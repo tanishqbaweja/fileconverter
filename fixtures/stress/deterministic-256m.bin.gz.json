@@ -1,0 +1,9 @@
+{
+  "generator": "node:zlib.createGzip",
+  "sourcePath": "H:\\Github Repositories\\fileconverter\\fixtures\\stress\\deterministic-256m.bin",
+  "bytes": 268517399,
+  "sha256": "0c6052ca8a97a22ae2227772d94497e0608f29896a5cd8ada150c2467df5af9f",
+  "validationBytes": 268435456,
+  "validationSha256": "bc5c01970c2033cae17a1d2d125fcf3ce7faabbcbde003a669725c52d9481c13",
+  "path": "H:\\Github Repositories\\fileconverter\\fixtures\\stress\\deterministic-256m.bin.gz"
+}

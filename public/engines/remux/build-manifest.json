@@ -1,0 +1,12 @@
+{
+  "engine": "within-remux",
+  "ffmpegVersion": "8.1.2",
+  "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+  "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
+  "initialWasmMemoryBytes": 33554432,
+  "maximumWasmMemoryBytes": 100663296,
+  "avioInputBufferBytes": 262144,
+  "avioOutputBufferBytes": 262144,
+  "outstandingWrites": 1,
+  "largeFileMemfs": false
+}

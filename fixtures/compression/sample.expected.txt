@@ -1,0 +1,3 @@
+Within deterministic GZIP fixture.
+Unicode: β, हिन्दी, 日本語.
+The decompressed bytes must match exactly.

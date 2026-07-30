@@ -1,0 +1,8 @@
+{
+  "generator": "xorshift32",
+  "seed": "0x6d2b79f5",
+  "sizeMiB": 256,
+  "bytes": 268435456,
+  "sha256": "bc5c01970c2033cae17a1d2d125fcf3ce7faabbcbde003a669725c52d9481c13",
+  "path": "H:\\Github Repositories\\fileconverter\\fixtures\\stress\\deterministic-256m.bin"
+}

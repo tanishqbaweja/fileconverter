@@ -1,0 +1,4 @@
+name,note,count
+alpha,"comma, quote ""and"" newline
+inside",2
+βeta,Unicode survives,3

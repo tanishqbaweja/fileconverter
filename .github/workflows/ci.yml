@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: sudo apt-get update
+      - run: sudo apt-get install -y ffmpeg
+
+      - name: Rebuild pinned FFmpeg/Wasm core
+        run: npm run build:ffmpeg-remux
+
+      - name: Verify reproducible engine artifacts
+        run: git diff --exit-code -- public/engines/remux
+
+      - run: npm run lint
+      - run: npx tsc --noEmit --incremental false
+      - run: npm test
+      - run: npm run test:browser
+
+      - name: Upload browser failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-evidence
+          path: |
+            output/playwright/artifacts
+            output/playwright/report
+          if-no-files-found: ignore
