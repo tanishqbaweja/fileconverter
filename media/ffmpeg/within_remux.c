@@ -13,6 +13,7 @@
 #include <libavutil/dict.h>
 #include <libavutil/error.h>
 #include <libavutil/mathematics.h>
+#include <libswresample/swresample.h>
 
 #define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)
 #define WITHIN_ROTATE_REQUIRED (-4096)
@@ -307,6 +308,732 @@ static int64_t packet_time_us(const AVPacket *packet,
   return av_rescale_q(timestamp, stream->time_base, AV_TIME_BASE_Q);
 }
 
+typedef struct WithinAudioPipeline {
+  AVCodecContext *decoder;
+  AVCodecContext *encoder;
+  AVFormatContext *output_format;
+  AVStream *output_stream;
+  SwrContext *resampler;
+  AVFrame *decoded_frame;
+  AVFrame *converted_frame;
+  AVPacket *encoded_packet;
+  int64_t next_pts;
+} WithinAudioPipeline;
+
+static int write_audio_packets(WithinAudioPipeline *pipeline,
+                               AVFrame *frame) {
+  int result = avcodec_send_frame(pipeline->encoder, frame);
+  if (result < 0) {
+    return result;
+  }
+  while (1) {
+    result =
+        avcodec_receive_packet(pipeline->encoder, pipeline->encoded_packet);
+    if (result == AVERROR(EAGAIN) || result == AVERROR_EOF) {
+      return 0;
+    }
+    if (result < 0) {
+      return result;
+    }
+    av_packet_rescale_ts(pipeline->encoded_packet,
+                         pipeline->encoder->time_base,
+                         pipeline->output_stream->time_base);
+    pipeline->encoded_packet->stream_index =
+        pipeline->output_stream->index;
+    result = av_interleaved_write_frame(pipeline->output_format,
+                                        pipeline->encoded_packet);
+    av_packet_unref(pipeline->encoded_packet);
+    if (result < 0) {
+      return result;
+    }
+  }
+}
+
+static int convert_decoded_audio(WithinAudioPipeline *pipeline) {
+  AVFrame *input = pipeline->decoded_frame;
+  AVFrame *output = pipeline->converted_frame;
+  int output_capacity =
+      swr_get_out_samples(pipeline->resampler, input->nb_samples);
+  if (output_capacity <= 0 || output_capacity > 8192) {
+    return AVERROR_INVALIDDATA;
+  }
+
+  av_frame_unref(output);
+  output->format = pipeline->encoder->sample_fmt;
+  output->sample_rate = pipeline->encoder->sample_rate;
+  output->nb_samples = output_capacity;
+  int result =
+      av_channel_layout_copy(&output->ch_layout,
+                             &pipeline->encoder->ch_layout);
+  if (result < 0) {
+    return result;
+  }
+  result = av_frame_get_buffer(output, 0);
+  if (result < 0) {
+    return result;
+  }
+  result = swr_convert(pipeline->resampler, output->data, output_capacity,
+                       (const uint8_t **)input->extended_data,
+                       input->nb_samples);
+  if (result < 0) {
+    return result;
+  }
+  output->nb_samples = result;
+  output->pts = pipeline->next_pts;
+  pipeline->next_pts += result;
+  return write_audio_packets(pipeline, output);
+}
+
+static int drain_audio_decoder(WithinAudioPipeline *pipeline,
+                               const AVPacket *packet) {
+  int result = avcodec_send_packet(pipeline->decoder, packet);
+  if (result < 0) {
+    return result;
+  }
+  while (1) {
+    result =
+        avcodec_receive_frame(pipeline->decoder, pipeline->decoded_frame);
+    if (result == AVERROR(EAGAIN) || result == AVERROR_EOF) {
+      return 0;
+    }
+    if (result < 0) {
+      return result;
+    }
+    result = convert_decoded_audio(pipeline);
+    av_frame_unref(pipeline->decoded_frame);
+    if (result < 0) {
+      return result;
+    }
+  }
+}
+
+static int within_audio_to_wav(void) {
+  int result = 0;
+  int audio_stream_index = -1;
+  AVFormatContext *input_format = NULL;
+  AVFormatContext *output_format = NULL;
+  AVIOContext *input_io = NULL;
+  AVIOContext *output_io = NULL;
+  uint8_t *input_buffer = NULL;
+  uint8_t *output_buffer = NULL;
+  AVCodecContext *decoder = NULL;
+  AVCodecContext *encoder = NULL;
+  SwrContext *resampler = NULL;
+  AVPacket *input_packet = NULL;
+  AVPacket *encoded_packet = NULL;
+  AVFrame *decoded_frame = NULL;
+  AVFrame *converted_frame = NULL;
+  WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
+  WithinOutput output = {.position = 0, .size = 0};
+  WithinAudioPipeline pipeline = {0};
+
+  if (input.size <= 0) {
+    within_message(2, "The input file is empty.");
+    return AVERROR_INVALIDDATA;
+  }
+
+  input_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  if (!input_buffer) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_io = avio_alloc_context(input_buffer, WITHIN_AVIO_BUFFER_SIZE, 0,
+                                &input, input_read, NULL, input_seek);
+  if (!input_io) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_buffer = NULL;
+  input_format = avformat_alloc_context();
+  if (!input_format) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_format->pb = input_io;
+  input_format->flags |= AVFMT_FLAG_CUSTOM_IO;
+  input_format->probesize = 2 * 1024 * 1024;
+  result = avformat_open_input(&input_format, NULL, NULL, NULL);
+  if (result < 0) {
+    report_av_error("Input probing failed", result);
+    goto cleanup;
+  }
+
+  for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+    AVStream *stream = input_format->streams[index];
+    if (audio_stream_index < 0 &&
+        stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+      audio_stream_index = (int)index;
+      continue;
+    }
+    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC ||
+        stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
+      within_message(
+          1,
+          "The source attachment is explicitly excluded from WAV output.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      within_message(
+          1,
+          "The source video stream is explicitly excluded from audio-only "
+          "WAV output.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+      within_message(
+          1,
+          "The source subtitle stream is explicitly excluded from WAV output.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+      within_message(
+          1,
+          "Only the first audio stream is converted by this WAV profile.");
+    }
+  }
+  if (audio_stream_index < 0) {
+    within_message(2, "No audio stream was found.");
+    result = AVERROR_STREAM_NOT_FOUND;
+    goto cleanup;
+  }
+
+  AVStream *input_stream = input_format->streams[audio_stream_index];
+  const AVCodec *decoder_codec =
+      avcodec_find_decoder(input_stream->codecpar->codec_id);
+  if (!decoder_codec) {
+    within_message(2, "The source audio decoder is not installed.");
+    result = AVERROR_DECODER_NOT_FOUND;
+    goto cleanup;
+  }
+  decoder = avcodec_alloc_context3(decoder_codec);
+  if (!decoder) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  result =
+      avcodec_parameters_to_context(decoder, input_stream->codecpar);
+  if (result < 0) {
+    goto cleanup;
+  }
+  decoder->pkt_timebase = input_stream->time_base;
+  result = avcodec_open2(decoder, decoder_codec, NULL);
+  if (result < 0) {
+    report_av_error("Audio decoder initialization failed", result);
+    goto cleanup;
+  }
+
+  const AVCodec *encoder_codec = avcodec_find_encoder(AV_CODEC_ID_PCM_S16LE);
+  if (!encoder_codec) {
+    result = AVERROR_ENCODER_NOT_FOUND;
+    goto cleanup;
+  }
+  encoder = avcodec_alloc_context3(encoder_codec);
+  if (!encoder) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  encoder->sample_rate = decoder->sample_rate;
+  encoder->sample_fmt = AV_SAMPLE_FMT_S16;
+  encoder->time_base = (AVRational){1, encoder->sample_rate};
+  result =
+      av_channel_layout_copy(&encoder->ch_layout, &decoder->ch_layout);
+  if (result < 0) {
+    goto cleanup;
+  }
+  result = avcodec_open2(encoder, encoder_codec, NULL);
+  if (result < 0) {
+    report_av_error("PCM encoder initialization failed", result);
+    goto cleanup;
+  }
+
+  result =
+      avformat_alloc_output_context2(&output_format, NULL, "wav", NULL);
+  if (result < 0 || !output_format) {
+    result = result < 0 ? result : AVERROR(EINVAL);
+    goto cleanup;
+  }
+  AVStream *output_stream = avformat_new_stream(output_format, NULL);
+  if (!output_stream) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_stream->time_base = encoder->time_base;
+  result =
+      avcodec_parameters_from_context(output_stream->codecpar, encoder);
+  if (result < 0) {
+    goto cleanup;
+  }
+  av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
+  av_dict_copy(&output_format->metadata, input_format->metadata, 0);
+
+  output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  if (!output_buffer) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_BUFFER_SIZE, 1,
+                                 &output, NULL, output_write, output_seek);
+  if (!output_io) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_buffer = NULL;
+  output_format->pb = output_io;
+  output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
+  result = avformat_write_header(output_format, NULL);
+  if (result < 0) {
+    report_av_error("WAV header write failed", result);
+    goto cleanup;
+  }
+
+  result = swr_alloc_set_opts2(
+      &resampler, &encoder->ch_layout, encoder->sample_fmt,
+      encoder->sample_rate, &decoder->ch_layout, decoder->sample_fmt,
+      decoder->sample_rate, 0, NULL);
+  if (result < 0 || !resampler) {
+    result = result < 0 ? result : AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  result = swr_init(resampler);
+  if (result < 0) {
+    goto cleanup;
+  }
+
+  input_packet = av_packet_alloc();
+  encoded_packet = av_packet_alloc();
+  decoded_frame = av_frame_alloc();
+  converted_frame = av_frame_alloc();
+  if (!input_packet || !encoded_packet || !decoded_frame ||
+      !converted_frame) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  pipeline = (WithinAudioPipeline){
+      .decoder = decoder,
+      .encoder = encoder,
+      .output_format = output_format,
+      .output_stream = output_stream,
+      .resampler = resampler,
+      .decoded_frame = decoded_frame,
+      .converted_frame = converted_frame,
+      .encoded_packet = encoded_packet,
+      .next_pts = 0,
+  };
+
+  while ((result = av_read_frame(input_format, input_packet)) >= 0) {
+    if (within_is_cancelled()) {
+      result = AVERROR_EXIT;
+      goto cleanup;
+    }
+    if (input_packet->stream_index == audio_stream_index) {
+      int64_t media_time =
+          packet_time_us(input_packet, input_stream);
+      result = drain_audio_decoder(&pipeline, input_packet);
+      if (result < 0) {
+        report_av_error("Audio decode or PCM encode failed", result);
+        goto cleanup;
+      }
+      within_progress((double)input.position, (double)output.size,
+                      (double)media_time, (double)input_format->duration,
+                      (double)emscripten_get_heap_size());
+    }
+    av_packet_unref(input_packet);
+  }
+  if (result != AVERROR_EOF) {
+    report_av_error("Input packet read failed", result);
+    goto cleanup;
+  }
+  result = drain_audio_decoder(&pipeline, NULL);
+  if (result < 0) {
+    report_av_error("Audio decoder flush failed", result);
+    goto cleanup;
+  }
+  result = write_audio_packets(&pipeline, NULL);
+  if (result < 0) {
+    report_av_error("PCM encoder flush failed", result);
+    goto cleanup;
+  }
+  result = av_write_trailer(output_format);
+  if (result < 0) {
+    report_av_error("WAV trailer write failed", result);
+    goto cleanup;
+  }
+  avio_flush(output_io);
+  result = within_has_sync_output()
+               ? within_output_truncate_sync((double)output.size)
+               : within_output_truncate((double)output.size);
+  if (result < 0) {
+    goto cleanup;
+  }
+  result = within_has_sync_output() ? within_output_flush_sync()
+                                    : within_output_flush();
+
+cleanup:
+  av_packet_free(&input_packet);
+  av_packet_free(&encoded_packet);
+  av_frame_free(&decoded_frame);
+  av_frame_free(&converted_frame);
+  swr_free(&resampler);
+  avcodec_free_context(&decoder);
+  avcodec_free_context(&encoder);
+  if (output_format) {
+    output_format->pb = NULL;
+    avformat_free_context(output_format);
+  }
+  if (output_io) {
+    av_freep(&output_io->buffer);
+    avio_context_free(&output_io);
+  } else {
+    av_freep(&output_buffer);
+  }
+  if (input_format) {
+    input_format->pb = NULL;
+    avformat_close_input(&input_format);
+  }
+  if (input_io) {
+    av_freep(&input_io->buffer);
+    avio_context_free(&input_io);
+  } else {
+    av_freep(&input_buffer);
+  }
+  return result < 0 ? result : 0;
+}
+
+typedef struct WithinVideoPipeline {
+  AVCodecContext *decoder;
+  AVCodecContext *encoder;
+  AVFormatContext *output_format;
+  AVStream *output_stream;
+  AVFrame *decoded_frame;
+  AVPacket *encoded_packet;
+  int64_t next_pts;
+} WithinVideoPipeline;
+
+static int write_video_packets(WithinVideoPipeline *pipeline,
+                               AVFrame *frame) {
+  int result = avcodec_send_frame(pipeline->encoder, frame);
+  if (result < 0) {
+    return result;
+  }
+  while (1) {
+    result =
+        avcodec_receive_packet(pipeline->encoder, pipeline->encoded_packet);
+    if (result == AVERROR(EAGAIN) || result == AVERROR_EOF) {
+      return 0;
+    }
+    if (result < 0) {
+      return result;
+    }
+    av_packet_rescale_ts(pipeline->encoded_packet,
+                         pipeline->encoder->time_base,
+                         pipeline->output_stream->time_base);
+    pipeline->encoded_packet->stream_index =
+        pipeline->output_stream->index;
+    result = av_interleaved_write_frame(pipeline->output_format,
+                                        pipeline->encoded_packet);
+    av_packet_unref(pipeline->encoded_packet);
+    if (result < 0) {
+      return result;
+    }
+  }
+}
+
+static int drain_video_decoder(WithinVideoPipeline *pipeline,
+                               const AVPacket *packet) {
+  int result = avcodec_send_packet(pipeline->decoder, packet);
+  if (result < 0) {
+    return result;
+  }
+  while (1) {
+    result =
+        avcodec_receive_frame(pipeline->decoder, pipeline->decoded_frame);
+    if (result == AVERROR(EAGAIN) || result == AVERROR_EOF) {
+      return 0;
+    }
+    if (result < 0) {
+      return result;
+    }
+    if (pipeline->decoded_frame->format !=
+        pipeline->encoder->pix_fmt) {
+      av_frame_unref(pipeline->decoded_frame);
+      return AVERROR(ENOSYS);
+    }
+    pipeline->decoded_frame->pts = pipeline->next_pts++;
+    result =
+        write_video_packets(pipeline, pipeline->decoded_frame);
+    av_frame_unref(pipeline->decoded_frame);
+    if (result < 0) {
+      return result;
+    }
+  }
+}
+
+static int within_video_to_mpeg4(void) {
+  int result = 0;
+  int video_stream_index = -1;
+  AVFormatContext *input_format = NULL;
+  AVFormatContext *output_format = NULL;
+  AVIOContext *input_io = NULL;
+  AVIOContext *output_io = NULL;
+  uint8_t *input_buffer = NULL;
+  uint8_t *output_buffer = NULL;
+  AVCodecContext *decoder = NULL;
+  AVCodecContext *encoder = NULL;
+  AVPacket *input_packet = NULL;
+  AVPacket *encoded_packet = NULL;
+  AVFrame *decoded_frame = NULL;
+  AVDictionary *muxer_options = NULL;
+  WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
+  WithinOutput output = {.position = 0, .size = 0};
+  WithinVideoPipeline pipeline = {0};
+
+  if (input.size <= 0) {
+    return AVERROR_INVALIDDATA;
+  }
+  input_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  if (!input_buffer) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_io = avio_alloc_context(input_buffer, WITHIN_AVIO_BUFFER_SIZE, 0,
+                                &input, input_read, NULL, input_seek);
+  if (!input_io) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_buffer = NULL;
+  input_format = avformat_alloc_context();
+  if (!input_format) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  input_format->pb = input_io;
+  input_format->flags |= AVFMT_FLAG_CUSTOM_IO;
+  input_format->probesize = 2 * 1024 * 1024;
+  result = avformat_open_input(&input_format, NULL, NULL, NULL);
+  if (result < 0) {
+    report_av_error("Input probing failed", result);
+    goto cleanup;
+  }
+
+  for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+    AVStream *stream = input_format->streams[index];
+    if (video_stream_index < 0 &&
+        stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+        !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
+      video_stream_index = (int)index;
+      continue;
+    }
+    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC ||
+        stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
+      within_message(
+          1,
+          "The source attachment is explicitly excluded from the re-encoded "
+          "MP4.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+      within_message(
+          1,
+          "The source audio stream is explicitly excluded from this "
+          "video-only re-encode profile.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+      within_message(
+          1,
+          "The source subtitle stream is explicitly excluded from the "
+          "re-encoded MP4.");
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      within_message(
+          1,
+          "Only the first video stream is converted by this profile.");
+    }
+  }
+  if (video_stream_index < 0) {
+    result = AVERROR_STREAM_NOT_FOUND;
+    goto cleanup;
+  }
+
+  AVStream *input_stream = input_format->streams[video_stream_index];
+  const AVCodec *decoder_codec =
+      avcodec_find_decoder(input_stream->codecpar->codec_id);
+  if (!decoder_codec) {
+    within_message(2, "The source video decoder is not installed.");
+    result = AVERROR_DECODER_NOT_FOUND;
+    goto cleanup;
+  }
+  decoder = avcodec_alloc_context3(decoder_codec);
+  if (!decoder) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  result =
+      avcodec_parameters_to_context(decoder, input_stream->codecpar);
+  if (result < 0) {
+    goto cleanup;
+  }
+  decoder->pkt_timebase = input_stream->time_base;
+  decoder->thread_count = 1;
+  result = avcodec_open2(decoder, decoder_codec, NULL);
+  if (result < 0) {
+    report_av_error("Video decoder initialization failed", result);
+    goto cleanup;
+  }
+
+  AVRational frame_rate = input_stream->avg_frame_rate;
+  if (frame_rate.num <= 0 || frame_rate.den <= 0) {
+    frame_rate = (AVRational){24, 1};
+  }
+  const AVCodec *encoder_codec = avcodec_find_encoder(AV_CODEC_ID_MPEG4);
+  if (!encoder_codec) {
+    result = AVERROR_ENCODER_NOT_FOUND;
+    goto cleanup;
+  }
+  encoder = avcodec_alloc_context3(encoder_codec);
+  if (!encoder) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  encoder->width = decoder->width;
+  encoder->height = decoder->height;
+  encoder->pix_fmt = AV_PIX_FMT_YUV420P;
+  encoder->time_base = av_inv_q(frame_rate);
+  encoder->framerate = frame_rate;
+  encoder->bit_rate = 2 * 1000 * 1000;
+  encoder->gop_size = 48;
+  encoder->max_b_frames = 0;
+  encoder->thread_count = 1;
+  encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+  result = avcodec_open2(encoder, encoder_codec, NULL);
+  if (result < 0) {
+    report_av_error("MPEG-4 encoder initialization failed", result);
+    goto cleanup;
+  }
+
+  result =
+      avformat_alloc_output_context2(&output_format, NULL, "mp4", NULL);
+  if (result < 0 || !output_format) {
+    result = result < 0 ? result : AVERROR(EINVAL);
+    goto cleanup;
+  }
+  AVStream *output_stream = avformat_new_stream(output_format, NULL);
+  if (!output_stream) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_stream->time_base = encoder->time_base;
+  result =
+      avcodec_parameters_from_context(output_stream->codecpar, encoder);
+  if (result < 0) {
+    goto cleanup;
+  }
+  av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
+  av_dict_copy(&output_format->metadata, input_format->metadata, 0);
+
+  output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  if (!output_buffer) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_BUFFER_SIZE, 1,
+                                 &output, NULL, output_write, output_seek);
+  if (!output_io) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  output_buffer = NULL;
+  output_format->pb = output_io;
+  output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
+  av_dict_set(&muxer_options, "movflags",
+              "frag_keyframe+empty_moov+default_base_moof", 0);
+  result = avformat_write_header(output_format, &muxer_options);
+  if (result < 0) {
+    report_av_error("MP4 header write failed", result);
+    goto cleanup;
+  }
+
+  input_packet = av_packet_alloc();
+  encoded_packet = av_packet_alloc();
+  decoded_frame = av_frame_alloc();
+  if (!input_packet || !encoded_packet || !decoded_frame) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  pipeline = (WithinVideoPipeline){
+      .decoder = decoder,
+      .encoder = encoder,
+      .output_format = output_format,
+      .output_stream = output_stream,
+      .decoded_frame = decoded_frame,
+      .encoded_packet = encoded_packet,
+      .next_pts = 0,
+  };
+
+  while ((result = av_read_frame(input_format, input_packet)) >= 0) {
+    if (within_is_cancelled()) {
+      result = AVERROR_EXIT;
+      goto cleanup;
+    }
+    if (input_packet->stream_index == video_stream_index) {
+      int64_t media_time =
+          packet_time_us(input_packet, input_stream);
+      result = drain_video_decoder(&pipeline, input_packet);
+      if (result < 0) {
+        report_av_error("Video decode or MPEG-4 encode failed", result);
+        goto cleanup;
+      }
+      within_progress((double)input.position, (double)output.size,
+                      (double)media_time, (double)input_format->duration,
+                      (double)emscripten_get_heap_size());
+    }
+    av_packet_unref(input_packet);
+  }
+  if (result != AVERROR_EOF) {
+    goto cleanup;
+  }
+  result = drain_video_decoder(&pipeline, NULL);
+  if (result < 0) {
+    goto cleanup;
+  }
+  result = write_video_packets(&pipeline, NULL);
+  if (result < 0) {
+    goto cleanup;
+  }
+  result = av_write_trailer(output_format);
+  if (result < 0) {
+    goto cleanup;
+  }
+  avio_flush(output_io);
+  result = within_has_sync_output()
+               ? within_output_truncate_sync((double)output.size)
+               : within_output_truncate((double)output.size);
+  if (result < 0) {
+    goto cleanup;
+  }
+  result = within_has_sync_output() ? within_output_flush_sync()
+                                    : within_output_flush();
+
+cleanup:
+  av_dict_free(&muxer_options);
+  av_packet_free(&input_packet);
+  av_packet_free(&encoded_packet);
+  av_frame_free(&decoded_frame);
+  avcodec_free_context(&decoder);
+  avcodec_free_context(&encoder);
+  if (output_format) {
+    output_format->pb = NULL;
+    avformat_free_context(output_format);
+  }
+  if (output_io) {
+    av_freep(&output_io->buffer);
+    avio_context_free(&output_io);
+  } else {
+    av_freep(&output_buffer);
+  }
+  if (input_format) {
+    input_format->pb = NULL;
+    avformat_close_input(&input_format);
+  }
+  if (input_io) {
+    av_freep(&input_io->buffer);
+    avio_context_free(&input_io);
+  } else {
+    av_freep(&input_buffer);
+  }
+  return result < 0 ? result : 0;
+}
+
 EMSCRIPTEN_KEEPALIVE
 int within_remux(int profile) {
   int result = 0;
@@ -324,6 +1051,12 @@ int within_remux(int profile) {
   WithinOutput output = {.position = 0, .size = 0};
   AVPacket *packet = NULL;
 
+  if (profile == 3) {
+    return within_audio_to_wav();
+  }
+  if (profile == 4) {
+    return within_video_to_mpeg4();
+  }
   if (profile != 1 && profile != 2) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);

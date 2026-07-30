@@ -111,10 +111,24 @@ export const formats = [
     category: "audio",
   },
   {
+    id: "wav",
+    label: "Waveform audio (WAV)",
+    extensions: ["wav"],
+    mimeTypes: ["audio/wav", "audio/x-wav"],
+    category: "audio",
+  },
+  {
     id: "webm",
     label: "WebM video",
     extensions: ["webm"],
     mimeTypes: ["video/webm"],
+    category: "video",
+  },
+  {
+    id: "mp4-mpeg4",
+    label: "MP4 (MPEG-4 video)",
+    extensions: ["mp4"],
+    mimeTypes: ["video/mp4"],
     category: "video",
   },
 ] as const satisfies readonly FormatDefinition[];
@@ -248,6 +262,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "mkv-to-wav",
+    input: "mkv",
+    output: "wav",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Only the first audio stream is converted.",
+      "Video, subtitle, and attachment streams are explicitly excluded.",
+      "WAV cannot preserve every Matroska language or container tag.",
+    ],
+    fidelityLimitations: [
+      "AAC is decoded and encoded as uncompressed 16-bit little-endian PCM.",
+    ],
+    maxTestedBytes: 2_958_573_265,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "mkv-to-webm",
     input: "mkv",
     output: "webm",
@@ -266,6 +305,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     maxTestedBytes: null,
     automatedTestStatus: "pending",
     public: false,
+  },
+  {
+    id: "mkv-to-mp4-mpeg4",
+    input: "mkv",
+    output: "mp4-mpeg4",
+    engine: "ffmpeg-video",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "high",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "This initial specialist profile converts only the first video stream.",
+      "Audio, subtitles, and attachments are explicitly excluded.",
+    ],
+    fidelityLimitations: [
+      "Video is decoded and encoded as lossy MPEG-4 Part 2 at 2 Mbit/s.",
+      "Only YUV 4:2:0 source frames are currently accepted.",
+    ],
+    maxTestedBytes: 936_003,
+    automatedTestStatus: "passed",
+    public: true,
   },
 ];
 

@@ -20,11 +20,13 @@ complete-Chromium memory profile have passed.
 | GZIP | Original bytes | Browser decompression stream | 256.1 MiB | Passed |
 | MKV with compatible codecs | MP4 | FFmpeg stream copy | 10,737,988,703 bytes | Passed |
 | MKV with compatible AAC | M4A | FFmpeg audio extraction/stream copy | 2,958,573,265 bytes | Passed |
+| MKV with AAC | WAV | FFmpeg AAC decode + PCM encode | 2,958,573,265 bytes | Passed |
+| MKV with H.264/HEVC YUV420P | MP4 (MPEG-4 video) | FFmpeg decode + MPEG-4 Part 2 encode | 936,003 bytes | Passed |
 
 SRT/WebVTT and CSV/TSV/NDJSON engines are implemented and browser-tested, but
 remain hidden from the normal selector while their dedicated large-fixture
-memory records are pending. MKV-to-WebM re-encoding is declared non-public and
-pending; the app never substitutes an extension rename or a server conversion.
+memory records are pending. MKV-to-WebM video re-encoding is declared non-public
+and pending; the app never substitutes an extension rename or a server conversion.
 
 ## Bounded-memory architecture
 
@@ -75,9 +77,11 @@ delete user-selected destination files.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables Matroska demuxing,
-fragmented MP4/M4A muxing, the HEVC and AAC parsers required by the verified
-fixture, and the necessary bitstream filters. It stream-copies compatible HEVC
-and AAC packets.
+fragmented MP4/M4A and seekable WAV muxing, H.264/HEVC/AAC decoding, MPEG-4
+Part 2 and signed 16-bit PCM encoding, libswresample, libswscale, and the
+necessary parsers and bitstream filters. It stream-copies compatible HEVC and
+AAC packets, performs a real AAC decode/resample/PCM encode pipeline for WAV,
+or decodes H.264/HEVC video and encodes bounded MPEG-4 Part 2 video.
 
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
@@ -85,11 +89,17 @@ compatible general metadata. The SRT stream and attached PNG cannot be
 stream-copied into this MP4 profile; the worker emits explicit warnings before
 excluding them. M4A intentionally excludes video, subtitle, and attachment
 streams and reports each limitation. It uses a fixed five-second fragment
-duration so audio-only sample tables cannot grow with total duration.
+duration so audio-only sample tables cannot grow with total duration. The WAV
+profile converts only the first audio stream, preserves its channel count and
+sample rate, and discloses the container metadata it cannot represent.
 
-The project does not claim that every MKV codec combination is compatible with
-MP4/M4A. Genuine codec conversion routes stay absent until a separately pinned
-decoder/encoder core passes the same correctness and process-tree memory gate.
+The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
+HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
+explicitly excludes audio, subtitles, and attachments. Its current maximum
+tested source is the deterministic 936,003-byte fixture, so the UI discloses
+that evidence rather than implying a large-file video-transcode result.
+MKV-to-WebM remains unavailable until an audited WebM encoder build passes the
+same correctness and process-tree memory gate.
 
 ## Privacy, security, and offline behavior
 
@@ -164,6 +174,8 @@ Current exact-build results:
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 151.6 MiB | 49.4 MiB | 20.0–61.1 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 133.1 MiB | 32 MiB | 4.6–21.8 MiB |
+| MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 176.6 MiB | 32 MiB | −17.4–−12.2 MiB |
+| MKV → MPEG-4 video | 3 | 936,003 B | 1,109,864 B | 135.7 MiB | 32 MiB | 31.5–39.3 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
@@ -172,6 +184,8 @@ The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
+The three WAV outputs shared SHA-256
+`659d36eac2310b7d20d8c694a8eafb11760061def608a9241a64913fc003e1eb`.
 Native `ffprobe` validates structure and metadata; native FFmpeg traverses every
 selected output packet. JSON, CSV, and HTML reports remain under the ignored
 `outputs/reports/` folder. Multi-gigabyte output files and Chrome profiles are

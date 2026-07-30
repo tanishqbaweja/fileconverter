@@ -50,7 +50,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2;
+  remuxProfile: 1 | 2 | 3 | 4;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;

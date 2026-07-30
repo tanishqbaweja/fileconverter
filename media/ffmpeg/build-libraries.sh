@@ -37,7 +37,9 @@ emconfigure ./configure \
   --enable-swresample \
   --enable-swscale \
   --enable-demuxer=matroska \
-  --enable-muxer=mp4,mov,mpegts,adts \
+  --enable-muxer=mp4,mov,mpegts,adts,wav \
+  --enable-decoder=aac,h264,hevc \
+  --enable-encoder=pcm_s16le,mpeg4 \
   --enable-parser=aac,hevc \
   --enable-bsf=aac_adtstoasc,extract_extradata,hevc_mp4toannexb \
   --extra-cflags="-O3 -fno-math-errno" \

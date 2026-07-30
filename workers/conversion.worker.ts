@@ -620,7 +620,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     emitProgress(jobId, "Worker started", metrics, startedAt, true);
     destination = await openDestination(
       message.destination,
-      (profileId === "mkv-to-mp4" || profileId === "mkv-to-m4a") &&
+      (profileId === "mkv-to-mp4" ||
+        profileId === "mkv-to-m4a" ||
+        profileId === "mkv-to-wav" ||
+        profileId === "mkv-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
     );
     emitProgress(jobId, "Destination opened", metrics, startedAt, true);
@@ -642,11 +645,23 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         metrics,
         startedAt,
       );
-    } else if (profileId === "mkv-to-mp4" || profileId === "mkv-to-m4a") {
+    } else if (
+      profileId === "mkv-to-mp4" ||
+      profileId === "mkv-to-m4a" ||
+      profileId === "mkv-to-wav" ||
+      profileId === "mkv-to-mp4-mpeg4"
+    ) {
       await runMediaRemux({
         file,
         writable: destination.writable,
-        remuxProfile: profileId === "mkv-to-m4a" ? 2 : 1,
+        remuxProfile:
+          profileId === "mkv-to-wav"
+            ? 3
+            : profileId === "mkv-to-mp4-mpeg4"
+              ? 4
+            : profileId === "mkv-to-m4a"
+              ? 2
+              : 1,
         jobId,
         metrics,
         startedAt,

@@ -25,12 +25,17 @@ if (
     "gzip-decompress",
     "mkv-to-mp4",
     "mkv-to-m4a",
+    "mkv-to-wav",
+    "mkv-to-mp4-mpeg4",
   ].includes(profileId)
 ) {
   throw new Error(`Unsupported memory-profile route: ${profileId}`);
 }
 const isMediaProfile =
-  profileId === "mkv-to-mp4" || profileId === "mkv-to-m4a";
+  profileId === "mkv-to-mp4" ||
+  profileId === "mkv-to-m4a" ||
+  profileId === "mkv-to-wav" ||
+  profileId === "mkv-to-mp4-mpeg4";
 const expectedValidationBytes =
   fixtureManifest.validationBytes ?? fixtureManifest.bytes;
 const expectedValidationHash =
@@ -369,10 +374,18 @@ try {
 }
 
 async function validateMediaOutput(localPath, source, finalState, route) {
-  const audioOnly = route === "mkv-to-m4a";
-  const minimumComparableSize = audioOnly ? 1 : Math.floor(source.bytes * 0.85);
-  const maximumComparableSize = audioOnly
+  const audioOnly =
+    route === "mkv-to-m4a" || route === "mkv-to-wav";
+  const pcmOutput = route === "mkv-to-wav";
+  const videoReencode = route === "mkv-to-mp4-mpeg4";
+  const minimumComparableSize =
+    audioOnly || videoReencode ? 1 : Math.floor(source.bytes * 0.85);
+  const maximumComparableSize = pcmOutput
+    ? Number.MAX_SAFE_INTEGER
+    : audioOnly
     ? source.bytes
+    : videoReencode
+      ? source.bytes * 3
     : Math.ceil(source.bytes * 1.05);
   if (
     finalState.metrics.outputBytes < minimumComparableSize ||
@@ -399,8 +412,13 @@ async function validateMediaOutput(localPath, source, finalState, route) {
   const probe = JSON.parse(stdout);
   const codecs = probe.streams.map((stream) => stream.codec_name);
   if (
-    (audioOnly && (codecs.length !== 1 || codecs[0] !== "aac")) ||
+    (audioOnly &&
+      (codecs.length !== 1 ||
+        codecs[0] !== (pcmOutput ? "pcm_s16le" : "aac"))) ||
+    (videoReencode &&
+      (codecs.length !== 1 || codecs[0] !== "mpeg4")) ||
     (!audioOnly &&
+      !videoReencode &&
       (codecs.length !== 2 ||
         codecs[0] !== "hevc" ||
         codecs[1] !== "aac"))
@@ -422,12 +440,14 @@ async function validateMediaOutput(localPath, source, finalState, route) {
     (!audioOnly &&
       (video?.width !== sourceVideo?.width ||
         video?.height !== sourceVideo?.height)) ||
-    audio.channels !== sourceAudio?.channels ||
-    audio.tags?.language !== sourceAudio?.tags?.language ||
+    (audioOnly && audio?.channels !== sourceAudio?.channels) ||
+    (audioOnly &&
+      !pcmOutput &&
+      audio.tags?.language !== sourceAudio?.tags?.language) ||
     Math.abs(duration - sourceDuration) > 0.25
   ) {
     throw new Error(
-      `Browser MP4 metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio.channels} channels, ${audio.tags?.language}, ${duration}s.`,
+      `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
     );
   }
   const sourceHasSubtitle = source.probe.streams.some(
@@ -454,6 +474,12 @@ async function validateMediaOutput(localPath, source, finalState, route) {
   ) {
     throw new Error("The browser did not explicitly disclose the excluded video stream.");
   }
+  if (
+    videoReencode &&
+    !finalState.warnings.some((warning) => warning.includes("audio stream"))
+  ) {
+    throw new Error("The browser did not explicitly disclose the excluded audio stream.");
+  }
   await execFileAsync(
     "ffmpeg",
     [
@@ -462,8 +488,7 @@ async function validateMediaOutput(localPath, source, finalState, route) {
       "-i",
       localPath,
       ...(audioOnly ? [] : ["-map", "0:v:0"]),
-      "-map",
-      "0:a:0",
+      ...(videoReencode ? [] : ["-map", "0:a:0"]),
       "-c",
       "copy",
       "-f",

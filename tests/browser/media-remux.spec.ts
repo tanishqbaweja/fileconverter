@@ -18,6 +18,8 @@ const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
+const wavOutputPath = path.join(outputRoot, "convert-output.wav");
+const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const fixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -54,6 +56,8 @@ test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
   assertProjectLocal(m4aOutputPath);
+  assertProjectLocal(wavOutputPath);
+  assertProjectLocal(mpeg4OutputPath);
   await rm(profileRoot, { recursive: true, force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
@@ -84,11 +88,17 @@ test.afterAll(async () => {
   await context?.close();
   await rm(mp4OutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
+  await rm(wavOutputPath, { force: true });
+  await rm(mpeg4OutputPath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
 async function runMediaRoute(
-  profileId: "mkv-to-mp4" | "mkv-to-m4a",
+  profileId:
+    | "mkv-to-mp4"
+    | "mkv-to-m4a"
+    | "mkv-to-wav"
+    | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
   minimumBytes: number,
@@ -112,8 +122,12 @@ async function runMediaRoute(
     expect(state.opfsName).toBeTruthy();
     if (profileId === "mkv-to-mp4") {
       expect(state.warnings).toEqual([]);
-    } else {
+    } else if (profileId === "mkv-to-m4a" || profileId === "mkv-to-wav") {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
+        true,
+      );
+    } else {
+      expect(state.warnings.some((warning) => warning.includes("audio stream"))).toBe(
         true,
       );
     }
@@ -197,6 +211,24 @@ test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async ()
 
 test("browser FFmpeg AVIO extracts MKV audio to valid M4A with bounded I/O", async () => {
   await runMediaRoute("mkv-to-m4a", m4aOutputPath, ["aac"], 20_000);
+});
+
+test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "mkv-to-wav",
+    wavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+  );
+});
+
+test("browser FFmpeg performs a genuine bounded video re-encode", async () => {
+  await runMediaRoute(
+    "mkv-to-mp4-mpeg4",
+    mpeg4OutputPath,
+    ["mpeg4"],
+    100_000,
+  );
 });
 
 declare global {

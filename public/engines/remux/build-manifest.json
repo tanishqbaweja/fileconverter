@@ -8,5 +8,8 @@
   "avioInputBufferBytes": 262144,
   "avioOutputBufferBytes": 262144,
   "outstandingWrites": 1,
-  "largeFileMemfs": false
+  "largeFileMemfs": false,
+  "profiles": ["mkv-to-mp4", "mkv-to-m4a", "mkv-to-wav", "mkv-to-mp4-mpeg4"],
+  "enabledDecoders": ["aac", "h264", "hevc"],
+  "enabledEncoders": ["pcm_s16le", "mpeg4"]
 }
