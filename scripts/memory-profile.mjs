@@ -49,6 +49,7 @@ if (
     "mkv-to-m4a",
     "mp4-to-m4a",
     "mkv-to-wav",
+    "mp4-to-wav",
     "m4a-to-wav",
     "mp3-to-wav",
     "flac-to-wav",
@@ -73,6 +74,7 @@ const isMediaProfile =
   profileId === "mkv-to-m4a" ||
   profileId === "mp4-to-m4a" ||
   profileId === "mkv-to-wav" ||
+  profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "mp3-to-wav" ||
   profileId === "flac-to-wav" ||
@@ -583,6 +585,7 @@ async function validateMediaOutput(
     route === "mkv-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "mkv-to-wav" ||
+    route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
@@ -594,6 +597,7 @@ async function validateMediaOutput(
     route === "wav-to-flac";
   const pcmOutput =
     route === "mkv-to-wav" ||
+    route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||

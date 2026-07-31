@@ -24,6 +24,7 @@ const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
+const mp4WavOutputPath = path.join(outputRoot, "mp4-convert-output.wav");
 const standaloneWavOutputPath = path.join(
   outputRoot,
   "standalone-convert-output.wav",
@@ -162,6 +163,7 @@ test.beforeAll(async () => {
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(mp4M4aOutputPath);
   assertProjectLocal(wavOutputPath);
+  assertProjectLocal(mp4WavOutputPath);
   assertProjectLocal(standaloneWavOutputPath);
   assertProjectLocal(mp3WavOutputPath);
   assertProjectLocal(flacWavOutputPath);
@@ -277,6 +279,7 @@ test.afterAll(async () => {
   await rm(m4aOutputPath, { force: true });
   await rm(mp4M4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
+  await rm(mp4WavOutputPath, { force: true });
   await rm(standaloneWavOutputPath, { force: true });
   await rm(mp3WavOutputPath, { force: true });
   await rm(flacWavOutputPath, { force: true });
@@ -359,6 +362,7 @@ async function runMediaRoute(
     | "mkv-to-m4a"
     | "mp4-to-m4a"
     | "mkv-to-wav"
+    | "mp4-to-wav"
     | "m4a-to-wav"
     | "mp3-to-wav"
     | "flac-to-wav"
@@ -405,7 +409,8 @@ async function runMediaRoute(
     } else if (
       profileId === "mkv-to-m4a" ||
       profileId === "mp4-to-m4a" ||
-      profileId === "mkv-to-wav"
+      profileId === "mkv-to-wav" ||
+      profileId === "mp4-to-wav"
     ) {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
         true,
@@ -750,6 +755,16 @@ test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {
     wavOutputPath,
     ["pcm_s16le"],
     300_000,
+  );
+});
+
+test("browser FFmpeg extracts MP4 audio and encodes bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "mp4-to-wav",
+    mp4WavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    mp4InputFixturePath,
   );
 });
 

@@ -2423,6 +2423,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mkv-to-m4a" ||
         profileId === "mp4-to-m4a" ||
         profileId === "mkv-to-wav" ||
+        profileId === "mp4-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "mp3-to-wav" ||
         profileId === "flac-to-wav" ||
@@ -2572,6 +2573,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mkv-to-m4a" ||
       profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
+      profileId === "mp4-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "mp3-to-wav" ||
       profileId === "flac-to-wav" ||
@@ -2589,6 +2591,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         writable: destination.writable,
         remuxProfile:
           profileId === "mkv-to-wav" ||
+          profileId === "mp4-to-wav" ||
           profileId === "m4a-to-wav" ||
           profileId === "mp3-to-wav" ||
           profileId === "flac-to-wav" ||

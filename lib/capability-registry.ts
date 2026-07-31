@@ -810,6 +810,33 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "mp4-to-wav",
+    input: "mp4",
+    output: "wav",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Only the first audio stream is converted.",
+      "Video, subtitle, and cover-art streams are explicitly excluded.",
+      "WAV cannot preserve every MPEG-4 language, artwork, or container tag.",
+      "Source chapters are not copied into WAV.",
+    ],
+    fidelityLimitations: [
+      "AAC is decoded and encoded as uncompressed 16-bit little-endian PCM.",
+    ],
+    maxTestedBytes: 2_964_855_971,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "m4a-to-wav",
     input: "m4a",
     output: "wav",

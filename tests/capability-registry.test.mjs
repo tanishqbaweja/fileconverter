@@ -93,4 +93,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.ok(
     publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-m4a"),
   );
+  assert.ok(
+    publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-wav"),
+  );
 });
