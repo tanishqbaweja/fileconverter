@@ -1,0 +1,67 @@
+{
+  "generatedBy": "scripts/generate-audio-stress-fixture.mjs",
+  "durationSeconds": 2100,
+  "bytes": 201600106,
+  "sha256": "9c2896179c106afa459499c384c760e1f3400c76677c1d9a6f97f64d067a9425",
+  "losslessPcmReference": true,
+  "decodedPcmSha256": "510547501d1be939b567a4e1f49fef298adb3b9f7d36ee3a72da55a8274891cf",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "pcm_s16le",
+        "codec_long_name": "PCM signed 16-bit little-endian",
+        "codec_type": "audio",
+        "codec_tag_string": "[1][0][0][0]",
+        "codec_tag": "0x0001",
+        "sample_fmt": "s16",
+        "sample_rate": "48000",
+        "channels": 1,
+        "bits_per_sample": 16,
+        "initial_padding": 0,
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "duration_ts": 100800000,
+        "duration": "2100.000000",
+        "bit_rate": "768000",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\stress\\media\\audio-pcm-192m.wav",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "wav",
+      "format_long_name": "WAV / WAVE (Waveform Audio)",
+      "duration": "2100.000000",
+      "size": "201600106",
+      "bit_rate": "768000",
+      "probe_score": 99,
+      "tags": {
+        "title": "Within deterministic large audio fixture"
+      }
+    }
+  }
+}

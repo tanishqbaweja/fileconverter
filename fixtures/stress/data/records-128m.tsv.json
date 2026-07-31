@@ -1,0 +1,16 @@
+{
+  "generatedBy": "scripts/generate-record-stress-fixtures.mjs",
+  "rows": 5490000,
+  "bytes": 134423894,
+  "sha256": "97cf23e934feb0809fc1ea14ce69972f4328ef85d86667e85eb198b6e10be6a5",
+  "expectedByProfile": {
+    "tsv-to-csv": {
+      "validationBytes": 139913895,
+      "validationSha256": "6cd8761b2f7c747f19ee5d731a557b7287248524c21fddb73654e54b3b0e67a4"
+    },
+    "tsv-to-ndjson": {
+      "validationBytes": 288143880,
+      "validationSha256": "524ff7cd8a5107d47277d893d97708f8c65f4adb9901a215738313930fece230"
+    }
+  }
+}

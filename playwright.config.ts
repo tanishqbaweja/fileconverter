@@ -1,5 +1,9 @@
 import { defineConfig } from "@playwright/test";
 
+const testPort = Number.parseInt(process.env.WITHIN_TEST_PORT ?? "3000", 10);
+const baseURL =
+  process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
+
 export default defineConfig({
   testDir: "./tests/browser",
   timeout: 60_000,
@@ -10,19 +14,19 @@ export default defineConfig({
   reporter: [["line"], ["html", { outputFolder: "output/playwright/report", open: "never" }]],
   outputDir: "output/playwright/artifacts",
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
   },
   webServer: {
     command:
-      "npm run build && wrangler dev --config dist/server/wrangler.json --port 3000",
-    url: "http://127.0.0.1:3000",
+      `npm run build && wrangler dev --config dist/server/wrangler.json --port ${testPort}`,
+    url: baseURL,
     env: {
       WRANGLER_SEND_METRICS: "false",
     },
-    reuseExistingServer: true,
+    reuseExistingServer: process.env.WITHIN_REUSE_SERVER === "1",
     timeout: 120_000,
   },
 });

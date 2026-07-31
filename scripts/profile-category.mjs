@@ -1,0 +1,243 @@
+import { spawn } from "node:child_process";
+import { access } from "node:fs/promises";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const projectRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
+const activeProfileMarker = path.join(
+  projectRoot,
+  "work",
+  "memory-profile-chrome",
+  "DevToolsActivePort",
+);
+const category = process.argv[2];
+const runCount = process.env.WITHIN_RUN_COUNT ?? "3";
+const resumeProfile = process.env.WITHIN_PROFILE_START ?? null;
+const endProfile = process.env.WITHIN_PROFILE_END ?? null;
+
+const categories = {
+  audio: {
+    generator: "scripts/generate-audio-stress-fixture.mjs",
+    profiles: [
+      ["m4a-to-wav", "audio-aac-50m.m4a"],
+      ["mp3-to-wav", "audio-mp3-50m.mp3"],
+      ["flac-to-wav", "audio-flac-50m.flac"],
+      ["aiff-to-wav", "audio-pcm-192m.aiff"],
+      ["ogg-to-wav", "audio-vorbis-long.ogg"],
+      ["opus-to-wav", "audio-opus-long.opus"],
+      ["m4a-to-flac", "audio-aac-50m.m4a"],
+      ["mp3-to-flac", "audio-mp3-50m.mp3"],
+      ["wav-to-flac", "audio-pcm-192m.wav"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
+  records: {
+    generator: "scripts/generate-record-stress-fixtures.mjs",
+    profiles: [
+      ["csv-to-tsv", "records-128m.csv"],
+      ["csv-to-ndjson", "records-128m.csv"],
+      ["tsv-to-csv", "records-128m.tsv"],
+      ["tsv-to-ndjson", "records-128m.tsv"],
+      ["ndjson-to-csv", "records-128m.ndjson"],
+      ["ndjson-to-tsv", "records-128m.ndjson"],
+      ["ndjson-to-json", "records-128m.ndjson"],
+      ["json-to-ndjson", "records-128m.json"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/data/${name}`,
+    ]),
+  },
+  subtitles: {
+    generator: "scripts/generate-subtitle-stress-fixtures.mjs",
+    profiles: [
+      ["srt-to-vtt", "subtitles-64m.srt"],
+      ["vtt-to-srt", "subtitles-64m.vtt"],
+      ["ass-to-srt", "subtitles-64m.ass"],
+      ["ass-to-vtt", "subtitles-64m.ass"],
+      ["srt-to-ttml", "subtitles-64m.srt"],
+      ["vtt-to-ttml", "subtitles-64m.vtt"],
+      ["ttml-to-srt", "subtitles-64m.ttml"],
+      ["ttml-to-vtt", "subtitles-64m.ttml"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/subtitles/${name}`,
+    ]),
+  },
+  documents: {
+    generator: "scripts/generate-document-stress-fixtures.mjs",
+    profiles: [
+      ["txt-to-html", "document-64m.txt"],
+      ["md-to-html", "document-64m.md"],
+      ["html-to-txt", "document-64m.html"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/documents/${name}`,
+    ]),
+  },
+  archives: {
+    generator: "scripts/generate-archive-fixtures.mjs",
+    generatorArguments: ["--include-stress"],
+    profiles: [
+      ["tar-to-tar-gz", "archive-256m.tar"],
+      ["tar-gz-to-tar", "archive-256m.tar.gz"],
+      ["zip-to-tar", "archive-256m.zip"],
+      ["tar-to-zip", "archive-256m.tar"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/archives/${name}`,
+    ]),
+  },
+  images: {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-jpeg", "highres-pattern.png"],
+      ["png-to-webp", "highres-pattern.png"],
+      ["png-to-bmp", "highres-pattern.png"],
+      ["jpeg-to-png", "highres-pattern.jpg"],
+      ["jpeg-to-webp", "highres-pattern.jpg"],
+      ["jpeg-to-bmp", "highres-pattern.jpg"],
+      ["webp-to-png", "highres-pattern.webp"],
+      ["webp-to-jpeg", "highres-pattern.webp"],
+      ["webp-to-bmp", "highres-pattern.webp"],
+      ["avif-to-png", "highres-pattern.avif"],
+      ["avif-to-jpeg", "highres-pattern.avif"],
+      ["avif-to-webp", "highres-pattern.avif"],
+      ["avif-to-bmp", "highres-pattern.avif"],
+      ["bmp-to-png", "highres-pattern.bmp"],
+      ["bmp-to-jpeg", "highres-pattern.bmp"],
+      ["bmp-to-webp", "highres-pattern.bmp"],
+      ["gif-to-png", "animated-pattern.gif"],
+      ["gif-to-jpeg", "animated-pattern.gif"],
+      ["gif-to-webp", "animated-pattern.gif"],
+      ["gif-to-bmp", "animated-pattern.gif"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/images/${name}`,
+    ]),
+  },
+};
+
+if (!Object.hasOwn(categories, category)) {
+  throw new Error(
+    `Choose one category: ${Object.keys(categories).join(", ")}.`,
+  );
+}
+if (!/^[1-9]\d*$/.test(runCount) || Number(runCount) > 10) {
+  throw new Error(`WITHIN_RUN_COUNT must be an integer from 1 through 10.`);
+}
+try {
+  await access(activeProfileMarker);
+  throw new Error(
+    "Another memory profile appears active. Wait for it to finish or clean its stale project-local profile before starting a category.",
+  );
+} catch (error) {
+  if (error?.code !== "ENOENT") throw error;
+}
+
+const selected = categories[category];
+let profiles = selected.profiles;
+let startIndex = 0;
+if (resumeProfile) {
+  startIndex = profiles.findIndex(
+    ([profileId]) => profileId === resumeProfile,
+  );
+  if (startIndex < 0) {
+    throw new Error(
+      `WITHIN_PROFILE_START=${resumeProfile} is not part of category ${category}.`,
+    );
+  }
+}
+let endIndex = profiles.length - 1;
+if (endProfile) {
+  endIndex = profiles.findIndex(([profileId]) => profileId === endProfile);
+  if (endIndex < 0) {
+    throw new Error(
+      `WITHIN_PROFILE_END=${endProfile} is not part of category ${category}.`,
+    );
+  }
+}
+if (endIndex < startIndex) {
+  throw new Error(
+    `WITHIN_PROFILE_END=${endProfile} precedes WITHIN_PROFILE_START=${resumeProfile}.`,
+  );
+}
+profiles = profiles.slice(startIndex, endIndex + 1);
+let completed = false;
+let activeChild = null;
+let terminationSignal = null;
+const handleTermination = (signal) => {
+  if (terminationSignal) return;
+  terminationSignal = signal;
+  process.stderr.write(
+    `Received ${signal}; stopping the active profile before project-local cleanup.\n`,
+  );
+  if (process.platform !== "win32" || signal === "SIGTERM") {
+    activeChild?.kill(signal);
+  }
+};
+const onSigint = () => handleTermination("SIGINT");
+const onSigterm = () => handleTermination("SIGTERM");
+process.on("SIGINT", onSigint);
+process.on("SIGTERM", onSigterm);
+try {
+  process.stdout.write(
+    "Building the current source before profiling the production bundle.\n",
+  );
+  await runNode("node_modules/vinext/dist/cli.js", ["build"]);
+  await runNode(selected.generator, selected.generatorArguments ?? []);
+  for (const [profileId, relativeFixture] of profiles) {
+    const relativeManifest = `${relativeFixture}.json`;
+    process.stdout.write(
+      `\nProfiling ${profileId} with ${relativeFixture} (${runCount} run${runCount === "1" ? "" : "s"})\n`,
+    );
+    await runNode(
+      "scripts/memory-profile.mjs",
+      [relativeFixture, profileId, relativeManifest],
+      { WITHIN_RUN_COUNT: runCount },
+    );
+  }
+  completed = true;
+} finally {
+  await runNode("scripts/cleanup-generated.mjs", []);
+  process.off("SIGINT", onSigint);
+  process.off("SIGTERM", onSigterm);
+}
+
+if (terminationSignal) {
+  throw new Error(`Category ${category} was interrupted by ${terminationSignal}.`);
+}
+if (completed) {
+  process.stdout.write(
+    `Category ${category}${resumeProfile ? ` from ${resumeProfile}` : ""}${endProfile ? ` through ${endProfile}` : ""} passed; large generated fixtures and converted copies were removed.\n`,
+  );
+}
+
+function runNode(script, arguments_, extraEnvironment = {}) {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, [script, ...arguments_], {
+      cwd: projectRoot,
+      env: { ...process.env, ...extraEnvironment },
+      stdio: "inherit",
+      windowsHide: true,
+    });
+    activeChild = child;
+    child.once("error", reject);
+    child.once("exit", (code, signal) => {
+      if (activeChild === child) activeChild = null;
+      if (code === 0) {
+        resolve();
+      } else {
+        reject(
+          new Error(
+            `${script} failed with ${signal ? `signal ${signal}` : `exit code ${code}`}.`,
+          ),
+        );
+      }
+    });
+  });
+}

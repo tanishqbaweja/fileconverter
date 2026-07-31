@@ -10,13 +10,20 @@
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
+#include <libavutil/audio_fifo.h>
 #include <libavutil/dict.h>
 #include <libavutil/error.h>
 #include <libavutil/mathematics.h>
+#include <libavutil/opt.h>
 #include <libswresample/swresample.h>
+#include <libswscale/swscale.h>
 
 #define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)
+#define WITHIN_AUDIO_FIFO_MAX_SAMPLES 16384
 #define WITHIN_ROTATE_REQUIRED (-4096)
+#ifndef WITHIN_VIDEO_THREADS
+#define WITHIN_VIDEO_THREADS 1
+#endif
 
 typedef struct WithinInput {
   int64_t position;
@@ -317,6 +324,7 @@ typedef struct WithinAudioPipeline {
   AVFrame *decoded_frame;
   AVFrame *converted_frame;
   AVPacket *encoded_packet;
+  AVAudioFifo *fifo;
   int64_t next_pts;
 } WithinAudioPipeline;
 
@@ -349,6 +357,64 @@ static int write_audio_packets(WithinAudioPipeline *pipeline,
   }
 }
 
+static int drain_audio_fifo(WithinAudioPipeline *pipeline, int flush) {
+  const int frame_size = pipeline->encoder->frame_size;
+  while (av_audio_fifo_size(pipeline->fifo) >= frame_size ||
+         (flush && av_audio_fifo_size(pipeline->fifo) > 0)) {
+    int samples = FFMIN(frame_size, av_audio_fifo_size(pipeline->fifo));
+    AVFrame *output = pipeline->converted_frame;
+    av_frame_unref(output);
+    output->format = pipeline->encoder->sample_fmt;
+    output->sample_rate = pipeline->encoder->sample_rate;
+    output->nb_samples = samples;
+    int result = av_channel_layout_copy(
+        &output->ch_layout, &pipeline->encoder->ch_layout);
+    if (result < 0) {
+      return result;
+    }
+    result = av_frame_get_buffer(output, 0);
+    if (result < 0) {
+      return result;
+    }
+    if (av_audio_fifo_read(pipeline->fifo,
+                           (void **)output->extended_data,
+                           samples) != samples) {
+      return AVERROR(EIO);
+    }
+    output->pts = pipeline->next_pts;
+    pipeline->next_pts += samples;
+    result = write_audio_packets(pipeline, output);
+    if (result < 0) {
+      return result;
+    }
+  }
+  return 0;
+}
+
+static int submit_converted_audio(WithinAudioPipeline *pipeline,
+                                  AVFrame *output, int samples) {
+  output->nb_samples = samples;
+  if (pipeline->fifo) {
+    int current = av_audio_fifo_size(pipeline->fifo);
+    if (current < 0 ||
+        samples > WITHIN_AUDIO_FIFO_MAX_SAMPLES - current) {
+      return AVERROR(ENOMEM);
+    }
+    if (av_audio_fifo_realloc(pipeline->fifo, current + samples) < 0) {
+      return AVERROR(ENOMEM);
+    }
+    if (av_audio_fifo_write(pipeline->fifo,
+                            (void **)output->extended_data,
+                            samples) != samples) {
+      return AVERROR(EIO);
+    }
+    return drain_audio_fifo(pipeline, 0);
+  }
+  output->pts = pipeline->next_pts;
+  pipeline->next_pts += samples;
+  return write_audio_packets(pipeline, output);
+}
+
 static int convert_decoded_audio(WithinAudioPipeline *pipeline) {
   AVFrame *input = pipeline->decoded_frame;
   AVFrame *output = pipeline->converted_frame;
@@ -378,10 +444,46 @@ static int convert_decoded_audio(WithinAudioPipeline *pipeline) {
   if (result < 0) {
     return result;
   }
-  output->nb_samples = result;
-  output->pts = pipeline->next_pts;
-  pipeline->next_pts += result;
-  return write_audio_packets(pipeline, output);
+  return submit_converted_audio(pipeline, output, result);
+}
+
+static int flush_audio_resampler(WithinAudioPipeline *pipeline) {
+  AVFrame *output = pipeline->converted_frame;
+  while (1) {
+    int output_capacity =
+        swr_get_out_samples(pipeline->resampler, 0);
+    if (output_capacity < 0 || output_capacity > 8192) {
+      return AVERROR_INVALIDDATA;
+    }
+    if (output_capacity == 0) {
+      return 0;
+    }
+    av_frame_unref(output);
+    output->format = pipeline->encoder->sample_fmt;
+    output->sample_rate = pipeline->encoder->sample_rate;
+    output->nb_samples = output_capacity;
+    int result = av_channel_layout_copy(
+        &output->ch_layout, &pipeline->encoder->ch_layout);
+    if (result < 0) {
+      return result;
+    }
+    result = av_frame_get_buffer(output, 0);
+    if (result < 0) {
+      return result;
+    }
+    result = swr_convert(pipeline->resampler, output->data,
+                         output_capacity, NULL, 0);
+    if (result < 0) {
+      return result;
+    }
+    if (result == 0) {
+      return 0;
+    }
+    result = submit_converted_audio(pipeline, output, result);
+    if (result < 0) {
+      return result;
+    }
+  }
 }
 
 static int drain_audio_decoder(WithinAudioPipeline *pipeline,
@@ -407,7 +509,8 @@ static int drain_audio_decoder(WithinAudioPipeline *pipeline,
   }
 }
 
-static int within_audio_to_wav(void) {
+static int within_audio_transcode(int profile) {
+  const int flac_output = profile == 6;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -423,6 +526,7 @@ static int within_audio_to_wav(void) {
   AVPacket *encoded_packet = NULL;
   AVFrame *decoded_frame = NULL;
   AVFrame *converted_frame = NULL;
+  AVAudioFifo *fifo = NULL;
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
   WithinAudioPipeline pipeline = {0};
@@ -452,10 +556,21 @@ static int within_audio_to_wav(void) {
   input_format->pb = input_io;
   input_format->flags |= AVFMT_FLAG_CUSTOM_IO;
   input_format->probesize = 2 * 1024 * 1024;
+  input_format->max_analyze_duration = 2 * AV_TIME_BASE;
   result = avformat_open_input(&input_format, NULL, NULL, NULL);
   if (result < 0) {
     report_av_error("Input probing failed", result);
     goto cleanup;
+  }
+  result = avformat_find_stream_info(input_format, NULL);
+  if (result < 0) {
+    report_av_error("Audio stream inspection failed", result);
+    goto cleanup;
+  }
+  if (input_format->nb_chapters > 0) {
+    within_message(
+        1,
+        "Source chapters are explicitly excluded from this audio-only output.");
   }
 
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
@@ -469,20 +584,20 @@ static int within_audio_to_wav(void) {
         stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
       within_message(
           1,
-          "The source attachment is explicitly excluded from WAV output.");
+          "The source attachment is explicitly excluded from audio-only output.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       within_message(
           1,
           "The source video stream is explicitly excluded from audio-only "
-          "WAV output.");
+          "output.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
       within_message(
           1,
-          "The source subtitle stream is explicitly excluded from WAV output.");
+          "The source subtitle stream is explicitly excluded from audio-only output.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
       within_message(
           1,
-          "Only the first audio stream is converted by this WAV profile.");
+          "Only the first audio stream is converted by this audio profile.");
     }
   }
   if (audio_stream_index < 0) {
@@ -516,7 +631,8 @@ static int within_audio_to_wav(void) {
     goto cleanup;
   }
 
-  const AVCodec *encoder_codec = avcodec_find_encoder(AV_CODEC_ID_PCM_S16LE);
+  const AVCodec *encoder_codec = avcodec_find_encoder(
+      flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -536,12 +652,18 @@ static int within_audio_to_wav(void) {
   }
   result = avcodec_open2(encoder, encoder_codec, NULL);
   if (result < 0) {
-    report_av_error("PCM encoder initialization failed", result);
+    report_av_error("Audio encoder initialization failed", result);
+    goto cleanup;
+  }
+  if (encoder->frame_size < 0 || encoder->frame_size > 8192) {
+    within_message(2, "The audio encoder frame size exceeds the bounded FIFO limit.");
+    result = AVERROR_INVALIDDATA;
     goto cleanup;
   }
 
   result =
-      avformat_alloc_output_context2(&output_format, NULL, "wav", NULL);
+      avformat_alloc_output_context2(
+          &output_format, NULL, flac_output ? "flac" : "wav", NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
     goto cleanup;
@@ -576,7 +698,7 @@ static int within_audio_to_wav(void) {
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
   result = avformat_write_header(output_format, NULL);
   if (result < 0) {
-    report_av_error("WAV header write failed", result);
+    report_av_error("Audio header write failed", result);
     goto cleanup;
   }
 
@@ -602,6 +724,15 @@ static int within_audio_to_wav(void) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
+  if (encoder->frame_size > 0) {
+    fifo = av_audio_fifo_alloc(encoder->sample_fmt,
+                               encoder->ch_layout.nb_channels,
+                               encoder->frame_size * 2);
+    if (!fifo) {
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+  }
   pipeline = (WithinAudioPipeline){
       .decoder = decoder,
       .encoder = encoder,
@@ -611,6 +742,7 @@ static int within_audio_to_wav(void) {
       .decoded_frame = decoded_frame,
       .converted_frame = converted_frame,
       .encoded_packet = encoded_packet,
+      .fifo = fifo,
       .next_pts = 0,
   };
 
@@ -624,7 +756,7 @@ static int within_audio_to_wav(void) {
           packet_time_us(input_packet, input_stream);
       result = drain_audio_decoder(&pipeline, input_packet);
       if (result < 0) {
-        report_av_error("Audio decode or PCM encode failed", result);
+        report_av_error("Audio decode or encode failed", result);
         goto cleanup;
       }
       within_progress((double)input.position, (double)output.size,
@@ -642,14 +774,26 @@ static int within_audio_to_wav(void) {
     report_av_error("Audio decoder flush failed", result);
     goto cleanup;
   }
+  result = flush_audio_resampler(&pipeline);
+  if (result < 0) {
+    report_av_error("Audio resampler flush failed", result);
+    goto cleanup;
+  }
+  if (fifo) {
+    result = drain_audio_fifo(&pipeline, 1);
+    if (result < 0) {
+      report_av_error("Audio FIFO flush failed", result);
+      goto cleanup;
+    }
+  }
   result = write_audio_packets(&pipeline, NULL);
   if (result < 0) {
-    report_av_error("PCM encoder flush failed", result);
+    report_av_error("Audio encoder flush failed", result);
     goto cleanup;
   }
   result = av_write_trailer(output_format);
   if (result < 0) {
-    report_av_error("WAV trailer write failed", result);
+    report_av_error("Audio trailer write failed", result);
     goto cleanup;
   }
   avio_flush(output_io);
@@ -667,6 +811,7 @@ cleanup:
   av_packet_free(&encoded_packet);
   av_frame_free(&decoded_frame);
   av_frame_free(&converted_frame);
+  av_audio_fifo_free(fifo);
   swr_free(&resampler);
   avcodec_free_context(&decoder);
   avcodec_free_context(&encoder);
@@ -699,6 +844,8 @@ typedef struct WithinVideoPipeline {
   AVFormatContext *output_format;
   AVStream *output_stream;
   AVFrame *decoded_frame;
+  AVFrame *converted_frame;
+  struct SwsContext *scaler;
   AVPacket *encoded_packet;
   int64_t next_pts;
 } WithinVideoPipeline;
@@ -747,14 +894,45 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
     if (result < 0) {
       return result;
     }
-    if (pipeline->decoded_frame->format !=
-        pipeline->encoder->pix_fmt) {
+    AVFrame *frame_to_encode = pipeline->decoded_frame;
+    if (pipeline->converted_frame) {
+      if (!pipeline->scaler) {
+        pipeline->scaler = sws_getContext(
+            pipeline->decoded_frame->width,
+            pipeline->decoded_frame->height,
+            pipeline->decoded_frame->format,
+            pipeline->encoder->width,
+            pipeline->encoder->height,
+            pipeline->encoder->pix_fmt,
+            SWS_BILINEAR, NULL, NULL, NULL);
+        if (!pipeline->scaler) {
+          av_frame_unref(pipeline->decoded_frame);
+          return AVERROR(ENOMEM);
+        }
+      }
+      result = av_frame_make_writable(pipeline->converted_frame);
+      if (result < 0) {
+        av_frame_unref(pipeline->decoded_frame);
+        return result;
+      }
+      result = sws_scale(
+          pipeline->scaler,
+          (const uint8_t *const *)pipeline->decoded_frame->data,
+          pipeline->decoded_frame->linesize, 0, pipeline->decoder->height,
+          pipeline->converted_frame->data,
+          pipeline->converted_frame->linesize);
+      if (result != pipeline->encoder->height) {
+        av_frame_unref(pipeline->decoded_frame);
+        return result < 0 ? result : AVERROR_EXTERNAL;
+      }
+      frame_to_encode = pipeline->converted_frame;
+    } else if (pipeline->decoded_frame->format !=
+               pipeline->encoder->pix_fmt) {
       av_frame_unref(pipeline->decoded_frame);
       return AVERROR(ENOSYS);
     }
-    pipeline->decoded_frame->pts = pipeline->next_pts++;
-    result =
-        write_video_packets(pipeline, pipeline->decoded_frame);
+    frame_to_encode->pts = pipeline->next_pts++;
+    result = write_video_packets(pipeline, frame_to_encode);
     av_frame_unref(pipeline->decoded_frame);
     if (result < 0) {
       return result;
@@ -762,7 +940,7 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
   }
 }
 
-static int within_video_to_mpeg4(void) {
+static int within_video_reencode(int webm) {
   int result = 0;
   int video_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -776,6 +954,9 @@ static int within_video_to_mpeg4(void) {
   AVPacket *input_packet = NULL;
   AVPacket *encoded_packet = NULL;
   AVFrame *decoded_frame = NULL;
+  AVFrame *converted_frame = NULL;
+  struct SwsContext *scaler = NULL;
+  AVDictionary *encoder_options = NULL;
   AVDictionary *muxer_options = NULL;
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
@@ -809,6 +990,13 @@ static int within_video_to_mpeg4(void) {
     report_av_error("Input probing failed", result);
     goto cleanup;
   }
+  if (input_format->nb_chapters > 0) {
+    within_message(
+        1,
+        webm
+            ? "Source chapters are explicitly excluded from the re-encoded WebM."
+            : "Source chapters are explicitly excluded from the re-encoded MP4.");
+  }
 
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
     AVStream *stream = input_format->streams[index];
@@ -822,8 +1010,11 @@ static int within_video_to_mpeg4(void) {
         stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
       within_message(
           1,
-          "The source attachment is explicitly excluded from the re-encoded "
-          "MP4.");
+          webm
+              ? "The source attachment is explicitly excluded from the "
+                "re-encoded WebM."
+              : "The source attachment is explicitly excluded from the "
+                "re-encoded MP4.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
       within_message(
           1,
@@ -832,8 +1023,11 @@ static int within_video_to_mpeg4(void) {
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
       within_message(
           1,
-          "The source subtitle stream is explicitly excluded from the "
-          "re-encoded MP4.");
+          webm
+              ? "The source subtitle stream is explicitly excluded from the "
+                "re-encoded WebM."
+              : "The source subtitle stream is explicitly excluded from the "
+                "re-encoded MP4.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       within_message(
           1,
@@ -864,7 +1058,10 @@ static int within_video_to_mpeg4(void) {
     goto cleanup;
   }
   decoder->pkt_timebase = input_stream->time_base;
-  decoder->thread_count = 1;
+  decoder->thread_count = webm ? WITHIN_VIDEO_THREADS : 1;
+  if (webm && WITHIN_VIDEO_THREADS > 1) {
+    decoder->thread_type = FF_THREAD_FRAME | FF_THREAD_SLICE;
+  }
   result = avcodec_open2(decoder, decoder_codec, NULL);
   if (result < 0) {
     report_av_error("Video decoder initialization failed", result);
@@ -875,7 +1072,8 @@ static int within_video_to_mpeg4(void) {
   if (frame_rate.num <= 0 || frame_rate.den <= 0) {
     frame_rate = (AVRational){24, 1};
   }
-  const AVCodec *encoder_codec = avcodec_find_encoder(AV_CODEC_ID_MPEG4);
+  const AVCodec *encoder_codec =
+      avcodec_find_encoder(webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -887,26 +1085,63 @@ static int within_video_to_mpeg4(void) {
   }
   encoder->width = decoder->width;
   encoder->height = decoder->height;
+  if (webm && encoder->width > 640) {
+    encoder->width = 640;
+    encoder->height =
+        (int)(((int64_t)decoder->height * encoder->width) / decoder->width);
+    encoder->height &= ~1;
+    if (encoder->height < 2) {
+      encoder->height = 2;
+    }
+    within_message(
+        1,
+        "The WebM profile downscales video to at most 640 pixels wide to "
+        "enforce its CPU and memory budget.");
+  }
+  within_message(
+      1,
+      webm
+          ? "The WebM profile normalizes variable frame timing to the "
+            "source average frame rate."
+          : "The MPEG-4 profile normalizes variable frame timing to the "
+            "source average frame rate.");
   encoder->pix_fmt = AV_PIX_FMT_YUV420P;
   encoder->time_base = av_inv_q(frame_rate);
   encoder->framerate = frame_rate;
-  encoder->bit_rate = 2 * 1000 * 1000;
-  encoder->gop_size = 48;
+  encoder->bit_rate = webm ? 600 * 1000 : 2 * 1000 * 1000;
+  encoder->gop_size = webm ? 120 : 48;
   encoder->max_b_frames = 0;
-  encoder->thread_count = 1;
-  encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
-  result = avcodec_open2(encoder, encoder_codec, NULL);
+  encoder->thread_count = webm ? WITHIN_VIDEO_THREADS : 1;
+  encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER | AV_CODEC_FLAG_BITEXACT;
+  encoder->sample_aspect_ratio = decoder->sample_aspect_ratio;
+  encoder->color_primaries = decoder->color_primaries;
+  encoder->color_trc = decoder->color_trc;
+  encoder->colorspace = decoder->colorspace;
+  encoder->color_range = decoder->color_range;
+  encoder->chroma_sample_location = decoder->chroma_sample_location;
+  if (webm) {
+    av_dict_set(&encoder_options, "deadline", "realtime", 0);
+    av_dict_set(&encoder_options, "cpu-used", "8", 0);
+    av_dict_set_int(&encoder_options, "slices", WITHIN_VIDEO_THREADS, 0);
+    av_dict_set(&encoder_options, "lag-in-frames", "0", 0);
+    av_dict_set(&encoder_options, "auto-alt-ref", "0", 0);
+  }
+  result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   if (result < 0) {
-    report_av_error("MPEG-4 encoder initialization failed", result);
+    report_av_error(
+        webm ? "VP8 encoder initialization failed"
+             : "MPEG-4 encoder initialization failed",
+        result);
     goto cleanup;
   }
 
-  result =
-      avformat_alloc_output_context2(&output_format, NULL, "mp4", NULL);
+  result = avformat_alloc_output_context2(
+      &output_format, NULL, webm ? "webm" : "mp4", NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
     goto cleanup;
   }
+  output_format->flags |= AVFMT_FLAG_BITEXACT;
   AVStream *output_stream = avformat_new_stream(output_format, NULL);
   if (!output_stream) {
     result = AVERROR(ENOMEM);
@@ -920,6 +1155,29 @@ static int within_video_to_mpeg4(void) {
   }
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
+  output_stream->sample_aspect_ratio = encoder->sample_aspect_ratio;
+
+  if (encoder->width != decoder->width ||
+      encoder->height != decoder->height) {
+    converted_frame = av_frame_alloc();
+    if (!converted_frame) {
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+    converted_frame->format = encoder->pix_fmt;
+    converted_frame->width = encoder->width;
+    converted_frame->height = encoder->height;
+    converted_frame->sample_aspect_ratio = encoder->sample_aspect_ratio;
+    converted_frame->color_primaries = encoder->color_primaries;
+    converted_frame->color_trc = encoder->color_trc;
+    converted_frame->colorspace = encoder->colorspace;
+    converted_frame->color_range = encoder->color_range;
+    converted_frame->chroma_location = encoder->chroma_sample_location;
+    result = av_frame_get_buffer(converted_frame, 32);
+    if (result < 0) {
+      goto cleanup;
+    }
+  }
 
   output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
   if (!output_buffer) {
@@ -935,11 +1193,15 @@ static int within_video_to_mpeg4(void) {
   output_buffer = NULL;
   output_format->pb = output_io;
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
-  av_dict_set(&muxer_options, "movflags",
-              "frag_keyframe+empty_moov+default_base_moof", 0);
+  if (!webm) {
+    av_dict_set(&muxer_options, "movflags",
+                "frag_keyframe+empty_moov+default_base_moof", 0);
+  }
   result = avformat_write_header(output_format, &muxer_options);
   if (result < 0) {
-    report_av_error("MP4 header write failed", result);
+    report_av_error(webm ? "WebM header write failed"
+                         : "MP4 header write failed",
+                    result);
     goto cleanup;
   }
 
@@ -956,6 +1218,8 @@ static int within_video_to_mpeg4(void) {
       .output_format = output_format,
       .output_stream = output_stream,
       .decoded_frame = decoded_frame,
+      .converted_frame = converted_frame,
+      .scaler = scaler,
       .encoded_packet = encoded_packet,
       .next_pts = 0,
   };
@@ -970,7 +1234,10 @@ static int within_video_to_mpeg4(void) {
           packet_time_us(input_packet, input_stream);
       result = drain_video_decoder(&pipeline, input_packet);
       if (result < 0) {
-        report_av_error("Video decode or MPEG-4 encode failed", result);
+        report_av_error(
+            webm ? "Video decode or VP8 encode failed"
+                 : "Video decode or MPEG-4 encode failed",
+            result);
         goto cleanup;
       }
       within_progress((double)input.position, (double)output.size,
@@ -1005,10 +1272,14 @@ static int within_video_to_mpeg4(void) {
                                     : within_output_flush();
 
 cleanup:
+  scaler = pipeline.scaler ? pipeline.scaler : scaler;
+  av_dict_free(&encoder_options);
   av_dict_free(&muxer_options);
   av_packet_free(&input_packet);
   av_packet_free(&encoded_packet);
   av_frame_free(&decoded_frame);
+  av_frame_free(&converted_frame);
+  sws_freeContext(scaler);
   avcodec_free_context(&decoder);
   avcodec_free_context(&encoder);
   if (output_format) {
@@ -1034,6 +1305,14 @@ cleanup:
   return result < 0 ? result : 0;
 }
 
+static int within_video_to_mpeg4(void) {
+  return within_video_reencode(0);
+}
+
+static int within_video_to_webm(void) {
+  return within_video_reencode(1);
+}
+
 EMSCRIPTEN_KEEPALIVE
 int within_remux(int profile) {
   int result = 0;
@@ -1051,11 +1330,14 @@ int within_remux(int profile) {
   WithinOutput output = {.position = 0, .size = 0};
   AVPacket *packet = NULL;
 
-  if (profile == 3) {
-    return within_audio_to_wav();
+  if (profile == 3 || profile == 6) {
+    return within_audio_transcode(profile);
   }
   if (profile == 4) {
     return within_video_to_mpeg4();
+  }
+  if (profile == 5) {
+    return within_video_to_webm();
   }
   if (profile != 1 && profile != 2) {
     within_message(2, "Unknown remux profile.");
@@ -1092,6 +1374,13 @@ int within_remux(int profile) {
   if (result < 0) {
     report_av_error("Input probing failed", result);
     goto cleanup;
+  }
+  if (input_format->nb_chapters > 0) {
+    within_message(
+        1,
+        profile == 2
+            ? "Source chapters are explicitly excluded from the audio-only M4A output."
+            : "Source chapters are explicitly excluded from this MP4 remux profile.");
   }
   result = avformat_alloc_output_context2(&output_format, NULL, "mp4", NULL);
   if (result < 0 || !output_format) {

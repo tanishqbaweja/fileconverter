@@ -1,0 +1,78 @@
+{
+  "generatedBy": "scripts/generate-image-fixtures.mjs",
+  "bytes": 100464,
+  "sha256": "e24504d1a77272b0cc7e958bfb1323c54f221dc7a79df2967f5de697b6f75629",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "av1",
+        "codec_long_name": "Alliance for Open Media AV1",
+        "profile": "Main",
+        "codec_type": "video",
+        "codec_tag_string": "av01",
+        "codec_tag": "0x31307661",
+        "mime_codec_string": "av01.0.12M.08",
+        "width": 3840,
+        "height": 2160,
+        "coded_width": 3840,
+        "coded_height": 2160,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 4,
+        "color_range": "tv",
+        "refs": 1,
+        "id": "0x1",
+        "r_frame_rate": "1/1",
+        "avg_frame_rate": "1/1",
+        "time_base": "1/1",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "nb_frames": "1",
+        "extradata_size": 4,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "title": "Color"
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\highres-pattern.avif",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "size": "100464",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "avif",
+        "minor_version": "0",
+        "compatible_brands": "avifmif1miafMA1B"
+      }
+    }
+  }
+}

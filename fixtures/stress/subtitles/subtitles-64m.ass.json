@@ -1,0 +1,16 @@
+{
+  "generatedBy": "scripts/generate-subtitle-stress-fixtures.mjs",
+  "cues": 1070000,
+  "bytes": 101393068,
+  "sha256": "9bacffb246c3a27cae5592b439d7a52e47fe9d7f1255c3b73a57089a3f67909e",
+  "expectedByProfile": {
+    "ass-to-srt": {
+      "validationBytes": 83377792,
+      "validationSha256": "511334c224ef0a8e132de23ffb98af87ce6eec030038dd4fdc014213d22a8d19"
+    },
+    "ass-to-vtt": {
+      "validationBytes": 75928906,
+      "validationSha256": "23aea4d2bd39a5b901ee99e72f58cd8e4e65ee2d15ce5b312d79768369b9605d"
+    }
+  }
+}

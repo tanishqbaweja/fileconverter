@@ -1,10 +1,13 @@
-const CACHE_NAME = "within-shell-v1";
+const CACHE_NAME = "within-shell-v4";
 const APP_SHELL = [
   "/",
   "/icon.svg",
   "/manifest.webmanifest",
+  "/THIRD_PARTY_NOTICES.txt",
   "/engines/remux/within-remux.mjs",
   "/engines/remux/within-remux.wasm",
+  "/engines/remux/within-webm.mjs",
+  "/engines/remux/within-webm.wasm",
 ];
 
 self.addEventListener("install", (event) => {

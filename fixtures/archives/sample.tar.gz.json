@@ -1,0 +1,24 @@
+{
+  "generatedBy": "scripts/generate-archive-fixtures.mjs",
+  "bytes": 237,
+  "sha256": "7d9b02ae920b7b165a6348a40b50e2c83558b708ad757d6c5f05e510a9db2dd2",
+  "validationBytes": 4096,
+  "validationSha256": "975d0238e50ed6bafa8ff5ef5c0bb8132fe1063c6e847c8ceb109b857aee40e4",
+  "entries": [
+    {
+      "name": "hello.txt",
+      "size": 24,
+      "sha256": "2c36bbd6c5579c97c417410826b8355da9a168cd253b4ccc7d6c01d07cc19cb0"
+    },
+    {
+      "name": "nested/data.json",
+      "size": 33,
+      "sha256": "b193f8e86f5602fda4fea24cf5bf90749e546ec57e6df0633ae159ec77f267f3"
+    },
+    {
+      "name": "nested/unicode-café.txt",
+      "size": 31,
+      "sha256": "8b82fa8198d3e03c37dccf2735515ae85ef8cab1ef147605030b2c3035375dac"
+    }
+  ]
+}

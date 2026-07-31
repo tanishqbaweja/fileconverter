@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling" xml:lang="en">
+  <head>
+    <metadata />
+    <styling />
+    <layout />
+  </head>
+  <body>
+    <div>
+      <p xml:id="cue-1" begin="00:00:01.250" end="00:00:03.900"><span tts:fontStyle="italic">Hello</span> from Within.</p>
+      <p xml:id="cue-2" begin="4.1s" dur="2900ms">Second cue<br/>with two lines.</p>
+    </div>
+  </body>
+</tt>

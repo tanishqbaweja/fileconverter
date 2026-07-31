@@ -3,7 +3,11 @@ import type { RandomAccessDestination } from "./random-access-destination";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
+const WEBM_MODULE_URL = "/engines/remux/within-webm.mjs";
+const WEBM_WASM_URL = "/engines/remux/within-webm.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
+const MAX_ENGINE_ERRORS = 32;
+const MAX_ENGINE_ERROR_CHARS = 512;
 const ROTATE_REQUIRED = -4096;
 
 interface RemuxProgress {
@@ -50,7 +54,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -84,7 +88,25 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  const phase =
+    remuxProfile === 1
+      ? "Lossless remux"
+      : remuxProfile === 2
+        ? "Extracting audio"
+        : remuxProfile === 3
+          ? "Converting audio"
+          : remuxProfile === 6
+            ? "Encoding FLAC audio"
+          : remuxProfile === 5
+            ? "Encoding VP8 WebM"
+            : "Encoding MPEG-4 video";
   const engineErrors: string[] = [];
+  const recordEngineError = (text: string): void => {
+    const bounded = text.trim().slice(0, MAX_ENGINE_ERROR_CHARS);
+    if (!bounded) return;
+    if (engineErrors.length === MAX_ENGINE_ERRORS) engineErrors.shift();
+    engineErrors.push(bounded);
+  };
   let totalReadBytes = 0;
   let inputReader: ReadableStreamBYOBReader | null = null;
   let inputReaderPosition = -1;
@@ -102,7 +124,7 @@ export async function runMediaRemux({
     totalReadBytes += bytes;
     metrics.inputBytes = Math.min(file.size, totalReadBytes);
     metrics.maxReadChunkBytes = Math.max(metrics.maxReadChunkBytes, bytes);
-    emitProgress(jobId, "Lossless remux", metrics, startedAt);
+    emitProgress(jobId, phase, metrics, startedAt);
   };
 
   const recordWrite = (offset: number, bytes: number): void => {
@@ -110,7 +132,7 @@ export async function runMediaRemux({
     metrics.outputBytes = Math.max(metrics.outputBytes, offset + bytes);
     metrics.queuedBytes = 0;
     metrics.pendingOperations = 0;
-    emitProgress(jobId, "Lossless remux", metrics, startedAt);
+    emitProgress(jobId, phase, metrics, startedAt);
   };
 
   const bridge: RemuxBridge = {
@@ -257,7 +279,7 @@ export async function runMediaRemux({
       if (level === 1) {
         post({ type: "warning", jobId, message: text });
       } else if (level >= 2) {
-        engineErrors.push(text);
+        recordEngineError(text);
       }
     },
     progress(progress) {
@@ -271,24 +293,27 @@ export async function runMediaRemux({
       );
       metrics.outputBytes = Math.max(metrics.outputBytes, progress.outputSize);
       metrics.wasmMemoryBytes = progress.wasmMemoryBytes;
+      metrics.sharedArrayBufferBytes = progress.wasmMemoryBytes;
       metrics.peakWasmMemoryBytes = Math.max(
         metrics.peakWasmMemoryBytes ?? 0,
         progress.wasmMemoryBytes,
       );
-      emitProgress(jobId, "Lossless remux", metrics, startedAt);
+      emitProgress(jobId, phase, metrics, startedAt);
     },
   };
 
+  const moduleUrl = remuxProfile === 5 ? WEBM_MODULE_URL : REMUX_MODULE_URL;
+  const wasmUrl = remuxProfile === 5 ? WEBM_WASM_URL : REMUX_WASM_URL;
   const imported = (await import(
-    /* @vite-ignore */ REMUX_MODULE_URL
+    /* @vite-ignore */ moduleUrl
   )) as { default: RemuxModuleFactory };
   const engineModule = await imported.default({
     withinBridge: bridge,
     locateFile: (path) =>
-      path.endsWith(".wasm") ? REMUX_WASM_URL : `/engines/remux/${path}`,
+      path.endsWith(".wasm") ? wasmUrl : `/engines/remux/${path}`,
     print: () => {},
     printErr: (text) => {
-      if (text.trim()) engineErrors.push(text.trim());
+      recordEngineError(text);
     },
   });
   assertActive();

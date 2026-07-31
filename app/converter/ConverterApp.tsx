@@ -34,6 +34,8 @@ interface BrowserCapabilities {
   sharedArrayBuffer: boolean;
   crossOriginIsolated: boolean;
   webCodecs: boolean;
+  imageDecoder: boolean;
+  offscreenCanvas: boolean;
 }
 
 interface PerformanceWithMemory extends Performance {
@@ -103,6 +105,12 @@ function outputName(file: File, profile: ConversionProfile): string {
   if (profile.id === "gzip-decompress") {
     return file.name.replace(/\.(?:gz|gzip)$/i, "") || "decompressed-file";
   }
+  if (profile.id === "tar-gz-to-tar") {
+    return (
+      file.name.replace(/(?:\.tar\.gz|\.tgz)$/i, ".tar") ||
+      "decompressed-archive.tar"
+    );
+  }
   const extension = formatById(profile.output)?.extensions[0] ?? "out";
   return `${file.name.replace(/\.[^.]+$/, "")}.${extension}`;
 }
@@ -120,6 +128,18 @@ function outputPickerTypes(profile: ConversionProfile): FilePickerAcceptType[] {
   ];
 }
 
+async function destinationMatchesSource(
+  handle: FileSystemFileHandle,
+  source: File,
+): Promise<boolean> {
+  const existing = await handle.getFile();
+  return (
+    existing.name === source.name &&
+    existing.size === source.size &&
+    existing.lastModified === source.lastModified
+  );
+}
+
 function capabilitySnapshot(): BrowserCapabilities {
   return {
     secure: window.isSecureContext,
@@ -133,6 +153,8 @@ function capabilitySnapshot(): BrowserCapabilities {
     sharedArrayBuffer: typeof SharedArrayBuffer === "function",
     crossOriginIsolated: window.crossOriginIsolated,
     webCodecs: typeof window.VideoEncoder === "function",
+    imageDecoder: typeof window.ImageDecoder === "function",
+    offscreenCanvas: typeof window.OffscreenCanvas === "function",
   };
 }
 
@@ -165,6 +187,9 @@ export function ConverterApp() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const testMode =
     typeof window !== "undefined" &&
+    (window.location.hostname === "127.0.0.1" ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "[::1]") &&
     new URLSearchParams(window.location.search).get("test") === "1";
 
   const profiles = useMemo(
@@ -383,6 +408,13 @@ export function ConverterApp() {
         types: outputPickerTypes(selectedProfile),
         excludeAcceptAllOption: false,
       });
+      if (await destinationMatchesSource(handle, file)) {
+        setDestinationHandle(null);
+        setError(
+          "Choose a different destination name or folder. The source file cannot also be the output.",
+        );
+        return;
+      }
       setDestinationHandle(handle);
       setError(null);
     } catch (pickerError) {
@@ -413,6 +445,22 @@ export function ConverterApp() {
     } else {
       if (!destinationHandle) {
         setError("Choose where the converted file should be saved first.");
+        return;
+      }
+      try {
+        if (await destinationMatchesSource(destinationHandle, file)) {
+          setDestinationHandle(null);
+          setError(
+            "The destination now matches the source file. Choose a different destination before converting.",
+          );
+          return;
+        }
+      } catch (destinationError) {
+        setError(
+          destinationError instanceof Error
+            ? `The destination is no longer accessible: ${destinationError.message}`
+            : "The destination is no longer accessible.",
+        );
         return;
       }
       destination = { mode: "handle", handle: destinationHandle };
@@ -467,11 +515,33 @@ export function ConverterApp() {
     metrics && metrics.elapsedMs > 0
       ? metrics.inputBytes / (metrics.elapsedMs / 1000)
       : 0;
+  const estimatedRemainingMs =
+    file &&
+    metrics &&
+    throughput > 0 &&
+    metrics.inputBytes < file.size
+      ? ((file.size - metrics.inputBytes) / throughput) * 1000
+      : jobState === "complete"
+        ? 0
+        : null;
+  const mediaProfile =
+    selectedProfile?.engine === "ffmpeg-remux" ||
+    selectedProfile?.engine === "ffmpeg-audio" ||
+    selectedProfile?.engine === "ffmpeg-video";
+  const compressionProfile =
+    selectedProfile?.engine === "compression-stream";
+  const imageProfile = selectedProfile?.engine === "image-browser";
   const featureReady =
     capabilities?.secure &&
-    capabilities.wasm &&
     capabilities.workers &&
     workerReady &&
+    (!mediaProfile ||
+      (capabilities.wasm &&
+        capabilities.sharedArrayBuffer &&
+        capabilities.crossOriginIsolated)) &&
+    (!compressionProfile || capabilities.compression) &&
+    (!imageProfile ||
+      (capabilities.imageDecoder && capabilities.offscreenCanvas)) &&
     (testMode || capabilities.fileSystemAccess);
 
   const capabilityItems: [string, boolean][] = capabilities
@@ -480,6 +550,11 @@ export function ConverterApp() {
         ["Direct save", capabilities.fileSystemAccess],
         ["Workers", capabilities.workers],
         ["Wasm", capabilities.wasm],
+        ["Shared buffers", capabilities.sharedArrayBuffer],
+        [
+          "Image codecs",
+          capabilities.imageDecoder && capabilities.offscreenCanvas,
+        ],
         ["OPFS fallback", capabilities.opfs],
         ["Cross-origin isolated", capabilities.crossOriginIsolated],
       ]
@@ -652,6 +727,15 @@ export function ConverterApp() {
                 <div className="test-mode-note">Test output uses isolated browser storage.</div>
               )}
 
+              {selectedProfile ? (
+                <div className="profile-evidence">
+                  {selectedProfile.automatedTestStatus === "passed" &&
+                  selectedProfile.maxTestedBytes != null
+                    ? `Correctness and complete-browser memory tested through ${formatBytes(selectedProfile.maxTestedBytes)}.`
+                    : "Test-only route: correctness and complete-browser memory evidence is still pending."}
+                </div>
+              ) : null}
+
               {selectedProfile &&
               (selectedProfile.metadataLimitations.length ||
                 selectedProfile.fidelityLimitations.length) ? (
@@ -695,12 +779,40 @@ export function ConverterApp() {
                       <dd>{formatDuration(metrics.elapsedMs)}</dd>
                     </div>
                     <div>
+                      <dt>Estimated remaining</dt>
+                      <dd>
+                        {estimatedRemainingMs == null
+                          ? "Calculating"
+                          : formatDuration(estimatedRemainingMs)}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Active engine</dt>
+                      <dd>{selectedProfile?.engine ?? "Unavailable"}</dd>
+                    </div>
+                    <div>
                       <dt>Queued</dt>
                       <dd>{formatBytes(metrics.queuedBytes)}</dd>
                     </div>
                     <div>
+                      <dt>Peak Wasm</dt>
+                      <dd>
+                        {metrics.peakWasmMemoryBytes
+                          ? formatBytes(metrics.peakWasmMemoryBytes)
+                          : "Not used"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Conversion workers</dt>
+                      <dd>{metrics.activeWorkerCount ?? "Unavailable"}</dd>
+                    </div>
+                    <div>
                       <dt>Peak JS heap</dt>
                       <dd>{peakJsHeap == null ? "Unavailable" : formatBytes(peakJsHeap)}</dd>
+                    </div>
+                    <div>
+                      <dt>Incremental private</dt>
+                      <dd>Profiler only</dd>
                     </div>
                   </dl>
                 </div>
@@ -846,7 +958,12 @@ export function ConverterApp() {
                 <span>{formatById(profile.input)?.label}</span>
                 <b aria-hidden="true">→</b>
                 <span>{formatById(profile.output)?.label}</span>
-                <small>{profile.route}</small>
+                <small>
+                  {profile.route} · tested to{" "}
+                  {profile.maxTestedBytes == null
+                    ? "pending"
+                    : formatBytes(profile.maxTestedBytes)}
+                </small>
               </article>
             ))}
           {!conversionProfiles.some(
@@ -867,7 +984,10 @@ export function ConverterApp() {
           </span>
           <span>Within</span>
         </div>
-        <p>No accounts. No analytics. No file or filename telemetry. No PDFs.</p>
+        <p>
+          No accounts. No analytics. No file or filename telemetry. No PDFs.{" "}
+          <a href="/THIRD_PARTY_NOTICES.txt">Codec notices</a>.
+        </p>
         <span className="footer-memory">
           Current page JS heap: {jsHeap == null ? "unavailable" : formatBytes(jsHeap)}
         </span>

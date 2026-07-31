@@ -1,0 +1,30 @@
+Within — third-party notices
+
+The browser media engine is reproducibly built from the following pinned source
+archives. No opaque precompiled media binary is used as a build input.
+
+FFmpeg 8.1.2
+Source: https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz
+SHA-256: 464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c
+Project: https://ffmpeg.org/
+License for the configured build: LGPL-2.1-or-later
+The build excludes FFmpeg's GPL and nonfree configuration switches.
+
+libvpx 1.16.0
+Source: https://github.com/webmproject/libvpx/archive/refs/tags/v1.16.0.tar.gz
+SHA-256: 7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c
+Project: https://chromium.googlesource.com/webm/libvpx/
+License: BSD-3-Clause
+
+Emscripten SDK 6.0.4-x64
+Container digest:
+sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b
+Project: https://emscripten.org/
+License: MIT and University of Illinois/NCSA components
+
+Exact configure switches, enabled components, memory limits, and build commands
+are in media/ffmpeg/ and public/engines/remux/build-manifest.json in the source
+repository.
+
+These notices describe copyright licenses, not patent rights. Deployers remain
+responsible for evaluating codec patent obligations in their jurisdictions.

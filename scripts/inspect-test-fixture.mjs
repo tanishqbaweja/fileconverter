@@ -8,13 +8,12 @@ import { fileURLToPath } from "node:url";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourcePath = path.join(projectRoot, "test.mkv");
-const manifestPath = path.join(
-  projectRoot,
-  "fixtures",
-  "media",
-  "test-mkv.manifest.json",
-);
+const sourcePath = path.resolve(projectRoot, process.argv[2] ?? "test.mkv");
+const manifestPath = process.argv[3]
+  ? path.resolve(projectRoot, process.argv[3])
+  : sourcePath === path.join(projectRoot, "test.mkv")
+    ? path.join(projectRoot, "fixtures", "media", "test-mkv.manifest.json")
+    : `${sourcePath}.json`;
 const sourceStat = await stat(sourcePath);
 const hash = createHash("sha256");
 for await (const chunk of createReadStream(sourcePath, {
@@ -40,7 +39,8 @@ await writeFile(
   manifestPath,
   `${JSON.stringify(
     {
-      name: "test.mkv",
+      generatedBy: "scripts/inspect-test-fixture.mjs",
+      name: path.basename(sourcePath),
       path: sourcePath,
       bytes: sourceStat.size,
       sha256: hash.digest("hex"),

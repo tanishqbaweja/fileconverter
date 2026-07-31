@@ -1,0 +1,12 @@
+{
+  "generatedBy": "scripts/generate-document-stress-fixtures.mjs",
+  "records": 1370000,
+  "bytes": 143850123,
+  "sha256": "6e0fd680d0017b50a8fff4ba017b5529bee5f8c70f67a104f0c6f92fa58e6d7f",
+  "expectedByProfile": {
+    "html-to-txt": {
+      "validationBytes": 101380000,
+      "validationSha256": "0426d33caa484c3cdd6e050ed3964f1ee530270519e09e704d72ae1995e3fca7"
+    }
+  }
+}

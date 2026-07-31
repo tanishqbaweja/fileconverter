@@ -1,0 +1,12 @@
+{
+  "generatedBy": "scripts/generate-archive-fixtures.mjs",
+  "bytes": 191,
+  "sha256": "b7ee1b48331ec09f3f22f28701b4034501489f972ba3423458a7ad825beae5fa",
+  "entries": [
+    {
+      "name": "../escape.txt",
+      "size": 49,
+      "sha256": "f3cec07f89f056a6c52a2a61afd46de4448846d02610a30056333b36ae06ad73"
+    }
+  ]
+}

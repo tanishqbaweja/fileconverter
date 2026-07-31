@@ -10,23 +10,28 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
 ## Verified public routes
 
-The selector and this table come from `lib/capability-registry.ts`. A route is
-visible only when its implementation, independent output validation, and
-complete-Chromium memory profile have passed.
+The selector and published matrix are generated from
+`lib/capability-registry.ts`. A route is visible only when its implementation,
+independent output validation, three-run repeatability check, cleanup check, and
+complete-Chromium memory profile have passed. The current registry publishes 57
+routes:
 
-| Input | Output | Route | Largest tested source | Status |
-| --- | --- | --- | ---: | --- |
-| Any byte stream | GZIP | Browser compression stream | 256 MiB | Passed |
-| GZIP | Original bytes | Browser decompression stream | 256.1 MiB | Passed |
-| MKV with compatible codecs | MP4 | FFmpeg stream copy | 10,737,988,703 bytes | Passed |
-| MKV with compatible AAC | M4A | FFmpeg audio extraction/stream copy | 2,958,573,265 bytes | Passed |
-| MKV with AAC | WAV | FFmpeg AAC decode + PCM encode | 2,958,573,265 bytes | Passed |
-| MKV with H.264/HEVC YUV420P | MP4 (MPEG-4 video) | FFmpeg decode + MPEG-4 Part 2 encode | 936,003 bytes | Passed |
+| Category | Verified routes | Largest tested source |
+| --- | --- | ---: |
+| Compression | bytes -> GZIP; GZIP -> bytes | 268,517,399 B |
+| Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR; TAR -> ZIP | 268,517,551 B |
+| Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
+| Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
+| Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON -> NDJSON | 293,633,883 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to every implemented PNG/JPEG/WebP/BMP destination | 24,883,254 B |
+| Video/container | MKV -> MP4; MKV -> M4A; MKV -> WAV; MKV -> WebM | 10,737,988,703 B |
+| Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
-SRT/WebVTT and CSV/TSV/NDJSON engines are implemented and browser-tested, but
-remain hidden from the normal selector while their dedicated large-fixture
-memory records are pending. MKV-to-WebM video re-encoding is declared non-public
-and pending; the app never substitutes an extension rename or a server conversion.
+The registry records the exact tested size and limitations for every individual
+route; the UI exposes that same evidence. VP8 WebM is public after passing its
+three-run gate on the untouched 2,958,573,265-byte fixture. MPEG-4 Part 2 video
+remains hidden while its final large-fixture gate is incomplete. The app never
+substitutes an extension rename or a server conversion.
 
 ## Bounded-memory architecture
 
@@ -65,8 +70,15 @@ Hard limits:
 - maximum queued output bytes: 262,144
 - initial Wasm memory: 32 MiB
 - maximum Wasm memory: 96 MiB
-- SharedArrayBuffer allocation: 0 bytes in verified media runs
+- shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
+  routes and 80 MiB observed for threaded WebM
 - completed large input/output in MEMFS: prohibited
+- text line, record, XML node, or subtitle cue: 1 MiB
+- structured-data columns: 4,096
+- image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
+- archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
+- ZIP central directory: 8 MiB; ZIP64, encryption, links, and special files:
+  rejected
 
 The worker is terminated after completion, cancellation, or failure. A failed or
 cancelled OPFS job truncates and removes its app-owned entry. On a normal app
@@ -74,14 +86,24 @@ start, stale entries whose names begin with `within-` are removed. The storage
 panel also provides manual cleanup. These operations never enumerate, alter, or
 delete user-selected destination files.
 
+Development conversions, stress fixtures, browser profiles, and validation
+copies stay under this repository's `fixtures/stress/`, `outputs/`, and `work/`
+directories. Each browser smoke test deletes its copied output in teardown, each
+category profiler cleans its generated fixtures and converted copies in a
+`finally` block, and `npm run clean:generated` performs the same bounded,
+project-local cleanup manually. Compact JSON/CSV/HTML evidence is retained under
+`outputs/reports/`; `npm run clean:reports` keeps only the newest passing and
+newest failing record per profile.
+
 ## Media decisions and limitations
 
-The current media core is deliberately small. It enables Matroska demuxing,
-fragmented MP4/M4A and seekable WAV muxing, H.264/HEVC/AAC decoding, MPEG-4
-Part 2 and signed 16-bit PCM encoding, libswresample, libswscale, and the
+The current media core is deliberately small. It enables only the documented
+AIFF, FLAC, Matroska, MOV/MP4, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
+WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
+FLAC, MPEG-4 Part 2, and libvpx VP8 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
-AAC packets, performs a real AAC decode/resample/PCM encode pipeline for WAV,
-or decodes H.264/HEVC video and encodes bounded MPEG-4 Part 2 video.
+AAC packets, performs real bounded audio decode/resample/encode pipelines, or
+decodes H.264/HEVC video and performs a real video encode.
 
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
@@ -95,11 +117,69 @@ sample rate, and discloses the container metadata it cannot represent.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
-explicitly excludes audio, subtitles, and attachments. Its current maximum
-tested source is the deterministic 936,003-byte fixture, so the UI discloses
-that evidence rather than implying a large-file video-transcode result.
-MKV-to-WebM remains unavailable until an audited WebM encoder build passes the
-same correctness and process-tree memory gate.
+explicitly excludes audio, subtitles, attachments, and chapters. Its current
+evidence is only a deterministic small fixture, so the normal selector hides it.
+The VP8 profile similarly converts the first video stream to a video-only WebM,
+bounds output to 640 pixels wide, uses four decoder threads, four encoder
+threads, four token partitions, realtime deadline, `cpu-used=8`, and zero
+lookahead, and reports excluded audio, subtitles, attachments, and chapters.
+It is loaded from a dedicated eight-worker pthread module so audio and remux
+routes do not pay that pool's memory cost.
+
+## Non-media engines and limitations
+
+Archive conversion never extracts an archive tree to memory or disk. TAR.GZ
+routes validate each USTAR header while passing the original TAR bytes through
+the browser compression streams. ZIP-to-TAR reads the bounded ZIP32 central
+directory, validates every local header, path, size, method, CRC-32, and
+expansion limit, and inflates one entry at a time. TAR-to-ZIP reads one USTAR
+entry at a time and writes DEFLATE data descriptors plus a bounded central
+directory. Both directions reject traversal, absolute and drive-letter paths,
+duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
+extensions, and archive bombs. Permissions, owners, comments, and unsupported
+container-specific fields are disclosed as not preserved.
+
+Still-image routes use `ImageDecoder` in the conversion worker, request one
+deterministic RGBA frame, enforce compressed-size, dimensions, pixel-count,
+decoded-byte, and expansion-ratio limits before allocating the surface, and
+write the encoded output in bounded chunks. Animated inputs intentionally use
+only the first frame. EXIF, ICC, text metadata, and animation are not preserved;
+JPEG and BMP composite transparency over white, and JPEG/WebP outputs are lossy
+at the disclosed quality.
+
+Subtitle and structured-data engines are incremental UTF-8 parsers with a
+1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
+and emit real destination syntax. TTML rejects DTDs and custom entities, accepts
+clock/second/millisecond time expressions, and maps only basic italic, bold,
+underline, and line-break styling. CSV/TSV quoting is parsed across chunk
+boundaries; NDJSON and JSON-array routes preserve nested values but normalize
+equivalent JSON whitespace and lexical forms. Column-shape losses are warned.
+
+Document routes are deliberately semantic rather than extension renames. TXT
+is escaped into a complete preformatted HTML document. Markdown renders a
+bounded documented subset and escapes raw HTML. HTML-to-TXT tokenizes the input,
+decodes the supported entities, retains visible block/list/table text, and
+removes scripts, styles, templates, metadata, layout, images, SVG/canvas, and
+form controls. Unsupported Markdown extensions and HTML named entities produce
+clear limitations or errors rather than silently invoking a server converter.
+
+## Deliberately unsupported routes
+
+Absence from the registry means unsupported; the app does not guess a route.
+PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
+animated-image output, 7Z, BZIP2, XZ, EPUB, DOCX/XLSX/PPTX, ODT/ODS/ODP, and
+additional legacy/proprietary media codecs are not published because this build
+does not yet contain a bounded, auditable browser engine and independent
+large-fixture evidence for them. Office and ebook files are not flattened to
+plain text and called converted. ZIP64 and files requiring an individual ZIP
+entry or completed ZIP above 4 GiB are rejected instead of silently wrapping or
+truncating sizes.
+
+The same rule applies to codec/container combinations. A listed container name
+does not imply every codec can be copied into it. The planner exposes only the
+exact source/destination profiles in the registry, and each profile lists its
+stream exclusions, metadata losses, browser requirements, CPU class, memory
+class, largest tested input, and automated-test state.
 
 ## Privacy, security, and offline behavior
 
@@ -129,6 +209,8 @@ Pinned inputs:
 
 - FFmpeg 8.1.2 official source archive, SHA-256
   `464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c`
+- libvpx 1.16.0 official source archive, SHA-256
+  `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
 
@@ -172,13 +254,26 @@ Current exact-build results:
 
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 151.6 MiB | 49.4 MiB | 20.0–61.1 MiB |
-| MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 133.1 MiB | 32 MiB | 4.6–21.8 MiB |
-| MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 176.6 MiB | 32 MiB | −17.4–−12.2 MiB |
-| MKV → MPEG-4 video | 3 | 936,003 B | 1,109,864 B | 135.7 MiB | 32 MiB | 31.5–39.3 MiB |
+| MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 182.3 MiB | 52.6 MiB | −4.6–1.3 MiB |
+| MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
+| MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
+| MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
+
+Representative three-run category peaks from the same full-process-tree
+profiler:
+
+| Category/profile | Source | Worst incremental private memory | Output validation |
+| --- | ---: | ---: | --- |
+| Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
+| Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
+| Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
+| Archives, TAR -> TAR.GZ | 268,436,992 B | 219.3 MiB | full TAR validation |
+| Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
+| Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
+| Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`.
@@ -186,6 +281,12 @@ The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
 The three WAV outputs shared SHA-256
 `659d36eac2310b7d20d8c694a8eafb11760061def608a9241a64913fc003e1eb`.
+The three WebM outputs shared SHA-256
+`b192fb8b0cb3e4356b54ed242d0de5fbeb6a56f421381c426ca19321e0807e1f`;
+they completed in 2,682.0–2,687.1 seconds, passed full native decode as VP8,
+and produced a midpoint SSIM of 0.967634. A fixed 120-second benchmark improved
+from 122.48 seconds on the old single-thread artifact to 26.29–27.44 seconds on
+the final four-thread artifact while remaining below the same memory ceiling.
 Native `ffprobe` validates structure and metadata; native FFmpeg traverses every
 selected output packet. JSON, CSV, and HTML reports remain under the ignored
 `outputs/reports/` folder. Multi-gigabyte output files and Chrome profiles are
@@ -216,18 +317,33 @@ npm run profile:memory -- fixtures/stress/media/remux-10g.mkv mkv-to-mp4
 npm run clean:generated
 ```
 
+Profile an implemented category sequentially. The runner generates fixtures
+only inside this repository and removes the large fixtures, converted outputs,
+and browser profiles whether the category passes, fails, or is interrupted:
+
+```powershell
+npm run profile:audio
+npm run profile:images
+npm run profile:records
+npm run profile:subtitles
+npm run profile:archives
+npm run profile:documents
+```
+
 `scripts/memory-profile.mjs` records complete per-process private/RSS samples,
 accessible page/worker heaps, Wasm memory, SharedArrayBuffer totals, buffers,
 queue depth, worker count, storage estimates, throughput, output size, and
-cleanup recovery. Failed runs retain their reports for diagnosis. CI exercises
-small fixtures; multi-gigabyte profiling is documented for a dedicated Windows
-runner with installed stable Chrome and native FFmpeg.
+cleanup recovery. Failed runs retain compact reports for diagnosis but delete
+the browser profile and converted payload. CI exercises small fixtures;
+multi-gigabyte profiling is documented for a dedicated Windows runner with
+installed stable Chrome and native FFmpeg.
 
 ## Repository map
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI
 - `lib/capability-registry.ts` — single source for formats and public matrix
-- `workers/` — bounded transforms, FFmpeg bridge, destinations, lifecycle
+- `workers/` — bounded media, archive, subtitle, image, record, and document
+  transforms; FFmpeg bridge, destinations, and lifecycle
 - `media/ffmpeg/` — reproducible build and native AVIO wrapper
 - `public/engines/` — auditable generated engine artifacts
 - `scripts/` — fixtures, validators, cleanup, process-tree memory reports
@@ -237,6 +353,7 @@ runner with installed stable Chrome and native FFmpeg.
 ## Licensing
 
 Application code is project-owned. FFmpeg licensing depends on the exact
-configured components; this build excludes GPL/nonfree switches and external
-codec libraries. Deployers must still review FFmpeg's LGPL terms and any codec
-patent obligations applicable to their jurisdiction and distribution model.
+configured components; this build excludes GPL/nonfree switches. libvpx is
+BSD-3-Clause licensed. Deployers must still review FFmpeg's LGPL terms, the
+bundled third-party notices, and any codec patent obligations applicable to
+their jurisdiction and distribution model.

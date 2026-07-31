@@ -1,0 +1,13 @@
+[
+  {
+    "id": 1,
+    "nested": {
+      "enabled": true
+    },
+    "tags": ["a", "b"]
+  },
+  {
+    "id": 2,
+    "text": "comma, bracket ] and escaped quote \""
+  }
+]

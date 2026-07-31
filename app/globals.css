@@ -507,6 +507,7 @@ h1 em {
 
 .honesty-note,
 .test-mode-note,
+.profile-evidence,
 .warning,
 .error {
   border-radius: 0.7rem;
@@ -524,6 +525,12 @@ h1 em {
 
 .test-mode-note {
   background: var(--mint);
+  margin-top: 0.8rem;
+}
+
+.profile-evidence {
+  background: #eef0ea;
+  color: var(--muted);
   margin-top: 0.8rem;
 }
 
@@ -800,6 +807,12 @@ footer {
   gap: 1rem;
   grid-template-columns: 1fr auto 1fr;
   padding: 2rem 4.5vw 2.5rem;
+}
+
+footer a {
+  text-decoration: underline;
+  text-decoration-color: var(--line);
+  text-underline-offset: 0.2em;
 }
 
 footer p {

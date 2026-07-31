@@ -14,17 +14,75 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
+const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
+const baseURL =
+  process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
 const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
+const standaloneWavOutputPath = path.join(
+  outputRoot,
+  "standalone-convert-output.wav",
+);
+const mp3WavOutputPath = path.join(outputRoot, "mp3-convert-output.wav");
+const flacWavOutputPath = path.join(outputRoot, "flac-convert-output.wav");
+const m4aFlacOutputPath = path.join(outputRoot, "m4a-convert-output.flac");
+const mp3FlacOutputPath = path.join(outputRoot, "mp3-convert-output.flac");
+const wavFlacOutputPath = path.join(outputRoot, "wav-convert-output.flac");
+const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
+const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
+const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
+const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const fixturePath = path.join(
   projectRoot,
   "fixtures",
   "media",
   "remux-source.mkv",
+);
+const audioFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.m4a",
+);
+const mp3FixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.mp3",
+);
+const flacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.flac",
+);
+const wavFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.wav",
+);
+const aiffFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.aiff",
+);
+const oggFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.ogg",
+);
+const opusFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.opus",
 );
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -57,7 +115,17 @@ test.beforeAll(async () => {
   assertProjectLocal(mp4OutputPath);
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(wavOutputPath);
+  assertProjectLocal(standaloneWavOutputPath);
+  assertProjectLocal(mp3WavOutputPath);
+  assertProjectLocal(flacWavOutputPath);
+  assertProjectLocal(m4aFlacOutputPath);
+  assertProjectLocal(mp3FlacOutputPath);
+  assertProjectLocal(wavFlacOutputPath);
+  assertProjectLocal(aiffWavOutputPath);
+  assertProjectLocal(oggWavOutputPath);
+  assertProjectLocal(opusWavOutputPath);
   assertProjectLocal(mpeg4OutputPath);
+  assertProjectLocal(webmOutputPath);
   await rm(profileRoot, { recursive: true, force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
@@ -66,7 +134,7 @@ test.beforeAll(async () => {
     executablePath: chromePath,
     headless: true,
     acceptDownloads: false,
-    baseURL: "http://127.0.0.1:3000",
+    baseURL,
   });
   page = context.pages()[0] ?? (await context.newPage());
   await page.exposeBinding(
@@ -89,7 +157,17 @@ test.afterAll(async () => {
   await rm(mp4OutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
+  await rm(standaloneWavOutputPath, { force: true });
+  await rm(mp3WavOutputPath, { force: true });
+  await rm(flacWavOutputPath, { force: true });
+  await rm(m4aFlacOutputPath, { force: true });
+  await rm(mp3FlacOutputPath, { force: true });
+  await rm(wavFlacOutputPath, { force: true });
+  await rm(aiffWavOutputPath, { force: true });
+  await rm(oggWavOutputPath, { force: true });
+  await rm(opusWavOutputPath, { force: true });
   await rm(mpeg4OutputPath, { force: true });
+  await rm(webmOutputPath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -98,17 +176,28 @@ async function runMediaRoute(
     | "mkv-to-mp4"
     | "mkv-to-m4a"
     | "mkv-to-wav"
+    | "m4a-to-wav"
+    | "mp3-to-wav"
+    | "flac-to-wav"
+    | "m4a-to-flac"
+    | "mp3-to-flac"
+    | "wav-to-flac"
+    | "aiff-to-wav"
+    | "ogg-to-wav"
+    | "opus-to-wav"
+    | "mkv-to-webm"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
   minimumBytes: number,
+  inputPath = fixturePath,
 ) {
   try {
     await page.goto("/?test=1");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
-    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+    await page.locator('[data-testid="file-input"]').setInputFiles(inputPath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
@@ -126,6 +215,18 @@ async function runMediaRoute(
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
         true,
       );
+    } else if (
+      profileId === "m4a-to-wav" ||
+      profileId === "mp3-to-wav" ||
+      profileId === "flac-to-wav" ||
+      profileId === "m4a-to-flac" ||
+      profileId === "mp3-to-flac" ||
+      profileId === "wav-to-flac" ||
+      profileId === "aiff-to-wav" ||
+      profileId === "ogg-to-wav" ||
+      profileId === "opus-to-wav"
+    ) {
+      expect(state.warnings).toEqual([]);
     } else {
       expect(state.warnings.some((warning) => warning.includes("audio stream"))).toBe(
         true,
@@ -222,12 +323,111 @@ test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {
   );
 });
 
+test("browser FFmpeg converts a standalone M4A audio file to PCM WAV", async () => {
+  await runMediaRoute(
+    "m4a-to-wav",
+    standaloneWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    audioFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes a standalone MP3 file to PCM WAV", async () => {
+  await runMediaRoute(
+    "mp3-to-wav",
+    mp3WavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    mp3FixturePath,
+  );
+});
+
+test("browser FFmpeg decodes a standalone FLAC file to PCM WAV", async () => {
+  await runMediaRoute(
+    "flac-to-wav",
+    flacWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    flacFixturePath,
+  );
+});
+
+test("browser FFmpeg converts standalone M4A audio to FLAC", async () => {
+  await runMediaRoute(
+    "m4a-to-flac",
+    m4aFlacOutputPath,
+    ["flac"],
+    20_000,
+    audioFixturePath,
+  );
+});
+
+test("browser FFmpeg converts standalone MP3 audio to FLAC", async () => {
+  await runMediaRoute(
+    "mp3-to-flac",
+    mp3FlacOutputPath,
+    ["flac"],
+    20_000,
+    mp3FixturePath,
+  );
+});
+
+test("browser FFmpeg losslessly encodes PCM WAV as FLAC", async () => {
+  await runMediaRoute(
+    "wav-to-flac",
+    wavFlacOutputPath,
+    ["flac"],
+    20_000,
+    wavFixturePath,
+  );
+});
+
+test("browser FFmpeg converts AIFF PCM to PCM WAV", async () => {
+  await runMediaRoute(
+    "aiff-to-wav",
+    aiffWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    aiffFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes Ogg Vorbis to PCM WAV", async () => {
+  await runMediaRoute(
+    "ogg-to-wav",
+    oggWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    oggFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes Opus to PCM WAV", async () => {
+  await runMediaRoute(
+    "opus-to-wav",
+    opusWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    opusFixturePath,
+  );
+});
+
 test("browser FFmpeg performs a genuine bounded video re-encode", async () => {
   await runMediaRoute(
     "mkv-to-mp4-mpeg4",
     mpeg4OutputPath,
     ["mpeg4"],
     100_000,
+  );
+});
+
+test("browser FFmpeg decodes video and encodes a genuine VP8 WebM", async () => {
+  await runMediaRoute(
+    "mkv-to-webm",
+    webmOutputPath,
+    ["vp8"],
+    50_000,
   );
 });
 

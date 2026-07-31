@@ -12,6 +12,13 @@ export interface ConversionMetrics {
   peakWasmMemoryBytes?: number;
   sharedArrayBufferBytes?: number;
   activeWorkerCount?: number;
+  imageFrameFormat?: string | null;
+  imageColorSpace?: {
+    primaries: string | null;
+    transfer: string | null;
+    matrix: string | null;
+    fullRange: boolean | null;
+  };
 }
 
 export interface StartConversionMessage {

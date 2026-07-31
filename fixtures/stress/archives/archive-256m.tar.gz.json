@@ -1,0 +1,14 @@
+{
+  "generatedBy": "scripts/generate-archive-fixtures.mjs",
+  "bytes": 268517551,
+  "sha256": "71118420ea9b0f6a441d30b367f23480664e5a45653a43e8f53cf3595bade360",
+  "validationBytes": 268436992,
+  "validationSha256": "338f60637109dca606605c8a7a02bb7241270162818b03fc176b63cb12d22011",
+  "entries": [
+    {
+      "name": "payload.bin",
+      "size": 268435456,
+      "sha256": "4c4064e4a50f72f04627f6ee0f945e2792fa65e194fb3685a8888654502316ef"
+    }
+  ]
+}

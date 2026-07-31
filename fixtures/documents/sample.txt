@@ -1,0 +1,3 @@
+Within keeps files on this device.
+Symbols: <private> & "quoted".
+Unicode: हिन्दी, 日本語, café.

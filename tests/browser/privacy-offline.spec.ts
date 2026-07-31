@@ -4,6 +4,10 @@ import { mkdir, rm } from "node:fs/promises";
 import path from "node:path";
 
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
+const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
+const baseURL =
+  process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
+const expectedOrigin = new URL(baseURL).origin;
 const profileRoot = path.join(projectRoot, "work", "playwright-profile-privacy");
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -29,7 +33,7 @@ test.beforeAll(async () => {
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
     headless: true,
-    baseURL: "http://127.0.0.1:3000",
+    baseURL,
     serviceWorkers: "allow",
   });
   page = context.pages()[0] ?? (await context.newPage());
@@ -89,7 +93,7 @@ test("conversion transmits no filename or file content", async () => {
 
   expect(observed.length).toBeGreaterThan(0);
   for (const request of observed) {
-    expect(new URL(request.url).origin).toBe("http://127.0.0.1:3000");
+    expect(new URL(request.url).origin).toBe(expectedOrigin);
     expect(request.method).toBe("GET");
     expect(request.body).toBeNull();
     expect(request.url).not.toContain("sample.csv");
@@ -118,6 +122,8 @@ test("installed app shell and conversion engine load offline", async () => {
   });
   expect(cachedPaths).toContain("/engines/remux/within-remux.wasm");
   expect(cachedPaths).toContain("/engines/remux/within-remux.mjs");
+  expect(cachedPaths).toContain("/engines/remux/within-webm.wasm");
+  expect(cachedPaths).toContain("/engines/remux/within-webm.mjs");
 
   await context.setOffline(true);
   try {
@@ -128,4 +134,14 @@ test("installed app shell and conversion engine load offline", async () => {
   } finally {
     await context.setOffline(false);
   }
+});
+
+test("static codec assets preserve cross-origin isolation for pthread workers", async () => {
+  const response = await page.request.get("/engines/remux/within-remux.mjs");
+  expect(response.ok()).toBe(true);
+  expect(response.headers()["cross-origin-embedder-policy"]).toBe(
+    "require-corp",
+  );
+  expect(response.headers()["cross-origin-opener-policy"]).toBe("same-origin");
+  expect(response.headers()["cross-origin-resource-policy"]).toBe("same-origin");
 });
