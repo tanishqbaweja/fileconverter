@@ -21,6 +21,12 @@ export interface ConversionMetrics {
   };
 }
 
+export type TestFault =
+  | "write"
+  | "quota"
+  | "permission"
+  | "worker-crash";
+
 export interface StartConversionMessage {
   type: "start";
   jobId: string;
@@ -29,6 +35,8 @@ export interface StartConversionMessage {
   destination:
     | { mode: "handle"; handle: FileSystemFileHandle }
     | { mode: "opfs-test"; name: string };
+  /** Localhost-only Playwright fault injection; ignored for user destinations. */
+  testFault?: TestFault;
 }
 
 export interface CancelConversionMessage {

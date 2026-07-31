@@ -86,6 +86,13 @@ start, stale entries whose names begin with `within-` are removed. The storage
 panel also provides manual cleanup. These operations never enumerate, alter, or
 delete user-selected destination files.
 
+Browser tests exercise write rejection, quota exhaustion, revoked destination
+permission, and an uncaught worker crash after a real bounded write. Fault
+injection is accepted only by the localhost `?test=1` harness and only for its
+`within-test-*` OPFS destinations; it is ignored for user-selected handles. Each
+case verifies that the partial app-owned output is removed and, after a crash,
+that a fresh conversion worker becomes ready.
+
 Development conversions, stress fixtures, browser profiles, and validation
 copies stay under this repository's `fixtures/stress/`, `outputs/`, and `work/`
 directories. Each browser smoke test deletes its copied output in teardown, each

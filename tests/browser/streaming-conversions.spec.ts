@@ -95,6 +95,24 @@ async function readAndDeleteOpfsText(name: string): Promise<string> {
   }, name);
 }
 
+async function appOwnedOpfsNames(prefix: string): Promise<string[]> {
+  return page.evaluate(async (expectedPrefix) => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith(expectedPrefix)) names.push(name);
+    }
+    return names;
+  }, prefix);
+}
+
+async function openFaultMode(fault: string): Promise<void> {
+  await page.goto(`/?test=1&fault=${fault}`);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+}
+
 test.beforeAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
@@ -472,6 +490,67 @@ test("rejects malformed JSON and deletes its partial OPFS output", async () => {
     return names;
   });
   expect(leftovers).toEqual([]);
+});
+
+for (const fault of [
+  {
+    id: "write",
+    title: "propagates an output-write failure and deletes the partial output",
+    message: "destination rejected a bounded write",
+  },
+  {
+    id: "quota",
+    title: "propagates OPFS quota exhaustion and deletes the partial output",
+    message: "ran out of quota after a bounded write",
+  },
+  {
+    id: "permission",
+    title: "propagates revoked destination permission and deletes the partial output",
+    message: "permission was revoked after a bounded write",
+  },
+]) {
+  test(fault.title, async () => {
+    await openFaultMode(fault.id);
+    await selectFixture("fixtures/documents/sample.txt", "txt-to-html");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(fault.message);
+    expect(state.opfsName).toBeNull();
+    await expect
+      .poll(
+        async () =>
+          (
+            await appOwnedOpfsNames("within-test-txt-to-html")
+          ).length,
+        { timeout: 15_000 },
+      )
+      .toBe(0);
+  });
+}
+
+test("recovers from a worker crash and removes its abandoned partial output", async () => {
+  await openFaultMode("worker-crash");
+  await selectFixture("fixtures/documents/sample.txt", "txt-to-html");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const failed = await currentState();
+  expect(failed.error).toContain("Injected conversion worker crash");
+  expect(failed.opfsName).toBeNull();
+  await expect
+    .poll(
+      async () =>
+        (await appOwnedOpfsNames("within-test-txt-to-html")).length,
+      { timeout: 15_000 },
+    )
+    .toBe(0);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
 });
 
 test("cancels a large streaming conversion and deletes its partial output", async () => {

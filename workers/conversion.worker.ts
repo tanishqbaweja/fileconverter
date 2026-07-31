@@ -2,6 +2,7 @@
 
 import type {
   ConversionMetrics,
+  TestFault,
   WorkerRequest,
   WorkerResponse,
 } from "../lib/conversion-protocol";
@@ -77,6 +78,63 @@ async function yieldForCancellation(outputBytes: number): Promise<void> {
 interface Destination {
   writable: RandomAccessDestination;
   opfsName?: string;
+}
+
+function faultMessage(fault: Exclude<TestFault, "worker-crash">): Error {
+  if (fault === "quota") {
+    return new DOMException(
+      "The destination ran out of quota after a bounded write.",
+      "QuotaExceededError",
+    );
+  }
+  if (fault === "permission") {
+    return new DOMException(
+      "Destination permission was revoked after a bounded write.",
+      "NotAllowedError",
+    );
+  }
+  return new Error("The destination rejected a bounded write.");
+}
+
+function injectDestinationFault(
+  writable: RandomAccessDestination,
+  fault: Exclude<TestFault, "worker-crash">,
+): RandomAccessDestination {
+  let injected = false;
+  const failOnce = () => {
+    if (injected) return;
+    injected = true;
+    throw faultMessage(fault);
+  };
+  const wrapper: RandomAccessDestination = {
+    requiresOwnedWriteBuffer: writable.requiresOwnedWriteBuffer,
+    async write(operation) {
+      await writable.write(operation);
+      failOnce();
+    },
+    async truncate(size) {
+      await writable.truncate(size);
+    },
+    async close() {
+      await writable.close();
+    },
+    async abort(reason) {
+      await writable.abort(reason);
+    },
+  };
+  if (writable.writeSync) {
+    wrapper.writeSync = (operation) => {
+      const written = writable.writeSync!(operation);
+      if (written) failOnce();
+      return written;
+    };
+  }
+  if (writable.rotate) wrapper.rotate = () => writable.rotate!();
+  if (writable.truncateSync) {
+    wrapper.truncateSync = (size) => writable.truncateSync!(size);
+  }
+  if (writable.flush) wrapper.flush = () => writable.flush!();
+  return wrapper;
 }
 
 async function openDestination(
@@ -2385,7 +2443,32 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mkv-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
     );
+    if (
+      message.testFault &&
+      message.testFault !== "worker-crash" &&
+      message.destination.mode === "opfs-test"
+    ) {
+      destination.writable = injectDestinationFault(
+        destination.writable,
+        message.testFault,
+      );
+    }
     emitProgress(jobId, "Destination opened", metrics, startedAt, true);
+    if (
+      message.testFault === "worker-crash" &&
+      message.destination.mode === "opfs-test"
+    ) {
+      const partial = new TextEncoder().encode("partial worker output\n");
+      await destination.writable.write(partial);
+      metrics.outputBytes = partial.byteLength;
+      metrics.maxWriteChunkBytes = partial.byteLength;
+      emitProgress(jobId, "Injected worker crash", metrics, startedAt, true);
+      workerScope.setTimeout(() => {
+        throw new Error("Injected conversion worker crash");
+      }, 0);
+      await new Promise<void>(() => {});
+      return;
+    }
     if (
       profileId === "gzip-compress" ||
       profileId === "gzip-decompress" ||

@@ -9,6 +9,7 @@ import {
 } from "../../lib/capability-registry";
 import type {
   ConversionMetrics,
+  TestFault,
   WorkerRequest,
   WorkerResponse,
 } from "../../lib/conversion-protocol";
@@ -80,6 +81,19 @@ const EMPTY_METRICS: ConversionMetrics = {
   sharedArrayBufferBytes: 0,
   activeWorkerCount: 1,
 };
+
+const TEST_FAULTS = new Set<TestFault>([
+  "write",
+  "quota",
+  "permission",
+  "worker-crash",
+]);
+
+async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
+  if (!name?.startsWith("within-test-")) return;
+  const root = await navigator.storage.getDirectory();
+  await root.removeEntry(name).catch(() => {});
+}
 
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes)) return "Unavailable";
@@ -184,6 +198,7 @@ export function ConverterApp() {
   const [workerFailed, setWorkerFailed] = useState(false);
   const workerRef = useRef<Worker | null>(null);
   const jobIdRef = useRef<string | null>(null);
+  const activeOpfsNameRef = useRef<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const testMode =
     typeof window !== "undefined" &&
@@ -191,6 +206,14 @@ export function ConverterApp() {
       window.location.hostname === "localhost" ||
       window.location.hostname === "[::1]") &&
     new URLSearchParams(window.location.search).get("test") === "1";
+  const requestedTestFault =
+    typeof window === "undefined"
+      ? null
+      : new URLSearchParams(window.location.search).get("fault");
+  const testFault =
+    testMode && TEST_FAULTS.has(requestedTestFault as TestFault)
+      ? (requestedTestFault as TestFault)
+      : undefined;
 
   const profiles = useMemo(
     () => publicProfilesFor(inputFormat, testMode),
@@ -208,14 +231,24 @@ export function ConverterApp() {
       setCapabilities(capabilitySnapshot());
     });
 
-    const replaceWorker = (retired: Worker) => {
+    const replaceWorker = (
+      retired: Worker,
+      abandonedOpfsName: string | null = null,
+    ) => {
       retired.terminate();
       if (workerRef.current === retired) workerRef.current = null;
       setWorkerReady(false);
-      if (disposed) return;
-      replacementTimer = window.setTimeout(() => {
-        if (!disposed) installWorker();
-      }, 250);
+      const restart = () => {
+        if (disposed) return;
+        replacementTimer = window.setTimeout(() => {
+          if (!disposed) installWorker();
+        }, 250);
+      };
+      if (abandonedOpfsName) {
+        void removeAppOwnedOpfsEntry(abandonedOpfsName).finally(restart);
+      } else {
+        restart();
+      }
     };
 
     const installWorker = () => {
@@ -238,17 +271,23 @@ export function ConverterApp() {
         } else if (message.type === "warning") {
           setWarnings((current) => [...current.slice(-7), message.message]);
         } else if (message.type === "complete") {
+          activeOpfsNameRef.current = null;
+          jobIdRef.current = null;
           setMetrics(message.metrics);
           setOpfsName(message.opfsName ?? null);
           setPhase("Saved");
           setJobState("complete");
           replaceWorker(worker);
         } else if (message.type === "cancelled") {
+          activeOpfsNameRef.current = null;
+          jobIdRef.current = null;
           setMetrics(message.metrics);
           setPhase("Cancelled");
           setJobState("cancelled");
           replaceWorker(worker);
         } else {
+          activeOpfsNameRef.current = null;
+          jobIdRef.current = null;
           setMetrics(message.metrics);
           setError(message.message);
           setPhase("Stopped safely");
@@ -257,20 +296,34 @@ export function ConverterApp() {
         }
       };
       worker.onerror = (event) => {
+        event.preventDefault();
+        const failedDuringConversion = jobIdRef.current !== null;
+        const staleOpfsName = activeOpfsNameRef.current;
+        activeOpfsNameRef.current = null;
+        jobIdRef.current = null;
         setWorkerFailed(true);
         const detail =
           event instanceof ErrorEvent && event.message
             ? event.message
             : "the browser blocked or rejected the worker script";
-        setError(`Conversion worker failed to start: ${detail}.`);
+        setError(
+          failedDuringConversion
+            ? `Conversion worker failed: ${detail}.`
+            : `Conversion worker failed to start: ${detail}.`,
+        );
         setPhase("Worker unavailable");
         setJobState("error");
+        replaceWorker(worker, staleOpfsName);
       };
       worker.onmessageerror = () => {
+        const staleOpfsName = activeOpfsNameRef.current;
+        activeOpfsNameRef.current = null;
+        jobIdRef.current = null;
         setWorkerFailed(true);
         setError("The conversion worker returned an unreadable message.");
         setPhase("Worker unavailable");
         setJobState("error");
+        replaceWorker(worker, staleOpfsName);
       };
     };
 
@@ -442,6 +495,7 @@ export function ConverterApp() {
         mode: "opfs-test",
         name: `within-test-${selectedProfile.id}-${Date.now()}`,
       };
+      activeOpfsNameRef.current = destination.name;
     } else {
       if (!destinationHandle) {
         setError("Choose where the converted file should be saved first.");
@@ -464,6 +518,7 @@ export function ConverterApp() {
         return;
       }
       destination = { mode: "handle", handle: destinationHandle };
+      activeOpfsNameRef.current = null;
     }
 
     const jobId = crypto.randomUUID();
@@ -481,6 +536,7 @@ export function ConverterApp() {
       profileId: selectedProfile.id,
       file,
       destination,
+      testFault,
     };
     workerRef.current.postMessage(request);
   };
