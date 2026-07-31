@@ -88,10 +88,12 @@ delete user-selected destination files.
 
 Browser tests exercise write rejection, quota exhaustion, revoked destination
 permission, and an uncaught worker crash after a real bounded write. Fault
-injection is accepted only by the localhost `?test=1` harness and only for its
-`within-test-*` OPFS destinations; it is ignored for user-selected handles. Each
-case verifies that the partial app-owned output is removed and, after a crash,
-that a fresh conversion worker becomes ready.
+injection is accepted only by the localhost `?test=1` harness. Write, quota, and
+permission failures run through both its synchronous `within-test-*` adapter and
+an isolated asynchronous `FileSystemFileHandle`; the application never sends a
+fault request for a user-selected handle. Each case verifies that the partial
+test output is empty or removed, deletes its test-created entry, and, after a
+crash, verifies that a fresh conversion worker becomes ready.
 
 Files with the same detected input format can be selected as a batch. The user
 chooses one destination folder, existing names are never overwritten, and files

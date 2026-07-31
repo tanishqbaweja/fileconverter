@@ -115,11 +115,34 @@ async function appOwnedOpfsNames(prefix: string): Promise<string[]> {
   }, prefix);
 }
 
-async function openFaultMode(fault: string): Promise<void> {
-  await page.goto(`/?test=1&fault=${fault}`);
+async function openFaultMode(
+  fault: string,
+  destination: "opfs-test" | "direct" = "opfs-test",
+): Promise<void> {
+  const directory = destination === "direct" ? "&directory=1" : "";
+  await page.goto(`/?test=1&fault=${fault}${directory}`);
   await expect
     .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
     .toBe("ready");
+}
+
+async function removeOpfsEntryAndReportSize(
+  name: string,
+): Promise<number | null> {
+  return page.evaluate(async (entryName) => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle(entryName);
+      const size = (await handle.getFile()).size;
+      await root.removeEntry(entryName);
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return null;
+      }
+      throw error;
+    }
+  }, name);
 }
 
 test.beforeAll(async () => {
@@ -610,6 +633,31 @@ for (const fault of [
         { timeout: 15_000 },
       )
       .toBe(0);
+  });
+
+  test(`${fault.title} through the asynchronous direct-save adapter`, async () => {
+    const outputName = "sample.html";
+    await openFaultMode(fault.id, "direct");
+    await removeOpfsEntryAndReportSize(outputName);
+    try {
+      await selectFixture("fixtures/documents/sample.txt", "txt-to-html");
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+        .toBe("error");
+      const state = await currentState();
+      expect(state.error?.toLowerCase()).toContain(fault.message);
+      expect(state.opfsName).toBeNull();
+      expect(state.batchOutputNames).toEqual([outputName]);
+      expect(state.metrics?.pendingOperations).toBe(0);
+      expect(state.metrics?.queuedBytes).toBe(0);
+      expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+      expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      const abandonedSize = await removeOpfsEntryAndReportSize(outputName);
+      expect(abandonedSize).toBe(0);
+    } finally {
+      await removeOpfsEntryAndReportSize(outputName);
+    }
   });
 }
 

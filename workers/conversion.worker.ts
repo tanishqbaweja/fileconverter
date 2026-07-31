@@ -2445,8 +2445,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     );
     if (
       message.testFault &&
-      message.testFault !== "worker-crash" &&
-      message.destination.mode === "opfs-test"
+      message.testFault !== "worker-crash"
     ) {
       destination.writable = injectDestinationFault(
         destination.writable,
