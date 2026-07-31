@@ -52,9 +52,13 @@ For sequential reads, a persistent BYOB byte-stream buffer is reused. A genuine
 FFmpeg seek cancels that reader and opens a new bounded stream at the requested
 offset. Bytes are copied once from the browser-owned BYOB view into FFmpeg's
 256 KiB AVIO input buffer. FFmpeg's output callback exposes at most 256 KiB. A
-normal user-selected `FileSystemWritableFileStream` receives one owned chunk
-because its asynchronous write may outlive the Wasm heap view; backpressure
-prevents a second write from being queued.
+dedicated destination worker owns the user-selected
+`FileSystemWritableFileStream` and its writer for the full job. The conversion
+worker copies one chunk into a 256 KiB `SharedArrayBuffer`, waits with Atomics,
+and cannot queue another operation until the destination worker acknowledges
+the write. Random offsets, truncate, close, abort, and a bounded 4 KiB error
+message use the same one-command bridge. Browsers without that isolated-worker
+capability retain the awaited asynchronous stream fallback.
 
 The automated large-file harness uses synchronous OPFS access so it can profile
 and independently validate an output without creating another multi-gigabyte
@@ -74,6 +78,8 @@ Hard limits:
 - maximum browser read or write chunk: 262,144 bytes
 - outstanding output operations: 1
 - maximum queued output bytes: 262,144
+- direct-writer shared command, payload, and error storage: 266,272 bytes
+- active workers during direct media output: 2
 - initial Wasm memory: 32 MiB
 - maximum Wasm memory: 96 MiB
 - shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
@@ -301,7 +307,7 @@ Current exact-build results:
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
-| MKV → MP4, asynchronous direct handle | 1 | 2,958,573,265 B | 2,962,151,522 B | 230.4 MiB | 52.6 MiB | 16.5 MiB |
+| MKV → MP4, shared direct writer | 1 | 2,958,573,265 B | 2,962,151,522 B | 212.7 MiB | 52.6 MiB | 14.4 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
@@ -325,9 +331,11 @@ profiler:
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`
 and completed in 9.3–16.2 seconds with the compatibility-gated Wasm build.
-The asynchronous direct-handle run produced the same byte-identical hash in
-35.4 seconds with one 256 KiB write in flight; its report records
-`destinationMode: "direct-handle"` separately from synchronous OPFS evidence.
+The shared direct-writer run produced the same byte-identical hash in 33.0
+seconds, 8.8% faster than the initial 36.2-second asynchronous path. It uses one
+256 KiB payload, one write in flight, a persistent stream writer, and a second
+worker; its report records `destinationMode: "direct-handle"` separately from
+synchronous OPFS evidence.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
 The three WAV outputs shared SHA-256

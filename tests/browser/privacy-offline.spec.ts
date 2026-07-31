@@ -36,6 +36,17 @@ test.beforeAll(async () => {
     baseURL,
     serviceWorkers: "allow",
   });
+  await context.addInitScript(() => {
+    Object.defineProperty(window, "showSaveFilePicker", {
+      configurable: true,
+      value: async (options?: { suggestedName?: string }) => {
+        const root = await navigator.storage.getDirectory();
+        return root.getFileHandle(options?.suggestedName ?? "within-output.bin", {
+          create: true,
+        });
+      },
+    });
+  });
   page = context.pages()[0] ?? (await context.newPage());
 });
 
@@ -133,6 +144,63 @@ test("installed app shell and conversion engine load offline", async () => {
     ).toBeVisible();
   } finally {
     await context.setOffline(false);
+  }
+});
+
+test("cached direct destination writer converts while offline", async () => {
+  const outputName = "sample.tsv";
+  const convertDirect = async () => {
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("csv-to-tsv");
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await expect(page.getByRole("button", { name: new RegExp(outputName) })).toBeVisible();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName);
+      const text = await (await handle.getFile()).text();
+      await root.removeEntry(entryName);
+      return text;
+    }, outputName);
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  expect(await convertDirect()).toContain("name\tnote\tcount");
+  const writerCached = await page.evaluate(async () => {
+    const requests = (
+      await Promise.all(
+        (await caches.keys())
+          .filter((key) => key.startsWith("within-"))
+          .map(async (key) => (await caches.open(key)).keys()),
+      )
+    ).flat();
+    return requests.some((request) =>
+      /\/assets\/direct-file-writer\.worker-[^/]+\.js$/.test(
+        new URL(request.url).pathname,
+      ),
+    );
+  });
+  expect(writerCached).toBe(true);
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    expect(await convertDirect()).toContain("name\tnote\tcount");
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(entryName).catch(() => {});
+    }, outputName).catch(() => {});
   }
 });
 

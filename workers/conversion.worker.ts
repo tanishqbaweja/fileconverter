@@ -11,6 +11,7 @@ import { runDocumentConversion } from "./document-conversion";
 import { runMediaRemux } from "./media-remux";
 import {
   asynchronousFileStreamDestination,
+  sharedDirectFileDestination,
   syncOpfsDestination,
   type RandomAccessDestination,
 } from "./random-access-destination";
@@ -145,6 +146,13 @@ async function openDestination(
   preferSynchronousOpfs = false,
 ): Promise<Destination> {
   if (destination.mode === "handle") {
+    if (
+      workerScope.crossOriginIsolated &&
+      typeof SharedArrayBuffer === "function" &&
+      typeof Atomics.wait === "function"
+    ) {
+      return { writable: await sharedDirectFileDestination(destination.handle) };
+    }
     const writable = await destination.handle.createWritable({
       keepExistingData: false,
     });

@@ -111,8 +111,9 @@ export async function runMediaRemux({
   let inputReader: ReadableStreamBYOBReader | null = null;
   let inputReaderPosition = -1;
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
-  metrics.activeWorkerCount = 1;
-  metrics.sharedArrayBufferBytes = 0;
+  metrics.activeWorkerCount = 1 + (writable.additionalWorkerCount ?? 0);
+  const writerSharedBytes = writable.sharedBufferBytes ?? 0;
+  metrics.sharedArrayBufferBytes = writerSharedBytes;
 
   const assertActive = (): void => {
     if (isCancelled()) {
@@ -293,7 +294,7 @@ export async function runMediaRemux({
       );
       metrics.outputBytes = Math.max(metrics.outputBytes, progress.outputSize);
       metrics.wasmMemoryBytes = progress.wasmMemoryBytes;
-      metrics.sharedArrayBufferBytes = progress.wasmMemoryBytes;
+      metrics.sharedArrayBufferBytes = progress.wasmMemoryBytes + writerSharedBytes;
       metrics.peakWasmMemoryBytes = Math.max(
         metrics.peakWasmMemoryBytes ?? 0,
         progress.wasmMemoryBytes,
