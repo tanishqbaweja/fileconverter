@@ -574,6 +574,97 @@ test("streams a JSON array to NDJSON with nested values intact", async () => {
   ]);
 });
 
+test("streams XML to ordered NDJSON structural events", async () => {
+  await selectFixture("fixtures/data/sample.xml", "xml-to-ndjson");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.warnings.some((warning) => warning.includes("structural events"))).toBe(
+    true,
+  );
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  const events = output
+    .trim()
+    .split("\n")
+    .map((line) => JSON.parse(line));
+
+  expect(events[0]).toEqual({ type: "startDocument" });
+  expect(events.at(-1)).toEqual({ type: "endDocument" });
+  expect(events.find((event) => event.type === "declaration")).toEqual({
+    type: "declaration",
+    version: "1.0",
+    encoding: "UTF-8",
+    standalone: "yes",
+  });
+  expect(events.find((event) => event.type === "processingInstruction")).toEqual({
+    type: "processingInstruction",
+    target: "within",
+    data: 'privacy="local"',
+  });
+  expect(events.find((event) => event.type === "comment")?.value).toBe(
+    " deterministic XML fixture ",
+  );
+  expect(
+    events
+      .filter((event) => event.type === "startElement")
+      .map((event) => ({ name: event.name, selfClosing: event.selfClosing })),
+  ).toEqual([
+    { name: "catalog", selfClosing: false },
+    { name: "item", selfClosing: false },
+    { name: "empty", selfClosing: true },
+    { name: "item", selfClosing: false },
+  ]);
+  expect(
+    events.find(
+      (event) => event.type === "startElement" && event.name === "catalog",
+    )?.attributes,
+  ).toEqual([
+    { name: "xmlns", value: "urn:within:catalog" },
+    { name: "xml:lang", value: "en" },
+  ]);
+  expect(
+    events.find(
+      (event) => event.type === "startElement" && event.name === "empty",
+    )?.attributes,
+  ).toEqual([{ name: "mark", value: "✓" }]);
+  expect(
+    events
+      .filter((event) => event.type === "text" && event.value.trim())
+      .map((event) => ({ value: event.value, cdata: event.cdata ?? false })),
+  ).toEqual([
+    { value: "Alpha & Beta", cdata: false },
+    { value: " <local> ", cdata: true },
+    { value: "café", cdata: false },
+  ]);
+
+  const stack: string[] = [];
+  for (const event of events) {
+    if (event.type === "startElement" && !event.selfClosing) stack.push(event.name);
+    if (event.type === "endElement") expect(stack.pop()).toBe(event.name);
+  }
+  expect(stack).toEqual([]);
+});
+
+test("rejects XML DTDs and deletes the partial OPFS output", async () => {
+  await selectFixture("fixtures/data/unsafe-doctype.xml", "xml-to-ndjson");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error).toContain("DTDs");
+  expect(state.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-xml-to-ndjson")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
 test("rejects malformed JSON and deletes its partial OPFS output", async () => {
   await selectFixture(
     "fixtures/data/invalid-trailing.json",

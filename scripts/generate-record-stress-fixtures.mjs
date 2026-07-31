@@ -165,4 +165,85 @@ for (const [format, filePath] of Object.entries(paths)) {
   );
 }
 
+await generateXmlFixture();
+
 process.stdout.write(`${fixtureRoot}\n`);
+
+async function generateXmlFixture() {
+  const xmlPath = path.join(fixtureRoot, "records-128m.xml");
+  const stream = createWriteStream(xmlPath, { flags: "w" });
+  const sourceHash = createHash("sha256");
+  const outputHash = createHash("sha256");
+  let bytes = 0;
+  let outputBytes = 0;
+  let xmlRow = 0;
+
+  const writeXml = async (text) => {
+    const size = Buffer.byteLength(text);
+    sourceHash.update(text);
+    bytes += size;
+    if (!stream.write(text, "utf8")) await once(stream, "drain");
+  };
+  const writeEvent = (event) => {
+    const text = `${JSON.stringify(event)}\n`;
+    outputHash.update(text);
+    outputBytes += Buffer.byteLength(text);
+  };
+
+  await writeXml('<?xml version="1.0" encoding="UTF-8"?>\n<records>\n');
+  writeEvent({ type: "startDocument" });
+  writeEvent({
+    type: "declaration",
+    version: "1.0",
+    encoding: "UTF-8",
+    standalone: null,
+  });
+  writeEvent({
+    type: "startElement",
+    name: "records",
+    attributes: [],
+    selfClosing: false,
+  });
+
+  while (bytes < targetCsvBytes) {
+    const payload = `value_${xmlRow}_${"x".repeat(960)}`;
+    await writeXml(`  <record id="${xmlRow}">${payload}</record>\n`);
+    writeEvent({ type: "text", value: "\n  " });
+    writeEvent({
+      type: "startElement",
+      name: "record",
+      attributes: [{ name: "id", value: String(xmlRow) }],
+      selfClosing: false,
+    });
+    writeEvent({ type: "text", value: payload });
+    writeEvent({ type: "endElement", name: "record" });
+    xmlRow += 1;
+  }
+  await writeXml("</records>\n");
+  writeEvent({ type: "text", value: "\n" });
+  writeEvent({ type: "endElement", name: "records" });
+  writeEvent({ type: "endDocument" });
+  stream.end();
+  await once(stream, "finish");
+
+  await writeFile(
+    `${xmlPath}.json`,
+    `${JSON.stringify(
+      {
+        generatedBy: "scripts/generate-record-stress-fixtures.mjs",
+        rows: xmlRow,
+        bytes,
+        sha256: sourceHash.digest("hex"),
+        expectedByProfile: {
+          "xml-to-ndjson": {
+            validationBytes: outputBytes,
+            validationSha256: outputHash.digest("hex"),
+          },
+        },
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+}

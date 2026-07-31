@@ -47,6 +47,7 @@ const categories = {
       ["ndjson-to-tsv", "records-128m.ndjson"],
       ["ndjson-to-json", "records-128m.ndjson"],
       ["json-to-ndjson", "records-128m.json"],
+      ["xml-to-ndjson", "records-128m.xml"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/stress/data/${name}`,

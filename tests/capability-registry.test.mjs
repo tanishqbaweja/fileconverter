@@ -98,6 +98,12 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "photo.avif", type: "" }), "avif");
   assert.equal(detectFormat({ name: "legacy.BMP", type: "" }), "bmp");
   assert.equal(detectFormat({ name: "records.json", type: "" }), "json");
+  assert.equal(detectFormat({ name: "document.xml", type: "" }), "xml");
+  assert.ok(
+    publicProfilesFor("xml").some(
+      (profile) => profile.id === "xml-to-ndjson",
+    ),
+  );
   assert.equal(detectFormat({ name: "captions.SSA", type: "" }), "ass");
   assert.equal(detectFormat({ name: "track.MP3", type: "" }), "mp3");
   assert.equal(detectFormat({ name: "lossless.flac", type: "" }), "flac");

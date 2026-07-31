@@ -944,7 +944,7 @@ export function ConverterApp() {
           <div className="hero-notes" aria-label="Core guarantees">
             <span>0 bytes uploaded</span>
             <span>1 write in flight</span>
-            <span>256 KiB write cap</span>
+            <span>Bounded write cap</span>
           </div>
         </div>
 

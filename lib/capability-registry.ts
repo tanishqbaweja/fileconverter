@@ -4,6 +4,7 @@ export type EngineId =
   | "document-stream"
   | "subtitle-stream"
   | "records-stream"
+  | "xml-stream"
   | "image-browser"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
@@ -105,7 +106,7 @@ export const formats = [
   {
     id: "ttml",
     label: "Timed Text Markup Language (TTML)",
-    extensions: ["ttml", "dfxp", "xml"],
+    extensions: ["ttml", "dfxp"],
     mimeTypes: ["application/ttml+xml"],
     category: "subtitle",
   },
@@ -135,6 +136,13 @@ export const formats = [
     label: "JSON array",
     extensions: ["json"],
     mimeTypes: ["application/json"],
+    category: "data",
+  },
+  {
+    id: "xml",
+    label: "XML",
+    extensions: ["xml"],
+    mimeTypes: ["application/xml", "text/xml"],
     category: "data",
   },
   {
@@ -682,6 +690,27 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed" as const,
     public: true,
   })),
+  {
+    id: "xml-to-ndjson",
+    input: "xml",
+    output: "ndjson",
+    engine: "xml-stream",
+    route: "stream",
+    browserRequirements: ["Web Workers", "File System Access"],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "The output is an ordered NDJSON event stream rather than an inferred application-specific object model.",
+      "Qualified names and namespace declarations are preserved lexically; namespace URIs are not resolved.",
+      "DTDs, custom entities, external entities, and non-UTF-8 XML declarations are rejected.",
+    ],
+    fidelityLimitations: [
+      "Element and attribute order, empty-element syntax, text, CDATA distinction, comments, and processing instructions are represented; XML line endings and entity spellings are normalized.",
+    ],
+    maxTestedBytes: 134_218_700,
+    automatedTestStatus: "passed",
+    public: true,
+  },
   ...imageProfiles.map(([id, input, output]) => ({
     id,
     input,

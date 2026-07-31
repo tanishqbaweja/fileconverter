@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 61
+complete-Chromium memory profile have passed. The current registry publishes 62
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -22,7 +22,7 @@ routes:
 | Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR; TAR -> ZIP | 268,517,551 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
-| Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON -> NDJSON | 293,633,883 B |
+| Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to every implemented PNG/JPEG/WebP/BMP destination | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
@@ -74,18 +74,19 @@ FFmpeg, and deletes both test-owned copies. It asserts one pending write and a
 Hard limits:
 
 - AVIO input buffer: 262,144 bytes
-- AVIO output buffer: 262,144 bytes
-- maximum browser read or write chunk: 262,144 bytes
+- AVIO output buffer: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
+- maximum browser read chunk: 262,144 bytes
+- maximum browser write and queued output: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
 - outstanding output operations: 1
-- maximum queued output bytes: 262,144
-- direct-writer shared command, payload, and error storage: 266,272 bytes
+- direct-writer shared command, payload, and error storage: 1,052,704 bytes for direct MKV -> MP4
 - active workers during direct media output: 2
 - initial Wasm memory: 32 MiB
 - maximum Wasm memory: 96 MiB
 - shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
   routes and 80 MiB observed for threaded WebM
 - completed large input/output in MEMFS: prohibited
-- text line, record, XML node, or subtitle cue: 1 MiB
+- text line, record, or subtitle cue: 1 MiB
+- XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
@@ -212,7 +213,12 @@ and emit real destination syntax. TTML rejects DTDs and custom entities, accepts
 clock/second/millisecond time expressions, and maps only basic italic, bold,
 underline, and line-break styling. CSV/TSV quoting is parsed across chunk
 boundaries; NDJSON and JSON-array routes preserve nested values but normalize
-equivalent JSON whitespace and lexical forms. Column-shape losses are warned.
+equivalent JSON whitespace and lexical forms. XML-to-NDJSON uses a strict
+incremental XML 1.0 tokenizer and emits ordered document, declaration, element,
+text, CDATA, comment, and processing-instruction events. It preserves qualified
+names and namespace declarations lexically, rejects DTDs and custom/external
+entities, and never creates a DOM. Column-shape and XML normalization limits are
+disclosed.
 
 Document routes are deliberately semantic rather than extension renames. TXT
 is escaped into a complete preformatted HTML document. Markdown renders a
@@ -336,6 +342,7 @@ profiler:
 | Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
+| Records, XML -> NDJSON events | 134,218,700 B | 165.1 MiB | independent streamed hash/parse |
 | Archives, TAR -> TAR.GZ | 268,436,992 B | 219.3 MiB | full TAR validation |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
@@ -454,7 +461,7 @@ installed stable Chrome and native FFmpeg.
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI
 - `lib/capability-registry.ts` — single source for formats and public matrix
-- `workers/` — bounded media, archive, subtitle, image, record, and document
+- `workers/` — bounded media, archive, subtitle, image, record, XML, and document
   transforms; FFmpeg bridge, destinations, and lifecycle
 - `media/ffmpeg/` — reproducible build and native AVIO wrapper
 - `public/engines/` — auditable generated engine artifacts

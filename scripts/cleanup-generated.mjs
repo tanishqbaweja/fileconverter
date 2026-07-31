@@ -8,6 +8,7 @@ const outputsRoot = path.resolve(projectRoot, "outputs");
 const reportRoot = path.resolve(outputsRoot, "reports");
 const disposableOutputRoot = path.resolve(projectRoot, "output");
 const playwrightOutputRoot = path.resolve(disposableOutputRoot, "playwright");
+const playwrightCliRoot = path.resolve(projectRoot, ".playwright-cli");
 const playwrightImageProfileRoot = path.resolve(
   workRoot,
   "playwright-profile-images",
@@ -48,6 +49,10 @@ const detachedProfileLogs = [
   path.resolve(workRoot, "webm-profile-run.stdout.log"),
   path.resolve(workRoot, "webm-profile-run.stderr.log"),
 ];
+const headedBrowserLogs = [
+  path.resolve(workRoot, "headed-server.stdout.log"),
+  path.resolve(workRoot, "headed-server.stderr.log"),
+];
 const retainedOutputExtensions = new Set([".json", ".csv", ".html"]);
 const generatedStressExtensions = new Set([
   ".bin",
@@ -72,6 +77,7 @@ const generatedStressExtensions = new Set([
   ".txt",
   ".md",
   ".html",
+  ".xml",
   ".tar",
   ".zip",
 ]);
@@ -82,6 +88,8 @@ assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(stressFixturesRoot, webmBenchmarkFixture);
 for (const logPath of detachedProfileLogs) assertInside(workRoot, logPath);
+for (const logPath of headedBrowserLogs) assertInside(workRoot, logPath);
+assertInside(projectRoot, playwrightCliRoot);
 assertInside(disposableOutputRoot, playwrightOutputRoot);
 assertInside(workRoot, playwrightImageProfileRoot);
 assertInside(workRoot, playwrightMediaProfileRoot);
@@ -92,6 +100,7 @@ assertInside(outputsRoot, browserMediaSmokeRoot);
 assertInside(outputsRoot, reportRoot);
 
 if (process.argv.includes("--test-artifacts-only")) {
+  await removeWithRetries(playwrightCliRoot);
   await removeWithRetries(playwrightOutputRoot);
   await removeWithRetries(playwrightImageProfileRoot);
   await removeWithRetries(playwrightMediaProfileRoot);
@@ -100,6 +109,7 @@ if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(browserImageSmokeRoot);
   await removeWithRetries(browserMediaSmokeRoot);
   await rm(cancellationFixture, { force: true });
+  for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
   process.stdout.write("Disposable browser test artifacts removed.\n");
   process.exit(0);
 }
@@ -118,6 +128,7 @@ if (process.argv.includes("--prune-reports-only")) {
 }
 
 await removeWithRetries(profileRoot);
+await removeWithRetries(playwrightCliRoot);
 await removeWithRetries(playwrightOutputRoot);
 await removeWithRetries(playwrightImageProfileRoot);
 await removeWithRetries(playwrightMediaProfileRoot);
@@ -128,6 +139,7 @@ await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 for (const logPath of detachedProfileLogs) await rm(logPath, { force: true });
+for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
 
 for await (const entry of walkFiles(outputsRoot)) {
   if (

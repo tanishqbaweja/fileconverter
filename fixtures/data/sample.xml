@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<?within privacy="local"?>
+<!-- deterministic XML fixture -->
+<catalog xmlns="urn:within:catalog" xml:lang="en">
+  <item id="1" enabled="true">Alpha &amp; Beta<![CDATA[ <local> ]]><empty mark="&#x2713;"/></item>
+  <item id="2">caf&#233;</item>
+</catalog>

@@ -9,6 +9,7 @@ import type {
 import { runZipArchiveConversion } from "./archive-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runMediaRemux } from "./media-remux";
+import { runXmlToNdjson } from "./xml-conversion";
 import {
   asynchronousFileStreamDestination,
   sharedDirectFileDestination,
@@ -2516,6 +2517,25 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         write: (chunk, phase) =>
           writeBounded(
             documentDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+          ),
+        warn: (message) => post({ type: "warning", jobId, message }),
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+      });
+    } else if (profileId === "xml-to-ndjson") {
+      const xmlDestination = destination.writable;
+      await runXmlToNdjson({
+        file,
+        metrics,
+        write: (chunk, phase) =>
+          writeBounded(
+            xmlDestination,
             chunk,
             jobId,
             phase,

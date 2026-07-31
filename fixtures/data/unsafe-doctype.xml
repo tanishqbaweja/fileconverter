@@ -1,0 +1,3 @@
+<?xml version="1.0"?>
+<!DOCTYPE catalog [<!ENTITY secret SYSTEM "file:///private.txt">]>
+<catalog>&secret;</catalog>
