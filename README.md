@@ -133,7 +133,8 @@ category profiler cleans its generated fixtures and converted copies in a
 `finally` block, and `npm run clean:generated` performs the same bounded,
 project-local cleanup manually. Compact JSON/CSV/HTML evidence is retained under
 `outputs/reports/`; `npm run clean:reports` keeps only the newest passing and
-newest failing record per profile.
+newest failing record per profile, destination mode, and distinct source
+fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 
 ## Media decisions and limitations
 

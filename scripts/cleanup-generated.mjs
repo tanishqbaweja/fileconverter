@@ -225,6 +225,14 @@ async function pruneSupersededReports(directory) {
               : "unknown";
         reports.push({
           profileId,
+          sourceIdentity:
+            typeof report.source?.sha256 === "string"
+              ? `sha256:${report.source.sha256.toLowerCase()}`
+              : Number.isFinite(report.source?.bytes)
+                ? `bytes:${report.source.bytes}`
+                : Number.isFinite(report.runs?.[0]?.sourceBytes)
+                  ? `bytes:${report.runs[0].sourceBytes}`
+                  : "source:unknown",
           destinationMode:
             typeof report.destinationMode === "string"
               ? report.destinationMode
@@ -246,7 +254,7 @@ async function pruneSupersededReports(directory) {
 
   const byProfile = new Map();
   for (const report of reports) {
-    const key = `${report.profileId}:${report.destinationMode}:${report.outcome}`;
+    const key = `${report.profileId}:${report.destinationMode}:${report.outcome}:${report.sourceIdentity}`;
     const current = byProfile.get(key) ?? [];
     current.push(report);
     byProfile.set(key, current);
