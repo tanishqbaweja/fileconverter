@@ -134,6 +134,14 @@ duration so audio-only sample tables cannot grow with total duration. The WAV
 profile converts only the first audio stream, preserves its channel count and
 sample rate, and discloses the container metadata it cannot represent.
 
+The reproducible `complex-remux-source.mkv` fixture adds VFR H.264, two AAC
+tracks with English and Spanish language tags and distinct dispositions, French
+SRT, two named chapters, a text attachment, and container metadata. A real
+browser MKV-to-MP4 test preserves both audio tracks, VFR packet timing,
+dispositions, languages, and compatible metadata; verifies explicit warnings
+for the three unrepresentable source elements; and fully decodes the output with
+native FFmpeg. Rebuilding the fixture produces the same SHA-256.
+
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
 explicitly excludes audio, subtitles, attachments, and chapters. Its current
@@ -259,6 +267,9 @@ The unmodified project-root fixture:
 - streams: HEVC Main 1920×804, HE-AAC 48 kHz 5.1 Hindi, English SRT,
   attached PNG 250×140
 - chapters: none
+
+The deterministic complex remux fixture is 780,953 bytes with SHA-256
+`ef3675ef5a258230de70970a4c3e0f0545d74538661fe7df98a48f1b525f1ad2`.
 
 Chrome 150.0.7871.188 was launched as a clean process tree. The acceptance
 formula is exactly:

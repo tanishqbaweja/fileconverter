@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -16,6 +16,8 @@ const wavFixturePath = path.join(fixtureRoot, "audio-source.wav");
 const aiffFixturePath = path.join(fixtureRoot, "audio-source.aiff");
 const oggFixturePath = path.join(fixtureRoot, "audio-source.ogg");
 const opusFixturePath = path.join(fixtureRoot, "audio-source.opus");
+const complexFixturePath = path.join(fixtureRoot, "complex-remux-source.mkv");
+const complexWorkRoot = path.join(projectRoot, "work", "complex-media-fixture");
 
 await mkdir(fixtureRoot, { recursive: true });
 await execFileAsync(
@@ -278,4 +280,154 @@ for (const [outputPath, codecArguments, title, losslessPcmReference] of [
     "utf8",
   );
 }
-process.stdout.write(`${fixturePath}\n`);
+
+await rm(complexWorkRoot, { recursive: true, force: true });
+await mkdir(complexWorkRoot, { recursive: true });
+const subtitlePath = path.join(complexWorkRoot, "captions.srt");
+const chapterPath = path.join(complexWorkRoot, "chapters.ffmeta");
+const attachmentPath = path.join(complexWorkRoot, "within-notes.txt");
+try {
+  await writeFile(
+    subtitlePath,
+    "1\n00:00:00,250 --> 00:00:01,500\nPrivate caption one.\n\n" +
+      "2\n00:00:02,250 --> 00:00:03,750\nPrivate caption two.\n",
+    "utf8",
+  );
+  await writeFile(
+    chapterPath,
+    ";FFMETADATA1\n" +
+      "title=Within complex remux fixture\n" +
+      "comment=Deterministic multi-stream metadata\n" +
+      "[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=2000\ntitle=Opening\n" +
+      "[CHAPTER]\nTIMEBASE=1/1000\nSTART=2000\nEND=4000\ntitle=Closing\n",
+    "utf8",
+  );
+  await writeFile(
+    attachmentPath,
+    "Within deterministic attachment.\n",
+    "utf8",
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-y",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=640x360:rate=24:duration=4",
+      "-f",
+      "lavfi",
+      "-i",
+      "sine=frequency=440:sample_rate=48000:duration=4",
+      "-f",
+      "lavfi",
+      "-i",
+      "sine=frequency=880:sample_rate=48000:duration=4",
+      "-i",
+      subtitlePath,
+      "-f",
+      "ffmetadata",
+      "-i",
+      chapterPath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-map",
+      "2:a:0",
+      "-map",
+      "3:s:0",
+      "-map_metadata",
+      "4",
+      "-map_chapters",
+      "4",
+      "-vf",
+      "select='if(lt(t,2),not(mod(n,2)),1)'",
+      "-fps_mode:v:0",
+      "vfr",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "ultrafast",
+      "-tune",
+      "zerolatency",
+      "-g",
+      "48",
+      "-pix_fmt",
+      "yuv420p",
+      "-c:a",
+      "aac",
+      "-b:a",
+      "96k",
+      "-c:s",
+      "srt",
+      "-metadata:s:v:0",
+      "title=Variable timing video",
+      "-metadata:s:a:0",
+      "language=eng",
+      "-metadata:s:a:0",
+      "title=Primary English audio",
+      "-metadata:s:a:1",
+      "language=spa",
+      "-metadata:s:a:1",
+      "title=Secondary Spanish audio",
+      "-metadata:s:s:0",
+      "language=fra",
+      "-disposition:a:0",
+      "default",
+      "-disposition:a:1",
+      "0",
+      "-attach",
+      attachmentPath,
+      "-metadata:s:t:0",
+      "filename=within-notes.txt",
+      "-metadata:s:t:0",
+      "mimetype=text/plain",
+      "-fflags",
+      "+bitexact",
+      "-flags:v",
+      "+bitexact",
+      "-flags:a",
+      "+bitexact",
+      complexFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+} finally {
+  await rm(complexWorkRoot, { recursive: true, force: true });
+}
+
+const complexBytes = await readFile(complexFixturePath);
+const { stdout: complexProbe } = await execFileAsync(
+  "ffprobe",
+  [
+    "-v",
+    "error",
+    "-show_format",
+    "-show_streams",
+    "-show_chapters",
+    "-of",
+    "json",
+    complexFixturePath,
+  ],
+  { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+);
+await writeFile(
+  `${complexFixturePath}.json`,
+  `${JSON.stringify(
+    {
+      generatedBy: "scripts/generate-media-fixture.mjs",
+      bytes: complexBytes.byteLength,
+      sha256: createHash("sha256").update(complexBytes).digest("hex"),
+      probe: JSON.parse(complexProbe),
+    },
+    null,
+    2,
+  )}\n`,
+  "utf8",
+);
+
+process.stdout.write(`${fixturePath}\n${complexFixturePath}\n`);

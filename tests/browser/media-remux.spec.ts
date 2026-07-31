@@ -36,11 +36,18 @@ const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
+const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
   "fixtures",
   "media",
   "remux-source.mkv",
+);
+const complexFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "complex-remux-source.mkv",
 );
 const audioFixturePath = path.join(
   projectRoot,
@@ -96,6 +103,27 @@ let context: BrowserContext;
 let page: Page;
 let validationSink: WriteStream | null = null;
 
+interface ProbeStream {
+  codec_name: string;
+  codec_type: string;
+  tags?: Record<string, string>;
+  disposition?: Record<string, number>;
+}
+
+interface MediaProbe {
+  streams: ProbeStream[];
+  chapters?: unknown[];
+  format: {
+    duration: string;
+    tags?: Record<string, string>;
+  };
+}
+
+interface MediaRouteOptions {
+  expectedWarningFragments?: readonly string[];
+  validate?: (probe: MediaProbe, outputPath: string) => Promise<void>;
+}
+
 function assertProjectLocal(target: string): void {
   const relative = path.relative(projectRoot, target);
   if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
@@ -126,6 +154,7 @@ test.beforeAll(async () => {
   assertProjectLocal(opusWavOutputPath);
   assertProjectLocal(mpeg4OutputPath);
   assertProjectLocal(webmOutputPath);
+  assertProjectLocal(complexMp4OutputPath);
   await rm(profileRoot, { recursive: true, force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
@@ -168,6 +197,7 @@ test.afterAll(async () => {
   await rm(opusWavOutputPath, { force: true });
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
+  await rm(complexMp4OutputPath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -191,6 +221,7 @@ async function runMediaRoute(
   expectedCodecs: string[],
   minimumBytes: number,
   inputPath = fixturePath,
+  options: MediaRouteOptions = {},
 ) {
   try {
     await page.goto("/?test=1");
@@ -209,7 +240,14 @@ async function runMediaRoute(
     const state = await currentState();
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
     expect(state.opfsName).toBeTruthy();
-    if (profileId === "mkv-to-mp4") {
+    if (options.expectedWarningFragments) {
+      for (const fragment of options.expectedWarningFragments) {
+        expect(
+          state.warnings.some((warning) => warning.includes(fragment)),
+          `Expected a warning containing ${fragment}.`,
+        ).toBe(true);
+      }
+    } else if (profileId === "mkv-to-mp4") {
       expect(state.warnings).toEqual([]);
     } else if (profileId === "mkv-to-m4a" || profileId === "mkv-to-wav") {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
@@ -280,13 +318,14 @@ async function runMediaRoute(
         "error",
         "-show_format",
         "-show_streams",
+        "-show_chapters",
         "-of",
         "json",
         outputPath,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
-    const probe = JSON.parse(stdout);
+    const probe = JSON.parse(stdout) as MediaProbe;
     expect(
       probe.streams.map(
         (stream: { codec_name: string }) => stream.codec_name,
@@ -294,6 +333,7 @@ async function runMediaRoute(
     ).toEqual(expectedCodecs);
     expect(Number(probe.format.duration)).toBeGreaterThan(3.9);
     expect(Number(probe.format.duration)).toBeLessThan(4.2);
+    await options.validate?.(probe, outputPath);
   } finally {
     validationSink?.destroy();
     validationSink = null;
@@ -307,6 +347,92 @@ test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async ()
     mp4OutputPath,
     ["h264", "aac"],
     250_000,
+  );
+});
+
+test("browser remux preserves multiple audio tracks and VFR timing while disclosing exclusions", async () => {
+  await runMediaRoute(
+    "mkv-to-mp4",
+    complexMp4OutputPath,
+    ["h264", "aac", "aac"],
+    400_000,
+    complexFixturePath,
+    {
+      expectedWarningFragments: ["subtitle", "attachment", "chapter"],
+      validate: async (probe, outputPath) => {
+        const audio = probe.streams.filter(
+          (stream) => stream.codec_type === "audio",
+        );
+        expect(audio).toHaveLength(2);
+        expect(audio.map((stream) => stream.tags?.language)).toEqual([
+          "eng",
+          "spa",
+        ]);
+        expect(audio.map((stream) => stream.disposition?.default)).toEqual([
+          1,
+          0,
+        ]);
+        expect(probe.chapters ?? []).toEqual([]);
+        expect(probe.format.tags?.title).toBe(
+          "Within complex remux fixture",
+        );
+
+        const { stdout: packetOutput } = await execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "packet=pts_time",
+            "-show_packets",
+            "-of",
+            "json",
+            outputPath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+        const packets = JSON.parse(packetOutput) as {
+          packets: Array<{ pts_time: string }>;
+        };
+        const timestamps = packets.packets
+          .map((packet) => Number(packet.pts_time))
+          .sort((left, right) => left - right);
+        const deltasMs = new Set(
+          timestamps
+            .slice(1)
+            .map((timestamp, index) =>
+              Math.round((timestamp - timestamps[index]) * 1000),
+            ),
+        );
+        expect([...deltasMs].some((delta) => delta >= 82 && delta <= 84)).toBe(
+          true,
+        );
+        expect([...deltasMs].some((delta) => delta >= 41 && delta <= 43)).toBe(
+          true,
+        );
+
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a",
+            "-f",
+            "null",
+            "-",
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
   );
 });
 
