@@ -124,6 +124,12 @@ necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
+The lossless MKV-to-MP4 planner accepts only H.264 or HEVC video plus AAC audio,
+the combinations proven by its browser and stress tests. M4A extraction accepts
+AAC. A different codec is rejected before the muxer writes media data, with a
+readable explanation that a verified bounded re-encoder is not installed; it is
+never silently dropped or passed to an incompatible container.
+
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
 compatible general metadata. The SRT stream and attached PNG cannot be
@@ -286,7 +292,7 @@ Current exact-build results:
 
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 182.3 MiB | 52.6 MiB | −4.6–1.3 MiB |
+| MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
@@ -308,7 +314,8 @@ profiler:
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 
 The three MP4 outputs shared SHA-256
-`aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`.
+`aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`
+and completed in 9.3–16.2 seconds with the compatibility-gated Wasm build.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
 The three WAV outputs shared SHA-256

@@ -305,6 +305,19 @@ static int stream_is_supported(const AVStream *stream, int profile) {
                  stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO));
 }
 
+static int stream_codec_is_copy_compatible(const AVStream *stream,
+                                           int profile) {
+  if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+    return stream->codecpar->codec_id == AV_CODEC_ID_AAC;
+  }
+  if (profile != 2 &&
+      stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+    return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
+           stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
+  }
+  return 1;
+}
+
 static int64_t packet_time_us(const AVPacket *packet,
                               const AVStream *stream) {
   int64_t timestamp =
@@ -1401,6 +1414,35 @@ int within_remux(int profile) {
     AVStream *input_stream = input_format->streams[index];
     stream_map[index] = -1;
     last_dts[index] = AV_NOPTS_VALUE;
+    if (!(input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC) &&
+        ((profile == 2 &&
+          input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) ||
+         (profile != 2 &&
+          (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
+           input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO))) &&
+        !stream_codec_is_copy_compatible(input_stream, profile)) {
+      if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        within_message(
+            2,
+            "MKV-to-MP4 lossless stream copy accepts H.264 or HEVC video. "
+            "This source video codec needs a bounded re-encoding route that "
+            "is not installed.");
+      } else if (profile == 2) {
+        within_message(
+            2,
+            "MKV-to-M4A lossless stream copy accepts AAC audio. This source "
+            "audio codec needs a bounded re-encoding route that is not "
+            "installed.");
+      } else {
+        within_message(
+            2,
+            "MKV-to-MP4 lossless stream copy accepts AAC audio. This source "
+            "audio codec needs a bounded re-encoding route that is not "
+            "installed.");
+      }
+      result = AVERROR(ENOSYS);
+      goto cleanup;
+    }
     if (!stream_is_supported(input_stream, profile)) {
       if (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
         within_message(

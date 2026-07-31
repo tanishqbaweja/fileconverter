@@ -54,6 +54,11 @@ const corruptFixturePath = path.join(
   "work",
   "corrupt-source.mkv",
 );
+const incompatibleFixturePath = path.join(
+  projectRoot,
+  "work",
+  "incompatible-audio-source.mkv",
+);
 const audioFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -161,8 +166,10 @@ test.beforeAll(async () => {
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
+  assertProjectLocal(incompatibleFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
+  await rm(incompatibleFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
   await writeFile(
@@ -171,6 +178,39 @@ test.beforeAll(async () => {
       Buffer.from("Within deliberately corrupt Matroska fixture.\n", "utf8"),
       Buffer.alloc(4096, 0xa5),
     ]),
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-y",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=320x180:rate=24:duration=2",
+      "-f",
+      "lavfi",
+      "-i",
+      "sine=frequency=660:sample_rate=48000:duration=2",
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "ultrafast",
+      "-pix_fmt",
+      "yuv420p",
+      "-c:a",
+      "libvorbis",
+      "-f",
+      "matroska",
+      incompatibleFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
 
   context = await chromium.launchPersistentContext(profileRoot, {
@@ -213,6 +253,7 @@ test.afterAll(async () => {
   await rm(webmOutputPath, { force: true });
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
+  await rm(incompatibleFixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -468,6 +509,40 @@ test("browser FFmpeg rejects corrupt MKV and removes its partial output", async 
     .toBe("error");
   const failed = await currentState();
   expect(failed.error).toMatch(/input|matroska|invalid data/i);
+  expect(failed.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-mkv-to-mp4")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+});
+
+test("browser planner rejects a codec combination that MP4 cannot stream-copy", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(incompatibleFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-mp4");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const failed = await currentState();
+  expect(failed.error).toContain(
+    "MKV-to-MP4 lossless stream copy accepts AAC audio",
+  );
   expect(failed.opfsName).toBeNull();
   const leftovers = await page.evaluate(async () => {
     const root = await navigator.storage.getDirectory();

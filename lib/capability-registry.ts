@@ -725,6 +725,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
+      "Lossless stream copy accepts H.264 or HEVC video with AAC audio; other source codecs are rejected unless a separately verified re-encoding route is selected.",
       "SRT subtitles and container-incompatible attachments are explicitly excluded.",
       "Source chapters are not copied by this initial fragmented-MP4 profile.",
     ],
@@ -748,6 +749,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
+      "Lossless M4A extraction accepts AAC audio; other source audio codecs require a separately verified re-encoding route.",
       "Video, subtitle, and attachment streams are explicitly excluded from the audio-only destination.",
       "Source chapters are not copied into this initial M4A profile.",
     ],
