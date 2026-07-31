@@ -22,6 +22,7 @@ const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
+const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
 const standaloneWavOutputPath = path.join(
   outputRoot,
@@ -59,6 +60,11 @@ const incompatibleFixturePath = path.join(
   projectRoot,
   "work",
   "incompatible-audio-source.mkv",
+);
+const mp4InputFixturePath = path.join(
+  projectRoot,
+  "work",
+  "remux-source.mp4",
 );
 const audioFixturePath = path.join(
   projectRoot,
@@ -154,6 +160,7 @@ test.beforeAll(async () => {
   assertProjectLocal(mp4OutputPath);
   assertProjectLocal(directMp4OutputPath);
   assertProjectLocal(m4aOutputPath);
+  assertProjectLocal(mp4M4aOutputPath);
   assertProjectLocal(wavOutputPath);
   assertProjectLocal(standaloneWavOutputPath);
   assertProjectLocal(mp3WavOutputPath);
@@ -169,9 +176,11 @@ test.beforeAll(async () => {
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
+  assertProjectLocal(mp4InputFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
+  await rm(mp4InputFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
   await writeFile(
@@ -214,6 +223,30 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-i",
+      fixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0",
+      "-c",
+      "copy",
+      "-map_metadata",
+      "0",
+      "-movflags",
+      "+faststart",
+      mp4InputFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
 
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
@@ -242,6 +275,7 @@ test.afterAll(async () => {
   await rm(mp4OutputPath, { force: true });
   await rm(directMp4OutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
+  await rm(mp4M4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
   await rm(standaloneWavOutputPath, { force: true });
   await rm(mp3WavOutputPath, { force: true });
@@ -257,6 +291,7 @@ test.afterAll(async () => {
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
+  await rm(mp4InputFixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -322,6 +357,7 @@ async function runMediaRoute(
   profileId:
     | "mkv-to-mp4"
     | "mkv-to-m4a"
+    | "mp4-to-m4a"
     | "mkv-to-wav"
     | "m4a-to-wav"
     | "mp3-to-wav"
@@ -366,7 +402,11 @@ async function runMediaRoute(
       }
     } else if (profileId === "mkv-to-mp4") {
       expect(state.warnings).toEqual([]);
-    } else if (profileId === "mkv-to-m4a" || profileId === "mkv-to-wav") {
+    } else if (
+      profileId === "mkv-to-m4a" ||
+      profileId === "mp4-to-m4a" ||
+      profileId === "mkv-to-wav"
+    ) {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
         true,
       );
@@ -647,12 +687,12 @@ for (const route of [
   {
     profileId: "mkv-to-mp4",
     title: "MP4",
-    expectedError: "MKV-to-MP4 lossless stream copy accepts AAC audio",
+    expectedError: "Lossless MP4 stream copy accepts AAC audio",
   },
   {
     profileId: "mkv-to-m4a",
     title: "M4A",
-    expectedError: "MKV-to-M4A lossless stream copy accepts AAC audio",
+    expectedError: "Lossless M4A stream copy accepts AAC audio",
   },
 ] as const) {
   test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
@@ -692,6 +732,16 @@ for (const route of [
 
 test("browser FFmpeg AVIO extracts MKV audio to valid M4A with bounded I/O", async () => {
   await runMediaRoute("mkv-to-m4a", m4aOutputPath, ["aac"], 20_000);
+});
+
+test("browser FFmpeg AVIO extracts MP4 audio to valid M4A with bounded I/O", async () => {
+  await runMediaRoute(
+    "mp4-to-m4a",
+    mp4M4aOutputPath,
+    ["aac"],
+    20_000,
+    mp4InputFixturePath,
+  );
 });
 
 test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {

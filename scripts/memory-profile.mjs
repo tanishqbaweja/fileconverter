@@ -47,6 +47,7 @@ if (
     "gzip-decompress",
     "mkv-to-mp4",
     "mkv-to-m4a",
+    "mp4-to-m4a",
     "mkv-to-wav",
     "m4a-to-wav",
     "mp3-to-wav",
@@ -70,6 +71,7 @@ if (
 const isMediaProfile =
   profileId === "mkv-to-mp4" ||
   profileId === "mkv-to-m4a" ||
+  profileId === "mp4-to-m4a" ||
   profileId === "mkv-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "mp3-to-wav" ||
@@ -579,6 +581,7 @@ async function validateMediaOutput(
 ) {
   const audioOnly =
     route === "mkv-to-m4a" ||
+    route === "mp4-to-m4a" ||
     route === "mkv-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -791,7 +794,7 @@ async function validateMediaOutput(
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
     (audioOnly && audio?.channels !== sourceAudio?.channels) ||
-    (route === "mkv-to-m4a" &&
+    ((route === "mkv-to-m4a" || route === "mp4-to-m4a") &&
       audio?.tags?.language !== sourceAudio?.tags?.language) ||
     Math.abs(duration - sourceDuration) > 0.25
   ) {
@@ -883,7 +886,7 @@ async function validateMediaOutput(
     throw new Error("The browser did not explicitly disclose the excluded audio stream.");
   }
   const requiresFullDecodeTraversal =
-    videoReencode || route === "mkv-to-m4a";
+    videoReencode || route === "mkv-to-m4a" || route === "mp4-to-m4a";
   await execFileAsync(
     "ffmpeg",
     [

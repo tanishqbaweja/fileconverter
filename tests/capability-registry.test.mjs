@@ -89,4 +89,8 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "master.AIFF", type: "" }), "aiff");
   assert.equal(detectFormat({ name: "voice.ogg", type: "" }), "ogg");
   assert.equal(detectFormat({ name: "voice.opus", type: "" }), "opus");
+  assert.equal(detectFormat({ name: "movie.MP4", type: "" }), "mp4");
+  assert.ok(
+    publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-m4a"),
+  );
 });

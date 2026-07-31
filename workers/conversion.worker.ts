@@ -2421,6 +2421,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.destination,
       (profileId === "mkv-to-mp4" ||
         profileId === "mkv-to-m4a" ||
+        profileId === "mp4-to-m4a" ||
         profileId === "mkv-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "mp3-to-wav" ||
@@ -2569,6 +2570,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     } else if (
       profileId === "mkv-to-mp4" ||
       profileId === "mkv-to-m4a" ||
+      profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "mp3-to-wav" ||
@@ -2602,7 +2604,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 5
             : profileId === "mkv-to-mp4-mpeg4"
               ? 4
-            : profileId === "mkv-to-m4a"
+            : profileId === "mkv-to-m4a" || profileId === "mp4-to-m4a"
               ? 2
               : 1,
         jobId,

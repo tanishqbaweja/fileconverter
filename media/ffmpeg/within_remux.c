@@ -1424,19 +1424,19 @@ int within_remux(int profile) {
       if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
-            "MKV-to-MP4 lossless stream copy accepts H.264 or HEVC video. "
+            "Lossless MP4 stream copy accepts H.264 or HEVC video. "
             "This source video codec needs a bounded re-encoding route that "
             "is not installed.");
       } else if (profile == 2) {
         within_message(
             2,
-            "MKV-to-M4A lossless stream copy accepts AAC audio. This source "
+            "Lossless M4A stream copy accepts AAC audio. This source "
             "audio codec needs a bounded re-encoding route that is not "
             "installed.");
       } else {
         within_message(
             2,
-            "MKV-to-MP4 lossless stream copy accepts AAC audio. This source "
+            "Lossless MP4 stream copy accepts AAC audio. This source "
             "audio codec needs a bounded re-encoding route that is not "
             "installed.");
       }
@@ -1447,8 +1447,11 @@ int within_remux(int profile) {
       if (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
         within_message(
             1,
-            "The Matroska attachment cannot be represented as an MP4 "
-            "attachment and is explicitly excluded.");
+            profile == 2
+                ? "The source cover-art stream is explicitly excluded from "
+                  "this audio-only M4A profile."
+                : "The source attached picture is explicitly excluded from "
+                  "this MP4 remux profile.");
       } else if (profile == 2 &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -1458,14 +1461,14 @@ int within_remux(int profile) {
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
         within_message(
             1,
-            "The source subtitle stream is SRT, which MP4 cannot stream-copy; "
-            "it is explicitly excluded from this lossless remux.");
+            "The source subtitle stream cannot be stream-copied by this "
+            "profile and is explicitly excluded.");
       } else if (input_stream->codecpar->codec_type ==
                  AVMEDIA_TYPE_ATTACHMENT) {
         within_message(
             1,
-            "The Matroska attachment cannot be represented as an MP4 "
-            "attachment and is explicitly excluded.");
+            "The source attachment cannot be represented by this MP4 profile "
+            "and is explicitly excluded.");
       } else {
         within_message(
             1,

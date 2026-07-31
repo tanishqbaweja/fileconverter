@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 57
+complete-Chromium memory profile have passed. The current registry publishes 58
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -24,7 +24,7 @@ routes:
 | Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to every implemented PNG/JPEG/WebP/BMP destination | 24,883,254 B |
-| Video/container | MKV -> MP4; MKV -> M4A; MKV -> WAV; MKV -> WebM | 10,737,988,703 B |
+| Video/container | MKV -> MP4/M4A/WAV/WebM; MP4 -> M4A | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -147,10 +147,11 @@ AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
 The lossless MKV-to-MP4 planner accepts only H.264 or HEVC video plus AAC audio,
-the combinations proven by its browser and stress tests. M4A extraction accepts
-AAC. A different codec is rejected before the muxer writes media data, with a
-readable explanation that a verified bounded re-encoder is not installed; it is
-never silently dropped or passed to an incompatible container.
+the combinations proven by its browser and stress tests. M4A extraction from
+MKV or MP4 accepts AAC. A different codec is rejected before the muxer writes
+media data, with a readable explanation that a verified bounded re-encoder is
+not installed; it is never silently dropped or passed to an incompatible
+container.
 
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
@@ -317,6 +318,7 @@ Current exact-build results:
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
 | MKV → MP4, shared direct writer | 1 | 2,958,573,265 B | 2,962,151,522 B | 212.7 MiB | 52.6 MiB | 14.4 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
+| MP4 → M4A | 3 | 2,964,855,971 B | 249,427,976 B | 203.3 MiB | 73.8 MiB | −4.0–−0.6 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
@@ -346,6 +348,10 @@ worker; its report records `destinationMode: "direct-handle"` separately from
 synchronous OPFS evidence.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
+The three MP4-to-M4A outputs shared SHA-256
+`1efb42d762b766f67f70471a6e2b628aedf8a0e183293aff824226ae83c669a1`,
+completed in 2.58–2.89 seconds, retained Hindi 5.1 AAC, and passed full native
+decode.
 The three WAV outputs shared SHA-256
 `659d36eac2310b7d20d8c694a8eafb11760061def608a9241a64913fc003e1eb`.
 The three WebM outputs shared SHA-256
