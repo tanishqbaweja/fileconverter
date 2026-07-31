@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, rm, stat } from "node:fs/promises";
+import { mkdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -48,6 +48,11 @@ const complexFixturePath = path.join(
   "fixtures",
   "media",
   "complex-remux-source.mkv",
+);
+const corruptFixturePath = path.join(
+  projectRoot,
+  "work",
+  "corrupt-source.mkv",
 );
 const audioFixturePath = path.join(
   projectRoot,
@@ -155,9 +160,18 @@ test.beforeAll(async () => {
   assertProjectLocal(mpeg4OutputPath);
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(complexMp4OutputPath);
+  assertProjectLocal(corruptFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
+  await rm(corruptFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
+  await writeFile(
+    corruptFixturePath,
+    Buffer.concat([
+      Buffer.from("Within deliberately corrupt Matroska fixture.\n", "utf8"),
+      Buffer.alloc(4096, 0xa5),
+    ]),
+  );
 
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
@@ -198,6 +212,7 @@ test.afterAll(async () => {
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(complexMp4OutputPath, { force: true });
+  await rm(corruptFixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -434,6 +449,38 @@ test("browser remux preserves multiple audio tracks and VFR timing while disclos
       },
     },
   );
+});
+
+test("browser FFmpeg rejects corrupt MKV and removes its partial output", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(corruptFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-mp4");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const failed = await currentState();
+  expect(failed.error).toMatch(/input|matroska|invalid data/i);
+  expect(failed.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-mkv-to-mp4")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
 });
 
 test("browser FFmpeg AVIO extracts MKV audio to valid M4A with bounded I/O", async () => {

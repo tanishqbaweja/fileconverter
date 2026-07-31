@@ -140,7 +140,9 @@ SRT, two named chapters, a text attachment, and container metadata. A real
 browser MKV-to-MP4 test preserves both audio tracks, VFR packet timing,
 dispositions, languages, and compatible metadata; verifies explicit warnings
 for the three unrepresentable source elements; and fully decodes the output with
-native FFmpeg. Rebuilding the fixture produces the same SHA-256.
+native FFmpeg. Rebuilding the fixture produces the same SHA-256. A separate
+corrupt-MKV browser case proves FFmpeg errors reach the interface, its partial
+OPFS output is removed, and a replacement worker becomes ready.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
