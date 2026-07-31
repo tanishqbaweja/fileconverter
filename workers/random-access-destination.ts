@@ -12,6 +12,7 @@ export interface RandomAccessDestination {
   requiresOwnedWriteBuffer: boolean;
   additionalWorkerCount?: number;
   sharedBufferBytes?: number;
+  maximumWriteBytes?: number;
   write(data: DestinationWrite): Promise<void>;
   writeSync?(data: DestinationWrite): boolean;
   rotate?(): Promise<void>;
@@ -52,11 +53,15 @@ const DIRECT_COMMAND_TIMEOUT_MS = 120_000;
 export async function sharedDirectFileDestination(
   handle: FileSystemFileHandle,
   testFault?: Exclude<TestFault, "worker-crash">,
+  payloadBytes = DIRECT_WRITER_PAYLOAD_BYTES,
 ): Promise<RandomAccessDestination> {
+  if (!Number.isSafeInteger(payloadBytes) || payloadBytes < 1) {
+    throw new RangeError(`Invalid direct-writer payload size: ${payloadBytes}.`);
+  }
   const controlBuffer = new SharedArrayBuffer(
     DIRECT_WRITER_CONTROL_WORDS * Int32Array.BYTES_PER_ELEMENT,
   );
-  const payloadBuffer = new SharedArrayBuffer(DIRECT_WRITER_PAYLOAD_BYTES);
+  const payloadBuffer = new SharedArrayBuffer(payloadBytes);
   const errorBuffer = new SharedArrayBuffer(DIRECT_WRITER_ERROR_BYTES);
   const control = new Int32Array(controlBuffer);
   const payload = new Uint8Array(payloadBuffer);
@@ -146,6 +151,7 @@ export async function sharedDirectFileDestination(
   return {
     requiresOwnedWriteBuffer: false,
     additionalWorkerCount: 1,
+    maximumWriteBytes: payload.byteLength,
     sharedBufferBytes:
       controlBuffer.byteLength + payloadBuffer.byteLength + errorBuffer.byteLength,
     async write(operation) {

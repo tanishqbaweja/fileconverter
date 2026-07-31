@@ -121,6 +121,10 @@ if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
     `Invalid WITHIN_DESTINATION_MODE: ${process.env.WITHIN_DESTINATION_MODE}`,
   );
 }
+const maximumWriteChunkBytes =
+  destinationMode === "direct-handle" && profileId === "mkv-to-mp4"
+    ? 1024 * 1024
+    : 256 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
 }`;
@@ -459,13 +463,13 @@ try {
       (run) => run.peakPendingOperations <= 1,
     ),
     queuedBytes: runSummaries.every(
-      (run) => run.peakQueuedBytes <= 256 * 1024,
+      (run) => run.peakQueuedBytes <= maximumWriteChunkBytes,
     ),
     readChunkBytes: runSummaries.every(
       (run) => run.maxReadChunkBytes <= 256 * 1024,
     ),
     writeChunkBytes: runSummaries.every(
-      (run) => run.maxWriteChunkBytes <= 256 * 1024,
+      (run) => run.maxWriteChunkBytes <= maximumWriteChunkBytes,
     ),
     imageOutputBytes: runSummaries.every(
       (run) => !isImageProfile || run.outputBytes <= 64 * 1024 * 1024,
@@ -870,7 +874,10 @@ async function validateMediaOutput(
     (sourceHasSubtitle &&
       !finalState.warnings.some((warning) => warning.includes("subtitle"))) ||
     (sourceHasAttachment &&
-      !finalState.warnings.some((warning) => warning.includes("attachment")))
+      !finalState.warnings.some(
+        (warning) =>
+          warning.includes("attachment") || warning.includes("attached picture"),
+      ))
   ) {
     throw new Error(
       "The browser did not explicitly disclose excluded subtitle and attachment streams.",

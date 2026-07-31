@@ -7,6 +7,8 @@ const MPEG4_MODULE_URL = "/engines/remux/within-mpeg4.mjs";
 const MPEG4_WASM_URL = "/engines/remux/within-mpeg4.wasm";
 const THREADED_VIDEO_MODULE_URL = "/engines/remux/within-webm.mjs";
 const THREADED_VIDEO_WASM_URL = "/engines/remux/within-webm.wasm";
+const DIRECT_REMUX_MODULE_URL = "/engines/remux/within-direct.mjs";
+const DIRECT_REMUX_WASM_URL = "/engines/remux/within-direct.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
 const MPEG4_WORKER_POOL_SIZE = 4;
 const WEBM_WORKER_POOL_SIZE = 8;
@@ -73,10 +75,14 @@ export interface MediaRemuxOptions {
   post: (message: WorkerResponse) => void;
 }
 
-function assertBoundedChunk(length: number, operation: string): void {
-  if (length < 0 || length > MAX_AVIO_CHUNK) {
+function assertBoundedChunk(
+  length: number,
+  operation: string,
+  maximum = MAX_AVIO_CHUNK,
+): void {
+  if (length < 0 || length > maximum) {
     throw new Error(
-      `${operation} requested ${length} bytes; the AVIO safety limit is ${MAX_AVIO_CHUNK} bytes.`,
+      `${operation} requested ${length} bytes; the AVIO safety limit is ${maximum} bytes.`,
     );
   }
 }
@@ -126,6 +132,9 @@ export async function runMediaRemux({
     threadedWorkerPoolSize +
     (writable.additionalWorkerCount ?? 0);
   const writerSharedBytes = writable.sharedBufferBytes ?? 0;
+  const maximumOutputWriteBytes = writable.maximumWriteBytes ?? MAX_AVIO_CHUNK;
+  const useDirectRemuxCore =
+    remuxProfile === 1 && maximumOutputWriteBytes > MAX_AVIO_CHUNK;
   metrics.sharedArrayBufferBytes = writerSharedBytes;
 
   const assertActive = (): void => {
@@ -192,7 +201,11 @@ export async function runMediaRemux({
     writeSync: writable.writeSync
       ? (offset, source) => {
           assertActive();
-          assertBoundedChunk(source.byteLength, "Output write");
+          assertBoundedChunk(
+            source.byteLength,
+            "Output write",
+            maximumOutputWriteBytes,
+          );
           if (!Number.isSafeInteger(offset) || offset < 0) {
             throw new Error(
               `FFmpeg requested an invalid output offset: ${offset}.`,
@@ -225,7 +238,11 @@ export async function runMediaRemux({
       : undefined,
     async write(offset, source) {
       assertActive();
-      assertBoundedChunk(source.byteLength, "Output write");
+      assertBoundedChunk(
+        source.byteLength,
+        "Output write",
+        maximumOutputWriteBytes,
+      );
       if (!Number.isSafeInteger(offset) || offset < 0) {
         throw new Error(`FFmpeg requested an invalid output offset: ${offset}.`);
       }
@@ -317,13 +334,17 @@ export async function runMediaRemux({
   };
 
   const moduleUrl =
-    remuxProfile === 4
+    useDirectRemuxCore
+      ? DIRECT_REMUX_MODULE_URL
+      : remuxProfile === 4
       ? MPEG4_MODULE_URL
       : remuxProfile === 5
         ? THREADED_VIDEO_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    remuxProfile === 4
+    useDirectRemuxCore
+      ? DIRECT_REMUX_WASM_URL
+      : remuxProfile === 4
       ? MPEG4_WASM_URL
       : remuxProfile === 5
         ? THREADED_VIDEO_WASM_URL

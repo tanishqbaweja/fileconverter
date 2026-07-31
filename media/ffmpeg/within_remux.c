@@ -19,6 +19,9 @@
 #include <libswscale/swscale.h>
 
 #define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)
+#ifndef WITHIN_AVIO_OUTPUT_BUFFER_SIZE
+#define WITHIN_AVIO_OUTPUT_BUFFER_SIZE WITHIN_AVIO_BUFFER_SIZE
+#endif
 #define WITHIN_AUDIO_FIFO_MAX_SAMPLES 16384
 #define WITHIN_ROTATE_REQUIRED (-4096)
 #ifndef WITHIN_VIDEO_THREADS
@@ -243,9 +246,9 @@ static int output_write(void *opaque, const uint8_t *buffer, int length) {
   int total = 0;
   while (total < length) {
     int remaining = length - total;
-    int bounded = remaining < WITHIN_AVIO_BUFFER_SIZE
+    int bounded = remaining < WITHIN_AVIO_OUTPUT_BUFFER_SIZE
                       ? remaining
-                      : WITHIN_AVIO_BUFFER_SIZE;
+                      : WITHIN_AVIO_OUTPUT_BUFFER_SIZE;
     int written;
     if (within_has_sync_output()) {
       written = within_output_write_sync((double)output->position,
@@ -695,12 +698,12 @@ static int within_audio_transcode(int profile) {
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
 
-  output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_BUFFER_SIZE, 1,
+  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_OUTPUT_BUFFER_SIZE, 1,
                                  &output, NULL, output_write, output_seek);
   if (!output_io) {
     result = AVERROR(ENOMEM);
@@ -1201,12 +1204,12 @@ static int within_video_reencode(int webm) {
     }
   }
 
-  output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_BUFFER_SIZE, 1,
+  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_OUTPUT_BUFFER_SIZE, 1,
                                  &output, NULL, output_write, output_seek);
   if (!output_io) {
     result = AVERROR(ENOMEM);
@@ -1505,12 +1508,12 @@ int within_remux(int profile) {
   }
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
 
-  output_buffer = av_malloc(WITHIN_AVIO_BUFFER_SIZE);
+  output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_BUFFER_SIZE, 1,
+  output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_OUTPUT_BUFFER_SIZE, 1,
                                  &output, NULL, output_write, output_seek);
   if (!output_io) {
     result = AVERROR(ENOMEM);

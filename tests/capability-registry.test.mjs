@@ -66,6 +66,13 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       profiles: ["stream-copy", "audio"],
     },
     {
+      name: "within-direct",
+      wasmPthreadPoolSize: 0,
+      videoCodecThreads: 1,
+      avioOutputBufferBytes: 1024 * 1024,
+      profiles: ["mkv-to-mp4-direct-save"],
+    },
+    {
       name: "within-mpeg4",
       wasmPthreadPoolSize: 4,
       videoCodecThreads: 2,

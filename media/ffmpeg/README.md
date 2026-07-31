@@ -26,20 +26,23 @@ values, builds a VP8-encoder-only libvpx, configures only the documented
 demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
-The build emits three lazy-loaded WebAssembly SIMD modules from the same pinned
+The build emits four lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
-stream copy. `within-mpeg4` uses a fixed four-worker pool for two-thread
-HEVC/H.264 decode and MPEG-4 Part 2 encode. `within-webm` uses a fixed
-eight-worker pool for four-thread decode and VP8 encode. The conversion worker
-and each module's pool workers are counted in runtime diagnostics and terminated
-during job cleanup. VP8 is built in realtime-only mode and uses four token
+stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a
+1 MiB output AVIO buffer to reduce synchronous browser-file write crossings.
+`within-mpeg4` uses a fixed four-worker pool for two-thread HEVC/H.264 decode and
+MPEG-4 Part 2 encode. `within-webm` uses a fixed eight-worker pool for
+four-thread decode and VP8 encode. The conversion worker and each module's pool
+workers are counted in runtime diagnostics and terminated during job cleanup.
+VP8 is built in realtime-only mode and uses four token
 partitions, realtime deadline, `cpu-used=8`, and zero lookahead. Current stable
 Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The
 scalar file I/O bridge stays single-flight, and each module's shared Wasm memory
 retains its 32 MiB initial and 96 MiB maximum sizes.
 
-The input and output `AVIOContext` buffers are each 256 KiB. JavaScript handles a
-single awaited read or write at a time. Input uses a bounded browser File stream
-and reopens that stream at a genuine FFmpeg seek. Output writes use positional
+The input `AVIOContext` buffer is 256 KiB. Output is 256 KiB except for the
+direct-save MKV-to-MP4 specialist's fixed 1 MiB buffer. JavaScript still handles
+one read or write at a time. Input uses a bounded browser File stream and reopens
+that stream at a genuine FFmpeg seek. Output writes use positional
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.

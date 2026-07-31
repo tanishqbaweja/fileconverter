@@ -317,7 +317,7 @@ Current exact-build results:
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
-| MKV → MP4, shared direct writer | 1 | 2,958,573,265 B | 2,962,151,522 B | 212.7 MiB | 52.6 MiB | 14.4 MiB |
+| MKV → MP4, 1 MiB shared direct writer | 3 | 2,958,573,265 B | 2,962,151,522 B | 247.5 MiB | 53.6 MiB | 13.8–17.0 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
 | MP4 → M4A | 3 | 2,964,855,971 B | 249,427,976 B | 203.3 MiB | 73.8 MiB | −4.0–−0.6 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
@@ -344,10 +344,13 @@ profiler:
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`
 and completed in 9.3–16.2 seconds with the compatibility-gated Wasm build.
-The shared direct-writer run produced the same byte-identical hash in 33.0
-seconds, 8.8% faster than the initial 36.2-second asynchronous path. It uses one
-256 KiB payload, one write in flight, a persistent stream writer, and a second
-worker; its report records `destinationMode: "direct-handle"` separately from
+The 1 MiB shared direct-writer runs produced the same byte-identical hash in
+17.42, 22.26, and 23.30 seconds, compared with the prior 256 KiB direct-write
+baseline of 33.00 seconds. The slowest optimized run is 29.4% faster and the
+mean is 36.4% faster. The bounded path uses one fixed shared payload, one private
+writer copy, one write in flight, a persistent stream writer, and a second
+worker. Each project-local validation output was deleted after native probing;
+the report records `destinationMode: "direct-handle"` separately from
 synchronous OPFS evidence.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.

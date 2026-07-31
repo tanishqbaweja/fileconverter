@@ -18,6 +18,7 @@ import {
 
 const workerScope: DedicatedWorkerGlobalScope = self as never;
 const MAX_WRITE_CHUNK = 256 * 1024;
+const DIRECT_REMUX_WRITE_CHUNK = 1024 * 1024;
 const MAX_TEXT_RECORD = 1024 * 1024;
 const MAX_TEXT_COLUMNS = 4_096;
 const MAX_GZIP_EXPANSION_RATIO = 100;
@@ -146,6 +147,7 @@ async function openDestination(
     | { mode: "opfs-test"; name: string },
   preferSynchronousOpfs = false,
   testFault?: TestFault,
+  directWriteBytes = MAX_WRITE_CHUNK,
 ): Promise<Destination> {
   if (destination.mode === "handle") {
     if (
@@ -157,6 +159,7 @@ async function openDestination(
         writable: await sharedDirectFileDestination(
           destination.handle,
           testFault === "worker-crash" ? undefined : testFault,
+          directWriteBytes,
         ),
         handlesTestFault: testFault !== undefined && testFault !== "worker-crash",
       };
@@ -2437,6 +2440,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mkv-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
       message.testFault,
+      profileId === "mkv-to-mp4"
+        ? DIRECT_REMUX_WRITE_CHUNK
+        : MAX_WRITE_CHUNK,
     );
     if (
       message.testFault &&

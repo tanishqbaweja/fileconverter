@@ -11,6 +11,7 @@ build_core() {
   local video_threads="$2"
   local pthread_pool_size="$3"
   local threaded_mpeg4="${4:-0}"
+  local output_buffer_bytes="${5:-262144}"
   local profile_defines=()
   if [[ "${threaded_mpeg4}" == "1" ]]; then
     profile_defines+=("-DWITHIN_MPEG4_THREADED=1")
@@ -18,6 +19,7 @@ build_core() {
 
   emcc /src/within_remux.c \
     -DWITHIN_VIDEO_THREADS="${video_threads}" \
+    -DWITHIN_AVIO_OUTPUT_BUFFER_SIZE="${output_buffer_bytes}" \
     "${profile_defines[@]}" \
     -I"${PREFIX}/include" \
     "${PREFIX}/lib/libavformat.a" \
@@ -55,6 +57,7 @@ build_core() {
 }
 
 build_core within-remux 1 0 0
+build_core within-direct 1 0 0 1048576
 build_core within-mpeg4 2 4 1
 build_core within-webm 4 8 0
 
@@ -71,6 +74,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
     {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio"]},
+    {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm"]}
   ],
