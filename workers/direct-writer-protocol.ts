@@ -1,3 +1,5 @@
+import type { TestFault } from "../lib/conversion-protocol";
+
 export const DIRECT_WRITER_PAYLOAD_BYTES = 256 * 1024;
 export const DIRECT_WRITER_ERROR_BYTES = 4 * 1024;
 export const DIRECT_WRITER_CONTROL_WORDS = 8;
@@ -25,6 +27,7 @@ export interface DirectWriterInitMessage {
   controlBuffer: SharedArrayBuffer;
   payloadBuffer: SharedArrayBuffer;
   errorBuffer: SharedArrayBuffer;
+  testFault?: Exclude<TestFault, "worker-crash">;
 }
 
 export interface DirectWriterCommandMessage {

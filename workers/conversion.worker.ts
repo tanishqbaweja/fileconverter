@@ -80,6 +80,7 @@ async function yieldForCancellation(outputBytes: number): Promise<void> {
 interface Destination {
   writable: RandomAccessDestination;
   opfsName?: string;
+  handlesTestFault?: boolean;
 }
 
 function faultMessage(fault: Exclude<TestFault, "worker-crash">): Error {
@@ -144,6 +145,7 @@ async function openDestination(
     | { mode: "handle"; handle: FileSystemFileHandle }
     | { mode: "opfs-test"; name: string },
   preferSynchronousOpfs = false,
+  testFault?: TestFault,
 ): Promise<Destination> {
   if (destination.mode === "handle") {
     if (
@@ -151,7 +153,13 @@ async function openDestination(
       typeof SharedArrayBuffer === "function" &&
       typeof Atomics.wait === "function"
     ) {
-      return { writable: await sharedDirectFileDestination(destination.handle) };
+      return {
+        writable: await sharedDirectFileDestination(
+          destination.handle,
+          testFault === "worker-crash" ? undefined : testFault,
+        ),
+        handlesTestFault: testFault !== undefined && testFault !== "worker-crash",
+      };
     }
     const writable = await destination.handle.createWritable({
       keepExistingData: false,
@@ -2426,10 +2434,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mkv-to-webm" ||
         profileId === "mkv-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
+      message.testFault,
     );
     if (
       message.testFault &&
-      message.testFault !== "worker-crash"
+      message.testFault !== "worker-crash" &&
+      !destination.handlesTestFault
     ) {
       destination.writable = injectDestinationFault(
         destination.writable,

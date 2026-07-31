@@ -106,6 +106,9 @@ an isolated asynchronous `FileSystemFileHandle`; the application never sends a
 fault request for a user-selected handle. Each case verifies that the partial
 test output is empty or removed, deletes its test-created entry, and, after a
 crash, verifies that a fresh conversion worker becomes ready.
+Direct-handle faults are raised inside the destination worker after the bounded
+write, then cross the 4 KiB shared error channel so writer-thread DOMException
+names and messages cannot be hidden by a secondary shared-buffer decode error.
 
 Files with the same detected input format can be selected as a batch. The user
 chooses one destination folder, existing names are never overwritten, and files

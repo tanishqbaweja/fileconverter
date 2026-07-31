@@ -28,6 +28,8 @@ let errorBytes: Uint8Array | null = null;
 let ownedPayload: Uint8Array<ArrayBuffer> | null = null;
 let position = 0;
 let busy = false;
+let testFault: "write" | "quota" | "permission" | undefined;
+let faultInjected = false;
 
 function post(message: DirectWriterResponse): void {
   writerScope.postMessage(message);
@@ -38,6 +40,24 @@ function errorText(error: unknown): string {
     return `${error.name}: ${error.message}`;
   }
   return String(error);
+}
+
+function injectTestFault(): void {
+  if (!testFault || faultInjected) return;
+  faultInjected = true;
+  if (testFault === "quota") {
+    throw new DOMException(
+      "The destination ran out of quota after a bounded write.",
+      "QuotaExceededError",
+    );
+  }
+  if (testFault === "permission") {
+    throw new DOMException(
+      "Destination permission was revoked after a bounded write.",
+      "NotAllowedError",
+    );
+  }
+  throw new Error("The destination rejected a bounded write.");
 }
 
 function signal(state: typeof DIRECT_DONE | typeof DIRECT_FAILED, error?: unknown) {
@@ -80,6 +100,7 @@ async function runCommand(): Promise<void> {
         });
       }
       position = offset + length;
+      injectTestFault();
     } else if (operation === DIRECT_TRUNCATE) {
       await streamWriter.write({ type: "truncate", size: offset });
       if (position > offset) position = offset;
@@ -112,6 +133,7 @@ writerScope.onmessage = (event: MessageEvent<DirectWriterRequest>) => {
       payload = new Uint8Array(message.payloadBuffer);
       errorBytes = new Uint8Array(message.errorBuffer);
       ownedPayload = new Uint8Array(payload.byteLength);
+      testFault = message.testFault;
       const writable = await message.handle.createWritable({
         keepExistingData: false,
       });

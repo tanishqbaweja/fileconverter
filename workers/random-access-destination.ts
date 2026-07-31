@@ -1,3 +1,5 @@
+import type { TestFault } from "../lib/conversion-protocol";
+
 export type DestinationWrite =
   | Uint8Array<ArrayBuffer>
   | {
@@ -49,6 +51,7 @@ const DIRECT_COMMAND_TIMEOUT_MS = 120_000;
 
 export async function sharedDirectFileDestination(
   handle: FileSystemFileHandle,
+  testFault?: Exclude<TestFault, "worker-crash">,
 ): Promise<RandomAccessDestination> {
   const controlBuffer = new SharedArrayBuffer(
     DIRECT_WRITER_CONTROL_WORDS * Int32Array.BYTES_PER_ELEMENT,
@@ -82,6 +85,7 @@ export async function sharedDirectFileDestination(
       controlBuffer,
       payloadBuffer,
       errorBuffer,
+      testFault,
     });
   });
   worker.onerror = null;
@@ -112,9 +116,11 @@ export async function sharedDirectFileDestination(
       throw new Error("The selected destination did not finish a write within 120 seconds.");
     }
     const errorLength = Atomics.load(control, DIRECT_ERROR_LENGTH);
+    const errorCopy = new Uint8Array(errorLength);
+    errorCopy.set(errorBytes.subarray(0, errorLength));
     const message =
       result === DIRECT_FAILED
-        ? decoder.decode(errorBytes.subarray(0, errorLength))
+        ? decoder.decode(errorCopy)
         : "";
     Atomics.store(control, DIRECT_STATE, DIRECT_IDLE);
     if (result !== DIRECT_DONE) {
