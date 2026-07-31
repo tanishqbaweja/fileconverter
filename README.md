@@ -353,6 +353,15 @@ they completed in 2,682.0–2,687.1 seconds, passed full native decode as VP8,
 and produced a midpoint SSIM of 0.967634. A fixed 120-second benchmark improved
 from 122.48 seconds on the old single-thread artifact to 26.29–27.44 seconds on
 the final four-thread artifact while remaining below the same memory ceiling.
+On the same controlled fixture, five codec threads took 26.608 seconds versus
+26.820 seconds for four (a noise-level 0.8% change), while six took 26.769
+seconds and produced a 267.3 MiB process-tree sample. Higher realtime
+`cpu-used` values and fast-bilinear scaling produced byte-identical output with
+no meaningful gain. The production core therefore keeps the faster proven
+four-thread topology instead of adding workers or weakening quality for a
+placebo improvement.
+`npm run clean:benchmark-artifacts` removes that fixed project-local 120-second
+fixture and its Chrome profile without deleting the compact measurements.
 Native `ffprobe` validates structure and metadata; native FFmpeg traverses every
 selected output packet. JSON, CSV, and HTML reports remain under the ignored
 `outputs/reports/` folder. Multi-gigabyte output files and Chrome profiles are

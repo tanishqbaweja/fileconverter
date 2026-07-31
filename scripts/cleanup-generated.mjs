@@ -38,6 +38,11 @@ const cancellationFixture = path.resolve(
   workRoot,
   "cancellation-source.ndjson",
 );
+const webmBenchmarkFixture = path.resolve(
+  stressFixturesRoot,
+  "media",
+  "webm-benchmark-120s.mkv",
+);
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const detachedProfileLogs = [
   path.resolve(workRoot, "webm-profile-run.stdout.log"),
@@ -75,6 +80,7 @@ const generatedStressNames = new Set(["records-128m.json"]);
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
+assertInside(stressFixturesRoot, webmBenchmarkFixture);
 for (const logPath of detachedProfileLogs) assertInside(workRoot, logPath);
 assertInside(disposableOutputRoot, playwrightOutputRoot);
 assertInside(workRoot, playwrightImageProfileRoot);
@@ -95,6 +101,13 @@ if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(browserMediaSmokeRoot);
   await rm(cancellationFixture, { force: true });
   process.stdout.write("Disposable browser test artifacts removed.\n");
+  process.exit(0);
+}
+
+if (process.argv.includes("--benchmark-artifacts-only")) {
+  await removeWithRetries(profileRoot);
+  await rm(webmBenchmarkFixture, { force: true });
+  process.stdout.write("Disposable benchmark fixture and browser profile removed.\n");
   process.exit(0);
 }
 
