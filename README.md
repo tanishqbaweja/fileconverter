@@ -301,6 +301,7 @@ Current exact-build results:
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
+| MKV → MP4, asynchronous direct handle | 1 | 2,958,573,265 B | 2,962,151,522 B | 230.4 MiB | 52.6 MiB | 16.5 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
@@ -324,6 +325,9 @@ profiler:
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`
 and completed in 9.3–16.2 seconds with the compatibility-gated Wasm build.
+The asynchronous direct-handle run produced the same byte-identical hash in
+35.4 seconds with one 256 KiB write in flight; its report records
+`destinationMode: "direct-handle"` separately from synchronous OPFS evidence.
 The three M4A outputs shared SHA-256
 `334d44f28c7eefc4c2393b32db991c886c32444254868b1e4c602252f40f8a38`.
 The three WAV outputs shared SHA-256
@@ -353,6 +357,16 @@ Run a three-pass real-fixture profile:
 ```powershell
 $env:WITHIN_RUN_COUNT = "3"
 npm run profile:memory -- test.mkv mkv-to-mp4 fixtures/media/test-mkv.manifest.json
+```
+
+Profile the normal asynchronous destination-handle adapter without creating a
+second multi-gigabyte validation copy outside the project-local Chrome profile:
+
+```powershell
+$env:WITHIN_DESTINATION_MODE = "direct-handle"
+$env:WITHIN_RUN_COUNT = "1"
+npm run profile:memory -- test.mkv mkv-to-mp4 fixtures/media/test-mkv.manifest.json
+Remove-Item Env:WITHIN_DESTINATION_MODE,Env:WITHIN_RUN_COUNT
 ```
 
 Create and profile a valid 10 GiB scale fixture, then remove it after its report:

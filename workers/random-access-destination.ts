@@ -22,6 +22,47 @@ export interface RandomAccessDestination {
 const SYNC_FLUSH_INTERVAL_BYTES = 8 * 1024 * 1024;
 const SYNC_REOPEN_INTERVAL_BYTES = 128 * 1024 * 1024;
 
+export function asynchronousFileStreamDestination(
+  writable: FileSystemWritableFileStream,
+  onAbort?: () => Promise<void>,
+): RandomAccessDestination {
+  let position = 0;
+  let closed = false;
+
+  return {
+    requiresOwnedWriteBuffer: true,
+    async write(operation) {
+      const source = operation instanceof Uint8Array ? operation : operation.data;
+      const at =
+        operation instanceof Uint8Array
+          ? position
+          : (operation.position ?? position);
+      if (at === position) {
+        await writable.write(source);
+      } else {
+        await writable.write({ type: "write", position: at, data: source });
+      }
+      position = at + source.byteLength;
+    },
+    async truncate(size) {
+      await writable.truncate(size);
+      if (position > size) position = size;
+    },
+    async close() {
+      await writable.close();
+      closed = true;
+    },
+    async abort(reason) {
+      try {
+        if (!closed) await writable.abort(reason).catch(() => {});
+      } finally {
+        closed = true;
+        await onAbort?.();
+      }
+    },
+  };
+}
+
 export function syncOpfsDestination(
   initialAccess: FileSystemSyncAccessHandle,
   fileHandle: FileSystemFileHandle,

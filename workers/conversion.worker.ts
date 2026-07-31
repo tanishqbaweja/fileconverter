@@ -10,6 +10,7 @@ import { runZipArchiveConversion } from "./archive-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runMediaRemux } from "./media-remux";
 import {
+  asynchronousFileStreamDestination,
   syncOpfsDestination,
   type RandomAccessDestination,
 } from "./random-access-destination";
@@ -148,9 +149,7 @@ async function openDestination(
       keepExistingData: false,
     });
     await writable.truncate(0);
-    const direct = writable as unknown as RandomAccessDestination;
-    direct.requiresOwnedWriteBuffer = true;
-    return { writable: direct };
+    return { writable: asynchronousFileStreamDestination(writable) };
   }
 
   const root = await withTimeout(
@@ -174,33 +173,10 @@ async function openDestination(
   }
   const writable = await handle.createWritable({ keepExistingData: false });
   await writable.truncate(0);
-  let closed = false;
-  const asynchronous: RandomAccessDestination = {
-    requiresOwnedWriteBuffer: true,
-    async write(operation) {
-      await writable.write(
-        operation as unknown as FileSystemWriteChunkType,
-      );
-    },
-    async truncate(size) {
-      await writable.truncate(size);
-    },
-    async close() {
-      await writable.close();
-      closed = true;
-    },
-    async abort(reason) {
-      try {
-        if (!closed) {
-          await writable.abort(reason).catch(() => {});
-        }
-      } finally {
-        await root.removeEntry(destination.name).catch(() => {});
-      }
-    },
-  };
   return {
-    writable: asynchronous,
+    writable: asynchronousFileStreamDestination(writable, async () => {
+      await root.removeEntry(destination.name).catch(() => {});
+    }),
     opfsName: destination.name,
   };
 }

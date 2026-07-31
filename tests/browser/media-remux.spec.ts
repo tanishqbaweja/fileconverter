@@ -451,6 +451,9 @@ test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-sav
       .selectOption("mkv-to-mp4");
     await page.locator('[data-testid="convert-button"]').click();
     await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 15_000 })
+      .not.toBe("idle");
+    await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
       .not.toBe("running");
 

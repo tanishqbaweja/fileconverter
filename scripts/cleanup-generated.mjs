@@ -212,6 +212,10 @@ async function pruneSupersededReports(directory) {
               : "unknown";
         reports.push({
           profileId,
+          destinationMode:
+            typeof report.destinationMode === "string"
+              ? report.destinationMode
+              : "sync-opfs",
           outcome,
           generatedAt:
             Date.parse(report.generatedAt ?? "") ||
@@ -229,7 +233,7 @@ async function pruneSupersededReports(directory) {
 
   const byProfile = new Map();
   for (const report of reports) {
-    const key = `${report.profileId}:${report.outcome}`;
+    const key = `${report.profileId}:${report.destinationMode}:${report.outcome}`;
     const current = byProfile.get(key) ?? [];
     current.push(report);
     byProfile.set(key, current);

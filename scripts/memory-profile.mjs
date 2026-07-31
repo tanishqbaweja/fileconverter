@@ -111,6 +111,15 @@ const runCount = Number.parseInt(process.env.WITHIN_RUN_COUNT ?? "3", 10);
 if (!Number.isInteger(runCount) || runCount < 1 || runCount > 10) {
   throw new Error(`Invalid WITHIN_RUN_COUNT: ${process.env.WITHIN_RUN_COUNT}`);
 }
+const destinationMode = process.env.WITHIN_DESTINATION_MODE ?? "sync-opfs";
+if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
+  throw new Error(
+    `Invalid WITHIN_DESTINATION_MODE: ${process.env.WITHIN_DESTINATION_MODE}`,
+  );
+}
+const testUrl = `${serverUrl}/?test=1${
+  destinationMode === "direct-handle" ? "&directory=1" : ""
+}`;
 
 assertInside(workRoot, profileRoot);
 assertInside(path.resolve(projectRoot, "outputs"), reportRoot);
@@ -214,7 +223,7 @@ try {
     throw new Error("Blank Chromium private-memory baseline is unavailable.");
   }
 
-  await page.goto(`${serverUrl}/?test=1`);
+  await page.goto(testUrl);
   await page.getByRole("heading", { name: "Big files. Small memory." }).waitFor();
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -233,7 +242,7 @@ try {
     activeRun = run;
     const validationHash = createHash("sha256");
     let validationBytes = 0;
-    await page.goto(`${serverUrl}/?test=1`);
+    await page.goto(testUrl);
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
@@ -242,6 +251,9 @@ try {
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
     await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().jobState !== "idle",
+    );
 
     let peakPrivateBytes = null;
     let peakRssBytes = null;
@@ -274,7 +286,15 @@ try {
       await delay(sampleIntervalMs);
     }
 
-    if (!finalState || finalState.jobState !== "complete" || !finalState.opfsName) {
+    const outputStorageName =
+      destinationMode === "direct-handle"
+        ? finalState?.batchOutputNames?.[0]
+        : finalState?.opfsName;
+    if (
+      !finalState ||
+      finalState.jobState !== "complete" ||
+      !outputStorageName
+    ) {
       throw new Error(
         `Conversion run ${run} failed: ${finalState?.error ?? finalState?.phase ?? "unknown"}`,
       );
@@ -357,7 +377,7 @@ try {
             await window.__withinValidationChunk(btoa(binary));
           }
         }
-      }, { opfsName: finalState.opfsName, profileId });
+      }, { opfsName: outputStorageName, profileId });
       await validationPage.close();
       if (
         validationBytes !== expectedValidationBytes ||
@@ -375,7 +395,7 @@ try {
     await cleanupPage.evaluate(async (opfsName) => {
       const root = await navigator.storage.getDirectory();
       await root.removeEntry(opfsName);
-    }, finalState.opfsName);
+    }, outputStorageName);
     await cleanupPage.close();
 
     await delay(3_000);
@@ -467,6 +487,7 @@ try {
     },
     source: fixtureManifest,
     profileId,
+    destinationMode,
     formula:
       "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     blankBaseline: blankStable,
@@ -514,6 +535,7 @@ try {
       await writeFailureReports({
         generatedAt: new Date().toISOString(),
         profileId,
+        destinationMode,
         source: fixtureManifest,
         formula:
           "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
@@ -1314,9 +1336,11 @@ $result | ConvertTo-Json -Compress
 
 async function writeFailureReports(report) {
   const stamp = report.generatedAt.replace(/[:.]/g, "-");
+  const destinationSuffix =
+    report.destinationMode === "direct-handle" ? "-direct-handle" : "";
   const base = path.join(
     reportRoot,
-    `${stamp}-${report.profileId}-stress-failure`,
+    `${stamp}-${report.profileId}${destinationSuffix}-stress-failure`,
   );
   await writeFile(`${base}.json`, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   const csvRows = [
@@ -1369,7 +1393,12 @@ async function writeFailureReports(report) {
 
 async function writeReports(report) {
   const stamp = report.generatedAt.replace(/[:.]/g, "-");
-  const base = path.join(reportRoot, `${stamp}-${report.profileId}-stress`);
+  const destinationSuffix =
+    report.destinationMode === "direct-handle" ? "-direct-handle" : "";
+  const base = path.join(
+    reportRoot,
+    `${stamp}-${report.profileId}${destinationSuffix}-stress`,
+  );
   await writeFile(`${base}.json`, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   const csvRows = [
     [
