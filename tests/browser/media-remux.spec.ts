@@ -524,39 +524,52 @@ test("browser FFmpeg rejects corrupt MKV and removes its partial output", async 
     .toBe("ready");
 });
 
-test("browser planner rejects a codec combination that MP4 cannot stream-copy", async () => {
-  await page.goto("/?test=1");
-  await page.waitForFunction(
-    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
-  );
-  await page
-    .locator('[data-testid="file-input"]')
-    .setInputFiles(incompatibleFixturePath);
-  await page
-    .locator('[data-testid="format-select"]')
-    .selectOption("mkv-to-mp4");
-  await page.locator('[data-testid="convert-button"]').click();
-  await expect
-    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-    .toBe("error");
-  const failed = await currentState();
-  expect(failed.error).toContain(
-    "MKV-to-MP4 lossless stream copy accepts AAC audio",
-  );
-  expect(failed.opfsName).toBeNull();
-  const leftovers = await page.evaluate(async () => {
-    const root = await navigator.storage.getDirectory();
-    const names: string[] = [];
-    for await (const [name] of root.entries()) {
-      if (name.startsWith("within-test-mkv-to-mp4")) names.push(name);
-    }
-    return names;
+for (const route of [
+  {
+    profileId: "mkv-to-mp4",
+    title: "MP4",
+    expectedError: "MKV-to-MP4 lossless stream copy accepts AAC audio",
+  },
+  {
+    profileId: "mkv-to-m4a",
+    title: "M4A",
+    expectedError: "MKV-to-M4A lossless stream copy accepts AAC audio",
+  },
+] as const) {
+  test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(incompatibleFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(route.profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const failed = await currentState();
+    expect(failed.error).toContain(route.expectedError);
+    expect(failed.opfsName).toBeNull();
+    const leftovers = await page.evaluate(async (profileId) => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith(`within-test-${profileId}`)) names.push(name);
+      }
+      return names;
+    }, route.profileId);
+    expect(leftovers).toEqual([]);
+    await expect
+      .poll(async () => (await currentState()).workerStatus, {
+        timeout: 15_000,
+      })
+      .toBe("ready");
   });
-  expect(leftovers).toEqual([]);
-  await expect
-    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
-    .toBe("ready");
-});
+}
 
 test("browser FFmpeg AVIO extracts MKV audio to valid M4A with bounded I/O", async () => {
   await runMediaRoute("mkv-to-m4a", m4aOutputPath, ["aac"], 20_000);
