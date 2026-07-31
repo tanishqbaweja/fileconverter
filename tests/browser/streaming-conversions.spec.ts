@@ -773,6 +773,63 @@ test("cancels a large streaming conversion and deletes its partial output", asyn
   expect(leftovers).toEqual([]);
 });
 
+test("cancels a direct-save conversion, releases its lock, and deletes the partial file", async () => {
+  const outputName = "cancellation-source.json";
+  await page.goto("/?test=1&directory=1");
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+  await removeOpfsEntryAndReportSize(outputName);
+
+  try {
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(cancellationFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("ndjson-to-json");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => {
+        const state = await currentState();
+        return state.jobState === "running"
+          ? (state.metrics?.outputBytes ?? 0)
+          : -1;
+      }, { timeout: 30_000 })
+      .toBeGreaterThan(1024 * 1024);
+
+    await page.getByRole("button", { name: "Cancel safely" }).click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("cancelled");
+
+    const state = await currentState();
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.outputBytes).toBeGreaterThan(1024 * 1024);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(await removeOpfsEntryAndReportSize(outputName)).toBe(0);
+
+    const lockReleased = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName, { create: true });
+      const writable = await handle.createWritable({ keepExistingData: false });
+      await writable.close();
+      await root.removeEntry(entryName);
+      return true;
+    }, outputName);
+    expect(lockReleased).toBe(true);
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+  } finally {
+    await removeOpfsEntryAndReportSize(outputName);
+  }
+});
+
 test("compresses a file with browser GZIP and verifies it in-browser", async () => {
   await selectFixture("fixtures/data/sample.csv", "gzip-compress");
   const state = await convert();

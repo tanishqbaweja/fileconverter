@@ -109,6 +109,10 @@ crash, verifies that a fresh conversion worker becomes ready.
 Direct-handle faults are raised inside the destination worker after the bounded
 write, then cross the 4 KiB shared error channel so writer-thread DOMException
 names and messages cannot be hidden by a secondary shared-buffer decode error.
+Cancellation is also exercised through the direct-save worker after more than
+1 MiB of output has been written. The test verifies that abort discards the
+transaction, leaves a zero-byte test entry, releases the destination lock,
+restarts the conversion worker, and explicitly deletes the entry.
 
 Files with the same detected input format can be selected as a batch. The user
 chooses one destination folder, existing names are never overwritten, and files
