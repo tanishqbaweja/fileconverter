@@ -30,6 +30,7 @@ interface BrowserCapabilities {
   wasm: boolean;
   workers: boolean;
   fileSystemAccess: boolean;
+  directoryAccess: boolean;
   opfs: boolean;
   compression: boolean;
   sharedArrayBuffer: boolean;
@@ -56,8 +57,26 @@ interface TestBridge {
     warnings: string[];
     selectedProfileId: string | null;
     opfsName: string | null;
+    opfsNames: string[];
+    batchOutputNames: string[];
+    batchCompleted: number;
+    batchTotal: number;
     workerStatus: "starting" | "ready" | "error";
   };
+}
+
+interface ActiveBatch {
+  files: File[];
+  profile: ConversionProfile;
+  outputNames: string[];
+  destinationHandle: FileSystemFileHandle | null;
+  destinationDirectoryHandle: FileSystemDirectoryHandle | null;
+  testMode: boolean;
+  testDirectoryMode: boolean;
+  testFault?: TestFault;
+  runId: string;
+  index: number;
+  opfsNames: string[];
 }
 
 declare global {
@@ -129,6 +148,54 @@ function outputName(file: File, profile: ConversionProfile): string {
   return `${file.name.replace(/\.[^.]+$/, "")}.${extension}`;
 }
 
+function numberedOutputName(name: string, number: number): string {
+  const dot = name.lastIndexOf(".");
+  return dot > 0
+    ? `${name.slice(0, dot)}-${number}${name.slice(dot)}`
+    : `${name}-${number}`;
+}
+
+function batchOutputNames(
+  files: readonly File[],
+  profile: ConversionProfile,
+): string[] {
+  const used = new Set<string>();
+  return files.map((file) => {
+    const initial = outputName(file, profile);
+    let candidate = initial;
+    let suffix = 2;
+    while (used.has(candidate.toLowerCase())) {
+      candidate = numberedOutputName(initial, suffix);
+      suffix += 1;
+    }
+    used.add(candidate.toLowerCase());
+    return candidate;
+  });
+}
+
+async function unusedFileHandle(
+  directory: FileSystemDirectoryHandle,
+  initialName: string,
+): Promise<{ handle: FileSystemFileHandle; name: string }> {
+  let candidate = initialName;
+  let suffix = 2;
+  for (;;) {
+    try {
+      await directory.getFileHandle(candidate);
+      candidate = numberedOutputName(initialName, suffix);
+      suffix += 1;
+    } catch (error) {
+      if (!(error instanceof DOMException) || error.name !== "NotFoundError") {
+        throw error;
+      }
+      return {
+        handle: await directory.getFileHandle(candidate, { create: true }),
+        name: candidate,
+      };
+    }
+  }
+}
+
 function outputPickerTypes(profile: ConversionProfile): FilePickerAcceptType[] {
   const format = formatById(profile.output);
   if (!format) return [];
@@ -160,6 +227,7 @@ function capabilitySnapshot(): BrowserCapabilities {
     wasm: typeof WebAssembly === "object",
     workers: typeof Worker === "function",
     fileSystemAccess: typeof window.showSaveFilePicker === "function",
+    directoryAccess: typeof window.showDirectoryPicker === "function",
     opfs: typeof navigator.storage?.getDirectory === "function",
     compression:
       typeof CompressionStream === "function" &&
@@ -174,10 +242,13 @@ function capabilitySnapshot(): BrowserCapabilities {
 
 export function ConverterApp() {
   const [file, setFile] = useState<File | null>(null);
+  const [batchFiles, setBatchFiles] = useState<File[]>([]);
   const [inputFormat, setInputFormat] = useState("binary");
   const [profileId, setProfileId] = useState<string | null>(null);
   const [destinationHandle, setDestinationHandle] =
     useState<FileSystemFileHandle | null>(null);
+  const [destinationDirectoryHandle, setDestinationDirectoryHandle] =
+    useState<FileSystemDirectoryHandle | null>(null);
   const [jobState, setJobState] = useState<JobState>("idle");
   const [phase, setPhase] = useState("Ready");
   const [metrics, setMetrics] = useState<ConversionMetrics | null>(null);
@@ -189,6 +260,11 @@ export function ConverterApp() {
   const [jsHeap, setJsHeap] = useState<number | null>(null);
   const [peakJsHeap, setPeakJsHeap] = useState<number | null>(null);
   const [opfsName, setOpfsName] = useState<string | null>(null);
+  const [opfsNames, setOpfsNames] = useState<string[]>([]);
+  const [completedBatchOutputNames, setCompletedBatchOutputNames] = useState<
+    string[]
+  >([]);
+  const [batchCompleted, setBatchCompleted] = useState(0);
   const [storageUsage, setStorageUsage] = useState<number | null>(null);
   const [storageQuota, setStorageQuota] = useState<number | null>(null);
   const [cleanupMessage, setCleanupMessage] = useState(
@@ -199,6 +275,10 @@ export function ConverterApp() {
   const workerRef = useRef<Worker | null>(null);
   const jobIdRef = useRef<string | null>(null);
   const activeOpfsNameRef = useRef<string | null>(null);
+  const activeBatchRef = useRef<ActiveBatch | null>(null);
+  const beginBatchItemRef = useRef<
+    ((worker: Worker, batch: ActiveBatch, index: number) => Promise<void>) | null
+  >(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const testMode =
     typeof window !== "undefined" &&
@@ -214,6 +294,9 @@ export function ConverterApp() {
     testMode && TEST_FAULTS.has(requestedTestFault as TestFault)
       ? (requestedTestFault as TestFault)
       : undefined;
+  const testDirectoryMode =
+    testMode &&
+    new URLSearchParams(window.location.search).get("directory") === "1";
 
   const profiles = useMemo(
     () => publicProfilesFor(inputFormat, testMode),
@@ -230,6 +313,65 @@ export function ConverterApp() {
     const capabilityFrame = window.requestAnimationFrame(() => {
       setCapabilities(capabilitySnapshot());
     });
+
+    const beginBatchItem = async (
+      worker: Worker,
+      batch: ActiveBatch,
+      index: number,
+    ) => {
+      const nextFile = batch.files[index];
+      if (!nextFile) throw new Error("The next batch file is unavailable.");
+      batch.index = index;
+      setFile(nextFile);
+      setBatchCompleted(index);
+      setJobState("running");
+      setPhase(
+        batch.files.length > 1
+          ? `Opening destination ${index + 1} of ${batch.files.length}`
+          : "Opening destination",
+      );
+      setMetrics({ ...EMPTY_METRICS });
+      setError(null);
+      setPeakJsHeap(null);
+      setOpfsName(null);
+
+      let destination:
+        | { mode: "handle"; handle: FileSystemFileHandle }
+        | { mode: "opfs-test"; name: string };
+      if (batch.testMode && !batch.testDirectoryMode) {
+        destination = {
+          mode: "opfs-test",
+          name: `within-test-${batch.profile.id}-${batch.runId}-${index + 1}`,
+        };
+        activeOpfsNameRef.current = destination.name;
+      } else if (batch.files.length === 1 && batch.destinationHandle) {
+        destination = { mode: "handle", handle: batch.destinationHandle };
+        activeOpfsNameRef.current = null;
+      } else if (batch.destinationDirectoryHandle) {
+        const available = await unusedFileHandle(
+          batch.destinationDirectoryHandle,
+          batch.outputNames[index],
+        );
+        batch.outputNames[index] = available.name;
+        destination = { mode: "handle", handle: available.handle };
+        activeOpfsNameRef.current = null;
+      } else {
+        throw new Error("Choose a destination folder for this batch first.");
+      }
+
+      const jobId = crypto.randomUUID();
+      jobIdRef.current = jobId;
+      const request: WorkerRequest = {
+        type: "start",
+        jobId,
+        profileId: batch.profile.id,
+        file: nextFile,
+        destination,
+        testFault: batch.testFault,
+      };
+      worker.postMessage(request);
+    };
+    beginBatchItemRef.current = beginBatchItem;
 
     const replaceWorker = (
       retired: Worker,
@@ -269,23 +411,70 @@ export function ConverterApp() {
           setPhase(message.phase);
           setMetrics(message.metrics);
         } else if (message.type === "warning") {
-          setWarnings((current) => [...current.slice(-7), message.message]);
+          const batch = activeBatchRef.current;
+          const warning =
+            batch && batch.files.length > 1
+              ? `${batch.files[batch.index]?.name ?? `File ${batch.index + 1}`}: ${message.message}`
+              : message.message;
+          setWarnings((current) => [...current.slice(-7), warning]);
         } else if (message.type === "complete") {
+          const batch = activeBatchRef.current;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
           setMetrics(message.metrics);
-          setOpfsName(message.opfsName ?? null);
-          setPhase("Saved");
-          setJobState("complete");
-          replaceWorker(worker);
+          if (batch) {
+            if (message.opfsName) batch.opfsNames.push(message.opfsName);
+            setOpfsNames([...batch.opfsNames]);
+            const nextIndex = batch.index + 1;
+            if (nextIndex < batch.files.length) {
+              setBatchCompleted(nextIndex);
+              setPhase(`Saved ${nextIndex} of ${batch.files.length}`);
+              void beginBatchItem(worker, batch, nextIndex).catch((error) => {
+                const staleOpfsName = activeOpfsNameRef.current;
+                activeBatchRef.current = null;
+                activeOpfsNameRef.current = null;
+                jobIdRef.current = null;
+                setError(error instanceof Error ? error.message : String(error));
+                setPhase("Batch stopped safely");
+                setJobState("error");
+                replaceWorker(worker, staleOpfsName);
+              });
+              return;
+            }
+            activeBatchRef.current = null;
+            setBatchCompleted(batch.files.length);
+            setCompletedBatchOutputNames([...batch.outputNames]);
+            setOpfsName(
+              batch.files.length === 1 ? (message.opfsName ?? null) : null,
+            );
+            setPhase(
+              batch.files.length === 1
+                ? "Saved"
+                : `Saved ${batch.files.length} files`,
+            );
+            setJobState("complete");
+            replaceWorker(worker);
+          } else {
+            setOpfsName(message.opfsName ?? null);
+            setPhase("Saved");
+            setJobState("complete");
+            replaceWorker(worker);
+          }
         } else if (message.type === "cancelled") {
+          const batch = activeBatchRef.current;
+          activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
           setMetrics(message.metrics);
-          setPhase("Cancelled");
+          setPhase(
+            batch && batch.files.length > 1
+              ? `Cancelled after ${batch.index} of ${batch.files.length} files`
+              : "Cancelled",
+          );
           setJobState("cancelled");
           replaceWorker(worker);
         } else {
+          activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
           setMetrics(message.metrics);
@@ -299,6 +488,7 @@ export function ConverterApp() {
         event.preventDefault();
         const failedDuringConversion = jobIdRef.current !== null;
         const staleOpfsName = activeOpfsNameRef.current;
+        activeBatchRef.current = null;
         activeOpfsNameRef.current = null;
         jobIdRef.current = null;
         setWorkerFailed(true);
@@ -317,6 +507,7 @@ export function ConverterApp() {
       };
       worker.onmessageerror = () => {
         const staleOpfsName = activeOpfsNameRef.current;
+        activeBatchRef.current = null;
         activeOpfsNameRef.current = null;
         jobIdRef.current = null;
         setWorkerFailed(true);
@@ -330,6 +521,7 @@ export function ConverterApp() {
     installWorker();
     return () => {
       disposed = true;
+      beginBatchItemRef.current = null;
       window.cancelAnimationFrame(capabilityFrame);
       window.clearTimeout(replacementTimer);
       workerRef.current?.terminate();
@@ -401,6 +593,10 @@ export function ConverterApp() {
         warnings,
         selectedProfileId: profileId,
         opfsName,
+        opfsNames,
+        batchOutputNames: completedBatchOutputNames,
+        batchCompleted,
+        batchTotal: batchFiles.length,
         workerStatus: workerFailed ? "error" : workerReady ? "ready" : "starting",
       }),
     };
@@ -412,23 +608,54 @@ export function ConverterApp() {
     jobState,
     metrics,
     opfsName,
+    opfsNames,
+    completedBatchOutputNames,
     phase,
     profileId,
+    batchCompleted,
+    batchFiles.length,
     testMode,
     warnings,
     workerFailed,
     workerReady,
   ]);
 
-  const acceptFile = useCallback(
-    (nextFile: File) => {
+  const acceptFiles = useCallback(
+    (nextFiles: File[]) => {
       if (jobState === "running") return;
+      const nextFile = nextFiles[0];
+      if (!nextFile) return;
       const detected = detectFormat(nextFile);
+      const mismatched = nextFiles.find(
+        (candidate) => detectFormat(candidate) !== detected,
+      );
+      if (mismatched) {
+        setFile(null);
+        setBatchFiles([]);
+        setInputFormat("binary");
+        setProfileId(null);
+        setDestinationHandle(null);
+        setDestinationDirectoryHandle(null);
+        setJobState("idle");
+        setMetrics(null);
+        setWarnings([]);
+        setOpfsName(null);
+        setOpfsNames([]);
+        setCompletedBatchOutputNames([]);
+        setBatchCompleted(0);
+        setError(
+          `Batch files must share one detected format. ${mismatched.name} does not match ${nextFile.name}.`,
+        );
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       const nextProfiles = publicProfilesFor(detected, testMode);
       setFile(nextFile);
+      setBatchFiles(nextFiles);
       setInputFormat(detected);
       setProfileId(nextProfiles[0]?.id ?? null);
       setDestinationHandle(null);
+      setDestinationDirectoryHandle(null);
       setJobState("idle");
       setPhase("Ready");
       setMetrics(null);
@@ -437,25 +664,40 @@ export function ConverterApp() {
       setJsHeap(null);
       setPeakJsHeap(null);
       setOpfsName(null);
+      setOpfsNames([]);
+      setCompletedBatchOutputNames([]);
+      setBatchCompleted(0);
     },
     [jobState, testMode],
   );
 
   const onFileInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const nextFile = event.target.files?.[0];
-    if (nextFile) acceptFile(nextFile);
+    const nextFiles = Array.from(event.target.files ?? []);
+    if (nextFiles.length) acceptFiles(nextFiles);
   };
 
   const onDrop = (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setDragging(false);
-    const nextFile = event.dataTransfer.files?.[0];
-    if (nextFile) acceptFile(nextFile);
+    const nextFiles = Array.from(event.dataTransfer.files ?? []);
+    if (nextFiles.length) acceptFiles(nextFiles);
   };
 
   const chooseDestination = async () => {
-    if (!file || !selectedProfile || !window.showSaveFilePicker) return;
+    if (!file || !selectedProfile) return;
     try {
+      if (batchFiles.length > 1) {
+        if (!window.showDirectoryPicker) return;
+        const directory = await window.showDirectoryPicker({
+          id: "within-batch-output",
+          mode: "readwrite",
+        });
+        setDestinationDirectoryHandle(directory);
+        setDestinationHandle(null);
+        setError(null);
+        return;
+      }
+      if (!window.showSaveFilePicker) return;
       const handle = await window.showSaveFilePicker({
         suggestedName: outputName(file, selectedProfile),
         types: outputPickerTypes(selectedProfile),
@@ -469,6 +711,7 @@ export function ConverterApp() {
         return;
       }
       setDestinationHandle(handle);
+      setDestinationDirectoryHandle(null);
       setError(null);
     } catch (pickerError) {
       if (
@@ -485,60 +728,69 @@ export function ConverterApp() {
   };
 
   const startConversion = async () => {
-    if (!file || !selectedProfile || !workerRef.current) return;
-    let destination:
-      | { mode: "handle"; handle: FileSystemFileHandle }
-      | { mode: "opfs-test"; name: string };
+    const worker = workerRef.current;
+    if (!file || !selectedProfile || !worker || !beginBatchItemRef.current) return;
+    const files = batchFiles.length ? batchFiles : [file];
 
-    if (testMode) {
-      destination = {
-        mode: "opfs-test",
-        name: `within-test-${selectedProfile.id}-${Date.now()}`,
-      };
-      activeOpfsNameRef.current = destination.name;
-    } else {
-      if (!destinationHandle) {
+    if (!testMode) {
+      if (files.length > 1 && !destinationDirectoryHandle) {
+        setError("Choose a destination folder for this batch first.");
+        return;
+      }
+      if (files.length === 1 && !destinationHandle) {
         setError("Choose where the converted file should be saved first.");
         return;
       }
-      try {
-        if (await destinationMatchesSource(destinationHandle, file)) {
-          setDestinationHandle(null);
+      if (files.length === 1 && destinationHandle) {
+        try {
+          if (await destinationMatchesSource(destinationHandle, file)) {
+            setDestinationHandle(null);
+            setError(
+              "The destination now matches the source file. Choose a different destination before converting.",
+            );
+            return;
+          }
+        } catch (destinationError) {
           setError(
-            "The destination now matches the source file. Choose a different destination before converting.",
+            destinationError instanceof Error
+              ? `The destination is no longer accessible: ${destinationError.message}`
+              : "The destination is no longer accessible.",
           );
           return;
         }
-      } catch (destinationError) {
-        setError(
-          destinationError instanceof Error
-            ? `The destination is no longer accessible: ${destinationError.message}`
-            : "The destination is no longer accessible.",
-        );
-        return;
       }
-      destination = { mode: "handle", handle: destinationHandle };
-      activeOpfsNameRef.current = null;
     }
 
-    const jobId = crypto.randomUUID();
-    jobIdRef.current = jobId;
-    setJobState("running");
-    setPhase("Opening destination");
-    setMetrics({ ...EMPTY_METRICS });
-    setWarnings([]);
-    setError(null);
-    setPeakJsHeap(null);
-    setOpfsName(null);
-    const request: WorkerRequest = {
-      type: "start",
-      jobId,
-      profileId: selectedProfile.id,
-      file,
-      destination,
+    const batch: ActiveBatch = {
+      files,
+      profile: selectedProfile,
+      outputNames: batchOutputNames(files, selectedProfile),
+      destinationHandle,
+      destinationDirectoryHandle: testDirectoryMode
+        ? await navigator.storage.getDirectory()
+        : destinationDirectoryHandle,
+      testMode,
+      testDirectoryMode,
       testFault,
+      runId: `${Date.now()}-${crypto.randomUUID()}`,
+      index: 0,
+      opfsNames: [],
     };
-    workerRef.current.postMessage(request);
+    activeBatchRef.current = batch;
+    setWarnings([]);
+    setOpfsNames([]);
+    setCompletedBatchOutputNames([...batch.outputNames]);
+    setBatchCompleted(0);
+    try {
+      await beginBatchItemRef.current(worker, batch, 0);
+    } catch (startError) {
+      activeBatchRef.current = null;
+      activeOpfsNameRef.current = null;
+      jobIdRef.current = null;
+      setError(startError instanceof Error ? startError.message : String(startError));
+      setPhase("Batch stopped safely");
+      setJobState("error");
+    }
   };
 
   const cancelConversion = () => {
@@ -552,21 +804,38 @@ export function ConverterApp() {
   const clearFile = () => {
     if (jobState === "running") return;
     setFile(null);
+    setBatchFiles([]);
     setInputFormat("binary");
     setProfileId(null);
     setDestinationHandle(null);
+    setDestinationDirectoryHandle(null);
     setMetrics(null);
     setWarnings([]);
     setError(null);
     setPhase("Ready");
     setOpfsName(null);
+    setOpfsNames([]);
+    setCompletedBatchOutputNames([]);
+    setBatchCompleted(0);
     setJobState("idle");
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
-  const progress = file
+  const currentFileProgress = file
     ? Math.min(100, ((metrics?.inputBytes ?? 0) / Math.max(1, file.size)) * 100)
     : 0;
+  const progress =
+    batchFiles.length > 1
+      ? Math.min(
+          100,
+          ((batchCompleted + currentFileProgress / 100) / batchFiles.length) *
+            100,
+        )
+      : currentFileProgress;
+  const totalInputBytes = batchFiles.reduce(
+    (total, candidate) => total + candidate.size,
+    0,
+  );
   const throughput =
     metrics && metrics.elapsedMs > 0
       ? metrics.inputBytes / (metrics.elapsedMs / 1000)
@@ -598,12 +867,20 @@ export function ConverterApp() {
     (!compressionProfile || capabilities.compression) &&
     (!imageProfile ||
       (capabilities.imageDecoder && capabilities.offscreenCanvas)) &&
-    (testMode || capabilities.fileSystemAccess);
+    (testMode ||
+      (batchFiles.length > 1
+        ? capabilities.directoryAccess
+        : capabilities.fileSystemAccess));
 
   const capabilityItems: [string, boolean][] = capabilities
     ? [
         ["Private context", capabilities.secure],
-        ["Direct save", capabilities.fileSystemAccess],
+        [
+          "Direct save",
+          batchFiles.length > 1
+            ? capabilities.directoryAccess
+            : capabilities.fileSystemAccess,
+        ],
         ["Workers", capabilities.workers],
         ["Wasm", capabilities.wasm],
         ["Shared buffers", capabilities.sharedArrayBuffer],
@@ -681,19 +958,30 @@ export function ConverterApp() {
               data-testid="file-input"
               id="file-input"
               type="file"
+              multiple
               onChange={onFileInput}
               disabled={jobState === "running"}
             />
             {file ? (
               <div className="selected-file">
                 <div className="file-glyph" aria-hidden="true">
-                  {file.name.split(".").pop()?.slice(0, 4).toUpperCase() || "FILE"}
+                  {batchFiles.length > 1
+                    ? "BATCH"
+                    : file.name.split(".").pop()?.slice(0, 4).toUpperCase() ||
+                      "FILE"}
                 </div>
                 <div className="file-copy">
-                  <strong>{file.name}</strong>
+                  <strong>
+                    {file.name}
+                    {batchFiles.length > 1
+                      ? ` + ${batchFiles.length - 1} more`
+                      : ""}
+                  </strong>
                   <span>
                     {formatById(inputFormat)?.label ?? "Unknown format"} ·{" "}
-                    {formatBytes(file.size)}
+                    {formatBytes(
+                      batchFiles.length > 1 ? totalInputBytes : file.size,
+                    )}
                   </span>
                 </div>
                 <button
@@ -710,11 +998,17 @@ export function ConverterApp() {
                 <span className="plus" aria-hidden="true">
                   +
                 </span>
-                <strong>Drop a file here</strong>
-                <span>or choose one from your device</span>
+                <strong>Drop files here</strong>
+                <span>or choose one or more matching files from your device</span>
               </label>
             )}
           </div>
+
+          {error && !file ? (
+            <p className="error" role="alert">
+              {error}
+            </p>
+          ) : null}
 
           {file && profiles.length === 0 ? (
             <div className="honesty-note" role="status">
@@ -737,9 +1031,14 @@ export function ConverterApp() {
                     onChange={(event) => {
                       setProfileId(event.target.value);
                       setDestinationHandle(null);
+                      setDestinationDirectoryHandle(null);
                       setJobState("idle");
                       setMetrics(null);
                       setError(null);
+                      setOpfsName(null);
+                      setOpfsNames([]);
+                      setCompletedBatchOutputNames([]);
+                      setBatchCompleted(0);
                     }}
                     disabled={jobState === "running"}
                   >
@@ -769,18 +1068,29 @@ export function ConverterApp() {
                   onClick={chooseDestination}
                   disabled={
                     jobState === "running" ||
-                    !capabilities?.fileSystemAccess
+                    !(batchFiles.length > 1
+                      ? capabilities?.directoryAccess
+                      : capabilities?.fileSystemAccess)
                   }
                 >
                   <span>
-                    {destinationHandle
-                      ? destinationHandle.name
-                      : "Choose destination file"}
+                    {batchFiles.length > 1
+                      ? destinationDirectoryHandle
+                        ? destinationDirectoryHandle.name
+                        : "Choose destination folder"
+                      : destinationHandle
+                        ? destinationHandle.name
+                        : "Choose destination file"}
                   </span>
                   <span aria-hidden="true">Browse →</span>
                 </button>
               ) : (
-                <div className="test-mode-note">Test output uses isolated browser storage.</div>
+                <div className="test-mode-note">
+                  Test output uses isolated browser storage
+                  {batchFiles.length > 1
+                    ? ` for ${batchFiles.length} sequential files.`
+                    : "."}
+                </div>
               )}
 
               {selectedProfile ? (
@@ -901,11 +1211,20 @@ export function ConverterApp() {
                   onClick={startConversion}
                   disabled={
                     !selectedProfile ||
-                    (!testMode && !destinationHandle) ||
+                    (!testMode &&
+                      (batchFiles.length > 1
+                        ? !destinationDirectoryHandle
+                        : !destinationHandle)) ||
                     !featureReady
                   }
                 >
-                  {jobState === "complete" ? "Convert again" : "Start conversion"}
+                  {jobState === "complete"
+                    ? batchFiles.length > 1
+                      ? "Convert batch again"
+                      : "Convert again"
+                    : batchFiles.length > 1
+                      ? `Convert ${batchFiles.length} files`
+                      : "Start conversion"}
                   <span aria-hidden="true">↗</span>
                 </button>
               )}

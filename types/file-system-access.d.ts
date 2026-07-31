@@ -9,10 +9,19 @@ interface SaveFilePickerOptions {
   excludeAcceptAllOption?: boolean;
 }
 
+interface DirectoryPickerOptions {
+  id?: string;
+  mode?: "read" | "readwrite";
+  startIn?: FileSystemHandle | string;
+}
+
 interface Window {
   showSaveFilePicker?: (
     options?: SaveFilePickerOptions,
   ) => Promise<FileSystemFileHandle>;
+  showDirectoryPicker?: (
+    options?: DirectoryPickerOptions,
+  ) => Promise<FileSystemDirectoryHandle>;
   __withinValidationChunk?: (base64: string) => Promise<void>;
 }
 
@@ -50,6 +59,10 @@ interface FileSystemDirectoryHandle {
   entries(): AsyncIterableIterator<
     [string, FileSystemFileHandle | FileSystemDirectoryHandle]
   >;
+  getFileHandle(
+    name: string,
+    options?: { create?: boolean },
+  ): Promise<FileSystemFileHandle>;
   removeEntry(
     name: string,
     options?: { recursive?: boolean },

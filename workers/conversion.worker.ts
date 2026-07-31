@@ -2636,6 +2636,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     await destination.writable.close();
     updateElapsed(metrics, startedAt);
     emitProgress(jobId, "Complete", metrics, startedAt, true);
+    activeJobId = null;
+    cancelled = false;
     post({
       type: "complete",
       jobId,

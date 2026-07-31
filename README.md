@@ -93,6 +93,13 @@ injection is accepted only by the localhost `?test=1` harness and only for its
 case verifies that the partial app-owned output is removed and, after a crash,
 that a fresh conversion worker becomes ready.
 
+Files with the same detected input format can be selected as a batch. The user
+chooses one destination folder, existing names are never overwritten, and files
+are converted strictly sequentially through the same bounded engine with one
+write in flight; the worker is terminated after the batch. The browser suite
+converts Unicode-named files in one batch, parses both outputs, checks the queue
+limits, and deletes every test-owned copy.
+
 Development conversions, stress fixtures, browser profiles, and validation
 copies stay under this repository's `fixtures/stress/`, `outputs/`, and `work/`
 directories. Each browser smoke test deletes its copied output in teardown, each

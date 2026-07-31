@@ -1,7 +1,7 @@
 import { expect, test, chromium, type BrowserContext, type Page } from "@playwright/test";
 import { createWriteStream, existsSync } from "node:fs";
 import { once } from "node:events";
-import { mkdir, rm } from "node:fs/promises";
+import { mkdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
@@ -14,6 +14,10 @@ const cancellationFixturePath = path.join(
   "work",
   "cancellation-source.ndjson",
 );
+const batchFixturePaths = [
+  path.join(projectRoot, "work", "batch-café.txt"),
+  path.join(projectRoot, "work", "batch-日本語.txt"),
+];
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -44,6 +48,10 @@ interface TestState {
   warnings: string[];
   selectedProfileId: string | null;
   opfsName: string | null;
+  opfsNames: string[];
+  batchOutputNames: string[];
+  batchCompleted: number;
+  batchTotal: number;
   workerStatus: "starting" | "ready" | "error";
 }
 
@@ -117,6 +125,8 @@ test.beforeAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
+  await writeFile(batchFixturePaths[0], "First private batch payload: café.\n", "utf8");
+  await writeFile(batchFixturePaths[1], "Second private batch payload: 日本語.\n", "utf8");
   const cancellationFixture = createWriteStream(cancellationFixturePath, {
     flags: "w",
   });
@@ -173,6 +183,7 @@ test.afterAll(async () => {
   await context?.close();
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
+  await Promise.all(batchFixturePaths.map((fixture) => rm(fixture, { force: true })));
 });
 
 test.beforeEach(async () => {
@@ -285,6 +296,76 @@ test("converts UTF-8 text to safe preformatted HTML", async () => {
   expect(result.text).toBe(
     'Within keeps files on this device.\nSymbols: <private> & "quoted".\nUnicode: हिन्दी, 日本語, café.\n',
   );
+});
+
+test("converts a Unicode-named batch sequentially and cleans every output", async () => {
+  await page.goto("/?test=1&directory=1");
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+  await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const existing = await root.getFileHandle("batch-café.html", { create: true });
+    const writable = await existing.createWritable();
+    await writable.write("existing output must not be overwritten\n");
+    await writable.close();
+  });
+  await page.locator('[data-testid="file-input"]').setInputFiles(batchFixturePaths);
+  await expect(page.locator('[data-testid="format-select"]')).toBeVisible();
+  await page.locator('[data-testid="format-select"]').selectOption("txt-to-html");
+  await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+    /Convert 2 files/,
+  );
+
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 45_000 })
+    .toBe("complete");
+  const state = await currentState();
+  expect(state.batchCompleted).toBe(2);
+  expect(state.batchTotal).toBe(2);
+  expect(state.opfsName).toBeNull();
+  expect(state.opfsNames).toEqual([]);
+  expect(state.batchOutputNames).toEqual([
+    "batch-café-2.html",
+    "batch-日本語.html",
+  ]);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+
+  const outputs = await page.evaluate(async (names) => {
+    const root = await navigator.storage.getDirectory();
+    const texts: string[] = [];
+    for (const name of names) {
+      const handle = await root.getFileHandle(name);
+      texts.push(await (await handle.getFile()).text());
+      await root.removeEntry(name);
+    }
+    const existing = await root.getFileHandle("batch-café.html");
+    const existingText = await (await existing.getFile()).text();
+    await root.removeEntry("batch-café.html");
+    return { texts, existingText };
+  }, state.batchOutputNames);
+  expect(outputs.texts[0]).toContain("First private batch payload: café.");
+  expect(outputs.texts[1]).toContain("Second private batch payload: 日本語.");
+  expect(outputs.existingText).toBe("existing output must not be overwritten\n");
+  expect(await appOwnedOpfsNames("within-test-txt-to-html")).toEqual([]);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+});
+
+test("rejects a mixed-format batch before creating any output", async () => {
+  await page.locator('[data-testid="file-input"]').setInputFiles([
+    path.join(projectRoot, "fixtures/documents/sample.txt"),
+    path.join(projectRoot, "fixtures/data/sample.csv"),
+  ]);
+  await expect(page.getByRole("alert")).toContainText(
+    "Batch files must share one detected format",
+  );
+  expect((await currentState()).batchTotal).toBe(0);
+  await expect(page.locator('[data-testid="format-select"]')).toBeHidden();
+  expect(await appOwnedOpfsNames("within-test-")).toEqual([]);
 });
 
 test("renders a disclosed bounded Markdown subset as valid HTML", async () => {
