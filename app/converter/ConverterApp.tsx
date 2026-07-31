@@ -61,6 +61,7 @@ interface TestBridge {
     batchOutputNames: string[];
     batchCompleted: number;
     batchTotal: number;
+    startupCleanupComplete: boolean;
     workerStatus: "starting" | "ready" | "error";
   };
 }
@@ -270,6 +271,7 @@ export function ConverterApp() {
   const [cleanupMessage, setCleanupMessage] = useState(
     "No app-owned temporary files detected.",
   );
+  const [startupCleanupComplete, setStartupCleanupComplete] = useState(false);
   const [workerReady, setWorkerReady] = useState(false);
   const [workerFailed, setWorkerFailed] = useState(false);
   const workerRef = useRef<Worker | null>(null);
@@ -297,6 +299,9 @@ export function ConverterApp() {
   const testDirectoryMode =
     testMode &&
     new URLSearchParams(window.location.search).get("directory") === "1";
+  const testCleanupMode =
+    testMode &&
+    new URLSearchParams(window.location.search).get("cleanup") === "1";
 
   const profiles = useMemo(
     () => publicProfilesFor(inputFormat, testMode),
@@ -549,8 +554,16 @@ export function ConverterApp() {
   }, [refreshStorageEstimate]);
 
   useEffect(() => {
-    if (testMode) return;
-    void navigator.serviceWorker?.register("/sw.js").catch(() => {});
+    if (testMode && !testCleanupMode) {
+      const skippedCleanupTimer = window.setTimeout(
+        () => setStartupCleanupComplete(true),
+        0,
+      );
+      return () => window.clearTimeout(skippedCleanupTimer);
+    }
+    if (!testMode) {
+      void navigator.serviceWorker?.register("/sw.js").catch(() => {});
+    }
     const cleanupTimer = window.setTimeout(() => {
       void clearAppTemporaryStorage()
         .then((removed) => {
@@ -562,10 +575,11 @@ export function ConverterApp() {
         })
         .catch(() => {
           setCleanupMessage("Temporary storage is unavailable in this browser.");
-        });
+        })
+        .finally(() => setStartupCleanupComplete(true));
     }, 0);
     return () => window.clearTimeout(cleanupTimer);
-  }, [clearAppTemporaryStorage, testMode]);
+  }, [clearAppTemporaryStorage, testCleanupMode, testMode]);
 
   useEffect(() => {
     if (jobState !== "running") return;
@@ -597,6 +611,7 @@ export function ConverterApp() {
         batchOutputNames: completedBatchOutputNames,
         batchCompleted,
         batchTotal: batchFiles.length,
+        startupCleanupComplete,
         workerStatus: workerFailed ? "error" : workerReady ? "ready" : "starting",
       }),
     };
@@ -614,6 +629,7 @@ export function ConverterApp() {
     profileId,
     batchCompleted,
     batchFiles.length,
+    startupCleanupComplete,
     testMode,
     warnings,
     workerFailed,

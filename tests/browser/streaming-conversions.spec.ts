@@ -52,6 +52,7 @@ interface TestState {
   batchOutputNames: string[];
   batchCompleted: number;
   batchTotal: number;
+  startupCleanupComplete: boolean;
   workerStatus: "starting" | "ready" | "error";
 }
 
@@ -629,6 +630,63 @@ test("recovers from a worker crash and removes its abandoned partial output", as
       { timeout: 15_000 },
     )
     .toBe(0);
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+});
+
+test("reload removes an abandoned app-owned output and preserves unrelated storage", async () => {
+  await page.goto("/?test=1&cleanup=1");
+  await expect
+    .poll(async () => (await currentState()).startupCleanupComplete, {
+      timeout: 15_000,
+    })
+    .toBe(true);
+  await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const sentinel = await root.getFileHandle("user-owned-sentinel.txt", {
+      create: true,
+    });
+    const writable = await sentinel.createWritable();
+    await writable.write("preserve me\n");
+    await writable.close();
+  });
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(cancellationFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("ndjson-to-json");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).metrics?.inputBytes ?? 0, {
+      timeout: 30_000,
+    })
+    .toBeGreaterThan(1024 * 1024);
+  await expect
+    .poll(async () => (await appOwnedOpfsNames("within-test-ndjson-to-json")).length)
+    .toBe(1);
+
+  await page.reload({ waitUntil: "domcontentloaded" });
+  await expect
+    .poll(async () => (await currentState()).startupCleanupComplete, {
+      timeout: 15_000,
+    })
+    .toBe(true);
+  await expect
+    .poll(async () => (await appOwnedOpfsNames("within-test-ndjson-to-json")).length, {
+      timeout: 15_000,
+    })
+    .toBe(0);
+  const sentinel = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle("user-owned-sentinel.txt");
+    const text = await (await handle.getFile()).text();
+    await root.removeEntry("user-owned-sentinel.txt");
+    return text;
+  });
+  expect(sentinel).toBe("preserve me\n");
   await expect
     .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
     .toBe("ready");

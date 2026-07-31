@@ -100,6 +100,11 @@ write in flight; the worker is terminated after the batch. The browser suite
 converts Unicode-named files in one batch, parses both outputs, checks the queue
 limits, and deletes every test-owned copy.
 
+An abandonment test reloads the page during a real large streaming conversion.
+The next app start removes the locked job's released `within-*` partial while an
+unrelated browser-storage sentinel remains unchanged, proving cleanup is scoped
+to app-owned entries.
+
 Development conversions, stress fixtures, browser profiles, and validation
 copies stay under this repository's `fixtures/stress/`, `outputs/`, and `work/`
 directories. Each browser smoke test deletes its copied output in teardown, each
