@@ -1,4 +1,4 @@
-const CACHE_NAME = "within-shell-v8";
+const CACHE_NAME = "within-shell-v9";
 const APP_SHELL = [
   "/",
   "/icon.svg",
@@ -6,6 +6,8 @@ const APP_SHELL = [
   "/THIRD_PARTY_NOTICES.txt",
   "/engines/remux/within-remux.mjs",
   "/engines/remux/within-remux.wasm",
+  "/engines/remux/within-mpeg4.mjs",
+  "/engines/remux/within-mpeg4.wasm",
   "/engines/remux/within-webm.mjs",
   "/engines/remux/within-webm.wasm",
 ];

@@ -10,9 +10,15 @@ build_core() {
   local output_name="$1"
   local video_threads="$2"
   local pthread_pool_size="$3"
+  local threaded_mpeg4="${4:-0}"
+  local profile_defines=()
+  if [[ "${threaded_mpeg4}" == "1" ]]; then
+    profile_defines+=("-DWITHIN_MPEG4_THREADED=1")
+  fi
 
   emcc /src/within_remux.c \
     -DWITHIN_VIDEO_THREADS="${video_threads}" \
+    "${profile_defines[@]}" \
     -I"${PREFIX}/include" \
     "${PREFIX}/lib/libavformat.a" \
     "${PREFIX}/lib/libavcodec.a" \
@@ -48,8 +54,9 @@ build_core() {
     -o "${OUTPUT}/${output_name}.mjs"
 }
 
-build_core within-remux 1 0
-build_core within-webm 4 8
+build_core within-remux 1 0 0
+build_core within-mpeg4 2 4 1
+build_core within-webm 4 8 0
 
 cat > "${OUTPUT}/build-manifest.json" <<EOF
 {
@@ -63,8 +70,9 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1},
-    {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4}
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio"]},
+    {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4"]},
+    {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm"]}
   ],
   "wasmSimd": true,
   "avioInputBufferBytes": 262144,

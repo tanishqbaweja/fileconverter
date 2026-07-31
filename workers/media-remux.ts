@@ -3,9 +3,13 @@ import type { RandomAccessDestination } from "./random-access-destination";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
-const WEBM_MODULE_URL = "/engines/remux/within-webm.mjs";
-const WEBM_WASM_URL = "/engines/remux/within-webm.wasm";
+const MPEG4_MODULE_URL = "/engines/remux/within-mpeg4.mjs";
+const MPEG4_WASM_URL = "/engines/remux/within-mpeg4.wasm";
+const THREADED_VIDEO_MODULE_URL = "/engines/remux/within-webm.mjs";
+const THREADED_VIDEO_WASM_URL = "/engines/remux/within-webm.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
+const MPEG4_WORKER_POOL_SIZE = 4;
+const WEBM_WORKER_POOL_SIZE = 8;
 const MAX_ENGINE_ERRORS = 32;
 const MAX_ENGINE_ERROR_CHARS = 512;
 const ROTATE_REQUIRED = -4096;
@@ -111,7 +115,16 @@ export async function runMediaRemux({
   let inputReader: ReadableStreamBYOBReader | null = null;
   let inputReaderPosition = -1;
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
-  metrics.activeWorkerCount = 1 + (writable.additionalWorkerCount ?? 0);
+  const threadedWorkerPoolSize =
+    remuxProfile === 4
+      ? MPEG4_WORKER_POOL_SIZE
+      : remuxProfile === 5
+        ? WEBM_WORKER_POOL_SIZE
+        : 0;
+  metrics.activeWorkerCount =
+    1 +
+    threadedWorkerPoolSize +
+    (writable.additionalWorkerCount ?? 0);
   const writerSharedBytes = writable.sharedBufferBytes ?? 0;
   metrics.sharedArrayBufferBytes = writerSharedBytes;
 
@@ -303,8 +316,18 @@ export async function runMediaRemux({
     },
   };
 
-  const moduleUrl = remuxProfile === 5 ? WEBM_MODULE_URL : REMUX_MODULE_URL;
-  const wasmUrl = remuxProfile === 5 ? WEBM_WASM_URL : REMUX_WASM_URL;
+  const moduleUrl =
+    remuxProfile === 4
+      ? MPEG4_MODULE_URL
+      : remuxProfile === 5
+        ? THREADED_VIDEO_MODULE_URL
+        : REMUX_MODULE_URL;
+  const wasmUrl =
+    remuxProfile === 4
+      ? MPEG4_WASM_URL
+      : remuxProfile === 5
+        ? THREADED_VIDEO_WASM_URL
+        : REMUX_WASM_URL;
   const imported = (await import(
     /* @vite-ignore */ moduleUrl
   )) as { default: RemuxModuleFactory };

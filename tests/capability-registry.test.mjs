@@ -63,11 +63,19 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-remux",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
+      profiles: ["stream-copy", "audio"],
+    },
+    {
+      name: "within-mpeg4",
+      wasmPthreadPoolSize: 4,
+      videoCodecThreads: 2,
+      profiles: ["mkv-to-mp4-mpeg4"],
     },
     {
       name: "within-webm",
       wasmPthreadPoolSize: 8,
       videoCodecThreads: 4,
+      profiles: ["mkv-to-webm"],
     },
   ]);
 });
@@ -95,5 +103,10 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.ok(
     publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-wav"),
+  );
+  assert.ok(
+    publicProfilesFor("mkv").some(
+      (profile) => profile.id === "mkv-to-mp4-mpeg4",
+    ),
   );
 });

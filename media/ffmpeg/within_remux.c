@@ -1071,8 +1071,13 @@ static int within_video_reencode(int webm) {
     goto cleanup;
   }
   decoder->pkt_timebase = input_stream->time_base;
+#if defined(WITHIN_MPEG4_THREADED)
+  decoder->thread_count = WITHIN_VIDEO_THREADS;
+  if (WITHIN_VIDEO_THREADS > 1) {
+#else
   decoder->thread_count = webm ? WITHIN_VIDEO_THREADS : 1;
   if (webm && WITHIN_VIDEO_THREADS > 1) {
+#endif
     decoder->thread_type = FF_THREAD_FRAME | FF_THREAD_SLICE;
   }
   result = avcodec_open2(decoder, decoder_codec, NULL);
@@ -1124,7 +1129,11 @@ static int within_video_reencode(int webm) {
   encoder->bit_rate = webm ? 600 * 1000 : 2 * 1000 * 1000;
   encoder->gop_size = webm ? 120 : 48;
   encoder->max_b_frames = 0;
+#if defined(WITHIN_MPEG4_THREADED)
+  encoder->thread_count = WITHIN_VIDEO_THREADS;
+#else
   encoder->thread_count = webm ? WITHIN_VIDEO_THREADS : 1;
+#endif
   encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER | AV_CODEC_FLAG_BITEXACT;
   encoder->sample_aspect_ratio = decoder->sample_aspect_ratio;
   encoder->color_primaries = decoder->color_primaries;

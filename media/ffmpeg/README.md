@@ -26,11 +26,12 @@ values, builds a VP8-encoder-only libvpx, configures only the documented
 demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
-The build emits two lazy-loaded WebAssembly SIMD modules from the same pinned
-libraries and wrapper. `within-remux` has no pthread pool and handles audio,
-stream copy, and the pending MPEG-4 profile. `within-webm` preloads a fixed pool
-of eight pthread workers for its four-thread HEVC/H.264 decode and four-thread
-VP8 encode contexts. The conversion worker and its children are terminated
+The build emits three lazy-loaded WebAssembly SIMD modules from the same pinned
+libraries and wrapper. `within-remux` has no pthread pool and handles audio and
+stream copy. `within-mpeg4` uses a fixed four-worker pool for two-thread
+HEVC/H.264 decode and MPEG-4 Part 2 encode. `within-webm` uses a fixed
+eight-worker pool for four-thread decode and VP8 encode. The conversion worker
+and each module's pool workers are counted in runtime diagnostics and terminated
 during job cleanup. VP8 is built in realtime-only mode and uses four token
 partitions, realtime deadline, `cpu-used=8`, and zero lookahead. Current stable
 Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The

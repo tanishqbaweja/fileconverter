@@ -822,7 +822,7 @@ async function validateMediaOutput(
         "-i",
         localPath,
         "-filter_complex",
-        `[0:v:0]scale=${video.width}:${video.height}:flags=bicubic,format=yuv420p[source];[1:v:0]format=yuv420p[converted];[source][converted]ssim[quality]`,
+        `[0:v:0]scale=${video.width}:${video.height}:flags=bicubic,format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]`,
         "-map",
         "[quality]",
         "-frames:v",
@@ -841,8 +841,14 @@ async function validateMediaOutput(
       similarityLog.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
     );
     if (!Number.isFinite(similarity) || similarity < 0.35) {
+      const diagnosticTail = similarityLog
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .slice(-8)
+        .join(" | ")
+        .slice(0, 2_048);
       throw new Error(
-        `Browser video midpoint visual validation failed: SSIM ${Number.isFinite(similarity) ? similarity : "unavailable"}.`,
+        `Browser video midpoint visual validation failed: SSIM ${Number.isFinite(similarity) ? similarity : "unavailable"}.${diagnosticTail ? ` Validator tail: ${diagnosticTail}` : ""}`,
       );
     }
     probe.withinValidation = {

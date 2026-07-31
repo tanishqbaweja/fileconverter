@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 59
+complete-Chromium memory profile have passed. The current registry publishes 61
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -24,14 +24,14 @@ routes:
 | Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to every implemented PNG/JPEG/WebP/BMP destination | 24,883,254 B |
-| Video/container | MKV -> MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
-route; the UI exposes that same evidence. VP8 WebM is public after passing its
-three-run gate on the untouched 2,958,573,265-byte fixture. MPEG-4 Part 2 video
-remains hidden while its final large-fixture gate is incomplete. The app never
-substitutes an extension rename or a server conversion.
+route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
+public after passing their three-run gates on the untouched
+2,958,573,265-byte fixture. The app never substitutes an extension rename or a
+server conversion.
 
 ## Bounded-memory architecture
 
@@ -322,6 +322,7 @@ Current exact-build results:
 | MP4 → M4A | 3 | 2,964,855,971 B | 249,427,976 B | 203.3 MiB | 73.8 MiB | −4.0–−0.6 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
 | MP4 → WAV | 3 | 2,964,855,971 B | 7,107,834,950 B | 224.1 MiB | 73.8 MiB | −8.1–−4.8 MiB |
+| MKV → MPEG-4 MP4 | 3 | 2,958,573,265 B | 3,086,358,463 B | 211.3 MiB | 89.6 MiB | −1.0–7.1 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
@@ -360,6 +361,16 @@ The three MP4-to-WAV outputs shared SHA-256
 `d489b3567851a1f2bace1a8a9915bd52f6d819daa7c1ec8674af951e1330887a`,
 completed in 93.11–93.94 seconds, retained 48 kHz 5.1 audio as PCM s16le,
 and passed full decoded-audio APSNR at 153.7 dB or better on every channel.
+The three MPEG-4 Part 2 outputs shared SHA-256
+`457f9da69f4234f2ee39c6103ef597b4b735ba90de34d4d124f1d1fe55326e42`,
+completed in 3,091.2–3,096.1 seconds, passed full native decode at 1920×804,
+and produced midpoint SSIM 0.991884. On the fixed 120-second fixture, the final
+two-thread/four-worker specialist core completed in 27.20 seconds versus 59.59
+seconds for the prior single-thread core, a 2.19× speedup without changing the
+2 Mbit/s encode or dimensions. Four codec threads reached 16.64 seconds but
+failed at 266.4 MiB; three reached 19.39 seconds but failed at 254.2 MiB. The
+published topology therefore preserves most of the throughput gain with a
+measured 204.5–206.9 MiB benchmark range and 211.3 MiB full-file peak.
 The three WebM outputs shared SHA-256
 `b192fb8b0cb3e4356b54ed242d0de5fbeb6a56f421381c426ca19321e0807e1f`;
 they completed in 2,682.0–2,687.1 seconds, passed full native decode as VP8,

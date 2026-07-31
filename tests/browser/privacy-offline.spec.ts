@@ -133,6 +133,8 @@ test("installed app shell and conversion engine load offline", async () => {
   });
   expect(cachedPaths).toContain("/engines/remux/within-remux.wasm");
   expect(cachedPaths).toContain("/engines/remux/within-remux.mjs");
+  expect(cachedPaths).toContain("/engines/remux/within-mpeg4.wasm");
+  expect(cachedPaths).toContain("/engines/remux/within-mpeg4.mjs");
   expect(cachedPaths).toContain("/engines/remux/within-webm.wasm");
   expect(cachedPaths).toContain("/engines/remux/within-webm.mjs");
 

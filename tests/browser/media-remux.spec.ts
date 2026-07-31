@@ -438,6 +438,11 @@ async function runMediaRoute(
     expect(state.metrics?.peakWasmMemoryBytes).toBeLessThanOrEqual(
       128 * 1024 * 1024,
     );
+    if (profileId === "mkv-to-webm") {
+      expect(state.metrics?.activeWorkerCount).toBe(9);
+    } else if (profileId === "mkv-to-mp4-mpeg4") {
+      expect(state.metrics?.activeWorkerCount).toBe(5);
+    }
 
     await copyAndDeleteBrowserStorageEntry(state.opfsName!, outputPath);
 

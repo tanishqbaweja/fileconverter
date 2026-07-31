@@ -1101,8 +1101,8 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Video is decoded and encoded as lossy MPEG-4 Part 2 at 2 Mbit/s.",
       "Only YUV 4:2:0 source frames are currently accepted.",
     ],
-    maxTestedBytes: 936_003,
-    automatedTestStatus: "pending",
+    maxTestedBytes: 2_958_573_265,
+    automatedTestStatus: "passed",
     public: true,
   },
 ];
