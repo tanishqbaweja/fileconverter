@@ -61,6 +61,12 @@ and independently validate an output without creating another multi-gigabyte
 copy. That path rotates the access handle every 128 MiB and flushes every 8 MiB.
 It is test/fallback storage, not the normal production destination.
 
+A separate real-Chrome test remuxes H.264/AAC Matroska through the normal
+asynchronous `FileSystemFileHandle` destination, streams the result to a
+project-local verifier in 64 KiB chunks, probes and fully decodes it with native
+FFmpeg, and deletes both test-owned copies. It asserts one pending write and a
+262,144-byte ceiling for reads, writes, and queued output.
+
 Hard limits:
 
 - AVIO input buffer: 262,144 bytes

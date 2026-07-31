@@ -20,6 +20,7 @@ const baseURL =
 const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
+const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
 const standaloneWavOutputPath = path.join(
@@ -151,6 +152,7 @@ async function currentState() {
 test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
+  assertProjectLocal(directMp4OutputPath);
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(wavOutputPath);
   assertProjectLocal(standaloneWavOutputPath);
@@ -238,6 +240,7 @@ test.afterAll(async () => {
   validationSink = null;
   await context?.close();
   await rm(mp4OutputPath, { force: true });
+  await rm(directMp4OutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
   await rm(standaloneWavOutputPath, { force: true });
@@ -256,6 +259,64 @@ test.afterAll(async () => {
   await rm(incompatibleFixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
+
+async function removeBrowserStorageEntry(name: string): Promise<void> {
+  await page.evaluate(async (entryName) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(entryName).catch((error) => {
+      if (!(error instanceof DOMException) || error.name !== "NotFoundError") {
+        throw error;
+      }
+    });
+  }, name);
+}
+
+async function copyAndDeleteBrowserStorageEntry(
+  name: string,
+  outputPath: string,
+): Promise<void> {
+  const sink = createWriteStream(outputPath, { flags: "w" });
+  validationSink = sink;
+  try {
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(entryName);
+        const file = await handle.getFile();
+        const reader = file.stream().getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          for (let offset = 0; offset < value.byteLength; offset += 64 * 1024) {
+            const part = value.subarray(
+              offset,
+              Math.min(offset + 64 * 1024, value.byteLength),
+            );
+            let binary = "";
+            for (let inner = 0; inner < part.byteLength; inner += 16 * 1024) {
+              binary += String.fromCharCode(
+                ...part.subarray(
+                  inner,
+                  Math.min(inner + 16 * 1024, part.byteLength),
+                ),
+              );
+            }
+            await window.__withinMediaValidationChunk(btoa(binary));
+          }
+        }
+      } finally {
+        await root.removeEntry(entryName).catch(() => {});
+      }
+    }, name);
+    sink.end();
+    await once(sink, "finish");
+  } catch (error) {
+    sink.destroy();
+    throw error;
+  } finally {
+    if (validationSink === sink) validationSink = null;
+  }
+}
 
 async function runMediaRoute(
   profileId:
@@ -333,37 +394,7 @@ async function runMediaRoute(
       128 * 1024 * 1024,
     );
 
-    validationSink = createWriteStream(outputPath, { flags: "w" });
-    await page.evaluate(async (opfsName) => {
-      const root = await navigator.storage.getDirectory();
-      const handle = await root.getFileHandle(opfsName!);
-      const file = await handle.getFile();
-      const reader = file.stream().getReader();
-      for (;;) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        for (let offset = 0; offset < value.byteLength; offset += 64 * 1024) {
-          const part = value.subarray(
-            offset,
-            Math.min(offset + 64 * 1024, value.byteLength),
-          );
-          let binary = "";
-          for (let inner = 0; inner < part.byteLength; inner += 16 * 1024) {
-            binary += String.fromCharCode(
-              ...part.subarray(
-                inner,
-                Math.min(inner + 16 * 1024, part.byteLength),
-              ),
-            );
-          }
-          await window.__withinMediaValidationChunk(btoa(binary));
-        }
-      }
-      await root.removeEntry(opfsName!);
-    }, state.opfsName);
-    validationSink.end();
-    await once(validationSink, "finish");
-    validationSink = null;
+    await copyAndDeleteBrowserStorageEntry(state.opfsName!, outputPath);
 
     const { size } = await stat(outputPath);
     expect(size).toBeGreaterThan(minimumBytes);
@@ -404,6 +435,83 @@ test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async ()
     ["h264", "aac"],
     250_000,
   );
+});
+
+test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-save adapter", async () => {
+  const outputName = "remux-source.mp4";
+  try {
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mkv-to-mp4");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
+      .not.toBe("running");
+
+    const state = await currentState();
+    expect(state.jobState, state.error ?? state.phase).toBe("complete");
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+
+    await copyAndDeleteBrowserStorageEntry(outputName, directMp4OutputPath);
+    const { size } = await stat(directMp4OutputPath);
+    expect(size).toBeGreaterThan(250_000);
+    const { stdout } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-show_entries",
+        "stream=codec_name:format=duration",
+        "-of",
+        "json",
+        directMp4OutputPath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const probe = JSON.parse(stdout) as MediaProbe;
+    expect(probe.streams.map((stream) => stream.codec_name)).toEqual([
+      "h264",
+      "aac",
+    ]);
+    expect(Number(probe.format.duration)).toBeGreaterThan(3.9);
+    expect(Number(probe.format.duration)).toBeLessThan(4.2);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-i",
+        directMp4OutputPath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-f",
+        "null",
+        "-",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+    await rm(directMp4OutputPath, { force: true });
+  }
 });
 
 test("browser remux preserves multiple audio tracks and VFR timing while disclosing exclusions", async () => {
