@@ -13,6 +13,7 @@ export type EngineId =
   | "records-stream"
   | "xml-stream"
   | "image-browser"
+  | "libtiff-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
   | "ffmpeg-video";
@@ -313,6 +314,13 @@ export const formats = [
     label: "Windows icon (ICO)",
     extensions: ["ico"],
     mimeTypes: ["image/x-icon", "image/vnd.microsoft.icon"],
+    category: "image",
+  },
+  {
+    id: "tiff",
+    label: "TIFF image",
+    extensions: ["tif", "tiff"],
+    mimeTypes: ["image/tiff"],
     category: "image",
   },
   {
@@ -1411,6 +1419,27 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed" as const,
     public: true,
   })),
+  {
+    id: "tiff-to-png",
+    input: "tiff",
+    output: "png",
+    engine: "libtiff-wasm",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Accepts one strip-organized 8-bit contiguous grayscale, palette, RGB, or RGBA image compressed with none, PackBits, LZW, or Deflate.",
+      "Tiled, multipage, separated-planar, unusually oriented, and other photometric or compressed TIFF layouts are rejected explicitly.",
+      "EXIF, ICC profiles, resolution, textual metadata, thumbnails, and private TIFF tags are not copied to PNG.",
+    ],
+    fidelityLimitations: [
+      "Associated alpha is converted to PNG's unassociated alpha representation with bounded 8-bit rounding.",
+    ],
+    maxTestedBytes: 50_348_250,
+    automatedTestStatus: "passed",
+    public: true,
+  },
   {
     id: "mkv-to-mp4",
     input: "mkv",

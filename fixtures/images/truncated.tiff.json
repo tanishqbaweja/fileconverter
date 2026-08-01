@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-image-fixtures.mjs",
+  "bytes": 256,
+  "sha256": "455afb0e4aca950f55e0eb20eb68845526fd225cdf3402df75bd21d89eef85e3",
+  "expectation": "rejected truncated TIFF directory or strip data"
+}

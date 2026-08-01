@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
@@ -319,9 +319,17 @@ ICO output uses those same bounded decoders, scales proportionally only when an
 edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
 followed by an incrementally copied PNG payload. It preserves alpha but does not
 claim alternate icon sizes, animation, or metadata that the source cannot carry
-through this bounded profile. Stable Chrome does not expose TIFF, ICO, SVG,
-HEIC/HEIF, or JPEG XL through worker `ImageDecoder`, so those formats are not
-advertised as inputs.
+through this bounded profile. Stable Chrome does not expose ICO, SVG, HEIC/HEIF,
+or JPEG XL through worker `ImageDecoder`, so those formats are not advertised as
+inputs.
+
+TIFF-to-PNG uses a separate reproducible libtiff/libpng/zlib Wasm engine because
+Chrome does not decode TIFF in a worker. It reads at most 256 KiB at a time,
+decodes strip-organized 8-bit grayscale, palette, RGB, or RGBA scanlines, and
+writes PNG chunks of at most 64 KiB with one pending destination operation. The
+heap is fixed at 40 MiB; decoded strips are capped at 4 MiB. None, PackBits, LZW,
+and Deflate inputs are accepted. Tiled, multipage, separated-planar, unusually
+oriented, or other unsupported layouts fail explicitly.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
@@ -403,7 +411,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. HEIC/HEIF, TIFF, JPEG XL, SVG, camera raw,
+PDF is excluded by product scope. HEIC/HEIF, JPEG XL, SVG, camera raw,
 animated-image output, TAR-to-7Z, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
@@ -582,6 +590,7 @@ profiler:
 | --- | ---: | ---: | --- |
 | Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
 | Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
+| Images, TIFF -> PNG | 50,348,250 B | 155.3 MiB | native PNG decode, dimensions, SSIM 1.0 |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |
@@ -873,6 +882,7 @@ and browser profiles whether the category passes, fails, or is interrupted:
 ```powershell
 npm run profile:audio
 npm run profile:images
+npm run profile:tiff
 npm run profile:records
 npm run profile:subtitles
 npm run profile:archives

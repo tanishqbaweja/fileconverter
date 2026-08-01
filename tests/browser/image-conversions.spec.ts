@@ -52,6 +52,10 @@ const routes = [
   ["png-to-jpeg", "transparent-pattern.png", "jpg", "mjpeg", "removed"],
   ["png-to-bmp", "transparent-pattern.png", "bmp", "bmp", "removed"],
   ["png-to-ico", "transparent-pattern.png", "ico", "png", "preserved", 256, 192],
+  ["tiff-to-png", "test-pattern-deflate.tiff", "png", "png"],
+  ["tiff-to-png", "test-pattern-gray-packbits.tiff", "png", "png", undefined, 320, 240],
+  ["tiff-to-png", "test-pattern-rgba-lzw.tiff", "png", "png", "preserved", 320, 240, 100],
+  ["tiff-to-png", "test-pattern-palette.tiff", "png", "png", undefined, 320, 240],
 ] as const;
 
 let context: BrowserContext;
@@ -108,6 +112,7 @@ for (const [
   alphaExpectation,
   expectedWidth = 1024,
   expectedHeight = 768,
+  minimumOutputBytes = 1_000,
 ] of routes) {
   test(`${profileId} from ${sourceName} produces a bounded independently decodable image`, async () => {
     const sourcePath = path.join(
@@ -189,7 +194,7 @@ for (const [
       await once(validationSink, "finish");
       validationSink = null;
 
-      expect((await stat(outputPath)).size).toBeGreaterThan(1_000);
+      expect((await stat(outputPath)).size).toBeGreaterThan(minimumOutputBytes);
       const { stdout } = await execFileAsync(
         "ffprobe",
         [
@@ -258,6 +263,106 @@ test("ICO output failure removes the partial browser-owned file", async () => {
   });
   expect(leftovers).toEqual([]);
 });
+
+test("TIFF output failure removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "test-pattern-deflate.tiff"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("tiff-to-png");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state?.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-tiff-to-png")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+test("TIFF converts through the bounded direct-save worker", async () => {
+  const outputName = "test-pattern-deflate.png";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern-deflate.tiff"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("tiff-to-png");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(40 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(new Uint8Array(await file.slice(0, 8).arrayBuffer()));
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(100);
+    expect(output.signature).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName);
+  }
+});
+
+for (const [sourceName, expectedError] of [
+  ["unsupported-16bit.tiff", "requires 8-bit"],
+  ["decompression-bomb.tiff", "16-megapixel safety limit"],
+  ["truncated.tiff", "TIFF"],
+  ["corrupt.tiff", "TIFF"],
+] as const) {
+  test(`rejects unsafe or unsupported TIFF input ${sourceName} without output`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", sourceName),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("tiff-to-png");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.error).toContain(expectedError);
+    expect(state?.metrics?.outputBytes).toBe(0);
+    expect(state?.opfsName).toBeNull();
+  });
+}
 
 test("rejects an image decompression bomb before allocating a decoded surface", async () => {
   await page.goto("/?test=1");

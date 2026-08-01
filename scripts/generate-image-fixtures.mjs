@@ -100,6 +100,79 @@ const fixtures = [
     source: "color=c=black:size=3840x2160:rate=1",
     codecArguments: ["-c:v", "png"],
   },
+  {
+    name: "test-pattern-deflate.tiff",
+    source: "testsrc2=size=1024x768:rate=1",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "deflate",
+      "-pix_fmt",
+      "rgb24",
+    ],
+  },
+  {
+    name: "test-pattern-gray-packbits.tiff",
+    source: "testsrc2=size=320x240:rate=1,format=gray",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "packbits",
+      "-pix_fmt",
+      "gray",
+    ],
+  },
+  {
+    name: "test-pattern-rgba-lzw.tiff",
+    source:
+      "color=c=red@0.0:size=320x240:rate=1,format=rgba,drawbox=x=80:y=60:w=160:h=120:color=blue@0.5:t=fill",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "lzw",
+      "-pix_fmt",
+      "rgba",
+    ],
+  },
+  {
+    name: "test-pattern-palette.tiff",
+    source: "testsrc2=size=320x240:rate=1,format=pal8",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "raw",
+      "-pix_fmt",
+      "pal8",
+    ],
+  },
+  {
+    name: "unsupported-16bit.tiff",
+    source: "testsrc2=size=64x64:rate=1,format=gray16le",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "deflate",
+      "-pix_fmt",
+      "gray16le",
+    ],
+  },
+  {
+    name: "decompression-bomb.tiff",
+    source: "color=c=black:size=5000x4000:rate=1",
+    codecArguments: [
+      "-c:v",
+      "tiff",
+      "-compression_algo",
+      "deflate",
+      "-pix_fmt",
+      "rgb24",
+    ],
+  },
 ];
 
 for (const fixture of fixtures) {
@@ -144,6 +217,37 @@ for (const fixture of fixtures) {
         bytes: bytes.byteLength,
         sha256: createHash("sha256").update(bytes).digest("hex"),
         probe: JSON.parse(stdout),
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+}
+
+const sourceTiff = await readFile(path.join(fixtureRoot, "test-pattern-deflate.tiff"));
+for (const derived of [
+  {
+    name: "truncated.tiff",
+    bytes: sourceTiff.subarray(0, Math.min(256, sourceTiff.byteLength)),
+    expectation: "rejected truncated TIFF directory or strip data",
+  },
+  {
+    name: "corrupt.tiff",
+    bytes: Buffer.from("not-a-tiff-input", "ascii"),
+    expectation: "rejected invalid TIFF signature",
+  },
+]) {
+  const fixturePath = path.join(fixtureRoot, derived.name);
+  await writeFile(fixturePath, derived.bytes);
+  await writeFile(
+    `${fixturePath}.json`,
+    `${JSON.stringify(
+      {
+        generatedBy: "scripts/generate-image-fixtures.mjs",
+        bytes: derived.bytes.byteLength,
+        sha256: createHash("sha256").update(derived.bytes).digest("hex"),
+        expectation: derived.expectation,
       },
       null,
       2,

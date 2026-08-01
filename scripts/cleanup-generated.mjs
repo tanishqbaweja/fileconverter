@@ -46,6 +46,7 @@ const webmBenchmarkFixture = path.resolve(
 );
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
+const tiffAuditRoot = path.resolve(workRoot, "tiff-audit");
 const sevenZipExperimentRoots = [
   path.resolve(workRoot, "7z-experiment"),
   path.resolve(workRoot, "sevenzip-name-check"),
@@ -108,6 +109,8 @@ const generatedStressExtensions = new Set([
   ".epub",
   ".tar",
   ".zip",
+  ".tif",
+  ".tiff",
 ]);
 const generatedStressNames = new Set(["records-128m.json"]);
 
@@ -115,6 +118,7 @@ assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, sevenZipAuditRoot);
+assertInside(workRoot, tiffAuditRoot);
 for (const temporaryRoot of sevenZipExperimentRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -171,6 +175,7 @@ await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(sevenZipAuditRoot);
+await removeWithRetries(tiffAuditRoot);
 for (const temporaryRoot of sevenZipExperimentRoots) {
   await removeWithRetries(temporaryRoot);
 }

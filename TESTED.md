@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **124**
-- Public profiles with a retained successful Chrome stress report: **123**
+- Public passed conversion profiles: **125**
+- Public profiles with a retained successful Chrome stress report: **124**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -120,6 +120,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tar-to-tar-xz | 268,436,992 | 3 | 268,449,796 | 51.51 s–52.33 s | 175.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-to-zip | 268,436,992 | 3 | 268,517,517 | 16.67 s–16.85 s | 183.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-xz-to-tar | 268,449,796 | 3 | 268,436,992 | 6.21 s–6.65 s | 173.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
+| tiff-to-png | 50,348,250 | 3 | 1,578,983 | 2.23 s–2.50 s | 155.3 MiB | 40.0 MiB | read 24,576 B / write 32,768 B | passed |
 | tsv-to-csv | 134,423,894 | 3 | 139,913,895 | 8.34 s–8.49 s | 200.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-json | 134,423,894 | 3 | 299,123,885 | 18.32 s–19.93 s | 194.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-ndjson | 134,423,894 | 3 | 288,143,880 | 9.67 s–9.77 s | 226.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -267,6 +268,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | tar-to-tar-xz | archive | xz-wasm | stream | 268,436,992 B | 3-run Chrome report |
 | tar-to-zip | archive | archive-browser | stream | 268,436,992 B | 3-run Chrome report |
 | tar-xz-to-tar | archive | xz-wasm | stream | 268,449,796 B | 3-run Chrome report |
+| tiff-to-png | image | libtiff-wasm | re-encode | 50,348,250 B | 3-run Chrome report |
 | tsv-to-csv | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | tsv-to-json | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | tsv-to-ndjson | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
@@ -297,7 +299,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
-- Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
+- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats; broader TIFF layouts beyond the bounded scanline profile remain absent.
 - Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

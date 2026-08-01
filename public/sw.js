@@ -1,4 +1,4 @@
-const CACHE_NAME = "within-shell-v15";
+const CACHE_NAME = "within-shell-v16";
 const APP_SHELL = [
   "/",
   "/icon.svg",
@@ -25,6 +25,12 @@ const APP_SHELL = [
   "/engines/archive7z/build-manifest.json",
   "/engines/archive7z/LICENSE.libarchive",
   "/engines/archive7z/LICENSE.xz",
+  "/engines/tiff/within-tiff.mjs",
+  "/engines/tiff/within-tiff.wasm",
+  "/engines/tiff/build-manifest.json",
+  "/engines/tiff/LICENSE.libtiff",
+  "/engines/tiff/LICENSE.libpng",
+  "/engines/tiff/LICENSE.zlib",
 ];
 
 self.addEventListener("install", (event) => {

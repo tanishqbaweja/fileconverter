@@ -368,6 +368,12 @@ const categories = {
       `fixtures/images/${name}`,
     ]),
   },
+  tiff: {
+    generator: "scripts/generate-tiff-stress-fixture.mjs",
+    profiles: [
+      ["tiff-to-png", "fixtures/stress/images/tiff-rgb-48m.tiff"],
+    ],
+  },
 };
 
 if (!Object.hasOwn(categories, category)) {

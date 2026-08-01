@@ -22,6 +22,7 @@ import {
 } from "./sevenzip-conversion";
 import { runXmlToNdjson } from "./xml-conversion";
 import { runXzConversion } from "./xz-compression";
+import { runTiffToPng } from "./tiff-conversion";
 import {
   asynchronousFileStreamDestination,
   sharedDirectFileDestination,
@@ -2978,6 +2979,17 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         metrics,
         startedAt,
       );
+    } else if (profileId === "tiff-to-png") {
+      await runTiffToPng({
+        file,
+        writable: destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+        isCancelled: () => cancelled,
+        emitProgress,
+        post,
+      });
     } else if (
       profileId === "mkv-to-mp4" ||
       profileId === "mov-to-mp4" ||

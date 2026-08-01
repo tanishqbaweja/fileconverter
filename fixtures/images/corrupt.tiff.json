@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-image-fixtures.mjs",
+  "bytes": 16,
+  "sha256": "9124be7f41ec91d03d18dbea7c60dfbb91ab9efce0b476eddd33f115da27d923",
+  "expectation": "rejected invalid TIFF signature"
+}

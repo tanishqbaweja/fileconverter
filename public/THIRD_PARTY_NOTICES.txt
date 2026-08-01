@@ -45,9 +45,27 @@ License: BSD-2-Clause
 The 7Z reader also links the pinned 0BSD liblzma core listed above; its copied
 license is at public/engines/archive7z/LICENSE.xz.
 
+LibTIFF 4.7.2
+Source: https://download.osgeo.org/libtiff/tiff-4.7.2.tar.xz
+SHA-256: 4996f0c4f93094719b1ca5c6279b20e588773ba8a247533e486416fb662ddb88
+Project: https://libtiff.gitlab.io/libtiff/
+License: libtiff license (see public/engines/tiff/LICENSE.libtiff)
+
+libpng 1.6.58
+Source: https://download.sourceforge.net/libpng/libpng-1.6.58.tar.xz
+SHA-256: 28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775
+Project: https://www.libpng.org/pub/png/libpng.html
+License: libpng license (see public/engines/tiff/LICENSE.libpng)
+
+zlib 1.3.2
+Source: https://zlib.net/zlib-1.3.2.tar.xz
+SHA-256: d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3
+Project: https://zlib.net/
+License: zlib license (see public/engines/tiff/LICENSE.zlib)
+
 Exact configure switches, enabled components, memory limits, and build commands
 are in media/ffmpeg/, compression/bzip2/, compression/xz/,
-compression/libarchive7z/, and their corresponding build
+compression/libarchive7z/, images/libtiff/, and their corresponding build
 manifests under public/engines/ in the source repository.
 
 These notices describe copyright licenses, not patent rights. Deployers remain
