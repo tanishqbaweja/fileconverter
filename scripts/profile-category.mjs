@@ -371,7 +371,7 @@ const categories = {
   tiff: {
     generator: "scripts/generate-tiff-stress-fixture.mjs",
     profiles: [
-      ["tiff-to-png", "fixtures/stress/images/tiff-rgb-48m.tiff"],
+      ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m.tiff"],
     ],
   },
 };

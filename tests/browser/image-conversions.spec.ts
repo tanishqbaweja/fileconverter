@@ -56,6 +56,14 @@ const routes = [
   ["tiff-to-png", "test-pattern-gray-packbits.tiff", "png", "png", undefined, 320, 240],
   ["tiff-to-png", "test-pattern-rgba-lzw.tiff", "png", "png", "preserved", 320, 240, 100],
   ["tiff-to-png", "test-pattern-palette.tiff", "png", "png", undefined, 320, 240],
+  ["tiff-to-png", "test-pattern-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-tiled-reference.png"],
+  ["tiff-to-png", "test-pattern-gray16-deflate.tiff", "png", "png", undefined, 127, 95, 100, "gray16be", "test-pattern-gray16-deflate.tiff", "gray16le"],
+  ["tiff-to-png", "test-pattern-rgb16.tiff", "png", "png", undefined, 127, 95, 1_000, "rgb48be", "test-pattern-rgb16.tiff", "rgb48le"],
+  ["tiff-to-png", "test-pattern-rgba16.tiff", "png", "png", "preserved", 127, 95, 1_000, "rgba64be", "test-pattern-rgba16.tiff", "rgba64le"],
+  ["tiff-to-png", "test-pattern-jpeg.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-jpeg-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation2.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation2-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation3.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation3-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation4.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation4-reference.png"],
 ] as const;
 
 let context: BrowserContext;
@@ -113,6 +121,9 @@ for (const [
   expectedWidth = 1024,
   expectedHeight = 768,
   minimumOutputBytes = 1_000,
+  expectedPixelFormat,
+  referenceName,
+  referencePixelFormat = "rgb24",
 ] of routes) {
   test(`${profileId} from ${sourceName} produces a bounded independently decodable image`, async () => {
     const sourcePath = path.join(
@@ -216,11 +227,42 @@ for (const [
       } else if (alphaExpectation === "removed") {
         expect(stream.pix_fmt).not.toContain("a");
       }
+      if (expectedPixelFormat) {
+        expect(stream.pix_fmt).toBe(expectedPixelFormat);
+      }
       await execFileAsync(
         "ffmpeg",
         ["-v", "error", "-i", outputPath, "-f", "null", "NUL"],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
+      if (referenceName) {
+        const frameBytes = async (imagePath: string) => {
+          const result = await execFileAsync(
+              "ffmpeg",
+              [
+                "-v",
+                "error",
+                "-i",
+                imagePath,
+                "-pix_fmt",
+                referencePixelFormat,
+                "-f",
+                "rawvideo",
+                "-",
+              ],
+              {
+                cwd: projectRoot,
+                windowsHide: true,
+                maxBuffer: 8 * 1024 * 1024,
+                encoding: "buffer",
+              },
+            );
+          return result.stdout;
+        };
+        expect(await frameBytes(outputPath)).toEqual(
+          await frameBytes(path.join(projectRoot, "fixtures", "images", referenceName)),
+        );
+      }
     } finally {
       validationSink?.destroy();
       validationSink = null;
@@ -338,7 +380,9 @@ test("TIFF converts through the bounded direct-save worker", async () => {
 });
 
 for (const [sourceName, expectedError] of [
-  ["unsupported-16bit.tiff", "requires 8-bit"],
+  ["unsupported-planar.tiff", "contiguous pixels"],
+  ["unsupported-orientation5.tiff", "non-transposed orientation"],
+  ["unsupported-multipage.tiff", "Multipage TIFF"],
   ["decompression-bomb.tiff", "16-megapixel safety limit"],
   ["truncated.tiff", "TIFF"],
   ["corrupt.tiff", "TIFF"],

@@ -6,6 +6,8 @@ ARG LIBPNG_VERSION=1.6.58
 ARG LIBPNG_SHA256=28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775
 ARG ZLIB_VERSION=1.3.2
 ARG ZLIB_SHA256=d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3
+ARG LIBJPEG_TURBO_VERSION=3.1.4.1
+ARG LIBJPEG_TURBO_SHA256=ecae8008e2cc9ade2f2c1bb9d5e6d4fb73e7c433866a056bd82980741571a022
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates curl xz-utils \
@@ -32,7 +34,14 @@ RUN curl --fail --location --retry 3 \
     && echo "${ZLIB_SHA256}  zlib.tar.xz" | sha256sum --check --strict \
     && tar --extract --file zlib.tar.xz \
     && mv "zlib-${ZLIB_VERSION}" zlib \
-    && rm zlib.tar.xz
+    && rm zlib.tar.xz \
+    && curl --fail --location --retry 3 \
+      "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/${LIBJPEG_TURBO_VERSION}/libjpeg-turbo-${LIBJPEG_TURBO_VERSION}.tar.gz" \
+      --output libjpeg-turbo.tar.gz \
+    && echo "${LIBJPEG_TURBO_SHA256}  libjpeg-turbo.tar.gz" | sha256sum --check --strict \
+    && tar --extract --file libjpeg-turbo.tar.gz \
+    && mv "libjpeg-turbo-${LIBJPEG_TURBO_VERSION}" libjpeg-turbo \
+    && rm libjpeg-turbo.tar.gz
 
 COPY build-libraries.sh /src/build-libraries.sh
 RUN chmod +x /src/build-libraries.sh && /src/build-libraries.sh

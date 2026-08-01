@@ -1,7 +1,7 @@
 {
-  "generatedBy": "scripts/generate-image-fixtures.mjs",
-  "bytes": 1469,
-  "sha256": "f734d6be76ee916ad52773d2fa8c783226da05ebadb2e394e1b244d12141d19f",
+  "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
+  "bytes": 36435,
+  "sha256": "65cccd4b139f486eb0dc77e9ad57ae1ded5fd04c615c0d8e56d12165ad14cbf5",
   "probe": {
     "streams": [
       {
@@ -11,14 +11,14 @@
         "codec_type": "video",
         "codec_tag_string": "[0][0][0][0]",
         "codec_tag": "0x0000",
-        "width": 64,
-        "height": 64,
-        "coded_width": 64,
-        "coded_height": 64,
+        "width": 127,
+        "height": 95,
+        "coded_width": 127,
+        "coded_height": 95,
         "has_b_frames": 0,
         "sample_aspect_ratio": "1:1",
-        "display_aspect_ratio": "1:1",
-        "pix_fmt": "gray16le",
+        "display_aspect_ratio": "127:95",
+        "pix_fmt": "rgb24",
         "level": -99,
         "refs": 1,
         "r_frame_rate": "25/1",
@@ -48,13 +48,13 @@
       }
     ],
     "format": {
-      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\unsupported-16bit.tiff",
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-orientation4.tiff",
       "nb_streams": 1,
       "nb_programs": 0,
       "nb_stream_groups": 0,
       "format_name": "tiff_pipe",
       "format_long_name": "piped tiff sequence",
-      "size": "1469",
+      "size": "36435",
       "probe_score": 51
     }
   }

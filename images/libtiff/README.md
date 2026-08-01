@@ -2,10 +2,11 @@
 
 This directory reproducibly builds the browser-only TIFF reader from pinned
 libtiff, libpng, zlib, and Emscripten sources. It decodes one 8-bit, contiguous,
-strip-organized grayscale, palette, RGB, or RGBA image and streams PNG rows to
-the selected destination. None, PackBits, LZW, and Deflate input compression
-are enabled. Tiled, multipage, unusually oriented, separated-planar, and other
-layouts are rejected explicitly.
+strip- or tile-organized grayscale, palette, RGB, or RGBA image and streams PNG
+rows to the selected destination. None, PackBits, LZW, Deflate, and baseline
+JPEG input compression are enabled. Eight- and sixteen-bit samples plus the
+four non-transposed TIFF orientations are supported. Multipage, transposed,
+separated-planar, and other layouts are rejected explicitly.
 
 The Wasm heap is fixed at 40 MiB. Input reads are split at 256 KiB, output
 writes at 64 KiB, decoded strips at 4 MiB, and only one destination write is

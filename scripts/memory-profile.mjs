@@ -1449,13 +1449,24 @@ async function validateImageOutput(
     outputFormat === "ico"
       ? `[0:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,scale=${expectedWidth}:${expectedHeight}:flags=lanczos,format=rgb24[source];[1:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[converted];[source][converted]ssim[quality]`
       : "[0:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[source];[1:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[converted];[source][converted]ssim[quality]";
+  const comparisonSourcePath = source.validationReference
+    ? path.resolve(projectRoot, source.validationReference)
+    : sourcePath;
+  const comparisonRelative = path.relative(projectRoot, comparisonSourcePath);
+  if (
+    !comparisonRelative ||
+    comparisonRelative.startsWith("..") ||
+    path.isAbsolute(comparisonRelative)
+  ) {
+    throw new Error("Image validation references must stay inside the project.");
+  }
   const { stderr: similarityLog } = await execFileAsync(
     "ffmpeg",
     [
       "-hide_banner",
       "-nostdin",
       "-i",
-      sourcePath,
+      comparisonSourcePath,
       "-i",
       localPath,
       "-filter_complex",

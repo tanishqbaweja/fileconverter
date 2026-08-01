@@ -58,6 +58,8 @@
 /fixtures/stress/archives/*.tar.gz
 /fixtures/stress/archives/*.bz2
 /fixtures/stress/archives/*.xz
+/fixtures/stress/images/*.tiff
+/fixtures/stress/images/*-reference.png
 
 # next.js
 /.next/

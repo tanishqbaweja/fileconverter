@@ -156,7 +156,64 @@ static void within_png_flush(png_structp png) { (void)png; }
 static int within_supported_compression(uint16_t compression) {
   return compression == COMPRESSION_NONE || compression == COMPRESSION_PACKBITS ||
          compression == COMPRESSION_LZW || compression == COMPRESSION_ADOBE_DEFLATE ||
-         compression == COMPRESSION_DEFLATE;
+         compression == COMPRESSION_DEFLATE || compression == COMPRESSION_JPEG;
+}
+
+static uint16_t within_read_u16(const unsigned char *source) {
+  uint16_t value;
+  memcpy(&value, source, sizeof(value));
+  return value;
+}
+
+static void within_write_u16(unsigned char *destination, uint16_t value) {
+  memcpy(destination, &value, sizeof(value));
+}
+
+static void within_transform_row(const unsigned char *source,
+                                 unsigned char *destination, uint32_t width,
+                                 uint16_t samples, uint16_t bits,
+                                 uint16_t photometric, int associated_alpha,
+                                 int horizontal_flip) {
+  uint32_t bytes_per_sample = bits / 8U;
+  uint32_t pixel_bytes = (uint32_t)samples * bytes_per_sample;
+  uint32_t maximum = bits == 16 ? 65535U : 255U;
+  for (uint32_t output_x = 0; output_x < width; ++output_x) {
+    uint32_t source_x = horizontal_flip ? width - 1U - output_x : output_x;
+    const unsigned char *input_pixel = source + (uint64_t)source_x * pixel_bytes;
+    unsigned char *output_pixel = destination + (uint64_t)output_x * pixel_bytes;
+    if (bits == 8) {
+      if (photometric == PHOTOMETRIC_MINISWHITE) {
+        output_pixel[0] = (unsigned char)(255U - input_pixel[0]);
+      } else if (associated_alpha) {
+        unsigned int alpha = input_pixel[3];
+        output_pixel[3] = (unsigned char)alpha;
+        for (uint32_t channel = 0; channel < 3; ++channel) {
+          unsigned int numerator = (unsigned int)input_pixel[channel] * maximum + alpha / 2U;
+          unsigned int value = alpha == 0 ? 0 : numerator / alpha;
+          output_pixel[channel] = (unsigned char)(value > maximum ? maximum : value);
+        }
+      } else {
+        memcpy(output_pixel, input_pixel, pixel_bytes);
+      }
+    } else {
+      if (photometric == PHOTOMETRIC_MINISWHITE) {
+        within_write_u16(output_pixel,
+                         (uint16_t)(maximum - within_read_u16(input_pixel)));
+      } else if (associated_alpha) {
+        uint32_t alpha = within_read_u16(input_pixel + 6U);
+        within_write_u16(output_pixel + 6U, (uint16_t)alpha);
+        for (uint32_t channel = 0; channel < 3; ++channel) {
+          uint32_t sample = within_read_u16(input_pixel + channel * 2U);
+          uint64_t numerator = (uint64_t)sample * maximum + alpha / 2U;
+          uint32_t value = alpha == 0 ? 0 : (uint32_t)(numerator / alpha);
+          within_write_u16(output_pixel + channel * 2U,
+                           (uint16_t)(value > maximum ? maximum : value));
+        }
+      } else {
+        memcpy(output_pixel, input_pixel, pixel_bytes);
+      }
+    }
+  }
 }
 
 EMSCRIPTEN_KEEPALIVE const char *within_tiff_error(void) {
@@ -169,6 +226,8 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   png_infop info = NULL;
   unsigned char *row = NULL;
   unsigned char *converted = NULL;
+  unsigned char *tile = NULL;
+  unsigned char *tile_stripe = NULL;
   png_color *palette = NULL;
   int result = 1;
   within_input input = {(uint64_t)input_size, 0};
@@ -219,12 +278,9 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     within_set_error("TIFF dimensions exceed the 8,192-pixel edge or 16-megapixel safety limit.");
     goto cleanup;
   }
-  if (bits != 8 || planar != PLANARCONFIG_CONTIG || orientation != ORIENTATION_TOPLEFT) {
-    within_set_error("TIFF profile requires 8-bit contiguous top-left scanlines.");
-    goto cleanup;
-  }
-  if (TIFFIsTiled(tiff)) {
-    within_set_error("Tiled TIFF images are outside the bounded scanline profile.");
+  if ((bits != 8 && bits != 16) || planar != PLANARCONFIG_CONTIG ||
+      orientation < ORIENTATION_TOPLEFT || orientation > ORIENTATION_BOTLEFT) {
+    within_set_error("TIFF profile requires 8- or 16-bit contiguous pixels in a non-transposed orientation.");
     goto cleanup;
   }
   if (!TIFFLastDirectory(tiff)) {
@@ -232,39 +288,75 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     goto cleanup;
   }
   if (!within_supported_compression(compression)) {
-    within_set_error("TIFF compression is not supported; use none, PackBits, LZW, or Deflate.");
+    within_set_error("TIFF compression is not supported; use none, PackBits, LZW, Deflate, or JPEG.");
     goto cleanup;
   }
-  uint64_t decoded_bytes = pixels * (uint64_t)samples;
+  if (compression == COMPRESSION_JPEG && bits != 8) {
+    within_set_error("JPEG-compressed TIFF is limited to 8-bit samples.");
+    goto cleanup;
+  }
+  if (compression == COMPRESSION_JPEG && photometric == PHOTOMETRIC_YCBCR) {
+    if (!TIFFSetField(tiff, TIFFTAG_JPEGCOLORMODE, JPEGCOLORMODE_RGB)) {
+      within_set_error("JPEG TIFF could not enable bounded RGB scanline decoding.");
+      goto cleanup;
+    }
+    photometric = PHOTOMETRIC_RGB;
+  }
+  uint32_t bytes_per_sample = bits / 8U;
+  uint64_t decoded_bytes = pixels * (uint64_t)samples * bytes_per_sample;
   if (input_size >= 1024U * 1024U && decoded_bytes > (uint64_t)input_size * WITHIN_MAX_RATIO) {
     within_set_error("TIFF decompression ratio exceeds the 1,000:1 safety limit.");
     goto cleanup;
   }
-  uint64_t scanline_size = TIFFScanlineSize64(tiff);
-  uint64_t strip_size = TIFFStripSize64(tiff);
-  if (scanline_size == 0 || scanline_size > WITHIN_MAX_STRIP_BYTES ||
-      strip_size == 0 || strip_size > WITHIN_MAX_STRIP_BYTES) {
-    within_set_error("TIFF scanline or decoded strip exceeds the 4 MiB safety limit.");
-    goto cleanup;
+  uint64_t row_bytes = (uint64_t)width * samples * bytes_per_sample;
+  int tiled = TIFFIsTiled(tiff);
+  uint32_t tile_width = 0, tile_length = 0;
+  uint64_t tile_size = 0, tile_row_bytes = 0, tile_stripe_bytes = 0;
+  if (tiled) {
+    if (!TIFFGetField(tiff, TIFFTAG_TILEWIDTH, &tile_width) ||
+        !TIFFGetField(tiff, TIFFTAG_TILELENGTH, &tile_length) ||
+        tile_width == 0 || tile_length == 0) {
+      within_set_error("Tiled TIFF is missing valid tile dimensions.");
+      goto cleanup;
+    }
+    tile_size = TIFFTileSize64(tiff);
+    tile_row_bytes = TIFFTileRowSize64(tiff);
+    tile_stripe_bytes = row_bytes * tile_length;
+    uint64_t expected_tile_row = (uint64_t)tile_width * samples * bytes_per_sample;
+    if (tile_size == 0 || tile_size > WITHIN_MAX_STRIP_BYTES ||
+        tile_row_bytes != expected_tile_row ||
+        tile_stripe_bytes == 0 || tile_stripe_bytes > WITHIN_MAX_STRIP_BYTES) {
+      within_set_error("TIFF decoded tile or assembled tile stripe exceeds the 4 MiB safety limit.");
+      goto cleanup;
+    }
+  } else {
+    uint64_t scanline_size = TIFFScanlineSize64(tiff);
+    uint64_t strip_size = TIFFStripSize64(tiff);
+    if (scanline_size != row_bytes || scanline_size == 0 ||
+        scanline_size > WITHIN_MAX_STRIP_BYTES || strip_size == 0 ||
+        strip_size > WITHIN_MAX_STRIP_BYTES) {
+      within_set_error("TIFF scanline or decoded strip exceeds the 4 MiB safety limit.");
+      goto cleanup;
+    }
   }
 
   int color_type;
-  int output_samples;
   int associated_alpha = 0;
   uint16_t *red = NULL, *green = NULL, *blue = NULL;
   if ((photometric == PHOTOMETRIC_MINISBLACK || photometric == PHOTOMETRIC_MINISWHITE) && samples == 1) {
     color_type = PNG_COLOR_TYPE_GRAY;
-    output_samples = 1;
   } else if (photometric == PHOTOMETRIC_PALETTE && samples == 1) {
+    if (bits != 8) {
+      within_set_error("Palette TIFF is limited to 8-bit indices.");
+      goto cleanup;
+    }
     if (!TIFFGetField(tiff, TIFFTAG_COLORMAP, &red, &green, &blue)) {
       within_set_error("Palette TIFF is missing its color map.");
       goto cleanup;
     }
     color_type = PNG_COLOR_TYPE_PALETTE;
-    output_samples = 1;
   } else if (photometric == PHOTOMETRIC_RGB && (samples == 3 || samples == 4)) {
     color_type = samples == 4 ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB;
-    output_samples = samples;
     if (samples == 4) {
       uint16_t extra_count = 0;
       uint16_t *extra_types = NULL;
@@ -279,18 +371,26 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     within_set_error("TIFF photometric layout is outside the grayscale, palette, RGB, or RGBA profile.");
     goto cleanup;
   }
-  if (scanline_size != (uint64_t)width * (uint64_t)samples) {
-    within_set_error("TIFF scanline byte count does not match its declared 8-bit pixel layout.");
-    goto cleanup;
+  if (tiled) {
+    tile = (unsigned char *)_TIFFmalloc((tmsize_t)tile_size);
+    tile_stripe = (unsigned char *)malloc((size_t)tile_stripe_bytes);
+    if (!tile || !tile_stripe) {
+      within_set_error("Could not allocate the bounded TIFF tile buffers.");
+      goto cleanup;
+    }
+  } else {
+    row = (unsigned char *)_TIFFmalloc((tmsize_t)row_bytes);
+    if (!row) {
+      within_set_error("Could not allocate the bounded TIFF scanline.");
+      goto cleanup;
+    }
   }
-
-  row = (unsigned char *)_TIFFmalloc((tmsize_t)scanline_size);
-  if (!row) {
-    within_set_error("Could not allocate the bounded TIFF scanline.");
-    goto cleanup;
-  }
-  if (associated_alpha || photometric == PHOTOMETRIC_MINISWHITE) {
-    converted = (unsigned char *)malloc((size_t)width * (size_t)output_samples);
+  int horizontal_flip = orientation == ORIENTATION_TOPRIGHT ||
+                        orientation == ORIENTATION_BOTRIGHT;
+  int vertical_flip = orientation == ORIENTATION_BOTRIGHT ||
+                      orientation == ORIENTATION_BOTLEFT;
+  if (associated_alpha || photometric == PHOTOMETRIC_MINISWHITE || horizontal_flip) {
+    converted = (unsigned char *)malloc((size_t)row_bytes);
     if (!converted) {
       within_set_error("Could not allocate the bounded PNG scanline.");
       goto cleanup;
@@ -314,7 +414,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   png_set_write_fn(png, NULL, within_png_write, within_png_flush);
   png_set_compression_buffer_size(png, 32U * 1024U);
   png_set_compression_level(png, 6);
-  png_set_IHDR(png, info, width, height, 8, color_type, PNG_INTERLACE_NONE,
+  png_set_IHDR(png, info, width, height, bits, color_type, PNG_INTERLACE_NONE,
                PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
   if (color_type == PNG_COLOR_TYPE_PALETTE) {
     palette = (png_color *)malloc(256U * sizeof(png_color));
@@ -330,27 +430,58 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     png_set_PLTE(png, info, palette, 256);
   }
   png_write_info(png, info);
+  if (bits == 16) png_set_swap(png);
 
+  uint32_t cached_tile_y = UINT32_MAX;
+  uint32_t cached_tile_rows = 0;
   for (uint32_t y = 0; y < height; ++y) {
-    if (TIFFReadScanline(tiff, row, y, 0) < 0) {
-      if (!within_error_message[0]) within_set_error("TIFF scanline decoding failed at row %u.", y);
-      goto cleanup;
-    }
-    png_bytep output_row = row;
-    if (photometric == PHOTOMETRIC_MINISWHITE) {
-      for (uint32_t x = 0; x < width; ++x) converted[x] = (unsigned char)(255U - row[x]);
-      output_row = converted;
-    } else if (associated_alpha) {
-      for (uint32_t x = 0; x < width; ++x) {
-        unsigned char alpha = row[x * 4U + 3U];
-        converted[x * 4U + 3U] = alpha;
-        for (uint32_t channel = 0; channel < 3; ++channel) {
-          unsigned int value = row[x * 4U + channel];
-          converted[x * 4U + channel] = alpha == 0 ? 0 :
-              (unsigned char)((value * 255U + alpha / 2U) / alpha > 255U ? 255U :
-                              (value * 255U + alpha / 2U) / alpha);
+    uint32_t source_y = vertical_flip ? height - 1U - y : y;
+    png_bytep source_row;
+    if (tiled) {
+      uint32_t wanted_tile_y = (source_y / tile_length) * tile_length;
+      if (wanted_tile_y != cached_tile_y) {
+        cached_tile_y = wanted_tile_y;
+        cached_tile_rows = tile_length < height - cached_tile_y
+                               ? tile_length
+                               : height - cached_tile_y;
+        memset(tile_stripe, 0, (size_t)row_bytes * cached_tile_rows);
+        for (uint32_t tile_x = 0; tile_x < width; tile_x += tile_width) {
+          ttile_t tile_index = TIFFComputeTile(tiff, tile_x, cached_tile_y, 0, 0);
+          tmsize_t decoded = TIFFReadEncodedTile(tiff, tile_index, tile,
+                                                 (tmsize_t)tile_size);
+          if (decoded < 0 || (uint64_t)decoded < tile_row_bytes * cached_tile_rows) {
+            if (!within_error_message[0]) {
+              within_set_error("TIFF tile decoding failed at tile %u.",
+                               (unsigned int)tile_index);
+            }
+            goto cleanup;
+          }
+          uint32_t columns = tile_width < width - tile_x
+                                 ? tile_width
+                                 : width - tile_x;
+          uint64_t copy_bytes = (uint64_t)columns * samples * bytes_per_sample;
+          for (uint32_t tile_row = 0; tile_row < cached_tile_rows; ++tile_row) {
+            memcpy(tile_stripe + (uint64_t)tile_row * row_bytes +
+                       (uint64_t)tile_x * samples * bytes_per_sample,
+                   tile + (uint64_t)tile_row * tile_row_bytes,
+                   (size_t)copy_bytes);
+          }
         }
       }
+      source_row = tile_stripe + (uint64_t)(source_y - cached_tile_y) * row_bytes;
+    } else {
+      if (TIFFReadScanline(tiff, row, source_y, 0) < 0) {
+        if (!within_error_message[0]) {
+          within_set_error("TIFF scanline decoding failed at row %u.", source_y);
+        }
+        goto cleanup;
+      }
+      source_row = row;
+    }
+    png_bytep output_row = source_row;
+    if (converted) {
+      within_transform_row(source_row, converted, width, samples, bits,
+                           photometric, associated_alpha, horizontal_flip);
       output_row = converted;
     }
     png_write_row(png, output_row);
@@ -361,6 +492,8 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
 cleanup:
   if (palette) free(palette);
   if (converted) free(converted);
+  if (tile_stripe) free(tile_stripe);
+  if (tile) _TIFFfree(tile);
   if (row) _TIFFfree(row);
   if (png) png_destroy_write_struct(&png, info ? &info : NULL);
   if (tiff) TIFFClose(tiff);

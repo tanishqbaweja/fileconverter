@@ -120,7 +120,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tar-to-tar-xz | 268,436,992 | 3 | 268,449,796 | 51.51 s–52.33 s | 175.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-to-zip | 268,436,992 | 3 | 268,517,517 | 16.67 s–16.85 s | 183.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-xz-to-tar | 268,449,796 | 3 | 268,436,992 | 6.21 s–6.65 s | 173.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
-| tiff-to-png | 50,348,250 | 3 | 1,578,983 | 2.23 s–2.50 s | 155.3 MiB | 40.0 MiB | read 24,576 B / write 32,768 B | passed |
+| tiff-to-png | 50,338,032 | 3 | 577,310 | 1.67 s–1.81 s | 164.1 MiB | 40.0 MiB | read 49,152 B / write 32,768 B | passed |
 | tsv-to-csv | 134,423,894 | 3 | 139,913,895 | 8.34 s–8.49 s | 200.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-json | 134,423,894 | 3 | 299,123,885 | 18.32 s–19.93 s | 194.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-ndjson | 134,423,894 | 3 | 288,143,880 | 9.67 s–9.77 s | 226.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -162,6 +162,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 2026-08-01T05:26:46.307Z | avi-to-wav | 230,929,466 | 0 | 230,929,466 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 718.272s. |
 | 2026-08-01T08:45:53.233Z | amr-to-wav | 134,229,414 | 0 | 262,144 | Conversion run 1 failed: [amrnb @ 0x481f70] Corrupt bitstream \| Audio decode or encode failed: Invalid data found when processing input |
 | 2026-08-01T12:46:34.682Z | sevenzip-to-tar | 1,087,945 | 0 | 1,087,945 | Conversion run 1 failed: 7Z exceeds the 100:1 expansion safety limit |
+| 2026-08-01T14:59:04.416Z | tiff-to-png | 50,338,032 | 0 | 50,338,032 | Browser image visual validation failed: SSIM 0.000001. |
 
 ## Every public passed profile
 
@@ -299,7 +300,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
-- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats; broader TIFF layouts beyond the bounded scanline profile remain absent.
+- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, and transposed TIFF orientations remain absent.
 - Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

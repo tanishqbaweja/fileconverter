@@ -8,6 +8,17 @@ cd /src/zlib
 emconfigure ./configure --static
 emmake make -j"$(nproc)" libz.a
 
+cd /src/libjpeg-turbo
+emcmake cmake -S . -B build \
+  -DCMAKE_BUILD_TYPE=Release \
+  -DENABLE_SHARED=OFF \
+  -DENABLE_STATIC=ON \
+  -DWITH_SIMD=OFF \
+  -DWITH_TURBOJPEG=OFF \
+  -DWITH_TOOLS=OFF \
+  -DWITH_TESTS=OFF
+cmake --build build --target jpeg-static --parallel "$(nproc)"
+
 cd /src/libpng
 export CPPFLAGS="-I/src/zlib"
 export LDFLAGS="-O3 -flto -L/src/zlib"
@@ -21,9 +32,9 @@ emconfigure ./configure \
 emmake make -j"$(nproc)"
 
 cd /src/libtiff
-export CPPFLAGS="-I/src/zlib"
-export LDFLAGS="-O3 -flto -L/src/zlib"
-export LIBS="-lz"
+export CPPFLAGS="-I/src/zlib -I/src/libjpeg-turbo/src -I/src/libjpeg-turbo/build"
+export LDFLAGS="-O3 -flto -L/src/zlib -L/src/libjpeg-turbo/build"
+export LIBS="-ljpeg -lz"
 emconfigure ./configure \
   --host=wasm32-unknown-emscripten \
   --disable-shared \
@@ -33,12 +44,14 @@ emconfigure ./configure \
   --disable-contrib \
   --disable-docs \
   --disable-cxx \
-  --without-jpeg \
-  --without-old-jpeg \
-  --without-jbig \
-  --without-lerc \
-  --without-lzma \
-  --without-webp \
-  --without-zstd \
-  --with-zlib
+  --enable-jpeg \
+  --with-jpeg-include-dir=/src/libjpeg-turbo/src \
+  --with-jpeg-lib-dir=/src/libjpeg-turbo/build \
+  --disable-old-jpeg \
+  --disable-jbig \
+  --disable-lerc \
+  --disable-lzma \
+  --disable-webp \
+  --disable-zstd \
+  --enable-zlib
 emmake make -C libtiff -j"$(nproc)"

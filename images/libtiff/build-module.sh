@@ -7,9 +7,12 @@ emcc \
   /src/within_tiff.c \
   /src/libtiff/libtiff/.libs/libtiff.a \
   /src/libpng/.libs/libpng16.a \
+  /src/libjpeg-turbo/build/libjpeg.a \
   /src/zlib/libz.a \
   -I/src/libtiff/libtiff \
   -I/src/libpng \
+  -I/src/libjpeg-turbo/src \
+  -I/src/libjpeg-turbo/build \
   -I/src/zlib \
   -O3 \
   -flto \
@@ -34,7 +37,8 @@ emcc \
 cp /src/libtiff/LICENSE.md /out/LICENSE.libtiff
 cp /src/libpng/LICENSE /out/LICENSE.libpng
 cp /src/zlib/LICENSE /out/LICENSE.zlib
-sed -i 's/[[:space:]]*$//' /out/LICENSE.libtiff /out/LICENSE.libpng /out/LICENSE.zlib
+cp /src/libjpeg-turbo/LICENSE.md /out/LICENSE.libjpeg-turbo
+sed -i 's/[[:space:]]*$//' /out/LICENSE.libtiff /out/LICENSE.libpng /out/LICENSE.zlib /out/LICENSE.libjpeg-turbo
 
 cat > /out/build-manifest.json <<'JSON'
 {
@@ -48,6 +52,9 @@ cat > /out/build-manifest.json <<'JSON'
   "zlibVersion": "1.3.2",
   "zlibSource": "https://zlib.net/zlib-1.3.2.tar.xz",
   "zlibSourceSha256": "d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3",
+  "libjpegTurboVersion": "3.1.4.1",
+  "libjpegTurboSource": "https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.4.1/libjpeg-turbo-3.1.4.1.tar.gz",
+  "libjpegTurboSourceSha256": "ecae8008e2cc9ade2f2c1bb9d5e6d4fb73e7c433866a056bd82980741571a022",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
   "initialWasmMemoryBytes": 41943040,
   "maximumWasmMemoryBytes": 41943040,
@@ -58,9 +65,11 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumOutputBytes": 67108864,
   "maximumPixels": 16777216,
   "maximumStripBytes": 4194304,
+  "maximumDecodedBlockBytes": 4194304,
+  "maximumTileStripeBytes": 4194304,
   "maximumExpansionRatio": 1000,
   "outstandingWrites": 1,
-  "readCompressions": ["none", "packbits", "lzw", "deflate"],
+  "readCompressions": ["none", "packbits", "lzw", "deflate", "jpeg"],
   "profiles": ["tiff-to-png"]
 }
 JSON

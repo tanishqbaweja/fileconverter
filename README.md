@@ -323,13 +323,15 @@ through this bounded profile. Stable Chrome does not expose ICO, SVG, HEIC/HEIF,
 or JPEG XL through worker `ImageDecoder`, so those formats are not advertised as
 inputs.
 
-TIFF-to-PNG uses a separate reproducible libtiff/libpng/zlib Wasm engine because
-Chrome does not decode TIFF in a worker. It reads at most 256 KiB at a time,
-decodes strip-organized 8-bit grayscale, palette, RGB, or RGBA scanlines, and
+TIFF-to-PNG uses a separate reproducible libtiff/libpng/zlib/libjpeg-turbo Wasm
+engine because Chrome does not decode TIFF in a worker. It reads at most 256 KiB
+at a time, decodes strip or tile blocks into one bounded raster stripe, and
 writes PNG chunks of at most 64 KiB with one pending destination operation. The
-heap is fixed at 40 MiB; decoded strips are capped at 4 MiB. None, PackBits, LZW,
-and Deflate inputs are accepted. Tiled, multipage, separated-planar, unusually
-oriented, or other unsupported layouts fail explicitly.
+heap is fixed at 40 MiB; decoded blocks and assembled tile stripes are capped at
+4 MiB. Contiguous 8- or 16-bit grayscale, RGB, and RGBA are accepted, as are
+8-bit palette images, orientations 1 through 4, and none, PackBits, LZW,
+Deflate, or baseline JPEG compression. Multipage, separated-planar,
+transposed-orientation, and other unsupported layouts fail explicitly.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
@@ -590,7 +592,7 @@ profiler:
 | --- | ---: | ---: | --- |
 | Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
 | Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
-| Images, TIFF -> PNG | 50,348,250 B | 155.3 MiB | native PNG decode, dimensions, SSIM 1.0 |
+| Images, tiled TIFF -> PNG | 50,338,032 B | 164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |
@@ -848,6 +850,12 @@ npx tsc --noEmit --incremental false
 npm test
 npm run test:browser
 ```
+
+The committed extended TIFF fixtures are reproducible with native FFmpeg and
+the pinned Python packages in `scripts/requirements-tiff-fixtures.txt`.
+`npm run fixtures:images` regenerates the small correctness matrix;
+`npm run fixtures:tiff-stress` streams the large tiled fixture and its
+independent PNG reference inside `fixtures/stress/images`.
 
 Run a three-pass real-fixture profile:
 

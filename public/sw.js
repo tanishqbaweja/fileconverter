@@ -1,4 +1,4 @@
-const CACHE_NAME = "within-shell-v16";
+const CACHE_NAME = "within-shell-v17";
 const APP_SHELL = [
   "/",
   "/icon.svg",
@@ -31,6 +31,7 @@ const APP_SHELL = [
   "/engines/tiff/LICENSE.libtiff",
   "/engines/tiff/LICENSE.libpng",
   "/engines/tiff/LICENSE.zlib",
+  "/engines/tiff/LICENSE.libjpeg-turbo",
 ];
 
 self.addEventListener("install", (event) => {

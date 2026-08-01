@@ -47,6 +47,7 @@ const webmBenchmarkFixture = path.resolve(
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
 const tiffAuditRoot = path.resolve(workRoot, "tiff-audit");
+const jpegAuditRoot = path.resolve(workRoot, "jpeg-audit");
 const sevenZipExperimentRoots = [
   path.resolve(workRoot, "7z-experiment"),
   path.resolve(workRoot, "sevenzip-name-check"),
@@ -62,6 +63,7 @@ const headedBrowserLogs = [
 ];
 const retainedOutputExtensions = new Set([".json", ".csv", ".html"]);
 const generatedStressExtensions = new Set([
+  ".png",
   ".bin",
   ".gz",
   ".bz2",
@@ -119,6 +121,7 @@ assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, sevenZipAuditRoot);
 assertInside(workRoot, tiffAuditRoot);
+assertInside(workRoot, jpegAuditRoot);
 for (const temporaryRoot of sevenZipExperimentRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -176,6 +179,7 @@ await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(sevenZipAuditRoot);
 await removeWithRetries(tiffAuditRoot);
+await removeWithRetries(jpegAuditRoot);
 for (const temporaryRoot of sevenZipExperimentRoots) {
   await removeWithRetries(temporaryRoot);
 }

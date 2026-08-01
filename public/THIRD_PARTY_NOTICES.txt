@@ -63,6 +63,13 @@ SHA-256: d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3
 Project: https://zlib.net/
 License: zlib license (see public/engines/tiff/LICENSE.zlib)
 
+libjpeg-turbo 3.1.4.1
+Source: https://github.com/libjpeg-turbo/libjpeg-turbo/releases/download/3.1.4.1/libjpeg-turbo-3.1.4.1.tar.gz
+SHA-256: ecae8008e2cc9ade2f2c1bb9d5e6d4fb73e7c433866a056bd82980741571a022
+Project: https://libjpeg-turbo.org/
+License: IJG, BSD-3-Clause, and zlib licenses
+(see public/engines/tiff/LICENSE.libjpeg-turbo)
+
 Exact configure switches, enabled components, memory limits, and build commands
 are in media/ffmpeg/, compression/bzip2/, compression/xz/,
 compression/libarchive7z/, images/libtiff/, and their corresponding build

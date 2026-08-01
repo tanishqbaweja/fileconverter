@@ -1429,12 +1429,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "Accepts one strip-organized 8-bit contiguous grayscale, palette, RGB, or RGBA image compressed with none, PackBits, LZW, or Deflate.",
-      "Tiled, multipage, separated-planar, unusually oriented, and other photometric or compressed TIFF layouts are rejected explicitly.",
+      "Accepts one strip- or tile-organized contiguous grayscale, RGB, or RGBA image at 8 or 16 bits per sample; 8-bit palette images are also accepted.",
+      "Supports none, PackBits, LZW, Deflate, and baseline JPEG compression plus TIFF orientations 1 through 4; multipage, separated-planar, transposed, and other photometric layouts are rejected explicitly.",
       "EXIF, ICC profiles, resolution, textual metadata, thumbnails, and private TIFF tags are not copied to PNG.",
     ],
     fidelityLimitations: [
-      "Associated alpha is converted to PNG's unassociated alpha representation with bounded 8-bit rounding.",
+      "Associated alpha is converted to PNG's unassociated alpha representation with bounded 8- or 16-bit rounding.",
     ],
     maxTestedBytes: 50_348_250,
     automatedTestStatus: "passed",

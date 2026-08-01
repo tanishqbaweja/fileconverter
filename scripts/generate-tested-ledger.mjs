@@ -136,7 +136,7 @@ lines.push(
   "",
   "- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.",
   "- Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.",
-  "- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats; broader TIFF layouts beyond the bounded scanline profile remain absent.",
+  "- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, and transposed TIFF orientations remain absent.",
   "- Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.",
   "- Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.",
   "",

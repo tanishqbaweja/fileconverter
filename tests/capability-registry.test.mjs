@@ -162,11 +162,21 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.libtiffVersion, "4.7.2");
   assert.equal(manifest.libpngVersion, "1.6.58");
   assert.equal(manifest.zlibVersion, "1.3.2");
+  assert.equal(manifest.libjpegTurboVersion, "3.1.4.1");
   assert.equal(manifest.initialWasmMemoryBytes, 40 * 1024 * 1024);
   assert.equal(manifest.maximumWasmMemoryBytes, 40 * 1024 * 1024);
   assert.equal(manifest.inputBufferBytes, 256 * 1024);
   assert.equal(manifest.outputBufferBytes, 64 * 1024);
   assert.equal(manifest.maximumStripBytes, 4 * 1024 * 1024);
+  assert.equal(manifest.maximumDecodedBlockBytes, 4 * 1024 * 1024);
+  assert.equal(manifest.maximumTileStripeBytes, 4 * 1024 * 1024);
+  assert.deepEqual(manifest.readCompressions, [
+    "none",
+    "packbits",
+    "lzw",
+    "deflate",
+    "jpeg",
+  ]);
   assert.equal(manifest.outstandingWrites, 1);
 });
 

@@ -14,6 +14,12 @@ const fixtureRoot = path.join(projectRoot, "fixtures", "images");
 
 await mkdir(fixtureRoot, { recursive: true });
 
+await execFileAsync(
+  "python",
+  [path.join(projectRoot, "scripts", "generate-tiff-extended-fixtures.py")],
+  { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+);
+
 const fixtures = [
   {
     name: "test-pattern.png",
@@ -150,18 +156,6 @@ const fixtures = [
     ],
   },
   {
-    name: "unsupported-16bit.tiff",
-    source: "testsrc2=size=64x64:rate=1,format=gray16le",
-    codecArguments: [
-      "-c:v",
-      "tiff",
-      "-compression_algo",
-      "deflate",
-      "-pix_fmt",
-      "gray16le",
-    ],
-  },
-  {
     name: "decompression-bomb.tiff",
     source: "color=c=black:size=5000x4000:rate=1",
     codecArguments: [
@@ -214,6 +208,47 @@ for (const fixture of fixtures) {
     `${JSON.stringify(
       {
         generatedBy: "scripts/generate-image-fixtures.mjs",
+        bytes: bytes.byteLength,
+        sha256: createHash("sha256").update(bytes).digest("hex"),
+        probe: JSON.parse(stdout),
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+}
+
+for (const name of [
+  "test-pattern-tiled.tiff",
+  "test-pattern-tiled-reference.png",
+  "test-pattern-gray16-deflate.tiff",
+  "test-pattern-rgb16.tiff",
+  "test-pattern-rgba16.tiff",
+  "test-pattern-orientation2.tiff",
+  "test-pattern-orientation3.tiff",
+  "test-pattern-orientation4.tiff",
+  "test-pattern-orientation2-reference.png",
+  "test-pattern-orientation3-reference.png",
+  "test-pattern-orientation4-reference.png",
+  "test-pattern-jpeg.tiff",
+  "test-pattern-jpeg-reference.png",
+  "unsupported-planar.tiff",
+  "unsupported-orientation5.tiff",
+  "unsupported-multipage.tiff",
+]) {
+  const fixturePath = path.join(fixtureRoot, name);
+  const bytes = await readFile(fixturePath);
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    ["-v", "error", "-show_streams", "-show_format", "-of", "json", fixturePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await writeFile(
+    `${fixturePath}.json`,
+    `${JSON.stringify(
+      {
+        generatedBy: "scripts/generate-tiff-extended-fixtures.py",
         bytes: bytes.byteLength,
         sha256: createHash("sha256").update(bytes).digest("hex"),
         probe: JSON.parse(stdout),
