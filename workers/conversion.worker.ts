@@ -2556,11 +2556,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.destination,
       (profileId === "mkv-to-mp4" ||
         profileId === "mov-to-mp4" ||
+        profileId === "mpeg-ts-to-mp4" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
+        profileId === "mpeg-ts-to-m4a" ||
         profileId === "mp4-to-m4a" ||
         profileId === "mkv-to-wav" ||
         profileId === "mov-to-wav" ||
+        profileId === "mpeg-ts-to-wav" ||
         profileId === "mp4-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "mp3-to-wav" ||
@@ -2836,11 +2839,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     } else if (
       profileId === "mkv-to-mp4" ||
       profileId === "mov-to-mp4" ||
+      profileId === "mpeg-ts-to-mp4" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
+      profileId === "mpeg-ts-to-m4a" ||
       profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
       profileId === "mov-to-wav" ||
+      profileId === "mpeg-ts-to-wav" ||
       profileId === "mp4-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "mp3-to-wav" ||
@@ -2860,6 +2866,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         remuxProfile:
           profileId === "mkv-to-wav" ||
           profileId === "mov-to-wav" ||
+          profileId === "mpeg-ts-to-wav" ||
           profileId === "mp4-to-wav" ||
           profileId === "m4a-to-wav" ||
           profileId === "mp3-to-wav" ||
@@ -2878,6 +2885,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 4
             : profileId === "mkv-to-m4a" ||
                 profileId === "mov-to-m4a" ||
+                profileId === "mpeg-ts-to-m4a" ||
                 profileId === "mp4-to-m4a"
               ? 2
               : 1,

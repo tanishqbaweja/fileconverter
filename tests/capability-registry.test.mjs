@@ -147,6 +147,22 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.ok(
     publicProfilesFor("mov").some((profile) => profile.id === "mov-to-wav"),
   );
+  assert.equal(detectFormat({ name: "broadcast.M2TS", type: "" }), "mpeg-ts");
+  assert.ok(
+    publicProfilesFor("mpeg-ts").some(
+      (profile) => profile.id === "mpeg-ts-to-mp4",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("mpeg-ts").some(
+      (profile) => profile.id === "mpeg-ts-to-m4a",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("mpeg-ts").some(
+      (profile) => profile.id === "mpeg-ts-to-wav",
+    ),
+  );
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
   assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));

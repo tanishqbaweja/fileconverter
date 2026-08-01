@@ -27,6 +27,7 @@ interface RemuxProgress {
 interface RemuxBridge {
   inputSize: number;
   copyOutput: boolean;
+  readSync?: (offset: number, destination: Uint8Array) => number;
   read: (offset: number, destination: Uint8Array) => Promise<number>;
   writeSync?: (offset: number, source: Uint8Array<ArrayBuffer>) => number;
   write: (offset: number, source: Uint8Array<ArrayBuffer>) => Promise<number>;
@@ -121,6 +122,8 @@ export async function runMediaRemux({
   let inputReader: ReadableStreamBYOBReader | null = null;
   let inputReaderPosition = -1;
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
+  const synchronousFileReader =
+    typeof FileReaderSync === "function" ? new FileReaderSync() : null;
   const threadedWorkerPoolSize =
     remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE
@@ -218,6 +221,23 @@ export async function runMediaRemux({
   const bridge: RemuxBridge = {
     inputSize: file.size,
     copyOutput: writable.requiresOwnedWriteBuffer,
+    readSync: synchronousFileReader
+      ? (offset, destination) => {
+          assertActive();
+          assertBoundedChunk(destination.byteLength, "Input read");
+          if (!Number.isSafeInteger(offset) || offset < 0) {
+            throw new Error(`FFmpeg requested an invalid input offset: ${offset}.`);
+          }
+          const end = Math.min(file.size, offset + destination.byteLength);
+          if (end <= offset) return 0;
+          const bytes = new Uint8Array(
+            synchronousFileReader.readAsArrayBuffer(file.slice(offset, end)),
+          );
+          destination.set(bytes);
+          recordRead(bytes.byteLength);
+          return bytes.byteLength;
+        }
+      : undefined,
     async read(offset, destination) {
       assertActive();
       assertBoundedChunk(destination.byteLength, "Input read");
@@ -449,6 +469,12 @@ export async function runMediaRemux({
   }
   if (result === 0) {
     flushCoalescedOutputSync();
+  }
+  if (result === 0 && metrics.outputBytes === 0) {
+    throw new Error(
+      engineErrors.join(" | ") ||
+        "FFmpeg completed without producing any output bytes.",
+    );
   }
   if (result !== 0) {
     throw new Error(

@@ -20,11 +20,11 @@
   "outstandingWrites": 1,
   "audioFifoMaximumQueuedSamples": 16384,
   "largeFileMemfs": false,
-  "profiles": ["mkv-to-mp4", "mov-to-mp4", "mkv-to-m4a", "mov-to-m4a", "mp4-to-m4a", "mkv-to-wav", "mov-to-wav", "mp4-to-wav", "m4a-to-wav", "mp3-to-wav", "flac-to-wav", "aiff-to-wav", "ogg-to-wav", "opus-to-wav", "m4a-to-flac", "mp3-to-flac", "wav-to-flac", "mkv-to-mp4-mpeg4", "mkv-to-webm"],
+  "profiles": ["mkv-to-mp4", "mov-to-mp4", "mpeg-ts-to-mp4", "mkv-to-m4a", "mov-to-m4a", "mpeg-ts-to-m4a", "mp4-to-m4a", "mkv-to-wav", "mov-to-wav", "mpeg-ts-to-wav", "mp4-to-wav", "m4a-to-wav", "mp3-to-wav", "flac-to-wav", "aiff-to-wav", "ogg-to-wav", "opus-to-wav", "m4a-to-flac", "mp3-to-flac", "wav-to-flac", "mkv-to-mp4-mpeg4", "mkv-to-webm"],
   "enabledDecoders": ["aac", "flac", "h264", "hevc", "mp3", "opus", "pcm_s16be", "pcm_s16le", "vorbis"],
   "enabledEncoders": ["flac", "h263", "libvpx_vp8", "mpeg4", "pcm_s16le"],
-  "enabledDemuxers": ["aiff", "flac", "matroska", "mov", "mp3", "ogg", "wav"],
+  "enabledDemuxers": ["aiff", "flac", "matroska", "mov", "mp3", "mpegts", "ogg", "wav"],
   "enabledMuxers": ["adts", "flac", "latm", "mov", "mp4", "mpegts", "wav", "webm"],
-  "enabledParsers": ["aac", "ac3", "flac", "hevc", "mpegaudio", "opus", "vorbis"],
+  "enabledParsers": ["aac", "ac3", "flac", "h264", "hevc", "mpegaudio", "opus", "vorbis"],
   "enabledBitstreamFilters": ["aac_adtstoasc", "extract_extradata", "h264_mp4toannexb", "hevc_mp4toannexb", "vp9_superframe", "vvc_mp4toannexb"]
 }

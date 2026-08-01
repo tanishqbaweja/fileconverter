@@ -57,11 +57,14 @@ if (
     "gzip-decompress",
     "mkv-to-mp4",
     "mov-to-mp4",
+    "mpeg-ts-to-mp4",
     "mkv-to-m4a",
     "mov-to-m4a",
+    "mpeg-ts-to-m4a",
     "mp4-to-m4a",
     "mkv-to-wav",
     "mov-to-wav",
+    "mpeg-ts-to-wav",
     "mp4-to-wav",
     "m4a-to-wav",
     "mp3-to-wav",
@@ -85,11 +88,14 @@ if (
 const isMediaProfile =
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
+  profileId === "mpeg-ts-to-mp4" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
+  profileId === "mpeg-ts-to-m4a" ||
   profileId === "mp4-to-m4a" ||
   profileId === "mkv-to-wav" ||
   profileId === "mov-to-wav" ||
+  profileId === "mpeg-ts-to-wav" ||
   profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "mp3-to-wav" ||
@@ -271,6 +277,14 @@ try {
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await setLocalFileInput(cdp, fixturePath);
+    const selectedFileBytes = await page.locator('[data-testid="file-input"]').evaluate(
+      (input) => input.files?.[0]?.size ?? null,
+    );
+    if (selectedFileBytes !== fixtureManifest.bytes) {
+      throw new Error(
+        `Chromium selected ${selectedFileBytes ?? "no"} bytes; expected ${fixtureManifest.bytes}.`,
+      );
+    }
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
@@ -604,9 +618,11 @@ async function validateMediaOutput(
   const audioOnly =
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
+    route === "mpeg-ts-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
+    route === "mpeg-ts-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -620,6 +636,7 @@ async function validateMediaOutput(
   const pcmOutput =
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
+    route === "mpeg-ts-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -776,6 +793,10 @@ async function validateMediaOutput(
     probe.withinValidation = independentAudioValidation;
   }
   const codecs = probe.streams.map((stream) => stream.codec_name);
+  const sourceVideo = source.probe.streams.find(
+    (stream) =>
+      stream.codec_type === "video" && !stream.disposition?.attached_pic,
+  );
   if (
     (audioOnly &&
       (codecs.length !== 1 ||
@@ -787,7 +808,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       !videoReencode &&
       (codecs.length !== 2 ||
-        codecs[0] !== "hevc" ||
+        codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== "aac"))
   ) {
     throw new Error(`Unexpected browser MP4 streams: ${codecs.join(", ")}.`);
@@ -795,14 +816,14 @@ async function validateMediaOutput(
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
   const duration = Number(probe.format.duration);
-  const sourceVideo = source.probe.streams.find(
-    (stream) =>
-      stream.codec_type === "video" && !stream.disposition?.attached_pic,
-  );
   const sourceAudio = source.probe.streams.find(
     (stream) => stream.codec_type === "audio",
   );
   const sourceDuration = Number(source.probe.format.duration);
+  const expectedDuration =
+    audioOnly && (pcmOutput || flacOutput)
+      ? (source.decodedAudioDurationSeconds ?? sourceDuration)
+      : sourceDuration;
   const expectedVideoWidth = webmReencode
     ? Math.min(640, sourceVideo?.width ?? 0)
     : sourceVideo?.width;
@@ -823,9 +844,10 @@ async function validateMediaOutput(
     (audioOnly && audio?.channels !== sourceAudio?.channels) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
+      route === "mpeg-ts-to-m4a" ||
       route === "mp4-to-m4a") &&
       audio?.tags?.language !== sourceAudio?.tags?.language) ||
-    Math.abs(duration - sourceDuration) > 0.25
+    Math.abs(duration - expectedDuration) > 0.25
   ) {
     throw new Error(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
@@ -927,6 +949,7 @@ async function validateMediaOutput(
     videoReencode ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
+    route === "mpeg-ts-to-m4a" ||
     route === "mp4-to-m4a";
   await execFileAsync(
     "ffmpeg",

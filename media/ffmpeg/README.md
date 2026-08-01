@@ -42,10 +42,16 @@ retains its 32 MiB initial and 96 MiB maximum sizes.
 
 The input `AVIOContext` buffer is 256 KiB. Output is 256 KiB except for the
 direct-save MKV-to-MP4 specialist's fixed 1 MiB buffer. JavaScript still handles
-one read or write at a time. Input uses a bounded browser File stream and reopens
-that stream at a genuine FFmpeg seek. Output writes use positional
+one read or write at a time. Input uses synchronous bounded `FileReaderSync`
+slices inside the dedicated worker, with the bounded BYOB stream bridge retained
+as a compatibility fallback. FFmpeg seeks by requesting a new slice. Output writes use positional
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.
+
+The lean core includes the MPEG-TS demuxer and H.264/HEVC parsers. Transport
+probing is capped at 2 MiB and two seconds of analyzed media. AAC packets use the
+`aac_adtstoasc` bitstream filter before fragmented MP4/M4A muxing; WAV conversion
+uses the existing bounded AAC decode, resample, and PCM pipeline.
 
 The shared remux core accepts both Matroska and genuine QuickTime MOV input.
 It preserves valid demuxer DTS values (including MOV edit-list timing) and only

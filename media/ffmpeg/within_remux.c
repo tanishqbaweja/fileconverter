@@ -8,6 +8,7 @@
 #include <emscripten/heap.h>
 
 #include <libavcodec/avcodec.h>
+#include <libavcodec/bsf.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
 #include <libavutil/audio_fifo.h>
@@ -42,6 +43,23 @@ EM_ASYNC_JS(int, within_input_read,
             (double offset, uint8_t *destination, int requested), {
   try {
     return await Module["withinBridge"].read(
+      offset,
+      HEAPU8.subarray(destination, destination + requested)
+    );
+  } catch (error) {
+    Module["withinBridge"].message(
+      2,
+      error instanceof Error ? error.message : String(error)
+    );
+    return -5;
+  }
+});
+
+EM_JS(int, within_input_read_sync,
+      (double offset, uint8_t *destination, int requested), {
+  try {
+    if (typeof Module["withinBridge"].readSync !== "function") return -38;
+    return Module["withinBridge"].readSync(
       offset,
       HEAPU8.subarray(destination, destination + requested)
     );
@@ -155,6 +173,10 @@ EM_JS(int, within_has_sync_output, (void), {
   return typeof Module["withinBridge"].writeSync === "function" ? 1 : 0;
 });
 
+EM_JS(int, within_has_sync_input, (void), {
+  return typeof Module["withinBridge"].readSync === "function" ? 1 : 0;
+});
+
 EM_JS(double, within_input_size, (void), {
   return Module["withinBridge"].inputSize;
 });
@@ -203,7 +225,10 @@ static int input_read(void *opaque, uint8_t *buffer, int requested) {
   if (available < bounded) {
     bounded = (int)available;
   }
-  int read = within_input_read((double)input->position, buffer, bounded);
+  int read = within_has_sync_input()
+                 ? within_input_read_sync((double)input->position, buffer,
+                                          bounded)
+                 : within_input_read((double)input->position, buffer, bounded);
   if (read < 0) {
     return AVERROR(EIO);
   }
@@ -1349,8 +1374,10 @@ int within_remux(int profile) {
   uint8_t *output_buffer = NULL;
   int *stream_map = NULL;
   int *synthesize_video_dts = NULL;
+  AVBSFContext **stream_bsfs = NULL;
   int64_t *last_dts = NULL;
   int64_t *packet_counts = NULL;
+  int64_t output_packet_count = 0;
   AVDictionary *muxer_options = NULL;
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
@@ -1395,10 +1422,16 @@ int within_remux(int profile) {
   input_format->pb = input_io;
   input_format->flags |= AVFMT_FLAG_CUSTOM_IO;
   input_format->probesize = 2 * 1024 * 1024;
+  input_format->max_analyze_duration = 2 * AV_TIME_BASE;
 
   result = avformat_open_input(&input_format, NULL, NULL, NULL);
   if (result < 0) {
     report_av_error("Input probing failed", result);
+    goto cleanup;
+  }
+  result = avformat_find_stream_info(input_format, NULL);
+  if (result < 0) {
+    report_av_error("Input stream inspection failed", result);
     goto cleanup;
   }
   if (input_format->nb_chapters > 0) {
@@ -1418,10 +1451,12 @@ int within_remux(int profile) {
   stream_map = av_calloc(input_format->nb_streams, sizeof(*stream_map));
   synthesize_video_dts =
       av_calloc(input_format->nb_streams, sizeof(*synthesize_video_dts));
+  stream_bsfs = av_calloc(input_format->nb_streams, sizeof(*stream_bsfs));
   last_dts = av_malloc_array(input_format->nb_streams, sizeof(*last_dts));
   packet_counts =
       av_calloc(input_format->nb_streams, sizeof(*packet_counts));
-  if (!stream_map || !synthesize_video_dts || !last_dts || !packet_counts) {
+  if (!stream_map || !synthesize_video_dts || !stream_bsfs || !last_dts ||
+      !packet_counts) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
@@ -1503,6 +1538,40 @@ int within_remux(int profile) {
     if (result < 0) {
       report_av_error("Stream metadata copy failed", result);
       goto cleanup;
+    }
+    if (input_format->iformat && input_format->iformat->name &&
+        strstr(input_format->iformat->name, "mpegts") &&
+        input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
+      const AVBitStreamFilter *filter =
+          av_bsf_get_by_name("aac_adtstoasc");
+      if (!filter) {
+        within_message(2, "The MPEG-TS AAC compatibility filter is unavailable.");
+        result = AVERROR_BSF_NOT_FOUND;
+        goto cleanup;
+      }
+      result = av_bsf_alloc(filter, &stream_bsfs[index]);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter allocation failed", result);
+        goto cleanup;
+      }
+      result = avcodec_parameters_copy(stream_bsfs[index]->par_in,
+                                       input_stream->codecpar);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter setup failed", result);
+        goto cleanup;
+      }
+      stream_bsfs[index]->time_base_in = input_stream->time_base;
+      result = av_bsf_init(stream_bsfs[index]);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter initialization failed", result);
+        goto cleanup;
+      }
+      result = avcodec_parameters_copy(output_stream->codecpar,
+                                       stream_bsfs[index]->par_out);
+      if (result < 0) {
+        report_av_error("Filtered AAC metadata copy failed", result);
+        goto cleanup;
+      }
     }
     output_stream->codecpar->codec_tag = 0;
     output_stream->time_base = input_stream->time_base;
@@ -1601,6 +1670,36 @@ int within_remux(int profile) {
     }
     last_dts[input_index] = packet->dts;
     int64_t media_time = packet_time_us(packet, input_stream);
+    if (stream_bsfs[input_index]) {
+      AVBSFContext *filter = stream_bsfs[input_index];
+      result = av_bsf_send_packet(filter, packet);
+      if (result < 0) {
+        av_packet_unref(packet);
+        report_av_error("AAC compatibility filtering failed", result);
+        goto cleanup;
+      }
+      while ((result = av_bsf_receive_packet(filter, packet)) >= 0) {
+        av_packet_rescale_ts(packet, filter->time_base_out,
+                             output_stream->time_base);
+        packet->stream_index = output_stream->index;
+        packet->pos = -1;
+        result = av_interleaved_write_frame(output_format, packet);
+        av_packet_unref(packet);
+        if (result < 0) {
+          report_av_error("MP4 packet write failed", result);
+          goto cleanup;
+        }
+        output_packet_count += 1;
+      }
+      if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
+        report_av_error("AAC compatibility filter read failed", result);
+        goto cleanup;
+      }
+      within_progress((double)input.position, (double)output.size,
+                      (double)media_time, (double)input_format->duration,
+                      (double)emscripten_get_heap_size());
+      continue;
+    }
     av_packet_rescale_ts(packet, input_stream->time_base,
                          output_stream->time_base);
     packet->stream_index = output_stream->index;
@@ -1612,6 +1711,7 @@ int within_remux(int profile) {
       report_av_error("MP4 packet write failed", result);
       goto cleanup;
     }
+    output_packet_count += 1;
     within_progress((double)input.position, (double)output.size,
                     (double)media_time, (double)input_format->duration,
                     (double)emscripten_get_heap_size());
@@ -1623,12 +1723,60 @@ int within_remux(int profile) {
     goto cleanup;
   }
 
+  for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+    AVBSFContext *filter = stream_bsfs[index];
+    if (!filter || stream_map[index] < 0) continue;
+    result = av_bsf_send_packet(filter, NULL);
+    if (result < 0 && result != AVERROR_EOF) {
+      report_av_error("AAC compatibility filter flush failed", result);
+      goto cleanup;
+    }
+    AVStream *output_stream = output_format->streams[stream_map[index]];
+    while ((result = av_bsf_receive_packet(filter, packet)) >= 0) {
+      av_packet_rescale_ts(packet, filter->time_base_out,
+                           output_stream->time_base);
+      packet->stream_index = output_stream->index;
+      packet->pos = -1;
+      result = av_interleaved_write_frame(output_format, packet);
+      av_packet_unref(packet);
+      if (result < 0) {
+        report_av_error("MP4 packet write failed", result);
+        goto cleanup;
+      }
+      output_packet_count += 1;
+    }
+    if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
+      report_av_error("AAC compatibility filter drain failed", result);
+      goto cleanup;
+    }
+  }
+  result = 0;
+  if (output_packet_count == 0) {
+    char message[256] = {0};
+    snprintf(message, sizeof(message),
+             "No media packets were produced after reading %lld of %lld source bytes.",
+             (long long)input.position, (long long)input.size);
+    within_message(2, message);
+    result = AVERROR_INVALIDDATA;
+    goto cleanup;
+  }
+
   result = av_write_trailer(output_format);
   if (result < 0) {
     report_av_error("MP4 trailer write failed", result);
     goto cleanup;
   }
   avio_flush(output_io);
+  if (output.size == 0) {
+    char message[320] = {0};
+    snprintf(message, sizeof(message),
+             "MP4 muxing produced no bytes from %lld packets after reading %lld of %lld source bytes.",
+             (long long)output_packet_count, (long long)input.position,
+             (long long)input.size);
+    within_message(2, message);
+    result = AVERROR_INVALIDDATA;
+    goto cleanup;
+  }
   result = within_has_sync_output()
                ? within_output_truncate_sync((double)output.size)
                : within_output_truncate((double)output.size);
@@ -1652,6 +1800,12 @@ cleanup:
   av_packet_free(&packet);
   av_free(stream_map);
   av_free(synthesize_video_dts);
+  if (stream_bsfs && input_format) {
+    for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+      av_bsf_free(&stream_bsfs[index]);
+    }
+  }
+  av_free(stream_bsfs);
   av_free(last_dts);
   av_free(packet_counts);
 

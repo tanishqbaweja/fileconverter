@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 84
+complete-Chromium memory profile have passed. The current registry publishes 87
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV -> MP4/M4A/WAV; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/MPEG-TS -> MP4/M4A/WAV; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -40,7 +40,7 @@ server conversion.
 
 ```text
 Browser File
-  -> reusable BYOB reader (<= 256 KiB)
+  -> synchronous worker slice reader, with BYOB fallback (<= 256 KiB)
   -> dedicated conversion worker
   -> custom FFmpeg AVIOContext / streaming transform
   -> one positional write in flight (<= 256 KiB)
@@ -163,16 +163,16 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables only the documented
-AIFF, FLAC, Matroska, MOV/MP4, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
+AIFF, FLAC, Matroska, MOV/MP4, MPEG-TS, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
 WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
-The lossless MKV/MOV-to-MP4 planner accepts only H.264 or HEVC video plus AAC
+The lossless MKV/MOV/MPEG-TS-to-MP4 planner accepts only H.264 or HEVC video plus AAC
 audio, the combinations proven by its browser and stress tests. M4A extraction
-from MKV, MOV, or MP4 accepts AAC. WAV extraction from MKV, MOV, or MP4 performs
+from MKV, MOV, MPEG-TS, or MP4 accepts AAC. WAV extraction from MKV, MOV, MPEG-TS, or MP4 performs
 genuine AAC decode, libswresample conversion, and PCM s16le encoding. A different codec is
 rejected before the muxer writes media data, with a readable explanation that a
 verified bounded re-encoder is not installed; it is never silently dropped or
@@ -426,6 +426,9 @@ Current exact-build results:
 | MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
 | MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
 | MOV → WAV | 3 | 149,251,969 B | 414,733,404 B | 195.3 MiB | 32 MiB | 2.8–36.0 MiB |
+| MPEG-TS → MP4 | 3 | 175,444,796 B | 167,139,361 B | 215.6 MiB | 56 MiB | 11.5–26.0 MiB |
+| MPEG-TS → M4A | 3 | 175,444,796 B | 11,455,964 B | 220.2 MiB | 56 MiB | 32.9–42.4 MiB |
+| MPEG-TS → WAV | 3 | 175,444,796 B | 68,776,014 B | 243.7 MiB | 56 MiB | 8.9–37.5 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -459,6 +462,15 @@ profiler:
 | Video, MOV -> MP4 | 149,251,969 B | 168.2 MiB | native packet traversal and HEVC/AAC probe |
 | Audio, MOV -> M4A | 149,251,969 B | 164.5 MiB | full AAC decode and metadata probe |
 | Audio, MOV -> WAV | 149,251,969 B | 195.3 MiB | full PCM decode and APSNR |
+| Video, MPEG-TS -> MP4 | 175,444,796 B | 215.6 MiB | native packet traversal and H.264/AAC probe |
+| Audio, MPEG-TS -> M4A | 175,444,796 B | 220.2 MiB | full AAC decode and metadata probe |
+| Audio, MPEG-TS -> WAV | 175,444,796 B | 243.7 MiB | full PCM decode and APSNR |
+
+The MPEG-TS stress source is a genuine 175,444,796-byte H.264/AAC transport
+stream. With the synchronous bounded worker reader, MP4 stream copy completed in
+2.14-2.42 seconds, M4A extraction in 1.51-1.69 seconds, and full AAC-to-PCM WAV
+conversion in 4.21-4.81 seconds. Every read remained at or below 262,144 bytes;
+the complete input and output were never mirrored into JavaScript or MEMFS.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and
@@ -636,6 +648,7 @@ npm run profile:archives
 npm run profile:documents
 npm run profile:ebooks
 npm run profile:mov
+npm run profile:mpeg-ts
 ```
 
 `scripts/memory-profile.mjs` records complete per-process private/RSS samples,
