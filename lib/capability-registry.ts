@@ -3,6 +3,7 @@ export type EngineId =
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
+  | "odf-stream"
   | "presentation-stream"
   | "spreadsheet-stream"
   | "subtitle-stream"
@@ -183,6 +184,27 @@ export const formats = [
     mimeTypes: [
       "application/vnd.openxmlformats-officedocument.presentationml.presentation",
     ],
+    category: "presentation",
+  },
+  {
+    id: "odt",
+    label: "OpenDocument text (ODT)",
+    extensions: ["odt"],
+    mimeTypes: ["application/vnd.oasis.opendocument.text"],
+    category: "document",
+  },
+  {
+    id: "ods",
+    label: "OpenDocument spreadsheet (ODS)",
+    extensions: ["ods"],
+    mimeTypes: ["application/vnd.oasis.opendocument.spreadsheet"],
+    category: "spreadsheet",
+  },
+  {
+    id: "odp",
+    label: "OpenDocument presentation (ODP)",
+    extensions: ["odp"],
+    mimeTypes: ["application/vnd.oasis.opendocument.presentation"],
     category: "presentation",
   },
   {
@@ -822,6 +844,83 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Fonts, styling, positions, layouts, transitions, animations, charts, diagrams, equations, images, media, hyperlinks, and embedded objects are not represented in plain text.",
     ],
     maxTestedBytes: 135_296_355,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "odt-to-txt",
+    input: "odt",
+    output: "txt",
+    engine: "odf-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Extracts the office:text body; headers, footers, annotations, tracked-change history, document properties, and embedded objects are omitted.",
+      "Encrypted, macro-bearing, or scripted packages, unsafe ZIP paths, ZIP64, archive bombs, malformed XML, DTDs, custom entities, and non-UTF-8 XML are rejected.",
+    ],
+    fidelityLimitations: [
+      "Preserves paragraph and heading order, tabs, explicit spaces, line breaks, Unicode text, and table-cell paragraphs.",
+      "Styles, page layout, fields, drawings, images, equations, links, and indexes are not represented in plain text.",
+    ],
+    maxTestedBytes: 135_267_233,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "ods-to-csv",
+    input: "ods",
+    output: "csv",
+    engine: "odf-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Exports only the first visible sheet; other visible and hidden sheets, named ranges, validation, annotations, drawings, charts, images, and print layout are omitted.",
+      "Encrypted, macro-bearing, or scripted packages, unsafe ZIP paths, ZIP64, archive bombs, malformed XML, DTDs, custom entities, and non-UTF-8 XML are rejected.",
+      "Cells and rows are bounded to 1 MiB of text, 16,384 columns, and 1,048,576 output rows.",
+    ],
+    fidelityLimitations: [
+      "Preserves cell order, repeated rows and columns, text, numbers, Booleans, dates, times, and cached formula values.",
+      "Formulas are not recalculated and styles or number formats are not rendered.",
+    ],
+    maxTestedBytes: 135_267_401,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "odp-to-txt",
+    input: "odp",
+    output: "txt",
+    engine: "odf-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Follows declared page order and includes hidden-page text; speaker notes, masters, styles, and package metadata are omitted.",
+      "Encrypted, macro-bearing, or scripted packages, unsafe ZIP paths, ZIP64, archive bombs, malformed XML, DTDs, custom entities, and non-UTF-8 XML are rejected.",
+      "Presentations are bounded to 10,000 declared pages.",
+    ],
+    fidelityLimitations: [
+      "Preserves text paragraph order, tabs, explicit spaces, line breaks, and Unicode text.",
+      "Positions, transitions, animations, charts, drawings, images, media, links, equations, and embedded objects are not represented in plain text.",
+    ],
+    maxTestedBytes: 135_272_481,
     automatedTestStatus: "passed",
     public: true,
   },

@@ -10,6 +10,7 @@ import { runZipArchiveConversion } from "./archive-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
 import { runEpubToText } from "./epub-conversion";
+import { runOdfConversion } from "./odf-conversion";
 import { runPptxToText } from "./pptx-conversion";
 import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
@@ -2646,6 +2647,30 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         write: (chunk, phase) =>
           writeBounded(
             presentationDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+          ),
+        warn: (message) => post({ type: "warning", jobId, message }),
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+      });
+    } else if (
+      profileId === "odt-to-txt" ||
+      profileId === "ods-to-csv" ||
+      profileId === "odp-to-txt"
+    ) {
+      const odfDestination = destination.writable;
+      await runOdfConversion({
+        file,
+        profileId,
+        metrics,
+        write: (chunk, phase) =>
+          writeBounded(
+            odfDestination,
             chunk,
             jobId,
             phase,

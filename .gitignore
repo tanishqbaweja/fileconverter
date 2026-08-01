@@ -36,6 +36,9 @@
 /fixtures/stress/documents/*.docx
 /fixtures/stress/spreadsheets/*.xlsx
 /fixtures/stress/presentations/*.pptx
+/fixtures/stress/open-documents/*.odt
+/fixtures/stress/open-documents/*.ods
+/fixtures/stress/open-documents/*.odp
 /fixtures/stress/ebooks/*.epub
 /fixtures/stress/archives/*.tar
 /fixtures/stress/archives/*.tar.gz

@@ -134,6 +134,12 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "pptx-to-txt",
     ),
   );
+  assert.equal(detectFormat({ name: "report.ODT", type: "" }), "odt");
+  assert.equal(detectFormat({ name: "ledger.ODS", type: "" }), "ods");
+  assert.equal(detectFormat({ name: "briefing.ODP", type: "" }), "odp");
+  assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
+  assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
+  assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));
   assert.equal(detectFormat({ name: "book.EPUB", type: "" }), "epub");
   assert.ok(
     publicProfilesFor("epub").some(

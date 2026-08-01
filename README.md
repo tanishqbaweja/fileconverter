@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 74
+complete-Chromium memory profile have passed. The current registry publishes 77
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -21,10 +21,10 @@ routes:
 | Compression | bytes -> GZIP; GZIP -> bytes | 268,517,399 B |
 | Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 268,517,551 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
-| Documents | DOCX -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
+| Documents | DOCX/ODT -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
-| Spreadsheets | XLSX -> first-visible-sheet CSV | 135,267,834 B |
-| Presentations | PPTX -> slide-ordered TXT | 135,296,355 B |
+| Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
+| Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
@@ -106,6 +106,9 @@ Hard limits:
   1,048,576 rows by 16,384 columns; package expansion: 100:1
 - PPTX metadata part: 2 MiB; declared slides: 10,000; XML token: 256 KiB;
   package expansion: 100:1
+- OpenDocument manifest: 2 MiB; XML token: 256 KiB; nesting: 256 elements;
+  package expansion: 100:1; ODS cells and rows: 1 MiB text, 16,384 columns,
+  and 1,048,576 rows; ODP pages: 10,000
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - ICO output: one PNG-compressed image; 256 px maximum per edge
@@ -299,11 +302,23 @@ hyperlinks, comments, speaker notes, masters, and embedded objects are omitted.
 Macro packages, unsafe references, encryption, ZIP64, archive bombs, DTDs,
 custom entities, non-UTF-8 XML, and malformed package structures are rejected.
 
+The OpenDocument routes require the exact uncompressed first `mimetype` entry,
+validate the package manifest and root media type, and stream `content.xml`
+through the same strict bounded XML tokenizer. ODT-to-TXT retains body paragraph,
+heading, explicit-space, tab, line-break, Unicode, and table-cell text while
+excluding annotations and tracked-change definitions. ODS-to-CSV emits only the
+first visible sheet, expands bounded repeated rows and cells, and preserves
+strings, numbers, Booleans, dates, times, and cached formula values without
+recalculating formulas or rendering styles. ODP-to-TXT follows declared page
+order, includes disclosed hidden-page text, and excludes notes and annotations.
+All three reject encryption, macros/scripts, unsafe paths, ZIP64, archive bombs,
+DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
+
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, BZIP2, XZ, ODT/ODS/ODP, and
+animated-image output, 7Z, BZIP2, XZ, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -427,6 +442,9 @@ profiler:
 | Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |
 | Spreadsheets, XLSX -> CSV | 135,267,834 B | 218.4 MiB | exact streamed output hash |
 | Presentations, PPTX -> TXT | 135,296,355 B | 217.4 MiB | exact streamed output hash |
+| Documents, ODT -> TXT | 135,267,233 B | 191.1 MiB | exact streamed output hash |
+| Spreadsheets, ODS -> CSV | 135,267,401 B | 196.2 MiB | exact streamed output hash |
+| Presentations, ODP -> TXT | 135,272,481 B | 199.1 MiB | exact streamed output hash |
 
 The DOCX profile produced the same 90,834,111-byte SHA-256
 `876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
@@ -457,6 +475,18 @@ in all three runs. Conversion took 10.50-10.93 seconds with one 262,144-byte
 write in flight and a 217.4 MiB worst process-tree result. The runner removed
 the generated presentation, converted outputs, and browser profile after
 validation.
+
+The OpenDocument profiles kept one 262,144-byte write in flight and produced
+byte-identical results in every run. ODT converted to a 108,212,672-byte TXT
+with SHA-256
+`143b28eff766ba5468a54a7695eaece6ee13565f25c41d33b99052f8111b487d`
+in 10.38-10.90 seconds. ODS converted to a 37,117,581-byte CSV with SHA-256
+`9efff69354574231912bd1218ebc414d694fc4075fcb617faa970d830ddd55ea`
+in 8.61-8.67 seconds. ODP converted to a 109,181,183-byte TXT with SHA-256
+`4356ce436790659471e1a0a2624affaba48afe003bb38b0b5b8c0359bf797c03`
+in 10.34-10.56 seconds. The category runner generated only one large package at
+a time inside this repository and removed every generated source, converted
+output, and browser profile after validation.
 
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`

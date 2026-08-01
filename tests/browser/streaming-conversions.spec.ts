@@ -433,6 +433,82 @@ for (const [fixture, expectedError] of [
   });
 }
 
+test("streams ODT body text while excluding revision history and annotations", async () => {
+  await selectFixture("fixtures/open-documents/sample.odt", "odt-to-txt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Private ODT\n" +
+      "Within keeps files on this device.\n" +
+      "Spaces:   tab:\tline\nbreak 😀\n" +
+      "Cell A\n" +
+      "Cell B\n",
+  );
+  expect(output).not.toContain("deleted history");
+  expect(output).not.toContain("comment omitted");
+  expect(state.warnings.join(" ")).toContain("tracked-change history");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-odt-to-txt")).toEqual([]);
+});
+
+test("streams the first visible ODS sheet to bounded coordinate-faithful CSV", async () => {
+  await selectFixture("fixtures/open-documents/sample.ods", "ods-to-csv");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Name,,,Value\r\n" +
+      '"Comma, quote ""\nline 😀",TRUE,2026-08-01,7\r\n' +
+      "3.5,,,\r\n" +
+      "3.5,,,\r\n",
+  );
+  expect(output).not.toContain("comment omitted");
+  expect(output).not.toContain("omitted extra");
+  const warnings = state.warnings.join(" ");
+  expect(warnings).toContain("additional visible ODS sheet was omitted");
+  expect(warnings).toContain("hidden ODS sheet was omitted");
+  expect(warnings).toContain("2 ODS formulas had no cached result");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-ods-to-csv")).toEqual([]);
+});
+
+test("streams ODP page text in order while excluding speaker notes", async () => {
+  await selectFixture("fixtures/open-documents/sample.odp", "odp-to-txt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "OpenDocument deck\n" +
+      "Page one\tprivate\n😀\n" +
+      "\n" +
+      "Hidden page\n",
+  );
+  expect(output).not.toContain("speaker note omitted");
+  expect(output).not.toContain("comment omitted");
+  expect(state.warnings.join(" ")).toContain("hidden ODP page is included");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-odp-to-txt")).toEqual([]);
+});
+
+for (const [fixture, profileId, expectedError] of [
+  ["fixtures/open-documents/unsafe-doctype.odt", "odt-to-txt", "DTD"],
+  ["fixtures/open-documents/unsafe-doctype.ods", "ods-to-csv", "DTD"],
+  ["fixtures/open-documents/unsafe-doctype.odp", "odp-to-txt", "DTD"],
+  ["fixtures/open-documents/encrypted.odt", "odt-to-txt", "Encrypted"],
+  ["fixtures/open-documents/macro.ods", "ods-to-csv", "macros or scripts"],
+  ["fixtures/open-documents/unsafe-path.odp", "odp-to-txt", "Unsafe ZIP entry"],
+] as const) {
+  test(`rejects hostile OpenDocument package ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(fixture, profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames(`within-test-${profileId}`)).toEqual([]);
+  });
+}
+
 test("streams EPUB spine text in reading order with explicit fidelity limits", async () => {
   await selectFixture("fixtures/ebooks/sample.epub", "epub-to-txt");
   const state = await convert();

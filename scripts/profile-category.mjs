@@ -108,6 +108,36 @@ const categories = {
       ],
     ),
   },
+  odt: {
+    generator: "scripts/generate-open-document-stress-fixture.mjs",
+    generatorArguments: ["odt"],
+    profiles: [["odt-to-txt", "document-128m.odt"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/open-documents/${name}`,
+      ],
+    ),
+  },
+  ods: {
+    generator: "scripts/generate-open-document-stress-fixture.mjs",
+    generatorArguments: ["ods"],
+    profiles: [["ods-to-csv", "spreadsheet-128m.ods"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/open-documents/${name}`,
+      ],
+    ),
+  },
+  odp: {
+    generator: "scripts/generate-open-document-stress-fixture.mjs",
+    generatorArguments: ["odp"],
+    profiles: [["odp-to-txt", "presentation-128m.odp"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/open-documents/${name}`,
+      ],
+    ),
+  },
   archives: {
     generator: "scripts/generate-archive-fixtures.mjs",
     generatorArguments: ["--include-stress"],

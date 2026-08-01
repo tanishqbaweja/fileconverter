@@ -1,0 +1,16 @@
+{
+  "generatedBy": "scripts/generate-open-document-stress-fixture.mjs",
+  "format": "odt",
+  "records": 1690823,
+  "pages": null,
+  "recordsPerPage": null,
+  "contentBytes": 135266355,
+  "bytes": 135267233,
+  "sha256": "b9d28ea02dabe84e2bf20d45b1127a60bb5073ebeb907aea36432e71e238ef1a",
+  "expectedByProfile": {
+    "odt-to-txt": {
+      "validationBytes": 108212672,
+      "validationSha256": "143b28eff766ba5468a54a7695eaece6ee13565f25c41d33b99052f8111b487d"
+    }
+  }
+}
