@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-01 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-02 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **143**
-- Public profiles with a retained successful Chrome stress report: **143**
+- Public passed conversion profiles: **149**
+- Public profiles with a retained successful Chrome stress report: **149**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 317/317 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-02:** 342/342 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Direct raw compression transcoding:** all six GZIP/BZIP2/XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable outputs, independent streamed decode/SHA-256 validation, and cleanup recovery. GZIP-to-BZIP2 reached 159.2 MiB in 42.58–43.27 s; GZIP-to-XZ 200.1 MiB in 55.81–56.43 s; BZIP2-to-GZIP 179.4 MiB in 51.10–51.54 s; BZIP2-to-XZ 201.3 MiB in 71.09–71.72 s; XZ-to-GZIP 236.2 MiB in 34.65–41.21 s; and XZ-to-BZIP2 196.4 MiB in 42.36–42.72 s. Every route kept reads at 256 KiB, writes at no more than 64 KiB, one pending operation, and no complete decompressed intermediate file.
 - **Direct compressed-TAR transcoding:** all six TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable hashes and cleanup recovery. TAR.GZ-to-TAR.BZ2 reached 168.7 MiB in 42.45–43.04 s; TAR.GZ-to-TAR.XZ 191.6 MiB in 54.92–56.42 s; TAR.BZ2-to-TAR.GZ 183.9 MiB in 51.26–52.65 s; TAR.BZ2-to-TAR.XZ 195.9 MiB in 70.70–71.99 s; TAR.XZ-to-TAR.GZ 239.9 MiB in 34.25–35.22 s; and TAR.XZ-to-TAR.BZ2 209.4 MiB in 42.39–42.73 s. Every route validated USTAR in flight, kept reads at 256 KiB and writes at 64 KiB with one pending operation, independently verified archive entry hashes, and stored no complete intermediate TAR.
 - **Compressed TAR/ZIP-to-7Z:** TAR.GZ passed 3/3 256 MiB Chrome runs in 8.22–9.17 s at 225.8 MiB worst incremental private memory; TAR.BZ2 passed in 25.06–25.69 s at 187.2 MiB; optimized TAR.XZ passed in 8.25–8.42 s at 231.1 MiB; and ZIP passed in 9.25–9.45 s at 236.2 MiB. All four streamed directly without a complete intermediate TAR, produced repeatable hashes, used adaptive COPY for the incompressible fixture, independently validated every extracted entry, and deleted 7Z scratch after every run. TAR.XZ uses a specialist 24 MiB decode-only XZ module, reducing combined fixed Wasm from 104 MiB to 80 MiB and resolving the earlier 250.1 MiB boundary failure.
 - **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
@@ -57,6 +58,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | bmp-to-webp | 24,883,254 | 3 | 257,798 | 0.48 s–0.55 s | 239.6 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
 | bzip2-compress | 268,435,456 | 3 | 270,593,081 | 39.16 s–39.85 s | 139.2 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | bzip2-decompress | 270,593,081 | 3 | 268,435,456 | 23.68 s–23.94 s | 140.4 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
+| bzip2-to-gzip | 270,593,081 | 3 | 268,517,399 | 51.10 s–51.54 s | 179.4 MiB | 8.0 MiB | read 262,144 B / write 16,384 B | passed |
+| bzip2-to-xz | 270,593,081 | 3 | 268,448,840 | 71.09 s–71.72 s | 201.3 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | csv-to-json | 134,423,894 | 3 | 299,123,885 | 18.76 s–19.14 s | 204.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | csv-to-ndjson | 134,423,894 | 3 | 288,143,880 | 9.76 s–9.97 s | 193.0 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | csv-to-tsv | 134,423,894 | 3 | 139,913,895 | 8.53 s–8.71 s | 192.7 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -75,6 +78,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | gif-to-webp | 281,853 | 3 | 57,248 | 0.07 s–0.12 s | 67.3 MiB | 0.0 MiB | read 196,608 B / write 57,248 B | passed |
 | gzip-compress | 268,435,456 | 3 | 268,517,399 | 27.81 s–29.70 s | 211.8 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | gzip-decompress | 268,517,399 | 3 | 268,435,456 | 3.71 s–4.08 s | 145.0 MiB | 0.0 MiB | read 2,097,152 B / write 65,536 B | not proven |
+| gzip-to-bzip2 | 268,517,399 | 3 | 270,593,081 | 42.58 s–43.27 s | 159.2 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
+| gzip-to-xz | 268,517,399 | 3 | 268,448,840 | 55.81 s–56.43 s | 200.1 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | html-to-txt | 143,850,123 | 3 | 101,380,000 | 15.71 s–15.93 s | 231.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | jpeg-to-bmp | 418,486 | 3 | 24,883,254 | 0.28 s–0.36 s | 169.9 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | jpeg-to-ico | 418,486 | 3 | 12,998 | 0.09 s–0.14 s | 80.5 MiB | 0.0 MiB | read 196,608 B / write 12,976 B | passed |
@@ -170,6 +175,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | xml-to-ndjson | 134,218,700 | 3 | 156,960,149 | 2.29 s–2.46 s | 165.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | xz-compress | 268,435,456 | 3 | 268,448,840 | 52.48 s–56.84 s | 172.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | xz-decompress | 268,448,840 | 3 | 268,435,456 | 6.32 s–6.98 s | 203.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
+| xz-to-bzip2 | 268,448,840 | 3 | 270,593,081 | 42.36 s–42.72 s | 196.4 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
+| xz-to-gzip | 268,448,840 | 3 | 268,517,399 | 34.65 s–41.21 s | 236.2 MiB | 48.0 MiB | read 262,144 B / write 16,384 B | passed |
 | zip-to-sevenzip | 268,517,517 | 3 | 268,435,574 | 9.25 s–9.45 s | 236.2 MiB | 56.0 MiB | read 262,144 B / write 65,536 B / scratch 61,440 B read/write | passed |
 | zip-to-tar | 268,517,517 | 3 | 268,436,992 | 3.91 s–4.19 s | 194.4 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | zip-to-tar-bz2 | 268,517,517 | 3 | 270,592,831 | 42.52 s–43.06 s | 160.6 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -224,6 +231,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | bmp-to-webp | image | image-browser | re-encode | 24,883,254 B | 3-run Chrome report |
 | bzip2-compress | compression | bzip2-wasm | stream | 268,435,456 B | 3-run Chrome report |
 | bzip2-decompress | compression | bzip2-wasm | stream | 270,593,081 B | 3-run Chrome report |
+| bzip2-to-gzip | compression | compression-codec-pipeline | stream | 270,593,081 B | 3-run Chrome report |
+| bzip2-to-xz | compression | compression-codec-pipeline | stream | 270,593,081 B | 3-run Chrome report |
 | csv-to-json | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | csv-to-ndjson | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | csv-to-tsv | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
@@ -242,6 +251,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | gif-to-webp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gzip-compress | compression | compression-stream | stream | 268,435,456 B | 3-run Chrome report |
 | gzip-decompress | compression | compression-stream | stream | 268,517,399 B | 3-run Chrome report |
+| gzip-to-bzip2 | compression | compression-codec-pipeline | stream | 268,517,399 B | 3-run Chrome report |
+| gzip-to-xz | compression | compression-codec-pipeline | stream | 268,517,399 B | 3-run Chrome report |
 | html-to-txt | document | document-stream | stream | 143,850,123 B | 3-run Chrome report |
 | jpeg-to-bmp | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
 | jpeg-to-ico | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
@@ -337,6 +348,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | xml-to-ndjson | data | xml-stream | stream | 134,218,700 B | 3-run Chrome report |
 | xz-compress | compression | xz-wasm | stream | 268,435,456 B | 3-run Chrome report |
 | xz-decompress | compression | xz-wasm | stream | 268,448,840 B | 3-run Chrome report |
+| xz-to-bzip2 | compression | compression-codec-pipeline | stream | 268,448,840 B | 3-run Chrome report |
+| xz-to-gzip | compression | compression-codec-pipeline | stream | 268,448,840 B | 3-run Chrome report |
 | zip-to-sevenzip | archive | libarchive7z-wasm | stream | 268,517,517 B | 3-run Chrome report |
 | zip-to-tar | archive | archive-browser | stream | 268,517,517 B | 3-run Chrome report |
 | zip-to-tar-bz2 | archive | bzip2-wasm | stream | 268,517,517 B | 3-run Chrome report |

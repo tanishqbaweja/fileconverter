@@ -305,6 +305,16 @@ entries become deterministic USTAR chunks that feed the fixed 8 MiB BZIP2 or
 48 MiB XZ engine directly. Backpressure spans ZIP inflation, TAR construction,
 compression, and the final selected destination with no intermediate archive.
 
+Raw GZIP, BZIP2, and XZ can also transcode directly in all six directions.
+The source decoder feeds one 64 KiB bounded bridge into the target encoder, so
+the app never writes, rereads, or retains a complete decompressed copy. The
+three source codecs share one concurrently generated 256 MiB stress fixture set
+instead of regenerating the same bytes for every route. Each route independently
+decompresses and hashes the result, rejects corrupt or truncated source streams,
+propagates destination failures, works through the direct-save and offline
+paths, and deletes partial output. The six three-run Chrome gates used 159.2 to
+236.2 MiB worst incremental private memory with exact repeatable output.
+
 All six direct TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions use one shared bounded
 pipeline: the source codec emits at most a 64 KiB TAR bridge chunk, the USTAR
 validator checks headers, checksums, paths, duplicates, entry count, and payload

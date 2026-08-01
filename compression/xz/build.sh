@@ -101,7 +101,7 @@ cat > /out/build-manifest.json <<'JSON'
   "integrityCheck": "CRC64",
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
-  "profiles": ["xz-compress", "xz-decompress", "tar-to-tar-xz", "tar-xz-to-tar", "tar-xz-to-zip", "tar-gz-to-tar-xz", "tar-bz2-to-tar-xz", "tar-xz-to-tar-gz", "tar-xz-to-tar-bz2", "zip-to-tar-xz"]
+  "profiles": ["xz-compress", "xz-decompress", "gzip-to-xz", "bzip2-to-xz", "xz-to-gzip", "xz-to-bzip2", "tar-to-tar-xz", "tar-xz-to-tar", "tar-xz-to-zip", "tar-gz-to-tar-xz", "tar-bz2-to-tar-xz", "tar-xz-to-tar-gz", "tar-xz-to-tar-bz2", "zip-to-tar-xz"]
 }
 JSON
 fi

@@ -46,6 +46,14 @@ const isStreamingTextProfile =
 const isArchiveCompressionProfile =
   profileId === "tar-to-tar-gz" ||
   profileId === "tar-gz-to-tar";
+const isCompressionTranscodeProfile = [
+  "gzip-to-bzip2",
+  "gzip-to-xz",
+  "bzip2-to-gzip",
+  "bzip2-to-xz",
+  "xz-to-gzip",
+  "xz-to-bzip2",
+].includes(profileId);
 const isBzip2Profile =
   profileId === "bzip2-compress" ||
   profileId === "bzip2-decompress" ||
@@ -58,12 +66,18 @@ const isBzip2Profile =
   profileId === "tar-gz-to-tar-bz2" ||
   profileId === "tar-bz2-to-tar-gz" ||
   profileId === "tar-bz2-to-tar-xz" ||
-  profileId === "tar-xz-to-tar-bz2";
+  profileId === "tar-xz-to-tar-bz2" ||
+  profileId === "gzip-to-bzip2" ||
+  profileId === "bzip2-to-gzip" ||
+  profileId === "bzip2-to-xz" ||
+  profileId === "xz-to-bzip2";
 const isBzip2CompressedOutput =
   profileId === "bzip2-compress" ||
   profileId === "tar-to-tar-bz2" ||
   profileId === "tar-gz-to-tar-bz2" ||
-  profileId === "tar-xz-to-tar-bz2";
+  profileId === "tar-xz-to-tar-bz2" ||
+  profileId === "gzip-to-bzip2" ||
+  profileId === "xz-to-bzip2";
 const isXzProfile =
   profileId === "xz-compress" ||
   profileId === "xz-decompress" ||
@@ -76,12 +90,23 @@ const isXzProfile =
   profileId === "tar-gz-to-tar-xz" ||
   profileId === "tar-bz2-to-tar-xz" ||
   profileId === "tar-xz-to-tar-gz" ||
-  profileId === "tar-xz-to-tar-bz2";
+  profileId === "tar-xz-to-tar-bz2" ||
+  profileId === "gzip-to-xz" ||
+  profileId === "bzip2-to-xz" ||
+  profileId === "xz-to-gzip" ||
+  profileId === "xz-to-bzip2";
 const isXzCompressedOutput =
   profileId === "xz-compress" ||
   profileId === "tar-to-tar-xz" ||
   profileId === "tar-gz-to-tar-xz" ||
-  profileId === "tar-bz2-to-tar-xz";
+  profileId === "tar-bz2-to-tar-xz" ||
+  profileId === "gzip-to-xz" ||
+  profileId === "bzip2-to-xz";
+const isGzipCompressedOutput =
+  profileId === "gzip-compress" ||
+  profileId === "tar-to-tar-gz" ||
+  profileId === "bzip2-to-gzip" ||
+  profileId === "xz-to-gzip";
 const isSevenZipProfile =
   profileId === "tar-to-sevenzip" ||
   profileId === "tar-gz-to-sevenzip" ||
@@ -183,6 +208,7 @@ if (
   !isImageProfile &&
   !isStreamingTextProfile &&
   !isArchiveCompressionProfile &&
+  !isCompressionTranscodeProfile &&
   !isArchiveTransformProfile
 ) {
   throw new Error(`Unsupported memory-profile route: ${profileId}`);
@@ -279,7 +305,9 @@ const maximumWriteChunkBytes =
     : 256 * 1024;
 const maximumWasmMemoryBytes =
   profileId === "tar-bz2-to-tar-xz" ||
-  profileId === "tar-xz-to-tar-bz2"
+  profileId === "tar-xz-to-tar-bz2" ||
+  profileId === "bzip2-to-xz" ||
+  profileId === "xz-to-bzip2"
     ? 56 * 1024 * 1024
   : profileId === "sevenzip-to-tar-bz2"
     ? 64 * 1024 * 1024
@@ -498,17 +526,24 @@ try {
       isImageProfile ||
       isArchiveTransformProfile ||
       isBzip2CompressedOutput ||
-      isXzCompressedOutput
+      isXzCompressedOutput ||
+      isGzipCompressedOutput
     ) {
       const physicalOutputPath = await findProjectLocalPayload(
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (isBzip2CompressedOutput || isXzCompressedOutput) {
+      if (
+        isBzip2CompressedOutput ||
+        isXzCompressedOutput ||
+        isGzipCompressedOutput
+      ) {
         outputSha256 = (await hashFile(physicalOutputPath)).sha256;
         const decoded = isXzCompressedOutput
           ? await validateXzOutput(physicalOutputPath)
-          : await validateBzip2Output(physicalOutputPath);
+          : isBzip2CompressedOutput
+            ? await validateBzip2Output(physicalOutputPath)
+            : await validateGzipOutput(physicalOutputPath);
         validationBytes = decoded.bytes;
         externalValidationSha256 = decoded.sha256;
         if (
@@ -516,14 +551,16 @@ try {
           externalValidationSha256 !== expectedValidationHash
         ) {
           throw new Error(
-            `Independent streamed ${isXzCompressedOutput ? "XZ" : "BZIP2"} validation failed on run ${run}: ${validationBytes} bytes.`,
+            `Independent streamed ${isXzCompressedOutput ? "XZ" : isBzip2CompressedOutput ? "BZIP2" : "GZIP"} validation failed on run ${run}: ${validationBytes} bytes.`,
           );
         }
         mediaProbe = {
           withinValidation: {
             method: isXzCompressedOutput
               ? "python-lzma-stream-sha256"
-              : "python-bz2-stream-sha256",
+              : isBzip2CompressedOutput
+                ? "python-bz2-stream-sha256"
+                : "python-gzip-stream-sha256",
             passed: true,
             bytes: validationBytes,
             sha256: externalValidationSha256,
@@ -1353,6 +1390,36 @@ print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
     !/^[0-9a-f]{64}$/.test(result.sha256)
   ) {
     throw new Error("The independent BZIP2 validator returned invalid evidence.");
+  }
+  return result;
+}
+
+async function validateGzipOutput(filePath) {
+  const python = String.raw`
+import gzip, hashlib, json, sys
+h = hashlib.sha256()
+n = 0
+with gzip.open(sys.argv[1], "rb") as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256)
+  ) {
+    throw new Error("The independent GZIP validator returned invalid evidence.");
   }
   return result;
 }

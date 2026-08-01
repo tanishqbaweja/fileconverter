@@ -53,6 +53,24 @@ const sevenZipFixturePath = path.join(
   "archives",
   "sample.7z",
 );
+const gzipFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "compression",
+  "sample.txt.gz",
+);
+const bzip2FixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "compression",
+  "sample.txt.bz2",
+);
+const xzFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "compression",
+  "sample.txt.xz",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -472,6 +490,66 @@ test("cached compressed TAR transcoding pipelines convert offline", async () => 
       for (const name of names) {
         await root.removeEntry(name).catch(() => {});
       }
+    }, routes.map((route) => route.outputName)).catch(() => {});
+  }
+});
+
+test("cached raw compression transcoding pipelines convert offline", async () => {
+  test.setTimeout(120_000);
+  const routes = [
+    { fixture: gzipFixturePath, profileId: "gzip-to-bzip2", outputName: "sample.txt.bz2", signature: [0x42, 0x5a, 0x68] },
+    { fixture: gzipFixturePath, profileId: "gzip-to-xz", outputName: "sample.txt.xz", signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00] },
+    { fixture: bzip2FixturePath, profileId: "bzip2-to-gzip", outputName: "sample.txt.gz", signature: [0x1f, 0x8b] },
+    { fixture: bzip2FixturePath, profileId: "bzip2-to-xz", outputName: "sample.txt.xz", signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00] },
+    { fixture: xzFixturePath, profileId: "xz-to-gzip", outputName: "sample.txt.gz", signature: [0x1f, 0x8b] },
+    { fixture: xzFixturePath, profileId: "xz-to-bzip2", outputName: "sample.txt.bz2", signature: [0x42, 0x5a, 0x68] },
+  ] as const;
+
+  const convertDirect = async (route: (typeof routes)[number]) => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page.locator('[data-testid="file-input"]').setInputFiles(route.fixture);
+    await page.locator('[data-testid="format-select"]').selectOption(route.profileId);
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async ({ outputName, signatureBytes }) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(outputName);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, signatureBytes).arrayBuffer()),
+      );
+      await root.removeEntry(outputName);
+      return { bytes: file.size, signature };
+    }, { outputName: route.outputName, signatureBytes: route.signature.length });
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  for (const route of routes) {
+    expect((await convertDirect(route)).signature).toEqual(route.signature);
+  }
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    for (const route of routes) {
+      const result = await convertDirect(route);
+      expect(result.bytes).toBeGreaterThan(100);
+      expect(result.signature).toEqual(route.signature);
+    }
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (names) => {
+      const root = await navigator.storage.getDirectory();
+      for (const name of names) await root.removeEntry(name).catch(() => {});
     }, routes.map((route) => route.outputName)).catch(() => {});
   }
 });

@@ -20,6 +20,7 @@ const cancellationFixturePath = path.join(
   "work",
   "cancellation-source.ndjson",
 );
+const truncatedGzipFixturePath = path.join(projectRoot, "work", "truncated.gz");
 const corruptBzip2FixturePath = path.join(projectRoot, "work", "corrupt.bz2");
 const truncatedBzip2FixturePath = path.join(projectRoot, "work", "truncated.bz2");
 const browserBzip2OutputPath = path.join(projectRoot, "work", "browser-output.bz2");
@@ -144,6 +145,56 @@ const compressedTarTranscodeRoutes = [
       xz: 48 * 1024 * 1024,
       bzip2: 8 * 1024 * 1024,
     },
+  },
+] as const;
+const rawCompressionTranscodeRoutes = [
+  {
+    fixture: "fixtures/compression/sample.txt.gz",
+    profileId: "gzip-to-bzip2",
+    target: "bzip2",
+    outputName: "sample.txt.bz2",
+    signature: [0x42, 0x5a, 0x68],
+    wasmMemories: { bzip2: 8 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/compression/sample.txt.gz",
+    profileId: "gzip-to-xz",
+    target: "xz",
+    outputName: "sample.txt.xz",
+    signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    wasmMemories: { xz: 48 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/compression/sample.txt.bz2",
+    profileId: "bzip2-to-gzip",
+    target: "gzip",
+    outputName: "sample.txt.gz",
+    signature: [0x1f, 0x8b],
+    wasmMemories: { bzip2: 8 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/compression/sample.txt.bz2",
+    profileId: "bzip2-to-xz",
+    target: "xz",
+    outputName: "sample.txt.xz",
+    signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    wasmMemories: { bzip2: 8 * 1024 * 1024, xz: 48 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/compression/sample.txt.xz",
+    profileId: "xz-to-gzip",
+    target: "gzip",
+    outputName: "sample.txt.gz",
+    signature: [0x1f, 0x8b],
+    wasmMemories: { xz: 48 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/compression/sample.txt.xz",
+    profileId: "xz-to-bzip2",
+    target: "bzip2",
+    outputName: "sample.txt.bz2",
+    signature: [0x42, 0x5a, 0x68],
+    wasmMemories: { xz: 48 * 1024 * 1024, bzip2: 8 * 1024 * 1024 },
   },
 ] as const;
 const batchFixturePaths = [
@@ -299,6 +350,32 @@ print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
   const { stdout } = await execFileAsync(
     "python",
     ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as { bytes: number; sha256: string };
+}
+
+async function compressedPayloadDigest(
+  filePath: string,
+  codec: "gzip" | "bzip2" | "xz",
+) {
+  const python = String.raw`
+import bz2, gzip, hashlib, json, lzma, sys
+opener = {"gzip": gzip.open, "bzip2": bz2.open, "xz": lzma.open}[sys.argv[2]]
+h = hashlib.sha256()
+n = 0
+with opener(sys.argv[1], "rb") as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath, codec],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
   );
   return JSON.parse(stdout) as { bytes: number; sha256: string };
@@ -500,6 +577,13 @@ test.beforeAll(async () => {
     truncatedBzip2FixturePath,
     validBzip2.subarray(0, validBzip2.byteLength - 7),
   );
+  const validGzip = await readFile(
+    path.join(projectRoot, "fixtures", "compression", "sample.txt.gz"),
+  );
+  await writeFile(
+    truncatedGzipFixturePath,
+    validGzip.subarray(0, validGzip.byteLength - 7),
+  );
   await writeFile(
     corruptXzFixturePath,
     Buffer.from("This is deliberately not an XZ stream.\n", "utf8"),
@@ -585,6 +669,7 @@ test.afterAll(async () => {
   await context?.close();
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
+  await rm(truncatedGzipFixturePath, { force: true });
   await rm(corruptBzip2FixturePath, { force: true });
   await rm(truncatedBzip2FixturePath, { force: true });
   await rm(browserBzip2OutputPath, { force: true });
@@ -2663,6 +2748,108 @@ for (const route of compressedTarTranscodeRoutes) {
   });
 }
 
+for (const route of rawCompressionTranscodeRoutes) {
+  test(`${route.profileId} directly transcodes an independently validated byte stream`, async () => {
+    await selectFixture(route.fixture, route.profileId);
+    const state = await convert();
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBe(1);
+    expect(state.metrics?.wasmMemories).toEqual(route.wasmMemories);
+    expect(state.metrics?.peakWasmMemoryBytes).toBe(
+      Object.values(route.wasmMemories).reduce((sum, bytes) => sum + bytes, 0),
+    );
+    await copyAndDeleteSmallOpfsFile(
+      state.opfsName!,
+      browserCompressedTarTranscodeOutputPath,
+    );
+    try {
+      expect(
+        await compressedPayloadDigest(
+          browserCompressedTarTranscodeOutputPath,
+          route.target,
+        ),
+      ).toEqual(
+        await fileDigest(
+          path.join(projectRoot, "fixtures", "compression", "sample.expected.txt"),
+        ),
+      );
+    } finally {
+      await rm(browserCompressedTarTranscodeOutputPath, { force: true });
+    }
+  });
+
+  test(`${route.profileId} writes through the bounded direct-save worker`, async () => {
+    await page.goto("/?test=1&directory=1");
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+    await removeOpfsEntryAndReportSize(route.outputName);
+    try {
+      await selectFixture(route.fixture, route.profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+        .toBe("complete");
+      const state = await currentState();
+      expect(state.batchOutputNames).toEqual([route.outputName]);
+      expect(state.opfsName).toBeNull();
+      expect(state.metrics?.peakPendingOperations).toBe(1);
+      expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+      const output = await page.evaluate(async ({ name, signatureBytes }) => {
+        const root = await navigator.storage.getDirectory();
+        const handle = await root.getFileHandle(name);
+        const file = await handle.getFile();
+        const signature = Array.from(
+          new Uint8Array(await file.slice(0, signatureBytes).arrayBuffer()),
+        );
+        await root.removeEntry(name);
+        return { bytes: file.size, signature };
+      }, { name: route.outputName, signatureBytes: route.signature.length });
+      expect(output.bytes).toBeGreaterThan(100);
+      expect(output.signature).toEqual(route.signature);
+    } finally {
+      await removeOpfsEntryAndReportSize(route.outputName);
+    }
+  });
+}
+
+for (const [fixture, profileId, expectedError] of [
+  [corruptBzip2FixturePath, "bzip2-to-gzip", "invalid stream header"],
+  [truncatedBzip2FixturePath, "bzip2-to-xz", "truncated"],
+  [corruptXzFixturePath, "xz-to-gzip", "invalid stream header"],
+  [truncatedXzFixturePath, "xz-to-bzip2", "truncated"],
+] as const) {
+  test(`${profileId} rejects ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(path.relative(projectRoot, fixture), profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames(`within-test-${profileId}`)).toEqual([]);
+  });
+}
+
+for (const profileId of ["gzip-to-bzip2", "gzip-to-xz"] as const) {
+  test(`${profileId} rejects truncated GZIP and removes partial output`, async () => {
+    await selectFixture(
+      path.relative(projectRoot, truncatedGzipFixturePath),
+      profileId,
+    );
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toBeTruthy();
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames(`within-test-${profileId}`)).toEqual([]);
+  });
+}
+
 test("converts a 1,024-entry ZIP directly to TAR.GZ", async () => {
   await selectFixture(
     "fixtures/archives/many-entries.zip",
@@ -3022,6 +3209,29 @@ for (const [fixture, profileId] of [
 }
 
 for (const route of compressedTarTranscodeRoutes) {
+  test(`${route.profileId} propagates a nested output failure and cleans up`, async () => {
+    await openFaultMode("write");
+    await selectFixture(route.fixture, route.profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    await expect
+      .poll(
+        async () =>
+          (await appOwnedOpfsNames(`within-test-${route.profileId}`)).length,
+        { timeout: 15_000 },
+      )
+      .toBe(0);
+  });
+}
+
+for (const route of rawCompressionTranscodeRoutes) {
   test(`${route.profileId} propagates a nested output failure and cleans up`, async () => {
     await openFaultMode("write");
     await selectFixture(route.fixture, route.profileId);

@@ -10,6 +10,12 @@ import {
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const reportRoot = path.join(projectRoot, "outputs", "reports");
 const ledgerPath = path.join(projectRoot, "TESTED.md");
+const ledgerDate = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Kolkata",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+}).format(new Date());
 
 const publicPassed = conversionProfiles.filter(
   (profile) =>
@@ -53,7 +59,7 @@ const profiled = publicPassed
 const lines = [
   "# Tested conversion ledger",
   "",
-  `Updated ${new Date().toISOString().slice(0, 10)} from the capability registry and retained successful Chrome stress reports.`,
+  `Updated ${ledgerDate} from the capability registry and retained successful Chrome stress reports.`,
   "",
   "This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.",
   "",
@@ -71,7 +77,8 @@ const lines = [
   "",
   "## Latest full verification cycle",
   "",
-  "- **2026-08-02:** 317/317 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **2026-08-02:** 342/342 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **Direct raw compression transcoding:** all six GZIP/BZIP2/XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable outputs, independent streamed decode/SHA-256 validation, and cleanup recovery. GZIP-to-BZIP2 reached 159.2 MiB in 42.58–43.27 s; GZIP-to-XZ 200.1 MiB in 55.81–56.43 s; BZIP2-to-GZIP 179.4 MiB in 51.10–51.54 s; BZIP2-to-XZ 201.3 MiB in 71.09–71.72 s; XZ-to-GZIP 236.2 MiB in 34.65–41.21 s; and XZ-to-BZIP2 196.4 MiB in 42.36–42.72 s. Every route kept reads at 256 KiB, writes at no more than 64 KiB, one pending operation, and no complete decompressed intermediate file.",
   "- **Direct compressed-TAR transcoding:** all six TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable hashes and cleanup recovery. TAR.GZ-to-TAR.BZ2 reached 168.7 MiB in 42.45–43.04 s; TAR.GZ-to-TAR.XZ 191.6 MiB in 54.92–56.42 s; TAR.BZ2-to-TAR.GZ 183.9 MiB in 51.26–52.65 s; TAR.BZ2-to-TAR.XZ 195.9 MiB in 70.70–71.99 s; TAR.XZ-to-TAR.GZ 239.9 MiB in 34.25–35.22 s; and TAR.XZ-to-TAR.BZ2 209.4 MiB in 42.39–42.73 s. Every route validated USTAR in flight, kept reads at 256 KiB and writes at 64 KiB with one pending operation, independently verified archive entry hashes, and stored no complete intermediate TAR.",
   "- **Compressed TAR/ZIP-to-7Z:** TAR.GZ passed 3/3 256 MiB Chrome runs in 8.22–9.17 s at 225.8 MiB worst incremental private memory; TAR.BZ2 passed in 25.06–25.69 s at 187.2 MiB; optimized TAR.XZ passed in 8.25–8.42 s at 231.1 MiB; and ZIP passed in 9.25–9.45 s at 236.2 MiB. All four streamed directly without a complete intermediate TAR, produced repeatable hashes, used adaptive COPY for the incompressible fixture, independently validated every extracted entry, and deleted 7Z scratch after every run. TAR.XZ uses a specialist 24 MiB decode-only XZ module, reducing combined fixed Wasm from 104 MiB to 80 MiB and resolving the earlier 250.1 MiB boundary failure.",
   "- **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840\u00d72,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44\u20130.65 s conversion time, and 202.2 MiB worst incremental private memory.",

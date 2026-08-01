@@ -52,6 +52,6 @@ cat > /out/build-manifest.json <<'JSON'
   "decompressionSmallMode": 0,
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
-  "profiles": ["bzip2-compress", "bzip2-decompress", "tar-to-tar-bz2", "tar-bz2-to-tar", "tar-bz2-to-zip", "tar-gz-to-tar-bz2", "tar-bz2-to-tar-gz", "tar-bz2-to-tar-xz", "tar-xz-to-tar-bz2", "zip-to-tar-bz2"]
+  "profiles": ["bzip2-compress", "bzip2-decompress", "tar-to-tar-bz2", "tar-bz2-to-tar", "tar-bz2-to-zip", "gzip-to-bzip2", "bzip2-to-gzip", "bzip2-to-xz", "xz-to-bzip2", "tar-gz-to-tar-bz2", "tar-bz2-to-tar-gz", "tar-bz2-to-tar-xz", "tar-xz-to-tar-bz2", "zip-to-tar-bz2"]
 }
 JSON

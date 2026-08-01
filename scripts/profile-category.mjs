@@ -347,6 +347,17 @@ const categories = {
       ["tar-xz-to-tar-bz2", "fixtures/stress/archives/archive-256m.tar.xz"],
     ],
   },
+  "compression-transcode": {
+    generator: "scripts/generate-compression-transcode-stress-fixtures.mjs",
+    profiles: [
+      ["gzip-to-bzip2", "fixtures/stress/deterministic-256m.bin.gz"],
+      ["gzip-to-xz", "fixtures/stress/deterministic-256m.bin.gz"],
+      ["bzip2-to-gzip", "fixtures/stress/deterministic-256m.bin.bz2"],
+      ["bzip2-to-xz", "fixtures/stress/deterministic-256m.bin.bz2"],
+      ["xz-to-gzip", "fixtures/stress/deterministic-256m.bin.xz"],
+      ["xz-to-bzip2", "fixtures/stress/deterministic-256m.bin.xz"],
+    ],
+  },
   gzip: {
     generator: "scripts/generate-stress-fixture.mjs",
     generatorArguments: ["256"],

@@ -95,7 +95,9 @@ test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => 
     (profile) =>
       profile.engine === "bzip2-wasm" ||
       (profile.engine === "archive-codec-pipeline" &&
-        (profile.input === "tar-bz2" || profile.output === "tar-bz2")),
+        (profile.input === "tar-bz2" || profile.output === "tar-bz2")) ||
+      (profile.engine === "compression-codec-pipeline" &&
+        (profile.input === "bzip2" || profile.output === "bzip2")),
   );
   assert.deepEqual(
     profiles.map((profile) => profile.id),
@@ -118,7 +120,9 @@ test("every XZ profile is declared by its fixed-memory Wasm manifest", () => {
     (profile) =>
       profile.engine === "xz-wasm" ||
       (profile.engine === "archive-codec-pipeline" &&
-        (profile.input === "tar-xz" || profile.output === "tar-xz")),
+        (profile.input === "tar-xz" || profile.output === "tar-xz")) ||
+      (profile.engine === "compression-codec-pipeline" &&
+        (profile.input === "xz" || profile.output === "xz")),
   );
   assert.deepEqual(
     profiles.map((profile) => profile.id),

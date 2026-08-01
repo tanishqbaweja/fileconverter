@@ -13,8 +13,8 @@ import { runArchiveToSevenZip } from "./archive-to-sevenzip-conversion";
 import { runBzip2Conversion } from "./bzip2-compression";
 import { runCompressedTarToZip } from "./compressed-tar-conversion";
 import {
-  runCompressedTarTranscode,
-  type TarCompressionCodec,
+  runCompressionTranscode,
+  type CompressionCodec,
 } from "./compressed-tar-transcode";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
@@ -64,16 +64,22 @@ const MAX_SVG_INPUT_BYTES = 4 * 1024 * 1024;
 const MAX_SVG_ELEMENTS = 10_000;
 const CANCELLATION_YIELD_BYTES = 1024 * 1024;
 const RESVG_WASM_URL = "/engines/svg/resvg.wasm";
-const COMPRESSED_TAR_TRANSCODES = {
-  "tar-gz-to-tar-bz2": { source: "gzip", target: "bzip2" },
-  "tar-gz-to-tar-xz": { source: "gzip", target: "xz" },
-  "tar-bz2-to-tar-gz": { source: "bzip2", target: "gzip" },
-  "tar-bz2-to-tar-xz": { source: "bzip2", target: "xz" },
-  "tar-xz-to-tar-gz": { source: "xz", target: "gzip" },
-  "tar-xz-to-tar-bz2": { source: "xz", target: "bzip2" },
+const COMPRESSION_TRANSCODES = {
+  "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
+  "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
+  "bzip2-to-gzip": { source: "bzip2", target: "gzip", validateTar: false },
+  "bzip2-to-xz": { source: "bzip2", target: "xz", validateTar: false },
+  "xz-to-gzip": { source: "xz", target: "gzip", validateTar: false },
+  "xz-to-bzip2": { source: "xz", target: "bzip2", validateTar: false },
+  "tar-gz-to-tar-bz2": { source: "gzip", target: "bzip2", validateTar: true },
+  "tar-gz-to-tar-xz": { source: "gzip", target: "xz", validateTar: true },
+  "tar-bz2-to-tar-gz": { source: "bzip2", target: "gzip", validateTar: true },
+  "tar-bz2-to-tar-xz": { source: "bzip2", target: "xz", validateTar: true },
+  "tar-xz-to-tar-gz": { source: "xz", target: "gzip", validateTar: true },
+  "tar-xz-to-tar-bz2": { source: "xz", target: "bzip2", validateTar: true },
 } as const satisfies Record<
   string,
-  { source: TarCompressionCodec; target: TarCompressionCodec }
+  { source: CompressionCodec; target: CompressionCodec; validateTar: boolean }
 >;
 
 let activeJobId: string | null = null;
@@ -2611,9 +2617,9 @@ async function runRecords(
 
 async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   const { jobId, profileId, file } = message;
-  const compressedTarTranscode =
-    COMPRESSED_TAR_TRANSCODES[
-      profileId as keyof typeof COMPRESSED_TAR_TRANSCODES
+  const compressionTranscode =
+    COMPRESSION_TRANSCODES[
+      profileId as keyof typeof COMPRESSION_TRANSCODES
     ];
   activeJobId = jobId;
   cancelled = false;
@@ -2679,7 +2685,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.testFault,
       profileId === "mkv-to-mp4"
         ? DIRECT_REMUX_WRITE_CHUNK
-        : compressedTarTranscode ||
+        : compressionTranscode ||
             profileId === "tar-to-sevenzip" ||
             profileId === "tar-gz-to-sevenzip" ||
             profileId === "tar-bz2-to-sevenzip" ||
@@ -2723,18 +2729,18 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       await new Promise<void>(() => {});
       return;
     }
-    if (compressedTarTranscode) {
-      const compressedTarDestination = destination.writable;
-      await runCompressedTarTranscode({
+    if (compressionTranscode) {
+      const compressedDestination = destination.writable;
+      await runCompressionTranscode({
         file,
-        ...compressedTarTranscode,
+        ...compressionTranscode,
         metrics,
         assertActive,
         progress: (phase) =>
           emitProgress(jobId, phase, metrics, startedAt),
         write: (chunk, phase) =>
           writeBounded(
-            compressedTarDestination,
+            compressedDestination,
             chunk,
             jobId,
             phase,

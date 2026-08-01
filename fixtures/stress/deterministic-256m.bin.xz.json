@@ -1,7 +1,6 @@
 {
-  "generatedBy": "scripts/generate-xz-stress-fixtures.mjs",
-  "compressionPreset": 0,
-  "integrityCheck": "CRC64",
+  "generatedBy": "scripts/generate-compression-transcode-stress-fixtures.mjs",
+  "codec": "xz",
   "bytes": 268448840,
   "sha256": "02020bbe77118269a17cf031c923a20ac1436a82fdb2472f9315b29580440bf6",
   "validationBytes": 268435456,

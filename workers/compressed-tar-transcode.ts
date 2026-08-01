@@ -8,51 +8,52 @@ const TAR_CHUNK_BYTES = 64 * 1024;
 const MAX_EXPANDED_BYTES = 64 * 1024 * 1024 * 1024;
 const MAX_EXPANSION_RATIO = 100;
 
-export type TarCompressionCodec = "gzip" | "bzip2" | "xz";
+export type CompressionCodec = "gzip" | "bzip2" | "xz";
 
-export interface CompressedTarTranscodeOptions {
+export interface CompressionTranscodeOptions {
   file: File;
-  source: TarCompressionCodec;
-  target: TarCompressionCodec;
+  source: CompressionCodec;
+  target: CompressionCodec;
+  validateTar: boolean;
   metrics: ConversionMetrics;
   assertActive(): void;
   progress(phase: string): void;
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
 }
 
-export async function runCompressedTarTranscode(
-  options: CompressedTarTranscodeOptions,
+export async function runCompressionTranscode(
+  options: CompressionTranscodeOptions,
 ): Promise<void> {
   if (options.source === options.target) {
-    throw new Error("Compressed TAR transcoding requires different codecs.");
+    throw new Error("Compression transcoding requires different codecs.");
   }
-  const tarStream = new TransformStream<
+  const payloadStream = new TransformStream<
     Uint8Array<ArrayBuffer>,
     Uint8Array<ArrayBuffer>
   >();
-  const tarWriter = tarStream.writable.getWriter();
-  const validator = new TarStreamValidator();
+  const payloadWriter = payloadStream.writable.getWriter();
+  const validator = options.validateTar ? new TarStreamValidator() : null;
   let targetFailure: unknown = null;
 
   const target = (async () => {
     try {
-      await encodeTarget(options, tarStream.readable);
+      await encodeTarget(options, payloadStream.readable);
     } catch (error) {
       targetFailure = error;
     }
   })();
 
-  const writeTarChunk = async (
+  const writePayloadChunk = async (
     chunk: Uint8Array<ArrayBuffer>,
   ): Promise<void> => {
-    validator.push(chunk);
+    validator?.push(chunk);
     for (let offset = 0; offset < chunk.byteLength; offset += TAR_CHUNK_BYTES) {
       if (targetFailure) throw targetFailure;
       const part = chunk.slice(
         offset,
         Math.min(offset + TAR_CHUNK_BYTES, chunk.byteLength),
       );
-      await tarWriter.write(part);
+      await payloadWriter.write(part);
       if (targetFailure) throw targetFailure;
     }
   };
@@ -60,31 +61,31 @@ export async function runCompressedTarTranscode(
   let sourceFailure: unknown = null;
   try {
     try {
-      await decodeSource(options, writeTarChunk);
-      validator.finish();
+      await decodeSource(options, writePayloadChunk);
+      validator?.finish();
     } catch (error) {
       sourceFailure = error;
       throw error;
     }
-    await tarWriter.close();
+    await payloadWriter.close();
     await target;
     if (targetFailure) throw targetFailure;
     if (options.metrics.outputBytes === 0) {
-      throw new Error("The compressed TAR transcoder produced no output.");
+      throw new Error("The compression transcoder produced no output.");
     }
   } catch (error) {
-    await tarWriter.abort(error).catch(() => {});
+    await payloadWriter.abort(error).catch(() => {});
     await target;
     throw sourceFailure ?? targetFailure ?? error;
   }
 }
 
 async function decodeSource(
-  options: CompressedTarTranscodeOptions,
-  writeTarChunk: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
+  options: CompressionTranscodeOptions,
+  writePayloadChunk: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
 ): Promise<void> {
   if (options.source === "gzip") {
-    await decodeGzip(options, writeTarChunk);
+    await decodeGzip(options, writePayloadChunk);
     return;
   }
   const codecOptions = {
@@ -93,7 +94,7 @@ async function decodeSource(
     metrics: options.metrics,
     assertActive: options.assertActive,
     progress: options.progress,
-    write: (chunk: Uint8Array<ArrayBuffer>) => writeTarChunk(chunk),
+    write: (chunk: Uint8Array<ArrayBuffer>) => writePayloadChunk(chunk),
   };
   if (options.source === "bzip2") {
     await runBzip2Conversion(codecOptions);
@@ -103,7 +104,7 @@ async function decodeSource(
 }
 
 async function encodeTarget(
-  options: CompressedTarTranscodeOptions,
+  options: CompressionTranscodeOptions,
   inputStream: ReadableStream<Uint8Array<ArrayBuffer>>,
 ): Promise<void> {
   if (options.target === "gzip") {
@@ -119,7 +120,7 @@ async function encodeTarget(
         options.assertActive();
         const { done, value } = await reader.read();
         if (done) break;
-        await options.write(value, "Writing TAR.GZ");
+        await options.write(value, `Writing ${codecLabel(options.target)}`);
       }
     } finally {
       await reader.cancel().catch(() => {});
@@ -145,8 +146,8 @@ async function encodeTarget(
 }
 
 async function decodeGzip(
-  options: CompressedTarTranscodeOptions,
-  writeTarChunk: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
+  options: CompressionTranscodeOptions,
+  writePayloadChunk: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
 ): Promise<void> {
   const source = createBoundedFileInput(options);
   const decoded = source.pipeThrough(
@@ -172,8 +173,8 @@ async function decodeGzip(
           `GZIP decompression stopped: output exceeded the ${MAX_EXPANSION_RATIO}:1 or 64 GiB expansion safety limit.`,
         );
       }
-      await writeTarChunk(value);
-      options.progress("Decompressing TAR.GZ");
+      await writePayloadChunk(value);
+      options.progress(`Decompressing ${codecLabel(options.source)}`);
     }
     options.metrics.inputBytes = options.file.size;
   } finally {
@@ -182,7 +183,7 @@ async function decodeGzip(
 }
 
 function createBoundedFileInput(
-  options: CompressedTarTranscodeOptions,
+  options: CompressionTranscodeOptions,
 ): ReadableStream<Uint8Array<ArrayBuffer>> {
   const reader = options.file.stream().getReader({ mode: "byob" });
   let readBuffer = new Uint8Array(INPUT_CHUNK_BYTES);
@@ -201,7 +202,7 @@ function createBoundedFileInput(
           options.metrics.maxReadChunkBytes,
           owned.byteLength,
         );
-        options.progress("Reading TAR.GZ");
+        options.progress(`Reading ${codecLabel(options.source)}`);
         readBuffer =
           value.buffer.byteLength >= INPUT_CHUNK_BYTES
             ? new Uint8Array(value.buffer, 0, INPUT_CHUNK_BYTES)
@@ -214,4 +215,8 @@ function createBoundedFileInput(
     },
     { highWaterMark: 1 },
   );
+}
+
+function codecLabel(codec: CompressionCodec): string {
+  return codec === "gzip" ? "GZIP" : codec === "bzip2" ? "BZIP2" : "XZ";
 }
