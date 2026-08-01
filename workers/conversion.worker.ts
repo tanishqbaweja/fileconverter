@@ -2572,6 +2572,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mpeg-ts-to-wav" ||
         profileId === "flv-to-wav" ||
         profileId === "avi-to-wav" ||
+        profileId === "ogv-to-wav" ||
         profileId === "mp4-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "mp3-to-wav" ||
@@ -2583,6 +2584,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mp3-to-flac" ||
         profileId === "wav-to-flac" ||
         profileId === "mkv-to-webm" ||
+        profileId === "ogv-to-webm" ||
         profileId === "mkv-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
       message.testFault,
@@ -2863,6 +2865,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mpeg-ts-to-wav" ||
       profileId === "flv-to-wav" ||
       profileId === "avi-to-wav" ||
+      profileId === "ogv-to-wav" ||
       profileId === "mp4-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "mp3-to-wav" ||
@@ -2874,6 +2877,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
       profileId === "mkv-to-webm" ||
+      profileId === "ogv-to-webm" ||
       profileId === "mkv-to-mp4-mpeg4"
     ) {
       await runMediaRemux({
@@ -2886,6 +2890,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "mpeg-ts-to-wav" ||
             profileId === "flv-to-wav" ||
             profileId === "avi-to-wav" ||
+            profileId === "ogv-to-wav" ||
             profileId === "mp4-to-wav" ||
             profileId === "m4a-to-wav" ||
             profileId === "mp3-to-wav" ||
@@ -2900,6 +2905,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 6
             : profileId === "mkv-to-webm"
               ? 5
+            : profileId === "ogv-to-webm"
+              ? 7
             : profileId === "mkv-to-mp4-mpeg4"
               ? 4
             : profileId === "mkv-to-m4a" ||

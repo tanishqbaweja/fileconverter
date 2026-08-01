@@ -90,6 +90,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  ogv: {
+    generator: "scripts/generate-ogv-stress-fixture.mjs",
+    profiles: [
+      ["ogv-to-webm", "theora-video-128m.ogv"],
+      ["ogv-to-wav", "theora-video-128m.ogv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [

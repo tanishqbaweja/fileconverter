@@ -39,7 +39,7 @@ emconfigure ./configure \
   --enable-swscale \
   --enable-demuxer=aiff,avi,flac,flv,matroska,mov,mp3,mpegts,ogg,wav \
   --enable-muxer=flac,mp4,mov,mpegts,adts,wav,webm \
-  --enable-decoder=aac,flac,h264,hevc,mp3,opus,pcm_s16be,pcm_s16le,vorbis \
+  --enable-decoder=aac,flac,h264,hevc,mp3,opus,pcm_s16be,pcm_s16le,theora,vorbis \
   --enable-encoder=flac,pcm_s16le,mpeg4,libvpx_vp8 \
   --enable-parser=aac,flac,h264,hevc,mpeg4video,mpegaudio,opus,vorbis \
   --enable-bsf=aac_adtstoasc,extract_extradata,hevc_mp4toannexb \

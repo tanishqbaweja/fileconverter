@@ -85,6 +85,8 @@ if (
     "wav-to-flac",
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
+    "ogv-to-webm",
+    "ogv-to-wav",
   ].includes(profileId) &&
   !isImageProfile &&
   !isStreamingTextProfile &&
@@ -123,7 +125,9 @@ const isMediaProfile =
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
   profileId === "mkv-to-mp4-mpeg4" ||
-  profileId === "mkv-to-webm";
+  profileId === "mkv-to-webm" ||
+  profileId === "ogv-to-webm" ||
+  profileId === "ogv-to-wav";
 const expectedProfileValidation =
   fixtureManifest.expectedByProfile?.[profileId];
 const expectedValidationBytes =
@@ -644,6 +648,7 @@ async function validateMediaOutput(
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
     route === "avi-to-wav" ||
+    route === "ogv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -661,6 +666,7 @@ async function validateMediaOutput(
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
     route === "avi-to-wav" ||
+    route === "ogv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -672,7 +678,9 @@ async function validateMediaOutput(
     route === "m4a-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac";
-  const webmReencode = route === "mkv-to-webm";
+  const webmReencode =
+    route === "mkv-to-webm" || route === "ogv-to-webm";
+  const webmAudioCopy = route === "ogv-to-webm";
   const videoReencode =
     route === "mkv-to-mp4-mpeg4" || webmReencode;
   const sourceDurationSeconds = Number(source.probe?.format?.duration);
@@ -830,8 +838,9 @@ async function validateMediaOutput(
         codecs[0] !==
           (pcmOutput ? "pcm_s16le" : flacOutput ? "flac" : "aac"))) ||
     (videoReencode &&
-      (codecs.length !== 1 ||
-        codecs[0] !== (webmReencode ? "vp8" : "mpeg4"))) ||
+      (codecs.length !== (webmAudioCopy ? 2 : 1) ||
+        codecs[0] !== (webmReencode ? "vp8" : "mpeg4") ||
+        (webmAudioCopy && codecs[1] !== "vorbis"))) ||
     (!audioOnly &&
       !videoReencode &&
       (codecs.length !== 2 ||
@@ -873,13 +882,15 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    (audioOnly && audio?.channels !== sourceAudio?.channels) ||
+    ((audioOnly || webmAudioCopy) &&
+      audio?.channels !== sourceAudio?.channels) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
       route === "mpeg-ts-to-m4a" ||
       route === "flv-to-m4a" ||
-      route === "mp4-to-m4a") &&
+      route === "mp4-to-m4a" ||
+      webmAudioCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
     Math.abs(duration - expectedDuration) > 0.25
   ) {
@@ -975,6 +986,7 @@ async function validateMediaOutput(
   }
   if (
     videoReencode &&
+    !webmAudioCopy &&
     !finalState.warnings.some((warning) => warning.includes("audio stream"))
   ) {
     throw new Error("The browser did not explicitly disclose the excluded audio stream.");
@@ -995,7 +1007,7 @@ async function validateMediaOutput(
       "-i",
       localPath,
       ...(audioOnly ? [] : ["-map", "0:v:0"]),
-      ...(videoReencode ? [] : ["-map", "0:a:0"]),
+      ...(!videoReencode || webmAudioCopy ? ["-map", "0:a:0"] : []),
       ...(requiresFullDecodeTraversal ? [] : ["-c", "copy"]),
       "-f",
       "null",

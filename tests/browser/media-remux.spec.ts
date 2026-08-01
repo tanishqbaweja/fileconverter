@@ -56,6 +56,8 @@ const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
+const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
+const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
@@ -156,6 +158,12 @@ const opusFixturePath = path.join(
   "media",
   "audio-source.opus",
 );
+const ogvFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "theora-video-source.ogv",
+);
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -236,6 +244,8 @@ test.beforeAll(async () => {
   assertProjectLocal(opusWavOutputPath);
   assertProjectLocal(mpeg4OutputPath);
   assertProjectLocal(webmOutputPath);
+  assertProjectLocal(ogvWebmOutputPath);
+  assertProjectLocal(ogvWavOutputPath);
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
@@ -369,6 +379,8 @@ test.afterAll(async () => {
   await rm(opusWavOutputPath, { force: true });
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
+  await rm(ogvWebmOutputPath, { force: true });
+  await rm(ogvWavOutputPath, { force: true });
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -465,6 +477,8 @@ async function runMediaRoute(
     | "ogg-to-wav"
     | "opus-to-wav"
     | "mkv-to-webm"
+    | "ogv-to-webm"
+    | "ogv-to-wav"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
@@ -541,7 +555,7 @@ async function runMediaRoute(
     expect(state.metrics?.peakWasmMemoryBytes).toBeLessThanOrEqual(
       128 * 1024 * 1024,
     );
-    if (profileId === "mkv-to-webm") {
+    if (profileId === "mkv-to-webm" || profileId === "ogv-to-webm") {
       expect(state.metrics?.activeWorkerCount).toBe(9);
     } else if (profileId === "mkv-to-mp4-mpeg4") {
       expect(state.metrics?.activeWorkerCount).toBe(5);
@@ -1348,6 +1362,46 @@ test("browser FFmpeg decodes video and encodes a genuine VP8 WebM", async () => 
     webmOutputPath,
     ["vp8"],
     50_000,
+  );
+});
+
+test("browser FFmpeg converts Theora/Vorbis OGV to VP8/Vorbis WebM", async () => {
+  await runMediaRoute(
+    "ogv-to-webm",
+    ogvWebmOutputPath,
+    ["vp8", "vorbis"],
+    50_000,
+    ogvFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: async (probe, outputPath) => {
+        const audio = probe.streams.find(
+          (stream) => stream.codec_type === "audio",
+        );
+        expect(audio?.tags?.language).toBe("eng");
+        expect(probe.chapters ?? []).toEqual([]);
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-v", "error", "-i", outputPath,
+            "-map", "0:v:0", "-map", "0:a:0",
+            "-f", "null", "NUL",
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
+  );
+});
+
+test("browser FFmpeg decodes OGV Vorbis audio to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "ogv-to-wav",
+    ogvWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    ogvFixturePath,
+    { expectedWarningFragments: ["video stream"] },
   );
 });
 

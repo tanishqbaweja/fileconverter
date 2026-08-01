@@ -29,6 +29,7 @@
 /fixtures/stress/media/*.flac
 /fixtures/stress/media/*.aiff
 /fixtures/stress/media/*.ogg
+/fixtures/stress/media/*.ogv
 /fixtures/stress/media/*.opus
 /fixtures/stress/data/*.csv
 /fixtures/stress/data/*.tsv

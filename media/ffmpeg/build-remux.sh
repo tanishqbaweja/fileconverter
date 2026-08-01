@@ -76,7 +76,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
     {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4"]},
-    {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm"]}
+    {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "ogv-to-webm"]}
   ],
   "wasmSimd": true,
   "avioInputBufferBytes": 262144,
@@ -84,8 +84,8 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "outstandingWrites": 1,
   "audioFifoMaximumQueuedSamples": 16384,
   "largeFileMemfs": false,
-  "profiles": ["mkv-to-mp4", "mov-to-mp4", "3gp-to-mp4", "mpeg-ts-to-mp4", "flv-to-mp4", "avi-to-mp4", "mkv-to-m4a", "mov-to-m4a", "3gp-to-m4a", "mpeg-ts-to-m4a", "flv-to-m4a", "mp4-to-m4a", "mkv-to-wav", "mov-to-wav", "3gp-to-wav", "mpeg-ts-to-wav", "flv-to-wav", "avi-to-wav", "mp4-to-wav", "m4a-to-wav", "mp3-to-wav", "flac-to-wav", "aiff-to-wav", "ogg-to-wav", "opus-to-wav", "m4a-to-flac", "mp3-to-flac", "wav-to-flac", "mkv-to-mp4-mpeg4", "mkv-to-webm"],
-  "enabledDecoders": ["aac", "flac", "h264", "hevc", "mp3", "opus", "pcm_s16be", "pcm_s16le", "vorbis"],
+  "profiles": ["mkv-to-mp4", "mov-to-mp4", "3gp-to-mp4", "mpeg-ts-to-mp4", "flv-to-mp4", "avi-to-mp4", "mkv-to-m4a", "mov-to-m4a", "3gp-to-m4a", "mpeg-ts-to-m4a", "flv-to-m4a", "mp4-to-m4a", "mkv-to-wav", "mov-to-wav", "3gp-to-wav", "mpeg-ts-to-wav", "flv-to-wav", "avi-to-wav", "ogv-to-wav", "mp4-to-wav", "m4a-to-wav", "mp3-to-wav", "flac-to-wav", "aiff-to-wav", "ogg-to-wav", "opus-to-wav", "m4a-to-flac", "mp3-to-flac", "wav-to-flac", "mkv-to-mp4-mpeg4", "mkv-to-webm", "ogv-to-webm"],
+  "enabledDecoders": ["aac", "flac", "h264", "hevc", "mp3", "opus", "pcm_s16be", "pcm_s16le", "theora", "vorbis"],
   "enabledEncoders": ["flac", "h263", "libvpx_vp8", "mpeg4", "pcm_s16le"],
   "enabledDemuxers": ["aiff", "avi", "flac", "flv", "matroska", "mov", "mp3", "mpegts", "ogg", "wav"],
   "enabledMuxers": ["adts", "flac", "latm", "mov", "mp4", "mpegts", "wav", "webm"],

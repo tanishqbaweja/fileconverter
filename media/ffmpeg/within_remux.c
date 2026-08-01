@@ -993,9 +993,10 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
   }
 }
 
-static int within_video_reencode(int webm) {
+static int within_video_reencode(int webm, int preserve_vorbis_audio) {
   int result = 0;
   int video_stream_index = -1;
+  int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
@@ -1059,6 +1060,12 @@ static int within_video_reencode(int webm) {
       video_stream_index = (int)index;
       continue;
     }
+    if (preserve_vorbis_audio && audio_stream_index < 0 &&
+        stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+        stream->codecpar->codec_id == AV_CODEC_ID_VORBIS) {
+      audio_stream_index = (int)index;
+      continue;
+    }
     if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC ||
         stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
       within_message(
@@ -1071,8 +1078,11 @@ static int within_video_reencode(int webm) {
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
       within_message(
           1,
-          "The source audio stream is explicitly excluded from this "
-          "video-only re-encode profile.");
+          preserve_vorbis_audio
+              ? "Only the first Vorbis audio stream is preserved by this "
+                "WebM profile."
+              : "The source audio stream is explicitly excluded from this "
+                "video-only re-encode profile.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
       within_message(
           1,
@@ -1088,6 +1098,14 @@ static int within_video_reencode(int webm) {
     }
   }
   if (video_stream_index < 0) {
+    result = AVERROR_STREAM_NOT_FOUND;
+    goto cleanup;
+  }
+  if (preserve_vorbis_audio && audio_stream_index < 0) {
+    within_message(
+        2,
+        "The OGV to WebM profile requires a Vorbis audio stream so audio "
+        "can be preserved without a second lossy encode.");
     result = AVERROR_STREAM_NOT_FOUND;
     goto cleanup;
   }
@@ -1218,6 +1236,25 @@ static int within_video_reencode(int webm) {
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
   output_stream->sample_aspect_ratio = encoder->sample_aspect_ratio;
+  AVStream *audio_input_stream = NULL;
+  AVStream *audio_output_stream = NULL;
+  if (preserve_vorbis_audio) {
+    audio_input_stream = input_format->streams[audio_stream_index];
+    audio_output_stream = avformat_new_stream(output_format, NULL);
+    if (!audio_output_stream) {
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+    audio_output_stream->time_base = audio_input_stream->time_base;
+    result = avcodec_parameters_copy(audio_output_stream->codecpar,
+                                     audio_input_stream->codecpar);
+    if (result < 0) {
+      goto cleanup;
+    }
+    audio_output_stream->codecpar->codec_tag = 0;
+    av_dict_copy(&audio_output_stream->metadata,
+                 audio_input_stream->metadata, 0);
+  }
 
   if (encoder->width != decoder->width ||
       encoder->height != decoder->height) {
@@ -1305,6 +1342,16 @@ static int within_video_reencode(int webm) {
       within_progress((double)input.position, (double)output.size,
                       (double)media_time, (double)input_format->duration,
                       (double)emscripten_get_heap_size());
+    } else if (preserve_vorbis_audio &&
+               input_packet->stream_index == audio_stream_index) {
+      av_packet_rescale_ts(input_packet, audio_input_stream->time_base,
+                           audio_output_stream->time_base);
+      input_packet->stream_index = audio_output_stream->index;
+      result = av_interleaved_write_frame(output_format, input_packet);
+      if (result < 0) {
+        report_av_error("Vorbis audio stream copy failed", result);
+        goto cleanup;
+      }
     }
     av_packet_unref(input_packet);
   }
@@ -1368,11 +1415,15 @@ cleanup:
 }
 
 static int within_video_to_mpeg4(void) {
-  return within_video_reencode(0);
+  return within_video_reencode(0, 0);
 }
 
 static int within_video_to_webm(void) {
-  return within_video_reencode(1);
+  return within_video_reencode(1, 0);
+}
+
+static int within_ogv_to_webm(void) {
+  return within_video_reencode(1, 1);
 }
 
 EMSCRIPTEN_KEEPALIVE
@@ -1403,6 +1454,9 @@ int within_remux(int profile) {
   }
   if (profile == 5) {
     return within_video_to_webm();
+  }
+  if (profile == 7) {
+    return within_ogv_to_webm();
   }
   if (profile != 1 && profile != 2) {
     within_message(2, "Unknown remux profile.");

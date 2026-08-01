@@ -61,7 +61,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -108,7 +108,7 @@ export async function runMediaRemux({
           ? "Converting audio"
           : remuxProfile === 6
             ? "Encoding FLAC audio"
-          : remuxProfile === 5
+          : remuxProfile === 5 || remuxProfile === 7
             ? "Encoding VP8 WebM"
             : "Encoding MPEG-4 video";
   const engineErrors: string[] = [];
@@ -127,7 +127,7 @@ export async function runMediaRemux({
   const threadedWorkerPoolSize =
     remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE
-      : remuxProfile === 5
+      : remuxProfile === 5 || remuxProfile === 7
         ? WEBM_WORKER_POOL_SIZE
         : 0;
   metrics.activeWorkerCount =
@@ -432,7 +432,7 @@ export async function runMediaRemux({
       ? DIRECT_REMUX_MODULE_URL
       : remuxProfile === 4
       ? MPEG4_MODULE_URL
-      : remuxProfile === 5
+      : remuxProfile === 5 || remuxProfile === 7
         ? THREADED_VIDEO_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
@@ -440,7 +440,7 @@ export async function runMediaRemux({
       ? DIRECT_REMUX_WASM_URL
       : remuxProfile === 4
       ? MPEG4_WASM_URL
-      : remuxProfile === 5
+      : remuxProfile === 5 || remuxProfile === 7
         ? THREADED_VIDEO_WASM_URL
         : REMUX_WASM_URL;
   const imported = (await import(
