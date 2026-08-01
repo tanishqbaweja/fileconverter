@@ -78,6 +78,12 @@ const mp4WebmOutputPath = path.join(outputRoot, "mp4-vp8-output.webm");
 const mp4Vp9WebmOutputPath = path.join(outputRoot, "mp4-vp9-output.webm");
 const movWebmOutputPath = path.join(outputRoot, "mov-vp8-output.webm");
 const movVp9WebmOutputPath = path.join(outputRoot, "mov-vp9-output.webm");
+const threeGpWebmOutputPath = path.join(outputRoot, "3gp-vp8-output.webm");
+const threeGpVp9WebmOutputPath = path.join(outputRoot, "3gp-vp9-output.webm");
+const mpegTsWebmOutputPath = path.join(outputRoot, "mpeg-ts-vp8-output.webm");
+const mpegTsVp9WebmOutputPath = path.join(outputRoot, "mpeg-ts-vp9-output.webm");
+const flvWebmOutputPath = path.join(outputRoot, "flv-vp8-output.webm");
+const flvVp9WebmOutputPath = path.join(outputRoot, "flv-vp9-output.webm");
 const ogvVp9WebmOutputPath = path.join(outputRoot, "ogv-vp9-reencode-output.webm");
 const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
@@ -538,6 +544,12 @@ test.afterAll(async () => {
   await rm(mp4Vp9WebmOutputPath, { force: true });
   await rm(movWebmOutputPath, { force: true });
   await rm(movVp9WebmOutputPath, { force: true });
+  await rm(threeGpWebmOutputPath, { force: true });
+  await rm(threeGpVp9WebmOutputPath, { force: true });
+  await rm(mpegTsWebmOutputPath, { force: true });
+  await rm(mpegTsVp9WebmOutputPath, { force: true });
+  await rm(flvWebmOutputPath, { force: true });
+  await rm(flvVp9WebmOutputPath, { force: true });
   await rm(ogvVp9WebmOutputPath, { force: true });
   await rm(ogvWavOutputPath, { force: true });
   await rm(m2vMpeg4OutputPath, { force: true });
@@ -655,6 +667,9 @@ async function runMediaRoute(
     | "mkv-to-webm"
     | "mp4-to-webm"
     | "mov-to-webm"
+    | "3gp-to-webm"
+    | "mpeg-ts-to-webm"
+    | "flv-to-webm"
     | "ogv-to-webm"
     | "ogv-to-wav"
     | "m2v-to-mp4-mpeg4"
@@ -662,6 +677,9 @@ async function runMediaRoute(
     | "mkv-to-webm-vp9"
     | "mp4-to-webm-vp9"
     | "mov-to-webm-vp9"
+    | "3gp-to-webm-vp9"
+    | "mpeg-ts-to-webm-vp9"
+    | "flv-to-webm-vp9"
     | "ogv-to-webm-vp9"
     | "m2v-to-webm-vp9"
     | "mkv-to-mp4-mpeg4",
@@ -758,6 +776,9 @@ async function runMediaRoute(
       profileId === "mkv-to-webm" ||
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
+      profileId === "3gp-to-webm" ||
+      profileId === "mpeg-ts-to-webm" ||
+      profileId === "flv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm"
     ) {
@@ -766,6 +787,9 @@ async function runMediaRoute(
       profileId === "mkv-to-webm-vp9" ||
       profileId === "mp4-to-webm-vp9" ||
       profileId === "mov-to-webm-vp9" ||
+      profileId === "3gp-to-webm-vp9" ||
+      profileId === "mpeg-ts-to-webm-vp9" ||
+      profileId === "flv-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9"
     ) {
@@ -1235,6 +1259,12 @@ for (const route of [
   ["mp4-to-webm-vp9", mp4InputFixturePath],
   ["mov-to-webm", movInputFixturePath],
   ["mov-to-webm-vp9", movInputFixturePath],
+  ["3gp-to-webm", threeGpInputFixturePath],
+  ["3gp-to-webm-vp9", threeGpInputFixturePath],
+  ["mpeg-ts-to-webm", mpegTsInputFixturePath],
+  ["mpeg-ts-to-webm-vp9", mpegTsInputFixturePath],
+  ["flv-to-webm", flvInputFixturePath],
+  ["flv-to-webm-vp9", flvInputFixturePath],
 ] as const) {
   test(`${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -1895,6 +1925,12 @@ for (const route of [
   ["mp4-to-webm-vp9", mp4InputFixturePath, mp4Vp9WebmOutputPath, "vp9"],
   ["mov-to-webm", movInputFixturePath, movWebmOutputPath, "vp8"],
   ["mov-to-webm-vp9", movInputFixturePath, movVp9WebmOutputPath, "vp9"],
+  ["3gp-to-webm", threeGpInputFixturePath, threeGpWebmOutputPath, "vp8"],
+  ["3gp-to-webm-vp9", threeGpInputFixturePath, threeGpVp9WebmOutputPath, "vp9"],
+  ["mpeg-ts-to-webm", mpegTsInputFixturePath, mpegTsWebmOutputPath, "vp8"],
+  ["mpeg-ts-to-webm-vp9", mpegTsInputFixturePath, mpegTsVp9WebmOutputPath, "vp9"],
+  ["flv-to-webm", flvInputFixturePath, flvWebmOutputPath, "vp8"],
+  ["flv-to-webm-vp9", flvInputFixturePath, flvVp9WebmOutputPath, "vp9"],
 ] as const) {
   test(`browser FFmpeg converts ${route[0]} with bounded optimized workers`, async () => {
     await runMediaRoute(route[0], route[2], [route[3]], 50_000, route[1], {

@@ -115,6 +115,20 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "legacy-container-webm": {
+    generator: "scripts/generate-legacy-container-webm-stress-fixtures.mjs",
+    profiles: [
+      ["3gp-to-webm", "h264-aac-128m.3gp"],
+      ["3gp-to-webm-vp9", "h264-aac-128m.3gp"],
+      ["mpeg-ts-to-webm", "h264-aac-128m.mpegts"],
+      ["mpeg-ts-to-webm-vp9", "h264-aac-128m.mpegts"],
+      ["flv-to-webm", "h264-aac-128m.flv"],
+      ["flv-to-webm-vp9", "h264-aac-128m.flv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

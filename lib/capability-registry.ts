@@ -60,6 +60,46 @@ export interface ConversionProfile {
   public: boolean;
 }
 
+const legacyContainerWebmEvidence = {
+  "3gp": 146_854_522,
+  "mpeg-ts": 150_441_548,
+  flv: 146_903_539,
+} as const;
+
+function legacyContainerWebmProfile(
+  input: "3gp" | "mpeg-ts" | "flv",
+  vp9: boolean,
+): ConversionProfile {
+  const codec = vp9 ? "VP9" : "VP8";
+  return {
+    id: `${input}-to-webm${vp9 ? "-vp9" : ""}`,
+    input,
+    output: vp9 ? "webm-vp9" : "webm",
+    engine: "ffmpeg-video",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "high",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination is H.264 video with AAC audio; other container codec combinations require separately verified routes.",
+      "Only the first non-attached video stream is converted; audio, subtitles, data, additional streams, and chapters are explicitly excluded.",
+      "Variable frame timing and rotation side data are not preserved; output uses the average source frame rate.",
+      "Compatible aspect-ratio, color, stream, and general metadata are copied where WebM can represent them.",
+    ],
+    fidelityLimitations: [
+      `H.264 video is decoded, downscaled to at most 640 pixels wide, and encoded as lossy ${codec} at 600 kbit/s${vp9 ? " in realtime mode" : ""} with no lookahead.`,
+    ],
+    maxTestedBytes: legacyContainerWebmEvidence[input],
+    automatedTestStatus: "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -3133,6 +3173,9 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  legacyContainerWebmProfile("3gp", false),
+  legacyContainerWebmProfile("mpeg-ts", false),
+  legacyContainerWebmProfile("flv", false),
   {
     id: "ogv-to-webm",
     input: "ogv",
@@ -3242,6 +3285,9 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  legacyContainerWebmProfile("3gp", true),
+  legacyContainerWebmProfile("mpeg-ts", true),
+  legacyContainerWebmProfile("flv", true),
   {
     id: "ogv-to-webm-vp9",
     input: "ogv",

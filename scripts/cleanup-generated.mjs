@@ -115,7 +115,12 @@ const generatedStressExtensions = new Set([
   ".tiff",
   ".svg",
 ]);
-const generatedStressNames = new Set(["records-128m.json"]);
+const generatedStressNames = new Set([
+  "records-128m.json",
+  "h264-aac-128m.3gp.json",
+  "h264-aac-128m.mpegts.json",
+  "h264-aac-128m.flv.json",
+]);
 
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);

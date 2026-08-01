@@ -2677,9 +2677,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "wav-to-wma" ||
         profileId === "flac-to-wma" ||
         profileId === "mkv-to-webm" ||
+        profileId === "3gp-to-webm" ||
+        profileId === "mpeg-ts-to-webm" ||
+        profileId === "flv-to-webm" ||
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
         profileId === "mkv-to-webm-vp9" ||
+        profileId === "3gp-to-webm-vp9" ||
+        profileId === "mpeg-ts-to-webm-vp9" ||
+        profileId === "flv-to-webm-vp9" ||
         profileId === "ogv-to-webm-vp9" ||
         profileId === "m2v-to-webm-vp9" ||
         profileId === "mkv-to-mp4-mpeg4" ||
@@ -3229,11 +3235,17 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
       profileId === "mkv-to-webm" ||
+      profileId === "3gp-to-webm" ||
+      profileId === "mpeg-ts-to-webm" ||
+      profileId === "flv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
       profileId === "mp4-to-webm-vp9" ||
       profileId === "mov-to-webm-vp9" ||
       profileId === "mkv-to-webm-vp9" ||
+      profileId === "3gp-to-webm-vp9" ||
+      profileId === "mpeg-ts-to-webm-vp9" ||
+      profileId === "flv-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
       profileId === "mkv-to-mp4-mpeg4" ||
@@ -3280,6 +3292,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             : profileId === "mp4-to-webm" ||
                 profileId === "mov-to-webm" ||
                 profileId === "mkv-to-webm" ||
+                profileId === "3gp-to-webm" ||
+                profileId === "mpeg-ts-to-webm" ||
+                profileId === "flv-to-webm" ||
                 profileId === "m2v-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
@@ -3287,6 +3302,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             : profileId === "mp4-to-webm-vp9" ||
                 profileId === "mov-to-webm-vp9" ||
                 profileId === "mkv-to-webm-vp9" ||
+                profileId === "3gp-to-webm-vp9" ||
+                profileId === "mpeg-ts-to-webm-vp9" ||
+                profileId === "flv-to-webm-vp9" ||
                 profileId === "m2v-to-webm-vp9"
               ? 10
             : profileId === "ogv-to-webm-vp9"

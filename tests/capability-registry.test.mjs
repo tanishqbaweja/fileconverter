@@ -86,6 +86,9 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "mkv-to-webm",
         "mp4-to-webm",
         "mov-to-webm",
+        "3gp-to-webm",
+        "mpeg-ts-to-webm",
+        "flv-to-webm",
         "ogv-to-webm",
         "m2v-to-webm",
       ],
@@ -98,6 +101,9 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "mkv-to-webm-vp9",
         "mp4-to-webm-vp9",
         "mov-to-webm-vp9",
+        "3gp-to-webm-vp9",
+        "mpeg-ts-to-webm-vp9",
+        "flv-to-webm-vp9",
         "ogv-to-webm-vp9",
         "m2v-to-webm-vp9",
       ],
@@ -419,6 +425,12 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "3gp-to-wav",
     ),
   );
+  assert.deepEqual(
+    publicProfilesFor("3gp", true)
+      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .map((profile) => profile.id),
+    ["3gp-to-webm", "3gp-to-webm-vp9"],
+  );
   assert.equal(detectFormat({ name: "broadcast.M2TS", type: "" }), "mpeg-ts");
   assert.ok(
     publicProfilesFor("mpeg-ts").some(
@@ -435,6 +447,12 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "mpeg-ts-to-wav",
     ),
   );
+  assert.deepEqual(
+    publicProfilesFor("mpeg-ts", true)
+      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .map((profile) => profile.id),
+    ["mpeg-ts-to-webm", "mpeg-ts-to-webm-vp9"],
+  );
   assert.equal(detectFormat({ name: "legacy.F4V", type: "" }), "flv");
   assert.ok(
     publicProfilesFor("flv").some(
@@ -450,6 +468,12 @@ test("compound archives and mainstream images are detected by filename", () => {
     publicProfilesFor("flv").some(
       (profile) => profile.id === "flv-to-wav",
     ),
+  );
+  assert.deepEqual(
+    publicProfilesFor("flv", true)
+      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .map((profile) => profile.id),
+    ["flv-to-webm", "flv-to-webm-vp9"],
   );
   assert.equal(detectFormat({ name: "legacy.DIVX", type: "" }), "avi");
   assert.ok(

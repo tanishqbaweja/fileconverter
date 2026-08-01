@@ -1089,6 +1089,7 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   input_format->pb = input_io;
   input_format->flags |= AVFMT_FLAG_CUSTOM_IO;
   input_format->probesize = 2 * 1024 * 1024;
+  input_format->max_analyze_duration = 2 * AV_TIME_BASE;
   result = avformat_open_input(&input_format, NULL, NULL, NULL);
   if (result < 0) {
     report_av_error("Input probing failed", result);
@@ -1097,12 +1098,10 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   const int raw_mpeg_video =
       input_format->iformat && input_format->iformat->name &&
       strcmp(input_format->iformat->name, "mpegvideo") == 0;
-  if (raw_mpeg_video) {
-    result = avformat_find_stream_info(input_format, NULL);
-    if (result < 0) {
-      report_av_error("Video stream inspection failed", result);
-      goto cleanup;
-    }
+  result = avformat_find_stream_info(input_format, NULL);
+  if (result < 0) {
+    report_av_error("Video stream inspection failed", result);
+    goto cleanup;
   }
   if (input_format->nb_chapters > 0) {
     within_message(
@@ -1158,6 +1157,7 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
     }
   }
   if (video_stream_index < 0) {
+    within_message(2, "No decodable video stream was found in the source container.");
     result = AVERROR_STREAM_NOT_FOUND;
     goto cleanup;
   }

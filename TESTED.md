@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **156**
-- Public profiles with a retained successful Chrome stress report: **156**
+- Public passed conversion profiles: **162**
+- Public profiles with a retained successful Chrome stress report: **162**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 355/355 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-02:** 367/367 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Bounded 3GP/MPEG-TS/FLV to WebM:** six H.264 container routes reuse the lazy optimized eight-worker VP8/VP9 cores after bounded stream inspection. 3GP-to-VP8 passed 3/3 Chrome runs on 146,854,522 bytes in 9.28–9.69 s at 236.4 MiB worst incremental private memory; 3GP-to-VP9 passed in 13.55–14.19 s at 234.0 MiB; MPEG-TS-to-VP8 passed on 150,441,548 bytes in 9.59–9.97 s at 220.4 MiB; MPEG-TS-to-VP9 passed in 13.81–14.39 s at 222.9 MiB; FLV-to-VP8 passed on 146,903,539 bytes in 9.22–9.71 s at 220.6 MiB; and FLV-to-VP9 passed in 13.62–14.05 s at 222.1 MiB. All eighteen outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. The stress generator now loops the verified project-local 3GP fixture, performs one 65-second H.264 encode plus two stream-copy remuxes, and generated all three 128 MiB-class sources in 2.16 seconds instead of roughly ten minutes; sources stay under `fixtures/stress` and category cleanup removes them in `finally`. Retained rejected topologies measured 266.2 MiB for FLV VP8 and 255.2 MiB for 1,282×722 3GP VP8 before the final 1,282×536 fixture passed without changing the 250 MiB limit or worker counts.
 - **Optimized MP4/MOV to WebM:** four new routes reuse the lazy optimized eight-worker VP8/VP9 cores. MP4-to-VP8 passed 3/3 Chrome runs on 147,136,619 bytes in 12.84–13.34 s at 226.9 MiB worst incremental private memory; MP4-to-VP9 passed on 147,136,625 bytes in 14.80–15.36 s at 237.1 MiB; MOV-to-VP8 passed on 147,136,647 bytes in 9.53–10.14 s at 244.4 MiB; and MOV-to-VP9 passed in 14.67–15.17 s at 236.8 MiB. All twelve outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. Rejected VP9 fixture topologies measured 254.5–268.5 MiB; the final 1,282-pixel source activates two decoder threads while retaining four encoder threads, cutting the passing process-tree peak by 17.4–31.4 MiB without changing the 250 MiB limit or encode settings.
 - **Bounded VP9 WebM:** MKV-to-VP9 passed 3/3 Chrome runs on a 181,825,549-byte HEVC/AAC/SubRip source in 329.00–330.04 s at 244.9 MiB worst incremental private memory; OGV-to-VP9/Vorbis passed on 137,635,308 bytes in 97.19–97.53 s at 224.1 MiB; and M2V-to-VP9 passed on 136,166,136 bytes in 68.34–69.32 s at 223.4 MiB. All nine outputs were byte-repeatable, independently probed as genuine VP9 WebM, midpoint-SSIM checked, fully decoded, and deleted after validation. The separate lazy-loaded core retains a 96 MiB hard Wasm ceiling, uses four VP9 encoder threads, and limits high-resolution decoding to two threads. The final M2V topology improved the controlled 136 MiB conversion from 85.49 s to 69.06 s (19.2%) while staying bounded; split high-resolution decode/encode improved MKV from 355.59 s to 330.23 s (7.1%).
 - **Direct raw compression transcoding:** all six GZIP/BZIP2/XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable outputs, independent streamed decode/SHA-256 validation, and cleanup recovery. GZIP-to-BZIP2 reached 159.2 MiB in 42.58–43.27 s; GZIP-to-XZ 200.1 MiB in 55.81–56.43 s; BZIP2-to-GZIP 179.4 MiB in 51.10–51.54 s; BZIP2-to-XZ 201.3 MiB in 71.09–71.72 s; XZ-to-GZIP 236.2 MiB in 34.65–41.21 s; and XZ-to-BZIP2 196.4 MiB in 42.36–42.72 s. Every route kept reads at 256 KiB, writes at no more than 64 KiB, one pending operation, and no complete decompressed intermediate file.
@@ -38,6 +39,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | 3gp-to-m4a | 167,130,850 | 3 | 11,539,835 | 1.12 s–1.50 s | 204.8 MiB | 32.0 MiB | read 262,144 B / write 80,761 B | passed |
 | 3gp-to-mp4 | 167,130,850 | 3 | 167,156,758 | 1.66 s–1.93 s | 209.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | 3gp-to-wav | 167,130,850 | 3 | 69,130,350 | 3.66 s–3.91 s | 193.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
+| 3gp-to-webm | 146,854,522 | 3 | 4,948,064 | 9.28 s–9.69 s | 236.4 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
+| 3gp-to-webm-vp9 | 146,854,522 | 3 | 3,372,711 | 13.55 s–14.19 s | 234.0 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | aac-to-flac | 134,367,785 | 3 | 114,800,971 | 22.02 s–22.50 s | 167.1 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
 | aac-to-m4a | 134,367,785 | 3 | 133,906,114 | 1.81 s–2.23 s | 179.8 MiB | 32.0 MiB | read 262,144 B / write 167,549 B | passed |
 | aac-to-wav | 134,367,785 | 3 | 770,273,358 | 19.20 s–19.62 s | 186.5 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
@@ -73,6 +76,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | flv-to-m4a | 167,517,193 | 3 | 11,456,012 | 1.16 s–1.42 s | 213.2 MiB | 32.0 MiB | read 262,144 B / write 80,260 B | passed |
 | flv-to-mp4 | 167,517,193 | 3 | 167,091,007 | 1.64 s–1.85 s | 193.1 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-wav | 167,517,193 | 3 | 68,776,058 | 3.44 s–3.93 s | 192.4 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
+| flv-to-webm | 146,903,539 | 3 | 4,948,077 | 9.22 s–9.71 s | 220.6 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
+| flv-to-webm-vp9 | 146,903,539 | 3 | 3,372,724 | 13.62 s–14.05 s | 222.1 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | gif-to-bmp | 281,853 | 3 | 2,359,350 | 0.05 s–0.11 s | 69.5 MiB | 0.0 MiB | read 131,072 B / write 196,608 B | passed |
 | gif-to-ico | 281,853 | 3 | 16,065 | 0.03 s–0.09 s | 80.2 MiB | 0.0 MiB | read 216,317 B / write 16,043 B | passed |
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
@@ -116,6 +121,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mpeg-ts-to-m4a | 175,444,796 | 3 | 11,455,964 | 1.51 s–1.69 s | 220.2 MiB | 56.0 MiB | read 262,144 B / write 80,260 B | passed |
 | mpeg-ts-to-mp4 | 175,444,796 | 3 | 167,139,361 | 2.14 s–2.42 s | 215.6 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mpeg-ts-to-wav | 175,444,796 | 3 | 68,776,014 | 4.21 s–4.81 s | 243.7 MiB | 56.0 MiB | read 262,144 B / write 2,048 B | passed |
+| mpeg-ts-to-webm | 150,441,548 | 3 | 4,947,933 | 9.59 s–9.97 s | 220.4 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mpeg-ts-to-webm-vp9 | 150,441,548 | 3 | 3,372,580 | 13.81 s–14.39 s | 222.9 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ndjson-to-csv | 288,143,880 | 3 | 139,913,895 | 8.08 s–8.40 s | 183.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ndjson-to-json | 288,143,880 | 3 | 299,123,885 | 7.48 s–7.69 s | 176.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ndjson-to-tsv | 288,143,880 | 3 | 139,913,895 | 8.03 s–8.12 s | 186.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -231,6 +238,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 2026-08-01T22:28:35.943Z | mp4-to-webm-vp9 | 161,758,724 | 3 | 161,758,724 | Failed checks: processTreePrivateMemory; measured 256.1 MiB against a 250.0 MiB limit. |
 | 2026-08-01T22:34:47.662Z | mp4-to-webm-vp9 | 147,136,619 | 3 | 147,136,619 | Failed checks: processTreePrivateMemory; measured 254.5 MiB against a 250.0 MiB limit. |
 | 2026-08-01T22:37:44.431Z | mp4-to-webm-vp9 | 147,499,419 | 3 | 147,499,419 | Failed checks: processTreePrivateMemory; measured 268.5 MiB against a 250.0 MiB limit. |
+| 2026-08-01T23:19:09.425Z | flv-to-webm | 147,164,019 | 3 | 147,164,019 | Failed checks: processTreePrivateMemory; measured 266.2 MiB against a 250.0 MiB limit. |
+| 2026-08-01T23:22:42.411Z | 3gp-to-webm | 146,854,481 | 3 | 146,854,481 | Failed checks: processTreePrivateMemory; measured 255.2 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
@@ -239,6 +248,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 3gp-to-m4a | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-mp4 | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-wav | video | ffmpeg-audio | re-encode | 167,130,850 B | 3-run Chrome report |
+| 3gp-to-webm | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
+| 3gp-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
 | aac-to-flac | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aac-to-m4a | audio | ffmpeg-remux | stream-copy | 134,367,785 B | 3-run Chrome report |
 | aac-to-wav | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
@@ -274,6 +285,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | flv-to-m4a | video | ffmpeg-remux | stream-copy | 167,517,193 B | 3-run Chrome report |
 | flv-to-mp4 | video | ffmpeg-remux | stream-copy | 167,517,193 B | 3-run Chrome report |
 | flv-to-wav | video | ffmpeg-audio | re-encode | 167,517,193 B | 3-run Chrome report |
+| flv-to-webm | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
+| flv-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
 | gif-to-bmp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-ico | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
@@ -317,6 +330,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | mpeg-ts-to-m4a | video | ffmpeg-remux | stream-copy | 175,444,796 B | 3-run Chrome report |
 | mpeg-ts-to-mp4 | video | ffmpeg-remux | stream-copy | 175,444,796 B | 3-run Chrome report |
 | mpeg-ts-to-wav | video | ffmpeg-audio | re-encode | 175,444,796 B | 3-run Chrome report |
+| mpeg-ts-to-webm | video | ffmpeg-video | re-encode | 150,441,548 B | 3-run Chrome report |
+| mpeg-ts-to-webm-vp9 | video | ffmpeg-video | re-encode | 150,441,548 B | 3-run Chrome report |
 | ndjson-to-csv | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
 | ndjson-to-json | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
 | ndjson-to-tsv | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
