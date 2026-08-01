@@ -42,9 +42,16 @@ const routes = [
   ["webp-to-bmp", "test-pattern.webp", "bmp", "bmp"],
   ["gif-to-bmp", "animated-pattern.gif", "bmp", "bmp"],
   ["avif-to-bmp", "test-pattern.avif", "bmp", "bmp"],
+  ["png-to-ico", "test-pattern.png", "ico", "png", undefined, 256, 192],
+  ["jpeg-to-ico", "test-pattern.jpg", "ico", "png", undefined, 256, 192],
+  ["webp-to-ico", "test-pattern.webp", "ico", "png", undefined, 256, 192],
+  ["gif-to-ico", "animated-pattern.gif", "ico", "png", undefined, 256, 192],
+  ["avif-to-ico", "test-pattern.avif", "ico", "png", undefined, 256, 192],
+  ["bmp-to-ico", "test-pattern.bmp", "ico", "png", undefined, 256, 192],
   ["png-to-webp", "transparent-pattern.png", "webp", "webp", "preserved"],
   ["png-to-jpeg", "transparent-pattern.png", "jpg", "mjpeg", "removed"],
   ["png-to-bmp", "transparent-pattern.png", "bmp", "bmp", "removed"],
+  ["png-to-ico", "transparent-pattern.png", "ico", "png", "preserved", 256, 192],
 ] as const;
 
 let context: BrowserContext;
@@ -99,6 +106,8 @@ for (const [
   extension,
   expectedCodec,
   alphaExpectation,
+  expectedWidth = 1024,
+  expectedHeight = 768,
 ] of routes) {
   test(`${profileId} from ${sourceName} produces a bounded independently decodable image`, async () => {
     const sourcePath = path.join(
@@ -144,6 +153,9 @@ for (const [
       }
       if (alphaExpectation === "removed") {
         expect(state?.warnings.join(" ")).toContain("transparent pixels");
+      }
+      if (extension === "ico") {
+        expect(state?.warnings.join(" ")).toContain("scaled to 256\u00d7192");
       }
 
       validationSink = createWriteStream(outputPath, { flags: "w" });
@@ -192,8 +204,8 @@ for (const [
       );
       const stream = JSON.parse(stdout).streams[0];
       expect(stream.codec_name).toBe(expectedCodec);
-      expect(stream.width).toBe(1024);
-      expect(stream.height).toBe(768);
+      expect(stream.width).toBe(expectedWidth);
+      expect(stream.height).toBe(expectedHeight);
       if (alphaExpectation === "preserved") {
         expect(stream.pix_fmt).toContain("a");
       } else if (alphaExpectation === "removed") {
@@ -211,6 +223,41 @@ for (const [
     }
   });
 }
+
+test("ICO output failure removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "test-pattern.png"),
+  );
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("png-to-ico");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      async () =>
+        page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state?.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-png-to-ico")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
 
 test("rejects an image decompression bomb before allocating a decoded surface", async () => {
   await page.goto("/?test=1");

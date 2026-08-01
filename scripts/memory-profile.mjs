@@ -21,7 +21,7 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp)$/.test(profileId);
+  /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)$/.test(profileId);
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -1030,7 +1030,11 @@ async function validateImageOutput(
   }
   const outputFormat = route.split("-to-")[1];
   const expectedCodec =
-    outputFormat === "jpeg" ? "mjpeg" : outputFormat;
+    outputFormat === "jpeg"
+      ? "mjpeg"
+      : outputFormat === "ico"
+        ? "png"
+        : outputFormat;
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -1047,11 +1051,19 @@ async function validateImageOutput(
   const probe = JSON.parse(stdout);
   const stream = probe.streams?.[0];
   const sourceStream = source.probe?.streams?.[0];
+  const sourceWidth = Number(sourceStream?.width);
+  const sourceHeight = Number(sourceStream?.height);
+  const iconScale =
+    outputFormat === "ico"
+      ? Math.min(1, 256 / sourceWidth, 256 / sourceHeight)
+      : 1;
+  const expectedWidth = Math.max(1, Math.round(sourceWidth * iconScale));
+  const expectedHeight = Math.max(1, Math.round(sourceHeight * iconScale));
   if (
     probe.streams?.length !== 1 ||
     stream?.codec_name !== expectedCodec ||
-    stream?.width !== sourceStream?.width ||
-    stream?.height !== sourceStream?.height
+    stream?.width !== expectedWidth ||
+    stream?.height !== expectedHeight
   ) {
     throw new Error(
       `Browser image validation failed: ${stream?.codec_name ?? "missing"} ${stream?.width ?? 0}x${stream?.height ?? 0}.`,
@@ -1062,6 +1074,10 @@ async function validateImageOutput(
     ["-v", "error", "-i", localPath, "-f", "null", "NUL"],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  const comparisonFilter =
+    outputFormat === "ico"
+      ? `[0:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,scale=${expectedWidth}:${expectedHeight}:flags=lanczos,format=rgb24[source];[1:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[converted];[source][converted]ssim[quality]`
+      : "[0:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[source];[1:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[converted];[source][converted]ssim[quality]";
   const { stderr: similarityLog } = await execFileAsync(
     "ffmpeg",
     [
@@ -1072,7 +1088,7 @@ async function validateImageOutput(
       "-i",
       localPath,
       "-filter_complex",
-      "[0:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[source];[1:v:0]trim=end_frame=1,setpts=PTS-STARTPTS,format=rgb24[converted];[source][converted]ssim[quality]",
+      comparisonFilter,
       "-map",
       "[quality]",
       "-frames:v",

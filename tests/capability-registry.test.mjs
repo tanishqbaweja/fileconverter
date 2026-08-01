@@ -107,6 +107,13 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");
   assert.equal(detectFormat({ name: "photo.avif", type: "" }), "avif");
   assert.equal(detectFormat({ name: "legacy.BMP", type: "" }), "bmp");
+  assert.equal(detectFormat({ name: "application.ICO", type: "" }), "ico");
+  assert.ok(
+    publicProfilesFor("png").some((profile) => profile.id === "png-to-ico"),
+  );
+  assert.ok(
+    publicProfilesFor("bmp").some((profile) => profile.id === "bmp-to-ico"),
+  );
   assert.equal(detectFormat({ name: "records.json", type: "" }), "json");
   assert.equal(detectFormat({ name: "document.xml", type: "" }), "xml");
   assert.ok(

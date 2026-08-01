@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-  complete-Chromium memory profile have passed. The current registry publishes 64
+complete-Chromium memory profile have passed. The current registry publishes 70
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -23,7 +23,7 @@ routes:
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
-| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to every implemented PNG/JPEG/WebP/BMP destination | 24,883,254 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
@@ -89,6 +89,7 @@ Hard limits:
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
+- ICO output: one PNG-compressed image; 256 px maximum per edge
 - archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
 - ZIP central directory: 8 MiB; ZIP64, encryption, links, and special files:
   rejected
@@ -209,6 +210,14 @@ write the encoded output in bounded chunks. Animated inputs intentionally use
 only the first frame. EXIF, ICC, text metadata, and animation are not preserved;
 JPEG and BMP composite transparency over white, and JPEG/WebP outputs are lossy
 at the disclosed quality.
+
+ICO output uses those same bounded decoders, scales proportionally only when an
+edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
+followed by an incrementally copied PNG payload. It preserves alpha but does not
+claim alternate icon sizes, animation, or metadata that the source cannot carry
+through this bounded profile. Stable Chrome does not expose TIFF, ICO, SVG,
+HEIC/HEIF, or JPEG XL through worker `ImageDecoder`, so those formats are not
+advertised as inputs.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
@@ -343,6 +352,7 @@ profiler:
 | Category/profile | Source | Worst incremental private memory | Output validation |
 | --- | ---: | ---: | --- |
 | Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
+| Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, XML -> NDJSON events | 134,218,700 B | 165.1 MiB | independent streamed hash/parse |

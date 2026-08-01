@@ -118,6 +118,12 @@ const categories = {
       ["gif-to-jpeg", "animated-pattern.gif"],
       ["gif-to-webp", "animated-pattern.gif"],
       ["gif-to-bmp", "animated-pattern.gif"],
+      ["png-to-ico", "highres-pattern.png"],
+      ["jpeg-to-ico", "highres-pattern.jpg"],
+      ["webp-to-ico", "highres-pattern.webp"],
+      ["gif-to-ico", "animated-pattern.gif"],
+      ["avif-to-ico", "highres-pattern.avif"],
+      ["bmp-to-ico", "highres-pattern.bmp"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/images/${name}`,

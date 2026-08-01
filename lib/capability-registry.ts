@@ -209,6 +209,13 @@ export const formats = [
     category: "image",
   },
   {
+    id: "ico",
+    label: "Windows icon (ICO)",
+    extensions: ["ico"],
+    mimeTypes: ["image/x-icon", "image/vnd.microsoft.icon"],
+    category: "image",
+  },
+  {
     id: "mkv",
     label: "Matroska video",
     extensions: ["mkv"],
@@ -326,6 +333,15 @@ const imageProfiles = [
   ["webp-to-bmp", "webp", "bmp"],
   ["gif-to-bmp", "gif", "bmp"],
   ["avif-to-bmp", "avif", "bmp"],
+] as const;
+
+const icoOutputProfiles = [
+  ["png-to-ico", "png"],
+  ["jpeg-to-ico", "jpeg"],
+  ["webp-to-ico", "webp"],
+  ["gif-to-ico", "gif"],
+  ["avif-to-ico", "avif"],
+  ["bmp-to-ico", "bmp"],
 ] as const;
 
 const imageMaxTestedBytes = {
@@ -783,6 +799,29 @@ export const conversionProfiles: readonly ConversionProfile[] = [
           : output === "bmp"
             ? ["BMP output uses 24-bit color and cannot preserve transparency."]
           : [],
+    maxTestedBytes: imageMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
+  })),
+  ...icoOutputProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "ico",
+    engine: "image-browser" as const,
+    route: "re-encode" as const,
+    browserRequirements: [
+      "ImageDecoder",
+      "OffscreenCanvas",
+      "File System Access",
+    ],
+    cpuClass: "medium" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "The output contains one PNG-compressed icon image; alternate icon sizes, EXIF, ICC profiles, textual metadata, and animation are not preserved.",
+    ],
+    fidelityLimitations: [
+      "Images larger than 256 pixels on either edge are scaled down proportionally to fit the ICO limit.",
+    ],
     maxTestedBytes: imageMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,

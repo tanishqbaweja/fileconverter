@@ -584,6 +584,7 @@ const imageMimeTypes: Record<string, string> = {
   gif: "image/gif",
   avif: "image/avif",
   bmp: "image/bmp",
+  ico: "image/x-icon",
 };
 
 interface ImageDimensions {
@@ -885,6 +886,40 @@ async function writeBmpCanvas(
   }
 }
 
+function createIcoHeader(
+  width: number,
+  height: number,
+  payloadBytes: number,
+): Uint8Array<ArrayBuffer> {
+  if (
+    !Number.isInteger(width) ||
+    !Number.isInteger(height) ||
+    width < 1 ||
+    height < 1 ||
+    width > 256 ||
+    height > 256 ||
+    !Number.isSafeInteger(payloadBytes) ||
+    payloadBytes < 1 ||
+    payloadBytes > 0xffff_ffff - 22
+  ) {
+    throw new Error("ICO dimensions or PNG payload exceed the bounded ICO profile.");
+  }
+  const header = new Uint8Array(22);
+  const view = new DataView(header.buffer);
+  view.setUint16(0, 0, true);
+  view.setUint16(2, 1, true);
+  view.setUint16(4, 1, true);
+  header[6] = width === 256 ? 0 : width;
+  header[7] = height === 256 ? 0 : height;
+  header[8] = 0;
+  header[9] = 0;
+  view.setUint16(10, 1, true);
+  view.setUint16(12, 32, true);
+  view.setUint32(14, payloadBytes, true);
+  view.setUint32(18, header.byteLength, true);
+  return header;
+}
+
 async function runImageConversion(
   profileId: string,
   file: File,
@@ -1061,13 +1096,46 @@ async function runImageConversion(
       metrics.inputBytes = file.size;
       return;
     }
+    if (outputFormat === "ico" && (width > 256 || height > 256)) {
+      const scale = Math.min(256 / width, 256 / height);
+      const iconWidth = Math.max(1, Math.round(width * scale));
+      const iconHeight = Math.max(1, Math.round(height * scale));
+      const iconCanvas = new OffscreenCanvas(iconWidth, iconHeight);
+      const iconContext = iconCanvas.getContext("2d", { alpha: true });
+      if (!iconContext) {
+        throw new Error("The browser could not create the bounded ICO surface.");
+      }
+      iconContext.imageSmoothingEnabled = true;
+      iconContext.imageSmoothingQuality = "high";
+      iconContext.drawImage(canvas, 0, 0, iconWidth, iconHeight);
+      canvas.width = 1;
+      canvas.height = 1;
+      canvas = iconCanvas;
+      post({
+        type: "warning",
+        jobId,
+        message: `ICO output is limited to 256 pixels per edge; this image was scaled to ${iconWidth}\u00d7${iconHeight}.`,
+      });
+    }
     emitProgress(jobId, "Encoding image", metrics, startedAt, true);
     const output = await canvas.convertToBlob({
-      type: outputMime,
-      quality: outputFormat === "png" ? undefined : 0.9,
+      type: outputFormat === "ico" ? "image/png" : outputMime,
+      quality:
+        outputFormat === "png" || outputFormat === "ico" ? undefined : 0.9,
     });
-    if (output.size < 1 || output.size > MAX_IMAGE_OUTPUT_BYTES) {
+    const containerBytes = output.size + (outputFormat === "ico" ? 22 : 0);
+    if (output.size < 1 || containerBytes > MAX_IMAGE_OUTPUT_BYTES) {
       throw new Error("Encoded image exceeds the 64 MiB output safety limit.");
+    }
+    if (outputFormat === "ico") {
+      await writeBounded(
+        destination,
+        createIcoHeader(canvas.width, canvas.height, output.size),
+        jobId,
+        "Writing ICO header",
+        metrics,
+        startedAt,
+      );
     }
     const reader = output.stream().getReader();
     for (;;) {
@@ -1078,7 +1146,7 @@ async function runImageConversion(
         destination,
         value,
         jobId,
-        "Writing image",
+        outputFormat === "ico" ? "Writing ICO image" : "Writing image",
         metrics,
         startedAt,
       );
@@ -2589,7 +2657,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         startedAt,
       );
     } else if (
-      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp)$/.test(profileId)
+      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)$/.test(profileId)
     ) {
       await runImageConversion(
         profileId,
