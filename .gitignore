@@ -18,6 +18,7 @@
 /fixtures/stress/media/*.mkv
 /fixtures/stress/media/*.mp4
 /fixtures/stress/media/*.mov
+/fixtures/stress/media/*.3gp
 /fixtures/stress/media/*.ts
 /fixtures/stress/media/*.m2ts
 /fixtures/stress/media/*.mpegts

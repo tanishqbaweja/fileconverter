@@ -12,14 +12,17 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **92**
-- Public profiles with a retained successful Chrome stress report: **91**
+- Public passed conversion profiles: **95**
+- Public profiles with a retained successful Chrome stress report: **94**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
 
 | Profile | Source bytes | Runs | Output bytes | Conversion time | Worst incremental private memory | Peak Wasm | I/O bounds | Cleanup |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
+| 3gp-to-m4a | 167,130,850 | 3 | 11,539,835 | 1.12 s–1.50 s | 204.8 MiB | 32.0 MiB | read 262,144 B / write 80,761 B | passed |
+| 3gp-to-mp4 | 167,130,850 | 3 | 167,156,758 | 1.66 s–1.93 s | 209.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| 3gp-to-wav | 167,130,850 | 3 | 69,130,350 | 3.66 s–3.91 s | 193.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | aiff-to-wav | 201,600,102 | 3 | 201,600,128 | 3.38 s–4.24 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -116,6 +119,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 | Profile | Input category | Engine | Method | Largest tested source | Evidence snapshot |
 | --- | --- | --- | --- | ---: | --- |
+| 3gp-to-m4a | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
+| 3gp-to-mp4 | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
+| 3gp-to-wav | video | ffmpeg-audio | re-encode | 167,130,850 B | 3-run Chrome report |
 | aiff-to-wav | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
@@ -213,7 +219,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
-- Video/container: 3GP, OGV, and relevant elementary-stream inputs/outputs; broader AVI codec combinations plus VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.
+- Video/container: OGV and relevant elementary-stream inputs/outputs; broader 3GP and AVI codec combinations plus VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.
 - Audio: raw AAC, ALAC, AMR, and WMA routes; user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
 - Archives/compression: BZIP2, XZ, and 7Z.

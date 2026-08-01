@@ -47,6 +47,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "3gp": {
+    generator: "scripts/generate-3gp-stress-fixture.mjs",
+    profiles: [
+      ["3gp-to-mp4", "mobile-video-128m.3gp"],
+      ["3gp-to-m4a", "mobile-video-128m.3gp"],
+      ["3gp-to-wav", "mobile-video-128m.3gp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "mpeg-ts": {
     generator: "scripts/generate-mpeg-ts-stress-fixture.mjs",
     profiles: [

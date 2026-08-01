@@ -110,7 +110,7 @@ lines.push(
   "",
   "This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:",
   "",
-  "- Video/container: 3GP, OGV, and relevant elementary-stream inputs/outputs; broader AVI codec combinations plus VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.",
+  "- Video/container: OGV and relevant elementary-stream inputs/outputs; broader 3GP and AVI codec combinations plus VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.",
   "- Audio: raw AAC, ALAC, AMR, and WMA routes; user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.",
   "- Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.",
   "- Archives/compression: BZIP2, XZ, and 7Z.",

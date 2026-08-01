@@ -57,16 +57,19 @@ if (
     "gzip-decompress",
     "mkv-to-mp4",
     "mov-to-mp4",
+    "3gp-to-mp4",
     "mpeg-ts-to-mp4",
     "flv-to-mp4",
     "avi-to-mp4",
     "mkv-to-m4a",
     "mov-to-m4a",
+    "3gp-to-m4a",
     "mpeg-ts-to-m4a",
     "flv-to-m4a",
     "mp4-to-m4a",
     "mkv-to-wav",
     "mov-to-wav",
+    "3gp-to-wav",
     "mpeg-ts-to-wav",
     "flv-to-wav",
     "avi-to-wav",
@@ -93,16 +96,19 @@ if (
 const isMediaProfile =
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
+  profileId === "3gp-to-mp4" ||
   profileId === "mpeg-ts-to-mp4" ||
   profileId === "flv-to-mp4" ||
   profileId === "avi-to-mp4" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
+  profileId === "3gp-to-m4a" ||
   profileId === "mpeg-ts-to-m4a" ||
   profileId === "flv-to-m4a" ||
   profileId === "mp4-to-m4a" ||
   profileId === "mkv-to-wav" ||
   profileId === "mov-to-wav" ||
+  profileId === "3gp-to-wav" ||
   profileId === "mpeg-ts-to-wav" ||
   profileId === "flv-to-wav" ||
   profileId === "avi-to-wav" ||
@@ -628,11 +634,13 @@ async function validateMediaOutput(
   const audioOnly =
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
+    route === "3gp-to-m4a" ||
     route === "mpeg-ts-to-m4a" ||
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
+    route === "3gp-to-wav" ||
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
     route === "avi-to-wav" ||
@@ -649,6 +657,7 @@ async function validateMediaOutput(
   const pcmOutput =
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
+    route === "3gp-to-wav" ||
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
     route === "avi-to-wav" ||
@@ -867,6 +876,7 @@ async function validateMediaOutput(
     (audioOnly && audio?.channels !== sourceAudio?.channels) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
+      route === "3gp-to-m4a" ||
       route === "mpeg-ts-to-m4a" ||
       route === "flv-to-m4a" ||
       route === "mp4-to-m4a") &&
@@ -973,6 +983,7 @@ async function validateMediaOutput(
     videoReencode ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
+    route === "3gp-to-m4a" ||
     route === "mpeg-ts-to-m4a" ||
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a";

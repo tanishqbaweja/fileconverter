@@ -2556,16 +2556,19 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.destination,
       (profileId === "mkv-to-mp4" ||
         profileId === "mov-to-mp4" ||
+        profileId === "3gp-to-mp4" ||
         profileId === "mpeg-ts-to-mp4" ||
         profileId === "flv-to-mp4" ||
         profileId === "avi-to-mp4" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
+        profileId === "3gp-to-m4a" ||
         profileId === "mpeg-ts-to-m4a" ||
         profileId === "flv-to-m4a" ||
         profileId === "mp4-to-m4a" ||
         profileId === "mkv-to-wav" ||
         profileId === "mov-to-wav" ||
+        profileId === "3gp-to-wav" ||
         profileId === "mpeg-ts-to-wav" ||
         profileId === "flv-to-wav" ||
         profileId === "avi-to-wav" ||
@@ -2844,16 +2847,19 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     } else if (
       profileId === "mkv-to-mp4" ||
       profileId === "mov-to-mp4" ||
+      profileId === "3gp-to-mp4" ||
       profileId === "mpeg-ts-to-mp4" ||
       profileId === "flv-to-mp4" ||
       profileId === "avi-to-mp4" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
+      profileId === "3gp-to-m4a" ||
       profileId === "mpeg-ts-to-m4a" ||
       profileId === "flv-to-m4a" ||
       profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
       profileId === "mov-to-wav" ||
+      profileId === "3gp-to-wav" ||
       profileId === "mpeg-ts-to-wav" ||
       profileId === "flv-to-wav" ||
       profileId === "avi-to-wav" ||
@@ -2876,6 +2882,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         remuxProfile:
           profileId === "mkv-to-wav" ||
             profileId === "mov-to-wav" ||
+            profileId === "3gp-to-wav" ||
             profileId === "mpeg-ts-to-wav" ||
             profileId === "flv-to-wav" ||
             profileId === "avi-to-wav" ||
@@ -2897,6 +2904,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 4
             : profileId === "mkv-to-m4a" ||
                 profileId === "mov-to-m4a" ||
+                profileId === "3gp-to-m4a" ||
                 profileId === "mpeg-ts-to-m4a" ||
                 profileId === "flv-to-m4a" ||
                 profileId === "mp4-to-m4a"

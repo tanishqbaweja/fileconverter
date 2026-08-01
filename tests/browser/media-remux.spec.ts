@@ -21,6 +21,7 @@ const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const movMp4OutputPath = path.join(outputRoot, "mov-remux-output.mp4");
+const threeGpMp4OutputPath = path.join(outputRoot, "3gp-remux-output.mp4");
 const mpegTsMp4OutputPath = path.join(outputRoot, "mpeg-ts-remux-output.mp4");
 const flvMp4OutputPath = path.join(outputRoot, "flv-remux-output.mp4");
 const aviMp4OutputPath = path.join(outputRoot, "avi-remux-output.mp4");
@@ -31,11 +32,13 @@ const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
 const movM4aOutputPath = path.join(outputRoot, "mov-extract-output.m4a");
+const threeGpM4aOutputPath = path.join(outputRoot, "3gp-extract-output.m4a");
 const mpegTsM4aOutputPath = path.join(outputRoot, "mpeg-ts-extract-output.m4a");
 const flvM4aOutputPath = path.join(outputRoot, "flv-extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
 const mp4WavOutputPath = path.join(outputRoot, "mp4-convert-output.wav");
 const movWavOutputPath = path.join(outputRoot, "mov-convert-output.wav");
+const threeGpWavOutputPath = path.join(outputRoot, "3gp-convert-output.wav");
 const mpegTsWavOutputPath = path.join(outputRoot, "mpeg-ts-convert-output.wav");
 const flvWavOutputPath = path.join(outputRoot, "flv-convert-output.wav");
 const aviWavOutputPath = path.join(outputRoot, "avi-convert-output.wav");
@@ -86,6 +89,12 @@ const movInputFixturePath = path.join(
   "fixtures",
   "media",
   "quicktime-source.mov",
+);
+const threeGpInputFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "mobile-video-source.3gp",
 );
 const mpegTsInputFixturePath = path.join(
   projectRoot,
@@ -198,6 +207,7 @@ test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
   assertProjectLocal(movMp4OutputPath);
+  assertProjectLocal(threeGpMp4OutputPath);
   assertProjectLocal(mpegTsMp4OutputPath);
   assertProjectLocal(flvMp4OutputPath);
   assertProjectLocal(aviMp4OutputPath);
@@ -205,11 +215,13 @@ test.beforeAll(async () => {
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(mp4M4aOutputPath);
   assertProjectLocal(movM4aOutputPath);
+  assertProjectLocal(threeGpM4aOutputPath);
   assertProjectLocal(mpegTsM4aOutputPath);
   assertProjectLocal(flvM4aOutputPath);
   assertProjectLocal(wavOutputPath);
   assertProjectLocal(mp4WavOutputPath);
   assertProjectLocal(movWavOutputPath);
+  assertProjectLocal(threeGpWavOutputPath);
   assertProjectLocal(mpegTsWavOutputPath);
   assertProjectLocal(flvWavOutputPath);
   assertProjectLocal(aviWavOutputPath);
@@ -325,6 +337,7 @@ test.afterAll(async () => {
   await context?.close();
   await rm(mp4OutputPath, { force: true });
   await rm(movMp4OutputPath, { force: true });
+  await rm(threeGpMp4OutputPath, { force: true });
   await rm(mpegTsMp4OutputPath, { force: true });
   await rm(flvMp4OutputPath, { force: true });
   await rm(aviMp4OutputPath, { force: true });
@@ -335,11 +348,13 @@ test.afterAll(async () => {
   await rm(m4aOutputPath, { force: true });
   await rm(mp4M4aOutputPath, { force: true });
   await rm(movM4aOutputPath, { force: true });
+  await rm(threeGpM4aOutputPath, { force: true });
   await rm(mpegTsM4aOutputPath, { force: true });
   await rm(flvM4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
   await rm(mp4WavOutputPath, { force: true });
   await rm(movWavOutputPath, { force: true });
+  await rm(threeGpWavOutputPath, { force: true });
   await rm(mpegTsWavOutputPath, { force: true });
   await rm(flvWavOutputPath, { force: true });
   await rm(aviWavOutputPath, { force: true });
@@ -423,16 +438,19 @@ async function runMediaRoute(
   profileId:
     | "mkv-to-mp4"
     | "mov-to-mp4"
+    | "3gp-to-mp4"
     | "mpeg-ts-to-mp4"
     | "flv-to-mp4"
     | "avi-to-mp4"
     | "mkv-to-m4a"
     | "mov-to-m4a"
+    | "3gp-to-m4a"
     | "mpeg-ts-to-m4a"
     | "flv-to-m4a"
     | "mp4-to-m4a"
     | "mkv-to-wav"
     | "mov-to-wav"
+    | "3gp-to-wav"
     | "mpeg-ts-to-wav"
     | "flv-to-wav"
     | "avi-to-wav"
@@ -481,6 +499,7 @@ async function runMediaRoute(
     } else if (
       profileId === "mkv-to-mp4" ||
       profileId === "mov-to-mp4" ||
+      profileId === "3gp-to-mp4" ||
       profileId === "mpeg-ts-to-mp4" ||
       profileId === "flv-to-mp4" ||
       profileId === "avi-to-mp4"
@@ -489,9 +508,11 @@ async function runMediaRoute(
     } else if (
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
+      profileId === "3gp-to-m4a" ||
       profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
       profileId === "mov-to-wav" ||
+      profileId === "3gp-to-wav" ||
       profileId === "mp4-to-wav"
     ) {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
@@ -653,6 +674,16 @@ test("browser FFmpeg AVIO remuxes genuine QuickTime MOV to valid MP4", async () 
     ["h264", "aac"],
     500_000,
     movInputFixturePath,
+  );
+});
+
+test("browser FFmpeg AVIO remuxes H.264/AAC 3GP to valid MP4", async () => {
+  await runMediaRoute(
+    "3gp-to-mp4",
+    threeGpMp4OutputPath,
+    ["h264", "aac"],
+    500_000,
+    threeGpInputFixturePath,
   );
 });
 
@@ -1106,6 +1137,17 @@ test("browser FFmpeg AVIO extracts QuickTime MOV audio to valid M4A", async () =
   );
 });
 
+test("browser FFmpeg AVIO extracts 3GP audio to valid M4A", async () => {
+  await runMediaRoute(
+    "3gp-to-m4a",
+    threeGpM4aOutputPath,
+    ["aac"],
+    20_000,
+    threeGpInputFixturePath,
+    { expectedWarningFragments: ["video stream"] },
+  );
+});
+
 test("browser FFmpeg AVIO extracts MPEG-TS audio to valid M4A", async () => {
   await runMediaRoute(
     "mpeg-ts-to-m4a",
@@ -1154,6 +1196,17 @@ test("browser FFmpeg decodes QuickTime MOV audio to bounded PCM WAV", async () =
     ["pcm_s16le"],
     300_000,
     movInputFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes 3GP AAC audio to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "3gp-to-wav",
+    threeGpWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    threeGpInputFixturePath,
+    { expectedWarningFragments: ["video stream"] },
   );
 });
 

@@ -56,8 +56,10 @@ uses the existing bounded AAC decode, resample, and PCM pipeline. AVI can copy
 the verified MPEG-4 Part 2/MP3 combination to fragmented MP4, or decode its MP3
 audio through the same bounded PCM path.
 
-The shared remux core accepts Matroska, genuine QuickTime MOV, AVI, MPEG-TS,
-and FLV input.
+The shared remux core accepts Matroska, genuine QuickTime MOV, 3GP, AVI,
+MPEG-TS, and FLV input. 3GP reuses the lean MOV-family demuxer and supports the
+verified H.264/AAC stream-copy and bounded AAC decode routes without adding a
+larger codec module.
 It preserves valid demuxer DTS values (including MOV edit-list timing) and only
 synthesizes a video DTS sequence when a stream begins without decode
 timestamps, as the protected large Matroska fixture does.
