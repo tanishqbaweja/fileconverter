@@ -28,8 +28,15 @@ SHA-256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
 Project: https://sourceware.org/bzip2/
 License: bzip2-1.0.8 license (see public/engines/bzip2/LICENSE.bzip2)
 
+XZ Utils / liblzma 5.8.3
+Source: https://github.com/tukaani-project/xz/releases/download/v5.8.3/xz-5.8.3.tar.xz
+SHA-256: fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6
+Project: https://tukaani.org/xz/
+License for the linked liblzma core: 0BSD
+(see public/engines/xz/LICENSE.xz)
+
 Exact configure switches, enabled components, memory limits, and build commands
-are in media/ffmpeg/, compression/bzip2/, and their corresponding build
+are in media/ffmpeg/, compression/bzip2/, compression/xz/, and their corresponding build
 manifests under public/engines/ in the source repository.
 
 These notices describe copyright licenses, not patent rights. Deployers remain

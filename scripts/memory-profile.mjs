@@ -53,6 +53,13 @@ const isBzip2Profile =
   profileId === "tar-bz2-to-tar";
 const isBzip2CompressedOutput =
   profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
+const isXzProfile =
+  profileId === "xz-compress" ||
+  profileId === "xz-decompress" ||
+  profileId === "tar-to-tar-xz" ||
+  profileId === "tar-xz-to-tar";
+const isXzCompressedOutput =
+  profileId === "xz-compress" || profileId === "tar-to-tar-xz";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
   profileId === "zip-to-tar-gz" ||
@@ -66,6 +73,10 @@ if (
     "bzip2-decompress",
     "tar-to-tar-bz2",
     "tar-bz2-to-tar",
+    "xz-compress",
+    "xz-decompress",
+    "tar-to-tar-xz",
+    "tar-xz-to-tar",
     "mkv-to-mp4",
     "mov-to-mp4",
     "3gp-to-mp4",
@@ -209,7 +220,7 @@ if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
 const maximumWriteChunkBytes =
   destinationMode === "direct-handle" && profileId === "mkv-to-mp4"
     ? 1024 * 1024
-    : isBzip2Profile
+    : isBzip2Profile || isXzProfile
       ? 64 * 1024
     : 256 * 1024;
 const testUrl = `${serverUrl}/?test=1${
@@ -413,15 +424,18 @@ try {
       isMediaProfile ||
       isImageProfile ||
       isArchiveTransformProfile ||
-      isBzip2CompressedOutput
+      isBzip2CompressedOutput ||
+      isXzCompressedOutput
     ) {
       const physicalOutputPath = await findProjectLocalPayload(
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (isBzip2CompressedOutput) {
+      if (isBzip2CompressedOutput || isXzCompressedOutput) {
         outputSha256 = (await hashFile(physicalOutputPath)).sha256;
-        const decoded = await validateBzip2Output(physicalOutputPath);
+        const decoded = isXzCompressedOutput
+          ? await validateXzOutput(physicalOutputPath)
+          : await validateBzip2Output(physicalOutputPath);
         validationBytes = decoded.bytes;
         externalValidationSha256 = decoded.sha256;
         if (
@@ -429,12 +443,14 @@ try {
           externalValidationSha256 !== expectedValidationHash
         ) {
           throw new Error(
-            `Independent streamed BZIP2 validation failed on run ${run}: ${validationBytes} bytes.`,
+            `Independent streamed ${isXzCompressedOutput ? "XZ" : "BZIP2"} validation failed on run ${run}: ${validationBytes} bytes.`,
           );
         }
         mediaProbe = {
           withinValidation: {
-            method: "python-bz2-stream-sha256",
+            method: isXzCompressedOutput
+              ? "python-lzma-stream-sha256"
+              : "python-bz2-stream-sha256",
             passed: true,
             bytes: validationBytes,
             sha256: externalValidationSha256,
@@ -604,10 +620,14 @@ try {
     ),
     wasmMemoryBytes: runSummaries.every(
       (run) =>
-        (!isMediaProfile && !isBzip2Profile) ||
+        (!isMediaProfile && !isBzip2Profile && !isXzProfile) ||
         (typeof run.peakWasmMemoryBytes === "number" &&
           run.peakWasmMemoryBytes <=
-            (isBzip2Profile ? 8 * 1024 * 1024 : 128 * 1024 * 1024)),
+            (isBzip2Profile
+              ? 8 * 1024 * 1024
+              : isXzProfile
+                ? 48 * 1024 * 1024
+                : 128 * 1024 * 1024)),
     ),
     cleanupRecovery: runSummaries.every(
       (run) =>
@@ -1243,6 +1263,36 @@ print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
   return result;
 }
 
+async function validateXzOutput(filePath) {
+  const python = String.raw`
+import hashlib, json, lzma, sys
+h = hashlib.sha256()
+n = 0
+with lzma.open(sys.argv[1], "rb") as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256)
+  ) {
+    throw new Error("The independent XZ validator returned invalid evidence.");
+  }
+  return result;
+}
+
 async function validateArchiveOutput(localPath, source, route) {
   if (!Array.isArray(source.entries) || source.entries.length === 0) {
     throw new Error("Archive fixture manifest has no independently verifiable entries.");
@@ -1644,13 +1694,23 @@ async function takeSample(rootPid, page, phase) {
 
 async function sampleWindowsProcessTree(rootPid) {
   const script = `
-$all = @(Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,CommandLine,PrivatePageCount,WorkingSetSize)
+$all = @(Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,CommandLine,CreationDate,PrivatePageCount,WorkingSetSize)
 $ids = New-Object 'System.Collections.Generic.HashSet[int]'
 [void]$ids.Add(${Number(rootPid)})
+$createdAt = @{}
+foreach ($p in $all) {
+  $createdAt[[int]$p.ProcessId] = [datetime]$p.CreationDate
+}
 do {
   $changed = $false
   foreach ($p in $all) {
-    if ($ids.Contains([int]$p.ParentProcessId) -and -not $ids.Contains([int]$p.ProcessId)) {
+    $parentId = [int]$p.ParentProcessId
+    if (
+      $ids.Contains($parentId) -and
+      -not $ids.Contains([int]$p.ProcessId) -and
+      $createdAt.ContainsKey($parentId) -and
+      [datetime]$p.CreationDate -ge [datetime]$createdAt[$parentId]
+    ) {
       [void]$ids.Add([int]$p.ProcessId)
       $changed = $true
     }
@@ -1664,6 +1724,7 @@ $result = @($all | Where-Object { $ids.Contains([int]$_.ProcessId) } | ForEach-O
     parentPid = [int]$_.ParentProcessId
     name = [string]$_.Name
     type = [string]$type
+    createdAt = ([datetime]$_.CreationDate).ToUniversalTime().ToString('o')
     privateBytes = [double]$_.PrivatePageCount
     rssBytes = [double]$_.WorkingSetSize
   }

@@ -1,0 +1,9 @@
+{
+  "generatedBy": "scripts/generate-xz-fixtures.mjs",
+  "purpose": "XZ expansion-ratio rejection fixture",
+  "compressionPreset": 0,
+  "bytes": 440,
+  "sha256": "b6e19cfa11212131a003354ecc890bbfbfcfb6ce80df858b910743826437490d",
+  "validationBytes": 2097152,
+  "validationSha256": "5647f05ec18958947d32874eeb788fa396a05d0bab7c1b71f112ceb7e9b31eee"
+}

@@ -13,13 +13,13 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 117
+complete-Chromium memory profile have passed. The current registry publishes 121
 routes:
 
 | Category | Verified routes | Largest tested source |
 | --- | --- | ---: |
-| Compression | bytes -> GZIP/BZIP2; GZIP/BZIP2 -> bytes | 270,593,081 B |
-| Archives | TAR -> TAR.GZ/TAR.BZ2; TAR.GZ/TAR.BZ2 -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
+| Compression | bytes -> GZIP/BZIP2/XZ; GZIP/BZIP2/XZ -> bytes | 270,593,081 B |
+| Archives | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | DOCX/ODT -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
@@ -83,6 +83,12 @@ destination write before continuing. Compression uses the standard lossless
 level-1 100 KiB block for lower memory and faster browser throughput; no full
 source, output, or TAR tree is materialized.
 
+Raw XZ and TAR.XZ use a separate lazy-loaded XZ Utils 5.8.3 liblzma Wasm
+module. It uses the same 256 KiB reads, owned 64 KiB output chunks, one awaited
+write, and streaming TAR validation with a fixed 48 MiB Wasm heap. Compression
+uses standard lossless preset 0 and CRC64 for the fastest low-memory XZ route;
+the decoder is additionally capped at 32 MiB of liblzma allocations.
+
 The automated large-file harness uses synchronous OPFS access so it can profile
 and independently validate an output without creating another multi-gigabyte
 copy. That path rotates the access handle every 128 MiB and flushes every 8 MiB.
@@ -102,6 +108,8 @@ Hard limits:
 - maximum browser write and queued output: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
 - direct audio packet-coalescing buffer: 262,144 bytes
 - BZIP2 input/output buffers: 262,144 / 65,536 bytes; fixed Wasm memory: 8 MiB
+- XZ input/output buffers: 262,144 / 65,536 bytes; fixed Wasm memory: 48 MiB;
+  decoder allocation limit: 32 MiB
 - outstanding output operations: 1
 - direct-writer shared command, payload, and error storage: 1,052,704 bytes for direct MKV -> MP4
 - active workers during direct media output: 2
@@ -268,11 +276,12 @@ and embedded artwork are explicitly outside these audio-only profiles.
 
 ## Non-media engines and limitations
 
-Archive conversion never extracts an archive tree to memory or disk. TAR.GZ
-and TAR.BZ2 routes validate each USTAR header while passing TAR bytes through
-browser compression streams or the fixed-memory BZIP2 module. Raw BZIP2
-decompression rejects corrupt, truncated, concatenated, and trailing streams;
-both decompression routes enforce the 64 GiB and 100:1 expansion limits.
+Archive conversion never extracts an archive tree to memory or disk. TAR.GZ,
+TAR.BZ2, and TAR.XZ routes validate each USTAR header while passing TAR bytes
+through browser compression streams or fixed-memory codec modules. Raw BZIP2
+and XZ decompression reject corrupt, truncated, concatenated, and trailing
+streams; decompression routes enforce the 64 GiB and 100:1 expansion limits.
+XZ streams requesting more than 32 MiB of decoder memory are rejected.
 ZIP-to-TAR and ZIP-to-TAR.GZ read the bounded ZIP32
 central directory, validate every local header, path, size, method, CRC-32, and
 expansion limit, and inflate one entry at a time. The TAR.GZ destination feeds
@@ -382,7 +391,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, XZ, and
+animated-image output, 7Z, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -428,6 +437,8 @@ Pinned inputs:
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - bzip2 1.0.8 official source archive, SHA-256
   `ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269`
+- XZ Utils 5.8.3 official source archive, SHA-256
+  `fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6`
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
 
@@ -437,12 +448,13 @@ Build the auditable artifacts:
 npm ci
 npm run build:ffmpeg-remux
 npm run build:bzip2
+npm run build:xz
 npm run build
 ```
 
 The Docker builds verify each source archive before compilation. Exact
 configure switches and Emscripten flags are in `media/ffmpeg/` and
-`compression/bzip2/`. Generated settings are recorded in the corresponding
+`compression/bzip2/` and `compression/xz/`. Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
 ## Validation and memory results
@@ -525,6 +537,10 @@ Current exact-build results:
 | BZIP2 decompress | 3 | 270,593,081 B | 268,435,456 B | 140.4 MiB | 8 MiB | cleanup passed |
 | TAR -> TAR.BZ2 | 3 | 268,436,992 B | 270,592,763 B | 136.6 MiB | 8 MiB | cleanup passed |
 | TAR.BZ2 -> TAR | 3 | 270,592,763 B | 268,436,992 B | 137.0 MiB | 8 MiB | cleanup passed |
+| XZ compress | 3 | 268,435,456 B | 268,448,840 B | 172.7 MiB | 48 MiB | cleanup passed |
+| XZ decompress | 3 | 268,448,840 B | 268,435,456 B | 203.0 MiB | 48 MiB | cleanup passed |
+| TAR -> TAR.XZ | 3 | 268,436,992 B | 268,449,796 B | 175.0 MiB | 48 MiB | cleanup passed |
+| TAR.XZ -> TAR | 3 | 268,449,796 B | 268,436,992 B | 173.7 MiB | 48 MiB | cleanup passed |
 
 The optimized level-1 BZIP2 encoder completed its 256 MiB-class runs in
 38.94-39.85 seconds; decompression completed in 23.50-23.94 seconds. All four
@@ -533,6 +549,14 @@ pending operation, one conversion worker, and 8 MiB of Wasm memory. Python's
 independent standard-library decoder verified compressed output bytes and
 SHA-256; raw/TAR outputs were streamed to exact SHA-256 checks. The category
 runner then removed every large source, browser output, and Chrome profile.
+
+The preset-0 XZ encoder completed its 256 MiB-class runs in 51.51-56.84
+seconds; XZ decompression completed in 6.21-6.98 seconds. Every run held reads
+to 262,144 bytes, writes and queued bytes to 65,536, one pending operation, one
+conversion worker, and 48 MiB of Wasm memory. Python's independent standard
+library decoded compressed results and checked exact bytes and SHA-256. Stress
+fixture preparation compresses the independent raw and TAR references in
+parallel; the production conversion itself remains one bounded job.
 
 Representative three-run category peaks from the same full-process-tree
 profiler:
@@ -553,6 +577,10 @@ profiler:
 | Compression, BZIP2 -> bytes | 270,593,081 B | 140.4 MiB | exact streamed output SHA-256 |
 | Archives, TAR -> TAR.BZ2 | 268,436,992 B | 136.6 MiB | streamed USTAR validation plus independent BZIP2 decode/SHA-256 |
 | Archives, TAR.BZ2 -> TAR | 270,592,763 B | 137.0 MiB | streamed USTAR validation and exact SHA-256 |
+| Compression, bytes -> XZ | 268,435,456 B | 172.7 MiB | independent Python LZMA decode and SHA-256 |
+| Compression, XZ -> bytes | 268,448,840 B | 203.0 MiB | exact streamed output SHA-256 |
+| Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
+| Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
@@ -829,6 +857,7 @@ npm run profile:records
 npm run profile:subtitles
 npm run profile:archives
 npm run profile:bzip2
+npm run profile:xz
 npm run profile:documents
 npm run profile:ebooks
 npm run profile:mov
@@ -850,7 +879,7 @@ installed stable Chrome and native FFmpeg.
 - `lib/capability-registry.ts` — single source for formats and public matrix
 - `workers/` — bounded media, compression, archive, subtitle, image, record, XML, ebook, and document
   transforms; FFmpeg bridge, destinations, and lifecycle
-- `media/ffmpeg/` and `compression/bzip2/` — reproducible native Wasm builds
+- `media/ffmpeg/`, `compression/bzip2/`, and `compression/xz/` — reproducible native Wasm builds
 - `public/engines/` — auditable generated engine artifacts
 - `scripts/` — fixtures, validators, cleanup, process-tree memory reports
 - `tests/browser/` — correctness, privacy, offline, and bounded-I/O tests
@@ -860,7 +889,8 @@ installed stable Chrome and native FFmpeg.
 
 Application code is project-owned. FFmpeg licensing depends on the exact
 configured components; this build excludes GPL/nonfree switches. libvpx is
-BSD-3-Clause licensed, and bzip2 carries its permissive upstream license.
+BSD-3-Clause licensed, bzip2 carries its permissive upstream license, and the
+linked liblzma core is 0BSD.
 Deployers must still review FFmpeg's LGPL terms, the
 bundled third-party notices, and any codec patent obligations applicable to
 their jurisdiction and distribution model.

@@ -1,0 +1,9 @@
+{
+  "generatedBy": "scripts/generate-xz-stress-fixtures.mjs",
+  "compressionPreset": 0,
+  "integrityCheck": "CRC64",
+  "bytes": 268448840,
+  "sha256": "02020bbe77118269a17cf031c923a20ac1436a82fdb2472f9315b29580440bf6",
+  "validationBytes": 268435456,
+  "validationSha256": "bc5c01970c2033cae17a1d2d125fcf3ce7faabbcbde003a669725c52d9481c13"
+}

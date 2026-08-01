@@ -1,0 +1,9 @@
+{
+  "generatedBy": "scripts/generate-xz-fixtures.mjs",
+  "purpose": "XZ decoder memory-limit rejection fixture",
+  "compressionPreset": 9,
+  "bytes": 88,
+  "sha256": "6f7f9635e410fc97c1a5ded9f45318f2be9974377d64b21bc9826ea50286ee61",
+  "validationBytes": 30,
+  "validationSha256": "33ec8ebf0f9fbc25e267371fa4545d5d267cefb2a16a6d0ce50aab34016b5091"
+}

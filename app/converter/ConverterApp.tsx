@@ -137,11 +137,15 @@ function formatDuration(milliseconds: number): string {
 function outputName(file: File, profile: ConversionProfile): string {
   if (profile.id === "gzip-compress") return `${file.name}.gz`;
   if (profile.id === "bzip2-compress") return `${file.name}.bz2`;
+  if (profile.id === "xz-compress") return `${file.name}.xz`;
   if (profile.id === "gzip-decompress") {
     return file.name.replace(/\.(?:gz|gzip)$/i, "") || "decompressed-file";
   }
   if (profile.id === "bzip2-decompress") {
     return file.name.replace(/\.(?:bz2|bzip2)$/i, "") || "decompressed-file";
+  }
+  if (profile.id === "xz-decompress") {
+    return file.name.replace(/\.xz$/i, "") || "decompressed-file";
   }
   if (profile.id === "tar-gz-to-tar") {
     return (
@@ -152,6 +156,12 @@ function outputName(file: File, profile: ConversionProfile): string {
   if (profile.id === "tar-bz2-to-tar") {
     return (
       file.name.replace(/(?:\.tar\.bz2|\.tbz2|\.tbz)$/i, ".tar") ||
+      "decompressed-archive.tar"
+    );
+  }
+  if (profile.id === "tar-xz-to-tar") {
+    return (
+      file.name.replace(/(?:\.tar\.xz|\.txz)$/i, ".tar") ||
       "decompressed-archive.tar"
     );
   }
@@ -881,7 +891,9 @@ export function ConverterApp() {
     selectedProfile?.engine === "ffmpeg-video";
   const compressionProfile =
     selectedProfile?.engine === "compression-stream";
-  const bzip2Profile = selectedProfile?.engine === "bzip2-wasm";
+  const wasmCompressionProfile =
+    selectedProfile?.engine === "bzip2-wasm" ||
+    selectedProfile?.engine === "xz-wasm";
   const imageProfile = selectedProfile?.engine === "image-browser";
   const featureReady =
     capabilities?.secure &&
@@ -891,7 +903,7 @@ export function ConverterApp() {
       (capabilities.wasm &&
         capabilities.sharedArrayBuffer &&
         capabilities.crossOriginIsolated)) &&
-    (!bzip2Profile || capabilities.wasm) &&
+    (!wasmCompressionProfile || capabilities.wasm) &&
     (!compressionProfile || capabilities.compression) &&
     (!imageProfile ||
       (capabilities.imageDecoder && capabilities.offscreenCanvas)) &&

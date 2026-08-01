@@ -1,6 +1,7 @@
 export type EngineId =
   | "compression-stream"
   | "bzip2-wasm"
+  | "xz-wasm"
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
@@ -77,6 +78,13 @@ export const formats = [
     category: "compression",
   },
   {
+    id: "xz",
+    label: "XZ",
+    extensions: ["xz"],
+    mimeTypes: ["application/x-xz"],
+    category: "compression",
+  },
+  {
     id: "tar",
     label: "TAR archive",
     extensions: ["tar"],
@@ -95,6 +103,13 @@ export const formats = [
     label: "Compressed TAR (TAR.BZ2)",
     extensions: ["tar.bz2", "tbz2", "tbz"],
     mimeTypes: ["application/x-bzip2"],
+    category: "archive",
+  },
+  {
+    id: "tar-xz",
+    label: "Compressed TAR (TAR.XZ)",
+    extensions: ["tar.xz", "txz"],
+    mimeTypes: ["application/x-xz"],
     category: "archive",
   },
   {
@@ -634,6 +649,82 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     ],
     fidelityLimitations: [],
     maxTestedBytes: 268_436_992,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "xz-compress",
+    input: "binary",
+    output: "xz",
+    engine: "xz-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "XZ stores a single byte stream, not a directory tree or original filename.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_435_456,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "xz-decompress",
+    input: "xz",
+    output: "binary",
+    engine: "xz-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "The original filename is inferred from the .xz suffix.",
+      "Concatenated XZ streams and trailing data are rejected.",
+      "Streams requiring more than 32 MiB of decoder memory are rejected.",
+      "Decompression stops above 64 GiB or a 100:1 expansion ratio after the first MiB.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_448_840,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "tar-to-tar-xz",
+    input: "tar",
+    output: "tar-xz",
+    engine: "xz-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "This bounded route accepts UTF-8 USTAR headers and rejects GNU/PAX extended records.",
+      "Archives are validated but not extracted; original TAR entry bytes are preserved before compression.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_436_992,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "tar-xz-to-tar",
+    input: "tar-xz",
+    output: "tar",
+    engine: "xz-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "This bounded route accepts UTF-8 USTAR headers and rejects GNU/PAX extended records.",
+      "Archives are validated but not extracted; original TAR entry bytes are preserved after decompression.",
+      "Concatenated XZ streams and trailing data are rejected.",
+      "Streams requiring more than 32 MiB of decoder memory are rejected.",
+      "Decompression stops above 64 GiB or a 100:1 expansion ratio after the first MiB.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_449_796,
     automatedTestStatus: "passed",
     public: true,
   },
@@ -2468,7 +2559,8 @@ export function publicProfilesFor(
       profile.public &&
       (profile.input === input ||
         (profile.id === "gzip-compress" && input !== "gzip") ||
-        (profile.id === "bzip2-compress" && input !== "bzip2")) &&
+        (profile.id === "bzip2-compress" && input !== "bzip2") ||
+        (profile.id === "xz-compress" && input !== "xz")) &&
       (includePending || profile.automatedTestStatus === "passed"),
   );
 }

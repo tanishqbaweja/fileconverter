@@ -22,6 +22,9 @@ const cancellationFixturePath = path.join(
 const corruptBzip2FixturePath = path.join(projectRoot, "work", "corrupt.bz2");
 const truncatedBzip2FixturePath = path.join(projectRoot, "work", "truncated.bz2");
 const browserBzip2OutputPath = path.join(projectRoot, "work", "browser-output.bz2");
+const corruptXzFixturePath = path.join(projectRoot, "work", "corrupt.xz");
+const truncatedXzFixturePath = path.join(projectRoot, "work", "truncated.xz");
+const browserXzOutputPath = path.join(projectRoot, "work", "browser-output.xz");
 const batchFixturePaths = [
   path.join(projectRoot, "work", "batch-café.txt"),
   path.join(projectRoot, "work", "batch-日本語.txt"),
@@ -152,6 +155,28 @@ print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
   return JSON.parse(stdout) as { bytes: number; sha256: string };
 }
 
+async function xzDecodedDigest(filePath: string) {
+  const python = String.raw`
+import hashlib, json, lzma, sys
+h = hashlib.sha256()
+n = 0
+with lzma.open(sys.argv[1], "rb", format=lzma.FORMAT_XZ) as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as { bytes: number; sha256: string };
+}
+
 async function fileDigest(filePath: string) {
   const bytes = await readFile(filePath);
   return {
@@ -218,6 +243,17 @@ test.beforeAll(async () => {
     truncatedBzip2FixturePath,
     validBzip2.subarray(0, validBzip2.byteLength - 7),
   );
+  await writeFile(
+    corruptXzFixturePath,
+    Buffer.from("This is deliberately not an XZ stream.\n", "utf8"),
+  );
+  const validXz = await readFile(
+    path.join(projectRoot, "fixtures", "compression", "sample.txt.xz"),
+  );
+  await writeFile(
+    truncatedXzFixturePath,
+    validXz.subarray(0, validXz.byteLength - 7),
+  );
   const cancellationFixture = createWriteStream(cancellationFixturePath, {
     flags: "w",
   });
@@ -277,6 +313,9 @@ test.afterAll(async () => {
   await rm(corruptBzip2FixturePath, { force: true });
   await rm(truncatedBzip2FixturePath, { force: true });
   await rm(browserBzip2OutputPath, { force: true });
+  await rm(corruptXzFixturePath, { force: true });
+  await rm(truncatedXzFixturePath, { force: true });
+  await rm(browserXzOutputPath, { force: true });
   await Promise.all(batchFixturePaths.map((fixture) => rm(fixture, { force: true })));
 });
 
@@ -1406,6 +1445,107 @@ test("rejects a BZIP2 expansion bomb and deletes partial output", async () => {
   expect(await appOwnedOpfsNames("within-test-bzip2-decompress")).toEqual([]);
 });
 
+test("compresses a byte stream with the bounded XZ Wasm engine", async () => {
+  await selectFixture(
+    "fixtures/compression/sample.expected.txt",
+    "xz-compress",
+  );
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  expect(state.metrics?.peakWasmMemoryBytes).toBe(48 * 1024 * 1024);
+  await copyAndDeleteSmallOpfsFile(state.opfsName!, browserXzOutputPath);
+  try {
+    expect(await xzDecodedDigest(browserXzOutputPath)).toEqual(
+      await fileDigest(
+        path.join(projectRoot, "fixtures", "compression", "sample.expected.txt"),
+      ),
+    );
+  } finally {
+    await rm(browserXzOutputPath, { force: true });
+  }
+});
+
+test("decompresses XZ to the exact original bytes", async () => {
+  await selectFixture("fixtures/compression/sample.txt.xz", "xz-decompress");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  expect(state.metrics?.peakWasmMemoryBytes).toBe(48 * 1024 * 1024);
+  expect(await readAndDeleteOpfsText(state.opfsName!)).toBe(
+    await readFile(
+      path.join(projectRoot, "fixtures", "compression", "sample.expected.txt"),
+      "utf8",
+    ),
+  );
+});
+
+test("compresses validated USTAR to TAR.XZ", async () => {
+  await selectFixture("fixtures/archives/sample.tar", "tar-to-tar-xz");
+  const state = await convert();
+  await copyAndDeleteSmallOpfsFile(state.opfsName!, browserXzOutputPath);
+  try {
+    expect(await xzDecodedDigest(browserXzOutputPath)).toEqual(
+      await fileDigest(path.join(projectRoot, "fixtures", "archives", "sample.tar")),
+    );
+  } finally {
+    await rm(browserXzOutputPath, { force: true });
+  }
+});
+
+test("decompresses TAR.XZ to an exact structurally valid TAR", async () => {
+  await selectFixture("fixtures/archives/sample.tar.xz", "tar-xz-to-tar");
+  const state = await convert();
+  const base64 = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+    let binary = "";
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    await root.removeEntry(opfsName);
+    return btoa(binary);
+  }, state.opfsName!);
+  const output = Buffer.from(base64, "base64");
+  expect(output).toEqual(
+    await readFile(path.join(projectRoot, "fixtures", "archives", "sample.tar")),
+  );
+  expect(output.subarray(257, 262).toString("ascii")).toBe("ustar");
+});
+
+for (const [fixture, expectedError] of [
+  [corruptXzFixturePath, "invalid stream header"],
+  [truncatedXzFixturePath, "truncated"],
+] as const) {
+  test(`rejects ${path.basename(fixture)} and deletes partial XZ output`, async () => {
+    await selectFixture(path.relative(projectRoot, fixture), "xz-decompress");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-xz-decompress")).toEqual([]);
+  });
+}
+
+for (const [fixture, expectedError] of [
+  ["fixtures/compression/expansion-bomb.xz", "expansion safety limit"],
+  ["fixtures/compression/memory-limit.xz", "decoder memory limit"],
+] as const) {
+  test(`rejects ${path.basename(fixture)} and deletes partial XZ output`, async () => {
+    await selectFixture(fixture, "xz-decompress");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-xz-decompress")).toEqual([]);
+  });
+}
+
 test("compresses a valid TAR archive to TAR.GZ with bounded writes", async () => {
   await selectFixture("fixtures/archives/sample.tar", "tar-to-tar-gz");
   const state = await convert();
@@ -1744,8 +1884,10 @@ test("converts a 1,024-entry TAR.GZ directly to ZIP", async () => {
 for (const [fixture, profileId, expectedError] of [
   ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-gz", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-bz2", "Unsafe TAR entry"],
+  ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-xz", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-tar", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.tar.bz2", "tar-bz2-to-tar", "Unsafe TAR entry"],
+  ["fixtures/archives/unsafe-entry.tar.xz", "tar-xz-to-tar", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-gz", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-zip", "Unsafe TAR entry"],
@@ -1776,6 +1918,8 @@ for (const [fixture, profileId] of [
   ["fixtures/archives/sample.tar.gz", "tar-gz-to-zip"],
   ["fixtures/compression/sample.expected.txt", "bzip2-compress"],
   ["fixtures/archives/sample.tar.bz2", "tar-bz2-to-tar"],
+  ["fixtures/compression/sample.expected.txt", "xz-compress"],
+  ["fixtures/archives/sample.tar.xz", "tar-xz-to-tar"],
 ] as const) {
   test(`${profileId} propagates a nested output failure and cleans up`, async () => {
     await openFaultMode("write");

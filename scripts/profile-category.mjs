@@ -317,6 +317,15 @@ const categories = {
       ],
     ],
   },
+  xz: {
+    generator: "scripts/generate-xz-stress-fixtures.mjs",
+    profiles: [
+      ["xz-compress", "fixtures/stress/deterministic-256m.bin"],
+      ["xz-decompress", "fixtures/stress/deterministic-256m.bin.xz"],
+      ["tar-to-tar-xz", "fixtures/stress/archives/archive-256m.tar"],
+      ["tar-xz-to-tar", "fixtures/stress/archives/archive-256m.tar.xz"],
+    ],
+  },
   images: {
     generator: "scripts/generate-image-fixtures.mjs",
     profiles: [

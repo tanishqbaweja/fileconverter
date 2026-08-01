@@ -58,6 +58,7 @@ const generatedStressExtensions = new Set([
   ".bin",
   ".gz",
   ".bz2",
+  ".xz",
   ".mkv",
   ".m4a",
   ".mp3",

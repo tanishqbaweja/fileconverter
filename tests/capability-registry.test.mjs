@@ -107,6 +107,28 @@ test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => 
   assert.equal(manifest.compressionBlockSize100k, 1);
 });
 
+test("every XZ profile is declared by its fixed-memory Wasm manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/xz/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "xz-wasm",
+  );
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
+  assert.equal(manifest.xzVersion, "5.8.3");
+  assert.equal(manifest.initialWasmMemoryBytes, 48 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 48 * 1024 * 1024);
+  assert.equal(manifest.decoderMemoryLimitBytes, 32 * 1024 * 1024);
+  assert.equal(manifest.inputBufferBytes, 256 * 1024);
+  assert.equal(manifest.outputBufferBytes, 64 * 1024);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(manifest.compressionPreset, 0);
+  assert.equal(manifest.integrityCheck, "CRC64");
+});
+
 test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(
     detectFormat({ name: "backup.tar.gz", type: "application/gzip" }),
@@ -117,9 +139,19 @@ test("compound archives and mainstream images are detected by filename", () => {
     "tar-bz2",
   );
   assert.equal(detectFormat({ name: "payload.BZ2", type: "" }), "bzip2");
+  assert.equal(
+    detectFormat({ name: "backup.TAR.XZ", type: "application/x-xz" }),
+    "tar-xz",
+  );
+  assert.equal(detectFormat({ name: "payload.XZ", type: "" }), "xz");
   assert.ok(
     publicProfilesFor("bzip2", true).some(
       (profile) => profile.id === "bzip2-decompress",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("xz", true).some(
+      (profile) => profile.id === "xz-decompress",
     ),
   );
   assert.ok(

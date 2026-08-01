@@ -16,6 +16,7 @@
 /fixtures/stress/*.bin
 /fixtures/stress/*.gz
 /fixtures/stress/*.bz2
+/fixtures/stress/*.xz
 /fixtures/stress/media/*.mkv
 /fixtures/stress/media/*.mp4
 /fixtures/stress/media/*.mov
@@ -56,6 +57,7 @@
 /fixtures/stress/archives/*.tar
 /fixtures/stress/archives/*.tar.gz
 /fixtures/stress/archives/*.bz2
+/fixtures/stress/archives/*.xz
 
 # next.js
 /.next/

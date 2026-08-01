@@ -1,4 +1,4 @@
-const CACHE_NAME = "within-shell-v11";
+const CACHE_NAME = "within-shell-v12";
 const APP_SHELL = [
   "/",
   "/icon.svg",
@@ -16,6 +16,10 @@ const APP_SHELL = [
   "/engines/bzip2/within-bzip2.wasm",
   "/engines/bzip2/build-manifest.json",
   "/engines/bzip2/LICENSE.bzip2",
+  "/engines/xz/within-xz.mjs",
+  "/engines/xz/within-xz.wasm",
+  "/engines/xz/build-manifest.json",
+  "/engines/xz/LICENSE.xz",
 ];
 
 self.addEventListener("install", (event) => {

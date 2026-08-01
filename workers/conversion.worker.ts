@@ -16,6 +16,7 @@ import { runPptxToText } from "./pptx-conversion";
 import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
 import { runXmlToNdjson } from "./xml-conversion";
+import { runXzConversion } from "./xz-compression";
 import {
   asynchronousFileStreamDestination,
   sharedDirectFileDestination,
@@ -2662,6 +2663,45 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         write: (chunk, phase) =>
           writeBounded(
             bzip2Destination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+            true,
+          ),
+        validateInput:
+          validateTar && !decompress
+            ? (chunk) => tarValidator!.push(chunk)
+            : undefined,
+        validateOutput:
+          validateTar && decompress
+            ? (chunk) => tarValidator!.push(chunk)
+            : undefined,
+      });
+      tarValidator?.finish();
+    } else if (
+      profileId === "xz-compress" ||
+      profileId === "xz-decompress" ||
+      profileId === "tar-to-tar-xz" ||
+      profileId === "tar-xz-to-tar"
+    ) {
+      const decompress =
+        profileId === "xz-decompress" || profileId === "tar-xz-to-tar";
+      const validateTar =
+        profileId === "tar-to-tar-xz" || profileId === "tar-xz-to-tar";
+      const tarValidator = validateTar ? new TarStreamValidator() : null;
+      const xzDestination = destination.writable;
+      await runXzConversion({
+        file,
+        decompress,
+        metrics,
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+        write: (chunk, phase) =>
+          writeBounded(
+            xzDestination,
             chunk,
             jobId,
             phase,

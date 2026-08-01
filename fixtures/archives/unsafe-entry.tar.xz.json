@@ -1,0 +1,8 @@
+{
+  "generatedBy": "scripts/generate-xz-fixtures.mjs",
+  "compressionPreset": 0,
+  "bytes": 188,
+  "sha256": "f5a1f3d32d9080a5c47c043ed393ffff618c2e2f5f9cb4444a2778d04d63812f",
+  "validationBytes": 2048,
+  "validationSha256": "86a30851dfc4d3aa93567172dd4946da2404f27ebce73f691a0f70d87e3ab9c6"
+}
