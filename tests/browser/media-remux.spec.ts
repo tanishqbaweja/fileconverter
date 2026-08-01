@@ -21,6 +21,9 @@ const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
+const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
+const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
+const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
@@ -276,6 +279,9 @@ test.afterAll(async () => {
   await context?.close();
   await rm(mp4OutputPath, { force: true });
   await rm(directMp4OutputPath, { force: true });
+  await rm(directWavOutputPath, { force: true });
+  await rm(directM4aOutputPath, { force: true });
+  await rm(directFlacOutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
   await rm(mp4M4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
@@ -478,6 +484,83 @@ async function runMediaRoute(
   }
 }
 
+async function runSmallDirectAudioRoute(
+  profileId: "mkv-to-m4a" | "mp3-to-flac",
+  inputPath: string,
+  outputName: string,
+  outputPath: string,
+  expectedCodec: "aac" | "flac",
+  minimumBytes: number,
+): Promise<void> {
+  try {
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(inputPath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
+      .not.toBe("running");
+
+    const state = await currentState();
+    expect(state.jobState, state.error ?? state.phase).toBe("complete");
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeGreaterThan(0);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.activeWorkerCount).toBe(2);
+
+    await copyAndDeleteBrowserStorageEntry(outputName, outputPath);
+    expect((await stat(outputPath)).size).toBeGreaterThan(minimumBytes);
+    const { stdout } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-show_entries",
+        "stream=codec_name:format=duration",
+        "-of",
+        "json",
+        outputPath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const probe = JSON.parse(stdout) as MediaProbe;
+    expect(probe.streams.map((stream) => stream.codec_name)).toEqual([
+      expectedCodec,
+    ]);
+    expect(Number(probe.format.duration)).toBeGreaterThan(3.9);
+    expect(Number(probe.format.duration)).toBeLessThan(4.2);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-i",
+        outputPath,
+        "-f",
+        "null",
+        "-",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+    await rm(outputPath, { force: true });
+  }
+}
+
 test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async () => {
   await runMediaRoute(
     "mkv-to-mp4",
@@ -572,6 +655,149 @@ test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-sav
     validationSink = null;
     await removeBrowserStorageEntry(outputName).catch(() => {});
     await rm(directMp4OutputPath, { force: true });
+  }
+});
+
+test("browser FFmpeg coalesces PCM packets for a bounded direct WAV save", async () => {
+  const outputName = "audio-source.wav";
+  try {
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mp3-to-wav");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
+      .not.toBe("running");
+
+    const state = await currentState();
+    expect(state.jobState, state.error ?? state.phase).toBe("complete");
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeGreaterThan(128 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.activeWorkerCount).toBe(2);
+
+    await copyAndDeleteBrowserStorageEntry(outputName, directWavOutputPath);
+    const { size } = await stat(directWavOutputPath);
+    expect(size).toBeGreaterThan(300_000);
+    const { stdout } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-show_entries",
+        "stream=codec_name:format=duration",
+        "-of",
+        "json",
+        directWavOutputPath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const probe = JSON.parse(stdout) as MediaProbe;
+    expect(probe.streams.map((stream) => stream.codec_name)).toEqual([
+      "pcm_s16le",
+    ]);
+    expect(Number(probe.format.duration)).toBeGreaterThan(3.9);
+    expect(Number(probe.format.duration)).toBeLessThan(4.2);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-i",
+        directWavOutputPath,
+        "-f",
+        "null",
+        "-",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+    await rm(directWavOutputPath, { force: true });
+  }
+});
+
+test("browser FFmpeg flushes a bounded direct M4A save correctly", async () => {
+  await runSmallDirectAudioRoute(
+    "mkv-to-m4a",
+    fixturePath,
+    "remux-source.m4a",
+    directM4aOutputPath,
+    "aac",
+    20_000,
+  );
+});
+
+test("browser FFmpeg flushes a bounded direct FLAC save correctly", async () => {
+  await runSmallDirectAudioRoute(
+    "mp3-to-flac",
+    mp3FixturePath,
+    "audio-source.flac",
+    directFlacOutputPath,
+    "flac",
+    20_000,
+  );
+});
+
+test("direct WAV coalescing propagates write failure and releases the partial file", async () => {
+  const outputName = "audio-source.wav";
+  try {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mp3-to-wav");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    const abandonedSize = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(entryName);
+        const size = (await handle.getFile()).size;
+        await root.removeEntry(entryName);
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    }, outputName);
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  } finally {
+    await removeBrowserStorageEntry(outputName).catch(() => {});
   }
 });
 

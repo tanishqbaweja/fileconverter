@@ -135,6 +135,14 @@ export async function runMediaRemux({
   const maximumOutputWriteBytes = writable.maximumWriteBytes ?? MAX_AVIO_CHUNK;
   const useDirectRemuxCore =
     remuxProfile === 1 && maximumOutputWriteBytes > MAX_AVIO_CHUNK;
+  const coalescedOutput =
+    (remuxProfile === 2 || remuxProfile === 3 || remuxProfile === 6) &&
+    writable.writeSync &&
+    writable.additionalWorkerCount === 1
+      ? new Uint8Array(maximumOutputWriteBytes)
+      : null;
+  let coalescedOutputOffset = 0;
+  let coalescedOutputLength = 0;
   metrics.sharedArrayBufferBytes = writerSharedBytes;
 
   const assertActive = (): void => {
@@ -156,6 +164,55 @@ export async function runMediaRemux({
     metrics.queuedBytes = 0;
     metrics.pendingOperations = 0;
     emitProgress(jobId, phase, metrics, startedAt);
+  };
+
+  const writeDestinationSync = (
+    offset: number,
+    source: Uint8Array<ArrayBuffer>,
+  ): number => {
+    metrics.queuedBytes = source.byteLength;
+    metrics.peakQueuedBytes = Math.max(
+      metrics.peakQueuedBytes,
+      metrics.queuedBytes,
+    );
+    metrics.pendingOperations = 1;
+    metrics.peakPendingOperations = Math.max(
+      metrics.peakPendingOperations,
+      metrics.pendingOperations,
+    );
+    let completed: boolean;
+    try {
+      completed = writable.writeSync!({
+        type: "write",
+        position: offset,
+        data: source,
+      });
+    } catch (error) {
+      metrics.queuedBytes = 0;
+      metrics.pendingOperations = 0;
+      throw error;
+    }
+    if (!completed) {
+      metrics.queuedBytes = 0;
+      metrics.pendingOperations = 0;
+      return ROTATE_REQUIRED;
+    }
+    recordWrite(offset, source.byteLength);
+    return source.byteLength;
+  };
+
+  const flushCoalescedOutputSync = (): void => {
+    if (!coalescedOutput || coalescedOutputLength === 0) return;
+    const result = writeDestinationSync(
+      coalescedOutputOffset,
+      coalescedOutput.subarray(0, coalescedOutputLength),
+    );
+    if (result === ROTATE_REQUIRED) {
+      throw new Error(
+        "The direct destination unexpectedly requested output rotation.",
+      );
+    }
+    coalescedOutputLength = 0;
   };
 
   const bridge: RemuxBridge = {
@@ -211,28 +268,41 @@ export async function runMediaRemux({
               `FFmpeg requested an invalid output offset: ${offset}.`,
             );
           }
-          metrics.queuedBytes = source.byteLength;
+
+          if (!coalescedOutput) {
+            return writeDestinationSync(offset, source);
+          }
+          const expectedOffset =
+            coalescedOutputOffset + coalescedOutputLength;
+          if (
+            coalescedOutputLength > 0 &&
+            (offset !== expectedOffset ||
+              source.byteLength >
+                coalescedOutput.byteLength - coalescedOutputLength)
+          ) {
+            flushCoalescedOutputSync();
+          }
+          if (source.byteLength > coalescedOutput.byteLength) {
+            return writeDestinationSync(offset, source);
+          }
+          if (coalescedOutputLength === 0) {
+            coalescedOutputOffset = offset;
+          }
+          coalescedOutput.set(source, coalescedOutputLength);
+          coalescedOutputLength += source.byteLength;
+          metrics.outputBytes = Math.max(
+            metrics.outputBytes,
+            offset + source.byteLength,
+          );
+          metrics.queuedBytes = coalescedOutputLength;
           metrics.peakQueuedBytes = Math.max(
             metrics.peakQueuedBytes,
             metrics.queuedBytes,
           );
-          metrics.pendingOperations = 1;
-          metrics.peakPendingOperations = Math.max(
-            metrics.peakPendingOperations,
-            metrics.pendingOperations,
-          );
-          if (
-            !writable.writeSync!({
-              type: "write",
-              position: offset,
-              data: source,
-            })
-          ) {
-            metrics.queuedBytes = 0;
-            metrics.pendingOperations = 0;
-            return ROTATE_REQUIRED;
+          emitProgress(jobId, phase, metrics, startedAt);
+          if (coalescedOutputLength === coalescedOutput.byteLength) {
+            flushCoalescedOutputSync();
           }
-          recordWrite(offset, source.byteLength);
           return source.byteLength;
         }
       : undefined,
@@ -283,6 +353,7 @@ export async function runMediaRemux({
     truncateSync: writable.truncateSync
       ? (size) => {
           assertActive();
+          flushCoalescedOutputSync();
           writable.truncateSync!(size);
           metrics.outputBytes = size;
         }
@@ -292,17 +363,20 @@ export async function runMediaRemux({
       if (!Number.isSafeInteger(size) || size < 0) {
         throw new Error(`FFmpeg requested an invalid truncate size: ${size}.`);
       }
+      flushCoalescedOutputSync();
       await writable.truncate(size);
       metrics.outputBytes = size;
     },
     flushSync: writable.flushSync
       ? () => {
           assertActive();
+          flushCoalescedOutputSync();
           writable.flushSync!();
         }
       : undefined,
     async flush() {
       assertActive();
+      flushCoalescedOutputSync();
       await writable.flush?.();
     },
     cancelled: isCancelled,
@@ -372,6 +446,9 @@ export async function runMediaRemux({
   );
   if (isCancelled()) {
     throw new DOMException("Conversion cancelled", "AbortError");
+  }
+  if (result === 0) {
+    flushCoalescedOutputSync();
   }
   if (result !== 0) {
     throw new Error(

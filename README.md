@@ -60,6 +60,14 @@ the write. Random offsets, truncate, close, abort, and a bounded 4 KiB error
 message use the same one-command bridge. Browsers without that isolated-worker
 capability retain the awaited asynchronous stream fallback.
 
+Audio muxers often expose only 2-24 KiB at a time even though the destination
+accepts a larger bounded write. The direct-save media bridge therefore copies
+adjacent M4A, WAV, and FLAC packets into one reusable 256 KiB coalescing buffer.
+It flushes before a non-contiguous write, truncate, close, or explicit flush;
+the destination still permits only one operation and at most 256 KiB in flight.
+This changes only write granularity, not decoding, encoding, samples, metadata,
+or output bytes.
+
 The automated large-file harness uses synchronous OPFS access so it can profile
 and independently validate an output without creating another multi-gigabyte
 copy. That path rotates the access handle every 128 MiB and flushes every 8 MiB.
@@ -77,6 +85,7 @@ Hard limits:
 - AVIO output buffer: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
 - maximum browser read chunk: 262,144 bytes
 - maximum browser write and queued output: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
+- direct audio packet-coalescing buffer: 262,144 bytes
 - outstanding output operations: 1
 - direct-writer shared command, payload, and error storage: 1,052,704 bytes for direct MKV -> MP4
 - active workers during direct media output: 2
@@ -334,6 +343,8 @@ Current exact-build results:
 
 | Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| MKV to WAV, 256 KiB direct coalescer | 1 | 2,958,573,265 B | 7,107,834,734 B | 186.7 MiB | 32 MiB | 9.0 MiB |
+| MP3 to WAV, 256 KiB direct coalescer | 3 | 50,401,224 B | 201,600,128 B | 191.9 MiB | 32 MiB | 8.5-32.0 MiB |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
 | MKV → MP4, 1 MiB shared direct writer | 3 | 2,958,573,265 B | 2,962,151,522 B | 247.5 MiB | 53.6 MiB | 13.8–17.0 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
@@ -382,6 +393,16 @@ completed in 2.58–2.89 seconds, retained Hindi 5.1 AAC, and passed full native
 decode.
 The three WAV outputs shared SHA-256
 `659d36eac2310b7d20d8c694a8eafb11760061def608a9241a64913fc003e1eb`.
+The 256 KiB direct coalescer produced that same 7,107,834,734-byte WAV from
+`test.mkv` in 126.14 seconds, 19.5% faster than the prior fastest 156.72-second
+bounded run, while peaking at 186.7 MiB incremental private memory. On the
+50,401,224-byte MP3 stress source, the uncoalesced direct baseline took 65.22
+seconds. Three optimized runs took 3.36-3.60 seconds (18.1-19.4x faster),
+produced the same 201,600,128-byte output and SHA-256
+`b32ef83ee6cf931c48f0430696a39ebab4b96eb950262c593ec0ad959e4288b3`,
+kept one pending write and at most 260,574 queued bytes, and peaked at 191.9
+MiB. Independent probes and full native decodes passed for the WAV, M4A, and
+FLAC direct-save paths; injected write failure discarded the partial WAV.
 The three MP4-to-WAV outputs shared SHA-256
 `d489b3567851a1f2bace1a8a9915bd52f6d819daa7c1ec8674af951e1330887a`,
 completed in 93.11–93.94 seconds, retained 48 kHz 5.1 audio as PCM s16le,
