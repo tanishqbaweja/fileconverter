@@ -319,6 +319,10 @@ const categories = {
         "tar-bz2-to-zip",
         "fixtures/stress/archives/archive-256m.tar.bz2",
       ],
+      [
+        "zip-to-tar-bz2",
+        "fixtures/stress/archives/archive-256m.zip",
+      ],
     ],
   },
   xz: {
@@ -329,6 +333,7 @@ const categories = {
       ["tar-to-tar-xz", "fixtures/stress/archives/archive-256m.tar"],
       ["tar-xz-to-tar", "fixtures/stress/archives/archive-256m.tar.xz"],
       ["tar-xz-to-zip", "fixtures/stress/archives/archive-256m.tar.xz"],
+      ["zip-to-tar-xz", "fixtures/stress/archives/archive-256m.zip"],
     ],
   },
   gzip: {

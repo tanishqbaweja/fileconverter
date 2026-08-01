@@ -15,5 +15,5 @@
   "integrityCheck": "CRC64",
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
-  "profiles": ["xz-compress", "xz-decompress", "tar-to-tar-xz", "tar-xz-to-tar", "tar-xz-to-zip"]
+  "profiles": ["xz-compress", "xz-decompress", "tar-to-tar-xz", "tar-xz-to-tar", "tar-xz-to-zip", "zip-to-tar-xz"]
 }

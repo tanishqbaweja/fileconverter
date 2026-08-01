@@ -51,7 +51,8 @@ const isBzip2Profile =
   profileId === "bzip2-decompress" ||
   profileId === "tar-to-tar-bz2" ||
   profileId === "tar-bz2-to-tar" ||
-  profileId === "tar-bz2-to-zip";
+  profileId === "tar-bz2-to-zip" ||
+  profileId === "zip-to-tar-bz2";
 const isBzip2CompressedOutput =
   profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
 const isXzProfile =
@@ -59,7 +60,8 @@ const isXzProfile =
   profileId === "xz-decompress" ||
   profileId === "tar-to-tar-xz" ||
   profileId === "tar-xz-to-tar" ||
-  profileId === "tar-xz-to-zip";
+  profileId === "tar-xz-to-zip" ||
+  profileId === "zip-to-tar-xz";
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
 const isSevenZipProfile =
@@ -74,6 +76,8 @@ const isArchiveTransformProfile =
   profileId === "tar-gz-to-zip" ||
   profileId === "tar-bz2-to-zip" ||
   profileId === "tar-xz-to-zip" ||
+  profileId === "zip-to-tar-bz2" ||
+  profileId === "zip-to-tar-xz" ||
   isSevenZipProfile;
 if (
   ![
@@ -84,11 +88,13 @@ if (
     "tar-to-tar-bz2",
     "tar-bz2-to-tar",
     "tar-bz2-to-zip",
+    "zip-to-tar-bz2",
     "xz-compress",
     "xz-decompress",
     "tar-to-tar-xz",
     "tar-xz-to-tar",
     "tar-xz-to-zip",
+    "zip-to-tar-xz",
     "mkv-to-mp4",
     "mov-to-mp4",
     "3gp-to-mp4",

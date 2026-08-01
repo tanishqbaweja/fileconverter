@@ -12,17 +12,18 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **129**
-- Public profiles with a retained successful Chrome stress report: **129**
+- Public passed conversion profiles: **131**
+- Public profiles with a retained successful Chrome stress report: **131**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-01:** 257/257 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-01:** 266/266 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
 - **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81–29.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.
 - **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06–8.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2–6.9× faster than the measured 55.73-second always-LZMA2 baseline.
 - **Compressed TAR-to-ZIP:** TAR.BZ2-to-ZIP passed 3/3 258 MiB Chrome runs in 51.19–51.31 s at 190.5 MiB worst incremental private memory; TAR.XZ-to-ZIP passed 3/3 256 MiB runs in 33.22–35.50 s at 228.8 MiB. Both used one bounded nested stream with 16 KiB maximum destination writes, repeatable output hashes, independent per-entry size/SHA-256 validation, and cleanup recovery.
+- **ZIP-to-compressed TAR:** ZIP-to-TAR.BZ2 passed 3/3 256 MiB Chrome runs in 42.52–43.06 s at 160.6 MiB worst incremental private memory; ZIP-to-TAR.XZ passed 3/3 runs in 55.77–56.03 s at 195.7 MiB. Both bound the entire ZIP-inflate/TAR-build/codec/write pipeline to 64 KiB chunks with one pending destination operation, repeatable outputs, native per-entry size/SHA-256 validation, and cleanup recovery.
 - **Production dependency audit:** Next.js was upgraded from 16.2.6 to 16.2.12 to clear the framework advisories with a compatible fix. `npm audit --omit=dev` still reports three high transitive findings through Next's pinned PostCSS 8.4.31 and Sharp 0.34.5; npm currently offers no compatible non-major remediation for those two packages.
 
 ## Retained Chrome stress evidence
@@ -157,7 +158,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 | xz-compress | 268,435,456 | 3 | 268,448,840 | 52.48 s–56.84 s | 172.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | xz-decompress | 268,448,840 | 3 | 268,435,456 | 6.32 s–6.98 s | 203.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | zip-to-tar | 268,517,517 | 3 | 268,436,992 | 3.91 s–4.19 s | 194.4 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
+| zip-to-tar-bz2 | 268,517,517 | 3 | 270,592,831 | 42.52 s–43.06 s | 160.6 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | zip-to-tar-gz | 268,517,517 | 3 | 268,517,554 | 21.41 s–22.16 s | 194.5 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
+| zip-to-tar-xz | 268,517,517 | 3 | 268,449,796 | 55.77 s–56.03 s | 195.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 
 ## Retained failure evidence
 
@@ -310,7 +313,9 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | xz-compress | compression | xz-wasm | stream | 268,435,456 B | 3-run Chrome report |
 | xz-decompress | compression | xz-wasm | stream | 268,448,840 B | 3-run Chrome report |
 | zip-to-tar | archive | archive-browser | stream | 268,517,517 B | 3-run Chrome report |
+| zip-to-tar-bz2 | archive | bzip2-wasm | stream | 268,517,517 B | 3-run Chrome report |
 | zip-to-tar-gz | archive | archive-browser | stream | 268,517,517 B | 3-run Chrome report |
+| zip-to-tar-xz | archive | xz-wasm | stream | 268,517,517 B | 3-run Chrome report |
 
 ## Explicit remaining gaps — not tested or advertised
 

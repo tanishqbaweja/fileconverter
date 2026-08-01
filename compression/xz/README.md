@@ -12,6 +12,8 @@ CRC64 integrity check for the fastest low-memory XZ profile. The decoder has a
 64 GiB and 100:1 expansion limits.
 TAR.XZ-to-ZIP streams those bounded decoder chunks directly into the shared
 sequential USTAR parser and ZIP writer without an intermediate TAR file.
+ZIP-to-TAR.XZ feeds validated USTAR chunks into the same encoder through a
+64 KiB backpressured bridge, also without an intermediate TAR file.
 
 Build reproducibly from the repository root:
 

@@ -36,6 +36,8 @@ type XzModuleFactory = (options: {
 
 export interface XzConversionOptions {
   file: File;
+  inputStream?: ReadableStream<Uint8Array<ArrayBuffer>>;
+  trackInputMetrics?: boolean;
   decompress: boolean;
   metrics: ConversionMetrics;
   assertActive(): void;
@@ -47,6 +49,8 @@ export interface XzConversionOptions {
 
 export async function runXzConversion({
   file,
+  inputStream,
+  trackInputMetrics,
   decompress,
   metrics,
   assertActive,
@@ -84,7 +88,11 @@ export async function runXzConversion({
   }
 
   const phase = decompress ? "Decompressing XZ" : "Compressing XZ";
-  const reader = file.stream().getReader({ mode: "byob" });
+  const byobReader = inputStream
+    ? null
+    : file.stream().getReader({ mode: "byob" });
+  const streamReader = inputStream?.getReader() ?? null;
+  const countSourceBytes = trackInputMetrics ?? !inputStream;
   let readBuffer = new Uint8Array(INPUT_BUFFER_BYTES);
   let streamFinished = false;
   let expandedBytes = 0;
@@ -146,16 +154,25 @@ export async function runXzConversion({
   try {
     for (;;) {
       assertActive();
-      const { done, value } = await reader.read(readBuffer);
+      const { done, value } = byobReader
+        ? await byobReader.read(readBuffer)
+        : await streamReader!.read();
       if (done) break;
+      if (value.byteLength > INPUT_BUFFER_BYTES) {
+        throw new Error(
+          "The XZ stream bridge exceeded its 256 KiB input chunk limit.",
+        );
+      }
       if (streamFinished) {
         throw new Error("XZ input contains trailing data after the stream end.");
       }
-      metrics.inputBytes += value.byteLength;
-      metrics.maxReadChunkBytes = Math.max(
-        metrics.maxReadChunkBytes,
-        value.byteLength,
-      );
+      if (countSourceBytes) {
+        metrics.inputBytes += value.byteLength;
+        metrics.maxReadChunkBytes = Math.max(
+          metrics.maxReadChunkBytes,
+          value.byteLength,
+        );
+      }
       validateInput?.(value);
       codecModule.HEAPU8.set(value, inputPointer);
       progress(phase);
@@ -180,7 +197,7 @@ export async function runXzConversion({
           throw new Error("The XZ engine stopped making progress.");
         }
       }
-      readBuffer = nextByobBuffer(value);
+      if (byobReader) readBuffer = nextByobBuffer(value);
     }
 
     if (decompress) {
@@ -202,10 +219,11 @@ export async function runXzConversion({
         }
       }
     }
-    metrics.inputBytes = file.size;
+    if (countSourceBytes) metrics.inputBytes = file.size;
     progress(phase);
   } finally {
-    await reader.cancel().catch(() => {});
+    await byobReader?.cancel().catch(() => {});
+    await streamReader?.cancel().catch(() => {});
     codecModule._free(outputPointer);
     codecModule._free(inputPointer);
     codecModule._within_xz_destroy(handle);

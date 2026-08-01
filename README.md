@@ -300,6 +300,10 @@ permits one 64 KiB TAR chunk at a time and awaits every final destination write,
 so neither route creates an intermediate TAR or lets decompression outrun ZIP
 encoding. Compound input suffixes are removed when suggesting the final ZIP
 name, including `.tar.bz2`, `.tbz2`, `.tar.xz`, and `.txz`.
+ZIP-to-TAR.BZ2 and ZIP-to-TAR.XZ use the same bridge in reverse: validated ZIP
+entries become deterministic USTAR chunks that feed the fixed 8 MiB BZIP2 or
+48 MiB XZ engine directly. Backpressure spans ZIP inflation, TAR construction,
+compression, and the final selected destination with no intermediate archive.
 
 TAR-to-7Z, 7Z-to-TAR, 7Z-to-TAR.GZ, and 7Z-to-ZIP use a separately lazy-loaded
 libarchive 3.8.9 engine with a fixed 56 MiB Wasm heap, 256 KiB seekable `File`
@@ -625,6 +629,8 @@ profiler:
 | Archives, 7Z -> ZIP | 268,435,574 B | 218.3 MiB | independent ZIP entry size/SHA-256 |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
+| Archives, ZIP -> TAR.BZ2 | 268,517,517 B | 160.6 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, ZIP -> TAR.XZ | 268,517,517 B | 195.7 MiB | 3-run native entry size/SHA-256 validation |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |

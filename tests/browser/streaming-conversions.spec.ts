@@ -59,6 +59,16 @@ const browserTarXzZipOutputPath = path.join(
   "work",
   "browser-tar-xz-output.zip",
 );
+const browserZipBzip2OutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-zip-output.tar.bz2",
+);
+const browserZipXzOutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-zip-output.tar.xz",
+);
 const batchFixturePaths = [
   path.join(projectRoot, "work", "batch-café.txt"),
   path.join(projectRoot, "work", "batch-日本語.txt"),
@@ -277,6 +287,43 @@ print(json.dumps(entries, ensure_ascii=True))
   }>;
 }
 
+async function compressedTarEntryDigests(
+  archivePath: string,
+  codec: "bzip2" | "xz",
+) {
+  const python = String.raw`
+import bz2, hashlib, json, lzma, sys, tarfile
+opener = bz2.open if sys.argv[2] == "bzip2" else lzma.open
+entries = []
+with opener(sys.argv[1], "rb") as source:
+    with tarfile.open(fileobj=source, mode="r|") as archive:
+        for info in archive:
+            digest = hashlib.sha256()
+            size = 0
+            if info.isfile():
+                payload = archive.extractfile(info)
+                while True:
+                    chunk = payload.read(262144)
+                    if not chunk:
+                        break
+                    digest.update(chunk)
+                    size += len(chunk)
+            name = info.name.rstrip("/") + "/" if info.isdir() else info.name
+            entries.append({"name": name, "size": size, "sha256": digest.hexdigest()})
+print(json.dumps(entries, ensure_ascii=True))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, archivePath, codec],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as Array<{
+    name: string;
+    size: number;
+    sha256: string;
+  }>;
+}
+
 async function sevenZipEntryDigests(archivePath: string) {
   const python = String.raw`
 import hashlib, json, os, pathlib, sys, tempfile
@@ -475,6 +522,8 @@ test.afterAll(async () => {
   await rm(browserTarSevenZipOutputPath, { force: true });
   await rm(browserTarBzip2ZipOutputPath, { force: true });
   await rm(browserTarXzZipOutputPath, { force: true });
+  await rm(browserZipBzip2OutputPath, { force: true });
+  await rm(browserZipXzOutputPath, { force: true });
   await Promise.all(batchFixturePaths.map((fixture) => rm(fixture, { force: true })));
 });
 
@@ -2222,6 +2271,79 @@ test("converts ZIP directly to TAR.GZ with bounded nested streams", async () => 
   ]);
 });
 
+for (const [profileId, codec, outputPath, outputName] of [
+  [
+    "zip-to-tar-bz2",
+    "bzip2",
+    browserZipBzip2OutputPath,
+    "sample.tar.bz2",
+  ],
+  ["zip-to-tar-xz", "xz", browserZipXzOutputPath, "sample.tar.xz"],
+] as const) {
+  test(`${profileId} streams to an independently validated compressed TAR`, async () => {
+    await selectFixture("fixtures/archives/sample.zip", profileId);
+    const state = await convert();
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBe(1);
+    expect(state.metrics?.peakWasmMemoryBytes).toBe(
+      codec === "bzip2" ? 8 * 1024 * 1024 : 48 * 1024 * 1024,
+    );
+    await copyAndDeleteSmallOpfsFile(state.opfsName!, outputPath);
+    try {
+      const manifest = JSON.parse(
+        await readFile(
+          path.join(projectRoot, "fixtures", "archives", "sample.zip.json"),
+          "utf8",
+        ),
+      ) as { entries: Array<{ name: string; size: number; sha256: string }> };
+      expect(await compressedTarEntryDigests(outputPath, codec)).toEqual(
+        manifest.entries,
+      );
+    } finally {
+      await rm(outputPath, { force: true });
+    }
+  });
+
+  test(`${profileId} writes through the bounded direct-save worker`, async () => {
+    await page.goto("/?test=1&directory=1");
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+    await removeOpfsEntryAndReportSize(outputName);
+    try {
+      await selectFixture("fixtures/archives/sample.zip", profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+        .toBe("complete");
+      const state = await currentState();
+      expect(state.batchOutputNames).toEqual([outputName]);
+      expect(state.opfsName).toBeNull();
+      expect(state.metrics?.peakPendingOperations).toBe(1);
+      expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+      const output = await page.evaluate(async (name) => {
+        const root = await navigator.storage.getDirectory();
+        const handle = await root.getFileHandle(name);
+        const file = await handle.getFile();
+        const signature = Array.from(
+          new Uint8Array(await file.slice(0, 6).arrayBuffer()),
+        );
+        await root.removeEntry(name);
+        return { bytes: file.size, signature };
+      }, outputName);
+      expect(output.bytes).toBeGreaterThan(100);
+      expect(output.signature.slice(0, codec === "bzip2" ? 3 : 6)).toEqual(
+        codec === "bzip2"
+          ? [0x42, 0x5a, 0x68]
+          : [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+      );
+    } finally {
+      await removeOpfsEntryAndReportSize(outputName);
+    }
+  });
+}
+
 test("converts a 1,024-entry ZIP directly to TAR.GZ", async () => {
   await selectFixture(
     "fixtures/archives/many-entries.zip",
@@ -2490,6 +2612,8 @@ for (const [fixture, profileId, expectedError] of [
   ["fixtures/archives/unsafe-entry.tar.xz", "tar-xz-to-zip", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-gz", "Unsafe ZIP entry"],
+  ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-bz2", "Unsafe ZIP entry"],
+  ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-xz", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-zip", "Unsafe TAR entry"],
 ] as const) {
   test(`${profileId} rejects traversal entries and deletes partial output`, async () => {
@@ -2516,6 +2640,8 @@ for (const [fixture, profileId, expectedError] of [
 for (const [fixture, profileId] of [
   ["fixtures/archives/sample.tar", "tar-to-sevenzip"],
   ["fixtures/archives/sample.zip", "zip-to-tar-gz"],
+  ["fixtures/archives/sample.zip", "zip-to-tar-bz2"],
+  ["fixtures/archives/sample.zip", "zip-to-tar-xz"],
   ["fixtures/archives/sample.tar.gz", "tar-gz-to-zip"],
   ["fixtures/compression/sample.expected.txt", "bzip2-compress"],
   ["fixtures/archives/sample.tar.bz2", "tar-bz2-to-tar"],

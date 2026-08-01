@@ -29,6 +29,12 @@ const tarXzFixturePath = path.join(
   "archives",
   "sample.tar.xz",
 );
+const zipFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "archives",
+  "sample.zip",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -330,6 +336,57 @@ test("cached TAR.XZ-to-ZIP pipeline converts offline", async () => {
     const result = await convertTarXzDirect();
     expect(result.bytes).toBeGreaterThan(100);
     expect(result.signature).toEqual([0x50, 0x4b, 0x03, 0x04]);
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(entryName).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("cached ZIP-to-TAR.XZ pipeline converts offline", async () => {
+  const outputName = "sample.tar.xz";
+  const convertZipDirect = async () => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page.locator('[data-testid="file-input"]').setInputFiles(zipFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("zip-to-tar-xz");
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 6).arrayBuffer()),
+      );
+      await root.removeEntry(entryName);
+      return { bytes: file.size, signature };
+    }, outputName);
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  expect((await convertZipDirect()).signature).toEqual([
+    0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00,
+  ]);
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const result = await convertZipDirect();
+    expect(result.bytes).toBeGreaterThan(100);
+    expect(result.signature).toEqual([0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00]);
   } finally {
     await context.setOffline(false);
     await page.evaluate(async (entryName) => {

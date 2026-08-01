@@ -26,6 +26,7 @@ import {
 } from "./sevenzip-conversion";
 import { runXmlToNdjson } from "./xml-conversion";
 import { runXzConversion } from "./xz-compression";
+import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng } from "./tiff-conversion";
 import {
   asynchronousFileStreamDestination,
@@ -2823,7 +2824,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "sevenzip-to-tar-gz" ||
             profileId === "sevenzip-to-zip" ||
             profileId === "tar-bz2-to-zip" ||
-            profileId === "tar-xz-to-zip"
+            profileId === "tar-xz-to-zip" ||
+            profileId === "zip-to-tar-bz2" ||
+            profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
     );
@@ -2876,6 +2879,30 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         isCancelled: () => cancelled,
         emitProgress,
         post,
+      });
+    } else if (
+      profileId === "zip-to-tar-bz2" ||
+      profileId === "zip-to-tar-xz"
+    ) {
+      const compressedTarDestination = destination.writable;
+      await runZipToCompressedTar({
+        file,
+        codec: profileId === "zip-to-tar-bz2" ? "bzip2" : "xz",
+        metrics,
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+        write: (chunk, phase) =>
+          writeBounded(
+            compressedTarDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+            true,
+            ARCHIVE_WASM_WRITE_CHUNK,
+          ),
       });
     } else if (
       profileId === "tar-bz2-to-zip" ||
