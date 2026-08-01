@@ -16,13 +16,19 @@ const publicPassed = conversionProfiles.filter(
     profile.public && profile.automatedTestStatus === "passed",
 );
 const reports = new Map();
+const failedReports = [];
 
 for (const name of await readdir(reportRoot).catch(() => [])) {
-  if (!name.endsWith("-stress.json") || name.includes("failure")) continue;
+  if (!name.endsWith(".json")) continue;
   try {
     const report = JSON.parse(
       await readFile(path.join(reportRoot, name), "utf8"),
     );
+    if (name.endsWith("-stress-failure.json") && report.failure) {
+      failedReports.push(report);
+      continue;
+    }
+    if (!name.endsWith("-stress.json")) continue;
     if (!report.passed || !report.profileId || !Array.isArray(report.runs)) {
       continue;
     }
@@ -85,6 +91,24 @@ for (const profile of profiled) {
 
 lines.push(
   "",
+  "## Retained failure evidence",
+  "",
+  "These are historical failed attempts retained for diagnosis. A later passing report does not erase the failure or its measured boundary.",
+  "",
+  "| When | Profile | Source bytes | Completed runs | Last input bytes | Failure |",
+  "| --- | --- | ---: | ---: | ---: | --- |",
+);
+
+for (const report of failedReports.sort((left, right) =>
+  String(left.generatedAt).localeCompare(String(right.generatedAt)),
+)) {
+  lines.push(
+    `| ${cell(report.generatedAt ?? "unknown")} | ${cell(report.profileId ?? "unknown")} | ${integer(report.source?.bytes ?? 0)} | ${integer(report.completedRuns?.length ?? 0)} | ${integer(report.lastObservedState?.metrics?.inputBytes ?? 0)} | ${cell(String(report.failure?.message ?? report.lastObservedState?.error ?? "unknown failure").slice(0, 180))} |`,
+  );
+}
+
+lines.push(
+  "",
   "## Every public passed profile",
   "",
   "| Profile | Input category | Engine | Method | Largest tested source | Evidence snapshot |",
@@ -111,7 +135,7 @@ lines.push(
   "This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:",
   "",
   "- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.",
-  "- Audio: AMR routes; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.",
+  "- Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.",
   "- Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.",
   "- Archives/compression: BZIP2, XZ, and 7Z.",
   "- Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.",

@@ -62,6 +62,8 @@ const wmaWavOutputPath = path.join(outputRoot, "wma-decode-output.wav");
 const wmaFlacOutputPath = path.join(outputRoot, "wma-decode-output.flac");
 const wavWmaOutputPath = path.join(outputRoot, "wav-encode-output.wma");
 const flacWmaOutputPath = path.join(outputRoot, "flac-encode-output.wma");
+const amrWavOutputPath = path.join(outputRoot, "amr-decode-output.wav");
+const amrFlacOutputPath = path.join(outputRoot, "amr-decode-output.flac");
 const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
 const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
@@ -146,6 +148,12 @@ const wmaFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.wma",
+);
+const amrFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.amr",
 );
 const aacFixturePath = path.join(
   projectRoot,
@@ -236,6 +244,8 @@ interface MediaProbe {
 
 interface MediaRouteOptions {
   expectedWarningFragments?: readonly string[];
+  expectedDurationSeconds?: number;
+  durationToleranceSeconds?: number;
   validate?: (probe: MediaProbe, outputPath: string) => Promise<void>;
 }
 
@@ -342,6 +352,8 @@ test.beforeAll(async () => {
   assertProjectLocal(wmaFlacOutputPath);
   assertProjectLocal(wavWmaOutputPath);
   assertProjectLocal(flacWmaOutputPath);
+  assertProjectLocal(amrWavOutputPath);
+  assertProjectLocal(amrFlacOutputPath);
   assertProjectLocal(aiffWavOutputPath);
   assertProjectLocal(oggWavOutputPath);
   assertProjectLocal(opusWavOutputPath);
@@ -490,6 +502,8 @@ test.afterAll(async () => {
   await rm(wmaFlacOutputPath, { force: true });
   await rm(wavWmaOutputPath, { force: true });
   await rm(flacWmaOutputPath, { force: true });
+  await rm(amrWavOutputPath, { force: true });
+  await rm(amrFlacOutputPath, { force: true });
   await rm(aiffWavOutputPath, { force: true });
   await rm(oggWavOutputPath, { force: true });
   await rm(opusWavOutputPath, { force: true });
@@ -600,6 +614,8 @@ async function runMediaRoute(
     | "wma-to-flac"
     | "wav-to-wma"
     | "flac-to-wma"
+    | "amr-to-wav"
+    | "amr-to-flac"
     | "aiff-to-wav"
     | "ogg-to-wav"
     | "opus-to-wav"
@@ -677,6 +693,8 @@ async function runMediaRoute(
       profileId === "wma-to-flac" ||
       profileId === "wav-to-wma" ||
       profileId === "flac-to-wma" ||
+      profileId === "amr-to-wav" ||
+      profileId === "amr-to-flac" ||
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav"
@@ -730,8 +748,15 @@ async function runMediaRoute(
         (stream: { codec_name: string }) => stream.codec_name,
       ),
     ).toEqual(expectedCodecs);
-    expect(Number(probe.format.duration)).toBeGreaterThan(3.9);
-    expect(Number(probe.format.duration)).toBeLessThan(4.2);
+    const outputDuration = Number(probe.format.duration);
+    if (options.expectedDurationSeconds == null) {
+      expect(outputDuration).toBeGreaterThan(3.9);
+      expect(outputDuration).toBeLessThan(4.2);
+    } else {
+      expect(
+        Math.abs(outputDuration - options.expectedDurationSeconds),
+      ).toBeLessThanOrEqual(options.durationToleranceSeconds ?? 0.1);
+    }
     await options.validate?.(probe, outputPath);
   } finally {
     validationSink?.destroy();
@@ -1626,6 +1651,36 @@ test("browser FFmpeg encodes FLAC as WMA2", async () => {
         expect(probe.streams[0]?.bit_rate).toBe("320000");
         await expectDecodedAudioPsnr(flacFixturePath, outputPath, 60);
       },
+    },
+  );
+});
+
+test("browser FFmpeg decodes AMR-NB to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "amr-to-wav",
+    amrWavOutputPath,
+    ["pcm_s16le"],
+    50_000,
+    amrFixturePath,
+    {
+      expectedDurationSeconds: 4.02,
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(amrFixturePath, outputPath),
+    },
+  );
+});
+
+test("browser FFmpeg converts AMR-NB to FLAC", async () => {
+  await runMediaRoute(
+    "amr-to-flac",
+    amrFlacOutputPath,
+    ["flac"],
+    5_000,
+    amrFixturePath,
+    {
+      expectedDurationSeconds: 4.02,
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(amrFixturePath, outputPath),
     },
   );
 });

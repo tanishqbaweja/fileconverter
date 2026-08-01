@@ -109,6 +109,19 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
   assert.equal(detectFormat({ name: "audio.ADTS", type: "" }), "aac");
   assert.equal(detectFormat({ name: "legacy-audio.WMA", type: "" }), "wma");
+  assert.equal(detectFormat({ name: "voice-note.AMR", type: "" }), "amr");
+  assert.deepEqual(
+    conversionProfiles
+      .filter((profile) => profile.input === "amr" || profile.output === "amr")
+      .map((profile) => profile.id)
+      .sort(),
+    ["amr-to-flac", "amr-to-wav"],
+  );
+  assert.ok(
+    publicProfilesFor("amr").some(
+      (profile) => profile.id === "amr-to-wav",
+    ),
+  );
   assert.equal(
     formats.find((format) => format.id === "wma")?.extensions[0],
     "wma",

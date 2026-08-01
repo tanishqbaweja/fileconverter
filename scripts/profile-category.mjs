@@ -71,6 +71,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  amr: {
+    generator: "scripts/generate-amr-stress-fixture.mjs",
+    profiles: [
+      ["amr-to-wav", "audio-amr-nb-128m.amr"],
+      ["amr-to-flac", "audio-amr-nb-128m.amr"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [

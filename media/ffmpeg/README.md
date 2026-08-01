@@ -48,6 +48,13 @@ as a compatibility fallback. FFmpeg seeks by requesting a new slice. Output writ
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.
 
+The pinned FFmpeg tree is patched reproducibly with
+`patches/amr-bounded-packets.patch`. Its AMR demuxer emits only complete AMR
+frames and batches them into packets capped at 32 KiB, avoiding corrupt partial
+frames at AVIO refill boundaries and reducing demux overhead. The audio
+pipeline also batches frame-size-zero PCM encoders into fixed 8,192-sample FIFO
+frames; total FIFO occupancy remains capped at 16,384 samples.
+
 The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
 MPEG-4 Part 2 parsers. Transport
 probing is capped at 2 MiB and two seconds of analyzed media. AAC packets use the

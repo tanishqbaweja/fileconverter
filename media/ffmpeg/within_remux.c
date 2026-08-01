@@ -378,6 +378,7 @@ typedef struct WithinAudioPipeline {
   AVFrame *converted_frame;
   AVPacket *encoded_packet;
   AVAudioFifo *fifo;
+  int output_frame_samples;
   int64_t next_pts;
 } WithinAudioPipeline;
 
@@ -411,7 +412,7 @@ static int write_audio_packets(WithinAudioPipeline *pipeline,
 }
 
 static int drain_audio_fifo(WithinAudioPipeline *pipeline, int flush) {
-  const int frame_size = pipeline->encoder->frame_size;
+  const int frame_size = pipeline->output_frame_samples;
   while (av_audio_fifo_size(pipeline->fifo) >= frame_size ||
          (flush && av_audio_fifo_size(pipeline->fifo) > 0)) {
     int samples = FFMIN(frame_size, av_audio_fifo_size(pipeline->fifo));
@@ -743,7 +744,9 @@ static int within_audio_transcode(int profile) {
     report_av_error("Audio encoder initialization failed", result);
     goto cleanup;
   }
-  if (encoder->frame_size < 0 || encoder->frame_size > 8192) {
+  const int output_frame_samples =
+      encoder->frame_size > 0 ? encoder->frame_size : 8192;
+  if (output_frame_samples > 8192) {
     within_message(2, "The audio encoder frame size exceeds the bounded FIFO limit.");
     result = AVERROR_INVALIDDATA;
     goto cleanup;
@@ -821,14 +824,12 @@ static int within_audio_transcode(int profile) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  if (encoder->frame_size > 0) {
-    fifo = av_audio_fifo_alloc(encoder->sample_fmt,
-                               encoder->ch_layout.nb_channels,
-                               encoder->frame_size * 2);
-    if (!fifo) {
-      result = AVERROR(ENOMEM);
-      goto cleanup;
-    }
+  fifo = av_audio_fifo_alloc(encoder->sample_fmt,
+                             encoder->ch_layout.nb_channels,
+                             output_frame_samples * 2);
+  if (!fifo) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
   }
   pipeline = (WithinAudioPipeline){
       .decoder = decoder,
@@ -840,6 +841,7 @@ static int within_audio_transcode(int profile) {
       .converted_frame = converted_frame,
       .encoded_packet = encoded_packet,
       .fifo = fifo,
+      .output_frame_samples = output_frame_samples,
       .next_pts = 0,
   };
 

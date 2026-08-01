@@ -1,0 +1,63 @@
+diff --git a/libavformat/amr.c b/libavformat/amr.c
+--- a/libavformat/amr.c
++++ b/libavformat/amr.c
+@@ -119 +119 @@ static int amr_read_header(AVFormatContext *s)
+-    ffstream(st)->need_parsing = AVSTREAM_PARSE_FULL_RAW;
++    ffstream(st)->need_parsing = AVSTREAM_PARSE_NONE;
+@@ -127,0 +128,53 @@ static int amr_read_header(AVFormatContext *s)
++static int amr_read_packet(AVFormatContext *s, AVPacket *pkt)
++{
++    AVStream *st = s->streams[0];
++    const int maximum_packet_size = 32 * 1024;
++    int packet_size = 0, ret;
++
++    if (st->codecpar->ch_layout.nb_channels != 1)
++        return AVERROR(ENOSYS);
++
++    ret = av_new_packet(pkt, maximum_packet_size);
++    if (ret < 0)
++        return ret;
++
++    while (maximum_packet_size - packet_size >= 61) {
++        uint8_t toc;
++        int frame_samples, frame_size, mode;
++
++        ret = avio_read(s->pb, &toc, 1);
++        if (ret != 1) {
++            if (packet_size == 0) {
++                av_packet_unref(pkt);
++                return ret < 0 ? ret : AVERROR_EOF;
++            }
++            break;
++        }
++
++        mode = (toc >> 3) & 0x0F;
++        if (st->codecpar->codec_id == AV_CODEC_ID_AMR_NB) {
++            frame_size = amrnb_packed_size[mode];
++            frame_samples = 160;
++        } else if (st->codecpar->codec_id == AV_CODEC_ID_AMR_WB) {
++            frame_size = amrwb_packed_size[mode];
++            frame_samples = 320;
++        } else {
++            av_packet_unref(pkt);
++            return AVERROR_INVALIDDATA;
++        }
++
++        pkt->data[packet_size] = toc;
++        ret = avio_read(s->pb, pkt->data + packet_size + 1, frame_size - 1);
++        if (ret != frame_size - 1) {
++            av_packet_unref(pkt);
++            return ret < 0 ? ret : AVERROR_INVALIDDATA;
++        }
++        packet_size += frame_size;
++        pkt->duration += frame_samples;
++    }
++
++    av_shrink_packet(pkt, packet_size);
++    pkt->stream_index = 0;
++    return packet_size;
++}
++
+@@ -136 +189 @@ const FFInputFormat ff_amr_demuxer = {
+-    .read_packet    = ff_raw_read_partial_packet,
++    .read_packet    = amr_read_packet,

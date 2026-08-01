@@ -77,6 +77,7 @@ if (
     "mp4-to-wav",
     "m4a-to-wav",
     "aac-to-wav",
+    "amr-to-wav",
     "mp3-to-wav",
     "flac-to-wav",
     "wma-to-wav",
@@ -85,6 +86,7 @@ if (
     "opus-to-wav",
     "m4a-to-flac",
     "aac-to-flac",
+    "amr-to-flac",
     "mp3-to-flac",
     "wav-to-flac",
     "wma-to-flac",
@@ -129,6 +131,7 @@ const isMediaProfile =
   profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "aac-to-wav" ||
+  profileId === "amr-to-wav" ||
   profileId === "mp3-to-wav" ||
   profileId === "flac-to-wav" ||
   profileId === "wma-to-wav" ||
@@ -137,6 +140,7 @@ const isMediaProfile =
   profileId === "opus-to-wav" ||
   profileId === "m4a-to-flac" ||
   profileId === "aac-to-flac" ||
+  profileId === "amr-to-flac" ||
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
   profileId === "wma-to-flac" ||
@@ -675,6 +679,7 @@ async function validateMediaOutput(
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "aac-to-wav" ||
+    route === "amr-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
     route === "wma-to-wav" ||
@@ -683,6 +688,7 @@ async function validateMediaOutput(
     route === "opus-to-wav" ||
     route === "m4a-to-flac" ||
     route === "aac-to-flac" ||
+    route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac" ||
     route === "wma-to-flac" ||
@@ -701,6 +707,7 @@ async function validateMediaOutput(
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "aac-to-wav" ||
+    route === "amr-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
     route === "wma-to-wav" ||
@@ -710,6 +717,7 @@ async function validateMediaOutput(
   const flacOutput =
     route === "m4a-to-flac" ||
     route === "aac-to-flac" ||
+    route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac" ||
     route === "wma-to-flac";

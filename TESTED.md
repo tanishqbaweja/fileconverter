@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **108**
-- Public profiles with a retained successful Chrome stress report: **107**
+- Public passed conversion profiles: **110**
+- Public profiles with a retained successful Chrome stress report: **109**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -27,6 +27,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | aac-to-m4a | 134,367,785 | 3 | 133,906,114 | 1.81 s–2.23 s | 179.8 MiB | 32.0 MiB | read 262,144 B / write 167,549 B | passed |
 | aac-to-wav | 134,367,785 | 3 | 770,273,358 | 19.20 s–19.62 s | 186.5 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
 | aiff-to-wav | 201,600,102 | 3 | 201,600,128 | 3.38 s–4.24 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
+| amr-to-flac | 134,229,414 | 3 | 760,765,211 | 124.23 s–126.93 s | 166.0 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| amr-to-wav | 134,229,414 | 3 | 1,342,294,158 | 61.54 s–62.01 s | 209.7 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -128,6 +130,23 @@ This is the living progress record. It is regenerated after each test/profile cy
 | zip-to-tar | 268,517,517 | 3 | 268,436,992 | 3.91 s–4.19 s | 194.4 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | zip-to-tar-gz | 268,517,517 | 3 | 268,517,554 | 21.41 s–22.16 s | 194.5 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 
+## Retained failure evidence
+
+These are historical failed attempts retained for diagnosis. A later passing report does not erase the failure or its measured boundary.
+
+| When | Profile | Source bytes | Completed runs | Last input bytes | Failure |
+| --- | --- | ---: | ---: | ---: | --- |
+| 2026-07-31T08:25:25.261Z | m4a-to-flac | 36,929,878 | 0 | 36,929,878 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 2100.010667s. |
+| 2026-07-31T20:18:46.844Z | mkv-to-mp4-mpeg4 | 2,958,573,265 | 0 | 2,958,573,265 | Browser video midpoint visual validation failed: SSIM unavailable. |
+| 2026-07-31T23:46:30.284Z | xml-to-ndjson | 134,218,700 | 0 | 128,974,848 | Conversion run 1 failed: Conversion worker failed to start: the browser blocked or rejected the worker script. |
+| 2026-08-01T04:32:00.293Z | mpeg-ts-to-mp4 | 157,710,004 | 0 | 2,347,152 | Conversion run 1 failed: [aac @ 0x474110] Error decoding AAC frame header. \| [aac @ 0x474110] Error decoding AAC frame header. \| [aac @ 0x474110] Error decoding AAC frame header. \| |
+| 2026-08-01T04:37:07.771Z | mpeg-ts-to-mp4 | 161,109,984 | 0 | 2,347,152 | Conversion run 1 failed: [aac @ 0x473a90] Error decoding AAC frame header. \| [aac @ 0x473a90] Error decoding AAC frame header. \| [aac @ 0x473a90] Error decoding AAC frame header. \| |
+| 2026-08-01T04:38:44.400Z | mpeg-ts-to-mp4 | 175,444,796 | 0 | 175,444,796 | Unexpected browser MP4 streams: h264, aac. |
+| 2026-08-01T04:43:46.389Z | mpeg-ts-to-wav | 175,444,796 | 0 | 175,444,796 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 716.416s. |
+| 2026-08-01T05:02:40.476Z | flv-to-m4a | 167,517,193 | 0 | 167,517,193 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, und, 720.035s. |
+| 2026-08-01T05:26:46.307Z | avi-to-wav | 230,929,466 | 0 | 230,929,466 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 718.272s. |
+| 2026-08-01T08:45:53.233Z | amr-to-wav | 134,229,414 | 0 | 262,144 | Conversion run 1 failed: [amrnb @ 0x481f70] Corrupt bitstream \| Audio decode or encode failed: Invalid data found when processing input |
+
 ## Every public passed profile
 
 | Profile | Input category | Engine | Method | Largest tested source | Evidence snapshot |
@@ -139,6 +158,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | aac-to-m4a | audio | ffmpeg-remux | stream-copy | 134,367,785 B | 3-run Chrome report |
 | aac-to-wav | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aiff-to-wav | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
+| amr-to-flac | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
+| amr-to-wav | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
@@ -246,7 +267,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
-- Audio: AMR routes; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
+- Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
 - Archives/compression: BZIP2, XZ, and 7Z.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.

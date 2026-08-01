@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 108
+complete-Chromium memory profile have passed. The current registry publishes 110
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, or WMA -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 201,600,106 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, or WMA -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
@@ -240,6 +240,15 @@ frames without re-encoding, removes the ADTS transport headers with
 The WAV and FLAC routes genuinely decode AAC, resample to stereo PCM s16le, and
 write bounded PCM or losslessly compressed decoded audio. Raw ADTS has no
 container artwork, chapters, language tag, or general metadata to preserve.
+
+Raw AMR input is limited to certified 8 kHz mono AMR-NB. The pinned FFmpeg
+source build applies the audited `amr-bounded-packets.patch`, which replaces
+partial raw packet reads with complete-frame batches capped at 32 KiB. This
+prevents a frame from being split at a 256 KiB AVIO refill boundary and avoids
+millions of tiny demux packets. PCM output is accumulated in fixed
+8,192-sample FIFO batches; FLAC uses its codec frame size. Both outputs decode
+to the same exact PCM SHA-256 as native FFmpeg. AMR-WB and AMR carried inside
+3GP remain outside these two raw-AMR profiles.
 
 ## Non-media engines and limitations
 
@@ -484,6 +493,8 @@ Current exact-build results:
 | WMA2 → FLAC | 3 | 142,503,082 B | 326,238,814 B | 191.2 MiB | 32 MiB | −0.6–4.7 MiB |
 | WAV → WMA2 | 3 | 153,600,104 B | 60,000,756 B | 150.2 MiB | 32 MiB | 5.8–41.4 MiB |
 | FLAC → WMA2 | 3 | 138,186,536 B | 60,000,756 B | 159.9 MiB | 32 MiB | 0.8–5.1 MiB |
+| AMR-NB to WAV | 3 | 134,229,414 B | 1,342,294,158 B | 209.7 MiB | 32 MiB | cleanup passed |
+| AMR-NB to FLAC | 3 | 134,229,414 B | 760,765,211 B | 166.0 MiB | 32 MiB | cleanup passed |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -584,6 +595,14 @@ stereo and downmixes larger layouts to stereo. Independent full-decode APSNR
 validation passed for every result. All reads stayed at or below 262,144 bytes;
 WMA output writes were at most 3,200 bytes, and one write was pending at a
 time. Cleanup deleted the three large sources and every converted copy.
+
+The AMR gate used a genuine 134,229,414-byte raw AMR-NB source containing
+4,194,669 frames (83,893.38 seconds of decoded audio). AMR-to-WAV completed in
+61.54-62.01 seconds and produced 1,342,294,158 bytes; AMR-to-FLAC completed in
+124.23-126.93 seconds and produced 760,765,211 bytes. Worst complete-Chrome
+incremental private memory was 209.7 MiB for WAV and 166.0 MiB for FLAC. Every
+run matched the manifest's exact decoded-PCM SHA-256, kept reads at or below
+262,144 bytes, held at most one write, and passed cleanup recovery.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

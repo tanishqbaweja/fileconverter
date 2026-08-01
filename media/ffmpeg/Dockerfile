@@ -29,6 +29,9 @@ RUN curl --fail --location --retry 3 \
 COPY build-vpx.sh /src/build-vpx.sh
 RUN chmod +x /src/build-vpx.sh && /src/build-vpx.sh
 
+COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
+RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
+
 COPY build-libraries.sh /src/build-libraries.sh
 RUN chmod +x /src/build-libraries.sh && /src/build-libraries.sh
 

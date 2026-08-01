@@ -2577,6 +2577,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mp4-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "aac-to-wav" ||
+        profileId === "amr-to-wav" ||
         profileId === "mp3-to-wav" ||
         profileId === "flac-to-wav" ||
         profileId === "wma-to-wav" ||
@@ -2585,6 +2586,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "opus-to-wav" ||
         profileId === "m4a-to-flac" ||
         profileId === "aac-to-flac" ||
+        profileId === "amr-to-flac" ||
         profileId === "mp3-to-flac" ||
         profileId === "wav-to-flac" ||
         profileId === "wma-to-flac" ||
@@ -2881,6 +2883,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mp4-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "aac-to-wav" ||
+      profileId === "amr-to-wav" ||
       profileId === "mp3-to-wav" ||
       profileId === "flac-to-wav" ||
       profileId === "wma-to-wav" ||
@@ -2889,6 +2892,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "opus-to-wav" ||
       profileId === "m4a-to-flac" ||
       profileId === "aac-to-flac" ||
+      profileId === "amr-to-flac" ||
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
       profileId === "wma-to-flac" ||
@@ -2916,6 +2920,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "mp4-to-wav" ||
             profileId === "m4a-to-wav" ||
             profileId === "aac-to-wav" ||
+            profileId === "amr-to-wav" ||
             profileId === "mp3-to-wav" ||
             profileId === "flac-to-wav" ||
             profileId === "wma-to-wav" ||
@@ -2925,6 +2930,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             ? 3
             : profileId === "m4a-to-flac" ||
                 profileId === "aac-to-flac" ||
+                profileId === "amr-to-flac" ||
                 profileId === "mp3-to-flac" ||
                 profileId === "wav-to-flac" ||
                 profileId === "wma-to-flac"
