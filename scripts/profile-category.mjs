@@ -81,6 +81,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "flac-inputs": {
+    generator: "scripts/generate-flac-input-stress-fixtures.mjs",
+    profiles: [
+      ["aiff-to-flac", "audio-pcm-flac-192m.aiff"],
+      ["ogg-to-flac", "audio-vorbis-flac-128m.ogg"],
+      ["opus-to-flac", "audio-opus-flac-128m.opus"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [

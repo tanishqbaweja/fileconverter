@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 110
+complete-Chromium memory profile have passed. The current registry publishes 113
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, or WMA -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 201,600,106 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
@@ -249,6 +249,14 @@ millions of tiny demux packets. PCM output is accumulated in fixed
 8,192-sample FIFO batches; FLAC uses its codec frame size. Both outputs decode
 to the same exact PCM SHA-256 as native FFmpeg. AMR-WB and AMR carried inside
 3GP remain outside these two raw-AMR profiles.
+
+AIFF PCM, Ogg Vorbis, and Ogg Opus can also be written as FLAC through the
+same bounded decoder, resampler, FIFO, and direct-output callbacks. Signed
+16-bit AIFF remains sample-exact. Vorbis and Opus cannot regain information
+discarded by their source codecs, so their FLAC results are independently
+checked against the decoded source with APSNR rather than byte-comparing the
+compressed streams. Compatible text comments are copied; container-only chunks
+and embedded artwork are explicitly outside these audio-only profiles.
 
 ## Non-media engines and limitations
 
@@ -495,6 +503,9 @@ Current exact-build results:
 | FLAC → WMA2 | 3 | 138,186,536 B | 60,000,756 B | 159.9 MiB | 32 MiB | 0.8–5.1 MiB |
 | AMR-NB to WAV | 3 | 134,229,414 B | 1,342,294,158 B | 209.7 MiB | 32 MiB | cleanup passed |
 | AMR-NB to FLAC | 3 | 134,229,414 B | 760,765,211 B | 166.0 MiB | 32 MiB | cleanup passed |
+| AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
+| Ogg Vorbis to FLAC | 3 | 144,431,506 B | 397,265,921 B | 198.4 MiB | 32 MiB | read 262,144 B / write 16,617 B |
+| Ogg Opus to FLAC | 3 | 147,964,541 B | 386,531,887 B | 194.4 MiB | 32 MiB | read 262,144 B / write 16,213 B |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -603,6 +614,17 @@ The AMR gate used a genuine 134,229,414-byte raw AMR-NB source containing
 incremental private memory was 209.7 MiB for WAV and 166.0 MiB for FLAC. Every
 run matched the manifest's exact decoded-PCM SHA-256, kept reads at or below
 262,144 bytes, held at most one write, and passed cleanup recovery.
+
+The expanded FLAC-input gate used genuine 2,300-second sources: a
+220,800,108-byte PCM AIFF, a 144,431,506-byte Ogg Vorbis stream, and a
+147,964,541-byte Ogg Opus stream. AIFF-to-FLAC completed in 6.06-7.02 seconds,
+Ogg-to-FLAC in 15.35-15.46 seconds, and Opus-to-FLAC in 25.55-26.09 seconds.
+Worst complete-Chrome incremental private memory was respectively 207.2,
+198.4, and 194.4 MiB. AIFF matched the exact decoded-PCM SHA-256; both lossy
+inputs passed full decoded-audio APSNR validation. Every run kept Wasm at
+32 MiB, bounded reads to 262,144 bytes, held one write at a time, produced a
+repeatable output hash, and returned near the loaded idle baseline after
+cleanup. The category runner then deleted all three sources and outputs.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

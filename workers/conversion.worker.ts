@@ -2590,6 +2590,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mp3-to-flac" ||
         profileId === "wav-to-flac" ||
         profileId === "wma-to-flac" ||
+        profileId === "aiff-to-flac" ||
+        profileId === "ogg-to-flac" ||
+        profileId === "opus-to-flac" ||
         profileId === "wav-to-alac" ||
         profileId === "flac-to-alac" ||
         profileId === "wav-to-wma" ||
@@ -2896,6 +2899,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
       profileId === "wma-to-flac" ||
+      profileId === "aiff-to-flac" ||
+      profileId === "ogg-to-flac" ||
+      profileId === "opus-to-flac" ||
       profileId === "wav-to-alac" ||
       profileId === "flac-to-alac" ||
       profileId === "wav-to-wma" ||
@@ -2933,7 +2939,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "amr-to-flac" ||
                 profileId === "mp3-to-flac" ||
                 profileId === "wav-to-flac" ||
-                profileId === "wma-to-flac"
+                profileId === "wma-to-flac" ||
+                profileId === "aiff-to-flac" ||
+                profileId === "ogg-to-flac" ||
+                profileId === "opus-to-flac"
               ? 6
             : profileId === "wav-to-alac" ||
                 profileId === "flac-to-alac"

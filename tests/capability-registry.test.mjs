@@ -139,6 +139,14 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.ok(
     publicProfilesFor("wav").some((profile) => profile.id === "wav-to-wma"),
   );
+  assert.deepEqual(
+    ["aiff", "ogg", "opus"].map((input) =>
+      publicProfilesFor(input).some(
+        (profile) => profile.id === `${input}-to-flac`,
+      ),
+    ),
+    [true, true, true],
+  );
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
   assert.equal(
     formats.find((format) => format.id === "alac")?.extensions[0],

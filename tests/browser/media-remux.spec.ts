@@ -67,6 +67,9 @@ const amrFlacOutputPath = path.join(outputRoot, "amr-decode-output.flac");
 const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
 const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
+const aiffFlacOutputPath = path.join(outputRoot, "aiff-convert-output.flac");
+const oggFlacOutputPath = path.join(outputRoot, "ogg-convert-output.flac");
+const opusFlacOutputPath = path.join(outputRoot, "opus-convert-output.flac");
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
@@ -357,6 +360,9 @@ test.beforeAll(async () => {
   assertProjectLocal(aiffWavOutputPath);
   assertProjectLocal(oggWavOutputPath);
   assertProjectLocal(opusWavOutputPath);
+  assertProjectLocal(aiffFlacOutputPath);
+  assertProjectLocal(oggFlacOutputPath);
+  assertProjectLocal(opusFlacOutputPath);
   assertProjectLocal(mpeg4OutputPath);
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(ogvWebmOutputPath);
@@ -507,6 +513,9 @@ test.afterAll(async () => {
   await rm(aiffWavOutputPath, { force: true });
   await rm(oggWavOutputPath, { force: true });
   await rm(opusWavOutputPath, { force: true });
+  await rm(aiffFlacOutputPath, { force: true });
+  await rm(oggFlacOutputPath, { force: true });
+  await rm(opusFlacOutputPath, { force: true });
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
@@ -619,6 +628,9 @@ async function runMediaRoute(
     | "aiff-to-wav"
     | "ogg-to-wav"
     | "opus-to-wav"
+    | "aiff-to-flac"
+    | "ogg-to-flac"
+    | "opus-to-flac"
     | "mkv-to-webm"
     | "ogv-to-webm"
     | "ogv-to-wav"
@@ -697,7 +709,10 @@ async function runMediaRoute(
       profileId === "amr-to-flac" ||
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
-      profileId === "opus-to-wav"
+      profileId === "opus-to-wav" ||
+      profileId === "aiff-to-flac" ||
+      profileId === "ogg-to-flac" ||
+      profileId === "opus-to-flac"
     ) {
       expect(state.warnings).toEqual([]);
     } else {
@@ -1712,6 +1727,48 @@ test("browser FFmpeg decodes Opus to PCM WAV", async () => {
     ["pcm_s16le"],
     300_000,
     opusFixturePath,
+  );
+});
+
+test("browser FFmpeg losslessly encodes AIFF PCM as FLAC", async () => {
+  await runMediaRoute(
+    "aiff-to-flac",
+    aiffFlacOutputPath,
+    ["flac"],
+    20_000,
+    aiffFixturePath,
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(aiffFixturePath, outputPath),
+    },
+  );
+});
+
+test("browser FFmpeg converts Ogg Vorbis to FLAC", async () => {
+  await runMediaRoute(
+    "ogg-to-flac",
+    oggFlacOutputPath,
+    ["flac"],
+    20_000,
+    oggFixturePath,
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(oggFixturePath, outputPath, 60),
+    },
+  );
+});
+
+test("browser FFmpeg converts Opus to FLAC", async () => {
+  await runMediaRoute(
+    "opus-to-flac",
+    opusFlacOutputPath,
+    ["flac"],
+    20_000,
+    opusFixturePath,
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(opusFixturePath, outputPath, 60),
+    },
   );
 });
 

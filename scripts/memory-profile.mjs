@@ -90,6 +90,9 @@ if (
     "mp3-to-flac",
     "wav-to-flac",
     "wma-to-flac",
+    "aiff-to-flac",
+    "ogg-to-flac",
+    "opus-to-flac",
     "wav-to-alac",
     "flac-to-alac",
     "wav-to-wma",
@@ -144,6 +147,9 @@ const isMediaProfile =
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
   profileId === "wma-to-flac" ||
+  profileId === "aiff-to-flac" ||
+  profileId === "ogg-to-flac" ||
+  profileId === "opus-to-flac" ||
   profileId === "wav-to-alac" ||
   profileId === "flac-to-alac" ||
   profileId === "wav-to-wma" ||
@@ -692,6 +698,9 @@ async function validateMediaOutput(
     route === "mp3-to-flac" ||
     route === "wav-to-flac" ||
     route === "wma-to-flac" ||
+    route === "aiff-to-flac" ||
+    route === "ogg-to-flac" ||
+    route === "opus-to-flac" ||
     route === "wav-to-alac" ||
     route === "flac-to-alac" ||
     route === "wav-to-wma" ||
@@ -720,7 +729,10 @@ async function validateMediaOutput(
     route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac" ||
-    route === "wma-to-flac";
+    route === "wma-to-flac" ||
+    route === "aiff-to-flac" ||
+    route === "ogg-to-flac" ||
+    route === "opus-to-flac";
   const alacOutput =
     route === "wav-to-alac" || route === "flac-to-alac";
   const wmaOutput =
