@@ -200,10 +200,13 @@ if (
     "flac-to-wma",
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
+    "mkv-to-webm-vp9",
     "ogv-to-webm",
+    "ogv-to-webm-vp9",
     "ogv-to-wav",
     "m2v-to-mp4-mpeg4",
     "m2v-to-webm",
+    "m2v-to-webm-vp9",
   ].includes(profileId) &&
   !isImageProfile &&
   !isStreamingTextProfile &&
@@ -258,10 +261,13 @@ const isMediaProfile =
   profileId === "flac-to-wma" ||
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
+  profileId === "mkv-to-webm-vp9" ||
   profileId === "ogv-to-webm" ||
+  profileId === "ogv-to-webm-vp9" ||
   profileId === "ogv-to-wav" ||
   profileId === "m2v-to-mp4-mpeg4" ||
-  profileId === "m2v-to-webm";
+  profileId === "m2v-to-webm" ||
+  profileId === "m2v-to-webm-vp9";
 const expectedProfileValidation =
   fixtureManifest.expectedByProfile?.[profileId];
 const expectedValidationBytes =
@@ -935,11 +941,17 @@ async function validateMediaOutput(
     route === "wav-to-alac" || route === "flac-to-alac";
   const wmaOutput =
     route === "wav-to-wma" || route === "flac-to-wma";
+  const vp9Reencode =
+    route === "mkv-to-webm-vp9" ||
+    route === "ogv-to-webm-vp9" ||
+    route === "m2v-to-webm-vp9";
   const webmReencode =
     route === "mkv-to-webm" ||
     route === "ogv-to-webm" ||
-    route === "m2v-to-webm";
-  const webmAudioCopy = route === "ogv-to-webm";
+    route === "m2v-to-webm" ||
+    vp9Reencode;
+  const webmAudioCopy =
+    route === "ogv-to-webm" || route === "ogv-to-webm-vp9";
   const videoReencode =
     route === "mkv-to-mp4-mpeg4" ||
     route === "m2v-to-mp4-mpeg4" ||
@@ -1154,7 +1166,8 @@ async function validateMediaOutput(
                 : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
-        codecs[0] !== (webmReencode ? "vp8" : "mpeg4") ||
+        codecs[0] !==
+          (vp9Reencode ? "vp9" : webmReencode ? "vp8" : "mpeg4") ||
         (webmAudioCopy && codecs[1] !== "vorbis"))) ||
     (!audioOnly &&
       !videoReencode &&

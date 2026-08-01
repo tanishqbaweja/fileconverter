@@ -73,9 +73,12 @@ const opusFlacOutputPath = path.join(outputRoot, "opus-convert-output.flac");
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
+const vp9WebmOutputPath = path.join(outputRoot, "vp9-reencode-output.webm");
+const ogvVp9WebmOutputPath = path.join(outputRoot, "ogv-vp9-reencode-output.webm");
 const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
 const m2vWebmOutputPath = path.join(outputRoot, "m2v-reencode-output.webm");
+const m2vVp9WebmOutputPath = path.join(outputRoot, "m2v-vp9-reencode-output.webm");
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
@@ -366,9 +369,12 @@ test.beforeAll(async () => {
   assertProjectLocal(mpeg4OutputPath);
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(ogvWebmOutputPath);
+  assertProjectLocal(vp9WebmOutputPath);
+  assertProjectLocal(ogvVp9WebmOutputPath);
   assertProjectLocal(ogvWavOutputPath);
   assertProjectLocal(m2vMpeg4OutputPath);
   assertProjectLocal(m2vWebmOutputPath);
+  assertProjectLocal(m2vVp9WebmOutputPath);
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
@@ -519,9 +525,12 @@ test.afterAll(async () => {
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
+  await rm(vp9WebmOutputPath, { force: true });
+  await rm(ogvVp9WebmOutputPath, { force: true });
   await rm(ogvWavOutputPath, { force: true });
   await rm(m2vMpeg4OutputPath, { force: true });
   await rm(m2vWebmOutputPath, { force: true });
+  await rm(m2vVp9WebmOutputPath, { force: true });
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -636,6 +645,9 @@ async function runMediaRoute(
     | "ogv-to-wav"
     | "m2v-to-mp4-mpeg4"
     | "m2v-to-webm"
+    | "mkv-to-webm-vp9"
+    | "ogv-to-webm-vp9"
+    | "m2v-to-webm-vp9"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
@@ -730,6 +742,12 @@ async function runMediaRoute(
       profileId === "mkv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm"
+    ) {
+      expect(state.metrics?.activeWorkerCount).toBe(9);
+    } else if (
+      profileId === "mkv-to-webm-vp9" ||
+      profileId === "ogv-to-webm-vp9" ||
+      profileId === "m2v-to-webm-vp9"
     ) {
       expect(state.metrics?.activeWorkerCount).toBe(9);
     } else if (
@@ -1173,6 +1191,37 @@ test("direct WAV coalescing propagates write failure and releases the partial fi
   } finally {
     await removeBrowserStorageEntry(outputName).catch(() => {});
   }
+});
+
+test("VP9 WebM propagates a destination failure and removes partial output", async () => {
+  await page.goto("/?test=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("m2v-to-webm-vp9");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-m2v-to-webm-vp9")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
 });
 
 test("browser remux preserves multiple audio tracks and VFR timing while disclosing exclusions", async () => {
@@ -1790,6 +1839,15 @@ test("browser FFmpeg decodes video and encodes a genuine VP8 WebM", async () => 
   );
 });
 
+test("browser FFmpeg decodes video and encodes a genuine VP9 WebM", async () => {
+  await runMediaRoute(
+    "mkv-to-webm-vp9",
+    vp9WebmOutputPath,
+    ["vp9"],
+    50_000,
+  );
+});
+
 test("browser FFmpeg converts Theora/Vorbis OGV to VP8/Vorbis WebM", async () => {
   await runMediaRoute(
     "ogv-to-webm",
@@ -1812,6 +1870,30 @@ test("browser FFmpeg converts Theora/Vorbis OGV to VP8/Vorbis WebM", async () =>
             "-map", "0:v:0", "-map", "0:a:0",
             "-f", "null", "NUL",
           ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
+  );
+});
+
+test("browser FFmpeg converts Theora/Vorbis OGV to VP9/Vorbis WebM", async () => {
+  await runMediaRoute(
+    "ogv-to-webm-vp9",
+    ogvVp9WebmOutputPath,
+    ["vp9", "vorbis"],
+    50_000,
+    ogvFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: async (probe, outputPath) => {
+        const audio = probe.streams.find(
+          (stream) => stream.codec_type === "audio",
+        );
+        expect(audio?.tags?.language).toBe("eng");
+        await execFileAsync(
+          "ffmpeg",
+          ["-v", "error", "-i", outputPath, "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "NUL"],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
       },
@@ -1849,6 +1931,20 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP8 WebM", async () => 
     "m2v-to-webm",
     m2vWebmOutputPath,
     ["vp8"],
+    50_000,
+    m2vFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: validateMpeg2VideoOutput,
+    },
+  );
+});
+
+test("browser FFmpeg converts MPEG-2 elementary video to VP9 WebM", async () => {
+  await runMediaRoute(
+    "m2v-to-webm-vp9",
+    m2vVp9WebmOutputPath,
+    ["vp9"],
     50_000,
     m2vFixturePath,
     {

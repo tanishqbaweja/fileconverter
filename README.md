@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 121
+complete-Chromium memory profile have passed. The current registry publishes 152
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,14 +27,15 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/VP8 or VP9 WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
 public after passing their three-run gates on the untouched
 2,958,573,265-byte fixture. The app never substitutes an extension rename or a
-server conversion.
+server conversion. Separate VP9 WebM routes passed three-run gates on genuine
+181,825,549-byte MKV, 137,635,308-byte OGV, and 136,166,136-byte M2V sources.
 
 The living [tested conversion ledger](TESTED.md) lists every public passed
 profile, retained Chrome stress evidence, exact I/O bounds, cleanup status, and
@@ -116,7 +117,7 @@ Hard limits:
 - initial Wasm memory: 32 MiB
 - maximum Wasm memory: 96 MiB
 - shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
-  routes and 80 MiB observed for threaded WebM
+  routes, 80 MiB for VP8 WebM, and 88 MiB for VP9 WebM
 - completed large input/output in MEMFS: prohibited
 - text line, record, or subtitle cue: 1 MiB
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
@@ -186,7 +187,7 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 The current media core is deliberately small. It enables only the documented
 AIFF, AVI, FLAC, FLV, Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
 WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
-FLAC, MPEG-4 Part 2, and libvpx VP8 encoders; libswresample; libswscale; and the
+FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
@@ -229,7 +230,7 @@ OPFS output is removed, and a replacement worker becomes ready.
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
 explicitly excludes audio, subtitles, attachments, and chapters. Its current
-evidence is only a deterministic small fixture, so the normal selector hides it.
+evidence includes the protected 2,958,573,265-byte fixture, so the normal selector exposes it.
 The VP8 profile similarly converts the first video stream to a video-only WebM,
 bounds output to 640 pixels wide, uses four decoder threads, four encoder
 threads, four token partitions, realtime deadline, `cpu-used=8`, and zero
@@ -237,9 +238,19 @@ lookahead, and reports excluded audio, subtitles, attachments, and chapters.
 It is loaded from a dedicated eight-worker pthread module so audio and remux
 routes do not pay that pool's memory cost.
 
-The OGV profile uses that same bounded module to decode the first Theora video
-stream to VP8 while copying the first Vorbis audio stream losslessly into WebM.
-It preserves compatible audio language and general metadata, scales video wider
+The VP9 profiles use a separate lazy-loaded eight-worker module, so selecting a
+VP8, audio, or stream-copy route never downloads or starts the VP9 specialist.
+They retain the same 640-pixel width, 600 kbit/s, realtime, `cpu-used=8`, and
+zero-lookahead bounds while enabling row multithreading and two tile columns.
+The VP9 encoder uses four threads. Inputs wider than 1,280 pixels limit only the
+memory-heavy decoder to two threads; the downscaled encoder stays four-threaded.
+This topology improved the 136 MiB M2V benchmark from 85.49 to 69.06 seconds
+and the 181.8 MB high-resolution MKV benchmark from 355.59 to 330.23 seconds
+without increasing the 96 MiB Wasm ceiling.
+
+The OGV profiles use the matching bounded VP8 or VP9 module to decode the first
+Theora video stream while copying the first Vorbis audio stream losslessly into WebM.
+They preserve compatible audio language and general metadata, scale video wider
 than 640 pixels, and explicitly excludes unsupported additional streams and
 chapters. The OGV-to-WAV route decodes the first Vorbis stream to PCM s16le and
 discloses the excluded video stream.
@@ -247,7 +258,7 @@ discloses the excluded video stream.
 Raw MPEG-2 elementary streams are inspected with FFmpeg's bounded stream-info
 probe so sequence-header dimensions and frame rate are used instead of the raw
 demuxer's generic defaults. The site converts their decoded YUV 4:2:0 frames to
-either 2 Mbit/s MPEG-4 Part 2 MP4 or realtime 600 kbit/s VP8 WebM. Elementary
+either 2 Mbit/s MPEG-4 Part 2 MP4 or realtime 600 kbit/s VP8/VP9 WebM. Elementary
 streams have no audio, chapters, attachments, or container metadata to carry.
 
 Raw AAC/ADTS input uses FFmpeg's bounded AAC demuxer. The M4A route copies AAC
@@ -471,12 +482,14 @@ class, largest tested input, and automated-test state.
   Permissions-Policy headers
 - network Playwright test fails if a conversion emits a non-GET request,
   cross-origin request, filename, or fixture content
-- service worker caches only same-origin GET application/engine assets
-- test routes are excluded from service-worker caching
+- service worker eagerly caches only the lightweight same-origin app shell;
+  conversion engines are cached lazily on first use, avoiding a 50+ MiB install stall
+- same-origin runtime GET responses use the versioned cache; test-mode and
+  standalone-validator requests bypass the service worker
 - selected files and converted outputs are browser File API objects and never
   pass through `fetch`, Cache Storage, or a service worker
-- after one online controlled reload, the installed app shell and media engine
-  load offline
+- after an engine's first online conversion, the installed app shell and that
+  engine perform the same conversion offline
 
 The direct-save route requires a secure context and the File System Access API.
 Current Chrome, Edge, Brave, and Opera are the primary targets. Missing features
@@ -556,6 +569,7 @@ Current exact-build results:
 | MP4 → WAV | 3 | 2,964,855,971 B | 7,107,834,950 B | 224.1 MiB | 73.8 MiB | −8.1–−4.8 MiB |
 | MKV → MPEG-4 MP4 | 3 | 2,958,573,265 B | 3,086,358,463 B | 211.3 MiB | 89.6 MiB | −1.0–7.1 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
+| MKV → VP9 WebM | 3 | 181,825,549 B | 65,122,757 B | 244.9 MiB | 88 MiB | 7.2–17.8 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
 | MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
 | MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
@@ -572,9 +586,11 @@ Current exact-build results:
 | AVI → MP4 | 3 | 230,929,466 B | 229,960,974 B | 199.4 MiB | 32 MiB | 13.3–29.1 MiB |
 | AVI → WAV | 3 | 230,929,466 B | 68,954,218 B | 225.1 MiB | 32 MiB | 15.1–40.0 MiB |
 | OGV → WebM | 3 | 137,778,644 B | 61,043,196 B | 199.4 MiB | 32 MiB | 1.2–6.8 MiB |
+| OGV → VP9 WebM | 3 | 137,635,308 B | 67,478,525 B | 224.1 MiB | 64 MiB | 1.7–4.9 MiB |
 | OGV → WAV | 3 | 137,635,308 B | 74,880,078 B | 204.9 MiB | 32 MiB | 12.4–31.6 MiB |
 | M2V → MPEG-4 MP4 | 3 | 136,166,136 B | 124,300,753 B | 177.1 MiB | 32 MiB | 1.1–8.3 MiB |
 | M2V → VP8 WebM | 3 | 136,166,136 B | 37,835,173 B | 163.9 MiB | 32 MiB | 2.6–6.8 MiB |
+| M2V → VP9 WebM | 3 | 136,166,136 B | 44,351,703 B | 223.4 MiB | 56 MiB | −4.4–1.3 MiB |
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
@@ -879,6 +895,13 @@ seconds and produced a 267.3 MiB process-tree sample. Higher realtime
 no meaningful gain. The production core therefore keeps the faster proven
 four-thread topology instead of adding workers or weakening quality for a
 placebo improvement.
+The separate VP9 core passed three runs per source with byte-repeatable output:
+MKV completed in 329.00–330.04 seconds at 244.9 MiB worst incremental private
+memory, OGV in 97.19–97.53 seconds at 224.1 MiB, and M2V in 68.34–69.32 seconds
+at 223.4 MiB. Every output was independently probed as VP9 WebM, midpoint-SSIM
+checked, and fully decoded. The 4-thread VP9 configuration improved the M2V
+benchmark by 19.2%; limiting only high-resolution decoding to two threads kept
+the MKV path below the 96 MiB Wasm ceiling while preserving four-thread encode.
 `npm run clean:benchmark-artifacts` removes that fixed project-local 120-second
 fixture and its Chrome profile without deleting the compact measurements.
 Native `ffprobe` validates structure and metadata; native FFmpeg traverses every

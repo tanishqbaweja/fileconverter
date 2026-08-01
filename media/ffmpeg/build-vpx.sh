@@ -19,8 +19,9 @@ LDFLAGS="-pthread" STRIP=emstrip emconfigure ./configure \
   --enable-multithread \
   --enable-realtime-only \
   --disable-vp8-decoder \
-  --disable-vp9 \
+  --disable-vp9-decoder \
   --enable-vp8-encoder \
+  --enable-vp9-encoder \
   --enable-static \
   --disable-shared \
   --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread"

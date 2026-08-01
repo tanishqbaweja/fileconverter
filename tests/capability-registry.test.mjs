@@ -84,7 +84,18 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       videoCodecThreads: 4,
       profiles: ["mkv-to-webm", "ogv-to-webm", "m2v-to-webm"],
     },
+    {
+      name: "within-vp9",
+      wasmPthreadPoolSize: 8,
+      videoCodecThreads: 4,
+      profiles: [
+        "mkv-to-webm-vp9",
+        "ogv-to-webm-vp9",
+        "m2v-to-webm-vp9",
+      ],
+    },
   ]);
+  assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {

@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **149**
-- Public profiles with a retained successful Chrome stress report: **149**
+- Public passed conversion profiles: **152**
+- Public profiles with a retained successful Chrome stress report: **152**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 342/342 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-02:** 347/347 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Bounded VP9 WebM:** MKV-to-VP9 passed 3/3 Chrome runs on a 181,825,549-byte HEVC/AAC/SubRip source in 329.00–330.04 s at 244.9 MiB worst incremental private memory; OGV-to-VP9/Vorbis passed on 137,635,308 bytes in 97.19–97.53 s at 224.1 MiB; and M2V-to-VP9 passed on 136,166,136 bytes in 68.34–69.32 s at 223.4 MiB. All nine outputs were byte-repeatable, independently probed as genuine VP9 WebM, midpoint-SSIM checked, fully decoded, and deleted after validation. The separate lazy-loaded core retains a 96 MiB hard Wasm ceiling, uses four VP9 encoder threads, and limits high-resolution decoding to two threads. The final M2V topology improved the controlled 136 MiB conversion from 85.49 s to 69.06 s (19.2%) while staying bounded; split high-resolution decode/encode improved MKV from 355.59 s to 330.23 s (7.1%).
 - **Direct raw compression transcoding:** all six GZIP/BZIP2/XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable outputs, independent streamed decode/SHA-256 validation, and cleanup recovery. GZIP-to-BZIP2 reached 159.2 MiB in 42.58–43.27 s; GZIP-to-XZ 200.1 MiB in 55.81–56.43 s; BZIP2-to-GZIP 179.4 MiB in 51.10–51.54 s; BZIP2-to-XZ 201.3 MiB in 71.09–71.72 s; XZ-to-GZIP 236.2 MiB in 34.65–41.21 s; and XZ-to-BZIP2 196.4 MiB in 42.36–42.72 s. Every route kept reads at 256 KiB, writes at no more than 64 KiB, one pending operation, and no complete decompressed intermediate file.
 - **Direct compressed-TAR transcoding:** all six TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable hashes and cleanup recovery. TAR.GZ-to-TAR.BZ2 reached 168.7 MiB in 42.45–43.04 s; TAR.GZ-to-TAR.XZ 191.6 MiB in 54.92–56.42 s; TAR.BZ2-to-TAR.GZ 183.9 MiB in 51.26–52.65 s; TAR.BZ2-to-TAR.XZ 195.9 MiB in 70.70–71.99 s; TAR.XZ-to-TAR.GZ 239.9 MiB in 34.25–35.22 s; and TAR.XZ-to-TAR.BZ2 209.4 MiB in 42.39–42.73 s. Every route validated USTAR in flight, kept reads at 256 KiB and writes at 64 KiB with one pending operation, independently verified archive entry hashes, and stored no complete intermediate TAR.
 - **Compressed TAR/ZIP-to-7Z:** TAR.GZ passed 3/3 256 MiB Chrome runs in 8.22–9.17 s at 225.8 MiB worst incremental private memory; TAR.BZ2 passed in 25.06–25.69 s at 187.2 MiB; optimized TAR.XZ passed in 8.25–8.42 s at 231.1 MiB; and ZIP passed in 9.25–9.45 s at 236.2 MiB. All four streamed directly without a complete intermediate TAR, produced repeatable hashes, used adaptive COPY for the incompressible fixture, independently validated every extracted entry, and deleted 7Z scratch after every run. TAR.XZ uses a specialist 24 MiB decode-only XZ module, reducing combined fixed Wasm from 104 MiB to 80 MiB and resolving the earlier 250.1 MiB boundary failure.
@@ -90,6 +91,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | json-to-tsv | 293,633,883 | 3 | 139,913,895 | 24.43 s–24.94 s | 212.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | m2v-to-mp4-mpeg4 | 136,166,136 | 3 | 124,300,753 | 25.52 s–25.61 s | 177.1 MiB | 32.0 MiB | read 262,144 B / write 189,607 B | passed |
 | m2v-to-webm | 136,166,136 | 3 | 37,835,173 | 30.57 s–32.39 s | 163.9 MiB | 32.0 MiB | read 262,144 B / write 42,619 B | passed |
+| m2v-to-webm-vp9 | 136,166,136 | 3 | 44,351,703 | 68.34 s–69.32 s | 223.4 MiB | 56.0 MiB | read 262,144 B / write 45,682 B | passed |
 | m4a-to-flac | 140,941,469 | 3 | 138,185,793 | 7.43 s–7.84 s | 230.4 MiB | 32.0 MiB | read 262,144 B / write 16,614 B | passed |
 | m4a-to-wav | 140,941,469 | 3 | 153,600,128 | 5.11 s–5.39 s | 227.1 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | md-to-html | 141,110,000 | 3 | 206,870,176 | 13.97 s–14.30 s | 211.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -98,6 +100,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-mp4-mpeg4 | 2,958,573,265 | 3 | 3,086,358,463 | 3091.16 s–3096.06 s | 211.3 MiB | 89.6 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-wav | 2,958,573,265 | 3 | 7,107,834,734 | 156.72 s–161.53 s | 178.0 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
 | mkv-to-webm | 2,958,573,265 | 3 | 921,524,214 | 2682.01 s–2687.09 s | 208.8 MiB | 80.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mkv-to-webm-vp9 | 181,825,549 | 3 | 65,122,757 | 329.00 s–330.04 s | 244.9 MiB | 88.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-m4a | 149,251,969 | 3 | 14,557,639 | 0.42 s–0.69 s | 164.5 MiB | 32.0 MiB | read 262,144 B / write 103,136 B | passed |
 | mov-to-mp4 | 149,251,969 | 3 | 149,087,892 | 0.87 s–1.13 s | 168.2 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-wav | 149,251,969 | 3 | 414,733,404 | 9.31 s–9.77 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
@@ -118,6 +121,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ogg-to-wav | 4,580,949 | 3 | 201,600,078 | 5.91 s–7.02 s | 196.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | ogv-to-wav | 137,635,308 | 3 | 74,880,078 | 3.34 s–3.91 s | 204.9 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | ogv-to-webm | 137,778,644 | 3 | 61,043,196 | 44.03 s–45.01 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 71,004 B | passed |
+| ogv-to-webm-vp9 | 137,635,308 | 3 | 67,478,525 | 97.19 s–97.53 s | 224.1 MiB | 64.0 MiB | read 262,144 B / write 79,087 B | passed |
 | opus-to-flac | 147,964,541 | 3 | 386,531,887 | 25.55 s–26.09 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 16,213 B | passed |
 | opus-to-wav | 40,289,464 | 3 | 201,600,078 | 11.63 s–11.80 s | 229.3 MiB | 32.0 MiB | read 262,144 B / write 1,920 B | passed |
 | png-to-bmp | 780,611 | 3 | 24,883,254 | 0.29 s–0.39 s | 196.0 MiB | 0.0 MiB | read 262,144 B / write 195,840 B | passed |
@@ -201,6 +205,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 2026-08-01T08:45:53.233Z | amr-to-wav | 134,229,414 | 0 | 262,144 | Conversion run 1 failed: [amrnb @ 0x481f70] Corrupt bitstream \| Audio decode or encode failed: Invalid data found when processing input |
 | 2026-08-01T12:46:34.682Z | sevenzip-to-tar | 1,087,945 | 0 | 1,087,945 | Conversion run 1 failed: 7Z exceeds the 100:1 expansion safety limit |
 | 2026-08-01T14:59:04.416Z | tiff-to-png | 50,338,032 | 0 | 50,338,032 | Browser image visual validation failed: SSIM 0.000001. |
+| 2026-08-01T20:55:44.715Z | m2v-to-webm-vp9 | 136,166,136 | 0 | 786,432 | Conversion run 1 failed: [libvpx-vp9 @ 0x4dace0] v1.16.0 \| [libvpx-vp9 @ 0x4dace0] Error encoding frame: Unspecified internal error \| [libvpx-vp9 @ 0x4dace0]   Additional informati |
+| 2026-08-01T21:04:36.605Z | mkv-to-webm-vp9 | 181,825,549 | 0 | 173,771,355 | Conversion run 1 failed: [libvpx-vp9 @ 0x92af60] v1.16.0 \| Video decode or VP9 encode failed: Out of memory |
 
 ## Every public passed profile
 
@@ -263,6 +269,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | json-to-tsv | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
 | m2v-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m2v-to-webm | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
+| m2v-to-webm-vp9 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m4a-to-flac | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
 | m4a-to-wav | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
 | md-to-html | document | document-stream | stream | 141,110,000 B | 3-run Chrome report |
@@ -271,6 +278,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | mkv-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-wav | video | ffmpeg-audio | re-encode | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-webm | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
+| mkv-to-webm-vp9 | video | ffmpeg-video | re-encode | 181,825,549 B | 3-run Chrome report |
 | mov-to-m4a | video | ffmpeg-remux | stream-copy | 149,251,969 B | 3-run Chrome report |
 | mov-to-mp4 | video | ffmpeg-remux | stream-copy | 149,251,969 B | 3-run Chrome report |
 | mov-to-wav | video | ffmpeg-audio | re-encode | 149,251,969 B | 3-run Chrome report |
@@ -291,6 +299,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | ogg-to-wav | audio | ffmpeg-audio | re-encode | 4,580,949 B | 3-run Chrome report |
 | ogv-to-wav | video | ffmpeg-audio | re-encode | 137,635,308 B | 3-run Chrome report |
 | ogv-to-webm | video | ffmpeg-video | re-encode | 137,778,644 B | 3-run Chrome report |
+| ogv-to-webm-vp9 | video | ffmpeg-video | re-encode | 137,635,308 B | 3-run Chrome report |
 | opus-to-flac | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-wav | audio | ffmpeg-audio | re-encode | 40,289,464 B | 3-run Chrome report |
 | png-to-bmp | image | image-browser | re-encode | 780,611 B | 3-run Chrome report |
@@ -360,7 +369,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
-- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
+- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, AVI, and VP9 container/codec combinations plus AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.

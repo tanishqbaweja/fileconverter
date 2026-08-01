@@ -2679,6 +2679,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mkv-to-webm" ||
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
+        profileId === "mkv-to-webm-vp9" ||
+        profileId === "ogv-to-webm-vp9" ||
+        profileId === "m2v-to-webm-vp9" ||
         profileId === "mkv-to-mp4-mpeg4" ||
         profileId === "m2v-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
@@ -3226,6 +3229,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mkv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
+      profileId === "mkv-to-webm-vp9" ||
+      profileId === "ogv-to-webm-vp9" ||
+      profileId === "m2v-to-webm-vp9" ||
       profileId === "mkv-to-mp4-mpeg4" ||
       profileId === "m2v-to-mp4-mpeg4"
     ) {
@@ -3271,6 +3277,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 5
             : profileId === "ogv-to-webm"
               ? 7
+            : profileId === "mkv-to-webm-vp9" ||
+                profileId === "m2v-to-webm-vp9"
+              ? 10
+            : profileId === "ogv-to-webm-vp9"
+              ? 11
             : profileId === "mkv-to-mp4-mpeg4" ||
                 profileId === "m2v-to-mp4-mpeg4"
               ? 4

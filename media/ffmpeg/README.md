@@ -22,20 +22,24 @@ docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engi
 ```
 
 The Docker build downloads the pinned source archives, verifies both SHA-256
-values, builds a VP8-encoder-only libvpx, configures only the documented
-demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
+values, builds a VP8/VP9-encoder-only libvpx with both decoders disabled,
+configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
-The build emits four lazy-loaded WebAssembly SIMD modules from the same pinned
+The build emits five lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
 stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a
 1 MiB output AVIO buffer to reduce synchronous browser-file write crossings.
 `within-mpeg4` uses a fixed four-worker pool for two-thread HEVC/H.264 decode and
 MPEG-4 Part 2 encode. `within-webm` uses a fixed eight-worker pool for
-four-thread decode and VP8 encode. The conversion worker and each module's pool
-workers are counted in runtime diagnostics and terminated during job cleanup.
-VP8 is built in realtime-only mode and uses four token
-partitions, realtime deadline, `cpu-used=8`, and zero lookahead. Current stable
+four-thread decode and VP8 encode. `within-vp9` uses a fixed eight-worker pool
+and four-thread VP9 encode; inputs wider than 1,280 pixels limit decoding to two
+threads while the 640-wide encoder remains four-threaded. The conversion worker
+and each module's pool workers are counted in runtime diagnostics and terminated
+during job cleanup.
+VP8 uses four token partitions. VP8 and VP9 use realtime deadline,
+`cpu-used=8`, and zero lookahead; VP9 also enables row multithreading and two
+tile columns. Current stable
 Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The
 scalar file I/O bridge stays single-flight, and each module's shared Wasm memory
 retains its 32 MiB initial and 96 MiB maximum sizes.

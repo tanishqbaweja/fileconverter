@@ -166,6 +166,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  vp9: {
+    generator: "scripts/generate-vp9-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-webm-vp9", "matroska-vp9-128m.mkv"],
+      ["ogv-to-webm-vp9", "theora-video-128m.ogv"],
+      ["m2v-to-webm-vp9", "mpeg2-video-128m.m2v"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [

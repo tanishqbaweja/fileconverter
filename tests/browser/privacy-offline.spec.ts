@@ -71,6 +71,12 @@ const xzFixturePath = path.join(
   "compression",
   "sample.txt.xz",
 );
+const m2vFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "mpeg2-video-source.m2v",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -166,7 +172,7 @@ test("conversion transmits no filename or file content", async () => {
   }
 });
 
-test("installed app shell and conversion engine load offline", async () => {
+test("installed app shell loads offline without eagerly downloading engines", async () => {
   await page.goto("/");
   await expect(
     page.getByRole("heading", { name: "Big files. Small memory." }),
@@ -185,17 +191,11 @@ test("installed app shell and conversion engine load offline", async () => {
     ).flat();
     return requests.map((request) => new URL(request.url).pathname);
   });
-  expect(cachedPaths).toContain("/engines/remux/within-remux.wasm");
-  expect(cachedPaths).toContain("/engines/remux/within-remux.mjs");
-  expect(cachedPaths).toContain("/engines/remux/within-mpeg4.wasm");
-  expect(cachedPaths).toContain("/engines/remux/within-mpeg4.mjs");
-  expect(cachedPaths).toContain("/engines/remux/within-webm.wasm");
-  expect(cachedPaths).toContain("/engines/remux/within-webm.mjs");
-  expect(cachedPaths).toContain("/engines/tiff/within-tiff.wasm");
-  expect(cachedPaths).toContain("/engines/tiff/within-tiff.mjs");
-  expect(cachedPaths).toContain("/engines/svg/resvg.wasm");
-  expect(cachedPaths).toContain("/engines/archive7z/within-archive7z.wasm");
-  expect(cachedPaths).toContain("/engines/archive7z/within-archive7z.mjs");
+  expect(cachedPaths).toContain("/");
+  expect(cachedPaths).toContain("/manifest.webmanifest");
+  expect(cachedPaths.some((pathname) => pathname.startsWith("/engines/"))).toBe(
+    false,
+  );
 
   await context.setOffline(true);
   try {
@@ -203,6 +203,69 @@ test("installed app shell and conversion engine load offline", async () => {
     await expect(
       page.getByRole("heading", { name: "Big files. Small memory." }),
     ).toBeVisible();
+  } finally {
+    await context.setOffline(false);
+  }
+});
+
+test("cached VP9 media core performs a real conversion offline", async () => {
+  test.setTimeout(120_000);
+  const convert = async () => {
+    await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("m2v-to-webm-vp9");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 60_000 },
+      )
+      .toBe("complete");
+    return page.evaluate(async () => {
+      const state = window.__WITHIN_TEST__!.getState();
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(state.opfsName!);
+      const file = await handle.getFile();
+      const magic = Array.from(new Uint8Array(await file.slice(0, 4).arrayBuffer()));
+      await root.removeEntry(state.opfsName!);
+      return { bytes: file.size, magic };
+    });
+  };
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.goto("/?test=1");
+  expect((await convert()).magic).toEqual([0x1a, 0x45, 0xdf, 0xa3]);
+  const cachedVp9Paths = await page.evaluate(async () => {
+    const keys = await caches.keys();
+    return (
+      await Promise.all(
+        keys.map(async (key) =>
+          (await (await caches.open(key)).keys()).map(
+            (request) => new URL(request.url).pathname,
+          ),
+        ),
+      )
+    ).flat();
+  });
+  expect(cachedVp9Paths).toContain("/engines/remux/within-vp9.mjs");
+  expect(cachedVp9Paths).toContain("/engines/remux/within-vp9.wasm");
+  await page.reload();
+  await expect
+    .poll(
+      async () =>
+        page.evaluate(() => window.__WITHIN_TEST__?.getState().workerStatus),
+      { timeout: 15_000 },
+    )
+    .toBe("ready");
+  await context.setOffline(true);
+  try {
+    const result = await convert();
+    expect(result.bytes).toBeGreaterThan(50_000);
+    expect(result.magic).toEqual([0x1a, 0x45, 0xdf, 0xa3]);
   } finally {
     await context.setOffline(false);
   }

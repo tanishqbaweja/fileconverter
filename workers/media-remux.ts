@@ -7,11 +7,14 @@ const MPEG4_MODULE_URL = "/engines/remux/within-mpeg4.mjs";
 const MPEG4_WASM_URL = "/engines/remux/within-mpeg4.wasm";
 const THREADED_VIDEO_MODULE_URL = "/engines/remux/within-webm.mjs";
 const THREADED_VIDEO_WASM_URL = "/engines/remux/within-webm.wasm";
+const VP9_MODULE_URL = "/engines/remux/within-vp9.mjs";
+const VP9_WASM_URL = "/engines/remux/within-vp9.wasm";
 const DIRECT_REMUX_MODULE_URL = "/engines/remux/within-direct.mjs";
 const DIRECT_REMUX_WASM_URL = "/engines/remux/within-direct.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
 const MPEG4_WORKER_POOL_SIZE = 4;
 const WEBM_WORKER_POOL_SIZE = 8;
+const VP9_WORKER_POOL_SIZE = 8;
 const MAX_ENGINE_ERRORS = 32;
 const MAX_ENGINE_ERROR_CHARS = 512;
 const ROTATE_REQUIRED = -4096;
@@ -61,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -112,6 +115,8 @@ export async function runMediaRemux({
             ? "Encoding Apple Lossless audio"
           : remuxProfile === 9
             ? "Encoding Windows Media Audio"
+          : remuxProfile === 10 || remuxProfile === 11
+            ? "Encoding VP9 WebM"
           : remuxProfile === 5 || remuxProfile === 7
             ? "Encoding VP8 WebM"
             : "Encoding MPEG-4 video";
@@ -133,6 +138,8 @@ export async function runMediaRemux({
       ? MPEG4_WORKER_POOL_SIZE
       : remuxProfile === 5 || remuxProfile === 7
         ? WEBM_WORKER_POOL_SIZE
+      : remuxProfile === 10 || remuxProfile === 11
+        ? VP9_WORKER_POOL_SIZE
         : 0;
   metrics.activeWorkerCount =
     1 +
@@ -442,6 +449,8 @@ export async function runMediaRemux({
       ? MPEG4_MODULE_URL
       : remuxProfile === 5 || remuxProfile === 7
         ? THREADED_VIDEO_MODULE_URL
+      : remuxProfile === 10 || remuxProfile === 11
+        ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
     useDirectRemuxCore
@@ -450,6 +459,8 @@ export async function runMediaRemux({
       ? MPEG4_WASM_URL
       : remuxProfile === 5 || remuxProfile === 7
         ? THREADED_VIDEO_WASM_URL
+      : remuxProfile === 10 || remuxProfile === 11
+        ? VP9_WASM_URL
         : REMUX_WASM_URL;
   const imported = (await import(
     /* @vite-ignore */ moduleUrl

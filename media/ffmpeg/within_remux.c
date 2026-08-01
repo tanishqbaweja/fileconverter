@@ -1041,7 +1041,9 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
   }
 }
 
-static int within_video_reencode(int webm, int preserve_vorbis_audio) {
+static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
+  const int webm = webm_codec != 0;
+  const int vp9 = webm_codec == 2;
   int result = 0;
   int video_stream_index = -1;
   int audio_stream_index = -1;
@@ -1187,12 +1189,20 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
     goto cleanup;
   }
   decoder->pkt_timebase = input_stream->time_base;
+  int decoder_thread_count = WITHIN_VIDEO_THREADS;
+  if (vp9 && decoder->width > 1280 && decoder_thread_count > 2) {
+    decoder_thread_count = 2;
+    within_message(
+        1,
+        "The VP9 profile limits high-resolution decoding to two threads to "
+        "preserve its fixed memory budget.");
+  }
 #if defined(WITHIN_MPEG4_THREADED)
-  decoder->thread_count = WITHIN_VIDEO_THREADS;
-  if (WITHIN_VIDEO_THREADS > 1) {
+  decoder->thread_count = decoder_thread_count;
+  if (decoder_thread_count > 1) {
 #else
-  decoder->thread_count = webm ? WITHIN_VIDEO_THREADS : 1;
-  if (webm && WITHIN_VIDEO_THREADS > 1) {
+  decoder->thread_count = webm ? decoder_thread_count : 1;
+  if (webm && decoder_thread_count > 1) {
 #endif
     decoder->thread_type = FF_THREAD_FRAME | FF_THREAD_SLICE;
   }
@@ -1209,8 +1219,8 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
   if (frame_rate.num <= 0 || frame_rate.den <= 0) {
     frame_rate = (AVRational){24, 1};
   }
-  const AVCodec *encoder_codec =
-      avcodec_find_encoder(webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
+  const AVCodec *encoder_codec = avcodec_find_encoder(
+      vp9 ? AV_CODEC_ID_VP9 : webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -1263,14 +1273,20 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
   if (webm) {
     av_dict_set(&encoder_options, "deadline", "realtime", 0);
     av_dict_set(&encoder_options, "cpu-used", "8", 0);
-    av_dict_set_int(&encoder_options, "slices", WITHIN_VIDEO_THREADS, 0);
     av_dict_set(&encoder_options, "lag-in-frames", "0", 0);
     av_dict_set(&encoder_options, "auto-alt-ref", "0", 0);
+    if (vp9) {
+      av_dict_set(&encoder_options, "row-mt", "1", 0);
+      av_dict_set(&encoder_options, "tile-columns", "1", 0);
+    } else {
+      av_dict_set_int(&encoder_options, "slices", WITHIN_VIDEO_THREADS, 0);
+    }
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   if (result < 0) {
     report_av_error(
-        webm ? "VP8 encoder initialization failed"
+        vp9 ? "VP9 encoder initialization failed"
+            : webm ? "VP8 encoder initialization failed"
              : "MPEG-4 encoder initialization failed",
         result);
     goto cleanup;
@@ -1395,7 +1411,8 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
       result = drain_video_decoder(&pipeline, input_packet);
       if (result < 0) {
         report_av_error(
-            webm ? "Video decode or VP8 encode failed"
+            vp9 ? "Video decode or VP9 encode failed"
+                : webm ? "Video decode or VP8 encode failed"
                  : "Video decode or MPEG-4 encode failed",
             result);
         goto cleanup;
@@ -1487,6 +1504,14 @@ static int within_ogv_to_webm(void) {
   return within_video_reencode(1, 1);
 }
 
+static int within_video_to_vp9(void) {
+  return within_video_reencode(2, 0);
+}
+
+static int within_ogv_to_vp9(void) {
+  return within_video_reencode(2, 1);
+}
+
 EMSCRIPTEN_KEEPALIVE
 int within_remux(int profile) {
   int result = 0;
@@ -1518,6 +1543,12 @@ int within_remux(int profile) {
   }
   if (profile == 7) {
     return within_ogv_to_webm();
+  }
+  if (profile == 10) {
+    return within_video_to_vp9();
+  }
+  if (profile == 11) {
+    return within_ogv_to_vp9();
   }
   if (profile != 1 && profile != 2) {
     within_message(2, "Unknown remux profile.");
