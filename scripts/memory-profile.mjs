@@ -87,6 +87,8 @@ if (
     "mkv-to-webm",
     "ogv-to-webm",
     "ogv-to-wav",
+    "m2v-to-mp4-mpeg4",
+    "m2v-to-webm",
   ].includes(profileId) &&
   !isImageProfile &&
   !isStreamingTextProfile &&
@@ -127,7 +129,9 @@ const isMediaProfile =
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
   profileId === "ogv-to-webm" ||
-  profileId === "ogv-to-wav";
+  profileId === "ogv-to-wav" ||
+  profileId === "m2v-to-mp4-mpeg4" ||
+  profileId === "m2v-to-webm";
 const expectedProfileValidation =
   fixtureManifest.expectedByProfile?.[profileId];
 const expectedValidationBytes =
@@ -679,11 +683,18 @@ async function validateMediaOutput(
     route === "mp3-to-flac" ||
     route === "wav-to-flac";
   const webmReencode =
-    route === "mkv-to-webm" || route === "ogv-to-webm";
+    route === "mkv-to-webm" ||
+    route === "ogv-to-webm" ||
+    route === "m2v-to-webm";
   const webmAudioCopy = route === "ogv-to-webm";
   const videoReencode =
-    route === "mkv-to-mp4-mpeg4" || webmReencode;
-  const sourceDurationSeconds = Number(source.probe?.format?.duration);
+    route === "mkv-to-mp4-mpeg4" ||
+    route === "m2v-to-mp4-mpeg4" ||
+    webmReencode;
+  const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
+  const sourceDurationSeconds = Number.isFinite(probedSourceDurationSeconds)
+    ? probedSourceDurationSeconds
+    : Number(source.durationSeconds);
   const minimumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.floor((sourceDurationSeconds * 300_000) / 8)
@@ -847,7 +858,7 @@ async function validateMediaOutput(
         codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== sourceAudio?.codec_name))
   ) {
-    throw new Error(`Unexpected browser MP4 streams: ${codecs.join(", ")}.`);
+    throw new Error(`Unexpected browser media streams: ${codecs.join(", ")}.`);
   }
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
@@ -860,7 +871,7 @@ async function validateMediaOutput(
     sourceAudio?.tags?.language && sourceAudio.tags.language !== "und"
       ? sourceAudio.tags.language
       : null;
-  const sourceDuration = Number(source.probe.format.duration);
+  const sourceDuration = sourceDurationSeconds;
   const expectedDuration =
     audioOnly && (pcmOutput || flacOutput)
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
@@ -987,6 +998,7 @@ async function validateMediaOutput(
   if (
     videoReencode &&
     !webmAudioCopy &&
+    sourceAudio &&
     !finalState.warnings.some((warning) => warning.includes("audio stream"))
   ) {
     throw new Error("The browser did not explicitly disclose the excluded audio stream.");

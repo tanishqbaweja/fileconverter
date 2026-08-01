@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **97**
-- Public profiles with a retained successful Chrome stress report: **96**
+- Public passed conversion profiles: **99**
+- Public profiles with a retained successful Chrome stress report: **98**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -60,6 +60,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | json-to-csv | 293,633,883 | 3 | 139,913,895 | 24.37 s–25.13 s | 185.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | json-to-ndjson | 293,633,883 | 3 | 288,143,880 | 12.09 s–12.39 s | 229.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | json-to-tsv | 293,633,883 | 3 | 139,913,895 | 24.43 s–24.94 s | 212.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| m2v-to-mp4-mpeg4 | 136,166,136 | 3 | 124,300,753 | 25.52 s–25.61 s | 177.1 MiB | 32.0 MiB | read 262,144 B / write 189,607 B | passed |
+| m2v-to-webm | 136,166,136 | 3 | 37,835,173 | 30.57 s–32.39 s | 163.9 MiB | 32.0 MiB | read 262,144 B / write 42,619 B | passed |
 | m4a-to-flac | 36,929,878 | 3 | 31,505,487 | 6.52 s–7.00 s | 208.5 MiB | 32.0 MiB | read 262,144 B / write 8,413 B | passed |
 | m4a-to-wav | 36,929,878 | 3 | 201,601,152 | 7.99 s–8.30 s | 234.0 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | md-to-html | 141,110,000 | 3 | 206,870,176 | 13.97 s–14.30 s | 211.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -162,6 +164,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | json-to-csv | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
 | json-to-ndjson | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
 | json-to-tsv | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
+| m2v-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
+| m2v-to-webm | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m4a-to-flac | audio | ffmpeg-audio | re-encode | 36,929,878 B | 3-run Chrome report |
 | m4a-to-wav | audio | ffmpeg-audio | re-encode | 36,929,878 B | 3-run Chrome report |
 | md-to-html | document | document-stream | stream | 141,110,000 B | 3-run Chrome report |
@@ -223,7 +227,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
-- Video/container: relevant elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2, and additional codec-conversion combinations.
+- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: raw AAC, ALAC, AMR, and WMA routes; user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
 - Archives/compression: BZIP2, XZ, and 7Z.

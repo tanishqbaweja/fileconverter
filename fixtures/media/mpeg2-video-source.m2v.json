@@ -1,0 +1,79 @@
+{
+  "generatedBy": "scripts/generate-mpeg2-video-fixture.mjs",
+  "durationSeconds": 4,
+  "frameRate": 24,
+  "bytes": 1098114,
+  "sha256": "fca56e50db00647ec61fefb5ba270c1322c201eaea5711b6226d8178a32dfd96",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "mpeg2video",
+        "codec_long_name": "MPEG-2 video",
+        "profile": "Main",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 640,
+        "height": 360,
+        "coded_width": 640,
+        "coded_height": 360,
+        "has_b_frames": 1,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 8,
+        "color_range": "tv",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/1200000",
+        "nb_read_frames": "96",
+        "extradata_size": 22,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "side_data_list": [
+          {
+            "side_data_type": "CPB properties",
+            "max_bitrate": 0,
+            "min_bitrate": 0,
+            "avg_bitrate": 0,
+            "buffer_size": 573440,
+            "vbv_delay": -1
+          }
+        ]
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\media\\mpeg2-video-source.m2v",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mpegvideo",
+      "format_long_name": "raw MPEG video",
+      "size": "1098114",
+      "probe_score": 51
+    }
+  }
+}

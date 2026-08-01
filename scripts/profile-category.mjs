@@ -100,6 +100,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "mpeg2-video": {
+    generator: "scripts/generate-mpeg2-video-stress-fixture.mjs",
+    profiles: [
+      ["m2v-to-mp4-mpeg4", "mpeg2-video-128m.m2v"],
+      ["m2v-to-webm", "mpeg2-video-128m.m2v"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [

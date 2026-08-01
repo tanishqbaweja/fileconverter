@@ -21,6 +21,7 @@
 /fixtures/stress/media/*.3gp
 /fixtures/stress/media/*.ts
 /fixtures/stress/media/*.m2ts
+/fixtures/stress/media/*.m2v
 /fixtures/stress/media/*.mpegts
 /fixtures/stress/media/*.flv
 /fixtures/stress/media/*.avi

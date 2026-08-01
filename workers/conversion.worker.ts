@@ -2585,7 +2585,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "wav-to-flac" ||
         profileId === "mkv-to-webm" ||
         profileId === "ogv-to-webm" ||
-        profileId === "mkv-to-mp4-mpeg4") &&
+        profileId === "m2v-to-webm" ||
+        profileId === "mkv-to-mp4-mpeg4" ||
+        profileId === "m2v-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
       message.testFault,
       profileId === "mkv-to-mp4"
@@ -2878,7 +2880,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "wav-to-flac" ||
       profileId === "mkv-to-webm" ||
       profileId === "ogv-to-webm" ||
-      profileId === "mkv-to-mp4-mpeg4"
+      profileId === "m2v-to-webm" ||
+      profileId === "mkv-to-mp4-mpeg4" ||
+      profileId === "m2v-to-mp4-mpeg4"
     ) {
       await runMediaRemux({
         file,
@@ -2903,11 +2907,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "mp3-to-flac" ||
                 profileId === "wav-to-flac"
               ? 6
-            : profileId === "mkv-to-webm"
+            : profileId === "mkv-to-webm" || profileId === "m2v-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
               ? 7
-            : profileId === "mkv-to-mp4-mpeg4"
+            : profileId === "mkv-to-mp4-mpeg4" ||
+                profileId === "m2v-to-mp4-mpeg4"
               ? 4
             : profileId === "mkv-to-m4a" ||
                 profileId === "mov-to-m4a" ||

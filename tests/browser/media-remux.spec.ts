@@ -58,6 +58,8 @@ const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
 const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
+const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
+const m2vWebmOutputPath = path.join(outputRoot, "m2v-reencode-output.webm");
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
@@ -164,6 +166,12 @@ const ogvFixturePath = path.join(
   "media",
   "theora-video-source.ogv",
 );
+const m2vFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "mpeg2-video-source.m2v",
+);
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -179,6 +187,8 @@ let validationSink: WriteStream | null = null;
 interface ProbeStream {
   codec_name: string;
   codec_type: string;
+  width?: number;
+  height?: number;
   tags?: Record<string, string>;
   disposition?: Record<string, number>;
 }
@@ -246,6 +256,8 @@ test.beforeAll(async () => {
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(ogvWebmOutputPath);
   assertProjectLocal(ogvWavOutputPath);
+  assertProjectLocal(m2vMpeg4OutputPath);
+  assertProjectLocal(m2vWebmOutputPath);
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
@@ -381,6 +393,8 @@ test.afterAll(async () => {
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
   await rm(ogvWavOutputPath, { force: true });
+  await rm(m2vMpeg4OutputPath, { force: true });
+  await rm(m2vWebmOutputPath, { force: true });
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -479,6 +493,8 @@ async function runMediaRoute(
     | "mkv-to-webm"
     | "ogv-to-webm"
     | "ogv-to-wav"
+    | "m2v-to-mp4-mpeg4"
+    | "m2v-to-webm"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
@@ -555,9 +571,16 @@ async function runMediaRoute(
     expect(state.metrics?.peakWasmMemoryBytes).toBeLessThanOrEqual(
       128 * 1024 * 1024,
     );
-    if (profileId === "mkv-to-webm" || profileId === "ogv-to-webm") {
+    if (
+      profileId === "mkv-to-webm" ||
+      profileId === "ogv-to-webm" ||
+      profileId === "m2v-to-webm"
+    ) {
       expect(state.metrics?.activeWorkerCount).toBe(9);
-    } else if (profileId === "mkv-to-mp4-mpeg4") {
+    } else if (
+      profileId === "mkv-to-mp4-mpeg4" ||
+      profileId === "m2v-to-mp4-mpeg4"
+    ) {
       expect(state.metrics?.activeWorkerCount).toBe(5);
     }
 
@@ -593,6 +616,34 @@ async function runMediaRoute(
     validationSink = null;
     await rm(outputPath, { force: true });
   }
+}
+
+async function validateMpeg2VideoOutput(
+  probe: MediaProbe,
+  outputPath: string,
+): Promise<void> {
+  const video = probe.streams.find((stream) => stream.codec_type === "video");
+  expect(video?.width).toBe(640);
+  expect(video?.height).toBe(360);
+  expect(probe.streams).toHaveLength(1);
+  expect(probe.chapters ?? []).toEqual([]);
+
+  const { stderr } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-nostdin",
+      "-ss", "2", "-i", m2vFixturePath,
+      "-ss", "2", "-i", outputPath,
+      "-filter_complex",
+      "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
+      "-map", "[quality]", "-frames:v", "1", "-f", "null", "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const similarity = Number.parseFloat(
+    stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+  );
+  expect(similarity).toBeGreaterThan(0.35);
 }
 
 async function runSmallDirectAudioRoute(
@@ -1402,6 +1453,34 @@ test("browser FFmpeg decodes OGV Vorbis audio to bounded PCM WAV", async () => {
     300_000,
     ogvFixturePath,
     { expectedWarningFragments: ["video stream"] },
+  );
+});
+
+test("browser FFmpeg converts MPEG-2 elementary video to MPEG-4 MP4", async () => {
+  await runMediaRoute(
+    "m2v-to-mp4-mpeg4",
+    m2vMpeg4OutputPath,
+    ["mpeg4"],
+    100_000,
+    m2vFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: validateMpeg2VideoOutput,
+    },
+  );
+});
+
+test("browser FFmpeg converts MPEG-2 elementary video to VP8 WebM", async () => {
+  await runMediaRoute(
+    "m2v-to-webm",
+    m2vWebmOutputPath,
+    ["vp8"],
+    50_000,
+    m2vFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: validateMpeg2VideoOutput,
+    },
   );
 });
 

@@ -70,6 +70,7 @@ const generatedStressExtensions = new Set([
   ".3gp",
   ".ts",
   ".m2ts",
+  ".m2v",
   ".mpegts",
   ".flv",
   ".avi",

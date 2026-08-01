@@ -1044,6 +1044,16 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
     report_av_error("Input probing failed", result);
     goto cleanup;
   }
+  const int raw_mpeg_video =
+      input_format->iformat && input_format->iformat->name &&
+      strcmp(input_format->iformat->name, "mpegvideo") == 0;
+  if (raw_mpeg_video) {
+    result = avformat_find_stream_info(input_format, NULL);
+    if (result < 0) {
+      report_av_error("Video stream inspection failed", result);
+      goto cleanup;
+    }
+  }
   if (input_format->nb_chapters > 0) {
     within_message(
         1,
@@ -1145,6 +1155,9 @@ static int within_video_reencode(int webm, int preserve_vorbis_audio) {
   }
 
   AVRational frame_rate = input_stream->avg_frame_rate;
+  if (raw_mpeg_video) {
+    frame_rate = av_guess_frame_rate(input_format, input_stream, NULL);
+  }
   if (frame_rate.num <= 0 || frame_rate.den <= 0) {
     frame_rate = (AVRational){24, 1};
   }

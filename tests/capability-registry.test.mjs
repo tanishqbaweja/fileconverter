@@ -76,13 +76,13 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-mpeg4",
       wasmPthreadPoolSize: 4,
       videoCodecThreads: 2,
-      profiles: ["mkv-to-mp4-mpeg4"],
+      profiles: ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"],
     },
     {
       name: "within-webm",
       wasmPthreadPoolSize: 8,
       videoCodecThreads: 4,
-      profiles: ["mkv-to-webm", "ogv-to-webm"],
+      profiles: ["mkv-to-webm", "ogv-to-webm", "m2v-to-webm"],
     },
   ]);
 });
@@ -106,6 +106,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "still.webp", type: "" }), "webp");
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
+  assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
   assert.equal(detectFormat({ name: "photo.avif", type: "" }), "avif");
   assert.equal(detectFormat({ name: "legacy.BMP", type: "" }), "bmp");
   assert.equal(detectFormat({ name: "application.ICO", type: "" }), "ico");
