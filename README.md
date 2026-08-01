@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 102
+complete-Chromium memory profile have passed. The current registry publishes 104
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC; M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, or WAV -> FLAC; WAV/FLAC -> ALAC M4A | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
@@ -476,6 +476,10 @@ Current exact-build results:
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
+| ALAC M4A → WAV | 3 | 140,941,469 B | 153,600,128 B | 227.1 MiB | 32 MiB | 12.0–28.9 MiB |
+| ALAC M4A → FLAC, fresh-session repeat | 3 | 140,941,469 B | 138,185,793 B | 230.4 MiB | 32 MiB | 9.5–38.7 MiB |
+| WAV → ALAC M4A | 3 | 153,600,106 B | 140,941,506 B | 200.2 MiB | 32 MiB | 13.5–40.0 MiB |
+| FLAC → ALAC M4A | 3 | 138,185,686 B | 140,941,506 B | 199.1 MiB | 32 MiB | 11.8–43.8 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -554,6 +558,18 @@ packet SHA-256 match after removing ADTS framing. AAC-to-WAV completed in
 comparisons measured 154.165 dB APSNR per channel. Every run kept reads at or
 below 262,144 bytes, held at most one queued write, and the category cleanup
 deleted the generated stress source and every converted copy.
+
+The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
+Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,
+138,185,686 bytes, and 153,600,106 bytes. ALAC-to-WAV completed in 5.11-5.39
+seconds, ALAC-to-FLAC in 7.43-7.84 seconds, WAV-to-ALAC in 6.14-6.58 seconds,
+and FLAC-to-ALAC in 7.52-7.73 seconds. Every result decoded to the same exact
+PCM SHA-256, `0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff`.
+The ALAC encoder fixes prediction order at four to reduce compute while
+remaining lossless, fragments M4A for bounded incremental writing, and keeps a
+single write of at most 262,144 bytes queued. The near-limit ALAC-to-FLAC route
+also passed three additional runs in a fresh Chrome process tree at 230.4 MiB.
+Cleanup deleted all three large sources and every converted copy.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

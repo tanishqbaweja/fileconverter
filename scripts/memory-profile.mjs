@@ -86,6 +86,8 @@ if (
     "aac-to-flac",
     "mp3-to-flac",
     "wav-to-flac",
+    "wav-to-alac",
+    "flac-to-alac",
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
     "ogv-to-webm",
@@ -132,6 +134,8 @@ const isMediaProfile =
   profileId === "aac-to-flac" ||
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
+  profileId === "wav-to-alac" ||
+  profileId === "flac-to-alac" ||
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
   profileId === "ogv-to-webm" ||
@@ -671,7 +675,9 @@ async function validateMediaOutput(
     route === "m4a-to-flac" ||
     route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
-    route === "wav-to-flac";
+    route === "wav-to-flac" ||
+    route === "wav-to-alac" ||
+    route === "flac-to-alac";
   const pcmOutput =
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
@@ -693,6 +699,8 @@ async function validateMediaOutput(
     route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac";
+  const alacOutput =
+    route === "wav-to-alac" || route === "flac-to-alac";
   const webmReencode =
     route === "mkv-to-webm" ||
     route === "ogv-to-webm" ||
@@ -717,7 +725,7 @@ async function validateMediaOutput(
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
       : pcmOutput
         ? Number.MAX_SAFE_INTEGER
-        : flacOutput
+        : flacOutput || alacOutput
           ? source.bytes * 10
           : audioOnly
             ? source.bytes
@@ -734,7 +742,7 @@ async function validateMediaOutput(
   }
   let independentAudioValidation = null;
   if (
-    (pcmOutput || flacOutput) &&
+    (pcmOutput || flacOutput || alacOutput) &&
     source.losslessPcmReference &&
     source.decodedPcmSha256
   ) {
@@ -774,7 +782,7 @@ async function validateMediaOutput(
       passed: true,
       sha256: source.decodedPcmSha256,
     };
-  } else if (pcmOutput || flacOutput) {
+  } else if (pcmOutput || flacOutput || alacOutput) {
     const minimumPsnrDb = source.minimumDecodedAudioPsnrDb ?? 60;
     const { stderr: qualityLog } = await execFileAsync(
       "ffmpeg",
@@ -901,7 +909,13 @@ async function validateMediaOutput(
     (audioOnly &&
       (codecs.length !== 1 ||
         codecs[0] !==
-          (pcmOutput ? "pcm_s16le" : flacOutput ? "flac" : "aac"))) ||
+          (pcmOutput
+            ? "pcm_s16le"
+            : flacOutput
+              ? "flac"
+              : alacOutput
+                ? "alac"
+                : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
         codecs[0] !== (webmReencode ? "vp8" : "mpeg4") ||
@@ -928,7 +942,7 @@ async function validateMediaOutput(
   const sourceDuration = sourceDurationSeconds;
   const expectedDuration =
     audioOnly &&
-    (pcmOutput || flacOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -957,6 +971,8 @@ async function validateMediaOutput(
       route === "flv-to-m4a" ||
       route === "mp4-to-m4a" ||
       route === "aac-to-m4a" ||
+      route === "wav-to-alac" ||
+      route === "flac-to-alac" ||
       webmAudioCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
     Math.abs(duration - expectedDuration) > 0.25
@@ -1067,7 +1083,9 @@ async function validateMediaOutput(
     route === "mpeg-ts-to-m4a" ||
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
-    route === "aac-to-m4a";
+    route === "aac-to-m4a" ||
+    route === "wav-to-alac" ||
+    route === "flac-to-alac";
   await execFileAsync(
     "ffmpeg",
     [

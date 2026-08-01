@@ -61,7 +61,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -108,6 +108,8 @@ export async function runMediaRemux({
           ? "Converting audio"
           : remuxProfile === 6
             ? "Encoding FLAC audio"
+          : remuxProfile === 8
+            ? "Encoding Apple Lossless audio"
           : remuxProfile === 5 || remuxProfile === 7
             ? "Encoding VP8 WebM"
             : "Encoding MPEG-4 video";
@@ -139,7 +141,10 @@ export async function runMediaRemux({
   const useDirectRemuxCore =
     remuxProfile === 1 && maximumOutputWriteBytes > MAX_AVIO_CHUNK;
   const coalescedOutput =
-    (remuxProfile === 2 || remuxProfile === 3 || remuxProfile === 6) &&
+    (remuxProfile === 2 ||
+      remuxProfile === 3 ||
+      remuxProfile === 6 ||
+      remuxProfile === 8) &&
     writable.writeSync &&
     writable.additionalWorkerCount === 1
       ? new Uint8Array(maximumOutputWriteBytes)

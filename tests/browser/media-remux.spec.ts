@@ -54,6 +54,10 @@ const flacWavOutputPath = path.join(outputRoot, "flac-convert-output.wav");
 const m4aFlacOutputPath = path.join(outputRoot, "m4a-convert-output.flac");
 const mp3FlacOutputPath = path.join(outputRoot, "mp3-convert-output.flac");
 const wavFlacOutputPath = path.join(outputRoot, "wav-convert-output.flac");
+const alacWavOutputPath = path.join(outputRoot, "alac-decode-output.wav");
+const alacFlacOutputPath = path.join(outputRoot, "alac-decode-output.flac");
+const wavAlacOutputPath = path.join(outputRoot, "wav-encode-output.m4a");
+const flacAlacOutputPath = path.join(outputRoot, "flac-encode-output.m4a");
 const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
 const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
@@ -126,6 +130,12 @@ const audioFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.m4a",
+);
+const alacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-alac.m4a",
 );
 const aacFixturePath = path.join(
   projectRoot,
@@ -230,6 +240,28 @@ async function currentState() {
   });
 }
 
+async function decodedPcmSha256(inputPath: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "hash",
+      "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return stdout.trim().split("=")[1];
+}
+
+async function expectDecodedPcmMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await decodedPcmSha256(outputPath)).toBe(
+    await decodedPcmSha256(sourcePath),
+  );
+}
+
 test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
@@ -261,6 +293,10 @@ test.beforeAll(async () => {
   assertProjectLocal(m4aFlacOutputPath);
   assertProjectLocal(mp3FlacOutputPath);
   assertProjectLocal(wavFlacOutputPath);
+  assertProjectLocal(alacWavOutputPath);
+  assertProjectLocal(alacFlacOutputPath);
+  assertProjectLocal(wavAlacOutputPath);
+  assertProjectLocal(flacAlacOutputPath);
   assertProjectLocal(aiffWavOutputPath);
   assertProjectLocal(oggWavOutputPath);
   assertProjectLocal(opusWavOutputPath);
@@ -401,6 +437,10 @@ test.afterAll(async () => {
   await rm(m4aFlacOutputPath, { force: true });
   await rm(mp3FlacOutputPath, { force: true });
   await rm(wavFlacOutputPath, { force: true });
+  await rm(alacWavOutputPath, { force: true });
+  await rm(alacFlacOutputPath, { force: true });
+  await rm(wavAlacOutputPath, { force: true });
+  await rm(flacAlacOutputPath, { force: true });
   await rm(aiffWavOutputPath, { force: true });
   await rm(oggWavOutputPath, { force: true });
   await rm(opusWavOutputPath, { force: true });
@@ -505,6 +545,8 @@ async function runMediaRoute(
     | "aac-to-flac"
     | "mp3-to-flac"
     | "wav-to-flac"
+    | "wav-to-alac"
+    | "flac-to-alac"
     | "aiff-to-wav"
     | "ogg-to-wav"
     | "opus-to-wav"
@@ -576,6 +618,8 @@ async function runMediaRoute(
       profileId === "aac-to-flac" ||
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
+      profileId === "wav-to-alac" ||
+      profileId === "flac-to-alac" ||
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav"
@@ -1426,6 +1470,50 @@ test("browser FFmpeg losslessly encodes PCM WAV as FLAC", async () => {
     ["flac"],
     20_000,
     wavFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes ALAC M4A to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "m4a-to-wav",
+    alacWavOutputPath,
+    ["pcm_s16le"],
+    700_000,
+    alacFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(alacFixturePath, outputPath) },
+  );
+});
+
+test("browser FFmpeg converts ALAC M4A to lossless FLAC", async () => {
+  await runMediaRoute(
+    "m4a-to-flac",
+    alacFlacOutputPath,
+    ["flac"],
+    20_000,
+    alacFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(alacFixturePath, outputPath) },
+  );
+});
+
+test("browser FFmpeg losslessly encodes PCM WAV as ALAC M4A", async () => {
+  await runMediaRoute(
+    "wav-to-alac",
+    wavAlacOutputPath,
+    ["alac"],
+    20_000,
+    wavFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(wavFixturePath, outputPath) },
+  );
+});
+
+test("browser FFmpeg losslessly transcodes FLAC to ALAC M4A", async () => {
+  await runMediaRoute(
+    "flac-to-alac",
+    flacAlacOutputPath,
+    ["alac"],
+    20_000,
+    flacFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(flacFixturePath, outputPath) },
   );
 });
 

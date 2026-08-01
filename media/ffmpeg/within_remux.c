@@ -564,6 +564,7 @@ static int drain_audio_decoder(WithinAudioPipeline *pipeline,
 
 static int within_audio_transcode(int profile) {
   const int flac_output = profile == 6;
+  const int alac_output = profile == 8;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -580,6 +581,8 @@ static int within_audio_transcode(int profile) {
   AVFrame *decoded_frame = NULL;
   AVFrame *converted_frame = NULL;
   AVAudioFifo *fifo = NULL;
+  AVDictionary *encoder_options = NULL;
+  AVDictionary *muxer_options = NULL;
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
   WithinAudioPipeline pipeline = {0};
@@ -685,7 +688,8 @@ static int within_audio_transcode(int profile) {
   }
 
   const AVCodec *encoder_codec = avcodec_find_encoder(
-      flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
+      alac_output ? AV_CODEC_ID_ALAC
+                  : flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -696,14 +700,27 @@ static int within_audio_transcode(int profile) {
     goto cleanup;
   }
   encoder->sample_rate = decoder->sample_rate;
-  encoder->sample_fmt = AV_SAMPLE_FMT_S16;
+  encoder->sample_fmt = alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
   encoder->time_base = (AVRational){1, encoder->sample_rate};
-  result =
-      av_channel_layout_copy(&encoder->ch_layout, &decoder->ch_layout);
+  if (alac_output &&
+      decoder->ch_layout.order == AV_CHANNEL_ORDER_UNSPEC) {
+    av_channel_layout_default(&encoder->ch_layout,
+                              decoder->ch_layout.nb_channels);
+    result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
+  } else {
+    result =
+        av_channel_layout_copy(&encoder->ch_layout, &decoder->ch_layout);
+  }
   if (result < 0) {
     goto cleanup;
   }
-  result = avcodec_open2(encoder, encoder_codec, NULL);
+  if (alac_output) {
+    encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+    av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
+    av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
+  }
+  result = avcodec_open2(encoder, encoder_codec, &encoder_options);
+  av_dict_free(&encoder_options);
   if (result < 0) {
     report_av_error("Audio encoder initialization failed", result);
     goto cleanup;
@@ -714,9 +731,9 @@ static int within_audio_transcode(int profile) {
     goto cleanup;
   }
 
-  result =
-      avformat_alloc_output_context2(
-          &output_format, NULL, flac_output ? "flac" : "wav", NULL);
+  result = avformat_alloc_output_context2(
+      &output_format, NULL,
+      alac_output ? "ipod" : flac_output ? "flac" : "wav", NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
     goto cleanup;
@@ -749,7 +766,13 @@ static int within_audio_transcode(int profile) {
   output_buffer = NULL;
   output_format->pb = output_io;
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
-  result = avformat_write_header(output_format, NULL);
+  if (alac_output) {
+    av_dict_set(&muxer_options, "movflags",
+                "empty_moov+default_base_moof", 0);
+    av_dict_set(&muxer_options, "frag_duration", "5000000", 0);
+  }
+  result = avformat_write_header(output_format, &muxer_options);
+  av_dict_free(&muxer_options);
   if (result < 0) {
     report_av_error("Audio header write failed", result);
     goto cleanup;
@@ -860,6 +883,8 @@ static int within_audio_transcode(int profile) {
                                     : within_output_flush();
 
 cleanup:
+  av_dict_free(&encoder_options);
+  av_dict_free(&muxer_options);
   av_packet_free(&input_packet);
   av_packet_free(&encoded_packet);
   av_frame_free(&decoded_frame);
@@ -1459,7 +1484,7 @@ int within_remux(int profile) {
   WithinOutput output = {.position = 0, .size = 0};
   AVPacket *packet = NULL;
 
-  if (profile == 3 || profile == 6) {
+  if (profile == 3 || profile == 6 || profile == 8) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

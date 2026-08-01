@@ -1,0 +1,81 @@
+{
+  "generatedBy": "scripts/generate-alac-fixture.mjs",
+  "durationSeconds": 4,
+  "bytes": 268102,
+  "sha256": "77f9e963226a382047c877ea7dee5de72522029eb39d2ec6f22621df230017ad",
+  "losslessPcmReference": true,
+  "decodedPcmSha256": "e768e534f4e8e56c5531a2d67ffc49a68014bc30d124524fbafcae76de108768",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "alac",
+        "codec_long_name": "ALAC (Apple Lossless Audio Codec)",
+        "codec_type": "audio",
+        "codec_tag_string": "alac",
+        "codec_tag": "0x63616c61",
+        "sample_fmt": "s16p",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "id": "0x1",
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/48000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 192000,
+        "duration": "4.000000",
+        "bit_rate": "533680",
+        "bits_per_raw_sample": "16",
+        "extradata_size": 36,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "eng",
+          "handler_name": "SoundHandler"
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\media\\audio-source-alac.m4a",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+      "format_long_name": "QuickTime / MOV",
+      "start_time": "0.000000",
+      "duration": "4.000000",
+      "size": "268102",
+      "bit_rate": "536204",
+      "probe_score": 100,
+      "tags": {
+        "major_brand": "M4A ",
+        "minor_version": "512",
+        "compatible_brands": "M4A iso6iso5",
+        "title": "Within deterministic ALAC fixture"
+      }
+    }
+  }
+}

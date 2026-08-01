@@ -2586,6 +2586,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "aac-to-flac" ||
         profileId === "mp3-to-flac" ||
         profileId === "wav-to-flac" ||
+        profileId === "wav-to-alac" ||
+        profileId === "flac-to-alac" ||
         profileId === "mkv-to-webm" ||
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
@@ -2884,6 +2886,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "aac-to-flac" ||
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
+      profileId === "wav-to-alac" ||
+      profileId === "flac-to-alac" ||
       profileId === "mkv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
@@ -2915,6 +2919,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "mp3-to-flac" ||
                 profileId === "wav-to-flac"
               ? 6
+            : profileId === "wav-to-alac" ||
+                profileId === "flac-to-alac"
+              ? 8
             : profileId === "mkv-to-webm" || profileId === "m2v-to-webm"
               ? 5
             : profileId === "ogv-to-webm"

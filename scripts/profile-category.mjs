@@ -47,6 +47,18 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  alac: {
+    generator: "scripts/generate-alac-stress-fixture.mjs",
+    profiles: [
+      ["m4a-to-wav", "audio-alac-128m.m4a"],
+      ["m4a-to-flac", "audio-alac-128m.m4a"],
+      ["wav-to-alac", "audio-pcm-alac-128m.wav"],
+      ["flac-to-alac", "audio-flac-alac-128m.flac"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [
