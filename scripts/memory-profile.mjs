@@ -61,6 +61,7 @@ const isXzProfile =
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
 const isSevenZipProfile =
+  profileId === "tar-to-sevenzip" ||
   profileId === "sevenzip-to-tar" ||
   profileId === "sevenzip-to-tar-gz" ||
   profileId === "sevenzip-to-zip";
@@ -583,6 +584,13 @@ try {
       activeWorkerCount: finalState.metrics.activeWorkerCount ?? null,
       imageFrameFormat: finalState.metrics.imageFrameFormat ?? null,
       imageColorSpace: finalState.metrics.imageColorSpace ?? null,
+      archiveCompression: finalState.metrics.archiveCompression ?? null,
+      scratchBytes: finalState.metrics.scratchBytes ?? null,
+      peakScratchBytes: finalState.metrics.peakScratchBytes ?? null,
+      maxScratchReadChunkBytes:
+        finalState.metrics.maxScratchReadChunkBytes ?? null,
+      maxScratchWriteChunkBytes:
+        finalState.metrics.maxScratchWriteChunkBytes ?? null,
       peakPrivateBytes,
       peakRssBytes,
       incrementalPrivateMiB:
@@ -619,6 +627,21 @@ try {
     ),
     writeChunkBytes: runSummaries.every(
       (run) => run.maxWriteChunkBytes <= maximumWriteChunkBytes,
+    ),
+    scratchChunkBytes: runSummaries.every(
+      (run) =>
+        profileId !== "tar-to-sevenzip" ||
+        (run.maxScratchReadChunkBytes <= 64 * 1024 &&
+          run.maxScratchWriteChunkBytes <= 64 * 1024),
+    ),
+    scratchCleanup: runSummaries.every(
+      (run) => profileId !== "tar-to-sevenzip" || run.scratchBytes === 0,
+    ),
+    adaptiveArchiveCompression: runSummaries.every(
+      (run) =>
+        profileId !== "tar-to-sevenzip" ||
+        run.archiveCompression === "copy" ||
+        run.archiveCompression === "lzma2",
     ),
     imageOutputBytes: runSummaries.every(
       (run) => !isImageProfile || run.outputBytes <= 64 * 1024 * 1024,

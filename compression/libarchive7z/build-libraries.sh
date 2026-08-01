@@ -19,7 +19,7 @@ emconfigure ./configure \
 emmake make -C src/liblzma -j"$(nproc)"
 
 cd /src/libarchive
-export CPPFLAGS="-I/src/xz/src/liblzma/api"
+export CPPFLAGS="-I/src/xz/src/liblzma/api -include /src/within_archive_temp_bridge.h"
 export CFLAGS="-O3 -flto"
 export LDFLAGS="-O3 -flto -L/src/xz/src/liblzma/.libs"
 export LIBS="-llzma"

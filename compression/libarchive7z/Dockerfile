@@ -26,6 +26,10 @@ RUN curl --fail --location --retry 3 \
     && rm xz.tar.xz
 
 COPY build-libraries.sh /src/build-libraries.sh
+COPY libarchive-7zip-opfs.patch /src/libarchive-7zip-opfs.patch
+COPY within_archive_temp_bridge.h /src/within_archive_temp_bridge.h
+RUN cd /src/libarchive \
+    && patch -p1 < /src/libarchive-7zip-opfs.patch
 RUN chmod +x /src/build-libraries.sh && /src/build-libraries.sh
 
 COPY within_archive7z.c /src/within_archive7z.c

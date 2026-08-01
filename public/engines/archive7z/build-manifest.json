@@ -17,5 +17,10 @@
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
   "readCodecs": ["copy", "lzma1", "lzma2", "ppmd"],
-  "profiles": ["sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
+  "writeCodec": "adaptive-lzma2-level-0-or-copy",
+  "compressionSampleBytes": 262144,
+  "copyRatioThreshold": 0.98,
+  "scratchBackend": "opfs-sync-access-handle",
+  "maximumScratchChunkBytes": 65536,
+  "profiles": ["tar-to-sevenzip", "sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
 }

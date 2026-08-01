@@ -1,0 +1,68 @@
+--- a/libarchive/archive_write_set_format_7zip.c
++++ b/libarchive/archive_write_set_format_7zip.c
+@@ -668,19 +668,16 @@ write_to_temp(struct archive_write *a, const void *buff, size_t s)
+ 	/*
+ 	 * Open a temporary file.
+ 	 */
+ 	if (zip->temp_fd == -1) {
+ 		zip->temp_offset = 0;
+-		zip->temp_fd = __archive_mktemp(NULL);
+-		if (zip->temp_fd < 0) {
+-			archive_set_error(&a->archive, errno,
+-			    "Couldn't create temporary file");
+-			return (ARCHIVE_FATAL);
+-		}
++		/* The browser wrapper owns an OPFS scratch file. */
++		zip->temp_fd = 1;
+ 	}
+ 
+ 	p = (const unsigned char *)buff;
+ 	while (s) {
+-		ws = write(zip->temp_fd, p, s);
++		ws = within_archive_temp_write((double)zip->temp_offset, p,
++		    s > 65536 ? 65536 : (int)s);
+ 		if (ws < 0) {
+ 			archive_set_error(&(a->archive), errno,
+ 			    "write function failed");
+@@ -803,11 +799,6 @@ copy_out(struct archive_write *a, uint64_t offset, uint64_t length)
+ 	struct _7zip *zip = a->format_data;
+ 	int r;
+ 
+-	if (zip->temp_offset > 0 &&
+-	    lseek(zip->temp_fd, offset, SEEK_SET) < 0) {
+-		archive_set_error(&(a->archive), errno, "lseek failed");
+-		return (ARCHIVE_FATAL);
+-	}
+ 	while (length) {
+ 		size_t rsize;
+ 		ssize_t rs;
+@@ -818,7 +809,8 @@ copy_out(struct archive_write *a, uint64_t offset, uint64_t length)
+ 		else
+ 			rsize = (size_t)length;
+ 		wb = zip->wbuff + (sizeof(zip->wbuff) - zip->wbuff_remaining);
+-		rs = read(zip->temp_fd, wb, rsize);
++		rs = within_archive_temp_read((double)offset, wb,
++		    rsize > 65536 ? 65536 : (int)rsize);
+ 		if (rs < 0) {
+ 			archive_set_error(&(a->archive), errno,
+ 			    "Can't read temporary file(%jd)",
+@@ -832,6 +824,7 @@ copy_out(struct archive_write *a, uint64_t offset, uint64_t length)
+ 			return (ARCHIVE_FATAL);
+ 		}
+ 		zip->wbuff_remaining -= rs;
++		offset += rs;
+ 		length -= rs;
+ 		if (zip->wbuff_remaining == 0) {
+ 			r = flush_wbuff(a);
+@@ -1583,9 +1576,8 @@ _7z_free(struct archive_write *a)
+ {
+ 	struct _7zip *zip = a->format_data;
+ 
+-	/* Close the temporary file. */
+-	if (zip->temp_fd >= 0)
+-		close(zip->temp_fd);
++	/* The browser wrapper closes and removes its OPFS scratch file. */
++	zip->temp_fd = -1;
+ 
+ 	file_free_register(zip);
+ 	compression_end(&(a->archive), &(zip->stream));

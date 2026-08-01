@@ -294,18 +294,19 @@ duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
 extensions, and archive bombs. Permissions, owners, comments, and unsupported
 container-specific fields are disclosed as not preserved.
 
-7Z-to-TAR, 7Z-to-TAR.GZ, and 7Z-to-ZIP use a separately lazy-loaded libarchive
-3.8.9 reader with a fixed 56 MiB Wasm heap, 256 KiB seekable `File` reads,
-64 KiB TAR writes,
-and exactly one awaited destination operation. TAR.GZ output streams those TAR
+TAR-to-7Z, 7Z-to-TAR, 7Z-to-TAR.GZ, and 7Z-to-ZIP use a separately lazy-loaded
+libarchive 3.8.9 engine with a fixed 56 MiB Wasm heap, 256 KiB seekable `File`
+reads, 64 KiB writes, and exactly one awaited destination operation. TAR.GZ output streams those TAR
 blocks directly through Chromium's GZIP transform or the sequential ZIP encoder
 without an intermediate TAR file. All three routes accept regular files and
 directories using COPY, LZMA1, LZMA2, or PPMd and reject unsafe paths, duplicates,
 encryption, links, special files, unsupported codecs, more than 10,000 entries,
 more than 64 GiB of payload, and expansion above 100:1. Output is deterministic
-USTAR with sanitized owners and permissions. TAR-to-7Z is not advertised:
-libarchive's 7Z writer spools the full encoded payload to a temporary file, so
-it requires a future bounded OPFS scratch bridge rather than MEMFS.
+USTAR with sanitized owners and permissions. TAR-to-7Z strictly validates raw
+USTAR blocks and stages libarchive's encoded payload through synchronous bounded
+OPFS scratch I/O rather than MEMFS. A 256 KiB sample selects LZMA2 preset 0 for
+compressible input and lossless COPY when recompression would waste CPU or grow
+the archive. Scratch is truncated and deleted after success, failure, or cancel.
 
 Still-image routes use `ImageDecoder` in the conversion worker, request one
 deterministic RGBA frame, enforce compressed-size, dimensions, pixel-count,
@@ -413,8 +414,8 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. HEIC/HEIF, JPEG XL, SVG, camera raw,
-animated-image output, TAR-to-7Z, unsupported 7Z codecs, and
+PDF is excluded by product scope. HEIC/HEIF, JPEG XL, camera raw,
+animated-image output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -609,6 +610,7 @@ profiler:
 | Compression, XZ -> bytes | 268,448,840 B | 203.0 MiB | exact streamed output SHA-256 |
 | Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
 | Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
+| Archives, TAR -> 7Z | 268,436,992 B | 216.9 MiB | 3-run adaptive COPY/LZMA2 gate plus native entry size/SHA-256 |
 | Archives, 7Z -> TAR | 268,435,574 B | 199.8 MiB | native libarchive listing plus entry size/SHA-256 |
 | Archives, 7Z -> TAR.GZ | 268,435,574 B | 222.7 MiB | native libarchive listing plus entry size/SHA-256 |
 | Archives, 7Z -> ZIP | 268,435,574 B | 218.3 MiB | independent ZIP entry size/SHA-256 |

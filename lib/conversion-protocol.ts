@@ -10,6 +10,11 @@ export interface ConversionMetrics {
   elapsedMs: number;
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
+  scratchBytes?: number;
+  peakScratchBytes?: number;
+  maxScratchReadChunkBytes?: number;
+  maxScratchWriteChunkBytes?: number;
+  archiveCompression?: "copy" | "lzma2";
   sharedArrayBufferBytes?: number;
   activeWorkerCount?: number;
   imageFrameFormat?: string | null;

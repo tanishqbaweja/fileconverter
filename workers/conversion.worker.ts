@@ -18,6 +18,7 @@ import { runPptxToText } from "./pptx-conversion";
 import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
 import {
+  runTarToSevenZip,
   runSevenZipToTar,
   runSevenZipToTarGz,
   runSevenZipToZip,
@@ -2815,7 +2816,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.testFault,
       profileId === "mkv-to-mp4"
         ? DIRECT_REMUX_WRITE_CHUNK
-        : profileId === "sevenzip-to-tar" ||
+        : profileId === "tar-to-sevenzip" ||
+            profileId === "sevenzip-to-tar" ||
             profileId === "sevenzip-to-tar-gz" ||
             profileId === "sevenzip-to-zip"
           ? SEVENZIP_WRITE_CHUNK
@@ -2848,12 +2850,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       return;
     }
     if (
+      profileId === "tar-to-sevenzip" ||
       profileId === "sevenzip-to-tar" ||
       profileId === "sevenzip-to-tar-gz" ||
       profileId === "sevenzip-to-zip"
     ) {
       const runSevenZip =
-        profileId === "sevenzip-to-zip"
+        profileId === "tar-to-sevenzip"
+          ? runTarToSevenZip
+          : profileId === "sevenzip-to-zip"
           ? runSevenZipToZip
           : profileId === "sevenzip-to-tar-gz"
           ? runSevenZipToTarGz

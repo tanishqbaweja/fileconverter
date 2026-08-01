@@ -12,15 +12,16 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **126**
-- Public profiles with a retained successful Chrome stress report: **126**
+- Public passed conversion profiles: **127**
+- Public profiles with a retained successful Chrome stress report: **127**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-01:** 242/242 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-01:** 248/248 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
 - **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81–29.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.
+- **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06–8.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2–6.9× faster than the measured 55.73-second always-LZMA2 baseline.
 - **Production dependency audit:** Next.js was upgraded from 16.2.6 to 16.2.12 to clear the framework advisories with a compatible fix. `npm audit --omit=dev` still reports three high transitive findings through Next's pinned PostCSS 8.4.31 and Sharp 0.34.5; npm currently offers no compatible non-major remediation for those two packages.
 
 ## Retained Chrome stress evidence
@@ -124,6 +125,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-gz-to-tar | 268,517,551 | 3 | 268,436,992 | 3.71 s–3.96 s | 146.6 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-gz-to-zip | 268,517,551 | 3 | 268,517,517 | 21.19 s–21.49 s | 201.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
+| tar-to-sevenzip | 268,436,992 | 3 | 268,435,574 | 8.06 s–8.94 s | 216.9 MiB | 56.0 MiB | read 262,144 B / write 65,536 B / scratch 61,440 B read/write | passed |
 | tar-to-tar-bz2 | 268,436,992 | 3 | 270,592,763 | 38.94 s–39.77 s | 136.6 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-to-tar-gz | 268,436,992 | 3 | 268,517,551 | 15.86 s–16.02 s | 219.3 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-to-tar-xz | 268,436,992 | 3 | 268,449,796 | 51.51 s–52.33 s | 175.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -274,6 +276,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-gz-to-tar | archive | compression-stream | stream | 268,517,551 B | 3-run Chrome report |
 | tar-gz-to-zip | archive | archive-browser | stream | 268,517,551 B | 3-run Chrome report |
+| tar-to-sevenzip | archive | libarchive7z-wasm | stream | 268,436,992 B | 3-run Chrome report |
 | tar-to-tar-bz2 | archive | bzip2-wasm | stream | 268,436,992 B | 3-run Chrome report |
 | tar-to-tar-gz | archive | compression-stream | stream | 268,436,992 B | 3-run Chrome report |
 | tar-to-tar-xz | archive | xz-wasm | stream | 268,436,992 B | 3-run Chrome report |
@@ -311,7 +314,7 @@ This project is not complete yet. The specification still names major surfaces t
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
-- Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
+- Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 
 ## Cleanup invariant

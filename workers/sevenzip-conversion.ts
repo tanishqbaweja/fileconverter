@@ -7,12 +7,16 @@ const WASM_URL = "/engines/archive7z/within-archive7z.wasm";
 const INPUT_BUFFER_BYTES = 256 * 1024;
 const OUTPUT_BUFFER_BYTES = 64 * 1024;
 const WASM_MEMORY_BYTES = 56 * 1024 * 1024;
+const COMPRESSION_SAMPLE_BYTES = 256 * 1024;
+const COPY_RATIO_THRESHOLD = 0.98;
 const MAX_ENGINE_ERRORS = 8;
 const MAX_ENGINE_ERROR_CHARS = 512;
 
 interface SevenZipBridge {
   read(offset: number, destination: Uint8Array): Promise<number> | number;
   write(offset: number, source: Uint8Array<ArrayBuffer>): Promise<number>;
+  tempWrite(offset: number, source: Uint8Array): number;
+  tempRead(offset: number, destination: Uint8Array): number;
   cancelled(): boolean;
   message(text: string): void;
   progress(inputPosition: number, outputPosition: number, entries: number): void;
@@ -21,10 +25,10 @@ interface SevenZipBridge {
 interface SevenZipModule {
   HEAPU8: Uint8Array<ArrayBuffer>;
   ccall(
-    name: "within_archive_7z_to_tar",
+    name: "within_archive_7z_to_tar" | "within_archive_tar_to_7z",
     returnType: "number",
-    argumentTypes: readonly ["number"],
-    arguments_: readonly [number],
+    argumentTypes: readonly ["number"] | readonly ["number", "number"],
+    arguments_: readonly [number] | readonly [number, number],
     options: { async: true },
   ): Promise<number>;
   _within_archive_error(): number;
@@ -58,6 +62,8 @@ export interface SevenZipConversionOptions {
 interface SevenZipReaderOptions extends SevenZipConversionOptions {
   phase: string;
   trackTarDestinationMetrics: boolean;
+  nativeFunction?: "within_archive_7z_to_tar" | "within_archive_tar_to_7z";
+  useScratch?: boolean;
 }
 
 async function writeTrackedDestination(
@@ -105,6 +111,8 @@ async function runSevenZipReader({
   post,
   phase,
   trackTarDestinationMetrics,
+  nativeFunction = "within_archive_7z_to_tar",
+  useScratch = false,
 }: SevenZipReaderOptions): Promise<void> {
   const errors: string[] = [];
   let reader: ReadableStreamBYOBReader | null = null;
@@ -112,6 +120,9 @@ async function runSevenZipReader({
   let readBuffer = new Uint8Array(INPUT_BUFFER_BYTES);
   const synchronousReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
+  let scratchRoot: FileSystemDirectoryHandle | null = null;
+  let scratchAccess: FileSystemSyncAccessHandle | null = null;
+  let scratchName: string | null = null;
 
   const assertActive = (): void => {
     if (isCancelled()) {
@@ -212,6 +223,53 @@ async function runSevenZipReader({
       }
       return source.byteLength;
     },
+    tempWrite(offset, source) {
+      assertActive();
+      if (
+        !scratchAccess ||
+        !Number.isSafeInteger(offset) ||
+        offset < 0 ||
+        source.byteLength > OUTPUT_BUFFER_BYTES
+      ) {
+        throw new Error("The 7Z engine requested an invalid bounded scratch write.");
+      }
+      const written = scratchAccess.write(source, { at: offset });
+      if (written !== source.byteLength) {
+        throw new Error(
+          `The 7Z scratch write was incomplete: ${written} of ${source.byteLength} bytes.`,
+        );
+      }
+      metrics.scratchBytes = Math.max(
+        metrics.scratchBytes ?? 0,
+        offset + written,
+      );
+      metrics.peakScratchBytes = Math.max(
+        metrics.peakScratchBytes ?? 0,
+        metrics.scratchBytes,
+      );
+      metrics.maxScratchWriteChunkBytes = Math.max(
+        metrics.maxScratchWriteChunkBytes ?? 0,
+        written,
+      );
+      return written;
+    },
+    tempRead(offset, destination) {
+      assertActive();
+      if (
+        !scratchAccess ||
+        !Number.isSafeInteger(offset) ||
+        offset < 0 ||
+        destination.byteLength > OUTPUT_BUFFER_BYTES
+      ) {
+        throw new Error("The 7Z engine requested an invalid bounded scratch read.");
+      }
+      const read = scratchAccess.read(destination, { at: offset });
+      metrics.maxScratchReadChunkBytes = Math.max(
+        metrics.maxScratchReadChunkBytes ?? 0,
+        read,
+      );
+      return read;
+    },
     cancelled: isCancelled,
     message: recordError,
     progress(inputPosition, outputPosition) {
@@ -230,6 +288,48 @@ async function runSevenZipReader({
   metrics.sharedArrayBufferBytes = writable.sharedBufferBytes ?? 0;
 
   try {
+    if (useScratch) {
+      if (!navigator.storage?.getDirectory) {
+        throw new Error("Private browser storage is required for bounded 7Z output.");
+      }
+      scratchRoot = await navigator.storage.getDirectory();
+      scratchName = `within-sevenzip-scratch-${jobId.replace(/[^a-zA-Z0-9_-]/g, "-")}`;
+      await scratchRoot.removeEntry(scratchName).catch(() => {});
+      const scratchHandle = await scratchRoot.getFileHandle(scratchName, {
+        create: true,
+      });
+      if (!scratchHandle.createSyncAccessHandle) {
+        throw new Error(
+          "A synchronous private-storage handle is required for bounded 7Z output.",
+        );
+      }
+      scratchAccess = await scratchHandle.createSyncAccessHandle();
+      scratchAccess.truncate(0);
+    }
+    let useCopy = false;
+    if (nativeFunction === "within_archive_tar_to_7z") {
+      const sampleBytes = Math.min(file.size, COMPRESSION_SAMPLE_BYTES);
+      const compressedSample = await new Response(
+        file
+          .slice(0, sampleBytes)
+          .stream()
+          .pipeThrough(new CompressionStream("gzip")),
+      ).arrayBuffer();
+      metrics.inputBytes = Math.max(metrics.inputBytes, sampleBytes);
+      metrics.maxReadChunkBytes = Math.max(
+        metrics.maxReadChunkBytes,
+        sampleBytes,
+      );
+      useCopy = compressedSample.byteLength / sampleBytes >= COPY_RATIO_THRESHOLD;
+      metrics.archiveCompression = useCopy ? "copy" : "lzma2";
+      emitProgress(
+        jobId,
+        "Selecting adaptive 7Z compression",
+        metrics,
+        startedAt,
+        true,
+      );
+    }
     const imported = (await import(
       /* @vite-ignore */ MODULE_URL
     )) as { default: SevenZipModuleFactory };
@@ -250,13 +350,22 @@ async function runSevenZipReader({
       metrics.peakWasmMemoryBytes ?? 0,
       metrics.wasmMemoryBytes,
     );
-    const result = await archiveModule.ccall(
-      "within_archive_7z_to_tar",
-      "number",
-      ["number"],
-      [file.size],
-      { async: true },
-    );
+    const result =
+      nativeFunction === "within_archive_tar_to_7z"
+        ? await archiveModule.ccall(
+            nativeFunction,
+            "number",
+            ["number", "number"],
+            [file.size, useCopy ? 1 : 0],
+            { async: true },
+          )
+        : await archiveModule.ccall(
+            nativeFunction,
+            "number",
+            ["number"],
+            [file.size],
+            { async: true },
+          );
     if (isCancelled()) {
       throw new DOMException("Conversion cancelled", "AbortError");
     }
@@ -268,8 +377,16 @@ async function runSevenZipReader({
       const details = [nativeError, ...errors].filter(Boolean).join(" | ");
       throw new Error(details || `7Z conversion failed with code ${result}.`);
     }
-    if (trackTarDestinationMetrics && metrics.outputBytes === 0) {
-      throw new Error("The 7Z engine completed without producing a TAR archive.");
+    if (
+      (nativeFunction === "within_archive_tar_to_7z" ||
+        trackTarDestinationMetrics) &&
+      metrics.outputBytes === 0
+    ) {
+      throw new Error(
+        nativeFunction === "within_archive_tar_to_7z"
+          ? "The 7Z engine completed without producing a 7Z archive."
+          : "The 7Z engine completed without producing a TAR archive.",
+      );
     }
     metrics.inputBytes = file.size;
     await writable.flush?.();
@@ -284,6 +401,19 @@ async function runSevenZipReader({
   } finally {
     const activeReader = reader as ReadableStreamBYOBReader | null;
     await activeReader?.cancel("7Z conversion finished").catch(() => {});
+    const activeScratch = scratchAccess as FileSystemSyncAccessHandle | null;
+    if (activeScratch) {
+      try {
+        activeScratch.truncate(0);
+        activeScratch.flush();
+      } finally {
+        activeScratch.close();
+      }
+    }
+    if (scratchRoot && scratchName) {
+      await scratchRoot.removeEntry(scratchName);
+      metrics.scratchBytes = 0;
+    }
   }
 }
 
@@ -294,6 +424,18 @@ export async function runSevenZipToTar(
     ...options,
     phase: "Converting 7Z to TAR",
     trackTarDestinationMetrics: true,
+  });
+}
+
+export async function runTarToSevenZip(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  await runSevenZipReader({
+    ...options,
+    phase: "Converting TAR to 7Z",
+    trackTarDestinationMetrics: true,
+    nativeFunction: "within_archive_tar_to_7z",
+    useScratch: true,
   });
 }
 

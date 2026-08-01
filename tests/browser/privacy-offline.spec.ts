@@ -17,6 +17,12 @@ const chromePath =
     ? installedChromePath
     : chromium.executablePath());
 const fixturePath = path.join(projectRoot, "fixtures", "data", "sample.csv");
+const tarFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "archives",
+  "sample.tar",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -140,6 +146,8 @@ test("installed app shell and conversion engine load offline", async () => {
   expect(cachedPaths).toContain("/engines/tiff/within-tiff.wasm");
   expect(cachedPaths).toContain("/engines/tiff/within-tiff.mjs");
   expect(cachedPaths).toContain("/engines/svg/resvg.wasm");
+  expect(cachedPaths).toContain("/engines/archive7z/within-archive7z.wasm");
+  expect(cachedPaths).toContain("/engines/archive7z/within-archive7z.mjs");
 
   await context.setOffline(true);
   try {
@@ -205,6 +213,69 @@ test("cached direct destination writer converts while offline", async () => {
     await page.evaluate(async (entryName) => {
       const root = await navigator.storage.getDirectory();
       await root.removeEntry(entryName).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("cached TAR-to-7Z engine converts offline and removes scratch", async () => {
+  const outputName = "sample.7z";
+  const convertTarDirect = async () => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(tarFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("tar-to-sevenzip");
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName);
+      const file = await handle.getFile();
+      const magic = Array.from(
+        new Uint8Array(await file.slice(0, 6).arrayBuffer()),
+      );
+      const leftovers: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-sevenzip-scratch-")) leftovers.push(name);
+      }
+      await root.removeEntry(entryName);
+      return { bytes: file.size, magic, leftovers };
+    }, outputName);
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  expect((await convertTarDirect()).magic).toEqual([
+    0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c,
+  ]);
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const result = await convertTarDirect();
+    expect(result.bytes).toBeGreaterThan(32);
+    expect(result.magic).toEqual([0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c]);
+    expect(result.leftovers).toEqual([]);
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(entryName).catch(() => {});
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-sevenzip-scratch-")) {
+          await root.removeEntry(name).catch(() => {});
+        }
+      }
     }, outputName).catch(() => {});
   }
 });

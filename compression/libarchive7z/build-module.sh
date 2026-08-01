@@ -25,7 +25,7 @@ emcc \
   -s MALLOC=emmalloc \
   -s ASSERTIONS=0 \
   -s NO_EXIT_RUNTIME=1 \
-  -s EXPORTED_FUNCTIONS='["_within_archive_7z_to_tar","_within_archive_error"]' \
+  -s EXPORTED_FUNCTIONS='["_within_archive_7z_to_tar","_within_archive_tar_to_7z","_within_archive_error"]' \
   -s EXPORTED_RUNTIME_METHODS='["ccall","UTF8ToString","HEAPU8"]' \
   -o /out/within-archive7z.mjs
 
@@ -53,6 +53,11 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
   "readCodecs": ["copy", "lzma1", "lzma2", "ppmd"],
-  "profiles": ["sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
+  "writeCodec": "adaptive-lzma2-level-0-or-copy",
+  "compressionSampleBytes": 262144,
+  "copyRatioThreshold": 0.98,
+  "scratchBackend": "opfs-sync-access-handle",
+  "maximumScratchChunkBytes": 65536,
+  "profiles": ["tar-to-sevenzip", "sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
 }
 JSON
