@@ -9,6 +9,7 @@ import type {
   WorkerResponse,
 } from "../lib/conversion-protocol";
 import { runZipArchiveConversion } from "./archive-conversion";
+import { runArchiveToSevenZip } from "./archive-to-sevenzip-conversion";
 import { runBzip2Conversion } from "./bzip2-compression";
 import { runCompressedTarToZip } from "./compressed-tar-conversion";
 import { runDocumentConversion } from "./document-conversion";
@@ -2823,6 +2824,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mkv-to-mp4"
         ? DIRECT_REMUX_WRITE_CHUNK
         : profileId === "tar-to-sevenzip" ||
+            profileId === "tar-gz-to-sevenzip" ||
+            profileId === "tar-bz2-to-sevenzip" ||
+            profileId === "tar-xz-to-sevenzip" ||
+            profileId === "zip-to-sevenzip" ||
             profileId === "sevenzip-to-tar" ||
             profileId === "sevenzip-to-tar-gz" ||
             profileId === "sevenzip-to-tar-bz2" ||
@@ -2862,6 +2867,30 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       return;
     }
     if (
+      profileId === "tar-gz-to-sevenzip" ||
+      profileId === "tar-bz2-to-sevenzip" ||
+      profileId === "tar-xz-to-sevenzip" ||
+      profileId === "zip-to-sevenzip"
+    ) {
+      await runArchiveToSevenZip({
+        file,
+        source:
+          profileId === "tar-gz-to-sevenzip"
+            ? "gzip"
+            : profileId === "tar-bz2-to-sevenzip"
+              ? "bzip2"
+              : profileId === "tar-xz-to-sevenzip"
+                ? "xz"
+                : "zip",
+        writable: destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+        isCancelled: () => cancelled,
+        emitProgress,
+        post,
+      });
+    } else if (
       profileId === "tar-to-sevenzip" ||
       profileId === "sevenzip-to-tar" ||
       profileId === "sevenzip-to-tar-gz" ||

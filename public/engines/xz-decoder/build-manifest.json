@@ -1,0 +1,18 @@
+{
+  "engine": "within-xz-decoder",
+  "variant": "decoder-only",
+  "xzVersion": "5.8.3",
+  "xzSource": "https://github.com/tukaani-project/xz/releases/download/v5.8.3/xz-5.8.3.tar.xz",
+  "xzSourceSha256": "fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6",
+  "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
+  "license": "0BSD for liblzma core",
+  "initialWasmMemoryBytes": 25165824,
+  "maximumWasmMemoryBytes": 25165824,
+  "decoderMemoryLimitBytes": 16777216,
+  "inputBufferBytes": 262144,
+  "outputBufferBytes": 65536,
+  "outstandingWrites": 1,
+  "maximumExpandedBytes": 68719476736,
+  "maximumExpansionRatio": 100,
+  "profiles": ["tar-xz-to-sevenzip"]
+}

@@ -23,6 +23,18 @@ const tarFixturePath = path.join(
   "archives",
   "sample.tar",
 );
+const tarGzFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "archives",
+  "sample.tar.gz",
+);
+const tarBz2FixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "archives",
+  "sample.tar.bz2",
+);
 const tarXzFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -284,6 +296,78 @@ test("cached TAR-to-7Z engine converts offline and removes scratch", async () =>
     expect(result.bytes).toBeGreaterThan(32);
     expect(result.magic).toEqual([0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c]);
     expect(result.leftovers).toEqual([]);
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(entryName).catch(() => {});
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-sevenzip-scratch-")) {
+          await root.removeEntry(name).catch(() => {});
+        }
+      }
+    }, outputName).catch(() => {});
+  }
+});
+
+test("cached compressed-TAR and ZIP pipelines convert to 7Z offline", async () => {
+  const routes = [
+    { fixture: tarGzFixturePath, profileId: "tar-gz-to-sevenzip" },
+    { fixture: tarBz2FixturePath, profileId: "tar-bz2-to-sevenzip" },
+    { fixture: tarXzFixturePath, profileId: "tar-xz-to-sevenzip" },
+    { fixture: zipFixturePath, profileId: "zip-to-sevenzip" },
+  ] as const;
+  const outputName = "sample.7z";
+
+  const convertDirect = async (route: (typeof routes)[number]) => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page.locator('[data-testid="file-input"]').setInputFiles(route.fixture);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(route.profileId);
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName);
+      const file = await handle.getFile();
+      const magic = Array.from(
+        new Uint8Array(await file.slice(0, 6).arrayBuffer()),
+      );
+      const leftovers: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-sevenzip-scratch-")) leftovers.push(name);
+      }
+      await root.removeEntry(entryName);
+      return { bytes: file.size, magic, leftovers };
+    }, outputName);
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  for (const route of routes) {
+    expect((await convertDirect(route)).magic).toEqual([
+      0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c,
+    ]);
+  }
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    for (const route of routes) {
+      const result = await convertDirect(route);
+      expect(result.bytes).toBeGreaterThan(32);
+      expect(result.magic).toEqual([0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c]);
+      expect(result.leftovers).toEqual([]);
+    }
   } finally {
     await context.setOffline(false);
     await page.evaluate(async (entryName) => {

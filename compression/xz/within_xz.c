@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <string.h>
 
+#ifndef WITHIN_XZ_DECODER_MEMORY_LIMIT
 #define WITHIN_XZ_DECODER_MEMORY_LIMIT (32ULL * 1024ULL * 1024ULL)
+#endif
 
 typedef struct {
   lzma_stream stream;
@@ -22,12 +24,22 @@ uintptr_t within_xz_create(int decompress) {
   lzma_stream initialized = LZMA_STREAM_INIT;
   context->stream = initialized;
   context->decompress = decompress != 0;
-  lzma_ret result = context->decompress
-                        ? lzma_stream_decoder(&context->stream,
-                                              WITHIN_XZ_DECODER_MEMORY_LIMIT,
-                                              LZMA_FAIL_FAST)
-                        : lzma_easy_encoder(&context->stream, 0,
-                                            LZMA_CHECK_CRC64);
+  lzma_ret result;
+#ifdef WITHIN_XZ_DECODER_ONLY
+  if (!context->decompress) {
+    free(context);
+    return 0;
+  }
+  result = lzma_stream_decoder(&context->stream,
+                               WITHIN_XZ_DECODER_MEMORY_LIMIT,
+                               LZMA_FAIL_FAST);
+#else
+  result = context->decompress
+               ? lzma_stream_decoder(&context->stream,
+                                     WITHIN_XZ_DECODER_MEMORY_LIMIT,
+                                     LZMA_FAIL_FAST)
+               : lzma_easy_encoder(&context->stream, 0, LZMA_CHECK_CRC64);
+#endif
   if (result != LZMA_OK) {
     free(context);
     return 0;

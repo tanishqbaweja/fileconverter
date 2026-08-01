@@ -71,7 +71,8 @@ const lines = [
   "",
   "## Latest full verification cycle",
   "",
-  "- **2026-08-01:** 275/275 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **2026-08-01:** 292/292 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **Compressed TAR/ZIP-to-7Z:** TAR.GZ passed 3/3 256 MiB Chrome runs in 8.22–9.17 s at 225.8 MiB worst incremental private memory; TAR.BZ2 passed in 25.06–25.69 s at 187.2 MiB; optimized TAR.XZ passed in 8.25–8.42 s at 231.1 MiB; and ZIP passed in 9.25–9.45 s at 236.2 MiB. All four streamed directly without a complete intermediate TAR, produced repeatable hashes, used adaptive COPY for the incompressible fixture, independently validated every extracted entry, and deleted 7Z scratch after every run. TAR.XZ uses a specialist 24 MiB decode-only XZ module, reducing combined fixed Wasm from 104 MiB to 80 MiB and resolving the earlier 250.1 MiB boundary failure.",
   "- **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840\u00d72,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44\u20130.65 s conversion time, and 202.2 MiB worst incremental private memory.",
   "- **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81\u201329.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.",
   "- **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06\u20138.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2\u20136.9\u00d7 faster than the measured 55.73-second always-LZMA2 baseline.",
@@ -97,7 +98,13 @@ for (const profile of profiled) {
   const maxRead = Math.max(...report.runs.map((run) => run.maxReadChunkBytes));
   const maxWrite = Math.max(...report.runs.map((run) => run.maxWriteChunkBytes));
   const scratchEvidence =
-    profile.id === "tar-to-sevenzip"
+    [
+      "tar-to-sevenzip",
+      "tar-gz-to-sevenzip",
+      "tar-bz2-to-sevenzip",
+      "tar-xz-to-sevenzip",
+      "zip-to-sevenzip",
+    ].includes(profile.id)
       ? ` / scratch ${integer(Math.max(...report.runs.map((run) => run.maxScratchReadChunkBytes ?? 0)))} B read/write`
       : "";
   lines.push(

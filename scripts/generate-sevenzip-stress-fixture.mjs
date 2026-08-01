@@ -41,6 +41,8 @@ await execFileAsync(
   { cwd: projectRoot, windowsHide: true, maxBuffer: 4 * 1024 * 1024 },
 );
 const sourceManifest = JSON.parse(await readFile(`${sourcePath}.json`, "utf8"));
+const sourceStat = await stat(sourcePath);
+const sourceSha256 = await sha256(sourcePath);
 const outputStat = await stat(outputPath);
 await writeFile(
   `${outputPath}.json`,
@@ -56,6 +58,56 @@ await writeFile(
     2,
   )}\n`,
 );
+const compressedTarOutputs = [
+  {
+    path: `${sourcePath}.bz2`,
+    codec: "bzip2",
+    python: String.raw`
+import bz2, shutil, sys
+with open(sys.argv[1], "rb") as source, bz2.open(sys.argv[2], "wb", compresslevel=1) as target:
+    shutil.copyfileobj(source, target, length=262144)
+`,
+  },
+  {
+    path: `${sourcePath}.xz`,
+    codec: "xz",
+    python: String.raw`
+import lzma, shutil, sys
+with open(sys.argv[1], "rb") as source, lzma.open(
+    sys.argv[2], "wb", format=lzma.FORMAT_XZ, check=lzma.CHECK_CRC64, preset=0
+) as target:
+    shutil.copyfileobj(source, target, length=262144)
+`,
+  },
+];
+await Promise.all(
+  compressedTarOutputs.map((compressed) =>
+    execFileAsync("python", ["-c", compressed.python, sourcePath, compressed.path], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    }),
+  ),
+);
+for (const compressed of compressedTarOutputs) {
+  const compressedStat = await stat(compressed.path);
+  await writeFile(
+    `${compressed.path}.json`,
+    `${JSON.stringify(
+      {
+        generatedBy: "scripts/generate-sevenzip-stress-fixture.mjs",
+        codec: compressed.codec,
+        bytes: compressedStat.size,
+        sha256: await sha256(compressed.path),
+        validationBytes: sourceStat.size,
+        validationSha256: sourceSha256,
+        entries: sourceManifest.entries,
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
 process.stdout.write(`${outputPath}\n`);
 
 async function sha256(filePath) {

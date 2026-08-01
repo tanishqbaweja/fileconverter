@@ -53,7 +53,8 @@ const isBzip2Profile =
   profileId === "tar-bz2-to-tar" ||
   profileId === "tar-bz2-to-zip" ||
   profileId === "zip-to-tar-bz2" ||
-  profileId === "sevenzip-to-tar-bz2";
+  profileId === "sevenzip-to-tar-bz2" ||
+  profileId === "tar-bz2-to-sevenzip";
 const isBzip2CompressedOutput =
   profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
 const isXzProfile =
@@ -63,11 +64,16 @@ const isXzProfile =
   profileId === "tar-xz-to-tar" ||
   profileId === "tar-xz-to-zip" ||
   profileId === "zip-to-tar-xz" ||
-  profileId === "sevenzip-to-tar-xz";
+  profileId === "sevenzip-to-tar-xz" ||
+  profileId === "tar-xz-to-sevenzip";
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
 const isSevenZipProfile =
   profileId === "tar-to-sevenzip" ||
+  profileId === "tar-gz-to-sevenzip" ||
+  profileId === "tar-bz2-to-sevenzip" ||
+  profileId === "tar-xz-to-sevenzip" ||
+  profileId === "zip-to-sevenzip" ||
   profileId === "sevenzip-to-tar" ||
   profileId === "sevenzip-to-tar-gz" ||
   profileId === "sevenzip-to-tar-bz2" ||
@@ -83,6 +89,12 @@ const isArchiveTransformProfile =
   profileId === "zip-to-tar-bz2" ||
   profileId === "zip-to-tar-xz" ||
   isSevenZipProfile;
+const isSevenZipOutputProfile =
+  profileId === "tar-to-sevenzip" ||
+  profileId === "tar-gz-to-sevenzip" ||
+  profileId === "tar-bz2-to-sevenzip" ||
+  profileId === "tar-xz-to-sevenzip" ||
+  profileId === "zip-to-sevenzip";
 if (
   ![
     "gzip-compress",
@@ -248,8 +260,12 @@ const maximumWriteChunkBytes =
 const maximumWasmMemoryBytes =
   profileId === "sevenzip-to-tar-bz2"
     ? 64 * 1024 * 1024
+    : profileId === "tar-bz2-to-sevenzip"
+      ? 64 * 1024 * 1024
     : profileId === "sevenzip-to-tar-xz"
       ? 104 * 1024 * 1024
+      : profileId === "tar-xz-to-sevenzip"
+        ? 80 * 1024 * 1024
       : isBzip2Profile
         ? 8 * 1024 * 1024
         : isXzProfile
@@ -659,16 +675,16 @@ try {
     ),
     scratchChunkBytes: runSummaries.every(
       (run) =>
-        profileId !== "tar-to-sevenzip" ||
+        !isSevenZipOutputProfile ||
         (run.maxScratchReadChunkBytes <= 64 * 1024 &&
           run.maxScratchWriteChunkBytes <= 64 * 1024),
     ),
     scratchCleanup: runSummaries.every(
-      (run) => profileId !== "tar-to-sevenzip" || run.scratchBytes === 0,
+      (run) => !isSevenZipOutputProfile || run.scratchBytes === 0,
     ),
     adaptiveArchiveCompression: runSummaries.every(
       (run) =>
-        profileId !== "tar-to-sevenzip" ||
+        !isSevenZipOutputProfile ||
         run.archiveCompression === "copy" ||
         run.archiveCompression === "lzma2",
     ),

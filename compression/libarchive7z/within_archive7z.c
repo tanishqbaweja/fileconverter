@@ -21,6 +21,7 @@
 typedef struct {
   int64_t input_size;
   int64_t input_position;
+  int input_ended;
   int64_t output_position;
   uint64_t total_payload;
   int entry_count;
@@ -256,13 +257,21 @@ static la_ssize_t within_read_callback(struct archive *archive,
     archive_set_error(archive, EIO, "Conversion cancelled");
     return ARCHIVE_FATAL;
   }
-  int64_t remaining = context->input_size - context->input_position;
-  if (remaining <= 0) {
+  if (context->input_ended) {
     *buffer = NULL;
     return 0;
   }
-  int requested = remaining < WITHIN_INPUT_BYTES ? (int)remaining
-                                                  : WITHIN_INPUT_BYTES;
+  int requested = WITHIN_INPUT_BYTES;
+  if (context->input_size >= 0) {
+    int64_t remaining = context->input_size - context->input_position;
+    if (remaining <= 0) {
+      context->input_ended = 1;
+      *buffer = NULL;
+      return 0;
+    }
+    requested = remaining < WITHIN_INPUT_BYTES ? (int)remaining
+                                                : WITHIN_INPUT_BYTES;
+  }
   int received = within_archive_input_read((double)context->input_position,
                                            context->input_buffer, requested);
   if (received < 0 || received > requested) {
@@ -270,6 +279,7 @@ static la_ssize_t within_read_callback(struct archive *archive,
                       "The bounded browser input read failed");
     return ARCHIVE_FATAL;
   }
+  if (received == 0) context->input_ended = 1;
   if (context->validate_tar &&
       !within_validate_tar_bytes(context, context->input_buffer,
                                  (size_t)received)) {
@@ -301,6 +311,16 @@ static la_int64_t within_seek_callback(struct archive *archive,
                                        void *client_data,
                                        la_int64_t offset, int whence) {
   WithinArchive *context = (WithinArchive *)client_data;
+  if (context->input_size < 0) {
+    if ((whence == SEEK_CUR && offset == 0) ||
+        (whence == SEEK_SET && offset == context->input_position)) {
+      return context->input_position;
+    }
+    archive_set_error(
+        archive, EIO,
+        "Unknown-length USTAR input is sequential and cannot seek");
+    return ARCHIVE_FATAL;
+  }
   int64_t base;
   if (whence == SEEK_SET) {
     base = 0;
@@ -325,6 +345,7 @@ static la_int64_t within_seek_callback(struct archive *archive,
     return ARCHIVE_FATAL;
   }
   context->input_position = position;
+  context->input_ended = position == context->input_size;
   return position;
 }
 
@@ -655,7 +676,8 @@ int within_archive_tar_to_7z(double input_size_value, int use_copy) {
     within_set_plain_error("The 7Z engine could not activate its UTF-8 locale");
     return 3;
   }
-  if (input_size_value < 1024 || input_size_value > 9007199254740991.0) {
+  if (input_size_value != 0.0 &&
+      (input_size_value < 1024 || input_size_value > 9007199254740991.0)) {
     within_set_plain_error("TAR input size is outside the safe integer range");
     return 1;
   }
@@ -666,7 +688,8 @@ int within_archive_tar_to_7z(double input_size_value, int use_copy) {
 
   WithinArchive context;
   memset(&context, 0, sizeof(context));
-  context.input_size = (int64_t)input_size_value;
+  context.input_size =
+      input_size_value == 0.0 ? -1 : (int64_t)input_size_value;
   context.validate_tar = 1;
   context.input_buffer = (uint8_t *)malloc(WITHIN_INPUT_BYTES);
   context.names = (char **)calloc(WITHIN_MAX_ENTRIES, sizeof(char *));
@@ -841,10 +864,12 @@ int within_archive_tar_to_7z(double input_size_value, int use_copy) {
     within_set_error("Could not read the next TAR entry", reader);
     goto cleanup;
   }
-  while (context.input_position < context.input_size) {
+  while ((context.input_size < 0 && !context.input_ended) ||
+         (context.input_size >= 0 &&
+          context.input_position < context.input_size)) {
     const void *unused = NULL;
     la_ssize_t drained = within_read_callback(reader, &context, &unused);
-    if (drained <= 0) {
+    if (drained < 0 || (drained == 0 && context.input_size >= 0)) {
       within_set_plain_error("Could not finish validating the TAR byte stream");
       goto cleanup;
     }

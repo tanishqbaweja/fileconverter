@@ -3,6 +3,8 @@ import { recordWasmMemory } from "./wasm-metrics";
 
 const MODULE_URL = "/engines/xz/within-xz.mjs";
 const WASM_URL = "/engines/xz/within-xz.wasm";
+const DECODER_MODULE_URL = "/engines/xz-decoder/within-xz-decoder.mjs";
+const DECODER_WASM_URL = "/engines/xz-decoder/within-xz-decoder.wasm";
 const INPUT_BUFFER_BYTES = 256 * 1024;
 const OUTPUT_BUFFER_BYTES = 64 * 1024;
 const MAX_EXPANDED_BYTES = 64 * 1024 * 1024 * 1024;
@@ -39,6 +41,7 @@ export interface XzConversionOptions {
   file: File;
   inputStream?: ReadableStream<Uint8Array<ArrayBuffer>>;
   trackInputMetrics?: boolean;
+  compactDecoder?: boolean;
   decompress: boolean;
   metrics: ConversionMetrics;
   assertActive(): void;
@@ -52,6 +55,7 @@ export async function runXzConversion({
   file,
   inputStream,
   trackInputMetrics,
+  compactDecoder = false,
   decompress,
   metrics,
   assertActive,
@@ -61,19 +65,32 @@ export async function runXzConversion({
   validateOutput,
 }: XzConversionOptions): Promise<void> {
   const imported = (await import(
-    /* @vite-ignore */ MODULE_URL
+    /* @vite-ignore */ (compactDecoder ? DECODER_MODULE_URL : MODULE_URL)
   )) as { default: XzModuleFactory };
   const codecModule = await imported.default({
-    locateFile: (name) => (name.endsWith(".wasm") ? WASM_URL : name),
+    locateFile: (name) =>
+      name.endsWith(".wasm")
+        ? compactDecoder
+          ? DECODER_WASM_URL
+          : WASM_URL
+        : name,
     print: () => {},
     printErr: () => {},
   });
   assertActive();
 
-  recordWasmMemory(metrics, "xz", codecModule.HEAPU8.buffer.byteLength);
+  recordWasmMemory(
+    metrics,
+    compactDecoder ? "xz-decoder" : "xz",
+    codecModule.HEAPU8.buffer.byteLength,
+  );
   const handle = codecModule._within_xz_create(decompress ? 1 : 0);
   if (!handle) {
-    throw new Error("The XZ engine could not allocate its fixed memory.");
+    throw new Error(
+      compactDecoder
+        ? "The compact XZ decoder could not allocate its fixed memory."
+        : "The XZ engine could not allocate its fixed memory.",
+    );
   }
   const inputPointer = codecModule._malloc(INPUT_BUFFER_BYTES);
   const outputPointer = codecModule._malloc(OUTPUT_BUFFER_BYTES);
@@ -142,7 +159,7 @@ export async function runXzConversion({
       throw new Error("The XZ engine returned invalid bounded-I/O counters.");
     }
     if (status !== LZMA_OK && status !== LZMA_STREAM_END) {
-      throw xzError(status);
+      throw xzError(status, compactDecoder);
     }
     await drainOutput(produced);
     return { consumed, produced, status };
@@ -235,13 +252,15 @@ function nextByobBuffer(
     : new Uint8Array(INPUT_BUFFER_BYTES);
 }
 
-function xzError(code: number): Error {
+function xzError(code: number, compactDecoder: boolean): Error {
+  const wasmMemoryMiB = compactDecoder ? 24 : 48;
+  const decoderMemoryMiB = compactDecoder ? 16 : 32;
   const messages: Record<number, string> = {
     2: "XZ input has no integrity check and is rejected.",
     3: "XZ input uses an unsupported integrity check.",
     4: "XZ returned an unexpected integrity-check notification.",
-    5: "XZ exhausted its fixed 48 MiB Wasm memory.",
-    6: "XZ input requires more than the 32 MiB decoder memory limit.",
+    5: `XZ exhausted its fixed ${wasmMemoryMiB} MiB Wasm memory.`,
+    6: `XZ input requires more than the ${decoderMemoryMiB} MiB decoder memory limit.`,
     7: "XZ input has an invalid stream header.",
     8: "XZ input uses unsupported compression options or filters.",
     9: "XZ input is corrupt or failed its integrity check.",

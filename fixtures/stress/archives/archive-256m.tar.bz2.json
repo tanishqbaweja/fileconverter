@@ -1,6 +1,6 @@
 {
-  "generatedBy": "scripts/generate-bzip2-stress-fixtures.mjs",
-  "compressionLevel": 1,
+  "generatedBy": "scripts/generate-sevenzip-stress-fixture.mjs",
+  "codec": "bzip2",
   "bytes": 270592763,
   "sha256": "1a6b76e653ecc65418ed86cb333240dab00fbd49d43900449e65c614678fcea5",
   "validationBytes": 268436992,

@@ -347,6 +347,10 @@ const categories = {
     generator: "scripts/generate-sevenzip-stress-fixture.mjs",
     profiles: [
       ["tar-to-sevenzip", "fixtures/stress/archives/archive-256m.tar"],
+      ["tar-gz-to-sevenzip", "fixtures/stress/archives/archive-256m.tar.gz"],
+      ["tar-bz2-to-sevenzip", "fixtures/stress/archives/archive-256m.tar.bz2"],
+      ["tar-xz-to-sevenzip", "fixtures/stress/archives/archive-256m.tar.xz"],
+      ["zip-to-sevenzip", "fixtures/stress/archives/archive-256m.zip"],
       ["sevenzip-to-tar", "fixtures/stress/archives/archive-256m.7z"],
       ["sevenzip-to-tar-gz", "fixtures/stress/archives/archive-256m.7z"],
       ["sevenzip-to-tar-bz2", "fixtures/stress/archives/archive-256m.7z"],

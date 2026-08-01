@@ -71,6 +71,7 @@
     "build:ffmpeg-remux": "docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engines/remux media/ffmpeg",
     "build:bzip2": "docker build --file compression/bzip2/Dockerfile --output type=local,dest=public/engines/bzip2 compression/bzip2",
     "build:xz": "docker build --file compression/xz/Dockerfile --output type=local,dest=public/engines/xz compression/xz",
+    "build:xz-decoder": "docker build --build-arg XZ_VARIANT=decoder --file compression/xz/Dockerfile --output type=local,dest=public/engines/xz-decoder compression/xz",
     "build:archive7z": "docker build --file compression/libarchive7z/Dockerfile --output type=local,dest=public/engines/archive7z compression/libarchive7z",
     "build:tiff": "docker build --file images/libtiff/Dockerfile --output type=local,dest=public/engines/tiff images/libtiff",
     "build:svg": "node scripts/build-svg-engine.mjs",

@@ -129,6 +129,22 @@ test("every XZ profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.integrityCheck, "CRC64");
 });
 
+test("the TAR.XZ to 7Z route uses its compact fixed-memory decoder manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/xz-decoder/build-manifest.json", "utf8"),
+  );
+  assert.deepEqual(manifest.profiles, ["tar-xz-to-sevenzip"]);
+  assert.equal(manifest.engine, "within-xz-decoder");
+  assert.equal(manifest.variant, "decoder-only");
+  assert.equal(manifest.xzVersion, "5.8.3");
+  assert.equal(manifest.initialWasmMemoryBytes, 24 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 24 * 1024 * 1024);
+  assert.equal(manifest.decoderMemoryLimitBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.inputBufferBytes, 256 * 1024);
+  assert.equal(manifest.outputBufferBytes, 64 * 1024);
+  assert.equal(manifest.outstandingWrites, 1);
+});
+
 test("every 7Z profile is declared by its fixed-memory Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/archive7z/build-manifest.json", "utf8"),
@@ -149,6 +165,7 @@ test("every 7Z profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.maximumEntries, 10_000);
   assert.equal(manifest.nameTableSlots, 32_768);
   assert.equal(manifest.maximumExpansionRatio, 100);
+  assert.equal(manifest.sequentialUnknownLengthUstarInput, true);
 });
 
 test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {

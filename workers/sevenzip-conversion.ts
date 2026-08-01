@@ -65,6 +65,7 @@ export interface SevenZipConversionOptions {
 interface SevenZipReaderOptions extends SevenZipConversionOptions {
   phase: string;
   trackTarDestinationMetrics: boolean;
+  inputStream?: ReadableStream<Uint8Array<ArrayBuffer>>;
   nativeFunction?: "within_archive_7z_to_tar" | "within_archive_tar_to_7z";
   useScratch?: boolean;
 }
@@ -114,6 +115,7 @@ async function runSevenZipReader({
   post,
   phase,
   trackTarDestinationMetrics,
+  inputStream,
   nativeFunction = "within_archive_7z_to_tar",
   useScratch = false,
 }: SevenZipReaderOptions): Promise<void> {
@@ -121,6 +123,13 @@ async function runSevenZipReader({
   let reader: ReadableStreamBYOBReader | null = null;
   let readerPosition = -1;
   let readBuffer = new Uint8Array(INPUT_BUFFER_BYTES);
+  const streamReader = inputStream?.getReader() ?? null;
+  let streamPending: Uint8Array<ArrayBuffer> | null = null;
+  let streamPendingOffset = 0;
+  let streamPosition = 0;
+  let streamEnded = false;
+  let streamPrefix: Uint8Array<ArrayBuffer> | null = null;
+  let streamPrefixOffset = 0;
   const synchronousReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
   let scratchRoot: FileSystemDirectoryHandle | null = null;
@@ -148,6 +157,59 @@ async function runSevenZipReader({
     metrics.maxReadChunkBytes = Math.max(metrics.maxReadChunkBytes, bytes);
     emitProgress(jobId, phase, metrics, startedAt);
   };
+
+  const readRawStream = async (
+    destination: Uint8Array,
+  ): Promise<number> => {
+    if (!streamReader || streamEnded) return 0;
+    for (;;) {
+      if (streamPending && streamPendingOffset < streamPending.byteLength) {
+        const copied = Math.min(
+          destination.byteLength,
+          streamPending.byteLength - streamPendingOffset,
+        );
+        destination.set(
+          streamPending.subarray(
+            streamPendingOffset,
+            streamPendingOffset + copied,
+          ),
+        );
+        streamPendingOffset += copied;
+        if (streamPendingOffset === streamPending.byteLength) {
+          streamPending = null;
+          streamPendingOffset = 0;
+        }
+        return copied;
+      }
+      const { done, value } = await streamReader.read();
+      assertActive();
+      if (done) {
+        streamEnded = true;
+        return 0;
+      }
+      if (value.byteLength === 0) continue;
+      if (value.byteLength > INPUT_BUFFER_BYTES) {
+        throw new Error(
+          "The sequential USTAR bridge exceeded its 256 KiB chunk limit.",
+        );
+      }
+      streamPending = value;
+      streamPendingOffset = 0;
+    }
+  };
+
+  const bufferStreamCompressionSample = async (): Promise<Uint8Array<ArrayBuffer>> => {
+    const sample = new Uint8Array(COMPRESSION_SAMPLE_BYTES);
+    let sampleBytes = 0;
+    while (sampleBytes < sample.byteLength) {
+      const received = await readRawStream(sample.subarray(sampleBytes));
+      if (received === 0) break;
+      sampleBytes += received;
+    }
+    streamPrefix = sample.slice(0, sampleBytes);
+    streamPrefixOffset = 0;
+    return streamPrefix;
+  };
   const trackedDestinationOptions: SevenZipConversionOptions = {
     file,
     writable,
@@ -168,6 +230,37 @@ async function runSevenZipReader({
         destination.byteLength > INPUT_BUFFER_BYTES
       ) {
         throw new Error("The 7Z engine requested an invalid bounded input read.");
+      }
+      if (inputStream) {
+        return (async () => {
+          if (offset !== streamPosition) {
+            throw new Error(
+              "The sequential USTAR bridge received a non-sequential read.",
+            );
+          }
+          let received = 0;
+          if (streamPrefix && streamPrefixOffset < streamPrefix.byteLength) {
+            received = Math.min(
+              destination.byteLength,
+              streamPrefix.byteLength - streamPrefixOffset,
+            );
+            destination.set(
+              streamPrefix.subarray(
+                streamPrefixOffset,
+                streamPrefixOffset + received,
+              ),
+            );
+            streamPrefixOffset += received;
+            if (streamPrefixOffset === streamPrefix.byteLength) {
+              streamPrefix = null;
+              streamPrefixOffset = 0;
+            }
+          } else {
+            received = await readRawStream(destination);
+          }
+          streamPosition += received;
+          return received;
+        })();
       }
       const end = Math.min(file.size, offset + destination.byteLength);
       if (end <= offset) return 0;
@@ -276,10 +369,12 @@ async function runSevenZipReader({
     cancelled: isCancelled,
     message: recordError,
     progress(inputPosition, outputPosition) {
-      metrics.inputBytes = Math.max(
-        metrics.inputBytes,
-        Math.min(file.size, inputPosition),
-      );
+      if (!inputStream) {
+        metrics.inputBytes = Math.max(
+          metrics.inputBytes,
+          Math.min(file.size, inputPosition),
+        );
+      }
       if (trackTarDestinationMetrics) {
         metrics.outputBytes = Math.max(metrics.outputBytes, outputPosition);
       }
@@ -311,19 +406,28 @@ async function runSevenZipReader({
     }
     let useCopy = false;
     if (nativeFunction === "within_archive_tar_to_7z") {
-      const sampleBytes = Math.min(file.size, COMPRESSION_SAMPLE_BYTES);
+      const sample = inputStream
+        ? await bufferStreamCompressionSample()
+        : new Uint8Array(
+            await file
+              .slice(0, Math.min(file.size, COMPRESSION_SAMPLE_BYTES))
+              .arrayBuffer(),
+          );
       const compressedSample = await new Response(
-        file
-          .slice(0, sampleBytes)
+        new Blob([sample])
           .stream()
           .pipeThrough(new CompressionStream("gzip")),
       ).arrayBuffer();
-      metrics.inputBytes = Math.max(metrics.inputBytes, sampleBytes);
-      metrics.maxReadChunkBytes = Math.max(
-        metrics.maxReadChunkBytes,
-        sampleBytes,
-      );
-      useCopy = compressedSample.byteLength / sampleBytes >= COPY_RATIO_THRESHOLD;
+      if (!inputStream) {
+        metrics.inputBytes = Math.max(metrics.inputBytes, sample.byteLength);
+        metrics.maxReadChunkBytes = Math.max(
+          metrics.maxReadChunkBytes,
+          sample.byteLength,
+        );
+      }
+      useCopy =
+        sample.byteLength > 0 &&
+        compressedSample.byteLength / sample.byteLength >= COPY_RATIO_THRESHOLD;
       metrics.archiveCompression = useCopy ? "copy" : "lzma2";
       emitProgress(
         jobId,
@@ -356,7 +460,7 @@ async function runSevenZipReader({
             nativeFunction,
             "number",
             ["number", "number"],
-            [file.size, useCopy ? 1 : 0],
+            [inputStream ? 0 : file.size, useCopy ? 1 : 0],
             { async: true },
           )
         : await archiveModule.ccall(
@@ -401,6 +505,7 @@ async function runSevenZipReader({
   } finally {
     const activeReader = reader as ReadableStreamBYOBReader | null;
     await activeReader?.cancel("7Z conversion finished").catch(() => {});
+    await streamReader?.cancel("7Z conversion finished").catch(() => {});
     const activeScratch = scratchAccess as FileSystemSyncAccessHandle | null;
     if (activeScratch) {
       try {
@@ -433,6 +538,21 @@ export async function runTarToSevenZip(
   await runSevenZipReader({
     ...options,
     phase: "Converting TAR to 7Z",
+    trackTarDestinationMetrics: true,
+    nativeFunction: "within_archive_tar_to_7z",
+    useScratch: true,
+  });
+}
+
+export async function runTarStreamToSevenZip(
+  options: SevenZipConversionOptions,
+  inputStream: ReadableStream<Uint8Array<ArrayBuffer>>,
+  phase: string,
+): Promise<void> {
+  await runSevenZipReader({
+    ...options,
+    inputStream,
+    phase,
     trackTarDestinationMetrics: true,
     nativeFunction: "within_archive_tar_to_7z",
     useScratch: true,
