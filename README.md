@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 152
+complete-Chromium memory profile have passed. The current registry publishes 156
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/VP8 or VP9 WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -35,7 +35,8 @@ route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
 public after passing their three-run gates on the untouched
 2,958,573,265-byte fixture. The app never substitutes an extension rename or a
 server conversion. Separate VP9 WebM routes passed three-run gates on genuine
-181,825,549-byte MKV, 137,635,308-byte OGV, and 136,166,136-byte M2V sources.
+181,825,549-byte MKV, 147,136,625-byte MP4, 147,136,647-byte MOV,
+137,635,308-byte OGV, and 136,166,136-byte M2V sources.
 
 The living [tested conversion ledger](TESTED.md) lists every public passed
 profile, retained Chrome stress evidence, exact I/O bounds, cleanup status, and
@@ -237,6 +238,15 @@ threads, four token partitions, realtime deadline, `cpu-used=8`, and zero
 lookahead, and reports excluded audio, subtitles, attachments, and chapters.
 It is loaded from a dedicated eight-worker pthread module so audio and remux
 routes do not pay that pool's memory cost.
+
+MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
+non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
+downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or
+other audio, extra video, subtitles, attachments, and chapters are explicitly
+excluded with warnings. Small H.264/AAC browser fixtures prove both container
+paths, while 147 MiB high-bitrate H.264/AAC sources exercise bounded streaming,
+downscaling, complete decode, repeatability, and cleanup in three-run Chrome
+profiles.
 
 The VP9 profiles use a separate lazy-loaded eight-worker module, so selecting a
 VP8, audio, or stream-copy route never downloads or starts the VP9 specialist.
@@ -570,10 +580,14 @@ Current exact-build results:
 | MKV → MPEG-4 MP4 | 3 | 2,958,573,265 B | 3,086,358,463 B | 211.3 MiB | 89.6 MiB | −1.0–7.1 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
 | MKV → VP9 WebM | 3 | 181,825,549 B | 65,122,757 B | 244.9 MiB | 88 MiB | 7.2–17.8 MiB |
+| MP4 → VP8 WebM | 3 | 147,136,619 B | 5,105,363 B | 226.9 MiB | 64 MiB | 11.4–14.3 MiB |
+| MP4 → VP9 WebM | 3 | 147,136,625 B | 4,143,084 B | 237.1 MiB | 64 MiB | 7.4–14.5 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
 | MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
 | MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
 | MOV → WAV | 3 | 149,251,969 B | 414,733,404 B | 195.3 MiB | 32 MiB | 2.8–36.0 MiB |
+| MOV → VP8 WebM | 3 | 147,136,647 B | 5,100,809 B | 244.4 MiB | 48 MiB | 15.5–44.6 MiB |
+| MOV → VP9 WebM | 3 | 147,136,647 B | 4,126,570 B | 236.8 MiB | 64 MiB | 11.5–13.0 MiB |
 | 3GP → MP4 | 3 | 167,130,850 B | 167,156,758 B | 209.6 MiB | 32 MiB | 9.4–28.4 MiB |
 | 3GP → M4A | 3 | 167,130,850 B | 11,539,835 B | 204.8 MiB | 32 MiB | 26.0–27.1 MiB |
 | 3GP → WAV | 3 | 167,130,850 B | 69,130,350 B | 193.7 MiB | 32 MiB | 11.6–34.6 MiB |
@@ -902,6 +916,12 @@ at 223.4 MiB. Every output was independently probed as VP9 WebM, midpoint-SSIM
 checked, and fully decoded. The 4-thread VP9 configuration improved the M2V
 benchmark by 19.2%; limiting only high-resolution decoding to two threads kept
 the MKV path below the 96 MiB Wasm ceiling while preserving four-thread encode.
+The same core converted the final 147.1 MiB MP4 source in 14.80–15.36 seconds
+at 237.1 MiB and MOV in 14.67–15.17 seconds at 236.8 MiB. Two rejected MP4
+fixture topologies measured 254.5–268.5 MiB; the final 1,282-pixel source
+exercises the core's two-thread high-resolution decoder while leaving all four
+VP9 encoder threads active, cutting the passing profile by 17.4–31.4 MiB
+without relaxing the 250 MiB process-tree limit or encode settings.
 `npm run clean:benchmark-artifacts` removes that fixed project-local 120-second
 fixture and its Chrome profile without deleting the compact measurements.
 Native `ffprobe` validates structure and metadata; native FFmpeg traverses every

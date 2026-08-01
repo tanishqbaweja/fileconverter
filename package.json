@@ -92,6 +92,7 @@
     "profile:ogv": "node scripts/profile-category.mjs ogv",
     "profile:mpeg2-video": "node scripts/profile-category.mjs mpeg2-video",
     "profile:vp9": "node scripts/profile-category.mjs vp9",
+    "profile:container-webm": "node scripts/profile-category.mjs container-webm",
     "profile:images": "node scripts/profile-category.mjs images",
     "profile:tiff": "node scripts/profile-category.mjs tiff",
     "profile:svg": "node scripts/profile-category.mjs svg",

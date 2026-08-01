@@ -82,7 +82,13 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-webm",
       wasmPthreadPoolSize: 8,
       videoCodecThreads: 4,
-      profiles: ["mkv-to-webm", "ogv-to-webm", "m2v-to-webm"],
+      profiles: [
+        "mkv-to-webm",
+        "mp4-to-webm",
+        "mov-to-webm",
+        "ogv-to-webm",
+        "m2v-to-webm",
+      ],
     },
     {
       name: "within-vp9",
@@ -90,6 +96,8 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       videoCodecThreads: 4,
       profiles: [
         "mkv-to-webm-vp9",
+        "mp4-to-webm-vp9",
+        "mov-to-webm-vp9",
         "ogv-to-webm-vp9",
         "m2v-to-webm-vp9",
       ],
@@ -484,6 +492,22 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.ok(
     publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-wav"),
+  );
+  assert.ok(
+    publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-webm"),
+  );
+  assert.ok(
+    publicProfilesFor("mp4").some(
+      (profile) => profile.id === "mp4-to-webm-vp9",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("mov").some((profile) => profile.id === "mov-to-webm"),
+  );
+  assert.ok(
+    publicProfilesFor("mov").some(
+      (profile) => profile.id === "mov-to-webm-vp9",
+    ),
   );
   assert.ok(
     publicProfilesFor("mkv").some(

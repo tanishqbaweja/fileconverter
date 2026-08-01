@@ -3226,9 +3226,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "flac-to-alac" ||
       profileId === "wav-to-wma" ||
       profileId === "flac-to-wma" ||
+      profileId === "mp4-to-webm" ||
+      profileId === "mov-to-webm" ||
       profileId === "mkv-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
+      profileId === "mp4-to-webm-vp9" ||
+      profileId === "mov-to-webm-vp9" ||
       profileId === "mkv-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
@@ -3273,11 +3277,16 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             : profileId === "wav-to-wma" ||
                 profileId === "flac-to-wma"
               ? 9
-            : profileId === "mkv-to-webm" || profileId === "m2v-to-webm"
+            : profileId === "mp4-to-webm" ||
+                profileId === "mov-to-webm" ||
+                profileId === "mkv-to-webm" ||
+                profileId === "m2v-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
               ? 7
-            : profileId === "mkv-to-webm-vp9" ||
+            : profileId === "mp4-to-webm-vp9" ||
+                profileId === "mov-to-webm-vp9" ||
+                profileId === "mkv-to-webm-vp9" ||
                 profileId === "m2v-to-webm-vp9"
               ? 10
             : profileId === "ogv-to-webm-vp9"

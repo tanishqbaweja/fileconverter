@@ -201,6 +201,10 @@ if (
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
     "mkv-to-webm-vp9",
+    "mp4-to-webm",
+    "mp4-to-webm-vp9",
+    "mov-to-webm",
+    "mov-to-webm-vp9",
     "ogv-to-webm",
     "ogv-to-webm-vp9",
     "ogv-to-wav",
@@ -262,6 +266,10 @@ const isMediaProfile =
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
   profileId === "mkv-to-webm-vp9" ||
+  profileId === "mp4-to-webm" ||
+  profileId === "mp4-to-webm-vp9" ||
+  profileId === "mov-to-webm" ||
+  profileId === "mov-to-webm-vp9" ||
   profileId === "ogv-to-webm" ||
   profileId === "ogv-to-webm-vp9" ||
   profileId === "ogv-to-wav" ||
@@ -943,10 +951,14 @@ async function validateMediaOutput(
     route === "wav-to-wma" || route === "flac-to-wma";
   const vp9Reencode =
     route === "mkv-to-webm-vp9" ||
+    route === "mp4-to-webm-vp9" ||
+    route === "mov-to-webm-vp9" ||
     route === "ogv-to-webm-vp9" ||
     route === "m2v-to-webm-vp9";
   const webmReencode =
     route === "mkv-to-webm" ||
+    route === "mp4-to-webm" ||
+    route === "mov-to-webm" ||
     route === "ogv-to-webm" ||
     route === "m2v-to-webm" ||
     vp9Reencode;

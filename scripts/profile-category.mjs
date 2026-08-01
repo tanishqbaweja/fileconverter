@@ -103,6 +103,18 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-webm": {
+    generator: "scripts/generate-container-webm-stress-fixtures.mjs",
+    profiles: [
+      ["mp4-to-webm", "h264-aac-128m.mp4"],
+      ["mp4-to-webm-vp9", "h264-aac-128m.mp4"],
+      ["mov-to-webm", "h264-aac-128m.mov"],
+      ["mov-to-webm-vp9", "h264-aac-128m.mov"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

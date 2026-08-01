@@ -35,6 +35,22 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
       continue;
     }
     if (!name.endsWith("-stress.json")) continue;
+    if (report.passed === false && report.profileId && Array.isArray(report.runs)) {
+      const failedChecks = Object.entries(report.checks ?? {})
+        .filter(([, passed]) => passed === false)
+        .map(([check]) => check);
+      failedReports.push({
+        ...report,
+        completedRuns: report.runs,
+        failure: {
+          message:
+            failedChecks.length > 0
+              ? `Failed checks: ${failedChecks.join(", ")}; measured ${Number(report.incrementalPrivateMiB ?? 0).toFixed(1)} MiB against a ${Number(report.limitMiB ?? 0).toFixed(1)} MiB limit.`
+              : "The retained Chrome stress report did not pass.",
+        },
+      });
+      continue;
+    }
     if (!report.passed || !report.profileId || !Array.isArray(report.runs)) {
       continue;
     }
@@ -77,7 +93,8 @@ const lines = [
   "",
   "## Latest full verification cycle",
   "",
-  "- **2026-08-02:** 347/347 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **2026-08-02:** 355/355 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **Optimized MP4/MOV to WebM:** four new routes reuse the lazy optimized eight-worker VP8/VP9 cores. MP4-to-VP8 passed 3/3 Chrome runs on 147,136,619 bytes in 12.84\u201313.34 s at 226.9 MiB worst incremental private memory; MP4-to-VP9 passed on 147,136,625 bytes in 14.80\u201315.36 s at 237.1 MiB; MOV-to-VP8 passed on 147,136,647 bytes in 9.53\u201310.14 s at 244.4 MiB; and MOV-to-VP9 passed in 14.67\u201315.17 s at 236.8 MiB. All twelve outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. Rejected VP9 fixture topologies measured 254.5\u2013268.5 MiB; the final 1,282-pixel source activates two decoder threads while retaining four encoder threads, cutting the passing process-tree peak by 17.4\u201331.4 MiB without changing the 250 MiB limit or encode settings.",
   "- **Bounded VP9 WebM:** MKV-to-VP9 passed 3/3 Chrome runs on a 181,825,549-byte HEVC/AAC/SubRip source in 329.00\u2013330.04 s at 244.9 MiB worst incremental private memory; OGV-to-VP9/Vorbis passed on 137,635,308 bytes in 97.19\u201397.53 s at 224.1 MiB; and M2V-to-VP9 passed on 136,166,136 bytes in 68.34\u201369.32 s at 223.4 MiB. All nine outputs were byte-repeatable, independently probed as genuine VP9 WebM, midpoint-SSIM checked, fully decoded, and deleted after validation. The separate lazy-loaded core retains a 96 MiB hard Wasm ceiling, uses four VP9 encoder threads, and limits high-resolution decoding to two threads. The final M2V topology improved the controlled 136 MiB conversion from 85.49 s to 69.06 s (19.2%) while staying bounded; split high-resolution decode/encode improved MKV from 355.59 s to 330.23 s (7.1%).",
   "- **Direct raw compression transcoding:** all six GZIP/BZIP2/XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable outputs, independent streamed decode/SHA-256 validation, and cleanup recovery. GZIP-to-BZIP2 reached 159.2 MiB in 42.58–43.27 s; GZIP-to-XZ 200.1 MiB in 55.81–56.43 s; BZIP2-to-GZIP 179.4 MiB in 51.10–51.54 s; BZIP2-to-XZ 201.3 MiB in 71.09–71.72 s; XZ-to-GZIP 236.2 MiB in 34.65–41.21 s; and XZ-to-BZIP2 196.4 MiB in 42.36–42.72 s. Every route kept reads at 256 KiB, writes at no more than 64 KiB, one pending operation, and no complete decompressed intermediate file.",
   "- **Direct compressed-TAR transcoding:** all six TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions passed 3/3 256 MiB-class Chrome runs with repeatable hashes and cleanup recovery. TAR.GZ-to-TAR.BZ2 reached 168.7 MiB in 42.45–43.04 s; TAR.GZ-to-TAR.XZ 191.6 MiB in 54.92–56.42 s; TAR.BZ2-to-TAR.GZ 183.9 MiB in 51.26–52.65 s; TAR.BZ2-to-TAR.XZ 195.9 MiB in 70.70–71.99 s; TAR.XZ-to-TAR.GZ 239.9 MiB in 34.25–35.22 s; and TAR.XZ-to-TAR.BZ2 209.4 MiB in 42.39–42.73 s. Every route validated USTAR in flight, kept reads at 256 KiB and writes at 64 KiB with one pending operation, independently verified archive entry hashes, and stored no complete intermediate TAR.",
@@ -135,7 +152,7 @@ for (const report of failedReports.sort((left, right) =>
   String(left.generatedAt).localeCompare(String(right.generatedAt)),
 )) {
   lines.push(
-    `| ${cell(report.generatedAt ?? "unknown")} | ${cell(report.profileId ?? "unknown")} | ${integer(report.source?.bytes ?? 0)} | ${integer(report.completedRuns?.length ?? 0)} | ${integer(report.lastObservedState?.metrics?.inputBytes ?? 0)} | ${cell(String(report.failure?.message ?? report.lastObservedState?.error ?? "unknown failure").slice(0, 180))} |`,
+    `| ${cell(report.generatedAt ?? "unknown")} | ${cell(report.profileId ?? "unknown")} | ${integer(report.source?.bytes ?? 0)} | ${integer(report.completedRuns?.length ?? 0)} | ${integer(report.lastObservedState?.metrics?.inputBytes ?? report.runs?.at(-1)?.sourceBytes ?? 0)} | ${cell(String(report.failure?.message ?? report.lastObservedState?.error ?? "unknown failure").slice(0, 180))} |`,
   );
 }
 
