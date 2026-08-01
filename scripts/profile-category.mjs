@@ -58,6 +58,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  flv: {
+    generator: "scripts/generate-flv-stress-fixture.mjs",
+    profiles: [
+      ["flv-to-mp4", "flash-video-128m.flv"],
+      ["flv-to-m4a", "flash-video-128m.flv"],
+      ["flv-to-wav", "flash-video-128m.flv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [

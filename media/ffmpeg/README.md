@@ -48,7 +48,7 @@ as a compatibility fallback. FFmpeg seeks by requesting a new slice. Output writ
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.
 
-The lean core includes the MPEG-TS demuxer and H.264/HEVC parsers. Transport
+The lean core includes the FLV and MPEG-TS demuxers plus H.264/HEVC parsers. Transport
 probing is capped at 2 MiB and two seconds of analyzed media. AAC packets use the
 `aac_adtstoasc` bitstream filter before fragmented MP4/M4A muxing; WAV conversion
 uses the existing bounded AAC decode, resample, and PCM pipeline.

@@ -163,6 +163,22 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "mpeg-ts-to-wav",
     ),
   );
+  assert.equal(detectFormat({ name: "legacy.F4V", type: "" }), "flv");
+  assert.ok(
+    publicProfilesFor("flv").some(
+      (profile) => profile.id === "flv-to-mp4",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("flv").some(
+      (profile) => profile.id === "flv-to-m4a",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("flv").some(
+      (profile) => profile.id === "flv-to-wav",
+    ),
+  );
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
   assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));

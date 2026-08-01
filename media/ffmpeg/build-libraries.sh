@@ -37,7 +37,7 @@ emconfigure ./configure \
   --enable-avutil \
   --enable-swresample \
   --enable-swscale \
-  --enable-demuxer=aiff,flac,matroska,mov,mp3,mpegts,ogg,wav \
+  --enable-demuxer=aiff,flac,flv,matroska,mov,mp3,mpegts,ogg,wav \
   --enable-muxer=flac,mp4,mov,mpegts,adts,wav,webm \
   --enable-decoder=aac,flac,h264,hevc,mp3,opus,pcm_s16be,pcm_s16le,vorbis \
   --enable-encoder=flac,pcm_s16le,mpeg4,libvpx_vp8 \

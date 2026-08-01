@@ -58,13 +58,16 @@ if (
     "mkv-to-mp4",
     "mov-to-mp4",
     "mpeg-ts-to-mp4",
+    "flv-to-mp4",
     "mkv-to-m4a",
     "mov-to-m4a",
     "mpeg-ts-to-m4a",
+    "flv-to-m4a",
     "mp4-to-m4a",
     "mkv-to-wav",
     "mov-to-wav",
     "mpeg-ts-to-wav",
+    "flv-to-wav",
     "mp4-to-wav",
     "m4a-to-wav",
     "mp3-to-wav",
@@ -89,13 +92,16 @@ const isMediaProfile =
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "mpeg-ts-to-mp4" ||
+  profileId === "flv-to-mp4" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "mpeg-ts-to-m4a" ||
+  profileId === "flv-to-m4a" ||
   profileId === "mp4-to-m4a" ||
   profileId === "mkv-to-wav" ||
   profileId === "mov-to-wav" ||
   profileId === "mpeg-ts-to-wav" ||
+  profileId === "flv-to-wav" ||
   profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "mp3-to-wav" ||
@@ -619,10 +625,12 @@ async function validateMediaOutput(
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "mpeg-ts-to-m4a" ||
+    route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
     route === "mpeg-ts-to-wav" ||
+    route === "flv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -637,6 +645,7 @@ async function validateMediaOutput(
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
     route === "mpeg-ts-to-wav" ||
+    route === "flv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -819,6 +828,14 @@ async function validateMediaOutput(
   const sourceAudio = source.probe.streams.find(
     (stream) => stream.codec_type === "audio",
   );
+  const normalizedOutputLanguage =
+    audio?.tags?.language && audio.tags.language !== "und"
+      ? audio.tags.language
+      : null;
+  const normalizedSourceLanguage =
+    sourceAudio?.tags?.language && sourceAudio.tags.language !== "und"
+      ? sourceAudio.tags.language
+      : null;
   const sourceDuration = Number(source.probe.format.duration);
   const expectedDuration =
     audioOnly && (pcmOutput || flacOutput)
@@ -845,8 +862,9 @@ async function validateMediaOutput(
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "mpeg-ts-to-m4a" ||
+      route === "flv-to-m4a" ||
       route === "mp4-to-m4a") &&
-      audio?.tags?.language !== sourceAudio?.tags?.language) ||
+      normalizedOutputLanguage !== normalizedSourceLanguage) ||
     Math.abs(duration - expectedDuration) > 0.25
   ) {
     throw new Error(
@@ -950,6 +968,7 @@ async function validateMediaOutput(
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "mpeg-ts-to-m4a" ||
+    route === "flv-to-m4a" ||
     route === "mp4-to-m4a";
   await execFileAsync(
     "ffmpeg",
