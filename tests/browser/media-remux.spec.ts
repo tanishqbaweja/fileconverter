@@ -20,14 +20,17 @@ const baseURL =
 const profileRoot = path.join(projectRoot, "work", "playwright-profile-media");
 const outputRoot = path.join(projectRoot, "outputs", "browser-media-smoke");
 const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
+const movMp4OutputPath = path.join(outputRoot, "mov-remux-output.mp4");
 const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
 const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
+const movM4aOutputPath = path.join(outputRoot, "mov-extract-output.m4a");
 const wavOutputPath = path.join(outputRoot, "convert-output.wav");
 const mp4WavOutputPath = path.join(outputRoot, "mp4-convert-output.wav");
+const movWavOutputPath = path.join(outputRoot, "mov-convert-output.wav");
 const standaloneWavOutputPath = path.join(
   outputRoot,
   "standalone-convert-output.wav",
@@ -69,6 +72,12 @@ const mp4InputFixturePath = path.join(
   projectRoot,
   "work",
   "remux-source.mp4",
+);
+const movInputFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "quicktime-source.mov",
 );
 const audioFixturePath = path.join(
   projectRoot,
@@ -162,11 +171,14 @@ async function currentState() {
 test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
+  assertProjectLocal(movMp4OutputPath);
   assertProjectLocal(directMp4OutputPath);
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(mp4M4aOutputPath);
+  assertProjectLocal(movM4aOutputPath);
   assertProjectLocal(wavOutputPath);
   assertProjectLocal(mp4WavOutputPath);
+  assertProjectLocal(movWavOutputPath);
   assertProjectLocal(standaloneWavOutputPath);
   assertProjectLocal(mp3WavOutputPath);
   assertProjectLocal(flacWavOutputPath);
@@ -278,14 +290,17 @@ test.afterAll(async () => {
   validationSink = null;
   await context?.close();
   await rm(mp4OutputPath, { force: true });
+  await rm(movMp4OutputPath, { force: true });
   await rm(directMp4OutputPath, { force: true });
   await rm(directWavOutputPath, { force: true });
   await rm(directM4aOutputPath, { force: true });
   await rm(directFlacOutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
   await rm(mp4M4aOutputPath, { force: true });
+  await rm(movM4aOutputPath, { force: true });
   await rm(wavOutputPath, { force: true });
   await rm(mp4WavOutputPath, { force: true });
+  await rm(movWavOutputPath, { force: true });
   await rm(standaloneWavOutputPath, { force: true });
   await rm(mp3WavOutputPath, { force: true });
   await rm(flacWavOutputPath, { force: true });
@@ -365,9 +380,12 @@ async function copyAndDeleteBrowserStorageEntry(
 async function runMediaRoute(
   profileId:
     | "mkv-to-mp4"
+    | "mov-to-mp4"
     | "mkv-to-m4a"
+    | "mov-to-m4a"
     | "mp4-to-m4a"
     | "mkv-to-wav"
+    | "mov-to-wav"
     | "mp4-to-wav"
     | "m4a-to-wav"
     | "mp3-to-wav"
@@ -410,12 +428,14 @@ async function runMediaRoute(
           `Expected a warning containing ${fragment}.`,
         ).toBe(true);
       }
-    } else if (profileId === "mkv-to-mp4") {
+    } else if (profileId === "mkv-to-mp4" || profileId === "mov-to-mp4") {
       expect(state.warnings).toEqual([]);
     } else if (
       profileId === "mkv-to-m4a" ||
+      profileId === "mov-to-m4a" ||
       profileId === "mp4-to-m4a" ||
       profileId === "mkv-to-wav" ||
+      profileId === "mov-to-wav" ||
       profileId === "mp4-to-wav"
     ) {
       expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
@@ -567,6 +587,16 @@ test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async ()
     mp4OutputPath,
     ["h264", "aac"],
     250_000,
+  );
+});
+
+test("browser FFmpeg AVIO remuxes genuine QuickTime MOV to valid MP4", async () => {
+  await runMediaRoute(
+    "mov-to-mp4",
+    movMp4OutputPath,
+    ["h264", "aac"],
+    500_000,
+    movInputFixturePath,
   );
 });
 
@@ -980,6 +1010,16 @@ test("browser FFmpeg AVIO extracts MP4 audio to valid M4A with bounded I/O", asy
   );
 });
 
+test("browser FFmpeg AVIO extracts QuickTime MOV audio to valid M4A", async () => {
+  await runMediaRoute(
+    "mov-to-m4a",
+    movM4aOutputPath,
+    ["aac"],
+    20_000,
+    movInputFixturePath,
+  );
+});
+
 test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {
   await runMediaRoute(
     "mkv-to-wav",
@@ -996,6 +1036,16 @@ test("browser FFmpeg extracts MP4 audio and encodes bounded PCM WAV", async () =
     ["pcm_s16le"],
     300_000,
     mp4InputFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes QuickTime MOV audio to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "mov-to-wav",
+    movWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    movInputFixturePath,
   );
 });
 

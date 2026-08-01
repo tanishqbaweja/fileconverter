@@ -137,6 +137,16 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "report.ODT", type: "" }), "odt");
   assert.equal(detectFormat({ name: "ledger.ODS", type: "" }), "ods");
   assert.equal(detectFormat({ name: "briefing.ODP", type: "" }), "odp");
+  assert.equal(detectFormat({ name: "clip.MOV", type: "" }), "mov");
+  assert.ok(
+    publicProfilesFor("mov").some((profile) => profile.id === "mov-to-mp4"),
+  );
+  assert.ok(
+    publicProfilesFor("mov").some((profile) => profile.id === "mov-to-m4a"),
+  );
+  assert.ok(
+    publicProfilesFor("mov").some((profile) => profile.id === "mov-to-wav"),
+  );
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
   assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));

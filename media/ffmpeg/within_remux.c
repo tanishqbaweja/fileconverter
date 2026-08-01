@@ -1348,6 +1348,7 @@ int within_remux(int profile) {
   uint8_t *input_buffer = NULL;
   uint8_t *output_buffer = NULL;
   int *stream_map = NULL;
+  int *synthesize_video_dts = NULL;
   int64_t *last_dts = NULL;
   int64_t *packet_counts = NULL;
   AVDictionary *muxer_options = NULL;
@@ -1415,10 +1416,12 @@ int within_remux(int profile) {
   }
 
   stream_map = av_calloc(input_format->nb_streams, sizeof(*stream_map));
+  synthesize_video_dts =
+      av_calloc(input_format->nb_streams, sizeof(*synthesize_video_dts));
   last_dts = av_malloc_array(input_format->nb_streams, sizeof(*last_dts));
   packet_counts =
       av_calloc(input_format->nb_streams, sizeof(*packet_counts));
-  if (!stream_map || !last_dts || !packet_counts) {
+  if (!stream_map || !synthesize_video_dts || !last_dts || !packet_counts) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
@@ -1560,20 +1563,29 @@ int within_remux(int profile) {
     AVStream *input_stream = input_format->streams[input_index];
     AVStream *output_stream =
         output_format->streams[stream_map[input_index]];
-    if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+    int video_with_frame_rate =
+        input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
         input_stream->avg_frame_rate.num > 0 &&
-        input_stream->avg_frame_rate.den > 0) {
-      int reorder_delay = input_stream->codecpar->video_delay;
-      if (reorder_delay < 1 &&
-          input_stream->codecpar->codec_id == AV_CODEC_ID_HEVC) {
-        reorder_delay = 2;
+        input_stream->avg_frame_rate.den > 0;
+    if (video_with_frame_rate && packet_counts[input_index] == 0 &&
+        packet->dts == AV_NOPTS_VALUE) {
+      synthesize_video_dts[input_index] = 1;
+    }
+    if (video_with_frame_rate) {
+      if (synthesize_video_dts[input_index]) {
+        int reorder_delay = input_stream->codecpar->video_delay;
+        if (reorder_delay < 1 &&
+            input_stream->codecpar->codec_id == AV_CODEC_ID_HEVC) {
+          reorder_delay = 2;
+        }
+        AVRational frame_duration = av_inv_q(input_stream->avg_frame_rate);
+        packet->dts = av_rescale_q(
+            packet_counts[input_index] - reorder_delay, frame_duration,
+            input_stream->time_base);
       }
-      AVRational frame_duration =
-          av_inv_q(input_stream->avg_frame_rate);
-      packet->dts = av_rescale_q(packet_counts[input_index] - reorder_delay,
-                                 frame_duration, input_stream->time_base);
       packet_counts[input_index] += 1;
-    } else if (packet->dts == AV_NOPTS_VALUE) {
+    }
+    if (packet->dts == AV_NOPTS_VALUE) {
       int64_t duration = packet->duration > 0 ? packet->duration : 1;
       if (last_dts[input_index] == AV_NOPTS_VALUE) {
         int reorder_delay = input_stream->codecpar->video_delay;
@@ -1639,6 +1651,7 @@ cleanup:
   av_dict_free(&muxer_options);
   av_packet_free(&packet);
   av_free(stream_map);
+  av_free(synthesize_video_dts);
   av_free(last_dts);
   av_free(packet_counts);
 

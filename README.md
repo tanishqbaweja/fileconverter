@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 81
+complete-Chromium memory profile have passed. The current registry publishes 84
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV -> MP4/M4A/WAV; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -170,10 +170,10 @@ necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
-The lossless MKV-to-MP4 planner accepts only H.264 or HEVC video plus AAC audio,
-the combinations proven by its browser and stress tests. M4A extraction from
-MKV or MP4 accepts AAC. WAV extraction from MKV or MP4 performs genuine AAC
-decode, libswresample conversion, and PCM s16le encoding. A different codec is
+The lossless MKV/MOV-to-MP4 planner accepts only H.264 or HEVC video plus AAC
+audio, the combinations proven by its browser and stress tests. M4A extraction
+from MKV, MOV, or MP4 accepts AAC. WAV extraction from MKV, MOV, or MP4 performs
+genuine AAC decode, libswresample conversion, and PCM s16le encoding. A different codec is
 rejected before the muxer writes media data, with a readable explanation that a
 verified bounded re-encoder is not installed; it is never silently dropped or
 passed to an incompatible container.
@@ -423,6 +423,9 @@ Current exact-build results:
 | MKV → MPEG-4 MP4 | 3 | 2,958,573,265 B | 3,086,358,463 B | 211.3 MiB | 89.6 MiB | −1.0–7.1 MiB |
 | MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
 | MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
+| MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
+| MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
+| MOV → WAV | 3 | 149,251,969 B | 414,733,404 B | 195.3 MiB | 32 MiB | 2.8–36.0 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -453,6 +456,9 @@ profiler:
 | Documents, ODT -> TXT | 135,267,233 B | 191.1 MiB | exact streamed output hash |
 | Spreadsheets, ODS -> CSV | 135,267,401 B | 196.2 MiB | exact streamed output hash |
 | Presentations, ODP -> TXT | 135,272,481 B | 199.1 MiB | exact streamed output hash |
+| Video, MOV -> MP4 | 149,251,969 B | 168.2 MiB | native packet traversal and HEVC/AAC probe |
+| Audio, MOV -> M4A | 149,251,969 B | 164.5 MiB | full AAC decode and metadata probe |
+| Audio, MOV -> WAV | 149,251,969 B | 195.3 MiB | full PCM decode and APSNR |
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and
@@ -467,6 +473,15 @@ JSON-to-TSV took 24.43-24.94 seconds at the same output size with SHA-256
 Each three-run category generated only its required source inside this
 repository and removed that source, every converted output, and its browser
 profile after validation.
+
+The QuickTime category used one genuine 149,251,969-byte `qt  ` MOV source for
+all nine runs. MOV-to-MP4 completed in 0.87-1.13 seconds, MOV-to-M4A in
+0.42-0.69 seconds, and MOV-to-WAV in 9.31-9.77 seconds. Each route produced a
+byte-identical SHA-256 across its three runs, kept one write pending with no
+more than 262,144 bytes queued, and passed native probing plus full packet or
+decode validation. The runner then removed the MOV source, converted outputs,
+and browser profiles while retaining only compact reports and the source
+manifest.
 
 The DOCX profile produced the same 90,834,111-byte SHA-256
 `876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
@@ -620,6 +635,7 @@ npm run profile:subtitles
 npm run profile:archives
 npm run profile:documents
 npm run profile:ebooks
+npm run profile:mov
 ```
 
 `scripts/memory-profile.mjs` records complete per-process private/RSS samples,

@@ -46,3 +46,8 @@ one read or write at a time. Input uses a bounded browser File stream and reopen
 that stream at a genuine FFmpeg seek. Output writes use positional
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.
+
+The shared remux core accepts both Matroska and genuine QuickTime MOV input.
+It preserves valid demuxer DTS values (including MOV edit-list timing) and only
+synthesizes a video DTS sequence when a stream begins without decode
+timestamps, as the protected large Matroska fixture does.

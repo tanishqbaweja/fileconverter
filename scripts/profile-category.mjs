@@ -36,6 +36,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  mov: {
+    generator: "scripts/generate-mov-stress-fixture.mjs",
+    profiles: [
+      ["mov-to-mp4", "quicktime-128m.mov"],
+      ["mov-to-m4a", "quicktime-128m.mov"],
+      ["mov-to-wav", "quicktime-128m.mov"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [
