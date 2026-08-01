@@ -10,6 +10,7 @@ import { runZipArchiveConversion } from "./archive-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
 import { runEpubToText } from "./epub-conversion";
+import { runPptxToText } from "./pptx-conversion";
 import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
 import { runXmlToNdjson } from "./xml-conversion";
@@ -2626,6 +2627,25 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         write: (chunk, phase) =>
           writeBounded(
             spreadsheetDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+          ),
+        warn: (message) => post({ type: "warning", jobId, message }),
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+      });
+    } else if (profileId === "pptx-to-txt") {
+      const presentationDestination = destination.writable;
+      await runPptxToText({
+        file,
+        metrics,
+        write: (chunk, phase) =>
+          writeBounded(
+            presentationDestination,
             chunk,
             jobId,
             phase,

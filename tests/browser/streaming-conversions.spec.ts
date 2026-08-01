@@ -395,6 +395,44 @@ for (const [fixture, expectedError] of [
   });
 }
 
+test("streams PPTX slide text in declared order with explicit fidelity limits", async () => {
+  await selectFixture("fixtures/presentations/sample.pptx", "pptx-to-txt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Quarterly Plan\n" +
+      "Revenue\t₹42\nprivate 😀\n" +
+      "Cell A\n" +
+      "Cell B\n" +
+      "\n" +
+      "Hidden appendix\n",
+  );
+  expect(output).not.toContain("attribute text is not slide text");
+  const warnings = state.warnings.join(" ");
+  expect(warnings).toContain("hidden PPTX slide is included");
+  expect(warnings).toContain("speaker notes");
+  expect(warnings).toContain("animations");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-pptx-to-txt")).toEqual([]);
+});
+
+for (const [fixture, expectedError] of [
+  ["fixtures/presentations/unsafe-doctype.pptx", "DTD"],
+  ["fixtures/presentations/unsafe-reference.pptx", "escapes its root"],
+] as const) {
+  test(`rejects hostile PPTX package ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(fixture, "pptx-to-txt");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-pptx-to-txt")).toEqual([]);
+  });
+}
+
 test("streams EPUB spine text in reading order with explicit fidelity limits", async () => {
   await selectFixture("fixtures/ebooks/sample.epub", "epub-to-txt");
   const state = await convert();

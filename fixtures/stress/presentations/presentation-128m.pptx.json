@@ -1,0 +1,14 @@
+{
+  "generatedBy": "scripts/generate-presentation-stress-fixtures.mjs",
+  "slides": 128,
+  "recordsPerSlide": 10461,
+  "slideBytes": 1056843,
+  "bytes": 135296355,
+  "sha256": "72b9173b1cb5354961965c74a2771300f1aba8fa88b8eec0a7f57f2957e39989",
+  "expectedByProfile": {
+    "pptx-to-txt": {
+      "validationBytes": 92391679,
+      "validationSha256": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5"
+    }
+  }
+}

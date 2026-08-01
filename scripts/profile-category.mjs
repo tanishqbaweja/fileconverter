@@ -99,6 +99,15 @@ const categories = {
       ],
     ),
   },
+  presentations: {
+    generator: "scripts/generate-presentation-stress-fixtures.mjs",
+    profiles: [["pptx-to-txt", "presentation-128m.pptx"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/presentations/${name}`,
+      ],
+    ),
+  },
   archives: {
     generator: "scripts/generate-archive-fixtures.mjs",
     generatorArguments: ["--include-stress"],

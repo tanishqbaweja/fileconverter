@@ -3,6 +3,7 @@ export type EngineId =
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
+  | "presentation-stream"
   | "spreadsheet-stream"
   | "subtitle-stream"
   | "records-stream"
@@ -19,6 +20,7 @@ export type FormatCategory =
   | "data"
   | "document"
   | "ebook"
+  | "presentation"
   | "spreadsheet"
   | "image"
   | "video"
@@ -173,6 +175,15 @@ export const formats = [
       "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     ],
     category: "spreadsheet",
+  },
+  {
+    id: "pptx",
+    label: "PowerPoint presentation (PPTX)",
+    extensions: ["pptx"],
+    mimeTypes: [
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    ],
+    category: "presentation",
   },
   {
     id: "epub",
@@ -785,6 +796,32 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Excel number formats and styles are not rendered, so date serials and formatted numbers are emitted as stored values.",
     ],
     maxTestedBytes: 135_267_834,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "pptx-to-txt",
+    input: "pptx",
+    output: "txt",
+    engine: "presentation-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Follows declared slide order and includes hidden-slide text; comments, speaker notes, masters, themes, and package metadata are omitted.",
+      "Macro-enabled packages, unsafe ZIP paths or references, encrypted entries, ZIP64, archive bombs, malformed XML, DTDs, custom entities, and non-UTF-8 XML are rejected.",
+      "Presentation metadata parts are bounded to 2 MiB and presentations to 10,000 declared slides.",
+    ],
+    fidelityLimitations: [
+      "Preserves DrawingML text-run order, paragraphs, tabs, line breaks, and Unicode text.",
+      "Fonts, styling, positions, layouts, transitions, animations, charts, diagrams, equations, images, media, hyperlinks, and embedded objects are not represented in plain text.",
+    ],
+    maxTestedBytes: 135_296_355,
     automatedTestStatus: "passed",
     public: true,
   },
