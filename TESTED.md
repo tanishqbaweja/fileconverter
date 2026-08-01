@@ -12,13 +12,13 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **131**
-- Public profiles with a retained successful Chrome stress report: **131**
+- Public passed conversion profiles: **133**
+- Public profiles with a retained successful Chrome stress report: **133**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-01:** 266/266 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-01:** 275/275 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
 - **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81–29.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.
 - **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06–8.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2–6.9× faster than the measured 55.73-second always-LZMA2 baseline.
@@ -119,7 +119,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 | png-to-webp | 780,611 | 3 | 257,798 | 0.42 s–0.48 s | 189.5 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
 | pptx-to-txt | 135,296,355 | 3 | 92,391,679 | 10.50 s–10.93 s | 217.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | sevenzip-to-tar | 268,435,574 | 3 | 268,436,992 | 7.09 s–7.60 s | 199.8 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
+| sevenzip-to-tar-bz2 | 268,435,574 | 3 | 270,592,878 | 40.86 s–41.61 s | 186.5 MiB | 64.0 MiB | read 262,144 B / write 65,536 B | passed |
 | sevenzip-to-tar-gz | 268,435,574 | 3 | 268,517,545 | 30.24 s–30.54 s | 222.7 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
+| sevenzip-to-tar-xz | 268,435,574 | 3 | 268,449,796 | 50.58 s–50.83 s | 234.9 MiB | 104.0 MiB | read 262,144 B / write 65,536 B | passed |
 | sevenzip-to-zip | 268,435,574 | 3 | 268,517,517 | 29.88 s–31.08 s | 218.3 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -274,7 +276,9 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | png-to-webp | image | image-browser | re-encode | 780,611 B | 3-run Chrome report |
 | pptx-to-txt | presentation | presentation-stream | stream | 135,296,355 B | 3-run Chrome report |
 | sevenzip-to-tar | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
+| sevenzip-to-tar-bz2 | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | sevenzip-to-tar-gz | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
+| sevenzip-to-tar-xz | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | sevenzip-to-zip | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |

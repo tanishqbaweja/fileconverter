@@ -1,4 +1,5 @@
 import type { ConversionMetrics } from "../lib/conversion-protocol";
+import { recordWasmMemory } from "./wasm-metrics";
 
 const MODULE_URL = "/engines/bzip2/within-bzip2.mjs";
 const WASM_URL = "/engines/bzip2/within-bzip2.wasm";
@@ -71,11 +72,7 @@ export async function runBzip2Conversion({
   });
   assertActive();
 
-  metrics.wasmMemoryBytes = codecModule.HEAPU8.buffer.byteLength;
-  metrics.peakWasmMemoryBytes = Math.max(
-    metrics.peakWasmMemoryBytes ?? 0,
-    metrics.wasmMemoryBytes,
-  );
+  recordWasmMemory(metrics, "bzip2", codecModule.HEAPU8.buffer.byteLength);
   const handle = codecModule._within_bzip2_create(decompress ? 1 : 0);
   if (!handle) {
     throw new Error("The BZIP2 engine could not allocate its fixed memory.");

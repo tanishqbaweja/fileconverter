@@ -22,5 +22,5 @@
   "copyRatioThreshold": 0.98,
   "scratchBackend": "opfs-sync-access-handle",
   "maximumScratchChunkBytes": 65536,
-  "profiles": ["tar-to-sevenzip", "sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
+  "profiles": ["tar-to-sevenzip", "sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-tar-bz2", "sevenzip-to-tar-xz", "sevenzip-to-zip"]
 }

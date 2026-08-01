@@ -52,7 +52,8 @@ const isBzip2Profile =
   profileId === "tar-to-tar-bz2" ||
   profileId === "tar-bz2-to-tar" ||
   profileId === "tar-bz2-to-zip" ||
-  profileId === "zip-to-tar-bz2";
+  profileId === "zip-to-tar-bz2" ||
+  profileId === "sevenzip-to-tar-bz2";
 const isBzip2CompressedOutput =
   profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
 const isXzProfile =
@@ -61,13 +62,16 @@ const isXzProfile =
   profileId === "tar-to-tar-xz" ||
   profileId === "tar-xz-to-tar" ||
   profileId === "tar-xz-to-zip" ||
-  profileId === "zip-to-tar-xz";
+  profileId === "zip-to-tar-xz" ||
+  profileId === "sevenzip-to-tar-xz";
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
 const isSevenZipProfile =
   profileId === "tar-to-sevenzip" ||
   profileId === "sevenzip-to-tar" ||
   profileId === "sevenzip-to-tar-gz" ||
+  profileId === "sevenzip-to-tar-bz2" ||
+  profileId === "sevenzip-to-tar-xz" ||
   profileId === "sevenzip-to-zip";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
@@ -241,6 +245,18 @@ const maximumWriteChunkBytes =
     : isBzip2Profile || isXzProfile || isSevenZipProfile
       ? 64 * 1024
     : 256 * 1024;
+const maximumWasmMemoryBytes =
+  profileId === "sevenzip-to-tar-bz2"
+    ? 64 * 1024 * 1024
+    : profileId === "sevenzip-to-tar-xz"
+      ? 104 * 1024 * 1024
+      : isBzip2Profile
+        ? 8 * 1024 * 1024
+        : isXzProfile
+          ? 48 * 1024 * 1024
+          : isSevenZipProfile
+            ? 64 * 1024 * 1024
+            : 128 * 1024 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
 }`;
@@ -592,6 +608,7 @@ try {
       peakPendingOperations: finalState.metrics.peakPendingOperations,
       wasmMemoryBytes: finalState.metrics.wasmMemoryBytes ?? null,
       peakWasmMemoryBytes: finalState.metrics.peakWasmMemoryBytes ?? null,
+      wasmMemories: finalState.metrics.wasmMemories ?? null,
       sharedArrayBufferBytes: finalState.metrics.sharedArrayBufferBytes ?? null,
       activeWorkerCount: finalState.metrics.activeWorkerCount ?? null,
       imageFrameFormat: finalState.metrics.imageFrameFormat ?? null,
@@ -665,14 +682,7 @@ try {
           !isXzProfile &&
           !isSevenZipProfile) ||
         (typeof run.peakWasmMemoryBytes === "number" &&
-          run.peakWasmMemoryBytes <=
-            (isBzip2Profile
-              ? 8 * 1024 * 1024
-              : isXzProfile
-                ? 48 * 1024 * 1024
-                : isSevenZipProfile
-                  ? 64 * 1024 * 1024
-                : 128 * 1024 * 1024)),
+          run.peakWasmMemoryBytes <= maximumWasmMemoryBytes),
     ),
     cleanupRecovery: runSummaries.every(
       (run) =>

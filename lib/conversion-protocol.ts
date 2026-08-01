@@ -10,6 +10,7 @@ export interface ConversionMetrics {
   elapsedMs: number;
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
+  wasmMemories?: Record<string, number>;
   scratchBytes?: number;
   peakScratchBytes?: number;
   maxScratchReadChunkBytes?: number;

@@ -39,6 +39,16 @@ const browserSevenZipGzipOutputPath = path.join(
   "work",
   "browser-sevenzip-output.tar.gz",
 );
+const browserSevenZipBzip2OutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-sevenzip-output.tar.bz2",
+);
+const browserSevenZipXzOutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-sevenzip-output.tar.xz",
+);
 const browserSevenZipZipOutputPath = path.join(
   projectRoot,
   "work",
@@ -100,6 +110,7 @@ interface TestState {
     elapsedMs: number;
     wasmMemoryBytes?: number;
     peakWasmMemoryBytes?: number;
+    wasmMemories?: Record<string, number>;
     scratchBytes?: number;
     peakScratchBytes?: number;
     maxScratchReadChunkBytes?: number;
@@ -1937,6 +1948,91 @@ test("converts 7Z to TAR.GZ through the bounded direct-save worker", async () =>
   }
 });
 
+for (const [profileId, codec, outputPath, outputName] of [
+  [
+    "sevenzip-to-tar-bz2",
+    "bzip2",
+    browserSevenZipBzip2OutputPath,
+    "sample.tar.bz2",
+  ],
+  [
+    "sevenzip-to-tar-xz",
+    "xz",
+    browserSevenZipXzOutputPath,
+    "sample.tar.xz",
+  ],
+] as const) {
+  const codecMemoryBytes =
+    codec === "bzip2" ? 8 * 1024 * 1024 : 48 * 1024 * 1024;
+  const totalWasmMemoryBytes = 56 * 1024 * 1024 + codecMemoryBytes;
+
+  test(`${profileId} directly streams to an independently validated compressed TAR`, async () => {
+    await selectFixture("fixtures/archives/sample.7z", profileId);
+    const state = await convert();
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBe(1);
+    expect(state.metrics?.peakWasmMemoryBytes).toBe(totalWasmMemoryBytes);
+    expect(state.metrics?.wasmMemories).toEqual({
+      [codec]: codecMemoryBytes,
+      sevenzip: 56 * 1024 * 1024,
+    });
+    await copyAndDeleteSmallOpfsFile(state.opfsName!, outputPath);
+    try {
+      const manifest = JSON.parse(
+        await readFile(
+          path.join(projectRoot, "fixtures", "archives", "sample.7z.json"),
+          "utf8",
+        ),
+      ) as { entries: Array<{ name: string; size: number; sha256: string }> };
+      expect(await compressedTarEntryDigests(outputPath, codec)).toEqual(
+        manifest.entries,
+      );
+    } finally {
+      await rm(outputPath, { force: true });
+    }
+  });
+
+  test(`${profileId} writes through the bounded direct-save worker`, async () => {
+    await page.goto("/?test=1&directory=1");
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+    await removeOpfsEntryAndReportSize(outputName);
+    try {
+      await selectFixture("fixtures/archives/sample.7z", profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+        .toBe("complete");
+      const state = await currentState();
+      expect(state.batchOutputNames).toEqual([outputName]);
+      expect(state.opfsName).toBeNull();
+      expect(state.metrics?.peakPendingOperations).toBe(1);
+      expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+      expect(state.metrics?.peakWasmMemoryBytes).toBe(totalWasmMemoryBytes);
+      const output = await page.evaluate(async (name) => {
+        const root = await navigator.storage.getDirectory();
+        const handle = await root.getFileHandle(name);
+        const file = await handle.getFile();
+        const signature = Array.from(
+          new Uint8Array(await file.slice(0, 6).arrayBuffer()),
+        );
+        await root.removeEntry(name);
+        return { bytes: file.size, signature };
+      }, outputName);
+      expect(output.bytes).toBeGreaterThan(100);
+      expect(output.signature.slice(0, codec === "bzip2" ? 3 : 6)).toEqual(
+        codec === "bzip2"
+          ? [0x42, 0x5a, 0x68]
+          : [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+      );
+    } finally {
+      await removeOpfsEntryAndReportSize(outputName);
+    }
+  });
+}
+
 test("converts 7Z directly to independently validated ZIP", async () => {
   await selectFixture("fixtures/archives/sample.7z", "sevenzip-to-zip");
   const state = await convert();
@@ -2614,6 +2710,8 @@ for (const [fixture, profileId, expectedError] of [
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-gz", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-bz2", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-xz", "Unsafe ZIP entry"],
+  ["fixtures/archives/unsafe-entry.7z", "sevenzip-to-tar-bz2", "unsafe or unsupported entry path"],
+  ["fixtures/archives/unsafe-entry.7z", "sevenzip-to-tar-xz", "unsafe or unsupported entry path"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-zip", "Unsafe TAR entry"],
 ] as const) {
   test(`${profileId} rejects traversal entries and deletes partial output`, async () => {
@@ -2651,6 +2749,8 @@ for (const [fixture, profileId] of [
   ["fixtures/archives/sample.tar.xz", "tar-xz-to-zip"],
   ["fixtures/archives/sample.7z", "sevenzip-to-tar"],
   ["fixtures/archives/sample.7z", "sevenzip-to-tar-gz"],
+  ["fixtures/archives/sample.7z", "sevenzip-to-tar-bz2"],
+  ["fixtures/archives/sample.7z", "sevenzip-to-tar-xz"],
   ["fixtures/archives/sample.7z", "sevenzip-to-zip"],
 ] as const) {
   test(`${profileId} propagates a nested output failure and cleans up`, async () => {

@@ -241,6 +241,16 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.ok(
     publicProfilesFor("sevenzip").some(
+      (profile) => profile.id === "sevenzip-to-tar-bz2",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("sevenzip").some(
+      (profile) => profile.id === "sevenzip-to-tar-xz",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("sevenzip").some(
       (profile) => profile.id === "sevenzip-to-zip",
     ),
   );

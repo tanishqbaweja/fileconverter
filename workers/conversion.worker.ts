@@ -21,7 +21,9 @@ import { runMediaRemux } from "./media-remux";
 import {
   runTarToSevenZip,
   runSevenZipToTar,
+  runSevenZipToTarBz2,
   runSevenZipToTarGz,
+  runSevenZipToTarXz,
   runSevenZipToZip,
 } from "./sevenzip-conversion";
 import { runXmlToNdjson } from "./xml-conversion";
@@ -79,6 +81,7 @@ function newMetrics(): ConversionMetrics {
     elapsedMs: 0,
     wasmMemoryBytes: 0,
     peakWasmMemoryBytes: 0,
+    wasmMemories: {},
     sharedArrayBufferBytes: 0,
     activeWorkerCount: 1,
   };
@@ -2822,6 +2825,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         : profileId === "tar-to-sevenzip" ||
             profileId === "sevenzip-to-tar" ||
             profileId === "sevenzip-to-tar-gz" ||
+            profileId === "sevenzip-to-tar-bz2" ||
+            profileId === "sevenzip-to-tar-xz" ||
             profileId === "sevenzip-to-zip" ||
             profileId === "tar-bz2-to-zip" ||
             profileId === "tar-xz-to-zip" ||
@@ -2860,6 +2865,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "tar-to-sevenzip" ||
       profileId === "sevenzip-to-tar" ||
       profileId === "sevenzip-to-tar-gz" ||
+      profileId === "sevenzip-to-tar-bz2" ||
+      profileId === "sevenzip-to-tar-xz" ||
       profileId === "sevenzip-to-zip"
     ) {
       const runSevenZip =
@@ -2867,6 +2874,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
           ? runTarToSevenZip
           : profileId === "sevenzip-to-zip"
           ? runSevenZipToZip
+          : profileId === "sevenzip-to-tar-bz2"
+          ? runSevenZipToTarBz2
+          : profileId === "sevenzip-to-tar-xz"
+          ? runSevenZipToTarXz
           : profileId === "sevenzip-to-tar-gz"
           ? runSevenZipToTarGz
           : runSevenZipToTar;

@@ -1,6 +1,9 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
 import { convertSequentialTarToZip } from "./archive-conversion";
+import { runBzip2Conversion } from "./bzip2-compression";
 import type { RandomAccessDestination } from "./random-access-destination";
+import { recordWasmMemory } from "./wasm-metrics";
+import { runXzConversion } from "./xz-compression";
 
 const MODULE_URL = "/engines/archive7z/within-archive7z.mjs";
 const WASM_URL = "/engines/archive7z/within-archive7z.wasm";
@@ -340,16 +343,13 @@ async function runSevenZipReader({
       printErr: recordError,
     });
     assertActive();
-    metrics.wasmMemoryBytes = archiveModule.HEAPU8.buffer.byteLength;
-    if (metrics.wasmMemoryBytes !== WASM_MEMORY_BYTES) {
+    const archiveMemoryBytes = archiveModule.HEAPU8.buffer.byteLength;
+    if (archiveMemoryBytes !== WASM_MEMORY_BYTES) {
       throw new Error(
-        `The 7Z engine loaded ${metrics.wasmMemoryBytes} bytes of Wasm memory; expected the fixed ${WASM_MEMORY_BYTES}-byte heap.`,
+        `The 7Z engine loaded ${archiveMemoryBytes} bytes of Wasm memory; expected the fixed ${WASM_MEMORY_BYTES}-byte heap.`,
       );
     }
-    metrics.peakWasmMemoryBytes = Math.max(
-      metrics.peakWasmMemoryBytes ?? 0,
-      metrics.wasmMemoryBytes,
-    );
+    recordWasmMemory(metrics, "sevenzip", archiveMemoryBytes);
     const result =
       nativeFunction === "within_archive_tar_to_7z"
         ? await archiveModule.ccall(
@@ -532,6 +532,146 @@ export async function runSevenZipToTarGz(
     await pump;
     throw pumpFailure ?? error;
   }
+}
+
+async function runSevenZipToCompressedTar(
+  options: SevenZipConversionOptions,
+  codec: "bzip2" | "xz",
+): Promise<void> {
+  const tarStream = new TransformStream<
+    Uint8Array<ArrayBuffer>,
+    Uint8Array<ArrayBuffer>
+  >();
+  const writer = tarStream.writable.getWriter();
+  const outputLabel = codec === "bzip2" ? "TAR.BZ2" : "TAR.XZ";
+  let tarPosition = 0;
+  let consumerFailure: unknown = null;
+
+  const tarDestination: RandomAccessDestination = {
+    requiresOwnedWriteBuffer: true,
+    additionalWorkerCount: options.writable.additionalWorkerCount,
+    sharedBufferBytes: options.writable.sharedBufferBytes,
+    maximumWriteBytes: OUTPUT_BUFFER_BYTES,
+    async write(operation) {
+      const source =
+        operation instanceof Uint8Array ? operation : operation.data;
+      const position =
+        operation instanceof Uint8Array
+          ? tarPosition
+          : (operation.position ?? tarPosition);
+      if (position !== tarPosition) {
+        throw new Error(
+          `The streaming ${outputLabel} adapter received a non-sequential TAR write.`,
+        );
+      }
+      if (consumerFailure) throw consumerFailure;
+      const owned = source.slice();
+      await writer.write(owned);
+      if (consumerFailure) throw consumerFailure;
+      tarPosition += owned.byteLength;
+    },
+    async truncate() {
+      throw new Error(
+        `The streaming ${outputLabel} adapter cannot truncate TAR output.`,
+      );
+    },
+    async flush() {},
+    async close() {},
+    async abort() {},
+  };
+
+  const writeCompressed = async (
+    chunk: Uint8Array<ArrayBuffer>,
+    phase: string,
+  ): Promise<void> => {
+    for (let offset = 0; offset < chunk.byteLength; offset += OUTPUT_BUFFER_BYTES) {
+      const part = chunk.subarray(
+        offset,
+        Math.min(offset + OUTPUT_BUFFER_BYTES, chunk.byteLength),
+      );
+      await writeTrackedDestination(
+        options,
+        options.metrics.outputBytes,
+        part,
+        phase,
+      );
+    }
+  };
+
+  const codecOptions = {
+    file: options.file,
+    inputStream: tarStream.readable,
+    trackInputMetrics: false,
+    decompress: false,
+    metrics: options.metrics,
+    assertActive() {
+      if (options.isCancelled()) {
+        throw new DOMException("Conversion cancelled", "AbortError");
+      }
+    },
+    progress(phase: string) {
+      options.emitProgress(
+        options.jobId,
+        phase,
+        options.metrics,
+        options.startedAt,
+      );
+    },
+    write: writeCompressed,
+  };
+
+  const consumer = (async () => {
+    try {
+      if (codec === "bzip2") {
+        await runBzip2Conversion(codecOptions);
+      } else {
+        await runXzConversion(codecOptions);
+      }
+    } catch (error) {
+      consumerFailure = error;
+    }
+  })();
+
+  try {
+    await runSevenZipReader({
+      ...options,
+      writable: tarDestination,
+      phase: `Converting 7Z to ${outputLabel}`,
+      trackTarDestinationMetrics: false,
+    });
+    await writer.close();
+    await consumer;
+    if (consumerFailure) throw consumerFailure;
+    if (options.metrics.outputBytes === 0) {
+      throw new Error(
+        `The 7Z engine completed without producing a ${outputLabel} archive.`,
+      );
+    }
+    await options.writable.flush?.();
+    options.emitProgress(
+      options.jobId,
+      `Converting 7Z to ${outputLabel}`,
+      options.metrics,
+      options.startedAt,
+      true,
+    );
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    await consumer;
+    throw consumerFailure ?? error;
+  }
+}
+
+export async function runSevenZipToTarBz2(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  await runSevenZipToCompressedTar(options, "bzip2");
+}
+
+export async function runSevenZipToTarXz(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  await runSevenZipToCompressedTar(options, "xz");
 }
 
 export async function runSevenZipToZip(

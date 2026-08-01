@@ -1,4 +1,5 @@
 import type { ConversionMetrics } from "../lib/conversion-protocol";
+import { recordWasmMemory } from "./wasm-metrics";
 
 const MODULE_URL = "/engines/xz/within-xz.mjs";
 const WASM_URL = "/engines/xz/within-xz.wasm";
@@ -69,11 +70,7 @@ export async function runXzConversion({
   });
   assertActive();
 
-  metrics.wasmMemoryBytes = codecModule.HEAPU8.buffer.byteLength;
-  metrics.peakWasmMemoryBytes = Math.max(
-    metrics.peakWasmMemoryBytes ?? 0,
-    metrics.wasmMemoryBytes,
-  );
+  recordWasmMemory(metrics, "xz", codecModule.HEAPU8.buffer.byteLength);
   const handle = codecModule._within_xz_create(decompress ? 1 : 0);
   if (!handle) {
     throw new Error("The XZ engine could not allocate its fixed memory.");

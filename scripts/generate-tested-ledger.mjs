@@ -71,7 +71,7 @@ const lines = [
   "",
   "## Latest full verification cycle",
   "",
-  "- **2026-08-01:** 266/266 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **2026-08-01:** 275/275 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.",
   "- **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840\u00d72,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44\u20130.65 s conversion time, and 202.2 MiB worst incremental private memory.",
   "- **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81\u201329.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.",
   "- **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06\u20138.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2\u20136.9\u00d7 faster than the measured 55.73-second always-LZMA2 baseline.",

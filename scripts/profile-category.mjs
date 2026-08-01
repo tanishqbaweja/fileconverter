@@ -349,6 +349,8 @@ const categories = {
       ["tar-to-sevenzip", "fixtures/stress/archives/archive-256m.tar"],
       ["sevenzip-to-tar", "fixtures/stress/archives/archive-256m.7z"],
       ["sevenzip-to-tar-gz", "fixtures/stress/archives/archive-256m.7z"],
+      ["sevenzip-to-tar-bz2", "fixtures/stress/archives/archive-256m.7z"],
+      ["sevenzip-to-tar-xz", "fixtures/stress/archives/archive-256m.7z"],
       ["sevenzip-to-zip", "fixtures/stress/archives/archive-256m.7z"],
     ],
   },
