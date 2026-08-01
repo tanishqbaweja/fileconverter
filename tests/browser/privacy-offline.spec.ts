@@ -382,6 +382,100 @@ test("cached compressed-TAR and ZIP pipelines convert to 7Z offline", async () =
   }
 });
 
+test("cached compressed TAR transcoding pipelines convert offline", async () => {
+  test.setTimeout(120_000);
+  const routes = [
+    {
+      fixture: tarGzFixturePath,
+      profileId: "tar-gz-to-tar-bz2",
+      outputName: "sample.tar.bz2",
+      signature: [0x42, 0x5a, 0x68],
+    },
+    {
+      fixture: tarGzFixturePath,
+      profileId: "tar-gz-to-tar-xz",
+      outputName: "sample.tar.xz",
+      signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    },
+    {
+      fixture: tarBz2FixturePath,
+      profileId: "tar-bz2-to-tar-gz",
+      outputName: "sample.tar.gz",
+      signature: [0x1f, 0x8b],
+    },
+    {
+      fixture: tarBz2FixturePath,
+      profileId: "tar-bz2-to-tar-xz",
+      outputName: "sample.tar.xz",
+      signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    },
+    {
+      fixture: tarXzFixturePath,
+      profileId: "tar-xz-to-tar-gz",
+      outputName: "sample.tar.gz",
+      signature: [0x1f, 0x8b],
+    },
+    {
+      fixture: tarXzFixturePath,
+      profileId: "tar-xz-to-tar-bz2",
+      outputName: "sample.tar.bz2",
+      signature: [0x42, 0x5a, 0x68],
+    },
+  ] as const;
+
+  const convertDirect = async (route: (typeof routes)[number]) => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page.locator('[data-testid="file-input"]').setInputFiles(route.fixture);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(route.profileId);
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async ({ outputName, signatureBytes }) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(outputName);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, signatureBytes).arrayBuffer()),
+      );
+      await root.removeEntry(outputName);
+      return { bytes: file.size, signature };
+    }, { outputName: route.outputName, signatureBytes: route.signature.length });
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  for (const route of routes) {
+    expect((await convertDirect(route)).signature).toEqual(route.signature);
+  }
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    for (const route of routes) {
+      const result = await convertDirect(route);
+      expect(result.bytes).toBeGreaterThan(100);
+      expect(result.signature).toEqual(route.signature);
+    }
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (names) => {
+      const root = await navigator.storage.getDirectory();
+      for (const name of names) {
+        await root.removeEntry(name).catch(() => {});
+      }
+    }, routes.map((route) => route.outputName)).catch(() => {});
+  }
+});
+
 test("cached TAR.XZ-to-ZIP pipeline converts offline", async () => {
   const outputName = "sample.zip";
   const convertTarXzDirect = async () => {

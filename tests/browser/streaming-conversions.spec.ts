@@ -79,6 +79,73 @@ const browserZipXzOutputPath = path.join(
   "work",
   "browser-zip-output.tar.xz",
 );
+const browserCompressedTarTranscodeOutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-compressed-tar-transcode-output.bin",
+);
+const compressedTarTranscodeRoutes = [
+  {
+    fixture: "fixtures/archives/sample.tar.gz",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.gz",
+    profileId: "tar-gz-to-tar-bz2",
+    target: "bzip2",
+    outputName: "sample.tar.bz2",
+    signature: [0x42, 0x5a, 0x68],
+    wasmMemories: { bzip2: 8 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/archives/sample.tar.gz",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.gz",
+    profileId: "tar-gz-to-tar-xz",
+    target: "xz",
+    outputName: "sample.tar.xz",
+    signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    wasmMemories: { xz: 48 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/archives/sample.tar.bz2",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.bz2",
+    profileId: "tar-bz2-to-tar-gz",
+    target: "gzip",
+    outputName: "sample.tar.gz",
+    signature: [0x1f, 0x8b],
+    wasmMemories: { bzip2: 8 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/archives/sample.tar.bz2",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.bz2",
+    profileId: "tar-bz2-to-tar-xz",
+    target: "xz",
+    outputName: "sample.tar.xz",
+    signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00],
+    wasmMemories: {
+      bzip2: 8 * 1024 * 1024,
+      xz: 48 * 1024 * 1024,
+    },
+  },
+  {
+    fixture: "fixtures/archives/sample.tar.xz",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.xz",
+    profileId: "tar-xz-to-tar-gz",
+    target: "gzip",
+    outputName: "sample.tar.gz",
+    signature: [0x1f, 0x8b],
+    wasmMemories: { xz: 48 * 1024 * 1024 },
+  },
+  {
+    fixture: "fixtures/archives/sample.tar.xz",
+    unsafeFixture: "fixtures/archives/unsafe-entry.tar.xz",
+    profileId: "tar-xz-to-tar-bz2",
+    target: "bzip2",
+    outputName: "sample.tar.bz2",
+    signature: [0x42, 0x5a, 0x68],
+    wasmMemories: {
+      xz: 48 * 1024 * 1024,
+      bzip2: 8 * 1024 * 1024,
+    },
+  },
+] as const;
 const batchFixturePaths = [
   path.join(projectRoot, "work", "batch-café.txt"),
   path.join(projectRoot, "work", "batch-日本語.txt"),
@@ -300,11 +367,11 @@ print(json.dumps(entries, ensure_ascii=True))
 
 async function compressedTarEntryDigests(
   archivePath: string,
-  codec: "bzip2" | "xz",
+  codec: "gzip" | "bzip2" | "xz",
 ) {
   const python = String.raw`
-import bz2, hashlib, json, lzma, sys, tarfile
-opener = bz2.open if sys.argv[2] == "bzip2" else lzma.open
+import bz2, gzip, hashlib, json, lzma, sys, tarfile
+opener = {"gzip": gzip.open, "bzip2": bz2.open, "xz": lzma.open}[sys.argv[2]]
 entries = []
 with opener(sys.argv[1], "rb") as source:
     with tarfile.open(fileobj=source, mode="r|") as archive:
@@ -2528,6 +2595,74 @@ for (const [profileId, codec, outputPath, outputName] of [
   });
 }
 
+for (const route of compressedTarTranscodeRoutes) {
+  test(`${route.profileId} streams through an independently validated USTAR transcode`, async () => {
+    await selectFixture(route.fixture, route.profileId);
+    const state = await convert();
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state.metrics?.peakPendingOperations).toBe(1);
+    expect(state.metrics?.wasmMemories).toEqual(route.wasmMemories);
+    expect(state.metrics?.peakWasmMemoryBytes).toBe(
+      Object.values(route.wasmMemories).reduce((sum, bytes) => sum + bytes, 0),
+    );
+    await copyAndDeleteSmallOpfsFile(
+      state.opfsName!,
+      browserCompressedTarTranscodeOutputPath,
+    );
+    try {
+      expect(
+        await compressedTarEntryDigests(
+          browserCompressedTarTranscodeOutputPath,
+          route.target,
+        ),
+      ).toEqual(
+        tarEntryDigests(
+          await readFile(
+            path.join(projectRoot, "fixtures", "archives", "sample.tar"),
+          ),
+        ),
+      );
+    } finally {
+      await rm(browserCompressedTarTranscodeOutputPath, { force: true });
+    }
+  });
+
+  test(`${route.profileId} writes through the bounded direct-save worker`, async () => {
+    await page.goto("/?test=1&directory=1");
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+    await removeOpfsEntryAndReportSize(route.outputName);
+    try {
+      await selectFixture(route.fixture, route.profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+        .toBe("complete");
+      const state = await currentState();
+      expect(state.batchOutputNames).toEqual([route.outputName]);
+      expect(state.opfsName).toBeNull();
+      expect(state.metrics?.peakPendingOperations).toBe(1);
+      expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+      const output = await page.evaluate(async ({ name, signatureBytes }) => {
+        const root = await navigator.storage.getDirectory();
+        const handle = await root.getFileHandle(name);
+        const file = await handle.getFile();
+        const signature = Array.from(
+          new Uint8Array(await file.slice(0, signatureBytes).arrayBuffer()),
+        );
+        await root.removeEntry(name);
+        return { bytes: file.size, signature };
+      }, { name: route.outputName, signatureBytes: route.signature.length });
+      expect(output.bytes).toBeGreaterThan(100);
+      expect(output.signature).toEqual(route.signature);
+    } finally {
+      await removeOpfsEntryAndReportSize(route.outputName);
+    }
+  });
+}
+
 test("converts a 1,024-entry ZIP directly to TAR.GZ", async () => {
   await selectFixture(
     "fixtures/archives/many-entries.zip",
@@ -2827,6 +2962,20 @@ for (const [fixture, profileId, expectedError] of [
   });
 }
 
+for (const route of compressedTarTranscodeRoutes) {
+  test(`${route.profileId} rejects traversal entries and deletes partial output`, async () => {
+    await selectFixture(route.unsafeFixture, route.profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain("unsafe tar entry");
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames(`within-test-${route.profileId}`)).toEqual([]);
+  });
+}
+
 for (const [fixture, profileId] of [
   ["fixtures/archives/sample.tar", "tar-to-sevenzip"],
   ["fixtures/archives/sample.zip", "zip-to-tar-gz"],
@@ -2869,5 +3018,28 @@ for (const [fixture, profileId] of [
       )
       .toBe(0);
     expect(await appOwnedOpfsNames("within-sevenzip-scratch-")).toEqual([]);
+  });
+}
+
+for (const route of compressedTarTranscodeRoutes) {
+  test(`${route.profileId} propagates a nested output failure and cleans up`, async () => {
+    await openFaultMode("write");
+    await selectFixture(route.fixture, route.profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    await expect
+      .poll(
+        async () =>
+          (await appOwnedOpfsNames(`within-test-${route.profileId}`)).length,
+        { timeout: 15_000 },
+      )
+      .toBe(0);
   });
 }

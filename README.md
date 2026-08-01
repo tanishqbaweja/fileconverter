@@ -305,16 +305,27 @@ entries become deterministic USTAR chunks that feed the fixed 8 MiB BZIP2 or
 48 MiB XZ engine directly. Backpressure spans ZIP inflation, TAR construction,
 compression, and the final selected destination with no intermediate archive.
 
-TAR-to-7Z, 7Z-to-TAR, 7Z-to-TAR.GZ, and 7Z-to-ZIP use a separately lazy-loaded
-libarchive 3.8.9 engine with a fixed 56 MiB Wasm heap, 256 KiB seekable `File`
-reads, 64 KiB writes, and exactly one awaited destination operation. TAR.GZ output streams those TAR
-blocks directly through Chromium's GZIP transform or the sequential ZIP encoder
-without an intermediate TAR file. All three routes accept regular files and
-directories using COPY, LZMA1, LZMA2, or PPMd and reject unsafe paths, duplicates,
-encryption, links, special files, unsupported codecs, more than 10,000 entries,
-more than 64 GiB of payload, and expansion above 100:1. Output is deterministic
-USTAR with sanitized owners and permissions. TAR-to-7Z strictly validates raw
-USTAR blocks and stages libarchive's encoded payload through synchronous bounded
+All six direct TAR.GZ/TAR.BZ2/TAR.XZ cross-conversions use one shared bounded
+pipeline: the source codec emits at most a 64 KiB TAR bridge chunk, the USTAR
+validator checks headers, checksums, paths, duplicates, entry count, and payload
+limits in flight, and the destination codec cannot consume another chunk until
+the selected-file write completes. The inner USTAR bytes remain exact; only the
+outer compression stream changes. The BZIP2 and XZ pair uses 56 MiB combined
+fixed Wasm, while routes involving GZIP use only the relevant 8 MiB BZIP2 or
+48 MiB XZ module. No route creates a complete intermediate TAR or output copy.
+
+TAR, TAR.GZ, TAR.BZ2, TAR.XZ, and ZIP-to-7Z plus 7Z-to-TAR, compressed TAR, and
+ZIP use a separately lazy-loaded libarchive 3.8.9 engine with a fixed 56 MiB
+Wasm heap, 256 KiB bounded source reads, 64 KiB writes, and exactly one awaited
+destination operation. Compressed-TAR and ZIP producers feed validated USTAR
+directly into the sequential 7Z writer; 7Z output feeds decoded USTAR directly
+through GZIP, BZIP2, XZ, or the sequential ZIP encoder. No direction stores a
+complete intermediate TAR. 7Z input accepts regular files and directories using
+COPY, LZMA1, LZMA2, or PPMd and rejects unsafe paths, duplicates, encryption,
+links, special files, unsupported codecs, more than 10,000 entries, more than
+64 GiB of payload, and expansion above 100:1. Output is deterministic USTAR with
+sanitized owners and permissions. 7Z creation strictly validates USTAR blocks
+and stages libarchive's seekable encoded payload through synchronous bounded
 OPFS scratch I/O rather than MEMFS. A 256 KiB sample selects LZMA2 preset 0 for
 compressible input and lossless COPY when recompression would waste CPU or grow
 the archive. Scratch is truncated and deleted after success, failure, or cancel.
@@ -623,6 +634,12 @@ profiler:
 | Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
 | Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
 | Archives, TAR.XZ -> ZIP | 268,449,796 B | 228.8 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.GZ -> TAR.BZ2 | 268,517,551 B | 168.7 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.GZ -> TAR.XZ | 268,517,551 B | 191.6 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.BZ2 -> TAR.GZ | 270,592,763 B | 183.9 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.BZ2 -> TAR.XZ | 270,592,763 B | 195.9 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.XZ -> TAR.GZ | 268,449,796 B | 239.9 MiB | 3-run native entry size/SHA-256 validation |
+| Archives, TAR.XZ -> TAR.BZ2 | 268,449,796 B | 209.4 MiB | 3-run native entry size/SHA-256 validation |
 | Archives, TAR -> 7Z | 268,436,992 B | 216.9 MiB | 3-run adaptive COPY/LZMA2 gate plus native entry size/SHA-256 |
 | Archives, 7Z -> TAR | 268,435,574 B | 199.8 MiB | native libarchive listing plus entry size/SHA-256 |
 | Archives, 7Z -> TAR.GZ | 268,435,574 B | 222.7 MiB | native libarchive listing plus entry size/SHA-256 |
@@ -914,6 +931,7 @@ npm run profile:archives
 npm run profile:bzip2
 npm run profile:xz
 npm run profile:sevenzip
+npm run profile:category -- archive-transcode
 npm run profile:documents
 npm run profile:ebooks
 npm run profile:mov

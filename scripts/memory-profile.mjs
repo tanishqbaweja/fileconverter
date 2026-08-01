@@ -54,9 +54,16 @@ const isBzip2Profile =
   profileId === "tar-bz2-to-zip" ||
   profileId === "zip-to-tar-bz2" ||
   profileId === "sevenzip-to-tar-bz2" ||
-  profileId === "tar-bz2-to-sevenzip";
+  profileId === "tar-bz2-to-sevenzip" ||
+  profileId === "tar-gz-to-tar-bz2" ||
+  profileId === "tar-bz2-to-tar-gz" ||
+  profileId === "tar-bz2-to-tar-xz" ||
+  profileId === "tar-xz-to-tar-bz2";
 const isBzip2CompressedOutput =
-  profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
+  profileId === "bzip2-compress" ||
+  profileId === "tar-to-tar-bz2" ||
+  profileId === "tar-gz-to-tar-bz2" ||
+  profileId === "tar-xz-to-tar-bz2";
 const isXzProfile =
   profileId === "xz-compress" ||
   profileId === "xz-decompress" ||
@@ -65,9 +72,16 @@ const isXzProfile =
   profileId === "tar-xz-to-zip" ||
   profileId === "zip-to-tar-xz" ||
   profileId === "sevenzip-to-tar-xz" ||
-  profileId === "tar-xz-to-sevenzip";
+  profileId === "tar-xz-to-sevenzip" ||
+  profileId === "tar-gz-to-tar-xz" ||
+  profileId === "tar-bz2-to-tar-xz" ||
+  profileId === "tar-xz-to-tar-gz" ||
+  profileId === "tar-xz-to-tar-bz2";
 const isXzCompressedOutput =
-  profileId === "xz-compress" || profileId === "tar-to-tar-xz";
+  profileId === "xz-compress" ||
+  profileId === "tar-to-tar-xz" ||
+  profileId === "tar-gz-to-tar-xz" ||
+  profileId === "tar-bz2-to-tar-xz";
 const isSevenZipProfile =
   profileId === "tar-to-sevenzip" ||
   profileId === "tar-gz-to-sevenzip" ||
@@ -88,6 +102,12 @@ const isArchiveTransformProfile =
   profileId === "tar-xz-to-zip" ||
   profileId === "zip-to-tar-bz2" ||
   profileId === "zip-to-tar-xz" ||
+  profileId === "tar-gz-to-tar-bz2" ||
+  profileId === "tar-gz-to-tar-xz" ||
+  profileId === "tar-bz2-to-tar-gz" ||
+  profileId === "tar-bz2-to-tar-xz" ||
+  profileId === "tar-xz-to-tar-gz" ||
+  profileId === "tar-xz-to-tar-bz2" ||
   isSevenZipProfile;
 const isSevenZipOutputProfile =
   profileId === "tar-to-sevenzip" ||
@@ -258,7 +278,10 @@ const maximumWriteChunkBytes =
       ? 64 * 1024
     : 256 * 1024;
 const maximumWasmMemoryBytes =
-  profileId === "sevenzip-to-tar-bz2"
+  profileId === "tar-bz2-to-tar-xz" ||
+  profileId === "tar-xz-to-tar-bz2"
+    ? 56 * 1024 * 1024
+  : profileId === "sevenzip-to-tar-bz2"
     ? 64 * 1024 * 1024
     : profileId === "tar-bz2-to-sevenzip"
       ? 64 * 1024 * 1024
