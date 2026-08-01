@@ -183,6 +183,11 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
   );
   assert.ok(
+    publicProfilesFor("sevenzip").some(
+      (profile) => profile.id === "sevenzip-to-tar-gz",
+    ),
+  );
+  assert.ok(
     publicProfilesFor("tar-gz").some(
       (profile) => profile.id === "tar-gz-to-zip",
     ),

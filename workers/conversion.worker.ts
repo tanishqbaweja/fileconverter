@@ -15,7 +15,10 @@ import { runOdfConversion } from "./odf-conversion";
 import { runPptxToText } from "./pptx-conversion";
 import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
-import { runSevenZipToTar } from "./sevenzip-conversion";
+import {
+  runSevenZipToTar,
+  runSevenZipToTarGz,
+} from "./sevenzip-conversion";
 import { runXmlToNdjson } from "./xml-conversion";
 import { runXzConversion } from "./xz-compression";
 import {
@@ -2613,7 +2616,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.testFault,
       profileId === "mkv-to-mp4"
         ? DIRECT_REMUX_WRITE_CHUNK
-        : profileId === "sevenzip-to-tar"
+        : profileId === "sevenzip-to-tar" || profileId === "sevenzip-to-tar-gz"
           ? SEVENZIP_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
     );
@@ -2643,8 +2646,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       await new Promise<void>(() => {});
       return;
     }
-    if (profileId === "sevenzip-to-tar") {
-      await runSevenZipToTar({
+    if (
+      profileId === "sevenzip-to-tar" ||
+      profileId === "sevenzip-to-tar-gz"
+    ) {
+      const runSevenZip =
+        profileId === "sevenzip-to-tar-gz"
+          ? runSevenZipToTarGz
+          : runSevenZipToTar;
+      await runSevenZip({
         file,
         writable: destination.writable,
         jobId,

@@ -890,7 +890,11 @@ export function ConverterApp() {
     selectedProfile?.engine === "ffmpeg-audio" ||
     selectedProfile?.engine === "ffmpeg-video";
   const compressionProfile =
-    selectedProfile?.engine === "compression-stream";
+    selectedProfile?.browserRequirements.some(
+      (requirement) =>
+        requirement.includes("CompressionStream") ||
+        requirement.includes("DecompressionStream"),
+    ) ?? false;
   const wasmCompressionProfile =
     selectedProfile?.engine === "bzip2-wasm" ||
     selectedProfile?.engine === "xz-wasm" ||

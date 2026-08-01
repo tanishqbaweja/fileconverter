@@ -294,9 +294,11 @@ duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
 extensions, and archive bombs. Permissions, owners, comments, and unsupported
 container-specific fields are disclosed as not preserved.
 
-7Z-to-TAR uses a separately lazy-loaded libarchive 3.8.9 reader with a fixed
-64 MiB Wasm heap, 256 KiB seekable `File` reads, 64 KiB TAR writes, and exactly
-one awaited destination operation. It accepts regular files and directories
+7Z-to-TAR and 7Z-to-TAR.GZ use a separately lazy-loaded libarchive 3.8.9 reader
+with a fixed 64 MiB Wasm heap, 256 KiB seekable `File` reads, 64 KiB TAR writes,
+and exactly one awaited destination operation. TAR.GZ output streams those TAR
+blocks directly through Chromium's GZIP transform without an intermediate TAR
+file. Both routes accept regular files and directories
 using COPY, LZMA1, LZMA2, or PPMd and rejects unsafe paths, duplicates,
 encryption, links, special files, unsupported codecs, more than 10,000 entries,
 more than 64 GiB of payload, and expansion above 100:1. Output is deterministic
@@ -400,8 +402,8 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, and
+PDF is excluded by product scope. HEIC/HEIF, TIFF, JPEG XL, SVG, camera raw,
+animated-image output, TAR-to-7Z, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -596,6 +598,7 @@ profiler:
 | Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
 | Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
 | Archives, 7Z -> TAR | 268,435,574 B | 204.7 MiB | native libarchive listing plus entry size/SHA-256 |
+| Archives, 7Z -> TAR.GZ | 268,435,574 B | 225.1 MiB | native libarchive listing plus entry size/SHA-256 |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |

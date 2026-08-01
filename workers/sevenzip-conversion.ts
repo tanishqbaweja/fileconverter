@@ -54,7 +54,46 @@ export interface SevenZipConversionOptions {
   post(message: WorkerResponse): void;
 }
 
-export async function runSevenZipToTar({
+interface SevenZipReaderOptions extends SevenZipConversionOptions {
+  phase: string;
+  trackTarDestinationMetrics: boolean;
+}
+
+async function writeTrackedDestination(
+  options: SevenZipConversionOptions,
+  position: number,
+  source: Uint8Array<ArrayBuffer>,
+  phase: string,
+): Promise<void> {
+  const { writable, jobId, metrics, startedAt, emitProgress } = options;
+  metrics.queuedBytes = source.byteLength;
+  metrics.peakQueuedBytes = Math.max(
+    metrics.peakQueuedBytes,
+    metrics.queuedBytes,
+  );
+  metrics.pendingOperations = 1;
+  metrics.peakPendingOperations = Math.max(
+    metrics.peakPendingOperations,
+    metrics.pendingOperations,
+  );
+  metrics.maxWriteChunkBytes = Math.max(
+    metrics.maxWriteChunkBytes,
+    source.byteLength,
+  );
+  try {
+    await writable.write({ type: "write", position, data: source });
+    metrics.outputBytes = Math.max(
+      metrics.outputBytes,
+      position + source.byteLength,
+    );
+    emitProgress(jobId, phase, metrics, startedAt);
+  } finally {
+    metrics.queuedBytes = 0;
+    metrics.pendingOperations = 0;
+  }
+}
+
+async function runSevenZipReader({
   file,
   writable,
   jobId,
@@ -63,8 +102,9 @@ export async function runSevenZipToTar({
   isCancelled,
   emitProgress,
   post,
-}: SevenZipConversionOptions): Promise<void> {
-  const phase = "Converting 7Z to TAR";
+  phase,
+  trackTarDestinationMetrics,
+}: SevenZipReaderOptions): Promise<void> {
   const errors: string[] = [];
   let reader: ReadableStreamBYOBReader | null = null;
   let readerPosition = -1;
@@ -92,6 +132,16 @@ export async function runSevenZipToTar({
     );
     metrics.maxReadChunkBytes = Math.max(metrics.maxReadChunkBytes, bytes);
     emitProgress(jobId, phase, metrics, startedAt);
+  };
+  const trackedDestinationOptions: SevenZipConversionOptions = {
+    file,
+    writable,
+    jobId,
+    metrics,
+    startedAt,
+    isCancelled,
+    emitProgress,
+    post,
   };
 
   const bridge: SevenZipBridge = {
@@ -149,29 +199,17 @@ export async function runSevenZipToTar({
       ) {
         throw new Error("The 7Z engine requested an invalid bounded output write.");
       }
-      metrics.queuedBytes = source.byteLength;
-      metrics.peakQueuedBytes = Math.max(
-        metrics.peakQueuedBytes,
-        metrics.queuedBytes,
-      );
-      metrics.pendingOperations = 1;
-      metrics.peakPendingOperations = Math.max(
-        metrics.peakPendingOperations,
-        metrics.pendingOperations,
-      );
-      metrics.maxWriteChunkBytes = Math.max(
-        metrics.maxWriteChunkBytes,
-        source.byteLength,
-      );
-      try {
+      if (trackTarDestinationMetrics) {
+        await writeTrackedDestination(
+          trackedDestinationOptions,
+          offset,
+          source,
+          phase,
+        );
+      } else {
         await writable.write({ type: "write", position: offset, data: source });
-        metrics.outputBytes = Math.max(metrics.outputBytes, offset + source.byteLength);
-        emitProgress(jobId, phase, metrics, startedAt);
-        return source.byteLength;
-      } finally {
-        metrics.queuedBytes = 0;
-        metrics.pendingOperations = 0;
       }
+      return source.byteLength;
     },
     cancelled: isCancelled,
     message: recordError,
@@ -180,7 +218,9 @@ export async function runSevenZipToTar({
         metrics.inputBytes,
         Math.min(file.size, inputPosition),
       );
-      metrics.outputBytes = Math.max(metrics.outputBytes, outputPosition);
+      if (trackTarDestinationMetrics) {
+        metrics.outputBytes = Math.max(metrics.outputBytes, outputPosition);
+      }
       emitProgress(jobId, phase, metrics, startedAt);
     },
   };
@@ -227,7 +267,7 @@ export async function runSevenZipToTar({
       const details = [nativeError, ...errors].filter(Boolean).join(" | ");
       throw new Error(details || `7Z conversion failed with code ${result}.`);
     }
-    if (metrics.outputBytes === 0) {
+    if (trackTarDestinationMetrics && metrics.outputBytes === 0) {
       throw new Error("The 7Z engine completed without producing a TAR archive.");
     }
     metrics.inputBytes = file.size;
@@ -243,5 +283,110 @@ export async function runSevenZipToTar({
   } finally {
     const activeReader = reader as ReadableStreamBYOBReader | null;
     await activeReader?.cancel("7Z conversion finished").catch(() => {});
+  }
+}
+
+export async function runSevenZipToTar(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  await runSevenZipReader({
+    ...options,
+    phase: "Converting 7Z to TAR",
+    trackTarDestinationMetrics: true,
+  });
+}
+
+export async function runSevenZipToTarGz(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  const gzip = new CompressionStream("gzip");
+  const writer = gzip.writable.getWriter();
+  const reader = gzip.readable.getReader();
+  let tarPosition = 0;
+  let compressedPosition = 0;
+  let pumpFailure: unknown = null;
+
+  const gzipDestination: RandomAccessDestination = {
+    requiresOwnedWriteBuffer: false,
+    additionalWorkerCount: options.writable.additionalWorkerCount,
+    sharedBufferBytes: options.writable.sharedBufferBytes,
+    maximumWriteBytes: OUTPUT_BUFFER_BYTES,
+    async write(operation) {
+      const source =
+        operation instanceof Uint8Array ? operation : operation.data;
+      const position =
+        operation instanceof Uint8Array
+          ? tarPosition
+          : (operation.position ?? tarPosition);
+      if (position !== tarPosition) {
+        throw new Error("The streaming GZIP adapter received a non-sequential TAR write.");
+      }
+      if (pumpFailure) throw pumpFailure;
+      await writer.write(source);
+      if (pumpFailure) throw pumpFailure;
+      tarPosition += source.byteLength;
+    },
+    async truncate() {
+      throw new Error("The streaming GZIP adapter cannot truncate TAR output.");
+    },
+    async flush() {},
+    async close() {},
+    async abort() {},
+  };
+
+  const pump = (async () => {
+    try {
+      for (;;) {
+        if (options.isCancelled()) {
+          throw new DOMException("Conversion cancelled", "AbortError");
+        }
+        const { done, value } = await reader.read();
+        if (done) return;
+        for (let offset = 0; offset < value.byteLength; offset += OUTPUT_BUFFER_BYTES) {
+          const part = value.subarray(
+            offset,
+            Math.min(offset + OUTPUT_BUFFER_BYTES, value.byteLength),
+          );
+          await writeTrackedDestination(
+            options,
+            compressedPosition,
+            part,
+            "Writing TAR.GZ",
+          );
+          compressedPosition += part.byteLength;
+        }
+      }
+    } catch (error) {
+      pumpFailure = error;
+      await reader.cancel(error).catch(() => {});
+    }
+  })();
+
+  try {
+    await runSevenZipReader({
+      ...options,
+      writable: gzipDestination,
+      phase: "Converting 7Z to TAR.GZ",
+      trackTarDestinationMetrics: false,
+    });
+    await writer.close();
+    await pump;
+    if (pumpFailure) throw pumpFailure;
+    if (options.metrics.outputBytes === 0) {
+      throw new Error("The 7Z engine completed without producing a TAR.GZ archive.");
+    }
+    await options.writable.flush?.();
+    options.emitProgress(
+      options.jobId,
+      "Converting 7Z to TAR.GZ",
+      options.metrics,
+      options.startedAt,
+      true,
+    );
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    await reader.cancel(error).catch(() => {});
+    await pump;
+    throw pumpFailure ?? error;
   }
 }

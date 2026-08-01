@@ -330,6 +330,7 @@ const categories = {
     generator: "scripts/generate-sevenzip-stress-fixture.mjs",
     profiles: [
       ["sevenzip-to-tar", "fixtures/stress/archives/archive-256m.7z"],
+      ["sevenzip-to-tar-gz", "fixtures/stress/archives/archive-256m.7z"],
     ],
   },
   images: {

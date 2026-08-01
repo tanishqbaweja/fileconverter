@@ -53,6 +53,6 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
   "readCodecs": ["copy", "lzma1", "lzma2", "ppmd"],
-  "profiles": ["sevenzip-to-tar"]
+  "profiles": ["sevenzip-to-tar", "sevenzip-to-tar-gz"]
 }
 JSON

@@ -60,7 +60,8 @@ const isXzProfile =
   profileId === "tar-xz-to-tar";
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
-const isSevenZipProfile = profileId === "sevenzip-to-tar";
+const isSevenZipProfile =
+  profileId === "sevenzip-to-tar" || profileId === "sevenzip-to-tar-gz";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
   profileId === "zip-to-tar-gz" ||
