@@ -81,6 +81,15 @@ const categories = {
       `fixtures/stress/documents/${name}`,
     ]),
   },
+  ebooks: {
+    generator: "scripts/generate-ebook-stress-fixtures.mjs",
+    profiles: [["epub-to-txt", "ebook-128m.epub"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/ebooks/${name}`,
+      ],
+    ),
+  },
   archives: {
     generator: "scripts/generate-archive-fixtures.mjs",
     generatorArguments: ["--include-stress"],

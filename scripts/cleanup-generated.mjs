@@ -79,6 +79,7 @@ const generatedStressExtensions = new Set([
   ".html",
   ".xml",
   ".docx",
+  ".epub",
   ".tar",
   ".zip",
 ]);

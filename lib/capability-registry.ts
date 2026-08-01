@@ -2,6 +2,7 @@ export type EngineId =
   | "compression-stream"
   | "archive-browser"
   | "document-stream"
+  | "ebook-stream"
   | "subtitle-stream"
   | "records-stream"
   | "xml-stream"
@@ -16,6 +17,7 @@ export type FormatCategory =
   | "subtitle"
   | "data"
   | "document"
+  | "ebook"
   | "image"
   | "video"
   | "audio";
@@ -160,6 +162,13 @@ export const formats = [
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ],
     category: "document",
+  },
+  {
+    id: "epub",
+    label: "EPUB ebook",
+    extensions: ["epub"],
+    mimeTypes: ["application/epub+zip"],
+    category: "ebook",
   },
   {
     id: "md",
@@ -713,6 +722,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Formatting, images, drawings, fields, hyperlinks, styles, page layout, and table structure are not represented in plain text.",
     ],
     maxTestedBytes: 134_218_659,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "epub-to-txt",
+    input: "epub",
+    output: "txt",
+    engine: "ebook-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Follows the OPF linear spine; non-linear resources, navigation controls, annotations, and package metadata are omitted.",
+      "Encrypted or obfuscated resources, unsafe ZIP paths or references, ZIP64, archive bombs, DTDs, external entities, and non-UTF-8 XML/XHTML are rejected.",
+    ],
+    fidelityLimitations: [
+      "Preserves visible chapter order, headings, paragraphs, lists, table-cell boundaries, and Unicode text.",
+      "CSS, fonts, links, images, cover art, SVG, MathML, audio, video, scripts, and page layout are not represented in plain text.",
+    ],
+    maxTestedBytes: 134_219_595,
     automatedTestStatus: "passed",
     public: true,
   },

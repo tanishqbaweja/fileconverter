@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 71
+complete-Chromium memory profile have passed. The current registry publishes 72
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -22,6 +22,7 @@ routes:
 | Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 268,517,551 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | DOCX -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
+| Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
@@ -97,6 +98,7 @@ Hard limits:
 - text line, record, or subtitle cue: 1 MiB
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
 - DOCX package metadata part: 1 MiB; main XML token: 256 KiB; package expansion: 100:1
+- EPUB package metadata part: 2 MiB; spine items: 10,000; package expansion: 100:1
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - ICO output: one PNG-compressed image; 256 px maximum per edge
@@ -258,18 +260,26 @@ DTDs, custom/external entities, oversized metadata, and malformed XML are
 rejected. Unsupported Markdown extensions and HTML named entities produce clear
 limitations or errors rather than silently invoking a server converter.
 
+EPUB-to-TXT validates the required uncompressed first `mimetype` entry,
+`META-INF/container.xml`, the OPF package manifest and linear spine, then
+streams one XHTML reading-order resource at a time. Its strict incremental XML
+tokenizer uses a compacted 256 KiB window rather than retaining a new remainder
+string after every tag. Visible headings, paragraphs, lists, table cells, and
+Unicode text are retained. Encrypted/obfuscated resources, unsafe references,
+malformed XML, DTDs, external entities, and unsupported spine media types are
+rejected; non-linear content and non-text presentation are explicitly omitted.
+
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, BZIP2, XZ, EPUB, XLSX/PPTX, ODT/ODS/ODP, and
+animated-image output, 7Z, BZIP2, XZ, XLSX/PPTX, ODT/ODS/ODP, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
 flattened to plain text and called converted. ZIP64 and files requiring an
-individual ZIP
-entry or completed ZIP above 4 GiB are rejected instead of silently wrapping or
-truncating sizes.
+individual ZIP entry or completed ZIP above 4 GiB are rejected instead of
+silently wrapping or truncating sizes.
 
 The same rule applies to codec/container combinations. A listed container name
 does not imply every codec can be copied into it. The planner exposes only the
@@ -384,12 +394,20 @@ profiler:
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 | Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
+| Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |
 
 The DOCX profile produced the same 90,834,111-byte SHA-256
 `876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
 in all three runs. Conversion took 6.07-6.20 seconds with one 262,144-byte
 write in flight; each generated source, converted output, and browser profile
 was removed by the category runner after validation.
+
+The optimized EPUB tokenizer produced the same 123,185,664-byte SHA-256
+`b9af589a4c25e80cf5139151f9650284e3977968107087b838686ca887d8ca3e`
+in all three runs. Conversion took 6.89-6.94 seconds with one 262,144-byte
+write in flight. The final worst result was 205.5 MiB after a pre-optimization
+run exposed and rejected a 254.3 MiB peak; all generated EPUBs, outputs, and
+browser profiles were removed after each profiling session.
 
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`
@@ -500,6 +518,7 @@ npm run profile:records
 npm run profile:subtitles
 npm run profile:archives
 npm run profile:documents
+npm run profile:ebooks
 ```
 
 `scripts/memory-profile.mjs` records complete per-process private/RSS samples,
@@ -514,7 +533,7 @@ installed stable Chrome and native FFmpeg.
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI
 - `lib/capability-registry.ts` — single source for formats and public matrix
-- `workers/` — bounded media, archive, subtitle, image, record, XML, and document
+- `workers/` — bounded media, archive, subtitle, image, record, XML, ebook, and document
   transforms; FFmpeg bridge, destinations, and lifecycle
 - `media/ffmpeg/` — reproducible build and native AVIO wrapper
 - `public/engines/` — auditable generated engine artifacts

@@ -25,11 +25,11 @@ interface DocxRuntime extends ArchiveReadRuntime {
   warn(message: string): void;
 }
 
-type MarkupToken =
+export type MarkupToken =
   | { kind: "text"; value: string; cdata: boolean }
   | { kind: "start" | "end"; value: string };
 
-interface ParsedStartElement {
+export interface ParsedStartElement {
   name: string;
   attributes: Array<{ name: string; value: string }>;
   selfClosing: boolean;
@@ -313,48 +313,67 @@ async function extractWordDocument(
   await writer.flush();
 }
 
-async function* readMarkupTokens(
+export async function* readMarkupTokens(
   source: ReadableStream<Uint8Array<ArrayBuffer>>,
   runtime: DocxRuntime,
+  formatLabel = "DOCX",
 ): AsyncGenerator<MarkupToken> {
   const reader = source.getReader();
   const decoder = new TextDecoder("utf-8", { fatal: true });
   let buffer = "";
+  let offset = 0;
   let cdata = false;
   let first = true;
+  let declarationAllowed = true;
+  let declarationSeen = false;
+
+  const compact = () => {
+    if (!offset) return;
+    buffer = offset === buffer.length ? "" : buffer.slice(offset);
+    offset = 0;
+  };
 
   const take = (final: boolean): MarkupToken | null => {
     for (;;) {
       if (cdata) {
-        const end = buffer.indexOf("]]>");
-        if (end === 0) {
-          buffer = buffer.slice(3);
+        const end = buffer.indexOf("]]>", offset);
+        if (end === offset) {
+          offset += 3;
           cdata = false;
           continue;
         }
-        if (end > 0) {
+        if (end > offset) {
+          const available = end - offset;
           const length = safeCharacterCut(
-            buffer,
-            Math.min(end, MAX_XML_TOKEN_CHARS),
+            buffer.slice(offset, end),
+            Math.min(available, MAX_XML_TOKEN_CHARS),
           );
-          const value = buffer.slice(0, length);
-          buffer = buffer.slice(length);
+          const value = buffer.slice(offset, offset + length);
+          offset += length;
           return { kind: "text", value, cdata: true };
         }
-        if (buffer.length > MAX_XML_TOKEN_CHARS + 2) {
-          const length = safeCharacterCut(buffer, MAX_XML_TOKEN_CHARS);
-          const value = buffer.slice(0, length);
-          buffer = buffer.slice(length);
+        if (buffer.length - offset > MAX_XML_TOKEN_CHARS + 2) {
+          const length = safeCharacterCut(
+            buffer.slice(offset),
+            MAX_XML_TOKEN_CHARS,
+          );
+          const value = buffer.slice(offset, offset + length);
+          offset += length;
           return { kind: "text", value, cdata: true };
         }
-        if (final) throw new Error("DOCX XML ends inside a CDATA section.");
+        if (final) throw new Error(`${formatLabel} XML ends inside a CDATA section.`);
         return null;
       }
 
-      if (!buffer) return null;
-      if (!buffer.startsWith("<")) {
-        const markup = buffer.indexOf("<");
-        const available = markup < 0 ? buffer.length : markup;
+      if (offset === buffer.length) {
+        buffer = "";
+        offset = 0;
+        return null;
+      }
+      if (buffer[offset] !== "<") {
+        const markup = buffer.indexOf("<", offset);
+        const available =
+          (markup < 0 ? buffer.length : markup) - offset;
         if (
           markup < 0 &&
           !final &&
@@ -363,59 +382,103 @@ async function* readMarkupTokens(
           return null;
         }
         const desired = Math.min(available, MAX_XML_TOKEN_CHARS);
-        const length = safeXmlTextCut(buffer.slice(0, available), desired);
+        const length = safeXmlTextCut(
+          buffer.slice(offset, offset + available),
+          desired,
+        );
         if (!length) {
-          if (buffer.length > MAX_XML_TOKEN_CHARS + MAX_ENTITY_CHARS) {
-            throw new Error("A DOCX XML entity exceeds the bounded token limit.");
+          if (buffer.length - offset > MAX_XML_TOKEN_CHARS + MAX_ENTITY_CHARS) {
+            throw new Error(`A ${formatLabel} XML entity exceeds the bounded token limit.`);
           }
           return null;
         }
-        const value = buffer.slice(0, length);
-        buffer = buffer.slice(length);
+        const value = buffer.slice(offset, offset + length);
+        offset += length;
+        if (value.includes("]]>")) {
+          throw new Error(
+            `${formatLabel} XML text cannot contain ']]>' outside CDATA.`,
+          );
+        }
+        declarationAllowed = false;
         return { kind: "text", value, cdata: false };
       }
 
-      if (buffer.startsWith("<![CDATA[")) {
-        buffer = buffer.slice(9);
+      if (buffer.startsWith("<![CDATA[", offset)) {
+        offset += 9;
         cdata = true;
+        declarationAllowed = false;
         continue;
       }
-      if (buffer.startsWith("<!--")) {
-        const end = buffer.indexOf("-->", 4);
+      if (buffer.startsWith("<!--", offset)) {
+        const end = buffer.indexOf("-->", offset + 4);
         if (end < 0) {
-          assertPendingToken(buffer, final, "comment");
+          assertPendingToken(
+            buffer.slice(offset),
+            final,
+            "comment",
+            formatLabel,
+          );
           return null;
         }
-        buffer = buffer.slice(end + 3);
+        const comment = buffer.slice(offset + 4, end);
+        if (comment.includes("--") || comment.endsWith("-")) {
+          throw new Error(`${formatLabel} XML contains a malformed comment.`);
+        }
+        offset = end + 3;
+        declarationAllowed = false;
         continue;
       }
-      if (buffer.startsWith("<?")) {
-        const end = buffer.indexOf("?>", 2);
+      if (buffer.startsWith("<?", offset)) {
+        const end = buffer.indexOf("?>", offset + 2);
         if (end < 0) {
-          assertPendingToken(buffer, final, "processing instruction");
+          assertPendingToken(
+            buffer.slice(offset),
+            final,
+            "processing instruction",
+            formatLabel,
+          );
           return null;
         }
-        buffer = buffer.slice(end + 2);
+        const instruction = buffer.slice(offset, end + 2);
+        if (/^<\?xml(?:\s|\?)/.test(instruction)) {
+          if (!declarationAllowed || declarationSeen) {
+            throw new Error(
+              `${formatLabel} XML declaration must be the first construct.`,
+            );
+          }
+          validateXmlDeclaration(instruction, formatLabel);
+          declarationSeen = true;
+        } else if (/^<\?[xX][mM][lL](?:\s|\?)/.test(instruction)) {
+          throw new Error(`${formatLabel} XML declaration target must be lowercase xml.`);
+        }
+        offset = end + 2;
+        declarationAllowed = false;
         continue;
       }
-      if (buffer.startsWith("<!")) {
-        if (/^<!DOCTYPE\b/i.test(buffer)) {
-          throw new Error("DOCX XML DTDs and custom or external entities are not supported.");
+      if (buffer.startsWith("<!", offset)) {
+        if (/^<!DOCTYPE\b/i.test(buffer.slice(offset, offset + 10))) {
+          throw new Error(`${formatLabel} XML DTDs and custom or external entities are not supported.`);
         }
-        if (buffer.length < 10 && !final) return null;
-        throw new Error("Unsupported DOCX XML declaration markup was encountered.");
+        if (buffer.length - offset < 10 && !final) return null;
+        throw new Error(`Unsupported ${formatLabel} XML declaration markup was encountered.`);
       }
 
-      const end = findTagEnd(buffer);
+      const end = findTagEnd(buffer, offset);
       if (end < 0) {
-        assertPendingToken(buffer, final, "element tag");
+        assertPendingToken(
+          buffer.slice(offset),
+          final,
+          "element tag",
+          formatLabel,
+        );
         return null;
       }
-      if (end > MAX_XML_TOKEN_CHARS) {
-        throw new Error("A DOCX XML element tag exceeds the 256 KiB safety limit.");
+      if (end - offset > MAX_XML_TOKEN_CHARS) {
+        throw new Error(`A ${formatLabel} XML element tag exceeds the 256 KiB safety limit.`);
       }
-      const value = buffer.slice(0, end);
-      buffer = buffer.slice(end);
+      const value = buffer.slice(offset, end);
+      offset = end;
+      declarationAllowed = false;
       return { kind: value.startsWith("</") ? "end" : "start", value };
     }
   };
@@ -429,36 +492,56 @@ async function* readMarkupTokens(
       text = text.replace(/^\uFEFF/, "");
       first = false;
     }
+    compact();
     buffer += text;
-    runtime.progress("Parsing DOCX XML");
+    runtime.progress(`Parsing ${formatLabel} XML`);
     for (;;) {
       const token = take(false);
       if (!token) break;
       yield token;
     }
   }
+  compact();
   buffer += decoder.decode();
   for (;;) {
     const token = take(true);
     if (!token) break;
     yield token;
   }
-  if (buffer || cdata) throw new Error("DOCX XML input ends inside markup.");
+  if (offset !== buffer.length || cdata) {
+    throw new Error(`${formatLabel} XML input ends inside markup.`);
+  }
 }
 
-function parseStartElement(value: string): ParsedStartElement {
+function validateXmlDeclaration(value: string, formatLabel: string): void {
+  const match = value.match(
+    /^<\?xml\s+version\s*=\s*(["'])1\.0\1(?:\s+encoding\s*=\s*(["'])[Uu][Tt][Ff]-8\2)?(?:\s+standalone\s*=\s*(["'])(?:yes|no)\3)?\s*\?>$/,
+  );
+  if (!match) {
+    throw new Error(
+      `${formatLabel} XML declaration must specify XML 1.0 and optional UTF-8 encoding.`,
+    );
+  }
+}
+
+export function parseStartElement(
+  value: string,
+  formatLabel = "DOCX",
+): ParsedStartElement {
   if (!value.endsWith(">") || value.startsWith("</")) {
-    throw new Error("DOCX XML contains an invalid start element.");
+    throw new Error(`${formatLabel} XML contains an invalid start element.`);
   }
   let inner = value.slice(1, -1);
   const selfClosing = /\/\s*$/.test(inner);
   if (selfClosing) inner = inner.replace(/\/\s*$/, "");
   const nameMatch = inner.match(XML_NAME);
-  if (!nameMatch) throw new Error("DOCX XML contains an invalid element name.");
+  if (!nameMatch) {
+    throw new Error(`${formatLabel} XML contains an invalid element name.`);
+  }
   const name = nameMatch[0];
   let index = name.length;
   if (index < inner.length && !isXmlSpace(inner[index])) {
-    throw new Error(`DOCX XML element <${name}> has malformed attributes.`);
+    throw new Error(`${formatLabel} XML element <${name}> has malformed attributes.`);
   }
   const attributes: Array<{ name: string; value: string }> = [];
   const names = new Set<string>();
@@ -467,58 +550,58 @@ function parseStartElement(value: string): ParsedStartElement {
     if (index === inner.length) break;
     const attributeMatch = inner.slice(index).match(XML_NAME);
     if (!attributeMatch) {
-      throw new Error(`DOCX XML element <${name}> has an invalid attribute name.`);
+      throw new Error(`${formatLabel} XML element <${name}> has an invalid attribute name.`);
     }
     const attributeName = attributeMatch[0];
     index += attributeName.length;
     while (index < inner.length && isXmlSpace(inner[index])) index += 1;
     if (inner[index] !== "=") {
-      throw new Error(`DOCX XML attribute ${attributeName} is missing '='.`);
+      throw new Error(`${formatLabel} XML attribute ${attributeName} is missing '='.`);
     }
     index += 1;
     while (index < inner.length && isXmlSpace(inner[index])) index += 1;
     const quote = inner[index];
     if (quote !== '"' && quote !== "'") {
-      throw new Error(`DOCX XML attribute ${attributeName} must be quoted.`);
+      throw new Error(`${formatLabel} XML attribute ${attributeName} must be quoted.`);
     }
     const end = inner.indexOf(quote, index + 1);
     if (end < 0) {
-      throw new Error(`DOCX XML attribute ${attributeName} is not closed.`);
+      throw new Error(`${formatLabel} XML attribute ${attributeName} is not closed.`);
     }
     const raw = inner.slice(index + 1, end);
     if (raw.includes("<") || names.has(attributeName)) {
-      throw new Error(`DOCX XML element <${name}> has invalid repeated attributes.`);
+      throw new Error(`${formatLabel} XML element <${name}> has invalid repeated attributes.`);
     }
     names.add(attributeName);
     const decoded = decodeXmlEntities(
       normalizeXmlNewlines(raw),
-      `DOCX XML attribute ${attributeName}`,
+      `${formatLabel} XML attribute ${attributeName}`,
     );
-    assertXmlCharacters(decoded, `DOCX XML attribute ${attributeName}`);
+    assertXmlCharacters(decoded, `${formatLabel} XML attribute ${attributeName}`);
     attributes.push({ name: attributeName, value: decoded });
     if (attributes.length > MAX_XML_ATTRIBUTES) {
       throw new Error(
-        `DOCX XML element <${name}> exceeds the ${MAX_XML_ATTRIBUTES}-attribute safety limit.`,
+        `${formatLabel} XML element <${name}> exceeds the ${MAX_XML_ATTRIBUTES}-attribute safety limit.`,
       );
     }
     index = end + 1;
     if (index < inner.length && !isXmlSpace(inner[index])) {
-      throw new Error(`DOCX XML element <${name}> has malformed attributes.`);
+      throw new Error(`${formatLabel} XML element <${name}> has malformed attributes.`);
     }
   }
   return { name, attributes, selfClosing };
 }
 
-function parseEndElement(value: string): string {
+export function parseEndElement(value: string, formatLabel = "DOCX"): string {
   const inner = value.slice(2, -1);
   const trimmed = inner.trim();
   if (!XML_NAME_ONLY.test(trimmed) || inner !== inner.trimStart()) {
-    throw new Error("DOCX XML contains an invalid closing element.");
+    throw new Error(`${formatLabel} XML contains an invalid closing element.`);
   }
   return trimmed;
 }
 
-function decodeXmlEntities(value: string, context: string): string {
+export function decodeXmlEntities(value: string, context: string): string {
   const named: Record<string, string> = {
     amp: "&",
     apos: "'",
@@ -555,7 +638,7 @@ function decodeXmlEntities(value: string, context: string): string {
   return output;
 }
 
-function assertXmlCharacters(value: string, context: string): void {
+export function assertXmlCharacters(value: string, context: string): void {
   for (const character of value) {
     if (!isXmlCharacter(character.codePointAt(0) ?? 0)) {
       throw new Error(`${context} contains a character forbidden by XML 1.0.`);
@@ -574,13 +657,13 @@ function isXmlCharacter(codePoint: number): boolean {
   );
 }
 
-function normalizeXmlNewlines(value: string): string {
+export function normalizeXmlNewlines(value: string): string {
   return value.replace(/\r\n?/g, "\n");
 }
 
-function findTagEnd(value: string): number {
+function findTagEnd(value: string, start = 0): number {
   let quote = "";
-  for (let index = 1; index < value.length; index += 1) {
+  for (let index = start + 1; index < value.length; index += 1) {
     const character = value[index];
     if (quote) {
       if (character === quote) quote = "";
@@ -612,11 +695,18 @@ function safeCharacterCut(value: string, desired: number): number {
   return cut;
 }
 
-function assertPendingToken(value: string, final: boolean, label: string): void {
+function assertPendingToken(
+  value: string,
+  final: boolean,
+  label: string,
+  formatLabel: string,
+): void {
   if (value.length > MAX_XML_TOKEN_CHARS) {
-    throw new Error(`A DOCX XML ${label} exceeds the 256 KiB safety limit.`);
+    throw new Error(
+      `A ${formatLabel} XML ${label} exceeds the 256 KiB safety limit.`,
+    );
   }
-  if (final) throw new Error(`DOCX XML ends inside a ${label}.`);
+  if (final) throw new Error(`${formatLabel} XML ends inside a ${label}.`);
 }
 
 function isXmlSpace(character: string | undefined): boolean {

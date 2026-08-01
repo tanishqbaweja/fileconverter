@@ -359,6 +359,49 @@ for (const [fixture, expectedError] of [
   });
 }
 
+test("streams EPUB spine text in reading order with explicit fidelity limits", async () => {
+  await selectFixture("fixtures/ebooks/sample.epub", "epub-to-txt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Chapter One\n" +
+      "Within EPUB keeps files on this device.\n" +
+      "Formatting stays readable. Linked text.\n" +
+      "Inline, punctuation stays attached.\n" +
+      "- First item\n" +
+      "- Second item\n" +
+      "Cell A\tCell B\n" +
+      "Unicode: हिन्दी, 日本語, café, 😀.\n" +
+      "Chapter Two\n" +
+      "Line one\nafter break\n" +
+      "Copyright © registered ®.\n",
+  );
+  expect(output).not.toContain("Hidden title");
+  expect(output).not.toContain("hidden drawing text");
+  expect(output).not.toContain("upload");
+  expect(output).not.toContain("Non-linear appendix");
+  expect(state.warnings.join(" ")).toContain("non-linear EPUB spine");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-epub-to-txt")).toEqual([]);
+});
+
+for (const [fixture, expectedError] of [
+  ["fixtures/ebooks/unsafe-doctype.epub", "DTD"],
+  ["fixtures/ebooks/unsafe-reference.epub", "escapes its root"],
+] as const) {
+  test(`rejects hostile EPUB package ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(fixture, "epub-to-txt");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-epub-to-txt")).toEqual([]);
+  });
+}
+
 test("converts a Unicode-named batch sequentially and cleans every output", async () => {
   await page.goto("/?test=1&directory=1");
   await expect

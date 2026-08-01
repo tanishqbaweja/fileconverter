@@ -122,6 +122,12 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "docx-to-txt",
     ),
   );
+  assert.equal(detectFormat({ name: "book.EPUB", type: "" }), "epub");
+  assert.ok(
+    publicProfilesFor("epub").some(
+      (profile) => profile.id === "epub-to-txt",
+    ),
+  );
   assert.ok(
     publicProfilesFor("xml").some(
       (profile) => profile.id === "xml-to-ndjson",

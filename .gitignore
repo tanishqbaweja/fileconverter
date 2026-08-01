@@ -34,6 +34,7 @@
 /fixtures/stress/documents/*.md
 /fixtures/stress/documents/*.html
 /fixtures/stress/documents/*.docx
+/fixtures/stress/ebooks/*.epub
 /fixtures/stress/archives/*.tar
 /fixtures/stress/archives/*.tar.gz
 

@@ -1,0 +1,13 @@
+{
+  "generatedBy": "scripts/generate-ebook-stress-fixtures.mjs",
+  "chapters": 4,
+  "records": 1838592,
+  "bytes": 134219595,
+  "sha256": "9d6faffaef4180cabb6ec44b832e97a88ce4a568070b424ff8779fae62044f30",
+  "expectedByProfile": {
+    "epub-to-txt": {
+      "validationBytes": 123185664,
+      "validationSha256": "b9af589a4c25e80cf5139151f9650284e3977968107087b838686ca887d8ca3e"
+    }
+  }
+}

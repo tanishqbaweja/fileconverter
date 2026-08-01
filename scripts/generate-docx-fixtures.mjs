@@ -1,7 +1,7 @@
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { textEntry, writeZip } from "./docx-fixture-utils.mjs";
+import { textEntry, writeZip } from "./zip-fixture-utils.mjs";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtureRoot = path.join(projectRoot, "fixtures", "documents");
