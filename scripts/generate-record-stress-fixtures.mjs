@@ -11,6 +11,13 @@ const projectRoot = path.resolve(
 );
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "data");
 const targetCsvBytes = 128 * 1024 * 1024;
+const requestedFormat = process.argv[2] ?? "all";
+const supportedFormats = new Set(["all", "csv", "tsv", "ndjson", "json", "xml"]);
+if (!supportedFormats.has(requestedFormat)) {
+  throw new Error(
+    `Choose one record stress format: ${[...supportedFormats].join(", ")}.`,
+  );
+}
 
 await mkdir(fixtureRoot, { recursive: true });
 
@@ -21,10 +28,12 @@ const paths = {
   json: path.join(fixtureRoot, "records-128m.json"),
 };
 const streams = Object.fromEntries(
-  Object.entries(paths).map(([format, filePath]) => [
-    format,
-    createWriteStream(filePath, { flags: "w" }),
-  ]),
+  Object.entries(paths)
+    .filter(([format]) => requestedFormat === "all" || requestedFormat === format)
+    .map(([format, filePath]) => [
+      format,
+      createWriteStream(filePath, { flags: "w" }),
+    ]),
 );
 const sourceHashes = {
   csv: createHash("sha256"),
@@ -36,12 +45,16 @@ const sourceBytes = { csv: 0, tsv: 0, ndjson: 0, json: 0 };
 const expected = {
   "csv-to-tsv": { hash: createHash("sha256"), bytes: 0 },
   "csv-to-ndjson": { hash: createHash("sha256"), bytes: 0 },
+  "csv-to-json": { hash: createHash("sha256"), bytes: 0 },
   "tsv-to-csv": { hash: createHash("sha256"), bytes: 0 },
   "tsv-to-ndjson": { hash: createHash("sha256"), bytes: 0 },
+  "tsv-to-json": { hash: createHash("sha256"), bytes: 0 },
   "ndjson-to-csv": { hash: createHash("sha256"), bytes: 0 },
   "ndjson-to-tsv": { hash: createHash("sha256"), bytes: 0 },
   "ndjson-to-json": { hash: createHash("sha256"), bytes: 0 },
   "json-to-ndjson": { hash: createHash("sha256"), bytes: 0 },
+  "json-to-csv": { hash: createHash("sha256"), bytes: 0 },
+  "json-to-tsv": { hash: createHash("sha256"), bytes: 0 },
 };
 
 const updateExpected = (profileId, text) => {
@@ -54,11 +67,13 @@ const writeSource = async (format, text) => {
   const bytes = Buffer.byteLength(text);
   sourceHashes[format].update(text);
   sourceBytes[format] += bytes;
-  if (!streams[format].write(text, "utf8")) {
-    await once(streams[format], "drain");
+  const stream = streams[format];
+  if (stream && !stream.write(text, "utf8")) {
+    await once(stream, "drain");
   }
 };
 
+if (requestedFormat !== "xml") {
 const csvHeader = "id,name,value\n";
 const tsvHeader = "id\tname\tvalue\n";
 const csvHeaderOutput = "id,name,value\r\n";
@@ -68,9 +83,13 @@ await writeSource("tsv", tsvHeader);
 await writeSource("json", "[\n");
 updateExpected("csv-to-tsv", tsvHeaderOutput);
 updateExpected("tsv-to-csv", csvHeaderOutput);
+updateExpected("csv-to-json", "[\r\n");
+updateExpected("tsv-to-json", "[\r\n");
 updateExpected("ndjson-to-csv", csvHeaderOutput);
 updateExpected("ndjson-to-tsv", tsvHeaderOutput);
 updateExpected("ndjson-to-json", "[\r\n");
+updateExpected("json-to-csv", csvHeaderOutput);
+updateExpected("json-to-tsv", tsvHeaderOutput);
 
 let row = 0;
 while (sourceBytes.csv < targetCsvBytes) {
@@ -113,8 +132,20 @@ while (sourceBytes.csv < targetCsvBytes) {
   await writeSource("json", json);
   updateExpected("csv-to-tsv", tsvOutput);
   updateExpected("csv-to-ndjson", ndjsonOutput);
+  updateExpected(
+    "csv-to-json",
+    `${row === 10_000 ? "" : ",\r\n"}${ndjsonOutputBatch
+      .map((line) => line.trimEnd())
+      .join(",\r\n")}`,
+  );
   updateExpected("tsv-to-csv", csvOutput);
   updateExpected("tsv-to-ndjson", ndjsonOutput);
+  updateExpected(
+    "tsv-to-json",
+    `${row === 10_000 ? "" : ",\r\n"}${ndjsonOutputBatch
+      .map((line) => line.trimEnd())
+      .join(",\r\n")}`,
+  );
   updateExpected("ndjson-to-csv", csvOutput);
   updateExpected("ndjson-to-tsv", tsvOutput);
   updateExpected(
@@ -124,10 +155,14 @@ while (sourceBytes.csv < targetCsvBytes) {
       .join(",\r\n")}`,
   );
   updateExpected("json-to-ndjson", ndjsonOutput);
+  updateExpected("json-to-csv", csvOutput);
+  updateExpected("json-to-tsv", tsvOutput);
 }
 
 await writeSource("json", "\n]\n");
 updateExpected("ndjson-to-json", "\r\n]\r\n");
+updateExpected("csv-to-json", "\r\n]\r\n");
+updateExpected("tsv-to-json", "\r\n]\r\n");
 
 await Promise.all(
   Object.values(streams).map(async (stream) => {
@@ -136,7 +171,9 @@ await Promise.all(
   }),
 );
 
-for (const [format, filePath] of Object.entries(paths)) {
+for (const [format, filePath] of Object.entries(paths).filter(
+  ([format]) => requestedFormat === "all" || requestedFormat === format,
+)) {
   const expectedByProfile = Object.fromEntries(
     Object.entries(expected)
       .filter(([profileId]) => profileId.startsWith(`${format}-to-`))
@@ -164,8 +201,11 @@ for (const [format, filePath] of Object.entries(paths)) {
     "utf8",
   );
 }
+}
 
-await generateXmlFixture();
+if (requestedFormat === "all" || requestedFormat === "xml") {
+  await generateXmlFixture();
+}
 
 process.stdout.write(`${fixtureRoot}\n`);
 

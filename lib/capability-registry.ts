@@ -360,11 +360,15 @@ const recordProfiles = [
   ["csv-to-tsv", "csv", "tsv"],
   ["tsv-to-csv", "tsv", "csv"],
   ["csv-to-ndjson", "csv", "ndjson"],
+  ["csv-to-json", "csv", "json"],
   ["tsv-to-ndjson", "tsv", "ndjson"],
+  ["tsv-to-json", "tsv", "json"],
   ["ndjson-to-csv", "ndjson", "csv"],
   ["ndjson-to-tsv", "ndjson", "tsv"],
   ["ndjson-to-json", "ndjson", "json"],
   ["json-to-ndjson", "json", "ndjson"],
+  ["json-to-csv", "json", "csv"],
+  ["json-to-tsv", "json", "tsv"],
 ] as const;
 
 const recordMaxTestedBytes = {
@@ -975,11 +979,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-low" as const,
     metadataLimitations: [
       "Records larger than 1 MiB or wider than 4,096 fields are rejected to enforce the memory budget.",
-      ...(input === "ndjson" && output !== "json"
+      ...((input === "ndjson" || input === "json") &&
+      output !== "json" &&
+      output !== "ndjson"
         ? [
             "Columns are fixed by the first object; later extra keys are reported and ignored.",
+            "Nested arrays and objects are serialized as JSON text inside one delimited field.",
           ]
-        : (input === "csv" || input === "tsv") && output === "ndjson"
+        : (input === "csv" || input === "tsv") &&
+            (output === "ndjson" || output === "json")
           ? [
               "Delimited fields are emitted as JSON strings; this route does not guess numeric, Boolean, or null types.",
               "Fields beyond the header width are reported and ignored; missing fields become empty strings.",

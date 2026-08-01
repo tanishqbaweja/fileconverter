@@ -2167,7 +2167,7 @@ function normalizedHeaders(values: readonly string[]): string[] {
 async function runDelimitedInput(
   file: File,
   sourceDelimiter: string,
-  output: "csv" | "tsv" | "ndjson",
+  output: "csv" | "tsv" | "ndjson" | "json",
   destination: RandomAccessDestination,
   jobId: string,
   metrics: ConversionMetrics,
@@ -2182,6 +2182,8 @@ async function runDelimitedInput(
   );
   let headers: string[] | null = null;
   let warnedExtraFields = false;
+  let firstJsonRecord = true;
+  if (output === "json") await writer.write("[\r\n");
   for await (const record of readDelimitedRecords(
     file,
     sourceDelimiter,
@@ -2189,7 +2191,7 @@ async function runDelimitedInput(
   )) {
     assertActive();
     let text: string;
-    if (output === "ndjson") {
+    if (output === "ndjson" || output === "json") {
       if (!headers) {
         headers = normalizedHeaders(record);
         continue;
@@ -2206,12 +2208,19 @@ async function runDelimitedInput(
       const object = Object.fromEntries(
         headers.map((header, index) => [header, record[index] ?? ""]),
       );
-      text = `${JSON.stringify(object)}\n`;
+      const serialized = JSON.stringify(object);
+      if (output === "json") {
+        text = `${firstJsonRecord ? "" : ",\r\n"}${serialized}`;
+        firstJsonRecord = false;
+      } else {
+        text = `${serialized}\n`;
+      }
     } else {
       text = serializeDelimited(record, output === "csv" ? "," : "\t");
     }
     await writer.write(text);
   }
+  if (output === "json") await writer.write("\r\n]\r\n");
   await writer.flush();
 }
 
@@ -2305,8 +2314,9 @@ async function runNdjsonToJson(
   await writer.flush();
 }
 
-async function runJsonArrayToNdjson(
+async function runJsonArrayInput(
   file: File,
+  output: "ndjson" | "csv" | "tsv",
   destination: RandomAccessDestination,
   jobId: string,
   metrics: ConversionMetrics,
@@ -2329,13 +2339,60 @@ async function runJsonArrayToNdjson(
   let depth = 0;
   let value = "";
   let needsValue = false;
+  let headers: string[] | null = null;
+  let warnedExtraKeys = false;
 
   const finishValue = async (): Promise<void> => {
     const trimmed = value.trim();
     if (!trimmed) {
       throw new Error("JSON array contains an empty element.");
     }
-    await writer.write(`${JSON.stringify(JSON.parse(trimmed))}\n`);
+    const parsed: unknown = JSON.parse(trimmed);
+    if (output === "ndjson") {
+      await writer.write(`${JSON.stringify(parsed)}\n`);
+    } else {
+      if (!parsed || Array.isArray(parsed) || typeof parsed !== "object") {
+        throw new Error(
+          "Each JSON array element must be an object for delimited output.",
+        );
+      }
+      const object = parsed as Record<string, unknown>;
+      const keys = Object.keys(object);
+      if (keys.length > MAX_TEXT_COLUMNS) {
+        throw new Error(
+          `A JSON object exceeds the ${MAX_TEXT_COLUMNS.toLocaleString("en-US")}-field safety limit.`,
+        );
+      }
+      if (!headers) {
+        headers = keys;
+        if (!headers.length) {
+          throw new Error("The first JSON object has no fields.");
+        }
+        await writer.write(
+          serializeDelimited(headers, output === "csv" ? "," : "\t"),
+        );
+      } else if (
+        !warnedExtraKeys &&
+        keys.some((key) => !headers!.includes(key))
+      ) {
+        warnedExtraKeys = true;
+        post({
+          type: "warning",
+          jobId,
+          message:
+            "Later JSON objects contain extra keys. They were ignored because output columns are fixed by the first object.",
+        });
+      }
+      const row = headers.map((header) => {
+        const field = object[header];
+        return field != null && typeof field === "object"
+          ? JSON.stringify(field)
+          : field;
+      });
+      await writer.write(
+        serializeDelimited(row, output === "csv" ? "," : "\t"),
+      );
+    }
     value = "";
     inValue = false;
     inString = false;
@@ -2440,9 +2497,10 @@ async function runRecords(
   startedAt: number,
 ): Promise<void> {
   const [input, output] = profileId.replace("-to-", ":").split(":");
-  if (input === "json" && output === "ndjson") {
-    await runJsonArrayToNdjson(
+  if (input === "json") {
+    await runJsonArrayInput(
       file,
+      output as "ndjson" | "csv" | "tsv",
       destination,
       jobId,
       metrics,

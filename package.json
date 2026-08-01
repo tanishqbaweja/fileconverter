@@ -42,6 +42,7 @@
     "profile:audio": "node scripts/profile-category.mjs audio",
     "profile:images": "node scripts/profile-category.mjs images",
     "profile:records": "node scripts/profile-category.mjs records",
+    "profile:records-direct-json": "node scripts/profile-category.mjs records-csv-json && node scripts/profile-category.mjs records-tsv-json && node scripts/profile-category.mjs records-json-delimited",
     "profile:subtitles": "node scripts/profile-category.mjs subtitles",
     "profile:documents": "node scripts/profile-category.mjs documents",
     "profile:ebooks": "node scripts/profile-category.mjs ebooks",

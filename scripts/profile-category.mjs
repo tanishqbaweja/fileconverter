@@ -41,17 +41,39 @@ const categories = {
     profiles: [
       ["csv-to-tsv", "records-128m.csv"],
       ["csv-to-ndjson", "records-128m.csv"],
+      ["csv-to-json", "records-128m.csv"],
       ["tsv-to-csv", "records-128m.tsv"],
       ["tsv-to-ndjson", "records-128m.tsv"],
+      ["tsv-to-json", "records-128m.tsv"],
       ["ndjson-to-csv", "records-128m.ndjson"],
       ["ndjson-to-tsv", "records-128m.ndjson"],
       ["ndjson-to-json", "records-128m.ndjson"],
       ["json-to-ndjson", "records-128m.json"],
+      ["json-to-csv", "records-128m.json"],
+      ["json-to-tsv", "records-128m.json"],
       ["xml-to-ndjson", "records-128m.xml"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/stress/data/${name}`,
     ]),
+  },
+  "records-csv-json": {
+    generator: "scripts/generate-record-stress-fixtures.mjs",
+    generatorArguments: ["csv"],
+    profiles: [["csv-to-json", "fixtures/stress/data/records-128m.csv"]],
+  },
+  "records-tsv-json": {
+    generator: "scripts/generate-record-stress-fixtures.mjs",
+    generatorArguments: ["tsv"],
+    profiles: [["tsv-to-json", "fixtures/stress/data/records-128m.tsv"]],
+  },
+  "records-json-delimited": {
+    generator: "scripts/generate-record-stress-fixtures.mjs",
+    generatorArguments: ["json"],
+    profiles: [
+      ["json-to-csv", "fixtures/stress/data/records-128m.json"],
+      ["json-to-tsv", "fixtures/stress/data/records-128m.json"],
+    ],
   },
   subtitles: {
     generator: "scripts/generate-subtitle-stress-fixtures.mjs",

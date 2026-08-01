@@ -729,6 +729,16 @@ test("streams quoted CSV records to NDJSON", async () => {
   ]);
 });
 
+test("streams quoted CSV records directly to a valid JSON array", async () => {
+  await selectFixture("fixtures/data/sample.csv", "csv-to-json");
+  const state = await convert();
+  const values = JSON.parse(await readAndDeleteOpfsText(state.opfsName!));
+  expect(values).toEqual([
+    { name: "alpha", note: 'comma, quote "and" newline\ninside', count: "2" },
+    { name: "\u03b2eta", note: "Unicode survives", count: "3" },
+  ]);
+});
+
 test("streams quoted CSV records to TSV", async () => {
   await selectFixture("fixtures/data/sample.csv", "csv-to-tsv");
   const state = await convert();
@@ -760,6 +770,16 @@ test("streams TSV records to NDJSON", async () => {
     note: "Unicode survives",
     count: "3",
   });
+});
+
+test("streams TSV records directly to a valid JSON array", async () => {
+  await selectFixture("fixtures/data/sample.tsv", "tsv-to-json");
+  const state = await convert();
+  const values = JSON.parse(await readAndDeleteOpfsText(state.opfsName!));
+  expect(values).toEqual([
+    { name: "alpha", note: "plain field", count: "2" },
+    { name: "\u03b2eta", note: "Unicode survives", count: "3" },
+  ]);
 });
 
 test("streams NDJSON objects to TSV", async () => {
@@ -802,6 +822,37 @@ test("streams a JSON array to NDJSON with nested values intact", async () => {
     { id: 1, nested: { enabled: true }, tags: ["a", "b"] },
     { id: 2, text: "comma, bracket ] and escaped quote \"" },
   ]);
+});
+
+test("streams a JSON object array directly to CSV with fixed columns", async () => {
+  await selectFixture("fixtures/data/sample.json", "json-to-csv");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    'id,nested,tags\r\n1,"{""enabled"":true}","[""a"",""b""]"\r\n2,,\r\n',
+  );
+  expect(state.warnings.join(" ")).toContain("extra keys");
+});
+
+test("streams a JSON object array directly to TSV with fixed columns", async () => {
+  await selectFixture("fixtures/data/sample.json", "json-to-tsv");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    'id\tnested\ttags\r\n1\t"{""enabled"":true}"\t"[""a"",""b""]"\r\n2\t\t\r\n',
+  );
+  expect(state.warnings.join(" ")).toContain("extra keys");
+});
+
+test("rejects JSON scalar arrays for CSV output and removes partial output", async () => {
+  await selectFixture("fixtures/data/scalar-array.json", "json-to-csv");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState)
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error).toContain("must be an object");
+  expect(await appOwnedOpfsNames("within-test-json-to-csv")).toEqual([]);
 });
 
 test("streams XML to ordered NDJSON structural events", async () => {

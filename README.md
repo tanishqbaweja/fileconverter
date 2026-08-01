@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 77
+complete-Chromium memory profile have passed. The current registry publishes 81
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -25,7 +25,7 @@ routes:
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
-| Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
+| Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
@@ -247,7 +247,11 @@ and emit real destination syntax. TTML rejects DTDs and custom entities, accepts
 clock/second/millisecond time expressions, and maps only basic italic, bold,
 underline, and line-break styling. CSV/TSV quoting is parsed across chunk
 boundaries; NDJSON and JSON-array routes preserve nested values but normalize
-equivalent JSON whitespace and lexical forms. XML-to-NDJSON uses a strict
+equivalent JSON whitespace and lexical forms. Direct CSV/TSV-to-JSON writes one
+valid top-level array while retaining delimited values as strings. Direct
+JSON-to-CSV/TSV requires object elements, fixes columns from the first object,
+serializes nested values as JSON text inside one field, reports and ignores
+later extra keys, and rejects scalar arrays. XML-to-NDJSON uses a strict
 incremental XML 1.0 tokenizer and emits ordered document, declaration, element,
 text, CDATA, comment, and processing-instruction events. It preserves qualified
 names and namespace declarations lexically, rejects DTDs and custom/external
@@ -431,6 +435,10 @@ profiler:
 | Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
+| Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |
+| Records, TSV -> JSON | 134,423,894 B | 194.1 MiB | exact streamed output hash/parse |
+| Records, JSON -> CSV | 293,633,883 B | 185.8 MiB | exact streamed output hash/parse |
+| Records, JSON -> TSV | 293,633,883 B | 212.1 MiB | exact streamed output hash/parse |
 | Records, XML -> NDJSON events | 134,218,700 B | 165.1 MiB | independent streamed hash/parse |
 | Archives, TAR -> TAR.GZ | 268,436,992 B | 219.3 MiB | full TAR validation |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
@@ -445,6 +453,20 @@ profiler:
 | Documents, ODT -> TXT | 135,267,233 B | 191.1 MiB | exact streamed output hash |
 | Spreadsheets, ODS -> CSV | 135,267,401 B | 196.2 MiB | exact streamed output hash |
 | Presentations, ODP -> TXT | 135,272,481 B | 199.1 MiB | exact streamed output hash |
+
+The direct delimited/JSON profiles processed 5,490,000 records with one
+262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and
+TSV-to-JSON took 18.32-19.93 seconds; both produced the same 299,123,885-byte
+JSON array with SHA-256
+`d199fc95a7b8093b519d7accc3ff48c4a0b6c59f787f4d46f720d7d15eea33d8`.
+JSON-to-CSV took 24.37-25.13 seconds and produced a 139,913,895-byte output
+with SHA-256
+`6cd8761b2f7c747f19ee5d731a557b7287248524c21fddb73654e54b3b0e67a4`.
+JSON-to-TSV took 24.43-24.94 seconds at the same output size with SHA-256
+`8a168a9ae550b3e41046d2711be04fa108613d39766879c58ce47927e9d44f96`.
+Each three-run category generated only its required source inside this
+repository and removed that source, every converted output, and its browser
+profile after validation.
 
 The DOCX profile produced the same 90,834,111-byte SHA-256
 `876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
