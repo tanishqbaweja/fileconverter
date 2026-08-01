@@ -12,16 +12,17 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **127**
-- Public profiles with a retained successful Chrome stress report: **127**
+- Public passed conversion profiles: **129**
+- Public profiles with a retained successful Chrome stress report: **129**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-01:** 248/248 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-01:** 257/257 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
 - **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81–29.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.
 - **Adaptive TAR-to-7Z:** 3/3 256 MiB Chrome stress runs passed in 8.06–8.94 s with 216.9 MiB worst incremental private memory. The bounded sampler chose lossless COPY for incompressible input, all scratch reads/writes stayed at 61,440 bytes, and scratch returned to zero after every run. This is 6.2–6.9× faster than the measured 55.73-second always-LZMA2 baseline.
+- **Compressed TAR-to-ZIP:** TAR.BZ2-to-ZIP passed 3/3 258 MiB Chrome runs in 51.19–51.31 s at 190.5 MiB worst incremental private memory; TAR.XZ-to-ZIP passed 3/3 256 MiB runs in 33.22–35.50 s at 228.8 MiB. Both used one bounded nested stream with 16 KiB maximum destination writes, repeatable output hashes, independent per-entry size/SHA-256 validation, and cleanup recovery.
 - **Production dependency audit:** Next.js was upgraded from 16.2.6 to 16.2.12 to clear the framework advisories with a compatible fix. `npm audit --omit=dev` still reports three high transitive findings through Next's pinned PostCSS 8.4.31 and Sharp 0.34.5; npm currently offers no compatible non-major remediation for those two packages.
 
 ## Retained Chrome stress evidence
@@ -123,6 +124,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | svg-to-png | 327,564 | 3 | 196,588 | 0.44 s–0.65 s | 202.2 MiB | not exposed | read 196,608 B / write 196,588 B | passed |
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
+| tar-bz2-to-zip | 270,592,763 | 3 | 268,517,517 | 51.19 s–51.31 s | 190.5 MiB | 8.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-gz-to-tar | 268,517,551 | 3 | 268,436,992 | 3.71 s–3.96 s | 146.6 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-gz-to-zip | 268,517,551 | 3 | 268,517,517 | 21.19 s–21.49 s | 201.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-to-sevenzip | 268,436,992 | 3 | 268,435,574 | 8.06 s–8.94 s | 216.9 MiB | 56.0 MiB | read 262,144 B / write 65,536 B / scratch 61,440 B read/write | passed |
@@ -131,6 +133,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tar-to-tar-xz | 268,436,992 | 3 | 268,449,796 | 51.51 s–52.33 s | 175.0 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-to-zip | 268,436,992 | 3 | 268,517,517 | 16.67 s–16.85 s | 183.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-xz-to-tar | 268,449,796 | 3 | 268,436,992 | 6.21 s–6.65 s | 173.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
+| tar-xz-to-zip | 268,449,796 | 3 | 268,517,517 | 33.22 s–35.50 s | 228.8 MiB | 48.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tiff-to-png | 50,338,032 | 3 | 577,310 | 1.67 s–1.81 s | 164.1 MiB | 40.0 MiB | read 49,152 B / write 32,768 B | passed |
 | tsv-to-csv | 134,423,894 | 3 | 139,913,895 | 8.34 s–8.49 s | 200.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-json | 134,423,894 | 3 | 299,123,885 | 18.32 s–19.93 s | 194.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -274,6 +277,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | svg-to-png | image | svg-browser | re-encode | 327,564 B | 3-run Chrome report |
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
+| tar-bz2-to-zip | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-gz-to-tar | archive | compression-stream | stream | 268,517,551 B | 3-run Chrome report |
 | tar-gz-to-zip | archive | archive-browser | stream | 268,517,551 B | 3-run Chrome report |
 | tar-to-sevenzip | archive | libarchive7z-wasm | stream | 268,436,992 B | 3-run Chrome report |
@@ -282,6 +286,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | tar-to-tar-xz | archive | xz-wasm | stream | 268,436,992 B | 3-run Chrome report |
 | tar-to-zip | archive | archive-browser | stream | 268,436,992 B | 3-run Chrome report |
 | tar-xz-to-tar | archive | xz-wasm | stream | 268,449,796 B | 3-run Chrome report |
+| tar-xz-to-zip | archive | xz-wasm | stream | 268,449,796 B | 3-run Chrome report |
 | tiff-to-png | image | libtiff-wasm | re-encode | 50,348,250 B | 3-run Chrome report |
 | tsv-to-csv | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | tsv-to-json | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |

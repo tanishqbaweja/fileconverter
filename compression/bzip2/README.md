@@ -11,6 +11,8 @@ level-1 100 KiB block and work factor 30 for a faster, lower-memory browser
 default without changing lossless fidelity. Decompression uses the normal-memory decoder,
 rejects trailing data and truncation, and is additionally bounded by the
 browser worker's 64 GiB and 100:1 expansion limits.
+TAR.BZ2-to-ZIP streams those bounded decoder chunks directly into the shared
+sequential USTAR parser and ZIP writer without an intermediate TAR file.
 
 Build reproducibly from the repository root:
 

@@ -23,6 +23,12 @@ const tarFixturePath = path.join(
   "archives",
   "sample.tar",
 );
+const tarXzFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "archives",
+  "sample.tar.xz",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -276,6 +282,59 @@ test("cached TAR-to-7Z engine converts offline and removes scratch", async () =>
           await root.removeEntry(name).catch(() => {});
         }
       }
+    }, outputName).catch(() => {});
+  }
+});
+
+test("cached TAR.XZ-to-ZIP pipeline converts offline", async () => {
+  const outputName = "sample.zip";
+  const convertTarXzDirect = async () => {
+    await expect(
+      page.getByRole("heading", { name: "Big files. Small memory." }),
+    ).toBeVisible();
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(tarXzFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("tar-xz-to-zip");
+    await page.getByRole("button", { name: /Choose destination file/ }).click();
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect(page.locator('[data-testid="convert-button"]')).toHaveText(
+      /Convert again/,
+      { timeout: 45_000 },
+    );
+    return page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(entryName);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 4).arrayBuffer()),
+      );
+      await root.removeEntry(entryName);
+      return { bytes: file.size, signature };
+    }, outputName);
+  };
+
+  await page.goto("/");
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  await page.reload();
+  await page.evaluate(() => navigator.serviceWorker.ready);
+  expect((await convertTarXzDirect()).signature).toEqual([
+    0x50, 0x4b, 0x03, 0x04,
+  ]);
+
+  await context.setOffline(true);
+  try {
+    await page.reload({ waitUntil: "domcontentloaded" });
+    const result = await convertTarXzDirect();
+    expect(result.bytes).toBeGreaterThan(100);
+    expect(result.signature).toEqual([0x50, 0x4b, 0x03, 0x04]);
+  } finally {
+    await context.setOffline(false);
+    await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(entryName).catch(() => {});
     }, outputName).catch(() => {});
   }
 });

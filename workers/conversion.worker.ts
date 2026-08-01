@@ -10,6 +10,7 @@ import type {
 } from "../lib/conversion-protocol";
 import { runZipArchiveConversion } from "./archive-conversion";
 import { runBzip2Conversion } from "./bzip2-compression";
+import { runCompressedTarToZip } from "./compressed-tar-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
 import { runEpubToText } from "./epub-conversion";
@@ -35,7 +36,7 @@ import {
 
 const workerScope: DedicatedWorkerGlobalScope = self as never;
 const MAX_WRITE_CHUNK = 256 * 1024;
-const SEVENZIP_WRITE_CHUNK = 64 * 1024;
+const ARCHIVE_WASM_WRITE_CHUNK = 64 * 1024;
 const DIRECT_REMUX_WRITE_CHUNK = 1024 * 1024;
 const MAX_TEXT_RECORD = 1024 * 1024;
 const MAX_TEXT_COLUMNS = 4_096;
@@ -266,12 +267,13 @@ async function writeBounded(
   metrics: ConversionMetrics,
   startedAt: number,
   sourceIsOwned = false,
+  maximumChunkBytes = MAX_WRITE_CHUNK,
 ): Promise<void> {
-  for (let offset = 0; offset < chunk.byteLength; offset += MAX_WRITE_CHUNK) {
+  for (let offset = 0; offset < chunk.byteLength; offset += maximumChunkBytes) {
     assertActive();
     const part = chunk.subarray(
       offset,
-      Math.min(offset + MAX_WRITE_CHUNK, chunk.byteLength),
+      Math.min(offset + maximumChunkBytes, chunk.byteLength),
     );
     metrics.queuedBytes = part.byteLength;
     metrics.peakQueuedBytes = Math.max(
@@ -2819,8 +2821,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         : profileId === "tar-to-sevenzip" ||
             profileId === "sevenzip-to-tar" ||
             profileId === "sevenzip-to-tar-gz" ||
-            profileId === "sevenzip-to-zip"
-          ? SEVENZIP_WRITE_CHUNK
+            profileId === "sevenzip-to-zip" ||
+            profileId === "tar-bz2-to-zip" ||
+            profileId === "tar-xz-to-zip"
+          ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
     );
     if (
@@ -2872,6 +2876,30 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         isCancelled: () => cancelled,
         emitProgress,
         post,
+      });
+    } else if (
+      profileId === "tar-bz2-to-zip" ||
+      profileId === "tar-xz-to-zip"
+    ) {
+      const compressedArchiveDestination = destination.writable;
+      await runCompressedTarToZip({
+        file,
+        codec: profileId === "tar-bz2-to-zip" ? "bzip2" : "xz",
+        metrics,
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+        write: (chunk, phase) =>
+          writeBounded(
+            compressedArchiveDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+            false,
+            ARCHIVE_WASM_WRITE_CHUNK,
+          ),
       });
     } else if (
       profileId === "bzip2-compress" ||

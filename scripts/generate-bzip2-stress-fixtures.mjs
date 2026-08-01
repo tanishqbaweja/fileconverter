@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { stat, writeFile } from "node:fs/promises";
+import { readFile, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -51,6 +51,9 @@ for (const sourcePath of sources) {
   });
   const sourceStat = await stat(sourcePath);
   const outputStat = await stat(outputPath);
+  const sourceManifest = JSON.parse(
+    await readFile(`${sourcePath}.json`, "utf8"),
+  );
   await writeFile(
     `${outputPath}.json`,
     `${JSON.stringify(
@@ -61,6 +64,7 @@ for (const sourcePath of sources) {
         sha256: await sha256(outputPath),
         validationBytes: sourceStat.size,
         validationSha256: await sha256(sourcePath),
+        entries: sourceManifest.entries,
       },
       null,
       2,

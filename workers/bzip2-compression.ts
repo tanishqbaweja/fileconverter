@@ -89,6 +89,7 @@ export async function runBzip2Conversion({
   const reader = file.stream().getReader({ mode: "byob" });
   let readBuffer = new Uint8Array(INPUT_BUFFER_BYTES);
   let streamFinished = false;
+  let expandedBytes = 0;
 
   const drainOutput = async (produced: number): Promise<void> => {
     if (!produced) return;
@@ -97,7 +98,7 @@ export async function runBzip2Conversion({
       codecModule.HEAPU8.subarray(outputPointer, outputPointer + produced),
     );
     if (decompress) {
-      const projected = metrics.outputBytes + produced;
+      const projected = expandedBytes + produced;
       const ratio = projected / Math.max(1, metrics.inputBytes);
       if (
         projected > MAX_EXPANDED_BYTES ||
@@ -107,6 +108,7 @@ export async function runBzip2Conversion({
           `BZIP2 decompression stopped: output exceeded the ${MAX_EXPANSION_RATIO}:1 or 64 GiB expansion safety limit.`,
         );
       }
+      expandedBytes = projected;
       validateOutput?.(chunk);
     }
     await write(chunk, phase);

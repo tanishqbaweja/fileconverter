@@ -166,7 +166,16 @@ function outputName(file: File, profile: ConversionProfile): string {
     );
   }
   const extension = formatById(profile.output)?.extensions[0] ?? "out";
-  return `${file.name.replace(/\.[^.]+$/, "")}.${extension}`;
+  const inputExtensions = formatById(profile.input)?.extensions ?? [];
+  const matchingInputExtension = [...inputExtensions]
+    .sort((left, right) => right.length - left.length)
+    .find((candidate) =>
+      file.name.toLowerCase().endsWith(`.${candidate.toLowerCase()}`),
+    );
+  const stem = matchingInputExtension
+    ? file.name.slice(0, -(matchingInputExtension.length + 1))
+    : file.name.replace(/\.[^.]+$/, "");
+  return `${stem || "converted-file"}.${extension}`;
 }
 
 function numberedOutputName(name: string, number: number): string {
