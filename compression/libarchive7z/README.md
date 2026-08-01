@@ -8,8 +8,9 @@ The custom callbacks read the browser `File` at arbitrary offsets in chunks no
 larger than 262,144 bytes. TAR output is copied out of Wasm in owned chunks no
 larger than 65,536 bytes and every destination write is awaited. The browser
 adapter can stream those blocks directly through Chromium's GZIP transform for
-7Z-to-TAR.GZ without materializing an intermediate TAR. Wasm memory is fixed at
-64 MiB. The routes accept regular files and directories using COPY,
+7Z-to-TAR.GZ or through the bounded USTAR parser and raw-DEFLATE ZIP writer for
+7Z-to-ZIP without materializing an intermediate TAR. Wasm memory is fixed at
+56 MiB. The routes accept regular files and directories using COPY,
 LZMA1, LZMA2, or PPMd and rejects encryption, links, special files, duplicates,
 unsafe paths, unsupported codecs, more than 10,000 entries, more than 64 GiB of
 payload, or expansion above 100:1.

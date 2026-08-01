@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **123**
-- Public profiles with a retained successful Chrome stress report: **122**
+- Public passed conversion profiles: **124**
+- Public profiles with a retained successful Chrome stress report: **123**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -107,8 +107,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 | png-to-jpeg | 780,611 | 3 | 374,384 | 0.14 s–0.19 s | 71.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | png-to-webp | 780,611 | 3 | 257,798 | 0.42 s–0.48 s | 189.5 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
 | pptx-to-txt | 135,296,355 | 3 | 92,391,679 | 10.50 s–10.93 s | 217.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
-| sevenzip-to-tar | 268,435,574 | 3 | 268,436,992 | 8.52 s–10.30 s | 204.7 MiB | 64.0 MiB | read 262,144 B / write 65,536 B | passed |
-| sevenzip-to-tar-gz | 268,435,574 | 3 | 268,517,545 | 23.85 s–32.02 s | 225.1 MiB | 64.0 MiB | read 262,144 B / write 16,384 B | passed |
+| sevenzip-to-tar | 268,435,574 | 3 | 268,436,992 | 7.09 s–7.60 s | 199.8 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
+| sevenzip-to-tar-gz | 268,435,574 | 3 | 268,517,545 | 30.24 s–30.54 s | 222.7 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
+| sevenzip-to-zip | 268,435,574 | 3 | 268,517,517 | 29.88 s–31.08 s | 218.3 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -255,6 +256,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | pptx-to-txt | presentation | presentation-stream | stream | 135,296,355 B | 3-run Chrome report |
 | sevenzip-to-tar | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | sevenzip-to-tar-gz | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
+| sevenzip-to-zip | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |

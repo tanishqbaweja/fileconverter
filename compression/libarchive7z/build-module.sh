@@ -19,7 +19,7 @@ emcc \
   -s ASYNCIFY=1 \
   -s ASYNCIFY_STACK_SIZE=1048576 \
   -s ASYNCIFY_IMPORTS='["within_archive_input_read","within_archive_output_write"]' \
-  -s INITIAL_MEMORY=67108864 \
+  -s INITIAL_MEMORY=58720256 \
   -s ALLOW_MEMORY_GROWTH=0 \
   -s STACK_SIZE=1048576 \
   -s MALLOC=emmalloc \
@@ -42,8 +42,8 @@ cat > /out/build-manifest.json <<'JSON'
   "xzVersion": "5.8.3",
   "xzSourceSha256": "fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "initialWasmMemoryBytes": 67108864,
-  "maximumWasmMemoryBytes": 67108864,
+  "initialWasmMemoryBytes": 58720256,
+  "maximumWasmMemoryBytes": 58720256,
   "asyncifyStackBytes": 1048576,
   "inputBufferBytes": 262144,
   "outputBufferBytes": 65536,
@@ -53,6 +53,6 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumExpandedBytes": 68719476736,
   "maximumExpansionRatio": 100,
   "readCodecs": ["copy", "lzma1", "lzma2", "ppmd"],
-  "profiles": ["sevenzip-to-tar", "sevenzip-to-tar-gz"]
+  "profiles": ["sevenzip-to-tar", "sevenzip-to-tar-gz", "sevenzip-to-zip"]
 }
 JSON

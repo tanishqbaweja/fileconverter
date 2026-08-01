@@ -141,8 +141,8 @@ test("every 7Z profile is declared by its fixed-memory Wasm manifest", () => {
     manifest.profiles,
   );
   assert.equal(manifest.libarchiveVersion, "3.8.9");
-  assert.equal(manifest.initialWasmMemoryBytes, 64 * 1024 * 1024);
-  assert.equal(manifest.maximumWasmMemoryBytes, 64 * 1024 * 1024);
+  assert.equal(manifest.initialWasmMemoryBytes, 56 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 56 * 1024 * 1024);
   assert.equal(manifest.inputBufferBytes, 256 * 1024);
   assert.equal(manifest.outputBufferBytes, 64 * 1024);
   assert.equal(manifest.outstandingWrites, 1);
@@ -185,6 +185,11 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.ok(
     publicProfilesFor("sevenzip").some(
       (profile) => profile.id === "sevenzip-to-tar-gz",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("sevenzip").some(
+      (profile) => profile.id === "sevenzip-to-zip",
     ),
   );
   assert.ok(

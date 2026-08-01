@@ -331,6 +331,7 @@ const categories = {
     profiles: [
       ["sevenzip-to-tar", "fixtures/stress/archives/archive-256m.7z"],
       ["sevenzip-to-tar-gz", "fixtures/stress/archives/archive-256m.7z"],
+      ["sevenzip-to-zip", "fixtures/stress/archives/archive-256m.7z"],
     ],
   },
   images: {

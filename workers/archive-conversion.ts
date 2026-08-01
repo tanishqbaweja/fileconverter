@@ -25,6 +25,10 @@ interface ArchiveRuntime extends ArchiveReadRuntime {
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
 }
 
+export interface SequentialTarToZipRuntime extends ArchiveReadRuntime {
+  write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
+}
+
 export interface ZipEntry {
   name: string;
   nameBytes: Uint8Array<ArrayBuffer>;
@@ -285,7 +289,7 @@ async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
 }
 
 async function finishZip(
-  runtime: ArchiveRuntime,
+  runtime: SequentialTarToZipRuntime,
   entries: readonly WrittenZipEntry[],
 ): Promise<void> {
   const centralDirectoryOffset = runtime.metrics.outputBytes;
@@ -322,7 +326,8 @@ class SequentialArchiveReader {
 
   constructor(
     source: ReadableStream<Uint8Array<ArrayBuffer>>,
-    private readonly runtime: ArchiveRuntime,
+    private readonly runtime: ArchiveReadRuntime,
+    private readonly sourceLabel: string,
   ) {
     this.reader = source.getReader();
   }
@@ -360,9 +365,9 @@ class SequentialArchiveReader {
         (compressedBytes > 1024 * 1024 &&
           this.decodedBytes / compressedBytes > MAX_EXPANSION_RATIO)
       ) {
-        await this.reader.cancel("TAR.GZ expansion safety limit exceeded");
+        await this.reader.cancel(`${this.sourceLabel} expansion safety limit exceeded`);
         throw new Error(
-          `TAR.GZ expansion exceeds the 64 GiB or ${MAX_EXPANSION_RATIO}:1 safety limit.`,
+          `${this.sourceLabel} expansion exceeds the 64 GiB or ${MAX_EXPANSION_RATIO}:1 safety limit.`,
         );
       }
     }
@@ -394,7 +399,15 @@ async function tarGzToZip(runtime: ArchiveRuntime): Promise<void> {
   const source = boundedBlobStream(runtime.file, runtime).pipeThrough(
     new DecompressionStream("gzip"),
   );
-  const reader = new SequentialArchiveReader(source, runtime);
+  await convertSequentialTarToZip(runtime, source, "TAR.GZ");
+}
+
+export async function convertSequentialTarToZip(
+  runtime: SequentialTarToZipRuntime,
+  source: ReadableStream<Uint8Array<ArrayBuffer>>,
+  sourceLabel: string,
+): Promise<void> {
+  const reader = new SequentialArchiveReader(source, runtime, sourceLabel);
   const entries: WrittenZipEntry[] = [];
   const seen = new Set<string>();
   let zeroBlocks = 0;
@@ -436,7 +449,7 @@ async function tarGzToZip(runtime: ArchiveRuntime): Promise<void> {
       }
       ensureZip32(tarEntry.size, "ZIP uncompressed entry size");
 
-      runtime.progress(`Converting TAR.GZ entry ${tarEntry.name}`);
+      runtime.progress(`Converting ${sourceLabel} entry ${tarEntry.name}`);
       const nameBytes = utf8Encoder.encode(tarEntry.name);
       if (nameBytes.byteLength > MAX_ZIP_NAME_BYTES) {
         throw new Error(`TAR entry name is too long for ZIP: ${tarEntry.name}.`);
@@ -504,7 +517,7 @@ async function tarGzToZip(runtime: ArchiveRuntime): Promise<void> {
 }
 
 async function deflateSequentialPayload(
-  runtime: ArchiveRuntime,
+  runtime: SequentialTarToZipRuntime,
   source: SequentialArchiveReader,
   expectedBytes: number,
   entryName: string,

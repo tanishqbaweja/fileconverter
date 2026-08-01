@@ -1,11 +1,12 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
+import { convertSequentialTarToZip } from "./archive-conversion";
 import type { RandomAccessDestination } from "./random-access-destination";
 
 const MODULE_URL = "/engines/archive7z/within-archive7z.mjs";
 const WASM_URL = "/engines/archive7z/within-archive7z.wasm";
 const INPUT_BUFFER_BYTES = 256 * 1024;
 const OUTPUT_BUFFER_BYTES = 64 * 1024;
-const WASM_MEMORY_BYTES = 64 * 1024 * 1024;
+const WASM_MEMORY_BYTES = 56 * 1024 * 1024;
 const MAX_ENGINE_ERRORS = 8;
 const MAX_ENGINE_ERROR_CHARS = 512;
 
@@ -388,5 +389,119 @@ export async function runSevenZipToTarGz(
     await reader.cancel(error).catch(() => {});
     await pump;
     throw pumpFailure ?? error;
+  }
+}
+
+export async function runSevenZipToZip(
+  options: SevenZipConversionOptions,
+): Promise<void> {
+  const tarStream = new TransformStream<
+    Uint8Array<ArrayBuffer>,
+    Uint8Array<ArrayBuffer>
+  >();
+  const writer = tarStream.writable.getWriter();
+  let tarPosition = 0;
+  let consumerFailure: unknown = null;
+
+  const tarDestination: RandomAccessDestination = {
+    requiresOwnedWriteBuffer: true,
+    additionalWorkerCount: options.writable.additionalWorkerCount,
+    sharedBufferBytes: options.writable.sharedBufferBytes,
+    maximumWriteBytes: OUTPUT_BUFFER_BYTES,
+    async write(operation) {
+      const source =
+        operation instanceof Uint8Array ? operation : operation.data;
+      const position =
+        operation instanceof Uint8Array
+          ? tarPosition
+          : (operation.position ?? tarPosition);
+      if (position !== tarPosition) {
+        throw new Error("The streaming ZIP adapter received a non-sequential TAR write.");
+      }
+      if (consumerFailure) throw consumerFailure;
+      const owned = source.slice();
+      await writer.write(owned);
+      if (consumerFailure) throw consumerFailure;
+      tarPosition += owned.byteLength;
+    },
+    async truncate() {
+      throw new Error("The streaming ZIP adapter cannot truncate TAR output.");
+    },
+    async flush() {},
+    async close() {},
+    async abort() {},
+  };
+
+  const consumer = (async () => {
+    try {
+      await convertSequentialTarToZip(
+        {
+          file: options.file,
+          metrics: options.metrics,
+          assertActive() {
+            if (options.isCancelled()) {
+              throw new DOMException("Conversion cancelled", "AbortError");
+            }
+          },
+          progress(phase) {
+            options.emitProgress(
+              options.jobId,
+              phase,
+              options.metrics,
+              options.startedAt,
+            );
+          },
+          async write(chunk, phase) {
+            for (
+              let offset = 0;
+              offset < chunk.byteLength;
+              offset += OUTPUT_BUFFER_BYTES
+            ) {
+              const part = chunk.subarray(
+                offset,
+                Math.min(offset + OUTPUT_BUFFER_BYTES, chunk.byteLength),
+              );
+              await writeTrackedDestination(
+                options,
+                options.metrics.outputBytes,
+                part,
+                phase,
+              );
+            }
+          },
+        },
+        tarStream.readable,
+        "7Z-derived TAR",
+      );
+    } catch (error) {
+      consumerFailure = error;
+    }
+  })();
+
+  try {
+    await runSevenZipReader({
+      ...options,
+      writable: tarDestination,
+      phase: "Converting 7Z to ZIP",
+      trackTarDestinationMetrics: false,
+    });
+    await writer.close();
+    await consumer;
+    if (consumerFailure) throw consumerFailure;
+    if (options.metrics.outputBytes === 0) {
+      throw new Error("The 7Z engine completed without producing a ZIP archive.");
+    }
+    await options.writable.flush?.();
+    options.emitProgress(
+      options.jobId,
+      "Converting 7Z to ZIP",
+      options.metrics,
+      options.startedAt,
+      true,
+    );
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    await consumer;
+    throw error;
   }
 }

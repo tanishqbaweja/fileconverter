@@ -294,12 +294,13 @@ duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
 extensions, and archive bombs. Permissions, owners, comments, and unsupported
 container-specific fields are disclosed as not preserved.
 
-7Z-to-TAR and 7Z-to-TAR.GZ use a separately lazy-loaded libarchive 3.8.9 reader
-with a fixed 64 MiB Wasm heap, 256 KiB seekable `File` reads, 64 KiB TAR writes,
+7Z-to-TAR, 7Z-to-TAR.GZ, and 7Z-to-ZIP use a separately lazy-loaded libarchive
+3.8.9 reader with a fixed 56 MiB Wasm heap, 256 KiB seekable `File` reads,
+64 KiB TAR writes,
 and exactly one awaited destination operation. TAR.GZ output streams those TAR
-blocks directly through Chromium's GZIP transform without an intermediate TAR
-file. Both routes accept regular files and directories
-using COPY, LZMA1, LZMA2, or PPMd and rejects unsafe paths, duplicates,
+blocks directly through Chromium's GZIP transform or the sequential ZIP encoder
+without an intermediate TAR file. All three routes accept regular files and
+directories using COPY, LZMA1, LZMA2, or PPMd and reject unsafe paths, duplicates,
 encryption, links, special files, unsupported codecs, more than 10,000 entries,
 more than 64 GiB of payload, and expansion above 100:1. Output is deterministic
 USTAR with sanitized owners and permissions. TAR-to-7Z is not advertised:
@@ -597,8 +598,9 @@ profiler:
 | Compression, XZ -> bytes | 268,448,840 B | 203.0 MiB | exact streamed output SHA-256 |
 | Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
 | Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
-| Archives, 7Z -> TAR | 268,435,574 B | 204.7 MiB | native libarchive listing plus entry size/SHA-256 |
-| Archives, 7Z -> TAR.GZ | 268,435,574 B | 225.1 MiB | native libarchive listing plus entry size/SHA-256 |
+| Archives, 7Z -> TAR | 268,435,574 B | 199.8 MiB | native libarchive listing plus entry size/SHA-256 |
+| Archives, 7Z -> TAR.GZ | 268,435,574 B | 222.7 MiB | native libarchive listing plus entry size/SHA-256 |
+| Archives, 7Z -> ZIP | 268,435,574 B | 218.3 MiB | independent ZIP entry size/SHA-256 |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |

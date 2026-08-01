@@ -18,6 +18,7 @@ import { runMediaRemux } from "./media-remux";
 import {
   runSevenZipToTar,
   runSevenZipToTarGz,
+  runSevenZipToZip,
 } from "./sevenzip-conversion";
 import { runXmlToNdjson } from "./xml-conversion";
 import { runXzConversion } from "./xz-compression";
@@ -2616,7 +2617,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.testFault,
       profileId === "mkv-to-mp4"
         ? DIRECT_REMUX_WRITE_CHUNK
-        : profileId === "sevenzip-to-tar" || profileId === "sevenzip-to-tar-gz"
+        : profileId === "sevenzip-to-tar" ||
+            profileId === "sevenzip-to-tar-gz" ||
+            profileId === "sevenzip-to-zip"
           ? SEVENZIP_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
     );
@@ -2648,10 +2651,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     }
     if (
       profileId === "sevenzip-to-tar" ||
-      profileId === "sevenzip-to-tar-gz"
+      profileId === "sevenzip-to-tar-gz" ||
+      profileId === "sevenzip-to-zip"
     ) {
       const runSevenZip =
-        profileId === "sevenzip-to-tar-gz"
+        profileId === "sevenzip-to-zip"
+          ? runSevenZipToZip
+          : profileId === "sevenzip-to-tar-gz"
           ? runSevenZipToTarGz
           : runSevenZipToTar;
       await runSevenZip({
