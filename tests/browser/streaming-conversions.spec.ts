@@ -322,6 +322,43 @@ test("converts UTF-8 text to safe preformatted HTML", async () => {
   );
 });
 
+test("streams DOCX main-document text with disclosed structural loss", async () => {
+  await selectFixture("fixtures/documents/sample.docx", "docx-to-txt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Within DOCX keeps files on this device.\n" +
+      "Formatting stays readable.\n" +
+      "Linked text\tafter tab\nafter break\n" +
+      "Unicode: हिन्दी, 日本語, café, 😀.\n" +
+      "Accepted insertion\n" +
+      "Cell A\n" +
+      "Cell B\n",
+  );
+  expect(output).not.toContain("deleted text");
+  expect(state.warnings.join(" ")).toContain("Formatting");
+  expect(state.warnings.join(" ")).toContain("headers");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-docx-to-txt")).toEqual([]);
+});
+
+for (const [fixture, expectedError] of [
+  ["fixtures/documents/unsafe-doctype.docx", "DTD"],
+  ["fixtures/documents/unsafe-path.docx", "Unsafe ZIP entry"],
+] as const) {
+  test(`rejects hostile DOCX package ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(fixture, "docx-to-txt");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-docx-to-txt")).toEqual([]);
+  });
+}
+
 test("converts a Unicode-named batch sequentially and cleans every output", async () => {
   await page.goto("/?test=1&directory=1");
   await expect

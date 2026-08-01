@@ -30,6 +30,10 @@
 /fixtures/stress/subtitles/*.srt
 /fixtures/stress/subtitles/*.vtt
 /fixtures/stress/subtitles/*.ass
+/fixtures/stress/documents/*.txt
+/fixtures/stress/documents/*.md
+/fixtures/stress/documents/*.html
+/fixtures/stress/documents/*.docx
 /fixtures/stress/archives/*.tar
 /fixtures/stress/archives/*.tar.gz
 

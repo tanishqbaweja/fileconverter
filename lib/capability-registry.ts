@@ -153,6 +153,15 @@ export const formats = [
     category: "document",
   },
   {
+    id: "docx",
+    label: "Word document (DOCX)",
+    extensions: ["docx"],
+    mimeTypes: [
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ],
+    category: "document",
+  },
+  {
     id: "md",
     label: "Markdown",
     extensions: ["md", "markdown", "mdown"],
@@ -679,6 +688,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Text and whitespace are preserved in a safe preformatted HTML document.",
     ],
     maxTestedBytes: 67_130_000,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "docx-to-txt",
+    input: "docx",
+    output: "txt",
+    engine: "document-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Extracts the main Word document only; comments, headers, footers, notes, relationships, and document properties are omitted.",
+      "Macro-enabled packages, unsafe ZIP paths, encrypted entries, ZIP64, DTDs, custom entities, and unsupported compression methods are rejected.",
+    ],
+    fidelityLimitations: [
+      "Preserves paragraph order, tabs, line breaks, Unicode text, and accepted tracked insertions; tracked deletions are excluded.",
+      "Formatting, images, drawings, fields, hyperlinks, styles, page layout, and table structure are not represented in plain text.",
+    ],
+    maxTestedBytes: 134_218_659,
     automatedTestStatus: "passed",
     public: true,
   },

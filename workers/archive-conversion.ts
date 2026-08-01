@@ -9,20 +9,23 @@ const MAX_ZIP_DIRECTORY_BYTES = 8 * 1024 * 1024;
 const MAX_ZIP_NAME_BYTES = 65_535;
 const ZIP32_MAX = 0xffff_ffff;
 
-interface ArchiveRuntime {
+export interface ArchiveReadRuntime {
   file: File;
+  metrics: ConversionMetrics;
+  assertActive(): void;
+  progress(phase: string): void;
+}
+
+interface ArchiveRuntime extends ArchiveReadRuntime {
   profileId:
     | "zip-to-tar"
     | "zip-to-tar-gz"
     | "tar-to-zip"
     | "tar-gz-to-zip";
-  metrics: ConversionMetrics;
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
-  assertActive(): void;
-  progress(phase: string): void;
 }
 
-interface ZipEntry {
+export interface ZipEntry {
   name: string;
   nameBytes: Uint8Array<ArrayBuffer>;
   directory: boolean;
@@ -96,46 +99,15 @@ async function zipToTar(runtime: ArchiveRuntime): Promise<void> {
     await runtime.write(tarHeader, "Writing TAR");
     if (entry.directory) continue;
 
-    const dataStart = await zipEntryDataOffset(runtime, entry);
-    const compressedEnd = dataStart + entry.compressedSize;
-    if (
-      !Number.isSafeInteger(compressedEnd) ||
-      compressedEnd > entry.centralDirectoryOffset
-    ) {
-      throw new Error(`ZIP entry data is truncated: ${entry.name}.`);
-    }
-    let source = boundedBlobStream(
-      runtime.file.slice(dataStart, compressedEnd),
-      runtime,
-    );
-    if (entry.method === 8) {
-      source = source.pipeThrough(
-        new DecompressionStream("deflate-raw" as CompressionFormat),
-      );
-    }
+    const source = await openZipEntryStream(runtime, entry);
     const reader = source.getReader();
-    let crc = 0xffff_ffff;
     let decodedBytes = 0;
     for (;;) {
       runtime.assertActive();
       const { done, value } = await reader.read();
       if (done) break;
       decodedBytes += value.byteLength;
-      if (
-        decodedBytes > entry.uncompressedSize ||
-        decodedBytes > MAX_ARCHIVE_BYTES
-      ) {
-        throw new Error(`ZIP entry expands beyond its declared size: ${entry.name}.`);
-      }
-      crc = updateCrc32(crc, value);
       await runtime.write(value, "Writing TAR");
-    }
-    const actualCrc = (crc ^ 0xffff_ffff) >>> 0;
-    if (
-      decodedBytes !== entry.uncompressedSize ||
-      actualCrc !== entry.crc32
-    ) {
-      throw new Error(`ZIP entry CRC or decoded size is invalid: ${entry.name}.`);
     }
     const padding = (TAR_BLOCK_BYTES - (decodedBytes % TAR_BLOCK_BYTES)) %
       TAR_BLOCK_BYTES;
@@ -591,7 +563,9 @@ async function deflateSequentialPayload(
   };
 }
 
-async function readZipDirectory(runtime: ArchiveRuntime): Promise<ZipEntry[]> {
+export async function readZipDirectory(
+  runtime: ArchiveReadRuntime,
+): Promise<ZipEntry[]> {
   if (runtime.file.size < 22) {
     throw new Error("ZIP input is missing its end-of-central-directory record.");
   }
@@ -755,8 +729,65 @@ async function readZipDirectory(runtime: ArchiveRuntime): Promise<ZipEntry[]> {
   return entries;
 }
 
+export async function openZipEntryStream(
+  runtime: ArchiveReadRuntime,
+  entry: ZipEntry,
+): Promise<ReadableStream<Uint8Array<ArrayBuffer>>> {
+  if (entry.directory) {
+    throw new Error(`ZIP directory entry has no readable payload: ${entry.name}.`);
+  }
+  const dataStart = await zipEntryDataOffset(runtime, entry);
+  const compressedEnd = dataStart + entry.compressedSize;
+  if (
+    !Number.isSafeInteger(compressedEnd) ||
+    compressedEnd > entry.centralDirectoryOffset
+  ) {
+    throw new Error(`ZIP entry data is truncated: ${entry.name}.`);
+  }
+  let source = boundedBlobStream(
+    runtime.file.slice(dataStart, compressedEnd),
+    runtime,
+  );
+  if (entry.method === 8) {
+    source = source.pipeThrough(
+      new DecompressionStream("deflate-raw" as CompressionFormat),
+    );
+  }
+  let crc = 0xffff_ffff;
+  let decodedBytes = 0;
+  return source.pipeThrough(
+    new TransformStream<Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer>>({
+      transform(chunk, controller) {
+        runtime.assertActive();
+        decodedBytes += chunk.byteLength;
+        if (
+          decodedBytes > entry.uncompressedSize ||
+          decodedBytes > MAX_ARCHIVE_BYTES
+        ) {
+          throw new Error(
+            `ZIP entry expands beyond its declared size: ${entry.name}.`,
+          );
+        }
+        crc = updateCrc32(crc, chunk);
+        controller.enqueue(chunk);
+      },
+      flush() {
+        const actualCrc = (crc ^ 0xffff_ffff) >>> 0;
+        if (
+          decodedBytes !== entry.uncompressedSize ||
+          actualCrc !== entry.crc32
+        ) {
+          throw new Error(
+            `ZIP entry CRC or decoded size is invalid: ${entry.name}.`,
+          );
+        }
+      },
+    }),
+  );
+}
+
 async function zipEntryDataOffset(
-  runtime: ArchiveRuntime,
+  runtime: ArchiveReadRuntime,
   entry: ZipEntry,
 ): Promise<number> {
   const fixed = await readBlobBytes(
@@ -981,7 +1012,7 @@ function createZipEndRecord(
 
 function boundedBlobStream(
   blob: Blob,
-  runtime: ArchiveRuntime,
+  runtime: ArchiveReadRuntime,
 ): ReadableStream<Uint8Array<ArrayBuffer>> {
   const reader = blob.stream().getReader({ mode: "byob" });
   let readBuffer = new Uint8Array(IO_CHUNK_BYTES);
@@ -1014,7 +1045,7 @@ function boundedBlobStream(
 async function readBlobBytes(
   blob: Blob,
   maximumBytes: number,
-  runtime: ArchiveRuntime,
+  runtime: ArchiveReadRuntime,
 ): Promise<Uint8Array<ArrayBuffer>> {
   if (blob.size > maximumBytes) {
     throw new Error(`Archive metadata exceeds its ${maximumBytes}-byte safety limit.`);
@@ -1031,7 +1062,7 @@ async function readBlobBytes(
   return offset === output.byteLength ? output : output.slice(0, offset);
 }
 
-function recordInputRead(runtime: ArchiveRuntime, bytes: number): void {
+function recordInputRead(runtime: ArchiveReadRuntime, bytes: number): void {
   runtime.metrics.inputBytes = Math.min(
     runtime.file.size,
     runtime.metrics.inputBytes + bytes,

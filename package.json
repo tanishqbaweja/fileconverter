@@ -21,6 +21,7 @@
     "fixtures:records-stress": "node scripts/generate-record-stress-fixtures.mjs",
     "fixtures:subtitles-stress": "node scripts/generate-subtitle-stress-fixtures.mjs",
     "fixtures:documents-stress": "node scripts/generate-document-stress-fixtures.mjs",
+    "fixtures:docx": "node scripts/generate-docx-fixtures.mjs",
     "fixtures:archives": "node scripts/generate-archive-fixtures.mjs",
     "fixtures:archives:stress": "node scripts/generate-archive-fixtures.mjs --include-stress",
     "fixtures:inspect-test-mkv": "node scripts/inspect-test-fixture.mjs",

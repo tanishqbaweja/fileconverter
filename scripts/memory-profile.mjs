@@ -35,6 +35,7 @@ const isStreamingTextProfile =
   profileId === "txt-to-html" ||
   profileId === "md-to-html" ||
   profileId === "html-to-txt" ||
+  profileId === "docx-to-txt" ||
   profileId === "xml-to-ndjson";
 const isArchiveCompressionProfile =
   profileId === "tar-to-tar-gz" ||

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 70
+complete-Chromium memory profile have passed. The current registry publishes 71
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -21,7 +21,7 @@ routes:
 | Compression | bytes -> GZIP; GZIP -> bytes | 268,517,399 B |
 | Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 268,517,551 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
-| Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
+| Documents | DOCX -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
@@ -96,6 +96,7 @@ Hard limits:
 - completed large input/output in MEMFS: prohibited
 - text line, record, or subtitle cue: 1 MiB
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
+- DOCX package metadata part: 1 MiB; main XML token: 256 KiB; package expansion: 100:1
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - ICO output: one PNG-compressed image; 256 px maximum per edge
@@ -246,18 +247,27 @@ is escaped into a complete preformatted HTML document. Markdown renders a
 bounded documented subset and escapes raw HTML. HTML-to-TXT tokenizes the input,
 decodes the supported entities, retains visible block/list/table text, and
 removes scripts, styles, templates, metadata, layout, images, SVG/canvas, and
-form controls. Unsupported Markdown extensions and HTML named entities produce
-clear limitations or errors rather than silently invoking a server converter.
+form controls. DOCX-to-TXT validates the complete ZIP package, content-type and
+root-relationship metadata, then incrementally parses only the main
+WordprocessingML document. It preserves paragraph order, tabs, breaks, Unicode,
+and accepted tracked insertions while excluding tracked deletions. Formatting,
+images, drawings, fields, comments, headers, footers, notes, hyperlinks, styles,
+page layout, and table structure are explicitly disclosed as not representable
+in plain text. Macro packages, unsafe paths, encryption, ZIP64, archive bombs,
+DTDs, custom/external entities, oversized metadata, and malformed XML are
+rejected. Unsupported Markdown extensions and HTML named entities produce clear
+limitations or errors rather than silently invoking a server converter.
 
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, BZIP2, XZ, EPUB, DOCX/XLSX/PPTX, ODT/ODS/ODP, and
+animated-image output, 7Z, BZIP2, XZ, EPUB, XLSX/PPTX, ODT/ODS/ODP, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
-large-fixture evidence for them. Office and ebook files are not flattened to
-plain text and called converted. ZIP64 and files requiring an individual ZIP
+large-fixture evidence for them. Unsupported office and ebook files are not
+flattened to plain text and called converted. ZIP64 and files requiring an
+individual ZIP
 entry or completed ZIP above 4 GiB are rejected instead of silently wrapping or
 truncating sizes.
 
@@ -373,6 +383,13 @@ profiler:
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
+| Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
+
+The DOCX profile produced the same 90,834,111-byte SHA-256
+`876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
+in all three runs. Conversion took 6.07-6.20 seconds with one 262,144-byte
+write in flight; each generated source, converted output, and browser profile
+was removed by the category runner after validation.
 
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`

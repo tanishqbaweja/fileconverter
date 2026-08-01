@@ -75,6 +75,7 @@ const categories = {
       ["txt-to-html", "document-64m.txt"],
       ["md-to-html", "document-64m.md"],
       ["html-to-txt", "document-64m.html"],
+      ["docx-to-txt", "document-128m.docx"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/stress/documents/${name}`,

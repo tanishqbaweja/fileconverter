@@ -4,6 +4,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { once } from "node:events";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { textEntry, writeZip } from "./docx-fixture-utils.mjs";
 
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -14,6 +15,7 @@ const targetBytes = 64 * 1024 * 1024;
 const txtPath = path.join(fixtureRoot, "document-64m.txt");
 const markdownPath = path.join(fixtureRoot, "document-64m.md");
 const htmlPath = path.join(fixtureRoot, "document-64m.html");
+const docxPath = path.join(fixtureRoot, "document-128m.docx");
 
 await mkdir(fixtureRoot, { recursive: true });
 
@@ -145,6 +147,74 @@ await writeManifest(htmlPath, htmlBytes, htmlHash, {
     validationSha256: htmlOutputHash.digest("hex"),
   },
 });
+
+const docxContentTypes = `<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>`;
+const docxRelationships = `<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>`;
+const docxPrefix = `<?xml version="1.0" encoding="UTF-8"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>`;
+const docxSuffix = `<w:sectPr/></w:body></w:document>`;
+const sampleDocxId = "00000001";
+const sampleDocxText = `Within private DOCX paragraph ${sampleDocxId}: no upload, bounded memory.`;
+const sampleDocxParagraph = `<w:p><w:r><w:t>${sampleDocxText}</w:t></w:r></w:p>`;
+const docxRecords = Math.ceil(
+  (128 * 1024 * 1024 -
+    Buffer.byteLength(docxPrefix) -
+    Buffer.byteLength(docxSuffix)) /
+    Buffer.byteLength(sampleDocxParagraph),
+);
+const docxDocumentBytes =
+  Buffer.byteLength(docxPrefix) +
+  docxRecords * Buffer.byteLength(sampleDocxParagraph) +
+  Buffer.byteLength(docxSuffix);
+const docxOutputHash = createHash("sha256");
+let docxOutputBytes = 0;
+const docxDocumentEntry = {
+  name: "word/document.xml",
+  size: docxDocumentBytes,
+  async *chunks() {
+    yield Buffer.from(docxPrefix);
+    for (let start = 1; start <= docxRecords; start += 10_000) {
+      const paragraphs = [];
+      const lines = [];
+      const end = Math.min(docxRecords, start + 9_999);
+      for (let index = start; index <= end; index += 1) {
+        const id = String(index).padStart(8, "0");
+        const text = `Within private DOCX paragraph ${id}: no upload, bounded memory.`;
+        paragraphs.push(`<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`);
+        lines.push(`${text}\n`);
+      }
+      const output = lines.join("");
+      docxOutputHash.update(output);
+      docxOutputBytes += Buffer.byteLength(output);
+      yield Buffer.from(paragraphs.join(""));
+    }
+    yield Buffer.from(docxSuffix);
+  },
+};
+const docxManifest = await writeZip(docxPath, [
+  textEntry("[Content_Types].xml", docxContentTypes),
+  textEntry("_rels/.rels", docxRelationships),
+  docxDocumentEntry,
+]);
+await writeFile(
+  `${docxPath}.json`,
+  `${JSON.stringify(
+    {
+      generatedBy: "scripts/generate-document-stress-fixtures.mjs",
+      records: docxRecords,
+      bytes: docxManifest.bytes,
+      sha256: docxManifest.sha256,
+      expectedByProfile: {
+        "docx-to-txt": {
+          validationBytes: docxOutputBytes,
+          validationSha256: docxOutputHash.digest("hex"),
+        },
+      },
+    },
+    null,
+    2,
+  )}\n`,
+  "utf8",
+);
 
 process.stdout.write(`${fixtureRoot}\n`);
 

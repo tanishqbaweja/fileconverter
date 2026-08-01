@@ -116,6 +116,12 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.equal(detectFormat({ name: "records.json", type: "" }), "json");
   assert.equal(detectFormat({ name: "document.xml", type: "" }), "xml");
+  assert.equal(detectFormat({ name: "report.DOCX", type: "" }), "docx");
+  assert.ok(
+    publicProfilesFor("docx").some(
+      (profile) => profile.id === "docx-to-txt",
+    ),
+  );
   assert.ok(
     publicProfilesFor("xml").some(
       (profile) => profile.id === "xml-to-ndjson",
