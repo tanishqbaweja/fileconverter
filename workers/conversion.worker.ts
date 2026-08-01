@@ -2558,6 +2558,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mov-to-mp4" ||
         profileId === "mpeg-ts-to-mp4" ||
         profileId === "flv-to-mp4" ||
+        profileId === "avi-to-mp4" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
         profileId === "mpeg-ts-to-m4a" ||
@@ -2567,6 +2568,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mov-to-wav" ||
         profileId === "mpeg-ts-to-wav" ||
         profileId === "flv-to-wav" ||
+        profileId === "avi-to-wav" ||
         profileId === "mp4-to-wav" ||
         profileId === "m4a-to-wav" ||
         profileId === "mp3-to-wav" ||
@@ -2844,6 +2846,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mov-to-mp4" ||
       profileId === "mpeg-ts-to-mp4" ||
       profileId === "flv-to-mp4" ||
+      profileId === "avi-to-mp4" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
       profileId === "mpeg-ts-to-m4a" ||
@@ -2853,6 +2856,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mov-to-wav" ||
       profileId === "mpeg-ts-to-wav" ||
       profileId === "flv-to-wav" ||
+      profileId === "avi-to-wav" ||
       profileId === "mp4-to-wav" ||
       profileId === "m4a-to-wav" ||
       profileId === "mp3-to-wav" ||
@@ -2874,13 +2878,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "mov-to-wav" ||
             profileId === "mpeg-ts-to-wav" ||
             profileId === "flv-to-wav" ||
-          profileId === "mp4-to-wav" ||
-          profileId === "m4a-to-wav" ||
-          profileId === "mp3-to-wav" ||
-          profileId === "flac-to-wav" ||
-          profileId === "aiff-to-wav" ||
-          profileId === "ogg-to-wav" ||
-          profileId === "opus-to-wav"
+            profileId === "avi-to-wav" ||
+            profileId === "mp4-to-wav" ||
+            profileId === "m4a-to-wav" ||
+            profileId === "mp3-to-wav" ||
+            profileId === "flac-to-wav" ||
+            profileId === "aiff-to-wav" ||
+            profileId === "ogg-to-wav" ||
+            profileId === "opus-to-wav"
             ? 3
             : profileId === "m4a-to-flac" ||
                 profileId === "mp3-to-flac" ||

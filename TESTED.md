@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **90**
-- Public profiles with a retained successful Chrome stress report: **89**
+- Public passed conversion profiles: **92**
+- Public profiles with a retained successful Chrome stress report: **91**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -23,6 +23,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | aiff-to-wav | 201,600,102 | 3 | 201,600,128 | 3.38 s–4.24 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
 | avif-to-bmp | 100,464 | 3 | 24,883,254 | 0.27 s–0.38 s | 171.5 MiB | 0.0 MiB | read 65,536 B / write 195,840 B | passed |
 | avif-to-ico | 100,464 | 3 | 13,545 | 0.09 s–0.15 s | 84.7 MiB | 0.0 MiB | read 100,464 B / write 13,523 B | passed |
 | avif-to-jpeg | 100,464 | 3 | 367,450 | 0.12 s–0.17 s | 69.3 MiB | 0.0 MiB | read 65,536 B / write 262,144 B | passed |
@@ -117,6 +119,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | aiff-to-wav | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
+| avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
+| avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
 | avif-to-bmp | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-ico | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-jpeg | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
@@ -209,7 +213,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
-- Video/container: AVI, 3GP, OGV, and relevant elementary-stream inputs/outputs; broader VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.
+- Video/container: 3GP, OGV, and relevant elementary-stream inputs/outputs; broader AVI codec combinations plus VP9, AV1, MPEG-2, Theora, and codec-conversion combinations.
 - Audio: raw AAC, ALAC, AMR, and WMA routes; user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
 - Archives/compression: BZIP2, XZ, and 7Z.

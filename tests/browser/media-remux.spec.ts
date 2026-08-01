@@ -23,6 +23,7 @@ const mp4OutputPath = path.join(outputRoot, "remux-output.mp4");
 const movMp4OutputPath = path.join(outputRoot, "mov-remux-output.mp4");
 const mpegTsMp4OutputPath = path.join(outputRoot, "mpeg-ts-remux-output.mp4");
 const flvMp4OutputPath = path.join(outputRoot, "flv-remux-output.mp4");
+const aviMp4OutputPath = path.join(outputRoot, "avi-remux-output.mp4");
 const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
@@ -37,6 +38,7 @@ const mp4WavOutputPath = path.join(outputRoot, "mp4-convert-output.wav");
 const movWavOutputPath = path.join(outputRoot, "mov-convert-output.wav");
 const mpegTsWavOutputPath = path.join(outputRoot, "mpeg-ts-convert-output.wav");
 const flvWavOutputPath = path.join(outputRoot, "flv-convert-output.wav");
+const aviWavOutputPath = path.join(outputRoot, "avi-convert-output.wav");
 const standaloneWavOutputPath = path.join(
   outputRoot,
   "standalone-convert-output.wav",
@@ -96,6 +98,12 @@ const flvInputFixturePath = path.join(
   "fixtures",
   "media",
   "flash-video-source.flv",
+);
+const aviInputFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "legacy-video-source.avi",
 );
 const audioFixturePath = path.join(
   projectRoot,
@@ -192,6 +200,7 @@ test.beforeAll(async () => {
   assertProjectLocal(movMp4OutputPath);
   assertProjectLocal(mpegTsMp4OutputPath);
   assertProjectLocal(flvMp4OutputPath);
+  assertProjectLocal(aviMp4OutputPath);
   assertProjectLocal(directMp4OutputPath);
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(mp4M4aOutputPath);
@@ -203,6 +212,7 @@ test.beforeAll(async () => {
   assertProjectLocal(movWavOutputPath);
   assertProjectLocal(mpegTsWavOutputPath);
   assertProjectLocal(flvWavOutputPath);
+  assertProjectLocal(aviWavOutputPath);
   assertProjectLocal(standaloneWavOutputPath);
   assertProjectLocal(mp3WavOutputPath);
   assertProjectLocal(flacWavOutputPath);
@@ -317,6 +327,7 @@ test.afterAll(async () => {
   await rm(movMp4OutputPath, { force: true });
   await rm(mpegTsMp4OutputPath, { force: true });
   await rm(flvMp4OutputPath, { force: true });
+  await rm(aviMp4OutputPath, { force: true });
   await rm(directMp4OutputPath, { force: true });
   await rm(directWavOutputPath, { force: true });
   await rm(directM4aOutputPath, { force: true });
@@ -331,6 +342,7 @@ test.afterAll(async () => {
   await rm(movWavOutputPath, { force: true });
   await rm(mpegTsWavOutputPath, { force: true });
   await rm(flvWavOutputPath, { force: true });
+  await rm(aviWavOutputPath, { force: true });
   await rm(standaloneWavOutputPath, { force: true });
   await rm(mp3WavOutputPath, { force: true });
   await rm(flacWavOutputPath, { force: true });
@@ -413,6 +425,7 @@ async function runMediaRoute(
     | "mov-to-mp4"
     | "mpeg-ts-to-mp4"
     | "flv-to-mp4"
+    | "avi-to-mp4"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "mpeg-ts-to-m4a"
@@ -422,6 +435,7 @@ async function runMediaRoute(
     | "mov-to-wav"
     | "mpeg-ts-to-wav"
     | "flv-to-wav"
+    | "avi-to-wav"
     | "mp4-to-wav"
     | "m4a-to-wav"
     | "mp3-to-wav"
@@ -468,7 +482,8 @@ async function runMediaRoute(
       profileId === "mkv-to-mp4" ||
       profileId === "mov-to-mp4" ||
       profileId === "mpeg-ts-to-mp4" ||
-      profileId === "flv-to-mp4"
+      profileId === "flv-to-mp4" ||
+      profileId === "avi-to-mp4"
     ) {
       expect(state.warnings).toEqual([]);
     } else if (
@@ -658,6 +673,16 @@ test("browser FFmpeg AVIO remuxes Flash Video to valid MP4", async () => {
     ["h264", "aac"],
     500_000,
     flvInputFixturePath,
+  );
+});
+
+test("browser FFmpeg AVIO remuxes MPEG-4 Part 2/MP3 AVI to valid MP4", async () => {
+  await runMediaRoute(
+    "avi-to-mp4",
+    aviMp4OutputPath,
+    ["mpeg4", "mp3"],
+    500_000,
+    aviInputFixturePath,
   );
 });
 
@@ -1150,6 +1175,17 @@ test("browser FFmpeg decodes Flash Video audio to bounded PCM WAV", async () => 
     ["pcm_s16le"],
     300_000,
     flvInputFixturePath,
+    { expectedWarningFragments: ["video stream"] },
+  );
+});
+
+test("browser FFmpeg decodes AVI MP3 audio to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "avi-to-wav",
+    aviWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    aviInputFixturePath,
     { expectedWarningFragments: ["video stream"] },
   );
 });

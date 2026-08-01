@@ -48,12 +48,16 @@ as a compatibility fallback. FFmpeg seeks by requesting a new slice. Output writ
 `FileSystemWritableFileStream` operations, so neither the source nor completed
 destination is mirrored into MEMFS.
 
-The lean core includes the FLV and MPEG-TS demuxers plus H.264/HEVC parsers. Transport
+The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
+MPEG-4 Part 2 parsers. Transport
 probing is capped at 2 MiB and two seconds of analyzed media. AAC packets use the
 `aac_adtstoasc` bitstream filter before fragmented MP4/M4A muxing; WAV conversion
-uses the existing bounded AAC decode, resample, and PCM pipeline.
+uses the existing bounded AAC decode, resample, and PCM pipeline. AVI can copy
+the verified MPEG-4 Part 2/MP3 combination to fragmented MP4, or decode its MP3
+audio through the same bounded PCM path.
 
-The shared remux core accepts both Matroska and genuine QuickTime MOV input.
+The shared remux core accepts Matroska, genuine QuickTime MOV, AVI, MPEG-TS,
+and FLV input.
 It preserves valid demuxer DTS values (including MOV edit-list timing) and only
 synthesizes a video DTS sequence when a stream begins without decode
 timestamps, as the protected large Matroska fixture does.

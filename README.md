@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 90
+complete-Chromium memory profile have passed. The current registry publishes 92
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/MPEG-TS/FLV -> MP4/M4A/WAV; MP4 -> M4A/WAV | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; MP4 -> M4A/WAV | 10,737,988,703 B |
 | Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -168,7 +168,7 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables only the documented
-AIFF, FLAC, FLV, Matroska, MOV/MP4, MPEG-TS, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
+AIFF, AVI, FLAC, FLV, Matroska, MOV/MP4, MPEG-TS, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
 WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
@@ -176,13 +176,18 @@ AAC packets, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
 The lossless MKV/MOV/MPEG-TS-to-MP4 planner accepts only H.264 or HEVC video plus AAC;
-FLV-to-MP4 accepts the verified H.264/AAC combination. M4A extraction
+FLV-to-MP4 accepts the verified H.264/AAC combination, and AVI-to-MP4 accepts
+the verified MPEG-4 Part 2/MP3 combination. M4A extraction
 from MKV, MOV, MPEG-TS, FLV, or MP4 accepts AAC. WAV extraction from MKV, MOV,
 MPEG-TS, FLV, or MP4 performs
 genuine AAC decode, libswresample conversion, and PCM s16le encoding. A different codec is
 rejected before the muxer writes media data, with a readable explanation that a
 verified bounded re-encoder is not installed; it is never silently dropped or
 passed to an incompatible container.
+
+AVI-to-WAV converts the first MP3 stream through the same bounded decode,
+resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
+streams.
 
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
@@ -438,6 +443,8 @@ Current exact-build results:
 | FLV → MP4 | 3 | 167,517,193 B | 167,091,007 B | 193.1 MiB | 32 MiB | 17.2–29.8 MiB |
 | FLV → M4A | 3 | 167,517,193 B | 11,456,012 B | 213.2 MiB | 32 MiB | 20.3–27.2 MiB |
 | FLV → WAV | 3 | 167,517,193 B | 68,776,058 B | 192.4 MiB | 32 MiB | 13.0–29.0 MiB |
+| AVI → MP4 | 3 | 230,929,466 B | 229,960,974 B | 199.4 MiB | 32 MiB | 13.3–29.1 MiB |
+| AVI → WAV | 3 | 230,929,466 B | 68,954,218 B | 225.1 MiB | 32 MiB | 15.1–40.0 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -477,6 +484,8 @@ profiler:
 | Video, FLV -> MP4 | 167,517,193 B | 193.1 MiB | native packet traversal and H.264/AAC probe |
 | Audio, FLV -> M4A | 167,517,193 B | 213.2 MiB | full AAC decode and metadata probe |
 | Audio, FLV -> WAV | 167,517,193 B | 192.4 MiB | full PCM decode and APSNR |
+| Video, AVI -> MP4 | 230,929,466 B | 199.4 MiB | native packet traversal and MPEG-4 Part 2/MP3 probe |
+| Audio, AVI -> WAV | 230,929,466 B | 225.1 MiB | full PCM decode and APSNR |
 
 The MPEG-TS stress source is a genuine 175,444,796-byte H.264/AAC transport
 stream. With the synchronous bounded worker reader, MP4 stream copy completed in
@@ -489,6 +498,13 @@ FLV-to-MP4 completed in 1.64-1.85 seconds, FLV-to-M4A in 1.16-1.42 seconds,
 and FLV-to-WAV in 3.44-3.93 seconds. All nine runs retained the 262,144-byte
 read/write bound, passed native packet or decode validation, and deleted the
 generated source and outputs after measurement.
+
+The AVI stress source is a genuine 230,929,466-byte MPEG-4 Part 2/MP3 file.
+AVI-to-MP4 completed in 2.11-2.44 seconds by copying packets without re-encoding;
+AVI-to-WAV completed in 3.97-4.30 seconds. All six runs stayed within the
+262,144-byte I/O bound, produced byte-identical outputs per route, passed native
+packet traversal or full decoded-audio APSNR validation, and deleted the large
+generated AVI and converted copies after measurement.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

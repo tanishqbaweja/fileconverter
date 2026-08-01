@@ -179,6 +179,17 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "flv-to-wav",
     ),
   );
+  assert.equal(detectFormat({ name: "legacy.DIVX", type: "" }), "avi");
+  assert.ok(
+    publicProfilesFor("avi").some(
+      (profile) => profile.id === "avi-to-mp4",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("avi").some(
+      (profile) => profile.id === "avi-to-wav",
+    ),
+  );
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
   assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));

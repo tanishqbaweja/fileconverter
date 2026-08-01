@@ -69,6 +69,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  avi: {
+    generator: "scripts/generate-avi-stress-fixture.mjs",
+    profiles: [
+      ["avi-to-mp4", "legacy-video-128m.avi"],
+      ["avi-to-wav", "legacy-video-128m.avi"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   records: {
     generator: "scripts/generate-record-stress-fixtures.mjs",
     profiles: [

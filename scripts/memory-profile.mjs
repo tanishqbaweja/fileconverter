@@ -59,6 +59,7 @@ if (
     "mov-to-mp4",
     "mpeg-ts-to-mp4",
     "flv-to-mp4",
+    "avi-to-mp4",
     "mkv-to-m4a",
     "mov-to-m4a",
     "mpeg-ts-to-m4a",
@@ -68,6 +69,7 @@ if (
     "mov-to-wav",
     "mpeg-ts-to-wav",
     "flv-to-wav",
+    "avi-to-wav",
     "mp4-to-wav",
     "m4a-to-wav",
     "mp3-to-wav",
@@ -93,6 +95,7 @@ const isMediaProfile =
   profileId === "mov-to-mp4" ||
   profileId === "mpeg-ts-to-mp4" ||
   profileId === "flv-to-mp4" ||
+  profileId === "avi-to-mp4" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "mpeg-ts-to-m4a" ||
@@ -102,6 +105,7 @@ const isMediaProfile =
   profileId === "mov-to-wav" ||
   profileId === "mpeg-ts-to-wav" ||
   profileId === "flv-to-wav" ||
+  profileId === "avi-to-wav" ||
   profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
   profileId === "mp3-to-wav" ||
@@ -631,6 +635,7 @@ async function validateMediaOutput(
     route === "mov-to-wav" ||
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
+    route === "avi-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -646,6 +651,7 @@ async function validateMediaOutput(
     route === "mov-to-wav" ||
     route === "mpeg-ts-to-wav" ||
     route === "flv-to-wav" ||
+    route === "avi-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
     route === "mp3-to-wav" ||
@@ -806,6 +812,9 @@ async function validateMediaOutput(
     (stream) =>
       stream.codec_type === "video" && !stream.disposition?.attached_pic,
   );
+  const sourceAudio = source.probe.streams.find(
+    (stream) => stream.codec_type === "audio",
+  );
   if (
     (audioOnly &&
       (codecs.length !== 1 ||
@@ -818,16 +827,13 @@ async function validateMediaOutput(
       !videoReencode &&
       (codecs.length !== 2 ||
         codecs[0] !== sourceVideo?.codec_name ||
-        codecs[1] !== "aac"))
+        codecs[1] !== sourceAudio?.codec_name))
   ) {
     throw new Error(`Unexpected browser MP4 streams: ${codecs.join(", ")}.`);
   }
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
   const duration = Number(probe.format.duration);
-  const sourceAudio = source.probe.streams.find(
-    (stream) => stream.codec_type === "audio",
-  );
   const normalizedOutputLanguage =
     audio?.tags?.language && audio.tags.language !== "und"
       ? audio.tags.language

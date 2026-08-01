@@ -334,7 +334,19 @@ static int stream_is_supported(const AVStream *stream, int profile) {
 }
 
 static int stream_codec_is_copy_compatible(const AVStream *stream,
-                                           int profile) {
+                                           int profile,
+                                           const AVFormatContext *format) {
+  const int avi_input =
+      format->iformat && format->iformat->name &&
+      strstr(format->iformat->name, "avi") != NULL;
+  if (avi_input && stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+    return profile != 2 &&
+           stream->codecpar->codec_id == AV_CODEC_ID_MP3;
+  }
+  if (avi_input && stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+    return profile != 2 &&
+           stream->codecpar->codec_id == AV_CODEC_ID_MPEG4;
+  }
   if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
     return stream->codecpar->codec_id == AV_CODEC_ID_AAC;
   }
@@ -1470,11 +1482,13 @@ int within_remux(int profile) {
          (profile != 2 &&
           (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
            input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO))) &&
-        !stream_codec_is_copy_compatible(input_stream, profile)) {
+        !stream_codec_is_copy_compatible(input_stream, profile,
+                                         input_format)) {
       if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
-            "Lossless MP4 stream copy accepts H.264 or HEVC video. "
+            "Lossless MP4 stream copy accepts H.264 or HEVC video, or "
+            "MPEG-4 Part 2 video from AVI. "
             "This source video codec needs a bounded re-encoding route that "
             "is not installed.");
       } else if (profile == 2) {
@@ -1486,7 +1500,8 @@ int within_remux(int profile) {
       } else {
         within_message(
             2,
-            "Lossless MP4 stream copy accepts AAC audio. This source "
+            "Lossless MP4 stream copy accepts AAC audio, or MP3 audio "
+            "from AVI. This source "
             "audio codec needs a bounded re-encoding route that is not "
             "installed.");
       }
