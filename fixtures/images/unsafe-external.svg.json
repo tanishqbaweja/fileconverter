@@ -1,0 +1,6 @@
+{
+  "generatedBy": "maintained SVG safety fixture",
+  "bytes": 158,
+  "sha256": "09df1810a3c5fcfe541fea19f0f95114ba09f690003bf78b07cada953a9da978",
+  "expectation": "external resource rejected before rasterization"
+}

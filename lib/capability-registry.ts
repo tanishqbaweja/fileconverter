@@ -13,6 +13,7 @@ export type EngineId =
   | "records-stream"
   | "xml-stream"
   | "image-browser"
+  | "svg-browser"
   | "libtiff-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
@@ -321,6 +322,13 @@ export const formats = [
     label: "TIFF image",
     extensions: ["tif", "tiff"],
     mimeTypes: ["image/tiff"],
+    category: "image",
+  },
+  {
+    id: "svg",
+    label: "SVG vector image",
+    extensions: ["svg"],
+    mimeTypes: ["image/svg+xml"],
     category: "image",
   },
   {
@@ -1419,6 +1427,29 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed" as const,
     public: true,
   })),
+  {
+    id: "svg-to-png",
+    input: "svg",
+    output: "png",
+    engine: "svg-browser",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "Web Workers",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Only self-contained UTF-8 SVG with explicit paired width and height, or the standard 300\u00d7150 intrinsic default, is accepted within a 4 MiB source and 8-megapixel raster budget.",
+      "Scripts, CSS, event handlers, external resources, links, animation, filters, masks, text, DTDs, custom entities, CDATA, and processing instructions are rejected before rasterization.",
+      "Vector structure, text editability, metadata, and color profiles are not retained in PNG output.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 327_564,
+    automatedTestStatus: "passed",
+    public: true,
+  },
   {
     id: "tiff-to-png",
     input: "tiff",

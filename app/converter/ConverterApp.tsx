@@ -898,7 +898,8 @@ export function ConverterApp() {
   const wasmCompressionProfile =
     selectedProfile?.engine === "bzip2-wasm" ||
     selectedProfile?.engine === "xz-wasm" ||
-    selectedProfile?.engine === "libarchive7z-wasm";
+    selectedProfile?.engine === "libarchive7z-wasm" ||
+    selectedProfile?.engine === "svg-browser";
   const imageProfile = selectedProfile?.engine === "image-browser";
   const featureReady =
     capabilities?.secure &&

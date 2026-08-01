@@ -1,0 +1,18 @@
+{
+  "engine": "resvg-wasm",
+  "resvgWasmVersion": "2.6.2",
+  "npmPackage": "@resvg/resvg-wasm@2.6.2",
+  "npmIntegrity": "sha512-FqALmHI8D4o6lk/LRWDnhw95z5eO+eAa6ORjVg09YRR7BkcM6oPHU9uyC0gtQG5vpFLvgpeU4+zEAz2H8APHNw==",
+  "wasmBytes": 2478606,
+  "wasmSha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+  "maximumInputBytes": 4194304,
+  "maximumOutputBytes": 67108864,
+  "maximumPixels": 8388608,
+  "maximumDimension": 8192,
+  "maximumElements": 10000,
+  "outputWriteChunkBytes": 262144,
+  "outstandingWrites": 1,
+  "profiles": [
+    "svg-to-png"
+  ]
+}

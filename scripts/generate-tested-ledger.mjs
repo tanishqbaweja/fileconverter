@@ -69,6 +69,13 @@ const lines = [
   `- Public profiles with a retained successful Chrome stress report: **${profiled.length}**`,
   "- PDF profiles: **0** (intentionally prohibited)",
   "",
+  "## Latest full verification cycle",
+  "",
+  "- **2026-08-01:** 242/242 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.",
+  "- **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840\u00d72,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44\u20130.65 s conversion time, and 202.2 MiB worst incremental private memory.",
+  "- **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81\u201329.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.",
+  "- **Production dependency audit:** Next.js was upgraded from 16.2.6 to 16.2.12 to clear the framework advisories with a compatible fix. `npm audit --omit=dev` still reports three high transitive findings through Next's pinned PostCSS 8.4.31 and Sharp 0.34.5; npm currently offers no compatible non-major remediation for those two packages.",
+  "",
   "## Retained Chrome stress evidence",
   "",
   "| Profile | Source bytes | Runs | Output bytes | Conversion time | Worst incremental private memory | Peak Wasm | I/O bounds | Cleanup |",
@@ -82,10 +89,12 @@ for (const profile of profiled) {
   const peakWasm = Math.max(
     ...report.runs.map((run) => run.peakWasmMemoryBytes ?? 0),
   );
+  const peakWasmEvidence =
+    profile.engine === "svg-browser" ? "not exposed" : mib(peakWasm);
   const maxRead = Math.max(...report.runs.map((run) => run.maxReadChunkBytes));
   const maxWrite = Math.max(...report.runs.map((run) => run.maxWriteChunkBytes));
   lines.push(
-    `| ${cell(profile.id)} | ${integer(report.source.bytes)} | ${report.runs.length} | ${range(outputs, integer)} | ${range(elapsed, seconds)} | ${report.incrementalPrivateMiB.toFixed(1)} MiB | ${mib(peakWasm)} | read ${integer(maxRead)} B / write ${integer(maxWrite)} B | ${report.checks?.cleanupRecovery ? "passed" : "not proven"} |`,
+    `| ${cell(profile.id)} | ${integer(report.source.bytes)} | ${report.runs.length} | ${range(outputs, integer)} | ${range(elapsed, seconds)} | ${report.incrementalPrivateMiB.toFixed(1)} MiB | ${peakWasmEvidence} | read ${integer(maxRead)} B / write ${integer(maxWrite)} B | ${report.checks?.cleanupRecovery ? "passed" : "not proven"} |`,
   );
 }
 
@@ -136,7 +145,7 @@ lines.push(
   "",
   "- Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.",
   "- Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.",
-  "- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, and transposed TIFF orientations remain absent.",
+  "- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.",
   "- Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.",
   "- Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.",
   "",

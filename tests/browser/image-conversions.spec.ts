@@ -64,6 +64,7 @@ const routes = [
   ["tiff-to-png", "test-pattern-orientation2.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation2-reference.png"],
   ["tiff-to-png", "test-pattern-orientation3.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation3-reference.png"],
   ["tiff-to-png", "test-pattern-orientation4.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation4-reference.png"],
+  ["svg-to-png", "test-pattern.svg", "png", "png", undefined, 640, 480],
 ] as const;
 
 let context: BrowserContext;
@@ -334,6 +335,78 @@ test("TIFF output failure removes the partial browser-owned file", async () => {
   expect(leftovers).toEqual([]);
 });
 
+test("SVG output failure removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "test-pattern.svg"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("svg-to-png");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state?.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-svg-to-png")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+test("SVG converts through the bounded direct-save worker", async () => {
+  const outputName = "test-pattern.png";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern.svg"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("svg-to-png");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(new Uint8Array(await file.slice(0, 8).arrayBuffer()));
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(1_000);
+    expect(output.signature).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
 test("TIFF converts through the bounded direct-save worker", async () => {
   const outputName = "test-pattern-deflate.png";
   await page.goto("/?test=1&directory=1");
@@ -436,6 +509,43 @@ test("rejects an image decompression bomb before allocating a decoded surface", 
   expect(state?.error).toContain("decompression ratio");
   expect(state?.metrics?.outputBytes).toBe(0);
 });
+
+for (const [sourceName, expectedError] of [
+  ["unsafe-external.svg", "external-resource"],
+  ["oversized.svg", "8-megapixel"],
+] as const) {
+  test(`rejects unsafe SVG input ${sourceName} before rasterization`, async () => {
+    const externalRequests: string[] = [];
+    const observe = (request: { url(): string }) => {
+      if (request.url().includes("example.invalid")) {
+        externalRequests.push(request.url());
+      }
+    };
+    page.on("request", observe);
+    try {
+      await page.goto("/?test=1");
+      await page.waitForFunction(
+        () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+      );
+      await page.locator('[data-testid="file-input"]').setInputFiles(
+        path.join(projectRoot, "fixtures", "images", sourceName),
+      );
+      await page.locator('[data-testid="format-select"]').selectOption("svg-to-png");
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect.poll(
+        async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      ).toBe("error");
+      const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+      expect(state?.error).toContain(expectedError);
+      expect(state?.metrics?.outputBytes).toBe(0);
+      expect(state?.opfsName).toBeNull();
+      expect(externalRequests).toEqual([]);
+    } finally {
+      page.off("request", observe);
+    }
+  });
+}
 
 declare global {
   interface Window {

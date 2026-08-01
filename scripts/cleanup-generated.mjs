@@ -113,6 +113,7 @@ const generatedStressExtensions = new Set([
   ".zip",
   ".tif",
   ".tiff",
+  ".svg",
 ]);
 const generatedStressNames = new Set(["records-128m.json"]);
 

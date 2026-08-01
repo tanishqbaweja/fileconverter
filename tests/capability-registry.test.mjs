@@ -180,6 +180,28 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.outstandingWrites, 1);
 });
 
+test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/svg/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "svg-browser",
+  );
+  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.equal(manifest.resvgWasmVersion, "2.6.2");
+  assert.equal(manifest.wasmBytes, 2_478_606);
+  assert.equal(
+    manifest.wasmSha256,
+    "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+  );
+  assert.equal(manifest.maximumInputBytes, 4 * 1024 * 1024);
+  assert.equal(manifest.maximumOutputBytes, 64 * 1024 * 1024);
+  assert.equal(manifest.maximumPixels, 8_388_608);
+  assert.equal(manifest.maximumElements, 10_000);
+  assert.equal(manifest.outputWriteChunkBytes, 256 * 1024);
+  assert.equal(manifest.outstandingWrites, 1);
+});
+
 test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(
     detectFormat({ name: "backup.tar.gz", type: "application/gzip" }),
@@ -283,6 +305,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
   );
   assert.equal(detectFormat({ name: "photo.avif", type: "" }), "avif");
+  assert.equal(detectFormat({ name: "vector.SVG", type: "" }), "svg");
   assert.equal(detectFormat({ name: "legacy.BMP", type: "" }), "bmp");
   assert.equal(detectFormat({ name: "application.ICO", type: "" }), "ico");
   assert.ok(

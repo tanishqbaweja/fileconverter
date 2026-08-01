@@ -12,9 +12,16 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **125**
-- Public profiles with a retained successful Chrome stress report: **124**
+- Public passed conversion profiles: **126**
+- Public profiles with a retained successful Chrome stress report: **126**
 - PDF profiles: **0** (intentionally prohibited)
+
+## Latest full verification cycle
+
+- **2026-08-01:** 242/242 production-browser tests passed; 12/12 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **SVG-to-PNG:** 3/3 Chrome stress runs passed on a 3,840×2,160, 5,185-element fixture with pixel-exact independent validation (SSIM 1.0), 0.44–0.65 s conversion time, and 202.2 MiB worst incremental private memory.
+- **GZIP compression evidence repair:** 3/3 256 MiB Chrome stress runs passed in 27.81–29.70 s with 211.8 MiB worst incremental private memory and cleanup recovery proven.
+- **Production dependency audit:** Next.js was upgraded from 16.2.6 to 16.2.12 to clear the framework advisories with a compatible fix. `npm audit --omit=dev` still reports three high transitive findings through Next's pinned PostCSS 8.4.31 and Sharp 0.34.5; npm currently offers no compatible non-major remediation for those two packages.
 
 ## Retained Chrome stress evidence
 
@@ -61,6 +68,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
 | gif-to-png | 281,853 | 3 | 101,506 | 0.03 s–0.08 s | 70.3 MiB | 0.0 MiB | read 196,608 B / write 101,506 B | passed |
 | gif-to-webp | 281,853 | 3 | 57,248 | 0.07 s–0.12 s | 67.3 MiB | 0.0 MiB | read 196,608 B / write 57,248 B | passed |
+| gzip-compress | 268,435,456 | 3 | 268,517,399 | 27.81 s–29.70 s | 211.8 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | gzip-decompress | 268,517,399 | 3 | 268,435,456 | 3.71 s–4.08 s | 145.0 MiB | 0.0 MiB | read 2,097,152 B / write 65,536 B | not proven |
 | html-to-txt | 143,850,123 | 3 | 101,380,000 | 15.71 s–15.93 s | 231.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | jpeg-to-bmp | 418,486 | 3 | 24,883,254 | 0.28 s–0.36 s | 169.9 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
@@ -112,6 +120,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | sevenzip-to-zip | 268,435,574 | 3 | 268,517,517 | 29.88 s–31.08 s | 218.3 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| svg-to-png | 327,564 | 3 | 196,588 | 0.44 s–0.65 s | 202.2 MiB | not exposed | read 196,608 B / write 196,588 B | passed |
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-gz-to-tar | 268,517,551 | 3 | 268,436,992 | 3.71 s–3.96 s | 146.6 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-gz-to-zip | 268,517,551 | 3 | 268,517,517 | 21.19 s–21.49 s | 201.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
@@ -209,7 +218,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-png | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-webp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
-| gzip-compress | compression | compression-stream | stream | 268,435,456 B | registry passed; stress report not retained locally |
+| gzip-compress | compression | compression-stream | stream | 268,435,456 B | 3-run Chrome report |
 | gzip-decompress | compression | compression-stream | stream | 268,517,399 B | 3-run Chrome report |
 | html-to-txt | document | document-stream | stream | 143,850,123 B | 3-run Chrome report |
 | jpeg-to-bmp | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
@@ -261,6 +270,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | sevenzip-to-zip | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
+| svg-to-png | image | svg-browser | re-encode | 327,564 B | 3-run Chrome report |
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-gz-to-tar | archive | compression-stream | stream | 268,517,551 B | 3-run Chrome report |
 | tar-gz-to-zip | archive | archive-browser | stream | 268,517,551 B | 3-run Chrome report |
@@ -300,7 +310,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
-- Images: HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, and transposed TIFF orientations remain absent.
+- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
 - Archives/compression: TAR-to-7Z and additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

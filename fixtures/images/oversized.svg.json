@@ -1,0 +1,6 @@
+{
+  "generatedBy": "maintained SVG safety fixture",
+  "bytes": 127,
+  "sha256": "27ebd1115247f202ad02d7371b120d6b9cd0aa3721d797c8f2d2655e9bbaa814",
+  "expectation": "decoded surface rejected before allocation"
+}

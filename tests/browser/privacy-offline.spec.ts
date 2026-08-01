@@ -139,6 +139,7 @@ test("installed app shell and conversion engine load offline", async () => {
   expect(cachedPaths).toContain("/engines/remux/within-webm.mjs");
   expect(cachedPaths).toContain("/engines/tiff/within-tiff.wasm");
   expect(cachedPaths).toContain("/engines/tiff/within-tiff.mjs");
+  expect(cachedPaths).toContain("/engines/svg/resvg.wasm");
 
   await context.setOffline(true);
   try {

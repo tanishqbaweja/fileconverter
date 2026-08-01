@@ -1,5 +1,7 @@
 /// <reference lib="webworker" />
 
+import { initWasm as initResvgWasm, Resvg } from "@resvg/resvg-wasm";
+
 import type {
   ConversionMetrics,
   TestFault,
@@ -46,12 +48,16 @@ const MAX_IMAGE_DIMENSION = 8_192;
 const MAX_IMAGE_EXPANSION_RATIO = 1_000;
 const MAX_IMAGE_OUTPUT_BYTES = 64 * 1024 * 1024;
 const MAX_IMAGE_HEADER_BYTES = 1024 * 1024;
+const MAX_SVG_INPUT_BYTES = 4 * 1024 * 1024;
+const MAX_SVG_ELEMENTS = 10_000;
 const CANCELLATION_YIELD_BYTES = 1024 * 1024;
+const RESVG_WASM_URL = "/engines/svg/resvg.wasm";
 
 let activeJobId: string | null = null;
 let cancelled = false;
 let lastProgressAt = 0;
 let lastCancellationYieldBytes = 0;
+let resvgInitialization: Promise<void> | null = null;
 
 function post(message: WorkerResponse): void {
   workerScope.postMessage(message);
@@ -609,6 +615,136 @@ interface ImageDimensions {
   height: number;
 }
 
+async function readBoundedUtf8(
+  file: File,
+  metrics: ConversionMetrics,
+  jobId: string,
+  startedAt: number,
+): Promise<string> {
+  const reader = createBoundedFileInput(file, metrics, () =>
+    emitProgress(jobId, "Inspecting SVG", metrics, startedAt),
+  ).getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  let source = "";
+  try {
+    for (;;) {
+      assertActive();
+      const { done, value } = await reader.read();
+      if (done) break;
+      source += decoder.decode(value, { stream: true });
+    }
+    source += decoder.decode();
+  } finally {
+    await reader.cancel().catch(() => {});
+  }
+  return source.replace(/^\uFEFF/, "");
+}
+
+function parseSvgLength(value: string | undefined, field: string): number | null {
+  if (value == null) return null;
+  const match = value.trim().match(
+    /^([+]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?)(px|in|cm|mm|q|pt|pc)?$/i,
+  );
+  if (!match) {
+    throw new Error(
+      `SVG ${field} must be a finite absolute length (px, in, cm, mm, Q, pt, or pc).`,
+    );
+  }
+  const unitScale: Record<string, number> = {
+    px: 1,
+    in: 96,
+    cm: 96 / 2.54,
+    mm: 96 / 25.4,
+    q: 96 / 101.6,
+    pt: 96 / 72,
+    pc: 16,
+  };
+  const pixels = Number(match[1]) * unitScale[(match[2] ?? "px").toLowerCase()];
+  if (!Number.isFinite(pixels) || pixels <= 0) {
+    throw new Error(`SVG ${field} must resolve to a positive finite size.`);
+  }
+  return Math.round(pixels);
+}
+
+function parseSvgDimensions(source: string): ImageDimensions {
+  if (/\0/.test(source)) {
+    throw new Error("SVG input contains a NUL byte.");
+  }
+  const declaration = source.match(/^\s*<\?xml\b([\s\S]*?)\?>/i);
+  if (declaration) {
+    const encoding = declaration[1].match(/\bencoding\s*=\s*(["'])(.*?)\1/i)?.[2];
+    if (encoding && !/^utf-?8$/i.test(encoding)) {
+      throw new Error("SVG input must use UTF-8 encoding.");
+    }
+  }
+  const withoutDeclaration = declaration
+    ? source.slice(declaration[0].length)
+    : source;
+  if (/<\?/.test(withoutDeclaration)) {
+    throw new Error("SVG processing instructions are not accepted.");
+  }
+  const withoutComments = withoutDeclaration.replace(/<!--[\s\S]*?-->/g, "");
+  if (/<!--|-->/.test(withoutComments)) {
+    throw new Error("SVG input contains an unterminated comment.");
+  }
+  if (/<!\s*(?:doctype|entity)|<!\[cdata\[/i.test(withoutComments)) {
+    throw new Error("SVG DTDs, entities, and CDATA sections are not accepted.");
+  }
+  const root = withoutComments.match(/^\s*<svg\b([^>]*)>/i);
+  if (!root || !/<\/svg\s*>\s*$/i.test(withoutComments)) {
+    throw new Error("SVG input must contain one complete, unprefixed svg root element.");
+  }
+
+  const disallowedElement = /<\s*\/?\s*(?:script|style|foreignObject|iframe|object|embed|image|use|a|audio|video|link|cursor|filter|mask|animate|animateMotion|animateTransform|set|mpath|text|tspan|textPath)\b/i;
+  if (disallowedElement.test(withoutComments)) {
+    throw new Error(
+      "SVG scripts, CSS, external-resource, animation, filter, and masking elements are not accepted.",
+    );
+  }
+  if (
+    /\b(?:href|xlink:href|src|poster|style|xml:base)\s*=/i.test(withoutComments) ||
+    /\bon[a-z0-9_.:-]*\s*=/i.test(withoutComments) ||
+    /@import/i.test(withoutComments)
+  ) {
+    throw new Error("SVG external references, inline CSS, and event handlers are not accepted.");
+  }
+  for (const match of withoutComments.matchAll(/url\s*\(\s*([^)]+?)\s*\)/gi)) {
+    const reference = match[1].trim().replace(/^(["'])(.*)\1$/, "$2");
+    if (!/^#[A-Za-z_][\w.:-]*$/.test(reference)) {
+      throw new Error("SVG paint URLs must be local fragment references.");
+    }
+  }
+  const elements = [
+    ...withoutComments.matchAll(/<\s*([A-Za-z_][\w:.-]*)\b/g),
+  ];
+  if (elements.some((match) => match[1].includes(":"))) {
+    throw new Error("SVG namespace-prefixed elements are not accepted.");
+  }
+  if (elements.length > MAX_SVG_ELEMENTS) {
+    throw new Error(`SVG input exceeds the ${MAX_SVG_ELEMENTS.toLocaleString()}-element safety limit.`);
+  }
+
+  const attribute = (name: string) =>
+    root[1].match(new RegExp(`(?:^|\\s)${name}\\s*=\\s*(["'])(.*?)\\1`, "i"))?.[2];
+  const width = parseSvgLength(attribute("width"), "width");
+  const height = parseSvgLength(attribute("height"), "height");
+  if ((width == null) !== (height == null)) {
+    throw new Error("SVG width and height must either both be present or both be omitted.");
+  }
+  const dimensions = { width: width ?? 300, height: height ?? 150 };
+  const pixels = dimensions.width * dimensions.height;
+  if (
+    dimensions.width > MAX_IMAGE_DIMENSION ||
+    dimensions.height > MAX_IMAGE_DIMENSION ||
+    pixels > MAX_IMAGE_PIXELS
+  ) {
+    throw new Error(
+      "SVG dimensions exceed the 8,192-pixel edge or 8-megapixel decoded safety limit.",
+    );
+  }
+  return dimensions;
+}
+
 async function readImageHeader(
   file: File,
   metrics: ConversionMetrics,
@@ -935,6 +1071,67 @@ function createIcoHeader(
   view.setUint32(14, payloadBytes, true);
   view.setUint32(18, header.byteLength, true);
   return header;
+}
+
+async function runSvgToPng(
+  file: File,
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  if (file.size < 1 || file.size > MAX_SVG_INPUT_BYTES) {
+    throw new Error("SVG input must be between 1 byte and the 4 MiB safety limit.");
+  }
+  const source = await readBoundedUtf8(file, metrics, jobId, startedAt);
+  const expected = parseSvgDimensions(source);
+  let renderer: InstanceType<typeof Resvg> | null = null;
+  let rendered: ReturnType<InstanceType<typeof Resvg>["render"]> | null = null;
+  try {
+    resvgInitialization ??= initResvgWasm(fetch(RESVG_WASM_URL));
+    await resvgInitialization;
+    emitProgress(jobId, "Rasterizing SVG", metrics, startedAt, true);
+    renderer = new Resvg(source, {
+      fitTo: { mode: "original" },
+      font: { loadSystemFonts: false },
+      shapeRendering: 2,
+      textRendering: 2,
+      imageRendering: 0,
+    });
+    if (
+      renderer.width !== expected.width ||
+      renderer.height !== expected.height ||
+      renderer.width * renderer.height > MAX_IMAGE_PIXELS
+    ) {
+      throw new Error(
+        `SVG raster dimensions ${renderer.width}\u00d7${renderer.height} do not match the bounded ${expected.width}\u00d7${expected.height} inspection.`,
+      );
+    }
+    emitProgress(jobId, "Encoding PNG", metrics, startedAt, true);
+    rendered = renderer.render();
+    if (rendered.width !== expected.width || rendered.height !== expected.height) {
+      throw new Error("The SVG renderer returned unexpected output dimensions.");
+    }
+    const output = rendered.asPng();
+    if (output.byteLength < 1 || output.byteLength > MAX_IMAGE_OUTPUT_BYTES) {
+      throw new Error("Encoded SVG raster exceeds the 64 MiB output safety limit.");
+    }
+    for (let offset = 0; offset < output.byteLength; offset += MAX_WRITE_CHUNK) {
+      assertActive();
+      await writeBounded(
+        destination,
+        output.subarray(offset, Math.min(offset + MAX_WRITE_CHUNK, output.byteLength)),
+        jobId,
+        "Writing PNG",
+        metrics,
+        startedAt,
+      );
+    }
+    metrics.inputBytes = file.size;
+  } finally {
+    rendered?.free();
+    renderer?.free();
+  }
 }
 
 async function runImageConversion(
@@ -2964,6 +3161,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         file,
         destination.writable,
         profileId === "ass-to-vtt",
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else if (profileId === "svg-to-png") {
+      await runSvgToPng(
+        file,
+        destination.writable,
         jobId,
         metrics,
         startedAt,

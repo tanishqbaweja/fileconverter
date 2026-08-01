@@ -1,0 +1,20 @@
+{
+  "generatedBy": "scripts/generate-svg-stress-fixture.py",
+  "bytes": 327564,
+  "sha256": "8f3447eeabe7c15690e6c6320912b1f464aea15443b6cdb2645dc9affe799763",
+  "width": 3840,
+  "height": 2160,
+  "elements": 5185,
+  "validationReference": "fixtures/stress/images/svg-grid-8m-reference.png",
+  "validationBytes": 32928,
+  "validationSha256": "7b72d81436dfe1157b2d35ddd49feda1a67184387df0d498a0cef0960403e7e9",
+  "probe": {
+    "streams": [
+      {
+        "width": 3840,
+        "height": 2160,
+        "nb_frames": "1"
+      }
+    ]
+  }
+}

@@ -326,6 +326,13 @@ const categories = {
       ["tar-xz-to-tar", "fixtures/stress/archives/archive-256m.tar.xz"],
     ],
   },
+  gzip: {
+    generator: "scripts/generate-stress-fixture.mjs",
+    generatorArguments: ["256"],
+    profiles: [
+      ["gzip-compress", "fixtures/stress/deterministic-256m.bin"],
+    ],
+  },
   sevenzip: {
     generator: "scripts/generate-sevenzip-stress-fixture.mjs",
     profiles: [
@@ -372,6 +379,12 @@ const categories = {
     generator: "scripts/generate-tiff-stress-fixture.mjs",
     profiles: [
       ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m.tiff"],
+    ],
+  },
+  svg: {
+    generator: "scripts/generate-svg-stress-fixture.mjs",
+    profiles: [
+      ["svg-to-png", "fixtures/stress/images/svg-grid-8m.svg"],
     ],
   },
 };
