@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 99
+complete-Chromium memory profile have passed. The current registry publishes 102
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
-| Standalone audio | M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC; M4A/MP3/FLAC/AIFF/OGG/Opus -> WAV; M4A/MP3/WAV -> FLAC | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
@@ -233,6 +233,13 @@ probe so sequence-header dimensions and frame rate are used instead of the raw
 demuxer's generic defaults. The site converts their decoded YUV 4:2:0 frames to
 either 2 Mbit/s MPEG-4 Part 2 MP4 or realtime 600 kbit/s VP8 WebM. Elementary
 streams have no audio, chapters, attachments, or container metadata to carry.
+
+Raw AAC/ADTS input uses FFmpeg's bounded AAC demuxer. The M4A route copies AAC
+frames without re-encoding, removes the ADTS transport headers with
+`aac_adtstoasc`, and writes equivalent elementary payload into fragmented M4A.
+The WAV and FLAC routes genuinely decode AAC, resample to stereo PCM s16le, and
+write bounded PCM or losslessly compressed decoded audio. Raw ADTS has no
+container artwork, chapters, language tag, or general metadata to preserve.
 
 ## Non-media engines and limitations
 
@@ -466,6 +473,9 @@ Current exact-build results:
 | OGV → WAV | 3 | 137,635,308 B | 74,880,078 B | 204.9 MiB | 32 MiB | 12.4–31.6 MiB |
 | M2V → MPEG-4 MP4 | 3 | 136,166,136 B | 124,300,753 B | 177.1 MiB | 32 MiB | 1.1–8.3 MiB |
 | M2V → VP8 WebM | 3 | 136,166,136 B | 37,835,173 B | 163.9 MiB | 32 MiB | 2.6–6.8 MiB |
+| AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
+| AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
+| AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -536,6 +546,14 @@ AVI-to-WAV completed in 3.97-4.30 seconds. All six runs stayed within the
 262,144-byte I/O bound, produced byte-identical outputs per route, passed native
 packet traversal or full decoded-audio APSNR validation, and deleted the large
 generated AVI and converted copies after measurement.
+
+The raw AAC stress source is a genuine 134,367,785-byte, 4,011.84-second AAC-LC
+ADTS stream. AAC-to-M4A completed in 1.81-2.23 seconds with an exact elementary
+packet SHA-256 match after removing ADTS framing. AAC-to-WAV completed in
+19.20-19.62 seconds and AAC-to-FLAC in 22.02-22.50 seconds; both decoded-audio
+comparisons measured 154.165 dB APSNR per channel. Every run kept reads at or
+below 262,144 bytes, held at most one queued write, and the category cleanup
+deleted the generated stress source and every converted copy.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

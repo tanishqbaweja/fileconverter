@@ -62,6 +62,7 @@ const generatedStressExtensions = new Set([
   ".mp3",
   ".flac",
   ".aiff",
+  ".aac",
   ".ogg",
   ".ogv",
   ".opus",

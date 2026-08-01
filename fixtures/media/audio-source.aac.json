@@ -1,0 +1,68 @@
+{
+  "generatedBy": "scripts/generate-aac-fixture.mjs",
+  "decodedAudioDurationSeconds": 4.032,
+  "bytes": 135043,
+  "sha256": "f1b7449626cbd1490ddecaaca07fa2499a8ca57b92bab441b456d9b1c4385531",
+  "losslessPcmReference": false,
+  "minimumDecodedAudioPsnrDb": 60,
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "aac",
+        "codec_long_name": "AAC (Advanced Audio Coding)",
+        "profile": "LC",
+        "codec_type": "audio",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "mp4a.40.2",
+        "sample_fmt": "fltp",
+        "sample_rate": "48000",
+        "channels": 2,
+        "channel_layout": "stereo",
+        "bits_per_sample": 0,
+        "initial_padding": 0,
+        "r_frame_rate": "0/0",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/28224000",
+        "duration_ts": 113813381,
+        "duration": "4.032504",
+        "bit_rate": "267935",
+        "nb_read_frames": "189",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\media\\audio-source.aac",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "aac",
+      "format_long_name": "raw ADTS AAC (Advanced Audio Coding)",
+      "duration": "4.032504",
+      "size": "135043",
+      "bit_rate": "267908",
+      "probe_score": 51
+    }
+  }
+}

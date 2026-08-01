@@ -67,6 +67,7 @@ if (
     "mpeg-ts-to-m4a",
     "flv-to-m4a",
     "mp4-to-m4a",
+    "aac-to-m4a",
     "mkv-to-wav",
     "mov-to-wav",
     "3gp-to-wav",
@@ -75,12 +76,14 @@ if (
     "avi-to-wav",
     "mp4-to-wav",
     "m4a-to-wav",
+    "aac-to-wav",
     "mp3-to-wav",
     "flac-to-wav",
     "aiff-to-wav",
     "ogg-to-wav",
     "opus-to-wav",
     "m4a-to-flac",
+    "aac-to-flac",
     "mp3-to-flac",
     "wav-to-flac",
     "mkv-to-mp4-mpeg4",
@@ -110,6 +113,7 @@ const isMediaProfile =
   profileId === "mpeg-ts-to-m4a" ||
   profileId === "flv-to-m4a" ||
   profileId === "mp4-to-m4a" ||
+  profileId === "aac-to-m4a" ||
   profileId === "mkv-to-wav" ||
   profileId === "mov-to-wav" ||
   profileId === "3gp-to-wav" ||
@@ -118,12 +122,14 @@ const isMediaProfile =
   profileId === "avi-to-wav" ||
   profileId === "mp4-to-wav" ||
   profileId === "m4a-to-wav" ||
+  profileId === "aac-to-wav" ||
   profileId === "mp3-to-wav" ||
   profileId === "flac-to-wav" ||
   profileId === "aiff-to-wav" ||
   profileId === "ogg-to-wav" ||
   profileId === "opus-to-wav" ||
   profileId === "m4a-to-flac" ||
+  profileId === "aac-to-flac" ||
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
   profileId === "mkv-to-mp4-mpeg4" ||
@@ -646,6 +652,7 @@ async function validateMediaOutput(
     route === "mpeg-ts-to-m4a" ||
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
+    route === "aac-to-m4a" ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
     route === "3gp-to-wav" ||
@@ -655,12 +662,14 @@ async function validateMediaOutput(
     route === "ogv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
+    route === "aac-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
     route === "aiff-to-wav" ||
     route === "ogg-to-wav" ||
     route === "opus-to-wav" ||
     route === "m4a-to-flac" ||
+    route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac";
   const pcmOutput =
@@ -673,6 +682,7 @@ async function validateMediaOutput(
     route === "ogv-to-wav" ||
     route === "mp4-to-wav" ||
     route === "m4a-to-wav" ||
+    route === "aac-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
     route === "aiff-to-wav" ||
@@ -680,6 +690,7 @@ async function validateMediaOutput(
     route === "opus-to-wav";
   const flacOutput =
     route === "m4a-to-flac" ||
+    route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac";
   const webmReencode =
@@ -817,6 +828,49 @@ async function validateMediaOutput(
       ),
     };
   }
+  if (route === "aac-to-m4a") {
+    const packetHashes = [];
+    for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
+      const sourceAdtsFilter =
+        candidateIndex === 0 ? ["-bsf:a", "aac_adtstoasc"] : [];
+      const { stdout: packetHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-i",
+          candidate,
+          "-map",
+          "0:a:0",
+          "-c:a",
+          "copy",
+          ...sourceAdtsFilter,
+          "-f",
+          "hash",
+          "-hash",
+          "sha256",
+          "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 8 * 1024 * 1024,
+        },
+      );
+      packetHashes.push(packetHash.trim().split("=")[1]);
+    }
+    if (!packetHashes[0] || packetHashes[0] !== packetHashes[1]) {
+      throw new Error(
+        "Browser M4A AAC packets do not match the raw ADTS source payload.",
+      );
+    }
+    independentAudioValidation = {
+      method: "aac-packet-sha256",
+      passed: true,
+      sha256: packetHashes[0],
+    };
+  }
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -873,7 +927,8 @@ async function validateMediaOutput(
       : null;
   const sourceDuration = sourceDurationSeconds;
   const expectedDuration =
-    audioOnly && (pcmOutput || flacOutput)
+    audioOnly &&
+    (pcmOutput || flacOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -901,6 +956,7 @@ async function validateMediaOutput(
       route === "mpeg-ts-to-m4a" ||
       route === "flv-to-m4a" ||
       route === "mp4-to-m4a" ||
+      route === "aac-to-m4a" ||
       webmAudioCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
     Math.abs(duration - expectedDuration) > 0.25
@@ -1010,7 +1066,8 @@ async function validateMediaOutput(
     route === "3gp-to-m4a" ||
     route === "mpeg-ts-to-m4a" ||
     route === "flv-to-m4a" ||
-    route === "mp4-to-m4a";
+    route === "mp4-to-m4a" ||
+    route === "aac-to-m4a";
   await execFileAsync(
     "ffmpeg",
     [

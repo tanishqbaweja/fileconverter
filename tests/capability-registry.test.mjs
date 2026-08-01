@@ -107,6 +107,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
+  assert.equal(detectFormat({ name: "audio.ADTS", type: "" }), "aac");
   assert.equal(detectFormat({ name: "photo.avif", type: "" }), "avif");
   assert.equal(detectFormat({ name: "legacy.BMP", type: "" }), "bmp");
   assert.equal(detectFormat({ name: "application.ICO", type: "" }), "ico");

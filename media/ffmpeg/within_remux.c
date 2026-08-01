@@ -1622,12 +1622,13 @@ int within_remux(int profile) {
       goto cleanup;
     }
     if (input_format->iformat && input_format->iformat->name &&
-        strstr(input_format->iformat->name, "mpegts") &&
+        (strstr(input_format->iformat->name, "mpegts") ||
+         strcmp(input_format->iformat->name, "aac") == 0) &&
         input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
       const AVBitStreamFilter *filter =
           av_bsf_get_by_name("aac_adtstoasc");
       if (!filter) {
-        within_message(2, "The MPEG-TS AAC compatibility filter is unavailable.");
+        within_message(2, "The AAC-to-MP4 compatibility filter is unavailable.");
         result = AVERROR_BSF_NOT_FOUND;
         goto cleanup;
       }

@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **99**
-- Public profiles with a retained successful Chrome stress report: **98**
+- Public passed conversion profiles: **102**
+- Public profiles with a retained successful Chrome stress report: **101**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Retained Chrome stress evidence
@@ -23,6 +23,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 | 3gp-to-m4a | 167,130,850 | 3 | 11,539,835 | 1.12 s–1.50 s | 204.8 MiB | 32.0 MiB | read 262,144 B / write 80,761 B | passed |
 | 3gp-to-mp4 | 167,130,850 | 3 | 167,156,758 | 1.66 s–1.93 s | 209.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | 3gp-to-wav | 167,130,850 | 3 | 69,130,350 | 3.66 s–3.91 s | 193.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
+| aac-to-flac | 134,367,785 | 3 | 114,800,971 | 22.02 s–22.50 s | 167.1 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| aac-to-m4a | 134,367,785 | 3 | 133,906,114 | 1.81 s–2.23 s | 179.8 MiB | 32.0 MiB | read 262,144 B / write 167,549 B | passed |
+| aac-to-wav | 134,367,785 | 3 | 770,273,358 | 19.20 s–19.62 s | 186.5 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
 | aiff-to-wav | 201,600,102 | 3 | 201,600,128 | 3.38 s–4.24 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -126,6 +129,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 | 3gp-to-m4a | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-mp4 | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-wav | video | ffmpeg-audio | re-encode | 167,130,850 B | 3-run Chrome report |
+| aac-to-flac | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
+| aac-to-m4a | audio | ffmpeg-remux | stream-copy | 134,367,785 B | 3-run Chrome report |
+| aac-to-wav | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aiff-to-wav | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
@@ -228,7 +234,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
 - Video/container: additional elementary-stream inputs/outputs; broader OGV, 3GP, and AVI codec combinations plus VP9, AV1, MPEG-2 container/audio combinations, and additional codec conversions.
-- Audio: raw AAC, ALAC, AMR, and WMA routes; user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
+- Audio: ALAC, AMR, and WMA routes; broader AAC variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: TIFF, HEIF/HEIC, JPEG XL, SVG rasterization, animated WebP/AVIF, and camera raw formats.
 - Archives/compression: BZIP2, XZ, and 7Z.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.

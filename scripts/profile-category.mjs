@@ -36,6 +36,17 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  aac: {
+    generator: "scripts/generate-aac-stress-fixture.mjs",
+    profiles: [
+      ["aac-to-m4a", "audio-aac-128m.aac"],
+      ["aac-to-wav", "audio-aac-128m.aac"],
+      ["aac-to-flac", "audio-aac-128m.aac"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [

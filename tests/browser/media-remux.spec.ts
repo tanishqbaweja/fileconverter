@@ -29,6 +29,9 @@ const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
 const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
+const aacM4aOutputPath = path.join(outputRoot, "aac-remux-output.m4a");
+const aacWavOutputPath = path.join(outputRoot, "aac-convert-output.wav");
+const aacFlacOutputPath = path.join(outputRoot, "aac-convert-output.flac");
 const m4aOutputPath = path.join(outputRoot, "extract-output.m4a");
 const mp4M4aOutputPath = path.join(outputRoot, "mp4-extract-output.m4a");
 const movM4aOutputPath = path.join(outputRoot, "mov-extract-output.m4a");
@@ -123,6 +126,12 @@ const audioFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.m4a",
+);
+const aacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.aac",
 );
 const mp3FixturePath = path.join(
   projectRoot,
@@ -230,6 +239,9 @@ test.beforeAll(async () => {
   assertProjectLocal(flvMp4OutputPath);
   assertProjectLocal(aviMp4OutputPath);
   assertProjectLocal(directMp4OutputPath);
+  assertProjectLocal(aacM4aOutputPath);
+  assertProjectLocal(aacWavOutputPath);
+  assertProjectLocal(aacFlacOutputPath);
   assertProjectLocal(m4aOutputPath);
   assertProjectLocal(mp4M4aOutputPath);
   assertProjectLocal(movM4aOutputPath);
@@ -367,6 +379,9 @@ test.afterAll(async () => {
   await rm(directWavOutputPath, { force: true });
   await rm(directM4aOutputPath, { force: true });
   await rm(directFlacOutputPath, { force: true });
+  await rm(aacM4aOutputPath, { force: true });
+  await rm(aacWavOutputPath, { force: true });
+  await rm(aacFlacOutputPath, { force: true });
   await rm(m4aOutputPath, { force: true });
   await rm(mp4M4aOutputPath, { force: true });
   await rm(movM4aOutputPath, { force: true });
@@ -474,6 +489,7 @@ async function runMediaRoute(
     | "mpeg-ts-to-m4a"
     | "flv-to-m4a"
     | "mp4-to-m4a"
+    | "aac-to-m4a"
     | "mkv-to-wav"
     | "mov-to-wav"
     | "3gp-to-wav"
@@ -482,9 +498,11 @@ async function runMediaRoute(
     | "avi-to-wav"
     | "mp4-to-wav"
     | "m4a-to-wav"
+    | "aac-to-wav"
     | "mp3-to-wav"
     | "flac-to-wav"
     | "m4a-to-flac"
+    | "aac-to-flac"
     | "mp3-to-flac"
     | "wav-to-flac"
     | "aiff-to-wav"
@@ -550,9 +568,12 @@ async function runMediaRoute(
       );
     } else if (
       profileId === "m4a-to-wav" ||
+      profileId === "aac-to-m4a" ||
+      profileId === "aac-to-wav" ||
       profileId === "mp3-to-wav" ||
       profileId === "flac-to-wav" ||
       profileId === "m4a-to-flac" ||
+      profileId === "aac-to-flac" ||
       profileId === "mp3-to-flac" ||
       profileId === "wav-to-flac" ||
       profileId === "aiff-to-wav" ||
@@ -1192,6 +1213,26 @@ test("browser FFmpeg AVIO extracts MP4 audio to valid M4A with bounded I/O", asy
   );
 });
 
+test("browser FFmpeg losslessly remuxes raw AAC into bounded M4A", async () => {
+  await runMediaRoute(
+    "aac-to-m4a",
+    aacM4aOutputPath,
+    ["aac"],
+    20_000,
+    aacFixturePath,
+    {
+      expectedWarningFragments: [],
+      validate: async (_probe, outputPath) => {
+        await execFileAsync(
+          "ffmpeg",
+          ["-v", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
+  );
+});
+
 test("browser FFmpeg AVIO extracts QuickTime MOV audio to valid M4A", async () => {
   await runMediaRoute(
     "mov-to-m4a",
@@ -1318,6 +1359,16 @@ test("browser FFmpeg converts a standalone M4A audio file to PCM WAV", async () 
   );
 });
 
+test("browser FFmpeg decodes raw AAC to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "aac-to-wav",
+    aacWavOutputPath,
+    ["pcm_s16le"],
+    300_000,
+    aacFixturePath,
+  );
+});
+
 test("browser FFmpeg decodes a standalone MP3 file to PCM WAV", async () => {
   await runMediaRoute(
     "mp3-to-wav",
@@ -1345,6 +1396,16 @@ test("browser FFmpeg converts standalone M4A audio to FLAC", async () => {
     ["flac"],
     20_000,
     audioFixturePath,
+  );
+});
+
+test("browser FFmpeg decodes raw AAC and encodes FLAC", async () => {
+  await runMediaRoute(
+    "aac-to-flac",
+    aacFlacOutputPath,
+    ["flac"],
+    20_000,
+    aacFixturePath,
   );
 });
 
