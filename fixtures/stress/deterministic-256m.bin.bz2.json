@@ -1,0 +1,8 @@
+{
+  "generatedBy": "scripts/generate-bzip2-stress-fixtures.mjs",
+  "compressionLevel": 1,
+  "bytes": 270593081,
+  "sha256": "b62597d499bc9ea902a6c1fedf751aeccd15aa169a182e9fa8d51004e81bbae8",
+  "validationBytes": 268435456,
+  "validationSha256": "bc5c01970c2033cae17a1d2d125fcf3ce7faabbcbde003a669725c52d9481c13"
+}

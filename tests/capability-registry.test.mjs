@@ -87,10 +87,40 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   ]);
 });
 
+test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/bzip2/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "bzip2-wasm",
+  );
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
+  assert.equal(manifest.bzip2Version, "1.0.8");
+  assert.equal(manifest.initialWasmMemoryBytes, 8 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 8 * 1024 * 1024);
+  assert.equal(manifest.inputBufferBytes, 256 * 1024);
+  assert.equal(manifest.outputBufferBytes, 64 * 1024);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(manifest.compressionBlockSize100k, 1);
+});
+
 test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(
     detectFormat({ name: "backup.tar.gz", type: "application/gzip" }),
     "tar-gz",
+  );
+  assert.equal(
+    detectFormat({ name: "backup.TAR.BZ2", type: "application/x-bzip2" }),
+    "tar-bz2",
+  );
+  assert.equal(detectFormat({ name: "payload.BZ2", type: "" }), "bzip2");
+  assert.ok(
+    publicProfilesFor("bzip2", true).some(
+      (profile) => profile.id === "bzip2-decompress",
+    ),
   );
   assert.ok(
     publicProfilesFor("zip").some(

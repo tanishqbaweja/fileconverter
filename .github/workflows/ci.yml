@@ -28,8 +28,11 @@ jobs:
       - name: Rebuild pinned FFmpeg/Wasm core
         run: npm run build:ffmpeg-remux
 
+      - name: Rebuild pinned BZIP2/Wasm core
+        run: npm run build:bzip2
+
       - name: Verify reproducible engine artifacts
-        run: git diff --exit-code -- public/engines/remux
+        run: git diff --exit-code -- public/engines/remux public/engines/bzip2
 
       - run: npm run lint
       - run: npx tsc --noEmit --incremental false

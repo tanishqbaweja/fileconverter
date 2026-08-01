@@ -1,0 +1,7 @@
+{
+  "generatedBy": "scripts/generate-bzip2-fixtures.mjs",
+  "bytes": 154,
+  "sha256": "eedf8df063327e6d325745bfab2bfc7513ab1bb3a610fb1e08f3786d28102728",
+  "validationBytes": 2048,
+  "validationSha256": "86a30851dfc4d3aa93567172dd4946da2404f27ebce73f691a0f70d87e3ab9c6"
+}

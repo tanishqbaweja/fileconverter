@@ -305,6 +305,18 @@ const categories = {
       `fixtures/stress/archives/${name}`,
     ]),
   },
+  bzip2: {
+    generator: "scripts/generate-bzip2-stress-fixtures.mjs",
+    profiles: [
+      ["bzip2-compress", "fixtures/stress/deterministic-256m.bin"],
+      ["bzip2-decompress", "fixtures/stress/deterministic-256m.bin.bz2"],
+      ["tar-to-tar-bz2", "fixtures/stress/archives/archive-256m.tar"],
+      [
+        "tar-bz2-to-tar",
+        "fixtures/stress/archives/archive-256m.tar.bz2",
+      ],
+    ],
+  },
   images: {
     generator: "scripts/generate-image-fixtures.mjs",
     profiles: [

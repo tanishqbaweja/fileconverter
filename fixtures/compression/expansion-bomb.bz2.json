@@ -1,0 +1,8 @@
+{
+  "generatedBy": "scripts/generate-bzip2-fixtures.mjs",
+  "purpose": "BZIP2 expansion-ratio rejection fixture",
+  "bytes": 48,
+  "sha256": "497e17f6e046d3c5dd892e38b919a24b0bfd22558f8dda2a6ce838c2a5ef50ae",
+  "validationBytes": 2097152,
+  "validationSha256": "5647f05ec18958947d32874eeb788fa396a05d0bab7c1b71f112ceb7e9b31eee"
+}

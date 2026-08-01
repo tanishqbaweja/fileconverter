@@ -46,6 +46,13 @@ const isStreamingTextProfile =
 const isArchiveCompressionProfile =
   profileId === "tar-to-tar-gz" ||
   profileId === "tar-gz-to-tar";
+const isBzip2Profile =
+  profileId === "bzip2-compress" ||
+  profileId === "bzip2-decompress" ||
+  profileId === "tar-to-tar-bz2" ||
+  profileId === "tar-bz2-to-tar";
+const isBzip2CompressedOutput =
+  profileId === "bzip2-compress" || profileId === "tar-to-tar-bz2";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
   profileId === "zip-to-tar-gz" ||
@@ -55,6 +62,10 @@ if (
   ![
     "gzip-compress",
     "gzip-decompress",
+    "bzip2-compress",
+    "bzip2-decompress",
+    "tar-to-tar-bz2",
+    "tar-bz2-to-tar",
     "mkv-to-mp4",
     "mov-to-mp4",
     "3gp-to-mp4",
@@ -198,6 +209,8 @@ if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
 const maximumWriteChunkBytes =
   destinationMode === "direct-handle" && profileId === "mkv-to-mp4"
     ? 1024 * 1024
+    : isBzip2Profile
+      ? 64 * 1024
     : 256 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
@@ -324,6 +337,8 @@ try {
     activeRun = run;
     const validationHash = createHash("sha256");
     let validationBytes = 0;
+    let outputSha256 = null;
+    let externalValidationSha256 = null;
     await page.goto(testUrl);
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -394,38 +409,66 @@ try {
     }
 
     let mediaProbe = null;
-    if (isMediaProfile || isImageProfile || isArchiveTransformProfile) {
+    if (
+      isMediaProfile ||
+      isImageProfile ||
+      isArchiveTransformProfile ||
+      isBzip2CompressedOutput
+    ) {
       const physicalOutputPath = await findProjectLocalPayload(
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      for await (const chunk of createReadStream(physicalOutputPath, {
-        highWaterMark: 1024 * 1024,
-      })) {
-        validationHash.update(chunk);
-        validationBytes += chunk.byteLength;
+      if (isBzip2CompressedOutput) {
+        outputSha256 = (await hashFile(physicalOutputPath)).sha256;
+        const decoded = await validateBzip2Output(physicalOutputPath);
+        validationBytes = decoded.bytes;
+        externalValidationSha256 = decoded.sha256;
+        if (
+          validationBytes !== expectedValidationBytes ||
+          externalValidationSha256 !== expectedValidationHash
+        ) {
+          throw new Error(
+            `Independent streamed BZIP2 validation failed on run ${run}: ${validationBytes} bytes.`,
+          );
+        }
+        mediaProbe = {
+          withinValidation: {
+            method: "python-bz2-stream-sha256",
+            passed: true,
+            bytes: validationBytes,
+            sha256: externalValidationSha256,
+          },
+        };
+      } else {
+        for await (const chunk of createReadStream(physicalOutputPath, {
+          highWaterMark: 1024 * 1024,
+        })) {
+          validationHash.update(chunk);
+          validationBytes += chunk.byteLength;
+        }
+        mediaProbe = isArchiveTransformProfile
+          ? await validateArchiveOutput(
+            physicalOutputPath,
+            fixtureManifest,
+            profileId,
+          )
+          : isMediaProfile
+            ? await validateMediaOutput(
+                physicalOutputPath,
+                fixturePath,
+                fixtureManifest,
+                finalState,
+                profileId,
+              )
+            : await validateImageOutput(
+                physicalOutputPath,
+                fixturePath,
+                fixtureManifest,
+                finalState,
+                profileId,
+              );
       }
-      mediaProbe = isArchiveTransformProfile
-        ? await validateArchiveOutput(
-            physicalOutputPath,
-            fixtureManifest,
-            profileId,
-          )
-        : isMediaProfile
-          ? await validateMediaOutput(
-            physicalOutputPath,
-            fixturePath,
-            fixtureManifest,
-            finalState,
-            profileId,
-          )
-          : await validateImageOutput(
-              physicalOutputPath,
-              fixturePath,
-              fixtureManifest,
-              finalState,
-              profileId,
-            );
     } else {
       const validationPage = await context.newPage();
       await validationPage.exposeBinding(
@@ -478,7 +521,9 @@ try {
         );
       }
     }
-    const actualHash = validationHash.digest("hex");
+    const validationSha256 =
+      externalValidationSha256 ?? validationHash.digest("hex");
+    const actualHash = outputSha256 ?? validationSha256;
 
     const cleanupPage = await context.newPage();
     await cleanupPage.goto(`${serverUrl}/test-validator.html`);
@@ -528,6 +573,7 @@ try {
         (cleanupStable.privateBytes - loadedStable.privateBytes) / (1024 * 1024),
       sha256: actualHash,
       validationBytes,
+      validationSha256,
       mediaProbe,
     });
   }
@@ -558,9 +604,10 @@ try {
     ),
     wasmMemoryBytes: runSummaries.every(
       (run) =>
-        !isMediaProfile ||
+        (!isMediaProfile && !isBzip2Profile) ||
         (typeof run.peakWasmMemoryBytes === "number" &&
-          run.peakWasmMemoryBytes <= 128 * 1024 * 1024),
+          run.peakWasmMemoryBytes <=
+            (isBzip2Profile ? 8 * 1024 * 1024 : 128 * 1024 * 1024)),
     ),
     cleanupRecovery: runSummaries.every(
       (run) =>
@@ -1152,6 +1199,48 @@ async function validateMediaOutput(
       : "full-packet-traversal",
   };
   return probe;
+}
+
+async function hashFile(filePath) {
+  const hash = createHash("sha256");
+  let bytes = 0;
+  for await (const chunk of createReadStream(filePath, {
+    highWaterMark: 1024 * 1024,
+  })) {
+    hash.update(chunk);
+    bytes += chunk.byteLength;
+  }
+  return { bytes, sha256: hash.digest("hex") };
+}
+
+async function validateBzip2Output(filePath) {
+  const python = String.raw`
+import bz2, hashlib, json, sys
+h = hashlib.sha256()
+n = 0
+with bz2.open(sys.argv[1], "rb") as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256)
+  ) {
+    throw new Error("The independent BZIP2 validator returned invalid evidence.");
+  }
+  return result;
 }
 
 async function validateArchiveOutput(localPath, source, route) {

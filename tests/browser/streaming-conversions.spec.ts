@@ -1,8 +1,13 @@
 import { expect, test, chromium, type BrowserContext, type Page } from "@playwright/test";
+import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
 import { createWriteStream, existsSync } from "node:fs";
 import { once } from "node:events";
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { promisify } from "node:util";
+
+const execFileAsync = promisify(execFile);
 
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
 const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
@@ -14,6 +19,9 @@ const cancellationFixturePath = path.join(
   "work",
   "cancellation-source.ndjson",
 );
+const corruptBzip2FixturePath = path.join(projectRoot, "work", "corrupt.bz2");
+const truncatedBzip2FixturePath = path.join(projectRoot, "work", "truncated.bz2");
+const browserBzip2OutputPath = path.join(projectRoot, "work", "browser-output.bz2");
 const batchFixturePaths = [
   path.join(projectRoot, "work", "batch-café.txt"),
   path.join(projectRoot, "work", "batch-日本語.txt"),
@@ -43,6 +51,8 @@ interface TestState {
     maxReadChunkBytes: number;
     maxWriteChunkBytes: number;
     elapsedMs: number;
+    wasmMemoryBytes?: number;
+    peakWasmMemoryBytes?: number;
   } | null;
   error: string | null;
   warnings: string[];
@@ -104,6 +114,52 @@ async function readAndDeleteOpfsText(name: string): Promise<string> {
   }, name);
 }
 
+async function copyAndDeleteSmallOpfsFile(
+  name: string,
+  outputPath: string,
+): Promise<void> {
+  const base64 = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+    let binary = "";
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    await root.removeEntry(opfsName);
+    return btoa(binary);
+  }, name);
+  await writeFile(outputPath, Buffer.from(base64, "base64"));
+}
+
+async function bzip2DecodedDigest(filePath: string) {
+  const python = String.raw`
+import bz2, hashlib, json, sys
+h = hashlib.sha256()
+n = 0
+with bz2.open(sys.argv[1], "rb") as source:
+    while True:
+        chunk = source.read(262144)
+        if not chunk:
+            break
+        h.update(chunk)
+        n += len(chunk)
+print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as { bytes: number; sha256: string };
+}
+
+async function fileDigest(filePath: string) {
+  const bytes = await readFile(filePath);
+  return {
+    bytes: bytes.byteLength,
+    sha256: createHash("sha256").update(bytes).digest("hex"),
+  };
+}
+
 async function appOwnedOpfsNames(prefix: string): Promise<string[]> {
   return page.evaluate(async (expectedPrefix) => {
     const root = await navigator.storage.getDirectory();
@@ -151,6 +207,17 @@ test.beforeAll(async () => {
   await mkdir(profileRoot, { recursive: true });
   await writeFile(batchFixturePaths[0], "First private batch payload: café.\n", "utf8");
   await writeFile(batchFixturePaths[1], "Second private batch payload: 日本語.\n", "utf8");
+  await writeFile(
+    corruptBzip2FixturePath,
+    Buffer.from("This is deliberately not a BZIP2 stream.\n", "utf8"),
+  );
+  const validBzip2 = await readFile(
+    path.join(projectRoot, "fixtures", "compression", "sample.txt.bz2"),
+  );
+  await writeFile(
+    truncatedBzip2FixturePath,
+    validBzip2.subarray(0, validBzip2.byteLength - 7),
+  );
   const cancellationFixture = createWriteStream(cancellationFixturePath, {
     flags: "w",
   });
@@ -207,6 +274,9 @@ test.afterAll(async () => {
   await context?.close();
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
+  await rm(corruptBzip2FixturePath, { force: true });
+  await rm(truncatedBzip2FixturePath, { force: true });
+  await rm(browserBzip2OutputPath, { force: true });
   await Promise.all(batchFixturePaths.map((fixture) => rm(fixture, { force: true })));
 });
 
@@ -1233,6 +1303,109 @@ test("decompresses browser GZIP without buffering the output", async () => {
   );
 });
 
+test("compresses a byte stream with the bounded BZIP2 Wasm engine", async () => {
+  await selectFixture(
+    "fixtures/compression/sample.expected.txt",
+    "bzip2-compress",
+  );
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  expect(state.metrics?.peakWasmMemoryBytes).toBe(8 * 1024 * 1024);
+  await copyAndDeleteSmallOpfsFile(state.opfsName!, browserBzip2OutputPath);
+  try {
+    expect(await bzip2DecodedDigest(browserBzip2OutputPath)).toEqual(
+      await fileDigest(
+        path.join(projectRoot, "fixtures", "compression", "sample.expected.txt"),
+      ),
+    );
+  } finally {
+    await rm(browserBzip2OutputPath, { force: true });
+  }
+});
+
+test("decompresses BZIP2 to the exact original bytes", async () => {
+  await selectFixture(
+    "fixtures/compression/sample.txt.bz2",
+    "bzip2-decompress",
+  );
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  expect(state.metrics?.peakWasmMemoryBytes).toBe(8 * 1024 * 1024);
+  expect(await readAndDeleteOpfsText(state.opfsName!)).toBe(
+    await readFile(
+      path.join(projectRoot, "fixtures", "compression", "sample.expected.txt"),
+      "utf8",
+    ),
+  );
+});
+
+test("compresses validated USTAR to TAR.BZ2", async () => {
+  await selectFixture("fixtures/archives/sample.tar", "tar-to-tar-bz2");
+  const state = await convert();
+  await copyAndDeleteSmallOpfsFile(state.opfsName!, browserBzip2OutputPath);
+  try {
+    expect(await bzip2DecodedDigest(browserBzip2OutputPath)).toEqual(
+      await fileDigest(path.join(projectRoot, "fixtures", "archives", "sample.tar")),
+    );
+  } finally {
+    await rm(browserBzip2OutputPath, { force: true });
+  }
+});
+
+test("decompresses TAR.BZ2 to an exact structurally valid TAR", async () => {
+  await selectFixture("fixtures/archives/sample.tar.bz2", "tar-bz2-to-tar");
+  const state = await convert();
+  const base64 = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+    let binary = "";
+    for (const byte of bytes) binary += String.fromCharCode(byte);
+    await root.removeEntry(opfsName);
+    return btoa(binary);
+  }, state.opfsName!);
+  const output = Buffer.from(base64, "base64");
+  expect(output).toEqual(
+    await readFile(path.join(projectRoot, "fixtures", "archives", "sample.tar")),
+  );
+  expect(output.subarray(257, 262).toString("ascii")).toBe("ustar");
+});
+
+for (const [fixture, expectedError] of [
+  [corruptBzip2FixturePath, "invalid stream header"],
+  [truncatedBzip2FixturePath, "truncated"],
+] as const) {
+  test(`rejects ${path.basename(fixture)} and deletes partial BZIP2 output`, async () => {
+    await selectFixture(path.relative(projectRoot, fixture), "bzip2-decompress");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-bzip2-decompress")).toEqual([]);
+  });
+}
+
+test("rejects a BZIP2 expansion bomb and deletes partial output", async () => {
+  await selectFixture(
+    "fixtures/compression/expansion-bomb.bz2",
+    "bzip2-decompress",
+  );
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("expansion safety limit");
+  expect(state.metrics?.outputBytes).toBeLessThanOrEqual(1024 * 1024);
+  expect(state.opfsName).toBeNull();
+  expect(await appOwnedOpfsNames("within-test-bzip2-decompress")).toEqual([]);
+});
+
 test("compresses a valid TAR archive to TAR.GZ with bounded writes", async () => {
   await selectFixture("fixtures/archives/sample.tar", "tar-to-tar-gz");
   const state = await convert();
@@ -1570,7 +1743,9 @@ test("converts a 1,024-entry TAR.GZ directly to ZIP", async () => {
 
 for (const [fixture, profileId, expectedError] of [
   ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-gz", "Unsafe TAR entry"],
+  ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-bz2", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-tar", "Unsafe TAR entry"],
+  ["fixtures/archives/unsafe-entry.tar.bz2", "tar-bz2-to-tar", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-gz", "Unsafe ZIP entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-zip", "Unsafe TAR entry"],
@@ -1599,6 +1774,8 @@ for (const [fixture, profileId, expectedError] of [
 for (const [fixture, profileId] of [
   ["fixtures/archives/sample.zip", "zip-to-tar-gz"],
   ["fixtures/archives/sample.tar.gz", "tar-gz-to-zip"],
+  ["fixtures/compression/sample.expected.txt", "bzip2-compress"],
+  ["fixtures/archives/sample.tar.bz2", "tar-bz2-to-tar"],
 ] as const) {
   test(`${profileId} propagates a nested output failure and cleans up`, async () => {
     await openFaultMode("write");

@@ -22,9 +22,15 @@ sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b
 Project: https://emscripten.org/
 License: MIT and University of Illinois/NCSA components
 
+bzip2 1.0.8
+Source: https://sourceware.org/pub/bzip2/bzip2-1.0.8.tar.gz
+SHA-256: ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269
+Project: https://sourceware.org/bzip2/
+License: bzip2-1.0.8 license (see public/engines/bzip2/LICENSE.bzip2)
+
 Exact configure switches, enabled components, memory limits, and build commands
-are in media/ffmpeg/ and public/engines/remux/build-manifest.json in the source
-repository.
+are in media/ffmpeg/, compression/bzip2/, and their corresponding build
+manifests under public/engines/ in the source repository.
 
 These notices describe copyright licenses, not patent rights. Deployers remain
 responsible for evaluating codec patent obligations in their jurisdictions.

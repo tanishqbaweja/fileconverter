@@ -1,5 +1,6 @@
 export type EngineId =
   | "compression-stream"
+  | "bzip2-wasm"
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
@@ -69,6 +70,13 @@ export const formats = [
     category: "compression",
   },
   {
+    id: "bzip2",
+    label: "BZIP2",
+    extensions: ["bz2", "bzip2"],
+    mimeTypes: ["application/x-bzip2"],
+    category: "compression",
+  },
+  {
     id: "tar",
     label: "TAR archive",
     extensions: ["tar"],
@@ -80,6 +88,13 @@ export const formats = [
     label: "Compressed TAR (TAR.GZ)",
     extensions: ["tar.gz", "tgz"],
     mimeTypes: ["application/gzip", "application/x-gtar"],
+    category: "archive",
+  },
+  {
+    id: "tar-bz2",
+    label: "Compressed TAR (TAR.BZ2)",
+    extensions: ["tar.bz2", "tbz2", "tbz"],
+    mimeTypes: ["application/x-bzip2"],
     category: "archive",
   },
   {
@@ -527,6 +542,80 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     ],
     fidelityLimitations: [],
     maxTestedBytes: 268_517_399,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "bzip2-compress",
+    input: "binary",
+    output: "bzip2",
+    engine: "bzip2-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "BZIP2 stores a single byte stream, not a directory tree or original filename.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_435_456,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "bzip2-decompress",
+    input: "bzip2",
+    output: "binary",
+    engine: "bzip2-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "The original filename is inferred from the .bz2 suffix.",
+      "Concatenated BZIP2 members and trailing data are rejected.",
+      "Decompression stops above 64 GiB or a 100:1 expansion ratio after the first MiB.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 270_593_081,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "tar-to-tar-bz2",
+    input: "tar",
+    output: "tar-bz2",
+    engine: "bzip2-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "This bounded route accepts UTF-8 USTAR headers and rejects GNU/PAX extended records.",
+      "Archives are validated but not extracted; original TAR entry bytes are preserved before compression.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_436_992,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "tar-bz2-to-tar",
+    input: "tar-bz2",
+    output: "tar",
+    engine: "bzip2-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "This bounded route accepts UTF-8 USTAR headers and rejects GNU/PAX extended records.",
+      "Archives are validated but not extracted; original TAR entry bytes are preserved after decompression.",
+      "Concatenated BZIP2 members and trailing data are rejected.",
+      "Decompression stops above 64 GiB or a 100:1 expansion ratio after the first MiB.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 270_592_763,
     automatedTestStatus: "passed",
     public: true,
   },
@@ -2378,7 +2467,8 @@ export function publicProfilesFor(
     (profile) =>
       profile.public &&
       (profile.input === input ||
-        (profile.id === "gzip-compress" && input !== "gzip")) &&
+        (profile.id === "gzip-compress" && input !== "gzip") ||
+        (profile.id === "bzip2-compress" && input !== "bzip2")) &&
       (includePending || profile.automatedTestStatus === "passed"),
   );
 }

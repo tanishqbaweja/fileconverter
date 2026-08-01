@@ -7,6 +7,7 @@ import type {
   WorkerResponse,
 } from "../lib/conversion-protocol";
 import { runZipArchiveConversion } from "./archive-conversion";
+import { runBzip2Conversion } from "./bzip2-compression";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
 import { runEpubToText } from "./epub-conversion";
@@ -249,6 +250,7 @@ async function writeBounded(
   phase: string,
   metrics: ConversionMetrics,
   startedAt: number,
+  sourceIsOwned = false,
 ): Promise<void> {
   for (let offset = 0; offset < chunk.byteLength; offset += MAX_WRITE_CHUNK) {
     assertActive();
@@ -270,8 +272,10 @@ async function writeBounded(
       metrics.maxWriteChunkBytes,
       part.byteLength,
     );
-    const writeChunk = new Uint8Array(part.byteLength);
-    writeChunk.set(part);
+    const writeChunk =
+      sourceIsOwned && part.buffer instanceof ArrayBuffer
+        ? new Uint8Array(part.buffer, part.byteOffset, part.byteLength)
+        : part.slice();
     try {
       await destination.write(writeChunk);
       metrics.outputBytes += part.byteLength;
@@ -2635,6 +2639,47 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       return;
     }
     if (
+      profileId === "bzip2-compress" ||
+      profileId === "bzip2-decompress" ||
+      profileId === "tar-to-tar-bz2" ||
+      profileId === "tar-bz2-to-tar"
+    ) {
+      const decompress =
+        profileId === "bzip2-decompress" ||
+        profileId === "tar-bz2-to-tar";
+      const validateTar =
+        profileId === "tar-to-tar-bz2" ||
+        profileId === "tar-bz2-to-tar";
+      const tarValidator = validateTar ? new TarStreamValidator() : null;
+      const bzip2Destination = destination.writable;
+      await runBzip2Conversion({
+        file,
+        decompress,
+        metrics,
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+        write: (chunk, phase) =>
+          writeBounded(
+            bzip2Destination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+            true,
+          ),
+        validateInput:
+          validateTar && !decompress
+            ? (chunk) => tarValidator!.push(chunk)
+            : undefined,
+        validateOutput:
+          validateTar && decompress
+            ? (chunk) => tarValidator!.push(chunk)
+            : undefined,
+      });
+      tarValidator?.finish();
+    } else if (
       profileId === "gzip-compress" ||
       profileId === "gzip-decompress" ||
       profileId === "tar-to-tar-gz" ||

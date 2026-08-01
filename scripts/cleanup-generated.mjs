@@ -57,6 +57,7 @@ const retainedOutputExtensions = new Set([".json", ".csv", ".html"]);
 const generatedStressExtensions = new Set([
   ".bin",
   ".gz",
+  ".bz2",
   ".mkv",
   ".m4a",
   ".mp3",
