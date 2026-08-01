@@ -108,6 +108,24 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
   assert.equal(detectFormat({ name: "audio.ADTS", type: "" }), "aac");
+  assert.equal(detectFormat({ name: "legacy-audio.WMA", type: "" }), "wma");
+  assert.equal(
+    formats.find((format) => format.id === "wma")?.extensions[0],
+    "wma",
+  );
+  assert.deepEqual(
+    conversionProfiles
+      .filter((profile) => profile.input === "wma" || profile.output === "wma")
+      .map((profile) => profile.id)
+      .sort(),
+    ["flac-to-wma", "wav-to-wma", "wma-to-flac", "wma-to-wav"],
+  );
+  assert.ok(
+    publicProfilesFor("wma").some((profile) => profile.id === "wma-to-wav"),
+  );
+  assert.ok(
+    publicProfilesFor("wav").some((profile) => profile.id === "wav-to-wma"),
+  );
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
   assert.equal(
     formats.find((format) => format.id === "alac")?.extensions[0],

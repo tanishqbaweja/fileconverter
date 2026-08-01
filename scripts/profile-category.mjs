@@ -59,6 +59,18 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  wma: {
+    generator: "scripts/generate-wma-stress-fixture.mjs",
+    profiles: [
+      ["wma-to-wav", "audio-wma-128m.wma"],
+      ["wma-to-flac", "audio-wma-128m.wma"],
+      ["wav-to-wma", "audio-pcm-wma-128m.wav"],
+      ["flac-to-wma", "audio-flac-wma-128m.flac"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [

@@ -79,6 +79,7 @@ if (
     "aac-to-wav",
     "mp3-to-wav",
     "flac-to-wav",
+    "wma-to-wav",
     "aiff-to-wav",
     "ogg-to-wav",
     "opus-to-wav",
@@ -86,8 +87,11 @@ if (
     "aac-to-flac",
     "mp3-to-flac",
     "wav-to-flac",
+    "wma-to-flac",
     "wav-to-alac",
     "flac-to-alac",
+    "wav-to-wma",
+    "flac-to-wma",
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
     "ogv-to-webm",
@@ -127,6 +131,7 @@ const isMediaProfile =
   profileId === "aac-to-wav" ||
   profileId === "mp3-to-wav" ||
   profileId === "flac-to-wav" ||
+  profileId === "wma-to-wav" ||
   profileId === "aiff-to-wav" ||
   profileId === "ogg-to-wav" ||
   profileId === "opus-to-wav" ||
@@ -134,8 +139,11 @@ const isMediaProfile =
   profileId === "aac-to-flac" ||
   profileId === "mp3-to-flac" ||
   profileId === "wav-to-flac" ||
+  profileId === "wma-to-flac" ||
   profileId === "wav-to-alac" ||
   profileId === "flac-to-alac" ||
+  profileId === "wav-to-wma" ||
+  profileId === "flac-to-wma" ||
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
   profileId === "ogv-to-webm" ||
@@ -669,6 +677,7 @@ async function validateMediaOutput(
     route === "aac-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
+    route === "wma-to-wav" ||
     route === "aiff-to-wav" ||
     route === "ogg-to-wav" ||
     route === "opus-to-wav" ||
@@ -676,8 +685,11 @@ async function validateMediaOutput(
     route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
     route === "wav-to-flac" ||
+    route === "wma-to-flac" ||
     route === "wav-to-alac" ||
-    route === "flac-to-alac";
+    route === "flac-to-alac" ||
+    route === "wav-to-wma" ||
+    route === "flac-to-wma";
   const pcmOutput =
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
@@ -691,6 +703,7 @@ async function validateMediaOutput(
     route === "aac-to-wav" ||
     route === "mp3-to-wav" ||
     route === "flac-to-wav" ||
+    route === "wma-to-wav" ||
     route === "aiff-to-wav" ||
     route === "ogg-to-wav" ||
     route === "opus-to-wav";
@@ -698,9 +711,12 @@ async function validateMediaOutput(
     route === "m4a-to-flac" ||
     route === "aac-to-flac" ||
     route === "mp3-to-flac" ||
-    route === "wav-to-flac";
+    route === "wav-to-flac" ||
+    route === "wma-to-flac";
   const alacOutput =
     route === "wav-to-alac" || route === "flac-to-alac";
+  const wmaOutput =
+    route === "wav-to-wma" || route === "flac-to-wma";
   const webmReencode =
     route === "mkv-to-webm" ||
     route === "ogv-to-webm" ||
@@ -782,7 +798,7 @@ async function validateMediaOutput(
       passed: true,
       sha256: source.decodedPcmSha256,
     };
-  } else if (pcmOutput || flacOutput || alacOutput) {
+  } else if (pcmOutput || flacOutput || alacOutput || wmaOutput) {
     const minimumPsnrDb = source.minimumDecodedAudioPsnrDb ?? 60;
     const { stderr: qualityLog } = await execFileAsync(
       "ffmpeg",
@@ -915,6 +931,8 @@ async function validateMediaOutput(
               ? "flac"
               : alacOutput
                 ? "alac"
+                : wmaOutput
+                  ? "wmav2"
                 : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
@@ -963,7 +981,10 @@ async function validateMediaOutput(
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
     ((audioOnly || webmAudioCopy) &&
-      audio?.channels !== sourceAudio?.channels) ||
+      audio?.channels !==
+        (wmaOutput
+          ? Math.min(2, sourceAudio?.channels ?? 0)
+          : sourceAudio?.channels)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
@@ -1085,7 +1106,9 @@ async function validateMediaOutput(
     route === "mp4-to-m4a" ||
     route === "aac-to-m4a" ||
     route === "wav-to-alac" ||
-    route === "flac-to-alac";
+    route === "flac-to-alac" ||
+    route === "wav-to-wma" ||
+    route === "flac-to-wma";
   await execFileAsync(
     "ffmpeg",
     [

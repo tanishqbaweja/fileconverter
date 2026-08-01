@@ -58,6 +58,10 @@ const alacWavOutputPath = path.join(outputRoot, "alac-decode-output.wav");
 const alacFlacOutputPath = path.join(outputRoot, "alac-decode-output.flac");
 const wavAlacOutputPath = path.join(outputRoot, "wav-encode-output.m4a");
 const flacAlacOutputPath = path.join(outputRoot, "flac-encode-output.m4a");
+const wmaWavOutputPath = path.join(outputRoot, "wma-decode-output.wav");
+const wmaFlacOutputPath = path.join(outputRoot, "wma-decode-output.flac");
+const wavWmaOutputPath = path.join(outputRoot, "wav-encode-output.wma");
+const flacWmaOutputPath = path.join(outputRoot, "flac-encode-output.wma");
 const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
 const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
@@ -137,6 +141,12 @@ const alacFixturePath = path.join(
   "media",
   "audio-source-alac.m4a",
 );
+const wmaFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.wma",
+);
 const aacFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -208,6 +218,9 @@ interface ProbeStream {
   codec_type: string;
   width?: number;
   height?: number;
+  sample_rate?: string;
+  channels?: number;
+  bit_rate?: string;
   tags?: Record<string, string>;
   disposition?: Record<string, number>;
 }
@@ -262,6 +275,34 @@ async function expectDecodedPcmMatch(
   );
 }
 
+async function expectDecodedAudioPsnr(
+  sourcePath: string,
+  outputPath: string,
+  minimumPsnrDb: number,
+): Promise<void> {
+  const { stderr } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-nostdin", "-i", sourcePath, "-i", outputPath,
+      "-filter_complex",
+      "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]apsnr[quality]",
+      "-map", "[quality]", "-f", "null", "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const psnrValues = [
+    ...stderr.matchAll(
+      /PSNR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
+    ),
+  ].map((match) =>
+    match[1].toLowerCase() === "inf"
+      ? Number.POSITIVE_INFINITY
+      : Number.parseFloat(match[1]),
+  );
+  expect(psnrValues.length).toBeGreaterThan(0);
+  for (const value of psnrValues) expect(value).toBeGreaterThanOrEqual(minimumPsnrDb);
+}
+
 test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
@@ -297,6 +338,10 @@ test.beforeAll(async () => {
   assertProjectLocal(alacFlacOutputPath);
   assertProjectLocal(wavAlacOutputPath);
   assertProjectLocal(flacAlacOutputPath);
+  assertProjectLocal(wmaWavOutputPath);
+  assertProjectLocal(wmaFlacOutputPath);
+  assertProjectLocal(wavWmaOutputPath);
+  assertProjectLocal(flacWmaOutputPath);
   assertProjectLocal(aiffWavOutputPath);
   assertProjectLocal(oggWavOutputPath);
   assertProjectLocal(opusWavOutputPath);
@@ -441,6 +486,10 @@ test.afterAll(async () => {
   await rm(alacFlacOutputPath, { force: true });
   await rm(wavAlacOutputPath, { force: true });
   await rm(flacAlacOutputPath, { force: true });
+  await rm(wmaWavOutputPath, { force: true });
+  await rm(wmaFlacOutputPath, { force: true });
+  await rm(wavWmaOutputPath, { force: true });
+  await rm(flacWmaOutputPath, { force: true });
   await rm(aiffWavOutputPath, { force: true });
   await rm(oggWavOutputPath, { force: true });
   await rm(opusWavOutputPath, { force: true });
@@ -547,6 +596,10 @@ async function runMediaRoute(
     | "wav-to-flac"
     | "wav-to-alac"
     | "flac-to-alac"
+    | "wma-to-wav"
+    | "wma-to-flac"
+    | "wav-to-wma"
+    | "flac-to-wma"
     | "aiff-to-wav"
     | "ogg-to-wav"
     | "opus-to-wav"
@@ -620,6 +673,10 @@ async function runMediaRoute(
       profileId === "wav-to-flac" ||
       profileId === "wav-to-alac" ||
       profileId === "flac-to-alac" ||
+      profileId === "wma-to-wav" ||
+      profileId === "wma-to-flac" ||
+      profileId === "wav-to-wma" ||
+      profileId === "flac-to-wma" ||
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav"
@@ -1514,6 +1571,62 @@ test("browser FFmpeg losslessly transcodes FLAC to ALAC M4A", async () => {
     20_000,
     flacFixturePath,
     { validate: async (_probe, outputPath) => expectDecodedPcmMatch(flacFixturePath, outputPath) },
+  );
+});
+
+test("browser FFmpeg decodes WMA2 to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "wma-to-wav",
+    wmaWavOutputPath,
+    ["pcm_s16le"],
+    700_000,
+    wmaFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60) },
+  );
+});
+
+test("browser FFmpeg converts WMA2 to FLAC", async () => {
+  await runMediaRoute(
+    "wma-to-flac",
+    wmaFlacOutputPath,
+    ["flac"],
+    20_000,
+    wmaFixturePath,
+    { validate: async (_probe, outputPath) => expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60) },
+  );
+});
+
+test("browser FFmpeg encodes PCM WAV as WMA2", async () => {
+  await runMediaRoute(
+    "wav-to-wma",
+    wavWmaOutputPath,
+    ["wmav2"],
+    20_000,
+    wavFixturePath,
+    {
+      validate: async (probe, outputPath) => {
+        expect(probe.streams[0]?.sample_rate).toBe("48000");
+        expect(probe.streams[0]?.bit_rate).toBe("320000");
+        await expectDecodedAudioPsnr(wavFixturePath, outputPath, 60);
+      },
+    },
+  );
+});
+
+test("browser FFmpeg encodes FLAC as WMA2", async () => {
+  await runMediaRoute(
+    "flac-to-wma",
+    flacWmaOutputPath,
+    ["wmav2"],
+    20_000,
+    flacFixturePath,
+    {
+      validate: async (probe, outputPath) => {
+        expect(probe.streams[0]?.sample_rate).toBe("48000");
+        expect(probe.streams[0]?.bit_rate).toBe("320000");
+        await expectDecodedAudioPsnr(flacFixturePath, outputPath, 60);
+      },
+    },
   );
 });
 

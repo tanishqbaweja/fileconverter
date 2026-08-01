@@ -66,6 +66,7 @@ const generatedStressExtensions = new Set([
   ".ogg",
   ".ogv",
   ".opus",
+  ".wma",
   ".mp4",
   ".mov",
   ".3gp",

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 104
+complete-Chromium memory profile have passed. The current registry publishes 108
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MOV/3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, or WAV -> FLAC; WAV/FLAC -> ALAC M4A | 201,600,106 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, or WMA -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 201,600,106 B |
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
@@ -480,6 +480,10 @@ Current exact-build results:
 | ALAC M4A → FLAC, fresh-session repeat | 3 | 140,941,469 B | 138,185,793 B | 230.4 MiB | 32 MiB | 9.5–38.7 MiB |
 | WAV → ALAC M4A | 3 | 153,600,106 B | 140,941,506 B | 200.2 MiB | 32 MiB | 13.5–40.0 MiB |
 | FLAC → ALAC M4A | 3 | 138,185,686 B | 140,941,506 B | 199.1 MiB | 32 MiB | 11.8–43.8 MiB |
+| WMA2 → WAV | 3 | 142,503,082 B | 364,798,078 B | 190.7 MiB | 32 MiB | 4.5–34.3 MiB |
+| WMA2 → FLAC | 3 | 142,503,082 B | 326,238,814 B | 191.2 MiB | 32 MiB | −0.6–4.7 MiB |
+| WAV → WMA2 | 3 | 153,600,104 B | 60,000,756 B | 150.2 MiB | 32 MiB | 5.8–41.4 MiB |
+| FLAC → WMA2 | 3 | 138,186,536 B | 60,000,756 B | 159.9 MiB | 32 MiB | 0.8–5.1 MiB |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 
@@ -570,6 +574,16 @@ remaining lossless, fragments M4A for bounded incremental writing, and keeps a
 single write of at most 262,144 bytes queued. The near-limit ALAC-to-FLAC route
 also passed three additional runs in a fresh Chrome process tree at 230.4 MiB.
 Cleanup deleted all three large sources and every converted copy.
+
+The WMA gate used a genuine 142,503,082-byte, 1,900-second WMA2 source plus
+153,600,104-byte WAV and 138,186,536-byte FLAC sources. WMA-to-WAV completed
+in 7.95-8.20 seconds and WMA-to-FLAC in 12.91-13.56 seconds. WAV-to-WMA2
+completed in 11.72-11.98 seconds and FLAC-to-WMA2 in 13.07-13.37 seconds,
+using a fixed 320 kbit/s, 48 kHz encoder configuration that preserves mono or
+stereo and downmixes larger layouts to stereo. Independent full-decode APSNR
+validation passed for every result. All reads stayed at or below 262,144 bytes;
+WMA output writes were at most 3,200 bytes, and one write was pending at a
+time. Cleanup deleted the three large sources and every converted copy.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and

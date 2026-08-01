@@ -33,6 +33,7 @@
 /fixtures/stress/media/*.ogg
 /fixtures/stress/media/*.ogv
 /fixtures/stress/media/*.opus
+/fixtures/stress/media/*.wma
 /fixtures/stress/data/*.csv
 /fixtures/stress/data/*.tsv
 /fixtures/stress/data/*.ndjson

@@ -565,6 +565,7 @@ static int drain_audio_decoder(WithinAudioPipeline *pipeline,
 static int within_audio_transcode(int profile) {
   const int flac_output = profile == 6;
   const int alac_output = profile == 8;
+  const int wma_output = profile == 9;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -688,8 +689,11 @@ static int within_audio_transcode(int profile) {
   }
 
   const AVCodec *encoder_codec = avcodec_find_encoder(
-      alac_output ? AV_CODEC_ID_ALAC
-                  : flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
+      wma_output
+          ? AV_CODEC_ID_WMAV2
+          : alac_output
+                ? AV_CODEC_ID_ALAC
+                : flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -699,13 +703,25 @@ static int within_audio_transcode(int profile) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  encoder->sample_rate = decoder->sample_rate;
-  encoder->sample_fmt = alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
+  encoder->sample_rate = wma_output ? 48000 : decoder->sample_rate;
+  encoder->sample_fmt =
+      wma_output ? AV_SAMPLE_FMT_FLTP
+                 : alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
   encoder->time_base = (AVRational){1, encoder->sample_rate};
-  if (alac_output &&
-      decoder->ch_layout.order == AV_CHANNEL_ORDER_UNSPEC) {
-    av_channel_layout_default(&encoder->ch_layout,
-                              decoder->ch_layout.nb_channels);
+  if (decoder->ch_layout.order == AV_CHANNEL_ORDER_UNSPEC) {
+    int channels = decoder->ch_layout.nb_channels;
+    av_channel_layout_uninit(&decoder->ch_layout);
+    av_channel_layout_default(&decoder->ch_layout, channels);
+    if (decoder->ch_layout.nb_channels <= 0) {
+      result = AVERROR(EINVAL);
+      goto cleanup;
+    }
+  }
+  if (wma_output) {
+    av_channel_layout_default(
+        &encoder->ch_layout,
+        decoder->ch_layout.nb_channels > 2 ? 2
+                                           : decoder->ch_layout.nb_channels);
     result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
   } else {
     result =
@@ -718,6 +734,8 @@ static int within_audio_transcode(int profile) {
     encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
     av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
     av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
+  } else if (wma_output) {
+    encoder->bit_rate = 320000;
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   av_dict_free(&encoder_options);
@@ -733,7 +751,10 @@ static int within_audio_transcode(int profile) {
 
   result = avformat_alloc_output_context2(
       &output_format, NULL,
-      alac_output ? "ipod" : flac_output ? "flac" : "wav", NULL);
+      wma_output
+          ? "asf"
+          : alac_output ? "ipod" : flac_output ? "flac" : "wav",
+      NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
     goto cleanup;
@@ -1484,7 +1505,7 @@ int within_remux(int profile) {
   WithinOutput output = {.position = 0, .size = 0};
   AVPacket *packet = NULL;
 
-  if (profile == 3 || profile == 6 || profile == 8) {
+  if (profile == 3 || profile == 6 || profile == 8 || profile == 9) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {
