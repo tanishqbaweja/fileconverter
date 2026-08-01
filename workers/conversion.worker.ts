@@ -10,6 +10,7 @@ import { runZipArchiveConversion } from "./archive-conversion";
 import { runDocumentConversion } from "./document-conversion";
 import { runDocxToText } from "./docx-conversion";
 import { runEpubToText } from "./epub-conversion";
+import { runXlsxToCsv } from "./xlsx-conversion";
 import { runMediaRemux } from "./media-remux";
 import { runXmlToNdjson } from "./xml-conversion";
 import {
@@ -2606,6 +2607,25 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         write: (chunk, phase) =>
           writeBounded(
             ebookDestination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+          ),
+        warn: (message) => post({ type: "warning", jobId, message }),
+        assertActive,
+        progress: (phase) =>
+          emitProgress(jobId, phase, metrics, startedAt),
+      });
+    } else if (profileId === "xlsx-to-csv") {
+      const spreadsheetDestination = destination.writable;
+      await runXlsxToCsv({
+        file,
+        metrics,
+        write: (chunk, phase) =>
+          writeBounded(
+            spreadsheetDestination,
             chunk,
             jobId,
             phase,

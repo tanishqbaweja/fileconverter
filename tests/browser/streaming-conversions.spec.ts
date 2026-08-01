@@ -359,6 +359,42 @@ for (const [fixture, expectedError] of [
   });
 }
 
+test("streams the first visible XLSX worksheet to coordinate-faithful CSV", async () => {
+  await selectFixture("fixtures/spreadsheets/sample.xlsx", "xlsx-to-csv");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toBe(
+    "Name,42.5,,inline\r\n" +
+      '"Comma, quote "" and line\nbreak 😀",TRUE,#DIV/0!,2026-08-01T12:34:56Z\r\n' +
+      "\r\n" +
+      "7,,cached text\r\n",
+  );
+  const warnings = state.warnings.join(" ");
+  expect(warnings).toContain("first visible worksheet");
+  expect(warnings).toContain("additional visible XLSX worksheet was omitted");
+  expect(warnings).toContain("hidden XLSX worksheet was omitted");
+  expect(warnings).toContain("formula had no cached result");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(await appOwnedOpfsNames("within-test-xlsx-to-csv")).toEqual([]);
+});
+
+for (const [fixture, expectedError] of [
+  ["fixtures/spreadsheets/unsafe-doctype.xlsx", "DTD"],
+  ["fixtures/spreadsheets/unsafe-reference.xlsx", "escapes its root"],
+] as const) {
+  test(`rejects hostile XLSX package ${path.basename(fixture)} and removes partial output`, async () => {
+    await selectFixture(fixture, "xlsx-to-csv");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-xlsx-to-csv")).toEqual([]);
+  });
+}
+
 test("streams EPUB spine text in reading order with explicit fidelity limits", async () => {
   await selectFixture("fixtures/ebooks/sample.epub", "epub-to-txt");
   const state = await convert();

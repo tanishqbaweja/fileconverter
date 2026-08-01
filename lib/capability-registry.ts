@@ -3,6 +3,7 @@ export type EngineId =
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
+  | "spreadsheet-stream"
   | "subtitle-stream"
   | "records-stream"
   | "xml-stream"
@@ -18,6 +19,7 @@ export type FormatCategory =
   | "data"
   | "document"
   | "ebook"
+  | "spreadsheet"
   | "image"
   | "video"
   | "audio";
@@ -162,6 +164,15 @@ export const formats = [
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
     ],
     category: "document",
+  },
+  {
+    id: "xlsx",
+    label: "Excel workbook (XLSX)",
+    extensions: ["xlsx"],
+    mimeTypes: [
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    ],
+    category: "spreadsheet",
   },
   {
     id: "epub",
@@ -747,6 +758,33 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "CSS, fonts, links, images, cover art, SVG, MathML, audio, video, scripts, and page layout are not represented in plain text.",
     ],
     maxTestedBytes: 134_219_595,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "xlsx-to-csv",
+    input: "xlsx",
+    output: "csv",
+    engine: "spreadsheet-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "DecompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Exports only the first visible worksheet; other visible and hidden worksheets, workbook metadata, charts, drawings, comments, hyperlinks, images, and print layout are omitted.",
+      "Macro-enabled packages, unsafe ZIP paths or references, encrypted entries, ZIP64, archive bombs, malformed XML, DTDs, custom entities, and non-UTF-8 XML are rejected.",
+      "Shared strings are bounded to 262,144 items, 8 MiB of characters, and 1 MiB per cell.",
+    ],
+    fidelityLimitations: [
+      "Preserves worksheet coordinates and gaps, numbers, Booleans, errors, inline strings, Unicode, and bounded rich shared strings.",
+      "Formulas are not recalculated; stored cached results are exported, and formulas without cached results become empty fields.",
+      "Excel number formats and styles are not rendered, so date serials and formatted numbers are emitted as stored values.",
+    ],
+    maxTestedBytes: 135_267_834,
     automatedTestStatus: "passed",
     public: true,
   },

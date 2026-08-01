@@ -1,0 +1,13 @@
+{
+  "generatedBy": "scripts/generate-spreadsheet-stress-fixtures.mjs",
+  "rows": 812639,
+  "worksheetBytes": 135266443,
+  "bytes": 135267834,
+  "sha256": "87e72a88b3714432f5d7b53f5677191ab20bcb4e7df226a98c905aee7a207dc5",
+  "expectedByProfile": {
+    "xlsx-to-csv": {
+      "validationBytes": 55148347,
+      "validationSha256": "36ec9079f8e98eaf6a64907b2e90c092b465332c8fd0670c0666e08878dfa8f9"
+    }
+  }
+}

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 72
+complete-Chromium memory profile have passed. The current registry publishes 73
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -23,6 +23,7 @@ routes:
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | DOCX -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
+| Spreadsheets | XLSX -> first-visible-sheet CSV | 135,267,834 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations | 24,883,254 B |
 | Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/WebM; MP4 -> M4A/WAV | 10,737,988,703 B |
@@ -99,6 +100,9 @@ Hard limits:
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
 - DOCX package metadata part: 1 MiB; main XML token: 256 KiB; package expansion: 100:1
 - EPUB package metadata part: 2 MiB; spine items: 10,000; package expansion: 100:1
+- XLSX metadata part: 2 MiB; shared-string XML: 64 MiB; shared strings:
+  262,144 items, 8 MiB total characters, and 1 MiB per cell; worksheets:
+  1,048,576 rows by 16,384 columns; package expansion: 100:1
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - ICO output: one PNG-compressed image; 256 px maximum per edge
@@ -269,11 +273,23 @@ Unicode text are retained. Encrypted/obfuscated resources, unsafe references,
 malformed XML, DTDs, external entities, and unsupported spine media types are
 rejected; non-linear content and non-text presentation are explicitly omitted.
 
+XLSX-to-CSV validates the OOXML content types, root relationship, workbook,
+workbook relationships, and selected worksheet before emitting CSV. It parses
+only the first visible worksheet and streams coordinate-aware rows directly to
+one reusable 256 KiB output buffer; it never materializes the workbook or CSV
+as a whole. Empty row/column gaps, numbers, Booleans, errors, inline strings,
+Unicode, and bounded rich shared strings are retained. Stored formula results
+are used without recalculation. Other sheets, styles, number-format rendering,
+drawings, comments, hyperlinks, images, and print layout are disclosed as
+omitted. Macro packages, unsafe references, encryption, ZIP64, archive bombs,
+DTDs, custom entities, non-UTF-8 XML, and malformed package structures are
+rejected.
+
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, TIFF, ICO, JPEG XL, SVG, camera raw,
-animated-image output, 7Z, BZIP2, XZ, XLSX/PPTX, ODT/ODS/ODP, and
+animated-image output, 7Z, BZIP2, XZ, PPTX, ODT/ODS/ODP, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -395,6 +411,7 @@ profiler:
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 | Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
 | Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |
+| Spreadsheets, XLSX -> CSV | 135,267,834 B | 218.4 MiB | exact streamed output hash |
 
 The DOCX profile produced the same 90,834,111-byte SHA-256
 `876c08b205daafe39dd7681d819a69d177262377b345e9144bb82df09025333e`
@@ -408,6 +425,15 @@ in all three runs. Conversion took 6.89-6.94 seconds with one 262,144-byte
 write in flight. The final worst result was 205.5 MiB after a pre-optimization
 run exposed and rejected a 254.3 MiB peak; all generated EPUBs, outputs, and
 browser profiles were removed after each profiling session.
+
+The XLSX profile streamed an 812,639-row, 135,267,834-byte workbook to the same
+55,148,347-byte SHA-256
+`36ec9079f8e98eaf6a64907b2e90c092b465332c8fd0670c0666e08878dfa8f9`
+in all three runs. Conversion took 14.67-15.26 seconds with one 262,144-byte
+write in flight. The generator emits the large worksheet directly into its ZIP,
+the worker emits CSV directly to the destination, and the category runner
+removed the generated workbook, converted outputs, and browser profile after
+validation.
 
 The three MP4 outputs shared SHA-256
 `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`

@@ -90,6 +90,15 @@ const categories = {
       ],
     ),
   },
+  spreadsheets: {
+    generator: "scripts/generate-spreadsheet-stress-fixtures.mjs",
+    profiles: [["xlsx-to-csv", "spreadsheet-128m.xlsx"]].map(
+      ([profileId, name]) => [
+        profileId,
+        `fixtures/stress/spreadsheets/${name}`,
+      ],
+    ),
+  },
   archives: {
     generator: "scripts/generate-archive-fixtures.mjs",
     generatorArguments: ["--include-stress"],

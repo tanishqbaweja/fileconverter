@@ -122,6 +122,12 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "docx-to-txt",
     ),
   );
+  assert.equal(detectFormat({ name: "ledger.XLSX", type: "" }), "xlsx");
+  assert.ok(
+    publicProfilesFor("xlsx", true).some(
+      (profile) => profile.id === "xlsx-to-csv",
+    ),
+  );
   assert.equal(detectFormat({ name: "book.EPUB", type: "" }), "epub");
   assert.ok(
     publicProfilesFor("epub").some(
