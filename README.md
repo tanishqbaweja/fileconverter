@@ -13,13 +13,13 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 62
+  complete-Chromium memory profile have passed. The current registry publishes 64
 routes:
 
 | Category | Verified routes | Largest tested source |
 | --- | --- | ---: |
 | Compression | bytes -> GZIP; GZIP -> bytes | 268,517,399 B |
-| Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR; TAR -> ZIP | 268,517,551 B |
+| Archives | TAR -> TAR.GZ; TAR.GZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 268,517,551 B |
 | Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Structured data | CSV <-> TSV; CSV/TSV -> NDJSON; NDJSON -> CSV/TSV/JSON; JSON/XML -> NDJSON | 293,633,883 B |
@@ -189,12 +189,15 @@ routes do not pay that pool's memory cost.
 ## Non-media engines and limitations
 
 Archive conversion never extracts an archive tree to memory or disk. TAR.GZ
-routes validate each USTAR header while passing the original TAR bytes through
-the browser compression streams. ZIP-to-TAR reads the bounded ZIP32 central
-directory, validates every local header, path, size, method, CRC-32, and
-expansion limit, and inflates one entry at a time. TAR-to-ZIP reads one USTAR
-entry at a time and writes DEFLATE data descriptors plus a bounded central
-directory. Both directions reject traversal, absolute and drive-letter paths,
+routes validate each USTAR header while passing TAR bytes through browser
+compression streams. ZIP-to-TAR and ZIP-to-TAR.GZ read the bounded ZIP32
+central directory, validate every local header, path, size, method, CRC-32, and
+expansion limit, and inflate one entry at a time. The TAR.GZ destination feeds
+those same validated USTAR chunks directly into an awaited GZIP stream.
+TAR-to-ZIP reads one USTAR entry at a time. TAR.GZ-to-ZIP performs the same
+parse directly over an incrementally decompressed source; neither route creates
+an intermediate TAR. Both write DEFLATE data descriptors plus a bounded central
+directory. All directions reject traversal, absolute and drive-letter paths,
 duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
 extensions, and archive bombs. Permissions, owners, comments, and unsupported
 container-specific fields are disclosed as not preserved.
@@ -345,6 +348,8 @@ profiler:
 | Records, XML -> NDJSON events | 134,218,700 B | 165.1 MiB | independent streamed hash/parse |
 | Archives, TAR -> TAR.GZ | 268,436,992 B | 219.3 MiB | full TAR validation |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
+| Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
+| Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 

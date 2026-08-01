@@ -41,7 +41,9 @@ const isArchiveCompressionProfile =
   profileId === "tar-gz-to-tar";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
-  profileId === "tar-to-zip";
+  profileId === "zip-to-tar-gz" ||
+  profileId === "tar-to-zip" ||
+  profileId === "tar-gz-to-zip";
 if (
   ![
     "gzip-compress",

@@ -2485,7 +2485,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         metrics,
         startedAt,
       );
-    } else if (profileId === "zip-to-tar" || profileId === "tar-to-zip") {
+    } else if (
+      profileId === "zip-to-tar" ||
+      profileId === "zip-to-tar-gz" ||
+      profileId === "tar-to-zip" ||
+      profileId === "tar-gz-to-zip"
+    ) {
       const archiveDestination = destination.writable;
       await runZipArchiveConversion({
         file,

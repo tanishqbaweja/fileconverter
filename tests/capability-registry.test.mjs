@@ -92,6 +92,16 @@ test("compound archives and mainstream images are detected by filename", () => {
     detectFormat({ name: "backup.tar.gz", type: "application/gzip" }),
     "tar-gz",
   );
+  assert.ok(
+    publicProfilesFor("zip").some(
+      (profile) => profile.id === "zip-to-tar-gz",
+    ),
+  );
+  assert.ok(
+    publicProfilesFor("tar-gz").some(
+      (profile) => profile.id === "tar-gz-to-zip",
+    ),
+  );
   assert.equal(detectFormat({ name: "photo.JPG", type: "" }), "jpeg");
   assert.equal(detectFormat({ name: "still.webp", type: "" }), "webp");
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");

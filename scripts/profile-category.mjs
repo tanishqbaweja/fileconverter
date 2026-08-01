@@ -88,6 +88,8 @@ const categories = {
       ["tar-gz-to-tar", "archive-256m.tar.gz"],
       ["zip-to-tar", "archive-256m.zip"],
       ["tar-to-zip", "archive-256m.tar"],
+      ["zip-to-tar-gz", "archive-256m.zip"],
+      ["tar-gz-to-zip", "archive-256m.tar.gz"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/stress/archives/${name}`,

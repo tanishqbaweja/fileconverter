@@ -1057,6 +1057,85 @@ test("converts ZIP to USTAR with CRC validation and Unicode names", async () => 
   ]);
 });
 
+test("converts ZIP directly to TAR.GZ with bounded nested streams", async () => {
+  await selectFixture("fixtures/archives/sample.zip", "zip-to-tar-gz");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  const entries = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const compressed = await handle.getFile();
+    const bytes = new Uint8Array(
+      await new Response(
+        compressed.stream().pipeThrough(new DecompressionStream("gzip")),
+      ).arrayBuffer(),
+    );
+    const decoder = new TextDecoder();
+    const results: Array<{ name: string; text: string }> = [];
+    let offset = 0;
+    while (offset + 512 <= bytes.byteLength) {
+      const header = bytes.subarray(offset, offset + 512);
+      if (header.every((value) => value === 0)) break;
+      const readField = (start: number, end: number) =>
+        decoder.decode(header.subarray(start, end)).replace(/\0.*$/, "");
+      const name = readField(0, 100);
+      const prefix = readField(345, 500);
+      const fullName = prefix ? `${prefix}/${name}` : name;
+      const size = Number.parseInt(readField(124, 136).trim(), 8);
+      const payload = bytes.subarray(offset + 512, offset + 512 + size);
+      results.push({ name: fullName, text: decoder.decode(payload) });
+      offset += 512 + Math.ceil(size / 512) * 512;
+    }
+    await root.removeEntry(opfsName);
+    return results;
+  }, state.opfsName!);
+  expect(entries).toEqual([
+    { name: "hello.txt", text: "Within archive fixture.\n" },
+    {
+      name: "nested/data.json",
+      text: '{"private":true,"uploadBytes":0}\n',
+    },
+    {
+      name: "nested/unicode-caf\u00e9.txt",
+      text: "Private Unicode archive entry.\n",
+    },
+  ]);
+});
+
+test("converts a 1,024-entry ZIP directly to TAR.GZ", async () => {
+  await selectFixture(
+    "fixtures/archives/many-entries.zip",
+    "zip-to-tar-gz",
+  );
+  const state = await convert();
+  const entryCount = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const compressed = await handle.getFile();
+    const archive = new Uint8Array(
+      await new Response(
+        compressed.stream().pipeThrough(new DecompressionStream("gzip")),
+      ).arrayBuffer(),
+    );
+    let entries = 0;
+    let offset = 0;
+    while (offset + 512 <= archive.byteLength) {
+      const header = archive.subarray(offset, offset + 512);
+      if (header.every((value) => value === 0)) break;
+      const sizeText = new TextDecoder()
+        .decode(header.subarray(124, 136))
+        .replace(/\0.*$/, "")
+        .trim();
+      const size = Number.parseInt(sizeText, 8);
+      entries += 1;
+      offset += 512 + Math.ceil(size / 512) * 512;
+    }
+    await root.removeEntry(opfsName);
+    return entries;
+  }, state.opfsName!);
+  expect(entryCount).toBe(1_024);
+});
+
 test("converts USTAR to a valid ZIP with streamed DEFLATE entries", async () => {
   await selectFixture("fixtures/archives/sample.tar", "tar-to-zip");
   const state = await convert();
@@ -1121,10 +1200,99 @@ test("converts USTAR to a valid ZIP with streamed DEFLATE entries", async () => 
   ]);
 });
 
+test("converts TAR.GZ directly to ZIP with bounded nested streams", async () => {
+  await selectFixture("fixtures/archives/sample.tar.gz", "tar-gz-to-zip");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  const entries = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+    const view = new DataView(bytes.buffer);
+    let endOffset = bytes.byteLength - 22;
+    while (endOffset >= 0 && view.getUint32(endOffset, true) !== 0x06054b50) {
+      endOffset -= 1;
+    }
+    if (endOffset < 0) throw new Error("ZIP end record is missing.");
+    const entryCount = view.getUint16(endOffset + 10, true);
+    let directoryOffset = view.getUint32(endOffset + 16, true);
+    const decoder = new TextDecoder();
+    const results: Array<{ name: string; text: string }> = [];
+    for (let index = 0; index < entryCount; index += 1) {
+      if (view.getUint32(directoryOffset, true) !== 0x02014b50) {
+        throw new Error("ZIP central header is invalid.");
+      }
+      const method = view.getUint16(directoryOffset + 10, true);
+      const compressedSize = view.getUint32(directoryOffset + 20, true);
+      const nameLength = view.getUint16(directoryOffset + 28, true);
+      const extraLength = view.getUint16(directoryOffset + 30, true);
+      const commentLength = view.getUint16(directoryOffset + 32, true);
+      const localOffset = view.getUint32(directoryOffset + 42, true);
+      const name = decoder.decode(
+        bytes.subarray(directoryOffset + 46, directoryOffset + 46 + nameLength),
+      );
+      const localNameLength = view.getUint16(localOffset + 26, true);
+      const localExtraLength = view.getUint16(localOffset + 28, true);
+      const dataOffset = localOffset + 30 + localNameLength + localExtraLength;
+      const compressed = bytes.slice(dataOffset, dataOffset + compressedSize);
+      const payload =
+        method === 8
+          ? new Uint8Array(
+              await new Response(
+                new Blob([compressed]).stream().pipeThrough(
+                  new DecompressionStream("deflate-raw" as CompressionFormat),
+                ),
+              ).arrayBuffer(),
+            )
+          : compressed;
+      results.push({ name, text: decoder.decode(payload) });
+      directoryOffset += 46 + nameLength + extraLength + commentLength;
+    }
+    await root.removeEntry(opfsName);
+    return results;
+  }, state.opfsName!);
+  expect(entries).toEqual([
+    { name: "hello.txt", text: "Within archive fixture.\n" },
+    {
+      name: "nested/data.json",
+      text: '{"private":true,"uploadBytes":0}\n',
+    },
+    {
+      name: "nested/unicode-caf\u00e9.txt",
+      text: "Private Unicode archive entry.\n",
+    },
+  ]);
+});
+
+test("converts a 1,024-entry TAR.GZ directly to ZIP", async () => {
+  await selectFixture(
+    "fixtures/archives/many-entries.tar.gz",
+    "tar-gz-to-zip",
+  );
+  const state = await convert();
+  const entryCount = await page.evaluate(async (opfsName) => {
+    const root = await navigator.storage.getDirectory();
+    const handle = await root.getFileHandle(opfsName);
+    const bytes = new Uint8Array(await (await handle.getFile()).arrayBuffer());
+    const view = new DataView(bytes.buffer);
+    let endOffset = bytes.byteLength - 22;
+    while (endOffset >= 0 && view.getUint32(endOffset, true) !== 0x06054b50) {
+      endOffset -= 1;
+    }
+    if (endOffset < 0) throw new Error("ZIP end record is missing.");
+    const entries = view.getUint16(endOffset + 10, true);
+    await root.removeEntry(opfsName);
+    return entries;
+  }, state.opfsName!);
+  expect(entryCount).toBe(1_024);
+});
+
 for (const [fixture, profileId, expectedError] of [
   ["fixtures/archives/unsafe-entry.tar", "tar-to-tar-gz", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-tar", "Unsafe TAR entry"],
   ["fixtures/archives/unsafe-entry.zip", "zip-to-tar", "Unsafe ZIP entry"],
+  ["fixtures/archives/unsafe-entry.zip", "zip-to-tar-gz", "Unsafe ZIP entry"],
+  ["fixtures/archives/unsafe-entry.tar.gz", "tar-gz-to-zip", "Unsafe TAR entry"],
 ] as const) {
   test(`${profileId} rejects traversal entries and deletes partial output`, async () => {
     await selectFixture(fixture, profileId);
@@ -1144,5 +1312,31 @@ for (const [fixture, profileId, expectedError] of [
       return names;
     }, profileId);
     expect(leftovers).toEqual([]);
+  });
+}
+
+for (const [fixture, profileId] of [
+  ["fixtures/archives/sample.zip", "zip-to-tar-gz"],
+  ["fixtures/archives/sample.tar.gz", "tar-gz-to-zip"],
+] as const) {
+  test(`${profileId} propagates a nested output failure and cleans up`, async () => {
+    await openFaultMode("write");
+    await selectFixture(fixture, profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    await expect
+      .poll(
+        async () =>
+          (await appOwnedOpfsNames(`within-test-${profileId}`)).length,
+        { timeout: 15_000 },
+      )
+      .toBe(0);
   });
 }

@@ -11,7 +11,11 @@ const ZIP32_MAX = 0xffff_ffff;
 
 interface ArchiveRuntime {
   file: File;
-  profileId: "zip-to-tar" | "tar-to-zip";
+  profileId:
+    | "zip-to-tar"
+    | "zip-to-tar-gz"
+    | "tar-to-zip"
+    | "tar-gz-to-zip";
   metrics: ConversionMetrics;
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
   assertActive(): void;
@@ -61,10 +65,19 @@ const asciiDecoder = new TextDecoder("ascii", { fatal: true });
 export async function runZipArchiveConversion(
   runtime: ArchiveRuntime,
 ): Promise<void> {
-  if (runtime.profileId === "zip-to-tar") {
-    await zipToTar(runtime);
-  } else {
-    await tarToZip(runtime);
+  switch (runtime.profileId) {
+    case "zip-to-tar":
+      await zipToTar(runtime);
+      break;
+    case "zip-to-tar-gz":
+      await zipToTarGz(runtime);
+      break;
+    case "tar-to-zip":
+      await tarToZip(runtime);
+      break;
+    case "tar-gz-to-zip":
+      await tarGzToZip(runtime);
+      break;
   }
   runtime.metrics.inputBytes = runtime.file.size;
 }
@@ -133,6 +146,46 @@ async function zipToTar(runtime: ArchiveRuntime): Promise<void> {
   await runtime.write(new Uint8Array(TAR_BLOCK_BYTES * 2), "Finalizing TAR");
 }
 
+async function zipToTarGz(runtime: ArchiveRuntime): Promise<void> {
+  const gzip = new CompressionStream("gzip");
+  const writer = gzip.writable.getWriter();
+  const reader = gzip.readable.getReader();
+  let pumpFailure: unknown = null;
+  const pump = (async () => {
+    try {
+      for (;;) {
+        runtime.assertActive();
+        const { done, value } = await reader.read();
+        if (done) return;
+        await runtime.write(value, "Writing TAR.GZ");
+      }
+    } catch (error) {
+      pumpFailure = error;
+      await reader.cancel(error).catch(() => {});
+    }
+  })();
+
+  try {
+    await zipToTar({
+      ...runtime,
+      profileId: "zip-to-tar",
+      async write(chunk) {
+        if (pumpFailure) throw pumpFailure;
+        await writer.write(chunk);
+        if (pumpFailure) throw pumpFailure;
+      },
+    });
+    await writer.close();
+    await pump;
+    if (pumpFailure) throw pumpFailure;
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    await reader.cancel(error).catch(() => {});
+    await pump;
+    throw pumpFailure ?? error;
+  }
+}
+
 async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
   const entries: WrittenZipEntry[] = [];
   const seen = new Set<string>();
@@ -170,6 +223,7 @@ async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
     if (totalPayloadBytes > MAX_ARCHIVE_BYTES) {
       throw new Error("TAR payload exceeds the 64 GiB safety limit.");
     }
+    ensureZip32(tarEntry.size, "ZIP uncompressed entry size");
     if (tarEntry.nextHeaderOffset > runtime.file.size) {
       throw new Error(`TAR entry payload is truncated: ${tarEntry.name}.`);
     }
@@ -255,6 +309,13 @@ async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
   }
   await assertRemainingTarBytesAreZero(runtime, offset);
 
+  await finishZip(runtime, entries);
+}
+
+async function finishZip(
+  runtime: ArchiveRuntime,
+  entries: readonly WrittenZipEntry[],
+): Promise<void> {
   const centralDirectoryOffset = runtime.metrics.outputBytes;
   ensureZip32(centralDirectoryOffset, "ZIP central-directory offset");
   for (const entry of entries) {
@@ -277,6 +338,257 @@ async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
     ),
     "Finalizing ZIP",
   );
+}
+
+class SequentialArchiveReader {
+  private readonly reader: ReadableStreamDefaultReader<
+    Uint8Array<ArrayBuffer>
+  >;
+  private current = new Uint8Array(0);
+  private currentOffset = 0;
+  private decodedBytes = 0;
+
+  constructor(
+    source: ReadableStream<Uint8Array<ArrayBuffer>>,
+    private readonly runtime: ArchiveRuntime,
+  ) {
+    this.reader = source.getReader();
+  }
+
+  async readExact(
+    length: number,
+    description: string,
+    allowCleanEnd = false,
+  ): Promise<Uint8Array<ArrayBuffer> | null> {
+    const output = new Uint8Array(length);
+    let used = 0;
+    while (used < length) {
+      const chunk = await this.readChunk(length - used);
+      if (!chunk) {
+        if (allowCleanEnd && used === 0) return null;
+        throw new Error(`TAR input ends before ${description} is complete.`);
+      }
+      output.set(chunk, used);
+      used += chunk.byteLength;
+    }
+    return output;
+  }
+
+  async readChunk(maximumBytes: number): Promise<Uint8Array<ArrayBuffer> | null> {
+    this.runtime.assertActive();
+    while (this.currentOffset === this.current.byteLength) {
+      const { done, value } = await this.reader.read();
+      if (done) return null;
+      this.current = value;
+      this.currentOffset = 0;
+      this.decodedBytes += value.byteLength;
+      const compressedBytes = Math.max(1, this.runtime.metrics.inputBytes);
+      if (
+        this.decodedBytes > MAX_ARCHIVE_BYTES ||
+        (compressedBytes > 1024 * 1024 &&
+          this.decodedBytes / compressedBytes > MAX_EXPANSION_RATIO)
+      ) {
+        await this.reader.cancel("TAR.GZ expansion safety limit exceeded");
+        throw new Error(
+          `TAR.GZ expansion exceeds the 64 GiB or ${MAX_EXPANSION_RATIO}:1 safety limit.`,
+        );
+      }
+    }
+    const end = Math.min(
+      this.current.byteLength,
+      this.currentOffset + maximumBytes,
+    );
+    const output = this.current.subarray(this.currentOffset, end);
+    this.currentOffset = end;
+    return output;
+  }
+
+  async assertRemainingBytesAreZero(): Promise<void> {
+    for (;;) {
+      const chunk = await this.readChunk(IO_CHUNK_BYTES);
+      if (!chunk) return;
+      if (!chunk.every((byte) => byte === 0)) {
+        throw new Error("TAR contains non-zero data after its end marker.");
+      }
+    }
+  }
+
+  async cancel(reason: unknown): Promise<void> {
+    await this.reader.cancel(reason).catch(() => {});
+  }
+}
+
+async function tarGzToZip(runtime: ArchiveRuntime): Promise<void> {
+  const source = boundedBlobStream(runtime.file, runtime).pipeThrough(
+    new DecompressionStream("gzip"),
+  );
+  const reader = new SequentialArchiveReader(source, runtime);
+  const entries: WrittenZipEntry[] = [];
+  const seen = new Set<string>();
+  let zeroBlocks = 0;
+  let totalPayloadBytes = 0;
+  let decodedOffset = 0;
+
+  try {
+    for (;;) {
+      runtime.assertActive();
+      const header = await reader.readExact(
+        TAR_BLOCK_BYTES,
+        "a 512-byte header",
+        true,
+      );
+      if (!header) break;
+      decodedOffset += TAR_BLOCK_BYTES;
+      if (header.every((value) => value === 0)) {
+        zeroBlocks += 1;
+        if (zeroBlocks === 2) break;
+        continue;
+      }
+      if (zeroBlocks) {
+        throw new Error("TAR contains data between its end-marker blocks.");
+      }
+
+      const tarEntry = parseTarHeader(header, decodedOffset - TAR_BLOCK_BYTES);
+      if (seen.has(tarEntry.name)) {
+        throw new Error(`TAR contains a duplicate entry name: ${tarEntry.name}.`);
+      }
+      seen.add(tarEntry.name);
+      if (seen.size > MAX_ARCHIVE_ENTRIES) {
+        throw new Error(
+          `TAR exceeds the ${MAX_ARCHIVE_ENTRIES.toLocaleString("en-US")}-entry safety limit.`,
+        );
+      }
+      totalPayloadBytes += tarEntry.size;
+      if (totalPayloadBytes > MAX_ARCHIVE_BYTES) {
+        throw new Error("TAR payload exceeds the 64 GiB safety limit.");
+      }
+      ensureZip32(tarEntry.size, "ZIP uncompressed entry size");
+
+      runtime.progress(`Converting TAR.GZ entry ${tarEntry.name}`);
+      const nameBytes = utf8Encoder.encode(tarEntry.name);
+      if (nameBytes.byteLength > MAX_ZIP_NAME_BYTES) {
+        throw new Error(`TAR entry name is too long for ZIP: ${tarEntry.name}.`);
+      }
+      const directory = tarEntry.directory;
+      const method = directory ? 0 : 8;
+      const flags = 0x0808;
+      const { dosTime, dosDate } = unixToDos(tarEntry.modifiedAtSeconds);
+      const localHeaderOffset = runtime.metrics.outputBytes;
+      ensureZip32(localHeaderOffset, "ZIP local-header offset");
+      await runtime.write(
+        createZipLocalHeader(nameBytes, flags, method, dosTime, dosDate),
+        "Writing ZIP header",
+      );
+
+      const payload = directory
+        ? { crc32: 0, compressedSize: 0, uncompressedSize: 0 }
+        : await deflateSequentialPayload(
+            runtime,
+            reader,
+            tarEntry.size,
+            tarEntry.name,
+          );
+      const padding =
+        (TAR_BLOCK_BYTES - (tarEntry.size % TAR_BLOCK_BYTES)) % TAR_BLOCK_BYTES;
+      if (padding) {
+        await reader.readExact(padding, `padding for ${tarEntry.name}`);
+      }
+      decodedOffset += tarEntry.size + padding;
+
+      await runtime.write(
+        createZipDataDescriptor(
+          payload.crc32,
+          payload.compressedSize,
+          payload.uncompressedSize,
+        ),
+        "Writing ZIP descriptor",
+      );
+      entries.push({
+        nameBytes,
+        directory,
+        method,
+        flags,
+        dosTime,
+        dosDate,
+        crc32: payload.crc32,
+        compressedSize: payload.compressedSize,
+        uncompressedSize: payload.uncompressedSize,
+        localHeaderOffset,
+      });
+    }
+
+    if (zeroBlocks < 2) {
+      throw new Error("TAR input is missing its two-block end marker.");
+    }
+    if (entries.length === 0) {
+      throw new Error("TAR contains no entries.");
+    }
+    await reader.assertRemainingBytesAreZero();
+    await finishZip(runtime, entries);
+  } catch (error) {
+    await reader.cancel(error);
+    throw error;
+  }
+}
+
+async function deflateSequentialPayload(
+  runtime: ArchiveRuntime,
+  source: SequentialArchiveReader,
+  expectedBytes: number,
+  entryName: string,
+): Promise<{ crc32: number; compressedSize: number; uncompressedSize: number }> {
+  const codec = new CompressionStream("deflate-raw" as CompressionFormat);
+  const writer = codec.writable.getWriter();
+  const reader = codec.readable.getReader();
+  let crc = 0xffff_ffff;
+  let compressedSize = 0;
+  let uncompressedSize = 0;
+  let pumpFailure: unknown = null;
+  const pump = (async () => {
+    try {
+      for (;;) {
+        runtime.assertActive();
+        const { done, value } = await reader.read();
+        if (done) return;
+        compressedSize += value.byteLength;
+        ensureZip32(compressedSize, "ZIP compressed entry size");
+        await runtime.write(value, "Writing ZIP data");
+      }
+    } catch (error) {
+      pumpFailure = error;
+      await reader.cancel(error).catch(() => {});
+    }
+  })();
+
+  try {
+    while (uncompressedSize < expectedBytes) {
+      const chunk = await source.readChunk(
+        Math.min(IO_CHUNK_BYTES, expectedBytes - uncompressedSize),
+      );
+      if (!chunk) {
+        throw new Error(`TAR entry payload is truncated: ${entryName}.`);
+      }
+      crc = updateCrc32(crc, chunk);
+      uncompressedSize += chunk.byteLength;
+      if (pumpFailure) throw pumpFailure;
+      await writer.write(chunk);
+      if (pumpFailure) throw pumpFailure;
+    }
+    await writer.close();
+    await pump;
+    if (pumpFailure) throw pumpFailure;
+  } catch (error) {
+    await writer.abort(error).catch(() => {});
+    await reader.cancel(error).catch(() => {});
+    await pump;
+    throw pumpFailure ?? error;
+  }
+
+  return {
+    crc32: (crc ^ 0xffff_ffff) >>> 0,
+    compressedSize,
+    uncompressedSize,
+  };
 }
 
 async function readZipDirectory(runtime: ArchiveRuntime): Promise<ZipEntry[]> {
