@@ -294,6 +294,16 @@ duplicates, encryption, ZIP64, multi-disk records, links, devices, GNU/PAX
 extensions, and archive bombs. Permissions, owners, comments, and unsupported
 container-specific fields are disclosed as not preserved.
 
+7Z-to-TAR uses a separately lazy-loaded libarchive 3.8.9 reader with a fixed
+64 MiB Wasm heap, 256 KiB seekable `File` reads, 64 KiB TAR writes, and exactly
+one awaited destination operation. It accepts regular files and directories
+using COPY, LZMA1, LZMA2, or PPMd and rejects unsafe paths, duplicates,
+encryption, links, special files, unsupported codecs, more than 10,000 entries,
+more than 64 GiB of payload, and expansion above 100:1. Output is deterministic
+USTAR with sanitized owners and permissions. TAR-to-7Z is not advertised:
+libarchive's 7Z writer spools the full encoded payload to a temporary file, so
+it requires a future bounded OPFS scratch bridge rather than MEMFS.
+
 Still-image routes use `ImageDecoder` in the conversion worker, request one
 deterministic RGBA frame, enforce compressed-size, dimensions, pixel-count,
 decoded-byte, and expansion-ratio limits before allocating the surface, and
@@ -439,6 +449,8 @@ Pinned inputs:
   `ab5a03176ee106d3f0fa90e381da478ddae405918153cca248e682cd0c4a2269`
 - XZ Utils 5.8.3 official source archive, SHA-256
   `fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6`
+- libarchive 3.8.9 official source archive, SHA-256
+  `888c934f9d95648ecb9163dc8e23ab80a476ecb81a8f1154704a227b5b676dde`
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
 
@@ -449,12 +461,14 @@ npm ci
 npm run build:ffmpeg-remux
 npm run build:bzip2
 npm run build:xz
+npm run build:archive7z
 npm run build
 ```
 
 The Docker builds verify each source archive before compilation. Exact
 configure switches and Emscripten flags are in `media/ffmpeg/` and
-`compression/bzip2/` and `compression/xz/`. Generated settings are recorded in the corresponding
+`compression/bzip2/`, `compression/xz/`, and `compression/libarchive7z/`.
+Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
 ## Validation and memory results
@@ -581,6 +595,7 @@ profiler:
 | Compression, XZ -> bytes | 268,448,840 B | 203.0 MiB | exact streamed output SHA-256 |
 | Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
 | Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
+| Archives, 7Z -> TAR | 268,435,574 B | 204.7 MiB | native libarchive listing plus entry size/SHA-256 |
 | Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
 | Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
@@ -858,6 +873,7 @@ npm run profile:subtitles
 npm run profile:archives
 npm run profile:bzip2
 npm run profile:xz
+npm run profile:sevenzip
 npm run profile:documents
 npm run profile:ebooks
 npm run profile:mov
@@ -879,7 +895,7 @@ installed stable Chrome and native FFmpeg.
 - `lib/capability-registry.ts` — single source for formats and public matrix
 - `workers/` — bounded media, compression, archive, subtitle, image, record, XML, ebook, and document
   transforms; FFmpeg bridge, destinations, and lifecycle
-- `media/ffmpeg/`, `compression/bzip2/`, and `compression/xz/` — reproducible native Wasm builds
+- `media/ffmpeg/`, `compression/bzip2/`, `compression/xz/`, and `compression/libarchive7z/` — reproducible native Wasm builds
 - `public/engines/` — auditable generated engine artifacts
 - `scripts/` — fixtures, validators, cleanup, process-tree memory reports
 - `tests/browser/` — correctness, privacy, offline, and bounded-I/O tests

@@ -2,6 +2,7 @@ export type EngineId =
   | "compression-stream"
   | "bzip2-wasm"
   | "xz-wasm"
+  | "libarchive7z-wasm"
   | "archive-browser"
   | "document-stream"
   | "ebook-stream"
@@ -117,6 +118,13 @@ export const formats = [
     label: "ZIP archive",
     extensions: ["zip"],
     mimeTypes: ["application/zip", "application/x-zip-compressed"],
+    category: "archive",
+  },
+  {
+    id: "sevenzip",
+    label: "7Z archive",
+    extensions: ["7z"],
+    mimeTypes: ["application/x-7z-compressed"],
     category: "archive",
   },
   {
@@ -767,6 +775,26 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     ],
     fidelityLimitations: [],
     maxTestedBytes: 268_517_517,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "sevenzip-to-tar",
+    input: "sevenzip",
+    output: "tar",
+    engine: "libarchive7z-wasm",
+    route: "stream",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Accepts regular files and directories encoded with COPY, LZMA1, LZMA2, or PPMd; other 7Z codecs are rejected.",
+      "Rejects encryption, links, special files, duplicate names, unsafe paths, more than 10,000 entries, more than 64 GiB of payload, and expansion above 100:1 after the first MiB.",
+      "The deterministic USTAR output sanitizes permissions and owners and cannot preserve 7Z attributes or archive metadata.",
+      "Fixed 64 MiB Wasm memory can safely reject unusually memory-intensive solid, large-dictionary, or BCJ2 archives.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: 268_435_574,
     automatedTestStatus: "passed",
     public: true,
   },

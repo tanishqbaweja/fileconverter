@@ -45,6 +45,12 @@ const webmBenchmarkFixture = path.resolve(
   "webm-benchmark-120s.mkv",
 );
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
+const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
+const sevenZipExperimentRoots = [
+  path.resolve(workRoot, "7z-experiment"),
+  path.resolve(workRoot, "sevenzip-name-check"),
+  path.resolve(workRoot, "sevenzip-name-check-2"),
+];
 const detachedProfileLogs = [
   path.resolve(workRoot, "webm-profile-run.stdout.log"),
   path.resolve(workRoot, "webm-profile-run.stderr.log"),
@@ -59,6 +65,7 @@ const generatedStressExtensions = new Set([
   ".gz",
   ".bz2",
   ".xz",
+  ".7z",
   ".mkv",
   ".m4a",
   ".mp3",
@@ -107,6 +114,10 @@ const generatedStressNames = new Set(["records-128m.json"]);
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
+assertInside(workRoot, sevenZipAuditRoot);
+for (const temporaryRoot of sevenZipExperimentRoots) {
+  assertInside(workRoot, temporaryRoot);
+}
 assertInside(stressFixturesRoot, webmBenchmarkFixture);
 for (const logPath of detachedProfileLogs) assertInside(workRoot, logPath);
 for (const logPath of headedBrowserLogs) assertInside(workRoot, logPath);
@@ -159,6 +170,10 @@ await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
+await removeWithRetries(sevenZipAuditRoot);
+for (const temporaryRoot of sevenZipExperimentRoots) {
+  await removeWithRetries(temporaryRoot);
+}
 for (const logPath of detachedProfileLogs) await rm(logPath, { force: true });
 for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
 

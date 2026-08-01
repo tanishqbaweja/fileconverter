@@ -1,0 +1,25 @@
+{
+  "generatedBy": "scripts/generate-sevenzip-fixtures.mjs",
+  "libarchiveGenerator": "system bsdtar",
+  "requestedCompression": "deflate",
+  "bytes": 288,
+  "sha256": "60cc78b72181782c0f37162cdfd4494592fcf31b4c6ecc81ae955993a65b443e",
+  "purpose": "7Z unsupported-codec rejection fixture",
+  "entries": [
+    {
+      "name": "hello.txt",
+      "size": 24,
+      "sha256": "2c36bbd6c5579c97c417410826b8355da9a168cd253b4ccc7d6c01d07cc19cb0"
+    },
+    {
+      "name": "nested/data.json",
+      "size": 33,
+      "sha256": "b193f8e86f5602fda4fea24cf5bf90749e546ec57e6df0633ae159ec77f267f3"
+    },
+    {
+      "name": "nested/unicode-café.txt",
+      "size": 31,
+      "sha256": "8b82fa8198d3e03c37dccf2735515ae85ef8cab1ef147605030b2c3035375dac"
+    }
+  ]
+}

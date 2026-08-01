@@ -25,6 +25,13 @@ const browserBzip2OutputPath = path.join(projectRoot, "work", "browser-output.bz
 const corruptXzFixturePath = path.join(projectRoot, "work", "corrupt.xz");
 const truncatedXzFixturePath = path.join(projectRoot, "work", "truncated.xz");
 const browserXzOutputPath = path.join(projectRoot, "work", "browser-output.xz");
+const corruptSevenZipFixturePath = path.join(projectRoot, "work", "corrupt.7z");
+const truncatedSevenZipFixturePath = path.join(projectRoot, "work", "truncated.7z");
+const browserSevenZipOutputPath = path.join(
+  projectRoot,
+  "work",
+  "browser-sevenzip-output.tar",
+);
 const batchFixturePaths = [
   path.join(projectRoot, "work", "batch-café.txt"),
   path.join(projectRoot, "work", "batch-日本語.txt"),
@@ -185,6 +192,28 @@ async function fileDigest(filePath: string) {
   };
 }
 
+function tarEntryDigests(tarBytes: Buffer) {
+  const entries: Array<{ name: string; size: number; sha256: string }> = [];
+  let offset = 0;
+  while (offset + 512 <= tarBytes.byteLength) {
+    const header = tarBytes.subarray(offset, offset + 512);
+    if (header.every((byte) => byte === 0)) break;
+    const name = header.subarray(0, 100).toString("utf8").replace(/\0.*$/, "");
+    const size = Number.parseInt(
+      header.subarray(124, 136).toString("ascii").replace(/\0.*$/, "").trim(),
+      8,
+    );
+    const data = tarBytes.subarray(offset + 512, offset + 512 + size);
+    entries.push({
+      name,
+      size,
+      sha256: createHash("sha256").update(data).digest("hex"),
+    });
+    offset += 512 + Math.ceil(size / 512) * 512;
+  }
+  return entries;
+}
+
 async function appOwnedOpfsNames(prefix: string): Promise<string[]> {
   return page.evaluate(async (expectedPrefix) => {
     const root = await navigator.storage.getDirectory();
@@ -254,6 +283,17 @@ test.beforeAll(async () => {
     truncatedXzFixturePath,
     validXz.subarray(0, validXz.byteLength - 7),
   );
+  await writeFile(
+    corruptSevenZipFixturePath,
+    Buffer.from("This is deliberately not a 7Z archive.\n", "utf8"),
+  );
+  const validSevenZip = await readFile(
+    path.join(projectRoot, "fixtures", "archives", "sample.7z"),
+  );
+  await writeFile(
+    truncatedSevenZipFixturePath,
+    validSevenZip.subarray(0, validSevenZip.byteLength - 7),
+  );
   const cancellationFixture = createWriteStream(cancellationFixturePath, {
     flags: "w",
   });
@@ -316,6 +356,9 @@ test.afterAll(async () => {
   await rm(corruptXzFixturePath, { force: true });
   await rm(truncatedXzFixturePath, { force: true });
   await rm(browserXzOutputPath, { force: true });
+  await rm(corruptSevenZipFixturePath, { force: true });
+  await rm(truncatedSevenZipFixturePath, { force: true });
+  await rm(browserSevenZipOutputPath, { force: true });
   await Promise.all(batchFixturePaths.map((fixture) => rm(fixture, { force: true })));
 });
 
@@ -1512,6 +1555,117 @@ test("decompresses TAR.XZ to an exact structurally valid TAR", async () => {
   expect(output.subarray(257, 262).toString("ascii")).toBe("ustar");
 });
 
+test("converts 7Z to independently validated USTAR with bounded callbacks", async () => {
+  await selectFixture("fixtures/archives/sample.7z", "sevenzip-to-tar");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  expect(state.metrics?.peakPendingOperations).toBe(1);
+  expect(state.metrics?.peakWasmMemoryBytes).toBe(64 * 1024 * 1024);
+  await copyAndDeleteSmallOpfsFile(
+    state.opfsName!,
+    browserSevenZipOutputPath,
+  );
+  try {
+    const manifest = JSON.parse(
+      await readFile(
+        path.join(projectRoot, "fixtures", "archives", "sample.7z.json"),
+        "utf8",
+      ),
+    ) as { entries: Array<{ name: string; size: number; sha256: string }> };
+    expect(tarEntryDigests(await readFile(browserSevenZipOutputPath))).toEqual(
+      manifest.entries,
+    );
+    const { stdout } = await execFileAsync(
+      "tar",
+      ["-tf", browserSevenZipOutputPath],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+    expect(stdout.trim().split(/\r?\n/)).toHaveLength(manifest.entries.length);
+  } finally {
+    await rm(browserSevenZipOutputPath, { force: true });
+  }
+});
+
+test("converts 7Z through the bounded direct-save worker", async () => {
+  const outputName = "sample.tar";
+  await page.goto("/?test=1&directory=1");
+  await expect
+    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+    .toBe("ready");
+  await removeOpfsEntryAndReportSize(outputName);
+  try {
+    await selectFixture("fixtures/archives/sample.7z", "sevenzip-to-tar");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("complete");
+    const state = await currentState();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.opfsName).toBeNull();
+    expect(state.metrics?.peakPendingOperations).toBe(1);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state.metrics?.peakWasmMemoryBytes).toBe(64 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const magic = new TextDecoder("ascii").decode(bytes.subarray(257, 262));
+      await root.removeEntry(name);
+      return { bytes: bytes.byteLength, magic };
+    }, outputName);
+    expect(output).toEqual({ bytes: 4_096, magic: "ustar" });
+  } finally {
+    await removeOpfsEntryAndReportSize(outputName);
+  }
+});
+
+test("converts a 1,024-entry 7Z archive without quadratic name scans", async () => {
+  await selectFixture("fixtures/archives/many-entries.7z", "sevenzip-to-tar");
+  const state = await convert();
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+  await copyAndDeleteSmallOpfsFile(
+    state.opfsName!,
+    browserSevenZipOutputPath,
+  );
+  try {
+    expect(tarEntryDigests(await readFile(browserSevenZipOutputPath))).toEqual(
+      tarEntryDigests(
+        await readFile(
+          path.join(projectRoot, "fixtures", "archives", "many-entries.tar"),
+        ),
+      ),
+    );
+  } finally {
+    await rm(browserSevenZipOutputPath, { force: true });
+  }
+});
+
+for (const [fixture, expectedError] of [
+  ["fixtures/archives/unsafe-entry.7z", "unsafe or unsupported entry path"],
+  ["fixtures/archives/expansion-bomb.7z", "100:1 expansion safety limit"],
+  ["fixtures/archives/unsupported-deflate.7z", "unsupported"],
+  [corruptSevenZipFixturePath, "could not open the 7z archive"],
+  [truncatedSevenZipFixturePath, "7z"],
+] as const) {
+  test(`rejects ${path.basename(fixture)} and deletes partial 7Z output`, async () => {
+    await selectFixture(
+      path.isAbsolute(fixture) ? path.relative(projectRoot, fixture) : fixture,
+      "sevenzip-to-tar",
+    );
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(expectedError);
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-sevenzip-to-tar")).toEqual([]);
+  });
+}
+
 for (const [fixture, expectedError] of [
   [corruptXzFixturePath, "invalid stream header"],
   [truncatedXzFixturePath, "truncated"],
@@ -1920,6 +2074,7 @@ for (const [fixture, profileId] of [
   ["fixtures/archives/sample.tar.bz2", "tar-bz2-to-tar"],
   ["fixtures/compression/sample.expected.txt", "xz-compress"],
   ["fixtures/archives/sample.tar.xz", "tar-xz-to-tar"],
+  ["fixtures/archives/sample.7z", "sevenzip-to-tar"],
 ] as const) {
   test(`${profileId} propagates a nested output failure and cleans up`, async () => {
     await openFaultMode("write");

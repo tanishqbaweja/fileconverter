@@ -34,8 +34,11 @@ jobs:
       - name: Rebuild pinned XZ/Wasm core
         run: npm run build:xz
 
+      - name: Rebuild pinned libarchive 7Z/Wasm core
+        run: npm run build:archive7z
+
       - name: Verify reproducible engine artifacts
-        run: git diff --exit-code -- public/engines/remux public/engines/bzip2 public/engines/xz
+        run: git diff --exit-code -- public/engines/remux public/engines/bzip2 public/engines/xz public/engines/archive7z
 
       - run: npm run lint
       - run: npx tsc --noEmit --incremental false

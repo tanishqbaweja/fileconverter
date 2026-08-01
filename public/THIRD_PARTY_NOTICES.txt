@@ -35,8 +35,19 @@ Project: https://tukaani.org/xz/
 License for the linked liblzma core: 0BSD
 (see public/engines/xz/LICENSE.xz)
 
+libarchive 3.8.9
+Source: https://github.com/libarchive/libarchive/releases/download/v3.8.9/libarchive-3.8.9.tar.xz
+SHA-256: 888c934f9d95648ecb9163dc8e23ab80a476ecb81a8f1154704a227b5b676dde
+Project: https://www.libarchive.org/
+License: BSD-2-Clause
+(see public/engines/archive7z/LICENSE.libarchive)
+
+The 7Z reader also links the pinned 0BSD liblzma core listed above; its copied
+license is at public/engines/archive7z/LICENSE.xz.
+
 Exact configure switches, enabled components, memory limits, and build commands
-are in media/ffmpeg/, compression/bzip2/, compression/xz/, and their corresponding build
+are in media/ffmpeg/, compression/bzip2/, compression/xz/,
+compression/libarchive7z/, and their corresponding build
 manifests under public/engines/ in the source repository.
 
 These notices describe copyright licenses, not patent rights. Deployers remain

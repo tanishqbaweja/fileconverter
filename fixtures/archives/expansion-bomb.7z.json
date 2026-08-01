@@ -1,0 +1,15 @@
+{
+  "generatedBy": "scripts/generate-sevenzip-fixtures.mjs",
+  "libarchiveGenerator": "system bsdtar",
+  "requestedCompression": "lzma2",
+  "bytes": 515,
+  "sha256": "2b111efb6b7e1985de47bef8b1f1cea13ac9fdc3d0a8d8777e4cac5e9ef8cb15",
+  "purpose": "7Z expansion-ratio rejection fixture",
+  "entries": [
+    {
+      "name": "expanded-zeroes.bin",
+      "size": 2097152,
+      "sha256": "5647f05ec18958947d32874eeb788fa396a05d0bab7c1b71f112ceb7e9b31eee"
+    }
+  ]
+}

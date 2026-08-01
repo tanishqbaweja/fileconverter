@@ -60,11 +60,13 @@ const isXzProfile =
   profileId === "tar-xz-to-tar";
 const isXzCompressedOutput =
   profileId === "xz-compress" || profileId === "tar-to-tar-xz";
+const isSevenZipProfile = profileId === "sevenzip-to-tar";
 const isArchiveTransformProfile =
   profileId === "zip-to-tar" ||
   profileId === "zip-to-tar-gz" ||
   profileId === "tar-to-zip" ||
-  profileId === "tar-gz-to-zip";
+  profileId === "tar-gz-to-zip" ||
+  isSevenZipProfile;
 if (
   ![
     "gzip-compress",
@@ -220,7 +222,7 @@ if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
 const maximumWriteChunkBytes =
   destinationMode === "direct-handle" && profileId === "mkv-to-mp4"
     ? 1024 * 1024
-    : isBzip2Profile || isXzProfile
+    : isBzip2Profile || isXzProfile || isSevenZipProfile
       ? 64 * 1024
     : 256 * 1024;
 const testUrl = `${serverUrl}/?test=1${
@@ -620,13 +622,18 @@ try {
     ),
     wasmMemoryBytes: runSummaries.every(
       (run) =>
-        (!isMediaProfile && !isBzip2Profile && !isXzProfile) ||
+        (!isMediaProfile &&
+          !isBzip2Profile &&
+          !isXzProfile &&
+          !isSevenZipProfile) ||
         (typeof run.peakWasmMemoryBytes === "number" &&
           run.peakWasmMemoryBytes <=
             (isBzip2Profile
               ? 8 * 1024 * 1024
               : isXzProfile
                 ? 48 * 1024 * 1024
+                : isSevenZipProfile
+                  ? 64 * 1024 * 1024
                 : 128 * 1024 * 1024)),
     ),
     cleanupRecovery: runSummaries.every(

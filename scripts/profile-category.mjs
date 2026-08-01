@@ -326,6 +326,12 @@ const categories = {
       ["tar-xz-to-tar", "fixtures/stress/archives/archive-256m.tar.xz"],
     ],
   },
+  sevenzip: {
+    generator: "scripts/generate-sevenzip-stress-fixture.mjs",
+    profiles: [
+      ["sevenzip-to-tar", "fixtures/stress/archives/archive-256m.7z"],
+    ],
+  },
   images: {
     generator: "scripts/generate-image-fixtures.mjs",
     profiles: [
