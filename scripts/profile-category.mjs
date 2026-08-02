@@ -101,6 +101,16 @@ const categories = {
       ],
     ),
   },
+  "legacy-container-flac": {
+    generator: "scripts/generate-legacy-container-flac-stress-fixtures.mjs",
+    profiles: [
+      ["avi-to-flac", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-flac", "theora-video-128m.ogv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   mov: {
     generator: "scripts/generate-mov-stress-fixture.mjs",
     profiles: [

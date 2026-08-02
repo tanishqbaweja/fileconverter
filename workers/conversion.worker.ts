@@ -2670,6 +2670,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "3gp-to-flac" ||
         profileId === "mpeg-ts-to-flac" ||
         profileId === "flv-to-flac" ||
+        profileId === "avi-to-flac" ||
+        profileId === "ogv-to-flac" ||
         profileId === "aac-to-flac" ||
         profileId === "amr-to-flac" ||
         profileId === "mp3-to-flac" ||
@@ -3234,6 +3236,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-flac" ||
       profileId === "mpeg-ts-to-flac" ||
       profileId === "flv-to-flac" ||
+      profileId === "avi-to-flac" ||
+      profileId === "ogv-to-flac" ||
       profileId === "aac-to-flac" ||
       profileId === "amr-to-flac" ||
       profileId === "mp3-to-flac" ||
@@ -3296,6 +3300,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "3gp-to-flac" ||
                 profileId === "mpeg-ts-to-flac" ||
                 profileId === "flv-to-flac" ||
+                profileId === "avi-to-flac" ||
+                profileId === "ogv-to-flac" ||
                 profileId === "aac-to-flac" ||
                 profileId === "amr-to-flac" ||
                 profileId === "mp3-to-flac" ||

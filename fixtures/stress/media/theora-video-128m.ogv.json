@@ -4,8 +4,8 @@
   "sourceSha256": "5cbfe6054bb5a2b69ff9f3459f7093fade015ba3025013160b16eba4faeb2700",
   "durationSeconds": 780,
   "decodedAudioDurationSeconds": 780,
-  "bytes": 137635308,
-  "sha256": "876bdad37b0861f65f3ef8e056e1d802c6465d1d8ddad31185a469fef4f7f197",
+  "bytes": 137218662,
+  "sha256": "f0e7b56cd3e59568c742c891c3632f45718691224cdaca17f16fd3d74e70bd22",
   "probe": {
     "streams": [
       {
@@ -33,7 +33,6 @@
         "start_time": "0.000000",
         "duration_ts": 18732,
         "duration": "780.500000",
-        "nb_read_frames": "18720",
         "extradata_size": 3322,
         "disposition": {
           "default": 0,
@@ -82,9 +81,8 @@
         "start_time": "0.000000",
         "duration_ts": 37464832,
         "duration": "780.517333",
-        "bit_rate": "96000",
-        "nb_read_frames": "36563",
-        "extradata_size": 3826,
+        "bit_rate": "48000",
+        "extradata_size": 3420,
         "disposition": {
           "default": 0,
           "dub": 0,
@@ -123,8 +121,8 @@
       "format_long_name": "Ogg",
       "start_time": "0.000000",
       "duration": "780.517333",
-      "size": "137635308",
-      "bit_rate": "1410708",
+      "size": "137218662",
+      "bit_rate": "1406438",
       "probe_score": 100
     }
   }

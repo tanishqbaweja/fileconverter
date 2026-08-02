@@ -29,7 +29,7 @@ await execFileAsync(
     "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
     "-stream_loop", String(additionalLoops), "-i", sourcePath,
     "-map", "0:v:0", "-map", "0:a:0",
-    "-c:v", "copy", "-c:a", "libvorbis", "-q:a", "5",
+    "-c:v", "copy", "-c:a", "libvorbis", "-q:a", "0",
     "-map_metadata", "0", "-metadata:s:a:0", "language=eng",
     "-fflags", "+bitexact", "-f", "ogg", fixturePath,
   ],
@@ -48,7 +48,7 @@ for await (const chunk of createReadStream(fixturePath, {
 }
 const { stdout } = await execFileAsync(
   "ffprobe",
-  ["-v", "error", "-count_frames", "-show_format", "-show_streams", "-show_chapters", "-of", "json", fixturePath],
+  ["-v", "error", "-show_format", "-show_streams", "-show_chapters", "-of", "json", fixturePath],
   { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
 );
 const probe = JSON.parse(stdout);

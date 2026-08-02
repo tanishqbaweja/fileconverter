@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **170**
-- Public profiles with a retained successful Chrome stress report: **170**
+- Public passed conversion profiles: **172**
+- Public profiles with a retained successful Chrome stress report: **172**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 383/383 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-02:** 387/387 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Bounded legacy-container audio extraction to FLAC:** AVI/MP3 passed 3/3 Chrome runs on 159,500,442 bytes in 1.26–1.60 s at 223.3 MiB worst incremental private memory; OGV/Vorbis passed 3/3 on 137,218,662 bytes in 3.39–3.75 s at 213.1 MiB. All six FLAC outputs were byte-repeatable, independently probed and decoded-audio validated, and deleted. Two forced-write cases left no partial OPFS output. The shared generator runs both project-local fixture jobs concurrently; the final continuous-Vorbis OGV fixture is produced in about 10.63 seconds, down from about 19.05 seconds, while preserving source specifications. A rejected stream-copy shortcut generated the OGV in 0.52 seconds but repeated codec-delay samples extended the decoded FLAC to 782.586667 seconds from 780-second timestamps; that failed profile is retained so the invalid optimization is not repeated. Sources, manifests, and converted copies remain under the repository and category cleanup removes them in `finally`.
 - **Bounded container audio extraction to FLAC:** MKV passed 3/3 Chrome runs on 146,855,294 bytes in 1.28–1.53 s at 212.6 MiB worst incremental private memory; MP4 passed on 146,854,557 bytes in 1.23–1.54 s at 214.2 MiB; MOV passed on 146,854,612 bytes in 1.21–1.57 s at 213.9 MiB; 3GP passed on 146,854,456 bytes in 1.25–1.57 s at 214.7 MiB; MPEG-TS passed on 150,441,548 bytes in 1.50–1.98 s at 211.6 MiB; and FLV passed on 146,903,486 bytes in 1.25–1.57 s at 210.7 MiB. All eighteen FLAC outputs were byte-repeatable, independently probed and decoded-audio validated, and deleted. Six forced-write cases left no partial OPFS output. One optimized 65-second H.264/AAC encode plus five stream-copy remuxes generated all six 128 MiB-class sources under `fixtures/stress` in 3.89 seconds; the generator verifies the project-local source hash before and after, and category cleanup removes every source, manifest, and converted copy in `finally`.
 - **Bounded AVI to WebM:** MPEG-4 Part 2 AVI-to-VP8 passed 3/3 Chrome runs on 159,500,442 bytes in 9.19–9.62 s at 214.5 MiB worst incremental private memory; AVI-to-VP9 passed in 14.62–15.00 s at 233.3 MiB. All six video-only WebM outputs were byte-repeatable, independently probed, midpoint-SSIM checked, fully decoded, and deleted; route-specific forced-write failures left no partial OPFS output. The optimized generator creates the 128 MiB-class source under `fixtures/stress` in about 1.5 seconds instead of looping a 12-minute stream-copy fixture, records the 1,543 actually decodable frames rather than trusting AVI's 1,560-frame header, verifies the small source hash before and after, and removes the generated AVI and manifest in `finally`. The retained first-run failure documents the original header-duration validation mismatch; the strict 0.25-second tolerance remained unchanged and now compares against decoded-frame duration.
 - **Bounded 3GP/MPEG-TS/FLV to WebM:** six H.264 container routes reuse the lazy optimized eight-worker VP8/VP9 cores after bounded stream inspection. 3GP-to-VP8 passed 3/3 Chrome runs on 146,854,522 bytes in 9.28–9.69 s at 236.4 MiB worst incremental private memory; 3GP-to-VP9 passed in 13.55–14.19 s at 234.0 MiB; MPEG-TS-to-VP8 passed on 150,441,548 bytes in 9.59–9.97 s at 220.4 MiB; MPEG-TS-to-VP9 passed in 13.81–14.39 s at 222.9 MiB; FLV-to-VP8 passed on 146,903,539 bytes in 9.22–9.71 s at 220.6 MiB; and FLV-to-VP9 passed in 13.62–14.05 s at 222.1 MiB. All eighteen outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. The stress generator now loops the verified project-local 3GP fixture, performs one 65-second H.264 encode plus two stream-copy remuxes, and generated all three 128 MiB-class sources in 2.16 seconds instead of roughly ten minutes; sources stay under `fixtures/stress` and category cleanup removes them in `finally`. Retained rejected topologies measured 266.2 MiB for FLV VP8 and 255.2 MiB for 1,282×722 3GP VP8 before the final 1,282×536 fixture passed without changing the 250 MiB limit or worker counts.
@@ -53,6 +54,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | amr-to-wav | 134,229,414 | 3 | 1,342,294,158 | 61.54 s–62.01 s | 209.7 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-flac | 159,500,442 | 3 | 1,017,396 | 1.26 s–1.60 s | 223.3 MiB | 32.0 MiB | read 262,144 B / write 8,316 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
 | avi-to-webm | 159,500,442 | 3 | 4,890,311 | 9.19 s–9.62 s | 214.5 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -141,6 +143,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | odt-to-txt | 135,267,233 | 3 | 108,212,672 | 10.38 s–10.90 s | 191.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ogg-to-flac | 144,431,506 | 3 | 397,265,921 | 15.35 s–15.46 s | 198.4 MiB | 32.0 MiB | read 262,144 B / write 16,617 B | passed |
 | ogg-to-wav | 4,580,949 | 3 | 201,600,078 | 5.91 s–7.02 s | 196.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
+| ogv-to-flac | 137,218,662 | 3 | 10,205,021 | 3.39 s–3.75 s | 213.1 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
 | ogv-to-wav | 137,635,308 | 3 | 74,880,078 | 3.34 s–3.91 s | 204.9 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | ogv-to-webm | 137,778,644 | 3 | 61,043,196 | 44.03 s–45.01 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 71,004 B | passed |
 | ogv-to-webm-vp9 | 137,635,308 | 3 | 67,478,525 | 97.19 s–97.53 s | 224.1 MiB | 64.0 MiB | read 262,144 B / write 79,087 B | passed |
@@ -251,6 +254,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 2026-08-01T23:19:09.425Z | flv-to-webm | 147,164,019 | 3 | 147,164,019 | Failed checks: processTreePrivateMemory; measured 266.2 MiB against a 250.0 MiB limit. |
 | 2026-08-01T23:22:42.411Z | 3gp-to-webm | 146,854,481 | 3 | 146,854,481 | Failed checks: processTreePrivateMemory; measured 255.2 MiB against a 250.0 MiB limit. |
 | 2026-08-01T23:54:48.472Z | avi-to-webm | 159,500,442 | 0 | 159,500,442 | Browser media metadata validation failed: 640x266, video-only channels, not-applicable, 64.25s. |
+| 2026-08-02T00:39:29.177Z | ogv-to-flac | 137,778,644 | 0 | 137,778,644 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 782.586667s. |
 
 ## Every public passed profile
 
@@ -271,6 +275,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | amr-to-wav | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
+| avi-to-flac | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
 | avi-to-webm | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -359,6 +364,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | odt-to-txt | document | odf-stream | stream | 135,267,233 B | 3-run Chrome report |
 | ogg-to-flac | audio | ffmpeg-audio | re-encode | 144,431,506 B | 3-run Chrome report |
 | ogg-to-wav | audio | ffmpeg-audio | re-encode | 4,580,949 B | 3-run Chrome report |
+| ogv-to-flac | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | ogv-to-wav | video | ffmpeg-audio | re-encode | 137,635,308 B | 3-run Chrome report |
 | ogv-to-webm | video | ffmpeg-video | re-encode | 137,778,644 B | 3-run Chrome report |
 | ogv-to-webm-vp9 | video | ffmpeg-video | re-encode | 137,635,308 B | 3-run Chrome report |

@@ -132,8 +132,19 @@ function aviWebmProfile(vp9: boolean): ConversionProfile {
 }
 
 function containerFlacProfile(
-  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv",
+  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv" | "avi" | "ogv",
 ): ConversionProfile {
+  const sourceCodec = input === "avi" ? "MP3" : input === "ogv" ? "Vorbis" : "AAC";
+  const evidence = {
+    mkv: 146_855_294,
+    mp4: 146_854_557,
+    mov: 146_854_612,
+    "3gp": 146_854_456,
+    "mpeg-ts": 150_441_548,
+    flv: 146_903_486,
+    avi: 159_500_442,
+    ogv: 137_218_662,
+  }[input];
   return {
     id: `${input}-to-flac`,
     input,
@@ -149,22 +160,15 @@ function containerFlacProfile(
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified input combination uses AAC audio; other audio codecs require separately verified extraction routes.",
+      `The certified input combination uses ${sourceCodec} audio; other audio codecs require separately verified extraction routes.`,
       "Only the first audio stream is converted; video, subtitles, attachments, data, additional audio streams, and chapters are explicitly excluded.",
       "Compatible text and language metadata are copied where FLAC can represent them; container-specific fields and artwork are excluded.",
     ],
     fidelityLimitations: [
-      "FLAC losslessly preserves the decoded signed 16-bit AAC representation but cannot restore information already discarded by AAC compression.",
+      `FLAC losslessly preserves the decoded signed 16-bit ${sourceCodec} representation but cannot restore information already discarded by ${sourceCodec} compression.`,
     ],
-    maxTestedBytes: {
-      mkv: 146_855_294,
-      mp4: 146_854_557,
-      mov: 146_854_612,
-      "3gp": 146_854_456,
-      "mpeg-ts": 150_441_548,
-      flv: 146_903_486,
-    }[input],
-    automatedTestStatus: "passed",
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
     public: true,
   };
 }
@@ -2827,6 +2831,8 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerFlacProfile("3gp"),
   containerFlacProfile("mpeg-ts"),
   containerFlacProfile("flv"),
+  containerFlacProfile("avi"),
+  containerFlacProfile("ogv"),
   {
     id: "m4a-to-flac",
     input: "m4a",

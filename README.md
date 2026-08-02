@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -211,6 +211,12 @@ metadata, and explicitly warn about excluded video, additional streams,
 attachments, chapters, artwork, and container-only fields. FLAC losslessly
 preserves the decoded signed 16-bit representation; it cannot restore data
 already lost by AAC compression.
+
+AVI-to-FLAC and OGV-to-FLAC extend the same bounded path to the verified MP3
+and Vorbis combinations. They preserve the decoded signed 16-bit
+representation losslessly while disclosing that FLAC cannot restore
+information discarded by the source codec. Video and unrepresentable
+container-only metadata are explicitly excluded rather than silently copied.
 
 AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
@@ -622,6 +628,8 @@ Current exact-build results:
 | 3GP → FLAC | 3 | 146,854,456 B | 986,210 B | 214.7 MiB | 32 MiB | cleanup passed |
 | MPEG-TS → FLAC | 3 | 150,441,548 B | 987,948 B | 211.6 MiB | 32 MiB | cleanup passed |
 | FLV → FLAC | 3 | 146,903,486 B | 988,027 B | 210.7 MiB | 32 MiB | cleanup passed |
+| AVI → FLAC | 3 | 159,500,442 B | 1,017,396 B | 223.3 MiB | 32 MiB | cleanup passed |
+| OGV → FLAC | 3 | 137,218,662 B | 10,205,021 B | 213.1 MiB | 32 MiB | cleanup passed |
 | ALAC M4A → WAV | 3 | 140,941,469 B | 153,600,128 B | 227.1 MiB | 32 MiB | 12.0–28.9 MiB |
 | ALAC M4A → FLAC, fresh-session repeat | 3 | 140,941,469 B | 138,185,793 B | 230.4 MiB | 32 MiB | 9.5–38.7 MiB |
 | WAV → ALAC M4A | 3 | 153,600,106 B | 140,941,506 B | 200.2 MiB | 32 MiB | 13.5–40.0 MiB |
@@ -768,6 +776,16 @@ MOV, 3GP, MPEG-TS, and FLV. All six 146.9–150.4 MB sources are generated in
 1.21–1.98 seconds at 210.7–214.7 MiB worst incremental private memory, produced
 repeatable FLAC, passed independent decoded-audio validation, and left no
 generated source or converted copy after category cleanup.
+
+AVI/MP3 and OGV/Vorbis FLAC extraction reuse two codec-specific stress
+fixtures generated concurrently in about 11 seconds. The OGV generator was
+reduced from roughly 19 seconds to 10.63 seconds by using Vorbis quality 0 while
+stream-copying the 137 MB Theora payload. A fully copied Vorbis experiment was
+rejected because repeated codec-delay samples produced 782.587 seconds of FLAC
+from 780 seconds of timestamps; that failure remains retained. The continuous
+Vorbis fixture passed 3/3 in 3.39–3.75 seconds at 213.1 MiB; AVI passed in
+1.26–1.60 seconds at 223.3 MiB. Every source and output was removed after
+validation.
 
 The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
 Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,

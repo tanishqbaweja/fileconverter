@@ -192,6 +192,8 @@ if (
     "3gp-to-flac",
     "mpeg-ts-to-flac",
     "flv-to-flac",
+    "avi-to-flac",
+    "ogv-to-flac",
     "aac-to-flac",
     "amr-to-flac",
     "mp3-to-flac",
@@ -271,6 +273,8 @@ const isMediaProfile =
   profileId === "3gp-to-flac" ||
   profileId === "mpeg-ts-to-flac" ||
   profileId === "flv-to-flac" ||
+  profileId === "avi-to-flac" ||
+  profileId === "ogv-to-flac" ||
   profileId === "aac-to-flac" ||
   profileId === "amr-to-flac" ||
   profileId === "mp3-to-flac" ||
@@ -939,6 +943,8 @@ async function validateMediaOutput(
     route === "3gp-to-flac" ||
     route === "mpeg-ts-to-flac" ||
     route === "flv-to-flac" ||
+    route === "avi-to-flac" ||
+    route === "ogv-to-flac" ||
     route === "aac-to-flac" ||
     route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
@@ -977,6 +983,8 @@ async function validateMediaOutput(
     route === "3gp-to-flac" ||
     route === "mpeg-ts-to-flac" ||
     route === "flv-to-flac" ||
+    route === "avi-to-flac" ||
+    route === "ogv-to-flac" ||
     route === "aac-to-flac" ||
     route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
