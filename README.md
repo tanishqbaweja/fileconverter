@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC; AVI -> MP4/WAV; OGV -> VP8 or VP9 WebM/WAV; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -203,6 +203,14 @@ genuine AAC decode, libswresample conversion, and PCM s16le encoding. A differen
 rejected before the muxer writes media data, with a readable explanation that a
 verified bounded re-encoder is not installed; it is never silently dropped or
 passed to an incompatible container.
+
+MKV, MP4, MOV, 3GP, MPEG-TS, and FLV can also extract the first certified AAC
+stream to FLAC. These routes use the same custom AVIO callbacks and bounded
+8,192-sample FIFO as standalone AAC-to-FLAC, copy compatible text and language
+metadata, and explicitly warn about excluded video, additional streams,
+attachments, chapters, artwork, and container-only fields. FLAC losslessly
+preserves the decoded signed 16-bit representation; it cannot restore data
+already lost by AAC compression.
 
 AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
@@ -608,6 +616,12 @@ Current exact-build results:
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
+| MKV → FLAC | 3 | 146,855,294 B | 988,027 B | 212.6 MiB | 32 MiB | cleanup passed |
+| MP4 → FLAC | 3 | 146,854,557 B | 986,210 B | 214.2 MiB | 32 MiB | cleanup passed |
+| MOV → FLAC | 3 | 146,854,612 B | 986,198 B | 213.9 MiB | 32 MiB | cleanup passed |
+| 3GP → FLAC | 3 | 146,854,456 B | 986,210 B | 214.7 MiB | 32 MiB | cleanup passed |
+| MPEG-TS → FLAC | 3 | 150,441,548 B | 987,948 B | 211.6 MiB | 32 MiB | cleanup passed |
+| FLV → FLAC | 3 | 146,903,486 B | 988,027 B | 210.7 MiB | 32 MiB | cleanup passed |
 | ALAC M4A → WAV | 3 | 140,941,469 B | 153,600,128 B | 227.1 MiB | 32 MiB | 12.0–28.9 MiB |
 | ALAC M4A → FLAC, fresh-session repeat | 3 | 140,941,469 B | 138,185,793 B | 230.4 MiB | 32 MiB | 9.5–38.7 MiB |
 | WAV → ALAC M4A | 3 | 153,600,106 B | 140,941,506 B | 200.2 MiB | 32 MiB | 13.5–40.0 MiB |
@@ -746,6 +760,14 @@ packet SHA-256 match after removing ADTS framing. AAC-to-WAV completed in
 comparisons measured 154.165 dB APSNR per channel. Every run kept reads at or
 below 262,144 bytes, held at most one queued write, and the category cleanup
 deleted the generated stress source and every converted copy.
+
+The six container-to-FLAC routes share one optimized stress-fixture pass: a
+single 65-second high-bitrate H.264/AAC encode is stream-copied into MKV, MP4,
+MOV, 3GP, MPEG-TS, and FLV. All six 146.9–150.4 MB sources are generated in
+3.89 seconds under `fixtures/stress`. Eighteen Chrome conversions completed in
+1.21–1.98 seconds at 210.7–214.7 MiB worst incremental private memory, produced
+repeatable FLAC, passed independent decoded-audio validation, and left no
+generated source or converted copy after category cleanup.
 
 The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
 Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,

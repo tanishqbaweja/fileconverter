@@ -2664,6 +2664,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "ogg-to-wav" ||
         profileId === "opus-to-wav" ||
         profileId === "m4a-to-flac" ||
+        profileId === "mkv-to-flac" ||
+        profileId === "mp4-to-flac" ||
+        profileId === "mov-to-flac" ||
+        profileId === "3gp-to-flac" ||
+        profileId === "mpeg-ts-to-flac" ||
+        profileId === "flv-to-flac" ||
         profileId === "aac-to-flac" ||
         profileId === "amr-to-flac" ||
         profileId === "mp3-to-flac" ||
@@ -3222,6 +3228,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav" ||
       profileId === "m4a-to-flac" ||
+      profileId === "mkv-to-flac" ||
+      profileId === "mp4-to-flac" ||
+      profileId === "mov-to-flac" ||
+      profileId === "3gp-to-flac" ||
+      profileId === "mpeg-ts-to-flac" ||
+      profileId === "flv-to-flac" ||
       profileId === "aac-to-flac" ||
       profileId === "amr-to-flac" ||
       profileId === "mp3-to-flac" ||
@@ -3278,6 +3290,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "opus-to-wav"
             ? 3
             : profileId === "m4a-to-flac" ||
+                profileId === "mkv-to-flac" ||
+                profileId === "mp4-to-flac" ||
+                profileId === "mov-to-flac" ||
+                profileId === "3gp-to-flac" ||
+                profileId === "mpeg-ts-to-flac" ||
+                profileId === "flv-to-flac" ||
                 profileId === "aac-to-flac" ||
                 profileId === "amr-to-flac" ||
                 profileId === "mp3-to-flac" ||

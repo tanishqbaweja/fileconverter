@@ -186,6 +186,12 @@ if (
     "ogg-to-wav",
     "opus-to-wav",
     "m4a-to-flac",
+    "mkv-to-flac",
+    "mp4-to-flac",
+    "mov-to-flac",
+    "3gp-to-flac",
+    "mpeg-ts-to-flac",
+    "flv-to-flac",
     "aac-to-flac",
     "amr-to-flac",
     "mp3-to-flac",
@@ -259,6 +265,12 @@ const isMediaProfile =
   profileId === "ogg-to-wav" ||
   profileId === "opus-to-wav" ||
   profileId === "m4a-to-flac" ||
+  profileId === "mkv-to-flac" ||
+  profileId === "mp4-to-flac" ||
+  profileId === "mov-to-flac" ||
+  profileId === "3gp-to-flac" ||
+  profileId === "mpeg-ts-to-flac" ||
+  profileId === "flv-to-flac" ||
   profileId === "aac-to-flac" ||
   profileId === "amr-to-flac" ||
   profileId === "mp3-to-flac" ||
@@ -921,6 +933,12 @@ async function validateMediaOutput(
     route === "ogg-to-wav" ||
     route === "opus-to-wav" ||
     route === "m4a-to-flac" ||
+    route === "mkv-to-flac" ||
+    route === "mp4-to-flac" ||
+    route === "mov-to-flac" ||
+    route === "3gp-to-flac" ||
+    route === "mpeg-ts-to-flac" ||
+    route === "flv-to-flac" ||
     route === "aac-to-flac" ||
     route === "amr-to-flac" ||
     route === "mp3-to-flac" ||
@@ -953,6 +971,12 @@ async function validateMediaOutput(
     route === "opus-to-wav";
   const flacOutput =
     route === "m4a-to-flac" ||
+    route === "mkv-to-flac" ||
+    route === "mp4-to-flac" ||
+    route === "mov-to-flac" ||
+    route === "3gp-to-flac" ||
+    route === "mpeg-ts-to-flac" ||
+    route === "flv-to-flac" ||
     route === "aac-to-flac" ||
     route === "amr-to-flac" ||
     route === "mp3-to-flac" ||

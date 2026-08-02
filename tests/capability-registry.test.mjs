@@ -494,6 +494,13 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id),
     ["avi-to-webm", "avi-to-webm-vp9"],
   );
+  for (const input of ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"]) {
+    assert.ok(
+      publicProfilesFor(input).some(
+        (profile) => profile.id === `${input}-to-flac`,
+      ),
+    );
+  }
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
   assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));

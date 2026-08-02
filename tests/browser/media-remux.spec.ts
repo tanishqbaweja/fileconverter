@@ -52,6 +52,12 @@ const standaloneWavOutputPath = path.join(
 const mp3WavOutputPath = path.join(outputRoot, "mp3-convert-output.wav");
 const flacWavOutputPath = path.join(outputRoot, "flac-convert-output.wav");
 const m4aFlacOutputPath = path.join(outputRoot, "m4a-convert-output.flac");
+const mkvFlacOutputPath = path.join(outputRoot, "mkv-extract-output.flac");
+const mp4FlacOutputPath = path.join(outputRoot, "mp4-extract-output.flac");
+const movFlacOutputPath = path.join(outputRoot, "mov-extract-output.flac");
+const threeGpFlacOutputPath = path.join(outputRoot, "3gp-extract-output.flac");
+const mpegTsFlacOutputPath = path.join(outputRoot, "mpeg-ts-extract-output.flac");
+const flvFlacOutputPath = path.join(outputRoot, "flv-extract-output.flac");
 const mp3FlacOutputPath = path.join(outputRoot, "mp3-convert-output.flac");
 const wavFlacOutputPath = path.join(outputRoot, "wav-convert-output.flac");
 const alacWavOutputPath = path.join(outputRoot, "alac-decode-output.wav");
@@ -360,6 +366,12 @@ test.beforeAll(async () => {
   assertProjectLocal(mp3WavOutputPath);
   assertProjectLocal(flacWavOutputPath);
   assertProjectLocal(m4aFlacOutputPath);
+  assertProjectLocal(mkvFlacOutputPath);
+  assertProjectLocal(mp4FlacOutputPath);
+  assertProjectLocal(movFlacOutputPath);
+  assertProjectLocal(threeGpFlacOutputPath);
+  assertProjectLocal(mpegTsFlacOutputPath);
+  assertProjectLocal(flvFlacOutputPath);
   assertProjectLocal(mp3FlacOutputPath);
   assertProjectLocal(wavFlacOutputPath);
   assertProjectLocal(alacWavOutputPath);
@@ -522,6 +534,12 @@ test.afterAll(async () => {
   await rm(mp3WavOutputPath, { force: true });
   await rm(flacWavOutputPath, { force: true });
   await rm(m4aFlacOutputPath, { force: true });
+  await rm(mkvFlacOutputPath, { force: true });
+  await rm(mp4FlacOutputPath, { force: true });
+  await rm(movFlacOutputPath, { force: true });
+  await rm(threeGpFlacOutputPath, { force: true });
+  await rm(mpegTsFlacOutputPath, { force: true });
+  await rm(flvFlacOutputPath, { force: true });
   await rm(mp3FlacOutputPath, { force: true });
   await rm(wavFlacOutputPath, { force: true });
   await rm(alacWavOutputPath, { force: true });
@@ -653,6 +671,12 @@ async function runMediaRoute(
     | "mp3-to-wav"
     | "flac-to-wav"
     | "m4a-to-flac"
+    | "mkv-to-flac"
+    | "mp4-to-flac"
+    | "mov-to-flac"
+    | "3gp-to-flac"
+    | "mpeg-ts-to-flac"
+    | "flv-to-flac"
     | "aac-to-flac"
     | "mp3-to-flac"
     | "wav-to-flac"
@@ -1277,6 +1301,12 @@ for (const route of [
   ["flv-to-webm-vp9", flvInputFixturePath],
   ["avi-to-webm", aviInputFixturePath],
   ["avi-to-webm-vp9", aviInputFixturePath],
+  ["mkv-to-flac", fixturePath],
+  ["mp4-to-flac", mp4InputFixturePath],
+  ["mov-to-flac", movInputFixturePath],
+  ["3gp-to-flac", threeGpInputFixturePath],
+  ["mpeg-ts-to-flac", mpegTsInputFixturePath],
+  ["flv-to-flac", flvInputFixturePath],
 ] as const) {
   test(`${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -1672,6 +1702,23 @@ test("browser FFmpeg converts standalone M4A audio to FLAC", async () => {
     audioFixturePath,
   );
 });
+
+for (const route of [
+  ["mkv-to-flac", fixturePath, mkvFlacOutputPath],
+  ["mp4-to-flac", mp4InputFixturePath, mp4FlacOutputPath],
+  ["mov-to-flac", movInputFixturePath, movFlacOutputPath],
+  ["3gp-to-flac", threeGpInputFixturePath, threeGpFlacOutputPath],
+  ["mpeg-ts-to-flac", mpegTsInputFixturePath, mpegTsFlacOutputPath],
+  ["flv-to-flac", flvInputFixturePath, flvFlacOutputPath],
+] as const) {
+  test(`browser FFmpeg extracts ${route[0]} AAC audio to FLAC`, async () => {
+    await runMediaRoute(route[0], route[2], ["flac"], 20_000, route[1], {
+      expectedWarningFragments: ["video stream"],
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(route[1], outputPath, 60),
+    });
+  });
+}
 
 test("browser FFmpeg decodes raw AAC and encodes FLAC", async () => {
   await runMediaRoute(

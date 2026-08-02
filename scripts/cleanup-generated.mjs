@@ -121,6 +121,12 @@ const generatedStressNames = new Set([
   "h264-aac-128m.mpegts.json",
   "h264-aac-128m.flv.json",
   "mpeg4-mp3-webm-128m.avi.json",
+  "h264-aac-flac-128m.3gp.json",
+  "h264-aac-flac-128m.mp4.json",
+  "h264-aac-flac-128m.mov.json",
+  "h264-aac-flac-128m.mkv.json",
+  "h264-aac-flac-128m.mpegts.json",
+  "h264-aac-flac-128m.flv.json",
 ]);
 
 assertInside(workRoot, profileRoot);

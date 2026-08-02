@@ -131,6 +131,44 @@ function aviWebmProfile(vp9: boolean): ConversionProfile {
   };
 }
 
+function containerFlacProfile(
+  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv",
+): ConversionProfile {
+  return {
+    id: `${input}-to-flac`,
+    input,
+    output: "flac",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination uses AAC audio; other audio codecs require separately verified extraction routes.",
+      "Only the first audio stream is converted; video, subtitles, attachments, data, additional audio streams, and chapters are explicitly excluded.",
+      "Compatible text and language metadata are copied where FLAC can represent them; container-specific fields and artwork are excluded.",
+    ],
+    fidelityLimitations: [
+      "FLAC losslessly preserves the decoded signed 16-bit AAC representation but cannot restore information already discarded by AAC compression.",
+    ],
+    maxTestedBytes: {
+      mkv: 146_855_294,
+      mp4: 146_854_557,
+      mov: 146_854_612,
+      "3gp": 146_854_456,
+      "mpeg-ts": 150_441_548,
+      flv: 146_903_486,
+    }[input],
+    automatedTestStatus: "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -2783,6 +2821,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  containerFlacProfile("mkv"),
+  containerFlacProfile("mp4"),
+  containerFlacProfile("mov"),
+  containerFlacProfile("3gp"),
+  containerFlacProfile("mpeg-ts"),
+  containerFlacProfile("flv"),
   {
     id: "m4a-to-flac",
     input: "m4a",
