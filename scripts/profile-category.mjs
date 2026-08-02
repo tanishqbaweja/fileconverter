@@ -172,6 +172,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "avi-webm": {
+    generator: "scripts/generate-avi-webm-stress-fixture.mjs",
+    profiles: [
+      ["avi-to-webm", "mpeg4-mp3-webm-128m.avi"],
+      ["avi-to-webm-vp9", "mpeg4-mp3-webm-128m.avi"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   ogv: {
     generator: "scripts/generate-ogv-stress-fixture.mjs",
     profiles: [

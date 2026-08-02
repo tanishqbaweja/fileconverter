@@ -2680,12 +2680,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "3gp-to-webm" ||
         profileId === "mpeg-ts-to-webm" ||
         profileId === "flv-to-webm" ||
+        profileId === "avi-to-webm" ||
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
         profileId === "mkv-to-webm-vp9" ||
         profileId === "3gp-to-webm-vp9" ||
         profileId === "mpeg-ts-to-webm-vp9" ||
         profileId === "flv-to-webm-vp9" ||
+        profileId === "avi-to-webm-vp9" ||
         profileId === "ogv-to-webm-vp9" ||
         profileId === "m2v-to-webm-vp9" ||
         profileId === "mkv-to-mp4-mpeg4" ||
@@ -3238,6 +3240,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-webm" ||
       profileId === "mpeg-ts-to-webm" ||
       profileId === "flv-to-webm" ||
+      profileId === "avi-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
       profileId === "mp4-to-webm-vp9" ||
@@ -3246,6 +3249,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-webm-vp9" ||
       profileId === "mpeg-ts-to-webm-vp9" ||
       profileId === "flv-to-webm-vp9" ||
+      profileId === "avi-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
       profileId === "mkv-to-mp4-mpeg4" ||
@@ -3295,6 +3299,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "3gp-to-webm" ||
                 profileId === "mpeg-ts-to-webm" ||
                 profileId === "flv-to-webm" ||
+                profileId === "avi-to-webm" ||
                 profileId === "m2v-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
@@ -3305,6 +3310,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "3gp-to-webm-vp9" ||
                 profileId === "mpeg-ts-to-webm-vp9" ||
                 profileId === "flv-to-webm-vp9" ||
+                profileId === "avi-to-webm-vp9" ||
                 profileId === "m2v-to-webm-vp9"
               ? 10
             : profileId === "ogv-to-webm-vp9"

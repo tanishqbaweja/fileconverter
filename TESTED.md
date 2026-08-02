@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **162**
-- Public profiles with a retained successful Chrome stress report: **162**
+- Public passed conversion profiles: **164**
+- Public profiles with a retained successful Chrome stress report: **164**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 367/367 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-02:** 371/371 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Bounded AVI to WebM:** MPEG-4 Part 2 AVI-to-VP8 passed 3/3 Chrome runs on 159,500,442 bytes in 9.19–9.62 s at 214.5 MiB worst incremental private memory; AVI-to-VP9 passed in 14.62–15.00 s at 233.3 MiB. All six video-only WebM outputs were byte-repeatable, independently probed, midpoint-SSIM checked, fully decoded, and deleted; route-specific forced-write failures left no partial OPFS output. The optimized generator creates the 128 MiB-class source under `fixtures/stress` in about 1.5 seconds instead of looping a 12-minute stream-copy fixture, records the 1,543 actually decodable frames rather than trusting AVI's 1,560-frame header, verifies the small source hash before and after, and removes the generated AVI and manifest in `finally`. The retained first-run failure documents the original header-duration validation mismatch; the strict 0.25-second tolerance remained unchanged and now compares against decoded-frame duration.
 - **Bounded 3GP/MPEG-TS/FLV to WebM:** six H.264 container routes reuse the lazy optimized eight-worker VP8/VP9 cores after bounded stream inspection. 3GP-to-VP8 passed 3/3 Chrome runs on 146,854,522 bytes in 9.28–9.69 s at 236.4 MiB worst incremental private memory; 3GP-to-VP9 passed in 13.55–14.19 s at 234.0 MiB; MPEG-TS-to-VP8 passed on 150,441,548 bytes in 9.59–9.97 s at 220.4 MiB; MPEG-TS-to-VP9 passed in 13.81–14.39 s at 222.9 MiB; FLV-to-VP8 passed on 146,903,539 bytes in 9.22–9.71 s at 220.6 MiB; and FLV-to-VP9 passed in 13.62–14.05 s at 222.1 MiB. All eighteen outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. The stress generator now loops the verified project-local 3GP fixture, performs one 65-second H.264 encode plus two stream-copy remuxes, and generated all three 128 MiB-class sources in 2.16 seconds instead of roughly ten minutes; sources stay under `fixtures/stress` and category cleanup removes them in `finally`. Retained rejected topologies measured 266.2 MiB for FLV VP8 and 255.2 MiB for 1,282×722 3GP VP8 before the final 1,282×536 fixture passed without changing the 250 MiB limit or worker counts.
 - **Optimized MP4/MOV to WebM:** four new routes reuse the lazy optimized eight-worker VP8/VP9 cores. MP4-to-VP8 passed 3/3 Chrome runs on 147,136,619 bytes in 12.84–13.34 s at 226.9 MiB worst incremental private memory; MP4-to-VP9 passed on 147,136,625 bytes in 14.80–15.36 s at 237.1 MiB; MOV-to-VP8 passed on 147,136,647 bytes in 9.53–10.14 s at 244.4 MiB; and MOV-to-VP9 passed in 14.67–15.17 s at 236.8 MiB. All twelve outputs were byte-repeatable, independently probed as genuine video-only WebM, midpoint-SSIM checked, fully decoded, and deleted. Route-specific forced-write failures left no partial OPFS output. Rejected VP9 fixture topologies measured 254.5–268.5 MiB; the final 1,282-pixel source activates two decoder threads while retaining four encoder threads, cutting the passing process-tree peak by 17.4–31.4 MiB without changing the 250 MiB limit or encode settings.
 - **Bounded VP9 WebM:** MKV-to-VP9 passed 3/3 Chrome runs on a 181,825,549-byte HEVC/AAC/SubRip source in 329.00–330.04 s at 244.9 MiB worst incremental private memory; OGV-to-VP9/Vorbis passed on 137,635,308 bytes in 97.19–97.53 s at 224.1 MiB; and M2V-to-VP9 passed on 136,166,136 bytes in 68.34–69.32 s at 223.4 MiB. All nine outputs were byte-repeatable, independently probed as genuine VP9 WebM, midpoint-SSIM checked, fully decoded, and deleted after validation. The separate lazy-loaded core retains a 96 MiB hard Wasm ceiling, uses four VP9 encoder threads, and limits high-resolution decoding to two threads. The final M2V topology improved the controlled 136 MiB conversion from 85.49 s to 69.06 s (19.2%) while staying bounded; split high-resolution decode/encode improved MKV from 355.59 s to 330.23 s (7.1%).
@@ -52,6 +53,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
+| avi-to-webm | 159,500,442 | 3 | 4,890,311 | 9.19 s–9.62 s | 214.5 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-webm-vp9 | 159,500,442 | 3 | 3,510,077 | 14.62 s–15.00 s | 233.3 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avif-to-bmp | 100,464 | 3 | 24,883,254 | 0.27 s–0.38 s | 171.5 MiB | 0.0 MiB | read 65,536 B / write 195,840 B | passed |
 | avif-to-ico | 100,464 | 3 | 13,545 | 0.09 s–0.15 s | 84.7 MiB | 0.0 MiB | read 100,464 B / write 13,523 B | passed |
 | avif-to-jpeg | 100,464 | 3 | 367,450 | 0.12 s–0.17 s | 69.3 MiB | 0.0 MiB | read 65,536 B / write 262,144 B | passed |
@@ -240,6 +243,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | 2026-08-01T22:37:44.431Z | mp4-to-webm-vp9 | 147,499,419 | 3 | 147,499,419 | Failed checks: processTreePrivateMemory; measured 268.5 MiB against a 250.0 MiB limit. |
 | 2026-08-01T23:19:09.425Z | flv-to-webm | 147,164,019 | 3 | 147,164,019 | Failed checks: processTreePrivateMemory; measured 266.2 MiB against a 250.0 MiB limit. |
 | 2026-08-01T23:22:42.411Z | 3gp-to-webm | 146,854,481 | 3 | 146,854,481 | Failed checks: processTreePrivateMemory; measured 255.2 MiB against a 250.0 MiB limit. |
+| 2026-08-01T23:54:48.472Z | avi-to-webm | 159,500,442 | 0 | 159,500,442 | Browser media metadata validation failed: 640x266, video-only channels, not-applicable, 64.25s. |
 
 ## Every public passed profile
 
@@ -261,6 +265,8 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
+| avi-to-webm | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
+| avi-to-webm-vp9 | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
 | avif-to-bmp | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-ico | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-jpeg | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |

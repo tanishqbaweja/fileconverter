@@ -211,6 +211,8 @@ if (
     "mpeg-ts-to-webm-vp9",
     "flv-to-webm",
     "flv-to-webm-vp9",
+    "avi-to-webm",
+    "avi-to-webm-vp9",
     "ogv-to-webm",
     "ogv-to-webm-vp9",
     "ogv-to-wav",
@@ -282,6 +284,8 @@ const isMediaProfile =
   profileId === "mpeg-ts-to-webm-vp9" ||
   profileId === "flv-to-webm" ||
   profileId === "flv-to-webm-vp9" ||
+  profileId === "avi-to-webm" ||
+  profileId === "avi-to-webm-vp9" ||
   profileId === "ogv-to-webm" ||
   profileId === "ogv-to-webm-vp9" ||
   profileId === "ogv-to-wav" ||
@@ -968,6 +972,7 @@ async function validateMediaOutput(
     route === "3gp-to-webm-vp9" ||
     route === "mpeg-ts-to-webm-vp9" ||
     route === "flv-to-webm-vp9" ||
+    route === "avi-to-webm-vp9" ||
     route === "ogv-to-webm-vp9" ||
     route === "m2v-to-webm-vp9";
   const webmReencode =
@@ -977,6 +982,7 @@ async function validateMediaOutput(
     route === "3gp-to-webm" ||
     route === "mpeg-ts-to-webm" ||
     route === "flv-to-webm" ||
+    route === "avi-to-webm" ||
     route === "ogv-to-webm" ||
     route === "m2v-to-webm" ||
     vp9Reencode;
@@ -987,9 +993,13 @@ async function validateMediaOutput(
     route === "m2v-to-mp4-mpeg4" ||
     webmReencode;
   const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
-  const sourceDurationSeconds = Number.isFinite(probedSourceDurationSeconds)
-    ? probedSourceDurationSeconds
-    : Number(source.durationSeconds);
+  const decodedVideoDurationSeconds = Number(source.decodedVideoDurationSeconds);
+  const sourceDurationSeconds =
+    videoReencode && Number.isFinite(decodedVideoDurationSeconds)
+      ? decodedVideoDurationSeconds
+      : Number.isFinite(probedSourceDurationSeconds)
+        ? probedSourceDurationSeconds
+        : Number(source.durationSeconds);
   const minimumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.floor((sourceDurationSeconds * 300_000) / 8)

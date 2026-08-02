@@ -89,6 +89,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "3gp-to-webm",
         "mpeg-ts-to-webm",
         "flv-to-webm",
+        "avi-to-webm",
         "ogv-to-webm",
         "m2v-to-webm",
       ],
@@ -104,6 +105,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "3gp-to-webm-vp9",
         "mpeg-ts-to-webm-vp9",
         "flv-to-webm-vp9",
+        "avi-to-webm-vp9",
         "ogv-to-webm-vp9",
         "m2v-to-webm-vp9",
       ],
@@ -485,6 +487,12 @@ test("compound archives and mainstream images are detected by filename", () => {
     publicProfilesFor("avi").some(
       (profile) => profile.id === "avi-to-wav",
     ),
+  );
+  assert.deepEqual(
+    publicProfilesFor("avi")
+      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .map((profile) => profile.id),
+    ["avi-to-webm", "avi-to-webm-vp9"],
   );
   assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
   assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
