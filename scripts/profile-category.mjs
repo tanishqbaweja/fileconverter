@@ -221,6 +221,23 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "h264-elementary": {
+    generator: "scripts/generate-h264-elementary-stress-fixtures.mjs",
+    profiles: [
+      ["h264-to-mp4", "h264-elementary-128m.h264"],
+      ["h264-to-webm", "h264-elementary-128m.h264"],
+      ["h264-to-webm-vp9", "h264-elementary-128m.h264"],
+      ["mkv-to-h264", "h264-aac-flac-128m.mkv"],
+      ["mp4-to-h264", "h264-aac-flac-128m.mp4"],
+      ["mov-to-h264", "h264-aac-flac-128m.mov"],
+      ["3gp-to-h264", "h264-aac-flac-128m.3gp"],
+      ["mpeg-ts-to-h264", "h264-aac-flac-128m.mpegts"],
+      ["flv-to-h264", "h264-aac-flac-128m.flv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   vp9: {
     generator: "scripts/generate-vp9-stress-fixtures.mjs",
     profiles: [

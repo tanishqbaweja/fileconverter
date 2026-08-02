@@ -2639,6 +2639,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mpeg-ts-to-mp4" ||
         profileId === "flv-to-mp4" ||
         profileId === "avi-to-mp4" ||
+        profileId === "h264-to-mp4" ||
+        profileId === "mkv-to-h264" ||
+        profileId === "mp4-to-h264" ||
+        profileId === "mov-to-h264" ||
+        profileId === "3gp-to-h264" ||
+        profileId === "mpeg-ts-to-h264" ||
+        profileId === "flv-to-h264" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
         profileId === "3gp-to-m4a" ||
@@ -2691,6 +2698,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "avi-to-webm" ||
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
+        profileId === "h264-to-webm" ||
         profileId === "mkv-to-webm-vp9" ||
         profileId === "3gp-to-webm-vp9" ||
         profileId === "mpeg-ts-to-webm-vp9" ||
@@ -2698,6 +2706,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "avi-to-webm-vp9" ||
         profileId === "ogv-to-webm-vp9" ||
         profileId === "m2v-to-webm-vp9" ||
+        profileId === "h264-to-webm-vp9" ||
         profileId === "mkv-to-mp4-mpeg4" ||
         profileId === "m2v-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
@@ -3205,6 +3214,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mpeg-ts-to-mp4" ||
       profileId === "flv-to-mp4" ||
       profileId === "avi-to-mp4" ||
+      profileId === "h264-to-mp4" ||
+      profileId === "mkv-to-h264" ||
+      profileId === "mp4-to-h264" ||
+      profileId === "mov-to-h264" ||
+      profileId === "3gp-to-h264" ||
+      profileId === "mpeg-ts-to-h264" ||
+      profileId === "flv-to-h264" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
       profileId === "3gp-to-m4a" ||
@@ -3259,6 +3275,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "avi-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
+      profileId === "h264-to-webm" ||
       profileId === "mp4-to-webm-vp9" ||
       profileId === "mov-to-webm-vp9" ||
       profileId === "mkv-to-webm-vp9" ||
@@ -3268,6 +3285,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "avi-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
+      profileId === "h264-to-webm-vp9" ||
       profileId === "mkv-to-mp4-mpeg4" ||
       profileId === "m2v-to-mp4-mpeg4"
     ) {
@@ -3275,7 +3293,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         file,
         writable: destination.writable,
         remuxProfile:
-          profileId === "mkv-to-wav" ||
+          profileId === "mkv-to-h264" ||
+            profileId === "mp4-to-h264" ||
+            profileId === "mov-to-h264" ||
+            profileId === "3gp-to-h264" ||
+            profileId === "mpeg-ts-to-h264" ||
+            profileId === "flv-to-h264"
+            ? 12
+          : profileId === "mkv-to-wav" ||
             profileId === "mov-to-wav" ||
             profileId === "3gp-to-wav" ||
             profileId === "mpeg-ts-to-wav" ||
@@ -3324,7 +3349,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "mpeg-ts-to-webm" ||
                 profileId === "flv-to-webm" ||
                 profileId === "avi-to-webm" ||
-                profileId === "m2v-to-webm"
+                profileId === "m2v-to-webm" ||
+                profileId === "h264-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
               ? 7
@@ -3335,7 +3361,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "mpeg-ts-to-webm-vp9" ||
                 profileId === "flv-to-webm-vp9" ||
                 profileId === "avi-to-webm-vp9" ||
-                profileId === "m2v-to-webm-vp9"
+                profileId === "m2v-to-webm-vp9" ||
+                profileId === "h264-to-webm-vp9"
               ? 10
             : profileId === "ogv-to-webm-vp9"
               ? 11

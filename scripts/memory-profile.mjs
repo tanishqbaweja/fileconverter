@@ -162,6 +162,13 @@ if (
     "mpeg-ts-to-mp4",
     "flv-to-mp4",
     "avi-to-mp4",
+    "h264-to-mp4",
+    "mkv-to-h264",
+    "mp4-to-h264",
+    "mov-to-h264",
+    "3gp-to-h264",
+    "mpeg-ts-to-h264",
+    "flv-to-h264",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -227,6 +234,8 @@ if (
     "m2v-to-mp4-mpeg4",
     "m2v-to-webm",
     "m2v-to-webm-vp9",
+    "h264-to-webm",
+    "h264-to-webm-vp9",
   ].includes(profileId) &&
   !isImageProfile &&
   !isStreamingTextProfile &&
@@ -243,6 +252,13 @@ const isMediaProfile =
   profileId === "mpeg-ts-to-mp4" ||
   profileId === "flv-to-mp4" ||
   profileId === "avi-to-mp4" ||
+  profileId === "h264-to-mp4" ||
+  profileId === "mkv-to-h264" ||
+  profileId === "mp4-to-h264" ||
+  profileId === "mov-to-h264" ||
+  profileId === "3gp-to-h264" ||
+  profileId === "mpeg-ts-to-h264" ||
+  profileId === "flv-to-h264" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -307,7 +323,9 @@ const isMediaProfile =
   profileId === "ogv-to-wav" ||
   profileId === "m2v-to-mp4-mpeg4" ||
   profileId === "m2v-to-webm" ||
-  profileId === "m2v-to-webm-vp9";
+  profileId === "m2v-to-webm-vp9" ||
+  profileId === "h264-to-webm" ||
+  profileId === "h264-to-webm-vp9";
 const expectedProfileValidation =
   fixtureManifest.expectedByProfile?.[profileId];
 const expectedValidationBytes =
@@ -997,6 +1015,14 @@ async function validateMediaOutput(
     route === "wav-to-alac" || route === "flac-to-alac";
   const wmaOutput =
     route === "wav-to-wma" || route === "flac-to-wma";
+  const h264Output =
+    route === "mkv-to-h264" ||
+    route === "mp4-to-h264" ||
+    route === "mov-to-h264" ||
+    route === "3gp-to-h264" ||
+    route === "mpeg-ts-to-h264" ||
+    route === "flv-to-h264";
+  const videoOnlyCopy = route === "h264-to-mp4" || h264Output;
   const vp9Reencode =
     route === "mkv-to-webm-vp9" ||
     route === "mp4-to-webm-vp9" ||
@@ -1006,7 +1032,8 @@ async function validateMediaOutput(
     route === "flv-to-webm-vp9" ||
     route === "avi-to-webm-vp9" ||
     route === "ogv-to-webm-vp9" ||
-    route === "m2v-to-webm-vp9";
+    route === "m2v-to-webm-vp9" ||
+    route === "h264-to-webm-vp9";
   const webmReencode =
     route === "mkv-to-webm" ||
     route === "mp4-to-webm" ||
@@ -1017,6 +1044,7 @@ async function validateMediaOutput(
     route === "avi-to-webm" ||
     route === "ogv-to-webm" ||
     route === "m2v-to-webm" ||
+    route === "h264-to-webm" ||
     vp9Reencode;
   const webmAudioCopy =
     route === "ogv-to-webm" || route === "ogv-to-webm-vp9";
@@ -1205,6 +1233,7 @@ async function validateMediaOutput(
       "-show_format",
       "-show_streams",
       "-show_chapters",
+      "-count_frames",
       "-of",
       "json",
       localPath,
@@ -1241,8 +1270,11 @@ async function validateMediaOutput(
         codecs[0] !==
           (vp9Reencode ? "vp9" : webmReencode ? "vp8" : "mpeg4") ||
         (webmAudioCopy && codecs[1] !== "vorbis"))) ||
+    (videoOnlyCopy &&
+      (codecs.length !== 1 || codecs[0] !== "h264")) ||
     (!audioOnly &&
       !videoReencode &&
+      !videoOnlyCopy &&
       (codecs.length !== 2 ||
         codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== sourceAudio?.codec_name))
@@ -1251,7 +1283,15 @@ async function validateMediaOutput(
   }
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
-  const duration = Number(probe.format.duration);
+  const [videoRateNumerator, videoRateDenominator] = String(
+    probe.streams.find((stream) => stream.codec_type === "video")?.avg_frame_rate ?? "0/0",
+  ).split("/").map(Number);
+  const decodedVideoDuration =
+    Number(video?.nb_read_frames) * videoRateDenominator / videoRateNumerator;
+  const probedOutputDuration = Number(probe.format.duration);
+  const duration = Number.isFinite(probedOutputDuration)
+    ? probedOutputDuration
+    : decodedVideoDuration;
   const normalizedOutputLanguage =
     audio?.tags?.language && audio.tags.language !== "und"
       ? audio.tags.language
@@ -1262,7 +1302,9 @@ async function validateMediaOutput(
       : null;
   const sourceDuration = sourceDurationSeconds;
   const expectedDuration =
-    audioOnly &&
+    h264Output
+      ? decodedVideoDuration
+    : audioOnly &&
     (pcmOutput || flacOutput || alacOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
@@ -1305,19 +1347,31 @@ async function validateMediaOutput(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
     );
   }
+  if (
+    h264Output &&
+    Number.isFinite(Number(source.decodedVideoFrames)) &&
+    Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
+  ) {
+    throw new Error(
+      `Browser H.264 extraction produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
+    );
+  }
   if (videoReencode && video) {
-    const midpoint = Math.max(0, sourceDuration / 2);
+    const midpoint = route.startsWith("h264-to-")
+      ? 0
+      : Math.max(0, sourceDuration / 2);
+    const seekArguments = midpoint > 0
+      ? ["-ss", midpoint.toFixed(3)]
+      : [];
     const { stderr: similarityLog } = await execFileAsync(
       "ffmpeg",
       [
         "-hide_banner",
         "-nostdin",
-        "-ss",
-        midpoint.toFixed(3),
+        ...seekArguments,
         "-i",
         sourcePath,
-        "-ss",
-        midpoint.toFixed(3),
+        ...seekArguments,
         "-i",
         localPath,
         "-filter_complex",
@@ -1399,8 +1453,17 @@ async function validateMediaOutput(
   ) {
     throw new Error("The browser did not explicitly disclose the excluded audio stream.");
   }
+  if (
+    h264Output &&
+    sourceAudio &&
+    !finalState.warnings.some((warning) => warning.includes("Audio cannot be represented"))
+  ) {
+    throw new Error("The browser did not explicitly disclose audio excluded from H.264 output.");
+  }
   const requiresFullDecodeTraversal =
     videoReencode ||
+    h264Output ||
+    route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "3gp-to-m4a" ||
@@ -1412,6 +1475,10 @@ async function validateMediaOutput(
     route === "flac-to-alac" ||
     route === "wav-to-wma" ||
     route === "flac-to-wma";
+  const outputHasAudio =
+    audioOnly ||
+    webmAudioCopy ||
+    (!videoReencode && !videoOnlyCopy);
   await execFileAsync(
     "ffmpeg",
     [
@@ -1420,7 +1487,7 @@ async function validateMediaOutput(
       "-i",
       localPath,
       ...(audioOnly ? [] : ["-map", "0:v:0"]),
-      ...(!videoReencode || webmAudioCopy ? ["-map", "0:a:0"] : []),
+      ...(outputHasAudio ? ["-map", "0:a:0"] : []),
       ...(requiresFullDecodeTraversal ? [] : ["-c", "copy"]),
       "-f",
       "null",

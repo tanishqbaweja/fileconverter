@@ -173,6 +173,88 @@ function containerFlacProfile(
   };
 }
 
+const h264ElementaryEvidence = {
+  "h264-to-mp4": 145_801_019,
+  "h264-to-webm": 145_801_019,
+  "h264-to-webm-vp9": 145_801_019,
+  "mkv-to-h264": 146_855_294,
+  "mp4-to-h264": 146_854_557,
+  "mov-to-h264": 146_854_612,
+  "3gp-to-h264": 146_854_456,
+  "mpeg-ts-to-h264": 150_441_548,
+  "flv-to-h264": 146_903_486,
+} as const satisfies Record<string, number | null>;
+
+function h264InputProfile(
+  output: "mp4" | "webm" | "webm-vp9",
+): ConversionProfile {
+  const id = `h264-to-${output}` as keyof typeof h264ElementaryEvidence;
+  const evidence = h264ElementaryEvidence[id];
+  const webm = output !== "mp4";
+  const codec = output === "webm-vp9" ? "VP9" : "VP8";
+  return {
+    id,
+    input: "h264",
+    output,
+    engine: webm ? "ffmpeg-video" : "ffmpeg-remux",
+    route: webm ? "re-encode" : "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: webm ? "high" : "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The input is a single Annex B H.264 elementary video stream with no audio, subtitles, chapters, attachments, or general container metadata.",
+      "Frame timestamps are synthesized from the detected source frame rate.",
+      webm
+        ? "Compatible aspect-ratio and color descriptors are copied where WebM can represent them."
+        : "Compatible video descriptors are copied into fragmented MP4.",
+    ],
+    fidelityLimitations: webm
+      ? [
+          `H.264 video is decoded, downscaled to at most 640 pixels wide, and encoded as lossy ${codec} at 600 kbit/s${output === "webm-vp9" ? " in realtime mode" : ""} with no lookahead.`,
+        ]
+      : [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
+function containerH264Profile(
+  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv",
+): ConversionProfile {
+  const id = `${input}-to-h264` as keyof typeof h264ElementaryEvidence;
+  const evidence = h264ElementaryEvidence[id];
+  return {
+    id,
+    input,
+    output: "h264",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination uses H.264 video; other video codecs require a separately verified conversion route.",
+      "Only the first non-attached H.264 video stream is extracted; audio, subtitles, attachments, data, additional video streams, and chapters are explicitly excluded.",
+      "An H.264 elementary stream cannot preserve container packet timestamps, general metadata, language tags, rotation metadata, or chapter timing; playback timing is reconstructed from the detected elementary frame rate.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -598,6 +680,13 @@ export const formats = [
     label: "MPEG-2 elementary video (M2V)",
     extensions: ["m2v", "mpv", "mpeg2"],
     mimeTypes: ["video/mpeg"],
+    category: "video",
+  },
+  {
+    id: "h264",
+    label: "H.264 elementary video (Annex B)",
+    extensions: ["h264", "264", "avc"],
+    mimeTypes: ["video/h264"],
     category: "video",
   },
   {
@@ -3534,6 +3623,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  h264InputProfile("mp4"),
+  h264InputProfile("webm"),
+  h264InputProfile("webm-vp9"),
+  containerH264Profile("mkv"),
+  containerH264Profile("mp4"),
+  containerH264Profile("mov"),
+  containerH264Profile("3gp"),
+  containerH264Profile("mpeg-ts"),
+  containerH264Profile("flv"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

@@ -86,6 +86,7 @@ const generatedStressExtensions = new Set([
   ".ts",
   ".m2ts",
   ".m2v",
+  ".h264",
   ".mpegts",
   ".flv",
   ".avi",
@@ -127,6 +128,7 @@ const generatedStressNames = new Set([
   "h264-aac-flac-128m.mkv.json",
   "h264-aac-flac-128m.mpegts.json",
   "h264-aac-flac-128m.flv.json",
+  "h264-elementary-128m.h264.json",
 ]);
 
 assertInside(workRoot, profileRoot);

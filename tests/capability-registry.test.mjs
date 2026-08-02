@@ -63,7 +63,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-remux",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
-      profiles: ["stream-copy", "audio"],
+      profiles: ["stream-copy", "audio", "h264-extract"],
     },
     {
       name: "within-direct",
@@ -92,6 +92,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "avi-to-webm",
         "ogv-to-webm",
         "m2v-to-webm",
+        "h264-to-webm",
       ],
     },
     {
@@ -108,10 +109,13 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "avi-to-webm-vp9",
         "ogv-to-webm-vp9",
         "m2v-to-webm-vp9",
+        "h264-to-webm-vp9",
       ],
     },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
+  assert.ok(manifest.enabledDemuxers.includes("h264"));
+  assert.ok(manifest.enabledMuxers.includes("h264"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -318,6 +322,19 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
+  assert.equal(detectFormat({ name: "elementary.AVC", type: "" }), "h264");
+  assert.deepEqual(
+    publicProfilesFor("h264", true)
+      .filter((profile) => profile.input === "h264" || profile.output === "h264")
+      .map((profile) => profile.id),
+    ["h264-to-mp4", "h264-to-webm", "h264-to-webm-vp9"],
+  );
+  assert.deepEqual(
+    publicProfilesFor("h264")
+      .filter((profile) => profile.input === "h264")
+      .map((profile) => profile.id),
+    ["h264-to-mp4", "h264-to-webm", "h264-to-webm-vp9"],
+  );
   assert.equal(detectFormat({ name: "audio.ADTS", type: "" }), "aac");
   assert.equal(detectFormat({ name: "legacy-audio.WMA", type: "" }), "wma");
   assert.equal(detectFormat({ name: "voice-note.AMR", type: "" }), "amr");
@@ -498,6 +515,13 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.ok(
       publicProfilesFor(input).some(
         (profile) => profile.id === `${input}-to-flac`,
+      ),
+    );
+  }
+  for (const input of ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"]) {
+    assert.ok(
+      publicProfilesFor(input).some(
+        (profile) => profile.id === `${input}-to-h264`,
       ),
     );
   }

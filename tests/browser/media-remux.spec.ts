@@ -25,6 +25,7 @@ const threeGpMp4OutputPath = path.join(outputRoot, "3gp-remux-output.mp4");
 const mpegTsMp4OutputPath = path.join(outputRoot, "mpeg-ts-remux-output.mp4");
 const flvMp4OutputPath = path.join(outputRoot, "flv-remux-output.mp4");
 const aviMp4OutputPath = path.join(outputRoot, "avi-remux-output.mp4");
+const h264Mp4OutputPath = path.join(outputRoot, "h264-remux-output.mp4");
 const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
@@ -99,6 +100,16 @@ const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
 const m2vWebmOutputPath = path.join(outputRoot, "m2v-reencode-output.webm");
 const m2vVp9WebmOutputPath = path.join(outputRoot, "m2v-vp9-reencode-output.webm");
+const h264WebmOutputPath = path.join(outputRoot, "h264-vp8-output.webm");
+const h264Vp9WebmOutputPath = path.join(outputRoot, "h264-vp9-output.webm");
+const h264ExtractionOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-extract-output.h264"),
+  mp4: path.join(outputRoot, "mp4-extract-output.h264"),
+  mov: path.join(outputRoot, "mov-extract-output.h264"),
+  "3gp": path.join(outputRoot, "3gp-extract-output.h264"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.h264"),
+  flv: path.join(outputRoot, "flv-extract-output.h264"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
@@ -121,6 +132,11 @@ const incompatibleFixturePath = path.join(
   projectRoot,
   "work",
   "incompatible-audio-source.mkv",
+);
+const multiVideoFixturePath = path.join(
+  projectRoot,
+  "work",
+  "multi-video-source.mkv",
 );
 const mp4InputFixturePath = path.join(
   projectRoot,
@@ -235,6 +251,12 @@ const m2vFixturePath = path.join(
   "media",
   "mpeg2-video-source.m2v",
 );
+const h264FixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "h264-video-source.h264",
+);
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -257,13 +279,15 @@ interface ProbeStream {
   bit_rate?: string;
   tags?: Record<string, string>;
   disposition?: Record<string, number>;
+  avg_frame_rate?: string;
+  nb_read_frames?: string;
 }
 
 interface MediaProbe {
   streams: ProbeStream[];
   chapters?: unknown[];
   format: {
-    duration: string;
+    duration?: string;
     tags?: Record<string, string>;
   };
 }
@@ -339,6 +363,28 @@ async function expectDecodedAudioPsnr(
   for (const value of psnrValues) expect(value).toBeGreaterThanOrEqual(minimumPsnrDb);
 }
 
+async function decodedVideoSha256(inputPath: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", "0:v:0", "-pix_fmt", "yuv420p", "-f", "hash",
+      "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return stdout.trim().split("=")[1];
+}
+
+async function expectDecodedVideoMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await decodedVideoSha256(outputPath)).toBe(
+    await decodedVideoSha256(sourcePath),
+  );
+}
+
 test.beforeAll(async () => {
   assertProjectLocal(profileRoot);
   assertProjectLocal(mp4OutputPath);
@@ -347,6 +393,7 @@ test.beforeAll(async () => {
   assertProjectLocal(mpegTsMp4OutputPath);
   assertProjectLocal(flvMp4OutputPath);
   assertProjectLocal(aviMp4OutputPath);
+  assertProjectLocal(h264Mp4OutputPath);
   assertProjectLocal(directMp4OutputPath);
   assertProjectLocal(aacM4aOutputPath);
   assertProjectLocal(aacWavOutputPath);
@@ -409,13 +456,20 @@ test.beforeAll(async () => {
   assertProjectLocal(m2vMpeg4OutputPath);
   assertProjectLocal(m2vWebmOutputPath);
   assertProjectLocal(m2vVp9WebmOutputPath);
+  assertProjectLocal(h264WebmOutputPath);
+  assertProjectLocal(h264Vp9WebmOutputPath);
+  for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
+  assertProjectLocal(multiVideoFixturePath);
   assertProjectLocal(mp4InputFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
+  await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
@@ -456,6 +510,20 @@ test.beforeAll(async () => {
       "-f",
       "matroska",
       incompatibleFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=2",
+      "-f", "lavfi", "-i", "smptebars=size=320x180:rate=24:duration=2",
+      "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=2",
+      "-map", "0:v:0", "-map", "1:v:0", "-map", "2:a:0",
+      "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+      "-threads:v:0", "1", "-threads:v:1", "1", "-c:a", "aac",
+      "-f", "matroska", multiVideoFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -514,6 +582,7 @@ test.afterAll(async () => {
   await rm(mpegTsMp4OutputPath, { force: true });
   await rm(flvMp4OutputPath, { force: true });
   await rm(aviMp4OutputPath, { force: true });
+  await rm(h264Mp4OutputPath, { force: true });
   await rm(directMp4OutputPath, { force: true });
   await rm(directWavOutputPath, { force: true });
   await rm(directM4aOutputPath, { force: true });
@@ -585,9 +654,15 @@ test.afterAll(async () => {
   await rm(m2vMpeg4OutputPath, { force: true });
   await rm(m2vWebmOutputPath, { force: true });
   await rm(m2vVp9WebmOutputPath, { force: true });
+  await rm(h264WebmOutputPath, { force: true });
+  await rm(h264Vp9WebmOutputPath, { force: true });
+  for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
+  await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
@@ -658,6 +733,13 @@ async function runMediaRoute(
     | "mpeg-ts-to-mp4"
     | "flv-to-mp4"
     | "avi-to-mp4"
+    | "h264-to-mp4"
+    | "mkv-to-h264"
+    | "mp4-to-h264"
+    | "mov-to-h264"
+    | "3gp-to-h264"
+    | "mpeg-ts-to-h264"
+    | "flv-to-h264"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -713,6 +795,7 @@ async function runMediaRoute(
     | "ogv-to-wav"
     | "m2v-to-mp4-mpeg4"
     | "m2v-to-webm"
+    | "h264-to-webm"
     | "mkv-to-webm-vp9"
     | "mp4-to-webm-vp9"
     | "mov-to-webm-vp9"
@@ -722,6 +805,7 @@ async function runMediaRoute(
     | "avi-to-webm-vp9"
     | "ogv-to-webm-vp9"
     | "m2v-to-webm-vp9"
+    | "h264-to-webm-vp9"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
@@ -759,7 +843,8 @@ async function runMediaRoute(
       profileId === "3gp-to-mp4" ||
       profileId === "mpeg-ts-to-mp4" ||
       profileId === "flv-to-mp4" ||
-      profileId === "avi-to-mp4"
+      profileId === "avi-to-mp4" ||
+      profileId === "h264-to-mp4"
     ) {
       expect(state.warnings).toEqual([]);
     } else if (
@@ -821,7 +906,8 @@ async function runMediaRoute(
       profileId === "flv-to-webm" ||
       profileId === "avi-to-webm" ||
       profileId === "ogv-to-webm" ||
-      profileId === "m2v-to-webm"
+      profileId === "m2v-to-webm" ||
+      profileId === "h264-to-webm"
     ) {
       expect(state.metrics?.activeWorkerCount).toBe(9);
     } else if (
@@ -833,7 +919,8 @@ async function runMediaRoute(
       profileId === "flv-to-webm-vp9" ||
       profileId === "avi-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
-      profileId === "m2v-to-webm-vp9"
+      profileId === "m2v-to-webm-vp9" ||
+      profileId === "h264-to-webm-vp9"
     ) {
       expect(state.metrics?.activeWorkerCount).toBe(9);
     } else if (
@@ -855,6 +942,7 @@ async function runMediaRoute(
         "-show_format",
         "-show_streams",
         "-show_chapters",
+        "-count_frames",
         "-of",
         "json",
         outputPath,
@@ -867,7 +955,16 @@ async function runMediaRoute(
         (stream: { codec_name: string }) => stream.codec_name,
       ),
     ).toEqual(expectedCodecs);
-    const outputDuration = Number(probe.format.duration);
+    const video = probe.streams.find((stream) => stream.codec_type === "video");
+    const [rateNumerator, rateDenominator] = String(
+      video?.avg_frame_rate ?? "0/0",
+    ).split("/").map(Number);
+    const decodedDuration =
+      Number(video?.nb_read_frames) * rateDenominator / rateNumerator;
+    const probedDuration = Number(probe.format.duration);
+    const outputDuration = Number.isFinite(probedDuration)
+      ? probedDuration
+      : decodedDuration;
     if (options.expectedDurationSeconds == null) {
       expect(outputDuration).toBeGreaterThan(3.9);
       expect(outputDuration).toBeLessThan(4.2);
@@ -900,6 +997,34 @@ async function validateMpeg2VideoOutput(
       "-hide_banner", "-nostdin",
       "-ss", "2", "-i", m2vFixturePath,
       "-ss", "2", "-i", outputPath,
+      "-filter_complex",
+      "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
+      "-map", "[quality]", "-frames:v", "1", "-f", "null", "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const similarity = Number.parseFloat(
+    stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+  );
+  expect(similarity).toBeGreaterThan(0.35);
+}
+
+async function validateH264WebmOutput(
+  probe: MediaProbe,
+  outputPath: string,
+): Promise<void> {
+  const video = probe.streams.find((stream) => stream.codec_type === "video");
+  expect(video?.width).toBe(640);
+  expect(video?.height).toBe(360);
+  expect(probe.streams).toHaveLength(1);
+  expect(probe.chapters ?? []).toEqual([]);
+
+  const { stderr } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-nostdin",
+      "-i", h264FixturePath,
+      "-i", outputPath,
       "-filter_complex",
       "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
       "-map", "[quality]", "-frames:v", "1", "-f", "null", "NUL",
@@ -1296,6 +1421,15 @@ test("direct WAV coalescing propagates write failure and releases the partial fi
 });
 
 for (const route of [
+  ["h264-to-mp4", h264FixturePath],
+  ["h264-to-webm", h264FixturePath],
+  ["h264-to-webm-vp9", h264FixturePath],
+  ["mkv-to-h264", fixturePath],
+  ["mp4-to-h264", mp4InputFixturePath],
+  ["mov-to-h264", movInputFixturePath],
+  ["3gp-to-h264", threeGpInputFixturePath],
+  ["mpeg-ts-to-h264", mpegTsInputFixturePath],
+  ["flv-to-h264", flvInputFixturePath],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -2115,6 +2249,82 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP9 WebM", async () => 
     {
       expectedWarningFragments: [],
       validate: validateMpeg2VideoOutput,
+    },
+  );
+});
+
+test("browser FFmpeg losslessly wraps H.264 elementary video in MP4", async () => {
+  await runMediaRoute(
+    "h264-to-mp4",
+    h264Mp4OutputPath,
+    ["h264"],
+    500_000,
+    h264FixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(h264FixturePath, outputPath);
+      },
+    },
+  );
+});
+
+for (const route of [
+  ["h264-to-webm", h264WebmOutputPath, "vp8"],
+  ["h264-to-webm-vp9", h264Vp9WebmOutputPath, "vp9"],
+] as const) {
+  test(`browser FFmpeg converts ${route[0]} with bounded optimized workers`, async () => {
+    await runMediaRoute(route[0], route[1], [route[2]], 40_000, h264FixturePath, {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.1,
+      validate: validateH264WebmOutput,
+    });
+  });
+}
+
+for (const route of [
+  ["mkv-to-h264", fixturePath, h264ExtractionOutputPaths.mkv],
+  ["mp4-to-h264", mp4InputFixturePath, h264ExtractionOutputPaths.mp4],
+  ["mov-to-h264", movInputFixturePath, h264ExtractionOutputPaths.mov],
+  ["3gp-to-h264", threeGpInputFixturePath, h264ExtractionOutputPaths["3gp"]],
+  ["mpeg-ts-to-h264", mpegTsInputFixturePath, h264ExtractionOutputPaths["mpeg-ts"]],
+  ["flv-to-h264", flvInputFixturePath, h264ExtractionOutputPaths.flv],
+] as const) {
+  test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
+    await runMediaRoute(route[0], route[2], ["h264"], 500_000, route[1], {
+      expectedWarningFragments: ["Audio cannot be represented"],
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(route[1], outputPath);
+      },
+    });
+  });
+}
+
+test("MKV to H.264 extracts only the first video and discloses additional streams", async () => {
+  await runMediaRoute(
+    "mkv-to-h264",
+    h264ExtractionOutputPaths.mkv,
+    ["h264"],
+    30_000,
+    multiVideoFixturePath,
+    {
+      expectedWarningFragments: [
+        "Audio cannot be represented",
+        "additional video stream",
+      ],
+      expectedDurationSeconds: 1.92,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(multiVideoFixturePath, outputPath);
+      },
     },
   );
 });

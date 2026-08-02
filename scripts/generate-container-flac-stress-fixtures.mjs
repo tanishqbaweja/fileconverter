@@ -74,6 +74,7 @@ try {
         source: "fixtures/media/mobile-video-source.3gp",
         sourceSha256: sourceManifest.sha256,
         durationSeconds,
+        decodedVideoFrames: durationSeconds * 24,
         bytes: fixtureStat.size,
         sha256: await hashFile(fixturePath),
         probe,

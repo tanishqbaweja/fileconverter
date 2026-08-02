@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -186,7 +186,7 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables only the documented
-AIFF, AVI, FLAC, FLV, Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; fragmented MP4/M4A,
+AIFF, AVI, FLAC, FLV, raw H.264, Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, fragmented MP4/M4A,
 WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
@@ -284,6 +284,17 @@ probe so sequence-header dimensions and frame rate are used instead of the raw
 demuxer's generic defaults. The site converts their decoded YUV 4:2:0 frames to
 either 2 Mbit/s MPEG-4 Part 2 MP4 or realtime 600 kbit/s VP8/VP9 WebM. Elementary
 streams have no audio, chapters, attachments, or container metadata to carry.
+
+Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
+be stream-copied into fragmented MP4 or genuinely decoded and encoded as
+600 kbit/s VP8/VP9 WebM with the same 640-pixel width and zero-lookahead limits.
+Conversely, MKV, MP4, MOV, 3GP, MPEG-TS, and FLV can extract their first
+certified H.264 video stream without re-encoding. Audio, subtitles,
+attachments, chapters, extra video, and data streams are explicitly excluded.
+Elementary H.264 cannot carry container timestamps or metadata, so all encoded
+frames are preserved exactly while playback timing is reconstructed from the
+detected raw frame rate; tests compare decoded-frame SHA-256 rather than
+claiming that container timing survives extraction.
 
 Raw AAC/ADTS input uses FFmpeg's bounded AAC demuxer. The M4A route copies AAC
 frames without re-encoding, removes the ADTS transport headers with
@@ -619,6 +630,15 @@ Current exact-build results:
 | M2V → MPEG-4 MP4 | 3 | 136,166,136 B | 124,300,753 B | 177.1 MiB | 32 MiB | 1.1–8.3 MiB |
 | M2V → VP8 WebM | 3 | 136,166,136 B | 37,835,173 B | 163.9 MiB | 32 MiB | 2.6–6.8 MiB |
 | M2V → VP9 WebM | 3 | 136,166,136 B | 44,351,703 B | 223.4 MiB | 56 MiB | −4.4–1.3 MiB |
+| H.264 → MP4 | 3 | 145,801,019 B | 145,812,361 B | 233.9 MiB | 54.4 MiB | cleanup passed |
+| H.264 → VP8 WebM | 3 | 145,801,019 B | 4,752,826 B | 239.7 MiB | 40 MiB | cleanup passed |
+| H.264 → VP9 WebM | 3 | 145,801,019 B | 3,265,035 B | 243.7 MiB | 56 MiB | cleanup passed |
+| MKV → H.264 | 3 | 146,855,294 B | 145,801,019 B | 207.2 MiB | 32 MiB | cleanup passed |
+| MP4 → H.264 | 3 | 146,854,557 B | 145,801,019 B | 213.8 MiB | 32 MiB | cleanup passed |
+| MOV → H.264 | 3 | 146,854,612 B | 145,801,019 B | 208.3 MiB | 32 MiB | cleanup passed |
+| 3GP → H.264 | 3 | 146,854,456 B | 145,801,019 B | 212.8 MiB | 32 MiB | cleanup passed |
+| MPEG-TS → H.264 | 3 | 150,441,548 B | 145,810,379 B | 211.5 MiB | 32 MiB | cleanup passed |
+| FLV → H.264 | 3 | 146,903,486 B | 145,801,019 B | 209.1 MiB | 32 MiB | cleanup passed |
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
@@ -786,6 +806,19 @@ from 780 seconds of timestamps; that failure remains retained. The continuous
 Vorbis fixture passed 3/3 in 3.39–3.75 seconds at 213.1 MiB; AVI passed in
 1.26–1.60 seconds at 223.3 MiB. Every source and output was removed after
 validation.
+
+The H.264 elementary gate reuses one optimized fixture pass: a single
+65-second high-bitrate encode is remuxed into six containers and extracted to
+a 145,801,019-byte Annex B stream. All seven >128 MiB sources were generated
+under `fixtures/stress` in 6.26 seconds. H.264-to-MP4 passed 3/3 in
+1.75–2.26 seconds at 233.9 MiB; VP8 passed in 9.46–9.87 seconds at 239.7 MiB;
+and VP9 passed in 13.77–14.18 seconds at 243.7 MiB, retaining 6.3 MiB of
+headroom below the unchanged limit. The six extraction routes passed in
+1.60–3.09 seconds at 207.2–213.8 MiB. Independent validation fully decoded
+every output, checked VP8/VP9 visual similarity, and proved that each raw
+extraction retained all 1,560 decoded frames. Forced-write tests removed every
+partial output, and category cleanup deleted the large sources and converted
+copies.
 
 The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
 Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,
