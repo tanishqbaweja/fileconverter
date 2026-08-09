@@ -2646,6 +2646,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "3gp-to-h264" ||
         profileId === "mpeg-ts-to-h264" ||
         profileId === "flv-to-h264" ||
+        profileId === "m2v-to-mpeg-ts" ||
+        profileId === "mkv-to-m2v" ||
+        profileId === "mp4-to-m2v" ||
+        profileId === "mov-to-m2v" ||
+        profileId === "avi-to-m2v" ||
+        profileId === "mpeg-ts-to-m2v" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
         profileId === "3gp-to-m4a" ||
@@ -3221,6 +3227,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-h264" ||
       profileId === "mpeg-ts-to-h264" ||
       profileId === "flv-to-h264" ||
+      profileId === "m2v-to-mpeg-ts" ||
+      profileId === "mkv-to-m2v" ||
+      profileId === "mp4-to-m2v" ||
+      profileId === "mov-to-m2v" ||
+      profileId === "avi-to-m2v" ||
+      profileId === "mpeg-ts-to-m2v" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
       profileId === "3gp-to-m4a" ||
@@ -3293,7 +3305,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         file,
         writable: destination.writable,
         remuxProfile:
-          profileId === "mkv-to-h264" ||
+          profileId === "mkv-to-m2v" ||
+            profileId === "mp4-to-m2v" ||
+            profileId === "mov-to-m2v" ||
+            profileId === "avi-to-m2v" ||
+            profileId === "mpeg-ts-to-m2v"
+            ? 13
+          : profileId === "m2v-to-mpeg-ts"
+            ? 14
+          : profileId === "mkv-to-h264" ||
             profileId === "mp4-to-h264" ||
             profileId === "mov-to-h264" ||
             profileId === "3gp-to-h264" ||

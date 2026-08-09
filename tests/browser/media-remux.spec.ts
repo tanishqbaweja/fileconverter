@@ -100,6 +100,14 @@ const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
 const m2vWebmOutputPath = path.join(outputRoot, "m2v-reencode-output.webm");
 const m2vVp9WebmOutputPath = path.join(outputRoot, "m2v-vp9-reencode-output.webm");
+const m2vMpegTsOutputPath = path.join(outputRoot, "m2v-wrap-output.mpegts");
+const m2vExtractionOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-extract-output.m2v"),
+  mp4: path.join(outputRoot, "mp4-extract-output.m2v"),
+  mov: path.join(outputRoot, "mov-extract-output.m2v"),
+  avi: path.join(outputRoot, "avi-extract-output.m2v"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.m2v"),
+} as const;
 const h264WebmOutputPath = path.join(outputRoot, "h264-vp8-output.webm");
 const h264Vp9WebmOutputPath = path.join(outputRoot, "h264-vp9-output.webm");
 const h264ExtractionOutputPaths = {
@@ -257,6 +265,13 @@ const h264FixturePath = path.join(
   "media",
   "h264-video-source.h264",
 );
+const mpeg2ContainerFixturePaths = {
+  mkv: path.join(projectRoot, "work", "mpeg2-source.mkv"),
+  mp4: path.join(projectRoot, "work", "mpeg2-source.mp4"),
+  mov: path.join(projectRoot, "work", "mpeg2-source.mov"),
+  avi: path.join(projectRoot, "work", "mpeg2-source.avi"),
+  "mpeg-ts": path.join(projectRoot, "work", "mpeg2-source.mpegts"),
+} as const;
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -456,10 +471,17 @@ test.beforeAll(async () => {
   assertProjectLocal(m2vMpeg4OutputPath);
   assertProjectLocal(m2vWebmOutputPath);
   assertProjectLocal(m2vVp9WebmOutputPath);
+  assertProjectLocal(m2vMpegTsOutputPath);
+  for (const outputPath of Object.values(m2vExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(h264WebmOutputPath);
   assertProjectLocal(h264Vp9WebmOutputPath);
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
+  }
+  for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    assertProjectLocal(fixture);
   }
   assertProjectLocal(complexMp4OutputPath);
   assertProjectLocal(corruptFixturePath);
@@ -471,6 +493,9 @@ test.beforeAll(async () => {
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
+  for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
   await writeFile(
@@ -512,6 +537,36 @@ test.beforeAll(async () => {
       incompatibleFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-fflags", "+genpts+bitexact", "-r", "24", "-i", m2vFixturePath,
+      "-i", audioFixturePath, "-map", "0:v:0", "-map", "1:a:0",
+      "-map_metadata", "-1", "-c", "copy", "-shortest", "-f", "matroska",
+      mpeg2ContainerFixturePaths.mkv,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await Promise.all(
+    ([
+      [mpeg2ContainerFixturePaths.mp4, "mp4"],
+      [mpeg2ContainerFixturePaths.mov, "mov"],
+      [mpeg2ContainerFixturePaths.avi, "avi"],
+      [mpeg2ContainerFixturePaths["mpeg-ts"], "mpegts"],
+    ] as const).map(([outputPath, format]) =>
+      execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+          "-fflags", "+genpts+bitexact", "-r", "24", "-i", m2vFixturePath,
+          "-map", "0:v:0", "-map_metadata", "-1", "-c:v", "copy",
+          "-f", format, outputPath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      ),
+    ),
   );
   await execFileAsync(
     "ffmpeg",
@@ -654,6 +709,10 @@ test.afterAll(async () => {
   await rm(m2vMpeg4OutputPath, { force: true });
   await rm(m2vWebmOutputPath, { force: true });
   await rm(m2vVp9WebmOutputPath, { force: true });
+  await rm(m2vMpegTsOutputPath, { force: true });
+  for (const outputPath of Object.values(m2vExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(h264WebmOutputPath, { force: true });
   await rm(h264Vp9WebmOutputPath, { force: true });
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
@@ -664,6 +723,9 @@ test.afterAll(async () => {
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
+  for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -740,6 +802,12 @@ async function runMediaRoute(
     | "3gp-to-h264"
     | "mpeg-ts-to-h264"
     | "flv-to-h264"
+    | "m2v-to-mpeg-ts"
+    | "mkv-to-m2v"
+    | "mp4-to-m2v"
+    | "mov-to-m2v"
+    | "avi-to-m2v"
+    | "mpeg-ts-to-m2v"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -1430,6 +1498,12 @@ for (const route of [
   ["3gp-to-h264", threeGpInputFixturePath],
   ["mpeg-ts-to-h264", mpegTsInputFixturePath],
   ["flv-to-h264", flvInputFixturePath],
+  ["m2v-to-mpeg-ts", m2vFixturePath],
+  ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
+  ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
+  ["mov-to-m2v", mpeg2ContainerFixturePaths.mov],
+  ["avi-to-m2v", mpeg2ContainerFixturePaths.avi],
+  ["mpeg-ts-to-m2v", mpeg2ContainerFixturePaths["mpeg-ts"]],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -2252,6 +2326,45 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP9 WebM", async () => 
     },
   );
 });
+
+test("browser FFmpeg losslessly wraps MPEG-2 elementary video in MPEG-TS", async () => {
+  await runMediaRoute(
+    "m2v-to-mpeg-ts",
+    m2vMpegTsOutputPath,
+    ["mpeg2video"],
+    500_000,
+    m2vFixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(m2vFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+for (const route of [
+  ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv, m2vExtractionOutputPaths.mkv, true],
+  ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4, m2vExtractionOutputPaths.mp4, false],
+  ["mov-to-m2v", mpeg2ContainerFixturePaths.mov, m2vExtractionOutputPaths.mov, false],
+  ["avi-to-m2v", mpeg2ContainerFixturePaths.avi, m2vExtractionOutputPaths.avi, false],
+  ["mpeg-ts-to-m2v", mpeg2ContainerFixturePaths["mpeg-ts"], m2vExtractionOutputPaths["mpeg-ts"], false],
+] as const) {
+  test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
+    await runMediaRoute(route[0], route[2], ["mpeg2video"], 500_000, route[1], {
+      expectedWarningFragments: route[3] ? ["Audio cannot be represented"] : [],
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(route[1], outputPath);
+      },
+    });
+  });
+}
 
 test("browser FFmpeg losslessly wraps H.264 elementary video in MP4", async () => {
   await runMediaRoute(

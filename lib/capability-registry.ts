@@ -255,6 +255,74 @@ function containerH264Profile(
   };
 }
 
+const mpeg2ElementaryEvidence = {
+  "m2v-to-mpeg-ts": 136_166_136,
+  "mkv-to-m2v": 136_294_704,
+  "mp4-to-m2v": 136_284_917,
+  "mov-to-m2v": 136_284_843,
+  "avi-to-m2v": 136_465_056,
+  "mpeg-ts-to-m2v": 142_273_136,
+} as const satisfies Record<string, number | null>;
+
+function mpeg2TransportProfile(): ConversionProfile {
+  const evidence = mpeg2ElementaryEvidence["m2v-to-mpeg-ts"];
+  return {
+    id: "m2v-to-mpeg-ts",
+    input: "m2v",
+    output: "mpeg-ts",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The input is a single MPEG-2 elementary video stream with no audio, subtitles, chapters, attachments, or general container metadata.",
+      "Frame timestamps are synthesized from the detected elementary-stream frame rate before MPEG-TS muxing.",
+      "The output is a video-only transport stream; adding or converting audio requires a separately verified profile.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
+function containerMpeg2Profile(
+  input: "mkv" | "mp4" | "mov" | "avi" | "mpeg-ts",
+): ConversionProfile {
+  const id = `${input}-to-m2v` as keyof typeof mpeg2ElementaryEvidence;
+  const evidence = mpeg2ElementaryEvidence[id];
+  return {
+    id,
+    input,
+    output: "m2v",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination uses MPEG-2 video; other video codecs require a separately verified conversion route.",
+      "Only the first non-attached MPEG-2 video stream is extracted; audio, subtitles, attachments, data, additional video streams, and chapters are explicitly excluded.",
+      "An MPEG-2 elementary stream cannot preserve container packet timestamps, general metadata, language tags, rotation metadata, or chapter timing; playback timing is reconstructed from the detected elementary frame rate.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -3632,6 +3700,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerH264Profile("3gp"),
   containerH264Profile("mpeg-ts"),
   containerH264Profile("flv"),
+  mpeg2TransportProfile(),
+  containerMpeg2Profile("mkv"),
+  containerMpeg2Profile("mp4"),
+  containerMpeg2Profile("mov"),
+  containerMpeg2Profile("avi"),
+  containerMpeg2Profile("mpeg-ts"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

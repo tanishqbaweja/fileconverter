@@ -5,6 +5,8 @@
   "totalSourceCopies": 124,
   "durationSeconds": 496,
   "frameRate": 24,
+  "decodedVideoFrames": 11904,
+  "decodedVideoDurationSeconds": 476.16,
   "bytes": 136166136,
   "sha256": "d76146fc409a04f045d4dbbc29f0943de59a6ad38f9ef29a82b58acf104deebd",
   "probe": {

@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -107,6 +107,10 @@ export async function runMediaRemux({
       ? "Lossless remux"
       : remuxProfile === 12
         ? "Extracting H.264 video"
+      : remuxProfile === 13
+        ? "Extracting MPEG-2 video"
+      : remuxProfile === 14
+        ? "Wrapping MPEG-2 video"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3

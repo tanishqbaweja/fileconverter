@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 156
+complete-Chromium memory profile have passed. The current registry publishes 187
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -186,8 +186,10 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables only the documented
-AIFF, AVI, FLAC, FLV, raw H.264, Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, fragmented MP4/M4A,
-WAV, FLAC, and WebM muxers; the required audio and H.264/HEVC decoders; PCM,
+AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, Matroska, MOV/MP4/3GP,
+MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw MPEG-2 video, MPEG-TS,
+fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
+H.264/HEVC/MPEG-2 decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets, performs real bounded audio decode/resample/encode pipelines, or
@@ -284,6 +286,13 @@ probe so sequence-header dimensions and frame rate are used instead of the raw
 demuxer's generic defaults. The site converts their decoded YUV 4:2:0 frames to
 either 2 Mbit/s MPEG-4 Part 2 MP4 or realtime 600 kbit/s VP8/VP9 WebM. Elementary
 streams have no audio, chapters, attachments, or container metadata to carry.
+They can also be wrapped directly in video-only MPEG-TS without decoding. The
+wrapper synthesizes presentation timestamps from MPEG-2 picture temporal
+references, including B-frame display order. Conversely, MKV, MP4, MOV, AVI,
+and MPEG-TS can extract their first certified MPEG-2 video stream without
+re-encoding. Extraction excludes every other stream and container-only field;
+independent tests compare every decoded frame because raw M2V cannot preserve
+container timestamps or metadata.
 
 Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
 be stream-copied into fragmented MP4 or genuinely decoded and encoded as
@@ -630,6 +639,12 @@ Current exact-build results:
 | M2V → MPEG-4 MP4 | 3 | 136,166,136 B | 124,300,753 B | 177.1 MiB | 32 MiB | 1.1–8.3 MiB |
 | M2V → VP8 WebM | 3 | 136,166,136 B | 37,835,173 B | 163.9 MiB | 32 MiB | 2.6–6.8 MiB |
 | M2V → VP9 WebM | 3 | 136,166,136 B | 44,351,703 B | 223.4 MiB | 56 MiB | −4.4–1.3 MiB |
+| M2V → MPEG-TS | 3 | 136,166,136 B | 142,319,760 B | 202.0 MiB | 32 MiB | cleanup passed |
+| MKV → M2V | 3 | 136,294,704 B | 136,166,136 B | 207.8 MiB | 32 MiB | cleanup passed |
+| MP4 → M2V | 3 | 136,284,917 B | 136,166,136 B | 210.8 MiB | 32 MiB | cleanup passed |
+| MOV → M2V | 3 | 136,284,843 B | 136,166,136 B | 210.4 MiB | 32 MiB | cleanup passed |
+| AVI → M2V | 3 | 136,465,056 B | 136,166,136 B | 206.2 MiB | 32 MiB | cleanup passed |
+| MPEG-TS → M2V | 3 | 142,273,136 B | 136,166,136 B | 198.6 MiB | 32 MiB | cleanup passed |
 | H.264 → MP4 | 3 | 145,801,019 B | 145,812,361 B | 233.9 MiB | 54.4 MiB | cleanup passed |
 | H.264 → VP8 WebM | 3 | 145,801,019 B | 4,752,826 B | 239.7 MiB | 40 MiB | cleanup passed |
 | H.264 → VP9 WebM | 3 | 145,801,019 B | 3,265,035 B | 243.7 MiB | 56 MiB | cleanup passed |
@@ -819,6 +834,18 @@ every output, checked VP8/VP9 visual similarity, and proved that each raw
 extraction retained all 1,560 decoded frames. Forced-write tests removed every
 partial output, and category cleanup deleted the large sources and converted
 copies.
+
+The MPEG-2 elementary gate builds one 136,166,136-byte M2V source and remuxes
+five containers concurrently under `fixtures/stress`; all six sources are ready
+in 3.78 seconds. Direct M2V-to-MPEG-TS
+wrapping passed 3/3 in 1.96–2.30 seconds at 202.0 MiB worst incremental private
+memory. MKV, MP4, MOV, AVI, and MPEG-TS extraction passed 3/3 in 1.68–2.31
+seconds at 198.6–210.8 MiB. Every run retained one pending write, 262,144-byte
+maximum reads, 32 MiB Wasm, byte-repeatable output, and complete independent
+decode of all 11,904 frames. Six forced-write cases removed their partial OPFS
+outputs. The category's intentionally expensive full-decode validation remains
+separate from conversion timing, and cleanup deletes all generated container
+sources and converted copies.
 
 The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
 Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,

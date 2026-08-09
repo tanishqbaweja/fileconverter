@@ -2,6 +2,8 @@
   "generatedBy": "scripts/generate-mpeg2-video-fixture.mjs",
   "durationSeconds": 4,
   "frameRate": 24,
+  "decodedVideoFrames": 96,
+  "decodedVideoDurationSeconds": 3.84,
   "bytes": 1098114,
   "sha256": "fca56e50db00647ec61fefb5ba270c1322c201eaea5711b6226d8178a32dfd96",
   "probe": {

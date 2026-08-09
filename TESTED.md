@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-02 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-09 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,14 +12,15 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **181**
-- Public profiles with a retained successful Chrome stress report: **181**
+- Public passed conversion profiles: **187**
+- Public profiles with a retained successful Chrome stress report: **187**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-02:** 406/406 production-browser tests passed; 13/13 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-09:** 418/418 production-browser tests passed; 14/14 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **Bounded H.264 elementary-stream input and output:** raw H.264-to-MP4 passed 3/3 Chrome runs on 145,801,019 bytes in 1.75–2.26 s at 233.9 MiB worst incremental private memory; H.264-to-VP8 passed in 9.46–9.87 s at 239.7 MiB; and H.264-to-VP9 passed in 13.77–14.18 s at 243.7 MiB, retaining 6.3 MiB below the unchanged ceiling. MKV, MP4, MOV, 3GP, MPEG-TS, and FLV extraction to raw H.264 passed 3/3 in 1.60–3.09 s at 207.2–213.8 MiB. All 27 outputs were repeatable, independently probed and fully decoded; WebM passed visual-similarity checks, raw extraction retained all 1,560 decoded frames, and nine forced-write cases left no partial OPFS output. One 65-second high-bitrate encode plus stream-copy remux/extraction generated all seven >128 MiB sources under `fixtures/stress` in 6.26 seconds, and category cleanup deleted every source and converted copy. Annex B cannot preserve container timestamps, so the registry explicitly discloses reconstructed 25 fps timing. Retained failed reports record two corrected validator-only assumptions—requiring audio from video-only MP4 and attempting `-ss 0` against raw input—so neither loop is repeated.
+- **Bounded MPEG-2 elementary-stream input and output:** raw M2V-to-MPEG-TS passed 3/3 Chrome runs on 136,166,136 bytes in 1.96–2.30 s at 202.0 MiB worst incremental private memory. MKV, MP4, MOV, AVI, and MPEG-TS extraction to raw M2V passed 3/3 on 136,284,843–142,273,136-byte sources in 1.68–2.31 s at 198.6–210.8 MiB. All eighteen stress outputs were byte-repeatable, independently probed, and fully decoded through all 11,904 frames; six forced-write cases left no partial OPFS output. The direct packet-copy routes retained 262,144-byte maximum reads, one pending write, and 32 MiB Wasm. One retained raw fixture plus five concurrent remuxes generated all six sources under `fixtures/stress` in 3.78 seconds; category cleanup deleted every large source and converted copy while preserving the compact tracked manifest. Two failed small-fixture attempts documented and corrected missing raw-stream timestamps and B-frame presentation-order synthesis before promotion; the strict decoded-frame comparison was not weakened.
 - **Bounded legacy-container audio extraction to FLAC:** AVI/MP3 passed 3/3 Chrome runs on 159,500,442 bytes in 1.26–1.60 s at 223.3 MiB worst incremental private memory; OGV/Vorbis passed 3/3 on 137,218,662 bytes in 3.39–3.75 s at 213.1 MiB. All six FLAC outputs were byte-repeatable, independently probed and decoded-audio validated, and deleted. Two forced-write cases left no partial OPFS output. The shared generator runs both project-local fixture jobs concurrently; the final continuous-Vorbis OGV fixture is produced in about 10.63 seconds, down from about 19.05 seconds, while preserving source specifications. A rejected stream-copy shortcut generated the OGV in 0.52 seconds but repeated codec-delay samples extended the decoded FLAC to 782.586667 seconds from 780-second timestamps; that failed profile is retained so the invalid optimization is not repeated. Sources, manifests, and converted copies remain under the repository and category cleanup removes them in `finally`.
 - **Bounded container audio extraction to FLAC:** MKV passed 3/3 Chrome runs on 146,855,294 bytes in 1.28–1.53 s at 212.6 MiB worst incremental private memory; MP4 passed on 146,854,557 bytes in 1.23–1.54 s at 214.2 MiB; MOV passed on 146,854,612 bytes in 1.21–1.57 s at 213.9 MiB; 3GP passed on 146,854,456 bytes in 1.25–1.57 s at 214.7 MiB; MPEG-TS passed on 150,441,548 bytes in 1.50–1.98 s at 211.6 MiB; and FLV passed on 146,903,486 bytes in 1.25–1.57 s at 210.7 MiB. All eighteen FLAC outputs were byte-repeatable, independently probed and decoded-audio validated, and deleted. Six forced-write cases left no partial OPFS output. One optimized 65-second H.264/AAC encode plus five stream-copy remuxes generated all six 128 MiB-class sources under `fixtures/stress` in 3.89 seconds; the generator verifies the project-local source hash before and after, and category cleanup removes every source, manifest, and converted copy in `finally`.
 - **Bounded AVI to WebM:** MPEG-4 Part 2 AVI-to-VP8 passed 3/3 Chrome runs on 159,500,442 bytes in 9.19–9.62 s at 214.5 MiB worst incremental private memory; AVI-to-VP9 passed in 14.62–15.00 s at 233.3 MiB. All six video-only WebM outputs were byte-repeatable, independently probed, midpoint-SSIM checked, fully decoded, and deleted; route-specific forced-write failures left no partial OPFS output. The optimized generator creates the 128 MiB-class source under `fixtures/stress` in about 1.5 seconds instead of looping a 12-minute stream-copy fixture, records the 1,543 actually decodable frames rather than trusting AVI's 1,560-frame header, verifies the small source hash before and after, and removes the generated AVI and manifest in `finally`. The retained first-run failure documents the original header-duration validation mismatch; the strict 0.25-second tolerance remained unchanged and now compares against decoded-frame duration.
@@ -57,6 +58,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-flac | 159,500,442 | 3 | 1,017,396 | 1.26 s–1.60 s | 223.3 MiB | 32.0 MiB | read 262,144 B / write 8,316 B | passed |
+| avi-to-m2v | 136,465,056 | 3 | 136,166,136 | 1.76 s–2.03 s | 206.2 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
 | avi-to-webm | 159,500,442 | 3 | 4,890,311 | 9.19 s–9.62 s | 214.5 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -110,6 +112,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | json-to-ndjson | 293,633,883 | 3 | 288,143,880 | 12.09 s–12.39 s | 229.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | json-to-tsv | 293,633,883 | 3 | 139,913,895 | 24.43 s–24.94 s | 212.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | m2v-to-mp4-mpeg4 | 136,166,136 | 3 | 124,300,753 | 25.52 s–25.61 s | 177.1 MiB | 32.0 MiB | read 262,144 B / write 189,607 B | passed |
+| m2v-to-mpeg-ts | 136,166,136 | 3 | 142,319,760 | 1.96 s–2.30 s | 202.0 MiB | 32.0 MiB | read 262,144 B / write 29,892 B | passed |
 | m2v-to-webm | 136,166,136 | 3 | 37,835,173 | 30.57 s–32.39 s | 163.9 MiB | 32.0 MiB | read 262,144 B / write 42,619 B | passed |
 | m2v-to-webm-vp9 | 136,166,136 | 3 | 44,351,703 | 68.34 s–69.32 s | 223.4 MiB | 56.0 MiB | read 262,144 B / write 45,682 B | passed |
 | m4a-to-flac | 140,941,469 | 3 | 138,185,793 | 7.43 s–7.84 s | 230.4 MiB | 32.0 MiB | read 262,144 B / write 16,614 B | passed |
@@ -117,6 +120,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | md-to-html | 141,110,000 | 3 | 206,870,176 | 13.97 s–14.30 s | 211.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-flac | 146,855,294 | 3 | 988,027 | 1.28 s–1.53 s | 212.6 MiB | 32.0 MiB | read 262,144 B / write 8,367 B | passed |
 | mkv-to-h264 | 146,855,294 | 3 | 145,801,019 | 1.62 s–1.95 s | 207.2 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
+| mkv-to-m2v | 136,294,704 | 3 | 136,166,136 | 1.82 s–2.21 s | 207.8 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mkv-to-m4a | 2,958,573,265 | 3 | 249,427,974 | 2.49 s–4.04 s | 164.7 MiB | 32.0 MiB | read 262,144 B / write 103,136 B | passed |
 | mkv-to-mp4 | 2,958,573,265 | 3 | 2,962,151,522 | 17.42 s–23.30 s | 247.5 MiB | 53.6 MiB | read 262,144 B / write 1,048,576 B | passed |
 | mkv-to-mp4-mpeg4 | 2,958,573,265 | 3 | 3,086,358,463 | 3091.16 s–3096.06 s | 211.3 MiB | 89.6 MiB | read 262,144 B / write 262,144 B | passed |
@@ -125,6 +129,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-webm-vp9 | 181,825,549 | 3 | 65,122,757 | 329.00 s–330.04 s | 244.9 MiB | 88.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-flac | 146,854,612 | 3 | 986,198 | 1.21 s–1.57 s | 213.9 MiB | 32.0 MiB | read 262,144 B / write 8,355 B | passed |
 | mov-to-h264 | 146,854,612 | 3 | 145,801,019 | 1.64 s–3.09 s | 208.3 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
+| mov-to-m2v | 136,284,843 | 3 | 136,166,136 | 1.69 s–1.99 s | 210.4 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mov-to-m4a | 149,251,969 | 3 | 14,557,639 | 0.42 s–0.69 s | 164.5 MiB | 32.0 MiB | read 262,144 B / write 103,136 B | passed |
 | mov-to-mp4 | 149,251,969 | 3 | 149,087,892 | 0.87 s–1.13 s | 168.2 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-wav | 149,251,969 | 3 | 414,733,404 | 9.31 s–9.77 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
@@ -134,12 +139,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mp3-to-wav | 50,401,224 | 3 | 201,600,128 | 3.36 s–3.60 s | 191.9 MiB | 32.0 MiB | read 262,144 B / write 260,574 B | passed |
 | mp4-to-flac | 146,854,557 | 3 | 986,210 | 1.23 s–1.54 s | 214.2 MiB | 32.0 MiB | read 262,144 B / write 8,367 B | passed |
 | mp4-to-h264 | 146,854,557 | 3 | 145,801,019 | 1.60 s–1.88 s | 213.8 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
+| mp4-to-m2v | 136,284,917 | 3 | 136,166,136 | 1.68 s–2.04 s | 210.8 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mp4-to-m4a | 2,964,855,971 | 3 | 249,427,976 | 2.58 s–2.89 s | 203.3 MiB | 73.8 MiB | read 262,144 B / write 103,136 B | passed |
 | mp4-to-wav | 2,964,855,971 | 3 | 7,107,834,950 | 93.11 s–93.94 s | 224.1 MiB | 73.8 MiB | read 262,144 B / write 24,576 B | passed |
 | mp4-to-webm | 147,136,619 | 3 | 5,105,363 | 12.84 s–13.34 s | 226.9 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mp4-to-webm-vp9 | 147,136,625 | 3 | 4,143,084 | 14.80 s–15.36 s | 237.1 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mpeg-ts-to-flac | 150,441,548 | 3 | 987,948 | 1.50 s–1.98 s | 211.6 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
 | mpeg-ts-to-h264 | 150,441,548 | 3 | 145,810,379 | 1.90 s–2.28 s | 211.5 MiB | 32.0 MiB | read 262,144 B / write 115,522 B | passed |
+| mpeg-ts-to-m2v | 142,273,136 | 3 | 136,166,136 | 1.96 s–2.31 s | 198.6 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mpeg-ts-to-m4a | 175,444,796 | 3 | 11,455,964 | 1.51 s–1.69 s | 220.2 MiB | 56.0 MiB | read 262,144 B / write 80,260 B | passed |
 | mpeg-ts-to-mp4 | 175,444,796 | 3 | 167,139,361 | 2.14 s–2.42 s | 215.6 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mpeg-ts-to-wav | 175,444,796 | 3 | 68,776,014 | 4.21 s–4.81 s | 243.7 MiB | 56.0 MiB | read 262,144 B / write 2,048 B | passed |
@@ -290,6 +297,7 @@ Stream ma |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | avi-to-flac | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
+| avi-to-m2v | video | ffmpeg-remux | stream-copy | 136,465,056 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
 | avi-to-webm | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -343,6 +351,7 @@ Stream ma |
 | json-to-ndjson | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
 | json-to-tsv | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
 | m2v-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
+| m2v-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 136,166,136 B | 3-run Chrome report |
 | m2v-to-webm | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m2v-to-webm-vp9 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m4a-to-flac | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
@@ -350,6 +359,7 @@ Stream ma |
 | md-to-html | document | document-stream | stream | 141,110,000 B | 3-run Chrome report |
 | mkv-to-flac | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
+| mkv-to-m2v | video | ffmpeg-remux | stream-copy | 136,294,704 B | 3-run Chrome report |
 | mkv-to-m4a | video | ffmpeg-remux | stream-copy | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-mp4 | video | ffmpeg-remux | stream-copy | 10,737,988,703 B | 3-run Chrome report |
 | mkv-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
@@ -358,6 +368,7 @@ Stream ma |
 | mkv-to-webm-vp9 | video | ffmpeg-video | re-encode | 181,825,549 B | 3-run Chrome report |
 | mov-to-flac | video | ffmpeg-audio | re-encode | 146,854,612 B | 3-run Chrome report |
 | mov-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,612 B | 3-run Chrome report |
+| mov-to-m2v | video | ffmpeg-remux | stream-copy | 136,284,843 B | 3-run Chrome report |
 | mov-to-m4a | video | ffmpeg-remux | stream-copy | 149,251,969 B | 3-run Chrome report |
 | mov-to-mp4 | video | ffmpeg-remux | stream-copy | 149,251,969 B | 3-run Chrome report |
 | mov-to-wav | video | ffmpeg-audio | re-encode | 149,251,969 B | 3-run Chrome report |
@@ -367,12 +378,14 @@ Stream ma |
 | mp3-to-wav | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp4-to-flac | video | ffmpeg-audio | re-encode | 146,854,557 B | 3-run Chrome report |
 | mp4-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,557 B | 3-run Chrome report |
+| mp4-to-m2v | video | ffmpeg-remux | stream-copy | 136,284,917 B | 3-run Chrome report |
 | mp4-to-m4a | video | ffmpeg-remux | stream-copy | 2,964,855,971 B | 3-run Chrome report |
 | mp4-to-wav | video | ffmpeg-audio | re-encode | 2,964,855,971 B | 3-run Chrome report |
 | mp4-to-webm | video | ffmpeg-video | re-encode | 161,758,724 B | 3-run Chrome report |
 | mp4-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,625 B | 3-run Chrome report |
 | mpeg-ts-to-flac | video | ffmpeg-audio | re-encode | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-h264 | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
+| mpeg-ts-to-m2v | video | ffmpeg-remux | stream-copy | 142,273,136 B | 3-run Chrome report |
 | mpeg-ts-to-m4a | video | ffmpeg-remux | stream-copy | 175,444,796 B | 3-run Chrome report |
 | mpeg-ts-to-mp4 | video | ffmpeg-remux | stream-copy | 175,444,796 B | 3-run Chrome report |
 | mpeg-ts-to-wav | video | ffmpeg-audio | re-encode | 175,444,796 B | 3-run Chrome report |
@@ -459,7 +472,7 @@ Stream ma |
 
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
-- Video/container: additional elementary-stream codecs and raw outputs beyond H.264; broader OGV, 3GP, AVI, and VP9 container/codec combinations plus AV1, MPEG-2 container/audio combinations, and additional codec conversions.
+- Video/container: additional elementary-stream codecs and raw outputs beyond H.264 and MPEG-2; broader OGV, 3GP, AVI, and VP9 container/codec combinations plus AV1, MPEG-2 audio combinations, and additional codec conversions.
 - Audio: AMR-WB and 3GP-contained AMR; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling.
 - Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, separated-planar TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.

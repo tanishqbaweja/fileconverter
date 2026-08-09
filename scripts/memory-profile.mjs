@@ -169,6 +169,12 @@ if (
     "3gp-to-h264",
     "mpeg-ts-to-h264",
     "flv-to-h264",
+    "m2v-to-mpeg-ts",
+    "mkv-to-m2v",
+    "mp4-to-m2v",
+    "mov-to-m2v",
+    "avi-to-m2v",
+    "mpeg-ts-to-m2v",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -259,6 +265,12 @@ const isMediaProfile =
   profileId === "3gp-to-h264" ||
   profileId === "mpeg-ts-to-h264" ||
   profileId === "flv-to-h264" ||
+  profileId === "m2v-to-mpeg-ts" ||
+  profileId === "mkv-to-m2v" ||
+  profileId === "mp4-to-m2v" ||
+  profileId === "mov-to-m2v" ||
+  profileId === "avi-to-m2v" ||
+  profileId === "mpeg-ts-to-m2v" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -1022,7 +1034,18 @@ async function validateMediaOutput(
     route === "3gp-to-h264" ||
     route === "mpeg-ts-to-h264" ||
     route === "flv-to-h264";
-  const videoOnlyCopy = route === "h264-to-mp4" || h264Output;
+  const mpeg2Output =
+    route === "mkv-to-m2v" ||
+    route === "mp4-to-m2v" ||
+    route === "mov-to-m2v" ||
+    route === "avi-to-m2v" ||
+    route === "mpeg-ts-to-m2v";
+  const elementaryVideoOutput = h264Output || mpeg2Output;
+  const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
+  const videoOnlyCopy =
+    route === "h264-to-mp4" ||
+    elementaryVideoOutput ||
+    mpeg2TransportOutput;
   const vp9Reencode =
     route === "mkv-to-webm-vp9" ||
     route === "mp4-to-webm-vp9" ||
@@ -1069,6 +1092,8 @@ async function validateMediaOutput(
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
+      : mpeg2TransportOutput
+        ? Math.ceil(source.bytes * 1.1)
       : pcmOutput
         ? Number.MAX_SAFE_INTEGER
         : flacOutput || alacOutput
@@ -1271,7 +1296,8 @@ async function validateMediaOutput(
           (vp9Reencode ? "vp9" : webmReencode ? "vp8" : "mpeg4") ||
         (webmAudioCopy && codecs[1] !== "vorbis"))) ||
     (videoOnlyCopy &&
-      (codecs.length !== 1 || codecs[0] !== "h264")) ||
+      (codecs.length !== 1 ||
+        codecs[0] !== (mpeg2Output || mpeg2TransportOutput ? "mpeg2video" : "h264"))) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
@@ -1302,7 +1328,7 @@ async function validateMediaOutput(
       : null;
   const sourceDuration = sourceDurationSeconds;
   const expectedDuration =
-    h264Output
+    elementaryVideoOutput
       ? decodedVideoDuration
     : audioOnly &&
     (pcmOutput || flacOutput || alacOutput || route === "aac-to-m4a")
@@ -1348,12 +1374,12 @@ async function validateMediaOutput(
     );
   }
   if (
-    h264Output &&
+    elementaryVideoOutput &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
     throw new Error(
-      `Browser H.264 extraction produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
+      `Browser elementary-video extraction produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
     );
   }
   if (videoReencode && video) {
@@ -1454,15 +1480,16 @@ async function validateMediaOutput(
     throw new Error("The browser did not explicitly disclose the excluded audio stream.");
   }
   if (
-    h264Output &&
+    elementaryVideoOutput &&
     sourceAudio &&
     !finalState.warnings.some((warning) => warning.includes("Audio cannot be represented"))
   ) {
-    throw new Error("The browser did not explicitly disclose audio excluded from H.264 output.");
+    throw new Error("The browser did not explicitly disclose audio excluded from elementary-video output.");
   }
   const requiresFullDecodeTraversal =
     videoReencode ||
-    h264Output ||
+    elementaryVideoOutput ||
+    mpeg2TransportOutput ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||

@@ -55,11 +55,17 @@ const { stdout } = await execFileAsync(
 );
 const probe = JSON.parse(stdout);
 const video = probe.streams.find((stream) => stream.codec_type === "video");
+const [rateNumerator, rateDenominator] = String(video?.avg_frame_rate)
+  .split("/").map(Number);
+const decodedVideoFrames = Number(video?.nb_read_frames);
+const decodedVideoDurationSeconds =
+  decodedVideoFrames * rateDenominator / rateNumerator;
 if (
   probe.format?.format_name !== "mpegvideo" ||
   probe.streams.length !== 1 ||
   video?.codec_name !== "mpeg2video" ||
-  Number(video?.nb_read_frames) !== expectedFrames
+  decodedVideoFrames !== expectedFrames ||
+  !Number.isFinite(decodedVideoDurationSeconds)
 ) {
   throw new Error("Generated stress fixture is not the expected MPEG-2 elementary stream.");
 }
@@ -72,6 +78,8 @@ await writeFile(
     totalSourceCopies,
     durationSeconds,
     frameRate: sourceManifest.frameRate,
+    decodedVideoFrames,
+    decodedVideoDurationSeconds,
     bytes: fixtureStat.size,
     sha256: hash.digest("hex"),
     probe,

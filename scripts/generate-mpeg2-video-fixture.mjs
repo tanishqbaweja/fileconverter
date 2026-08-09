@@ -41,12 +41,18 @@ const { stdout } = await execFileAsync(
 );
 const probe = JSON.parse(stdout);
 const video = probe.streams.find((stream) => stream.codec_type === "video");
+const [rateNumerator, rateDenominator] = String(video?.avg_frame_rate)
+  .split("/").map(Number);
+const decodedVideoFrames = Number(video?.nb_read_frames);
+const decodedVideoDurationSeconds =
+  decodedVideoFrames * rateDenominator / rateNumerator;
 if (
   probe.format?.format_name !== "mpegvideo" ||
   probe.streams.length !== 1 ||
   video?.codec_name !== "mpeg2video" ||
   video?.pix_fmt !== "yuv420p" ||
-  Number(video?.nb_read_frames) !== durationSeconds * frameRate
+  decodedVideoFrames !== durationSeconds * frameRate ||
+  !Number.isFinite(decodedVideoDurationSeconds)
 ) {
   throw new Error("Generated fixture is not the expected 640x360 MPEG-2 elementary video.");
 }
@@ -56,6 +62,8 @@ await writeFile(
     generatedBy: "scripts/generate-mpeg2-video-fixture.mjs",
     durationSeconds,
     frameRate,
+    decodedVideoFrames,
+    decodedVideoDurationSeconds,
     bytes: fixtureStat.size,
     sha256: hash.digest("hex"),
     probe,

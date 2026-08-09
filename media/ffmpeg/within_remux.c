@@ -329,7 +329,7 @@ static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
     return 0;
   }
-  if (profile == 12) {
+  if (profile == 12 || profile == 13 || profile == 14) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
   }
   return profile == 2
@@ -344,6 +344,10 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 12) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
            stream->codecpar->codec_id == AV_CODEC_ID_H264;
+  }
+  if (profile == 13 || profile == 14) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_MPEG2VIDEO;
   }
   const int avi_input =
       format->iformat && format->iformat->name &&
@@ -375,6 +379,25 @@ static int64_t packet_time_us(const AVPacket *packet,
     return 0;
   }
   return av_rescale_q(timestamp, stream->time_base, AV_TIME_BASE_Q);
+}
+
+static int mpeg2_packet_temporal_reference(const AVPacket *packet,
+                                           int *saw_gop_start) {
+  *saw_gop_start = 0;
+  for (int index = 0; index + 5 < packet->size; index++) {
+    if (packet->data[index] != 0 || packet->data[index + 1] != 0 ||
+        packet->data[index + 2] != 1) {
+      continue;
+    }
+    const uint8_t start_code = packet->data[index + 3];
+    if (start_code == 0xb8) {
+      *saw_gop_start = 1;
+    } else if (start_code == 0x00) {
+      return ((int)packet->data[index + 4] << 2) |
+             ((int)packet->data[index + 5] >> 6);
+    }
+  }
+  return -1;
 }
 
 typedef struct WithinAudioPipeline {
@@ -1536,7 +1559,11 @@ int within_remux(int profile) {
   int64_t *last_dts = NULL;
   int64_t *packet_counts = NULL;
   int64_t output_packet_count = 0;
-  int h264_stream_index = -1;
+  int video_stream_index = -1;
+  int mpeg2_pending_gop_start = 0;
+  int mpeg2_seen_picture = 0;
+  int mpeg2_gop_max_temporal_reference = -1;
+  int64_t mpeg2_gop_display_base = 0;
   AVDictionary *muxer_options = NULL;
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
@@ -1560,7 +1587,8 @@ int within_remux(int profile) {
   if (profile == 11) {
     return within_ogv_to_vp9();
   }
-  if (profile != 1 && profile != 2 && profile != 12) {
+  if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
+      profile != 14) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1603,25 +1631,46 @@ int within_remux(int profile) {
     goto cleanup;
   }
   const int h264_output = profile == 12;
-  if (h264_output) {
+  const int mpeg2_output = profile == 13;
+  const int mpeg2_transport_output = profile == 14;
+  const int elementary_output = h264_output || mpeg2_output;
+  const int video_only_output = elementary_output || mpeg2_transport_output;
+  const enum AVCodecID expected_video_codec =
+      h264_output ? AV_CODEC_ID_H264 : AV_CODEC_ID_MPEG2VIDEO;
+  const char *video_label = h264_output ? "H.264" : "MPEG-2";
+  const char *output_label = h264_output
+                                 ? "H.264"
+                                 : mpeg2_output ? "MPEG-2"
+                                                : mpeg2_transport_output
+                                                      ? "MPEG-TS"
+                                                      : "MP4";
+  const char *muxer_name = h264_output
+                               ? "h264"
+                               : mpeg2_output ? "mpeg2video"
+                                              : mpeg2_transport_output
+                                                    ? "mpegts"
+                                                    : "mp4";
+  if (video_only_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
       if (!(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) &&
           stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-        h264_stream_index = (int)index;
+        video_stream_index = (int)index;
         break;
       }
     }
-    if (h264_stream_index < 0) {
-      within_message(2, "No non-attached video stream was found for H.264 extraction.");
+    if (video_stream_index < 0) {
+      within_message(2, "No non-attached video stream was found for the requested video-only output.");
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
-    if (input_format->streams[h264_stream_index]->codecpar->codec_id !=
-        AV_CODEC_ID_H264) {
-      within_message(
-          2,
-          "The first non-attached video stream is not H.264 and cannot be extracted by this profile.");
+    if (input_format->streams[video_stream_index]->codecpar->codec_id !=
+        expected_video_codec) {
+      char message[192] = {0};
+      snprintf(message, sizeof(message),
+               "The first non-attached video stream is not %s and cannot be copied by this profile.",
+               video_label);
+      within_message(2, message);
       result = AVERROR(ENOSYS);
       goto cleanup;
     }
@@ -1629,19 +1678,22 @@ int within_remux(int profile) {
   if (input_format->nb_chapters > 0) {
     within_message(
         1,
-        h264_output
-            ? "Source chapters cannot be represented in an H.264 elementary stream and are explicitly excluded."
+        elementary_output
+            ? "Source chapters cannot be represented in an elementary video stream and are explicitly excluded."
+        : mpeg2_transport_output
+            ? "Source chapters are explicitly excluded from this MPEG-TS wrapping profile."
         : profile == 2
             ? "Source chapters are explicitly excluded from the audio-only M4A output."
             : "Source chapters are explicitly excluded from this MP4 remux profile.");
   }
   result = avformat_alloc_output_context2(
-      &output_format, NULL, h264_output ? "h264" : "mp4", NULL);
+      &output_format, NULL, muxer_name, NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
-    report_av_error(h264_output ? "H.264 muxer initialization failed"
-                                : "MP4 muxer initialization failed",
-                    result);
+    char message[128] = {0};
+    snprintf(message, sizeof(message), "%s muxer initialization failed",
+             output_label);
+    report_av_error(message, result);
     goto cleanup;
   }
 
@@ -1660,7 +1712,7 @@ int within_remux(int profile) {
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
     AVStream *input_stream = input_format->streams[index];
     const int selected_stream =
-        h264_output ? (int)index == h264_stream_index
+        video_only_output ? (int)index == video_stream_index
                     : stream_is_supported(input_stream, profile);
     stream_map[index] = -1;
     last_dts[index] = AV_NOPTS_VALUE;
@@ -1670,8 +1722,8 @@ int within_remux(int profile) {
       if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
-            h264_output
-                ? "H.264 elementary extraction accepts only an H.264 video stream."
+            video_only_output
+                ? "This video-only stream-copy profile received an incompatible video codec."
                 : "Lossless MP4 stream copy accepts H.264 or HEVC video, or "
                   "MPEG-4 Part 2 video from AVI. "
                   "This source video codec needs a bounded re-encoding route that "
@@ -1697,18 +1749,23 @@ int within_remux(int profile) {
       if (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
         within_message(
             1,
-            h264_output
-                ? "The source attached picture is explicitly excluded from the H.264 elementary output."
+            elementary_output
+                ? "The source attached picture is explicitly excluded from the elementary video output."
+            : mpeg2_transport_output
+                ? "The source attached picture is explicitly excluded from this MPEG-TS wrapping profile."
             : profile == 2
                 ? "The source cover-art stream is explicitly excluded from "
                   "this audio-only M4A profile."
                 : "The source attached picture is explicitly excluded from "
                   "this MP4 remux profile.");
-      } else if (h264_output &&
+      } else if (elementary_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
-        within_message(
-            1,
-            "Audio cannot be represented in an H.264 elementary stream and is explicitly excluded.");
+        within_message(1,
+                       "Audio cannot be represented in an elementary video stream and is explicitly excluded.");
+      } else if (mpeg2_transport_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(1,
+                       "This MPEG-TS wrapping profile includes only the MPEG-2 video stream; source audio was explicitly excluded.");
       } else if (profile == 2 &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -1718,26 +1775,29 @@ int within_remux(int profile) {
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
         within_message(
             1,
-            h264_output
-                ? "Subtitles cannot be represented in an H.264 elementary stream and are explicitly excluded."
+            elementary_output
+                ? "Subtitles cannot be represented in an elementary video stream and are explicitly excluded."
+                : mpeg2_transport_output
+                  ? "Subtitles are explicitly excluded from this MPEG-TS wrapping profile."
                 : "The source subtitle stream cannot be stream-copied by this "
                   "profile and is explicitly excluded.");
       } else if (input_stream->codecpar->codec_type ==
                  AVMEDIA_TYPE_ATTACHMENT) {
-        within_message(
-            1,
-            "The source attachment cannot be represented by this MP4 profile "
-                  "and is explicitly excluded.");
-      } else if (h264_output &&
+        within_message(1,
+                       video_only_output
+                           ? "The source attachment is explicitly excluded from this video-only output."
+                           : "The source attachment cannot be represented by this MP4 profile and is explicitly excluded.");
+      } else if (video_only_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-        within_message(
-            1,
-            "Only the first non-attached H.264 video stream is extracted; an additional video stream was explicitly excluded.");
+        within_message(1,
+                       "Only the first non-attached video stream is copied; an additional video stream was explicitly excluded.");
       } else {
         within_message(
             1,
-            h264_output
-                ? "A source stream type unsupported by H.264 elementary output was explicitly excluded."
+            elementary_output
+                ? "A source stream type unsupported by elementary video output was explicitly excluded."
+                : mpeg2_transport_output
+                  ? "A source stream type unsupported by this MPEG-TS wrapping profile was explicitly excluded."
                 : "A source stream type unsupported by MP4 was explicitly excluded.");
       }
       continue;
@@ -1813,8 +1873,8 @@ int within_remux(int profile) {
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
   output_format->max_interleave_delta = 2 * AV_TIME_BASE;
 
-  if (h264_output) {
-    /* Elementary H.264 needs no seek-dependent container options. */
+  if (video_only_output) {
+    /* Elementary streams and MPEG-TS need no seek-dependent MOV options. */
   } else if (profile == 2) {
     av_dict_set(&muxer_options, "movflags",
                 "empty_moov+default_base_moof", 0);
@@ -1825,9 +1885,9 @@ int within_remux(int profile) {
   }
   result = avformat_write_header(output_format, &muxer_options);
   if (result < 0) {
-    report_av_error(h264_output ? "H.264 header write failed"
-                                : "MP4 header write failed",
-                    result);
+    char message[96] = {0};
+    snprintf(message, sizeof(message), "%s header write failed", output_label);
+    report_av_error(message, result);
     goto cleanup;
   }
 
@@ -1853,10 +1913,17 @@ int within_remux(int profile) {
     AVStream *input_stream = input_format->streams[input_index];
     AVStream *output_stream =
         output_format->streams[stream_map[input_index]];
+    AVRational packet_frame_rate = input_stream->avg_frame_rate;
+    if (mpeg2_transport_output) {
+      AVRational guessed_frame_rate =
+          av_guess_frame_rate(input_format, input_stream, NULL);
+      if (guessed_frame_rate.num > 0 && guessed_frame_rate.den > 0) {
+        packet_frame_rate = guessed_frame_rate;
+      }
+    }
     int video_with_frame_rate =
         input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
-        input_stream->avg_frame_rate.num > 0 &&
-        input_stream->avg_frame_rate.den > 0;
+        packet_frame_rate.num > 0 && packet_frame_rate.den > 0;
     if (video_with_frame_rate && packet_counts[input_index] == 0 &&
         packet->dts == AV_NOPTS_VALUE) {
       synthesize_video_dts[input_index] = 1;
@@ -1868,7 +1935,7 @@ int within_remux(int profile) {
             input_stream->codecpar->codec_id == AV_CODEC_ID_HEVC) {
           reorder_delay = 2;
         }
-        AVRational frame_duration = av_inv_q(input_stream->avg_frame_rate);
+        AVRational frame_duration = av_inv_q(packet_frame_rate);
         packet->dts = av_rescale_q(
             packet_counts[input_index] - reorder_delay, frame_duration,
             input_stream->time_base);
@@ -1889,6 +1956,31 @@ int within_remux(int profile) {
         packet->dts = last_dts[input_index] + duration;
       }
     }
+    if (mpeg2_transport_output && packet->pts == AV_NOPTS_VALUE) {
+      int saw_gop_start = 0;
+      int temporal_reference =
+          mpeg2_packet_temporal_reference(packet, &saw_gop_start);
+      if (saw_gop_start) {
+        mpeg2_pending_gop_start = 1;
+      }
+      if (temporal_reference >= 0) {
+        if (mpeg2_pending_gop_start && mpeg2_seen_picture) {
+          mpeg2_gop_display_base +=
+              mpeg2_gop_max_temporal_reference + 1;
+          mpeg2_gop_max_temporal_reference = -1;
+        }
+        mpeg2_pending_gop_start = 0;
+        mpeg2_seen_picture = 1;
+        if (temporal_reference > mpeg2_gop_max_temporal_reference) {
+          mpeg2_gop_max_temporal_reference = temporal_reference;
+        }
+        packet->pts = av_rescale_q(
+            mpeg2_gop_display_base + temporal_reference,
+            av_inv_q(packet_frame_rate), input_stream->time_base);
+      } else {
+        packet->pts = packet->dts;
+      }
+    }
     last_dts[input_index] = packet->dts;
     int64_t media_time = packet_time_us(packet, input_stream);
     if (stream_bsfs[input_index]) {
@@ -1907,9 +1999,10 @@ int within_remux(int profile) {
         result = av_interleaved_write_frame(output_format, packet);
         av_packet_unref(packet);
         if (result < 0) {
-          report_av_error(h264_output ? "H.264 packet write failed"
-                                      : "MP4 packet write failed",
-                          result);
+          char message[96] = {0};
+          snprintf(message, sizeof(message), "%s packet write failed",
+                   output_label);
+          report_av_error(message, result);
           goto cleanup;
         }
         output_packet_count += 1;
@@ -1931,9 +2024,10 @@ int within_remux(int profile) {
     result = av_interleaved_write_frame(output_format, packet);
     av_packet_unref(packet);
     if (result < 0) {
-      report_av_error(h264_output ? "H.264 packet write failed"
-                                  : "MP4 packet write failed",
-                      result);
+      char message[96] = {0};
+      snprintf(message, sizeof(message), "%s packet write failed",
+               output_label);
+      report_av_error(message, result);
       goto cleanup;
     }
     output_packet_count += 1;
@@ -1965,9 +2059,10 @@ int within_remux(int profile) {
       result = av_interleaved_write_frame(output_format, packet);
       av_packet_unref(packet);
       if (result < 0) {
-        report_av_error(h264_output ? "H.264 packet write failed"
-                                    : "MP4 packet write failed",
-                        result);
+        char message[96] = {0};
+        snprintf(message, sizeof(message), "%s packet write failed",
+                 output_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       output_packet_count += 1;
@@ -1990,9 +2085,9 @@ int within_remux(int profile) {
 
   result = av_write_trailer(output_format);
   if (result < 0) {
-    report_av_error(h264_output ? "H.264 trailer write failed"
-                                : "MP4 trailer write failed",
-                    result);
+    char message[96] = {0};
+    snprintf(message, sizeof(message), "%s trailer write failed", output_label);
+    report_av_error(message, result);
     goto cleanup;
   }
   avio_flush(output_io);
@@ -2000,7 +2095,7 @@ int within_remux(int profile) {
     char message[320] = {0};
     snprintf(message, sizeof(message),
              "%s muxing produced no bytes from %lld packets after reading %lld of %lld source bytes.",
-             h264_output ? "H.264" : "MP4",
+             output_label,
              (long long)output_packet_count, (long long)input.position,
              (long long)input.size);
     within_message(2, message);

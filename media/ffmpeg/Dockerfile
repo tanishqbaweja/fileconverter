@@ -37,7 +37,9 @@ RUN chmod +x /src/build-libraries.sh && /src/build-libraries.sh
 
 COPY build-remux.sh /src/build-remux.sh
 COPY within_remux.c /src/within_remux.c
-RUN chmod +x /src/build-remux.sh && /src/build-remux.sh
+ARG WITHIN_BUILD_CORE_FILTER=all
+RUN chmod +x /src/build-remux.sh \
+    && WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER}" /src/build-remux.sh
 
 FROM scratch AS artifact
 COPY --from=build /out/ /

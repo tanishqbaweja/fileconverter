@@ -37,6 +37,24 @@ test("normal selector exposes only public profiles with passed evidence", () => 
   }
 });
 
+test("MPEG-2 elementary routes expose only their measured evidence", () => {
+  const expected = new Map([
+    ["m2v-to-mpeg-ts", 136_166_136],
+    ["mkv-to-m2v", 136_294_704],
+    ["mp4-to-m2v", 136_284_917],
+    ["mov-to-m2v", 136_284_843],
+    ["avi-to-m2v", 136_465_056],
+    ["mpeg-ts-to-m2v", 142_273_136],
+  ]);
+  for (const [id, maxTestedBytes] of expected) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.public, true);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+  }
+});
+
 test("every profile references registered formats", () => {
   const ids = new Set(formats.map((format) => format.id));
   for (const profile of conversionProfiles) {
@@ -63,7 +81,13 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-remux",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
-      profiles: ["stream-copy", "audio", "h264-extract"],
+      profiles: [
+        "stream-copy",
+        "audio",
+        "h264-extract",
+        "mpeg2-extract",
+        "mpeg2-wrap",
+      ],
     },
     {
       name: "within-direct",
@@ -116,6 +140,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));
   assert.ok(manifest.enabledMuxers.includes("h264"));
+  assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
