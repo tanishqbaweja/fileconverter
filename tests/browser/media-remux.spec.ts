@@ -172,6 +172,13 @@ const containerMpegTsOutputPaths = {
   "3gp": path.join(outputRoot, "3gp-remux-output.mpegts"),
   flv: path.join(outputRoot, "flv-remux-output.mpegts"),
 } as const;
+const containerThreeGpOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-remux-output.3gp"),
+  mp4: path.join(outputRoot, "mp4-remux-output.3gp"),
+  mov: path.join(outputRoot, "mov-remux-output.3gp"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.3gp"),
+  flv: path.join(outputRoot, "flv-remux-output.3gp"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const complexMatroskaOutputPath = path.join(
   outputRoot,
@@ -516,6 +523,17 @@ async function expectAacAccessUnitMatch(
   );
 }
 
+async function expectIsoBmffAacPacketMatch(
+  sourcePath: string,
+  outputPath: string,
+  sourceUsesAdts: boolean,
+): Promise<void> {
+  const sourceHash = sourceUsesAdts
+    ? await aacAccessUnitSha256(sourcePath)
+    : await mp3PacketSha256(sourcePath);
+  expect(await mp3PacketSha256(outputPath)).toBe(sourceHash);
+}
+
 async function expectCompressedAudioPacketMatch(
   sourcePath: string,
   outputPath: string,
@@ -676,6 +694,9 @@ test.beforeAll(async () => {
     assertProjectLocal(outputPath);
   }
   for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  for (const outputPath of Object.values(containerThreeGpOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
@@ -1074,6 +1095,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerThreeGpOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
   await rm(complexMatroskaOutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
@@ -1189,6 +1213,11 @@ async function runMediaRoute(
     | "mov-to-mpeg-ts"
     | "3gp-to-mpeg-ts"
     | "flv-to-mpeg-ts"
+    | "mkv-to-3gp"
+    | "mp4-to-3gp"
+    | "mov-to-3gp"
+    | "mpeg-ts-to-3gp"
+    | "flv-to-3gp"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -1926,6 +1955,11 @@ for (const route of [
   ["mov-to-mpeg-ts", movInputFixturePath],
   ["3gp-to-mpeg-ts", threeGpInputFixturePath],
   ["flv-to-mpeg-ts", flvInputFixturePath],
+  ["mkv-to-3gp", fixturePath],
+  ["mp4-to-3gp", mp4InputFixturePath],
+  ["mov-to-3gp", movInputFixturePath],
+  ["mpeg-ts-to-3gp", mpegTsInputFixturePath],
+  ["flv-to-3gp", flvInputFixturePath],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -3228,6 +3262,61 @@ test("MPEG-TS stream copy rejects incompatible audio and cleans up", async () =>
   });
   expect(leftovers).toEqual([]);
 });
+
+for (const route of [
+  ["mkv-to-3gp", fixturePath, containerThreeGpOutputPaths.mkv, false],
+  ["mp4-to-3gp", mp4InputFixturePath, containerThreeGpOutputPaths.mp4, false],
+  ["mov-to-3gp", movInputFixturePath, containerThreeGpOutputPaths.mov, false],
+  ["mpeg-ts-to-3gp", mpegTsInputFixturePath, containerThreeGpOutputPaths["mpeg-ts"], true],
+  ["flv-to-3gp", flvInputFixturePath, containerThreeGpOutputPaths.flv, false],
+] as const) {
+  test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded 3GP`, async () => {
+    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("3gp");
+        expect(probe.format.tags?.major_brand).toBe("3gp6");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(route[1], outputPath);
+        await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+      },
+    });
+  });
+}
+
+for (const rejection of [
+  ["incompatible audio", incompatibleFixturePath],
+  ["HEVC video", hevcContainerFixturePaths.mkv],
+] as const) {
+  test(`3GP stream copy rejects ${rejection[0]} and cleans up`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
+    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-3gp");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(
+      "3GP stream copy accepts H.264 video with AAC audio",
+    );
+    expect(state.opfsName).toBeNull();
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-mkv-to-3gp")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
 
 test("MKV to H.264 extracts only the first video and discloses additional streams", async () => {
   await runMediaRoute(

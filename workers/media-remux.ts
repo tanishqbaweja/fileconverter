@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -131,6 +131,8 @@ export async function runMediaRemux({
         ? "Remuxing to Matroska"
       : remuxProfile === 24
         ? "Remuxing to MPEG-TS"
+      : remuxProfile === 25
+        ? "Remuxing to 3GP"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -162,7 +164,8 @@ export async function runMediaRemux({
   const synchronousInputReader =
     (remuxProfile >= 19 && remuxProfile <= 21) ||
     remuxProfile === 23 ||
-    remuxProfile === 24
+    remuxProfile === 24 ||
+    remuxProfile === 25
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =

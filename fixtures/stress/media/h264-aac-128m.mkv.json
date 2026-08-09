@@ -1,8 +1,8 @@
 {
   "generatedBy": "scripts/generate-container-mpegts-stress-fixtures.mjs",
   "source": "fixtures/stress/media/h264-aac-128m.mp4",
-  "bytes": 147131071,
-  "sha256": "1634cbef96995e871200f6ac6d94c6aa59745effbdda831c80bb87828f95b26c",
+  "bytes": 147131069,
+  "sha256": "ffffbc41368bcf4be5db84da45f98303b38025a7011968e9a4525134af9fb91b",
   "probe": {
     "streams": [
       {
@@ -127,7 +127,7 @@
       "format_long_name": "Matroska / WebM",
       "start_time": "0.000000",
       "duration": "65.109000",
-      "size": "147131071",
+      "size": "147131069",
       "bit_rate": "18078123",
       "probe_score": 100,
       "tags": {

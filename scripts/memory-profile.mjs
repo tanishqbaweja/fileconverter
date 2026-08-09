@@ -186,6 +186,11 @@ if (
     "mov-to-mpeg-ts",
     "3gp-to-mpeg-ts",
     "flv-to-mpeg-ts",
+    "mkv-to-3gp",
+    "mp4-to-3gp",
+    "mov-to-3gp",
+    "mpeg-ts-to-3gp",
+    "flv-to-3gp",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -322,6 +327,11 @@ const isMediaProfile =
   profileId === "mov-to-mpeg-ts" ||
   profileId === "3gp-to-mpeg-ts" ||
   profileId === "flv-to-mpeg-ts" ||
+  profileId === "mkv-to-3gp" ||
+  profileId === "mp4-to-3gp" ||
+  profileId === "mov-to-3gp" ||
+  profileId === "mpeg-ts-to-3gp" ||
+  profileId === "flv-to-3gp" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1174,6 +1184,13 @@ async function validateMediaOutput(
     "3gp-to-mpeg-ts",
     "flv-to-mpeg-ts",
   ].includes(route);
+  const containerThreeGpCopy = [
+    "mkv-to-3gp",
+    "mp4-to-3gp",
+    "mov-to-3gp",
+    "mpeg-ts-to-3gp",
+    "flv-to-3gp",
+  ].includes(route);
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
@@ -1580,6 +1597,13 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser MPEG-TS output did not probe as MPEG-TS.");
   }
+  if (
+    containerThreeGpCopy &&
+    (!String(probe.format?.format_name ?? "").split(",").includes("3gp") ||
+      !String(probe.format?.tags?.major_brand ?? "").startsWith("3gp"))
+  ) {
+    throw new Error("Browser 3GP output did not probe as genuine 3GP.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1686,7 +1710,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1703,7 +1727,8 @@ async function validateMediaOutput(
       oggPacketOutput ||
       webmAudioCopy ||
       av1WebmCopy ||
-      matroskaCopy) &&
+      matroskaCopy ||
+      containerThreeGpCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
     ((av1WebmCopy || liveMatroskaCopy) &&
       Number.isFinite(probedOutputDuration)) ||
@@ -1856,6 +1881,7 @@ async function validateMediaOutput(
     m4vMp4Output ||
     av1WebmCopy ||
     matroskaCopy ||
+    containerThreeGpCopy ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -1961,6 +1987,39 @@ async function validateMediaOutput(
       ...(probe.withinValidation ?? {}),
       decodedVideoAndAacStreamHash: packetStreamHashes[0],
     };
+  } else if (containerThreeGpCopy) {
+    const packetStreamHashes = [];
+    for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
+      const sourceAdtsFilter =
+        candidateIndex === 0 && route === "mpeg-ts-to-3gp"
+          ? ["-bsf:a", "aac_adtstoasc"]
+          : [];
+      const { stdout: packetStreamHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-xerror", "-i", candidate,
+          "-map", "0:v:0", "-map", "0:a:0",
+          "-c:v", "rawvideo", "-pix_fmt", "yuv420p",
+          "-c:a", "copy", ...sourceAdtsFilter,
+          "-f", "streamhash", "-hash", "sha256", "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 16 * 1024 * 1024,
+        },
+      );
+      packetStreamHashes.push(packetStreamHash.trim());
+    }
+    if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
+      throw new Error(
+        "Browser 3GP decoded video frames or AAC access units do not exactly match the source.",
+      );
+    }
+    probe.withinValidation = {
+      ...(probe.withinValidation ?? {}),
+      decodedVideoAndAacStreamHash: packetStreamHashes[0],
+    };
   } else if (!av1WebmCopy) {
     await execFileAsync(
       "ffmpeg",
@@ -1983,7 +2042,7 @@ async function validateMediaOutput(
     ...(probe.withinValidation ?? {}),
     mediaTraversal: av1WebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
-      : containerMpegTsCopy
+      : containerMpegTsCopy || containerThreeGpCopy
       ? "full-decoded-video-and-aac-streamhash"
       : requiresFullDecodeTraversal
       ? "full-native-decode"

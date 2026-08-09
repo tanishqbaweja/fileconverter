@@ -340,6 +340,10 @@ static int stream_is_supported(const AVStream *stream, int profile) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
            stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
   }
+  if (profile == 25) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
+  }
   if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
       profile == 16 || profile == 22) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
@@ -390,6 +394,13 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
              stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
+    }
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_AAC;
+  }
+  if (profile == 25) {
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_H264;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_AAC;
@@ -1776,7 +1787,7 @@ int within_remux(int profile) {
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
       profile != 18 && profile != 19 && profile != 20 && profile != 21 &&
-      profile != 22 && profile != 23 && profile != 24) {
+      profile != 22 && profile != 23 && profile != 24 && profile != 25) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1815,6 +1826,7 @@ int within_remux(int profile) {
   }
   const int matroska_output = profile == 23;
   const int container_mpegts_output = profile == 24;
+  const int container_threegp_output = profile == 25;
   const int matroska_live_output =
       matroska_output && input_format->iformat &&
       input_format->iformat->name &&
@@ -1834,12 +1846,18 @@ int within_remux(int profile) {
        strstr(input_format->iformat->name, "avi") != NULL);
   const int container_mpegts_input_requires_probe =
       container_mpegts_output;
+  const int container_threegp_input_requires_probe =
+      container_threegp_output && input_format->iformat &&
+      input_format->iformat->name &&
+      (strstr(input_format->iformat->name, "mpegts") != NULL ||
+       strstr(input_format->iformat->name, "flv") != NULL);
   if (profile != 17 &&
       ((!audio_extraction_output && !matroska_output &&
-        !container_mpegts_output) ||
+        !container_mpegts_output && !container_threegp_output) ||
        elementary_audio_input_requires_probe ||
        matroska_input_requires_probe ||
-       container_mpegts_input_requires_probe)) {
+       container_mpegts_input_requires_probe ||
+       container_threegp_input_requires_probe)) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);
@@ -1884,6 +1902,7 @@ int within_remux(int profile) {
                                  ? "H.264"
                                  : matroska_output ? "Matroska"
                                  : container_mpegts_output ? "MPEG-TS"
+                                 : container_threegp_output ? "3GP"
                                  : hevc_output ? "HEVC"
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
@@ -1898,6 +1917,7 @@ int within_remux(int profile) {
                                ? "h264"
                                : matroska_output ? "matroska"
                                : container_mpegts_output ? "mpegts"
+                               : container_threegp_output ? "3gp"
                                : hevc_output ? "hevc"
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
@@ -1966,6 +1986,8 @@ int within_remux(int profile) {
             ? "Source chapters cannot be represented in an elementary video stream and are explicitly excluded."
         : transport_output
             ? "Source chapters are explicitly excluded from this MPEG-TS wrapping profile."
+        : container_threegp_output
+            ? "Source chapters are explicitly excluded from this bounded 3GP remux profile."
         : av1_webm_output
             ? "Source chapters are explicitly excluded from this AV1 WebM remux profile."
         : profile == 2
@@ -1989,7 +2011,7 @@ int within_remux(int profile) {
     goto cleanup;
   }
   if (av1_webm_output || matroska_output || container_mpegts_output ||
-      audio_extraction_output) {
+      container_threegp_output || audio_extraction_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 
@@ -2032,6 +2054,10 @@ int within_remux(int profile) {
         within_message(
             2,
             "MPEG-TS stream copy accepts H.264 or HEVC video with AAC audio; this source needs a separately verified conversion route.");
+      } else if (container_threegp_output) {
+        within_message(
+            2,
+            "3GP stream copy accepts H.264 video with AAC audio; this source needs a separately verified conversion route.");
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
@@ -2066,6 +2092,8 @@ int within_remux(int profile) {
                 ? "The source attached picture is explicitly excluded from the elementary video output."
             : transport_output
                 ? "The source attached picture is explicitly excluded from this MPEG-TS wrapping profile."
+            : container_threegp_output
+                ? "The source attached picture is explicitly excluded from this 3GP remux profile."
             : profile == 2
                 ? "The source cover-art stream is explicitly excluded from "
                   "this audio-only M4A profile."
@@ -2146,6 +2174,8 @@ int within_remux(int profile) {
                 ? "Subtitles cannot be represented in an elementary video stream and are explicitly excluded."
                 : transport_output
                   ? "Subtitles are explicitly excluded from this MPEG-TS wrapping profile."
+                : container_threegp_output
+                  ? "Subtitles are explicitly excluded from this 3GP remux profile."
                 : mp3_output
                   ? "The source subtitle stream is explicitly excluded from this MP3 extraction profile."
                 : aac_output
@@ -2159,6 +2189,8 @@ int within_remux(int profile) {
         within_message(1,
                        transport_output
                            ? "The source attachment is explicitly excluded from this MPEG-TS wrapping profile."
+                       : container_threegp_output
+                           ? "The source attachment is explicitly excluded from this 3GP remux profile."
                        : video_only_output
                            ? "The source attachment is explicitly excluded from this video-only output."
                        : av1_webm_output
@@ -2181,6 +2213,8 @@ int within_remux(int profile) {
                 ? "A source stream type unsupported by elementary video output was explicitly excluded."
                 : transport_output
                   ? "A source stream type unsupported by this MPEG-TS wrapping profile was explicitly excluded."
+                : container_threegp_output
+                  ? "A source stream type unsupported by this 3GP remux profile was explicitly excluded."
                 : av1_webm_output
                   ? "A source stream type unsupported by this AV1 WebM profile was explicitly excluded."
                 : mp3_output
@@ -2215,7 +2249,7 @@ int within_remux(int profile) {
       const AVBitStreamFilter *filter =
           av_bsf_get_by_name("aac_adtstoasc");
       if (!filter) {
-        within_message(2, "The AAC-to-MP4 compatibility filter is unavailable.");
+        within_message(2, "The AAC-to-ISO-BMFF compatibility filter is unavailable.");
         result = AVERROR_BSF_NOT_FOUND;
         goto cleanup;
       }
