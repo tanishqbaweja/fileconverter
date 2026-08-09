@@ -149,6 +149,12 @@ const h264ExtractionOutputPaths = {
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.h264"),
   flv: path.join(outputRoot, "flv-extract-output.h264"),
 } as const;
+const hevcExtractionOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-extract-output.hevc"),
+  mp4: path.join(outputRoot, "mp4-extract-output.hevc"),
+  mov: path.join(outputRoot, "mov-extract-output.hevc"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.hevc"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
   projectRoot,
@@ -334,6 +340,14 @@ const h264FixturePath = path.join(
   "media",
   "h264-video-source.h264",
 );
+const protectedHevcSourcePath = path.join(projectRoot, "test.mkv");
+const hevcMovFixturePath = path.join(projectRoot, "work", "hevc-source.mov");
+const hevcContainerFixturePaths = {
+  mkv: path.join(projectRoot, "work", "hevc-source.mkv"),
+  mp4: path.join(projectRoot, "work", "hevc-source.mp4"),
+  mov: hevcMovFixturePath,
+  "mpeg-ts": path.join(projectRoot, "work", "hevc-source.mpegts"),
+} as const;
 const mpeg2ContainerFixturePaths = {
   mkv: path.join(projectRoot, "work", "mpeg2-source.mkv"),
   mp4: path.join(projectRoot, "work", "mpeg2-source.mp4"),
@@ -622,6 +636,12 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(hevcExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  for (const fixture of Object.values(hevcContainerFixturePaths)) {
+    assertProjectLocal(fixture);
+  }
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
     assertProjectLocal(fixture);
   }
@@ -645,6 +665,9 @@ test.beforeAll(async () => {
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  for (const fixture of Object.values(hevcContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -696,6 +719,31 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-i", protectedHevcSourcePath, "-t", "4",
+      "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
+      "-map_metadata", "0", "-f", "mov", hevcMovFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await Promise.all([
+    ...(["mkv", "mp4", "mpeg-ts"] as const).map((input) =>
+      execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+          "-i", hevcMovFixturePath, "-map", "0:v:0", "-map", "0:a:0",
+          "-c", "copy", "-map_metadata", "0",
+          "-f", input === "mpeg-ts" ? "mpegts" : input === "mkv" ? "matroska" : input,
+          hevcContainerFixturePaths[input],
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      ),
+    ),
+  ]);
   await Promise.all([
     execFileAsync(
       "ffmpeg",
@@ -962,6 +1010,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(hevcExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -969,6 +1020,9 @@ test.afterAll(async () => {
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  for (const fixture of Object.values(hevcContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -1054,6 +1108,10 @@ async function runMediaRoute(
     | "3gp-to-h264"
     | "mpeg-ts-to-h264"
     | "flv-to-h264"
+    | "mkv-to-hevc"
+    | "mp4-to-hevc"
+    | "mov-to-hevc"
+    | "mpeg-ts-to-hevc"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -1773,6 +1831,10 @@ for (const route of [
   ["3gp-to-h264", threeGpInputFixturePath],
   ["mpeg-ts-to-h264", mpegTsInputFixturePath],
   ["flv-to-h264", flvInputFixturePath],
+  ["mkv-to-hevc", hevcContainerFixturePaths.mkv],
+  ["mp4-to-hevc", hevcContainerFixturePaths.mp4],
+  ["mov-to-hevc", hevcContainerFixturePaths.mov],
+  ["mpeg-ts-to-hevc", hevcContainerFixturePaths["mpeg-ts"]],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -1982,6 +2044,12 @@ for (const route of [
     profileId: "mkv-to-m4a",
     title: "M4A",
     expectedError: "Lossless M4A stream copy accepts AAC audio",
+  },
+  {
+    profileId: "mkv-to-hevc",
+    title: "HEVC extraction",
+    expectedError: "The first non-attached video stream is not HEVC",
+    inputPath: fixturePath,
   },
   {
     profileId: "mkv-to-webm-av1",
@@ -2867,6 +2935,29 @@ for (const route of [
       expectedWarningFragments: ["Audio cannot be represented"],
       expectedDurationSeconds: 3.84,
       durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(route[1], outputPath);
+      },
+    });
+  });
+}
+
+for (const route of [
+  ["mkv-to-hevc", hevcContainerFixturePaths.mkv, hevcExtractionOutputPaths.mkv],
+  ["mp4-to-hevc", hevcContainerFixturePaths.mp4, hevcExtractionOutputPaths.mp4],
+  ["mov-to-hevc", hevcContainerFixturePaths.mov, hevcExtractionOutputPaths.mov],
+  [
+    "mpeg-ts-to-hevc",
+    hevcContainerFixturePaths["mpeg-ts"],
+    hevcExtractionOutputPaths["mpeg-ts"],
+  ],
+] as const) {
+  test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
+    await runMediaRoute(route[0], route[2], ["hevc"], 100_000, route[1], {
+      expectedWarningFragments: ["Audio cannot be represented"],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.15,
       validate: async (probe, outputPath) => {
         expect(probe.streams).toHaveLength(1);
         await expectDecodedVideoMatch(route[1], outputPath);

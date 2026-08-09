@@ -159,6 +159,24 @@ test("Ogg-family container extraction is public at its measured evidence limit",
   }
 });
 
+test("container HEVC extraction is public only at its measured evidence limit", () => {
+  for (const id of [
+    "mkv-to-hevc",
+    "mp4-to-hevc",
+    "mov-to-hevc",
+    "mpeg-ts-to-hevc",
+  ]) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(
+      publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
+
 test("every FFmpeg profile is declared by the reproducible Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/remux/build-manifest.json", "utf8"),
@@ -181,6 +199,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "stream-copy",
         "audio",
         "h264-extract",
+        "hevc-extract",
         "mpeg2-extract",
         "mpeg2-wrap",
         "m4v-extract",
@@ -243,6 +262,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledDemuxers.includes("h264"));
   assert.ok(manifest.enabledDemuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("h264"));
+  assert.ok(manifest.enabledMuxers.includes("hevc"));
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
   assert.ok(manifest.enabledMuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("mp3"));
@@ -455,6 +475,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
   assert.equal(detectFormat({ name: "elementary.AVC", type: "" }), "h264");
+  assert.equal(detectFormat({ name: "elementary.H265", type: "" }), "hevc");
   assert.deepEqual(
     publicProfilesFor("h264", true)
       .filter((profile) => profile.input === "h264" || profile.output === "h264")

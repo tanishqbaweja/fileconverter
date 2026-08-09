@@ -330,7 +330,7 @@ static int stream_is_supported(const AVStream *stream, int profile) {
     return 0;
   }
   if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
-      profile == 16) {
+      profile == 16 || profile == 22) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
   }
   return profile == 2 || profile == 18 || profile == 19 || profile == 20 ||
@@ -346,6 +346,10 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 12) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
            stream->codecpar->codec_id == AV_CODEC_ID_H264;
+  }
+  if (profile == 22) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
   }
   if (profile == 13 || profile == 14) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
@@ -1622,7 +1626,8 @@ int within_remux(int profile) {
   }
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
-      profile != 18 && profile != 19 && profile != 20 && profile != 21) {
+      profile != 18 && profile != 19 && profile != 20 && profile != 21 &&
+      profile != 22) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1684,18 +1689,23 @@ int within_remux(int profile) {
   const int aac_output = profile == 19;
   const int vorbis_output = profile == 20;
   const int opus_output = profile == 21;
+  const int hevc_output = profile == 22;
   const int ogg_audio_output = vorbis_output || opus_output;
-  const int elementary_output = h264_output || mpeg2_output || m4v_output;
+  const int elementary_output =
+      h264_output || hevc_output || mpeg2_output || m4v_output;
   const int video_only_output =
       elementary_output || mpeg2_transport_output || m4v_mp4_output;
   const enum AVCodecID expected_video_codec =
       h264_output
           ? AV_CODEC_ID_H264
+          : hevc_output ? AV_CODEC_ID_HEVC
           : (mpeg2_output || mpeg2_transport_output) ? AV_CODEC_ID_MPEG2VIDEO
           : av1_webm_output                          ? AV_CODEC_ID_AV1
                                                      : AV_CODEC_ID_MPEG4;
   const char *video_label = h264_output
                                 ? "H.264"
+                                : hevc_output
+                                    ? "HEVC"
                                 : av1_webm_output
                                     ? "AV1"
                                 : (mpeg2_output || mpeg2_transport_output)
@@ -1703,6 +1713,7 @@ int within_remux(int profile) {
                                       : "MPEG-4 Part 2";
   const char *output_label = h264_output
                                  ? "H.264"
+                                 : hevc_output ? "HEVC"
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
                                  : m4v_output             ? "M4V"
@@ -1714,6 +1725,7 @@ int within_remux(int profile) {
                                                           : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
+                               : hevc_output ? "hevc"
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
                                : m4v_output             ? "m4v"

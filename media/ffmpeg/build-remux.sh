@@ -96,7 +96,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "h264-extract", "mpeg2-extract", "mpeg2-wrap", "m4v-extract", "m4v-wrap", "av1-webm-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "m4v-extract", "m4v-wrap", "av1-webm-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
@@ -112,8 +112,10 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "enabledDecoders": ["aac", "alac", "amrnb", "flac", "h264", "hevc", "mp3", "mpeg2video", "mpeg4", "opus", "pcm_s16be", "pcm_s16le", "theora", "vorbis", "wmav1", "wmav2"],
   "enabledEncoders": ["alac", "flac", "h263", "libvpx_vp8", "libvpx_vp9", "mpeg4", "pcm_s16le", "wmav2"],
   "enabledDemuxers": ["aac", "aiff", "amr", "asf", "avi", "flac", "flv", "h264", "m4v", "matroska", "mov", "mp3", "mpegts", "mpegvideo", "ogg", "wav"],
-  "enabledMuxers": ["adts", "asf", "flac", "h264", "ipod", "latm", "m4v", "mov", "mp3", "mp4", "mpeg2video", "mpegts", "ogg", "wav", "webm"],
+  "enabledMuxers": ["adts", "asf", "flac", "h264", "hevc", "ipod", "latm", "m4v", "mov", "mp3", "mp4", "mpeg2video", "mpegts", "ogg", "wav", "webm"],
   "enabledParsers": ["aac", "ac3", "flac", "h264", "hevc", "mpeg4video", "mpegaudio", "mpegvideo", "opus", "vorbis"],
   "enabledBitstreamFilters": ["aac_adtstoasc", "extract_extradata", "h264_mp4toannexb", "hevc_mp4toannexb", "vp9_superframe", "vvc_mp4toannexb"]
 }
 EOF
+
+sed -i 's/"flv-to-h264",/"flv-to-h264", "mkv-to-hevc", "mp4-to-hevc", "mov-to-hevc", "mpeg-ts-to-hevc",/' "${OUTPUT}/build-manifest.json"

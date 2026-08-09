@@ -169,6 +169,10 @@ if (
     "3gp-to-h264",
     "mpeg-ts-to-h264",
     "flv-to-h264",
+    "mkv-to-hevc",
+    "mp4-to-hevc",
+    "mov-to-hevc",
+    "mpeg-ts-to-hevc",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -288,6 +292,10 @@ const isMediaProfile =
   profileId === "3gp-to-h264" ||
   profileId === "mpeg-ts-to-h264" ||
   profileId === "flv-to-h264" ||
+  profileId === "mkv-to-hevc" ||
+  profileId === "mp4-to-hevc" ||
+  profileId === "mov-to-hevc" ||
+  profileId === "mpeg-ts-to-hevc" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1104,6 +1112,11 @@ async function validateMediaOutput(
     route === "3gp-to-h264" ||
     route === "mpeg-ts-to-h264" ||
     route === "flv-to-h264";
+  const hevcOutput =
+    route === "mkv-to-hevc" ||
+    route === "mp4-to-hevc" ||
+    route === "mov-to-hevc" ||
+    route === "mpeg-ts-to-hevc";
   const mpeg2Output =
     route === "mkv-to-m2v" ||
     route === "mp4-to-m2v" ||
@@ -1117,7 +1130,8 @@ async function validateMediaOutput(
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
   const av1WebmCopy = route === "mkv-to-webm-av1";
-  const elementaryVideoOutput = h264Output || mpeg2Output || m4vOutput;
+  const elementaryVideoOutput =
+    h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
   const videoOnlyCopy =
     route === "h264-to-mp4" ||
@@ -1545,6 +1559,8 @@ async function validateMediaOutput(
             ? "mpeg2video"
             : m4vOutput || m4vMp4Output
               ? "mpeg4"
+            : hevcOutput
+              ? "hevc"
               : "h264"))) ||
     (!audioOnly &&
       !videoReencode &&

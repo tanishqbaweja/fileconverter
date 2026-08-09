@@ -255,6 +255,44 @@ function containerH264Profile(
   };
 }
 
+const hevcElementaryEvidence = {
+  "mkv-to-hevc": 148_952_609,
+  "mp4-to-hevc": 149_251_863,
+  "mov-to-hevc": 149_251_969,
+  "mpeg-ts-to-hevc": 157_710_004,
+} as const satisfies Record<string, number | null>;
+
+function containerHevcProfile(
+  input: "mkv" | "mp4" | "mov" | "mpeg-ts",
+): ConversionProfile {
+  const id = `${input}-to-hevc` as keyof typeof hevcElementaryEvidence;
+  const evidence = hevcElementaryEvidence[id];
+  return {
+    id,
+    input,
+    output: "hevc",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination uses HEVC video; other video codecs require a separately verified conversion route.",
+      "Only the first non-attached HEVC video stream is extracted; audio, subtitles, attachments, data, additional video streams, and chapters are explicitly excluded.",
+      "An HEVC elementary stream cannot preserve container packet timestamps, general metadata, language tags, rotation metadata, or chapter timing; playback timing is reconstructed from the detected elementary frame rate.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const mpeg2ElementaryEvidence = {
   "m2v-to-mpeg-ts": 136_166_136,
   "mkv-to-m2v": 136_294_704,
@@ -988,6 +1026,13 @@ export const formats = [
     label: "H.264 elementary video (Annex B)",
     extensions: ["h264", "264", "avc"],
     mimeTypes: ["video/h264"],
+    category: "video",
+  },
+  {
+    id: "hevc",
+    label: "HEVC/H.265 elementary video (Annex B)",
+    extensions: ["hevc", "h265", "265"],
+    mimeTypes: ["video/h265", "video/hevc"],
     category: "video",
   },
   {
@@ -3933,6 +3978,10 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerH264Profile("3gp"),
   containerH264Profile("mpeg-ts"),
   containerH264Profile("flv"),
+  containerHevcProfile("mkv"),
+  containerHevcProfile("mp4"),
+  containerHevcProfile("mov"),
+  containerHevcProfile("mpeg-ts"),
   mpeg2TransportProfile(),
   containerMpeg2Profile("mkv"),
   containerMpeg2Profile("mp4"),

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 210
+complete-Chromium memory profile have passed. The current registry publishes 214
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -190,7 +190,7 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 The current media core is deliberately small. It enables only the documented
 AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, raw MPEG-4 Part 2 M4V,
 Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
-MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
+HEVC, raw MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
 fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
@@ -351,6 +351,18 @@ Elementary H.264 cannot carry container timestamps or metadata, so all encoded
 frames are preserved exactly while playback timing is reconstructed from the
 detected raw frame rate; tests compare decoded-frame SHA-256 rather than
 claiming that container timing survives extraction.
+
+Certified HEVC video in MKV, MP4, MOV, or MPEG-TS takes the fastest lossless
+route: the first non-attached HEVC stream is packet-copied directly to Annex B
+elementary output while audio, subtitles, attachments, data, additional video,
+chapters, and container-only metadata are explicitly excluded. Three Chrome
+runs per route on 148,952,609–157,710,004-byte sources completed in 2.06–3.78
+seconds with 32 MiB Wasm and 195.3–212.2 MiB worst incremental process-tree
+private memory. Every output retained 17,282 decoded frames, had a repeatable
+hash, fully decoded natively, and was deleted after validation. Raw HEVC input
+to MP4 is intentionally not advertised: native and browser experiments retained
+all packets but could not reconstruct lossless B-frame presentation order from
+an elementary stream without container timestamps.
 
 Raw AAC/ADTS input uses FFmpeg's bounded AAC demuxer. The M4A route copies AAC
 frames without re-encoding, removes the ADTS transport headers with
