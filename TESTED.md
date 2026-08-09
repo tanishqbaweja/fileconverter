@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **242**
-- Public profiles with a retained successful Chrome stress report: **242**
+- Public passed conversion profiles: **244**
+- Public profiles with a retained successful Chrome stress report: **244**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-10:** 545/545 production-browser tests passed; 25/25 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-10:** 549/549 production-browser tests passed; 26/26 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Fast bounded ASS subtitle output:** SRT passed 3/3 Chrome runs on 67,327,792 bytes in 4.00-4.09 s at 177.0 MiB worst incremental private memory; WebVTT passed 3/3 on 73,788,904 bytes in 3.84-4.34 s at 187.1 MiB. Chunk-level cue parsing, 64 KiB text batching, and no-op guards for plain cues reduced the retained 7.35-7.90 s baseline by roughly 44-49% without changing output. All six final runs streamed directly through one worker with no Wasm or SharedArrayBuffer allocation, 256 KiB maximum reads and writes, one pending operation, and the same independently generated 83,203,467-byte SHA-256 (`8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5`). The route preserves cue timing, multiline text, entities, voice labels where available, and basic italic/bold/underline markup while generating a deterministic default style and explicitly disclosing nearest-centisecond rounding plus excluded WebVTT metadata, cue identifiers, positioning, regions, and CSS. Focused exact-success, malformed-timing, forced-write, and partial-output-cleanup coverage passed 4/4. The generator kept every source under `fixtures/stress/subtitles`; category cleanup removed all large generated fixtures and converted copies in `finally`, while compact reports and tracked manifests remain as the durable record.
 - **Fast bounded FLV remuxing:** MKV passed 3/3 Chrome runs on 147,131,070 bytes in 0.95-1.27 s at 166.7 MiB worst incremental private memory; MP4 passed on 147,136,622 bytes in 1.03-1.33 s at 187.5 MiB; MOV passed on 147,136,646 bytes in 1.00-1.32 s at 191.7 MiB; 3GP passed on 146,854,522 bytes in 1.09-1.40 s at 173.5 MiB; and MPEG-TS passed on 150,441,548 bytes in 1.55-1.88 s at 196.6 MiB. All fifteen H.264/AAC outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads, at most 256 KiB writes, one pending write, repeatable bytes, genuine FLV structure, and full decoded-video plus exact AAC-access-unit SHA-256 validation. Direct stream copy avoids decode/re-encode work; the FLV trailer performs only fixed-size duration/file-size updates and does not accumulate a duration-sized index. MPEG-TS uses the required `aac_adtstoasc` filter. FLV carries only the first video and audio stream, so chapters, subtitles, attachments, attached pictures, additional streams, language tags, and unsupported metadata are explicitly disclosed and excluded. Native feasibility and all temporary outputs stayed under `work` and were deleted; the reproducible pinned FFmpeg build added only the FLV muxer to the lean core and was hash-verified before publication. Focused exact-success, codec-rejection, forced-write, and partial-output-cleanup coverage passed 12/12 before the 545/545 regression. Category cleanup removed every large generated source and converted copy in `finally`, while compact reports remain as the durable record.
 - **Fast bounded fragmented QuickTime MOV remuxing:** MKV passed 3/3 Chrome runs on 147,131,073 bytes in 0.72-1.11 s at 215.8 MiB worst incremental private memory; MP4 passed on 147,136,624 bytes in 0.73-1.06 s at 219.3 MiB; 3GP passed on 146,854,522 bytes in 0.76-1.07 s at 231.9 MiB; MPEG-TS passed on 150,441,548 bytes in 1.17-1.50 s at 227.9 MiB; and FLV passed on 146,903,539 bytes in 0.78-1.12 s at 213.3 MiB. All fifteen H.264/AAC outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, repeatable bytes, genuine QuickTime `qt  ` branding, compatible language-tag preservation, and full decoded-video plus exact AAC-stream SHA-256 validation. Direct stream copy avoids decode/re-encode work, while fragmented output bounds duration-sized muxer indexes. MPEG-TS uses its required `aac_adtstoasc` filter. A bounded 2 MiB/4,096-packet opening inspection repaired only missing or non-monotonic decode timestamps, preserving presentation timestamps and exact HEVC decoded identity. The first focused run caught decreasing HEVC DTS; the corrected gate passed all 13 exact-success, codec-rejection, forced-write, and partial-output-cleanup cases before the 533/533 regression. The stress generator kept every source under `fixtures/stress`, and category cleanup removed all large generated fixtures and converted copies in `finally` while retaining compact reports as the durable record.
 - **Fast bounded fragmented 3GP remuxing:** MKV passed 3/3 Chrome runs on 147,131,069 bytes in 0.76-1.10 s at 182.5 MiB worst incremental private memory; MP4 passed on 147,136,621 bytes in 0.75-1.10 s at 205.3 MiB; MOV passed on 147,136,645 bytes in 0.78-1.10 s at 205.5 MiB; MPEG-TS passed on 150,441,548 bytes in 1.20-1.55 s at 218.7 MiB; and FLV passed on 146,903,539 bytes in 0.84-1.13 s at 204.3 MiB. All fifteen H.264/AAC outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, repeatable bytes, genuine `3gp6` branding, compatible language-tag preservation, and full decoded-video plus exact AAC-access-unit SHA-256 validation. Fragmented output bounds duration-sized muxer indexes and direct stream copy avoids decode/re-encode work. Native feasibility identified the MPEG-TS-only `aac_adtstoasc` requirement; focused browser coverage then passed 12/12 exact-success, codec-rejection, forced-write, and partial-output-cleanup cases. The first focused attempt also caught that FFmpeg names the runtime muxer `3gp` but its configure component `tgp`; the unusable repository-local staging build was deleted, the corrected Wasm was hash-verified before publication, and the final 520/520 regression passed. The stress generator kept every source under `fixtures/stress`, and category cleanup removed all large generated fixtures and converted copies in `finally` while retaining compact reports as the durable record.
@@ -239,6 +240,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | sevenzip-to-tar-gz | 268,435,574 | 3 | 268,517,545 | 30.24 s–30.54 s | 222.7 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
 | sevenzip-to-tar-xz | 268,435,574 | 3 | 268,449,796 | 50.58 s–50.83 s | 234.9 MiB | 104.0 MiB | read 262,144 B / write 65,536 B | passed |
 | sevenzip-to-zip | 268,435,574 | 3 | 268,517,517 | 29.88 s–31.08 s | 218.3 MiB | 56.0 MiB | read 262,144 B / write 16,384 B | passed |
+| srt-to-ass | 67,327,792 | 3 | 83,203,467 | 4.00 s–4.09 s | 177.0 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | svg-to-png | 327,564 | 3 | 196,588 | 0.44 s–0.65 s | 202.2 MiB | not exposed | read 196,608 B / write 196,588 B | passed |
@@ -269,6 +271,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ttml-to-srt | 82,349,061 | 3 | 71,607,792 | 4.77 s–4.90 s | 194.9 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ttml-to-vtt | 82,349,061 | 3 | 63,088,906 | 4.63 s–4.73 s | 198.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | txt-to-html | 67,130,000 | 3 | 94,530,182 | 0.79 s–0.88 s | 128.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| vtt-to-ass | 73,788,904 | 3 | 83,203,467 | 3.84 s–4.34 s | 187.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-srt | 73,788,904 | 3 | 71,607,792 | 2.79 s–2.84 s | 200.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-ttml | 73,788,904 | 3 | 82,349,061 | 3.48 s–3.58 s | 204.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | wav-to-alac | 153,600,106 | 3 | 140,941,506 | 6.14 s–6.58 s | 200.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -541,6 +544,7 @@ Stream ma |
 | sevenzip-to-tar-gz | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | sevenzip-to-tar-xz | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
 | sevenzip-to-zip | archive | libarchive7z-wasm | stream | 268,435,574 B | 3-run Chrome report |
+| srt-to-ass | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | svg-to-png | image | svg-browser | re-encode | 327,564 B | 3-run Chrome report |
@@ -571,6 +575,7 @@ Stream ma |
 | ttml-to-srt | subtitle | subtitle-stream | stream | 82,349,061 B | 3-run Chrome report |
 | ttml-to-vtt | subtitle | subtitle-stream | stream | 82,349,061 B | 3-run Chrome report |
 | txt-to-html | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
+| vtt-to-ass | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-srt | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-ttml | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | wav-to-alac | audio | ffmpeg-audio | re-encode | 153,600,106 B | 3-run Chrome report |

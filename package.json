@@ -135,6 +135,7 @@
     "profile:records": "node scripts/profile-category.mjs records",
     "profile:records-direct-json": "node scripts/profile-category.mjs records-csv-json && node scripts/profile-category.mjs records-tsv-json && node scripts/profile-category.mjs records-json-delimited",
     "profile:subtitles": "node scripts/profile-category.mjs subtitles",
+    "profile:subtitle-ass-output": "node scripts/profile-category.mjs subtitle-ass-output",
     "profile:documents": "node scripts/profile-category.mjs documents",
     "profile:ebooks": "node scripts/profile-category.mjs ebooks",
     "profile:spreadsheets": "node scripts/profile-category.mjs spreadsheets",

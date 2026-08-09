@@ -739,6 +739,41 @@ test("converts WebVTT to TTML and discloses removed cue settings", async () => {
   );
 });
 
+test("streams SRT to structurally valid ASS with basic styling", async () => {
+  await selectFixture("fixtures/subtitles/sample.srt", "srt-to-ass");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output.startsWith("[Script Info]\r\n")).toBe(true);
+  expect(output).toContain("[V4+ Styles]\r\n");
+  expect(output).toContain(
+    "Dialogue: 0,0:00:01.25,0:00:03.90,Default,,0,0,0,,{\\i1}Hello{\\i0} from Within.\r\n",
+  );
+  expect(output).toContain(
+    "Dialogue: 0,0:00:04.10,0:00:07.00,Default,,0,0,0,,Second cue\\Nwith two lines.\r\n",
+  );
+  expect(state.warnings.join(" ")).toContain("centisecond timing");
+  const dialogueLines = output
+    .split("\r\n")
+    .filter((line) => line.startsWith("Dialogue: "));
+  expect(dialogueLines).toHaveLength(2);
+  for (const line of dialogueLines) {
+    expect(
+      line.slice("Dialogue: ".length).split(",").length,
+    ).toBeGreaterThanOrEqual(10);
+  }
+});
+
+test("streams WebVTT voice labels, timing, and multiline styling to ASS", async () => {
+  await selectFixture("fixtures/subtitles/voice-sample.vtt", "vtt-to-ass");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toContain(
+    "Dialogue: 0,0:00:01.01,0:00:02.01,Default,Narrator,0,0,0,,{\\b1}Hello{\\b0}\\Nsecond line\r\n",
+  );
+  expect(state.warnings.join(" ")).toContain("positioning");
+  expect(state.warnings.join(" ")).toContain("cue identifiers");
+});
+
 test("converts bounded TTML to SRT with timing and line breaks", async () => {
   await selectFixture("fixtures/subtitles/sample.ttml", "ttml-to-srt");
   const state = await convert();
@@ -1190,6 +1225,42 @@ test("rejects invalid subtitle timing and deletes partial output", async () => {
   const state = await currentState();
   expect(state.error).toContain("later than");
   expect(state.opfsName).toBeNull();
+});
+
+test("ASS output rejects invalid subtitle timing and deletes partial output", async () => {
+  await selectFixture(
+    "fixtures/subtitles/invalid-time.srt",
+    "srt-to-ass",
+  );
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error).toContain("later than");
+  expect(state.opfsName).toBeNull();
+  expect(await appOwnedOpfsNames("within-test-srt-to-ass")).toEqual([]);
+});
+
+test("ASS output propagates a bounded write failure and cleans up", async () => {
+  await openFaultMode("write");
+  await selectFixture("fixtures/subtitles/sample.srt", "srt-to-ass");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state.opfsName).toBeNull();
+  await expect
+    .poll(
+      async () =>
+        (await appOwnedOpfsNames("within-test-srt-to-ass")).length,
+      { timeout: 15_000 },
+    )
+    .toBe(0);
 });
 
 test("streams ASS dialogue to SRT with explicit style loss", async () => {

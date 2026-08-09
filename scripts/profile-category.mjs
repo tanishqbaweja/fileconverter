@@ -422,6 +422,8 @@ const categories = {
     profiles: [
       ["srt-to-vtt", "subtitles-64m.srt"],
       ["vtt-to-srt", "subtitles-64m.vtt"],
+      ["srt-to-ass", "subtitles-64m.srt"],
+      ["vtt-to-ass", "subtitles-64m.vtt"],
       ["ass-to-srt", "subtitles-64m.ass"],
       ["ass-to-vtt", "subtitles-64m.ass"],
       ["srt-to-ttml", "subtitles-64m.srt"],
@@ -535,6 +537,13 @@ const categories = {
         "zip-to-tar-bz2",
         "fixtures/stress/archives/archive-256m.zip",
       ],
+    ],
+  },
+  "subtitle-ass-output": {
+    generator: "scripts/generate-subtitle-stress-fixtures.mjs",
+    profiles: [
+      ["srt-to-ass", "fixtures/stress/subtitles/subtitles-64m.srt"],
+      ["vtt-to-ass", "fixtures/stress/subtitles/subtitles-64m.vtt"],
     ],
   },
   xz: {

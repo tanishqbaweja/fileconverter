@@ -280,6 +280,22 @@ test("container FLV copy routes are public only at their measured evidence limit
   }
 });
 
+test("ASS output routes are public only at their measured evidence limits", () => {
+  for (const [id, maxTestedBytes] of [
+    ["srt-to-ass", 67_327_792],
+    ["vtt-to-ass", 73_788_904],
+  ]) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
+
 test("every FFmpeg profile is declared by the reproducible Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/remux/build-manifest.json", "utf8"),

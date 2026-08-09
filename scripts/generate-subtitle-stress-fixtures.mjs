@@ -28,6 +28,8 @@ const assHash = createHash("sha256");
 const ttmlHash = createHash("sha256");
 const srtToVttHash = createHash("sha256");
 const vttToSrtHash = createHash("sha256");
+const srtToAssHash = createHash("sha256");
+const vttToAssHash = createHash("sha256");
 const assToSrtHash = createHash("sha256");
 const assToVttHash = createHash("sha256");
 const srtToTtmlHash = createHash("sha256");
@@ -40,6 +42,8 @@ let assBytes = 0;
 let ttmlBytes = 0;
 let srtToVttBytes = 0;
 let vttToSrtBytes = 0;
+let srtToAssBytes = 0;
+let vttToAssBytes = 0;
 let assToSrtBytes = 0;
 let assToVttBytes = 0;
 let srtToTtmlBytes = 0;
@@ -75,6 +79,17 @@ const assHeader =
   "ScriptType: v4.00+\n\n" +
   "[Events]\n" +
   "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n";
+const assOutputHeader =
+  "[Script Info]\r\n" +
+  "Title: Converted locally by Within\r\n" +
+  "ScriptType: v4.00+\r\n" +
+  "WrapStyle: 0\r\n" +
+  "ScaledBorderAndShadow: yes\r\n\r\n" +
+  "[V4+ Styles]\r\n" +
+  "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\r\n" +
+  "Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,2,0,2,10,10,10,1\r\n\r\n" +
+  "[Events]\r\n" +
+  "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\r\n";
 const ttmlHeader =
   '<?xml version="1.0" encoding="UTF-8"?>\r\n' +
   '<tt xmlns="http://www.w3.org/ns/ttml" xmlns:tts="http://www.w3.org/ns/ttml#styling">\r\n' +
@@ -93,6 +108,10 @@ assToVttHash.update(vttOutputHeader);
 assToVttBytes += Buffer.byteLength(vttOutputHeader);
 ttmlToVttHash.update(vttOutputHeader);
 ttmlToVttBytes += Buffer.byteLength(vttOutputHeader);
+srtToAssHash.update(assOutputHeader);
+srtToAssBytes += Buffer.byteLength(assOutputHeader);
+vttToAssHash.update(assOutputHeader);
+vttToAssBytes += Buffer.byteLength(assOutputHeader);
 
 let cue = 1;
 while (
@@ -106,6 +125,8 @@ while (
   const assBatch = [];
   const srtToVttBatch = [];
   const vttToSrtBatch = [];
+  const srtToAssBatch = [];
+  const vttToAssBatch = [];
   const assToSrtBatch = [];
   const assToVttBatch = [];
   const ttmlBatch = [];
@@ -124,6 +145,14 @@ while (
     srtToVttBatch.push(`${vttTiming}\r\n${payload}\r\n\r\n`);
     vttToSrtBatch.push(
       `${cue}\r\n${vttTiming.replace(/\./g, ",")}\r\n${payload}\r\n\r\n`,
+    );
+    const assStart = assCueTiming.split(" --> ")[0];
+    const assEnd = assCueTiming.split(" --> ")[1];
+    srtToAssBatch.push(
+      `Dialogue: 0,${assStart},${assEnd},Default,,0,0,0,,${payload}\r\n`,
+    );
+    vttToAssBatch.push(
+      `Dialogue: 0,${assStart},${assEnd},Default,,0,0,0,,${payload}\r\n`,
     );
     assToSrtBatch.push(
       `${cue}\r\n${vttTiming.replace(/\./g, ",")}\r\n[Narrator] ${payload}\r\n\r\n`,
@@ -145,6 +174,8 @@ while (
   const ass = assBatch.join("");
   const srtToVtt = srtToVttBatch.join("");
   const vttToSrt = vttToSrtBatch.join("");
+  const srtToAss = srtToAssBatch.join("");
+  const vttToAss = vttToAssBatch.join("");
   const assToSrt = assToSrtBatch.join("");
   const assToVtt = assToVttBatch.join("");
   const ttml = ttmlBatch.join("");
@@ -158,6 +189,10 @@ while (
   srtToVttBytes += Buffer.byteLength(srtToVtt);
   vttToSrtHash.update(vttToSrt);
   vttToSrtBytes += Buffer.byteLength(vttToSrt);
+  srtToAssHash.update(srtToAss);
+  srtToAssBytes += Buffer.byteLength(srtToAss);
+  vttToAssHash.update(vttToAss);
+  vttToAssBytes += Buffer.byteLength(vttToAss);
   assToSrtHash.update(assToSrt);
   assToSrtBytes += Buffer.byteLength(assToSrt);
   assToVttHash.update(assToVtt);
@@ -200,6 +235,10 @@ await writeFile(
         "srt-to-vtt": {
           validationBytes: srtToVttBytes,
           validationSha256: srtToVttHash.digest("hex"),
+        },
+        "srt-to-ass": {
+          validationBytes: srtToAssBytes,
+          validationSha256: srtToAssHash.digest("hex"),
         },
         "srt-to-ttml": {
           validationBytes: srtToTtmlBytes,
@@ -248,6 +287,10 @@ await writeFile(
         "vtt-to-srt": {
           validationBytes: vttToSrtBytes,
           validationSha256: vttToSrtHash.digest("hex"),
+        },
+        "vtt-to-ass": {
+          validationBytes: vttToAssBytes,
+          validationSha256: vttToAssHash.digest("hex"),
         },
         "vtt-to-ttml": {
           validationBytes: vttToTtmlBytes,

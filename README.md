@@ -13,14 +13,14 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 242
+complete-Chromium memory profile have passed. The current registry publishes 244
 routes:
 
 | Category | Verified routes | Largest tested source |
 | --- | --- | ---: |
 | Compression | bytes -> GZIP/BZIP2/XZ; GZIP/BZIP2/XZ -> bytes | 270,593,081 B |
 | Archives | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
-| Subtitles | SRT <-> WebVTT; ASS -> SRT/WebVTT; SRT/WebVTT -> TTML; TTML -> SRT/WebVTT | 101,393,068 B |
+| Subtitles | SRT <-> WebVTT; SRT/WebVTT -> ASS/TTML; ASS/TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | DOCX/ODT -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
@@ -500,7 +500,11 @@ transposed-orientation, and other unsupported layouts fail explicitly.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
-and emit real destination syntax. TTML rejects DTDs and custom entities, accepts
+and emit real destination syntax. ASS output is written directly with a
+deterministic default style, nearest-centisecond timing, preserved multiline
+text, voice labels, and basic italic/bold/underline markup; excluded WebVTT
+metadata, cue identifiers, positioning, regions, and CSS are disclosed. TTML
+rejects DTDs and custom entities, accepts
 clock/second/millisecond time expressions, and maps only basic italic, bold,
 underline, and line-break styling. CSV/TSV quoting is parsed across chunk
 boundaries; NDJSON and JSON-array routes preserve nested values but normalize

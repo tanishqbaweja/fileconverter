@@ -1499,6 +1499,243 @@ async function runTextSubtitleToTtml(
   await writer.flush();
 }
 
+const ASS_OUTPUT_HEADER =
+  "[Script Info]\r\n" +
+  "Title: Converted locally by Within\r\n" +
+  "ScriptType: v4.00+\r\n" +
+  "WrapStyle: 0\r\n" +
+  "ScaledBorderAndShadow: yes\r\n\r\n" +
+  "[V4+ Styles]\r\n" +
+  "Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding\r\n" +
+  "Style: Default,Arial,20,&H00FFFFFF,&H000000FF,&H00000000,&H64000000,0,0,0,0,100,100,0,0,1,2,0,2,10,10,10,1\r\n\r\n" +
+  "[Events]\r\n" +
+  "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\r\n";
+const ASS_OUTPUT_BATCH_CHARS = 64 * 1024;
+
+async function runTextSubtitleToAss(
+  file: File,
+  srtInput: boolean,
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  const writer = createBoundedTextWriter(
+    destination,
+    jobId,
+    "Writing ASS cues",
+    metrics,
+    startedAt,
+  );
+  await writer.write(ASS_OUTPUT_HEADER);
+  post({
+    type: "warning",
+    jobId,
+    message: srtInput
+      ? "ASS uses centisecond timing and a generated default style; cue timing, line breaks, and basic italic, bold, and underline markup are preserved."
+      : "ASS uses centisecond timing and a generated default style; WebVTT header metadata, cue identifiers, positioning, regions, CSS classes, and unsupported markup are not represented, while voice labels and basic styling are preserved.",
+  });
+
+  let cueCount = 0;
+  let vttHeaderSeen = srtInput;
+  let warnedCueSettings = false;
+  let outputBatch = "";
+  const convertBlock = (rawBlock: string): string | null => {
+    if (!rawBlock.trim()) return null;
+    const lines = rawBlock
+      .replace(/\r?\n$/, "")
+      .split("\n")
+      .map((line) => line.replace(/\r$/, ""));
+    for (const line of lines) {
+      if (line.length > MAX_TEXT_RECORD) {
+        throw new Error("A text line exceeds the 1 MiB safety limit.");
+      }
+    }
+    const chars = lines.reduce((sum, line) => sum + line.length, 0);
+    if (chars > MAX_TEXT_RECORD) {
+      throw new Error("A subtitle cue exceeds the 1 MiB safety limit.");
+    }
+    if (!vttHeaderSeen) {
+      if (!/^WEBVTT(?:[ \t].*)?$/.test(lines[0]?.trim() ?? "")) {
+        throw new Error("WebVTT input is missing its WEBVTT header.");
+      }
+      vttHeaderSeen = true;
+      return null;
+    }
+    if (srtInput && /^\d+$/.test(lines[0] ?? "")) lines.shift();
+    const timingIndex = lines.findIndex((line) => line.includes("-->"));
+    if (timingIndex < 0) {
+      if (!srtInput) return null;
+      throw new Error("Invalid SRT cue: timing line is missing.");
+    }
+    const timing = normalizeCueTiming(lines[timingIndex], srtInput);
+    if (timing.hadSettings && !warnedCueSettings) {
+      warnedCueSettings = true;
+      post({
+        type: "warning",
+        jobId,
+        message:
+          "WebVTT cue positioning and region settings are not represented in this ASS profile.",
+      });
+    }
+    const payload = subtitleMarkupToAss(
+      lines.slice(timingIndex + 1).join("\n"),
+    );
+    const startCentiseconds = Math.round(timing.startMilliseconds / 10);
+    const endCentiseconds = Math.max(
+      startCentiseconds + 1,
+      Math.round(timing.endMilliseconds / 10),
+    );
+    cueCount += 1;
+    return `Dialogue: 0,${formatAssCentiseconds(startCentiseconds)},${formatAssCentiseconds(endCentiseconds)},Default,${payload.speaker},0,0,0,,${payload.text}\r\n`;
+  };
+
+  const reader = createBoundedFileInput(file, metrics).getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  const separator = /\r?\n[ \t]*\r?\n/g;
+  let carry = "";
+  let firstChunk = true;
+  const queueDialogue = (dialogue: string): Promise<void> | null => {
+    if (dialogue.length >= ASS_OUTPUT_BATCH_CHARS) {
+      if (outputBatch) {
+        const buffered = outputBatch;
+        outputBatch = "";
+        return writer.write(buffered).then(() => writer.write(dialogue));
+      }
+      return writer.write(dialogue);
+    } else if (
+      outputBatch.length + dialogue.length >
+      ASS_OUTPUT_BATCH_CHARS
+    ) {
+      const buffered = outputBatch;
+      outputBatch = dialogue;
+      return writer.write(buffered);
+    } else {
+      outputBatch += dialogue;
+      return null;
+    }
+  };
+  const processBlocks = async (final: boolean): Promise<void> => {
+    separator.lastIndex = 0;
+    let blockStart = 0;
+    for (;;) {
+      const match = separator.exec(carry);
+      if (!match) break;
+      const dialogue = convertBlock(carry.slice(blockStart, match.index));
+      const pending = dialogue ? queueDialogue(dialogue) : null;
+      if (pending) await pending;
+      blockStart = match.index + match[0].length;
+    }
+    carry = carry.slice(blockStart);
+    if (carry.length > MAX_TEXT_RECORD + MAX_WRITE_CHUNK) {
+      throw new Error("A subtitle cue exceeds the 1 MiB safety limit.");
+    }
+    if (final && carry.length) {
+      const dialogue = convertBlock(carry);
+      carry = "";
+      const pending = dialogue ? queueDialogue(dialogue) : null;
+      if (pending) await pending;
+    }
+  };
+
+  for (;;) {
+    assertActive();
+    const { done, value } = await reader.read();
+    if (done) break;
+    let decoded = decoder.decode(value, { stream: true });
+    if (firstChunk) {
+      decoded = decoded.replace(/^\uFEFF/, "");
+      firstChunk = false;
+    }
+    carry += decoded;
+    await processBlocks(false);
+  }
+  carry += decoder.decode();
+  await processBlocks(true);
+  if (!cueCount) {
+    throw new Error(`No valid ${srtInput ? "SRT" : "WebVTT"} cues were found.`);
+  }
+  if (outputBatch) await writer.write(outputBatch);
+  await writer.flush();
+}
+
+function formatAssCentiseconds(totalCentiseconds: number): string {
+  const hours = Math.floor(totalCentiseconds / 360_000);
+  const minutes = Math.floor(totalCentiseconds / 6_000) % 60;
+  const seconds = Math.floor(totalCentiseconds / 100) % 60;
+  const centiseconds = totalCentiseconds % 100;
+  return `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}.${String(centiseconds).padStart(2, "0")}`;
+}
+
+function subtitleMarkupToAss(value: string): {
+  text: string;
+  speaker: string;
+} {
+  let source = value;
+  let speaker = "";
+  if (!source.includes("<")) {
+    return {
+      text: escapeAssText(decodeSubtitleEntities(source)),
+      speaker,
+    };
+  }
+  const openingVoice = source.match(/^\s*<v\s+([^>]+)>/i);
+  if (openingVoice) {
+    speaker = sanitizeAssField(openingVoice[1]);
+    source = source.slice(openingVoice[0].length).replace(/<\/v\s*>\s*$/i, "");
+  }
+
+  const tagPattern = /<[^>]*>/g;
+  const closers: Array<{ source: string; output: string }> = [];
+  let output = "";
+  let cursor = 0;
+  for (const match of source.matchAll(tagPattern)) {
+    const index = match.index ?? 0;
+    output += escapeAssText(
+      decodeSubtitleEntities(source.slice(cursor, index)),
+    );
+    const tag = match[0].trim();
+    const simple = tag.toLowerCase();
+    if (simple === "<i>" || simple === "<b>" || simple === "<u>") {
+      const style = simple[1];
+      output += `{\\${style}1}`;
+      closers.push({ source: style, output: `{\\${style}0}` });
+    } else if (/^<\/[ibu]\s*>$/i.test(tag)) {
+      const style = tag[2].toLowerCase();
+      if (closers.at(-1)?.source === style) {
+        output += closers.pop()?.output ?? "";
+      }
+    } else if (/^<br\s*\/?>$/i.test(tag)) {
+      output += "\\N";
+    } else if (!speaker) {
+      const voice = tag.match(/^<v\s+([^>]+)>$/i);
+      if (voice) speaker = sanitizeAssField(voice[1]);
+    }
+    cursor = index + match[0].length;
+  }
+  output += escapeAssText(decodeSubtitleEntities(source.slice(cursor)));
+  while (closers.length) output += closers.pop()?.output ?? "";
+  return { text: output, speaker };
+}
+
+function escapeAssText(value: string): string {
+  if (!/[\\{}\r\n]/.test(value)) return value;
+  return value
+    .replace(/\\/g, "\\\\")
+    .replace(/{/g, "\\{")
+    .replace(/}/g, "\\}")
+    .replace(/\r?\n/g, "\\N");
+}
+
+function sanitizeAssField(value: string): string {
+  return decodeSubtitleEntities(value)
+    .replace(/<[^>]*>/g, "")
+    .replace(/[\r\n]+/g, " ")
+    .replace(/,/g, " ")
+    .trim()
+    .slice(0, 256);
+}
+
 function subtitleMarkupToTtml(value: string): string {
   const tagPattern = /<[^>]*>/g;
   const closers: Array<{ source: string; output: string }> = [];
@@ -1845,6 +2082,7 @@ function xmlAttributeByLocalName(
 }
 
 function decodeSubtitleEntities(value: string): string {
+  if (!value.includes("&")) return value;
   return value.replace(
     /&(?:amp|lt|gt|quot|apos|#\d+|#x[0-9a-f]+);/gi,
     (entity) => decodeXmlEntities(entity),
@@ -3215,6 +3453,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       await runTextSubtitleToTtml(
         file,
         profileId === "srt-to-ttml",
+        destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else if (profileId === "srt-to-ass" || profileId === "vtt-to-ass") {
+      await runTextSubtitleToAss(
+        file,
+        profileId === "srt-to-ass",
         destination.writable,
         jobId,
         metrics,

@@ -26,6 +26,8 @@ const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
   profileId === "vtt-to-srt" ||
+  profileId === "srt-to-ass" ||
+  profileId === "vtt-to-ass" ||
   profileId === "ass-to-srt" ||
   profileId === "ass-to-vtt" ||
   profileId === "srt-to-ttml" ||
