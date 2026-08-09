@@ -181,6 +181,12 @@ if (
     "mov-to-m4v",
     "avi-to-m4v",
     "mkv-to-webm-av1",
+    "mkv-to-mp3",
+    "mp4-to-mp3",
+    "mov-to-mp3",
+    "avi-to-mp3",
+    "mpeg-ts-to-mp3",
+    "flv-to-mp3",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -283,6 +289,12 @@ const isMediaProfile =
   profileId === "mov-to-m4v" ||
   profileId === "avi-to-m4v" ||
   profileId === "mkv-to-webm-av1" ||
+  profileId === "mkv-to-mp3" ||
+  profileId === "mp4-to-mp3" ||
+  profileId === "mov-to-mp3" ||
+  profileId === "avi-to-mp3" ||
+  profileId === "mpeg-ts-to-mp3" ||
+  profileId === "flv-to-mp3" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -953,7 +965,15 @@ async function validateMediaOutput(
   finalState,
   route,
 ) {
+  const mp3Output =
+    route === "mkv-to-mp3" ||
+    route === "mp4-to-mp3" ||
+    route === "mov-to-mp3" ||
+    route === "avi-to-mp3" ||
+    route === "mpeg-ts-to-mp3" ||
+    route === "flv-to-mp3";
   const audioOnly =
+    mp3Output ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "3gp-to-m4a" ||
@@ -1270,6 +1290,42 @@ async function validateMediaOutput(
       sha256: packetHashes[0],
     };
   }
+  if (mp3Output) {
+    const { stdout: packetHash } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-i",
+        localPath,
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      {
+        cwd: projectRoot,
+        windowsHide: true,
+        maxBuffer: 8 * 1024 * 1024,
+      },
+    );
+    const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
+    if (!sha256 || sha256 !== source.mp3PacketSha256) {
+      throw new Error(
+        "Browser MP3 output packets do not exactly match the source MP3 payload.",
+      );
+    }
+    independentAudioValidation = {
+      method: "mp3-packet-sha256",
+      passed: true,
+      sha256,
+    };
+  }
   if (av1WebmCopy) {
     const { stdout: decodedStreamHashes } = await execFileAsync(
       "ffmpeg",
@@ -1358,6 +1414,8 @@ async function validateMediaOutput(
                 ? "alac"
                 : wmaOutput
                   ? "wmav2"
+                : mp3Output
+                  ? "mp3"
                 : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
@@ -1571,6 +1629,7 @@ async function validateMediaOutput(
     mpeg2TransportOutput ||
     m4vMp4Output ||
     av1WebmCopy ||
+    mp3Output ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||

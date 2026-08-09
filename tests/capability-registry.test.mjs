@@ -87,6 +87,28 @@ test("AV1 WebM stream copy is public after its measured evidence passes", () => 
   );
 });
 
+test("container MP3 extraction is public after its measured evidence passes", () => {
+  const expected = new Map([
+    ["mkv", 181_340_062],
+    ["mp4", 181_344_111],
+    ["mov", 181_344_078],
+    ["avi", 182_803_272],
+    ["mpeg-ts", 185_645_300],
+    ["flv", 181_377_794],
+  ]);
+  for (const [input, maxTestedBytes] of expected) {
+    const id = `${input}-to-mp3`;
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      publicProfilesFor(input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
+
 test("every profile references registered formats", () => {
   const ids = new Set(formats.map((format) => format.id));
   for (const profile of conversionProfiles) {
@@ -122,6 +144,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "m4v-extract",
         "m4v-wrap",
         "av1-webm-copy",
+        "mp3-extract",
       ],
     },
     {
@@ -178,6 +201,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("h264"));
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
   assert.ok(manifest.enabledMuxers.includes("m4v"));
+  assert.ok(manifest.enabledMuxers.includes("mp3"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {

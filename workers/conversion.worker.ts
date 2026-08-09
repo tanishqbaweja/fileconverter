@@ -2658,6 +2658,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "mov-to-m4v" ||
         profileId === "avi-to-m4v" ||
         profileId === "mkv-to-webm-av1" ||
+        profileId === "mkv-to-mp3" ||
+        profileId === "mp4-to-mp3" ||
+        profileId === "mov-to-mp3" ||
+        profileId === "avi-to-mp3" ||
+        profileId === "mpeg-ts-to-mp3" ||
+        profileId === "flv-to-mp3" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
         profileId === "3gp-to-m4a" ||
@@ -3245,6 +3251,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "mov-to-m4v" ||
       profileId === "avi-to-m4v" ||
       profileId === "mkv-to-webm-av1" ||
+      profileId === "mkv-to-mp3" ||
+      profileId === "mp4-to-mp3" ||
+      profileId === "mov-to-mp3" ||
+      profileId === "avi-to-mp3" ||
+      profileId === "mpeg-ts-to-mp3" ||
+      profileId === "flv-to-mp3" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
       profileId === "3gp-to-m4a" ||
@@ -3317,7 +3329,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         file,
         writable: destination.writable,
         remuxProfile:
-          profileId === "mkv-to-webm-av1"
+          profileId === "mkv-to-mp3" ||
+          profileId === "mp4-to-mp3" ||
+          profileId === "mov-to-mp3" ||
+          profileId === "avi-to-mp3" ||
+          profileId === "mpeg-ts-to-mp3" ||
+          profileId === "flv-to-mp3"
+            ? 18
+          : profileId === "mkv-to-webm-av1"
             ? 17
           : profileId === "mkv-to-m4v" ||
             profileId === "mp4-to-m4v" ||

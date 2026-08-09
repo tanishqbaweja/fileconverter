@@ -423,6 +423,45 @@ function av1WebmProfile(): ConversionProfile {
   };
 }
 
+const mp3ExtractionEvidence = {
+  mkv: 181_340_062,
+  mp4: 181_344_111,
+  mov: 181_344_078,
+  avi: 182_803_272,
+  "mpeg-ts": 185_645_300,
+  flv: 181_377_794,
+} as const satisfies Record<string, number | null>;
+
+function containerMp3Profile(
+  input: keyof typeof mp3ExtractionEvidence,
+): ConversionProfile {
+  const evidence = mp3ExtractionEvidence[input];
+  return {
+    id: `${input}-to-mp3`,
+    input,
+    output: "mp3",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The first compatible MP3 audio stream is copied without decoding or re-encoding; a source without MP3 audio is rejected rather than transcoded implicitly.",
+      "Video, subtitles, attachments, data, chapters, and additional or incompatible audio streams are explicitly excluded with warnings.",
+      "Compatible text metadata is mapped to ID3 where the MP3 muxer can represent it; container timing, stream language, artwork, and container-specific fields may not be retained.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -3826,6 +3865,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerM4vProfile("mov"),
   containerM4vProfile("avi"),
   av1WebmProfile(),
+  containerMp3Profile("mkv"),
+  containerMp3Profile("mp4"),
+  containerMp3Profile("mov"),
+  containerMp3Profile("avi"),
+  containerMp3Profile("mpeg-ts"),
+  containerMp3Profile("flv"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

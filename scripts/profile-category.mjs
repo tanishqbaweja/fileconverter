@@ -254,6 +254,15 @@ const categories = {
       ["mkv-to-webm-av1", "fixtures/stress/media/av1-opus-128m.mkv"],
     ],
   },
+  "container-mp3": {
+    generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
+    profiles: ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"].map(
+      (input) => [
+        `${input}-to-mp3`,
+        `fixtures/stress/media/h264-mp3-128m.${input === "mpeg-ts" ? "mpegts" : input}`,
+      ],
+    ),
+  },
   "h264-elementary": {
     generator: "scripts/generate-h264-elementary-stress-fixtures.mjs",
     profiles: [

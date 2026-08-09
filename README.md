@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 193
+complete-Chromium memory profile have passed. The current registry publishes 199
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -188,7 +188,7 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 The current media core is deliberately small. It enables only the documented
 AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, raw MPEG-4 Part 2 M4V,
 Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
-MPEG-2 video, raw MPEG-4 Part 2 M4V, MPEG-TS,
+MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
 fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
@@ -313,6 +313,19 @@ seeking may require a player scan. In three Chrome runs, a 222,942,211-byte
 213.7 MiB worst incremental process-tree private memory. All 1,440 decoded video
 frames and decoded Opus samples matched the source SHA-256 exactly, and cleanup
 deleted the source and all three outputs.
+
+Certified MP3 audio in MKV, MP4, MOV, AVI, MPEG-TS, or FLV also takes a direct
+packet-copy path: only the first compatible MP3 stream is read, while video,
+additional audio, subtitles, attachments, data, and chapters are explicitly
+excluded. Header-complete MKV, MP4, MOV, and AVI inputs skip decoder-oriented
+stream analysis; MPEG-TS and FLV use a bounded 2 MiB probe because those
+containers do not fully declare the audio stream in their headers. Three Chrome
+runs per route on 181,340,062–185,645,300-byte sources completed in 1.20–2.14
+seconds with 32 MiB Wasm and 214.9–243.9 MiB worst incremental process-tree
+private memory. All eighteen outputs retained the same exact MP3 packet SHA-256,
+fully decoded with native FFmpeg, and were deleted with the six large sources.
+Standalone MP3 cannot represent container timing/trim, language, artwork, or
+container-only metadata; compatible text fields are mapped to ID3 where possible.
 
 Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
 be stream-copied into fragmented MP4 or genuinely decoded and encoded as

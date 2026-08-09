@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -117,6 +117,8 @@ export async function runMediaRemux({
         ? "Wrapping MPEG-4 video"
       : remuxProfile === 17
         ? "Copying AV1 WebM"
+      : remuxProfile === 18
+        ? "Extracting MP3 audio"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
