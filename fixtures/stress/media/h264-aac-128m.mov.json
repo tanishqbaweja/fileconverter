@@ -3,8 +3,8 @@
   "source": "test.mkv",
   "sourceSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
   "durationSeconds": 65,
-  "bytes": 147136648,
-  "sha256": "5651f8a55060c6fd6ccbd69e121af7cc5ba2a854398f14178e657e58ee8d2dc4",
+  "bytes": 147136646,
+  "sha256": "e4e67e2eee1a58f19e24c694b798aad6a0c4c0c9a51914204a1630607e0c314d",
   "probe": {
     "streams": [
       {
@@ -141,7 +141,7 @@
       "format_long_name": "QuickTime / MOV",
       "start_time": "0.000000",
       "duration": "65.004000",
-      "size": "147136648",
+      "size": "147136646",
       "bit_rate": "18108011",
       "probe_score": 100,
       "tags": {

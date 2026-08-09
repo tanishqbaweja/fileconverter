@@ -1,8 +1,8 @@
 {
   "generatedBy": "scripts/generate-container-mpegts-stress-fixtures.mjs",
   "source": "fixtures/stress/media/h264-aac-128m.mp4",
-  "bytes": 147131073,
-  "sha256": "933bde44fb60bb228dc708b9a7cde82977396d002883adfaae0557523797788b",
+  "bytes": 147131070,
+  "sha256": "53795241222dad6bd4b1e4e8713bb24b33d21a971848b020d4235505d6b5f1f2",
   "probe": {
     "streams": [
       {
@@ -127,8 +127,8 @@
       "format_long_name": "Matroska / WebM",
       "start_time": "0.000000",
       "duration": "65.109000",
-      "size": "147131073",
-      "bit_rate": "18078124",
+      "size": "147131070",
+      "bit_rate": "18078123",
       "probe_score": 100,
       "tags": {
         "title": "Within deterministic MP4 WebM stress source",

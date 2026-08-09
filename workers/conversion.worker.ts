@@ -2673,6 +2673,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "3gp-to-mov" ||
         profileId === "mpeg-ts-to-mov" ||
         profileId === "flv-to-mov" ||
+        profileId === "mkv-to-flv" ||
+        profileId === "mp4-to-flv" ||
+        profileId === "mov-to-flv" ||
+        profileId === "3gp-to-flv" ||
+        profileId === "mpeg-ts-to-flv" ||
         profileId === "m2v-to-mpeg-ts" ||
         profileId === "mkv-to-m2v" ||
         profileId === "mp4-to-m2v" ||
@@ -3304,6 +3309,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-mov" ||
       profileId === "mpeg-ts-to-mov" ||
       profileId === "flv-to-mov" ||
+      profileId === "mkv-to-flv" ||
+      profileId === "mp4-to-flv" ||
+      profileId === "mov-to-flv" ||
+      profileId === "3gp-to-flv" ||
+      profileId === "mpeg-ts-to-flv" ||
       profileId === "m2v-to-mpeg-ts" ||
       profileId === "mkv-to-m2v" ||
       profileId === "mp4-to-m2v" ||
@@ -3482,6 +3492,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "mpeg-ts-to-mov" ||
             profileId === "flv-to-mov"
             ? 26
+          : profileId === "mkv-to-flv" ||
+            profileId === "mp4-to-flv" ||
+            profileId === "mov-to-flv" ||
+            profileId === "3gp-to-flv" ||
+            profileId === "mpeg-ts-to-flv"
+            ? 27
           : profileId === "mkv-to-wav" ||
             profileId === "mov-to-wav" ||
             profileId === "3gp-to-wav" ||

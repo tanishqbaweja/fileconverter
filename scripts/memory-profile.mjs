@@ -196,6 +196,11 @@ if (
     "3gp-to-mov",
     "mpeg-ts-to-mov",
     "flv-to-mov",
+    "mkv-to-flv",
+    "mp4-to-flv",
+    "mov-to-flv",
+    "3gp-to-flv",
+    "mpeg-ts-to-flv",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -342,6 +347,11 @@ const isMediaProfile =
   profileId === "3gp-to-mov" ||
   profileId === "mpeg-ts-to-mov" ||
   profileId === "flv-to-mov" ||
+  profileId === "mkv-to-flv" ||
+  profileId === "mp4-to-flv" ||
+  profileId === "mov-to-flv" ||
+  profileId === "3gp-to-flv" ||
+  profileId === "mpeg-ts-to-flv" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1208,6 +1218,13 @@ async function validateMediaOutput(
     "mpeg-ts-to-mov",
     "flv-to-mov",
   ].includes(route);
+  const containerFlvCopy = [
+    "mkv-to-flv",
+    "mp4-to-flv",
+    "mov-to-flv",
+    "3gp-to-flv",
+    "mpeg-ts-to-flv",
+  ].includes(route);
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
@@ -1628,6 +1645,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser MOV output did not probe as genuine QuickTime MOV.");
   }
+  if (
+    containerFlvCopy &&
+    !String(probe.format?.format_name ?? "").split(",").includes("flv")
+  ) {
+    throw new Error("Browser FLV output did not probe as genuine FLV.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1734,7 +1757,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1908,6 +1931,7 @@ async function validateMediaOutput(
     matroskaCopy ||
     containerThreeGpCopy ||
     containerMovCopy ||
+    containerFlvCopy ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -2013,12 +2037,14 @@ async function validateMediaOutput(
       ...(probe.withinValidation ?? {}),
       decodedVideoAndAacStreamHash: packetStreamHashes[0],
     };
-  } else if (containerThreeGpCopy || containerMovCopy) {
+  } else if (containerThreeGpCopy || containerMovCopy || containerFlvCopy) {
     const packetStreamHashes = [];
     for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
       const sourceAdtsFilter =
         candidateIndex === 0 &&
-        (route === "mpeg-ts-to-3gp" || route === "mpeg-ts-to-mov")
+        (route === "mpeg-ts-to-3gp" ||
+          route === "mpeg-ts-to-mov" ||
+          route === "mpeg-ts-to-flv")
           ? ["-bsf:a", "aac_adtstoasc"]
           : [];
       const { stdout: packetStreamHash } = await execFileAsync(
@@ -2040,7 +2066,7 @@ async function validateMediaOutput(
     }
     if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
       throw new Error(
-        `Browser ${containerThreeGpCopy ? "3GP" : "MOV"} decoded video frames or AAC access units do not exactly match the source.`,
+        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames or AAC access units do not exactly match the source.`,
       );
     }
     probe.withinValidation = {
@@ -2069,7 +2095,7 @@ async function validateMediaOutput(
     ...(probe.withinValidation ?? {}),
     mediaTraversal: av1WebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
-      : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy
+      : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy
       ? "full-decoded-video-and-aac-streamhash"
       : requiresFullDecodeTraversal
       ? "full-native-decode"

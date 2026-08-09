@@ -71,6 +71,10 @@ The shared remux core accepts Matroska, genuine QuickTime MOV, 3GP, AVI,
 MPEG-TS, and FLV input. 3GP reuses the lean MOV-family demuxer and supports the
 verified H.264/AAC stream-copy and bounded AAC decode routes without adding a
 larger codec module.
+The same core writes certified H.264/AAC FLV directly through custom AVIO. It
+copies only the first video/audio pair, explicitly reports unsupported stream
+and metadata exclusions, and seeks back only for the muxer's fixed-size
+duration and file-size trailer updates rather than retaining a growing index.
 For certified AV1 Matroska input, the same lean core skips decoder-oriented
 stream analysis and copies AV1 plus compatible Opus/Vorbis packets directly to
 live WebM. Five-second or 5 MiB clusters bound muxer buffering; duration and cue

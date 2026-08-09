@@ -454,6 +454,45 @@ function containerMovProfile(
   };
 }
 
+const containerFlvEvidence = {
+  "mkv-to-flv": 147_131_070,
+  "mp4-to-flv": 147_136_622,
+  "mov-to-flv": 147_136_646,
+  "3gp-to-flv": 146_854_522,
+  "mpeg-ts-to-flv": 150_441_548,
+} as const satisfies Record<string, number | null>;
+
+function containerFlvProfile(
+  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts",
+): ConversionProfile {
+  const id = `${input}-to-flv` as keyof typeof containerFlvEvidence;
+  const evidence = containerFlvEvidence[id];
+  return {
+    id,
+    input,
+    output: "flv",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
+      "FLV carries only the first H.264 video stream and first AAC audio stream without re-encoding; additional streams, subtitles, attachments, attached pictures, chapters, language tags, and unsupported general metadata are explicitly excluded.",
+      "The FLV trailer seeks back only to update fixed-size duration and file-size metadata; output memory remains bounded independently of total duration and file size.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const mpeg2ElementaryEvidence = {
   "m2v-to-mpeg-ts": 136_166_136,
   "mkv-to-m2v": 136_294_704,
@@ -4166,6 +4205,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerMovProfile("3gp"),
   containerMovProfile("mpeg-ts"),
   containerMovProfile("flv"),
+  containerFlvProfile("mkv"),
+  containerFlvProfile("mp4"),
+  containerFlvProfile("mov"),
+  containerFlvProfile("3gp"),
+  containerFlvProfile("mpeg-ts"),
   mpeg2TransportProfile(),
   containerMpeg2Profile("mkv"),
   containerMpeg2Profile("mp4"),
