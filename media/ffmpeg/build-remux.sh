@@ -96,7 +96,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "m4v-extract", "m4v-wrap", "av1-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "m4v-extract", "m4v-wrap", "av1-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
@@ -122,3 +122,4 @@ sed -i 's/"flv-to-h264",/"flv-to-h264", "mkv-to-hevc", "mp4-to-hevc", "mov-to-he
 sed -i 's/"avi-to-mp4",/"avi-to-mp4", "mp4-to-mkv", "mov-to-mkv", "3gp-to-mkv", "mpeg-ts-to-mkv", "flv-to-mkv", "avi-to-mkv", "webm-to-mkv", "ogv-to-mkv",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"ogv-to-mkv",/"ogv-to-mkv", "mkv-to-mpeg-ts", "mp4-to-mpeg-ts", "mov-to-mpeg-ts", "3gp-to-mpeg-ts", "flv-to-mpeg-ts",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"flv-to-mpeg-ts",/"flv-to-mpeg-ts", "mkv-to-3gp", "mp4-to-3gp", "mov-to-3gp", "mpeg-ts-to-3gp", "flv-to-3gp",/' "${OUTPUT}/build-manifest.json"
+sed -i 's/"flv-to-3gp",/"flv-to-3gp", "mkv-to-mov", "mp4-to-mov", "3gp-to-mov", "mpeg-ts-to-mov", "flv-to-mov",/' "${OUTPUT}/build-manifest.json"

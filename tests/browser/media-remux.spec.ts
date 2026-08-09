@@ -179,6 +179,13 @@ const containerThreeGpOutputPaths = {
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.3gp"),
   flv: path.join(outputRoot, "flv-remux-output.3gp"),
 } as const;
+const containerMovOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-remux-output.mov"),
+  mp4: path.join(outputRoot, "mp4-remux-output.mov"),
+  "3gp": path.join(outputRoot, "3gp-remux-output.mov"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.mov"),
+  flv: path.join(outputRoot, "flv-remux-output.mov"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const complexMatroskaOutputPath = path.join(
   outputRoot,
@@ -699,6 +706,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(containerThreeGpOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerMovOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     assertProjectLocal(fixture);
   }
@@ -1098,6 +1108,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(containerThreeGpOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerMovOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
   await rm(complexMatroskaOutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
@@ -1218,6 +1231,11 @@ async function runMediaRoute(
     | "mov-to-3gp"
     | "mpeg-ts-to-3gp"
     | "flv-to-3gp"
+    | "mkv-to-mov"
+    | "mp4-to-mov"
+    | "3gp-to-mov"
+    | "mpeg-ts-to-mov"
+    | "flv-to-mov"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -1960,6 +1978,11 @@ for (const route of [
   ["mov-to-3gp", movInputFixturePath],
   ["mpeg-ts-to-3gp", mpegTsInputFixturePath],
   ["flv-to-3gp", flvInputFixturePath],
+  ["mkv-to-mov", fixturePath],
+  ["mp4-to-mov", mp4InputFixturePath],
+  ["3gp-to-mov", threeGpInputFixturePath],
+  ["mpeg-ts-to-mov", mpegTsInputFixturePath],
+  ["flv-to-mov", flvInputFixturePath],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -3311,6 +3334,87 @@ for (const rejection of [
       const names: string[] = [];
       for await (const [name] of root.entries()) {
         if (name.startsWith("within-test-mkv-to-3gp")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
+
+for (const route of [
+  ["mkv-to-mov", fixturePath, containerMovOutputPaths.mkv, false],
+  ["mp4-to-mov", mp4InputFixturePath, containerMovOutputPaths.mp4, false],
+  ["3gp-to-mov", threeGpInputFixturePath, containerMovOutputPaths["3gp"], false],
+  ["mpeg-ts-to-mov", mpegTsInputFixturePath, containerMovOutputPaths["mpeg-ts"], true],
+  ["flv-to-mov", flvInputFixturePath, containerMovOutputPaths.flv, false],
+] as const) {
+  test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded MOV`, async () => {
+    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mov");
+        expect(probe.format.tags?.major_brand).toBe("qt  ");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(route[1], outputPath);
+        await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+      },
+    });
+  });
+}
+
+test("browser FFmpeg losslessly remuxes HEVC MKV to bounded MOV", async () => {
+  await runMediaRoute(
+    "mkv-to-mov",
+    containerMovOutputPaths.mkv,
+    ["hevc", "aac"],
+    100_000,
+    hevcContainerFixturePaths.mkv,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.3,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mov");
+        expect(probe.format.tags?.major_brand).toBe("qt  ");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(hevcContainerFixturePaths.mkv, outputPath);
+        await expectIsoBmffAacPacketMatch(
+          hevcContainerFixturePaths.mkv,
+          outputPath,
+          false,
+        );
+      },
+    },
+  );
+});
+
+for (const rejection of [
+  ["incompatible audio", incompatibleFixturePath],
+  ["MPEG-4 Part 2 video", m4vContainerFixturePaths.mkv],
+] as const) {
+  test(`MOV stream copy rejects ${rejection[0]} and cleans up`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
+    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mov");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain(
+      "MOV stream copy accepts H.264 or HEVC video with AAC audio",
+    );
+    expect(state.opfsName).toBeNull();
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-mkv-to-mov")) names.push(name);
       }
       return names;
     });

@@ -203,6 +203,16 @@ const categories = {
       ["flv-to-3gp", "fixtures/stress/media/h264-aac-128m.flv"],
     ],
   },
+  "container-mov": {
+    generator: "scripts/generate-container-mpegts-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-mov", "fixtures/stress/media/h264-aac-128m.mkv"],
+      ["mp4-to-mov", "fixtures/stress/media/h264-aac-128m.mp4"],
+      ["3gp-to-mov", "fixtures/stress/media/h264-aac-128m.3gp"],
+      ["mpeg-ts-to-mov", "fixtures/stress/media/h264-aac-128m.mpegts"],
+      ["flv-to-mov", "fixtures/stress/media/h264-aac-128m.flv"],
+    ],
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

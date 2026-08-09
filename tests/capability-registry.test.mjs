@@ -240,6 +240,26 @@ test("container 3GP copy routes are public only at their measured evidence limit
   }
 });
 
+test("container MOV copy routes are public only at their measured evidence limits", () => {
+  const measuredBytes = new Map([
+    ["mkv-to-mov", 147_131_073],
+    ["mp4-to-mov", 147_136_624],
+    ["3gp-to-mov", 146_854_522],
+    ["mpeg-ts-to-mov", 150_441_548],
+    ["flv-to-mov", 146_903_539],
+  ]);
+  for (const [id, maxTestedBytes] of measuredBytes) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
+
 test("every FFmpeg profile is declared by the reproducible Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/remux/build-manifest.json", "utf8"),
@@ -267,6 +287,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "mpeg2-wrap",
         "mpegts-copy",
         "threegp-copy",
+        "mov-copy",
         "m4v-extract",
         "m4v-wrap",
         "av1-webm-copy",

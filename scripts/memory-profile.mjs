@@ -191,6 +191,11 @@ if (
     "mov-to-3gp",
     "mpeg-ts-to-3gp",
     "flv-to-3gp",
+    "mkv-to-mov",
+    "mp4-to-mov",
+    "3gp-to-mov",
+    "mpeg-ts-to-mov",
+    "flv-to-mov",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -332,6 +337,11 @@ const isMediaProfile =
   profileId === "mov-to-3gp" ||
   profileId === "mpeg-ts-to-3gp" ||
   profileId === "flv-to-3gp" ||
+  profileId === "mkv-to-mov" ||
+  profileId === "mp4-to-mov" ||
+  profileId === "3gp-to-mov" ||
+  profileId === "mpeg-ts-to-mov" ||
+  profileId === "flv-to-mov" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1191,6 +1201,13 @@ async function validateMediaOutput(
     "mpeg-ts-to-3gp",
     "flv-to-3gp",
   ].includes(route);
+  const containerMovCopy = [
+    "mkv-to-mov",
+    "mp4-to-mov",
+    "3gp-to-mov",
+    "mpeg-ts-to-mov",
+    "flv-to-mov",
+  ].includes(route);
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
@@ -1604,6 +1621,13 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser 3GP output did not probe as genuine 3GP.");
   }
+  if (
+    containerMovCopy &&
+    (!String(probe.format?.format_name ?? "").split(",").includes("mov") ||
+      String(probe.format?.tags?.major_brand ?? "") !== "qt  ")
+  ) {
+    throw new Error("Browser MOV output did not probe as genuine QuickTime MOV.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1710,7 +1734,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1728,7 +1752,8 @@ async function validateMediaOutput(
       webmAudioCopy ||
       av1WebmCopy ||
       matroskaCopy ||
-      containerThreeGpCopy) &&
+      containerThreeGpCopy ||
+      containerMovCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
     ((av1WebmCopy || liveMatroskaCopy) &&
       Number.isFinite(probedOutputDuration)) ||
@@ -1882,6 +1907,7 @@ async function validateMediaOutput(
     av1WebmCopy ||
     matroskaCopy ||
     containerThreeGpCopy ||
+    containerMovCopy ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -1987,11 +2013,12 @@ async function validateMediaOutput(
       ...(probe.withinValidation ?? {}),
       decodedVideoAndAacStreamHash: packetStreamHashes[0],
     };
-  } else if (containerThreeGpCopy) {
+  } else if (containerThreeGpCopy || containerMovCopy) {
     const packetStreamHashes = [];
     for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
       const sourceAdtsFilter =
-        candidateIndex === 0 && route === "mpeg-ts-to-3gp"
+        candidateIndex === 0 &&
+        (route === "mpeg-ts-to-3gp" || route === "mpeg-ts-to-mov")
           ? ["-bsf:a", "aac_adtstoasc"]
           : [];
       const { stdout: packetStreamHash } = await execFileAsync(
@@ -2013,7 +2040,7 @@ async function validateMediaOutput(
     }
     if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
       throw new Error(
-        "Browser 3GP decoded video frames or AAC access units do not exactly match the source.",
+        `Browser ${containerThreeGpCopy ? "3GP" : "MOV"} decoded video frames or AAC access units do not exactly match the source.`,
       );
     }
     probe.withinValidation = {
@@ -2042,7 +2069,7 @@ async function validateMediaOutput(
     ...(probe.withinValidation ?? {}),
     mediaTraversal: av1WebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
-      : containerMpegTsCopy || containerThreeGpCopy
+      : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy
       ? "full-decoded-video-and-aac-streamhash"
       : requiresFullDecodeTraversal
       ? "full-native-decode"

@@ -344,6 +344,10 @@ static int stream_is_supported(const AVStream *stream, int profile) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
            stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
   }
+  if (profile == 26) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
+  }
   if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
       profile == 16 || profile == 22) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
@@ -401,6 +405,14 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 25) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264;
+    }
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_AAC;
+  }
+  if (profile == 26) {
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_AAC;
@@ -1787,7 +1799,8 @@ int within_remux(int profile) {
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
       profile != 18 && profile != 19 && profile != 20 && profile != 21 &&
-      profile != 22 && profile != 23 && profile != 24 && profile != 25) {
+      profile != 22 && profile != 23 && profile != 24 && profile != 25 &&
+      profile != 26) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1827,6 +1840,7 @@ int within_remux(int profile) {
   const int matroska_output = profile == 23;
   const int container_mpegts_output = profile == 24;
   const int container_threegp_output = profile == 25;
+  const int container_mov_output = profile == 26;
   const int matroska_live_output =
       matroska_output && input_format->iformat &&
       input_format->iformat->name &&
@@ -1851,13 +1865,20 @@ int within_remux(int profile) {
       input_format->iformat->name &&
       (strstr(input_format->iformat->name, "mpegts") != NULL ||
        strstr(input_format->iformat->name, "flv") != NULL);
+  const int container_mov_input_requires_probe =
+      container_mov_output && input_format->iformat &&
+      input_format->iformat->name &&
+      (strstr(input_format->iformat->name, "mpegts") != NULL ||
+       strstr(input_format->iformat->name, "flv") != NULL);
   if (profile != 17 &&
       ((!audio_extraction_output && !matroska_output &&
-        !container_mpegts_output && !container_threegp_output) ||
+        !container_mpegts_output && !container_threegp_output &&
+        !container_mov_output) ||
        elementary_audio_input_requires_probe ||
        matroska_input_requires_probe ||
        container_mpegts_input_requires_probe ||
-       container_threegp_input_requires_probe)) {
+       container_threegp_input_requires_probe ||
+       container_mov_input_requires_probe)) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);
@@ -1903,6 +1924,7 @@ int within_remux(int profile) {
                                  : matroska_output ? "Matroska"
                                  : container_mpegts_output ? "MPEG-TS"
                                  : container_threegp_output ? "3GP"
+                                 : container_mov_output ? "MOV"
                                  : hevc_output ? "HEVC"
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
@@ -1918,6 +1940,7 @@ int within_remux(int profile) {
                                : matroska_output ? "matroska"
                                : container_mpegts_output ? "mpegts"
                                : container_threegp_output ? "3gp"
+                               : container_mov_output ? "mov"
                                : hevc_output ? "hevc"
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
@@ -1988,6 +2011,8 @@ int within_remux(int profile) {
             ? "Source chapters are explicitly excluded from this MPEG-TS wrapping profile."
         : container_threegp_output
             ? "Source chapters are explicitly excluded from this bounded 3GP remux profile."
+        : container_mov_output
+            ? "Source chapters are explicitly excluded from this bounded MOV remux profile."
         : av1_webm_output
             ? "Source chapters are explicitly excluded from this AV1 WebM remux profile."
         : profile == 2
@@ -2011,7 +2036,8 @@ int within_remux(int profile) {
     goto cleanup;
   }
   if (av1_webm_output || matroska_output || container_mpegts_output ||
-      container_threegp_output || audio_extraction_output) {
+      container_threegp_output || container_mov_output ||
+      audio_extraction_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 
@@ -2058,6 +2084,10 @@ int within_remux(int profile) {
         within_message(
             2,
             "3GP stream copy accepts H.264 video with AAC audio; this source needs a separately verified conversion route.");
+      } else if (container_mov_output) {
+        within_message(
+            2,
+            "MOV stream copy accepts H.264 or HEVC video with AAC audio; this source needs a separately verified conversion route.");
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
@@ -2094,6 +2124,8 @@ int within_remux(int profile) {
                 ? "The source attached picture is explicitly excluded from this MPEG-TS wrapping profile."
             : container_threegp_output
                 ? "The source attached picture is explicitly excluded from this 3GP remux profile."
+            : container_mov_output
+                ? "The source attached picture is explicitly excluded from this MOV remux profile."
             : profile == 2
                 ? "The source cover-art stream is explicitly excluded from "
                   "this audio-only M4A profile."
@@ -2176,6 +2208,8 @@ int within_remux(int profile) {
                   ? "Subtitles are explicitly excluded from this MPEG-TS wrapping profile."
                 : container_threegp_output
                   ? "Subtitles are explicitly excluded from this 3GP remux profile."
+                : container_mov_output
+                  ? "Subtitles are explicitly excluded from this MOV remux profile."
                 : mp3_output
                   ? "The source subtitle stream is explicitly excluded from this MP3 extraction profile."
                 : aac_output
@@ -2191,6 +2225,8 @@ int within_remux(int profile) {
                            ? "The source attachment is explicitly excluded from this MPEG-TS wrapping profile."
                        : container_threegp_output
                            ? "The source attachment is explicitly excluded from this 3GP remux profile."
+                       : container_mov_output
+                           ? "The source attachment is explicitly excluded from this MOV remux profile."
                        : video_only_output
                            ? "The source attachment is explicitly excluded from this video-only output."
                        : av1_webm_output
@@ -2215,6 +2251,8 @@ int within_remux(int profile) {
                   ? "A source stream type unsupported by this MPEG-TS wrapping profile was explicitly excluded."
                 : container_threegp_output
                   ? "A source stream type unsupported by this 3GP remux profile was explicitly excluded."
+                : container_mov_output
+                  ? "A source stream type unsupported by this MOV remux profile was explicitly excluded."
                 : av1_webm_output
                   ? "A source stream type unsupported by this AV1 WebM profile was explicitly excluded."
                 : mp3_output
@@ -2381,7 +2419,7 @@ int within_remux(int profile) {
     result = 0;
   }
 
-  if (container_mpegts_output) {
+  if (container_mpegts_output || container_mov_output) {
     int video_streams_remaining = 0;
     int *video_stream_done =
         av_calloc(input_format->nb_streams, sizeof(*video_stream_done));
@@ -2430,7 +2468,9 @@ int within_remux(int profile) {
             if (frame_rate.num <= 0 || frame_rate.den <= 0) {
               within_message(
                   2,
-                  "MPEG-TS stream copy cannot reconstruct missing or non-monotonic decode timestamps without a verified video frame rate.");
+                  container_mov_output
+                      ? "MOV stream copy cannot reconstruct missing or non-monotonic decode timestamps without a verified video frame rate."
+                      : "MPEG-TS stream copy cannot reconstruct missing or non-monotonic decode timestamps without a verified video frame rate.");
               result = AVERROR_INVALIDDATA;
               av_packet_unref(prefetch_packet);
               break;
@@ -2462,7 +2502,9 @@ int within_remux(int profile) {
     av_free(video_packets_seen);
     av_free(prefetch_last_dts);
     if (result < 0 && result != AVERROR_EOF) {
-      report_av_error("MPEG-TS timestamp inspection failed", result);
+      report_av_error(container_mov_output ? "MOV timestamp inspection failed"
+                                           : "MPEG-TS timestamp inspection failed",
+                      result);
       goto cleanup;
     }
     result = 0;
@@ -2549,6 +2591,7 @@ int within_remux(int profile) {
         output_format->streams[stream_map[input_index]];
     AVRational packet_frame_rate = input_stream->avg_frame_rate;
     if (mpeg2_transport_output || container_mpegts_output ||
+        container_mov_output ||
         m4v_mp4_output) {
       AVRational guessed_frame_rate =
           av_guess_frame_rate(input_format, input_stream, NULL);
