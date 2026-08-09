@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -121,6 +121,10 @@ export async function runMediaRemux({
         ? "Extracting MP3 audio"
       : remuxProfile === 19
         ? "Extracting AAC audio"
+      : remuxProfile === 20
+        ? "Extracting Ogg Vorbis audio"
+      : remuxProfile === 21
+        ? "Extracting Ogg Opus audio"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -150,7 +154,7 @@ export async function runMediaRemux({
   const synchronousFileReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
   const synchronousInputReader =
-    remuxProfile === 19 ? null : synchronousFileReader;
+    remuxProfile >= 19 && remuxProfile <= 21 ? null : synchronousFileReader;
   const threadedWorkerPoolSize =
     remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE

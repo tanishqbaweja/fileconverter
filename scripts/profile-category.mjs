@@ -110,6 +110,16 @@ const categories = {
       ],
     ),
   },
+  "container-ogg": {
+    generator: "scripts/generate-container-ogg-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-ogg", "fixtures/stress/media/av1-vorbis-128m.mkv"],
+      ["webm-to-ogg", "fixtures/stress/media/av1-vorbis-128m.webm"],
+      ["ogv-to-ogg", "fixtures/stress/media/theora-video-128m.ogv"],
+      ["mkv-to-opus", "fixtures/stress/media/av1-opus-128m.mkv"],
+      ["webm-to-opus", "fixtures/stress/media/av1-opus-128m.webm"],
+    ],
+  },
   "legacy-container-flac": {
     generator: "scripts/generate-legacy-container-flac-stress-fixtures.mjs",
     profiles: [

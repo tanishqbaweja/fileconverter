@@ -2670,6 +2670,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "3gp-to-aac" ||
         profileId === "mpeg-ts-to-aac" ||
         profileId === "flv-to-aac" ||
+        profileId === "mkv-to-ogg" ||
+        profileId === "webm-to-ogg" ||
+        profileId === "ogv-to-ogg" ||
+        profileId === "mkv-to-opus" ||
+        profileId === "webm-to-opus" ||
         profileId === "mkv-to-m4a" ||
         profileId === "mov-to-m4a" ||
         profileId === "3gp-to-m4a" ||
@@ -3269,6 +3274,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "3gp-to-aac" ||
       profileId === "mpeg-ts-to-aac" ||
       profileId === "flv-to-aac" ||
+      profileId === "mkv-to-ogg" ||
+      profileId === "webm-to-ogg" ||
+      profileId === "ogv-to-ogg" ||
+      profileId === "mkv-to-opus" ||
+      profileId === "webm-to-opus" ||
       profileId === "mkv-to-m4a" ||
       profileId === "mov-to-m4a" ||
       profileId === "3gp-to-m4a" ||
@@ -3355,6 +3365,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "mpeg-ts-to-aac" ||
             profileId === "flv-to-aac"
             ? 19
+          : profileId === "mkv-to-ogg" ||
+            profileId === "webm-to-ogg" ||
+            profileId === "ogv-to-ogg"
+            ? 20
+          : profileId === "mkv-to-opus" ||
+            profileId === "webm-to-opus"
+            ? 21
           : profileId === "mkv-to-webm-av1"
             ? 17
           : profileId === "mkv-to-m4v" ||

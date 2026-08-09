@@ -41,10 +41,11 @@ try {
   if (fixtureStat.size < minimumBytes) {
     throw new Error(`Generated AV1 fixture is ${fixtureStat.size} bytes; expected at least ${minimumBytes}.`);
   }
-  const [probe, decodedVideoSha256, decodedAudioSha256] = await Promise.all([
+  const [probe, decodedVideoSha256, decodedAudioSha256, audioPacketSha256] = await Promise.all([
     probeFile(fixturePath),
     decodedHash(fixturePath, "0:v:0"),
     decodedHash(fixturePath, "0:a:0"),
+    packetHash(fixturePath),
   ]);
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
@@ -69,6 +70,8 @@ try {
       decodedVideoDurationSeconds: decodedVideoFrames / frameRate,
       decodedVideoSha256,
       decodedAudioSha256,
+      audioPacketSha256,
+      audioPacketCount: Number(audio?.nb_read_packets),
       bytes: fixtureStat.size,
       sha256: await hashFile(fixturePath),
       generationSeconds: Number(((performance.now() - startedAt) / 1000).toFixed(2)),
@@ -92,10 +95,21 @@ try {
 async function probeFile(filePath) {
   const { stdout } = await execFileAsync(
     "ffprobe",
-    ["-v", "error", "-count_frames", "-show_format", "-show_streams", "-of", "json", filePath],
+    ["-v", "error", "-count_frames", "-count_packets", "-show_format", "-show_streams", "-of", "json", filePath],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
   return JSON.parse(stdout);
+}
+
+async function packetHash(filePath) {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    ["-v", "error", "-xerror", "-i", filePath, "-map", "0:a:0", "-c", "copy", "-f", "hash", "-hash", "sha256", "-"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+  const value = stdout.trim().match(/^SHA256=([0-9a-f]{64})$/i)?.[1];
+  if (!value) throw new Error("Opus packet hash is unavailable.");
+  return value.toLowerCase();
 }
 
 async function decodedHash(filePath, map) {

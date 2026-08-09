@@ -501,6 +501,47 @@ function containerAacProfile(
   };
 }
 
+const oggAudioExtractionEvidence = {
+  "mkv-to-ogg": 222_125_242,
+  "webm-to-ogg": 222_124_822,
+  "ogv-to-ogg": 137_218_662,
+  "mkv-to-opus": 222_942_211,
+  "webm-to-opus": 222_941_314,
+} as const satisfies Record<string, number | null>;
+
+function containerOggAudioProfile(
+  input: "mkv" | "webm" | "ogv",
+  output: "ogg" | "opus",
+): ConversionProfile {
+  const id = `${input}-to-${output}` as keyof typeof oggAudioExtractionEvidence;
+  const evidence = oggAudioExtractionEvidence[id];
+  const codec = output === "ogg" ? "Vorbis" : "Opus";
+  return {
+    id,
+    input,
+    output,
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The first compatible ${codec} audio stream is copied into Ogg without decoding or re-encoding; a source without ${codec} audio is rejected rather than transcoded implicitly.`,
+      "Video, subtitles, attachments, data, chapters, and additional or incompatible audio streams are explicitly excluded with warnings.",
+      "Compatible Ogg comments and language metadata are retained where representable; container timing, artwork, dispositions, and container-specific fields are not retained.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -3916,6 +3957,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerAacProfile("3gp"),
   containerAacProfile("mpeg-ts"),
   containerAacProfile("flv"),
+  containerOggAudioProfile("mkv", "ogg"),
+  containerOggAudioProfile("webm", "ogg"),
+  containerOggAudioProfile("ogv", "ogg"),
+  containerOggAudioProfile("mkv", "opus"),
+  containerOggAudioProfile("webm", "opus"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

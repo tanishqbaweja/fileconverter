@@ -48,7 +48,7 @@ for await (const chunk of createReadStream(fixturePath, {
 }
 const { stdout } = await execFileAsync(
   "ffprobe",
-  ["-v", "error", "-show_format", "-show_streams", "-show_chapters", "-of", "json", fixturePath],
+  ["-v", "error", "-count_packets", "-show_format", "-show_streams", "-show_chapters", "-of", "json", fixturePath],
   { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
 );
 const probe = JSON.parse(stdout);
@@ -61,6 +61,7 @@ if (
   throw new Error(`Generated stress fixture is not Theora/Vorbis OGV: ${codecs.join(", ")}.`);
 }
 const sourceManifest = JSON.parse(await readFile(sourceManifestPath, "utf8"));
+const audioPacketSha256 = await packetHash(fixturePath);
 const sourceAudio = sourceManifest.probe.streams.find(
   (stream) => stream.codec_type === "audio",
 );
@@ -77,6 +78,8 @@ await writeFile(
     sourceSha256: sourceManifest.sha256,
     durationSeconds,
     decodedAudioDurationSeconds,
+    audioPacketSha256,
+    audioPacketCount: Number(probe.streams[1]?.nb_read_packets),
     bytes: fixtureStat.size,
     sha256: hash.digest("hex"),
     probe,
@@ -84,3 +87,14 @@ await writeFile(
   "utf8",
 );
 process.stdout.write(`${fixturePath}\n`);
+
+async function packetHash(filePath) {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    ["-v", "error", "-xerror", "-i", filePath, "-map", "0:a:0", "-c", "copy", "-f", "hash", "-hash", "sha256", "-"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+  const value = stdout.trim().match(/^SHA256=([0-9a-f]{64})$/i)?.[1];
+  if (!value) throw new Error("Vorbis packet hash is unavailable.");
+  return value.toLowerCase();
+}

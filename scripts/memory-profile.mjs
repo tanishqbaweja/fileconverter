@@ -193,6 +193,11 @@ if (
     "3gp-to-aac",
     "mpeg-ts-to-aac",
     "flv-to-aac",
+    "mkv-to-ogg",
+    "webm-to-ogg",
+    "ogv-to-ogg",
+    "mkv-to-opus",
+    "webm-to-opus",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -307,6 +312,11 @@ const isMediaProfile =
   profileId === "3gp-to-aac" ||
   profileId === "mpeg-ts-to-aac" ||
   profileId === "flv-to-aac" ||
+  profileId === "mkv-to-ogg" ||
+  profileId === "webm-to-ogg" ||
+  profileId === "ogv-to-ogg" ||
+  profileId === "mkv-to-opus" ||
+  profileId === "webm-to-opus" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -991,9 +1001,17 @@ async function validateMediaOutput(
     route === "3gp-to-aac" ||
     route === "mpeg-ts-to-aac" ||
     route === "flv-to-aac";
+  const oggPacketOutput =
+    route === "mkv-to-ogg" ||
+    route === "webm-to-ogg" ||
+    route === "ogv-to-ogg" ||
+    route === "mkv-to-opus" ||
+    route === "webm-to-opus";
+  const opusOutput = route.endsWith("-to-opus");
   const audioOnly =
     mp3Output ||
     aacOutput ||
+    oggPacketOutput ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "3gp-to-m4a" ||
@@ -1384,6 +1402,43 @@ async function validateMediaOutput(
       sha256,
     };
   }
+  if (oggPacketOutput) {
+    const { stdout: packetHash } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-i",
+        localPath,
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      {
+        cwd: projectRoot,
+        windowsHide: true,
+        maxBuffer: 8 * 1024 * 1024,
+      },
+    );
+    const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
+    if (!sha256 || sha256 !== source.audioPacketSha256) {
+      throw new Error(
+        `Browser ${opusOutput ? "Opus" : "Vorbis"} packets do not exactly match the source payload.`,
+      );
+    }
+    independentAudioValidation = {
+      method: `${opusOutput ? "opus" : "vorbis"}-packet-sha256`,
+      passed: true,
+      sha256,
+    };
+  }
   if (av1WebmCopy) {
     const { stdout: decodedStreamHashes } = await execFileAsync(
       "ffmpeg",
@@ -1442,6 +1497,7 @@ async function validateMediaOutput(
       "-show_streams",
       "-show_chapters",
       "-count_frames",
+      "-count_packets",
       "-of",
       "json",
       localPath,
@@ -1474,6 +1530,8 @@ async function validateMediaOutput(
                   ? "wmav2"
                 : mp3Output
                   ? "mp3"
+                : oggPacketOutput
+                  ? opusOutput ? "opus" : "vorbis"
                 : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
@@ -1563,6 +1621,7 @@ async function validateMediaOutput(
       route === "aac-to-m4a" ||
       route === "wav-to-alac" ||
       route === "flac-to-alac" ||
+      oggPacketOutput ||
       webmAudioCopy ||
       av1WebmCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
@@ -1579,6 +1638,14 @@ async function validateMediaOutput(
   ) {
     throw new Error(
       `Browser raw AAC output produced ${audio?.nb_read_frames ?? "unavailable"} access units; expected ${source.aacAccessUnitCount}.`,
+    );
+  }
+  if (
+    oggPacketOutput &&
+    Number(audio?.nb_read_packets) !== Number(source.audioPacketCount)
+  ) {
+    throw new Error(
+      `Browser ${opusOutput ? "Opus" : "Vorbis"} output produced ${audio?.nb_read_packets ?? "unavailable"} packets; expected ${source.audioPacketCount}.`,
     );
   }
   if (
@@ -1705,6 +1772,7 @@ async function validateMediaOutput(
     av1WebmCopy ||
     mp3Output ||
     aacOutput ||
+    oggPacketOutput ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||

@@ -4,6 +4,8 @@
   "sourceSha256": "5cbfe6054bb5a2b69ff9f3459f7093fade015ba3025013160b16eba4faeb2700",
   "durationSeconds": 780,
   "decodedAudioDurationSeconds": 780,
+  "audioPacketSha256": "43f2a7e5eb549704d12c77e1ab3977ec2071e48fb724466edc2ce7ea00f6ae45",
+  "audioPacketCount": 36564,
   "bytes": 137218662,
   "sha256": "f0e7b56cd3e59568c742c891c3632f45718691224cdaca17f16fd3d74e70bd22",
   "probe": {
@@ -33,6 +35,7 @@
         "start_time": "0.000000",
         "duration_ts": 18732,
         "duration": "780.500000",
+        "nb_read_packets": "18720",
         "extradata_size": 3322,
         "disposition": {
           "default": 0,
@@ -82,6 +85,7 @@
         "duration_ts": 37464832,
         "duration": "780.517333",
         "bit_rate": "48000",
+        "nb_read_packets": "36564",
         "extradata_size": 3420,
         "disposition": {
           "default": 0,

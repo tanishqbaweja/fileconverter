@@ -109,7 +109,7 @@ test("container MP3 extraction is public after its measured evidence passes", ()
   }
 });
 
-  test("container AAC extraction is public only at its measured evidence limit", () => {
+test("container AAC extraction is public only at its measured evidence limit", () => {
     const measuredBytes = {
       mkv: 146_855_294,
       mp4: 146_854_557,
@@ -136,6 +136,26 @@ test("every profile references registered formats", () => {
   for (const profile of conversionProfiles) {
     assert.ok(ids.has(profile.input), `missing input ${profile.input}`);
     assert.ok(ids.has(profile.output), `missing output ${profile.output}`);
+  }
+});
+
+test("Ogg-family container extraction is public at its measured evidence limit", () => {
+  const measuredBytes = new Map([
+    ["mkv-to-ogg", 222_125_242],
+    ["webm-to-ogg", 222_124_822],
+    ["ogv-to-ogg", 137_218_662],
+    ["mkv-to-opus", 222_942_211],
+    ["webm-to-opus", 222_941_314],
+  ]);
+  for (const [id, bytes] of measuredBytes) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, bytes);
+    assert.equal(
+      publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
+      true,
+    );
   }
 });
 
@@ -168,6 +188,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "av1-webm-copy",
         "mp3-extract",
         "aac-extract",
+        "ogg-audio-extract",
       ],
     },
     {
@@ -226,6 +247,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("mp3"));
   assert.ok(manifest.enabledMuxers.includes("adts"));
+  assert.ok(manifest.enabledMuxers.includes("ogg"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {

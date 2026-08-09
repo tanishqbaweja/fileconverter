@@ -100,6 +100,13 @@ const aacExtractionOutputPaths = {
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.aac"),
   flv: path.join(outputRoot, "flv-extract-output.aac"),
 } as const;
+const oggAudioExtractionOutputPaths = {
+  "mkv-to-ogg": path.join(outputRoot, "mkv-extract-output.ogg"),
+  "webm-to-ogg": path.join(outputRoot, "webm-extract-output.ogg"),
+  "ogv-to-ogg": path.join(outputRoot, "ogv-extract-output.ogg"),
+  "mkv-to-opus": path.join(outputRoot, "mkv-extract-output.opus"),
+  "webm-to-opus": path.join(outputRoot, "webm-extract-output.opus"),
+} as const;
 const mp4WebmOutputPath = path.join(outputRoot, "mp4-vp8-output.webm");
 const mp4Vp9WebmOutputPath = path.join(outputRoot, "mp4-vp9-output.webm");
 const movWebmOutputPath = path.join(outputRoot, "mov-vp8-output.webm");
@@ -295,6 +302,16 @@ const av1OpusFixturePath = path.join(
   "media",
   "av1-opus-source.mkv",
 );
+const av1OpusWebmFixturePath = path.join(
+  projectRoot,
+  "work",
+  "av1-opus-source.webm",
+);
+const av1VorbisWebmFixturePath = path.join(
+  projectRoot,
+  "work",
+  "av1-vorbis-source.webm",
+);
 const mp3ContainerFixturePaths = {
   mkv: path.join(projectRoot, "fixtures", "media", "h264-mp3-source.mkv"),
   mp4: path.join(projectRoot, "work", "h264-mp3-source.mp4"),
@@ -452,6 +469,15 @@ async function expectAacAccessUnitMatch(
   );
 }
 
+async function expectCompressedAudioPacketMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await mp3PacketSha256(outputPath)).toBe(
+    await mp3PacketSha256(sourcePath),
+  );
+}
+
 async function expectDecodedAudioPsnr(
   sourcePath: string,
   outputPath: string,
@@ -569,6 +595,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(aacExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(oggAudioExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -607,11 +636,15 @@ test.beforeAll(async () => {
   assertProjectLocal(incompatibleFixturePath);
   assertProjectLocal(multiVideoFixturePath);
   assertProjectLocal(mp4InputFixturePath);
+  assertProjectLocal(av1OpusWebmFixturePath);
+  assertProjectLocal(av1VorbisWebmFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
+  await rm(av1OpusWebmFixturePath, { force: true });
+  await rm(av1VorbisWebmFixturePath, { force: true });
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -663,6 +696,28 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  await Promise.all([
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-i", av1OpusFixturePath,
+        "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
+        "-map_metadata", "0", "-f", "webm", av1OpusWebmFixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-i", av1OpusFixturePath, "-i", oggFixturePath,
+        "-map", "0:v:0", "-map", "1:a:0", "-c", "copy", "-shortest",
+        "-map_metadata", "0", "-f", "webm", av1VorbisWebmFixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+  ]);
   await execFileAsync(
     "ffmpeg",
     [
@@ -874,6 +929,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(aacExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(oggAudioExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mp4WebmOutputPath, { force: true });
   await rm(mp4Vp9WebmOutputPath, { force: true });
   await rm(movWebmOutputPath, { force: true });
@@ -909,6 +967,8 @@ test.afterAll(async () => {
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
+  await rm(av1OpusWebmFixturePath, { force: true });
+  await rm(av1VorbisWebmFixturePath, { force: true });
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -1018,6 +1078,11 @@ async function runMediaRoute(
     | "3gp-to-aac"
     | "mpeg-ts-to-aac"
     | "flv-to-aac"
+    | "mkv-to-ogg"
+    | "webm-to-ogg"
+    | "ogv-to-ogg"
+    | "mkv-to-opus"
+    | "webm-to-opus"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -1732,6 +1797,11 @@ for (const route of [
   ["3gp-to-aac", aacContainerFixturePaths["3gp"]],
   ["mpeg-ts-to-aac", aacContainerFixturePaths["mpeg-ts"]],
   ["flv-to-aac", aacContainerFixturePaths.flv],
+  ["mkv-to-ogg", incompatibleFixturePath],
+  ["webm-to-ogg", av1VorbisWebmFixturePath],
+  ["ogv-to-ogg", ogvFixturePath],
+  ["mkv-to-opus", av1OpusFixturePath],
+  ["webm-to-opus", av1OpusWebmFixturePath],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -1928,6 +1998,17 @@ for (const route of [
     title: "raw AAC extraction",
     expectedError: "No AAC audio stream was found",
   },
+  {
+    profileId: "mkv-to-ogg",
+    title: "Ogg Vorbis extraction",
+    expectedError: "No Vorbis audio stream was found",
+    inputPath: fixturePath,
+  },
+  {
+    profileId: "mkv-to-opus",
+    title: "Ogg Opus extraction",
+    expectedError: "No Opus audio stream was found",
+  },
 ] as const) {
   test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
     await page.goto("/?test=1");
@@ -1936,7 +2017,7 @@ for (const route of [
     );
     await page
       .locator('[data-testid="file-input"]')
-      .setInputFiles(incompatibleFixturePath);
+      .setInputFiles("inputPath" in route ? route.inputPath : incompatibleFixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(route.profileId);
@@ -2501,6 +2582,34 @@ for (const input of ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"] as const) {
           expect(probe.streams).toHaveLength(1);
           expect(probe.chapters ?? []).toEqual([]);
           await expectAacAccessUnitMatch(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+for (const route of [
+  ["mkv-to-ogg", incompatibleFixturePath, "vorbis", 5_000],
+  ["webm-to-ogg", av1VorbisWebmFixturePath, "vorbis", 10_000],
+  ["ogv-to-ogg", ogvFixturePath, "vorbis", 10_000],
+  ["mkv-to-opus", av1OpusFixturePath, "opus", 10_000],
+  ["webm-to-opus", av1OpusWebmFixturePath, "opus", 10_000],
+] as const) {
+  test(`browser FFmpeg losslessly extracts ${route[2]} packets with ${route[0]}`, async () => {
+    const [profileId, inputPath, codec, minimumBytes] = route;
+    await runMediaRoute(
+      profileId,
+      oggAudioExtractionOutputPaths[profileId],
+      [codec],
+      minimumBytes,
+      inputPath,
+      {
+        expectedDurationSeconds: profileId === "mkv-to-ogg" ? 2 : undefined,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(probe.streams).toHaveLength(1);
+          expect(probe.chapters ?? []).toEqual([]);
+          await expectCompressedAudioPacketMatch(inputPath, outputPath);
         },
       },
     );

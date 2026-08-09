@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 205
+complete-Chromium memory profile have passed. The current registry publishes 210
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -47,7 +47,7 @@ explicit remaining gaps. Regenerate it after profiling with
 
 ```text
 Browser File
-  -> synchronous worker slice reader, with BYOB fallback (<= 256 KiB)
+  -> bounded worker slice/BYOB reader (<= 256 KiB)
   -> dedicated conversion worker
   -> custom FFmpeg AVIOContext / streaming transform
   -> one positional write in flight (<= 256 KiB)
@@ -58,7 +58,9 @@ Media conversion uses FFmpeg libraries directly through
 `media/ffmpeg/within_remux.c`; it does not run the FFmpeg CLI and does not use
 MEMFS for large input or output.
 
-For sequential reads, a persistent BYOB byte-stream buffer is reused. A genuine
+For sequential reads, a persistent BYOB byte-stream buffer is reused. Direct
+AAC, Ogg Vorbis, and Ogg Opus extraction always uses this reusable path so a
+large source never creates a second source-sized synchronous Blob allocation. A genuine
 FFmpeg seek cancels that reader and opens a new bounded stream at the requested
 offset. Bytes are copied once from the browser-owned BYOB view into FFmpeg's
 256 KiB AVIO input buffer. FFmpeg's output callback exposes at most 256 KiB. A
@@ -710,6 +712,11 @@ Current exact-build results:
 | 3GP → AAC | 3 | 146,854,456 B | 1,037,649 B | 186.7 MiB | 32 MiB | cleanup passed |
 | MPEG-TS → AAC | 3 | 150,441,548 B | 1,037,546 B | 211.3 MiB | 32 MiB | cleanup passed |
 | FLV → AAC | 3 | 146,903,486 B | 1,037,649 B | 184.7 MiB | 32 MiB | cleanup passed |
+| MKV → Ogg Vorbis | 3 | 222,125,242 B | 106,739 B | 191.1 MiB | 32 MiB | cleanup passed |
+| WebM → Ogg Vorbis | 3 | 222,124,822 B | 106,739 B | 185.0 MiB | 32 MiB | cleanup passed |
+| OGV → Ogg Vorbis | 3 | 137,218,662 B | 1,346,492 B | 202.4 MiB | 32 MiB | cleanup passed |
+| MKV → Ogg Opus | 3 | 222,942,211 B | 922,267 B | 207.8 MiB | 32 MiB | cleanup passed |
+| WebM → Ogg Opus | 3 | 222,941,314 B | 922,267 B | 206.0 MiB | 32 MiB | cleanup passed |
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |

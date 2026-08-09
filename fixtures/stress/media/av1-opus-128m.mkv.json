@@ -6,9 +6,11 @@
   "decodedVideoDurationSeconds": 60,
   "decodedVideoSha256": "def376ea487b694befdea17c8a968de30dd4f0cf6618fba48a07bd37b0e30419",
   "decodedAudioSha256": "0d80b8566ae7cf4bdcb6b332eb41e47c0bea16b4f92e00be2a93065123abcc0a",
+  "audioPacketSha256": "21736db7433b3acf0001e65285e888f247e707e89b0707acaefbca37a8c745b9",
+  "audioPacketCount": 3001,
   "bytes": 222942211,
-  "sha256": "f3117241d233d0a096db5d8d26cf9661021d91a43458422e021699feaa067826",
-  "generationSeconds": 58.06,
+  "sha256": "5ba5ec17254be93975b1bf1373db182a88059650e4d8e17f6dfe6df60bf89f98",
+  "generationSeconds": 58.97,
   "probe": {
     "streams": [
       {
@@ -38,6 +40,7 @@
         "start_pts": 0,
         "start_time": "0.000000",
         "nb_read_frames": "1440",
+        "nb_read_packets": "1440",
         "extradata_size": 17,
         "disposition": {
           "default": 0,
@@ -85,6 +88,7 @@
         "start_pts": 0,
         "start_time": "0.000000",
         "nb_read_frames": "3001",
+        "nb_read_packets": "3001",
         "extradata_size": 19,
         "disposition": {
           "default": 1,
