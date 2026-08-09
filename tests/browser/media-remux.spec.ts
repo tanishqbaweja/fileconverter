@@ -108,6 +108,13 @@ const m2vExtractionOutputPaths = {
   avi: path.join(outputRoot, "avi-extract-output.m2v"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.m2v"),
 } as const;
+const m4vMp4OutputPath = path.join(outputRoot, "m4v-wrap-output.mp4");
+const m4vExtractionOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-extract-output.m4v"),
+  mp4: path.join(outputRoot, "mp4-extract-output.m4v"),
+  mov: path.join(outputRoot, "mov-extract-output.m4v"),
+  avi: path.join(outputRoot, "avi-extract-output.m4v"),
+} as const;
 const h264WebmOutputPath = path.join(outputRoot, "h264-vp8-output.webm");
 const h264Vp9WebmOutputPath = path.join(outputRoot, "h264-vp9-output.webm");
 const h264ExtractionOutputPaths = {
@@ -259,6 +266,12 @@ const m2vFixturePath = path.join(
   "media",
   "mpeg2-video-source.m2v",
 );
+const m4vFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "mpeg4-video-source.m4v",
+);
 const h264FixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -271,6 +284,12 @@ const mpeg2ContainerFixturePaths = {
   mov: path.join(projectRoot, "work", "mpeg2-source.mov"),
   avi: path.join(projectRoot, "work", "mpeg2-source.avi"),
   "mpeg-ts": path.join(projectRoot, "work", "mpeg2-source.mpegts"),
+} as const;
+const m4vContainerFixturePaths = {
+  mkv: path.join(projectRoot, "work", "mpeg4-source.mkv"),
+  mp4: path.join(projectRoot, "work", "mpeg4-source.mp4"),
+  mov: path.join(projectRoot, "work", "mpeg4-source.mov"),
+  avi: path.join(projectRoot, "work", "mpeg4-source.avi"),
 } as const;
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -475,12 +494,19 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(m2vExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  assertProjectLocal(m4vMp4OutputPath);
+  for (const outputPath of Object.values(m4vExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(h264WebmOutputPath);
   assertProjectLocal(h264Vp9WebmOutputPath);
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    assertProjectLocal(fixture);
+  }
+  for (const fixture of Object.values(m4vContainerFixturePaths)) {
     assertProjectLocal(fixture);
   }
   assertProjectLocal(complexMp4OutputPath);
@@ -494,6 +520,9 @@ test.beforeAll(async () => {
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
+  for (const fixture of Object.values(m4vContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
   await mkdir(profileRoot, { recursive: true });
@@ -561,6 +590,35 @@ test.beforeAll(async () => {
         [
           "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
           "-fflags", "+genpts+bitexact", "-r", "24", "-i", m2vFixturePath,
+          "-map", "0:v:0", "-map_metadata", "-1", "-c:v", "copy",
+          "-f", format, outputPath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      ),
+    ),
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-fflags", "+genpts+bitexact", "-r", "24", "-i", m4vFixturePath,
+      "-i", audioFixturePath, "-map", "0:v:0", "-map", "1:a:0",
+      "-map_metadata", "-1", "-c", "copy", "-shortest", "-f", "matroska",
+      m4vContainerFixturePaths.mkv,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await Promise.all(
+    ([
+      [m4vContainerFixturePaths.mp4, "mp4"],
+      [m4vContainerFixturePaths.mov, "mov"],
+      [m4vContainerFixturePaths.avi, "avi"],
+    ] as const).map(([outputPath, format]) =>
+      execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+          "-fflags", "+genpts+bitexact", "-r", "24", "-i", m4vFixturePath,
           "-map", "0:v:0", "-map_metadata", "-1", "-c:v", "copy",
           "-f", format, outputPath,
         ],
@@ -713,6 +771,10 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(m2vExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  await rm(m4vMp4OutputPath, { force: true });
+  for (const outputPath of Object.values(m4vExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(h264WebmOutputPath, { force: true });
   await rm(h264Vp9WebmOutputPath, { force: true });
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
@@ -724,6 +786,9 @@ test.afterAll(async () => {
   await rm(multiVideoFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   for (const fixture of Object.values(mpeg2ContainerFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
+  for (const fixture of Object.values(m4vContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
   await rm(profileRoot, { recursive: true, force: true });
@@ -808,6 +873,11 @@ async function runMediaRoute(
     | "mov-to-m2v"
     | "avi-to-m2v"
     | "mpeg-ts-to-m2v"
+    | "m4v-to-mp4"
+    | "mkv-to-m4v"
+    | "mp4-to-m4v"
+    | "mov-to-m4v"
+    | "avi-to-m4v"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -1504,6 +1574,11 @@ for (const route of [
   ["mov-to-m2v", mpeg2ContainerFixturePaths.mov],
   ["avi-to-m2v", mpeg2ContainerFixturePaths.avi],
   ["mpeg-ts-to-m2v", mpeg2ContainerFixturePaths["mpeg-ts"]],
+  ["m4v-to-mp4", m4vFixturePath],
+  ["mkv-to-m4v", m4vContainerFixturePaths.mkv],
+  ["mp4-to-m4v", m4vContainerFixturePaths.mp4],
+  ["mov-to-m4v", m4vContainerFixturePaths.mov],
+  ["avi-to-m4v", m4vContainerFixturePaths.avi],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -2355,6 +2430,44 @@ for (const route of [
 ] as const) {
   test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
     await runMediaRoute(route[0], route[2], ["mpeg2video"], 500_000, route[1], {
+      expectedWarningFragments: route[3] ? ["Audio cannot be represented"] : [],
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(route[1], outputPath);
+      },
+    });
+  });
+}
+
+test("browser FFmpeg losslessly wraps MPEG-4 Part 2 elementary video in MP4", async () => {
+  await runMediaRoute(
+    "m4v-to-mp4",
+    m4vMp4OutputPath,
+    ["mpeg4"],
+    500_000,
+    m4vFixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.1,
+      validate: async (probe, outputPath) => {
+        expect(probe.streams).toHaveLength(1);
+        await expectDecodedVideoMatch(m4vFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+for (const route of [
+  ["mkv-to-m4v", m4vContainerFixturePaths.mkv, m4vExtractionOutputPaths.mkv, true],
+  ["mp4-to-m4v", m4vContainerFixturePaths.mp4, m4vExtractionOutputPaths.mp4, false],
+  ["mov-to-m4v", m4vContainerFixturePaths.mov, m4vExtractionOutputPaths.mov, false],
+  ["avi-to-m4v", m4vContainerFixturePaths.avi, m4vExtractionOutputPaths.avi, false],
+] as const) {
+  test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
+    await runMediaRoute(route[0], route[2], ["mpeg4"], 500_000, route[1], {
       expectedWarningFragments: route[3] ? ["Audio cannot be represented"] : [],
       expectedDurationSeconds: 3.84,
       durationToleranceSeconds: 0.1,

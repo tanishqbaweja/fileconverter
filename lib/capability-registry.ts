@@ -323,6 +323,73 @@ function containerMpeg2Profile(
   };
 }
 
+const m4vElementaryEvidence = {
+  "m4v-to-mp4": 179_609_473,
+  "mkv-to-m4v": 180_576_319,
+  "mp4-to-m4v": 179_625_218,
+  "mov-to-m4v": 179_625_169,
+  "avi-to-m4v": 179_650_578,
+} as const satisfies Record<string, number | null>;
+
+function m4vMp4Profile(): ConversionProfile {
+  const evidence = m4vElementaryEvidence["m4v-to-mp4"];
+  return {
+    id: "m4v-to-mp4",
+    input: "m4v",
+    output: "mp4",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The input is a single MPEG-4 Part 2 elementary video stream with no audio, subtitles, chapters, attachments, or general container metadata.",
+      "Frame timestamps are reconstructed from the elementary stream before fragmented MP4 muxing.",
+      "The output is video-only; adding or converting audio requires a separately verified profile.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
+function containerM4vProfile(
+  input: "mkv" | "mp4" | "mov" | "avi",
+): ConversionProfile {
+  const id = `${input}-to-m4v` as keyof typeof m4vElementaryEvidence;
+  const evidence = m4vElementaryEvidence[id];
+  return {
+    id,
+    input,
+    output: "m4v",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input combination uses MPEG-4 Part 2 video; other video codecs require a separately verified conversion route.",
+      "Only the first non-attached MPEG-4 Part 2 video stream is extracted; audio, subtitles, attachments, data, additional video streams, and chapters are explicitly excluded.",
+      "An M4V elementary stream cannot preserve container packet timestamps, general metadata, language tags, rotation metadata, or chapter timing; playback timing is reconstructed from the encoded video headers.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -641,7 +708,7 @@ export const formats = [
   {
     id: "mp4",
     label: "MP4 video",
-    extensions: ["mp4", "m4v"],
+    extensions: ["mp4"],
     mimeTypes: ["video/mp4"],
     category: "video",
   },
@@ -748,6 +815,13 @@ export const formats = [
     label: "MPEG-2 elementary video (M2V)",
     extensions: ["m2v", "mpv", "mpeg2"],
     mimeTypes: ["video/mpeg"],
+    category: "video",
+  },
+  {
+    id: "m4v",
+    label: "MPEG-4 Part 2 elementary video (M4V)",
+    extensions: ["m4v"],
+    mimeTypes: ["video/x-m4v", "video/m4v"],
     category: "video",
   },
   {
@@ -3706,6 +3780,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerMpeg2Profile("mov"),
   containerMpeg2Profile("avi"),
   containerMpeg2Profile("mpeg-ts"),
+  m4vMp4Profile(),
+  containerM4vProfile("mkv"),
+  containerM4vProfile("mp4"),
+  containerM4vProfile("mov"),
+  containerM4vProfile("avi"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

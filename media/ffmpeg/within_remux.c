@@ -329,7 +329,8 @@ static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
     return 0;
   }
-  if (profile == 12 || profile == 13 || profile == 14) {
+  if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
+      profile == 16) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
   }
   return profile == 2
@@ -348,6 +349,10 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 13 || profile == 14) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
            stream->codecpar->codec_id == AV_CODEC_ID_MPEG2VIDEO;
+  }
+  if (profile == 15 || profile == 16) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_MPEG4;
   }
   const int avi_input =
       format->iformat && format->iformat->name &&
@@ -1588,7 +1593,7 @@ int within_remux(int profile) {
     return within_ogv_to_vp9();
   }
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
-      profile != 14) {
+      profile != 14 && profile != 15 && profile != 16) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1633,23 +1638,33 @@ int within_remux(int profile) {
   const int h264_output = profile == 12;
   const int mpeg2_output = profile == 13;
   const int mpeg2_transport_output = profile == 14;
-  const int elementary_output = h264_output || mpeg2_output;
-  const int video_only_output = elementary_output || mpeg2_transport_output;
+  const int m4v_output = profile == 15;
+  const int m4v_mp4_output = profile == 16;
+  const int elementary_output = h264_output || mpeg2_output || m4v_output;
+  const int video_only_output =
+      elementary_output || mpeg2_transport_output || m4v_mp4_output;
   const enum AVCodecID expected_video_codec =
-      h264_output ? AV_CODEC_ID_H264 : AV_CODEC_ID_MPEG2VIDEO;
-  const char *video_label = h264_output ? "H.264" : "MPEG-2";
+      h264_output
+          ? AV_CODEC_ID_H264
+          : (mpeg2_output || mpeg2_transport_output) ? AV_CODEC_ID_MPEG2VIDEO
+                                                     : AV_CODEC_ID_MPEG4;
+  const char *video_label = h264_output
+                                ? "H.264"
+                                : (mpeg2_output || mpeg2_transport_output)
+                                      ? "MPEG-2"
+                                      : "MPEG-4 Part 2";
   const char *output_label = h264_output
                                  ? "H.264"
                                  : mpeg2_output ? "MPEG-2"
-                                                : mpeg2_transport_output
-                                                      ? "MPEG-TS"
-                                                      : "MP4";
+                                 : mpeg2_transport_output ? "MPEG-TS"
+                                 : m4v_output             ? "M4V"
+                                                          : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
                                : mpeg2_output ? "mpeg2video"
-                                              : mpeg2_transport_output
-                                                    ? "mpegts"
-                                                    : "mp4";
+                               : mpeg2_transport_output ? "mpegts"
+                               : m4v_output             ? "m4v"
+                                                        : "mp4";
   if (video_only_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
@@ -1766,6 +1781,10 @@ int within_remux(int profile) {
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(1,
                        "This MPEG-TS wrapping profile includes only the MPEG-2 video stream; source audio was explicitly excluded.");
+      } else if (m4v_mp4_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(1,
+                       "This M4V wrapping profile includes only the MPEG-4 Part 2 video stream; source audio was explicitly excluded.");
       } else if (profile == 2 &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -1873,7 +1892,7 @@ int within_remux(int profile) {
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
   output_format->max_interleave_delta = 2 * AV_TIME_BASE;
 
-  if (video_only_output) {
+  if (elementary_output || mpeg2_transport_output) {
     /* Elementary streams and MPEG-TS need no seek-dependent MOV options. */
   } else if (profile == 2) {
     av_dict_set(&muxer_options, "movflags",
@@ -1914,7 +1933,7 @@ int within_remux(int profile) {
     AVStream *output_stream =
         output_format->streams[stream_map[input_index]];
     AVRational packet_frame_rate = input_stream->avg_frame_rate;
-    if (mpeg2_transport_output) {
+    if (mpeg2_transport_output || m4v_mp4_output) {
       AVRational guessed_frame_rate =
           av_guess_frame_rate(input_format, input_stream, NULL);
       if (guessed_frame_rate.num > 0 && guessed_frame_rate.den > 0) {

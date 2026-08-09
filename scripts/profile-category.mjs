@@ -235,6 +235,19 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "m4v-elementary": {
+    generator: "scripts/generate-m4v-elementary-stress-fixtures.mjs",
+    profiles: [
+      ["m4v-to-mp4", "mpeg4-video-128m.m4v"],
+      ["mkv-to-m4v", "mpeg4-video-128m.mkv"],
+      ["mp4-to-m4v", "mpeg4-video-128m.mp4"],
+      ["mov-to-m4v", "mpeg4-video-128m.mov"],
+      ["avi-to-m4v", "mpeg4-video-128m.avi"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "h264-elementary": {
     generator: "scripts/generate-h264-elementary-stress-fixtures.mjs",
     profiles: [

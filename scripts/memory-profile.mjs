@@ -175,6 +175,11 @@ if (
     "mov-to-m2v",
     "avi-to-m2v",
     "mpeg-ts-to-m2v",
+    "m4v-to-mp4",
+    "mkv-to-m4v",
+    "mp4-to-m4v",
+    "mov-to-m4v",
+    "avi-to-m4v",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -271,6 +276,11 @@ const isMediaProfile =
   profileId === "mov-to-m2v" ||
   profileId === "avi-to-m2v" ||
   profileId === "mpeg-ts-to-m2v" ||
+  profileId === "m4v-to-mp4" ||
+  profileId === "mkv-to-m4v" ||
+  profileId === "mp4-to-m4v" ||
+  profileId === "mov-to-m4v" ||
+  profileId === "avi-to-m4v" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -1040,10 +1050,17 @@ async function validateMediaOutput(
     route === "mov-to-m2v" ||
     route === "avi-to-m2v" ||
     route === "mpeg-ts-to-m2v";
-  const elementaryVideoOutput = h264Output || mpeg2Output;
+  const m4vOutput =
+    route === "mkv-to-m4v" ||
+    route === "mp4-to-m4v" ||
+    route === "mov-to-m4v" ||
+    route === "avi-to-m4v";
+  const m4vMp4Output = route === "m4v-to-mp4";
+  const elementaryVideoOutput = h264Output || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
   const videoOnlyCopy =
     route === "h264-to-mp4" ||
+    m4vMp4Output ||
     elementaryVideoOutput ||
     mpeg2TransportOutput;
   const vp9Reencode =
@@ -1078,7 +1095,7 @@ async function validateMediaOutput(
   const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
   const decodedVideoDurationSeconds = Number(source.decodedVideoDurationSeconds);
   const sourceDurationSeconds =
-    videoReencode && Number.isFinite(decodedVideoDurationSeconds)
+    (videoReencode || m4vMp4Output) && Number.isFinite(decodedVideoDurationSeconds)
       ? decodedVideoDurationSeconds
       : Number.isFinite(probedSourceDurationSeconds)
         ? probedSourceDurationSeconds
@@ -1297,7 +1314,12 @@ async function validateMediaOutput(
         (webmAudioCopy && codecs[1] !== "vorbis"))) ||
     (videoOnlyCopy &&
       (codecs.length !== 1 ||
-        codecs[0] !== (mpeg2Output || mpeg2TransportOutput ? "mpeg2video" : "h264"))) ||
+        codecs[0] !==
+          (mpeg2Output || mpeg2TransportOutput
+            ? "mpeg2video"
+            : m4vOutput || m4vMp4Output
+              ? "mpeg4"
+              : "h264"))) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
@@ -1490,6 +1512,7 @@ async function validateMediaOutput(
     videoReencode ||
     elementaryVideoOutput ||
     mpeg2TransportOutput ||
+    m4vMp4Output ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||

@@ -55,6 +55,23 @@ test("MPEG-2 elementary routes expose only their measured evidence", () => {
   }
 });
 
+test("M4V elementary routes expose only their measured evidence", () => {
+  const expected = new Map([
+    ["m4v-to-mp4", 179_609_473],
+    ["mkv-to-m4v", 180_576_319],
+    ["mp4-to-m4v", 179_625_218],
+    ["mov-to-m4v", 179_625_169],
+    ["avi-to-m4v", 179_650_578],
+  ]);
+  for (const [id, maxTestedBytes] of expected) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.public, true);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+  }
+});
+
 test("every profile references registered formats", () => {
   const ids = new Set(formats.map((format) => format.id));
   for (const profile of conversionProfiles) {
@@ -87,6 +104,8 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "h264-extract",
         "mpeg2-extract",
         "mpeg2-wrap",
+        "m4v-extract",
+        "m4v-wrap",
       ],
     },
     {
@@ -139,8 +158,10 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));
+  assert.ok(manifest.enabledDemuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("h264"));
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
+  assert.ok(manifest.enabledMuxers.includes("m4v"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -582,6 +603,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "voice.ogg", type: "" }), "ogg");
   assert.equal(detectFormat({ name: "voice.opus", type: "" }), "opus");
   assert.equal(detectFormat({ name: "movie.MP4", type: "" }), "mp4");
+  assert.equal(detectFormat({ name: "elementary.M4V", type: "video/mp4" }), "m4v");
   assert.ok(
     publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-m4a"),
   );

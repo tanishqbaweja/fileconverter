@@ -1,4 +1,4 @@
-const CACHE_NAME = "within-shell-v28";
+const CACHE_NAME = "within-shell-v29";
 const APP_SHELL = [
   "/",
   "/icon.svg",

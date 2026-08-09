@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 187
+complete-Chromium memory profile have passed. The current registry publishes 192
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -186,8 +186,9 @@ fixture, so a short A/B benchmark cannot erase multi-gigabyte evidence.
 ## Media decisions and limitations
 
 The current media core is deliberately small. It enables only the documented
-AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, Matroska, MOV/MP4/3GP,
-MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw MPEG-2 video, MPEG-TS,
+AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, raw MPEG-4 Part 2 M4V,
+Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
+MPEG-2 video, raw MPEG-4 Part 2 M4V, MPEG-TS,
 fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
@@ -293,6 +294,14 @@ and MPEG-TS can extract their first certified MPEG-2 video stream without
 re-encoding. Extraction excludes every other stream and container-only field;
 independent tests compare every decoded frame because raw M2V cannot preserve
 container timestamps or metadata.
+
+Raw MPEG-4 Part 2 M4V uses the same bounded AVIO path and the native FFmpeg
+parser's B-frame-aware timestamp reconstruction. It is packet-copied directly
+into fragmented, video-only MP4 without decoding or re-encoding. Conversely,
+MKV, MP4, MOV, and AVI can extract their first certified MPEG-4 Part 2 video
+stream directly to M4V. Audio and all container-only fields are explicitly
+excluded. Browser tests compare every decoded frame, and the large-file gate
+fully decoded all 1,440 frames in every output.
 
 Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
 be stream-copied into fragmented MP4 or genuinely decoded and encoded as
@@ -645,6 +654,11 @@ Current exact-build results:
 | MOV → M2V | 3 | 136,284,843 B | 136,166,136 B | 210.4 MiB | 32 MiB | cleanup passed |
 | AVI → M2V | 3 | 136,465,056 B | 136,166,136 B | 206.2 MiB | 32 MiB | cleanup passed |
 | MPEG-TS → M2V | 3 | 142,273,136 B | 136,166,136 B | 198.6 MiB | 32 MiB | cleanup passed |
+| M4V → MP4 | 3 | 179,609,473 B | 179,625,924 B | 234.2 MiB | 32 MiB | cleanup passed |
+| MKV → M4V | 3 | 180,576,319 B | 179,609,473 B | 211.5 MiB | 32 MiB | cleanup passed |
+| MP4 → M4V | 3 | 179,625,218 B | 179,609,473 B | 195.4 MiB | 32 MiB | cleanup passed |
+| MOV → M4V | 3 | 179,625,169 B | 179,609,473 B | 198.9 MiB | 32 MiB | cleanup passed |
+| AVI → M4V | 3 | 179,650,578 B | 179,609,473 B | 201.9 MiB | 32 MiB | cleanup passed |
 | H.264 → MP4 | 3 | 145,801,019 B | 145,812,361 B | 233.9 MiB | 54.4 MiB | cleanup passed |
 | H.264 → VP8 WebM | 3 | 145,801,019 B | 4,752,826 B | 239.7 MiB | 40 MiB | cleanup passed |
 | H.264 → VP9 WebM | 3 | 145,801,019 B | 3,265,035 B | 243.7 MiB | 56 MiB | cleanup passed |
@@ -846,6 +860,17 @@ decode of all 11,904 frames. Six forced-write cases removed their partial OPFS
 outputs. The category's intentionally expensive full-decode validation remains
 separate from conversion timing, and cleanup deletes all generated container
 sources and converted copies.
+
+The MPEG-4 Part 2 elementary gate continuously encodes one 179,609,473-byte,
+60-second, 1,920×1,080 B-frame M4V source in 5.36 seconds and creates the four
+container variants concurrently; the complete five-source set was ready in
+6.39 seconds. Direct M4V-to-MP4 packet copy passed 3/3 in 1.80–2.25 seconds at
+234.2 MiB worst incremental private memory. MKV, MP4, MOV, and AVI extraction
+passed 3/3 in 1.63–2.10 seconds at 195.4–211.5 MiB. All fifteen outputs were
+byte-repeatable, independently probed, fully decoded through all 1,440 frames,
+and removed. Reads and writes stayed at or below 262,144 bytes, only one write
+was pending, and Wasm stayed at 32 MiB. The direct-copy design is the fastest
+lossless path because it performs no video decode or re-encode.
 
 The ALAC gate used one shared, deterministic 800-second stereo PCM reference.
 Its ALAC M4A, FLAC, and WAV sources were respectively 140,941,469 bytes,
