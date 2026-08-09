@@ -462,6 +462,45 @@ function containerMp3Profile(
   };
 }
 
+const aacExtractionEvidence = {
+  mkv: 146_855_294,
+  mp4: 146_854_557,
+  mov: 146_854_612,
+  "3gp": 146_854_456,
+  "mpeg-ts": 150_441_548,
+  flv: 146_903_486,
+} as const satisfies Record<string, number | null>;
+
+function containerAacProfile(
+  input: keyof typeof aacExtractionEvidence,
+): ConversionProfile {
+  const evidence = aacExtractionEvidence[input];
+  return {
+    id: `${input}-to-aac`,
+    input,
+    output: "aac",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The first compatible AAC audio stream is copied without decoding or re-encoding; a source without AAC audio is rejected rather than transcoded implicitly.",
+      "Video, subtitles, attachments, data, chapters, and additional or incompatible audio streams are explicitly excluded with warnings.",
+      "Compatible general text metadata is written as ID3v2 where raw ADTS AAC can represent it; container timing, stream language, artwork, dispositions, and container-specific fields are not retained.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -3871,6 +3910,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerMp3Profile("avi"),
   containerMp3Profile("mpeg-ts"),
   containerMp3Profile("flv"),
+  containerAacProfile("mkv"),
+  containerAacProfile("mp4"),
+  containerAacProfile("mov"),
+  containerAacProfile("3gp"),
+  containerAacProfile("mpeg-ts"),
+  containerAacProfile("flv"),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

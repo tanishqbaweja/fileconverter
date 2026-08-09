@@ -101,6 +101,15 @@ const categories = {
       ],
     ),
   },
+  "container-aac": {
+    generator: "scripts/generate-container-flac-stress-fixtures.mjs",
+    profiles: ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"].map(
+      (input) => [
+        `${input}-to-aac`,
+        `fixtures/stress/media/h264-aac-flac-128m.${input === "mpeg-ts" ? "mpegts" : input}`,
+      ],
+    ),
+  },
   "legacy-container-flac": {
     generator: "scripts/generate-legacy-container-flac-stress-fixtures.mjs",
     profiles: [

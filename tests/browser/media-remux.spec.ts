@@ -92,6 +92,14 @@ const mp3ExtractionOutputPaths = {
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.mp3"),
   flv: path.join(outputRoot, "flv-extract-output.mp3"),
 } as const;
+const aacExtractionOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-extract-output.aac"),
+  mp4: path.join(outputRoot, "mp4-extract-output.aac"),
+  mov: path.join(outputRoot, "mov-extract-output.aac"),
+  "3gp": path.join(outputRoot, "3gp-extract-output.aac"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.aac"),
+  flv: path.join(outputRoot, "flv-extract-output.aac"),
+} as const;
 const mp4WebmOutputPath = path.join(outputRoot, "mp4-vp8-output.webm");
 const mp4Vp9WebmOutputPath = path.join(outputRoot, "mp4-vp9-output.webm");
 const movWebmOutputPath = path.join(outputRoot, "mov-vp8-output.webm");
@@ -295,6 +303,14 @@ const mp3ContainerFixturePaths = {
   "mpeg-ts": path.join(projectRoot, "work", "h264-mp3-source.mpegts"),
   flv: path.join(projectRoot, "work", "h264-mp3-source.flv"),
 } as const;
+const aacContainerFixturePaths = {
+  mkv: fixturePath,
+  mp4: mp4InputFixturePath,
+  mov: movInputFixturePath,
+  "3gp": threeGpInputFixturePath,
+  "mpeg-ts": mpegTsInputFixturePath,
+  flv: flvInputFixturePath,
+} as const;
 const h264FixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -414,6 +430,28 @@ async function expectMp3PacketMatch(
   );
 }
 
+async function aacAccessUnitSha256(inputPath: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", "0:a:0", "-c", "copy", "-bsf:a", "aac_adtstoasc",
+      "-f", "hash", "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return stdout.trim().split("=")[1];
+}
+
+async function expectAacAccessUnitMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await aacAccessUnitSha256(outputPath)).toBe(
+    await aacAccessUnitSha256(sourcePath),
+  );
+}
+
 async function expectDecodedAudioPsnr(
   sourcePath: string,
   outputPath: string,
@@ -526,6 +564,9 @@ test.beforeAll(async () => {
   assertProjectLocal(vp9WebmOutputPath);
   assertProjectLocal(av1WebmCopyOutputPath);
   for (const outputPath of Object.values(mp3ExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  for (const outputPath of Object.values(aacExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   assertProjectLocal(mp4WebmOutputPath);
@@ -830,6 +871,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(mp3ExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(aacExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mp4WebmOutputPath, { force: true });
   await rm(mp4Vp9WebmOutputPath, { force: true });
   await rm(movWebmOutputPath, { force: true });
@@ -968,6 +1012,12 @@ async function runMediaRoute(
     | "avi-to-mp3"
     | "mpeg-ts-to-mp3"
     | "flv-to-mp3"
+    | "mkv-to-aac"
+    | "mp4-to-aac"
+    | "mov-to-aac"
+    | "3gp-to-aac"
+    | "mpeg-ts-to-aac"
+    | "flv-to-aac"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -1676,6 +1726,12 @@ for (const route of [
   ["avi-to-mp3", mp3ContainerFixturePaths.avi],
   ["mpeg-ts-to-mp3", mp3ContainerFixturePaths["mpeg-ts"]],
   ["flv-to-mp3", mp3ContainerFixturePaths.flv],
+  ["mkv-to-aac", aacContainerFixturePaths.mkv],
+  ["mp4-to-aac", aacContainerFixturePaths.mp4],
+  ["mov-to-aac", aacContainerFixturePaths.mov],
+  ["3gp-to-aac", aacContainerFixturePaths["3gp"]],
+  ["mpeg-ts-to-aac", aacContainerFixturePaths["mpeg-ts"]],
+  ["flv-to-aac", aacContainerFixturePaths.flv],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -1866,6 +1922,11 @@ for (const route of [
     profileId: "mkv-to-mp3",
     title: "MP3 extraction",
     expectedError: "No MP3 audio stream was found",
+  },
+  {
+    profileId: "mkv-to-aac",
+    title: "raw AAC extraction",
+    expectedError: "No AAC audio stream was found",
   },
 ] as const) {
   test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
@@ -2419,6 +2480,27 @@ for (const input of ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"] as const) {
           expect(probe.streams).toHaveLength(1);
           expect(probe.chapters ?? []).toEqual([]);
           await expectMp3PacketMatch(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+for (const input of ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"] as const) {
+  test(`browser FFmpeg losslessly extracts AAC access units from ${input.toUpperCase()}`, async () => {
+    const inputPath = aacContainerFixturePaths[input];
+    await runMediaRoute(
+      `${input}-to-aac`,
+      aacExtractionOutputPaths[input],
+      ["aac"],
+      20_000,
+      inputPath,
+      {
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(probe.streams).toHaveLength(1);
+          expect(probe.chapters ?? []).toEqual([]);
+          await expectAacAccessUnitMatch(inputPath, outputPath);
         },
       },
     );

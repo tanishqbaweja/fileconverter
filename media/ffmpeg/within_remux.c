@@ -333,7 +333,7 @@ static int stream_is_supported(const AVStream *stream, int profile) {
       profile == 16) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
   }
-  return profile == 2 || profile == 18
+  return profile == 2 || profile == 18 || profile == 19
              ? stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO
              : (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
                 stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO);
@@ -367,6 +367,10 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 18) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_MP3;
+  }
+  if (profile == 19) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_AAC;
   }
   const int avi_input =
       format->iformat && format->iformat->name &&
@@ -1609,7 +1613,7 @@ int within_remux(int profile) {
   }
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
-      profile != 18) {
+      profile != 18 && profile != 19) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1646,11 +1650,14 @@ int within_remux(int profile) {
     report_av_error("Input probing failed", result);
     goto cleanup;
   }
-  const int mp3_input_requires_probe =
-      profile == 18 && input_format->iformat && input_format->iformat->name &&
+  const int elementary_audio_input_requires_probe =
+      (profile == 18 || profile == 19) && input_format->iformat &&
+      input_format->iformat->name &&
       (strstr(input_format->iformat->name, "mpegts") != NULL ||
        strstr(input_format->iformat->name, "flv") != NULL);
-  if (profile != 17 && (profile != 18 || mp3_input_requires_probe)) {
+  if (profile != 17 &&
+      ((profile != 18 && profile != 19) ||
+       elementary_audio_input_requires_probe)) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);
@@ -1664,6 +1671,7 @@ int within_remux(int profile) {
   const int m4v_mp4_output = profile == 16;
   const int av1_webm_output = profile == 17;
   const int mp3_output = profile == 18;
+  const int aac_output = profile == 19;
   const int elementary_output = h264_output || mpeg2_output || m4v_output;
   const int video_only_output =
       elementary_output || mpeg2_transport_output || m4v_mp4_output;
@@ -1687,6 +1695,7 @@ int within_remux(int profile) {
                                  : m4v_output             ? "M4V"
                                  : av1_webm_output        ? "WebM"
                                  : mp3_output             ? "MP3"
+                                 : aac_output             ? "AAC"
                                                           : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
@@ -1695,6 +1704,7 @@ int within_remux(int profile) {
                                : m4v_output             ? "m4v"
                                : av1_webm_output        ? "webm"
                                : mp3_output             ? "mp3"
+                               : aac_output             ? "adts"
                                                         : "mp4";
   if (video_only_output || av1_webm_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
@@ -1721,11 +1731,13 @@ int within_remux(int profile) {
       goto cleanup;
     }
   }
-  if (mp3_output) {
+  if (mp3_output || aac_output) {
+    const enum AVCodecID expected_audio_codec =
+        mp3_output ? AV_CODEC_ID_MP3 : AV_CODEC_ID_AAC;
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
       if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
-          stream->codecpar->codec_id == AV_CODEC_ID_MP3) {
+          stream->codecpar->codec_id == expected_audio_codec) {
         audio_stream_index = (int)index;
         break;
       }
@@ -1733,7 +1745,9 @@ int within_remux(int profile) {
     if (audio_stream_index < 0) {
       within_message(
           2,
-          "No MP3 audio stream was found; this lossless extraction profile does not re-encode other audio codecs.");
+          mp3_output
+              ? "No MP3 audio stream was found; this lossless extraction profile does not re-encode other audio codecs."
+              : "No AAC audio stream was found; this lossless extraction profile does not re-encode other audio codecs.");
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
@@ -1751,6 +1765,8 @@ int within_remux(int profile) {
             ? "Source chapters are explicitly excluded from the audio-only M4A output."
         : mp3_output
             ? "Source chapters are explicitly excluded from this MP3 extraction profile."
+        : aac_output
+            ? "Source chapters are explicitly excluded from this raw AAC extraction profile."
             : "Source chapters are explicitly excluded from this MP4 remux profile.");
   }
   result = avformat_alloc_output_context2(
@@ -1763,7 +1779,7 @@ int within_remux(int profile) {
     report_av_error(message, result);
     goto cleanup;
   }
-  if (av1_webm_output || mp3_output) {
+  if (av1_webm_output || mp3_output || aac_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 
@@ -1789,6 +1805,8 @@ int within_remux(int profile) {
         : av1_webm_output
             ? stream_is_supported(input_stream, profile) && copy_compatible
         : mp3_output
+            ? (int)index == audio_stream_index
+        : aac_output
             ? (int)index == audio_stream_index
             : stream_is_supported(input_stream, profile);
     stream_map[index] = -1;
@@ -1833,6 +1851,8 @@ int within_remux(int profile) {
                   "this audio-only M4A profile."
             : mp3_output
                 ? "The source attached picture is explicitly excluded from this MP3 extraction profile."
+            : aac_output
+                ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
             : av1_webm_output
                 ? "The source attached picture is explicitly excluded from this AV1 WebM profile."
                 : "The source attached picture is explicitly excluded from "
@@ -1873,6 +1893,16 @@ int within_remux(int profile) {
         within_message(
             1,
             "Only the first compatible MP3 audio stream is extracted; an additional or incompatible audio stream was explicitly excluded.");
+      } else if (aac_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        within_message(
+            1,
+            "The source video stream is explicitly excluded from the audio-only raw AAC output.");
+      } else if (aac_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(
+            1,
+            "Only the first compatible AAC audio stream is extracted; an additional or incompatible audio stream was explicitly excluded.");
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
         within_message(
             1,
@@ -1882,6 +1912,8 @@ int within_remux(int profile) {
                   ? "Subtitles are explicitly excluded from this MPEG-TS wrapping profile."
                 : mp3_output
                   ? "The source subtitle stream is explicitly excluded from this MP3 extraction profile."
+                : aac_output
+                  ? "The source subtitle stream is explicitly excluded from this raw AAC extraction profile."
                 : "The source subtitle stream cannot be stream-copied by this "
                   "profile and is explicitly excluded.");
       } else if (input_stream->codecpar->codec_type ==
@@ -1893,6 +1925,8 @@ int within_remux(int profile) {
                            ? "The source attachment is explicitly excluded from this AV1 WebM profile."
                        : mp3_output
                            ? "The source attachment is explicitly excluded from this MP3 extraction profile."
+                       : aac_output
+                           ? "The source attachment is explicitly excluded from this raw AAC extraction profile."
                            : "The source attachment cannot be represented by this MP4 profile and is explicitly excluded.");
       } else if (video_only_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -1909,6 +1943,8 @@ int within_remux(int profile) {
                   ? "A source stream type unsupported by this AV1 WebM profile was explicitly excluded."
                 : mp3_output
                   ? "A source stream type unsupported by this MP3 extraction profile was explicitly excluded."
+                : aac_output
+                  ? "A source stream type unsupported by this raw AAC extraction profile was explicitly excluded."
                 : "A source stream type unsupported by MP4 was explicitly excluded.");
       }
       continue;
@@ -1990,6 +2026,8 @@ int within_remux(int profile) {
     av_dict_set(&muxer_options, "live", "1", 0);
     av_dict_set(&muxer_options, "cluster_time_limit", "5000", 0);
     av_dict_set(&muxer_options, "cluster_size_limit", "5242880", 0);
+  } else if (aac_output) {
+    av_dict_set(&muxer_options, "write_id3v2", "1", 0);
   } else if (elementary_output || mpeg2_transport_output || mp3_output) {
     /* Elementary streams and MPEG-TS need no seek-dependent MOV options. */
   } else if (profile == 2) {

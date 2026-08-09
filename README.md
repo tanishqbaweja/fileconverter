@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 199
+complete-Chromium memory profile have passed. The current registry publishes 205
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -326,6 +326,18 @@ private memory. All eighteen outputs retained the same exact MP3 packet SHA-256,
 fully decoded with native FFmpeg, and were deleted with the six large sources.
 Standalone MP3 cannot represent container timing/trim, language, artwork, or
 container-only metadata; compatible text fields are mapped to ID3 where possible.
+
+Certified AAC audio in MKV, MP4, MOV, 3GP, MPEG-TS, or FLV takes the same
+lossless packet-copy route into raw ADTS AAC. Only the first compatible AAC
+stream is retained; video, other audio, subtitles, attachments, data, and
+chapters are explicitly excluded. The AAC worker uses a reusable 256 KiB BYOB
+input buffer because synchronous Blob reads retained transient per-read buffers
+and pushed FLV to 291.4 MiB. The bounded reader reduced the final six-route
+range to 175.7–211.3 MiB while completing 140–143 MiB-class inputs in
+0.35–1.08 seconds with 32 MiB Wasm. All eighteen outputs contained the same
+3,049 access units and exact normalized payload SHA-256. Raw ADTS cannot retain
+container timing, language, artwork, dispositions, or container-only metadata;
+compatible general text fields are written as ID3v2 where representable.
 
 Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
 be stream-copied into fragmented MP4 or genuinely decoded and encoded as
@@ -692,6 +704,12 @@ Current exact-build results:
 | 3GP → H.264 | 3 | 146,854,456 B | 145,801,019 B | 212.8 MiB | 32 MiB | cleanup passed |
 | MPEG-TS → H.264 | 3 | 150,441,548 B | 145,810,379 B | 211.5 MiB | 32 MiB | cleanup passed |
 | FLV → H.264 | 3 | 146,903,486 B | 145,801,019 B | 209.1 MiB | 32 MiB | cleanup passed |
+| MKV → AAC | 3 | 146,855,294 B | 1,037,649 B | 179.9 MiB | 32 MiB | cleanup passed |
+| MP4 → AAC | 3 | 146,854,557 B | 1,037,649 B | 175.7 MiB | 32 MiB | cleanup passed |
+| MOV → AAC | 3 | 146,854,612 B | 1,037,637 B | 184.7 MiB | 32 MiB | cleanup passed |
+| 3GP → AAC | 3 | 146,854,456 B | 1,037,649 B | 186.7 MiB | 32 MiB | cleanup passed |
+| MPEG-TS → AAC | 3 | 150,441,548 B | 1,037,546 B | 211.3 MiB | 32 MiB | cleanup passed |
+| FLV → AAC | 3 | 146,903,486 B | 1,037,649 B | 184.7 MiB | 32 MiB | cleanup passed |
 | AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
 | AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
 | AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |

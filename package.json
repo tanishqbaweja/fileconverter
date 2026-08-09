@@ -111,6 +111,7 @@
     "profile:m4v-elementary": "node scripts/profile-category.mjs m4v-elementary",
     "profile:av1-webm": "node scripts/profile-category.mjs av1-webm",
     "profile:container-mp3": "node scripts/profile-category.mjs container-mp3",
+    "profile:container-aac": "node scripts/profile-category.mjs container-aac",
     "profile:h264-elementary": "node scripts/profile-category.mjs h264-elementary",
     "profile:vp9": "node scripts/profile-category.mjs vp9",
     "profile:container-webm": "node scripts/profile-category.mjs container-webm",

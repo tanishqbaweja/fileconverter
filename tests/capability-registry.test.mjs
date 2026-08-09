@@ -109,6 +109,28 @@ test("container MP3 extraction is public after its measured evidence passes", ()
   }
 });
 
+  test("container AAC extraction is public only at its measured evidence limit", () => {
+    const measuredBytes = {
+      mkv: 146_855_294,
+      mp4: 146_854_557,
+      mov: 146_854_612,
+      "3gp": 146_854_456,
+      "mpeg-ts": 150_441_548,
+      flv: 146_903_486,
+    };
+    for (const [input, bytes] of Object.entries(measuredBytes)) {
+      const id = `${input}-to-aac`;
+      const profile = conversionProfiles.find((candidate) => candidate.id === id);
+      assert.ok(profile, `missing ${id}`);
+      assert.equal(profile.automatedTestStatus, "passed");
+      assert.equal(profile.maxTestedBytes, bytes);
+      assert.equal(
+        publicProfilesFor(input).some((candidate) => candidate.id === id),
+        true,
+      );
+    }
+  });
+
 test("every profile references registered formats", () => {
   const ids = new Set(formats.map((format) => format.id));
   for (const profile of conversionProfiles) {
@@ -145,6 +167,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "m4v-wrap",
         "av1-webm-copy",
         "mp3-extract",
+        "aac-extract",
       ],
     },
     {
@@ -202,6 +225,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
   assert.ok(manifest.enabledMuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("mp3"));
+  assert.ok(manifest.enabledMuxers.includes("adts"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {

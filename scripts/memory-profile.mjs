@@ -187,6 +187,12 @@ if (
     "avi-to-mp3",
     "mpeg-ts-to-mp3",
     "flv-to-mp3",
+    "mkv-to-aac",
+    "mp4-to-aac",
+    "mov-to-aac",
+    "3gp-to-aac",
+    "mpeg-ts-to-aac",
+    "flv-to-aac",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -295,6 +301,12 @@ const isMediaProfile =
   profileId === "avi-to-mp3" ||
   profileId === "mpeg-ts-to-mp3" ||
   profileId === "flv-to-mp3" ||
+  profileId === "mkv-to-aac" ||
+  profileId === "mp4-to-aac" ||
+  profileId === "mov-to-aac" ||
+  profileId === "3gp-to-aac" ||
+  profileId === "mpeg-ts-to-aac" ||
+  profileId === "flv-to-aac" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -972,8 +984,16 @@ async function validateMediaOutput(
     route === "avi-to-mp3" ||
     route === "mpeg-ts-to-mp3" ||
     route === "flv-to-mp3";
+  const aacOutput =
+    route === "mkv-to-aac" ||
+    route === "mp4-to-aac" ||
+    route === "mov-to-aac" ||
+    route === "3gp-to-aac" ||
+    route === "mpeg-ts-to-aac" ||
+    route === "flv-to-aac";
   const audioOnly =
     mp3Output ||
+    aacOutput ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
     route === "3gp-to-m4a" ||
@@ -1326,6 +1346,44 @@ async function validateMediaOutput(
       sha256,
     };
   }
+  if (aacOutput) {
+    const { stdout: packetHash } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-i",
+        localPath,
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-bsf:a",
+        "aac_adtstoasc",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      {
+        cwd: projectRoot,
+        windowsHide: true,
+        maxBuffer: 8 * 1024 * 1024,
+      },
+    );
+    const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
+    if (!sha256 || sha256 !== source.aacAccessUnitSha256) {
+      throw new Error(
+        "Browser raw AAC access units do not exactly match the source AAC payload.",
+      );
+    }
+    independentAudioValidation = {
+      method: "aac-access-unit-sha256",
+      passed: true,
+      sha256,
+    };
+  }
   if (av1WebmCopy) {
     const { stdout: decodedStreamHashes } = await execFileAsync(
       "ffmpeg",
@@ -1446,10 +1504,15 @@ async function validateMediaOutput(
   ).split("/").map(Number);
   const decodedVideoDuration =
     Number(video?.nb_read_frames) * videoRateDenominator / videoRateNumerator;
+  const decodedAacDuration =
+    (Number(audio?.nb_read_frames) * 1024) / Number(audio?.sample_rate);
   const probedOutputDuration = Number(probe.format.duration);
-  const duration = Number.isFinite(probedOutputDuration)
-    ? probedOutputDuration
-    : decodedVideoDuration;
+  const duration =
+    aacOutput && Number.isFinite(decodedAacDuration)
+      ? decodedAacDuration
+      : Number.isFinite(probedOutputDuration)
+        ? probedOutputDuration
+        : decodedVideoDuration;
   const normalizedOutputLanguage =
     audio?.tags?.language && audio.tags.language !== "und"
       ? audio.tags.language
@@ -1462,6 +1525,9 @@ async function validateMediaOutput(
   const expectedDuration =
     elementaryVideoOutput
       ? decodedVideoDuration
+    : aacOutput && Number.isFinite(Number(source.aacAccessUnitCount))
+      ? (Number(source.aacAccessUnitCount) * 1024) /
+        Number(sourceAudio?.sample_rate)
     : audioOnly &&
     (pcmOutput || flacOutput || alacOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
@@ -1505,6 +1571,14 @@ async function validateMediaOutput(
   ) {
     throw new Error(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
+    );
+  }
+  if (
+    aacOutput &&
+    Number(audio?.nb_read_frames) !== Number(source.aacAccessUnitCount)
+  ) {
+    throw new Error(
+      `Browser raw AAC output produced ${audio?.nb_read_frames ?? "unavailable"} access units; expected ${source.aacAccessUnitCount}.`,
     );
   }
   if (
@@ -1630,6 +1704,7 @@ async function validateMediaOutput(
     m4vMp4Output ||
     av1WebmCopy ||
     mp3Output ||
+    aacOutput ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||

@@ -7,6 +7,7 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 const execFileAsync = promisify(execFile);
+const startedAt = performance.now();
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const sourcePath = path.join(projectRoot, "fixtures", "media", "mobile-video-source.3gp");
 const sourceManifestPath = `${sourcePath}.json`;
@@ -39,14 +40,18 @@ try {
     "-f", fixtures[0].format, fixturePaths[0],
   ]);
 
-  for (let index = 1; index < fixtures.length; index += 1) {
-    await execFfmpeg([
-      "-i", fixturePaths[0], "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
-      "-map_metadata", "0", "-fflags", "+bitexact",
-      "-f", fixtures[index].format, fixturePaths[index],
-    ]);
-  }
+  await Promise.all(
+    fixtures.slice(1).map((fixture, offset) =>
+      execFfmpeg([
+        "-i", fixturePaths[0], "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
+        "-map_metadata", "0", "-fflags", "+bitexact",
+        "-f", fixture.format, fixturePaths[offset + 1],
+      ]),
+    ),
+  );
 
+  const referenceAacAccessUnitSha256 = await aacAccessUnitHash(fixturePaths[0]);
+  const referenceAacAccessUnitCount = await aacAccessUnitCount(fixturePaths[0]);
   for (let index = 0; index < fixtures.length; index += 1) {
     const fixture = fixtures[index];
     const fixturePath = fixturePaths[index];
@@ -58,7 +63,7 @@ try {
     }
     const { stdout } = await execFileAsync(
       "ffprobe",
-      ["-v", "error", "-show_format", "-show_streams", "-show_programs", "-of", "json", fixturePath],
+      ["-v", "error", "-count_packets", "-show_format", "-show_streams", "-show_programs", "-of", "json", fixturePath],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
     );
     const probe = JSON.parse(stdout);
@@ -66,6 +71,14 @@ try {
     const audio = probe.streams.find((stream) => stream.codec_type === "audio");
     if (video?.codec_name !== "h264" || audio?.codec_name !== "aac") {
       throw new Error(`Generated ${fixture.name} is not H.264/AAC.`);
+    }
+    const aacAccessUnitSha256 = await aacAccessUnitHash(fixturePath);
+    const aacAccessUnitCount = Number(audio.nb_read_packets);
+    if (
+      aacAccessUnitSha256 !== referenceAacAccessUnitSha256 ||
+      aacAccessUnitCount !== referenceAacAccessUnitCount
+    ) {
+      throw new Error(`Generated ${fixture.name} changed the AAC access units.`);
     }
     await writeFile(
       `${fixturePath}.json`,
@@ -77,6 +90,9 @@ try {
         decodedVideoFrames: durationSeconds * 24,
         bytes: fixtureStat.size,
         sha256: await hashFile(fixturePath),
+        aacAccessUnitSha256,
+        aacAccessUnitCount,
+        generationSeconds: Number(((performance.now() - startedAt) / 1000).toFixed(2)),
         probe,
       }, null, 2)}\n`,
       "utf8",
@@ -118,4 +134,34 @@ async function hashFile(filePath) {
     hash.update(chunk);
   }
   return hash.digest("hex");
+}
+
+async function aacAccessUnitHash(filePath) {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-v", "error", "-i", filePath, "-map", "0:a:0", "-c", "copy",
+      "-bsf:a", "aac_adtstoasc", "-f", "hash", "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const sha256 = stdout.trim().match(/^SHA256=([0-9a-f]{64})$/i)?.[1];
+  if (!sha256) throw new Error(`AAC access-unit hash is unavailable for ${filePath}.`);
+  return sha256.toLowerCase();
+}
+
+async function aacAccessUnitCount(filePath) {
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-select_streams", "a:0", "-count_packets",
+      "-show_entries", "stream=nb_read_packets", "-of", "json", filePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const count = Number(JSON.parse(stdout).streams?.[0]?.nb_read_packets);
+  if (!Number.isInteger(count) || count <= 0) {
+    throw new Error(`AAC access-unit count is unavailable for ${filePath}.`);
+  }
+  return count;
 }

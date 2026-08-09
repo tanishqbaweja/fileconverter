@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -119,6 +119,8 @@ export async function runMediaRemux({
         ? "Copying AV1 WebM"
       : remuxProfile === 18
         ? "Extracting MP3 audio"
+      : remuxProfile === 19
+        ? "Extracting AAC audio"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -147,6 +149,8 @@ export async function runMediaRemux({
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
   const synchronousFileReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
+  const synchronousInputReader =
+    remuxProfile === 19 ? null : synchronousFileReader;
   const threadedWorkerPoolSize =
     remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE
@@ -250,7 +254,7 @@ export async function runMediaRemux({
   const bridge: RemuxBridge = {
     inputSize: file.size,
     copyOutput: writable.requiresOwnedWriteBuffer,
-    readSync: synchronousFileReader
+    readSync: synchronousInputReader
       ? (offset, destination) => {
           assertActive();
           assertBoundedChunk(destination.byteLength, "Input read");
@@ -260,7 +264,7 @@ export async function runMediaRemux({
           const end = Math.min(file.size, offset + destination.byteLength);
           if (end <= offset) return 0;
           const bytes = new Uint8Array(
-            synchronousFileReader.readAsArrayBuffer(file.slice(offset, end)),
+            synchronousInputReader.readAsArrayBuffer(file.slice(offset, end)),
           );
           destination.set(bytes);
           recordRead(bytes.byteLength);
