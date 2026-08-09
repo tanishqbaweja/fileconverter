@@ -167,6 +167,22 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-matroska": {
+    generator: "scripts/generate-container-matroska-stress-fixtures.mjs",
+    profiles: [
+      ["mp4-to-mkv", "h264-aac-128m.mp4"],
+      ["mov-to-mkv", "h264-aac-128m.mov"],
+      ["3gp-to-mkv", "h264-aac-128m.3gp"],
+      ["mpeg-ts-to-mkv", "h264-aac-128m.mpegts"],
+      ["flv-to-mkv", "h264-aac-128m.flv"],
+      ["avi-to-mkv", "mpeg4-mp3-webm-128m.avi"],
+      ["webm-to-mkv", "av1-opus-128m.webm"],
+      ["ogv-to-mkv", "theora-video-128m.ogv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -155,7 +155,21 @@ const hevcExtractionOutputPaths = {
   mov: path.join(outputRoot, "mov-extract-output.hevc"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-extract-output.hevc"),
 } as const;
+const matroskaOutputPaths = {
+  mp4: path.join(outputRoot, "mp4-remux-output.mkv"),
+  mov: path.join(outputRoot, "mov-remux-output.mkv"),
+  "3gp": path.join(outputRoot, "3gp-remux-output.mkv"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.mkv"),
+  flv: path.join(outputRoot, "flv-remux-output.mkv"),
+  avi: path.join(outputRoot, "avi-remux-output.mkv"),
+  webm: path.join(outputRoot, "webm-remux-output.mkv"),
+  ogv: path.join(outputRoot, "ogv-remux-output.mkv"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
+const complexMatroskaOutputPath = path.join(
+  outputRoot,
+  "complex-remux-output.mkv",
+);
 const fixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -167,6 +181,11 @@ const complexFixturePath = path.join(
   "fixtures",
   "media",
   "complex-remux-source.mkv",
+);
+const complexMatroskaAsWebmFixturePath = path.join(
+  projectRoot,
+  "work",
+  "complex-remux-source.webm",
 );
 const corruptFixturePath = path.join(
   projectRoot,
@@ -182,6 +201,11 @@ const multiVideoFixturePath = path.join(
   projectRoot,
   "work",
   "multi-video-source.mkv",
+);
+const unsupportedMatroskaFixturePath = path.join(
+  projectRoot,
+  "work",
+  "unsupported-matroska-source.avi",
 );
 const mp4InputFixturePath = path.join(
   projectRoot,
@@ -374,7 +398,7 @@ let page: Page;
 let validationSink: WriteStream | null = null;
 
 interface ProbeStream {
-  codec_name: string;
+  codec_name?: string;
   codec_type: string;
   width?: number;
   height?: number;
@@ -389,9 +413,10 @@ interface ProbeStream {
 
 interface MediaProbe {
   streams: ProbeStream[];
-  chapters?: unknown[];
+  chapters?: Array<{ tags?: Record<string, string> }>;
   format: {
     duration?: string;
+    format_name?: string;
     tags?: Record<string, string>;
   };
 }
@@ -400,6 +425,7 @@ interface MediaRouteOptions {
   expectedWarningFragments?: readonly string[];
   expectedDurationSeconds?: number;
   durationToleranceSeconds?: number;
+  skipDurationValidation?: boolean;
   validate?: (probe: MediaProbe, outputPath: string) => Promise<void>;
 }
 
@@ -639,6 +665,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(hevcExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(matroskaOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     assertProjectLocal(fixture);
   }
@@ -652,9 +681,12 @@ test.beforeAll(async () => {
     if (input !== "mkv") assertProjectLocal(fixture);
   }
   assertProjectLocal(complexMp4OutputPath);
+  assertProjectLocal(complexMatroskaOutputPath);
+  assertProjectLocal(complexMatroskaAsWebmFixturePath);
   assertProjectLocal(corruptFixturePath);
   assertProjectLocal(incompatibleFixturePath);
   assertProjectLocal(multiVideoFixturePath);
+  assertProjectLocal(unsupportedMatroskaFixturePath);
   assertProjectLocal(mp4InputFixturePath);
   assertProjectLocal(av1OpusWebmFixturePath);
   assertProjectLocal(av1VorbisWebmFixturePath);
@@ -662,6 +694,8 @@ test.beforeAll(async () => {
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
+  await rm(unsupportedMatroskaFixturePath, { force: true });
+  await rm(complexMatroskaAsWebmFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
@@ -679,6 +713,7 @@ test.beforeAll(async () => {
   }
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
+  await copyFile(complexFixturePath, complexMatroskaAsWebmFixturePath);
   await writeFile(
     corruptFixturePath,
     Buffer.concat([
@@ -716,6 +751,16 @@ test.beforeAll(async () => {
       "-f",
       "matroska",
       incompatibleFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=1",
+      "-map", "0:v:0", "-c:v", "mjpeg", "-q:v", "4", "-an",
+      "-f", "avi", unsupportedMatroskaFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1013,10 +1058,16 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(hevcExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(matroskaOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
+  await rm(complexMatroskaOutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
+  await rm(unsupportedMatroskaFixturePath, { force: true });
+  await rm(complexMatroskaAsWebmFixturePath, { force: true });
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
@@ -1112,6 +1163,14 @@ async function runMediaRoute(
     | "mp4-to-hevc"
     | "mov-to-hevc"
     | "mpeg-ts-to-hevc"
+    | "mp4-to-mkv"
+    | "mov-to-mkv"
+    | "3gp-to-mkv"
+    | "mpeg-ts-to-mkv"
+    | "flv-to-mkv"
+    | "avi-to-mkv"
+    | "webm-to-mkv"
+    | "ogv-to-mkv"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -1352,9 +1411,7 @@ async function runMediaRoute(
     );
     const probe = JSON.parse(stdout) as MediaProbe;
     expect(
-      probe.streams.map(
-        (stream: { codec_name: string }) => stream.codec_name,
-      ),
+      probe.streams.map((stream) => stream.codec_name ?? stream.codec_type),
     ).toEqual(expectedCodecs);
     const video = probe.streams.find((stream) => stream.codec_type === "video");
     const [rateNumerator, rateDenominator] = String(
@@ -1366,7 +1423,10 @@ async function runMediaRoute(
     const outputDuration = Number.isFinite(probedDuration)
       ? probedDuration
       : decodedDuration;
-    if (options.expectedDurationSeconds == null) {
+    if (options.skipDurationValidation) {
+      // Live Matroska intentionally omits duration and some codecs do not
+      // expose a reliable average frame rate. Content hashes validate length.
+    } else if (options.expectedDurationSeconds == null) {
       expect(outputDuration).toBeGreaterThan(3.9);
       expect(outputDuration).toBeLessThan(4.2);
     } else {
@@ -1835,6 +1895,14 @@ for (const route of [
   ["mp4-to-hevc", hevcContainerFixturePaths.mp4],
   ["mov-to-hevc", hevcContainerFixturePaths.mov],
   ["mpeg-ts-to-hevc", hevcContainerFixturePaths["mpeg-ts"]],
+  ["mp4-to-mkv", mp4InputFixturePath],
+  ["mov-to-mkv", movInputFixturePath],
+  ["3gp-to-mkv", threeGpInputFixturePath],
+  ["mpeg-ts-to-mkv", mpegTsInputFixturePath],
+  ["flv-to-mkv", flvInputFixturePath],
+  ["avi-to-mkv", aviInputFixturePath],
+  ["webm-to-mkv", av1OpusWebmFixturePath],
+  ["ogv-to-mkv", ogvFixturePath],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -2965,6 +3033,106 @@ for (const route of [
     });
   });
 }
+
+for (const route of [
+  ["mp4-to-mkv", mp4InputFixturePath, matroskaOutputPaths.mp4, "h264", "aac"],
+  ["mov-to-mkv", movInputFixturePath, matroskaOutputPaths.mov, "h264", "aac"],
+  ["3gp-to-mkv", threeGpInputFixturePath, matroskaOutputPaths["3gp"], "h264", "aac"],
+  ["mpeg-ts-to-mkv", mpegTsInputFixturePath, matroskaOutputPaths["mpeg-ts"], "h264", "aac"],
+  ["flv-to-mkv", flvInputFixturePath, matroskaOutputPaths.flv, "h264", "aac"],
+  ["avi-to-mkv", aviInputFixturePath, matroskaOutputPaths.avi, "mpeg4", "mp3"],
+  ["webm-to-mkv", av1OpusWebmFixturePath, matroskaOutputPaths.webm, "av1", "opus"],
+  ["ogv-to-mkv", ogvFixturePath, matroskaOutputPaths.ogv, "theora", "vorbis"],
+] as const) {
+  test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded Matroska`, async () => {
+    await runMediaRoute(route[0], route[2], [route[3], route[4]], 100_000, route[1], {
+      expectedWarningFragments: [],
+      skipDurationValidation: route[0] !== "avi-to-mkv",
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("matroska");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(route[1], outputPath);
+        if (route[0] === "avi-to-mkv") {
+          await expectCompressedAudioPacketMatch(route[1], outputPath);
+        } else {
+          await expectDecodedPcmMatch(route[1], outputPath);
+        }
+      },
+    });
+  });
+}
+
+test("Matroska stream copy preserves compatible streams, chapters, and metadata", async () => {
+  await runMediaRoute(
+    "webm-to-mkv",
+    complexMatroskaOutputPath,
+    ["h264", "aac", "aac", "subrip", "attachment"],
+    400_000,
+    complexMatroskaAsWebmFixturePath,
+    {
+      expectedWarningFragments: [],
+      skipDurationValidation: true,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("matroska");
+        expect(probe.format.tags?.title).toBe("Within complex remux fixture");
+        expect(probe.format.tags?.COMMENT).toBe(
+          "Deterministic multi-stream metadata",
+        );
+        expect(probe.streams.filter((stream) => stream.codec_type === "audio"))
+          .toHaveLength(2);
+        expect(
+          probe.streams
+            .filter((stream) => stream.codec_type === "audio")
+            .map((stream) => stream.tags?.language),
+        ).toEqual(["eng", "spa"]);
+        expect(
+          probe.streams.find((stream) => stream.codec_type === "subtitle")
+            ?.tags?.language,
+        ).toBe("fra");
+        const attachment = probe.streams.find(
+          (stream) => stream.codec_type === "attachment",
+        );
+        expect(attachment?.tags?.filename).toBe("within-notes.txt");
+        expect(attachment?.tags?.mimetype).toBe("text/plain");
+        expect(probe.chapters?.map((chapter) => chapter.tags?.title)).toEqual([
+          "Opening",
+          "Closing",
+        ]);
+        await expectDecodedVideoMatch(complexFixturePath, outputPath);
+        await expectDecodedPcmMatch(complexFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+test("Matroska stream copy rejects codecs outside its certified set and cleans up", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(unsupportedMatroskaFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("avi-to-mkv");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error).toContain(
+    "Matroska stream copy received a stream codec outside the certified compatibility set",
+  );
+  expect(state.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-avi-to-mkv")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
 
 test("MKV to H.264 extracts only the first video and discloses additional streams", async () => {
   await runMediaRoute(

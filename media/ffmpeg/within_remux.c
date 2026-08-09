@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <limits.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -329,6 +330,12 @@ static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
     return 0;
   }
+  if (profile == 23) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT;
+  }
   if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
       profile == 16 || profile == 22) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
@@ -343,6 +350,38 @@ static int stream_is_supported(const AVStream *stream, int profile) {
 static int stream_codec_is_copy_compatible(const AVStream *stream,
                                            int profile,
                                            const AVFormatContext *format) {
+  if (profile == 23) {
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_HEVC ||
+             stream->codecpar->codec_id == AV_CODEC_ID_MPEG4 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_MPEG2VIDEO ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VP8 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VP9 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_AV1 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_THEORA;
+    }
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_AAC ||
+             stream->codecpar->codec_id == AV_CODEC_ID_MP3 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_OPUS ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VORBIS ||
+             stream->codecpar->codec_id == AV_CODEC_ID_FLAC ||
+             stream->codecpar->codec_id == AV_CODEC_ID_ALAC ||
+             stream->codecpar->codec_id == AV_CODEC_ID_PCM_S16LE ||
+             stream->codecpar->codec_id == AV_CODEC_ID_PCM_S16BE ||
+             stream->codecpar->codec_id == AV_CODEC_ID_WMAV1 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_WMAV2 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_AMR_NB;
+    }
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_SUBRIP ||
+             stream->codecpar->codec_id == AV_CODEC_ID_ASS ||
+             stream->codecpar->codec_id == AV_CODEC_ID_SSA ||
+             stream->codecpar->codec_id == AV_CODEC_ID_WEBVTT;
+    }
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT;
+  }
   if (profile == 12) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
            stream->codecpar->codec_id == AV_CODEC_ID_H264;
@@ -415,6 +454,100 @@ static int64_t packet_time_us(const AVPacket *packet,
     return 0;
   }
   return av_rescale_q(timestamp, stream->time_base, AV_TIME_BASE_Q);
+}
+
+static int copy_chapters(AVFormatContext *output_format,
+                         const AVFormatContext *input_format) {
+  if (input_format->nb_chapters == 0) {
+    return 0;
+  }
+  output_format->chapters =
+      av_calloc(input_format->nb_chapters, sizeof(*output_format->chapters));
+  if (!output_format->chapters) {
+    return AVERROR(ENOMEM);
+  }
+  for (unsigned int index = 0; index < input_format->nb_chapters; index++) {
+    const AVChapter *source = input_format->chapters[index];
+    AVChapter *destination = av_mallocz(sizeof(*destination));
+    if (!destination) {
+      return AVERROR(ENOMEM);
+    }
+    destination->id = source->id;
+    destination->time_base = source->time_base;
+    destination->start = source->start;
+    destination->end = source->end;
+    output_format->chapters[output_format->nb_chapters++] = destination;
+    int result = av_dict_copy(&destination->metadata, source->metadata, 0);
+    if (result < 0) {
+      return result;
+    }
+  }
+  return 0;
+}
+
+static int ensure_matroska_aac_extradata(AVCodecParameters *parameters) {
+  if (parameters->codec_id != AV_CODEC_ID_AAC ||
+      parameters->extradata_size > 0) {
+    return 0;
+  }
+  static const int sample_rates[] = {
+      96000, 88200, 64000, 48000, 44100, 32000, 24000,
+      22050, 16000, 12000, 11025, 8000,  7350,
+  };
+  int frequency_index = -1;
+  for (unsigned int index = 0;
+       index < sizeof(sample_rates) / sizeof(sample_rates[0]); index++) {
+    if (sample_rates[index] == parameters->sample_rate) {
+      frequency_index = (int)index;
+      break;
+    }
+  }
+  const int channels = parameters->ch_layout.nb_channels;
+  if (frequency_index < 0 || channels < 1 || channels > 7 ||
+      (parameters->profile != AV_PROFILE_UNKNOWN &&
+       parameters->profile != AV_PROFILE_AAC_LOW)) {
+    return AVERROR(ENOSYS);
+  }
+  parameters->extradata =
+      av_mallocz(2 + AV_INPUT_BUFFER_PADDING_SIZE);
+  if (!parameters->extradata) {
+    return AVERROR(ENOMEM);
+  }
+  const int audio_object_type = 2; /* AAC Low Complexity. */
+  parameters->extradata[0] =
+      (audio_object_type << 3) | (frequency_index >> 1);
+  parameters->extradata[1] =
+      ((frequency_index & 1) << 7) | (channels << 3);
+  parameters->extradata_size = 2;
+  return 0;
+}
+
+static int append_prefetched_packet(AVPacket ***packets,
+                                    int *packet_count,
+                                    int *packet_capacity,
+                                    AVPacket *packet) {
+  if (*packet_count == *packet_capacity) {
+    const int new_capacity = *packet_capacity ? *packet_capacity * 2 : 32;
+    AVPacket **resized =
+        av_realloc_array(*packets, new_capacity, sizeof(**packets));
+    if (!resized) {
+      return AVERROR(ENOMEM);
+    }
+    *packets = resized;
+    *packet_capacity = new_capacity;
+  }
+  AVPacket *stored = av_packet_alloc();
+  if (!stored) {
+    return AVERROR(ENOMEM);
+  }
+  av_packet_move_ref(stored, packet);
+  (*packets)[(*packet_count)++] = stored;
+  return 0;
+}
+
+static uint32_t read_little_endian_uint32(const uint8_t *data) {
+  return (uint32_t)data[0] | ((uint32_t)data[1] << 8) |
+         ((uint32_t)data[2] << 16) | ((uint32_t)data[3] << 24);
 }
 
 static int mpeg2_packet_temporal_reference(const AVPacket *packet,
@@ -1605,6 +1738,10 @@ int within_remux(int profile) {
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
   AVPacket *packet = NULL;
+  AVPacket **prefetched_packets = NULL;
+  int prefetched_packet_count = 0;
+  int prefetched_packet_capacity = 0;
+  int next_prefetched_packet = 0;
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9) {
     return within_audio_transcode(profile);
@@ -1627,7 +1764,7 @@ int within_remux(int profile) {
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
       profile != 18 && profile != 19 && profile != 20 && profile != 21 &&
-      profile != 22) {
+      profile != 22 && profile != 23) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1664,6 +1801,11 @@ int within_remux(int profile) {
     report_av_error("Input probing failed", result);
     goto cleanup;
   }
+  const int matroska_output = profile == 23;
+  const int matroska_live_output =
+      matroska_output && input_format->iformat &&
+      input_format->iformat->name &&
+      strstr(input_format->iformat->name, "avi") == NULL;
   const int audio_extraction_output =
       profile == 18 || profile == 19 || profile == 20 || profile == 21;
   const int elementary_audio_input_requires_probe =
@@ -1671,8 +1813,16 @@ int within_remux(int profile) {
       input_format->iformat->name &&
       (strstr(input_format->iformat->name, "mpegts") != NULL ||
        strstr(input_format->iformat->name, "flv") != NULL);
+  const int matroska_input_requires_probe =
+      matroska_output && input_format->iformat &&
+      input_format->iformat->name &&
+      (strstr(input_format->iformat->name, "mpegts") != NULL ||
+       strstr(input_format->iformat->name, "flv") != NULL ||
+       strstr(input_format->iformat->name, "avi") != NULL);
   if (profile != 17 &&
-      (!audio_extraction_output || elementary_audio_input_requires_probe)) {
+      ((!audio_extraction_output && !matroska_output) ||
+       elementary_audio_input_requires_probe ||
+       matroska_input_requires_probe)) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);
@@ -1713,6 +1863,7 @@ int within_remux(int profile) {
                                       : "MPEG-4 Part 2";
   const char *output_label = h264_output
                                  ? "H.264"
+                                 : matroska_output ? "Matroska"
                                  : hevc_output ? "HEVC"
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
@@ -1725,6 +1876,7 @@ int within_remux(int profile) {
                                                           : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
+                               : matroska_output ? "matroska"
                                : hevc_output ? "hevc"
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
@@ -1786,7 +1938,7 @@ int within_remux(int profile) {
       goto cleanup;
     }
   }
-  if (input_format->nb_chapters > 0) {
+  if (input_format->nb_chapters > 0 && !matroska_output) {
     within_message(
         1,
         elementary_output
@@ -1815,7 +1967,7 @@ int within_remux(int profile) {
     report_av_error(message, result);
     goto cleanup;
   }
-  if (av1_webm_output || audio_extraction_output) {
+  if (av1_webm_output || matroska_output || audio_extraction_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 
@@ -1850,7 +2002,11 @@ int within_remux(int profile) {
     stream_map[index] = -1;
     last_dts[index] = AV_NOPTS_VALUE;
     if (selected_stream && !copy_compatible) {
-      if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      if (matroska_output) {
+        within_message(
+            2,
+            "Matroska stream copy received a stream codec outside the certified compatibility set.");
+      } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
             video_only_output
@@ -1893,6 +2049,8 @@ int within_remux(int profile) {
                 ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
             : ogg_audio_output
                 ? "The source attached picture is explicitly excluded from this Ogg audio extraction profile."
+            : matroska_output
+                ? "The source attached picture is explicitly excluded from this Matroska stream-copy profile."
             : av1_webm_output
                 ? "The source attached picture is explicitly excluded from this AV1 WebM profile."
                 : "The source attached picture is explicitly excluded from "
@@ -2003,7 +2161,9 @@ int within_remux(int profile) {
                   ? "A source stream type unsupported by this raw AAC extraction profile was explicitly excluded."
                 : ogg_audio_output
                   ? "A source stream type unsupported by this Ogg audio extraction profile was explicitly excluded."
-                : "A source stream type unsupported by MP4 was explicitly excluded.");
+                : matroska_output
+                  ? "A source stream type unsupported by this Matroska profile was explicitly excluded."
+                  : "A source stream type unsupported by MP4 was explicitly excluded.");
       }
       continue;
     }
@@ -2055,12 +2215,109 @@ int within_remux(int profile) {
         goto cleanup;
       }
     }
+    if (matroska_output &&
+        input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
+      result = ensure_matroska_aac_extradata(output_stream->codecpar);
+      if (result < 0) {
+        within_message(
+            2,
+            "Matroska AAC stream copy requires AAC-LC with a standard sample rate and one through seven channels.");
+        goto cleanup;
+      }
+    }
     output_stream->codecpar->codec_tag = 0;
     output_stream->time_base = input_stream->time_base;
+    output_stream->avg_frame_rate = input_stream->avg_frame_rate;
+    output_stream->r_frame_rate = input_stream->r_frame_rate;
+    output_stream->sample_aspect_ratio = input_stream->sample_aspect_ratio;
     av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
     output_stream->disposition = input_stream->disposition;
   }
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
+  if (matroska_output) {
+    result = copy_chapters(output_format, input_format);
+    if (result < 0) {
+      report_av_error("Matroska chapter copy failed", result);
+      goto cleanup;
+    }
+  }
+
+  const int mov_family_input =
+      matroska_output && input_format->iformat && input_format->iformat->name &&
+      strstr(input_format->iformat->name, "mov") != NULL;
+  if (mov_family_input) {
+    int aac_streams_remaining = 0;
+    int *aac_stream_seen =
+        av_calloc(input_format->nb_streams, sizeof(*aac_stream_seen));
+    AVPacket *prefetch_packet = av_packet_alloc();
+    if (!aac_stream_seen || !prefetch_packet) {
+      av_free(aac_stream_seen);
+      av_packet_free(&prefetch_packet);
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+    for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+      if (stream_map[index] >= 0 &&
+          input_format->streams[index]->codecpar->codec_type ==
+              AVMEDIA_TYPE_AUDIO &&
+          input_format->streams[index]->codecpar->codec_id == AV_CODEC_ID_AAC) {
+        aac_streams_remaining += 1;
+      }
+    }
+    int64_t prefetched_bytes = 0;
+    while (aac_streams_remaining > 0 && prefetched_packet_count < 4096 &&
+           prefetched_bytes <= 2 * 1024 * 1024) {
+      result = av_read_frame(input_format, prefetch_packet);
+      if (result < 0) {
+        break;
+      }
+      const int input_index = prefetch_packet->stream_index;
+      prefetched_bytes += prefetch_packet->size;
+      if (input_index >= 0 &&
+          input_index < (int)input_format->nb_streams &&
+          stream_map[input_index] >= 0) {
+        AVStream *input_stream = input_format->streams[input_index];
+        if (!aac_stream_seen[input_index] &&
+            input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+            input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
+          size_t side_data_size = 0;
+          const uint8_t *side_data = av_packet_get_side_data(
+              prefetch_packet, AV_PKT_DATA_SKIP_SAMPLES, &side_data_size);
+          if (side_data && side_data_size >= 10) {
+            const uint32_t skip_samples =
+                read_little_endian_uint32(side_data);
+            if (skip_samples > 0 && skip_samples <= INT_MAX) {
+              output_format->streams[stream_map[input_index]]
+                  ->codecpar->initial_padding = (int)skip_samples;
+            }
+          }
+          aac_stream_seen[input_index] = 1;
+          aac_streams_remaining -= 1;
+        }
+        result = append_prefetched_packet(
+            &prefetched_packets, &prefetched_packet_count,
+            &prefetched_packet_capacity, prefetch_packet);
+        if (result < 0) {
+          break;
+        }
+      }
+      av_packet_unref(prefetch_packet);
+    }
+    av_packet_free(&prefetch_packet);
+    av_free(aac_stream_seen);
+    if (result < 0 && result != AVERROR_EOF) {
+      report_av_error("Matroska AAC priming inspection failed", result);
+      goto cleanup;
+    }
+    if (aac_streams_remaining > 0) {
+      within_message(
+          2,
+          "Matroska AAC priming metadata was not found within the bounded input inspection window.");
+      result = AVERROR_INVALIDDATA;
+      goto cleanup;
+    }
+    result = 0;
+  }
 
   output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
@@ -2078,10 +2335,14 @@ int within_remux(int profile) {
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
   output_format->max_interleave_delta = 2 * AV_TIME_BASE;
 
-  if (av1_webm_output) {
-    /* Live WebM omits the duration/cue index so muxer memory cannot grow with
-       total file duration. Five-second/5 MiB clusters bound muxer buffering. */
+  if (av1_webm_output || matroska_live_output) {
+    /* Live Matroska/WebM omits the duration/cue index so muxer memory cannot grow with
+       total file duration. Five-second/5 MiB clusters bound muxer buffering. AVI uses
+       indexed Matroska because FFmpeg live mode writes an invalid duration for VFW. */
     av_dict_set(&muxer_options, "live", "1", 0);
+    av_dict_set(&muxer_options, "cluster_time_limit", "5000", 0);
+    av_dict_set(&muxer_options, "cluster_size_limit", "5242880", 0);
+  } else if (matroska_output) {
     av_dict_set(&muxer_options, "cluster_time_limit", "5000", 0);
     av_dict_set(&muxer_options, "cluster_size_limit", "5242880", 0);
   } else if (aac_output) {
@@ -2111,7 +2372,17 @@ int within_remux(int profile) {
     goto cleanup;
   }
 
-  while ((result = av_read_frame(input_format, packet)) >= 0) {
+  for (;;) {
+    if (next_prefetched_packet < prefetched_packet_count) {
+      av_packet_move_ref(packet,
+                         prefetched_packets[next_prefetched_packet++]);
+      result = 0;
+    } else {
+      result = av_read_frame(input_format, packet);
+      if (result < 0) {
+        break;
+      }
+    }
     if (within_is_cancelled()) {
       result = AVERROR_EXIT;
       goto cleanup;
@@ -2337,6 +2608,10 @@ int within_remux(int profile) {
 cleanup:
   av_dict_free(&muxer_options);
   av_packet_free(&packet);
+  for (int index = 0; index < prefetched_packet_count; index++) {
+    av_packet_free(&prefetched_packets[index]);
+  }
+  av_free(prefetched_packets);
   av_free(stream_map);
   av_free(synthesize_video_dts);
   if (stream_bsfs && input_format) {

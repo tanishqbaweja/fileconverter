@@ -173,6 +173,14 @@ if (
     "mp4-to-hevc",
     "mov-to-hevc",
     "mpeg-ts-to-hevc",
+    "mp4-to-mkv",
+    "mov-to-mkv",
+    "3gp-to-mkv",
+    "mpeg-ts-to-mkv",
+    "flv-to-mkv",
+    "avi-to-mkv",
+    "webm-to-mkv",
+    "ogv-to-mkv",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -296,6 +304,14 @@ const isMediaProfile =
   profileId === "mp4-to-hevc" ||
   profileId === "mov-to-hevc" ||
   profileId === "mpeg-ts-to-hevc" ||
+  profileId === "mp4-to-mkv" ||
+  profileId === "mov-to-mkv" ||
+  profileId === "3gp-to-mkv" ||
+  profileId === "mpeg-ts-to-mkv" ||
+  profileId === "flv-to-mkv" ||
+  profileId === "avi-to-mkv" ||
+  profileId === "webm-to-mkv" ||
+  profileId === "ogv-to-mkv" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1130,6 +1146,17 @@ async function validateMediaOutput(
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
   const av1WebmCopy = route === "mkv-to-webm-av1";
+  const matroskaCopy = [
+    "mp4-to-mkv",
+    "mov-to-mkv",
+    "3gp-to-mkv",
+    "mpeg-ts-to-mkv",
+    "flv-to-mkv",
+    "avi-to-mkv",
+    "webm-to-mkv",
+    "ogv-to-mkv",
+  ].includes(route);
+  const liveMatroskaCopy = matroskaCopy && route !== "avi-to-mkv";
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
@@ -1170,7 +1197,8 @@ async function validateMediaOutput(
   const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
   const decodedVideoDurationSeconds = Number(source.decodedVideoDurationSeconds);
   const sourceDurationSeconds =
-    (videoReencode || m4vMp4Output) && Number.isFinite(decodedVideoDurationSeconds)
+    (videoReencode || m4vMp4Output || matroskaCopy) &&
+      Number.isFinite(decodedVideoDurationSeconds)
       ? decodedVideoDurationSeconds
       : Number.isFinite(probedSourceDurationSeconds)
         ? probedSourceDurationSeconds
@@ -1519,6 +1547,14 @@ async function validateMediaOutput(
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
   const probe = JSON.parse(stdout);
+  if (
+    matroskaCopy &&
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("matroska")
+  ) {
+    throw new Error("Browser Matroska output did not probe as Matroska.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1584,6 +1620,8 @@ async function validateMediaOutput(
   const duration =
     aacOutput && Number.isFinite(decodedAacDuration)
       ? decodedAacDuration
+      : route === "avi-to-mkv" && Number.isFinite(decodedVideoDuration)
+        ? decodedVideoDuration
       : Number.isFinite(probedOutputDuration)
         ? probedOutputDuration
         : decodedVideoDuration;
@@ -1623,7 +1661,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1639,10 +1677,13 @@ async function validateMediaOutput(
       route === "flac-to-alac" ||
       oggPacketOutput ||
       webmAudioCopy ||
-      av1WebmCopy) &&
+      av1WebmCopy ||
+      matroskaCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
-    (av1WebmCopy && Number.isFinite(probedOutputDuration)) ||
-    Math.abs(duration - expectedDuration) > 0.25
+    ((av1WebmCopy || liveMatroskaCopy) &&
+      Number.isFinite(probedOutputDuration)) ||
+    ((!matroskaCopy || route === "avi-to-mkv") &&
+      Math.abs(duration - expectedDuration) > 0.25)
   ) {
     throw new Error(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
@@ -1740,9 +1781,11 @@ async function validateMediaOutput(
       stream.disposition?.attached_pic,
   );
   if (
-    (sourceHasSubtitle &&
+    (!matroskaCopy &&
+      sourceHasSubtitle &&
       !finalState.warnings.some((warning) => warning.includes("subtitle"))) ||
-    (sourceHasAttachment &&
+    (!matroskaCopy &&
+      sourceHasAttachment &&
       !finalState.warnings.some(
         (warning) =>
           warning.includes("attachment") || warning.includes("attached picture"),
@@ -1753,6 +1796,7 @@ async function validateMediaOutput(
     );
   }
   if (
+    !matroskaCopy &&
     (source.probe.chapters?.length ?? 0) > 0 &&
     !finalState.warnings.some((warning) => warning.includes("chapter"))
   ) {
@@ -1786,6 +1830,7 @@ async function validateMediaOutput(
     mpeg2TransportOutput ||
     m4vMp4Output ||
     av1WebmCopy ||
+    matroskaCopy ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -1805,7 +1850,64 @@ async function validateMediaOutput(
     audioOnly ||
     webmAudioCopy ||
     (!videoReencode && !videoOnlyCopy);
-  if (!av1WebmCopy) {
+  if (matroskaCopy) {
+    const hashes = [];
+    for (const candidate of [sourcePath, localPath]) {
+      const { stdout: decodedStreamHashes } = await execFileAsync(
+        "ffmpeg",
+        route === "avi-to-mkv"
+          ? [
+              "-v", "error", "-xerror", "-i", candidate,
+              "-map", "0:v:0", "-f", "hash", "-hash", "sha256", "-",
+            ]
+          : [
+              "-v", "error", "-xerror", "-i", candidate,
+              "-map", "0:v:0", "-map", "0:a:0", "-f", "streamhash",
+              "-hash", "sha256", "-",
+            ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 16 * 1024 * 1024,
+        },
+      );
+      hashes.push(decodedStreamHashes.trim());
+    }
+    if (!hashes[0] || hashes[0] !== hashes[1]) {
+      throw new Error(
+        "Browser Matroska decoded video or audio does not exactly match the source.",
+      );
+    }
+    probe.withinValidation = {
+      ...(probe.withinValidation ?? {}),
+      decodedStreamHash: hashes[0],
+    };
+    if (route === "avi-to-mkv") {
+      const packetHashes = [];
+      for (const candidate of [sourcePath, localPath]) {
+        const { stdout: packetHash } = await execFileAsync(
+          "ffmpeg",
+          [
+            "-v", "error", "-xerror", "-i", candidate,
+            "-map", "0:a:0", "-c", "copy", "-f", "hash",
+            "-hash", "sha256", "-",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 16 * 1024 * 1024,
+          },
+        );
+        packetHashes.push(packetHash.trim());
+      }
+      if (!packetHashes[0] || packetHashes[0] !== packetHashes[1]) {
+        throw new Error(
+          "Browser AVI-to-Matroska MP3 packets do not exactly match the source.",
+        );
+      }
+      probe.withinValidation.audioPacketHash = packetHashes[0];
+    }
+  } else if (!av1WebmCopy) {
     await execFileAsync(
       "ffmpeg",
       [
@@ -1825,7 +1927,7 @@ async function validateMediaOutput(
   }
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
-    mediaTraversal: av1WebmCopy
+    mediaTraversal: av1WebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
       : requiresFullDecodeTraversal
       ? "full-native-decode"

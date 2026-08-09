@@ -177,6 +177,29 @@ test("container HEVC extraction is public only at its measured evidence limit", 
   }
 });
 
+test("Matroska copy routes are public only at their measured evidence limits", () => {
+  const measuredBytes = new Map([
+    ["mp4-to-mkv", 147_136_623],
+    ["mov-to-mkv", 147_136_647],
+    ["3gp-to-mkv", 146_854_522],
+    ["mpeg-ts-to-mkv", 150_441_548],
+    ["flv-to-mkv", 146_903_539],
+    ["avi-to-mkv", 159_500_442],
+    ["webm-to-mkv", 222_941_314],
+    ["ogv-to-mkv", 137_218_662],
+  ]);
+  for (const [id, maxTestedBytes] of measuredBytes) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
+
 test("every FFmpeg profile is declared by the reproducible Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/remux/build-manifest.json", "utf8"),
@@ -205,6 +228,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "m4v-extract",
         "m4v-wrap",
         "av1-webm-copy",
+        "matroska-copy",
         "mp3-extract",
         "aac-extract",
         "ogg-audio-extract",
@@ -265,6 +289,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("hevc"));
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));
   assert.ok(manifest.enabledMuxers.includes("m4v"));
+  assert.ok(manifest.enabledMuxers.includes("matroska"));
   assert.ok(manifest.enabledMuxers.includes("mp3"));
   assert.ok(manifest.enabledMuxers.includes("adts"));
   assert.ok(manifest.enabledMuxers.includes("ogg"));

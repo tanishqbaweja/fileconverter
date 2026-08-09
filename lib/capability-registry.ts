@@ -293,6 +293,50 @@ function containerHevcProfile(
   };
 }
 
+const matroskaCopyEvidence = {
+  "mp4-to-mkv": 147_136_623,
+  "mov-to-mkv": 147_136_647,
+  "3gp-to-mkv": 146_854_522,
+  "mpeg-ts-to-mkv": 150_441_548,
+  "flv-to-mkv": 146_903_539,
+  "avi-to-mkv": 159_500_442,
+  "webm-to-mkv": 222_941_314,
+  "ogv-to-mkv": 137_218_662,
+} as const satisfies Record<string, number | null>;
+
+function containerMatroskaProfile(
+  input: "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv" | "avi" | "webm" | "ogv",
+): ConversionProfile {
+  const id = `${input}-to-mkv` as keyof typeof matroskaCopyEvidence;
+  const evidence = matroskaCopyEvidence[id];
+  return {
+    id,
+    input,
+    output: "mkv",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified codec combinations are H.264/AAC in MP4, MOV, 3GP, MPEG-TS, and FLV; MPEG-4 Part 2/MP3 in AVI; AV1/Opus in WebM; and Theora/Vorbis in OGV.",
+      "Compatible video, audio, subtitle, attachment, chapter, stream, and general metadata are copied without re-encoding; unsupported stream codecs and attached-picture tracks are rejected or explicitly disclosed.",
+      input === "avi"
+        ? "AVI uses five-second/5 MiB Matroska clusters plus a compact cue index because FFmpeg live mode writes invalid VFW duration metadata; the measured indexed route preserves accurate duration and seeking within the certified memory ceiling."
+        : "The bounded live-Matroska layout omits a duration field and cue index so muxer memory cannot grow with file duration; sequential playback remains valid, while accurate seeking or displayed duration may require a player scan.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const mpeg2ElementaryEvidence = {
   "m2v-to-mpeg-ts": 136_166_136,
   "mkv-to-m2v": 136_294_704,
@@ -3982,6 +4026,14 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerHevcProfile("mp4"),
   containerHevcProfile("mov"),
   containerHevcProfile("mpeg-ts"),
+  containerMatroskaProfile("mp4"),
+  containerMatroskaProfile("mov"),
+  containerMatroskaProfile("3gp"),
+  containerMatroskaProfile("mpeg-ts"),
+  containerMatroskaProfile("flv"),
+  containerMatroskaProfile("avi"),
+  containerMatroskaProfile("webm"),
+  containerMatroskaProfile("ogv"),
   mpeg2TransportProfile(),
   containerMpeg2Profile("mkv"),
   containerMpeg2Profile("mp4"),
