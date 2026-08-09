@@ -354,6 +354,16 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
            stream->codecpar->codec_id == AV_CODEC_ID_MPEG4;
   }
+  if (profile == 17) {
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_AV1;
+    }
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_OPUS ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VORBIS;
+    }
+    return 0;
+  }
   const int avi_input =
       format->iformat && format->iformat->name &&
       strstr(format->iformat->name, "avi") != NULL;
@@ -1593,7 +1603,7 @@ int within_remux(int profile) {
     return within_ogv_to_vp9();
   }
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
-      profile != 14 && profile != 15 && profile != 16) {
+      profile != 14 && profile != 15 && profile != 16 && profile != 17) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1630,16 +1640,19 @@ int within_remux(int profile) {
     report_av_error("Input probing failed", result);
     goto cleanup;
   }
-  result = avformat_find_stream_info(input_format, NULL);
-  if (result < 0) {
-    report_av_error("Input stream inspection failed", result);
-    goto cleanup;
+  if (profile != 17) {
+    result = avformat_find_stream_info(input_format, NULL);
+    if (result < 0) {
+      report_av_error("Input stream inspection failed", result);
+      goto cleanup;
+    }
   }
   const int h264_output = profile == 12;
   const int mpeg2_output = profile == 13;
   const int mpeg2_transport_output = profile == 14;
   const int m4v_output = profile == 15;
   const int m4v_mp4_output = profile == 16;
+  const int av1_webm_output = profile == 17;
   const int elementary_output = h264_output || mpeg2_output || m4v_output;
   const int video_only_output =
       elementary_output || mpeg2_transport_output || m4v_mp4_output;
@@ -1647,9 +1660,12 @@ int within_remux(int profile) {
       h264_output
           ? AV_CODEC_ID_H264
           : (mpeg2_output || mpeg2_transport_output) ? AV_CODEC_ID_MPEG2VIDEO
+          : av1_webm_output                          ? AV_CODEC_ID_AV1
                                                      : AV_CODEC_ID_MPEG4;
   const char *video_label = h264_output
                                 ? "H.264"
+                                : av1_webm_output
+                                    ? "AV1"
                                 : (mpeg2_output || mpeg2_transport_output)
                                       ? "MPEG-2"
                                       : "MPEG-4 Part 2";
@@ -1658,14 +1674,16 @@ int within_remux(int profile) {
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
                                  : m4v_output             ? "M4V"
+                                 : av1_webm_output        ? "WebM"
                                                           : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
                                : m4v_output             ? "m4v"
+                               : av1_webm_output        ? "webm"
                                                         : "mp4";
-  if (video_only_output) {
+  if (video_only_output || av1_webm_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
       if (!(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) &&
@@ -1675,7 +1693,7 @@ int within_remux(int profile) {
       }
     }
     if (video_stream_index < 0) {
-      within_message(2, "No non-attached video stream was found for the requested video-only output.");
+      within_message(2, "No non-attached video stream was found for the requested output.");
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
@@ -1697,6 +1715,8 @@ int within_remux(int profile) {
             ? "Source chapters cannot be represented in an elementary video stream and are explicitly excluded."
         : mpeg2_transport_output
             ? "Source chapters are explicitly excluded from this MPEG-TS wrapping profile."
+        : av1_webm_output
+            ? "Source chapters are explicitly excluded from this AV1 WebM remux profile."
         : profile == 2
             ? "Source chapters are explicitly excluded from the audio-only M4A output."
             : "Source chapters are explicitly excluded from this MP4 remux profile.");
@@ -1710,6 +1730,9 @@ int within_remux(int profile) {
              output_label);
     report_av_error(message, result);
     goto cleanup;
+  }
+  if (av1_webm_output) {
+    output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 
   stream_map = av_calloc(input_format->nb_streams, sizeof(*stream_map));
@@ -1726,14 +1749,17 @@ int within_remux(int profile) {
   }
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
     AVStream *input_stream = input_format->streams[index];
+    const int copy_compatible =
+        stream_codec_is_copy_compatible(input_stream, profile, input_format);
     const int selected_stream =
-        video_only_output ? (int)index == video_stream_index
-                    : stream_is_supported(input_stream, profile);
+        video_only_output
+            ? (int)index == video_stream_index
+        : av1_webm_output
+            ? stream_is_supported(input_stream, profile) && copy_compatible
+            : stream_is_supported(input_stream, profile);
     stream_map[index] = -1;
     last_dts[index] = AV_NOPTS_VALUE;
-    if (selected_stream &&
-        !stream_codec_is_copy_compatible(input_stream, profile,
-                                         input_format)) {
+    if (selected_stream && !copy_compatible) {
       if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
@@ -1771,6 +1797,8 @@ int within_remux(int profile) {
             : profile == 2
                 ? "The source cover-art stream is explicitly excluded from "
                   "this audio-only M4A profile."
+            : av1_webm_output
+                ? "The source attached picture is explicitly excluded from this AV1 WebM profile."
                 : "The source attached picture is explicitly excluded from "
                   "this MP4 remux profile.");
       } else if (elementary_output &&
@@ -1785,6 +1813,14 @@ int within_remux(int profile) {
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(1,
                        "This M4V wrapping profile includes only the MPEG-4 Part 2 video stream; source audio was explicitly excluded.");
+      } else if (av1_webm_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(1,
+                       "Only Opus or Vorbis audio can be copied into this WebM profile; incompatible source audio was explicitly excluded.");
+      } else if (av1_webm_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        within_message(1,
+                       "Only AV1 video can be copied by this WebM profile; an incompatible video stream was explicitly excluded.");
       } else if (profile == 2 &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -1805,6 +1841,8 @@ int within_remux(int profile) {
         within_message(1,
                        video_only_output
                            ? "The source attachment is explicitly excluded from this video-only output."
+                       : av1_webm_output
+                           ? "The source attachment is explicitly excluded from this AV1 WebM profile."
                            : "The source attachment cannot be represented by this MP4 profile and is explicitly excluded.");
       } else if (video_only_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -1817,6 +1855,8 @@ int within_remux(int profile) {
                 ? "A source stream type unsupported by elementary video output was explicitly excluded."
                 : mpeg2_transport_output
                   ? "A source stream type unsupported by this MPEG-TS wrapping profile was explicitly excluded."
+                : av1_webm_output
+                  ? "A source stream type unsupported by this AV1 WebM profile was explicitly excluded."
                 : "A source stream type unsupported by MP4 was explicitly excluded.");
       }
       continue;
@@ -1892,7 +1932,13 @@ int within_remux(int profile) {
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
   output_format->max_interleave_delta = 2 * AV_TIME_BASE;
 
-  if (elementary_output || mpeg2_transport_output) {
+  if (av1_webm_output) {
+    /* Live WebM omits the duration/cue index so muxer memory cannot grow with
+       total file duration. Five-second/5 MiB clusters bound muxer buffering. */
+    av_dict_set(&muxer_options, "live", "1", 0);
+    av_dict_set(&muxer_options, "cluster_time_limit", "5000", 0);
+    av_dict_set(&muxer_options, "cluster_size_limit", "5242880", 0);
+  } else if (elementary_output || mpeg2_transport_output) {
     /* Elementary streams and MPEG-TS need no seek-dependent MOV options. */
   } else if (profile == 2) {
     av_dict_set(&muxer_options, "movflags",

@@ -180,6 +180,7 @@ if (
     "mp4-to-m4v",
     "mov-to-m4v",
     "avi-to-m4v",
+    "mkv-to-webm-av1",
     "mkv-to-m4a",
     "mov-to-m4a",
     "3gp-to-m4a",
@@ -281,6 +282,7 @@ const isMediaProfile =
   profileId === "mp4-to-m4v" ||
   profileId === "mov-to-m4v" ||
   profileId === "avi-to-m4v" ||
+  profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-m4a" ||
   profileId === "mov-to-m4a" ||
   profileId === "3gp-to-m4a" ||
@@ -1056,6 +1058,7 @@ async function validateMediaOutput(
     route === "mov-to-m4v" ||
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
+  const av1WebmCopy = route === "mkv-to-webm-av1";
   const elementaryVideoOutput = h264Output || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
   const videoOnlyCopy =
@@ -1267,6 +1270,55 @@ async function validateMediaOutput(
       sha256: packetHashes[0],
     };
   }
+  if (av1WebmCopy) {
+    const { stdout: decodedStreamHashes } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-i",
+        localPath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-f",
+        "streamhash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      {
+        cwd: projectRoot,
+        windowsHide: true,
+        maxBuffer: 16 * 1024 * 1024,
+      },
+    );
+    const hashes = new Map(
+      decodedStreamHashes
+        .trim()
+        .split(/\r?\n/)
+        .map((line) => {
+          const match = line.match(/^(\d+),([av]),SHA256=([0-9a-f]{64})$/i);
+          return match ? [match[2], match[3].toLowerCase()] : ["", ""];
+        }),
+    );
+    if (
+      hashes.get("v") !== source.decodedVideoSha256 ||
+      hashes.get("a") !== source.decodedAudioSha256
+    ) {
+      throw new Error(
+        "Browser AV1 WebM decoded video or audio does not exactly match the source.",
+      );
+    }
+    independentAudioValidation = {
+      method: "decoded-av-streamhash-sha256",
+      passed: true,
+      videoSha256: hashes.get("v"),
+      audioSha256: hashes.get("a"),
+    };
+  }
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -1373,7 +1425,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1387,8 +1439,10 @@ async function validateMediaOutput(
       route === "aac-to-m4a" ||
       route === "wav-to-alac" ||
       route === "flac-to-alac" ||
-      webmAudioCopy) &&
+      webmAudioCopy ||
+      av1WebmCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
+    (av1WebmCopy && Number.isFinite(probedOutputDuration)) ||
     Math.abs(duration - expectedDuration) > 0.25
   ) {
     throw new Error(
@@ -1396,13 +1450,16 @@ async function validateMediaOutput(
     );
   }
   if (
-    elementaryVideoOutput &&
+    (elementaryVideoOutput || av1WebmCopy) &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
     throw new Error(
-      `Browser elementary-video extraction produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
+      `Browser video output produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
     );
+  }
+  if (av1WebmCopy && (probe.chapters?.length ?? 0) !== 0) {
+    throw new Error("Browser AV1 WebM output unexpectedly contains chapters.");
   }
   if (videoReencode && video) {
     const midpoint = route.startsWith("h264-to-")
@@ -1513,6 +1570,7 @@ async function validateMediaOutput(
     elementaryVideoOutput ||
     mpeg2TransportOutput ||
     m4vMp4Output ||
+    av1WebmCopy ||
     route === "h264-to-mp4" ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
@@ -1529,25 +1587,29 @@ async function validateMediaOutput(
     audioOnly ||
     webmAudioCopy ||
     (!videoReencode && !videoOnlyCopy);
-  await execFileAsync(
-    "ffmpeg",
-    [
-      "-v",
-      "error",
-      "-i",
-      localPath,
-      ...(audioOnly ? [] : ["-map", "0:v:0"]),
-      ...(outputHasAudio ? ["-map", "0:a:0"] : []),
-      ...(requiresFullDecodeTraversal ? [] : ["-c", "copy"]),
-      "-f",
-      "null",
-      "NUL",
-    ],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
-  );
+  if (!av1WebmCopy) {
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-i",
+        localPath,
+        ...(audioOnly ? [] : ["-map", "0:v:0"]),
+        ...(outputHasAudio ? ["-map", "0:a:0"] : []),
+        ...(requiresFullDecodeTraversal ? [] : ["-c", "copy"]),
+        "-f",
+        "null",
+        "NUL",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+    );
+  }
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
-    mediaTraversal: requiresFullDecodeTraversal
+    mediaTraversal: av1WebmCopy
+      ? "full-native-decode-and-streamhash"
+      : requiresFullDecodeTraversal
       ? "full-native-decode"
       : "full-packet-traversal",
   };

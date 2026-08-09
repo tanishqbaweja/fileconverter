@@ -390,6 +390,39 @@ function containerM4vProfile(
   };
 }
 
+const av1WebmEvidence = {
+  "mkv-to-webm-av1": 222_942_211,
+} as const satisfies Record<string, number | null>;
+
+function av1WebmProfile(): ConversionProfile {
+  const evidence = av1WebmEvidence["mkv-to-webm-av1"];
+  return {
+    id: "mkv-to-webm-av1",
+    input: "mkv",
+    output: "webm-av1",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The first non-attached video stream must be AV1. All AV1 video streams and compatible Opus or Vorbis audio streams are copied without re-encoding.",
+      "Incompatible video or audio, subtitles, attachments, data streams, and chapters are explicitly excluded with warnings.",
+      "Compatible stream dispositions, language tags, codec descriptors, and general metadata are copied where WebM can represent them.",
+      "The bounded live-WebM layout omits a duration field and cue index so muxer memory cannot grow with file duration; players can still decode sequentially but may need to scan before seeking accurately.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 export const formats = [
   {
     id: "binary",
@@ -799,6 +832,13 @@ export const formats = [
   {
     id: "webm-vp9",
     label: "WebM video (VP9)",
+    extensions: ["webm"],
+    mimeTypes: ["video/webm"],
+    category: "video",
+  },
+  {
+    id: "webm-av1",
+    label: "WebM video (AV1 stream copy)",
     extensions: ["webm"],
     mimeTypes: ["video/webm"],
     category: "video",
@@ -3785,6 +3825,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerM4vProfile("mp4"),
   containerM4vProfile("mov"),
   containerM4vProfile("avi"),
+  av1WebmProfile(),
 ];
 
 export function formatById(id: string): FormatDefinition | undefined {

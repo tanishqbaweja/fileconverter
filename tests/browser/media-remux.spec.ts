@@ -83,6 +83,7 @@ const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
 const vp9WebmOutputPath = path.join(outputRoot, "vp9-reencode-output.webm");
+const av1WebmCopyOutputPath = path.join(outputRoot, "av1-copy-output.webm");
 const mp4WebmOutputPath = path.join(outputRoot, "mp4-vp8-output.webm");
 const mp4Vp9WebmOutputPath = path.join(outputRoot, "mp4-vp9-output.webm");
 const movWebmOutputPath = path.join(outputRoot, "mov-vp8-output.webm");
@@ -271,6 +272,12 @@ const m4vFixturePath = path.join(
   "fixtures",
   "media",
   "mpeg4-video-source.m4v",
+);
+const av1OpusFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "av1-opus-source.mkv",
 );
 const h264FixturePath = path.join(
   projectRoot,
@@ -479,6 +486,7 @@ test.beforeAll(async () => {
   assertProjectLocal(webmOutputPath);
   assertProjectLocal(ogvWebmOutputPath);
   assertProjectLocal(vp9WebmOutputPath);
+  assertProjectLocal(av1WebmCopyOutputPath);
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -750,6 +758,7 @@ test.afterAll(async () => {
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
   await rm(vp9WebmOutputPath, { force: true });
+  await rm(av1WebmCopyOutputPath, { force: true });
   await rm(mp4WebmOutputPath, { force: true });
   await rm(mp4Vp9WebmOutputPath, { force: true });
   await rm(movWebmOutputPath, { force: true });
@@ -878,6 +887,7 @@ async function runMediaRoute(
     | "mp4-to-m4v"
     | "mov-to-m4v"
     | "avi-to-m4v"
+    | "mkv-to-webm-av1"
     | "mkv-to-m4a"
     | "mov-to-m4a"
     | "3gp-to-m4a"
@@ -1579,6 +1589,7 @@ for (const route of [
   ["mp4-to-m4v", m4vContainerFixturePaths.mp4],
   ["mov-to-m4v", m4vContainerFixturePaths.mov],
   ["avi-to-m4v", m4vContainerFixturePaths.avi],
+  ["mkv-to-webm-av1", av1OpusFixturePath],
   ["m2v-to-webm-vp9", m2vFixturePath],
   ["mp4-to-webm", mp4InputFixturePath],
   ["mp4-to-webm-vp9", mp4InputFixturePath],
@@ -1759,6 +1770,11 @@ for (const route of [
     profileId: "mkv-to-m4a",
     title: "M4A",
     expectedError: "Lossless M4A stream copy accepts AAC audio",
+  },
+  {
+    profileId: "mkv-to-webm-av1",
+    title: "AV1 WebM",
+    expectedError: "The first non-attached video stream is not AV1",
   },
 ] as const) {
   test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
@@ -2271,6 +2287,29 @@ test("browser FFmpeg decodes video and encodes a genuine VP9 WebM", async () => 
     vp9WebmOutputPath,
     ["vp9"],
     50_000,
+  );
+});
+
+test("browser FFmpeg losslessly copies AV1 and Opus from Matroska to bounded live WebM", async () => {
+  await runMediaRoute(
+    "mkv-to-webm-av1",
+    av1WebmCopyOutputPath,
+    ["av1", "opus"],
+    100_000,
+    av1OpusFixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      validate: async (probe, outputPath) => {
+        const video = probe.streams.find((stream) => stream.codec_type === "video");
+        const audio = probe.streams.find((stream) => stream.codec_type === "audio");
+        expect(video?.nb_read_frames).toBe("96");
+        expect(audio?.tags?.language).toBe("eng");
+        expect(probe.chapters ?? []).toEqual([]);
+        await expectDecodedVideoMatch(av1OpusFixturePath, outputPath);
+        await expectDecodedPcmMatch(av1OpusFixturePath, outputPath);
+      },
+    },
   );
 });
 

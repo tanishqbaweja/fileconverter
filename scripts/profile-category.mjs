@@ -248,6 +248,12 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "av1-webm": {
+    generator: "scripts/generate-av1-opus-stress-fixture.mjs",
+    profiles: [
+      ["mkv-to-webm-av1", "fixtures/stress/media/av1-opus-128m.mkv"],
+    ],
+  },
   "h264-elementary": {
     generator: "scripts/generate-h264-elementary-stress-fixtures.mjs",
     profiles: [

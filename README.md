@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 192
+complete-Chromium memory profile have passed. The current registry publishes 193
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
 
 The registry records the exact tested size and limitations for every individual
@@ -118,7 +118,7 @@ Hard limits:
 - initial Wasm memory: 32 MiB
 - maximum Wasm memory: 96 MiB
 - shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
-  routes, 80 MiB for VP8 WebM, and 88 MiB for VP9 WebM
+  routes including AV1 WebM copy, 80 MiB for VP8 WebM, and 88 MiB for VP9 WebM
 - completed large input/output in MEMFS: prohibited
 - text line, record, or subtitle cue: 1 MiB
 - XML markup token: 256 KiB; nesting: 256 elements; attributes: 4,096 per element
@@ -193,7 +193,7 @@ fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
 FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
-AAC packets, performs real bounded audio decode/resample/encode pipelines, or
+AAC packets plus certified AV1/Opus or AV1/Vorbis Matroska streams, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
 
 The lossless MKV/MOV/MPEG-TS-to-MP4 planner accepts only H.264 or HEVC video plus AAC;
@@ -302,6 +302,17 @@ MKV, MP4, MOV, and AVI can extract their first certified MPEG-4 Part 2 video
 stream directly to M4V. Audio and all container-only fields are explicitly
 excluded. Browser tests compare every decoded frame, and the large-file gate
 fully decoded all 1,440 frames in every output.
+
+Certified AV1 Matroska input takes the fastest lossless route: it skips the
+decoder-oriented stream-analysis pass and packet-copies every AV1 video stream
+plus compatible Opus or Vorbis audio directly into WebM. The live WebM layout
+uses five-second or 5 MiB clusters and omits duration/cue indexes so muxer memory
+cannot grow with duration; sequential playback remains valid, while accurate
+seeking may require a player scan. In three Chrome runs, a 222,942,211-byte
+1,920×1,080 AV1/Opus source completed in 1.98–2.40 seconds with 32 MiB Wasm and
+213.7 MiB worst incremental process-tree private memory. All 1,440 decoded video
+frames and decoded Opus samples matched the source SHA-256 exactly, and cleanup
+deleted the source and all three outputs.
 
 Raw Annex B H.264 input uses the same 262,144-byte bounded AVIO reader. It can
 be stream-copied into fragmented MP4 or genuinely decoded and encoded as
