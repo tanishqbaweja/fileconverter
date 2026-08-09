@@ -181,6 +181,11 @@ if (
     "avi-to-mkv",
     "webm-to-mkv",
     "ogv-to-mkv",
+    "mkv-to-mpeg-ts",
+    "mp4-to-mpeg-ts",
+    "mov-to-mpeg-ts",
+    "3gp-to-mpeg-ts",
+    "flv-to-mpeg-ts",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -312,6 +317,11 @@ const isMediaProfile =
   profileId === "avi-to-mkv" ||
   profileId === "webm-to-mkv" ||
   profileId === "ogv-to-mkv" ||
+  profileId === "mkv-to-mpeg-ts" ||
+  profileId === "mp4-to-mpeg-ts" ||
+  profileId === "mov-to-mpeg-ts" ||
+  profileId === "3gp-to-mpeg-ts" ||
+  profileId === "flv-to-mpeg-ts" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1157,6 +1167,13 @@ async function validateMediaOutput(
     "ogv-to-mkv",
   ].includes(route);
   const liveMatroskaCopy = matroskaCopy && route !== "avi-to-mkv";
+  const containerMpegTsCopy = [
+    "mkv-to-mpeg-ts",
+    "mp4-to-mpeg-ts",
+    "mov-to-mpeg-ts",
+    "3gp-to-mpeg-ts",
+    "flv-to-mpeg-ts",
+  ].includes(route);
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
@@ -1212,7 +1229,7 @@ async function validateMediaOutput(
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
-      : mpeg2TransportOutput
+      : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
       : pcmOutput
         ? Number.MAX_SAFE_INTEGER
@@ -1555,6 +1572,14 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser Matroska output did not probe as Matroska.");
   }
+  if (
+    containerMpegTsCopy &&
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("mpegts")
+  ) {
+    throw new Error("Browser MPEG-TS output did not probe as MPEG-TS.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1661,7 +1686,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy) &&
+    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy) &&
       audio?.channels !==
         (wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
@@ -1907,6 +1932,35 @@ async function validateMediaOutput(
       }
       probe.withinValidation.audioPacketHash = packetHashes[0];
     }
+  } else if (containerMpegTsCopy) {
+    const packetStreamHashes = [];
+    for (const candidate of [sourcePath, localPath]) {
+      const { stdout: packetStreamHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-xerror", "-i", candidate,
+          "-map", "0:v:0", "-map", "0:a:0",
+          "-c:v", "rawvideo", "-pix_fmt", "yuv420p",
+          "-c:a", "copy", "-bsf:a", "aac_adtstoasc",
+          "-f", "streamhash", "-hash", "sha256", "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 16 * 1024 * 1024,
+        },
+      );
+      packetStreamHashes.push(packetStreamHash.trim());
+    }
+    if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
+      throw new Error(
+        "Browser MPEG-TS decoded video frames or AAC access units do not exactly match the source.",
+      );
+    }
+    probe.withinValidation = {
+      ...(probe.withinValidation ?? {}),
+      decodedVideoAndAacStreamHash: packetStreamHashes[0],
+    };
   } else if (!av1WebmCopy) {
     await execFileAsync(
       "ffmpeg",
@@ -1929,6 +1983,8 @@ async function validateMediaOutput(
     ...(probe.withinValidation ?? {}),
     mediaTraversal: av1WebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
+      : containerMpegTsCopy
+      ? "full-decoded-video-and-aac-streamhash"
       : requiresFullDecodeTraversal
       ? "full-native-decode"
       : "full-packet-traversal",

@@ -183,6 +183,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-mpegts": {
+    generator: "scripts/generate-container-mpegts-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-mpeg-ts", "fixtures/stress/media/h264-aac-128m.mkv"],
+      ["mp4-to-mpeg-ts", "fixtures/stress/media/h264-aac-128m.mp4"],
+      ["mov-to-mpeg-ts", "fixtures/stress/media/h264-aac-128m.mov"],
+      ["3gp-to-mpeg-ts", "fixtures/stress/media/h264-aac-128m.3gp"],
+      ["flv-to-mpeg-ts", "fixtures/stress/media/h264-aac-128m.flv"],
+    ],
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

@@ -12,13 +12,14 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **222**
-- Public profiles with a retained successful Chrome stress report: **222**
+- Public passed conversion profiles: **227**
+- Public profiles with a retained successful Chrome stress report: **227**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Latest full verification cycle
 
-- **2026-08-09:** 496/496 production-browser tests passed; 21/21 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-10:** 508/508 production-browser tests passed; 22/22 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **Fast bounded MPEG-TS remuxing:** MKV, MP4, MOV, 3GP, and FLV passed 3/3 Chrome runs on 146,854,522-147,136,646-byte H.264/AAC sources in 0.77-1.59 s at 170.0-187.5 MiB worst incremental private memory. All fifteen outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, repeatable bytes, and full decoded-video plus exact AAC-access-unit SHA-256 validation. Standards-required Annex B and ADTS framing changes do not re-encode media. A separate HEVC/AAC Matroska browser case passed exact decoded-video and AAC identity. The reusable asynchronous BYOB reader avoids source-sized Blob retention; a bounded 2 MiB/2-second inspection plus 2 MiB opening-packet lookahead reconstructs only missing or decreasing B-frame decode timestamps while leaving valid monotonic timing untouched. Focused success, HEVC, codec-rejection, forced-write, and partial-output-cleanup coverage passed 12/12 before the 508/508 full regression. Retained failures document the stale-production-bundle timestamp loop and two validator normalization mistakes; the final category run removed every large generated source and converted copy in `finally`, while compact manifests and reports remain as the durable record.
 - **Fast bounded Matroska remuxing:** MP4, MOV, 3GP, MPEG-TS, FLV, AVI, WebM, and OGV passed 3/3 Chrome runs on 137,218,662-222,941,314-byte sources in 0.87-1.67 s at 166.2-183.7 MiB worst incremental private memory. All 24 outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, repeatable bytes, and full native decoded-stream or compressed-packet identity checks. Compatible video, audio, subtitle, attachment, chapter, stream, and general metadata are copied without re-encoding. Seven routes use live Matroska with five-second/5 MiB clusters and no duration/cue index; AVI uses the same bounded clusters plus a compact cue index after both native and browser FFmpeg live mode produced incorrect VFW duration metadata. A rejected synchronous Blob-reader topology reached 295.5 MiB on MP4; the reusable asynchronous BYOB reader reduced the passing routes to at most 183.7 MiB without changing the 250 MiB ceiling. Focused testing recorded and fixed AAC priming, transport-stream AAC configuration, AVI duration, and validator assumptions before the final 19/19 gate and 496/496 full regression. All generated sources and converted copies stayed under the repository and category cleanup removed them in `finally`, while compact manifests and success/failure reports remain as the loop-prevention record.
 - **Fast bounded container-to-HEVC extraction:** MKV, MP4, MOV, and MPEG-TS passed 3/3 Chrome runs on 148,952,609-157,710,004-byte HEVC sources in 2.06-3.78 s at 195.3-212.2 MiB worst incremental private memory. All twelve outputs used 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, were byte-repeatable, retained all 17,282 decoded frames, and passed full native decode traversal. The packet-copy route excludes audio, subtitles, attachments, data, additional video, chapters, timestamps, and container-only metadata that Annex B cannot represent. The focused production-browser gate passed 9/9 success, codec-rejection, forced-write, and partial-output-cleanup cases. A raw HEVC-to-MP4 candidate was rejected after both native FFmpeg and the browser retained 98 packets but produced a different decoded presentation-order hash: elementary HEVC lacks the container timestamps needed to reconstruct B-frame timing reliably. The unused raw HEVC demuxer and route were removed instead of weakening identity validation. All generated sources and converted copies stayed under the repository and cleanup removed them while retaining compact manifests and reports.
 - **Fast bounded Ogg-family audio extraction:** MKV/WebM-to-Ogg Vorbis, OGV-to-Ogg Vorbis, and MKV/WebM-to-Ogg Opus passed 3/3 Chrome runs on 137,218,662–222,942,211-byte sources in 0.39–0.93 s at 185.0–207.8 MiB worst incremental private memory. All fifteen outputs used 32 MiB Wasm, 256 KiB maximum reads, at most 15,406-byte writes, and one pending write. Exact compressed-packet validation retained 2,812 Vorbis packets from the 60-second Matroska/WebM sources, 36,564 Vorbis packets from OGV, and 3,001 Opus packets; native FFmpeg fully decoded every result. The reusable async BYOB input path avoids a second source-sized Blob allocation while preserving sub-second packet-copy performance. Two optimized base encodes ran concurrently and three derivative containers were generated by concurrent stream copy; all five 128 MiB-class sources were ready in 60.94 seconds. The focused production-browser gate passed 12/12 success, rejection, forced-write, and partial-output-cleanup cases. Every generated source and converted copy stayed under the repository and category cleanup removed them while retaining only compact manifests and reports.
@@ -54,6 +55,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | 3gp-to-m4a | 167,130,850 | 3 | 11,539,835 | 1.12 s–1.50 s | 204.8 MiB | 32.0 MiB | read 262,144 B / write 80,761 B | passed |
 | 3gp-to-mkv | 146,854,522 | 3 | 146,855,025 | 0.92 s–1.22 s | 183.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | 3gp-to-mp4 | 167,130,850 | 3 | 167,156,758 | 1.66 s–1.93 s | 209.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| 3gp-to-mpeg-ts | 146,854,522 | 3 | 150,630,112 | 1.21 s–1.59 s | 186.4 MiB | 32.0 MiB | read 262,144 B / write 118,440 B | passed |
 | 3gp-to-wav | 167,130,850 | 3 | 69,130,350 | 3.66 s–3.91 s | 193.7 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | 3gp-to-webm | 146,854,522 | 3 | 4,948,064 | 9.28 s–9.69 s | 236.4 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | 3gp-to-webm-vp9 | 146,854,522 | 3 | 3,372,711 | 13.55 s–14.19 s | 234.0 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -103,6 +105,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | flv-to-mkv | 146,903,539 | 3 | 146,854,983 | 0.93 s–1.32 s | 183.7 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-mp3 | 181,377,794 | 3 | 1,441,172 | 1.26 s–1.58 s | 221.2 MiB | 32.0 MiB | read 262,144 B / write 596 B | passed |
 | flv-to-mp4 | 167,517,193 | 3 | 167,091,007 | 1.64 s–1.85 s | 193.1 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| flv-to-mpeg-ts | 146,903,539 | 3 | 150,630,112 | 1.23 s–1.57 s | 187.5 MiB | 32.0 MiB | read 262,144 B / write 118,440 B | passed |
 | flv-to-wav | 167,517,193 | 3 | 68,776,058 | 3.44 s–3.93 s | 192.4 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | flv-to-webm | 146,903,539 | 3 | 4,948,077 | 9.22 s–9.71 s | 220.6 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-webm-vp9 | 146,903,539 | 3 | 3,372,724 | 13.62 s–14.05 s | 222.1 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -144,6 +147,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-mp3 | 181,340,062 | 3 | 1,440,788 | 1.22 s–1.54 s | 234.4 MiB | 32.0 MiB | read 262,144 B / write 576 B | passed |
 | mkv-to-mp4 | 2,958,573,265 | 3 | 2,962,151,522 | 17.42 s–23.30 s | 247.5 MiB | 53.6 MiB | read 262,144 B / write 1,048,576 B | passed |
 | mkv-to-mp4-mpeg4 | 2,958,573,265 | 3 | 3,086,358,463 | 3091.16 s–3096.06 s | 211.3 MiB | 89.6 MiB | read 262,144 B / write 262,144 B | passed |
+| mkv-to-mpeg-ts | 147,131,071 | 3 | 150,835,596 | 1.20 s–1.40 s | 187.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-ogg | 222,125,242 | 3 | 106,739 | 0.39 s–0.70 s | 191.1 MiB | 32.0 MiB | read 262,144 B / write 3,533 B | passed |
 | mkv-to-opus | 222,942,211 | 3 | 922,267 | 0.40 s–0.74 s | 207.8 MiB | 32.0 MiB | read 262,144 B / write 15,406 B | passed |
 | mkv-to-wav | 2,958,573,265 | 3 | 7,107,834,734 | 156.72 s–161.53 s | 178.0 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
@@ -160,6 +164,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mov-to-mkv | 147,136,647 | 3 | 147,130,829 | 0.87 s–1.21 s | 169.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-mp3 | 181,344,078 | 3 | 1,441,263 | 1.30 s–1.52 s | 243.9 MiB | 32.0 MiB | read 262,144 B / write 687 B | passed |
 | mov-to-mp4 | 149,251,969 | 3 | 149,087,892 | 0.87 s–1.13 s | 168.2 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mov-to-mpeg-ts | 147,136,646 | 3 | 150,830,332 | 0.77 s–1.43 s | 172.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-wav | 149,251,969 | 3 | 414,733,404 | 9.31 s–9.77 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
 | mov-to-webm | 147,136,647 | 3 | 5,100,809 | 9.53 s–10.14 s | 244.4 MiB | 48.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-webm-vp9 | 147,136,647 | 3 | 4,126,570 | 14.67 s–15.17 s | 236.8 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -174,6 +179,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mp4-to-m4v | 179,625,218 | 3 | 179,609,473 | 1.71 s–1.98 s | 195.4 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
 | mp4-to-mkv | 147,136,623 | 3 | 147,130,793 | 0.89 s–1.22 s | 172.9 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mp4-to-mp3 | 181,344,111 | 3 | 1,441,275 | 1.20 s–1.54 s | 229.2 MiB | 32.0 MiB | read 262,144 B / write 699 B | passed |
+| mp4-to-mpeg-ts | 147,136,623 | 3 | 150,835,032 | 1.13 s–1.43 s | 170.0 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mp4-to-wav | 2,964,855,971 | 3 | 7,107,834,950 | 93.11 s–93.94 s | 224.1 MiB | 73.8 MiB | read 262,144 B / write 24,576 B | passed |
 | mp4-to-webm | 147,136,619 | 3 | 5,105,363 | 12.84 s–13.34 s | 226.9 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mp4-to-webm-vp9 | 147,136,625 | 3 | 4,143,084 | 14.80 s–15.36 s | 237.1 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -322,6 +328,9 @@ Stream ma |
 | 2026-08-09T15:06:09.738Z | flv-to-aac | 146,903,486 | 3 | 146,903,486 | Failed checks: processTreePrivateMemory; measured 291.4 MiB against a 250.0 MiB limit. |
 | 2026-08-09T18:07:00.589Z | mp4-to-mkv | 147,136,622 | 3 | 147,136,622 | Failed checks: processTreePrivateMemory; measured 295.5 MiB against a 250.0 MiB limit. |
 | 2026-08-09T18:35:07.249Z | avi-to-mkv | 159,500,442 | 0 | 159,500,442 | Browser media metadata validation failed: 1282x536, 1 channels, not-applicable, 65s. |
+| 2026-08-09T19:21:59.802Z | mkv-to-mpeg-ts | 2,958,573,265 | 0 | 157,249 | Conversion run 1 failed: [mpegts @ 0x4dc7e0] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 15030 >= 7470 \| MPEG-TS packet write failed: Inval |
+| 2026-08-09T19:34:01.230Z | mkv-to-mpeg-ts | 147,131,069 | 0 | 147,131,069 | Browser MPEG-TS normalized compressed video packets or AAC access units do not exactly match the source. |
+| 2026-08-09T19:35:29.058Z | mkv-to-mpeg-ts | 147,131,073 | 0 | 147,131,073 | Browser MPEG-TS decoded video frames or AAC access units do not exactly match the source. |
 
 ## Every public passed profile
 
@@ -333,6 +342,7 @@ Stream ma |
 | 3gp-to-m4a | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-mkv | video | ffmpeg-remux | stream-copy | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-mp4 | video | ffmpeg-remux | stream-copy | 167,130,850 B | 3-run Chrome report |
+| 3gp-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-wav | video | ffmpeg-audio | re-encode | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-webm | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
@@ -382,6 +392,7 @@ Stream ma |
 | flv-to-mkv | video | ffmpeg-remux | stream-copy | 146,903,539 B | 3-run Chrome report |
 | flv-to-mp3 | video | ffmpeg-remux | stream-copy | 181,377,794 B | 3-run Chrome report |
 | flv-to-mp4 | video | ffmpeg-remux | stream-copy | 167,517,193 B | 3-run Chrome report |
+| flv-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 146,903,539 B | 3-run Chrome report |
 | flv-to-wav | video | ffmpeg-audio | re-encode | 167,517,193 B | 3-run Chrome report |
 | flv-to-webm | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
 | flv-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
@@ -423,6 +434,7 @@ Stream ma |
 | mkv-to-mp3 | video | ffmpeg-remux | stream-copy | 181,340,062 B | 3-run Chrome report |
 | mkv-to-mp4 | video | ffmpeg-remux | stream-copy | 10,737,988,703 B | 3-run Chrome report |
 | mkv-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
+| mkv-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 147,131,071 B | 3-run Chrome report |
 | mkv-to-ogg | video | ffmpeg-remux | stream-copy | 222,125,242 B | 3-run Chrome report |
 | mkv-to-opus | video | ffmpeg-remux | stream-copy | 222,942,211 B | 3-run Chrome report |
 | mkv-to-wav | video | ffmpeg-audio | re-encode | 2,958,573,265 B | 3-run Chrome report |
@@ -439,6 +451,7 @@ Stream ma |
 | mov-to-mkv | video | ffmpeg-remux | stream-copy | 147,136,647 B | 3-run Chrome report |
 | mov-to-mp3 | video | ffmpeg-remux | stream-copy | 181,344,078 B | 3-run Chrome report |
 | mov-to-mp4 | video | ffmpeg-remux | stream-copy | 149,251,969 B | 3-run Chrome report |
+| mov-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 147,136,646 B | 3-run Chrome report |
 | mov-to-wav | video | ffmpeg-audio | re-encode | 149,251,969 B | 3-run Chrome report |
 | mov-to-webm | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
 | mov-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
@@ -453,6 +466,7 @@ Stream ma |
 | mp4-to-m4v | video | ffmpeg-remux | stream-copy | 179,625,218 B | 3-run Chrome report |
 | mp4-to-mkv | video | ffmpeg-remux | stream-copy | 147,136,623 B | 3-run Chrome report |
 | mp4-to-mp3 | video | ffmpeg-remux | stream-copy | 181,344,111 B | 3-run Chrome report |
+| mp4-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 147,136,623 B | 3-run Chrome report |
 | mp4-to-wav | video | ffmpeg-audio | re-encode | 2,964,855,971 B | 3-run Chrome report |
 | mp4-to-webm | video | ffmpeg-video | re-encode | 161,758,724 B | 3-run Chrome report |
 | mp4-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,625 B | 3-run Chrome report |

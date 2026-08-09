@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -129,6 +129,8 @@ export async function runMediaRemux({
         ? "Extracting HEVC video"
       : remuxProfile === 23
         ? "Remuxing to Matroska"
+      : remuxProfile === 24
+        ? "Remuxing to MPEG-TS"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -158,7 +160,9 @@ export async function runMediaRemux({
   const synchronousFileReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
   const synchronousInputReader =
-    (remuxProfile >= 19 && remuxProfile <= 21) || remuxProfile === 23
+    (remuxProfile >= 19 && remuxProfile <= 21) ||
+    remuxProfile === 23 ||
+    remuxProfile === 24
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =

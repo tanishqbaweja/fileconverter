@@ -165,6 +165,13 @@ const matroskaOutputPaths = {
   webm: path.join(outputRoot, "webm-remux-output.mkv"),
   ogv: path.join(outputRoot, "ogv-remux-output.mkv"),
 } as const;
+const containerMpegTsOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-remux-output.mpegts"),
+  mp4: path.join(outputRoot, "mp4-remux-output.mpegts"),
+  mov: path.join(outputRoot, "mov-remux-output.mpegts"),
+  "3gp": path.join(outputRoot, "3gp-remux-output.mpegts"),
+  flv: path.join(outputRoot, "flv-remux-output.mpegts"),
+} as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const complexMatroskaOutputPath = path.join(
   outputRoot,
@@ -668,6 +675,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(matroskaOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     assertProjectLocal(fixture);
   }
@@ -1061,6 +1071,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(matroskaOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(complexMp4OutputPath, { force: true });
   await rm(complexMatroskaOutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
@@ -1171,6 +1184,11 @@ async function runMediaRoute(
     | "avi-to-mkv"
     | "webm-to-mkv"
     | "ogv-to-mkv"
+    | "mkv-to-mpeg-ts"
+    | "mp4-to-mpeg-ts"
+    | "mov-to-mpeg-ts"
+    | "3gp-to-mpeg-ts"
+    | "flv-to-mpeg-ts"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -1903,6 +1921,11 @@ for (const route of [
   ["avi-to-mkv", aviInputFixturePath],
   ["webm-to-mkv", av1OpusWebmFixturePath],
   ["ogv-to-mkv", ogvFixturePath],
+  ["mkv-to-mpeg-ts", fixturePath],
+  ["mp4-to-mpeg-ts", mp4InputFixturePath],
+  ["mov-to-mpeg-ts", movInputFixturePath],
+  ["3gp-to-mpeg-ts", threeGpInputFixturePath],
+  ["flv-to-mpeg-ts", flvInputFixturePath],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -3128,6 +3151,78 @@ test("Matroska stream copy rejects codecs outside its certified set and cleans u
     const names: string[] = [];
     for await (const [name] of root.entries()) {
       if (name.startsWith("within-test-avi-to-mkv")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+for (const route of [
+  ["mkv-to-mpeg-ts", fixturePath, containerMpegTsOutputPaths.mkv],
+  ["mp4-to-mpeg-ts", mp4InputFixturePath, containerMpegTsOutputPaths.mp4],
+  ["mov-to-mpeg-ts", movInputFixturePath, containerMpegTsOutputPaths.mov],
+  ["3gp-to-mpeg-ts", threeGpInputFixturePath, containerMpegTsOutputPaths["3gp"]],
+  ["flv-to-mpeg-ts", flvInputFixturePath, containerMpegTsOutputPaths.flv],
+] as const) {
+  test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded MPEG-TS`, async () => {
+    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mpegts");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(route[1], outputPath);
+        await expectAacAccessUnitMatch(route[1], outputPath);
+      },
+    });
+  });
+}
+
+test("browser FFmpeg losslessly remuxes HEVC MKV to bounded MPEG-TS", async () => {
+  await runMediaRoute(
+    "mkv-to-mpeg-ts",
+    containerMpegTsOutputPaths.mkv,
+    ["hevc", "aac"],
+    100_000,
+    hevcContainerFixturePaths.mkv,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.3,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mpegts");
+        expect(probe.streams).toHaveLength(2);
+        await expectDecodedVideoMatch(hevcContainerFixturePaths.mkv, outputPath);
+        await expectAacAccessUnitMatch(hevcContainerFixturePaths.mkv, outputPath);
+      },
+    },
+  );
+});
+
+test("MPEG-TS stream copy rejects incompatible audio and cleans up", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(incompatibleFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mpeg-ts");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error).toContain(
+    "MPEG-TS stream copy accepts H.264 or HEVC video with AAC audio",
+  );
+  expect(state.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-mkv-to-mpeg-ts")) names.push(name);
     }
     return names;
   });

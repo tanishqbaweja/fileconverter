@@ -337,6 +337,45 @@ function containerMatroskaProfile(
   };
 }
 
+const containerMpegTsEvidence = {
+  "mkv-to-mpeg-ts": 147_131_071,
+  "mp4-to-mpeg-ts": 147_136_623,
+  "mov-to-mpeg-ts": 147_136_646,
+  "3gp-to-mpeg-ts": 146_854_522,
+  "flv-to-mpeg-ts": 146_903_539,
+} as const satisfies Record<string, number | null>;
+
+function containerMpegTsProfile(
+  input: "mkv" | "mp4" | "mov" | "3gp" | "flv",
+): ConversionProfile {
+  const id = `${input}-to-mpeg-ts` as keyof typeof containerMpegTsEvidence;
+  const evidence = containerMpegTsEvidence[id];
+  return {
+    id,
+    input,
+    output: "mpeg-ts",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
+      "All compatible video and audio streams are copied without re-encoding; subtitles, attachments, attached pictures, chapters, language tags, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
+      "MPEG-TS begins on a standards-compliant transport timestamp offset and cannot preserve MP4/MOV AAC priming metadata, so decoded audio trim may differ even though compressed AAC access units are unchanged.",
+    ],
+    fidelityLimitations: [],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const mpeg2ElementaryEvidence = {
   "m2v-to-mpeg-ts": 136_166_136,
   "mkv-to-m2v": 136_294_704,
@@ -4034,6 +4073,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerMatroskaProfile("avi"),
   containerMatroskaProfile("webm"),
   containerMatroskaProfile("ogv"),
+  containerMpegTsProfile("mkv"),
+  containerMpegTsProfile("mp4"),
+  containerMpegTsProfile("mov"),
+  containerMpegTsProfile("3gp"),
+  containerMpegTsProfile("flv"),
   mpeg2TransportProfile(),
   containerMpeg2Profile("mkv"),
   containerMpeg2Profile("mp4"),
