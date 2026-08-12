@@ -173,6 +173,75 @@ function containerFlacProfile(
   };
 }
 
+type StandaloneAiffInput =
+  | "m4a"
+  | "aac"
+  | "amr"
+  | "mp3"
+  | "flac"
+  | "wav"
+  | "wma"
+  | "ogg"
+  | "opus";
+
+const standaloneAiffEvidence: Record<StandaloneAiffInput, number | null> = {
+  m4a: 140_941_469,
+  aac: 134_367_785,
+  amr: 134_229_414,
+  mp3: 50_401_224,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  ogg: 144_431_506,
+  opus: 147_964_541,
+};
+
+function standaloneAiffProfile(input: StandaloneAiffInput): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    aac: "AAC in ADTS",
+    amr: "AMR-NB",
+    mp3: "MP3",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    ogg: "Vorbis in Ogg",
+    opus: "Opus in Ogg",
+  }[input];
+  const losslessInput = input === "flac" || input === "wav";
+  const evidence = standaloneAiffEvidence[input];
+  return {
+    id: `${input}-to-aiff`,
+    input,
+    output: "aiff",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, additional streams, and container-specific metadata are explicitly excluded.",
+      "Compatible text metadata is copied when AIFF can represent it; language tags are not guaranteed by AIFF players.",
+    ],
+    fidelityLimitations: losslessInput
+      ? [
+          "Output is signed 16-bit big-endian PCM; source samples above 16 bits are reduced to 16 bits.",
+        ]
+      : [
+          `${sourceCodec} is decoded to signed 16-bit big-endian PCM; AIFF cannot restore information already discarded by lossy source encoding.`,
+        ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3500,6 +3569,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  standaloneAiffProfile("m4a"),
+  standaloneAiffProfile("aac"),
+  standaloneAiffProfile("amr"),
+  standaloneAiffProfile("mp3"),
+  standaloneAiffProfile("flac"),
+  standaloneAiffProfile("wav"),
+  standaloneAiffProfile("wma"),
+  standaloneAiffProfile("ogg"),
+  standaloneAiffProfile("opus"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),

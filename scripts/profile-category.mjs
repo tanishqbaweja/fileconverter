@@ -15,10 +15,29 @@ const activeProfileMarker = path.join(
 );
 const category = process.argv[2];
 const runCount = process.env.WITHIN_RUN_COUNT ?? "3";
+const reuseFixtures = process.env.WITHIN_REUSE_FIXTURES === "1";
 const resumeProfile = process.env.WITHIN_PROFILE_START ?? null;
 const endProfile = process.env.WITHIN_PROFILE_END ?? null;
 
 const categories = {
+  "aiff-output": {
+    generator: "scripts/generate-aiff-output-stress-fixtures.mjs",
+    profiles: [
+      ["m4a-to-aiff", "audio-aac-50m.m4a"],
+      ["m4a-to-aiff", "audio-alac-128m.m4a"],
+      ["aac-to-aiff", "audio-aac-128m.aac"],
+      ["amr-to-aiff", "audio-amr-nb-128m.amr"],
+      ["mp3-to-aiff", "audio-mp3-50m.mp3"],
+      ["flac-to-aiff", "audio-flac-alac-128m.flac"],
+      ["wav-to-aiff", "audio-pcm-alac-128m.wav"],
+      ["wma-to-aiff", "audio-wma-128m.wma"],
+      ["ogg-to-aiff", "audio-vorbis-flac-128m.ogg"],
+      ["opus-to-aiff", "audio-opus-flac-128m.opus"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   audio: {
     generator: "scripts/generate-audio-stress-fixture.mjs",
     profiles: [
@@ -716,7 +735,17 @@ try {
     "Building the current source before profiling the production bundle.\n",
   );
   await runNode("node_modules/vinext/dist/cli.js", ["build"]);
-  await runNode(selected.generator, selected.generatorArguments ?? []);
+  if (reuseFixtures) {
+    for (const [, relativeFixture] of profiles) {
+      await access(path.resolve(projectRoot, relativeFixture));
+      await access(path.resolve(projectRoot, `${relativeFixture}.json`));
+    }
+    process.stdout.write(
+      "Reusing verified project-local fixtures; generation was skipped.\n",
+    );
+  } else {
+    await runNode(selected.generator, selected.generatorArguments ?? []);
+  }
   for (const [profileId, relativeFixture] of profiles) {
     const relativeManifest = `${relativeFixture}.json`;
     process.stdout.write(

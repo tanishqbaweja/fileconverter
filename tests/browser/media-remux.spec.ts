@@ -30,6 +30,7 @@ const directMp4OutputPath = path.join(outputRoot, "direct-remux-output.mp4");
 const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
 const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
+const directAiffOutputPath = path.join(outputRoot, "direct-audio-output.aiff");
 const aacM4aOutputPath = path.join(outputRoot, "aac-remux-output.m4a");
 const aacWavOutputPath = path.join(outputRoot, "aac-convert-output.wav");
 const aacFlacOutputPath = path.join(outputRoot, "aac-convert-output.flac");
@@ -79,6 +80,17 @@ const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
 const aiffFlacOutputPath = path.join(outputRoot, "aiff-convert-output.flac");
 const oggFlacOutputPath = path.join(outputRoot, "ogg-convert-output.flac");
 const opusFlacOutputPath = path.join(outputRoot, "opus-convert-output.flac");
+const aiffOutputPaths = {
+  m4a: path.join(outputRoot, "m4a-convert-output.aiff"),
+  aac: path.join(outputRoot, "aac-convert-output.aiff"),
+  amr: path.join(outputRoot, "amr-convert-output.aiff"),
+  mp3: path.join(outputRoot, "mp3-convert-output.aiff"),
+  flac: path.join(outputRoot, "flac-convert-output.aiff"),
+  wav: path.join(outputRoot, "wav-convert-output.aiff"),
+  wma: path.join(outputRoot, "wma-convert-output.aiff"),
+  ogg: path.join(outputRoot, "ogg-convert-output.aiff"),
+  opus: path.join(outputRoot, "opus-convert-output.aiff"),
+} as const;
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
@@ -677,6 +689,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(oggAudioExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(aiffOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -1016,6 +1031,7 @@ test.afterAll(async () => {
   await rm(directWavOutputPath, { force: true });
   await rm(directM4aOutputPath, { force: true });
   await rm(directFlacOutputPath, { force: true });
+  await rm(directAiffOutputPath, { force: true });
   await rm(aacM4aOutputPath, { force: true });
   await rm(aacWavOutputPath, { force: true });
   await rm(aacFlacOutputPath, { force: true });
@@ -1062,6 +1078,9 @@ test.afterAll(async () => {
   await rm(aiffFlacOutputPath, { force: true });
   await rm(oggFlacOutputPath, { force: true });
   await rm(opusFlacOutputPath, { force: true });
+  for (const outputPath of Object.values(aiffOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
@@ -1327,6 +1346,15 @@ async function runMediaRoute(
     | "aiff-to-flac"
     | "ogg-to-flac"
     | "opus-to-flac"
+    | "m4a-to-aiff"
+    | "aac-to-aiff"
+    | "amr-to-aiff"
+    | "mp3-to-aiff"
+    | "flac-to-aiff"
+    | "wav-to-aiff"
+    | "wma-to-aiff"
+    | "ogg-to-aiff"
+    | "opus-to-aiff"
     | "mkv-to-webm"
     | "mp4-to-webm"
     | "mov-to-webm"
@@ -1427,6 +1455,7 @@ async function runMediaRoute(
       profileId === "aiff-to-flac" ||
       profileId === "ogg-to-flac" ||
       profileId === "opus-to-flac"
+      || profileId.endsWith("-to-aiff")
     ) {
       expect(state.warnings).toEqual([]);
     } else {
@@ -1598,11 +1627,11 @@ async function validateContainerWebmOutput(
 }
 
 async function runSmallDirectAudioRoute(
-  profileId: "mkv-to-m4a" | "mp3-to-flac",
+  profileId: "mkv-to-m4a" | "mp3-to-flac" | "mp3-to-aiff",
   inputPath: string,
   outputName: string,
   outputPath: string,
-  expectedCodec: "aac" | "flac",
+  expectedCodec: "aac" | "flac" | "pcm_s16be",
   minimumBytes: number,
 ): Promise<void> {
   try {
@@ -1915,6 +1944,63 @@ test("browser FFmpeg flushes a bounded direct FLAC save correctly", async () => 
     "flac",
     20_000,
   );
+});
+
+test("browser FFmpeg flushes coalesced AIFF PCM through a bounded direct save", async () => {
+  await runSmallDirectAudioRoute(
+    "mp3-to-aiff",
+    mp3FixturePath,
+    "audio-source.aiff",
+    directAiffOutputPath,
+    "pcm_s16be",
+    300_000,
+  );
+});
+
+test("direct AIFF coalescing propagates write failure and releases the partial file", async () => {
+  const outputName = "audio-source.aiff";
+  try {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mp3-to-aiff");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    const abandonedSize = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(entryName);
+        const size = (await handle.getFile()).size;
+        await root.removeEntry(entryName);
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    }, outputName);
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  } finally {
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+  }
 });
 
 test("direct WAV coalescing propagates write failure and releases the partial file", async () => {
@@ -2731,6 +2817,54 @@ test("browser FFmpeg converts Opus to FLAC", async () => {
     {
       validate: async (_probe, outputPath) =>
         expectDecodedAudioPsnr(opusFixturePath, outputPath, 60),
+    },
+  );
+});
+
+const standaloneAiffRoutes = [
+  ["m4a-to-aiff", "m4a", audioFixturePath, false],
+  ["aac-to-aiff", "aac", aacFixturePath, false],
+  ["amr-to-aiff", "amr", amrFixturePath, true],
+  ["mp3-to-aiff", "mp3", mp3FixturePath, false],
+  ["flac-to-aiff", "flac", flacFixturePath, true],
+  ["wav-to-aiff", "wav", wavFixturePath, true],
+  ["wma-to-aiff", "wma", wmaFixturePath, false],
+  ["ogg-to-aiff", "ogg", oggFixturePath, false],
+  ["opus-to-aiff", "opus", opusFixturePath, false],
+] as const;
+
+for (const [route, input, inputPath, losslessPcm] of standaloneAiffRoutes) {
+  test(`browser FFmpeg writes genuine AIFF PCM for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      aiffOutputPaths[input],
+      ["pcm_s16be"],
+      input === "amr" ? 30_000 : 300_000,
+      inputPath,
+      {
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("aiff");
+          if (losslessPcm) {
+            await expectDecodedPcmMatch(inputPath, outputPath);
+          } else {
+            await expectDecodedAudioPsnr(inputPath, outputPath, 60);
+          }
+        },
+      },
+    );
+  });
+}
+
+test("browser FFmpeg preserves decoded ALAC samples in AIFF", async () => {
+  await runMediaRoute(
+    "m4a-to-aiff",
+    aiffOutputPaths.m4a,
+    ["pcm_s16be"],
+    300_000,
+    alacFixturePath,
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(alacFixturePath, outputPath),
     },
   );
 });

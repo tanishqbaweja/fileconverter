@@ -15,6 +15,17 @@ const fixturePath = path.resolve(
   process.argv[2] ?? "fixtures/stress/deterministic-256m.bin",
 );
 const profileId = process.argv[3] ?? "gzip-compress";
+const AIFF_OUTPUT_PROFILES = [
+  "m4a-to-aiff",
+  "aac-to-aiff",
+  "amr-to-aiff",
+  "mp3-to-aiff",
+  "flac-to-aiff",
+  "wav-to-aiff",
+  "wma-to-aiff",
+  "ogg-to-aiff",
+  "opus-to-aiff",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -144,6 +155,7 @@ const isSevenZipOutputProfile =
   profileId === "zip-to-sevenzip";
 if (
   ![
+    ...AIFF_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -309,6 +321,7 @@ if (
   throw new Error(`Unsupported memory-profile route: ${profileId}`);
 }
 const isMediaProfile =
+  AIFF_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1074,7 +1087,9 @@ async function validateMediaOutput(
     route === "mkv-to-opus" ||
     route === "webm-to-opus";
   const opusOutput = route.endsWith("-to-opus");
+  const aiffOutput = AIFF_OUTPUT_PROFILES.includes(route);
   const audioOnly =
+    aiffOutput ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -1124,6 +1139,7 @@ async function validateMediaOutput(
     route === "wav-to-wma" ||
     route === "flac-to-wma";
   const pcmOutput =
+    aiffOutput ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
     route === "3gp-to-wav" ||
@@ -1653,6 +1669,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser FLV output did not probe as genuine FLV.");
   }
+  if (
+    aiffOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("aiff")
+  ) {
+    throw new Error("Browser AIFF output did not probe as genuine AIFF.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1668,8 +1690,10 @@ async function validateMediaOutput(
     (audioOnly &&
       (codecs.length !== 1 ||
         codecs[0] !==
-          (pcmOutput
-            ? "pcm_s16le"
+          (aiffOutput
+            ? "pcm_s16be"
+            : pcmOutput
+              ? "pcm_s16le"
             : flacOutput
               ? "flac"
               : alacOutput

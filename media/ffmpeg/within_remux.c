@@ -814,6 +814,7 @@ static int within_audio_transcode(int profile) {
   const int flac_output = profile == 6;
   const int alac_output = profile == 8;
   const int wma_output = profile == 9;
+  const int aiff_output = profile == 28;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -941,7 +942,10 @@ static int within_audio_transcode(int profile) {
           ? AV_CODEC_ID_WMAV2
           : alac_output
                 ? AV_CODEC_ID_ALAC
-                : flac_output ? AV_CODEC_ID_FLAC : AV_CODEC_ID_PCM_S16LE);
+                : flac_output
+                      ? AV_CODEC_ID_FLAC
+                      : aiff_output ? AV_CODEC_ID_PCM_S16BE
+                                    : AV_CODEC_ID_PCM_S16LE);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -1003,7 +1007,9 @@ static int within_audio_transcode(int profile) {
       &output_format, NULL,
       wma_output
           ? "asf"
-          : alac_output ? "ipod" : flac_output ? "flac" : "wav",
+          : alac_output
+                ? "ipod"
+                : flac_output ? "flac" : aiff_output ? "aiff" : "wav",
       NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
@@ -1789,7 +1795,8 @@ int within_remux(int profile) {
   int prefetched_packet_capacity = 0;
   int next_prefetched_packet = 0;
 
-  if (profile == 3 || profile == 6 || profile == 8 || profile == 9) {
+  if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
+      profile == 28) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

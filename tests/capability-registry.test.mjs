@@ -317,6 +317,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       profiles: [
         "stream-copy",
         "audio",
+        "aiff-audio",
         "h264-extract",
         "hevc-extract",
         "mpeg2-extract",
@@ -393,6 +394,8 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("mp3"));
   assert.ok(manifest.enabledMuxers.includes("adts"));
   assert.ok(manifest.enabledMuxers.includes("ogg"));
+  assert.ok(manifest.enabledMuxers.includes("aiff"));
+  assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -621,7 +624,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       .filter((profile) => profile.input === "amr" || profile.output === "amr")
       .map((profile) => profile.id)
       .sort(),
-    ["amr-to-flac", "amr-to-wav"],
+    ["amr-to-aiff", "amr-to-flac", "amr-to-wav"],
   );
   assert.ok(
     publicProfilesFor("amr").some(
@@ -637,7 +640,13 @@ test("compound archives and mainstream images are detected by filename", () => {
       .filter((profile) => profile.input === "wma" || profile.output === "wma")
       .map((profile) => profile.id)
       .sort(),
-    ["flac-to-wma", "wav-to-wma", "wma-to-flac", "wma-to-wav"],
+    [
+      "flac-to-wma",
+      "wav-to-wma",
+      "wma-to-aiff",
+      "wma-to-flac",
+      "wma-to-wav",
+    ],
   );
   assert.ok(
     publicProfilesFor("wma").some((profile) => profile.id === "wma-to-wav"),
@@ -653,6 +662,39 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
     [true, true, true],
   );
+  assert.deepEqual(
+    conversionProfiles
+      .filter((profile) => profile.output === "aiff")
+      .map((profile) => profile.id)
+      .sort(),
+    [
+      "aac-to-aiff",
+      "amr-to-aiff",
+      "flac-to-aiff",
+      "m4a-to-aiff",
+      "mp3-to-aiff",
+      "ogg-to-aiff",
+      "opus-to-aiff",
+      "wav-to-aiff",
+      "wma-to-aiff",
+    ],
+  );
+  assert.ok(
+    publicProfilesFor("mp3").some(
+      (profile) => profile.id === "mp3-to-aiff",
+    ),
+  );
+  for (const profile of conversionProfiles.filter(
+    (candidate) => candidate.output === "aiff",
+  )) {
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes > 0);
+    assert.ok(
+      publicProfilesFor(profile.input).some(
+        (candidate) => candidate.id === profile.id,
+      ),
+    );
+  }
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
   assert.equal(
     formats.find((format) => format.id === "alac")?.extensions[0],

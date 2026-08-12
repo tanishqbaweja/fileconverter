@@ -59,6 +59,13 @@ frames at AVIO refill boundaries and reducing demux overhead. The audio
 pipeline also batches frame-size-zero PCM encoders into fixed 8,192-sample FIFO
 frames; total FIFO occupancy remains capped at 16,384 samples.
 
+The same single-threaded audio core writes genuine AIFF with signed 16-bit
+big-endian PCM for the measured AAC/ALAC M4A, raw AAC, AMR-NB, MP3, FLAC, WAV,
+WMA2, Vorbis, and Opus inputs. Destination packets are coalesced before the
+single-flight positional write, while the custom AVIO buffer and FIFO retain
+their fixed bounds. The build enables only the AIFF muxer and `pcm_s16be`
+encoder needed for these profiles; it adds no codec library or extra worker.
+
 The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
 MPEG-4 Part 2 parsers. Transport
 probing is capped at 2 MiB and two seconds of analyzed media. AAC packets use the

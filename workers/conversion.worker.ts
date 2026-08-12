@@ -64,6 +64,17 @@ const MAX_SVG_INPUT_BYTES = 4 * 1024 * 1024;
 const MAX_SVG_ELEMENTS = 10_000;
 const CANCELLATION_YIELD_BYTES = 1024 * 1024;
 const RESVG_WASM_URL = "/engines/svg/resvg.wasm";
+const AIFF_OUTPUT_PROFILES = new Set([
+  "m4a-to-aiff",
+  "aac-to-aiff",
+  "amr-to-aiff",
+  "mp3-to-aiff",
+  "flac-to-aiff",
+  "wav-to-aiff",
+  "wma-to-aiff",
+  "ogg-to-aiff",
+  "opus-to-aiff",
+]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
   "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
@@ -2990,6 +3001,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "flac-to-alac" ||
         profileId === "wav-to-wma" ||
         profileId === "flac-to-wma" ||
+        AIFF_OUTPUT_PROFILES.has(profileId) ||
         profileId === "mkv-to-webm" ||
         profileId === "3gp-to-webm" ||
         profileId === "mpeg-ts-to-webm" ||
@@ -3635,6 +3647,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "flac-to-alac" ||
       profileId === "wav-to-wma" ||
       profileId === "flac-to-wma" ||
+      AIFF_OUTPUT_PROFILES.has(profileId) ||
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
       profileId === "mkv-to-webm" ||
@@ -3787,6 +3800,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             : profileId === "wav-to-wma" ||
                 profileId === "flac-to-wma"
               ? 9
+            : AIFF_OUTPUT_PROFILES.has(profileId)
+              ? 28
             : profileId === "mp4-to-webm" ||
                 profileId === "mov-to-webm" ||
                 profileId === "mkv-to-webm" ||

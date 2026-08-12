@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 244
+complete-Chromium memory profile have passed. The current registry publishes 253
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC; raw AMR-NB -> WAV/FLAC; M4A (AAC/ALAC), MP3, FLAC, WMA, AIFF, OGG, or Opus -> WAV; M4A (AAC/ALAC), MP3, WAV, WMA, AIFF, OGG, or Opus -> FLAC; WAV/FLAC -> ALAC M4A or WMA2 | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF; raw AMR-NB -> WAV/FLAC/AIFF; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF where applicable; WAV -> FLAC/AIFF/ALAC M4A/WMA2; FLAC -> WAV/AIFF/ALAC M4A/WMA2; AIFF -> WAV/FLAC | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -196,9 +196,10 @@ The current media core is deliberately small. It enables only the documented
 AIFF, AVI, FLAC, FLV, raw H.264, raw MPEG-2 video, raw MPEG-4 Part 2 M4V,
 Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
 HEVC, raw MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
-fragmented MP4/M4A, WAV, FLAC, and WebM muxers; the required audio and
+fragmented MP4/M4A, WAV, AIFF, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
-FLAC, MPEG-4 Part 2, and libvpx VP8/VP9 encoders; libswresample; libswscale; and the
+including signed 16-bit big- and little-endian PCM, FLAC, MPEG-4 Part 2, and
+libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets plus certified AV1/Opus or AV1/Vorbis Matroska streams, performs real bounded audio decode/resample/encode pipelines, or
 decodes H.264/HEVC video and performs a real video encode.
@@ -405,6 +406,15 @@ discarded by their source codecs, so their FLAC results are independently
 checked against the decoded source with APSNR rather than byte-comparing the
 compressed streams. Compatible text comments are copied; container-only chunks
 and embedded artwork are explicitly outside these audio-only profiles.
+
+M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, MP3, FLAC, WAV, WMA2, Ogg
+Vorbis, and Ogg Opus can be written as genuine AIFF containing signed 16-bit
+big-endian PCM. These routes reuse the bounded decoder/resampler/FIFO pipeline,
+write directly to the destination through coalesced callbacks, and never retain
+a complete input or output in memory. Lossless 16-bit inputs remain sample-exact;
+lossy sources are independently compared against their decoded source with a
+60 dB minimum APSNR gate. AIFF cannot preserve every container tag, artwork,
+chapter, language, or additional-stream field, so those exclusions are explicit.
 
 ## Non-media engines and limitations
 
@@ -775,6 +785,16 @@ Current exact-build results:
 | AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
 | Ogg Vorbis to FLAC | 3 | 144,431,506 B | 397,265,921 B | 198.4 MiB | 32 MiB | read 262,144 B / write 16,617 B |
 | Ogg Opus to FLAC | 3 | 147,964,541 B | 386,531,887 B | 194.4 MiB | 32 MiB | read 262,144 B / write 16,213 B |
+| AAC M4A to AIFF | 3 | 36,929,878 B | 201,601,126 B | 195.4 MiB | 32 MiB | 3.94-4.38 s |
+| ALAC M4A to AIFF | 3 | 140,941,469 B | 153,600,102 B | 226.2 MiB | 32 MiB | 5.22-5.86 s |
+| Raw AAC to AIFF | 3 | 134,367,785 B | 770,273,334 B | 172.8 MiB | 32 MiB | 12.85-13.47 s |
+| AMR-NB to AIFF | 3 | 134,229,414 B | 1,342,294,134 B | 195.1 MiB | 32 MiB | 65.92-66.64 s |
+| MP3 to AIFF | 3 | 50,401,224 B | 201,600,102 B | 165.8 MiB | 32 MiB | 5.00-5.96 s |
+| FLAC to AIFF | 3 | 138,185,686 B | 153,600,102 B | 209.5 MiB | 32 MiB | 3.10-3.59 s |
+| WAV to AIFF | 3 | 153,600,106 B | 153,600,102 B | 172.5 MiB | 32 MiB | 1.60-2.10 s |
+| WMA2 to AIFF | 3 | 142,503,082 B | 364,798,054 B | 179.0 MiB | 32 MiB | 7.03-7.38 s |
+| Ogg Vorbis to AIFF | 3 | 144,431,506 B | 441,600,054 B | 169.0 MiB | 32 MiB | 9.63-10.03 s |
+| Ogg Opus to AIFF | 3 | 147,964,541 B | 441,600,054 B | 180.2 MiB | 32 MiB | 19.00-19.65 s |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 | BZIP2 compress | 3 | 268,435,456 B | 270,593,081 B | 139.2 MiB | 8 MiB | cleanup passed |
@@ -995,6 +1015,20 @@ inputs passed full decoded-audio APSNR validation. Every run kept Wasm at
 32 MiB, bounded reads to 262,144 bytes, held one write at a time, produced a
 repeatable output hash, and returned near the loaded idle baseline after
 cleanup. The category runner then deleted all three sources and outputs.
+
+The AIFF-output gate ran ten source cases three times each, including separate
+AAC and ALAC M4A fixtures. Conversion times ranged from 1.60-2.10 seconds for
+153,600,106-byte WAV to 65.92-66.64 seconds for the 134,229,414-byte AMR-NB
+source; the other eight cases completed in 3.10-19.65 seconds. Worst complete
+Chrome incremental private memory was 226.2 MiB for ALAC, leaving 23.8 MiB
+below the unchanged limit. Every result probed as AIFF/PCM S16BE, produced a
+repeatable hash, kept reads to 262,144 bytes and writes/queueing to at most
+32,768 bytes, held one operation at a time, and passed full decoded PCM SHA-256
+or APSNR validation. The category reused already generated repository-local
+fixtures instead of spending another 520 seconds regenerating them, then its
+`finally` cleanup deleted every generated media source, converted copy, and
+Chrome profile while retaining the compact tracked JSON manifests and reports
+as the durable evidence record.
 
 The direct delimited/JSON profiles processed 5,490,000 records with one
 262,144-byte write in flight. CSV-to-JSON took 18.76-19.14 seconds and
