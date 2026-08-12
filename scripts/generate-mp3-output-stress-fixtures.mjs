@@ -9,7 +9,11 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const jobs = [
   {
     script: "scripts/generate-audio-stress-fixture.mjs",
-    outputs: ["audio-aac-50m.m4a", "audio-pcm-192m.aiff"],
+    outputs: [
+      "audio-aac-50m.m4a",
+      "audio-mp3-50m.mp3",
+      "audio-pcm-192m.aiff",
+    ],
     selectable: true,
   },
   {

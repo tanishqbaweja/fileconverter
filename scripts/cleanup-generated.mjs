@@ -7,6 +7,7 @@ const workRoot = path.resolve(projectRoot, "work");
 const outputsRoot = path.resolve(projectRoot, "outputs");
 const reportRoot = path.resolve(outputsRoot, "reports");
 const disposableOutputRoot = path.resolve(projectRoot, "output");
+const remuxEngineRoot = path.resolve(projectRoot, "public", "engines", "remux");
 const playwrightOutputRoot = path.resolve(disposableOutputRoot, "playwright");
 const playwrightCliRoot = path.resolve(projectRoot, ".playwright-cli");
 const playwrightImageProfileRoot = path.resolve(
@@ -45,12 +46,15 @@ const webmBenchmarkFixture = path.resolve(
   "webm-benchmark-120s.mkv",
 );
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
+const aacBenchmarkRoot = path.resolve(workRoot, "aac-benchmark");
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
   path.resolve(workRoot, "amr-repro-build"),
   path.resolve(workRoot, "amr-repro-verify"),
   path.resolve(workRoot, "mp3-repro-build"),
   path.resolve(workRoot, "mp3-repro-verify"),
+  path.resolve(workRoot, "aac-repro-build"),
+  path.resolve(workRoot, "aac-repro-verify"),
 ];
 const lameAuditRoot = path.resolve(workRoot, "lame-audit");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
@@ -74,6 +78,18 @@ const detachedProfileLogs = [
   path.resolve(workRoot, "mp3-profile-run.stderr.log"),
   path.resolve(workRoot, "mp3-full-regression.stdout.log"),
   path.resolve(workRoot, "mp3-full-regression.stderr.log"),
+  path.resolve(workRoot, "aac-build.stdout.log"),
+  path.resolve(workRoot, "aac-build.stderr.log"),
+  path.resolve(workRoot, "aac-browser.stdout.log"),
+  path.resolve(workRoot, "aac-browser.stderr.log"),
+  path.resolve(workRoot, "aac-profile.stdout.log"),
+  path.resolve(workRoot, "aac-profile.stderr.log"),
+  path.resolve(workRoot, "aac-full-regression.stdout.log"),
+  path.resolve(workRoot, "aac-full-regression.stderr.log"),
+  path.resolve(workRoot, "aac-repro-build.stdout.log"),
+  path.resolve(workRoot, "aac-repro-build.stderr.log"),
+  path.resolve(workRoot, "aac-repro-verify.stdout.log"),
+  path.resolve(workRoot, "aac-repro-verify.stderr.log"),
 ];
 const headedBrowserLogs = [
   path.resolve(workRoot, "headed-server.stdout.log"),
@@ -170,6 +186,7 @@ const generatedStressNames = new Set([
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
+assertInside(workRoot, aacBenchmarkRoot);
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -192,6 +209,7 @@ assertInside(workRoot, playwrightSmallProfileRoot);
 assertInside(outputsRoot, browserImageSmokeRoot);
 assertInside(outputsRoot, browserMediaSmokeRoot);
 assertInside(outputsRoot, reportRoot);
+assertInside(projectRoot, remuxEngineRoot);
 
 if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(playwrightCliRoot);
@@ -232,6 +250,7 @@ await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
+await removeWithRetries(aacBenchmarkRoot);
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   await removeWithRetries(temporaryRoot);
 }
@@ -242,8 +261,22 @@ await removeWithRetries(jpegAuditRoot);
 for (const temporaryRoot of sevenZipExperimentRoots) {
   await removeWithRetries(temporaryRoot);
 }
-for (const logPath of detachedProfileLogs) await rm(logPath, { force: true });
+for (const logPath of detachedProfileLogs) {
+  try {
+    await rm(logPath, { force: true });
+  } catch (error) {
+    if (error?.code !== "EBUSY" && error?.code !== "EPERM") throw error;
+  }
+}
 for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
+
+for (const entry of await readdir(remuxEngineRoot, { withFileTypes: true }).catch(() => [])) {
+  if (entry.isFile() && entry.name.startsWith(".tmp.")) {
+    const temporaryExport = path.resolve(remuxEngineRoot, entry.name);
+    assertInside(remuxEngineRoot, temporaryExport);
+    await rm(temporaryExport, { force: true });
+  }
+}
 
 for await (const entry of walkFiles(outputsRoot)) {
   if (

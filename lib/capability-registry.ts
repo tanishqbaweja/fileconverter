@@ -363,6 +363,67 @@ function standaloneMp3OutputProfile(
   };
 }
 
+type StandaloneAacOutputInput = Exclude<StandaloneAiffInput, "aac"> | "aiff";
+
+const standaloneAacOutputEvidence: Record<
+  StandaloneAacOutputInput,
+  number | null
+> = {
+  m4a: 140_941_469,
+  amr: 134_229_414,
+  mp3: 50_401_224,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  aiff: 201_600_102,
+  ogg: 144_431_506,
+  opus: 147_964_541,
+};
+
+function standaloneAacOutputProfile(
+  input: StandaloneAacOutputInput,
+): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    amr: "8 kHz mono AMR-NB",
+    mp3: "MP3",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    ogg: "Vorbis in Ogg",
+    opus: "Opus in Ogg",
+  }[input];
+  const evidence = standaloneAacOutputEvidence[input];
+  return {
+    id: `${input}-to-aac`,
+    input,
+    output: "aac",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, additional streams, and all source tags are explicitly excluded because raw ADTS cannot represent them.",
+      "Mono output is fixed at 128 kb/s and one channel; stereo output is fixed at 192 kb/s and at most two channels.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily encoded as AAC-LC with FFmpeg's measured fast-search coder; standard source rates from 8 through 48 kHz are preserved, while nonstandard or higher rates are rounded up or capped to the nearest supported rate through 48 kHz.`,
+      "The fastest certified profile disables TNS, PNS, intensity-stereo, and M/S-stereo tools after comparative ASDR testing found no quality regression on the reference program and WMA fixtures.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3717,6 +3778,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneMp3OutputProfile("aiff"),
   standaloneMp3OutputProfile("ogg"),
   standaloneMp3OutputProfile("opus"),
+  standaloneAacOutputProfile("m4a"),
+  standaloneAacOutputProfile("amr"),
+  standaloneAacOutputProfile("mp3"),
+  standaloneAacOutputProfile("flac"),
+  standaloneAacOutputProfile("wav"),
+  standaloneAacOutputProfile("wma"),
+  standaloneAacOutputProfile("aiff"),
+  standaloneAacOutputProfile("ogg"),
+  standaloneAacOutputProfile("opus"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),
@@ -4525,11 +4595,11 @@ export function publicProfilesFor(
 ): readonly ConversionProfile[] {
   return conversionProfiles.filter(
     (profile) =>
-      profile.public &&
       (profile.input === input ||
         (profile.id === "gzip-compress" && input !== "gzip") ||
         (profile.id === "bzip2-compress" && input !== "bzip2") ||
         (profile.id === "xz-compress" && input !== "xz")) &&
-      (includePending || profile.automatedTestStatus === "passed"),
+      (includePending ||
+        (profile.public && profile.automatedTestStatus === "passed")),
   );
 }

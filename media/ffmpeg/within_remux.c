@@ -831,6 +831,7 @@ static int within_audio_transcode(int profile) {
   const int aiff_output = profile == 28;
   const int amr_output = profile == 29;
   const int mp3_output = profile == 30;
+  const int aac_output = profile == 31;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -956,6 +957,8 @@ static int within_audio_transcode(int profile) {
   const AVCodec *encoder_codec = avcodec_find_encoder(
       wma_output
           ? AV_CODEC_ID_WMAV2
+          : aac_output
+                ? AV_CODEC_ID_AAC
           : mp3_output
                 ? AV_CODEC_ID_MP3
           : alac_output
@@ -984,10 +987,26 @@ static int within_audio_transcode(int profile) {
                       ? decoder->sample_rate <= 32000
                             ? 32000
                             : decoder->sample_rate <= 44100 ? 44100 : 48000
+                      : aac_output
+                            ? decoder->sample_rate <= 8000
+                                  ? 8000
+                                  : decoder->sample_rate <= 11025
+                                        ? 11025
+                                        : decoder->sample_rate <= 12000
+                                              ? 12000
+                                              : decoder->sample_rate <= 16000
+                                                    ? 16000
+                                                    : decoder->sample_rate <= 22050
+                                                          ? 22050
+                                                          : decoder->sample_rate <= 24000
+                                                                ? 24000
+                                                                : decoder->sample_rate <= 32000
+                                                                      ? 32000
+                                                                      : decoder->sample_rate <= 44100 ? 44100 : 48000
                       : decoder->sample_rate;
   encoder->sample_fmt =
       wma_output ? AV_SAMPLE_FMT_FLTP
-                 : mp3_output ? AV_SAMPLE_FMT_FLTP
+                 : (mp3_output || aac_output) ? AV_SAMPLE_FMT_FLTP
                  : alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
   encoder->time_base = (AVRational){1, encoder->sample_rate};
   if (decoder->ch_layout.order == AV_CHANNEL_ORDER_UNSPEC) {
@@ -1002,7 +1021,7 @@ static int within_audio_transcode(int profile) {
   if (amr_output) {
     av_channel_layout_default(&encoder->ch_layout, 1);
     result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
-  } else if (wma_output || mp3_output) {
+  } else if (wma_output || mp3_output || aac_output) {
     av_channel_layout_default(
         &encoder->ch_layout,
         decoder->ch_layout.nb_channels > 2 ? 2
@@ -1030,6 +1049,14 @@ static int within_audio_transcode(int profile) {
     if (encoder->ch_layout.nb_channels == 2) {
       av_dict_set(&encoder_options, "joint_stereo", "1", 0);
     }
+  } else if (aac_output) {
+    encoder->bit_rate =
+        encoder->ch_layout.nb_channels == 1 ? 128000 : 192000;
+    av_dict_set(&encoder_options, "aac_coder", "fast", 0);
+    av_dict_set(&encoder_options, "aac_tns", "0", 0);
+    av_dict_set(&encoder_options, "aac_pns", "0", 0);
+    av_dict_set(&encoder_options, "aac_is", "0", 0);
+    av_dict_set(&encoder_options, "aac_ms", "0", 0);
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   av_dict_free(&encoder_options);
@@ -1049,6 +1076,8 @@ static int within_audio_transcode(int profile) {
       &output_format, NULL,
       wma_output
           ? "asf"
+          : aac_output
+                ? "adts"
           : mp3_output
                 ? "mp3"
           : alac_output
@@ -1842,7 +1871,7 @@ int within_remux(int profile) {
   int next_prefetched_packet = 0;
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
-      profile == 28 || profile == 29 || profile == 30) {
+      profile == 28 || profile == 29 || profile == 30 || profile == 31) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

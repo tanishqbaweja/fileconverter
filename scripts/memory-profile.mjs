@@ -48,6 +48,17 @@ const MP3_OUTPUT_PROFILES = [
   "ogg-to-mp3",
   "opus-to-mp3",
 ];
+const AAC_OUTPUT_PROFILES = [
+  "m4a-to-aac",
+  "amr-to-aac",
+  "mp3-to-aac",
+  "flac-to-aac",
+  "wav-to-aac",
+  "wma-to-aac",
+  "aiff-to-aac",
+  "ogg-to-aac",
+  "opus-to-aac",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -180,6 +191,7 @@ if (
     ...AIFF_OUTPUT_PROFILES,
     ...AMR_OUTPUT_PROFILES,
     ...MP3_OUTPUT_PROFILES,
+    ...AAC_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -348,6 +360,7 @@ const isMediaProfile =
   AIFF_OUTPUT_PROFILES.includes(profileId) ||
   AMR_OUTPUT_PROFILES.includes(profileId) ||
   MP3_OUTPUT_PROFILES.includes(profileId) ||
+  AAC_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1100,13 +1113,15 @@ async function validateMediaOutput(
     route === "avi-to-mp3" ||
     route === "mpeg-ts-to-mp3" ||
     route === "flv-to-mp3";
-  const aacOutput =
+  const aacPacketCopyOutput =
     route === "mkv-to-aac" ||
     route === "mp4-to-aac" ||
     route === "mov-to-aac" ||
     route === "3gp-to-aac" ||
     route === "mpeg-ts-to-aac" ||
     route === "flv-to-aac";
+  const aacTranscodeOutput = AAC_OUTPUT_PROFILES.includes(route);
+  const aacOutput = aacPacketCopyOutput || aacTranscodeOutput;
   const oggPacketOutput =
     route === "mkv-to-ogg" ||
     route === "webm-to-ogg" ||
@@ -1328,13 +1343,14 @@ async function validateMediaOutput(
   const sourceAudioForSize = source.probe.streams.find(
     (stream) => stream.codec_type === "audio",
   );
-  const mp3OutputBitRate =
+  const compressedAudioOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
-      : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.02) / 8) +
+      : (mp3TranscodeOutput || aacTranscodeOutput) &&
+          Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8) +
           1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
@@ -1403,13 +1419,16 @@ async function validateMediaOutput(
     alacOutput ||
     wmaOutput ||
     amrOutput ||
-    mp3TranscodeOutput
+    mp3TranscodeOutput ||
+    aacTranscodeOutput
   ) {
-    const asdrOutput = amrOutput || mp3TranscodeOutput;
+    const asdrOutput = amrOutput || mp3TranscodeOutput || aacTranscodeOutput;
     const minimumQualityDb = amrOutput
       ? -3
       : mp3TranscodeOutput
         ? -5
+      : aacTranscodeOutput
+        ? -6.5
       : (source.minimumDecodedAudioPsnrDb ?? 60);
     const comparisonFilter = amrOutput
       ? "[0:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]apsnr[quality]"
@@ -1549,7 +1568,7 @@ async function validateMediaOutput(
       sha256,
     };
   }
-  if (aacOutput) {
+  if (aacPacketCopyOutput) {
     const { stdout: packetHash } = await execFileAsync(
       "ffmpeg",
       [
@@ -1744,6 +1763,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser MP3 output did not probe as genuine MP3.");
   }
+  if (
+    aacTranscodeOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("aac")
+  ) {
+    throw new Error("Browser AAC output did not probe as genuine AAC ADTS.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1835,11 +1860,11 @@ async function validateMediaOutput(
   const expectedDuration =
     elementaryVideoOutput
       ? decodedVideoDuration
-    : aacOutput && Number.isFinite(Number(source.aacAccessUnitCount))
+    : aacPacketCopyOutput && Number.isFinite(Number(source.aacAccessUnitCount))
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -1865,6 +1890,8 @@ async function validateMediaOutput(
           ? 1
         : mp3TranscodeOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
+        : aacTranscodeOutput
+          ? Math.min(2, sourceAudio?.channels ?? 0)
         : wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
           : sourceAudio?.channels)) ||
@@ -1876,6 +1903,11 @@ async function validateMediaOutput(
         Number(audio?.sample_rate) > 48000 ||
         Number(audio?.bit_rate) < 128000 ||
         Number(audio?.bit_rate) > 192000)) ||
+    (aacTranscodeOutput &&
+      (![8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000]
+          .includes(Number(audio?.sample_rate)) ||
+        Number(audio?.bit_rate) <= 0 ||
+        Number(audio?.bit_rate) > 220000)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
@@ -1895,14 +1927,17 @@ async function validateMediaOutput(
     ((av1WebmCopy || liveMatroskaCopy) &&
       Number.isFinite(probedOutputDuration)) ||
     ((!matroskaCopy || route === "avi-to-mkv") &&
-      Math.abs(duration - expectedDuration) > 0.25)
+      Math.abs(duration - expectedDuration) >
+        (aacTranscodeOutput
+          ? Math.max(0.2, 2048 / Number(audio?.sample_rate) + 0.01)
+          : 0.25))
   ) {
     throw new Error(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
     );
   }
   if (
-    aacOutput &&
+    aacPacketCopyOutput &&
     Number(audio?.nb_read_frames) !== Number(source.aacAccessUnitCount)
   ) {
     throw new Error(

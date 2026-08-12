@@ -97,6 +97,17 @@ const MP3_OUTPUT_PROFILES = new Set([
   "ogg-to-mp3",
   "opus-to-mp3",
 ]);
+const AAC_OUTPUT_PROFILES = new Set([
+  "m4a-to-aac",
+  "amr-to-aac",
+  "mp3-to-aac",
+  "flac-to-aac",
+  "wav-to-aac",
+  "wma-to-aac",
+  "aiff-to-aac",
+  "ogg-to-aac",
+  "opus-to-aac",
+]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
   "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
@@ -3026,6 +3037,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         AIFF_OUTPUT_PROFILES.has(profileId) ||
         AMR_OUTPUT_PROFILES.has(profileId) ||
         MP3_OUTPUT_PROFILES.has(profileId) ||
+        AAC_OUTPUT_PROFILES.has(profileId) ||
         profileId === "mkv-to-webm" ||
         profileId === "3gp-to-webm" ||
         profileId === "mpeg-ts-to-webm" ||
@@ -3674,6 +3686,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       AIFF_OUTPUT_PROFILES.has(profileId) ||
       AMR_OUTPUT_PROFILES.has(profileId) ||
       MP3_OUTPUT_PROFILES.has(profileId) ||
+      AAC_OUTPUT_PROFILES.has(profileId) ||
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
       profileId === "mkv-to-webm" ||
@@ -3832,6 +3845,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 29
             : MP3_OUTPUT_PROFILES.has(profileId)
               ? 30
+            : AAC_OUTPUT_PROFILES.has(profileId)
+              ? 31
             : profileId === "mp4-to-webm" ||
                 profileId === "mov-to-webm" ||
                 profileId === "mkv-to-webm" ||

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 271
+complete-Chromium memory profile have passed. The current registry publishes 280
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3; raw AMR-NB -> WAV/FLAC/AIFF/MP3; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3 where applicable; WAV -> FLAC/AIFF/AMR-NB/MP3/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3 | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -438,6 +438,20 @@ repeatable MP3 output was 1,342,295,469 bytes, with 205.1 MiB worst incremental
 complete-Chrome private memory. Every output was fully decoded and compared
 against the decoded source with ASDR; MP3 cannot preserve lossless identity or
 all container metadata, artwork, chapters, and extra streams.
+
+M4A (AAC or 16-bit ALAC), raw AMR-NB, MP3, FLAC, WAV, WMA2, AIFF, Ogg
+Vorbis, and Ogg Opus can also be encoded as genuine raw AAC-LC. The fastest
+certified native AAC search coder disables TNS, PNS, intensity stereo, and M/S
+stereo after comparative ASDR testing. Standard input rates from 8 through
+48 kHz are preserved; other rates are rounded upward or capped at 48 kHz.
+Thirty isolated Chrome runs passed across ten source cases in 12.20-203.05
+seconds at 202.5 MiB worst complete-Chrome incremental private memory. The
+8 kHz AMR policy was 22.38x faster than unnecessary 32 kHz upsampling in the
+one-hour native benchmark and improved ASDR. Every browser result was
+repeatable, fully decoded and ASDR-validated, used 32 MiB Wasm, 262,144-byte
+maximum reads, at most 780-byte writes, and one destination operation in flight.
+AAC is lossy and raw ADTS cannot preserve container metadata, artwork, chapters,
+or extra streams.
 
 ## Non-media engines and limitations
 

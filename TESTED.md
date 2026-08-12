@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-12 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-13 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,16 +12,36 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **271**
-- Public profiles with a retained successful Chrome stress report: **271**
+- Public passed conversion profiles: **280**
+- Public profiles with a retained successful Chrome stress report: **280**
 - PDF profiles: **0** (intentionally prohibited)
+
+## Active optimization log
+
+- **2026-08-12 standalone AAC baseline:** native FFmpeg 8.1.2 encoded the first 300 seconds of the protected HE-AAC source to 48 kHz stereo 192 kb/s AAC-LC ADTS with `aac_coder=fast` in 1.978 s (151.67x realtime, 7,189,807 bytes). The default `twoloop` coder took 5.058 s (59.31x realtime, 7,292,905 bytes), so `fast` was 2.56x quicker and slightly smaller. Independent ASDR measurements were -4.23181 dB for `fast` and -4.23055 dB for `twoloop`, a 0.00126 dB difference. The protected source remained SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`.
+- **Rejected validation attempt:** the first ASDR command trimmed the source inside the filter graph but did not bound the output, so FFmpeg continued decoding beyond the five-minute comparison window. It was terminated, replaced with an explicit 300-second output bound, and must not be repeated. Terminating the parent shell left one FFmpeg child holding the AAC output open; cleanup reported `EBUSY`, the exact orphan was identified by its repository-local command line and stopped, and the allowlisted cleanup then removed both outputs. All benchmark media is repository-local under `work/aac-benchmark`.
+- **Build-loop correction:** the first foreground Docker build outlived the command runner's timeout, and starting a logged replacement briefly created two identical clients. Their exact command lines were inspected, only the unlogged duplicate was stopped, and the remaining build completed from the shared cache. Future long engine builds must start once as a hidden logged process. A `.tmp.*` export left by the cancelled client is covered by the exact remux-engine cleanup rule.
+- **Runner correction:** the first focused Playwright command also reached the command runner's five-second foreground limit, but process inspection confirmed it had exited before a hidden logged replacement was started; no duplicate browser run was created. Long browser gates use one repository-local logged background process from this point forward.
+- **Pending-route browser failure:** the first focused AAC browser gate passed 22 established AAC-related cases, then timed out before conversion because the test-only selector could not see `public: false` pending profiles. The remaining identical timeouts were stopped. `publicProfilesFor(input, true)` now includes pending internal routes for `?test=1`, while the normal selector still requires both public and passed evidence.
+- **AAC warning-harness failure:** after pending selection was fixed, standalone AAC conversions completed but the shared browser helper expected an extra-stream warning that correctly was not emitted for single-stream audio fixtures. Remaining duplicate failures were stopped; the helper now applies the same standalone-versus-container distinction used by MP3 before independent AAC probing and ASDR validation.
+- **Focused-grep correction:** a broad AAC rerun stalled in the already-passed MOV-to-AAC forced-write regression before reaching the new routes, with its timeout unable to fire while the browser worker was blocked. It was stopped instead of repeated. The ten new cases now carry a unique `standalone-aac` marker so iteration exercises only the changed family; established AAC regression results from the first run remain recorded separately.
+- **AAC bitrate-validator failure:** the first standalone-only run reached genuine outputs but rejected simple synthetic sources because FFprobe reported observed ADTS averages below 120 kb/s (for example 85,381 b/s for the FLAC tone) despite a configured 128/192 kb/s target. The invalid minimum was removed; validation retains a 220 kb/s ceiling, positive observed rate, AAC-LC, 32/44.1/48 kHz, at most stereo, complete decode, bounded I/O, and ASDR quality.
+- **WMA AAC quality comparison:** on the exact four-second WMA2 fixture, `aac_coder=fast` produced 42,493 bytes in 106 ms with channel ASDR -5.98947/7.27727 dB; `twoloop` produced 96,366 bytes in 110 ms with -5.98241/7.2894 dB. The quality delta was only 0.007-0.012 dB, while the simple-source output was 2.27x larger. The long-source benchmark remains the meaningful speed discriminator, so `fast` is retained and the cross-lossy-codec ASDR floor is -6.5 dB. AAC frame/priming duration tolerance remains 0.2 seconds.
+- **AAC fixture topology:** the AAC category passes its exact ten required fixture names to the shared concurrent audio generator, avoiding the unrelated 128 MiB raw-AAC fixture. The generator's selectable base-audio outputs now include the previously omitted MP3 stress source, so AAC profiling creates every required source in parallel without depending on leftovers from an earlier category.
+- **AAC tool-set optimization:** on the same protected 300-second reference, native `aac_coder=fast` default tools encoded at 145.99x realtime with channel ASDR -4.0545/-4.2318 dB. Disabling TNS alone reached 149.78x; disabling TNS+PNS reached 156.99x; and disabling TNS, PNS, intensity stereo, and M/S stereo reached 165.20x, a 13.2% throughput gain, with slightly improved -4.05091/-4.22938 dB ASDR and only 0.23% size growth. The minimal tool set also retained WMA ASDR (-5.98951/7.2774 dB). It replaces the slower baseline before the remaining Chrome profiles are run.
+- **Stopped slow baseline:** the first 36,929,878-byte AAC-in-M4A Chrome baseline passed three runs in 81.92-83.48 seconds at 148.8 MiB incremental private memory, 32 MiB Wasm, 262,144-byte reads, and 552-byte writes. Profiling was intentionally stopped after retaining that report so the remaining 27 runs would not repeat a known slower encoder configuration; generated fixtures and partial work were deleted before optimization.
+- **Static-runner correction:** the first optimized-engine static gate invoked a nonexistent `npm run typecheck` alias and ran the Vinext production build concurrently with three other Node jobs. Unit tests and lint passed, but the contended build exhausted its process heap during the RSC stage. This is a test-orchestration failure, not conversion evidence: TypeScript must use the repository's direct compiler command and the production build must run sequentially so unrelated host contention does not invalidate it.
+- **Rejected AMR upsampling policy:** the optimized Chrome category passed the AAC-in-M4A and ALAC-in-M4A profiles, then spent about 50 minutes CPU-bound on the 134,229,414-byte, roughly day-long AMR-NB source because the initial policy unnecessarily upsampled 8 kHz mono input to 32 kHz before AAC encoding. The run was intentionally stopped before certifying that known-suboptimal policy. Its two completed reports remain evidence; generated media is cleanup-managed. The next iteration benchmarks and, if quality-valid, preserves AAC's standard 8 kHz source rate to avoid analyzing four times as many samples.
+- **AMR sample-rate optimization:** on the first hour of the exact stress AMR source, native AAC-LC at the preserved 8 kHz rate completed in 2.249 s versus 50.340 s at the former 32 kHz rate, a 22.38x speedup. The 8 kHz output was genuine mono AAC-LC, improved 300-second ASDR from -4.24891 to -2.07948 dB, and reduced size from 32,614,741 to 19,336,855 bytes. The converter now preserves all standard AAC rates from 8 through 48 kHz and only rounds nonstandard rates upward or caps rates above 48 kHz, avoiding unnecessary resampling without weakening codec, duration, quality, or compatibility validation.
+- **Optimized AMR validator correction:** the first rate-preserving Chrome AMR run reached validation in about four minutes instead of remaining CPU-bound past 50 minutes, then missed the fixed 0.25-second duration tolerance by 0.002 seconds: AAC's two 1,024-sample frames span 0.256 seconds at 8 kHz. Validation now derives its tolerance from the codec frame boundary (`max(0.2 s, 2048 / sample_rate + 0.01 s)`) instead of weakening duration checks arbitrarily. The same failed category cleanup also exposed Windows locking its own redirected log; cleanup now skips only currently locked logs and removes them on the next post-exit cleanup pass, while generated media cleanup continues.
 
 ## Latest full verification cycle
 
-- **Fast bounded standalone MP3 output:** nine public routes passed 30/30 isolated Chrome stress runs across separate AAC and ALAC M4A cases plus raw AAC, AMR-NB, FLAC, WAV, WMA2, AIFF, Ogg Vorbis, and Ogg Opus. Sources ranged from 36,929,878 to 201,600,102 bytes; conversion times were 10.38-428.36 seconds and worst complete-Chrome incremental private memory was 205.1 MiB. Every output was byte-repeatable, probed as genuine MP3, fully decoded and compared against the decoded source with ASDR, kept reads at or below 262,144 bytes, writes and queueing at or below 772 bytes, one operation in flight, one worker, and 32 MiB Wasm. The pinned LAME 4.0 encoder uses its fastest certified algorithm setting (`compression_level=9`), fixed 128 kb/s mono or 192 kb/s stereo output, and supported 32/44.1/48 kHz rates. The extreme 83,893.38-second AMR source produced a repeatable 1,342,295,469-byte MP3 in 417.56-428.36 seconds while remaining at 177.0 MiB. Targeted concurrent fixture generation avoids unrelated media and supports exact resume sets. Retained failures record and correct an extraction-only packet-identity assertion and a generic size-ratio gate; final duration/bitrate-derived bounds keep expansion strict. Category cleanup deleted all generated media, gigabyte-class converted copies, Chrome profiles, build staging, and temporary logs while retaining compact reports; the protected root fixture remains byte-identical.
+- **Fast bounded standalone AAC-LC output:** nine public routes passed 30/30 isolated Chrome stress runs across separate AAC and ALAC M4A cases plus AMR-NB, MP3, FLAC, WAV, WMA2, AIFF, Ogg Vorbis, and Ogg Opus. Sources ranged from 36,929,878 to 201,600,102 bytes; conversion times were 12.20-203.05 seconds and worst complete-Chrome incremental private memory was 202.5 MiB. Every output was byte-repeatable, probed as genuine AAC-LC, fully decoded and ASDR-validated by native FFmpeg, kept reads at or below 262,144 bytes, writes and queueing at or below 780 bytes, one operation in flight, one worker, and 32 MiB Wasm. The fastest measured coder/tool set and standard-rate preservation reduced the one-hour AMR benchmark by 22.38x while improving ASDR; the complete AMR Chrome gate finished in about fifteen minutes instead of the discarded 32 kHz policy remaining incomplete after roughly fifty. Focused browser coverage passed all nineteen success, forced-write, and partial-output-cleanup cases. Reused verified project-local fixtures avoided regenerating about 1.25 GB; category cleanup removed every large source, converted copy, and Chrome profile while retaining compact reports, and the protected fixture remained byte-identical.
+- **Standalone AAC reproducibility:** two fresh pinned Docker exports exactly matched each other and the published remux engine. SHA-256 was `E16232A682F7354BEE254240DF21BC5913D0EE7C47A899156D6E977904E99423` for the manifest, `9D993FCE1FB93560E302184C8175F90154019D1DF7858E53719DCA1E9806FDE5` for the JavaScript glue, and `B475E5D64BE00DE8DA0B8D0AA23D05B53BDDEA1BB4CA8837550DE3D93AAA91D4` for the Wasm binary. Repository cleanup removes both staging exports and their logs after comparison.
 - **Fast bounded AMR-NB output:** nine routes passed 30/30 isolated Chrome stress runs across separate AAC and ALAC M4A cases plus raw AAC, MP3, FLAC, WAV, WMA2, AIFF, Ogg Vorbis, and Ogg Opus. Sources ranged from 36,929,878 to 201,600,102 bytes; conversion times were 7.67-41.99 seconds and worst complete-Chrome incremental private memory was 217.0 MiB. Every output was byte-repeatable, probed as genuine 8 kHz mono AMR-NB MR122, fully traversed and decoded with native FFmpeg, validated by counted 20 ms frames, kept reads at or below 262,144 bytes, writes and queueing at 32 bytes, one operation in flight, one worker, and 32 MiB Wasm. The fixed 16,384-sample FIFO now skips reallocations while free space is sufficient, eliminating an MP3 hot-path failure and reducing allocation overhead for all audio routes; output coalescing retains a single bounded direct destination operation. Focused ASDR quality validation passed all nine routes after rejecting APSNR's implausible AMR values. Concurrent fixture generation completed in 218.48 seconds versus the previous roughly 520-second serial topology, a 58% reduction, while targeted parallel Ogg/Opus recovery avoided regenerating unneeded media. Category and direct-profiler cleanup delete all generated media, converted copies, Chrome profiles, and reproducibility directories while retaining compact manifests plus success/failure reports; the protected root fixture remains byte-identical.
 - **Fast bounded AIFF output:** nine routes passed 30/30 isolated Chrome stress runs across separate AAC and ALAC M4A cases plus raw AAC, AMR-NB, MP3, FLAC, WAV, WMA2, Ogg Vorbis, and Ogg Opus. Sources ranged from 36,929,878 to 153,600,106 bytes; conversion times were 1.60-66.64 seconds and worst complete-Chrome incremental private memory was 226.2 MiB. Every output was repeatable, probed as genuine AIFF with signed 16-bit big-endian PCM, kept reads at or below 262,144 bytes, writes and queueing at or below 32,768 bytes, one operation in flight, and 32 MiB Wasm. Lossless sources passed exact decoded-PCM SHA-256 checks; lossy sources passed full decoded-audio APSNR checks. Focused browser coverage passed all nine routes, separate ALAC exactness, coalesced direct save, and inherited AIFF input routes. `WITHIN_REUSE_FIXTURES=1` verifies and reuses already generated project-local sources instead of repeating the measured 520-second generation step. The category `finally` cleanup deleted all generated media sources, converted AIFF copies, and the Chrome profile while retaining compact tracked manifests and reports; the protected root fixture remained byte-identical.
-- **2026-08-12:** 584/584 production-browser tests passed; 26/26 unit tests passed; TypeScript, ESLint, and the production build passed.
+- **2026-08-12:** 603/603 production-browser tests passed; 26/26 unit tests passed; TypeScript, ESLint, and the production build passed.
 - **Fast bounded ASS subtitle output:** SRT passed 3/3 Chrome runs on 67,327,792 bytes in 4.00-4.09 s at 177.0 MiB worst incremental private memory; WebVTT passed 3/3 on 73,788,904 bytes in 3.84-4.34 s at 187.1 MiB. Chunk-level cue parsing, 64 KiB text batching, and no-op guards for plain cues reduced the retained 7.35-7.90 s baseline by roughly 44-49% without changing output. All six final runs streamed directly through one worker with no Wasm or SharedArrayBuffer allocation, 256 KiB maximum reads and writes, one pending operation, and the same independently generated 83,203,467-byte SHA-256 (`8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5`). The route preserves cue timing, multiline text, entities, voice labels where available, and basic italic/bold/underline markup while generating a deterministic default style and explicitly disclosing nearest-centisecond rounding plus excluded WebVTT metadata, cue identifiers, positioning, regions, and CSS. Focused exact-success, malformed-timing, forced-write, and partial-output-cleanup coverage passed 4/4. The generator kept every source under `fixtures/stress/subtitles`; category cleanup removed all large generated fixtures and converted copies in `finally`, while compact reports and tracked manifests remain as the durable record.
 - **Fast bounded FLV remuxing:** MKV passed 3/3 Chrome runs on 147,131,070 bytes in 0.95-1.27 s at 166.7 MiB worst incremental private memory; MP4 passed on 147,136,622 bytes in 1.03-1.33 s at 187.5 MiB; MOV passed on 147,136,646 bytes in 1.00-1.32 s at 191.7 MiB; 3GP passed on 146,854,522 bytes in 1.09-1.40 s at 173.5 MiB; and MPEG-TS passed on 150,441,548 bytes in 1.55-1.88 s at 196.6 MiB. All fifteen H.264/AAC outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads, at most 256 KiB writes, one pending write, repeatable bytes, genuine FLV structure, and full decoded-video plus exact AAC-access-unit SHA-256 validation. Direct stream copy avoids decode/re-encode work; the FLV trailer performs only fixed-size duration/file-size updates and does not accumulate a duration-sized index. MPEG-TS uses the required `aac_adtstoasc` filter. FLV carries only the first video and audio stream, so chapters, subtitles, attachments, attached pictures, additional streams, language tags, and unsupported metadata are explicitly disclosed and excluded. Native feasibility and all temporary outputs stayed under `work` and were deleted; the reproducible pinned FFmpeg build added only the FLV muxer to the lean core and was hash-verified before publication. Focused exact-success, codec-rejection, forced-write, and partial-output-cleanup coverage passed 12/12 before the 545/545 regression. Category cleanup removed every large generated source and converted copy in `finally`, while compact reports remain as the durable record.
 - **Fast bounded fragmented QuickTime MOV remuxing:** MKV passed 3/3 Chrome runs on 147,131,073 bytes in 0.72-1.11 s at 215.8 MiB worst incremental private memory; MP4 passed on 147,136,624 bytes in 0.73-1.06 s at 219.3 MiB; 3GP passed on 146,854,522 bytes in 0.76-1.07 s at 231.9 MiB; MPEG-TS passed on 150,441,548 bytes in 1.17-1.50 s at 227.9 MiB; and FLV passed on 146,903,539 bytes in 0.78-1.12 s at 213.3 MiB. All fifteen H.264/AAC outputs used one worker, 32 MiB Wasm, 256 KiB maximum reads and writes, one pending write, repeatable bytes, genuine QuickTime `qt  ` branding, compatible language-tag preservation, and full decoded-video plus exact AAC-stream SHA-256 validation. Direct stream copy avoids decode/re-encode work, while fragmented output bounds duration-sized muxer indexes. MPEG-TS uses its required `aac_adtstoasc` filter. A bounded 2 MiB/4,096-packet opening inspection repaired only missing or non-monotonic decode timestamps, preserving presentation timestamps and exact HEVC decoded identity. The first focused run caught decreasing HEVC DTS; the corrected gate passed all 13 exact-success, codec-rejection, forced-write, and partial-output-cleanup cases before the 533/533 regression. The stress generator kept every source under `fixtures/stress`, and category cleanup removed all large generated fixtures and converted copies in `finally` while retaining compact reports as the durable record.
@@ -74,10 +94,12 @@ This is the living progress record. It is regenerated after each test/profile cy
 | aac-to-m4a | 134,367,785 | 3 | 133,906,114 | 1.81 s–2.23 s | 179.8 MiB | 32.0 MiB | read 262,144 B / write 167,549 B | passed |
 | aac-to-mp3 | 134,367,785 | 3 | 96,285,357 | 61.12 s–62.00 s | 155.0 MiB | 32.0 MiB | read 262,144 B / write 621 B | passed |
 | aac-to-wav | 134,367,785 | 3 | 770,273,358 | 19.20 s–19.62 s | 186.5 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
+| aiff-to-aac | 201,600,102 | 3 | 21,872,668 | 86.45 s–86.76 s | 162.5 MiB | 32.0 MiB | read 262,144 B / write 557 B | passed |
 | aiff-to-amr | 201,600,102 | 3 | 3,360,038 | 16.98 s–17.77 s | 152.5 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | aiff-to-flac | 220,800,108 | 3 | 32,365,732 | 6.06 s–7.02 s | 207.2 MiB | 32.0 MiB | read 262,144 B / write 8,344 B | passed |
 | aiff-to-mp3 | 201,600,102 | 3 | 33,600,865 | 15.00 s–16.19 s | 154.4 MiB | 32.0 MiB | read 262,144 B / write 481 B | passed |
 | aiff-to-wav | 201,600,102 | 3 | 201,600,128 | 3.38 s–4.24 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 4,096 B | passed |
+| amr-to-aac | 134,229,414 | 3 | 450,612,583 | 197.19 s–203.05 s | 153.0 MiB | 32.0 MiB | read 262,144 B / write 780 B | passed |
 | amr-to-aiff | 134,229,414 | 3 | 1,342,294,134 | 65.92 s–66.64 s | 195.1 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | amr-to-flac | 134,229,414 | 3 | 760,765,211 | 124.23 s–126.93 s | 166.0 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
 | amr-to-mp3 | 134,229,414 | 3 | 1,342,295,469 | 417.56 s–428.36 s | 177.0 MiB | 32.0 MiB | read 262,144 B / write 621 B | passed |
@@ -111,6 +133,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | csv-to-tsv | 134,423,894 | 3 | 139,913,895 | 8.53 s–8.71 s | 192.7 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | docx-to-txt | 134,218,659 | 3 | 90,834,111 | 6.07 s–6.20 s | 217.9 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | epub-to-txt | 134,219,595 | 3 | 123,185,664 | 6.89 s–6.94 s | 205.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| flac-to-aac | 138,185,686 | 3 | 19,503,506 | 13.32 s–13.96 s | 162.5 MiB | 32.0 MiB | read 262,144 B / write 577 B | passed |
 | flac-to-aiff | 138,185,686 | 3 | 153,600,102 | 3.10 s–3.59 s | 209.5 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | flac-to-alac | 138,185,686 | 3 | 140,941,506 | 7.52 s–7.73 s | 199.1 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flac-to-amr | 138,185,686 | 3 | 1,280,038 | 8.71 s–9.44 s | 161.9 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
@@ -154,6 +177,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | m2v-to-mpeg-ts | 136,166,136 | 3 | 142,319,760 | 1.96 s–2.30 s | 202.0 MiB | 32.0 MiB | read 262,144 B / write 29,892 B | passed |
 | m2v-to-webm | 136,166,136 | 3 | 37,835,173 | 30.57 s–32.39 s | 163.9 MiB | 32.0 MiB | read 262,144 B / write 42,619 B | passed |
 | m2v-to-webm-vp9 | 136,166,136 | 3 | 44,351,703 | 68.34 s–69.32 s | 223.4 MiB | 56.0 MiB | read 262,144 B / write 45,682 B | passed |
+| m4a-to-aac | 140,941,469 | 3 | 19,503,506 | 15.19 s–16.09 s | 202.5 MiB | 32.0 MiB | read 262,144 B / write 577 B | passed |
 | m4a-to-aiff | 140,941,469 | 3 | 153,600,102 | 5.22 s–5.86 s | 226.2 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | m4a-to-amr | 140,941,469 | 3 | 1,280,038 | 10.95 s–11.18 s | 217.0 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | m4a-to-flac | 140,941,469 | 3 | 138,185,793 | 7.43 s–7.84 s | 230.4 MiB | 32.0 MiB | read 262,144 B / write 16,614 B | passed |
@@ -197,6 +221,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mov-to-wav | 149,251,969 | 3 | 414,733,404 | 9.31 s–9.77 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
 | mov-to-webm | 147,136,647 | 3 | 5,100,809 | 9.53 s–10.14 s | 244.4 MiB | 48.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-webm-vp9 | 147,136,647 | 3 | 4,126,570 | 14.67 s–15.17 s | 236.8 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mp3-to-aac | 50,401,224 | 3 | 31,240,176 | 31.25 s–32.64 s | 144.3 MiB | 32.0 MiB | read 262,144 B / write 584 B | passed |
 | mp3-to-aiff | 50,401,224 | 3 | 201,600,102 | 5.00 s–5.96 s | 165.8 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | mp3-to-amr | 50,401,224 | 3 | 3,360,038 | 19.91 s–20.37 s | 150.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | mp3-to-flac | 50,401,224 | 3 | 33,022,489 | 7.26 s–8.16 s | 214.2 MiB | 32.0 MiB | read 262,144 B / write 8,338 B | passed |
@@ -238,6 +263,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | odp-to-txt | 135,272,481 | 3 | 109,181,183 | 10.34 s–10.56 s | 199.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ods-to-csv | 135,267,401 | 3 | 37,117,581 | 8.61 s–8.67 s | 196.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | odt-to-txt | 135,267,233 | 3 | 108,212,672 | 10.38 s–10.90 s | 191.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| ogg-to-aac | 144,431,506 | 3 | 56,072,323 | 38.05 s–38.55 s | 160.7 MiB | 32.0 MiB | read 262,144 B / write 578 B | passed |
 | ogg-to-aiff | 144,431,506 | 3 | 441,600,054 | 9.63 s–10.03 s | 169.0 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | ogg-to-amr | 144,431,506 | 3 | 3,680,038 | 25.20 s–26.29 s | 155.7 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | ogg-to-flac | 144,431,506 | 3 | 397,265,921 | 15.35 s–15.46 s | 198.4 MiB | 32.0 MiB | read 262,144 B / write 16,617 B | passed |
@@ -249,6 +275,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ogv-to-wav | 137,635,308 | 3 | 74,880,078 | 3.34 s–3.91 s | 204.9 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | ogv-to-webm | 137,778,644 | 3 | 61,043,196 | 44.03 s–45.01 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 71,004 B | passed |
 | ogv-to-webm-vp9 | 137,635,308 | 3 | 67,478,525 | 97.19 s–97.53 s | 224.1 MiB | 64.0 MiB | read 262,144 B / write 79,087 B | passed |
+| opus-to-aac | 147,964,541 | 3 | 56,072,780 | 46.90 s–48.38 s | 147.2 MiB | 32.0 MiB | read 262,144 B / write 578 B | passed |
 | opus-to-aiff | 147,964,541 | 3 | 441,600,054 | 19.00 s–19.65 s | 180.2 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | opus-to-amr | 147,964,541 | 3 | 3,680,038 | 34.38 s–35.64 s | 163.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | opus-to-flac | 147,964,541 | 3 | 386,531,887 | 25.55 s–26.09 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 16,213 B | passed |
@@ -298,6 +325,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | vtt-to-ass | 73,788,904 | 3 | 83,203,467 | 3.84 s–4.34 s | 187.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-srt | 73,788,904 | 3 | 71,607,792 | 2.79 s–2.84 s | 200.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-ttml | 73,788,904 | 3 | 82,349,061 | 3.48 s–3.58 s | 204.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| wav-to-aac | 153,600,106 | 3 | 19,503,506 | 12.20 s–13.08 s | 153.8 MiB | 32.0 MiB | read 262,144 B / write 577 B | passed |
 | wav-to-aiff | 153,600,106 | 3 | 153,600,102 | 1.60 s–2.10 s | 172.5 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | wav-to-alac | 153,600,106 | 3 | 140,941,506 | 6.14 s–6.58 s | 200.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | wav-to-amr | 153,600,106 | 3 | 1,280,038 | 7.67 s–7.87 s | 162.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
@@ -311,6 +339,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webp-to-ico | 263,320 | 3 | 13,013 | 0.10 s–0.16 s | 77.6 MiB | 0.0 MiB | read 197,784 B / write 12,991 B | passed |
 | webp-to-jpeg | 263,320 | 3 | 364,322 | 0.13 s–0.18 s | 69.9 MiB | 0.0 MiB | read 131,072 B / write 262,144 B | passed |
 | webp-to-png | 263,320 | 3 | 1,528,103 | 0.12 s–0.17 s | 69.8 MiB | 0.0 MiB | read 197,784 B / write 262,144 B | passed |
+| wma-to-aac | 142,503,082 | 3 | 46,316,859 | 29.67 s–30.28 s | 162.1 MiB | 32.0 MiB | read 262,144 B / write 582 B | passed |
 | wma-to-aiff | 142,503,082 | 3 | 364,798,054 | 7.03 s–7.38 s | 179.0 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | wma-to-amr | 142,503,082 | 3 | 3,040,006 | 19.50 s–20.36 s | 149.8 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | wma-to-flac | 142,503,082 | 3 | 326,238,814 | 12.91 s–13.56 s | 191.2 MiB | 32.0 MiB | read 262,144 B / write 16,523 B | passed |
@@ -386,6 +415,7 @@ Stream ma |
 | 2026-08-12T15:45:53.778Z | ogg-to-amr | 144,431,506 | 0 | 0 | Chromium selected 0 bytes; expected 144431506. |
 | 2026-08-12T16:48:35.085Z | m4a-to-mp3 | 36,929,878 | 0 | 36,929,878 | Browser MP3 output packets do not exactly match the source MP3 payload. |
 | 2026-08-12T17:10:33.003Z | amr-to-mp3 | 134,229,414 | 0 | 134,229,414 | Browser media output size is outside the validated range: 1342295469 bytes. |
+| 2026-08-12T20:22:49.212Z | amr-to-aac | 134,229,414 | 0 | 134,229,414 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 83893.632s. |
 
 ## Every public passed profile
 
@@ -409,10 +439,12 @@ Stream ma |
 | aac-to-m4a | audio | ffmpeg-remux | stream-copy | 134,367,785 B | 3-run Chrome report |
 | aac-to-mp3 | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aac-to-wav | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
+| aiff-to-aac | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | aiff-to-amr | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | aiff-to-flac | audio | ffmpeg-audio | re-encode | 220,800,108 B | 3-run Chrome report |
 | aiff-to-mp3 | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
 | aiff-to-wav | audio | ffmpeg-audio | re-encode | 201,600,102 B | 3-run Chrome report |
+| amr-to-aac | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-aiff | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-flac | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-mp3 | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
@@ -446,6 +478,7 @@ Stream ma |
 | csv-to-tsv | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | docx-to-txt | document | document-stream | stream | 134,218,659 B | 3-run Chrome report |
 | epub-to-txt | ebook | ebook-stream | stream | 134,219,595 B | 3-run Chrome report |
+| flac-to-aac | audio | ffmpeg-audio | re-encode | 138,185,686 B | 3-run Chrome report |
 | flac-to-aiff | audio | ffmpeg-audio | re-encode | 138,185,686 B | 3-run Chrome report |
 | flac-to-alac | audio | ffmpeg-audio | re-encode | 138,185,686 B | 3-run Chrome report |
 | flac-to-amr | audio | ffmpeg-audio | re-encode | 138,185,686 B | 3-run Chrome report |
@@ -489,6 +522,7 @@ Stream ma |
 | m2v-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 136,166,136 B | 3-run Chrome report |
 | m2v-to-webm | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
 | m2v-to-webm-vp9 | video | ffmpeg-video | re-encode | 136,166,136 B | 3-run Chrome report |
+| m4a-to-aac | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
 | m4a-to-aiff | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
 | m4a-to-amr | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
 | m4a-to-flac | audio | ffmpeg-audio | re-encode | 140,941,469 B | 3-run Chrome report |
@@ -532,6 +566,7 @@ Stream ma |
 | mov-to-wav | video | ffmpeg-audio | re-encode | 149,251,969 B | 3-run Chrome report |
 | mov-to-webm | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
 | mov-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
+| mp3-to-aac | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp3-to-aiff | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp3-to-amr | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp3-to-flac | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
@@ -573,6 +608,7 @@ Stream ma |
 | odp-to-txt | presentation | odf-stream | stream | 135,272,481 B | 3-run Chrome report |
 | ods-to-csv | spreadsheet | odf-stream | stream | 135,267,401 B | 3-run Chrome report |
 | odt-to-txt | document | odf-stream | stream | 135,267,233 B | 3-run Chrome report |
+| ogg-to-aac | audio | ffmpeg-audio | re-encode | 144,431,506 B | 3-run Chrome report |
 | ogg-to-aiff | audio | ffmpeg-audio | re-encode | 144,431,506 B | 3-run Chrome report |
 | ogg-to-amr | audio | ffmpeg-audio | re-encode | 144,431,506 B | 3-run Chrome report |
 | ogg-to-flac | audio | ffmpeg-audio | re-encode | 144,431,506 B | 3-run Chrome report |
@@ -584,6 +620,7 @@ Stream ma |
 | ogv-to-wav | video | ffmpeg-audio | re-encode | 137,635,308 B | 3-run Chrome report |
 | ogv-to-webm | video | ffmpeg-video | re-encode | 137,778,644 B | 3-run Chrome report |
 | ogv-to-webm-vp9 | video | ffmpeg-video | re-encode | 137,635,308 B | 3-run Chrome report |
+| opus-to-aac | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-aiff | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-amr | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-flac | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
@@ -633,6 +670,7 @@ Stream ma |
 | vtt-to-ass | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-srt | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-ttml | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
+| wav-to-aac | audio | ffmpeg-audio | re-encode | 153,600,106 B | 3-run Chrome report |
 | wav-to-aiff | audio | ffmpeg-audio | re-encode | 153,600,106 B | 3-run Chrome report |
 | wav-to-alac | audio | ffmpeg-audio | re-encode | 153,600,106 B | 3-run Chrome report |
 | wav-to-amr | audio | ffmpeg-audio | re-encode | 153,600,106 B | 3-run Chrome report |
@@ -646,6 +684,7 @@ Stream ma |
 | webp-to-ico | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-jpeg | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-png | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
+| wma-to-aac | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
 | wma-to-aiff | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
 | wma-to-amr | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
 | wma-to-flac | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |

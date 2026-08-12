@@ -320,6 +320,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "aiff-audio",
         "amr-audio",
         "mp3-audio",
+        "aac-audio",
         "h264-extract",
         "hevc-extract",
         "mpeg2-extract",
@@ -644,6 +645,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     [
       "aac-to-amr",
       "aiff-to-amr",
+      "amr-to-aac",
       "amr-to-aiff",
       "amr-to-flac",
       "amr-to-mp3",
@@ -707,6 +709,36 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
+  assert.deepEqual(
+    conversionProfiles
+      .filter(
+        (profile) =>
+          profile.output === "aac" && profile.route === "re-encode",
+      )
+      .map((profile) => profile.id)
+      .sort(),
+    [
+      "aiff-to-aac",
+      "amr-to-aac",
+      "flac-to-aac",
+      "m4a-to-aac",
+      "mp3-to-aac",
+      "ogg-to-aac",
+      "opus-to-aac",
+      "wav-to-aac",
+      "wma-to-aac",
+    ],
+  );
+  for (const profile of conversionProfiles.filter(
+    (candidate) =>
+      candidate.output === "aac" && candidate.route === "re-encode",
+  )) {
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
+    assert.equal(profile.public, true);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+  }
   assert.equal(
     formats.find((format) => format.id === "wma")?.extensions[0],
     "wma",
@@ -719,6 +751,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     [
       "flac-to-wma",
       "wav-to-wma",
+      "wma-to-aac",
       "wma-to-aiff",
       "wma-to-amr",
       "wma-to-flac",
