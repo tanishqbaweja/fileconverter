@@ -45,7 +45,11 @@ const webmBenchmarkFixture = path.resolve(
   "webm-benchmark-120s.mkv",
 );
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
-const ffmpegReproBuildRoot = path.resolve(workRoot, "aiff-repro-build");
+const ffmpegReproBuildRoots = [
+  path.resolve(workRoot, "aiff-repro-build"),
+  path.resolve(workRoot, "amr-repro-build"),
+  path.resolve(workRoot, "amr-repro-verify"),
+];
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
 const tiffAuditRoot = path.resolve(workRoot, "tiff-audit");
 const jpegAuditRoot = path.resolve(workRoot, "jpeg-audit");
@@ -153,7 +157,9 @@ const generatedStressNames = new Set([
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
-assertInside(workRoot, ffmpegReproBuildRoot);
+for (const temporaryRoot of ffmpegReproBuildRoots) {
+  assertInside(workRoot, temporaryRoot);
+}
 assertInside(workRoot, sevenZipAuditRoot);
 assertInside(workRoot, tiffAuditRoot);
 assertInside(workRoot, jpegAuditRoot);
@@ -212,7 +218,9 @@ await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
-await removeWithRetries(ffmpegReproBuildRoot);
+for (const temporaryRoot of ffmpegReproBuildRoots) {
+  await removeWithRetries(temporaryRoot);
+}
 await removeWithRetries(sevenZipAuditRoot);
 await removeWithRetries(tiffAuditRoot);
 await removeWithRetries(jpegAuditRoot);

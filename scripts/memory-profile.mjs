@@ -26,6 +26,17 @@ const AIFF_OUTPUT_PROFILES = [
   "ogg-to-aiff",
   "opus-to-aiff",
 ];
+const AMR_OUTPUT_PROFILES = [
+  "m4a-to-amr",
+  "aac-to-amr",
+  "mp3-to-amr",
+  "flac-to-amr",
+  "wav-to-amr",
+  "wma-to-amr",
+  "aiff-to-amr",
+  "ogg-to-amr",
+  "opus-to-amr",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -156,6 +167,7 @@ const isSevenZipOutputProfile =
 if (
   ![
     ...AIFF_OUTPUT_PROFILES,
+    ...AMR_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -322,6 +334,7 @@ if (
 }
 const isMediaProfile =
   AIFF_OUTPUT_PROFILES.includes(profileId) ||
+  AMR_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1088,8 +1101,10 @@ async function validateMediaOutput(
     route === "webm-to-opus";
   const opusOutput = route.endsWith("-to-opus");
   const aiffOutput = AIFF_OUTPUT_PROFILES.includes(route);
+  const amrOutput = AMR_OUTPUT_PROFILES.includes(route);
   const audioOnly =
     aiffOutput ||
+    amrOutput ||
     mp3Output ||
     aacOutput ||
     oggPacketOutput ||
@@ -1359,8 +1374,13 @@ async function validateMediaOutput(
       passed: true,
       sha256: source.decodedPcmSha256,
     };
-  } else if (pcmOutput || flacOutput || alacOutput || wmaOutput) {
-    const minimumPsnrDb = source.minimumDecodedAudioPsnrDb ?? 60;
+  } else if (pcmOutput || flacOutput || alacOutput || wmaOutput || amrOutput) {
+    const minimumQualityDb = amrOutput
+      ? -3
+      : (source.minimumDecodedAudioPsnrDb ?? 60);
+    const comparisonFilter = amrOutput
+      ? "[0:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]apsnr[quality]"
+      : "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]apsnr[quality]";
     const { stderr: qualityLog } = await execFileAsync(
       "ffmpeg",
       [
@@ -1371,7 +1391,9 @@ async function validateMediaOutput(
         "-i",
         localPath,
         "-filter_complex",
-        "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]apsnr[quality]",
+        amrOutput
+          ? comparisonFilter.replace("apsnr[quality]", "asdr[quality]")
+          : comparisonFilter,
         "-map",
         "[quality]",
         "-f",
@@ -1384,9 +1406,11 @@ async function validateMediaOutput(
         maxBuffer: 16 * 1024 * 1024,
       },
     );
-    const channelPsnrDb = [
+    const channelQualityDb = [
       ...qualityLog.matchAll(
-        /PSNR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
+        amrOutput
+          ? /SDR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi
+          : /PSNR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
       ),
     ].map((match) =>
       match[1].toLowerCase() === "inf"
@@ -1394,21 +1418,21 @@ async function validateMediaOutput(
         : Number.parseFloat(match[1]),
     );
     if (
-      channelPsnrDb.length === 0 ||
-      channelPsnrDb.some(
+      channelQualityDb.length === 0 ||
+      channelQualityDb.some(
         (value) => !Number.isFinite(value) && value !== Number.POSITIVE_INFINITY,
       ) ||
-      channelPsnrDb.some((value) => value < minimumPsnrDb)
+      channelQualityDb.some((value) => value < minimumQualityDb)
     ) {
       throw new Error(
-        `Browser decoded audio quality validation failed: ${channelPsnrDb.join(", ") || "no APSNR result"} dB.`,
+        `Browser decoded audio quality validation failed: ${channelQualityDb.join(", ") || `no ${amrOutput ? "ASDR" : "APSNR"} result`} dB.`,
       );
     }
     independentAudioValidation = {
-      method: "decoded-audio-apsnr",
+      method: amrOutput ? "decoded-audio-asdr" : "decoded-audio-apsnr",
       passed: true,
-      minimumRequiredDb: minimumPsnrDb,
-      channelPsnrDb: channelPsnrDb.map((value) =>
+      minimumRequiredDb: minimumQualityDb,
+      [amrOutput ? "channelSdrDb" : "channelPsnrDb"]: channelQualityDb.map((value) =>
         value === Number.POSITIVE_INFINITY ? "Infinity" : value,
       ),
     };
@@ -1675,6 +1699,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser AIFF output did not probe as genuine AIFF.");
   }
+  if (
+    amrOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("amr")
+  ) {
+    throw new Error("Browser AMR output did not probe as genuine AMR.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1692,6 +1722,8 @@ async function validateMediaOutput(
         codecs[0] !==
           (aiffOutput
             ? "pcm_s16be"
+            : amrOutput
+              ? "amr_nb"
             : pcmOutput
               ? "pcm_s16le"
             : flacOutput
@@ -1739,8 +1771,13 @@ async function validateMediaOutput(
   const decodedAacDuration =
     (Number(audio?.nb_read_frames) * 1024) / Number(audio?.sample_rate);
   const probedOutputDuration = Number(probe.format.duration);
+  const countedAmrDuration = amrOutput
+    ? Number(audio?.nb_read_frames) * 0.02
+    : Number.NaN;
   const duration =
-    aacOutput && Number.isFinite(decodedAacDuration)
+    amrOutput && Number.isFinite(countedAmrDuration)
+      ? countedAmrDuration
+    : aacOutput && Number.isFinite(decodedAacDuration)
       ? decodedAacDuration
       : route === "avi-to-mkv" && Number.isFinite(decodedVideoDuration)
         ? decodedVideoDuration
@@ -1763,7 +1800,7 @@ async function validateMediaOutput(
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -1785,9 +1822,14 @@ async function validateMediaOutput(
         video?.height !== expectedVideoHeight)) ||
     ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
       audio?.channels !==
-        (wmaOutput
+        (amrOutput
+          ? 1
+        : wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
           : sourceAudio?.channels)) ||
+    (amrOutput &&
+      (Number(audio?.sample_rate) !== 8000 ||
+        Number(audio?.bit_rate) !== 12400)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||

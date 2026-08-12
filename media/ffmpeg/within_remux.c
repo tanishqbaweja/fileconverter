@@ -671,10 +671,12 @@ static int drain_audio_fifo(WithinAudioPipeline *pipeline, int flush) {
     int result = av_channel_layout_copy(
         &output->ch_layout, &pipeline->encoder->ch_layout);
     if (result < 0) {
+      report_av_error("Audio output layout allocation failed", result);
       return result;
     }
     result = av_frame_get_buffer(output, 0);
     if (result < 0) {
+      report_av_error("Audio output frame allocation failed", result);
       return result;
     }
     if (av_audio_fifo_read(pipeline->fifo,
@@ -686,6 +688,7 @@ static int drain_audio_fifo(WithinAudioPipeline *pipeline, int flush) {
     pipeline->next_pts += samples;
     result = write_audio_packets(pipeline, output);
     if (result < 0) {
+      report_av_error("Audio frame encode or mux failed", result);
       return result;
     }
   }
@@ -697,11 +700,15 @@ static int submit_converted_audio(WithinAudioPipeline *pipeline,
   output->nb_samples = samples;
   if (pipeline->fifo) {
     int current = av_audio_fifo_size(pipeline->fifo);
+    int available = av_audio_fifo_space(pipeline->fifo);
     if (current < 0 ||
+        available < 0 ||
         samples > WITHIN_AUDIO_FIFO_MAX_SAMPLES - current) {
       return AVERROR(ENOMEM);
     }
-    if (av_audio_fifo_realloc(pipeline->fifo, current + samples) < 0) {
+    if (available < samples &&
+        av_audio_fifo_realloc(pipeline->fifo, current + samples) < 0) {
+      within_message(2, "Audio FIFO capacity reservation failed.");
       return AVERROR(ENOMEM);
     }
     if (av_audio_fifo_write(pipeline->fifo,
@@ -733,19 +740,26 @@ static int convert_decoded_audio(WithinAudioPipeline *pipeline) {
       av_channel_layout_copy(&output->ch_layout,
                              &pipeline->encoder->ch_layout);
   if (result < 0) {
+    report_av_error("Resampled audio layout allocation failed", result);
     return result;
   }
   result = av_frame_get_buffer(output, 0);
   if (result < 0) {
+    report_av_error("Resampled audio frame allocation failed", result);
     return result;
   }
   result = swr_convert(pipeline->resampler, output->data, output_capacity,
                        (const uint8_t **)input->extended_data,
                        input->nb_samples);
   if (result < 0) {
+    report_av_error("Audio resampling failed", result);
     return result;
   }
-  return submit_converted_audio(pipeline, output, result);
+  result = submit_converted_audio(pipeline, output, result);
+  if (result < 0) {
+    report_av_error("Resampled audio submission failed", result);
+  }
+  return result;
 }
 
 static int flush_audio_resampler(WithinAudioPipeline *pipeline) {
@@ -815,6 +829,7 @@ static int within_audio_transcode(int profile) {
   const int alac_output = profile == 8;
   const int wma_output = profile == 9;
   const int aiff_output = profile == 28;
+  const int amr_output = profile == 29;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -944,8 +959,10 @@ static int within_audio_transcode(int profile) {
                 ? AV_CODEC_ID_ALAC
                 : flac_output
                       ? AV_CODEC_ID_FLAC
-                      : aiff_output ? AV_CODEC_ID_PCM_S16BE
-                                    : AV_CODEC_ID_PCM_S16LE);
+                      : aiff_output
+                            ? AV_CODEC_ID_PCM_S16BE
+                            : amr_output ? AV_CODEC_ID_AMR_NB
+                                         : AV_CODEC_ID_PCM_S16LE);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -955,7 +972,7 @@ static int within_audio_transcode(int profile) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  encoder->sample_rate = wma_output ? 48000 : decoder->sample_rate;
+  encoder->sample_rate = amr_output ? 8000 : wma_output ? 48000 : decoder->sample_rate;
   encoder->sample_fmt =
       wma_output ? AV_SAMPLE_FMT_FLTP
                  : alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
@@ -969,7 +986,10 @@ static int within_audio_transcode(int profile) {
       goto cleanup;
     }
   }
-  if (wma_output) {
+  if (amr_output) {
+    av_channel_layout_default(&encoder->ch_layout, 1);
+    result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
+  } else if (wma_output) {
     av_channel_layout_default(
         &encoder->ch_layout,
         decoder->ch_layout.nb_channels > 2 ? 2
@@ -988,6 +1008,8 @@ static int within_audio_transcode(int profile) {
     av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
   } else if (wma_output) {
     encoder->bit_rate = 320000;
+  } else if (amr_output) {
+    encoder->bit_rate = 12200;
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   av_dict_free(&encoder_options);
@@ -1009,7 +1031,9 @@ static int within_audio_transcode(int profile) {
           ? "asf"
           : alac_output
                 ? "ipod"
-                : flac_output ? "flac" : aiff_output ? "aiff" : "wav",
+                : flac_output
+                      ? "flac"
+                      : aiff_output ? "aiff" : amr_output ? "amr" : "wav",
       NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
@@ -1079,7 +1103,7 @@ static int within_audio_transcode(int profile) {
   }
   fifo = av_audio_fifo_alloc(encoder->sample_fmt,
                              encoder->ch_layout.nb_channels,
-                             output_frame_samples * 2);
+                             WITHIN_AUDIO_FIFO_MAX_SAMPLES);
   if (!fifo) {
     result = AVERROR(ENOMEM);
     goto cleanup;
@@ -1796,7 +1820,7 @@ int within_remux(int profile) {
   int next_prefetched_packet = 0;
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
-      profile == 28) {
+      profile == 28 || profile == 29) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

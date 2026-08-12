@@ -72,7 +72,19 @@ const fixtures = [
 
 await mkdir(fixtureRoot, { recursive: true });
 
-for (const fixture of fixtures) {
+const requestedNames = new Set(process.argv.slice(2));
+const selectedFixtures = requestedNames.size
+  ? fixtures.filter((fixture) => requestedNames.has(fixture.name))
+  : fixtures;
+if (selectedFixtures.length !== (requestedNames.size || fixtures.length)) {
+  throw new Error(
+    `Unknown fixture name. Choose from: ${fixtures.map((fixture) => fixture.name).join(", ")}.`,
+  );
+}
+
+await Promise.all(selectedFixtures.map(generateFixture));
+
+async function generateFixture(fixture) {
   const fixturePath = path.join(fixtureRoot, fixture.name);
   await execFileAsync(
     "ffmpeg",

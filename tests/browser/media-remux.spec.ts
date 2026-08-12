@@ -31,6 +31,7 @@ const directWavOutputPath = path.join(outputRoot, "direct-audio-output.wav");
 const directM4aOutputPath = path.join(outputRoot, "direct-audio-output.m4a");
 const directFlacOutputPath = path.join(outputRoot, "direct-audio-output.flac");
 const directAiffOutputPath = path.join(outputRoot, "direct-audio-output.aiff");
+const directAmrOutputPath = path.join(outputRoot, "direct-audio-output.amr");
 const aacM4aOutputPath = path.join(outputRoot, "aac-remux-output.m4a");
 const aacWavOutputPath = path.join(outputRoot, "aac-convert-output.wav");
 const aacFlacOutputPath = path.join(outputRoot, "aac-convert-output.flac");
@@ -90,6 +91,17 @@ const aiffOutputPaths = {
   wma: path.join(outputRoot, "wma-convert-output.aiff"),
   ogg: path.join(outputRoot, "ogg-convert-output.aiff"),
   opus: path.join(outputRoot, "opus-convert-output.aiff"),
+} as const;
+const amrOutputPaths = {
+  m4a: path.join(outputRoot, "m4a-convert-output.amr"),
+  aac: path.join(outputRoot, "aac-convert-output.amr"),
+  mp3: path.join(outputRoot, "mp3-convert-output.amr"),
+  flac: path.join(outputRoot, "flac-convert-output.amr"),
+  wav: path.join(outputRoot, "wav-convert-output.amr"),
+  wma: path.join(outputRoot, "wma-convert-output.amr"),
+  aiff: path.join(outputRoot, "aiff-convert-output.amr"),
+  ogg: path.join(outputRoot, "ogg-convert-output.amr"),
+  opus: path.join(outputRoot, "opus-convert-output.amr"),
 } as const;
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
@@ -692,6 +704,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(aiffOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(amrOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -1032,6 +1047,7 @@ test.afterAll(async () => {
   await rm(directM4aOutputPath, { force: true });
   await rm(directFlacOutputPath, { force: true });
   await rm(directAiffOutputPath, { force: true });
+  await rm(directAmrOutputPath, { force: true });
   await rm(aacM4aOutputPath, { force: true });
   await rm(aacWavOutputPath, { force: true });
   await rm(aacFlacOutputPath, { force: true });
@@ -1079,6 +1095,9 @@ test.afterAll(async () => {
   await rm(oggFlacOutputPath, { force: true });
   await rm(opusFlacOutputPath, { force: true });
   for (const outputPath of Object.values(aiffOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
+  for (const outputPath of Object.values(amrOutputPaths)) {
     await rm(outputPath, { force: true });
   }
   await rm(mpeg4OutputPath, { force: true });
@@ -1355,6 +1374,15 @@ async function runMediaRoute(
     | "wma-to-aiff"
     | "ogg-to-aiff"
     | "opus-to-aiff"
+    | "m4a-to-amr"
+    | "aac-to-amr"
+    | "mp3-to-amr"
+    | "flac-to-amr"
+    | "wav-to-amr"
+    | "wma-to-amr"
+    | "aiff-to-amr"
+    | "ogg-to-amr"
+    | "opus-to-amr"
     | "mkv-to-webm"
     | "mp4-to-webm"
     | "mov-to-webm"
@@ -1456,6 +1484,7 @@ async function runMediaRoute(
       profileId === "ogg-to-flac" ||
       profileId === "opus-to-flac"
       || profileId.endsWith("-to-aiff")
+      || profileId.endsWith("-to-amr")
     ) {
       expect(state.warnings).toEqual([]);
     } else {
@@ -1627,11 +1656,15 @@ async function validateContainerWebmOutput(
 }
 
 async function runSmallDirectAudioRoute(
-  profileId: "mkv-to-m4a" | "mp3-to-flac" | "mp3-to-aiff",
+  profileId:
+    | "mkv-to-m4a"
+    | "mp3-to-flac"
+    | "mp3-to-aiff"
+    | "mp3-to-amr",
   inputPath: string,
   outputName: string,
   outputPath: string,
-  expectedCodec: "aac" | "flac" | "pcm_s16be",
+  expectedCodec: "aac" | "flac" | "pcm_s16be" | "amr_nb",
   minimumBytes: number,
 ): Promise<void> {
   try {
@@ -1955,6 +1988,64 @@ test("browser FFmpeg flushes coalesced AIFF PCM through a bounded direct save", 
     "pcm_s16be",
     300_000,
   );
+});
+
+test("browser FFmpeg flushes bounded AMR-NB packets through a direct save", async () => {
+  await runSmallDirectAudioRoute(
+    "mp3-to-amr",
+    mp3FixturePath,
+    "audio-source.amr",
+    directAmrOutputPath,
+    "amr_nb",
+    1_000,
+  );
+});
+
+test("direct AMR save propagates write failure and releases the partial file", async () => {
+  const outputName = "audio-source.amr";
+  try {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mp3-to-amr");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    const abandonedSize = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(entryName);
+        const size = (await handle.getFile()).size;
+        await root.removeEntry(entryName);
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    }, outputName);
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  } finally {
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+  }
 });
 
 test("direct AIFF coalescing propagates write failure and releases the partial file", async () => {
@@ -2342,7 +2433,11 @@ for (const route of [
     );
     await page
       .locator('[data-testid="file-input"]')
-      .setInputFiles("inputPath" in route ? route.inputPath : incompatibleFixturePath);
+      .setInputFiles(
+        "inputPath" in route
+          ? (route.inputPath ?? incompatibleFixturePath)
+          : incompatibleFixturePath,
+      );
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(route.profileId);
@@ -2868,6 +2963,71 @@ test("browser FFmpeg preserves decoded ALAC samples in AIFF", async () => {
     },
   );
 });
+
+const standaloneAmrOutputRoutes = [
+  ["m4a-to-amr", "m4a", audioFixturePath],
+  ["aac-to-amr", "aac", aacFixturePath],
+  ["mp3-to-amr", "mp3", mp3FixturePath],
+  ["flac-to-amr", "flac", flacFixturePath],
+  ["wav-to-amr", "wav", wavFixturePath],
+  ["wma-to-amr", "wma", wmaFixturePath],
+  ["aiff-to-amr", "aiff", aiffFixturePath],
+  ["ogg-to-amr", "ogg", oggFixturePath],
+  ["opus-to-amr", "opus", opusFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of standaloneAmrOutputRoutes) {
+  test(`browser FFmpeg writes genuine 12.2 kb/s AMR-NB for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      amrOutputPaths[input],
+      ["amr_nb"],
+      1_000,
+      inputPath,
+      {
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("amr");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.sample_rate)).toBe(8_000);
+          expect(Number(audio?.channels)).toBe(1);
+          // FFprobe includes AMR framing overhead in its average stream rate.
+          // A 12.2 kb/s MR122 payload therefore probes as 12.4 kb/s.
+          expect(Number(audio?.bit_rate)).toBe(12_400);
+          await execFileAsync("ffmpeg", [
+            "-v",
+            "error",
+            "-i",
+            outputPath,
+            "-f",
+            "null",
+            "-",
+          ]);
+          const { stderr: qualityLog } = await execFileAsync("ffmpeg", [
+            "-hide_banner",
+            "-nostdin",
+            "-i",
+            inputPath,
+            "-i",
+            outputPath,
+            "-filter_complex",
+            "[0:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]asdr[quality]",
+            "-map",
+            "[quality]",
+            "-f",
+            "null",
+            "NUL",
+          ]);
+          const sdr = qualityLog.match(
+            /SDR ch0:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/i,
+          );
+          expect(Number(sdr?.[1])).toBeGreaterThanOrEqual(-3);
+        },
+      },
+    );
+  });
+}
 
 test("browser FFmpeg performs a genuine bounded video re-encode", async () => {
   await runMediaRoute(

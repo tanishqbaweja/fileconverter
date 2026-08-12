@@ -7,8 +7,15 @@ FFmpeg 8.1.2
 Source: https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz
 SHA-256: 464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c
 Project: https://ffmpeg.org/
-License for the configured build: LGPL-2.1-or-later
+License for the configured build: LGPL-3.0-or-later
 The build excludes FFmpeg's GPL and nonfree configuration switches.
+
+OpenCORE AMR 0.1.6
+Source: https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.6.tar.gz
+SHA-256: 483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1
+Project: https://sourceforge.net/projects/opencore-amr/
+License: Apache-2.0
+(see public/engines/remux/LICENSE.opencore-amr)
 
 libvpx 1.16.0
 Source: https://github.com/webmproject/libvpx/archive/refs/tags/v1.16.0.tar.gz

@@ -318,6 +318,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "stream-copy",
         "audio",
         "aiff-audio",
+        "amr-audio",
         "h264-extract",
         "hevc-extract",
         "mpeg2-extract",
@@ -395,7 +396,15 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("adts"));
   assert.ok(manifest.enabledMuxers.includes("ogg"));
   assert.ok(manifest.enabledMuxers.includes("aiff"));
+  assert.ok(manifest.enabledMuxers.includes("amr"));
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
+  assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
+  assert.equal(manifest.opencoreAmrVersion, "0.1.6");
+  assert.equal(
+    manifest.opencoreAmrSourceSha256,
+    "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
+  );
+  assert.ok(manifest.licenses.includes("OpenCORE AMR Apache-2.0"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -624,13 +633,42 @@ test("compound archives and mainstream images are detected by filename", () => {
       .filter((profile) => profile.input === "amr" || profile.output === "amr")
       .map((profile) => profile.id)
       .sort(),
-    ["amr-to-aiff", "amr-to-flac", "amr-to-wav"],
+    [
+      "aac-to-amr",
+      "aiff-to-amr",
+      "amr-to-aiff",
+      "amr-to-flac",
+      "amr-to-wav",
+      "flac-to-amr",
+      "m4a-to-amr",
+      "mp3-to-amr",
+      "ogg-to-amr",
+      "opus-to-amr",
+      "wav-to-amr",
+      "wma-to-amr",
+    ],
   );
   assert.ok(
     publicProfilesFor("amr").some(
       (profile) => profile.id === "amr-to-wav",
     ),
   );
+  for (const profile of conversionProfiles.filter(
+    (candidate) => candidate.output === "amr",
+  )) {
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes > 0);
+    assert.ok(
+      profile.fidelityLimitations.some((limitation) =>
+        limitation.includes("8 kHz mono"),
+      ),
+    );
+    assert.ok(
+      publicProfilesFor(profile.input).some(
+        (candidate) => candidate.id === profile.id,
+      ),
+    );
+  }
   assert.equal(
     formats.find((format) => format.id === "wma")?.extensions[0],
     "wma",
@@ -644,6 +682,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "flac-to-wma",
       "wav-to-wma",
       "wma-to-aiff",
+      "wma-to-amr",
       "wma-to-flac",
       "wma-to-wav",
     ],

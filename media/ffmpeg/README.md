@@ -8,6 +8,8 @@ the `ffmpeg` command-line program.
 
 - FFmpeg 8.1.2 source archive:
   `464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c`
+- OpenCORE AMR 0.1.6 source archive:
+  `483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1`
 - libvpx 1.16.0 source archive:
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - Emscripten SDK 6.0.4 amd64 image:
@@ -21,8 +23,8 @@ From the repository root:
 docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engines/remux media/ffmpeg
 ```
 
-The Docker build downloads the pinned source archives, verifies both SHA-256
-values, builds a VP8/VP9-encoder-only libvpx with both decoders disabled,
+The Docker build downloads the pinned source archives, verifies every SHA-256
+value, builds static OpenCORE AMR and a VP8/VP9-encoder-only libvpx with both decoders disabled,
 configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
@@ -57,7 +59,9 @@ The pinned FFmpeg tree is patched reproducibly with
 frames and batches them into packets capped at 32 KiB, avoiding corrupt partial
 frames at AVIO refill boundaries and reducing demux overhead. The audio
 pipeline also batches frame-size-zero PCM encoders into fixed 8,192-sample FIFO
-frames; total FIFO occupancy remains capped at 16,384 samples.
+frames; total FIFO occupancy remains capped at 16,384 samples. The FIFO is
+preallocated to that hard cap and is reallocated only if the current free space
+is insufficient, avoiding allocator work in the normal audio hot path.
 
 The same single-threaded audio core writes genuine AIFF with signed 16-bit
 big-endian PCM for the measured AAC/ALAC M4A, raw AAC, AMR-NB, MP3, FLAC, WAV,
@@ -65,6 +69,15 @@ WMA2, Vorbis, and Opus inputs. Destination packets are coalesced before the
 single-flight positional write, while the custom AVIO buffer and FIFO retain
 their fixed bounds. The build enables only the AIFF muxer and `pcm_s16be`
 encoder needed for these profiles; it adds no codec library or extra worker.
+
+The same lean module links the pinned static OpenCORE AMR library and writes
+genuine 8 kHz mono AMR-NB in fixed MR122 mode for AAC/ALAC M4A, raw AAC, MP3,
+FLAC, WAV, WMA2, AIFF, Vorbis, and Opus inputs. The encoder consumes signed
+16-bit samples from the bounded resampler/FIFO pipeline. AMR frames reach the
+custom AVIO callback as 32-byte writes, with one destination operation in
+flight and no complete output copy. This requires FFmpeg's `--enable-version3`;
+the configured FFmpeg build is therefore LGPL-3.0-or-later, while OpenCORE AMR
+is distributed under Apache-2.0.
 
 The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
 MPEG-4 Part 2 parsers. Transport

@@ -242,6 +242,66 @@ function standaloneAiffProfile(input: StandaloneAiffInput): ConversionProfile {
   };
 }
 
+type StandaloneAmrOutputInput = Exclude<StandaloneAiffInput, "amr"> | "aiff";
+
+const standaloneAmrOutputEvidence: Record<
+  StandaloneAmrOutputInput,
+  number | null
+> = {
+  m4a: 140_941_469,
+  aac: 134_367_785,
+  mp3: 50_401_224,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  aiff: 201_600_102,
+  ogg: 144_431_506,
+  opus: 147_964_541,
+};
+
+function standaloneAmrOutputProfile(
+  input: StandaloneAmrOutputInput,
+): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    aac: "AAC in ADTS",
+    mp3: "MP3",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    ogg: "Vorbis in Ogg",
+    opus: "Opus in Ogg",
+  }[input];
+  const evidence = standaloneAmrOutputEvidence[input];
+  return {
+    id: `${input}-to-amr`,
+    input,
+    output: "amr",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, additional streams, and source metadata are explicitly excluded.",
+      "AMR-NB output is fixed to one 8 kHz mono voice channel at 12.2 kb/s.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is downmixed and resampled to 8 kHz mono before lossy AMR-NB encoding; this voice profile is not transparent for music.`,
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3578,6 +3638,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneAiffProfile("wma"),
   standaloneAiffProfile("ogg"),
   standaloneAiffProfile("opus"),
+  standaloneAmrOutputProfile("m4a"),
+  standaloneAmrOutputProfile("aac"),
+  standaloneAmrOutputProfile("mp3"),
+  standaloneAmrOutputProfile("flac"),
+  standaloneAmrOutputProfile("wav"),
+  standaloneAmrOutputProfile("wma"),
+  standaloneAmrOutputProfile("aiff"),
+  standaloneAmrOutputProfile("ogg"),
+  standaloneAmrOutputProfile("opus"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),
