@@ -321,6 +321,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "amr-audio",
         "mp3-audio",
         "aac-audio",
+        "opus-audio",
         "h264-extract",
         "hevc-extract",
         "mpeg2-extract",
@@ -402,6 +403,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
   assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
   assert.ok(manifest.enabledEncoders.includes("libmp3lame"));
+  assert.ok(manifest.enabledEncoders.includes("libopus"));
   assert.equal(manifest.opencoreAmrVersion, "0.1.6");
   assert.equal(
     manifest.opencoreAmrSourceSha256,
@@ -414,6 +416,12 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
     "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
   );
   assert.ok(manifest.licenses.includes("LAME LGPL-2.0-or-later"));
+  assert.equal(manifest.opusVersion, "1.6.1");
+  assert.equal(
+    manifest.opusSourceSha256,
+    "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+  );
+  assert.ok(manifest.licenses.includes("libopus BSD-3-Clause"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -649,6 +657,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "amr-to-aiff",
       "amr-to-flac",
       "amr-to-mp3",
+      "amr-to-opus",
       "amr-to-wav",
       "flac-to-amr",
       "m4a-to-amr",
@@ -756,6 +765,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "wma-to-amr",
       "wma-to-flac",
       "wma-to-mp3",
+      "wma-to-opus",
       "wma-to-wav",
     ],
   );

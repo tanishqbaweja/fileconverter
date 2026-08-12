@@ -424,6 +424,70 @@ function standaloneAacOutputProfile(
   };
 }
 
+type StandaloneOpusOutputInput =
+  | Exclude<StandaloneAiffInput, "opus">
+  | "aiff";
+
+const standaloneOpusOutputEvidence: Record<
+  StandaloneOpusOutputInput,
+  number | null
+> = {
+  m4a: 140_941_469,
+  aac: 134_367_785,
+  amr: 134_229_414,
+  mp3: 50_401_224,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  aiff: 201_600_102,
+  ogg: 144_431_506,
+};
+
+function standaloneOpusOutputProfile(
+  input: StandaloneOpusOutputInput,
+): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    aac: "AAC in ADTS",
+    amr: "8 kHz mono AMR-NB",
+    mp3: "MP3",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    ogg: "Vorbis in Ogg",
+  }[input];
+  const evidence = standaloneOpusOutputEvidence[input];
+  return {
+    id: `${input}-to-opus`,
+    input,
+    output: "opus",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, and additional streams are explicitly excluded.",
+      "Compatible text tags are copied into Ogg comments where possible; stream language and container-specific fields may not be retained.",
+      "Mono output targets 64 kb/s VBR and one channel; stereo output targets 128 kb/s VBR and at most two channels.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily encoded as Opus with the measured fastest libopus complexity setting; supported 8, 12, 16, 24, and 48 kHz source rates are preserved, while unsupported or higher rates are rounded up or capped through 48 kHz.`,
+      "Complexity 0 was retained only after comparative ASDR testing found no quality regression against complexity 5 or 10 on the protected reference source.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3787,6 +3851,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneAacOutputProfile("aiff"),
   standaloneAacOutputProfile("ogg"),
   standaloneAacOutputProfile("opus"),
+  standaloneOpusOutputProfile("m4a"),
+  standaloneOpusOutputProfile("aac"),
+  standaloneOpusOutputProfile("amr"),
+  standaloneOpusOutputProfile("mp3"),
+  standaloneOpusOutputProfile("flac"),
+  standaloneOpusOutputProfile("wav"),
+  standaloneOpusOutputProfile("wma"),
+  standaloneOpusOutputProfile("aiff"),
+  standaloneOpusOutputProfile("ogg"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),

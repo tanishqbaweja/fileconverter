@@ -126,6 +126,17 @@ const aacTranscodeOutputPaths = {
   ogg: path.join(outputRoot, "ogg-convert-output.aac"),
   opus: path.join(outputRoot, "opus-convert-output.aac"),
 } as const;
+const opusTranscodeOutputPaths = {
+  m4a: path.join(outputRoot, "m4a-convert-output.opus"),
+  aac: path.join(outputRoot, "aac-convert-output.opus"),
+  amr: path.join(outputRoot, "amr-convert-output.opus"),
+  mp3: path.join(outputRoot, "mp3-convert-output.opus"),
+  flac: path.join(outputRoot, "flac-convert-output.opus"),
+  wav: path.join(outputRoot, "wav-convert-output.opus"),
+  wma: path.join(outputRoot, "wma-convert-output.opus"),
+  aiff: path.join(outputRoot, "aiff-convert-output.opus"),
+  ogg: path.join(outputRoot, "ogg-convert-output.opus"),
+} as const;
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
@@ -737,6 +748,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(aacTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -1137,6 +1151,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(aacTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
@@ -1438,6 +1455,15 @@ async function runMediaRoute(
     | "aiff-to-aac"
     | "ogg-to-aac"
     | "opus-to-aac"
+    | "m4a-to-opus"
+    | "aac-to-opus"
+    | "amr-to-opus"
+    | "mp3-to-opus"
+    | "flac-to-opus"
+    | "wav-to-opus"
+    | "wma-to-opus"
+    | "aiff-to-opus"
+    | "ogg-to-opus"
     | "mkv-to-webm"
     | "mp4-to-webm"
     | "mov-to-webm"
@@ -1548,6 +1574,8 @@ async function runMediaRoute(
         !profileId.startsWith("mp4-") && !profileId.startsWith("mov-") &&
         !profileId.startsWith("3gp-") && !profileId.startsWith("mpeg-ts-") &&
         !profileId.startsWith("flv-"))
+      || (profileId.endsWith("-to-opus") && !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("webm-"))
     ) {
       expect(state.warnings).toEqual([]);
     } else {
@@ -2337,6 +2365,15 @@ for (const route of [
   ["aiff-to-aac", aiffFixturePath],
   ["ogg-to-aac", oggFixturePath],
   ["opus-to-aac", opusFixturePath],
+  ["m4a-to-opus", audioFixturePath],
+  ["aac-to-opus", aacFixturePath],
+  ["amr-to-opus", amrFixturePath],
+  ["mp3-to-opus", mp3FixturePath],
+  ["flac-to-opus", flacFixturePath],
+  ["wav-to-opus", wavFixturePath],
+  ["wma-to-opus", wmaFixturePath],
+  ["aiff-to-opus", aiffFixturePath],
+  ["ogg-to-opus", oggFixturePath],
   ["mkv-to-ogg", incompatibleFixturePath],
   ["webm-to-ogg", av1VorbisWebmFixturePath],
   ["ogv-to-ogg", ogvFixturePath],
@@ -2364,11 +2401,13 @@ for (const route of [
   ["avi-to-flac", aviInputFixturePath],
   ["ogv-to-flac", ogvFixturePath],
 ] as const) {
-  const standaloneAacMarker =
-    /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
+  const standaloneAudioMarker =
+      /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
       ? "[standalone-aac] "
+      : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(route[0])
+        ? "[standalone-opus] "
       : "";
-  test(`${standaloneAacMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
+  test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -3324,6 +3363,92 @@ test("[standalone-aac] browser FFmpeg encodes ALAC M4A as genuine AAC", async ()
     {
       validate: async (_probe, outputPath) =>
         expectAacTranscodeQuality(alacFixturePath, outputPath),
+    },
+  );
+});
+
+const standaloneOpusOutputRoutes = [
+  ["m4a-to-opus", "m4a", audioFixturePath],
+  ["aac-to-opus", "aac", aacFixturePath],
+  ["amr-to-opus", "amr", amrFixturePath],
+  ["mp3-to-opus", "mp3", mp3FixturePath],
+  ["flac-to-opus", "flac", flacFixturePath],
+  ["wav-to-opus", "wav", wavFixturePath],
+  ["wma-to-opus", "wma", wmaFixturePath],
+  ["aiff-to-opus", "aiff", aiffFixturePath],
+  ["ogg-to-opus", "ogg", oggFixturePath],
+] as const;
+
+async function expectOpusTranscodeQuality(
+  inputPath: string,
+  outputPath: string,
+): Promise<void> {
+  const { stderr } = await execFileAsync("ffmpeg", [
+    "-hide_banner",
+    "-nostdin",
+    "-i",
+    inputPath,
+    "-i",
+    outputPath,
+    "-filter_complex",
+    "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]asdr[quality]",
+    "-map",
+    "[quality]",
+    "-f",
+    "null",
+    "NUL",
+  ]);
+  const channelSdr = [
+    ...stderr.matchAll(
+      /SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
+    ),
+  ].map((match) => Number(match[1]));
+  expect(channelSdr.length).toBeGreaterThan(0);
+  expect(Math.min(...channelSdr)).toBeGreaterThanOrEqual(-6.5);
+}
+
+for (const [route, input, inputPath] of standaloneOpusOutputRoutes) {
+  test(`[standalone-opus] browser FFmpeg writes genuine Opus for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      opusTranscodeOutputPaths[input],
+      ["opus"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.15,
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBeLessThanOrEqual(2);
+          expect(Number(audio?.sample_rate)).toBe(48_000);
+          const bitRate = Number(
+            (probe.format as { bit_rate?: string }).bit_rate,
+          );
+          expect(bitRate).toBeGreaterThan(0);
+          expect(bitRate).toBeLessThanOrEqual(160_000);
+          await expectOpusTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+test("[standalone-opus] browser FFmpeg encodes ALAC M4A as genuine Opus", async () => {
+  await runMediaRoute(
+    "m4a-to-opus",
+    opusTranscodeOutputPaths.m4a,
+    ["opus"],
+    1_000,
+    alacFixturePath,
+    {
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.15,
+      validate: async (_probe, outputPath) =>
+        expectOpusTranscodeQuality(alacFixturePath, outputPath),
     },
   );
 });

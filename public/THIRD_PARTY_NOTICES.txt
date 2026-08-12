@@ -17,6 +17,13 @@ Project: https://sourceforge.net/projects/opencore-amr/
 License: Apache-2.0
 (see public/engines/remux/LICENSE.opencore-amr)
 
+libopus 1.6.1
+Source: https://downloads.xiph.org/releases/opus/opus-1.6.1.tar.gz
+SHA-256: 6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1
+Project: https://opus-codec.org/
+License: BSD-3-Clause
+(see public/engines/remux/LICENSE.opus)
+
 libvpx 1.16.0
 Source: https://github.com/webmproject/libvpx/archive/refs/tags/v1.16.0.tar.gz
 SHA-256: 7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c

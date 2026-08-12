@@ -46,6 +46,16 @@ RUN curl --fail --location --retry 3 \
     && mv "lame-${LAME_VERSION}" lame \
     && rm lame.tar.gz
 
+ARG OPUS_VERSION=1.6.1
+ARG OPUS_SHA256=6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1
+RUN curl --fail --location --retry 3 \
+      "https://ftp.osuosl.org/pub/xiph/releases/opus/opus-${OPUS_VERSION}.tar.gz" \
+      --output opus.tar.gz \
+    && echo "${OPUS_SHA256}  opus.tar.gz" | sha256sum --check --strict \
+    && tar --extract --file opus.tar.gz \
+    && mv "opus-${OPUS_VERSION}" opus \
+    && rm opus.tar.gz
+
 COPY build-vpx.sh /src/build-vpx.sh
 RUN chmod +x /src/build-vpx.sh && /src/build-vpx.sh
 
@@ -55,11 +65,16 @@ RUN chmod +x /src/build-opencore-amr.sh && /src/build-opencore-amr.sh
 COPY build-lame.sh /src/build-lame.sh
 RUN chmod +x /src/build-lame.sh && /src/build-lame.sh
 
+COPY build-opus.sh /src/build-opus.sh
+RUN chmod +x /src/build-opus.sh && /src/build-opus.sh
+
 COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
 
 COPY build-libraries.sh /src/build-libraries.sh
-RUN chmod +x /src/build-libraries.sh && /src/build-libraries.sh
+COPY wasm-pkg-config.sh /src/wasm-pkg-config.sh
+RUN chmod +x /src/build-libraries.sh /src/wasm-pkg-config.sh \
+    && /src/build-libraries.sh
 
 COPY build-remux.sh /src/build-remux.sh
 COPY within_remux.c /src/within_remux.c

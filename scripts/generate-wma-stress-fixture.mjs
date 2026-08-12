@@ -40,11 +40,6 @@ const fixtures = [
   },
 ];
 
-await execFileAsync("node", ["scripts/generate-wma-fixture.mjs"], {
-  cwd: projectRoot,
-  windowsHide: true,
-  maxBuffer: 8 * 1024 * 1024,
-});
 await mkdir(fixtureRoot, { recursive: true });
 
 const requestedNames = new Set(process.argv.slice(2));

@@ -832,6 +832,7 @@ static int within_audio_transcode(int profile) {
   const int amr_output = profile == 29;
   const int mp3_output = profile == 30;
   const int aac_output = profile == 31;
+  const int opus_output = profile == 32;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -959,6 +960,8 @@ static int within_audio_transcode(int profile) {
           ? AV_CODEC_ID_WMAV2
           : aac_output
                 ? AV_CODEC_ID_AAC
+          : opus_output
+                ? AV_CODEC_ID_OPUS
           : mp3_output
                 ? AV_CODEC_ID_MP3
           : alac_output
@@ -978,35 +981,49 @@ static int within_audio_transcode(int profile) {
     result = AVERROR(ENOMEM);
     goto cleanup;
   }
-  encoder->sample_rate =
-      amr_output
-          ? 8000
-          : wma_output
-                ? 48000
-                : mp3_output
-                      ? decoder->sample_rate <= 32000
-                            ? 32000
-                            : decoder->sample_rate <= 44100 ? 44100 : 48000
-                      : aac_output
-                            ? decoder->sample_rate <= 8000
-                                  ? 8000
-                                  : decoder->sample_rate <= 11025
-                                        ? 11025
-                                        : decoder->sample_rate <= 12000
-                                              ? 12000
-                                              : decoder->sample_rate <= 16000
-                                                    ? 16000
-                                                    : decoder->sample_rate <= 22050
-                                                          ? 22050
-                                                          : decoder->sample_rate <= 24000
-                                                                ? 24000
-                                                                : decoder->sample_rate <= 32000
-                                                                      ? 32000
-                                                                      : decoder->sample_rate <= 44100 ? 44100 : 48000
-                      : decoder->sample_rate;
+  if (amr_output) {
+    encoder->sample_rate = 8000;
+  } else if (wma_output) {
+    encoder->sample_rate = 48000;
+  } else if (mp3_output) {
+    encoder->sample_rate = decoder->sample_rate <= 32000
+                               ? 32000
+                               : decoder->sample_rate <= 44100 ? 44100 : 48000;
+  } else if (aac_output) {
+    encoder->sample_rate =
+        decoder->sample_rate <= 8000
+            ? 8000
+            : decoder->sample_rate <= 11025
+                  ? 11025
+                  : decoder->sample_rate <= 12000
+                        ? 12000
+                        : decoder->sample_rate <= 16000
+                              ? 16000
+                              : decoder->sample_rate <= 22050
+                                    ? 22050
+                                    : decoder->sample_rate <= 24000
+                                          ? 24000
+                                          : decoder->sample_rate <= 32000
+                                                ? 32000
+                                                : decoder->sample_rate <= 44100
+                                                      ? 44100
+                                                      : 48000;
+  } else if (opus_output) {
+    encoder->sample_rate =
+        decoder->sample_rate <= 8000
+            ? 8000
+            : decoder->sample_rate <= 12000
+                  ? 12000
+                  : decoder->sample_rate <= 16000
+                        ? 16000
+                        : decoder->sample_rate <= 24000 ? 24000 : 48000;
+  } else {
+    encoder->sample_rate = decoder->sample_rate;
+  }
   encoder->sample_fmt =
       wma_output ? AV_SAMPLE_FMT_FLTP
-                 : (mp3_output || aac_output) ? AV_SAMPLE_FMT_FLTP
+                 : opus_output ? AV_SAMPLE_FMT_FLT
+                 : (mp3_output || aac_output || opus_output) ? AV_SAMPLE_FMT_FLTP
                  : alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
   encoder->time_base = (AVRational){1, encoder->sample_rate};
   if (decoder->ch_layout.order == AV_CHANNEL_ORDER_UNSPEC) {
@@ -1021,7 +1038,7 @@ static int within_audio_transcode(int profile) {
   if (amr_output) {
     av_channel_layout_default(&encoder->ch_layout, 1);
     result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
-  } else if (wma_output || mp3_output || aac_output) {
+  } else if (wma_output || mp3_output || aac_output || opus_output) {
     av_channel_layout_default(
         &encoder->ch_layout,
         decoder->ch_layout.nb_channels > 2 ? 2
@@ -1057,6 +1074,13 @@ static int within_audio_transcode(int profile) {
     av_dict_set(&encoder_options, "aac_pns", "0", 0);
     av_dict_set(&encoder_options, "aac_is", "0", 0);
     av_dict_set(&encoder_options, "aac_ms", "0", 0);
+  } else if (opus_output) {
+    encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+    encoder->bit_rate =
+        encoder->ch_layout.nb_channels == 1 ? 64000 : 128000;
+    av_dict_set(&encoder_options, "application", "audio", 0);
+    av_dict_set(&encoder_options, "compression_level", "0", 0);
+    av_dict_set(&encoder_options, "vbr", "on", 0);
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   av_dict_free(&encoder_options);
@@ -1078,6 +1102,8 @@ static int within_audio_transcode(int profile) {
           ? "asf"
           : aac_output
                 ? "adts"
+          : opus_output
+                ? "ogg"
           : mp3_output
                 ? "mp3"
           : alac_output
@@ -1118,6 +1144,9 @@ static int within_audio_transcode(int profile) {
   output_buffer = NULL;
   output_format->pb = output_io;
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
+  if (opus_output) {
+    output_format->flags |= AVFMT_FLAG_BITEXACT;
+  }
   if (alac_output) {
     av_dict_set(&muxer_options, "movflags",
                 "empty_moov+default_base_moof", 0);
@@ -1871,7 +1900,8 @@ int within_remux(int profile) {
   int next_prefetched_packet = 0;
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
-      profile == 28 || profile == 29 || profile == 30 || profile == 31) {
+      profile == 28 || profile == 29 || profile == 30 || profile == 31 ||
+      profile == 32) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

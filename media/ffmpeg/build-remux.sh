@@ -35,6 +35,7 @@ build_core() {
     "${PREFIX}/lib/libvpx.a" \
     "${PREFIX}/lib/libopencore-amrnb.a" \
     "${PREFIX}/lib/libmp3lame.a" \
+    "${PREFIX}/lib/libopus.a" \
     -O3 \
     -flto \
     -msimd128 \
@@ -95,14 +96,16 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "opencoreAmrSourceSha256": "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
   "lameVersion": "4.0",
   "lameSourceSha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
+  "opusVersion": "1.6.1",
+  "opusSourceSha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "licenses": ["FFmpeg LGPL-3.0-or-later", "LAME LGPL-2.0-or-later", "libvpx BSD-3-Clause", "OpenCORE AMR Apache-2.0"],
+  "licenses": ["FFmpeg LGPL-3.0-or-later", "LAME LGPL-2.0-or-later", "libopus BSD-3-Clause", "libvpx BSD-3-Clause", "OpenCORE AMR Apache-2.0"],
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "mp3-audio", "aac-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "m4v-extract", "m4v-wrap", "av1-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "mp3-audio", "aac-audio", "opus-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "m4v-extract", "m4v-wrap", "av1-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
@@ -114,10 +117,11 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "outstandingWrites": 1,
   "audioFifoMaximumQueuedSamples": 16384,
   "aacEncoderOptions": {"coder": "fast", "tns": false, "pns": false, "intensityStereo": false, "midSideStereo": false, "supportedSampleRates": [8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000], "preserveStandardSourceRate": true, "maximumSampleRate": 48000, "monoBitRate": 128000, "stereoBitRate": 192000},
+  "opusEncoderOptions": {"application": "audio", "complexity": 0, "vbr": true, "supportedSampleRates": [8000, 12000, 16000, 24000, 48000], "preserveStandardSourceRate": true, "maximumSampleRate": 48000, "monoBitRate": 64000, "stereoBitRate": 128000},
   "largeFileMemfs": false,
   "profiles": ["mkv-to-mp4", "mov-to-mp4", "3gp-to-mp4", "mpeg-ts-to-mp4", "flv-to-mp4", "avi-to-mp4", "h264-to-mp4", "mkv-to-h264", "mp4-to-h264", "mov-to-h264", "3gp-to-h264", "mpeg-ts-to-h264", "flv-to-h264", "m2v-to-mpeg-ts", "mkv-to-m2v", "mp4-to-m2v", "mov-to-m2v", "avi-to-m2v", "mpeg-ts-to-m2v", "m4v-to-mp4", "mkv-to-m4v", "mp4-to-m4v", "mov-to-m4v", "avi-to-m4v", "mkv-to-webm-av1", "mkv-to-mp3", "mp4-to-mp3", "mov-to-mp3", "avi-to-mp3", "mpeg-ts-to-mp3", "flv-to-mp3", "mkv-to-aac", "mp4-to-aac", "mov-to-aac", "3gp-to-aac", "mpeg-ts-to-aac", "flv-to-aac", "mkv-to-ogg", "webm-to-ogg", "ogv-to-ogg", "mkv-to-opus", "webm-to-opus", "mkv-to-m4a", "mov-to-m4a", "3gp-to-m4a", "mpeg-ts-to-m4a", "flv-to-m4a", "mp4-to-m4a", "aac-to-m4a", "mkv-to-wav", "mov-to-wav", "3gp-to-wav", "mpeg-ts-to-wav", "flv-to-wav", "avi-to-wav", "ogv-to-wav", "mp4-to-wav", "m4a-to-wav", "aac-to-wav", "amr-to-wav", "mp3-to-wav", "flac-to-wav", "wma-to-wav", "aiff-to-wav", "ogg-to-wav", "opus-to-wav", "m4a-to-aiff", "aac-to-aiff", "amr-to-aiff", "mp3-to-aiff", "flac-to-aiff", "wav-to-aiff", "wma-to-aiff", "ogg-to-aiff", "opus-to-aiff", "mkv-to-flac", "mp4-to-flac", "mov-to-flac", "3gp-to-flac", "mpeg-ts-to-flac", "flv-to-flac", "avi-to-flac", "ogv-to-flac", "m4a-to-flac", "aac-to-flac", "amr-to-flac", "mp3-to-flac", "wav-to-flac", "wma-to-flac", "aiff-to-flac", "ogg-to-flac", "opus-to-flac", "wav-to-alac", "flac-to-alac", "wav-to-wma", "flac-to-wma", "mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4", "mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm", "mkv-to-webm-vp9", "mp4-to-webm-vp9", "mov-to-webm-vp9", "3gp-to-webm-vp9", "mpeg-ts-to-webm-vp9", "flv-to-webm-vp9", "avi-to-webm-vp9", "ogv-to-webm-vp9", "m2v-to-webm-vp9", "h264-to-webm-vp9"],
   "enabledDecoders": ["aac", "alac", "amrnb", "flac", "h264", "hevc", "mp3", "mpeg2video", "mpeg4", "opus", "pcm_s16be", "pcm_s16le", "theora", "vorbis", "wmav1", "wmav2"],
-  "enabledEncoders": ["aac", "alac", "flac", "h263", "libmp3lame", "libopencore_amrnb", "libvpx_vp8", "libvpx_vp9", "mpeg4", "pcm_s16be", "pcm_s16le", "wmav2"],
+  "enabledEncoders": ["aac", "alac", "flac", "h263", "libmp3lame", "libopencore_amrnb", "libopus", "libvpx_vp8", "libvpx_vp9", "mpeg4", "pcm_s16be", "pcm_s16le", "wmav2"],
   "enabledDemuxers": ["aac", "aiff", "amr", "asf", "avi", "flac", "flv", "h264", "m4v", "matroska", "mov", "mp3", "mpegts", "mpegvideo", "ogg", "wav"],
   "enabledMuxers": ["3gp", "adts", "aiff", "amr", "asf", "flac", "flv", "h264", "hevc", "ipod", "latm", "m4v", "matroska", "mov", "mp3", "mp4", "mpeg2video", "mpegts", "ogg", "wav", "webm"],
   "enabledParsers": ["aac", "ac3", "flac", "h264", "hevc", "mpeg4video", "mpegaudio", "mpegvideo", "opus", "vorbis"],
@@ -128,10 +132,12 @@ EOF
 cp /src/opencore-amr/LICENSE "${OUTPUT}/LICENSE.opencore-amr"
 cp /src/lame/COPYING "${OUTPUT}/LICENSE.lame"
 cp /src/lame/LICENSE "${OUTPUT}/LICENSE.lame-linking"
+cp /src/opus/COPYING "${OUTPUT}/LICENSE.opus"
 
 sed -i 's/"opus-to-aiff",/"opus-to-aiff", "m4a-to-amr", "aac-to-amr", "mp3-to-amr", "flac-to-amr", "wav-to-amr", "wma-to-amr", "aiff-to-amr", "ogg-to-amr", "opus-to-amr",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"opus-to-amr",/"opus-to-amr", "m4a-to-mp3", "aac-to-mp3", "amr-to-mp3", "flac-to-mp3", "wav-to-mp3", "wma-to-mp3", "aiff-to-mp3", "ogg-to-mp3", "opus-to-mp3",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"opus-to-mp3",/"opus-to-mp3", "m4a-to-aac", "amr-to-aac", "mp3-to-aac", "flac-to-aac", "wav-to-aac", "wma-to-aac", "aiff-to-aac", "ogg-to-aac", "opus-to-aac",/' "${OUTPUT}/build-manifest.json"
+sed -i 's/"opus-to-aac",/"opus-to-aac", "m4a-to-opus", "aac-to-opus", "amr-to-opus", "mp3-to-opus", "flac-to-opus", "wav-to-opus", "wma-to-opus", "aiff-to-opus", "ogg-to-opus",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"flv-to-h264",/"flv-to-h264", "mkv-to-hevc", "mp4-to-hevc", "mov-to-hevc", "mpeg-ts-to-hevc",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"avi-to-mp4",/"avi-to-mp4", "mp4-to-mkv", "mov-to-mkv", "3gp-to-mkv", "mpeg-ts-to-mkv", "flv-to-mkv", "avi-to-mkv", "webm-to-mkv", "ogv-to-mkv",/' "${OUTPUT}/build-manifest.json"
 sed -i 's/"ogv-to-mkv",/"ogv-to-mkv", "mkv-to-mpeg-ts", "mp4-to-mpeg-ts", "mov-to-mpeg-ts", "3gp-to-mpeg-ts", "flv-to-mpeg-ts",/' "${OUTPUT}/build-manifest.json"

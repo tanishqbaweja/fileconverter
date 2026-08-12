@@ -59,6 +59,17 @@ const AAC_OUTPUT_PROFILES = [
   "ogg-to-aac",
   "opus-to-aac",
 ];
+const OPUS_OUTPUT_PROFILES = [
+  "m4a-to-opus",
+  "aac-to-opus",
+  "amr-to-opus",
+  "mp3-to-opus",
+  "flac-to-opus",
+  "wav-to-opus",
+  "wma-to-opus",
+  "aiff-to-opus",
+  "ogg-to-opus",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -192,6 +203,7 @@ if (
     ...AMR_OUTPUT_PROFILES,
     ...MP3_OUTPUT_PROFILES,
     ...AAC_OUTPUT_PROFILES,
+    ...OPUS_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -361,6 +373,7 @@ const isMediaProfile =
   AMR_OUTPUT_PROFILES.includes(profileId) ||
   MP3_OUTPUT_PROFILES.includes(profileId) ||
   AAC_OUTPUT_PROFILES.includes(profileId) ||
+  OPUS_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1129,6 +1142,7 @@ async function validateMediaOutput(
     route === "mkv-to-opus" ||
     route === "webm-to-opus";
   const opusOutput = route.endsWith("-to-opus");
+  const opusTranscodeOutput = OPUS_OUTPUT_PROFILES.includes(route);
   const aiffOutput = AIFF_OUTPUT_PROFILES.includes(route);
   const amrOutput = AMR_OUTPUT_PROFILES.includes(route);
   const mp3TranscodeOutput = MP3_OUTPUT_PROFILES.includes(route);
@@ -1137,6 +1151,7 @@ async function validateMediaOutput(
     amrOutput ||
     mp3Output ||
     aacOutput ||
+    opusTranscodeOutput ||
     oggPacketOutput ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
@@ -1345,12 +1360,17 @@ async function validateMediaOutput(
   );
   const compressedAudioOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
+  const opusOutputBitRate =
+    Number(sourceAudioForSize?.channels) === 1 ? 64_000 : 128_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
       : (mp3TranscodeOutput || aacTranscodeOutput) &&
           Number.isFinite(sourceDurationSeconds)
         ? Math.ceil((sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8) +
+          1024 * 1024
+      : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * opusOutputBitRate * 1.25) / 8) +
           1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
@@ -1420,14 +1440,18 @@ async function validateMediaOutput(
     wmaOutput ||
     amrOutput ||
     mp3TranscodeOutput ||
-    aacTranscodeOutput
+    aacTranscodeOutput ||
+    opusTranscodeOutput
   ) {
-    const asdrOutput = amrOutput || mp3TranscodeOutput || aacTranscodeOutput;
+    const asdrOutput =
+      amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput;
     const minimumQualityDb = amrOutput
       ? -3
       : mp3TranscodeOutput
         ? -5
       : aacTranscodeOutput
+        ? -6.5
+      : opusTranscodeOutput
         ? -6.5
       : (source.minimumDecodedAudioPsnrDb ?? 60);
     const comparisonFilter = amrOutput
@@ -1769,6 +1793,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser AAC output did not probe as genuine AAC ADTS.");
   }
+  if (
+    opusTranscodeOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+  ) {
+    throw new Error("Browser Opus output did not probe as genuine Ogg.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1798,6 +1828,8 @@ async function validateMediaOutput(
                   ? "wmav2"
                 : mp3Output
                   ? "mp3"
+                : opusTranscodeOutput
+                  ? "opus"
                 : oggPacketOutput
                   ? opusOutput ? "opus" : "vorbis"
                 : "aac"))) ||
@@ -1864,7 +1896,7 @@ async function validateMediaOutput(
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -1892,6 +1924,8 @@ async function validateMediaOutput(
           ? Math.min(2, sourceAudio?.channels ?? 0)
         : aacTranscodeOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
+        : opusTranscodeOutput
+          ? Math.min(2, sourceAudio?.channels ?? 0)
         : wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
           : sourceAudio?.channels)) ||
@@ -1908,6 +1942,10 @@ async function validateMediaOutput(
           .includes(Number(audio?.sample_rate)) ||
         Number(audio?.bit_rate) <= 0 ||
         Number(audio?.bit_rate) > 220000)) ||
+    (opusTranscodeOutput &&
+      (Number(audio?.sample_rate) !== 48000 ||
+        Number(audio?.bit_rate) <= 0 ||
+        Number(audio?.bit_rate) > 160000)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||

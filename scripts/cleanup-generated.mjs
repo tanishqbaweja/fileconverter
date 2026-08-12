@@ -47,6 +47,7 @@ const webmBenchmarkFixture = path.resolve(
 );
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const aacBenchmarkRoot = path.resolve(workRoot, "aac-benchmark");
+const opusBenchmarkRoot = path.resolve(workRoot, "opus-benchmark");
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
   path.resolve(workRoot, "amr-repro-build"),
@@ -55,6 +56,8 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "mp3-repro-verify"),
   path.resolve(workRoot, "aac-repro-build"),
   path.resolve(workRoot, "aac-repro-verify"),
+  path.resolve(workRoot, "opus-repro-build"),
+  path.resolve(workRoot, "opus-repro-verify"),
 ];
 const lameAuditRoot = path.resolve(workRoot, "lame-audit");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
@@ -90,6 +93,18 @@ const detachedProfileLogs = [
   path.resolve(workRoot, "aac-repro-build.stderr.log"),
   path.resolve(workRoot, "aac-repro-verify.stdout.log"),
   path.resolve(workRoot, "aac-repro-verify.stderr.log"),
+  path.resolve(workRoot, "opus-build.stdout.log"),
+  path.resolve(workRoot, "opus-build.stderr.log"),
+  path.resolve(workRoot, "opus-browser.stdout.log"),
+  path.resolve(workRoot, "opus-browser.stderr.log"),
+  path.resolve(workRoot, "opus-profile.stdout.log"),
+  path.resolve(workRoot, "opus-profile.stderr.log"),
+  path.resolve(workRoot, "opus-full-regression.stdout.log"),
+  path.resolve(workRoot, "opus-full-regression.stderr.log"),
+  path.resolve(workRoot, "opus-repro-build.stdout.log"),
+  path.resolve(workRoot, "opus-repro-build.stderr.log"),
+  path.resolve(workRoot, "opus-repro-verify.stdout.log"),
+  path.resolve(workRoot, "opus-repro-verify.stderr.log"),
 ];
 const headedBrowserLogs = [
   path.resolve(workRoot, "headed-server.stdout.log"),
@@ -187,6 +202,7 @@ assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
+assertInside(workRoot, opusBenchmarkRoot);
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -251,6 +267,7 @@ await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
+await removeWithRetries(opusBenchmarkRoot);
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   await removeWithRetries(temporaryRoot);
 }

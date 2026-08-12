@@ -10,6 +10,8 @@ the `ffmpeg` command-line program.
   `464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c`
 - OpenCORE AMR 0.1.6 source archive:
   `483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1`
+- libopus 1.6.1 source archive:
+  `6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1`
 - libvpx 1.16.0 source archive:
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - Emscripten SDK 6.0.4 amd64 image:
@@ -24,7 +26,7 @@ docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engi
 ```
 
 The Docker build downloads the pinned source archives, verifies every SHA-256
-value, builds static OpenCORE AMR and a VP8/VP9-encoder-only libvpx with both decoders disabled,
+value, builds static OpenCORE AMR, libopus, and a VP8/VP9-encoder-only libvpx with both decoders disabled,
 configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
@@ -78,6 +80,14 @@ custom AVIO callback as 32-byte writes, with one destination operation in
 flight and no complete output copy. This requires FFmpeg's `--enable-version3`;
 the configured FFmpeg build is therefore LGPL-3.0-or-later, while OpenCORE AMR
 is distributed under Apache-2.0.
+
+The lean core also links pinned static libopus and writes genuine Ogg Opus for
+AAC/ALAC M4A, raw AAC, AMR-NB, MP3, FLAC, WAV, WMA2, AIFF, and Vorbis input.
+The measured fastest quality-valid profile uses complexity 0, packed float,
+64 kb/s mono or 128 kb/s stereo VBR, and preserves supported libopus input
+rates to avoid needless resampling. Ogg output uses a deterministic serial path
+so header generation cannot block on unavailable Wasm entropy and clean builds
+produce repeatable bytes.
 
 The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
 MPEG-4 Part 2 parsers. Transport
