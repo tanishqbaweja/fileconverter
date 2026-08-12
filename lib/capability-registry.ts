@@ -302,6 +302,67 @@ function standaloneAmrOutputProfile(
   };
 }
 
+type StandaloneMp3OutputInput = Exclude<StandaloneAiffInput, "mp3"> | "aiff";
+
+const standaloneMp3OutputEvidence: Record<
+  StandaloneMp3OutputInput,
+  number | null
+> = {
+  m4a: 140_941_469,
+  aac: 134_367_785,
+  amr: 134_229_414,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  aiff: 201_600_102,
+  ogg: 144_431_506,
+  opus: 147_964_541,
+};
+
+function standaloneMp3OutputProfile(
+  input: StandaloneMp3OutputInput,
+): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    aac: "AAC in ADTS",
+    amr: "8 kHz mono AMR-NB",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    ogg: "Vorbis in Ogg",
+    opus: "Opus in Ogg",
+  }[input];
+  const evidence = standaloneMp3OutputEvidence[input];
+  return {
+    id: `${input}-to-mp3`,
+    input,
+    output: "mp3",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, and additional streams are explicitly excluded.",
+      "Compatible text tags are mapped to ID3 where possible; stream language and container-specific fields may not be retained.",
+      "Mono output is fixed at 128 kb/s and one channel; stereo output is fixed at 192 kb/s and at most two channels.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily encoded as MP3; the output is normalized to a LAME-supported 32, 44.1, or 48 kHz rate for a broadly compatible bitrate profile.`,
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: true,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3647,6 +3708,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneAmrOutputProfile("aiff"),
   standaloneAmrOutputProfile("ogg"),
   standaloneAmrOutputProfile("opus"),
+  standaloneMp3OutputProfile("m4a"),
+  standaloneMp3OutputProfile("aac"),
+  standaloneMp3OutputProfile("amr"),
+  standaloneMp3OutputProfile("flac"),
+  standaloneMp3OutputProfile("wav"),
+  standaloneMp3OutputProfile("wma"),
+  standaloneMp3OutputProfile("aiff"),
+  standaloneMp3OutputProfile("ogg"),
+  standaloneMp3OutputProfile("opus"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),

@@ -319,6 +319,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "audio",
         "aiff-audio",
         "amr-audio",
+        "mp3-audio",
         "h264-extract",
         "hevc-extract",
         "mpeg2-extract",
@@ -399,12 +400,19 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("amr"));
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
   assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
+  assert.ok(manifest.enabledEncoders.includes("libmp3lame"));
   assert.equal(manifest.opencoreAmrVersion, "0.1.6");
   assert.equal(
     manifest.opencoreAmrSourceSha256,
     "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
   );
   assert.ok(manifest.licenses.includes("OpenCORE AMR Apache-2.0"));
+  assert.equal(manifest.lameVersion, "4.0");
+  assert.equal(
+    manifest.lameSourceSha256,
+    "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
+  );
+  assert.ok(manifest.licenses.includes("LAME LGPL-2.0-or-later"));
 });
 
 test("every BZIP2 profile is declared by its fixed-memory Wasm manifest", () => {
@@ -638,6 +646,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "aiff-to-amr",
       "amr-to-aiff",
       "amr-to-flac",
+      "amr-to-mp3",
       "amr-to-wav",
       "flac-to-amr",
       "m4a-to-amr",
@@ -669,6 +678,35 @@ test("compound archives and mainstream images are detected by filename", () => {
       ),
     );
   }
+  assert.deepEqual(
+    conversionProfiles
+      .filter(
+        (profile) =>
+          profile.output === "mp3" && profile.route === "re-encode",
+      )
+      .map((profile) => profile.id)
+      .sort(),
+    [
+      "aac-to-mp3",
+      "aiff-to-mp3",
+      "amr-to-mp3",
+      "flac-to-mp3",
+      "m4a-to-mp3",
+      "ogg-to-mp3",
+      "opus-to-mp3",
+      "wav-to-mp3",
+      "wma-to-mp3",
+    ],
+  );
+  for (const profile of conversionProfiles.filter(
+    (candidate) =>
+      candidate.output === "mp3" && candidate.route === "re-encode",
+  )) {
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+  }
   assert.equal(
     formats.find((format) => format.id === "wma")?.extensions[0],
     "wma",
@@ -684,6 +722,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "wma-to-aiff",
       "wma-to-amr",
       "wma-to-flac",
+      "wma-to-mp3",
       "wma-to-wav",
     ],
   );

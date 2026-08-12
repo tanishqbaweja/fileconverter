@@ -6,9 +6,11 @@ ARG LIBVPX_VERSION=1.16.0
 ARG LIBVPX_SHA256=7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c
 ARG OPENCORE_AMR_VERSION=0.1.6
 ARG OPENCORE_AMR_SHA256=483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1
+ARG LAME_VERSION=4.0
+ARG LAME_SHA256=3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends ca-certificates curl xz-utils \
+    && apt-get install -y --no-install-recommends ca-certificates curl pkg-config xz-utils \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /src
@@ -36,11 +38,22 @@ RUN curl --fail --location --retry 3 \
     && mv "opencore-amr-${OPENCORE_AMR_VERSION}" opencore-amr \
     && rm opencore-amr.tar.gz
 
+RUN curl --fail --location --retry 3 \
+      "https://downloads.sourceforge.net/project/lame/lame/${LAME_VERSION}/lame-${LAME_VERSION}.tar.gz" \
+      --output lame.tar.gz \
+    && echo "${LAME_SHA256}  lame.tar.gz" | sha256sum --check --strict \
+    && tar --extract --file lame.tar.gz \
+    && mv "lame-${LAME_VERSION}" lame \
+    && rm lame.tar.gz
+
 COPY build-vpx.sh /src/build-vpx.sh
 RUN chmod +x /src/build-vpx.sh && /src/build-vpx.sh
 
 COPY build-opencore-amr.sh /src/build-opencore-amr.sh
 RUN chmod +x /src/build-opencore-amr.sh && /src/build-opencore-amr.sh
+
+COPY build-lame.sh /src/build-lame.sh
+RUN chmod +x /src/build-lame.sh && /src/build-lame.sh
 
 COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch

@@ -40,8 +40,18 @@ await execFileAsync("node", ["scripts/generate-alac-fixture.mjs"], {
 });
 await mkdir(fixtureRoot, { recursive: true });
 
+const requestedNames = new Set(process.argv.slice(2));
+const selectedFixtures = requestedNames.size
+  ? fixtures.filter((fixture) => requestedNames.has(fixture.name))
+  : fixtures;
+if (selectedFixtures.length !== (requestedNames.size || fixtures.length)) {
+  throw new Error(
+    `Unknown fixture name. Choose from: ${fixtures.map((fixture) => fixture.name).join(", ")}.`,
+  );
+}
+
 let referencePcmHash = null;
-for (const fixture of fixtures) {
+for (const fixture of selectedFixtures) {
   const fixturePath = path.join(fixtureRoot, fixture.name);
   await execFileAsync(
     "ffmpeg",

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 262
+complete-Chromium memory profile have passed. The current registry publishes 271
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB; raw AMR-NB -> WAV/FLAC/AIFF; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB where applicable; WAV -> FLAC/AIFF/AMR-NB/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3; raw AMR-NB -> WAV/FLAC/AIFF/MP3; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3 where applicable; WAV -> FLAC/AIFF/AMR-NB/MP3/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3 | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -198,7 +198,7 @@ Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
 HEVC, raw MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
 fragmented MP4/M4A, WAV, AIFF, AMR, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
-including signed 16-bit big- and little-endian PCM, FLAC, OpenCORE AMR-NB, MPEG-4 Part 2, and
+including signed 16-bit big- and little-endian PCM, FLAC, LAME MP3, OpenCORE AMR-NB, MPEG-4 Part 2, and
 libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets plus certified AV1/Opus or AV1/Vorbis Matroska streams, performs real bounded audio decode/resample/encode pipelines, or
@@ -426,6 +426,19 @@ insufficient. AMR is a narrowband speech format, so stereo, high frequencies,
 lossless identity, container metadata, artwork, chapters, and extra streams
 cannot be preserved. AMR-WB and 3GP-contained AMR remain out of scope.
 
+M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, FLAC, WAV, WMA2, AIFF, Ogg
+Vorbis, and Ogg Opus can be encoded as genuine MP3 using pinned LAME 4.0. The
+fastest certified LAME algorithm setting (`compression_level=9`) was selected
+after native timing and decoded-quality comparisons; mono output is fixed at
+128 kb/s, stereo at 192 kb/s, and output is normalized to 32, 44.1, or 48 kHz.
+The browser path retains one worker, 32 MiB Wasm, 256 KiB reads, sub-kilobyte
+direct writes, and one destination operation in flight. Thirty isolated Chrome
+runs passed across ten source cases, including a 23.3-hour AMR source whose
+repeatable MP3 output was 1,342,295,469 bytes, with 205.1 MiB worst incremental
+complete-Chrome private memory. Every output was fully decoded and compared
+against the decoded source with ASDR; MP3 cannot preserve lossless identity or
+all container metadata, artwork, chapters, and extra streams.
+
 ## Non-media engines and limitations
 
 Archive conversion never extracts an archive tree to memory or disk. TAR.GZ,
@@ -649,6 +662,8 @@ Pinned inputs:
   `464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c`
 - OpenCORE AMR 0.1.6 source archive, SHA-256
   `483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1`
+- LAME 4.0 official source archive, SHA-256
+  `3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb`
 - libvpx 1.16.0 official source archive, SHA-256
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - bzip2 1.0.8 official source archive, SHA-256
@@ -1287,7 +1302,7 @@ installed stable Chrome and native FFmpeg.
 
 Application code is project-owned. FFmpeg licensing depends on the exact
 configured components; this version-3 build excludes GPL/nonfree switches and
-is LGPL-3.0-or-later. OpenCORE AMR is Apache-2.0 licensed, libvpx is
+is LGPL-3.0-or-later. LAME is LGPL-2.0-or-later, OpenCORE AMR is Apache-2.0 licensed, libvpx is
 BSD-3-Clause licensed, bzip2 carries its permissive upstream license, and the
 linked liblzma core is 0BSD.
 Deployers must still review FFmpeg's LGPL terms, the

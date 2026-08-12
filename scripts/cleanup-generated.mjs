@@ -49,7 +49,10 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
   path.resolve(workRoot, "amr-repro-build"),
   path.resolve(workRoot, "amr-repro-verify"),
+  path.resolve(workRoot, "mp3-repro-build"),
+  path.resolve(workRoot, "mp3-repro-verify"),
 ];
+const lameAuditRoot = path.resolve(workRoot, "lame-audit");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
 const tiffAuditRoot = path.resolve(workRoot, "tiff-audit");
 const jpegAuditRoot = path.resolve(workRoot, "jpeg-audit");
@@ -61,6 +64,16 @@ const sevenZipExperimentRoots = [
 const detachedProfileLogs = [
   path.resolve(workRoot, "webm-profile-run.stdout.log"),
   path.resolve(workRoot, "webm-profile-run.stderr.log"),
+  path.resolve(workRoot, "mp3-docker-build.stdout.log"),
+  path.resolve(workRoot, "mp3-docker-build.stderr.log"),
+  path.resolve(workRoot, "mp3-browser-tests.stdout.log"),
+  path.resolve(workRoot, "mp3-browser-tests.stderr.log"),
+  path.resolve(workRoot, "mp3-fixtures.stdout.log"),
+  path.resolve(workRoot, "mp3-fixtures.stderr.log"),
+  path.resolve(workRoot, "mp3-profile-run.stdout.log"),
+  path.resolve(workRoot, "mp3-profile-run.stderr.log"),
+  path.resolve(workRoot, "mp3-full-regression.stdout.log"),
+  path.resolve(workRoot, "mp3-full-regression.stderr.log"),
 ];
 const headedBrowserLogs = [
   path.resolve(workRoot, "headed-server.stdout.log"),
@@ -160,6 +173,7 @@ assertInside(workRoot, downloadedFfmpegArchive);
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   assertInside(workRoot, temporaryRoot);
 }
+assertInside(workRoot, lameAuditRoot);
 assertInside(workRoot, sevenZipAuditRoot);
 assertInside(workRoot, tiffAuditRoot);
 assertInside(workRoot, jpegAuditRoot);
@@ -221,6 +235,7 @@ await rm(downloadedFfmpegArchive, { force: true });
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   await removeWithRetries(temporaryRoot);
 }
+await removeWithRetries(lameAuditRoot);
 await removeWithRetries(sevenZipAuditRoot);
 await removeWithRetries(tiffAuditRoot);
 await removeWithRetries(jpegAuditRoot);

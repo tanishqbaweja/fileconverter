@@ -37,6 +37,17 @@ const AMR_OUTPUT_PROFILES = [
   "ogg-to-amr",
   "opus-to-amr",
 ];
+const MP3_OUTPUT_PROFILES = [
+  "m4a-to-mp3",
+  "aac-to-mp3",
+  "amr-to-mp3",
+  "flac-to-mp3",
+  "wav-to-mp3",
+  "wma-to-mp3",
+  "aiff-to-mp3",
+  "ogg-to-mp3",
+  "opus-to-mp3",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -168,6 +179,7 @@ if (
   ![
     ...AIFF_OUTPUT_PROFILES,
     ...AMR_OUTPUT_PROFILES,
+    ...MP3_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -335,6 +347,7 @@ if (
 const isMediaProfile =
   AIFF_OUTPUT_PROFILES.includes(profileId) ||
   AMR_OUTPUT_PROFILES.includes(profileId) ||
+  MP3_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1080,6 +1093,7 @@ async function validateMediaOutput(
   route,
 ) {
   const mp3Output =
+    MP3_OUTPUT_PROFILES.includes(route) ||
     route === "mkv-to-mp3" ||
     route === "mp4-to-mp3" ||
     route === "mov-to-mp3" ||
@@ -1102,6 +1116,7 @@ async function validateMediaOutput(
   const opusOutput = route.endsWith("-to-opus");
   const aiffOutput = AIFF_OUTPUT_PROFILES.includes(route);
   const amrOutput = AMR_OUTPUT_PROFILES.includes(route);
+  const mp3TranscodeOutput = MP3_OUTPUT_PROFILES.includes(route);
   const audioOnly =
     aiffOutput ||
     amrOutput ||
@@ -1310,9 +1325,17 @@ async function validateMediaOutput(
       : audioOnly || videoReencode
         ? 1
         : Math.floor(source.bytes * 0.85);
+  const sourceAudioForSize = source.probe.streams.find(
+    (stream) => stream.codec_type === "audio",
+  );
+  const mp3OutputBitRate =
+    Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
+      : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.02) / 8) +
+          1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
       : pcmOutput
@@ -1374,9 +1397,19 @@ async function validateMediaOutput(
       passed: true,
       sha256: source.decodedPcmSha256,
     };
-  } else if (pcmOutput || flacOutput || alacOutput || wmaOutput || amrOutput) {
+  } else if (
+    pcmOutput ||
+    flacOutput ||
+    alacOutput ||
+    wmaOutput ||
+    amrOutput ||
+    mp3TranscodeOutput
+  ) {
+    const asdrOutput = amrOutput || mp3TranscodeOutput;
     const minimumQualityDb = amrOutput
       ? -3
+      : mp3TranscodeOutput
+        ? -5
       : (source.minimumDecodedAudioPsnrDb ?? 60);
     const comparisonFilter = amrOutput
       ? "[0:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]apsnr[quality]"
@@ -1391,7 +1424,7 @@ async function validateMediaOutput(
         "-i",
         localPath,
         "-filter_complex",
-        amrOutput
+        asdrOutput
           ? comparisonFilter.replace("apsnr[quality]", "asdr[quality]")
           : comparisonFilter,
         "-map",
@@ -1408,7 +1441,7 @@ async function validateMediaOutput(
     );
     const channelQualityDb = [
       ...qualityLog.matchAll(
-        amrOutput
+        asdrOutput
           ? /SDR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi
           : /PSNR ch\d+:\s+(inf|[+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
       ),
@@ -1425,14 +1458,14 @@ async function validateMediaOutput(
       channelQualityDb.some((value) => value < minimumQualityDb)
     ) {
       throw new Error(
-        `Browser decoded audio quality validation failed: ${channelQualityDb.join(", ") || `no ${amrOutput ? "ASDR" : "APSNR"} result`} dB.`,
+        `Browser decoded audio quality validation failed: ${channelQualityDb.join(", ") || `no ${asdrOutput ? "ASDR" : "APSNR"} result`} dB.`,
       );
     }
     independentAudioValidation = {
-      method: amrOutput ? "decoded-audio-asdr" : "decoded-audio-apsnr",
+      method: asdrOutput ? "decoded-audio-asdr" : "decoded-audio-apsnr",
       passed: true,
       minimumRequiredDb: minimumQualityDb,
-      [amrOutput ? "channelSdrDb" : "channelPsnrDb"]: channelQualityDb.map((value) =>
+      [asdrOutput ? "channelSdrDb" : "channelPsnrDb"]: channelQualityDb.map((value) =>
         value === Number.POSITIVE_INFINITY ? "Infinity" : value,
       ),
     };
@@ -1480,7 +1513,7 @@ async function validateMediaOutput(
       sha256: packetHashes[0],
     };
   }
-  if (mp3Output) {
+  if (mp3Output && !mp3TranscodeOutput) {
     const { stdout: packetHash } = await execFileAsync(
       "ffmpeg",
       [
@@ -1705,6 +1738,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser AMR output did not probe as genuine AMR.");
   }
+  if (
+    mp3TranscodeOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("mp3")
+  ) {
+    throw new Error("Browser MP3 output did not probe as genuine MP3.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1800,7 +1839,7 @@ async function validateMediaOutput(
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -1824,12 +1863,19 @@ async function validateMediaOutput(
       audio?.channels !==
         (amrOutput
           ? 1
+        : mp3TranscodeOutput
+          ? Math.min(2, sourceAudio?.channels ?? 0)
         : wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
           : sourceAudio?.channels)) ||
     (amrOutput &&
       (Number(audio?.sample_rate) !== 8000 ||
         Number(audio?.bit_rate) !== 12400)) ||
+    (mp3TranscodeOutput &&
+      (Number(audio?.sample_rate) < 32000 ||
+        Number(audio?.sample_rate) > 48000 ||
+        Number(audio?.bit_rate) < 128000 ||
+        Number(audio?.bit_rate) > 192000)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
