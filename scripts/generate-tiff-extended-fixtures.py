@@ -123,6 +123,11 @@ tifffile.imwrite(
     metadata=None,
     extratags=[(274, "H", 1, 5, False)],
 )
-with tifffile.TiffWriter(FIXTURES / "unsupported-multipage.tiff") as writer:
+with tifffile.TiffWriter(FIXTURES / "test-pattern-multipage.tiff") as writer:
     writer.write(rgb8, photometric="rgb", compression=None, metadata=None)
     writer.write(np.flipud(rgb8), photometric="rgb", compression=None, metadata=None)
+Image.fromarray(rgb8).save(
+    FIXTURES / "test-pattern-multipage-first-page-reference.png",
+    format="PNG",
+    compress_level=9,
+)

@@ -66,6 +66,7 @@ const routes = [
   ["tiff-to-png", "test-pattern-orientation4.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation4-reference.png"],
   ["tiff-to-png", "test-pattern-planar.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-reference.png"],
   ["tiff-to-png", "test-pattern-planar-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-tiled-reference.png"],
+  ["tiff-to-png", "test-pattern-multipage.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-multipage-first-page-reference.png"],
   ["svg-to-png", "test-pattern.svg", "png", "png", undefined, 640, 480],
 ] as const;
 
@@ -168,6 +169,11 @@ for (const [
       if (sourceName.endsWith(".gif")) {
         expect(state?.warnings).toContain(
           "This still-image route converts only the first animation frame.",
+        );
+      }
+      if (sourceName === "test-pattern-multipage.tiff") {
+        expect(state?.warnings).toContain(
+          "This TIFF contains multiple pages; only the first page was converted.",
         );
       }
       if (alphaExpectation === "removed") {
@@ -456,7 +462,6 @@ test("TIFF converts through the bounded direct-save worker", async () => {
 
 for (const [sourceName, expectedError] of [
   ["unsupported-orientation5.tiff", "non-transposed orientation"],
-  ["unsupported-multipage.tiff", "Multipage TIFF"],
   ["decompression-bomb.tiff", "16-megapixel safety limit"],
   ["truncated.tiff", "TIFF"],
   ["corrupt.tiff", "TIFF"],

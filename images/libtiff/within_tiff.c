@@ -24,6 +24,7 @@ typedef struct {
 
 static char within_error_message[1024];
 static uint64_t within_output_position;
+static int within_has_more_pages;
 
 EM_ASYNC_JS(int, within_tiff_input_read,
             (uint64_t offset, unsigned char *destination, int length), {
@@ -220,6 +221,10 @@ EMSCRIPTEN_KEEPALIVE const char *within_tiff_error(void) {
   return within_error_message;
 }
 
+EMSCRIPTEN_KEEPALIVE int within_tiff_has_more_pages(void) {
+  return within_has_more_pages;
+}
+
 EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   TIFF *tiff = NULL;
   png_structp png = NULL;
@@ -234,6 +239,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   within_input input = {(uint64_t)input_size, 0};
   within_error_message[0] = '\0';
   within_output_position = 0;
+  within_has_more_pages = 0;
 
   if (input_size < 8 || input_size > WITHIN_MAX_INPUT) {
     within_set_error("TIFF input must be between 8 bytes and 64 MiB.");
@@ -285,10 +291,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     within_set_error("TIFF profile requires 8- or 16-bit contiguous or separated pixels in a non-transposed orientation.");
     goto cleanup;
   }
-  if (!TIFFLastDirectory(tiff)) {
-    within_set_error("Multipage TIFF images are outside the single-image profile.");
-    goto cleanup;
-  }
+  within_has_more_pages = !TIFFLastDirectory(tiff);
   if (!within_supported_compression(compression)) {
     within_set_error("TIFF compression is not supported; use none, PackBits, LZW, Deflate, or JPEG.");
     goto cleanup;

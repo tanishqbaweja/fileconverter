@@ -237,8 +237,9 @@ for (const name of [
     "test-pattern-planar-reference.png",
     "test-pattern-planar-tiled.tiff",
     "test-pattern-planar-tiled-reference.png",
+    "test-pattern-multipage.tiff",
+    "test-pattern-multipage-first-page-reference.png",
   "unsupported-orientation5.tiff",
-  "unsupported-multipage.tiff",
 ]) {
   const fixturePath = path.join(fixtureRoot, name);
   const bytes = await readFile(fixturePath);

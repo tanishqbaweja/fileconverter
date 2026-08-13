@@ -18,6 +18,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Active optimization log
 
+- **2026-08-13 multipage TIFF disclosure:** multipage TIFF input now converts its first page through the same bounded streaming decoder and emits a visible warning that remaining pages were omitted. The two-page fixture passed exact first-page pixel comparison in the production browser, all 58 image cases passed, and the unchanged 50,338,032-byte stress fixture passed 3/3 in 1.90–2.14 seconds at 203.8 MiB worst incremental private memory with repeatable output, fixed 40 MiB Wasm, bounded 48 KiB reads/32 KiB writes, and cleanup recovery.
 - **2026-08-13 separated-planar TIFF:** the fixed-memory libtiff engine now interleaves separated RGB/RGBA planes one scanline or bounded tile stripe at a time instead of rejecting them or allocating a complete raster. Strip-planar and tile-planar fixtures passed exact decoded-pixel comparison in the production browser, the full 58-case image suite passed, and the unchanged 50,338,032-byte tiled TIFF stress fixture passed 3/3 in 1.80–2.02 seconds at 171.8 MiB worst incremental private memory with repeatable output, 48 KiB reads, 32 KiB writes, fixed 40 MiB Wasm, and cleanup recovery.
 - **2026-08-13 multi-gigabyte MKV input diagnosis:** a genuine 6,443,020,778-byte MKV-to-MP4 browser run produced the correct 6,448,220,966-byte output in 96.24 seconds with bounded 256 KiB I/O, but repeated synchronous Blob slices drove incremental Chrome process-tree private memory to 371.9 MiB and failed the unchanged 250 MiB ceiling. The generated source and browser output were deleted after the compact result was recorded.
 - **Persistent BYOB scale fix:** MKV-to-MP4 now reuses one asynchronous BYOB byte stream for source reads. The same 6,443,020,778-byte fixture passed in 55.33 seconds at 194.8 MiB, and a valid 10,737,988,703-byte fixture passed in 92.85 seconds at 210.3 MiB. Both kept reads, writes, and peak queued output at 262,144 bytes, one pending write, and a fixed 40 MiB Wasm memory; full output SHA-256, all video/audio packet counts, metadata, complete packet traversal, and cleanup recovery passed. This is 42.5% faster on the controlled 6 GiB input while restoring compliance.
@@ -441,7 +442,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tar-xz-to-tar-bz2 | 268,449,796 | 3 | 270,592,763 | 42.39 s–42.73 s | 209.4 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-xz-to-tar-gz | 268,449,796 | 3 | 268,517,551 | 34.25 s–35.22 s | 239.9 MiB | 48.0 MiB | read 262,144 B / write 16,384 B | passed |
 | tar-xz-to-zip | 268,449,796 | 3 | 268,517,517 | 33.22 s–35.50 s | 228.8 MiB | 48.0 MiB | read 262,144 B / write 16,384 B | passed |
-| tiff-to-png | 50,338,032 | 3 | 577,310 | 1.80 s–2.02 s | 171.8 MiB | 40.0 MiB | read 49,152 B / write 32,768 B | passed |
+| tiff-to-png | 50,338,032 | 3 | 577,310 | 1.90 s–2.14 s | 203.8 MiB | 40.0 MiB | read 49,152 B / write 32,768 B | passed |
 | tsv-to-csv | 134,423,894 | 3 | 139,913,895 | 8.34 s–8.49 s | 200.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-json | 134,423,894 | 3 | 299,123,885 | 18.32 s–19.93 s | 194.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | tsv-to-ndjson | 134,423,894 | 3 | 288,143,880 | 9.67 s–9.77 s | 226.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -936,7 +937,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB remains absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, multipage TIFF, transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
+- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, extraction of every page from multipage TIFF (the first page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

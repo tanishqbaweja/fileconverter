@@ -25,6 +25,7 @@ interface TiffModule {
     options: { async: true },
   ): Promise<number>;
   _within_tiff_error(): number;
+  _within_tiff_has_more_pages(): number;
   UTF8ToString(pointer: number, maximumBytesToRead?: number): string;
 }
 
@@ -156,6 +157,13 @@ export async function runTiffToPng(options: TiffConversionOptions): Promise<void
       throw new Error([nativeError, ...errors].filter(Boolean).join(" | ") || `TIFF conversion failed with code ${result}.`);
     }
     if (metrics.outputBytes === 0) throw new Error("TIFF engine completed without producing PNG output.");
+    if (tiffModule._within_tiff_has_more_pages() !== 0) {
+      options.post({
+        type: "warning",
+        jobId,
+        message: "This TIFF contains multiple pages; only the first page was converted.",
+      });
+    }
     metrics.inputBytes = file.size;
     await writable.flush?.();
     emitProgress(jobId, "Converted TIFF to PNG", metrics, startedAt, true);

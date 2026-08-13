@@ -579,8 +579,9 @@ heap is fixed at 40 MiB; decoded blocks and assembled tile stripes are capped at
 4 MiB. Contiguous or separated-planar 8- or 16-bit grayscale, RGB, and RGBA are
 accepted, as are 8-bit palette images, orientations 1 through 4, and none,
 PackBits, LZW, Deflate, or baseline JPEG compression. Separated planes are
-interleaved one scanline or bounded tile stripe at a time. Multipage,
-transposed-orientation, and other unsupported layouts fail explicitly.
+interleaved one scanline or bounded tile stripe at a time. Multipage input
+converts only its first page and shows a visible omission warning;
+transposed-orientation and other unsupported layouts fail explicitly.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing

@@ -30,7 +30,7 @@ emcc \
   -s MALLOC=emmalloc \
   -s ASSERTIONS=0 \
   -s NO_EXIT_RUNTIME=1 \
-  -s EXPORTED_FUNCTIONS='["_within_tiff_to_png","_within_tiff_error"]' \
+  -s EXPORTED_FUNCTIONS='["_within_tiff_to_png","_within_tiff_error","_within_tiff_has_more_pages"]' \
   -s EXPORTED_RUNTIME_METHODS='["ccall","UTF8ToString","HEAPU8"]' \
   -o /out/within-tiff.mjs
 
