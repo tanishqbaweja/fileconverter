@@ -847,10 +847,11 @@ const categories = {
     ],
   },
   gzip: {
-    generator: "scripts/generate-stress-fixture.mjs",
-    generatorArguments: ["256"],
+    generator: "scripts/generate-compression-transcode-stress-fixtures.mjs",
+    generatorArguments: ["gzip"],
     profiles: [
       ["gzip-compress", "fixtures/stress/deterministic-256m.bin"],
+      ["gzip-decompress", "fixtures/stress/deterministic-256m.bin.gz"],
     ],
   },
   sevenzip: {

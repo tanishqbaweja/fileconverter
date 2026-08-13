@@ -63,9 +63,22 @@ with open(sys.argv[1], "rb") as source, lzma.open(
   },
 ];
 
-await Promise.all(codecs.map((codec) => codec.create()));
+const requestedCodecNames = process.argv.slice(2);
+const knownCodecNames = new Set(codecs.map((codec) => codec.name));
+for (const requestedCodecName of requestedCodecNames) {
+  if (!knownCodecNames.has(requestedCodecName)) {
+    throw new Error(
+      `Unknown compression codec ${requestedCodecName}. Choose from: ${[...knownCodecNames].join(", ")}.`,
+    );
+  }
+}
+const selectedCodecs = requestedCodecNames.length
+  ? codecs.filter((codec) => requestedCodecNames.includes(codec.name))
+  : codecs;
+
+await Promise.all(selectedCodecs.map((codec) => codec.create()));
 await Promise.all(
-  codecs.map(async (codec) => {
+  selectedCodecs.map(async (codec) => {
     const outputStat = await stat(codec.outputPath);
     await writeFile(
       `${codec.outputPath}.json`,
