@@ -260,14 +260,14 @@ type ContainerAiffInput =
   | "webm";
 
 const containerAiffEvidence: Record<ContainerAiffInput, number | null> = {
-  mkv: null,
-  mp4: null,
-  mov: null,
-  "mpeg-ts": null,
-  flv: null,
-  avi: null,
-  ogv: null,
-  webm: null,
+  mkv: 146_855_294,
+  mp4: 146_854_557,
+  mov: 146_854_612,
+  "mpeg-ts": 150_441_548,
+  flv: 146_903_486,
+  avi: 159_500_442,
+  ogv: 137_218_662,
+  webm: 222_941_314,
 };
 
 function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
@@ -631,7 +631,7 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
     ogg: "quality-4 mono Vorbis in Ogg",
   }[output];
   const rateDescription = {
-    aiff: "the source 8 kHz sample rate",
+    aiff: "the source sample rate (8 kHz for AMR-NB or 48 kHz for the certified AAC-LC variant)",
     mp3: "32 kHz for LAME compatibility",
     opus: "the source 8 kHz rate internally; Ogg signals the standard 48 kHz Opus clock",
     ogg: "the source 8 kHz sample rate",
@@ -651,14 +651,16 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
+      output === "aiff"
+        ? "The certified input variants are a 3GP container whose first audio stream is either 8 kHz mono AMR-NB or 48 kHz mono AAC-LC; other codecs require separate evidence."
+        : "The certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
       "The 128 MiB-class bounded profile uses a genuine 720-second H.264/AMR-NB 3GP and traverses the large interleaved video payload; pathological multi-hour files with millions of audio packets and packet-count-sized indexes remain excluded.",
       "Only the first audio stream is converted; video, subtitles, data, chapters, artwork, and additional streams are explicitly excluded.",
       `Output is ${outputDescription}; compatible text tags are copied only where the destination can represent them.`,
     ],
     fidelityLimitations: [
       output === "aiff"
-        ? "AMR-NB is decoded to signed 16-bit PCM; AIFF cannot restore information already discarded by the source voice codec."
+        ? "AMR-NB or AAC-LC is decoded to signed 16-bit PCM; AIFF cannot restore information already discarded by the source codec."
         : `AMR-NB is decoded and lossily encoded as ${outputDescription}; this cannot restore source information.`,
       `The bounded encoder uses ${rateDescription} and one channel without unnecessary high-rate upsampling.`,
     ],
