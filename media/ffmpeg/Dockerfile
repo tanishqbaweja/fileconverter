@@ -68,6 +68,32 @@ RUN chmod +x /src/build-lame.sh && /src/build-lame.sh
 COPY build-opus.sh /src/build-opus.sh
 RUN chmod +x /src/build-opus.sh && /src/build-opus.sh
 
+ARG LIBOGG_VERSION=1.3.6
+ARG LIBOGG_SHA256=5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061
+RUN curl --fail --location --retry 3 \
+      "https://downloads.xiph.org/releases/ogg/libogg-${LIBOGG_VERSION}.tar.xz" \
+      --output libogg.tar.xz \
+    && echo "${LIBOGG_SHA256}  libogg.tar.xz" | sha256sum --check --strict \
+    && tar --extract --file libogg.tar.xz \
+    && mv "libogg-${LIBOGG_VERSION}" libogg \
+    && rm libogg.tar.xz
+
+ARG LIBVORBIS_VERSION=1.3.7
+ARG LIBVORBIS_SHA256=b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b
+RUN curl --fail --location --retry 3 \
+      "https://downloads.xiph.org/releases/vorbis/libvorbis-${LIBVORBIS_VERSION}.tar.xz" \
+      --output libvorbis.tar.xz \
+    && echo "${LIBVORBIS_SHA256}  libvorbis.tar.xz" | sha256sum --check --strict \
+    && tar --extract --file libvorbis.tar.xz \
+    && mv "libvorbis-${LIBVORBIS_VERSION}" libvorbis \
+    && rm libvorbis.tar.xz
+
+COPY build-ogg.sh /src/build-ogg.sh
+RUN chmod +x /src/build-ogg.sh && /src/build-ogg.sh
+
+COPY build-vorbis.sh /src/build-vorbis.sh
+RUN chmod +x /src/build-vorbis.sh && /src/build-vorbis.sh
+
 COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
 

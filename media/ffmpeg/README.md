@@ -12,6 +12,10 @@ the `ffmpeg` command-line program.
   `483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1`
 - libopus 1.6.1 source archive:
   `6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1`
+- libogg 1.3.6 source archive:
+  `5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061`
+- libvorbis 1.3.7 source archive:
+  `b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b`
 - libvpx 1.16.0 source archive:
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - Emscripten SDK 6.0.4 amd64 image:
@@ -26,7 +30,7 @@ docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engi
 ```
 
 The Docker build downloads the pinned source archives, verifies every SHA-256
-value, builds static OpenCORE AMR, libopus, and a VP8/VP9-encoder-only libvpx with both decoders disabled,
+value, builds static OpenCORE AMR, libopus, libogg, libvorbis, and a VP8/VP9-encoder-only libvpx with both decoders disabled,
 configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
@@ -88,6 +92,16 @@ The measured fastest quality-valid profile uses complexity 0, packed float,
 rates to avoid needless resampling. Ogg output uses a deterministic serial path
 so header generation cannot block on unavailable Wasm entropy and clean builds
 produce repeatable bytes.
+
+The same bounded audio pipeline links pinned reference libvorbis and writes
+genuine Ogg Vorbis from AAC/ALAC M4A, raw AAC, AMR-NB, MP3, FLAC, WAV, WMA2,
+AIFF, and Opus input. The measured quality-4 VBR setting was 27.7% faster than
+FFmpeg's experimental native encoder on the protected five-minute reference,
+while producing a 41.5% smaller file and balanced 23.5 dB channel ASDR. Source
+rates through 48 kHz are preserved; this made the one-hour AMR path 5.47x
+faster than unnecessary 48 kHz upsampling. Ogg headers use the deterministic
+bitexact path, and all decoding, resampling, FIFO, AVIO, and single-flight
+destination bounds remain unchanged.
 
 The lean core includes AVI, FLV, and MPEG-TS demuxers plus H.264/HEVC and
 MPEG-4 Part 2 parsers. Transport

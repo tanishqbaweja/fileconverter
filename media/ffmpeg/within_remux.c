@@ -833,6 +833,7 @@ static int within_audio_transcode(int profile) {
   const int mp3_output = profile == 30;
   const int aac_output = profile == 31;
   const int opus_output = profile == 32;
+  const int vorbis_output = profile == 33;
   int result = 0;
   int audio_stream_index = -1;
   AVFormatContext *input_format = NULL;
@@ -955,8 +956,9 @@ static int within_audio_transcode(int profile) {
     goto cleanup;
   }
 
-  const AVCodec *encoder_codec = avcodec_find_encoder(
-      wma_output
+  const AVCodec *encoder_codec = vorbis_output
+      ? avcodec_find_encoder_by_name("libvorbis")
+      : avcodec_find_encoder(wma_output
           ? AV_CODEC_ID_WMAV2
           : aac_output
                 ? AV_CODEC_ID_AAC
@@ -1017,12 +1019,17 @@ static int within_audio_transcode(int profile) {
                   : decoder->sample_rate <= 16000
                         ? 16000
                         : decoder->sample_rate <= 24000 ? 24000 : 48000;
+  } else if (vorbis_output) {
+    encoder->sample_rate = decoder->sample_rate > 48000
+                               ? 48000
+                               : decoder->sample_rate;
   } else {
     encoder->sample_rate = decoder->sample_rate;
   }
   encoder->sample_fmt =
       wma_output ? AV_SAMPLE_FMT_FLTP
                  : opus_output ? AV_SAMPLE_FMT_FLT
+                 : vorbis_output ? AV_SAMPLE_FMT_FLTP
                  : (mp3_output || aac_output || opus_output) ? AV_SAMPLE_FMT_FLTP
                  : alac_output ? AV_SAMPLE_FMT_S16P : AV_SAMPLE_FMT_S16;
   encoder->time_base = (AVRational){1, encoder->sample_rate};
@@ -1038,7 +1045,8 @@ static int within_audio_transcode(int profile) {
   if (amr_output) {
     av_channel_layout_default(&encoder->ch_layout, 1);
     result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
-  } else if (wma_output || mp3_output || aac_output || opus_output) {
+  } else if (wma_output || mp3_output || aac_output || opus_output ||
+             vorbis_output) {
     av_channel_layout_default(
         &encoder->ch_layout,
         decoder->ch_layout.nb_channels > 2 ? 2
@@ -1081,6 +1089,9 @@ static int within_audio_transcode(int profile) {
     av_dict_set(&encoder_options, "application", "audio", 0);
     av_dict_set(&encoder_options, "compression_level", "0", 0);
     av_dict_set(&encoder_options, "vbr", "on", 0);
+  } else if (vorbis_output) {
+    encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER | AV_CODEC_FLAG_QSCALE;
+    encoder->global_quality = 4 * FF_QP2LAMBDA;
   }
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   av_dict_free(&encoder_options);
@@ -1102,7 +1113,7 @@ static int within_audio_transcode(int profile) {
           ? "asf"
           : aac_output
                 ? "adts"
-          : opus_output
+          : opus_output || vorbis_output
                 ? "ogg"
           : mp3_output
                 ? "mp3"
@@ -1144,7 +1155,7 @@ static int within_audio_transcode(int profile) {
   output_buffer = NULL;
   output_format->pb = output_io;
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
-  if (opus_output) {
+  if (opus_output || vorbis_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
   if (alac_output) {
@@ -1901,7 +1912,7 @@ int within_remux(int profile) {
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
       profile == 28 || profile == 29 || profile == 30 || profile == 31 ||
-      profile == 32) {
+      profile == 32 || profile == 33) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {

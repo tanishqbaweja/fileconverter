@@ -48,6 +48,11 @@ const webmBenchmarkFixture = path.resolve(
 const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const aacBenchmarkRoot = path.resolve(workRoot, "aac-benchmark");
 const opusBenchmarkRoot = path.resolve(workRoot, "opus-benchmark");
+const vorbisBenchmarkRoot = path.resolve(workRoot, "vorbis-benchmark");
+const taskTempRoots = [
+  path.resolve(workRoot, "vorbis-npm-cache"),
+  path.resolve(workRoot, "vorbis-process-temp"),
+];
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
   path.resolve(workRoot, "amr-repro-build"),
@@ -58,6 +63,9 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aac-repro-verify"),
   path.resolve(workRoot, "opus-repro-build"),
   path.resolve(workRoot, "opus-repro-verify"),
+  path.resolve(workRoot, "vorbis-engine-build"),
+  path.resolve(workRoot, "vorbis-repro-build"),
+  path.resolve(workRoot, "vorbis-repro-verify"),
 ];
 const lameAuditRoot = path.resolve(workRoot, "lame-audit");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
@@ -99,12 +107,28 @@ const detachedProfileLogs = [
   path.resolve(workRoot, "opus-browser.stderr.log"),
   path.resolve(workRoot, "opus-profile.stdout.log"),
   path.resolve(workRoot, "opus-profile.stderr.log"),
+  path.resolve(workRoot, "opus-output-profile.stdout.log"),
+  path.resolve(workRoot, "opus-output-profile.stderr.log"),
   path.resolve(workRoot, "opus-full-regression.stdout.log"),
   path.resolve(workRoot, "opus-full-regression.stderr.log"),
+  path.resolve(workRoot, "full-browser-opus.stdout.log"),
+  path.resolve(workRoot, "full-browser-opus.stderr.log"),
   path.resolve(workRoot, "opus-repro-build.stdout.log"),
   path.resolve(workRoot, "opus-repro-build.stderr.log"),
   path.resolve(workRoot, "opus-repro-verify.stdout.log"),
   path.resolve(workRoot, "opus-repro-verify.stderr.log"),
+  path.resolve(workRoot, "vorbis-build.stdout.log"),
+  path.resolve(workRoot, "vorbis-build.stderr.log"),
+  path.resolve(workRoot, "vorbis-browser.stdout.log"),
+  path.resolve(workRoot, "vorbis-browser.stderr.log"),
+  path.resolve(workRoot, "vorbis-profile.stdout.log"),
+  path.resolve(workRoot, "vorbis-profile.stderr.log"),
+  path.resolve(workRoot, "vorbis-full-regression.stdout.log"),
+  path.resolve(workRoot, "vorbis-full-regression.stderr.log"),
+  path.resolve(workRoot, "vorbis-repro-build.stdout.log"),
+  path.resolve(workRoot, "vorbis-repro-build.stderr.log"),
+  path.resolve(workRoot, "vorbis-repro-verify.stdout.log"),
+  path.resolve(workRoot, "vorbis-repro-verify.stderr.log"),
 ];
 const headedBrowserLogs = [
   path.resolve(workRoot, "headed-server.stdout.log"),
@@ -203,6 +227,10 @@ assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
 assertInside(workRoot, opusBenchmarkRoot);
+assertInside(workRoot, vorbisBenchmarkRoot);
+for (const temporaryRoot of taskTempRoots) {
+  assertInside(workRoot, temporaryRoot);
+}
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -268,6 +296,10 @@ await rm(cancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
 await removeWithRetries(opusBenchmarkRoot);
+await removeWithRetries(vorbisBenchmarkRoot);
+for (const temporaryRoot of taskTempRoots) {
+  await removeWithRetries(temporaryRoot);
+}
 for (const temporaryRoot of ffmpegReproBuildRoots) {
   await removeWithRetries(temporaryRoot);
 }

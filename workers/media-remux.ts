@@ -64,7 +64,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -147,6 +147,8 @@ export async function runMediaRemux({
         ? "Encoding AAC audio"
       : remuxProfile === 32
         ? "Encoding Opus audio"
+      : remuxProfile === 33
+        ? "Encoding Ogg Vorbis audio"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -210,7 +212,8 @@ export async function runMediaRemux({
       remuxProfile === 29 ||
       remuxProfile === 30 ||
       remuxProfile === 31 ||
-      remuxProfile === 32) &&
+      remuxProfile === 32 ||
+      remuxProfile === 33) &&
     writable.writeSync &&
     writable.additionalWorkerCount === 1
       ? new Uint8Array(maximumOutputWriteBytes)

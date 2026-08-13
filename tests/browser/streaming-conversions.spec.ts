@@ -248,6 +248,9 @@ interface TestState {
 }
 
 async function currentState(): Promise<TestState> {
+  await page.waitForFunction(() => Boolean(window.__WITHIN_TEST__), null, {
+    timeout: 15_000,
+  });
   return page.evaluate(() => {
     if (!window.__WITHIN_TEST__) throw new Error("Test bridge is unavailable.");
     return window.__WITHIN_TEST__.getState();

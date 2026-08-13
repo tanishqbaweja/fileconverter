@@ -20,6 +20,36 @@ const resumeProfile = process.env.WITHIN_PROFILE_START ?? null;
 const endProfile = process.env.WITHIN_PROFILE_END ?? null;
 
 const categories = {
+  "vorbis-output": {
+    generator: "scripts/generate-mp3-output-stress-fixtures.mjs",
+    generatorArguments: [
+      "audio-aac-50m.m4a",
+      "audio-alac-128m.m4a",
+      "audio-aac-128m.aac",
+      "audio-amr-nb-128m.amr",
+      "audio-mp3-50m.mp3",
+      "audio-flac-alac-128m.flac",
+      "audio-pcm-alac-128m.wav",
+      "audio-wma-128m.wma",
+      "audio-pcm-192m.aiff",
+      "audio-opus-flac-128m.opus",
+    ],
+    profiles: [
+      ["m4a-to-ogg", "audio-aac-50m.m4a"],
+      ["m4a-to-ogg", "audio-alac-128m.m4a"],
+      ["aac-to-ogg", "audio-aac-128m.aac"],
+      ["amr-to-ogg", "audio-amr-nb-128m.amr"],
+      ["mp3-to-ogg", "audio-mp3-50m.mp3"],
+      ["flac-to-ogg", "audio-flac-alac-128m.flac"],
+      ["wav-to-ogg", "audio-pcm-alac-128m.wav"],
+      ["wma-to-ogg", "audio-wma-128m.wma"],
+      ["aiff-to-ogg", "audio-pcm-192m.aiff"],
+      ["opus-to-ogg", "audio-opus-flac-128m.opus"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "opus-output": {
     generator: "scripts/generate-mp3-output-stress-fixtures.mjs",
     generatorArguments: [

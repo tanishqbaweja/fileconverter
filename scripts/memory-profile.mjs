@@ -70,6 +70,17 @@ const OPUS_OUTPUT_PROFILES = [
   "aiff-to-opus",
   "ogg-to-opus",
 ];
+const VORBIS_OUTPUT_PROFILES = [
+  "m4a-to-ogg",
+  "aac-to-ogg",
+  "amr-to-ogg",
+  "mp3-to-ogg",
+  "flac-to-ogg",
+  "wav-to-ogg",
+  "wma-to-ogg",
+  "aiff-to-ogg",
+  "opus-to-ogg",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -204,6 +215,7 @@ if (
     ...MP3_OUTPUT_PROFILES,
     ...AAC_OUTPUT_PROFILES,
     ...OPUS_OUTPUT_PROFILES,
+    ...VORBIS_OUTPUT_PROFILES,
     "gzip-compress",
     "gzip-decompress",
     "bzip2-compress",
@@ -374,6 +386,7 @@ const isMediaProfile =
   MP3_OUTPUT_PROFILES.includes(profileId) ||
   AAC_OUTPUT_PROFILES.includes(profileId) ||
   OPUS_OUTPUT_PROFILES.includes(profileId) ||
+  VORBIS_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -1143,6 +1156,7 @@ async function validateMediaOutput(
     route === "webm-to-opus";
   const opusOutput = route.endsWith("-to-opus");
   const opusTranscodeOutput = OPUS_OUTPUT_PROFILES.includes(route);
+  const vorbisTranscodeOutput = VORBIS_OUTPUT_PROFILES.includes(route);
   const aiffOutput = AIFF_OUTPUT_PROFILES.includes(route);
   const amrOutput = AMR_OUTPUT_PROFILES.includes(route);
   const mp3TranscodeOutput = MP3_OUTPUT_PROFILES.includes(route);
@@ -1152,6 +1166,7 @@ async function validateMediaOutput(
     mp3Output ||
     aacOutput ||
     opusTranscodeOutput ||
+    vorbisTranscodeOutput ||
     oggPacketOutput ||
     route === "mkv-to-m4a" ||
     route === "mov-to-m4a" ||
@@ -1362,6 +1377,7 @@ async function validateMediaOutput(
     Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
   const opusOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 64_000 : 128_000;
+  const vorbisOutputBitRate = 220_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
@@ -1371,6 +1387,9 @@ async function validateMediaOutput(
           1024 * 1024
       : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
         ? Math.ceil((sourceDurationSeconds * opusOutputBitRate * 1.25) / 8) +
+          1024 * 1024
+      : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
           1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
@@ -1441,19 +1460,26 @@ async function validateMediaOutput(
     amrOutput ||
     mp3TranscodeOutput ||
     aacTranscodeOutput ||
-    opusTranscodeOutput
+    opusTranscodeOutput ||
+    vorbisTranscodeOutput
   ) {
     const asdrOutput =
-      amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput;
+      amrOutput ||
+      mp3TranscodeOutput ||
+      aacTranscodeOutput ||
+      opusTranscodeOutput ||
+      vorbisTranscodeOutput;
     const minimumQualityDb = amrOutput
       ? -3
       : mp3TranscodeOutput
         ? -5
-      : aacTranscodeOutput
-        ? -6.5
-      : opusTranscodeOutput
-        ? -6.5
-      : (source.minimumDecodedAudioPsnrDb ?? 60);
+        : aacTranscodeOutput
+          ? -6.5
+          : opusTranscodeOutput
+            ? -6.5
+            : vorbisTranscodeOutput
+              ? -6.5
+              : (source.minimumDecodedAudioPsnrDb ?? 60);
     const comparisonFilter = amrOutput
       ? "[0:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000:async=1:first_pts=0,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]apsnr[quality]"
       : "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]apsnr[quality]";
@@ -1799,6 +1825,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser Opus output did not probe as genuine Ogg.");
   }
+  if (
+    vorbisTranscodeOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+  ) {
+    throw new Error("Browser Vorbis output did not probe as genuine Ogg.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1830,6 +1862,8 @@ async function validateMediaOutput(
                   ? "mp3"
                 : opusTranscodeOutput
                   ? "opus"
+                : vorbisTranscodeOutput
+                  ? "vorbis"
                 : oggPacketOutput
                   ? opusOutput ? "opus" : "vorbis"
                 : "aac"))) ||
@@ -1896,7 +1930,7 @@ async function validateMediaOutput(
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || vorbisTranscodeOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode
@@ -1926,6 +1960,8 @@ async function validateMediaOutput(
           ? Math.min(2, sourceAudio?.channels ?? 0)
         : opusTranscodeOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
+        : vorbisTranscodeOutput
+          ? Math.min(2, sourceAudio?.channels ?? 0)
         : wmaOutput
           ? Math.min(2, sourceAudio?.channels ?? 0)
           : sourceAudio?.channels)) ||
@@ -1946,6 +1982,11 @@ async function validateMediaOutput(
       (Number(audio?.sample_rate) !== 48000 ||
         Number(audio?.bit_rate) <= 0 ||
         Number(audio?.bit_rate) > 160000)) ||
+    (vorbisTranscodeOutput &&
+      (Number(audio?.sample_rate) <= 0 ||
+        Number(audio?.sample_rate) > 48000 ||
+        Number(audio?.bit_rate) <= 0 ||
+        Number(audio?.bit_rate) > 220000)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||

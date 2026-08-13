@@ -488,6 +488,70 @@ function standaloneOpusOutputProfile(
   };
 }
 
+type StandaloneVorbisOutputInput =
+  | Exclude<StandaloneAiffInput, "ogg">
+  | "aiff";
+
+const standaloneVorbisOutputEvidence: Record<
+  StandaloneVorbisOutputInput,
+  number | null
+> = {
+  m4a: 140_941_469,
+  aac: 134_367_785,
+  amr: 134_229_414,
+  mp3: 50_401_224,
+  flac: 138_185_686,
+  wav: 153_600_106,
+  wma: 142_503_082,
+  aiff: 201_600_102,
+  opus: 147_964_541,
+};
+
+function standaloneVorbisOutputProfile(
+  input: StandaloneVorbisOutputInput,
+): ConversionProfile {
+  const sourceCodec = {
+    m4a: "AAC or 16-bit ALAC",
+    aac: "AAC in ADTS",
+    amr: "8 kHz mono AMR-NB",
+    mp3: "MP3",
+    flac: "FLAC",
+    wav: "signed 16-bit little-endian PCM WAV",
+    wma: "WMA2",
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    opus: "Opus in Ogg",
+  }[input];
+  const evidence = standaloneVorbisOutputEvidence[input];
+  return {
+    id: `${input}-to-ogg`,
+    input,
+    output: "ogg",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input codec is ${sourceCodec}.`,
+      "Only the first audio stream is converted; chapters, artwork, attachments, and additional streams are explicitly excluded.",
+      "Compatible text tags are copied into Vorbis comments where possible; stream language and container-specific fields may not be retained.",
+      "Output uses the measured quality-4 reference libvorbis VBR profile and at most two channels.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily encoded as Vorbis; source sample rates through 48 kHz are preserved and higher rates are capped at 48 kHz.`,
+      "Reference libvorbis quality 4 was retained after comparative speed, output-size, and ASDR testing rejected FFmpeg's slower experimental native encoder and the lower-fidelity quality-3 setting.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3860,6 +3924,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneOpusOutputProfile("wma"),
   standaloneOpusOutputProfile("aiff"),
   standaloneOpusOutputProfile("ogg"),
+  standaloneVorbisOutputProfile("m4a"),
+  standaloneVorbisOutputProfile("aac"),
+  standaloneVorbisOutputProfile("amr"),
+  standaloneVorbisOutputProfile("mp3"),
+  standaloneVorbisOutputProfile("flac"),
+  standaloneVorbisOutputProfile("wav"),
+  standaloneVorbisOutputProfile("wma"),
+  standaloneVorbisOutputProfile("aiff"),
+  standaloneVorbisOutputProfile("opus"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),

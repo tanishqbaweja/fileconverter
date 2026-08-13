@@ -66,6 +66,8 @@ interface TestBridge {
   };
 }
 
+type TestBridgeState = ReturnType<TestBridge["getState"]>;
+
 interface ActiveBatch {
   files: File[];
   profile: ConversionProfile;
@@ -311,6 +313,7 @@ export function ConverterApp() {
     ((worker: Worker, batch: ActiveBatch, index: number) => Promise<void>) | null
   >(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const testBridgeStateRef = useRef<TestBridgeState | null>(null);
   const testMode =
     typeof window !== "undefined" &&
     (window.location.hostname === "127.0.0.1" ||
@@ -626,26 +629,20 @@ export function ConverterApp() {
   }, [jobState]);
 
   useEffect(() => {
-    if (!testMode) return;
-    window.__WITHIN_TEST__ = {
-      getState: () => ({
-        jobState,
-        phase,
-        metrics,
-        error,
-        warnings,
-        selectedProfileId: profileId,
-        opfsName,
-        opfsNames,
-        batchOutputNames: completedBatchOutputNames,
-        batchCompleted,
-        batchTotal: batchFiles.length,
-        startupCleanupComplete,
-        workerStatus: workerFailed ? "error" : workerReady ? "ready" : "starting",
-      }),
-    };
-    return () => {
-      delete window.__WITHIN_TEST__;
+    testBridgeStateRef.current = {
+      jobState,
+      phase,
+      metrics,
+      error,
+      warnings,
+      selectedProfileId: profileId,
+      opfsName,
+      opfsNames,
+      batchOutputNames: completedBatchOutputNames,
+      batchCompleted,
+      batchTotal: batchFiles.length,
+      startupCleanupComplete,
+      workerStatus: workerFailed ? "error" : workerReady ? "ready" : "starting",
     };
   }, [
     error,
@@ -664,6 +661,20 @@ export function ConverterApp() {
     workerFailed,
     workerReady,
   ]);
+
+  useEffect(() => {
+    if (!testMode) return;
+    window.__WITHIN_TEST__ = {
+      getState: () => {
+        const state = testBridgeStateRef.current;
+        if (!state) throw new Error("Test bridge state is unavailable.");
+        return state;
+      },
+    };
+    return () => {
+      delete window.__WITHIN_TEST__;
+    };
+  }, [testMode]);
 
   const acceptFiles = useCallback(
     (nextFiles: File[]) => {

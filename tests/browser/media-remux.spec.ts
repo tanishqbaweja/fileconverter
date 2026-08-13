@@ -137,6 +137,17 @@ const opusTranscodeOutputPaths = {
   aiff: path.join(outputRoot, "aiff-convert-output.opus"),
   ogg: path.join(outputRoot, "ogg-convert-output.opus"),
 } as const;
+const vorbisTranscodeOutputPaths = {
+  m4a: path.join(outputRoot, "m4a-convert-output.ogg"),
+  aac: path.join(outputRoot, "aac-convert-output.ogg"),
+  amr: path.join(outputRoot, "amr-convert-output.ogg"),
+  mp3: path.join(outputRoot, "mp3-convert-output.ogg"),
+  flac: path.join(outputRoot, "flac-convert-output.ogg"),
+  wav: path.join(outputRoot, "wav-convert-output.ogg"),
+  wma: path.join(outputRoot, "wma-convert-output.ogg"),
+  aiff: path.join(outputRoot, "aiff-convert-output.ogg"),
+  opus: path.join(outputRoot, "opus-convert-output.ogg"),
+} as const;
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
@@ -524,6 +535,9 @@ function assertProjectLocal(target: string): void {
 }
 
 async function currentState() {
+  await page.waitForFunction(() => Boolean(window.__WITHIN_TEST__), null, {
+    timeout: 15_000,
+  });
   return page.evaluate(() => {
     if (!window.__WITHIN_TEST__) throw new Error("Test bridge is unavailable.");
     return window.__WITHIN_TEST__.getState();
@@ -749,6 +763,9 @@ test.beforeAll(async () => {
     assertProjectLocal(outputPath);
   }
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  for (const outputPath of Object.values(vorbisTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   assertProjectLocal(mp4WebmOutputPath);
@@ -1154,6 +1171,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(vorbisTranscodeOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
@@ -1464,6 +1484,15 @@ async function runMediaRoute(
     | "wma-to-opus"
     | "aiff-to-opus"
     | "ogg-to-opus"
+    | "m4a-to-ogg"
+    | "aac-to-ogg"
+    | "amr-to-ogg"
+    | "mp3-to-ogg"
+    | "flac-to-ogg"
+    | "wav-to-ogg"
+    | "wma-to-ogg"
+    | "aiff-to-ogg"
+    | "opus-to-ogg"
     | "mkv-to-webm"
     | "mp4-to-webm"
     | "mov-to-webm"
@@ -1576,6 +1605,8 @@ async function runMediaRoute(
         !profileId.startsWith("flv-"))
       || (profileId.endsWith("-to-opus") && !profileId.startsWith("mkv-") &&
         !profileId.startsWith("webm-"))
+      || (profileId.endsWith("-to-ogg") && !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("webm-") && !profileId.startsWith("ogv-"))
     ) {
       expect(state.warnings).toEqual([]);
     } else {
@@ -2374,6 +2405,15 @@ for (const route of [
   ["wma-to-opus", wmaFixturePath],
   ["aiff-to-opus", aiffFixturePath],
   ["ogg-to-opus", oggFixturePath],
+  ["m4a-to-ogg", audioFixturePath],
+  ["aac-to-ogg", aacFixturePath],
+  ["amr-to-ogg", amrFixturePath],
+  ["mp3-to-ogg", mp3FixturePath],
+  ["flac-to-ogg", flacFixturePath],
+  ["wav-to-ogg", wavFixturePath],
+  ["wma-to-ogg", wmaFixturePath],
+  ["aiff-to-ogg", aiffFixturePath],
+  ["opus-to-ogg", opusFixturePath],
   ["mkv-to-ogg", incompatibleFixturePath],
   ["webm-to-ogg", av1VorbisWebmFixturePath],
   ["ogv-to-ogg", ogvFixturePath],
@@ -2406,6 +2446,8 @@ for (const route of [
       ? "[standalone-aac] "
       : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(route[0])
         ? "[standalone-opus] "
+      : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|opus)-to-ogg$/.test(route[0])
+        ? "[standalone-vorbis] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3447,6 +3489,68 @@ test("[standalone-opus] browser FFmpeg encodes ALAC M4A as genuine Opus", async 
     {
       expectedDurationSeconds: 4,
       durationToleranceSeconds: 0.15,
+      validate: async (_probe, outputPath) =>
+        expectOpusTranscodeQuality(alacFixturePath, outputPath),
+    },
+  );
+});
+
+const standaloneVorbisOutputRoutes = [
+  ["m4a-to-ogg", "m4a", audioFixturePath],
+  ["aac-to-ogg", "aac", aacFixturePath],
+  ["amr-to-ogg", "amr", amrFixturePath],
+  ["mp3-to-ogg", "mp3", mp3FixturePath],
+  ["flac-to-ogg", "flac", flacFixturePath],
+  ["wav-to-ogg", "wav", wavFixturePath],
+  ["wma-to-ogg", "wma", wmaFixturePath],
+  ["aiff-to-ogg", "aiff", aiffFixturePath],
+  ["opus-to-ogg", "opus", opusFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of standaloneVorbisOutputRoutes) {
+  test(`[standalone-vorbis] browser FFmpeg writes genuine Vorbis for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      vorbisTranscodeOutputPaths[input],
+      ["vorbis"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.3,
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBeLessThanOrEqual(2);
+          expect(Number(audio?.sample_rate)).toBeGreaterThan(0);
+          expect(Number(audio?.sample_rate)).toBeLessThanOrEqual(48_000);
+          if (input === "amr") {
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+          }
+          const bitRate = Number(
+            (probe.format as { bit_rate?: string }).bit_rate,
+          );
+          expect(bitRate).toBeGreaterThan(0);
+          expect(bitRate).toBeLessThanOrEqual(220_000);
+          await expectOpusTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+test("[standalone-vorbis] browser FFmpeg encodes ALAC M4A as genuine Vorbis", async () => {
+  await runMediaRoute(
+    "m4a-to-ogg",
+    vorbisTranscodeOutputPaths.m4a,
+    ["vorbis"],
+    1_000,
+    alacFixturePath,
+    {
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.3,
       validate: async (_probe, outputPath) =>
         expectOpusTranscodeQuality(alacFixturePath, outputPath),
     },

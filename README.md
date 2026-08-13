@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -198,7 +198,7 @@ Matroska, MOV/MP4/3GP, MPEG-TS, MP3, Ogg, and WAV demuxers; raw H.264, raw
 HEVC, raw MPEG-2 video, raw MPEG-4 Part 2 M4V, MP3, MPEG-TS,
 fragmented MP4/M4A, WAV, AIFF, AMR, FLAC, and WebM muxers; the required audio and
 H.264/HEVC/MPEG-2 decoders; PCM,
-including signed 16-bit big- and little-endian PCM, FLAC, LAME MP3, OpenCORE AMR-NB, libopus, MPEG-4 Part 2, and
+including signed 16-bit big- and little-endian PCM, FLAC, LAME MP3, OpenCORE AMR-NB, libopus, reference libvorbis, MPEG-4 Part 2, and
 libvpx VP8/VP9 encoders; libswresample; libswscale; and the
 necessary parsers and bitstream filters. It stream-copies compatible HEVC and
 AAC packets plus certified AV1/Opus or AV1/Vorbis Matroska streams, performs real bounded audio decode/resample/encode pipelines, or
@@ -468,6 +468,21 @@ Wasm, 262,144-byte reads, at most 18,067-byte writes/queueing, one worker, and
 one destination operation in flight. Category cleanup deleted all stress inputs,
 converted copies, and the Chrome profile after retaining compact reports.
 
+M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, MP3, FLAC, WAV, WMA2, AIFF,
+and Ogg Opus can be encoded as genuine Ogg Vorbis with pinned reference
+libvorbis 1.3.7 and libogg 1.3.6. The measured quality-4 VBR setting was 27.7%
+faster and 41.5% smaller than FFmpeg's rejected experimental native encoder on
+the protected five-minute reference, while retaining balanced channel ASDR.
+Source sample rates through 48 kHz are preserved; this made the one-hour AMR-NB
+benchmark 5.47x faster and 55.4% smaller than unnecessary 48 kHz upsampling.
+All 30 isolated Chrome runs passed on 36,929,878-201,600,102-byte inputs in
+16.12-243.43 seconds at 201.0 MiB worst complete-Chrome incremental private
+memory, leaving 49.0 MiB below the cap. Outputs were repeatable, fully decoded
+and ASDR-validated, with 32 MiB Wasm, 262,144-byte reads, at most 16,243-byte
+writes/queueing, one worker, and one destination operation in flight. Category
+cleanup deleted every generated stress source, converted copy, and Chrome
+profile after retaining compact manifests and reports.
+
 ## Non-media engines and limitations
 
 Archive conversion never extracts an archive tree to memory or disk. TAR.GZ,
@@ -695,6 +710,10 @@ Pinned inputs:
   `3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb`
 - libopus 1.6.1 official source archive, SHA-256
   `6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1`
+- libogg 1.3.6 official source archive, SHA-256
+  `5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061`
+- libvorbis 1.3.7 official source archive, SHA-256
+  `b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b`
 - libvpx 1.16.0 official source archive, SHA-256
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - bzip2 1.0.8 official source archive, SHA-256
@@ -853,6 +872,16 @@ Current exact-build results:
 | WMA2 to AIFF | 3 | 142,503,082 B | 364,798,054 B | 179.0 MiB | 32 MiB | 7.03-7.38 s |
 | Ogg Vorbis to AIFF | 3 | 144,431,506 B | 441,600,054 B | 169.0 MiB | 32 MiB | 9.63-10.03 s |
 | Ogg Opus to AIFF | 3 | 147,964,541 B | 441,600,054 B | 180.2 MiB | 32 MiB | 19.00-19.65 s |
+| AAC M4A to Ogg Vorbis | 3 | 36,929,878 B | 3,723,084 B | 160.9 MiB | 32 MiB | 18.54-19.25 s |
+| ALAC M4A to Ogg Vorbis | 3 | 140,941,469 B | 12,155,861 B | 201.0 MiB | 32 MiB | 19.07-19.45 s |
+| Raw AAC to Ogg Vorbis | 3 | 134,367,785 B | 17,146,674 B | 165.1 MiB | 32 MiB | 63.17-64.10 s |
+| AMR-NB to Ogg Vorbis | 3 | 134,229,414 B | 154,581,919 B | 156.0 MiB | 32 MiB | 239.78-243.43 s |
+| MP3 to Ogg Vorbis | 3 | 50,401,224 B | 3,710,193 B | 164.0 MiB | 32 MiB | 20.05-20.48 s |
+| FLAC to Ogg Vorbis | 3 | 138,185,686 B | 12,155,741 B | 158.0 MiB | 32 MiB | 17.07-17.81 s |
+| WAV to Ogg Vorbis | 3 | 153,600,106 B | 12,155,741 B | 160.6 MiB | 32 MiB | 16.12-16.44 s |
+| WMA2 to Ogg Vorbis | 3 | 142,503,082 B | 28,839,568 B | 155.3 MiB | 32 MiB | 38.79-39.21 s |
+| AIFF to Ogg Vorbis | 3 | 201,600,102 B | 3,730,840 B | 164.0 MiB | 32 MiB | 17.92-18.14 s |
+| Ogg Opus to Ogg Vorbis | 3 | 147,964,541 B | 36,194,998 B | 159.8 MiB | 32 MiB | 57.51-58.47 s |
 | GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
 | GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
 | BZIP2 compress | 3 | 268,435,456 B | 270,593,081 B | 139.2 MiB | 8 MiB | cleanup passed |
@@ -1333,7 +1362,7 @@ installed stable Chrome and native FFmpeg.
 
 Application code is project-owned. FFmpeg licensing depends on the exact
 configured components; this version-3 build excludes GPL/nonfree switches and
-is LGPL-3.0-or-later. LAME is LGPL-2.0-or-later, OpenCORE AMR is Apache-2.0 licensed, libopus and libvpx are
+is LGPL-3.0-or-later. LAME is LGPL-2.0-or-later, OpenCORE AMR is Apache-2.0 licensed, and libopus, libogg, libvorbis, and libvpx are
 BSD-3-Clause licensed, bzip2 carries its permissive upstream license, and the
 linked liblzma core is 0BSD.
 Deployers must still review FFmpeg's LGPL terms, the
