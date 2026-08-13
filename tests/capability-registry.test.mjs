@@ -860,12 +860,20 @@ test("compound archives and mainstream images are detected by filename", () => {
       "3gp-to-aiff",
       "aac-to-aiff",
       "amr-to-aiff",
+      "avi-to-aiff",
       "flac-to-aiff",
+      "flv-to-aiff",
       "m4a-to-aiff",
+      "mkv-to-aiff",
+      "mov-to-aiff",
       "mp3-to-aiff",
+      "mp4-to-aiff",
+      "mpeg-ts-to-aiff",
       "ogg-to-aiff",
+      "ogv-to-aiff",
       "opus-to-aiff",
       "wav-to-aiff",
+      "webm-to-aiff",
       "wma-to-aiff",
     ],
   );
@@ -874,15 +882,29 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "mp3-to-aiff",
     ),
   );
+  const pendingContainerAiffInputs = new Set([
+    "mkv",
+    "mp4",
+    "mov",
+    "mpeg-ts",
+    "flv",
+    "avi",
+    "ogv",
+    "webm",
+  ]);
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "aiff",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.ok(profile.maxTestedBytes > 0);
-    assert.ok(
+    const pending = pendingContainerAiffInputs.has(profile.input);
+    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
+    assert.equal(profile.public, !pending);
+    if (pending) assert.equal(profile.maxTestedBytes, null);
+    else assert.ok(profile.maxTestedBytes > 0);
+    assert.equal(
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
+      !pending,
     );
   }
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");

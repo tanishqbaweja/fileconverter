@@ -52,6 +52,23 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-aiff": {
+    generator: "scripts/generate-container-wma-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-aiff", "h264-aac-flac-128m.mkv"],
+      ["mp4-to-aiff", "h264-aac-flac-128m.mp4"],
+      ["mov-to-aiff", "h264-aac-flac-128m.mov"],
+      ["3gp-to-aiff", "h264-aac-flac-128m.3gp"],
+      ["mpeg-ts-to-aiff", "h264-aac-flac-128m.mpegts"],
+      ["flv-to-aiff", "h264-aac-flac-128m.flv"],
+      ["avi-to-aiff", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-aiff", "theora-video-128m.ogv"],
+      ["webm-to-aiff", "av1-opus-128m.webm"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

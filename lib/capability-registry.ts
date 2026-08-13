@@ -249,6 +249,68 @@ function standaloneAiffProfile(input: StandaloneAiffInput): ConversionProfile {
   };
 }
 
+type ContainerAiffInput =
+  | "mkv"
+  | "mp4"
+  | "mov"
+  | "mpeg-ts"
+  | "flv"
+  | "avi"
+  | "ogv"
+  | "webm";
+
+const containerAiffEvidence: Record<ContainerAiffInput, number | null> = {
+  mkv: null,
+  mp4: null,
+  mov: null,
+  "mpeg-ts": null,
+  flv: null,
+  avi: null,
+  ogv: null,
+  webm: null,
+};
+
+function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
+  const sourceCodec = {
+    mkv: "AAC in Matroska",
+    mp4: "AAC in MP4",
+    mov: "AAC in QuickTime MOV",
+    "mpeg-ts": "AAC in MPEG-TS",
+    flv: "AAC in FLV",
+    avi: "MP3 in AVI",
+    ogv: "Vorbis in Ogg Video",
+    webm: "Opus in WebM",
+  }[input];
+  const evidence = containerAiffEvidence[input];
+  return {
+    id: `${input}-to-aiff`,
+    input,
+    output: "aiff",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      "Compatible text metadata is copied when AIFF can represent it; language tags are not guaranteed by AIFF players.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded to signed 16-bit big-endian PCM; AIFF cannot restore information already discarded by the lossy source codec.`,
+      "Layouts above stereo are downmixed to stereo; the certified mono sources preserve their source sample rate and channel count.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 type StandaloneAmrOutputInput = Exclude<StandaloneAiffInput, "amr"> | "aiff";
 
 const standaloneAmrOutputEvidence: Record<
@@ -4057,6 +4119,14 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneAiffProfile("wma"),
   standaloneAiffProfile("ogg"),
   standaloneAiffProfile("opus"),
+  containerAiffProfile("mkv"),
+  containerAiffProfile("mp4"),
+  containerAiffProfile("mov"),
+  containerAiffProfile("mpeg-ts"),
+  containerAiffProfile("flv"),
+  containerAiffProfile("avi"),
+  containerAiffProfile("ogv"),
+  containerAiffProfile("webm"),
   standaloneAmrOutputProfile("m4a"),
   standaloneAmrOutputProfile("aac"),
   standaloneAmrOutputProfile("mp3"),

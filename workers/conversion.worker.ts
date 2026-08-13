@@ -75,6 +75,14 @@ const AIFF_OUTPUT_PROFILES = new Set([
   "wma-to-aiff",
   "ogg-to-aiff",
   "opus-to-aiff",
+  "mkv-to-aiff",
+  "mp4-to-aiff",
+  "mov-to-aiff",
+  "mpeg-ts-to-aiff",
+  "flv-to-aiff",
+  "avi-to-aiff",
+  "ogv-to-aiff",
+  "webm-to-aiff",
 ]);
 const AMR_OUTPUT_PROFILES = new Set([
   "m4a-to-amr",

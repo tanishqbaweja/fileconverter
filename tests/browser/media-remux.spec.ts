@@ -93,6 +93,17 @@ const aiffOutputPaths = {
   ogg: path.join(outputRoot, "ogg-convert-output.aiff"),
   opus: path.join(outputRoot, "opus-convert-output.aiff"),
 } as const;
+const containerAiffOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-convert-output.aiff"),
+  mp4: path.join(outputRoot, "mp4-convert-output.aiff"),
+  mov: path.join(outputRoot, "mov-convert-output.aiff"),
+  "3gp": path.join(outputRoot, "3gp-convert-output.aiff"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-convert-output.aiff"),
+  flv: path.join(outputRoot, "flv-convert-output.aiff"),
+  avi: path.join(outputRoot, "avi-convert-output.aiff"),
+  ogv: path.join(outputRoot, "ogv-convert-output.aiff"),
+  webm: path.join(outputRoot, "webm-convert-output.aiff"),
+} as const;
 const amrOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.amr"),
   aac: path.join(outputRoot, "aac-convert-output.amr"),
@@ -785,6 +796,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(aiffOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerAiffOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const outputPath of Object.values(amrOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1221,6 +1235,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(aiffOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerAiffOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(amrOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1461,6 +1478,14 @@ async function runMediaRoute(
     | "mov-to-aac"
     | "3gp-to-aac"
     | "3gp-to-aiff"
+    | "mkv-to-aiff"
+    | "mp4-to-aiff"
+    | "mov-to-aiff"
+    | "mpeg-ts-to-aiff"
+    | "flv-to-aiff"
+    | "avi-to-aiff"
+    | "ogv-to-aiff"
+    | "webm-to-aiff"
     | "3gp-to-mp3"
     | "3gp-to-opus"
     | "3gp-to-ogg"
@@ -2519,6 +2544,14 @@ for (const route of [
   ["avi-to-wma", aviInputFixturePath],
   ["ogv-to-wma", ogvFixturePath],
   ["webm-to-wma", av1OpusWebmFixturePath],
+  ["mkv-to-aiff", fixturePath],
+  ["mp4-to-aiff", mp4InputFixturePath],
+  ["mov-to-aiff", movInputFixturePath],
+  ["mpeg-ts-to-aiff", mpegTsInputFixturePath],
+  ["flv-to-aiff", flvInputFixturePath],
+  ["avi-to-aiff", aviInputFixturePath],
+  ["ogv-to-aiff", ogvFixturePath],
+  ["webm-to-aiff", av1OpusWebmFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2563,6 +2596,8 @@ for (const route of [
         ? "[standalone-wma] "
       : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(route[0])
         ? "[container-wma] "
+      : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv|webm)-to-aiff$/.test(route[0])
+        ? "[container-aiff] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3403,6 +3438,37 @@ test("browser FFmpeg preserves decoded ALAC samples in AIFF", async () => {
     },
   );
 });
+
+const containerAiffRoutes = [
+  ["mkv-to-aiff", "mkv", fixturePath],
+  ["mp4-to-aiff", "mp4", mp4InputFixturePath],
+  ["mov-to-aiff", "mov", movInputFixturePath],
+  ["3gp-to-aiff", "3gp", threeGpInputFixturePath],
+  ["mpeg-ts-to-aiff", "mpeg-ts", mpegTsInputFixturePath],
+  ["flv-to-aiff", "flv", flvInputFixturePath],
+  ["avi-to-aiff", "avi", aviInputFixturePath],
+  ["ogv-to-aiff", "ogv", ogvFixturePath],
+  ["webm-to-aiff", "webm", av1OpusWebmFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of containerAiffRoutes) {
+  test(`[container-aiff] browser FFmpeg writes genuine AIFF PCM for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      containerAiffOutputPaths[input],
+      ["pcm_s16be"],
+      300_000,
+      inputPath,
+      {
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("aiff");
+          await expectDecodedAudioPsnr(inputPath, outputPath, 60);
+        },
+      },
+    );
+  });
+}
 
 const standaloneAmrOutputRoutes = [
   ["m4a-to-amr", "m4a", audioFixturePath],
