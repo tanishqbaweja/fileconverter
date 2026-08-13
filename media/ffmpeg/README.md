@@ -77,9 +77,11 @@ their fixed bounds. The build enables only the AIFF muxer and `pcm_s16be`
 encoder needed for these profiles; it adds no codec library or extra worker.
 
 The same core enables FFmpeg's native AMR-WB decoder for pinned mono 16 kHz
-`.awb` input in 3GP/ISOBMFF. It exposes only WAV and FLAC destinations, retains
+`.awb` input in 3GP/ISOBMFF. It exposes WAV, FLAC, and MP3 destinations, retains
 the 32 MiB initial Wasm heap and one-worker topology, and validates complete
-outputs against native decoding with a 60 dB APSNR floor.
+lossless outputs against native decoding with a 60 dB APSNR floor. MP3 keeps
+the 16 kHz speech rate at 64 kb/s; the same policy keeps 8 kHz AMR-NB at
+32 kb/s rather than needlessly upsampling either source to 32 kHz.
 
 The same lean module links the pinned static OpenCORE AMR library and writes
 genuine 8 kHz mono AMR-NB in fixed MR122 mode for AAC/ALAC M4A, raw AAC, MP3,

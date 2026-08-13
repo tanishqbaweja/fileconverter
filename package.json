@@ -69,6 +69,7 @@
     "fixtures:amr": "node scripts/generate-amr-fixture.mjs",
     "fixtures:amr-stress": "node scripts/generate-amr-stress-fixture.mjs",
     "fixtures:amr-wb-stress": "node scripts/generate-amr-wb-stress-fixture.mjs",
+    "benchmark:mp3-sample-rates": "node scripts/benchmark-mp3-sample-rates.mjs",
     "fixtures:flac-inputs-stress": "node scripts/generate-flac-input-stress-fixtures.mjs",
     "fixtures:container-flac-stress": "node scripts/generate-container-flac-stress-fixtures.mjs",
     "fixtures:legacy-container-flac-stress": "node scripts/generate-legacy-container-flac-stress-fixtures.mjs",

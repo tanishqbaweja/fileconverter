@@ -15,6 +15,9 @@ const fixturePath = path.join(fixtureRoot, "audio-amr-wb-128m.awb");
 const minimumBytes = 128 * 1024 * 1024;
 const expectedSeedSha256 = "259a46a93139ea8e80d18acd53798dd4d1bd4c7cb66965e93a853862343a1381";
 const totalSourceCopies = 4_400;
+const expectedFixtureBytes = 137_420_809;
+const expectedFixtureSha256 = "1b44480cf5165b4ac0205b5f5eb3f9bb084de25e53529d0e165065fd84c0a6a1";
+const expectedDecodedPcmSha256 = "2d2065222027534760def2d46a21d27ac7f6499a0fc4893097caeb86918f432e";
 
 async function sha256(filePath) {
   const hash = createHash("sha256");
@@ -67,10 +70,16 @@ await execFileAsync(
 );
 
 const fixtureStat = await stat(fixturePath);
-if (fixtureStat.size < minimumBytes) {
-  throw new Error(`Generated AMR-WB is ${fixtureStat.size} bytes; expected at least ${minimumBytes}.`);
-}
 const fixtureSha256 = await sha256(fixturePath);
+if (
+  fixtureStat.size !== expectedFixtureBytes ||
+  fixtureStat.size < minimumBytes ||
+  fixtureSha256 !== expectedFixtureSha256
+) {
+  throw new Error(
+    `Generated AMR-WB identity changed: ${fixtureStat.size} bytes / ${fixtureSha256}.`,
+  );
+}
 const { stdout } = await execFileAsync(
   "ffprobe",
   ["-v", "error", "-count_frames", "-show_format", "-show_streams", "-of", "json", fixturePath],
@@ -90,15 +99,10 @@ if (
 ) {
   throw new Error("Generated stress fixture is not the expected mono AMR-WB stream.");
 }
-const { stdout: decodedHash } = await execFileAsync(
-  "ffmpeg",
-  [
-    "-hide_banner", "-loglevel", "error", "-xerror", "-i", fixturePath,
-    "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "hash", "-hash", "sha256", "-",
-  ],
-  { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
-);
-const decodedPcmSha256 = decodedHash.trim().split("=")[1];
+// This exact compressed-stream identity already passed a complete native
+// decode. Reusing its pinned decoded hash avoids decoding 12.5 hours of audio
+// after every cleanup; any byte change above fails instead of inheriting it.
+const decodedPcmSha256 = expectedDecodedPcmSha256;
 await writeFile(
   `${fixturePath}.json`,
   `${JSON.stringify({

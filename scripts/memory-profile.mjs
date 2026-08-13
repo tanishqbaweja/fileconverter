@@ -62,6 +62,7 @@ const MP3_OUTPUT_PROFILES = [
   "m4a-to-mp3",
   "aac-to-mp3",
   "amr-to-mp3",
+  "amr-wb-to-mp3",
   "flac-to-mp3",
   "wav-to-mp3",
   "wma-to-mp3",
@@ -1454,13 +1455,33 @@ async function validateMediaOutput(
   );
   const compressedAudioOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
+  const mp3SourceSampleRate = Number(sourceAudioForSize?.sample_rate);
+  const mp3OutputSampleRate =
+    mp3SourceSampleRate === 8_000 || mp3SourceSampleRate === 16_000
+      ? mp3SourceSampleRate
+      : mp3SourceSampleRate <= 32_000
+        ? 32_000
+        : mp3SourceSampleRate <= 44_100
+          ? 44_100
+          : 48_000;
+  const mp3OutputBitRate =
+    Number(sourceAudioForSize?.channels) === 1
+      ? mp3OutputSampleRate === 8_000
+        ? 32_000
+        : mp3OutputSampleRate === 16_000
+          ? 64_000
+          : 128_000
+      : 192_000;
   const opusOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 64_000 : 128_000;
   const vorbisOutputBitRate = 220_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
       ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
-      : (mp3TranscodeOutput || aacTranscodeOutput) &&
+      : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.04) / 8) +
+          1024 * 1024
+      : aacTranscodeOutput &&
           Number.isFinite(sourceDurationSeconds)
         ? Math.ceil((sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8) +
           1024 * 1024
@@ -2096,10 +2117,8 @@ async function validateMediaOutput(
       (Number(audio?.sample_rate) !== 8000 ||
         Number(audio?.bit_rate) !== 12400)) ||
     (mp3TranscodeOutput &&
-      (Number(audio?.sample_rate) < 32000 ||
-        Number(audio?.sample_rate) > 48000 ||
-        Number(audio?.bit_rate) < 128000 ||
-        Number(audio?.bit_rate) > 192000)) ||
+      (Number(audio?.sample_rate) !== mp3OutputSampleRate ||
+        Number(audio?.bit_rate) !== mp3OutputBitRate)) ||
     (aacTranscodeOutput &&
       (![8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000]
           .includes(Number(audio?.sample_rate)) ||

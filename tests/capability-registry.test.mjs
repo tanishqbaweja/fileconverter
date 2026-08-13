@@ -88,7 +88,7 @@ test("AV1 WebM stream copy is public after its measured evidence passes", () => 
 });
 
 test("AMR-WB decode routes are public after bounded large-file evidence passes", () => {
-  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac"]) {
+  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac", "amr-wb-to-mp3"]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);
     assert.equal(profile.automatedTestStatus, "passed");
@@ -418,6 +418,12 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
   assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
   assert.ok(manifest.enabledEncoders.includes("libmp3lame"));
+  assert.deepEqual(manifest.mp3EncoderOptions, {
+    compressionLevel: 9,
+    preservedSpeechSampleRates: [8000, 16000],
+    monoBitRatesBySampleRate: { 8000: 32000, 16000: 64000, default: 128000 },
+    stereoBitRate: 192000,
+  });
   assert.ok(manifest.enabledEncoders.includes("libopus"));
   assert.equal(manifest.opencoreAmrVersion, "0.1.6");
   assert.equal(
@@ -739,6 +745,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "aac-to-mp3",
       "aiff-to-mp3",
       "amr-to-mp3",
+      "amr-wb-to-mp3",
       "flac-to-mp3",
       "m4a-to-mp3",
       "ogg-to-mp3",

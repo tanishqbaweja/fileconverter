@@ -137,6 +137,7 @@ const mp3TranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.mp3"),
   aac: path.join(outputRoot, "aac-convert-output.mp3"),
   amr: path.join(outputRoot, "amr-convert-output.mp3"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.mp3"),
   flac: path.join(outputRoot, "flac-convert-output.mp3"),
   wav: path.join(outputRoot, "wav-convert-output.mp3"),
   wma: path.join(outputRoot, "wma-convert-output.mp3"),
@@ -1696,6 +1697,7 @@ async function runMediaRoute(
     | "m4a-to-mp3"
     | "aac-to-mp3"
     | "amr-to-mp3"
+    | "amr-wb-to-mp3"
     | "flac-to-mp3"
     | "wav-to-mp3"
     | "wma-to-mp3"
@@ -2624,6 +2626,7 @@ for (const route of [
   ["3gp-to-aac", aacContainerFixturePaths["3gp"]],
   ["mpeg-ts-to-aac", aacContainerFixturePaths["mpeg-ts"]],
   ["flv-to-aac", aacContainerFixturePaths.flv],
+  ["amr-wb-to-mp3", amrWbFixturePath],
   ["m4a-to-aac", audioFixturePath],
   ["amr-to-aac", amrFixturePath],
   ["mp3-to-aac", mp3FixturePath],
@@ -2736,7 +2739,9 @@ for (const route of [
   ["ogv-to-flac", ogvFixturePath],
 ] as const) {
   const standaloneAudioMarker =
-      /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
+      route[0] === "amr-wb-to-mp3"
+      ? "[amr-wb-mp3] "
+      : /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
       ? "[webm-audio] "
       : /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
       ? "[3gp-amr] "
@@ -3774,6 +3779,7 @@ const standaloneMp3OutputRoutes = [
   ["m4a-to-mp3", "m4a", audioFixturePath],
   ["aac-to-mp3", "aac", aacFixturePath],
   ["amr-to-mp3", "amr", amrFixturePath],
+  ["amr-wb-to-mp3", "amr-wb", amrWbFixturePath],
   ["flac-to-mp3", "flac", flacFixturePath],
   ["wav-to-mp3", "wav", wavFixturePath],
   ["wma-to-mp3", "wma", wmaFixturePath],
@@ -3811,7 +3817,7 @@ async function expectMp3TranscodeQuality(
 }
 
 for (const [route, input, inputPath] of standaloneMp3OutputRoutes) {
-  test(`browser FFmpeg writes genuine MP3 for ${input.toUpperCase()} input`, async () => {
+  test(`${input === "amr-wb" ? "[amr-wb-mp3] " : ""}browser FFmpeg writes genuine MP3 for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       mp3TranscodeOutputPaths[input],
@@ -3819,15 +3825,28 @@ for (const [route, input, inputPath] of standaloneMp3OutputRoutes) {
       1_000,
       inputPath,
       {
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : undefined,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("mp3");
           const audio = probe.streams.find(
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
           );
           expect(Number(audio?.channels)).toBeLessThanOrEqual(2);
-          expect(Number(audio?.sample_rate)).toBeGreaterThanOrEqual(32_000);
+          const expectedSampleRate = input === "amr"
+            ? 8_000
+            : input === "amr-wb"
+              ? 16_000
+              : null;
+          if (expectedSampleRate === null) {
+            expect(Number(audio?.sample_rate)).toBeGreaterThanOrEqual(32_000);
+          } else {
+            expect(Number(audio?.sample_rate)).toBe(expectedSampleRate);
+          }
           expect(Number(audio?.sample_rate)).toBeLessThanOrEqual(48_000);
-          expect(Number(audio?.bit_rate)).toBeGreaterThanOrEqual(128_000);
+          expect(Number(audio?.bit_rate)).toBe(
+            input === "amr" ? 32_000 : input === "amr-wb" ? 64_000 :
+              Number(audio?.channels) === 1 ? 128_000 : 192_000,
+          );
           await expectMp3TranscodeQuality(inputPath, outputPath);
         },
       },

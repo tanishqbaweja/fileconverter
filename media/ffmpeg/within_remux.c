@@ -993,9 +993,12 @@ static int within_audio_transcode(int profile) {
   } else if (wma_output) {
     encoder->sample_rate = 48000;
   } else if (mp3_output) {
-    encoder->sample_rate = decoder->sample_rate <= 32000
-                               ? 32000
-                               : decoder->sample_rate <= 44100 ? 44100 : 48000;
+    encoder->sample_rate = decoder->sample_rate == 8000 ||
+                                   decoder->sample_rate == 16000
+                               ? decoder->sample_rate
+                               : decoder->sample_rate <= 32000
+                                     ? 32000
+                                     : decoder->sample_rate <= 44100 ? 44100 : 48000;
   } else if (aac_output) {
     if (m4a_aac_output) {
       encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -1076,8 +1079,11 @@ static int within_audio_transcode(int profile) {
   } else if (amr_output) {
     encoder->bit_rate = 12200;
   } else if (mp3_output) {
-    encoder->bit_rate =
-        encoder->ch_layout.nb_channels == 1 ? 128000 : 192000;
+    encoder->bit_rate = encoder->ch_layout.nb_channels == 1
+                            ? encoder->sample_rate == 8000
+                                  ? 32000
+                                  : encoder->sample_rate == 16000 ? 64000 : 128000
+                            : 192000;
     av_dict_set(&encoder_options, "compression_level", "9", 0);
     if (encoder->ch_layout.nb_channels == 2) {
       av_dict_set(&encoder_options, "joint_stereo", "1", 0);

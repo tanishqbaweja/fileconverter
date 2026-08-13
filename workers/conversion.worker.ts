@@ -114,6 +114,7 @@ const MP3_OUTPUT_PROFILES = new Set([
   "m4a-to-mp3",
   "aac-to-mp3",
   "amr-to-mp3",
+  "amr-wb-to-mp3",
   "flac-to-mp3",
   "wav-to-mp3",
   "wma-to-mp3",
@@ -197,6 +198,7 @@ const WMA_OUTPUT_PROFILES = new Set([
 const AMR_WB_INPUT_PROFILES = new Set([
   "amr-wb-to-wav",
   "amr-wb-to-flac",
+  "amr-wb-to-mp3",
 ]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
