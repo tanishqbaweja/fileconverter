@@ -661,10 +661,17 @@ test("compound archives and mainstream images are detected by filename", () => {
       "amr-to-ogg",
       "amr-to-opus",
       "amr-to-wav",
+      "avi-to-amr",
       "flac-to-amr",
+      "flv-to-amr",
       "m4a-to-amr",
+      "mkv-to-amr",
+      "mov-to-amr",
       "mp3-to-amr",
+      "mp4-to-amr",
+      "mpeg-ts-to-amr",
       "ogg-to-amr",
+      "ogv-to-amr",
       "opus-to-amr",
       "wav-to-amr",
       "webm-to-amr",
@@ -679,18 +686,23 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "amr",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.equal(profile.public, true);
-    assert.ok(profile.maxTestedBytes > 0);
+    const pendingContainerRoute = /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(
+      profile.id,
+    );
+    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
+    assert.equal(profile.public, !pendingContainerRoute);
+    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
+    else assert.ok(profile.maxTestedBytes > 0);
     assert.ok(
       profile.fidelityLimitations.some((limitation) =>
         limitation.includes("8 kHz mono"),
       ),
     );
-    assert.ok(
+    assert.equal(
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
+      !pendingContainerRoute,
     );
   }
   assert.deepEqual(
@@ -736,10 +748,12 @@ test("compound archives and mainstream images are detected by filename", () => {
     [
       "aiff-to-aac",
       "amr-to-aac",
+      "avi-to-aac",
       "flac-to-aac",
       "m4a-to-aac",
       "mp3-to-aac",
       "ogg-to-aac",
+      "ogv-to-aac",
       "opus-to-aac",
       "wav-to-aac",
       "webm-to-aac",
@@ -750,10 +764,12 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "aac" && candidate.route === "re-encode",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.equal(profile.public, true);
-    assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+    const pendingContainerRoute = /^(?:avi|ogv)-to-aac$/.test(profile.id);
+    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
+    assert.equal(profile.public, !pendingContainerRoute);
+    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
+    else assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), !pendingContainerRoute);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.equal(

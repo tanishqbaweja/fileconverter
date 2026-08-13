@@ -77,6 +77,23 @@ const categories = {
       "fixtures/stress/media/av1-opus-128m.webm",
     ]),
   },
+  "container-amr-aac": {
+    generator: "scripts/generate-container-amr-aac-stress-fixtures.mjs",
+    profiles: [
+      ["mkv-to-amr", "h264-aac-flac-128m.mkv"],
+      ["mp4-to-amr", "h264-aac-flac-128m.mp4"],
+      ["mov-to-amr", "h264-aac-flac-128m.mov"],
+      ["mpeg-ts-to-amr", "h264-aac-flac-128m.mpegts"],
+      ["flv-to-amr", "h264-aac-flac-128m.flv"],
+      ["avi-to-amr", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-amr", "theora-video-128m.ogv"],
+      ["avi-to-aac", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-aac", "theora-video-128m.ogv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

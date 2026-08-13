@@ -311,6 +311,108 @@ function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
   };
 }
 
+type ContainerAmrOutputInput = Exclude<ContainerAiffInput, "webm">;
+
+const containerAmrOutputEvidence: Record<
+  ContainerAmrOutputInput,
+  number | null
+> = {
+  mkv: null,
+  mp4: null,
+  mov: null,
+  "mpeg-ts": null,
+  flv: null,
+  avi: null,
+  ogv: null,
+};
+
+const containerAudioSourceCodec: Record<ContainerAmrOutputInput, string> = {
+  mkv: "AAC in Matroska",
+  mp4: "AAC in MP4",
+  mov: "AAC in QuickTime MOV",
+  "mpeg-ts": "AAC in MPEG-TS",
+  flv: "AAC in FLV",
+  avi: "MP3 in AVI",
+  ogv: "Vorbis in Ogg Video",
+};
+
+function containerAmrOutputProfile(
+  input: ContainerAmrOutputInput,
+): ConversionProfile {
+  const sourceCodec = containerAudioSourceCodec[input];
+  const evidence = containerAmrOutputEvidence[input];
+  return {
+    id: `${input}-to-amr`,
+    input,
+    output: "amr",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      "Raw AMR-NB output does not preserve source metadata or artwork.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is downmixed and resampled to 8 kHz mono before lossy 12.2 kb/s AMR-NB encoding; this voice profile is not transparent for music.`,
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
+type LegacyContainerAacOutputInput = Extract<ContainerAmrOutputInput, "avi" | "ogv">;
+
+const legacyContainerAacOutputEvidence: Record<
+  LegacyContainerAacOutputInput,
+  number | null
+> = {
+  avi: null,
+  ogv: null,
+};
+
+function legacyContainerAacOutputProfile(
+  input: LegacyContainerAacOutputInput,
+): ConversionProfile {
+  const sourceCodec = containerAudioSourceCodec[input];
+  const evidence = legacyContainerAacOutputEvidence[input];
+  return {
+    id: `${input}-to-aac`,
+    input,
+    output: "aac",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      "Raw ADTS AAC output does not preserve source metadata or artwork.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily re-encoded as AAC-LC; this cannot restore source information.`,
+      "The certified mono source retains its standard sample rate and one channel at 128 kb/s.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 type WebmAudioOutput = "wav" | "flac" | "amr" | "mp3" | "aac";
 
 const webmAudioOutputEvidence: Record<WebmAudioOutput, number | null> = {
@@ -4196,6 +4298,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   webmAudioOutputProfile("amr"),
   webmAudioOutputProfile("mp3"),
   webmAudioOutputProfile("aac"),
+  containerAmrOutputProfile("mkv"),
+  containerAmrOutputProfile("mp4"),
+  containerAmrOutputProfile("mov"),
+  containerAmrOutputProfile("mpeg-ts"),
+  containerAmrOutputProfile("flv"),
+  containerAmrOutputProfile("avi"),
+  containerAmrOutputProfile("ogv"),
+  legacyContainerAacOutputProfile("avi"),
+  legacyContainerAacOutputProfile("ogv"),
   standaloneAmrOutputProfile("m4a"),
   standaloneAmrOutputProfile("aac"),
   standaloneAmrOutputProfile("mp3"),

@@ -122,6 +122,15 @@ const amrOutputPaths = {
   ogg: path.join(outputRoot, "ogg-convert-output.amr"),
   opus: path.join(outputRoot, "opus-convert-output.amr"),
 } as const;
+const containerAmrOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-convert-output.amr"),
+  mp4: path.join(outputRoot, "mp4-convert-output.amr"),
+  mov: path.join(outputRoot, "mov-convert-output.amr"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-convert-output.amr"),
+  flv: path.join(outputRoot, "flv-convert-output.amr"),
+  avi: path.join(outputRoot, "avi-convert-output.amr"),
+  ogv: path.join(outputRoot, "ogv-convert-output.amr"),
+} as const;
 const mp3TranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.mp3"),
   aac: path.join(outputRoot, "aac-convert-output.mp3"),
@@ -143,6 +152,10 @@ const aacTranscodeOutputPaths = {
   aiff: path.join(outputRoot, "aiff-convert-output.aac"),
   ogg: path.join(outputRoot, "ogg-convert-output.aac"),
   opus: path.join(outputRoot, "opus-convert-output.aac"),
+} as const;
+const legacyContainerAacOutputPaths = {
+  avi: path.join(outputRoot, "avi-convert-output.aac"),
+  ogv: path.join(outputRoot, "ogv-convert-output.aac"),
 } as const;
 const opusTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.opus"),
@@ -812,10 +825,16 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(amrOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerAmrOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const outputPath of Object.values(mp3TranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   for (const outputPath of Object.values(aacTranscodeOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  for (const outputPath of Object.values(legacyContainerAacOutputPaths)) {
     assertProjectLocal(outputPath);
   }
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
@@ -1254,10 +1273,16 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(amrOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerAmrOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(mp3TranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
   for (const outputPath of Object.values(aacTranscodeOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
+  for (const outputPath of Object.values(legacyContainerAacOutputPaths)) {
     await rm(outputPath, { force: true });
   }
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
@@ -1504,6 +1529,15 @@ async function runMediaRoute(
     | "webm-to-amr"
     | "webm-to-mp3"
     | "webm-to-aac"
+    | "mkv-to-amr"
+    | "mp4-to-amr"
+    | "mov-to-amr"
+    | "mpeg-ts-to-amr"
+    | "flv-to-amr"
+    | "avi-to-amr"
+    | "ogv-to-amr"
+    | "avi-to-aac"
+    | "ogv-to-aac"
     | "3gp-to-mp3"
     | "3gp-to-opus"
     | "3gp-to-ogg"
@@ -2575,6 +2609,15 @@ for (const route of [
   ["webm-to-amr", av1OpusWebmFixturePath],
   ["webm-to-mp3", av1OpusWebmFixturePath],
   ["webm-to-aac", av1OpusWebmFixturePath],
+  ["mkv-to-amr", fixturePath],
+  ["mp4-to-amr", mp4InputFixturePath],
+  ["mov-to-amr", movInputFixturePath],
+  ["mpeg-ts-to-amr", mpegTsInputFixturePath],
+  ["flv-to-amr", flvInputFixturePath],
+  ["avi-to-amr", aviInputFixturePath],
+  ["ogv-to-amr", ogvFixturePath],
+  ["avi-to-aac", aviInputFixturePath],
+  ["ogv-to-aac", ogvFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2623,6 +2666,9 @@ for (const route of [
         ? "[container-wma] "
       : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv|webm)-to-aiff$/.test(route[0])
         ? "[container-aiff] "
+      : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(route[0]) ||
+          /^(?:avi|ogv)-to-aac$/.test(route[0])
+        ? "[container-amr-aac] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3567,6 +3613,41 @@ for (const [route, input, inputPath] of standaloneAmrOutputRoutes) {
   });
 }
 
+const containerAmrOutputRoutes = [
+  ["mkv-to-amr", "mkv", fixturePath],
+  ["mp4-to-amr", "mp4", mp4InputFixturePath],
+  ["mov-to-amr", "mov", movInputFixturePath],
+  ["mpeg-ts-to-amr", "mpeg-ts", mpegTsInputFixturePath],
+  ["flv-to-amr", "flv", flvInputFixturePath],
+  ["avi-to-amr", "avi", aviInputFixturePath],
+  ["ogv-to-amr", "ogv", ogvFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of containerAmrOutputRoutes) {
+  test(`[container-amr-aac] browser FFmpeg converts ${input.toUpperCase()} audio to genuine 12.2 kb/s AMR-NB`, async () => {
+    await runMediaRoute(
+      route,
+      containerAmrOutputPaths[input],
+      ["amr_nb"],
+      1_000,
+      inputPath,
+      {
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("amr");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.sample_rate)).toBe(8_000);
+          expect(Number(audio?.channels)).toBe(1);
+          expect(Number(audio?.bit_rate)).toBe(12_400);
+          await expectAmrTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
 const standaloneMp3OutputRoutes = [
   ["m4a-to-mp3", "m4a", audioFixturePath],
   ["aac-to-mp3", "aac", aacFixturePath],
@@ -3731,6 +3812,40 @@ test("[standalone-aac] browser FFmpeg encodes ALAC M4A as genuine AAC", async ()
     },
   );
 });
+
+const legacyContainerAacOutputRoutes = [
+  ["avi-to-aac", "avi", aviInputFixturePath],
+  ["ogv-to-aac", "ogv", ogvFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of legacyContainerAacOutputRoutes) {
+  test(`[container-amr-aac] browser FFmpeg converts ${input.toUpperCase()} audio to genuine AAC`, async () => {
+    await runMediaRoute(
+      route,
+      legacyContainerAacOutputPaths[input],
+      ["aac"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: input === "ogv" ? 3.84 : 4,
+        durationToleranceSeconds: 0.1,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("aac");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(audio?.profile).toBe("LC");
+          expect(Number(audio?.channels)).toBe(1);
+          expect(Number(audio?.sample_rate)).toBe(48_000);
+          expect(Number(audio?.bit_rate)).toBeGreaterThan(0);
+          expect(Number(audio?.bit_rate)).toBeLessThanOrEqual(220_000);
+          await expectAacTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
 
 const webmAudioOutputRoutes = [
   ["webm-to-wav", "wav", "pcm_s16le"],

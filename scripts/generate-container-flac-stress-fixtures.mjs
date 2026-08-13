@@ -14,7 +14,7 @@ const sourceManifestPath = `${sourcePath}.json`;
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const minimumBytes = 128 * 1024 * 1024;
 const durationSeconds = 65;
-const fixtures = [
+const availableFixtures = [
   { name: "h264-aac-flac-128m.3gp", format: "3gp" },
   { name: "h264-aac-flac-128m.mp4", format: "mp4" },
   { name: "h264-aac-flac-128m.mov", format: "mov" },
@@ -22,6 +22,19 @@ const fixtures = [
   { name: "h264-aac-flac-128m.mpegts", format: "mpegts" },
   { name: "h264-aac-flac-128m.flv", format: "flv" },
 ];
+const requestedNames = process.argv.slice(2);
+const availableNames = new Set(availableFixtures.map(({ name }) => name));
+for (const requestedName of requestedNames) {
+  if (!availableNames.has(requestedName)) {
+    throw new Error(
+      `Unknown container fixture ${requestedName}. Choose from: ${[...availableNames].join(", ")}.`,
+    );
+  }
+}
+const requestedNameSet = new Set(requestedNames);
+const fixtures = requestedNames.length === 0
+  ? availableFixtures
+  : availableFixtures.filter(({ name }) => requestedNameSet.has(name));
 const fixturePaths = fixtures.map((fixture) => path.join(fixtureRoot, fixture.name));
 
 const sourceManifest = JSON.parse(await readFile(sourceManifestPath, "utf8"));

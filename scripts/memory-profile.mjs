@@ -37,6 +37,13 @@ const AIFF_OUTPUT_PROFILES = [
 ];
 const AMR_OUTPUT_PROFILES = [
   "webm-to-amr",
+  "mkv-to-amr",
+  "mp4-to-amr",
+  "mov-to-amr",
+  "mpeg-ts-to-amr",
+  "flv-to-amr",
+  "avi-to-amr",
+  "ogv-to-amr",
   "m4a-to-amr",
   "aac-to-amr",
   "mp3-to-amr",
@@ -62,6 +69,8 @@ const MP3_OUTPUT_PROFILES = [
 ];
 const AAC_OUTPUT_PROFILES = [
   "webm-to-aac",
+  "avi-to-aac",
+  "ogv-to-aac",
   "m4a-to-aac",
   "amr-to-aac",
   "mp3-to-aac",
