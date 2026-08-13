@@ -311,6 +311,68 @@ function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
   };
 }
 
+type WebmAudioOutput = "wav" | "flac" | "amr" | "mp3" | "aac";
+
+const webmAudioOutputEvidence: Record<WebmAudioOutput, number | null> = {
+  wav: null,
+  flac: null,
+  amr: null,
+  mp3: null,
+  aac: null,
+};
+
+function webmAudioOutputProfile(output: WebmAudioOutput): ConversionProfile {
+  const outputDescription = {
+    wav: "signed 16-bit little-endian PCM WAV",
+    flac: "lossless 16-bit FLAC",
+    amr: "12.2 kb/s AMR-NB voice audio",
+    mp3: "128 kb/s mono MP3",
+    aac: "128 kb/s mono AAC-LC in ADTS",
+  }[output];
+  const evidence = webmAudioOutputEvidence[output];
+  return {
+    id: `webm-to-${output}`,
+    input: "webm",
+    output,
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input is AV1 video with one 48 kHz mono Opus audio stream in WebM; other WebM audio codecs require separate evidence.",
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional streams, and container-specific metadata are explicitly excluded.",
+      output === "flac"
+        ? "Compatible text and language metadata are copied where FLAC can represent them; embedded artwork is excluded."
+        : output === "mp3"
+          ? "Compatible text tags are mapped to ID3 where possible; WebM-only fields and artwork are excluded."
+          : output === "wav"
+            ? "WebM metadata and artwork are excluded because this bounded PCM WAV profile does not preserve them."
+            : "Raw AMR-NB and ADTS outputs do not preserve WebM metadata or artwork.",
+    ],
+    fidelityLimitations: [
+      output === "wav" || output === "flac"
+        ? `Opus is decoded to ${outputDescription}; this preserves the decoded 16-bit representation but cannot restore information already discarded by Opus.`
+        : output === "amr"
+          ? "Opus is downmixed and resampled to 8 kHz mono before lossy AMR-NB encoding; this voice profile is not transparent for music."
+          : `Opus is decoded and lossily re-encoded as ${outputDescription}; this cannot restore source information.`,
+      output === "wav" || output === "flac"
+        ? "The certified mono source retains its 48 kHz sample rate and channel count."
+        : output === "amr"
+          ? "Output is fixed to one 8 kHz mono channel."
+          : "The certified mono source retains its 48 kHz rate and one channel.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 type StandaloneAmrOutputInput = Exclude<StandaloneAiffInput, "amr"> | "aiff";
 
 const standaloneAmrOutputEvidence: Record<
@@ -4129,6 +4191,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerAiffProfile("avi"),
   containerAiffProfile("ogv"),
   containerAiffProfile("webm"),
+  webmAudioOutputProfile("wav"),
+  webmAudioOutputProfile("flac"),
+  webmAudioOutputProfile("amr"),
+  webmAudioOutputProfile("mp3"),
+  webmAudioOutputProfile("aac"),
   standaloneAmrOutputProfile("m4a"),
   standaloneAmrOutputProfile("aac"),
   standaloneAmrOutputProfile("mp3"),

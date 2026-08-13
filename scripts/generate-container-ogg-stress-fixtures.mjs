@@ -11,6 +11,8 @@ const startedAt = performance.now();
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const av1OpusMkv = path.join(fixtureRoot, "av1-opus-128m.mkv");
+const av1OpusManifestPath = `${av1OpusMkv}.json`;
+const retainedAv1Manifest = await readFile(av1OpusManifestPath, "utf8");
 const ogvVorbis = path.join(fixtureRoot, "theora-video-128m.ogv");
 const generated = [
   {
@@ -32,15 +34,28 @@ const generated = [
     arguments: ["-i", av1OpusMkv, "-i", ogvVorbis, "-map", "0:v:0", "-map", "1:a:0", "-c", "copy", "-shortest", "-map_metadata", "0", "-metadata:s:a:0", "language=eng", "-f", "webm"],
   },
 ];
+const requestedNames = new Set(process.argv.slice(2));
+const selectedGenerated = requestedNames.size === 0
+  ? generated
+  : generated.filter((fixture) => requestedNames.has(path.basename(fixture.path)));
+const unknownNames = [...requestedNames].filter(
+  (name) => !generated.some((fixture) => path.basename(fixture.path) === name),
+);
+if (unknownNames.length > 0 || selectedGenerated.length === 0) {
+  throw new Error(
+    `Unknown container-Ogg fixture selection: ${unknownNames.join(", ") || "none"}.`,
+  );
+}
 const retainedManifests = new Map();
 
 try {
   await mkdir(fixtureRoot, { recursive: true });
-  await Promise.all([
-    runNode("scripts/generate-av1-opus-stress-fixture.mjs"),
-    runNode("scripts/generate-ogv-stress-fixture.mjs"),
-  ]);
-  for (const fixture of generated) {
+  const sourceGenerators = [runNode("scripts/generate-av1-opus-stress-fixture.mjs")];
+  if (selectedGenerated.some((fixture) => fixture.inputs.includes(ogvVorbis))) {
+    sourceGenerators.push(runNode("scripts/generate-ogv-stress-fixture.mjs"));
+  }
+  await Promise.all(sourceGenerators);
+  for (const fixture of selectedGenerated) {
     retainedManifests.set(
       `${fixture.path}.json`,
       await readFile(`${fixture.path}.json`, "utf8").catch((error) => {
@@ -50,7 +65,7 @@ try {
     );
   }
   await Promise.all(
-    generated.map((fixture) =>
+    selectedGenerated.map((fixture) =>
       execFileAsync(
         "ffmpeg",
         ["-hide_banner", "-loglevel", "error", "-nostdin", "-y", ...fixture.arguments, fixture.path],
@@ -59,7 +74,7 @@ try {
     ),
   );
   const minimumBytes = 128 * 1024 * 1024;
-  for (const fixture of generated) {
+  for (const fixture of selectedGenerated) {
     const [fixtureStat, probe, audioPacketSha256] = await Promise.all([
       stat(fixture.path),
       probeFile(fixture.path),
@@ -90,9 +105,11 @@ try {
     );
     process.stdout.write(`${fixture.path}\n`);
   }
-  process.stdout.write(`Generated five Ogg-family extraction sources in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`);
+  process.stdout.write(
+    `Generated ${selectedGenerated.length} Ogg-family extraction source${selectedGenerated.length === 1 ? "" : "s"} in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
+  );
 } catch (error) {
-  for (const fixture of generated) {
+  for (const fixture of selectedGenerated) {
     await rm(fixture.path, { force: true });
     const manifestPath = `${fixture.path}.json`;
     const retained = retainedManifests.get(manifestPath);
@@ -100,6 +117,8 @@ try {
     else await writeFile(manifestPath, retained, "utf8");
   }
   throw error;
+} finally {
+  await writeFile(av1OpusManifestPath, retainedAv1Manifest, "utf8");
 }
 
 async function runNode(script) {

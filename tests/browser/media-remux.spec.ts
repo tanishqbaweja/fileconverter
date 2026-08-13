@@ -104,6 +104,13 @@ const containerAiffOutputPaths = {
   ogv: path.join(outputRoot, "ogv-convert-output.aiff"),
   webm: path.join(outputRoot, "webm-convert-output.aiff"),
 } as const;
+const webmAudioOutputPaths = {
+  wav: path.join(outputRoot, "webm-convert-output.wav"),
+  flac: path.join(outputRoot, "webm-convert-output.flac"),
+  amr: path.join(outputRoot, "webm-convert-output.amr"),
+  mp3: path.join(outputRoot, "webm-convert-output.mp3"),
+  aac: path.join(outputRoot, "webm-convert-output.aac"),
+} as const;
 const amrOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.amr"),
   aac: path.join(outputRoot, "aac-convert-output.amr"),
@@ -799,6 +806,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(containerAiffOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(webmAudioOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const outputPath of Object.values(amrOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1238,6 +1248,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(containerAiffOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(webmAudioOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(amrOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1486,6 +1499,11 @@ async function runMediaRoute(
     | "avi-to-aiff"
     | "ogv-to-aiff"
     | "webm-to-aiff"
+    | "webm-to-wav"
+    | "webm-to-flac"
+    | "webm-to-amr"
+    | "webm-to-mp3"
+    | "webm-to-aac"
     | "3gp-to-mp3"
     | "3gp-to-opus"
     | "3gp-to-ogg"
@@ -2552,6 +2570,11 @@ for (const route of [
   ["avi-to-aiff", aviInputFixturePath],
   ["ogv-to-aiff", ogvFixturePath],
   ["webm-to-aiff", av1OpusWebmFixturePath],
+  ["webm-to-wav", av1OpusWebmFixturePath],
+  ["webm-to-flac", av1OpusWebmFixturePath],
+  ["webm-to-amr", av1OpusWebmFixturePath],
+  ["webm-to-mp3", av1OpusWebmFixturePath],
+  ["webm-to-aac", av1OpusWebmFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2584,7 +2607,9 @@ for (const route of [
   ["ogv-to-flac", ogvFixturePath],
 ] as const) {
   const standaloneAudioMarker =
-      /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
+      /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
+      ? "[webm-audio] "
+      : /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
       ? "[3gp-amr] "
       : /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
       ? "[standalone-aac] "
@@ -3482,6 +3507,40 @@ const standaloneAmrOutputRoutes = [
   ["opus-to-amr", "opus", opusFixturePath],
 ] as const;
 
+async function expectAmrTranscodeQuality(
+  inputPath: string,
+  outputPath: string,
+): Promise<void> {
+  await execFileAsync("ffmpeg", [
+    "-v",
+    "error",
+    "-i",
+    outputPath,
+    "-f",
+    "null",
+    "-",
+  ]);
+  const { stderr: qualityLog } = await execFileAsync("ffmpeg", [
+    "-hide_banner",
+    "-nostdin",
+    "-i",
+    inputPath,
+    "-i",
+    outputPath,
+    "-filter_complex",
+    "[0:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]asdr[quality]",
+    "-map",
+    "[quality]",
+    "-f",
+    "null",
+    "NUL",
+  ]);
+  const sdr = qualityLog.match(
+    /SDR ch0:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/i,
+  );
+  expect(Number(sdr?.[1])).toBeGreaterThanOrEqual(-3);
+}
+
 for (const [route, input, inputPath] of standaloneAmrOutputRoutes) {
   test(`browser FFmpeg writes genuine 12.2 kb/s AMR-NB for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
@@ -3501,34 +3560,7 @@ for (const [route, input, inputPath] of standaloneAmrOutputRoutes) {
           // FFprobe includes AMR framing overhead in its average stream rate.
           // A 12.2 kb/s MR122 payload therefore probes as 12.4 kb/s.
           expect(Number(audio?.bit_rate)).toBe(12_400);
-          await execFileAsync("ffmpeg", [
-            "-v",
-            "error",
-            "-i",
-            outputPath,
-            "-f",
-            "null",
-            "-",
-          ]);
-          const { stderr: qualityLog } = await execFileAsync("ffmpeg", [
-            "-hide_banner",
-            "-nostdin",
-            "-i",
-            inputPath,
-            "-i",
-            outputPath,
-            "-filter_complex",
-            "[0:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[source];[1:a:0]aresample=8000,aformat=sample_fmts=fltp:sample_rates=8000:channel_layouts=mono[converted];[source][converted]asdr[quality]",
-            "-map",
-            "[quality]",
-            "-f",
-            "null",
-            "NUL",
-          ]);
-          const sdr = qualityLog.match(
-            /SDR ch0:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/i,
-          );
-          expect(Number(sdr?.[1])).toBeGreaterThanOrEqual(-3);
+          await expectAmrTranscodeQuality(inputPath, outputPath);
         },
       },
     );
@@ -3699,6 +3731,63 @@ test("[standalone-aac] browser FFmpeg encodes ALAC M4A as genuine AAC", async ()
     },
   );
 });
+
+const webmAudioOutputRoutes = [
+  ["webm-to-wav", "wav", "pcm_s16le"],
+  ["webm-to-flac", "flac", "flac"],
+  ["webm-to-amr", "amr", "amr_nb"],
+  ["webm-to-mp3", "mp3", "mp3"],
+  ["webm-to-aac", "aac", "aac"],
+] as const;
+
+for (const [route, output, codec] of webmAudioOutputRoutes) {
+  test(`[webm-audio] browser FFmpeg converts WebM Opus audio to ${output.toUpperCase()}`, async () => {
+    await runMediaRoute(
+      route,
+      webmAudioOutputPaths[output],
+      [codec],
+      output === "wav" ? 300_000 : 1_000,
+      av1OpusWebmFixturePath,
+      {
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: output === "amr" ? 0.3 : 0.25,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBe(1);
+          if (output === "wav") {
+            expect(String(probe.format.format_name).split(",")).toContain("wav");
+            expect(Number(audio?.sample_rate)).toBe(48_000);
+            await expectDecodedAudioPsnr(av1OpusWebmFixturePath, outputPath, 60);
+          } else if (output === "flac") {
+            expect(String(probe.format.format_name).split(",")).toContain("flac");
+            expect(Number(audio?.sample_rate)).toBe(48_000);
+            await expectDecodedAudioPsnr(av1OpusWebmFixturePath, outputPath, 60);
+          } else if (output === "amr") {
+            expect(String(probe.format.format_name).split(",")).toContain("amr");
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+            expect(Number(audio?.bit_rate)).toBe(12_400);
+            await expectAmrTranscodeQuality(av1OpusWebmFixturePath, outputPath);
+          } else if (output === "mp3") {
+            expect(String(probe.format.format_name).split(",")).toContain("mp3");
+            expect(Number(audio?.sample_rate)).toBe(48_000);
+            expect(Number(audio?.bit_rate)).toBe(128_000);
+            await expectMp3TranscodeQuality(av1OpusWebmFixturePath, outputPath);
+          } else {
+            expect(String(probe.format.format_name).split(",")).toContain("aac");
+            expect(audio?.profile).toBe("LC");
+            expect(Number(audio?.sample_rate)).toBe(48_000);
+            expect(Number(audio?.bit_rate)).toBeGreaterThan(0);
+            expect(Number(audio?.bit_rate)).toBeLessThanOrEqual(220_000);
+            await expectAacTranscodeQuality(av1OpusWebmFixturePath, outputPath);
+          }
+        },
+      },
+    );
+  });
+}
 
 const standaloneOpusOutputRoutes = [
   ["m4a-to-opus", "m4a", audioFixturePath],

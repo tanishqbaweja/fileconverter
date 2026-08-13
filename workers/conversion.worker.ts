@@ -85,6 +85,7 @@ const AIFF_OUTPUT_PROFILES = new Set([
   "webm-to-aiff",
 ]);
 const AMR_OUTPUT_PROFILES = new Set([
+  "webm-to-amr",
   "m4a-to-amr",
   "aac-to-amr",
   "mp3-to-amr",
@@ -96,6 +97,7 @@ const AMR_OUTPUT_PROFILES = new Set([
   "opus-to-amr",
 ]);
 const MP3_OUTPUT_PROFILES = new Set([
+  "webm-to-mp3",
   "3gp-to-mp3",
   "m4a-to-mp3",
   "aac-to-mp3",
@@ -108,6 +110,7 @@ const MP3_OUTPUT_PROFILES = new Set([
   "opus-to-mp3",
 ]);
 const AAC_OUTPUT_PROFILES = new Set([
+  "webm-to-aac",
   "m4a-to-aac",
   "amr-to-aac",
   "mp3-to-aac",
@@ -3066,6 +3069,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "aiff-to-wav" ||
         profileId === "ogg-to-wav" ||
         profileId === "opus-to-wav" ||
+        profileId === "webm-to-wav" ||
         profileId === "m4a-to-flac" ||
         profileId === "mkv-to-flac" ||
         profileId === "mp4-to-flac" ||
@@ -3083,6 +3087,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "aiff-to-flac" ||
         profileId === "ogg-to-flac" ||
         profileId === "opus-to-flac" ||
+        profileId === "webm-to-flac" ||
         profileId === "wav-to-alac" ||
         profileId === "flac-to-alac" ||
         WMA_OUTPUT_PROFILES.has(profileId) ||
@@ -3716,6 +3721,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav" ||
+      profileId === "webm-to-wav" ||
       profileId === "m4a-to-flac" ||
       profileId === "mkv-to-flac" ||
       profileId === "mp4-to-flac" ||
@@ -3733,6 +3739,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "aiff-to-flac" ||
       profileId === "ogg-to-flac" ||
       profileId === "opus-to-flac" ||
+      profileId === "webm-to-flac" ||
       profileId === "wav-to-alac" ||
       profileId === "flac-to-alac" ||
       WMA_OUTPUT_PROFILES.has(profileId) ||
@@ -3868,7 +3875,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "wma-to-wav" ||
             profileId === "aiff-to-wav" ||
             profileId === "ogg-to-wav" ||
-            profileId === "opus-to-wav"
+            profileId === "opus-to-wav" ||
+            profileId === "webm-to-wav"
             ? 3
             : profileId === "m4a-to-flac" ||
                 profileId === "mkv-to-flac" ||
@@ -3886,7 +3894,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "wma-to-flac" ||
                 profileId === "aiff-to-flac" ||
                 profileId === "ogg-to-flac" ||
-                profileId === "opus-to-flac"
+                profileId === "opus-to-flac" ||
+                profileId === "webm-to-flac"
               ? 6
             : profileId === "wav-to-alac" ||
                 profileId === "flac-to-alac"

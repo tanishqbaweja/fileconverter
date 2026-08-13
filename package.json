@@ -114,6 +114,8 @@
     "profile:wma-output": "node scripts/profile-category.mjs wma-output",
     "profile:container-wma": "node scripts/profile-category.mjs container-wma",
     "profile:container-aiff": "node scripts/profile-category.mjs container-aiff",
+    "profile:webm-audio": "node scripts/profile-category.mjs webm-audio",
+    "audit:webm-audio": "node scripts/audit-webm-audio-outputs.mjs",
     "profile:mp3-output": "node scripts/profile-category.mjs mp3-output",
     "profile:aac-output": "node scripts/profile-category.mjs aac-output",
     "profile:opus-output": "node scripts/profile-category.mjs opus-output",

@@ -69,6 +69,14 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "webm-audio": {
+    generator: "scripts/generate-container-ogg-stress-fixtures.mjs",
+    generatorArguments: ["av1-opus-128m.webm"],
+    profiles: ["wav", "flac", "amr", "mp3", "aac"].map((output) => [
+      `webm-to-${output}`,
+      "fixtures/stress/media/av1-opus-128m.webm",
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

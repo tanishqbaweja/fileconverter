@@ -36,6 +36,7 @@ const AIFF_OUTPUT_PROFILES = [
   "webm-to-aiff",
 ];
 const AMR_OUTPUT_PROFILES = [
+  "webm-to-amr",
   "m4a-to-amr",
   "aac-to-amr",
   "mp3-to-amr",
@@ -47,6 +48,7 @@ const AMR_OUTPUT_PROFILES = [
   "opus-to-amr",
 ];
 const MP3_OUTPUT_PROFILES = [
+  "webm-to-mp3",
   "3gp-to-mp3",
   "m4a-to-mp3",
   "aac-to-mp3",
@@ -59,6 +61,7 @@ const MP3_OUTPUT_PROFILES = [
   "opus-to-mp3",
 ];
 const AAC_OUTPUT_PROFILES = [
+  "webm-to-aac",
   "m4a-to-aac",
   "amr-to-aac",
   "mp3-to-aac",
@@ -358,6 +361,7 @@ if (
     "aiff-to-wav",
     "ogg-to-wav",
     "opus-to-wav",
+    "webm-to-wav",
     "m4a-to-flac",
     "mkv-to-flac",
     "mp4-to-flac",
@@ -375,6 +379,7 @@ if (
     "aiff-to-flac",
     "ogg-to-flac",
     "opus-to-flac",
+    "webm-to-flac",
     "wav-to-alac",
     "flac-to-alac",
     ...WMA_OUTPUT_PROFILES,
@@ -515,6 +520,7 @@ const isMediaProfile =
   profileId === "aiff-to-wav" ||
   profileId === "ogg-to-wav" ||
   profileId === "opus-to-wav" ||
+  profileId === "webm-to-wav" ||
   profileId === "m4a-to-flac" ||
   profileId === "mkv-to-flac" ||
   profileId === "mp4-to-flac" ||
@@ -532,6 +538,7 @@ const isMediaProfile =
   profileId === "aiff-to-flac" ||
   profileId === "ogg-to-flac" ||
   profileId === "opus-to-flac" ||
+  profileId === "webm-to-flac" ||
   profileId === "wav-to-alac" ||
   profileId === "flac-to-alac" ||
   WMA_OUTPUT_PROFILES.includes(profileId) ||
@@ -1222,6 +1229,7 @@ async function validateMediaOutput(
     route === "aiff-to-wav" ||
     route === "ogg-to-wav" ||
     route === "opus-to-wav" ||
+    route === "webm-to-wav" ||
     route === "m4a-to-flac" ||
     route === "mkv-to-flac" ||
     route === "mp4-to-flac" ||
@@ -1239,6 +1247,7 @@ async function validateMediaOutput(
     route === "aiff-to-flac" ||
     route === "ogg-to-flac" ||
     route === "opus-to-flac" ||
+    route === "webm-to-flac" ||
     route === "wav-to-alac" ||
     route === "flac-to-alac" ||
     WMA_OUTPUT_PROFILES.includes(route);
@@ -1260,7 +1269,8 @@ async function validateMediaOutput(
     route === "wma-to-wav" ||
     route === "aiff-to-wav" ||
     route === "ogg-to-wav" ||
-    route === "opus-to-wav";
+    route === "opus-to-wav" ||
+    route === "webm-to-wav";
   const flacOutput =
     route === "m4a-to-flac" ||
     route === "mkv-to-flac" ||
@@ -1278,7 +1288,8 @@ async function validateMediaOutput(
     route === "wma-to-flac" ||
     route === "aiff-to-flac" ||
     route === "ogg-to-flac" ||
-    route === "opus-to-flac";
+    route === "opus-to-flac" ||
+    route === "webm-to-flac";
   const alacOutput =
     route === "wav-to-alac" || route === "flac-to-alac";
   const wmaOutput = WMA_OUTPUT_PROFILES.includes(route);
