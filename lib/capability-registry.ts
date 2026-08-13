@@ -668,15 +668,15 @@ type ContainerWmaInput =
   | "webm";
 
 const containerWmaEvidence: Record<ContainerWmaInput, number | null> = {
-  mkv: null,
-  mp4: null,
-  mov: null,
-  "3gp": null,
-  "mpeg-ts": null,
-  flv: null,
-  avi: null,
-  ogv: null,
-  webm: null,
+  mkv: 146_855_294,
+  mp4: 146_854_557,
+  mov: 146_854_612,
+  "3gp": 146_854_456,
+  "mpeg-ts": 150_441_548,
+  flv: 146_903_486,
+  avi: 159_500_442,
+  ogv: 137_218_662,
+  webm: 222_941_314,
 };
 
 function containerWmaOutputProfile(input: ContainerWmaInput): ConversionProfile {

@@ -820,26 +820,27 @@ test("compound archives and mainstream images are detected by filename", () => {
       true,
     );
   }
-  for (const input of [
-    "mkv",
-    "mp4",
-    "mov",
-    "3gp",
-    "mpeg-ts",
-    "flv",
-    "avi",
-    "ogv",
-    "webm",
-  ]) {
+  const certifiedContainerWmaRoutes = new Map([
+    ["mkv", 146_855_294],
+    ["mp4", 146_854_557],
+    ["mov", 146_854_612],
+    ["3gp", 146_854_456],
+    ["mpeg-ts", 150_441_548],
+    ["flv", 146_903_486],
+    ["avi", 159_500_442],
+    ["ogv", 137_218_662],
+    ["webm", 222_941_314],
+  ]);
+  for (const [input, testedBytes] of certifiedContainerWmaRoutes) {
     const profile = conversionProfiles.find(
       (candidate) => candidate.id === `${input}-to-wma`,
     );
-    assert.equal(profile?.automatedTestStatus, "pending");
-    assert.equal(profile?.maxTestedBytes, null);
-    assert.equal(profile?.public, false);
+    assert.equal(profile?.automatedTestStatus, "passed");
+    assert.equal(profile?.maxTestedBytes, testedBytes);
+    assert.equal(profile?.public, true);
     assert.equal(
       publicProfilesFor(input).some((candidate) => candidate.id === profile?.id),
-      false,
+      true,
     );
   }
   assert.deepEqual(

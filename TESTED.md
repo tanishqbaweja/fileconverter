@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **308**
-- Public profiles with a retained successful Chrome stress report: **308**
+- Public passed conversion profiles: **317**
+- Public profiles with a retained successful Chrome stress report: **317**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -53,7 +53,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 - **Fast bounded 3GP-contained AMR output:** WAV passed 3/3 Chrome runs in 1.88-2.24 seconds at 229.2 MiB worst incremental private memory; FLAC passed in 2.79-2.98 seconds at 194.3 MiB; AIFF passed in 1.97-2.16 seconds at 226.5 MiB; MP3 passed in 5.89-8.50 seconds at 197.5 MiB; Opus passed in 3.36-3.82 seconds at 196.8 MiB; and Vorbis passed in 3.69-4.32 seconds at 214.9 MiB. All eighteen outputs were repeatable, used one worker and 32 MiB Wasm, held reads to 256 KiB and pending writes to one, and passed full native traversal plus exact decoded-PCM SHA-256 for WAV/FLAC/AIFF or decoded-audio ASDR for MP3/Opus/Vorbis. The category completed in 584.3 seconds including production build, source generation, independent fixture validation, all six three-pass profilers, and cleanup; every large source and converted copy was removed while compact manifests and reports remain.
 - **Deterministic AMR fixture regeneration optimization:** the raw 128 MiB-class AMR generator now reuses its tracked full decoded-PCM reference only when the regenerated 134,229,414-byte file matches the complete prior SHA-256 and byte count exactly; any changed source still triggers a fresh full decode. This removes a redundant 23-hour logical decode on identical reruns without weakening the source identity gate.
 - **Standalone WMA2 output feasibility:** native checks proved that AAC- and ALAC-in-M4A, raw AAC-LC, MP3, signed 16-bit AIFF, Ogg Vorbis, and Ogg Opus all encode to genuine ASF/WMA2 at 48 kHz and 320 kbit/s and fully decode. Seven repository-local audit outputs were probed, traversed, and deleted through the exact cleanup allowlist. Six route IDs are now public: `m4a-to-wma`, `aac-to-wma`, `mp3-to-wma`, `aiff-to-wma`, `ogg-to-wma`, and `opus-to-wma`; M4A passed separate AAC and ALAC evidence. Raw AMR-to-WMA is intentionally not added: a 128 MiB AMR-NB input represents roughly 23 hours, WMA2 requires six-times upsampling to 48 kHz, and the resulting multi-gigabyte output would be an operationally poor profile rather than a practical mainstream conversion.
-- **Container-to-WMA2 preparation checkpoint:** native feasibility passed MKV/AAC, MP4/AAC, MOV/AAC, 3GP/AAC, MPEG-TS/AAC, FLV/AAC, AVI/MP3, OGV/Vorbis, and WebM/Opus in 0.13-0.16 seconds per four-second source. All nine results were genuine 48 kHz, 320 kbit/s ASF/WMA2 and fully decoded. The reusable audit keeps its two derived inputs and nine outputs under `work`, uses a fixed cleanup allowlist, and deletes them in `finally`; two complete audit runs left only `work/.gitkeep`. The hidden pending implementation then passed 18/18 focused production-browser cases in 20.8 seconds: nine outputs passed codec, container, rate, bitrate, full traversal, decoded-audio ASDR, and excluded-video disclosure, while nine forced destination-write failures removed every partial OPFS result. These routes remain non-public until each real 128 MiB-class source passes all three complete-Chrome memory runs below the unchanged 250 MiB cap.
+- **Container-to-WMA2 preparation checkpoint:** native feasibility passed MKV/AAC, MP4/AAC, MOV/AAC, 3GP/AAC, MPEG-TS/AAC, FLV/AAC, AVI/MP3, OGV/Vorbis, and WebM/Opus in 0.13-0.16 seconds per four-second source. All nine results were genuine 48 kHz, 320 kbit/s ASF/WMA2 and fully decoded. The reusable audit keeps its two derived inputs and nine outputs under `work`, uses a fixed cleanup allowlist, and deletes them in `finally`; two complete audit runs left only `work/.gitkeep`. The hidden pending implementation then passed 18/18 focused production-browser cases in 20.8 seconds: nine outputs passed codec, container, rate, bitrate, full traversal, decoded-audio ASDR, and excluded-video disclosure, while nine forced destination-write failures removed every partial OPFS result. At this checkpoint the routes remained non-public pending their three-run complete-Chrome measurements.
+- **Fast bounded container-to-WMA2 output:** nine public routes passed 27/27 isolated Chrome stress conversions. MKV/AAC completed in 1.42-1.74 seconds at 211.2 MiB worst incremental private memory; MP4/AAC in 1.30-1.67 seconds at 205.3 MiB; MOV/AAC in 1.44-1.73 seconds at 197.8 MiB; 3GP/AAC in 1.31-1.78 seconds at 200.9 MiB; MPEG-TS/AAC in 1.57-2.06 seconds at 215.7 MiB; FLV/AAC in 1.29-1.91 seconds at 182.7 MiB; AVI/MP3 in 1.32-1.78 seconds at 215.1 MiB; OGV/Vorbis in 4.96-5.61 seconds at 201.7 MiB; and WebM/Opus in 1.62-2.19 seconds at 237.5 MiB, leaving 12.5 MiB below the unchanged cap. Inputs were 137,218,662-222,941,314 bytes. Every output was byte-repeatable, genuine 48 kHz/320 kbit/s ASF/WMA2, fully traversed and decoded-audio ASDR validated, used one worker and 32 MiB Wasm, held reads to 262,144 bytes, writes and queueing to 3,200 bytes, and pending operations to one. Parallel shared-fixture generation completed the full build, generation, validation, 27-run profile, and cleanup category in 874.8 seconds. Cleanup removed about 1.93 GiB of large media, every output and Chrome profile, restoring `H:` free space while `C:` remained stable; only 2.59 MiB of compact JSON/CSV/HTML reports remains. The protected root fixture stayed byte-identical.
 - **Standalone WMA2 focused browser gate:** the initial 13 production-browser cases passed in 16.7 seconds and the post-promotion production repeat passed 13/13 in 16.5 seconds: six standalone inputs wrote genuine 48 kHz, 320 kbit/s ASF/WMA2, ALAC-in-M4A passed separately from AAC-in-M4A, and six forced destination-write failures removed every partial OPFS output. Every success completed full native traversal and decoded-audio ASDR validation.
 - **WMA stress M4A size correction:** the first large-fixture setup generated and independently verified all seven sources but stopped before Chrome because packet-copying the 134,367,785-byte raw AAC source into M4A removed ADTS headers and yielded 133,805,747 bytes, 411,981 bytes below the unchanged 128 MiB floor. Cleanup removed the complete roughly 0.85 GB fixture set. The retry extends the same deterministic access-unit sequence by 30 seconds and exact-hashes the looped raw/M4A packet streams; it does not pad the container, lower the size requirement, or re-encode AAC.
 - **WMA ASF size-validator correction:** the corrected 134,807,097-byte AAC/M4A source reached Chrome and produced a genuine 303,139,894-byte WMA2 result in 38.83 seconds, reading the full input with 32 MiB Wasm. The initial maximum estimated only the stream's reported 320 kbit/s and ignored ASF's fixed packet padding; existing certified WMA outputs show the same roughly 600 kbit/s physical container rate. The validator now permits a bounded 640 kbit/s physical rate plus 4% and 1 MiB while still requiring genuine ASF, exactly reported 320 kbit/s WMA2, 48 kHz, full traversal/decode, ASDR, repeatability, bounded I/O, and sub-250 MiB process-tree memory. Cleanup removed the failed output and all large sources.
@@ -70,6 +71,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Latest full verification cycle
 
+- **2026-08-13 container WMA2 milestone verification:** the registry publishes 317 passed routes. Nine routes completed 27/27 three-run Chrome stress conversions; the pre-promotion and post-promotion focused gates each passed 18/18, with the latter completing in 20.5 seconds. Unit tests passed 26/26; TypeScript, ESLint, the production build, and exact 214-route manifest/build-source synchronization passed. The protected fixture remained byte-identical and all generated media/output copies were deleted. The full aggregate and two-export Docker reproducibility checks remain deliberately deferred until the system drive has safer headroom.
 - **2026-08-13 WMA2 milestone verification:** the registry publishes 308 passed routes. Seven codec variants completed 21/21 three-run Chrome stress conversions, the post-promotion focused gate passed 13/13, unit tests passed 26/26, and TypeScript, ESLint, and the production build passed. A fresh full 641-plus-case aggregate and two-export Docker reproducibility check remain deliberately unclaimed because the previous long suite expanded the Windows pagefile until the system drive was nearly exhausted; all WMA milestone media and converted copies are repository-local and deleted.
 - **2026-08-13 Vorbis milestone verification:** the registry publishes 298 passed routes. The standalone Vorbis category passed 30/30 isolated Chrome stress conversions and the post-fix focused/stability gate passed 24/24, covering all nineteen Vorbis success/failure/ALAC cases plus every established route that had failed transiently in the long suite. Unit tests passed 26/26; TypeScript, ESLint, and the production build passed. The final full regression reached 639/641 before host exhaustion caused Chrome `Failed to create datapipe` and Wasm `out of memory` errors on two unrelated archive cases with only about 20 MiB free on `C:`; both exact cases then passed 2/2 in a fresh browser in 17.3 seconds. A clean 641/641 aggregate and two-export Docker reproducibility check are deliberately not claimed until host system-drive space is restored.
 - **Fast bounded standalone Ogg Vorbis output:** nine public routes passed 30/30 isolated Chrome stress runs across separate AAC and ALAC M4A cases plus raw AAC, AMR-NB, MP3, FLAC, WAV, WMA2, AIFF, and Ogg Opus. Sources ranged from 36,929,878 to 201,600,102 bytes; browser conversion times were 16.12-243.43 seconds and worst complete-Chrome incremental private memory was 201.0 MiB, leaving 49.0 MiB below the required 250 MiB cap. Every output was byte-repeatable, probed as genuine Ogg/Vorbis, fully traversed, decoded, and ASDR-validated by native FFmpeg, kept reads at or below 262,144 bytes, writes and queueing at or below 16,243 bytes, one operation in flight, one worker, and 32 MiB Wasm. Reference libvorbis quality 4 was 27.7% faster and 41.5% smaller than the rejected experimental native encoder on the protected reference; preserving the source rate made the one-hour AMR benchmark 5.47x faster and 55.4% smaller than unnecessary 48 kHz upsampling. Focused browser coverage passed all nineteen success, forced-write, and partial-output-cleanup cases. Category cleanup removed every generated stress source, converted copy, and Chrome profile while retaining only compact manifests and reports; the protected root fixture remained byte-identical.
@@ -131,6 +133,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | 3gp-to-wav | 156,907,373 | 3 | 11,520,078 | 1.88 s–2.24 s | 229.2 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | 3gp-to-webm | 146,854,522 | 3 | 4,948,064 | 9.28 s–9.69 s | 236.4 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | 3gp-to-webm-vp9 | 146,854,522 | 3 | 3,372,711 | 13.55 s–14.19 s | 234.0 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
+| 3gp-to-wma | 146,854,456 | 3 | 4,880,823 | 1.31 s–1.78 s | 200.9 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | aac-to-aiff | 134,367,785 | 3 | 770,273,334 | 12.85 s–13.47 s | 172.8 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | aac-to-amr | 134,367,785 | 3 | 6,418,982 | 40.23 s–41.99 s | 164.9 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | aac-to-flac | 134,367,785 | 3 | 114,800,971 | 22.02 s–22.50 s | 167.1 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
@@ -166,6 +169,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
 | avi-to-webm | 159,500,442 | 3 | 4,890,311 | 9.19 s–9.62 s | 214.5 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-webm-vp9 | 159,500,442 | 3 | 3,510,077 | 14.62 s–15.00 s | 233.3 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-wma | 159,500,442 | 3 | 4,867,872 | 1.32 s–1.78 s | 215.1 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | avif-to-bmp | 100,464 | 3 | 24,883,254 | 0.27 s–0.38 s | 171.5 MiB | 0.0 MiB | read 65,536 B / write 195,840 B | passed |
 | avif-to-ico | 100,464 | 3 | 13,545 | 0.09 s–0.15 s | 84.7 MiB | 0.0 MiB | read 100,464 B / write 13,523 B | passed |
 | avif-to-jpeg | 100,464 | 3 | 367,450 | 0.12 s–0.17 s | 69.3 MiB | 0.0 MiB | read 65,536 B / write 262,144 B | passed |
@@ -206,6 +210,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | flv-to-wav | 167,517,193 | 3 | 68,776,058 | 3.44 s–3.93 s | 192.4 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | flv-to-webm | 146,903,539 | 3 | 4,948,077 | 9.22 s–9.71 s | 220.6 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-webm-vp9 | 146,903,539 | 3 | 3,372,724 | 13.62 s–14.05 s | 222.1 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
+| flv-to-wma | 146,903,486 | 3 | 4,880,702 | 1.29 s–1.91 s | 182.7 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | gif-to-bmp | 281,853 | 3 | 2,359,350 | 0.05 s–0.11 s | 69.5 MiB | 0.0 MiB | read 131,072 B / write 196,608 B | passed |
 | gif-to-ico | 281,853 | 3 | 16,065 | 0.03 s–0.09 s | 80.2 MiB | 0.0 MiB | read 216,317 B / write 16,043 B | passed |
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
@@ -261,6 +266,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-webm | 2,958,573,265 | 3 | 921,524,214 | 2682.01 s–2687.09 s | 208.8 MiB | 80.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-webm-av1 | 222,942,211 | 3 | 222,940,541 | 1.98 s–2.40 s | 213.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-webm-vp9 | 181,825,549 | 3 | 65,122,757 | 329.00 s–330.04 s | 244.9 MiB | 88.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mkv-to-wma | 146,855,294 | 3 | 4,880,823 | 1.42 s–1.74 s | 211.2 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | mov-to-3gp | 147,136,645 | 3 | 147,128,570 | 0.78 s–1.10 s | 205.5 MiB | 67.9 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-aac | 146,854,612 | 3 | 1,037,637 | 0.46 s–0.78 s | 184.7 MiB | 32.0 MiB | read 262,144 B / write 478 B | passed |
 | mov-to-flac | 146,854,612 | 3 | 986,198 | 1.21 s–1.57 s | 213.9 MiB | 32.0 MiB | read 262,144 B / write 8,355 B | passed |
@@ -277,6 +283,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mov-to-wav | 149,251,969 | 3 | 414,733,404 | 9.31 s–9.77 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
 | mov-to-webm | 147,136,647 | 3 | 5,100,809 | 9.53 s–10.14 s | 244.4 MiB | 48.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-webm-vp9 | 147,136,647 | 3 | 4,126,570 | 14.67 s–15.17 s | 236.8 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mov-to-wma | 146,854,612 | 3 | 4,880,799 | 1.44 s–1.73 s | 197.8 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | mp3-to-aac | 50,401,224 | 3 | 31,240,176 | 31.25 s–32.64 s | 144.3 MiB | 32.0 MiB | read 262,144 B / write 584 B | passed |
 | mp3-to-aiff | 50,401,224 | 3 | 201,600,102 | 5.00 s–5.96 s | 165.8 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | mp3-to-amr | 50,401,224 | 3 | 3,360,038 | 19.91 s–20.37 s | 150.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
@@ -301,6 +308,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mp4-to-wav | 2,964,855,971 | 3 | 7,107,834,950 | 93.11 s–93.94 s | 224.1 MiB | 73.8 MiB | read 262,144 B / write 24,576 B | passed |
 | mp4-to-webm | 147,136,619 | 3 | 5,105,363 | 12.84 s–13.34 s | 226.9 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mp4-to-webm-vp9 | 147,136,625 | 3 | 4,143,084 | 14.80 s–15.36 s | 237.1 MiB | 64.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mp4-to-wma | 146,854,557 | 3 | 4,880,823 | 1.30 s–1.67 s | 205.3 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | mpeg-ts-to-3gp | 150,441,548 | 3 | 146,864,096 | 1.20 s–1.55 s | 218.7 MiB | 71.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mpeg-ts-to-aac | 150,441,548 | 3 | 1,037,546 | 0.75 s–1.08 s | 211.3 MiB | 32.0 MiB | read 262,144 B / write 478 B | passed |
 | mpeg-ts-to-flac | 150,441,548 | 3 | 987,948 | 1.50 s–1.98 s | 211.6 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
@@ -316,6 +324,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mpeg-ts-to-wav | 175,444,796 | 3 | 68,776,014 | 4.21 s–4.81 s | 243.7 MiB | 56.0 MiB | read 262,144 B / write 2,048 B | passed |
 | mpeg-ts-to-webm | 150,441,548 | 3 | 4,947,933 | 9.59 s–9.97 s | 220.4 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mpeg-ts-to-webm-vp9 | 150,441,548 | 3 | 3,372,580 | 13.81 s–14.39 s | 222.9 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mpeg-ts-to-wma | 150,441,548 | 3 | 4,880,665 | 1.57 s–2.06 s | 215.7 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | ndjson-to-csv | 288,143,880 | 3 | 139,913,895 | 8.08 s–8.40 s | 183.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ndjson-to-json | 288,143,880 | 3 | 299,123,885 | 7.48 s–7.69 s | 176.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ndjson-to-tsv | 288,143,880 | 3 | 139,913,895 | 8.03 s–8.12 s | 186.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -336,6 +345,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ogv-to-wav | 137,635,308 | 3 | 74,880,078 | 3.34 s–3.91 s | 204.9 MiB | 32.0 MiB | read 262,144 B / write 2,048 B | passed |
 | ogv-to-webm | 137,778,644 | 3 | 61,043,196 | 44.03 s–45.01 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 71,004 B | passed |
 | ogv-to-webm-vp9 | 137,635,308 | 3 | 67,478,525 | 97.19 s–97.53 s | 224.1 MiB | 64.0 MiB | read 262,144 B / write 79,087 B | passed |
+| ogv-to-wma | 137,218,662 | 3 | 58,503,065 | 4.96 s–5.61 s | 201.7 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | opus-to-aac | 147,964,541 | 3 | 56,072,780 | 46.90 s–48.38 s | 147.2 MiB | 32.0 MiB | read 262,144 B / write 578 B | passed |
 | opus-to-aiff | 147,964,541 | 3 | 441,600,054 | 19.00 s–19.65 s | 180.2 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | opus-to-amr | 147,964,541 | 3 | 3,680,038 | 34.38 s–35.64 s | 163.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
@@ -400,6 +410,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webm-to-mkv | 222,941,314 | 3 | 222,940,925 | 1.15 s–1.60 s | 178.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | webm-to-ogg | 222,124,822 | 3 | 106,739 | 0.40 s–0.74 s | 185.0 MiB | 32.0 MiB | read 262,144 B / write 3,533 B | passed |
 | webm-to-opus | 222,941,314 | 3 | 922,267 | 0.40 s–0.76 s | 206.0 MiB | 32.0 MiB | read 262,144 B / write 15,406 B | passed |
+| webm-to-wma | 222,941,314 | 3 | 4,503,065 | 1.62 s–2.19 s | 237.5 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | webp-to-bmp | 263,320 | 3 | 24,883,254 | 0.29 s–0.37 s | 196.5 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | webp-to-ico | 263,320 | 3 | 13,013 | 0.10 s–0.16 s | 77.6 MiB | 0.0 MiB | read 197,784 B / write 12,991 B | passed |
 | webp-to-jpeg | 263,320 | 3 | 364,322 | 0.13 s–0.18 s | 69.9 MiB | 0.0 MiB | read 131,072 B / write 262,144 B | passed |
@@ -509,6 +520,7 @@ Stream ma |
 | 3gp-to-wav | video | ffmpeg-audio | re-encode | 167,130,850 B | 3-run Chrome report |
 | 3gp-to-webm | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,854,522 B | 3-run Chrome report |
+| 3gp-to-wma | video | ffmpeg-audio | re-encode | 146,854,456 B | 3-run Chrome report |
 | aac-to-aiff | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aac-to-amr | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
 | aac-to-flac | audio | ffmpeg-audio | re-encode | 134,367,785 B | 3-run Chrome report |
@@ -544,6 +556,7 @@ Stream ma |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
 | avi-to-webm | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-webm-vp9 | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
+| avi-to-wma | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avif-to-bmp | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-ico | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-jpeg | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
@@ -584,6 +597,7 @@ Stream ma |
 | flv-to-wav | video | ffmpeg-audio | re-encode | 167,517,193 B | 3-run Chrome report |
 | flv-to-webm | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
 | flv-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
+| flv-to-wma | video | ffmpeg-audio | re-encode | 146,903,486 B | 3-run Chrome report |
 | gif-to-bmp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-ico | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
@@ -639,6 +653,7 @@ Stream ma |
 | mkv-to-webm | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-webm-av1 | video | ffmpeg-remux | stream-copy | 222,942,211 B | 3-run Chrome report |
 | mkv-to-webm-vp9 | video | ffmpeg-video | re-encode | 181,825,549 B | 3-run Chrome report |
+| mkv-to-wma | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mov-to-3gp | video | ffmpeg-remux | stream-copy | 147,136,645 B | 3-run Chrome report |
 | mov-to-aac | video | ffmpeg-remux | stream-copy | 146,854,612 B | 3-run Chrome report |
 | mov-to-flac | video | ffmpeg-audio | re-encode | 146,854,612 B | 3-run Chrome report |
@@ -655,6 +670,7 @@ Stream ma |
 | mov-to-wav | video | ffmpeg-audio | re-encode | 149,251,969 B | 3-run Chrome report |
 | mov-to-webm | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
 | mov-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,647 B | 3-run Chrome report |
+| mov-to-wma | video | ffmpeg-audio | re-encode | 146,854,612 B | 3-run Chrome report |
 | mp3-to-aac | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp3-to-aiff | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
 | mp3-to-amr | audio | ffmpeg-audio | re-encode | 50,401,224 B | 3-run Chrome report |
@@ -679,6 +695,7 @@ Stream ma |
 | mp4-to-wav | video | ffmpeg-audio | re-encode | 2,964,855,971 B | 3-run Chrome report |
 | mp4-to-webm | video | ffmpeg-video | re-encode | 161,758,724 B | 3-run Chrome report |
 | mp4-to-webm-vp9 | video | ffmpeg-video | re-encode | 147,136,625 B | 3-run Chrome report |
+| mp4-to-wma | video | ffmpeg-audio | re-encode | 146,854,557 B | 3-run Chrome report |
 | mpeg-ts-to-3gp | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-aac | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-flac | video | ffmpeg-audio | re-encode | 150,441,548 B | 3-run Chrome report |
@@ -694,6 +711,7 @@ Stream ma |
 | mpeg-ts-to-wav | video | ffmpeg-audio | re-encode | 175,444,796 B | 3-run Chrome report |
 | mpeg-ts-to-webm | video | ffmpeg-video | re-encode | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-webm-vp9 | video | ffmpeg-video | re-encode | 150,441,548 B | 3-run Chrome report |
+| mpeg-ts-to-wma | video | ffmpeg-audio | re-encode | 150,441,548 B | 3-run Chrome report |
 | ndjson-to-csv | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
 | ndjson-to-json | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
 | ndjson-to-tsv | data | records-stream | stream | 288,143,880 B | 3-run Chrome report |
@@ -714,6 +732,7 @@ Stream ma |
 | ogv-to-wav | video | ffmpeg-audio | re-encode | 137,635,308 B | 3-run Chrome report |
 | ogv-to-webm | video | ffmpeg-video | re-encode | 137,778,644 B | 3-run Chrome report |
 | ogv-to-webm-vp9 | video | ffmpeg-video | re-encode | 137,635,308 B | 3-run Chrome report |
+| ogv-to-wma | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | opus-to-aac | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-aiff | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-amr | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
@@ -778,6 +797,7 @@ Stream ma |
 | webm-to-mkv | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
 | webm-to-ogg | video | ffmpeg-remux | stream-copy | 222,124,822 B | 3-run Chrome report |
 | webm-to-opus | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
+| webm-to-wma | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webp-to-bmp | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-ico | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-jpeg | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
