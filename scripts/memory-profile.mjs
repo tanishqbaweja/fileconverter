@@ -1403,7 +1403,7 @@ async function validateMediaOutput(
         ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
           1024 * 1024
       : wmaOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * 320_000 * 1.04) / 8) +
+        ? Math.ceil((sourceDurationSeconds * 640_000 * 1.04) / 8) +
           1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
@@ -1951,7 +1951,7 @@ async function validateMediaOutput(
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
     : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || vorbisTranscodeOutput || route === "aac-to-m4a")
+    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || vorbisTranscodeOutput || wmaOutput || route === "aac-to-m4a")
       ? (source.decodedAudioDurationSeconds ?? sourceDuration)
       : sourceDuration;
   const expectedVideoWidth = webmReencode

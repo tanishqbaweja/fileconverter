@@ -43,6 +43,7 @@ for (const result of generationResults) {
 }
 
 const rawAacManifest = JSON.parse(await readFile(rawAacManifestPath, "utf8"));
+const aacM4aDurationSeconds = Number(rawAacManifest.durationSeconds) + 30;
 await execFileAsync(
   "ffmpeg",
   [
@@ -51,8 +52,12 @@ await execFileAsync(
     "error",
     "-nostdin",
     "-y",
+    "-stream_loop",
+    "1",
     "-i",
     rawAacPath,
+    "-t",
+    String(aacM4aDurationSeconds),
     "-map",
     "0:a:0",
     "-map_metadata",
@@ -110,13 +115,15 @@ if (
   throw new Error("Generated WMA stress source is not AAC-LC in M4A.");
 }
 
-const packetHashArguments = (inputPath, adts) => [
+const packetHashArguments = (inputPath, adts, loop = false) => [
   "-hide_banner",
   "-loglevel",
   "error",
   "-xerror",
+  ...(loop ? ["-stream_loop", "1"] : []),
   "-i",
   inputPath,
+  ...(loop ? ["-t", String(aacM4aDurationSeconds)] : []),
   "-map",
   "0:a:0",
   "-c:a",
@@ -130,7 +137,7 @@ const packetHashArguments = (inputPath, adts) => [
 ];
 const [{ stdout: sourcePacketHash }, { stdout: m4aPacketHash }] =
   await Promise.all([
-    execFileAsync("ffmpeg", packetHashArguments(rawAacPath, true), {
+    execFileAsync("ffmpeg", packetHashArguments(rawAacPath, true, true), {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 16 * 1024 * 1024,

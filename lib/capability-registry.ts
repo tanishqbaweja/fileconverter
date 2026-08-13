@@ -609,6 +609,14 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
 type StandaloneWmaInput = "m4a" | "aac" | "mp3" | "aiff" | "ogg" | "opus";
 
 function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfile {
+  const evidence: Record<StandaloneWmaInput, number> = {
+    m4a: 140_941_469,
+    aac: 134_367_785,
+    mp3: 136_002_312,
+    aiff: 201_600_102,
+    ogg: 144_431_506,
+    opus: 147_964_541,
+  };
   const inputDescription = {
     m4a: "AAC or ALAC in M4A",
     aac: "raw AAC-LC ADTS",
@@ -632,7 +640,7 @@ function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfil
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      `The pending certified input is ${inputDescription}; other codec variants require separate evidence.`,
+      `The certified input is ${inputDescription}; other codec variants require separate evidence.`,
       "Only the first audio stream is converted; artwork, chapters, and container-only metadata are excluded.",
       "Compatible text tags are copied into ASF where representable.",
     ],
@@ -642,9 +650,9 @@ function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfil
         ? "Lossless PCM input becomes lossy WMA2."
         : `WMA2 adds another lossy generation to ${inputDescription}${input === "m4a" ? " when its codec is AAC; ALAC input becomes lossy" : ""}.`,
     ],
-    maxTestedBytes: null,
-    automatedTestStatus: "pending",
-    public: false,
+    maxTestedBytes: evidence[input],
+    automatedTestStatus: "passed",
+    public: true,
   };
 }
 
