@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const checkOnly = process.argv.includes("--check");
 const manifestPath = path.join(projectRoot, "public", "engines", "remux", "build-manifest.json");
 const buildScriptPath = path.join(projectRoot, "media", "ffmpeg", "build-remux.sh");
 const manifestSource = await readFile(manifestPath, "utf8");
@@ -35,12 +36,14 @@ for (let index = 0; index < manifestEntries.length; index += 1) {
       manifestLines.push(`    ${compactJson(module)}${moduleComma}`);
     });
     manifestLines.push(`  ]${comma}`);
+  } else if (key === "profiles") {
+    manifestLines.push(`  ${JSON.stringify(key)}: ${serializedProfiles}${comma}`);
   } else {
     manifestLines.push(`  ${JSON.stringify(key)}: ${compactJson(value)}${comma}`);
   }
 }
 manifestLines.push("}");
-await writeFile(manifestPath, `${manifestLines.join("\n")}\n`, "utf8");
+const synchronizedManifest = `${manifestLines.join("\n")}\n`;
 const rootProfilesPattern = /^  "profiles": \[[^\r\n]*\],$/m;
 if (!rootProfilesPattern.test(buildScript)) {
   throw new Error("Could not find the root FFmpeg profile declaration to synchronize.");
@@ -49,8 +52,19 @@ const synchronized = buildScript.replace(
   rootProfilesPattern,
   `  "profiles": ${serializedProfiles},`,
 );
-await writeFile(buildScriptPath, synchronized, "utf8");
-process.stdout.write(`Synchronized ${manifest.profiles.length} FFmpeg build profiles.\n`);
+if (checkOnly) {
+  const staleFiles = [];
+  if (manifestSource !== synchronizedManifest) staleFiles.push(path.relative(projectRoot, manifestPath));
+  if (buildScript !== synchronized) staleFiles.push(path.relative(projectRoot, buildScriptPath));
+  if (staleFiles.length > 0) {
+    throw new Error(`FFmpeg build profiles are stale in: ${staleFiles.join(", ")}`);
+  }
+  process.stdout.write(`Verified ${manifest.profiles.length} synchronized FFmpeg build profiles.\n`);
+} else {
+  await writeFile(manifestPath, synchronizedManifest, "utf8");
+  await writeFile(buildScriptPath, synchronized, "utf8");
+  process.stdout.write(`Synchronized ${manifest.profiles.length} FFmpeg build profiles.\n`);
+}
 
 function compactJson(value) {
   if (Array.isArray(value)) {

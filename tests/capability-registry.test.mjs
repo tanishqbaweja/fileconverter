@@ -87,6 +87,16 @@ test("AV1 WebM stream copy is public after its measured evidence passes", () => 
   );
 });
 
+test("AMR-WB decode routes are public after bounded large-file evidence passes", () => {
+  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac"]) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    assert.ok(profile);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, 137_420_809);
+    assert.equal(profile.public, true);
+  }
+});
+
 test("container MP3 extraction is public after its measured evidence passes", () => {
   const expected = new Map([
     ["mkv", 181_340_062],
@@ -319,6 +329,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "audio",
         "aiff-audio",
         "amr-audio",
+        "amr-wb-input",
         "mp3-audio",
         "aac-audio",
         "opus-audio",
@@ -403,6 +414,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("ogg"));
   assert.ok(manifest.enabledMuxers.includes("aiff"));
   assert.ok(manifest.enabledMuxers.includes("amr"));
+  assert.ok(manifest.enabledDecoders.includes("amrwb"));
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
   assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
   assert.ok(manifest.enabledEncoders.includes("libmp3lame"));

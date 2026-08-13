@@ -1,0 +1,12 @@
+{
+  "source": "FFmpeg FATE AMR-WB corpus: seed-23k85.awb",
+  "sourceUrl": "https://fate-suite.ffmpeg.org/amrwb/seed-23k85.awb",
+  "bytes": 33833,
+  "sha256": "259a46a93139ea8e80d18acd53798dd4d1bd4c7cb66965e93a853862343a1381",
+  "container": "3GP/ISOBMFF",
+  "codec": "amr_wb",
+  "sampleRate": 16000,
+  "channels": 1,
+  "durationSeconds": 10.24,
+  "bitRate": 23850
+}

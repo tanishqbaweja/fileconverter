@@ -76,6 +76,8 @@ const wavWmaOutputPath = path.join(outputRoot, "wav-encode-output.wma");
 const flacWmaOutputPath = path.join(outputRoot, "flac-encode-output.wma");
 const amrWavOutputPath = path.join(outputRoot, "amr-decode-output.wav");
 const amrFlacOutputPath = path.join(outputRoot, "amr-decode-output.flac");
+const amrWbWavOutputPath = path.join(outputRoot, "amr-wb-decode-output.wav");
+const amrWbFlacOutputPath = path.join(outputRoot, "amr-wb-decode-output.flac");
 const aiffWavOutputPath = path.join(outputRoot, "aiff-convert-output.wav");
 const oggWavOutputPath = path.join(outputRoot, "ogg-convert-output.wav");
 const opusWavOutputPath = path.join(outputRoot, "opus-convert-output.wav");
@@ -443,6 +445,12 @@ const amrFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.amr",
+);
+const amrWbFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "amr-wb-source.awb",
 );
 const threeGpAmrFixturePath = path.join(
   projectRoot,
@@ -1659,6 +1667,8 @@ async function runMediaRoute(
     | "webm-to-wma"
     | "amr-to-wav"
     | "amr-to-flac"
+    | "amr-wb-to-wav"
+    | "amr-wb-to-flac"
     | "aiff-to-wav"
     | "ogg-to-wav"
     | "opus-to-wav"
@@ -1812,6 +1822,8 @@ async function runMediaRoute(
       profileId.endsWith("-to-wma") ||
       profileId === "amr-to-wav" ||
       profileId === "amr-to-flac" ||
+      profileId === "amr-wb-to-wav" ||
+      profileId === "amr-wb-to-flac" ||
       profileId === "aiff-to-wav" ||
       profileId === "ogg-to-wav" ||
       profileId === "opus-to-wav" ||
@@ -3466,6 +3478,36 @@ test("browser FFmpeg converts AMR-NB to FLAC", async () => {
       expectedDurationSeconds: 4.02,
       validate: async (_probe, outputPath) =>
         expectDecodedPcmMatch(amrFixturePath, outputPath),
+    },
+  );
+});
+
+test("[amr-wb] browser FFmpeg decodes AMR-WB to bounded PCM WAV", async () => {
+  await runMediaRoute(
+    "amr-wb-to-wav",
+    amrWbWavOutputPath,
+    ["pcm_s16le"],
+    100_000,
+    amrWbFixturePath,
+    {
+      expectedDurationSeconds: 10.24,
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(amrWbFixturePath, outputPath, 60),
+    },
+  );
+});
+
+test("[amr-wb] browser FFmpeg converts AMR-WB to FLAC", async () => {
+  await runMediaRoute(
+    "amr-wb-to-flac",
+    amrWbFlacOutputPath,
+    ["flac"],
+    10_000,
+    amrWbFixturePath,
+    {
+      expectedDurationSeconds: 10.24,
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(amrWbFixturePath, outputPath, 60),
     },
   );
 });

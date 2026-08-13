@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -396,14 +396,22 @@ The WAV and FLAC routes genuinely decode AAC, resample to stereo PCM s16le, and
 write bounded PCM or losslessly compressed decoded audio. Raw ADTS has no
 container artwork, chapters, language tag, or general metadata to preserve.
 
-Raw AMR input is limited to certified 8 kHz mono AMR-NB. The pinned FFmpeg
+Raw `.amr` input is limited to certified 8 kHz mono AMR-NB. The pinned FFmpeg
 source build applies the audited `amr-bounded-packets.patch`, which replaces
 partial raw packet reads with complete-frame batches capped at 32 KiB. This
 prevents a frame from being split at a 256 KiB AVIO refill boundary and avoids
 millions of tiny demux packets. PCM output is accumulated in fixed
 8,192-sample FIFO batches; FLAC uses its codec frame size. Both outputs decode
-to the same exact PCM SHA-256 as native FFmpeg. AMR-WB and AMR carried inside
-3GP remain outside these two raw-AMR profiles.
+to the same exact PCM SHA-256 as native FFmpeg. Separately, pinned `.awb`
+input accepts certified mono 16 kHz AMR-WB in 3GP/ISOBMFF and converts it to
+WAV or FLAC through the same bounded pipeline. Native and Wasm floating-point
+AMR-WB decode differ only by rounding and passed full-timeline 154.179 dB
+APSNR; arbitrary AMR-WB container variants remain outside these two profiles.
+A second pinned Docker export matched all 17 published FFmpeg engine files
+byte-for-byte. The AMR-WB-capable core SHA-256 is
+`0D446120EF177C0488B10F0EF41A1F034DAAF2093AD837F181B56A2853513FC9`;
+the profile synchronizer has a read-only `--check` mode so verification cannot
+silently rewrite the published manifest.
 
 AIFF PCM, Ogg Vorbis, and Ogg Opus can also be written as FLAC through the
 same bounded decoder, resampler, FIFO, and direct-output callbacks. Signed
@@ -430,7 +438,8 @@ and direct destination writes stay inside the same bounded audio pipeline; the
 16,384-sample FIFO is preallocated and grows only if its existing free space is
 insufficient. AMR is a narrowband speech format, so stereo, high frequencies,
 lossless identity, container metadata, artwork, chapters, and extra streams
-cannot be preserved. AMR-WB and 3GP-contained AMR remain out of scope.
+cannot be preserved. AMR-WB encoding remains out of scope; the separately
+certified `.awb` decoder routes do not claim an AMR-WB destination.
 
 M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, FLAC, WAV, WMA2, AIFF, Ogg
 Vorbis, and Ogg Opus can be encoded as genuine MP3 using pinned LAME 4.0. The
@@ -905,6 +914,8 @@ Current exact-build results:
 | WebM/Opus → AAC-LC | 3 | 222,941,314 B | 621,779 B | 183.7 MiB | 32 MiB | 3.91-4.50 s |
 | AMR-NB to WAV | 3 | 134,229,414 B | 1,342,294,158 B | 209.7 MiB | 32 MiB | cleanup passed |
 | AMR-NB to FLAC | 3 | 134,229,414 B | 760,765,211 B | 166.0 MiB | 32 MiB | cleanup passed |
+| AMR-WB `.awb` to WAV | 3 | 137,420,809 B | 1,441,792,078 B | 201.3 MiB | 32 MiB | 72.32-76.10 s |
+| AMR-WB `.awb` to FLAC | 3 | 137,420,809 B | 531,051,566 B | 159.8 MiB | 32 MiB | 122.94-125.22 s |
 | AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
 | Ogg Vorbis to FLAC | 3 | 144,431,506 B | 397,265,921 B | 198.4 MiB | 32 MiB | read 262,144 B / write 16,617 B |
 | Ogg Opus to FLAC | 3 | 147,964,541 B | 386,531,887 B | 194.4 MiB | 32 MiB | read 262,144 B / write 16,213 B |

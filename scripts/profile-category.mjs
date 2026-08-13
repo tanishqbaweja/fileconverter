@@ -348,6 +348,16 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "amr-wb": {
+    generator: "scripts/generate-amr-wb-stress-fixture.mjs",
+    profiles: [
+      ["amr-wb-to-wav", "audio-amr-wb-128m.awb"],
+      ["amr-wb-to-flac", "audio-amr-wb-128m.awb"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "flac-inputs": {
     generator: "scripts/generate-flac-input-stress-fixtures.mjs",
     profiles: [

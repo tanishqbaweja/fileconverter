@@ -49,6 +49,7 @@ const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const aacBenchmarkRoot = path.resolve(workRoot, "aac-benchmark");
 const opusBenchmarkRoot = path.resolve(workRoot, "opus-benchmark");
 const vorbisBenchmarkRoot = path.resolve(workRoot, "vorbis-benchmark");
+const amrWbAuditRoot = path.resolve(workRoot, "amrwb-audit");
 const taskTempRoots = [
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
@@ -186,6 +187,7 @@ const generatedStressExtensions = new Set([
   ".flv",
   ".avi",
   ".webm",
+  ".awb",
   ".wav",
   ".csv",
   ".tsv",
@@ -212,6 +214,7 @@ const generatedStressExtensions = new Set([
   ".svg",
 ]);
 const generatedStressNames = new Set([
+  "audio-amr-wb-128m.awb.json",
   "records-128m.json",
   "h264-aac-128m.3gp.json",
   "h264-aac-128m.mpegts.json",
@@ -247,6 +250,7 @@ assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
 assertInside(workRoot, opusBenchmarkRoot);
 assertInside(workRoot, vorbisBenchmarkRoot);
+assertInside(workRoot, amrWbAuditRoot);
 for (const temporaryRoot of taskTempRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -316,6 +320,7 @@ await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
 await removeWithRetries(opusBenchmarkRoot);
 await removeWithRetries(vorbisBenchmarkRoot);
+await removeWithRetries(amrWbAuditRoot);
 for (const temporaryRoot of taskTempRoots) {
   await removeWithRetries(temporaryRoot);
 }

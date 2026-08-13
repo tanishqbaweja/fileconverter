@@ -12,12 +12,18 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **354**
-- Public profiles with a retained successful Chrome stress report: **354**
+- Public passed conversion profiles: **356**
+- Public profiles with a retained successful Chrome stress report: **356**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-13 bounded AMR-WB input:** the pinned FFmpeg 8.1.2 engine now includes its native AMR-WB decoder and exposes mono 16 kHz `.awb` input to WAV and FLAC through the existing single-worker audio pipeline. The 137,420,809-byte, 12.516-hour raw packet-copy stress source passed WAV 3/3 in 72.32-76.10 seconds at 201.3 MiB worst incremental complete-Chrome private memory and FLAC 3/3 in 122.94-125.22 seconds at 159.8 MiB. Outputs were byte-repeatable, genuine 16 kHz mono, fully traversed, and measured 154.179 dB APSNR against native decoding; reads stayed at 262,144 bytes, writes/queueing at 16,384 bytes for WAV and 8,288 for FLAC, one operation was pending, one worker and fixed 32 MiB Wasm were used, and cleanup recovery passed.
+- **AMR-WB fixture and cleanup optimization:** the 33,833-byte seed is pinned by SHA-256 from FFmpeg's FATE corpus. The stress generator packet-copy loops it only under `fixtures/stress`, reuses an exact existing source after full hash and manifest verification in about 0.5 seconds instead of repeating a 126-second full decoded-reference pass, and never stores decoded PCM. The first category success message exposed that `.awb` and its JSON manifest were absent from the cleanup allowlist; the exact extension/name were added, normal cleanup removed the 137 MB source, and a filesystem audit confirmed no large work file or converted output remained.
+- **AMR-WB validator correction:** the first large WAV run converted successfully but the generic profiler incorrectly required byte-identical PCM from native and Wasm floating-point AMR-WB decoders. Focused outputs showed valid deterministic conversion with only platform rounding differences, so the route now requires full-timeline APSNR of at least 60 dB; the final stress bundles measured 154.179 dB. The retained failed report prevents repeating the invalid exact-hash gate.
+- **AMR-WB aggregate-test orchestration correction:** focused browser coverage and deterministic ledger generation passed, but launching them in parallel with `npm test` let two Vinext production builds replace `dist` concurrently; the rendered-server checks observed the transient partial tree. The same unit run also correctly required the new `amr-wb-input` module label in its exact manifest expectation. The label was added and the aggregate is rerun sequentially; no converter, evidence threshold, or production runtime changed.
+- **AMR-WB engine reproducibility:** a second pinned Docker export matched all 17 published FFmpeg engine files byte-for-byte. SHA-256 is `D4C8E8233EDA3C8E2A0EBE9C7179FD80CF01F197E0F026BFC6E78D278A83F217` for the manifest, `137961EDF50557D30D41EB9270FBD73C339A9903F68458916035588216E4837E` for the main JavaScript glue, and `0D446120EF177C0488B10F0EF41A1F034DAAF2093AD837F181B56A2853513FC9` for the AMR-WB-capable Wasm core. The profile synchronizer now gives `--check` true read-only semantics and preserves build-emitted formatting, preventing verification from rewriting an otherwise reproducible manifest.
+- **2026-08-13 AMR-WB milestone verification:** the registry publishes 356 passed routes and all 356 have retained successful Chrome stress evidence. The post-promotion AMR-WB browser gate passed 2/2 in 11 seconds; the sequential production build and unit suite passed 27/27, followed by clean TypeScript and ESLint checks. Exact unique 254-route FFmpeg manifest/build-source synchronization passed in read-only mode. The protected fixture remained byte-identical and cleanup removed the generated stress source, converted copies, browser artifacts, and reproducibility export.
 - **2026-08-13 transposed TIFF orientations:** the fixed 40 MiB libtiff engine now supports orientations 5 through 8 as well as the established 1 through 4. It assembles transposed output rows in a bounded stripe instead of allocating a complete rotated raster. Four asymmetric production-browser fixtures matched independently generated references byte-for-byte, the complete image suite passed 74/74, and the 50,338,032-byte 8,192-by-2,048 tiled orientation-6 fixture passed 3/3 in 4.64-5.15 seconds at 188.4 MiB worst incremental Chrome process-tree private memory with SSIM 1.0, repeatable output, 49,152-byte reads, 32,768-byte writes/queueing, one pending operation, fixed 40 MiB Wasm, and cleanup recovery. A fresh second pinned Docker export matched all seven published TIFF engine files exactly; final Wasm SHA-256 is `96806ACD6431EBE20F00E8B27772E4EEEA20C0929D80A2F929A590E70C9C7F47`.
 - **Transposed TIFF speed optimization:** the first correct 4 MiB-stripe stress run took 15.00 seconds because it reread the bounded tile set thirteen times. A 16 MiB transpose stripe fits inside the unchanged fixed 40 MiB Wasm heap, reduces the same maximum-size orientation-6 input to three passes, and completed the controlled follow-up in 4.76 seconds, a 3.15x speedup while lowering measured incremental private memory from 198.0 to 160.0 MiB. The final three-run bundle retained the optimized path and the unchanged 250 MiB ceiling.
 - **Transposed TIFF validator correction:** the first stress conversion produced the correct 2,048-by-8,192 PNG, but the generic image profiler compared it against the source's stored 8,192-by-2,048 dimensions. The fixture manifest now records the orientation-normalized output dimensions while retaining the raw source hash and independent rotated PNG reference; no converter or memory limit was weakened.
@@ -195,6 +201,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | amr-to-ogg | 134,229,414 | 3 | 154,581,919 | 239.78 s–243.43 s | 156.0 MiB | 32.0 MiB | read 262,144 B / write 2,536 B | passed |
 | amr-to-opus | 134,229,414 | 3 | 681,593,688 | 193.70 s–197.74 s | 155.6 MiB | 32.0 MiB | read 262,144 B / write 8,504 B | passed |
 | amr-to-wav | 134,229,414 | 3 | 1,342,294,158 | 61.54 s–62.01 s | 209.7 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
+| amr-wb-to-flac | 137,420,809 | 3 | 531,051,566 | 122.94 s–125.22 s | 159.8 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| amr-wb-to-wav | 137,420,809 | 3 | 1,441,792,078 | 72.32 s–76.10 s | 201.3 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | ass-to-srt | 101,393,068 | 3 | 83,377,792 | 2.74 s–2.76 s | 175.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ass-to-vtt | 101,393,068 | 3 | 75,928,906 | 2.59 s–2.67 s | 156.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-aac | 159,500,442 | 3 | 979,789 | 2.06 s–2.28 s | 231.2 MiB | 32.0 MiB | read 262,144 B / write 628 B | passed |
@@ -586,6 +594,7 @@ Stream ma |
 | 2026-08-13T13:41:41.850Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 101.3 MiB against a 250.0 MiB limit. |
 | 2026-08-13T14:13:45.368Z | svg-to-png | 364,917 | 3 | 364,917 | Failed checks: processTreePrivateMemory; measured 268.8 MiB against a 250.0 MiB limit. |
 | 2026-08-13T14:32:49.347Z | tiff-to-png | 50,338,032 | 0 | 50,338,032 | Browser image validation failed: png 2048x8192. |
+| 2026-08-13T14:59:46.435Z | amr-wb-to-wav | 137,420,809 | 0 | 137,420,809 | Browser decoded audio content does not match the independently decoded source audio. |
 
 ## Every public passed profile
 
@@ -633,6 +642,8 @@ Stream ma |
 | amr-to-ogg | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-opus | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-wav | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
+| amr-wb-to-flac | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
+| amr-wb-to-wav | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | avi-to-aac | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -951,7 +962,7 @@ Stream ma |
 This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
-- Audio: AMR-WB remains absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
+- Audio: AMR-WB encoding and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
 - Images: HEIF/HEIC, JPEG XL, camera raw formats, extraction of every frame from animated GIF/WebP/AVIF and every page from multipage TIFF (the first frame/page is supported with an omission warning), and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.

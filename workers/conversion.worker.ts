@@ -194,6 +194,10 @@ const WMA_OUTPUT_PROFILES = new Set([
   "ogv-to-wma",
   "webm-to-wma",
 ]);
+const AMR_WB_INPUT_PROFILES = new Set([
+  "amr-wb-to-wav",
+  "amr-wb-to-flac",
+]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
   "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
@@ -3336,6 +3340,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         OPUS_OUTPUT_PROFILES.has(profileId) ||
         VORBIS_OUTPUT_PROFILES.has(profileId) ||
         M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId) ||
+        AMR_WB_INPUT_PROFILES.has(profileId) ||
         profileId === "3gp-to-amr" ||
         profileId === "mkv-to-webm" ||
         profileId === "3gp-to-webm" ||
@@ -3990,6 +3995,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       OPUS_OUTPUT_PROFILES.has(profileId) ||
       VORBIS_OUTPUT_PROFILES.has(profileId) ||
       M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId) ||
+      AMR_WB_INPUT_PROFILES.has(profileId) ||
       profileId === "3gp-to-amr" ||
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
@@ -4112,6 +4118,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "m4a-to-wav" ||
             profileId === "aac-to-wav" ||
             profileId === "amr-to-wav" ||
+            profileId === "amr-wb-to-wav" ||
             profileId === "mp3-to-wav" ||
             profileId === "flac-to-wav" ||
             profileId === "wma-to-wav" ||
@@ -4131,6 +4138,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "ogv-to-flac" ||
                 profileId === "aac-to-flac" ||
                 profileId === "amr-to-flac" ||
+                profileId === "amr-wb-to-flac" ||
                 profileId === "mp3-to-flac" ||
                 profileId === "wav-to-flac" ||
                 profileId === "wma-to-flac" ||

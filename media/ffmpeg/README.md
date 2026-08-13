@@ -76,6 +76,11 @@ single-flight positional write, while the custom AVIO buffer and FIFO retain
 their fixed bounds. The build enables only the AIFF muxer and `pcm_s16be`
 encoder needed for these profiles; it adds no codec library or extra worker.
 
+The same core enables FFmpeg's native AMR-WB decoder for pinned mono 16 kHz
+`.awb` input in 3GP/ISOBMFF. It exposes only WAV and FLAC destinations, retains
+the 32 MiB initial Wasm heap and one-worker topology, and validates complete
+outputs against native decoding with a 60 dB APSNR floor.
+
 The same lean module links the pinned static OpenCORE AMR library and writes
 genuine 8 kHz mono AMR-NB in fixed MR122 mode for AAC/ALAC M4A, raw AAC, MP3,
 FLAC, WAV, WMA2, AIFF, Vorbis, and Opus inputs. The encoder consumes signed
