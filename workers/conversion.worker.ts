@@ -105,6 +105,7 @@ const AMR_OUTPUT_PROFILES = new Set([
 ]);
 const MP3_OUTPUT_PROFILES = new Set([
   "webm-to-mp3",
+  "ogv-to-mp3",
   "3gp-to-mp3",
   "m4a-to-mp3",
   "aac-to-mp3",
@@ -131,6 +132,12 @@ const AAC_OUTPUT_PROFILES = new Set([
   "opus-to-aac",
 ]);
 const OPUS_OUTPUT_PROFILES = new Set([
+  "mp4-to-opus",
+  "mov-to-opus",
+  "mpeg-ts-to-opus",
+  "flv-to-opus",
+  "avi-to-opus",
+  "ogv-to-opus",
   "3gp-to-opus",
   "m4a-to-opus",
   "aac-to-opus",
@@ -143,6 +150,11 @@ const OPUS_OUTPUT_PROFILES = new Set([
   "ogg-to-opus",
 ]);
 const VORBIS_OUTPUT_PROFILES = new Set([
+  "mp4-to-ogg",
+  "mov-to-ogg",
+  "mpeg-ts-to-ogg",
+  "flv-to-ogg",
+  "avi-to-ogg",
   "3gp-to-ogg",
   "m4a-to-ogg",
   "aac-to-ogg",

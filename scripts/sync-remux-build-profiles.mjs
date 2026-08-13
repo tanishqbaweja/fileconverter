@@ -2,11 +2,25 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { conversionProfiles } from "../lib/capability-registry.ts";
+
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const manifestPath = path.join(projectRoot, "public", "engines", "remux", "build-manifest.json");
 const buildScriptPath = path.join(projectRoot, "media", "ffmpeg", "build-remux.sh");
 const manifestSource = await readFile(manifestPath, "utf8");
 const manifest = JSON.parse(manifestSource);
+const registryProfiles = conversionProfiles
+  .filter((profile) => profile.engine.startsWith("ffmpeg-"))
+  .map((profile) => profile.id);
+const registryProfileSet = new Set(registryProfiles);
+const synchronizedProfiles = manifest.profiles.filter((profile) =>
+  registryProfileSet.has(profile),
+);
+const synchronizedProfileSet = new Set(synchronizedProfiles);
+for (const profile of registryProfiles) {
+  if (!synchronizedProfileSet.has(profile)) synchronizedProfiles.push(profile);
+}
+manifest.profiles = synchronizedProfiles;
 const buildScript = await readFile(buildScriptPath, "utf8");
 const serializedProfiles = JSON.stringify(manifest.profiles);
 const manifestLines = ["{"];

@@ -157,6 +157,20 @@ const legacyContainerAacOutputPaths = {
   avi: path.join(outputRoot, "avi-convert-output.aac"),
   ogv: path.join(outputRoot, "ogv-convert-output.aac"),
 } as const;
+const containerLossyAudioOutputPaths = {
+  "mp4-to-opus": path.join(outputRoot, "mp4-convert-output.opus"),
+  "mov-to-opus": path.join(outputRoot, "mov-convert-output.opus"),
+  "mpeg-ts-to-opus": path.join(outputRoot, "mpeg-ts-convert-output.opus"),
+  "flv-to-opus": path.join(outputRoot, "flv-convert-output.opus"),
+  "avi-to-opus": path.join(outputRoot, "avi-convert-output.opus"),
+  "ogv-to-opus": path.join(outputRoot, "ogv-convert-output.opus"),
+  "mp4-to-ogg": path.join(outputRoot, "mp4-convert-output.ogg"),
+  "mov-to-ogg": path.join(outputRoot, "mov-convert-output.ogg"),
+  "mpeg-ts-to-ogg": path.join(outputRoot, "mpeg-ts-convert-output.ogg"),
+  "flv-to-ogg": path.join(outputRoot, "flv-convert-output.ogg"),
+  "avi-to-ogg": path.join(outputRoot, "avi-convert-output.ogg"),
+  "ogv-to-mp3": path.join(outputRoot, "ogv-convert-output.mp3"),
+} as const;
 const opusTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.opus"),
   aac: path.join(outputRoot, "aac-convert-output.opus"),
@@ -837,6 +851,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(legacyContainerAacOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerLossyAudioOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1285,6 +1302,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(legacyContainerAacOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerLossyAudioOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1538,6 +1558,18 @@ async function runMediaRoute(
     | "ogv-to-amr"
     | "avi-to-aac"
     | "ogv-to-aac"
+    | "mp4-to-opus"
+    | "mov-to-opus"
+    | "mpeg-ts-to-opus"
+    | "flv-to-opus"
+    | "avi-to-opus"
+    | "ogv-to-opus"
+    | "mp4-to-ogg"
+    | "mov-to-ogg"
+    | "mpeg-ts-to-ogg"
+    | "flv-to-ogg"
+    | "avi-to-ogg"
+    | "ogv-to-mp3"
     | "3gp-to-mp3"
     | "3gp-to-opus"
     | "3gp-to-ogg"
@@ -2618,6 +2650,18 @@ for (const route of [
   ["ogv-to-amr", ogvFixturePath],
   ["avi-to-aac", aviInputFixturePath],
   ["ogv-to-aac", ogvFixturePath],
+  ["mp4-to-opus", mp4InputFixturePath],
+  ["mov-to-opus", movInputFixturePath],
+  ["mpeg-ts-to-opus", mpegTsInputFixturePath],
+  ["flv-to-opus", flvInputFixturePath],
+  ["avi-to-opus", aviInputFixturePath],
+  ["ogv-to-opus", ogvFixturePath],
+  ["mp4-to-ogg", mp4InputFixturePath],
+  ["mov-to-ogg", movInputFixturePath],
+  ["mpeg-ts-to-ogg", mpegTsInputFixturePath],
+  ["flv-to-ogg", flvInputFixturePath],
+  ["avi-to-ogg", aviInputFixturePath],
+  ["ogv-to-mp3", ogvFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2669,6 +2713,10 @@ for (const route of [
       : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(route[0]) ||
           /^(?:avi|ogv)-to-aac$/.test(route[0])
         ? "[container-amr-aac] "
+      : /^(?:mp4|mov|mpeg-ts|flv|avi|ogv)-to-opus$/.test(route[0]) ||
+          /^(?:mp4|mov|mpeg-ts|flv|avi)-to-ogg$/.test(route[0]) ||
+          route[0] === "ogv-to-mp3"
+        ? "[container-lossy-audio] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3727,6 +3775,31 @@ test("browser FFmpeg encodes ALAC M4A as genuine MP3", async () => {
   );
 });
 
+test("[container-lossy-audio] browser FFmpeg converts OGV Vorbis audio to genuine MP3", async () => {
+  await runMediaRoute(
+    "ogv-to-mp3",
+    containerLossyAudioOutputPaths["ogv-to-mp3"],
+    ["mp3"],
+    1_000,
+    ogvFixturePath,
+    {
+      expectedDurationSeconds: 3.84,
+      durationToleranceSeconds: 0.2,
+      expectedWarningFragments: ["video stream"],
+      validate: async (probe, outputPath) => {
+        expect(String(probe.format.format_name).split(",")).toContain("mp3");
+        const audio = probe.streams.find(
+          (stream: { codec_type?: string }) => stream.codec_type === "audio",
+        );
+        expect(Number(audio?.channels)).toBe(1);
+        expect(Number(audio?.sample_rate)).toBe(48_000);
+        expect(Number(audio?.bit_rate)).toBeGreaterThanOrEqual(128_000);
+        await expectMp3TranscodeQuality(ogvFixturePath, outputPath);
+      },
+    },
+  );
+});
+
 const standaloneAacOutputRoutes = [
   ["m4a-to-aac", "m4a", audioFixturePath],
   ["amr-to-aac", "amr", amrFixturePath],
@@ -3990,6 +4063,44 @@ test("[standalone-opus] browser FFmpeg encodes ALAC M4A as genuine Opus", async 
   );
 });
 
+const containerOpusOutputRoutes = [
+  ["mp4-to-opus", mp4InputFixturePath],
+  ["mov-to-opus", movInputFixturePath],
+  ["mpeg-ts-to-opus", mpegTsInputFixturePath],
+  ["flv-to-opus", flvInputFixturePath],
+  ["avi-to-opus", aviInputFixturePath],
+  ["ogv-to-opus", ogvFixturePath],
+] as const;
+
+for (const [route, inputPath] of containerOpusOutputRoutes) {
+  test(`[container-lossy-audio] browser FFmpeg converts ${route.split("-to-")[0].toUpperCase()} audio to genuine Opus`, async () => {
+    await runMediaRoute(
+      route,
+      containerLossyAudioOutputPaths[route],
+      ["opus"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: route === "ogv-to-opus" ? 0.02 : 0.15,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBe(1);
+          expect(Number(audio?.sample_rate)).toBe(48_000);
+          const bitRate = Number((probe.format as { bit_rate?: string }).bit_rate);
+          expect(bitRate).toBeGreaterThan(0);
+          expect(bitRate).toBeLessThanOrEqual(160_000);
+          await expectOpusTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
 const standaloneVorbisOutputRoutes = [
   ["m4a-to-ogg", "m4a", audioFixturePath],
   ["aac-to-ogg", "aac", aacFixturePath],
@@ -4051,6 +4162,43 @@ test("[standalone-vorbis] browser FFmpeg encodes ALAC M4A as genuine Vorbis", as
     },
   );
 });
+
+const containerVorbisOutputRoutes = [
+  ["mp4-to-ogg", mp4InputFixturePath],
+  ["mov-to-ogg", movInputFixturePath],
+  ["mpeg-ts-to-ogg", mpegTsInputFixturePath],
+  ["flv-to-ogg", flvInputFixturePath],
+  ["avi-to-ogg", aviInputFixturePath],
+] as const;
+
+for (const [route, inputPath] of containerVorbisOutputRoutes) {
+  test(`[container-lossy-audio] browser FFmpeg converts ${route.split("-to-")[0].toUpperCase()} audio to genuine Vorbis`, async () => {
+    await runMediaRoute(
+      route,
+      containerLossyAudioOutputPaths[route],
+      ["vorbis"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.3,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBe(1);
+          expect(Number(audio?.sample_rate)).toBe(48_000);
+          const bitRate = Number((probe.format as { bit_rate?: string }).bit_rate);
+          expect(bitRate).toBeGreaterThan(0);
+          expect(bitRate).toBeLessThanOrEqual(220_000);
+          await expectOpusTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
 
 const threeGpAmrOutputRoutes = [
   ["3gp-to-wav", "wav", "pcm_s16le"],

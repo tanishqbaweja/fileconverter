@@ -413,6 +413,71 @@ function legacyContainerAacOutputProfile(
   };
 }
 
+type ContainerLossyAudioInput = "mp4" | "mov" | "mpeg-ts" | "flv" | "avi" | "ogv";
+type ContainerLossyAudioOutput = "mp3" | "opus" | "ogg";
+
+const containerLossyAudioEvidence: Record<string, number | null> = {
+  "mp4-to-opus": null,
+  "mov-to-opus": null,
+  "mpeg-ts-to-opus": null,
+  "flv-to-opus": null,
+  "avi-to-opus": null,
+  "ogv-to-opus": null,
+  "mp4-to-ogg": null,
+  "mov-to-ogg": null,
+  "mpeg-ts-to-ogg": null,
+  "flv-to-ogg": null,
+  "avi-to-ogg": null,
+  "ogv-to-mp3": null,
+};
+
+function containerLossyAudioProfile(
+  input: ContainerLossyAudioInput,
+  output: ContainerLossyAudioOutput,
+): ConversionProfile {
+  const id = `${input}-to-${output}`;
+  const sourceCodec = containerAudioSourceCodec[input];
+  const outputDescription = {
+    mp3: "128 kb/s mono MP3",
+    opus: "64 kb/s VBR mono Opus in Ogg",
+    ogg: "quality-4 mono Vorbis in Ogg",
+  }[output];
+  const evidence = containerLossyAudioEvidence[id];
+  return {
+    id,
+    input,
+    output,
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      output === "mp3"
+        ? "Compatible text tags are mapped to ID3 where possible; stream language and container-only fields may not be retained."
+        : "Compatible text tags are copied into Ogg comments where possible; stream language and container-only fields may not be retained.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily re-encoded as ${outputDescription}; this cannot restore source information.`,
+      output === "mp3"
+        ? "The certified mono source is normalized to a LAME-supported rate through 48 kHz."
+        : output === "opus"
+          ? "The measured fastest libopus complexity setting preserves supported source rates through 48 kHz and signals the standard 48 kHz Opus clock."
+          : "Reference libvorbis quality 4 preserves source rates through 48 kHz.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 type WebmAudioOutput = "wav" | "flac" | "amr" | "mp3" | "aac";
 
 const webmAudioOutputEvidence: Record<WebmAudioOutput, number | null> = {
@@ -4307,6 +4372,18 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerAmrOutputProfile("ogv"),
   legacyContainerAacOutputProfile("avi"),
   legacyContainerAacOutputProfile("ogv"),
+  containerLossyAudioProfile("mp4", "opus"),
+  containerLossyAudioProfile("mov", "opus"),
+  containerLossyAudioProfile("mpeg-ts", "opus"),
+  containerLossyAudioProfile("flv", "opus"),
+  containerLossyAudioProfile("avi", "opus"),
+  containerLossyAudioProfile("ogv", "opus"),
+  containerLossyAudioProfile("mp4", "ogg"),
+  containerLossyAudioProfile("mov", "ogg"),
+  containerLossyAudioProfile("mpeg-ts", "ogg"),
+  containerLossyAudioProfile("flv", "ogg"),
+  containerLossyAudioProfile("avi", "ogg"),
+  containerLossyAudioProfile("ogv", "mp3"),
   standaloneAmrOutputProfile("m4a"),
   standaloneAmrOutputProfile("aac"),
   standaloneAmrOutputProfile("mp3"),

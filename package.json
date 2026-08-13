@@ -119,6 +119,8 @@
     "audit:webm-audio": "node scripts/audit-webm-audio-outputs.mjs",
     "audit:container-amr-aac": "node scripts/audit-container-amr-aac-outputs.mjs",
     "profile:container-amr-aac": "node scripts/profile-category.mjs container-amr-aac",
+    "audit:container-lossy-audio": "node scripts/audit-container-lossy-audio-outputs.mjs",
+    "profile:container-lossy-audio": "node scripts/profile-category.mjs container-lossy-audio",
     "profile:mp3-output": "node scripts/profile-category.mjs mp3-output",
     "profile:aac-output": "node scripts/profile-category.mjs aac-output",
     "profile:opus-output": "node scripts/profile-category.mjs opus-output",

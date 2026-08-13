@@ -94,6 +94,27 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-lossy-audio": {
+    generator: "scripts/generate-container-amr-aac-stress-fixtures.mjs",
+    passSelectedFixturesToGenerator: true,
+    profiles: [
+      ["mp4-to-opus", "h264-aac-flac-128m.mp4"],
+      ["mov-to-opus", "h264-aac-flac-128m.mov"],
+      ["mpeg-ts-to-opus", "h264-aac-flac-128m.mpegts"],
+      ["flv-to-opus", "h264-aac-flac-128m.flv"],
+      ["avi-to-opus", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-opus", "theora-video-128m.ogv"],
+      ["mp4-to-ogg", "h264-aac-flac-128m.mp4"],
+      ["mov-to-ogg", "h264-aac-flac-128m.mov"],
+      ["mpeg-ts-to-ogg", "h264-aac-flac-128m.mpegts"],
+      ["flv-to-ogg", "h264-aac-flac-128m.flv"],
+      ["avi-to-ogg", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-mp3", "theora-video-128m.ogv"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

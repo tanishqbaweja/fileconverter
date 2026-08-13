@@ -719,6 +719,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "flac-to-mp3",
       "m4a-to-mp3",
       "ogg-to-mp3",
+      "ogv-to-mp3",
       "opus-to-mp3",
       "wav-to-mp3",
       "webm-to-mp3",
@@ -729,12 +730,42 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "mp3" && candidate.route === "re-encode",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.equal(profile.public, true);
-    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+    const pendingContainerRoute = profile.id === "ogv-to-mp3";
+    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
+    assert.equal(profile.public, !pendingContainerRoute);
+    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
+    else assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), !pendingContainerRoute);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
+  const pendingContainerLossyRoutes = new Set([
+    "mp4-to-opus",
+    "mov-to-opus",
+    "mpeg-ts-to-opus",
+    "flv-to-opus",
+    "avi-to-opus",
+    "ogv-to-opus",
+    "mp4-to-ogg",
+    "mov-to-ogg",
+    "mpeg-ts-to-ogg",
+    "flv-to-ogg",
+    "avi-to-ogg",
+  ]);
+  for (const profile of conversionProfiles.filter((candidate) =>
+    pendingContainerLossyRoutes.has(candidate.id),
+  )) {
+    assert.equal(profile.automatedTestStatus, "pending");
+    assert.equal(profile.public, false);
+    assert.equal(profile.maxTestedBytes, null);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), false);
+    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+  }
+  assert.equal(
+    conversionProfiles.filter((candidate) =>
+      pendingContainerLossyRoutes.has(candidate.id),
+    ).length,
+    pendingContainerLossyRoutes.size,
+  );
   assert.deepEqual(
     conversionProfiles
       .filter(
