@@ -134,12 +134,19 @@ function aviWebmProfile(vp9: boolean): ConversionProfile {
 function containerFlacProfile(
   input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv" | "avi" | "ogv",
 ): ConversionProfile {
-  const sourceCodec = input === "avi" ? "MP3" : input === "ogv" ? "Vorbis" : "AAC";
+  const sourceCodec =
+    input === "avi"
+      ? "MP3"
+      : input === "ogv"
+        ? "Vorbis"
+        : input === "3gp"
+          ? "AAC or AMR-NB"
+          : "AAC";
   const evidence = {
     mkv: 146_855_294,
     mp4: 146_854_557,
     mov: 146_854_612,
-    "3gp": 146_854_456,
+    "3gp": 156_907_373,
     "mpeg-ts": 150_441_548,
     flv: 146_903_486,
     avi: 159_500_442,
@@ -582,7 +589,8 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The pending certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
+      "The certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
+      "The 128 MiB-class bounded profile uses a genuine 720-second H.264/AMR-NB 3GP and traverses the large interleaved video payload; pathological multi-hour files with millions of audio packets and packet-count-sized indexes remain excluded.",
       "Only the first audio stream is converted; video, subtitles, data, chapters, artwork, and additional streams are explicitly excluded.",
       `Output is ${outputDescription}; compatible text tags are copied only where the destination can represent them.`,
     ],
@@ -592,9 +600,9 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
         : `AMR-NB is decoded and lossily encoded as ${outputDescription}; this cannot restore source information.`,
       `The bounded encoder uses ${rateDescription} and one channel without unnecessary high-rate upsampling.`,
     ],
-    maxTestedBytes: null,
-    automatedTestStatus: "pending",
-    public: false,
+    maxTestedBytes: 156_907_373,
+    automatedTestStatus: "passed",
+    public: true,
   };
 }
 
@@ -3420,12 +3428,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "Only the first AAC audio stream is converted.",
+      "Only the first AAC or 8 kHz mono AMR-NB audio stream is converted; AMR-NB is certified through 156,907,373 bytes.",
       "Video, subtitle, timed-metadata, data, cover-art, and additional audio streams are explicitly excluded.",
       "WAV cannot preserve 3GP metadata, language descriptors, artwork, or chapters.",
     ],
     fidelityLimitations: [
-      "AAC is decoded and encoded as uncompressed 16-bit little-endian PCM.",
+      "AAC or AMR-NB is decoded and encoded as uncompressed 16-bit little-endian PCM; this cannot restore information already discarded by either source codec.",
     ],
     maxTestedBytes: 167_130_850,
     automatedTestStatus: "passed",

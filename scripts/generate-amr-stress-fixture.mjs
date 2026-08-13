@@ -14,6 +14,13 @@ const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const fixturePath = path.join(fixtureRoot, "audio-amr-nb-128m.amr");
 const minimumBytes = 128 * 1024 * 1024;
 
+let previousManifest = null;
+try {
+  previousManifest = JSON.parse(await readFile(`${fixturePath}.json`, "utf8"));
+} catch (error) {
+  if (error?.code !== "ENOENT") throw error;
+}
+
 await execFileAsync("node", ["scripts/generate-amr-fixture.mjs"], {
   cwd: projectRoot,
   windowsHide: true,
@@ -51,6 +58,7 @@ for await (const chunk of createReadStream(fixturePath, {
 })) {
   hash.update(chunk);
 }
+const fixtureSha256 = hash.digest("hex");
 const { stdout } = await execFileAsync(
   "ffprobe",
   ["-v", "error", "-count_frames", "-show_format", "-show_streams", "-of", "json", fixturePath],
@@ -70,15 +78,23 @@ if (
 ) {
   throw new Error("Generated stress fixture is not the expected mono AMR-NB stream.");
 }
-const { stdout: decodedHash } = await execFileAsync(
-  "ffmpeg",
-  [
-    "-hide_banner", "-loglevel", "error", "-xerror", "-i", fixturePath,
-    "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "hash",
-    "-hash", "sha256", "-",
-  ],
-  { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
-);
+const canReuseDecodedReference =
+  previousManifest?.sha256 === fixtureSha256 &&
+  previousManifest?.bytes === fixtureStat.size &&
+  previousManifest?.decodedPcmSha256;
+let decodedPcmSha256 = previousManifest?.decodedPcmSha256;
+if (!canReuseDecodedReference) {
+  const { stdout: decodedHash } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-xerror", "-i", fixturePath,
+      "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "hash",
+      "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+  decodedPcmSha256 = decodedHash.trim().split("=")[1];
+}
 await writeFile(
   `${fixturePath}.json`,
   `${JSON.stringify({
@@ -90,9 +106,10 @@ await writeFile(
     decodedAudioDurationSeconds,
     durationSeconds: decodedAudioDurationSeconds,
     bytes: fixtureStat.size,
-    sha256: hash.digest("hex"),
+    sha256: fixtureSha256,
     losslessPcmReference: true,
-    decodedPcmSha256: decodedHash.trim().split("=")[1],
+    decodedPcmSha256,
+    decodedPcmReferenceReused: Boolean(canReuseDecodedReference),
     probe,
   }, null, 2)}\n`,
   "utf8",

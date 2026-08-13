@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -845,6 +845,12 @@ Current exact-build results:
 | MP4 → FLAC | 3 | 146,854,557 B | 986,210 B | 214.2 MiB | 32 MiB | cleanup passed |
 | MOV → FLAC | 3 | 146,854,612 B | 986,198 B | 213.9 MiB | 32 MiB | cleanup passed |
 | 3GP → FLAC | 3 | 146,854,456 B | 986,210 B | 214.7 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → WAV | 3 | 156,907,373 B | 11,520,078 B | 229.2 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → FLAC | 3 | 156,907,373 B | 6,525,834 B | 194.3 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → AIFF | 3 | 156,907,373 B | 11,520,054 B | 226.5 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → MP3 | 3 | 156,907,373 B | 11,521,300 B | 197.5 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → Opus | 3 | 156,907,373 B | 5,850,664 B | 196.8 MiB | 32 MiB | cleanup passed |
+| 3GP/AMR-NB → Ogg Vorbis | 3 | 156,907,373 B | 1,329,515 B | 214.9 MiB | 32 MiB | cleanup passed |
 | MPEG-TS → FLAC | 3 | 150,441,548 B | 987,948 B | 211.6 MiB | 32 MiB | cleanup passed |
 | FLV → FLAC | 3 | 146,903,486 B | 988,027 B | 210.7 MiB | 32 MiB | cleanup passed |
 | AVI → FLAC | 3 | 159,500,442 B | 1,017,396 B | 223.3 MiB | 32 MiB | cleanup passed |

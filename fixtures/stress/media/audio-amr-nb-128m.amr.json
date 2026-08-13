@@ -10,6 +10,7 @@
   "sha256": "8ec97c9561707e88888a9418c041a0f4277a6418d547cd01d9ce6112f9c53f79",
   "losslessPcmReference": true,
   "decodedPcmSha256": "d28633e8e9cbd0c926b63f3d22c01bdb40d1561c95cfab471f55aab43af69fc9",
+  "decodedPcmReferenceReused": true,
   "probe": {
     "streams": [
       {

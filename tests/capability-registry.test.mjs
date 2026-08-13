@@ -716,13 +716,9 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "mp3" && candidate.route === "re-encode",
   )) {
-    const pending = profile.id === "3gp-to-mp3";
-    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
-    assert.equal(
-      pending ? profile.maxTestedBytes : profile.maxTestedBytes >= 128 * 1024 * 1024,
-      pending ? null : true,
-    );
-    assert.equal(publicProfilesFor(profile.input).includes(profile), !pending);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.deepEqual(
@@ -817,14 +813,12 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "aiff",
   )) {
-    const pending = profile.id === "3gp-to-aiff";
-    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
-    assert.equal(pending ? profile.maxTestedBytes : profile.maxTestedBytes > 0, pending ? null : true);
-    assert.equal(
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes > 0);
+    assert.ok(
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
-      !pending,
     );
   }
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
@@ -896,7 +890,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "3gp-to-wav",
     ),
   );
-  const pendingThreeGpAmrRoutes = [
+  const certifiedThreeGpAmrRoutes = [
     "3gp-to-aiff",
     "3gp-to-mp3",
     "3gp-to-opus",
@@ -904,21 +898,17 @@ test("compound archives and mainstream images are detected by filename", () => {
   ];
   assert.deepEqual(
     publicProfilesFor("3gp", true)
-      .filter((profile) => pendingThreeGpAmrRoutes.includes(profile.id))
+      .filter((profile) => certifiedThreeGpAmrRoutes.includes(profile.id))
       .map((profile) => profile.id),
-    pendingThreeGpAmrRoutes,
+    certifiedThreeGpAmrRoutes,
   );
-  for (const profileId of pendingThreeGpAmrRoutes) {
-    const profile = publicProfilesFor("3gp", true).find(
+  for (const profileId of certifiedThreeGpAmrRoutes) {
+    const profile = publicProfilesFor("3gp").find(
       (candidate) => candidate.id === profileId,
     );
-    assert.equal(profile?.automatedTestStatus, "pending");
-    assert.equal(profile?.maxTestedBytes, null);
-    assert.equal(profile?.public, false);
-    assert.equal(
-      publicProfilesFor("3gp").some((candidate) => candidate.id === profileId),
-      false,
-    );
+    assert.equal(profile?.automatedTestStatus, "passed");
+    assert.equal(profile?.maxTestedBytes, 156_907_373);
+    assert.equal(profile?.public, true);
   }
   assert.deepEqual(
     publicProfilesFor("3gp", true)
