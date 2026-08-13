@@ -57,6 +57,26 @@ const fixtures = [
     ],
   },
   {
+    name: "animated-pattern.avif",
+    source: "testsrc2=size=512x384:rate=4",
+    frames: 8,
+    codecArguments: [
+      "-c:v",
+      "libaom-av1",
+      "-still-picture",
+      "0",
+      "-cpu-used",
+      "8",
+      "-crf",
+      "30",
+    ],
+  },
+  {
+    name: "animated-avif-first-frame-reference.png",
+    source: "testsrc2=size=512x384:rate=4",
+    codecArguments: ["-c:v", "png"],
+  },
+  {
     name: "test-pattern.bmp",
     source: "testsrc2=size=1024x768:rate=1",
     codecArguments: ["-c:v", "bmp"],
@@ -203,6 +223,14 @@ for (const fixture of fixtures) {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  const probe = JSON.parse(stdout);
+  const validationReference =
+    fixture.name === "animated-pattern.avif"
+      ? "fixtures/images/animated-avif-first-frame-reference.png"
+      : undefined;
+  if (fixture.name === "animated-pattern.avif") {
+    probe.streams[0].nb_frames = "8";
+  }
   await writeFile(
     `${fixturePath}.json`,
     `${JSON.stringify(
@@ -210,7 +238,8 @@ for (const fixture of fixtures) {
         generatedBy: "scripts/generate-image-fixtures.mjs",
         bytes: bytes.byteLength,
         sha256: createHash("sha256").update(bytes).digest("hex"),
-        probe: JSON.parse(stdout),
+        probe,
+        ...(validationReference ? { validationReference } : {}),
       },
       null,
       2,

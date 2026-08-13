@@ -911,6 +911,23 @@ function isAnimatedWebp(bytes: Uint8Array): boolean {
   );
 }
 
+function isAnimatedAvif(bytes: Uint8Array): boolean {
+  const ascii = (offset: number, length: number) =>
+    new TextDecoder("ascii").decode(bytes.subarray(offset, offset + length));
+  if (bytes.byteLength < 16 || ascii(4, 4) !== "ftyp") return false;
+  const boxSize = new DataView(
+    bytes.buffer,
+    bytes.byteOffset,
+    bytes.byteLength,
+  ).getUint32(0, false);
+  if (boxSize < 16 || boxSize > bytes.byteLength) return false;
+  if (ascii(8, 4) === "avis") return true;
+  for (let offset = 16; offset + 4 <= boxSize; offset += 4) {
+    if (ascii(offset, 4) === "avis") return true;
+  }
+  return false;
+}
+
 function nextByobBuffer(value: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
   if (value.buffer.byteLength >= MAX_WRITE_CHUNK) {
     return new Uint8Array(value.buffer, 0, MAX_WRITE_CHUNK);
@@ -1203,7 +1220,9 @@ async function runImageConversion(
     desiredHeight: dimensions.height,
     // Chrome requires the animation track for animated WebP frame 0, but the
     // still track is deterministic and must remain selected for static WebP.
-    preferAnimation: inputFormat === "webp" && isAnimatedWebp(header),
+    preferAnimation:
+      (inputFormat === "webp" && isAnimatedWebp(header)) ||
+      (inputFormat === "avif" && isAnimatedAvif(header)),
   });
   let frame: VideoFrame | null = null;
   let canvas: OffscreenCanvas | null = null;

@@ -558,7 +558,7 @@ the archive. Scratch is truncated and deleted after success, failure, or cancel.
 Still-image routes use `ImageDecoder` in the conversion worker, request one
 deterministic RGBA frame, enforce compressed-size, dimensions, pixel-count,
 decoded-byte, and expansion-ratio limits before allocating the surface, and
-write the encoded output in bounded chunks. Animated GIF and WebP inputs
+write the encoded output in bounded chunks. Animated GIF, WebP, and AVIF inputs
 intentionally use only the first frame and show a visible omission warning.
 EXIF, ICC, text metadata, and animation are not preserved;
 JPEG and BMP composite transparency over white, and JPEG/WebP outputs are lossy

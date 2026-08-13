@@ -36,6 +36,9 @@ const routes = [
   ["avif-to-png", "test-pattern.avif", "png", "png"],
   ["avif-to-jpeg", "test-pattern.avif", "jpg", "mjpeg"],
   ["avif-to-webp", "test-pattern.avif", "webp", "webp"],
+  ["avif-to-png", "animated-pattern.avif", "png", "png", undefined, 512, 384],
+  ["avif-to-jpeg", "animated-pattern.avif", "jpg", "mjpeg", undefined, 512, 384],
+  ["avif-to-webp", "animated-pattern.avif", "webp", "webp", undefined, 512, 384],
   ["bmp-to-png", "test-pattern.bmp", "png", "png"],
   ["bmp-to-jpeg", "test-pattern.bmp", "jpg", "mjpeg"],
   ["bmp-to-webp", "test-pattern.bmp", "webp", "webp"],
@@ -45,12 +48,14 @@ const routes = [
   ["webp-to-bmp", "animated-pattern.webp", "bmp", "bmp"],
   ["gif-to-bmp", "animated-pattern.gif", "bmp", "bmp"],
   ["avif-to-bmp", "test-pattern.avif", "bmp", "bmp"],
+  ["avif-to-bmp", "animated-pattern.avif", "bmp", "bmp", undefined, 512, 384],
   ["png-to-ico", "test-pattern.png", "ico", "png", undefined, 256, 192],
   ["jpeg-to-ico", "test-pattern.jpg", "ico", "png", undefined, 256, 192],
   ["webp-to-ico", "test-pattern.webp", "ico", "png", undefined, 256, 192],
   ["webp-to-ico", "animated-pattern.webp", "ico", "png", undefined, 256, 192],
   ["gif-to-ico", "animated-pattern.gif", "ico", "png", undefined, 256, 192],
   ["avif-to-ico", "test-pattern.avif", "ico", "png", undefined, 256, 192],
+  ["avif-to-ico", "animated-pattern.avif", "ico", "png", undefined, 256, 192],
   ["bmp-to-ico", "test-pattern.bmp", "ico", "png", undefined, 256, 192],
   ["png-to-webp", "transparent-pattern.png", "webp", "webp", "preserved"],
   ["png-to-jpeg", "transparent-pattern.png", "jpg", "mjpeg", "removed"],
@@ -170,7 +175,11 @@ for (const [
         256 * 1024,
       );
       expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
-      if (sourceName.endsWith(".gif") || sourceName === "animated-pattern.webp") {
+      if (
+        sourceName.endsWith(".gif") ||
+        sourceName === "animated-pattern.webp" ||
+        sourceName === "animated-pattern.avif"
+      ) {
         expect(state?.warnings).toContain(
           "This still-image route converts only the first animation frame.",
         );
