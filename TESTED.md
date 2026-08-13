@@ -18,6 +18,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Active optimization log
 
+- **2026-08-13 still-image repeatability diagnosis:** the retained static WebP-to-PNG runs alternate exactly between a 1,528,103-byte `BGRX` result (`b3ef2b94…`) and a 1,356,001-byte `I420` result (`21d0b53a…`); JPEG-to-BMP shows the same backend alternation (`5ee80a39…` versus `533e1e71…`). Requesting default sRGB conversion still produced two `BGRX` runs and one `I420` run, and removing the redundant intrinsic-size decoder hint did the same. Neither experiment improved speed, memory, or determinism, so both runtime changes were reverted. A genuine fix requires a pinned bounded software JPEG/WebP decoder rather than another unstable Chrome hint.
 - **2026-08-13 animated WebP disclosure:** production Chrome's bounded `ImageDecoder` path now has deterministic eight-frame lossless WebP coverage across PNG, JPEG, BMP, and ICO destinations. Every route emitted the first-frame omission warning; WebP-to-PNG matched an independently generated first-frame reference byte-for-byte after decode, and all 62 image browser cases passed. The animated 185,794-byte WebP-to-PNG fixture then passed 3/3 clean Chrome runs in 0.04–0.11 seconds at 98.2 MiB worst incremental private memory with repeatable output, at most 185,794-byte reads, at most 101,506-byte writes, one pending operation, and cleanup recovery.
 - **Rejected animated-WebP fixture:** FFmpeg's `libwebp_anim` mux output was not consumable by Chrome's streaming decoder and even native FFprobe reported no image data or dimensions; the focused browser run was stopped after its bounded outer timeout. The fixture generator now uses Pillow's supported libwebp animation muxer on the existing deterministic GIF frames. Generated files remain repository-local and cleanup-managed.
 - **Animated-track selection correction:** enabling animation preference globally made all five established still-AVIF routes fail track inspection. Restricting it to every WebP then reproduced known alternating static WebP output hashes. The final bounded RIFF inspection requests the animation track only when the `VP8X` animation flag is set, preserving the proven still tracks for static WebP and AVIF while allowing animated WebP frame zero to complete.
@@ -574,8 +575,8 @@ Stream ma |
 | 2026-08-13T09:50:34.230Z | ogv-to-amr | 137,218,662 | 0 | 137,218,662 | Browser decoded audio quality validation failed: -3.58873 dB. |
 | 2026-08-13T12:30:42.347Z | mkv-to-mp4 | 6,443,020,778 | 0 | 6,443,020,778 | Command failed: ffprobe -v error -show_format -show_streams -show_chapters -count_frames -count_packets -of json H:\Github Repositories\fileconverter\work\memory-profile-chrome\Def |
 | 2026-08-13T13:27:34.962Z | jpeg-to-bmp | 418,486 | 3 | 418,486 | Failed checks: repeatableOutputHash; measured 226.9 MiB against a 250.0 MiB limit. |
-| 2026-08-13T13:31:26.257Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 95.6 MiB against a 250.0 MiB limit. |
 | 2026-08-13T13:32:13.234Z | webp-to-png | 185,794 | 0 | 185,794 | Browser image validation failed: png 1024x768. |
+| 2026-08-13T13:41:41.850Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 101.3 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
