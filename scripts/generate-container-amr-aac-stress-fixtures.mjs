@@ -23,13 +23,36 @@ const containerNames = [
   "h264-aac-flac-128m.mpegts",
   "h264-aac-flac-128m.flv",
 ];
+const aviName = "mpeg4-mp3-webm-128m.avi";
+const ogvName = "theora-video-128m.ogv";
+const availableNames = new Set([...containerNames, aviName, ogvName]);
+const requestedNames = process.argv.slice(2);
+for (const requestedName of requestedNames) {
+  if (!availableNames.has(requestedName)) {
+    throw new Error(
+      `Unknown container AMR/AAC fixture ${requestedName}. Choose from: ${[...availableNames].join(", ")}.`,
+    );
+  }
+}
+const selectedNames = requestedNames.length === 0
+  ? availableNames
+  : new Set(requestedNames);
+const selectedContainerNames = containerNames.filter((name) => selectedNames.has(name));
 
 try {
-  const results = await Promise.all([
-    runGenerator("scripts/generate-container-flac-stress-fixtures.mjs", containerNames),
-    runGenerator("scripts/generate-avi-webm-stress-fixture.mjs"),
-    runGenerator("scripts/generate-ogv-stress-fixture.mjs"),
-  ]);
+  const generators = [];
+  if (selectedContainerNames.length > 0) {
+    generators.push(
+      runGenerator("scripts/generate-container-flac-stress-fixtures.mjs", selectedContainerNames),
+    );
+  }
+  if (selectedNames.has(aviName)) {
+    generators.push(runGenerator("scripts/generate-avi-webm-stress-fixture.mjs"));
+  }
+  if (selectedNames.has(ogvName)) {
+    generators.push(runGenerator("scripts/generate-ogv-stress-fixture.mjs"));
+  }
+  const results = await Promise.all(generators);
   for (const stdout of results) process.stdout.write(stdout);
 } finally {
   await Promise.all(

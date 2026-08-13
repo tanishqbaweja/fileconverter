@@ -79,6 +79,7 @@ const categories = {
   },
   "container-amr-aac": {
     generator: "scripts/generate-container-amr-aac-stress-fixtures.mjs",
+    passSelectedFixturesToGenerator: true,
     profiles: [
       ["mkv-to-amr", "h264-aac-flac-128m.mkv"],
       ["mp4-to-amr", "h264-aac-flac-128m.mp4"],
@@ -86,7 +87,6 @@ const categories = {
       ["mpeg-ts-to-amr", "h264-aac-flac-128m.mpegts"],
       ["flv-to-amr", "h264-aac-flac-128m.flv"],
       ["avi-to-amr", "mpeg4-mp3-webm-128m.avi"],
-      ["ogv-to-amr", "theora-video-128m.ogv"],
       ["avi-to-aac", "mpeg4-mp3-webm-128m.avi"],
       ["ogv-to-aac", "theora-video-128m.ogv"],
     ].map(([profileId, name]) => [
@@ -958,7 +958,10 @@ try {
       "Reusing verified project-local fixtures; generation was skipped.\n",
     );
   } else {
-    await runNode(selected.generator, selected.generatorArguments ?? []);
+    const generatorArguments = selected.passSelectedFixturesToGenerator
+      ? [...new Set(profiles.map(([, relativeFixture]) => path.basename(relativeFixture)))]
+      : selected.generatorArguments ?? [];
+    await runNode(selected.generator, generatorArguments);
   }
   for (const [profileId, relativeFixture] of profiles) {
     const relativeManifest = `${relativeFixture}.json`;
