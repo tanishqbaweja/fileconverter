@@ -900,6 +900,17 @@ function parseImageDimensions(
   return { width, height };
 }
 
+function isAnimatedWebp(bytes: Uint8Array): boolean {
+  return (
+    bytes.byteLength >= 21 &&
+    bytes[12] === 0x56 &&
+    bytes[13] === 0x50 &&
+    bytes[14] === 0x38 &&
+    bytes[15] === 0x58 &&
+    (bytes[20] & 0x02) !== 0
+  );
+}
+
 function nextByobBuffer(value: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
   if (value.buffer.byteLength >= MAX_WRITE_CHUNK) {
     return new Uint8Array(value.buffer, 0, MAX_WRITE_CHUNK);
@@ -1190,7 +1201,9 @@ async function runImageConversion(
     colorSpaceConversion: "none",
     desiredWidth: dimensions.width,
     desiredHeight: dimensions.height,
-    preferAnimation: false,
+    // Chrome requires the animation track for animated WebP frame 0, but the
+    // still track is deterministic and must remain selected for static WebP.
+    preferAnimation: inputFormat === "webp" && isAnimatedWebp(header),
   });
   let frame: VideoFrame | null = null;
   let canvas: OffscreenCanvas | null = null;

@@ -1,0 +1,60 @@
+{
+  "generatedBy": "scripts/generate-animated-webp-fixture.py",
+  "bytes": 185794,
+  "sha256": "90cbcb28347b4f7ab46b31f797a8cce65ff26f6c0c4c71ed6c48f763c97b3b38",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "webp",
+        "codec_long_name": "WebP",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 1024,
+        "height": 768,
+        "coded_width": 0,
+        "coded_height": 0,
+        "has_b_frames": 0,
+        "level": -99,
+        "refs": 1,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/25",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "nb_frames": "8"
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\animated-pattern.webp",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "webp_pipe",
+      "format_long_name": "piped webp sequence",
+      "size": "185794",
+      "probe_score": 99
+    }
+  },
+  "validationReference": "fixtures/images/animated-pattern-first-frame-reference.png"
+}

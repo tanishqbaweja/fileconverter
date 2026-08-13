@@ -28,6 +28,8 @@ const routes = [
   ["jpeg-to-webp", "test-pattern.jpg", "webp", "webp"],
   ["webp-to-png", "test-pattern.webp", "png", "png"],
   ["webp-to-jpeg", "test-pattern.webp", "jpg", "mjpeg"],
+  ["webp-to-png", "animated-pattern.webp", "png", "png", undefined, 1024, 768, 1_000, undefined, "animated-pattern-first-frame-reference.png"],
+  ["webp-to-jpeg", "animated-pattern.webp", "jpg", "mjpeg"],
   ["gif-to-png", "animated-pattern.gif", "png", "png"],
   ["gif-to-jpeg", "animated-pattern.gif", "jpg", "mjpeg"],
   ["gif-to-webp", "animated-pattern.gif", "webp", "webp"],
@@ -40,11 +42,13 @@ const routes = [
   ["png-to-bmp", "test-pattern.png", "bmp", "bmp"],
   ["jpeg-to-bmp", "test-pattern.jpg", "bmp", "bmp"],
   ["webp-to-bmp", "test-pattern.webp", "bmp", "bmp"],
+  ["webp-to-bmp", "animated-pattern.webp", "bmp", "bmp"],
   ["gif-to-bmp", "animated-pattern.gif", "bmp", "bmp"],
   ["avif-to-bmp", "test-pattern.avif", "bmp", "bmp"],
   ["png-to-ico", "test-pattern.png", "ico", "png", undefined, 256, 192],
   ["jpeg-to-ico", "test-pattern.jpg", "ico", "png", undefined, 256, 192],
   ["webp-to-ico", "test-pattern.webp", "ico", "png", undefined, 256, 192],
+  ["webp-to-ico", "animated-pattern.webp", "ico", "png", undefined, 256, 192],
   ["gif-to-ico", "animated-pattern.gif", "ico", "png", undefined, 256, 192],
   ["avif-to-ico", "test-pattern.avif", "ico", "png", undefined, 256, 192],
   ["bmp-to-ico", "test-pattern.bmp", "ico", "png", undefined, 256, 192],
@@ -166,7 +170,7 @@ for (const [
         256 * 1024,
       );
       expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
-      if (sourceName.endsWith(".gif")) {
+      if (sourceName.endsWith(".gif") || sourceName === "animated-pattern.webp") {
         expect(state?.warnings).toContain(
           "This still-image route converts only the first animation frame.",
         );

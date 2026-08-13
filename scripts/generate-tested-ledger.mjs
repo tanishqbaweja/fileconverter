@@ -61,6 +61,12 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
     ) {
       scaleReports.push(report);
     }
+    if (
+      report.source?.generatedBy ===
+      "scripts/generate-animated-webp-fixture.py"
+    ) {
+      continue;
+    }
     const current = reports.get(report.profileId);
     if (
       !current ||
@@ -109,6 +115,10 @@ const lines = [
   "",
   "## Active optimization log",
   "",
+  "- **2026-08-13 animated WebP disclosure:** production Chrome's bounded `ImageDecoder` path now has deterministic eight-frame lossless WebP coverage across PNG, JPEG, BMP, and ICO destinations. Every route emitted the first-frame omission warning; WebP-to-PNG matched an independently generated first-frame reference byte-for-byte after decode, and all 62 image browser cases passed. The animated 185,794-byte WebP-to-PNG fixture then passed 3/3 clean Chrome runs in 0.04–0.11 seconds at 98.2 MiB worst incremental private memory with repeatable output, at most 185,794-byte reads, at most 101,506-byte writes, one pending operation, and cleanup recovery.",
+  "- **Rejected animated-WebP fixture:** FFmpeg's `libwebp_anim` mux output was not consumable by Chrome's streaming decoder and even native FFprobe reported no image data or dimensions; the focused browser run was stopped after its bounded outer timeout. The fixture generator now uses Pillow's supported libwebp animation muxer on the existing deterministic GIF frames. Generated files remain repository-local and cleanup-managed.",
+  "- **Animated-track selection correction:** enabling animation preference globally made all five established still-AVIF routes fail track inspection. Restricting it to every WebP then reproduced known alternating static WebP output hashes. The final bounded RIFF inspection requests the animation track only when the `VP8X` animation flag is set, preserving the proven still tracks for static WebP and AVIF while allowing animated WebP frame zero to complete.",
+  "- **Unrelated image-category stop:** the full high-resolution image profiler reconfirmed six routes below 250 MiB, including PNG/JPEG-to-WebP at 192.2–199.1 MiB, then stopped on the established JPEG-to-BMP route's alternating output hash (226.9 MiB; memory passed). A targeted static WebP rerun reproduced its historical alternating hash as well. These are retained repeatability failures, not animated-WebP evidence; category cleanup removed its converted copies before the separate lossless animated-WebP profile passed.",
   "- **2026-08-13 multipage TIFF disclosure:** multipage TIFF input now converts its first page through the same bounded streaming decoder and emits a visible warning that remaining pages were omitted. The two-page fixture passed exact first-page pixel comparison in the production browser, all 58 image cases passed, and the unchanged 50,338,032-byte stress fixture passed 3/3 in 1.90–2.14 seconds at 203.8 MiB worst incremental private memory with repeatable output, fixed 40 MiB Wasm, bounded 48 KiB reads/32 KiB writes, and cleanup recovery.",
   "- **2026-08-13 separated-planar TIFF:** the fixed-memory libtiff engine now interleaves separated RGB/RGBA planes one scanline or bounded tile stripe at a time instead of rejecting them or allocating a complete raster. Strip-planar and tile-planar fixtures passed exact decoded-pixel comparison in the production browser, the full 58-case image suite passed, and the unchanged 50,338,032-byte tiled TIFF stress fixture passed 3/3 in 1.80–2.02 seconds at 171.8 MiB worst incremental private memory with repeatable output, 48 KiB reads, 32 KiB writes, fixed 40 MiB Wasm, and cleanup recovery.",
   "- **2026-08-13 multi-gigabyte MKV input diagnosis:** a genuine 6,443,020,778-byte MKV-to-MP4 browser run produced the correct 6,448,220,966-byte output in 96.24 seconds with bounded 256 KiB I/O, but repeated synchronous Blob slices drove incremental Chrome process-tree private memory to 371.9 MiB and failed the unchanged 250 MiB ceiling. The generated source and browser output were deleted after the compact result was recorded.",
@@ -324,7 +334,7 @@ lines.push(
   "",
   "- Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.",
   "- Audio: AMR-WB remains absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.",
-  "- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, extraction of every page from multipage TIFF (the first page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.",
+  "- Images: HEIF/HEIC, JPEG XL, animated AVIF, camera raw formats, extraction of every frame from animated GIF/WebP and every page from multipage TIFF (the first frame/page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.",
   "- Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.",
   "- Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.",
   "",

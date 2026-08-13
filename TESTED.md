@@ -18,6 +18,10 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Active optimization log
 
+- **2026-08-13 animated WebP disclosure:** production Chrome's bounded `ImageDecoder` path now has deterministic eight-frame lossless WebP coverage across PNG, JPEG, BMP, and ICO destinations. Every route emitted the first-frame omission warning; WebP-to-PNG matched an independently generated first-frame reference byte-for-byte after decode, and all 62 image browser cases passed. The animated 185,794-byte WebP-to-PNG fixture then passed 3/3 clean Chrome runs in 0.04–0.11 seconds at 98.2 MiB worst incremental private memory with repeatable output, at most 185,794-byte reads, at most 101,506-byte writes, one pending operation, and cleanup recovery.
+- **Rejected animated-WebP fixture:** FFmpeg's `libwebp_anim` mux output was not consumable by Chrome's streaming decoder and even native FFprobe reported no image data or dimensions; the focused browser run was stopped after its bounded outer timeout. The fixture generator now uses Pillow's supported libwebp animation muxer on the existing deterministic GIF frames. Generated files remain repository-local and cleanup-managed.
+- **Animated-track selection correction:** enabling animation preference globally made all five established still-AVIF routes fail track inspection. Restricting it to every WebP then reproduced known alternating static WebP output hashes. The final bounded RIFF inspection requests the animation track only when the `VP8X` animation flag is set, preserving the proven still tracks for static WebP and AVIF while allowing animated WebP frame zero to complete.
+- **Unrelated image-category stop:** the full high-resolution image profiler reconfirmed six routes below 250 MiB, including PNG/JPEG-to-WebP at 192.2–199.1 MiB, then stopped on the established JPEG-to-BMP route's alternating output hash (226.9 MiB; memory passed). A targeted static WebP rerun reproduced its historical alternating hash as well. These are retained repeatability failures, not animated-WebP evidence; category cleanup removed its converted copies before the separate lossless animated-WebP profile passed.
 - **2026-08-13 multipage TIFF disclosure:** multipage TIFF input now converts its first page through the same bounded streaming decoder and emits a visible warning that remaining pages were omitted. The two-page fixture passed exact first-page pixel comparison in the production browser, all 58 image cases passed, and the unchanged 50,338,032-byte stress fixture passed 3/3 in 1.90–2.14 seconds at 203.8 MiB worst incremental private memory with repeatable output, fixed 40 MiB Wasm, bounded 48 KiB reads/32 KiB writes, and cleanup recovery.
 - **2026-08-13 separated-planar TIFF:** the fixed-memory libtiff engine now interleaves separated RGB/RGBA planes one scanline or bounded tile stripe at a time instead of rejecting them or allocating a complete raster. Strip-planar and tile-planar fixtures passed exact decoded-pixel comparison in the production browser, the full 58-case image suite passed, and the unchanged 50,338,032-byte tiled TIFF stress fixture passed 3/3 in 1.80–2.02 seconds at 171.8 MiB worst incremental private memory with repeatable output, 48 KiB reads, 32 KiB writes, fixed 40 MiB Wasm, and cleanup recovery.
 - **2026-08-13 multi-gigabyte MKV input diagnosis:** a genuine 6,443,020,778-byte MKV-to-MP4 browser run produced the correct 6,448,220,966-byte output in 96.24 seconds with bounded 256 KiB I/O, but repeated synchronous Blob slices drove incremental Chrome process-tree private memory to 371.9 MiB and failed the unchanged 250 MiB ceiling. The generated source and browser output were deleted after the compact result was recorded.
@@ -261,8 +265,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | html-to-txt | 143,850,123 | 3 | 101,380,000 | 15.71 s–15.93 s | 231.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | jpeg-to-bmp | 418,486 | 3 | 24,883,254 | 0.28 s–0.36 s | 169.9 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | jpeg-to-ico | 418,486 | 3 | 12,998 | 0.09 s–0.14 s | 80.5 MiB | 0.0 MiB | read 196,608 B / write 12,976 B | passed |
-| jpeg-to-png | 418,486 | 3 | 1,792,327 | 0.11 s–0.16 s | 67.7 MiB | 0.0 MiB | read 221,878 B / write 262,144 B | passed |
-| jpeg-to-webp | 418,486 | 3 | 244,588 | 0.40 s–0.46 s | 179.6 MiB | 0.0 MiB | read 221,878 B / write 179,052 B | passed |
+| jpeg-to-png | 418,486 | 3 | 1,792,327 | 0.19 s–0.25 s | 72.9 MiB | 0.0 MiB | read 196,608 B / write 262,144 B | passed |
+| jpeg-to-webp | 418,486 | 3 | 244,588 | 0.56 s–0.67 s | 199.1 MiB | 0.0 MiB | read 196,608 B / write 244,588 B | passed |
 | json-to-csv | 293,633,883 | 3 | 139,913,895 | 24.37 s–25.13 s | 185.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | json-to-ndjson | 293,633,883 | 3 | 288,143,880 | 12.09 s–12.39 s | 229.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | json-to-tsv | 293,633,883 | 3 | 139,913,895 | 24.43 s–24.94 s | 212.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -408,10 +412,10 @@ This is the living progress record. It is regenerated after each test/profile cy
 | opus-to-ogg | 147,964,541 | 3 | 36,194,998 | 57.51 s–58.47 s | 159.8 MiB | 32.0 MiB | read 262,144 B / write 16,243 B | passed |
 | opus-to-wav | 40,289,464 | 3 | 201,600,078 | 11.63 s–11.80 s | 229.3 MiB | 32.0 MiB | read 262,144 B / write 1,920 B | passed |
 | opus-to-wma | 147,964,541 | 3 | 172,503,065 | 50.17 s–51.77 s | 166.1 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
-| png-to-bmp | 780,611 | 3 | 24,883,254 | 0.29 s–0.39 s | 196.0 MiB | 0.0 MiB | read 262,144 B / write 195,840 B | passed |
+| png-to-bmp | 780,611 | 3 | 24,883,254 | 0.50 s–0.60 s | 213.6 MiB | 0.0 MiB | read 262,144 B / write 195,840 B | passed |
 | png-to-ico | 780,611 | 3 | 12,290 | 0.11 s–0.17 s | 89.3 MiB | 0.0 MiB | read 262,144 B / write 12,268 B | passed |
-| png-to-jpeg | 780,611 | 3 | 374,384 | 0.14 s–0.19 s | 71.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
-| png-to-webp | 780,611 | 3 | 257,798 | 0.42 s–0.48 s | 189.5 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
+| png-to-jpeg | 780,611 | 3 | 374,384 | 0.22 s–0.30 s | 102.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| png-to-webp | 780,611 | 3 | 257,798 | 0.59 s–0.65 s | 192.2 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
 | pptx-to-txt | 135,296,355 | 3 | 92,391,679 | 10.50 s–10.93 s | 217.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | sevenzip-to-tar | 268,435,574 | 3 | 268,436,992 | 7.09 s–7.60 s | 199.8 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | sevenzip-to-tar-bz2 | 268,435,574 | 3 | 270,592,878 | 40.86 s–41.61 s | 186.5 MiB | 64.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -513,9 +517,7 @@ These are historical failed attempts retained for diagnosis. A later passing rep
 | --- | --- | ---: | ---: | ---: | --- |
 | 2026-07-31T01:31:20.401Z | mkv-to-webm | 936,003 | 3 | 936,003 | The retained Chrome stress report did not pass. |
 | 2026-07-31T06:16:57.954Z | png-to-jpeg | 780,611 | 3 | 780,611 | Failed checks: readChunkBytes; measured 68.0 MiB against a 250.0 MiB limit. |
-| 2026-07-31T06:39:21.714Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 74.8 MiB against a 250.0 MiB limit. |
 | 2026-07-31T06:42:49.152Z | webp-to-jpeg | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 70.6 MiB against a 250.0 MiB limit. |
-| 2026-07-31T07:08:25.103Z | jpeg-to-bmp | 418,486 | 3 | 418,486 | Failed checks: repeatableOutputHash; measured 184.3 MiB against a 250.0 MiB limit. |
 | 2026-07-31T07:42:28.891Z | jpeg-to-png | 418,486 | 3 | 418,486 | Failed checks: repeatableOutputHash; measured 68.2 MiB against a 250.0 MiB limit. |
 | 2026-07-31T08:25:25.261Z | m4a-to-flac | 36,929,878 | 0 | 36,929,878 | Browser media metadata validation failed: audio-onlyxaudio-only, 1 channels, not-applicable, 2100.010667s. |
 | 2026-07-31T08:36:37.569Z | csv-to-tsv | 134,423,894 | 3 | 134,423,894 | Failed checks: readChunkBytes; measured 190.4 MiB against a 250.0 MiB limit. |
@@ -571,6 +573,9 @@ Stream ma |
 | 2026-08-13T07:44:26.940Z | aac-to-wma | 134,367,785 | 0 | 134,367,785 | Browser media metadata validation failed: audio-onlyxaudio-only, 2 channels, not-applicable, 4011.862s. |
 | 2026-08-13T09:50:34.230Z | ogv-to-amr | 137,218,662 | 0 | 137,218,662 | Browser decoded audio quality validation failed: -3.58873 dB. |
 | 2026-08-13T12:30:42.347Z | mkv-to-mp4 | 6,443,020,778 | 0 | 6,443,020,778 | Command failed: ffprobe -v error -show_format -show_streams -show_chapters -count_frames -count_packets -of json H:\Github Repositories\fileconverter\work\memory-profile-chrome\Def |
+| 2026-08-13T13:27:34.962Z | jpeg-to-bmp | 418,486 | 3 | 418,486 | Failed checks: repeatableOutputHash; measured 226.9 MiB against a 250.0 MiB limit. |
+| 2026-08-13T13:31:26.257Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 95.6 MiB against a 250.0 MiB limit. |
+| 2026-08-13T13:32:13.234Z | webp-to-png | 185,794 | 0 | 185,794 | Browser image validation failed: png 1024x768. |
 
 ## Every public passed profile
 
@@ -937,7 +942,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB remains absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, JPEG XL, animated WebP/AVIF, camera raw formats, extraction of every page from multipage TIFF (the first page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
+- Images: HEIF/HEIC, JPEG XL, animated AVIF, camera raw formats, extraction of every frame from animated GIF/WebP and every page from multipage TIFF (the first frame/page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

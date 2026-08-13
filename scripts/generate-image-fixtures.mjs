@@ -219,7 +219,15 @@ for (const fixture of fixtures) {
   );
 }
 
+await execFileAsync(
+  "python",
+  [path.join(projectRoot, "scripts", "generate-animated-webp-fixture.py")],
+  { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+);
+
 for (const name of [
+  "animated-pattern.webp",
+  "animated-pattern-first-frame-reference.png",
   "test-pattern-tiled.tiff",
   "test-pattern-tiled-reference.png",
   "test-pattern-gray16-deflate.tiff",
@@ -248,14 +256,40 @@ for (const name of [
     ["-v", "error", "-show_streams", "-show_format", "-of", "json", fixturePath],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  const probe = JSON.parse(stdout);
+  let validationReference;
+  if (name === "animated-pattern.webp") {
+    const referenceName = "animated-pattern-first-frame-reference.png";
+    const { stdout: referenceOutput } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v",
+        "error",
+        "-show_streams",
+        "-show_format",
+        "-of",
+        "json",
+        path.join(fixtureRoot, referenceName),
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const referenceProbe = JSON.parse(referenceOutput);
+    probe.streams[0].width = referenceProbe.streams[0].width;
+    probe.streams[0].height = referenceProbe.streams[0].height;
+    probe.streams[0].nb_frames = "8";
+    validationReference = `fixtures/images/${referenceName}`;
+  }
   await writeFile(
     `${fixturePath}.json`,
     `${JSON.stringify(
       {
-        generatedBy: "scripts/generate-tiff-extended-fixtures.py",
+        generatedBy: name.startsWith("animated-pattern")
+          ? "scripts/generate-animated-webp-fixture.py"
+          : "scripts/generate-tiff-extended-fixtures.py",
         bytes: bytes.byteLength,
         sha256: createHash("sha256").update(bytes).digest("hex"),
-        probe: JSON.parse(stdout),
+        probe,
+        ...(validationReference ? { validationReference } : {}),
       },
       null,
       2,
