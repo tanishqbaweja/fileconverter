@@ -88,6 +88,7 @@ const aiffOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.aiff"),
   aac: path.join(outputRoot, "aac-convert-output.aiff"),
   amr: path.join(outputRoot, "amr-convert-output.aiff"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.aiff"),
   mp3: path.join(outputRoot, "mp3-convert-output.aiff"),
   flac: path.join(outputRoot, "flac-convert-output.aiff"),
   wav: path.join(outputRoot, "wav-convert-output.aiff"),
@@ -1679,6 +1680,7 @@ async function runMediaRoute(
     | "m4a-to-aiff"
     | "aac-to-aiff"
     | "amr-to-aiff"
+    | "amr-wb-to-aiff"
     | "mp3-to-aiff"
     | "flac-to-aiff"
     | "wav-to-aiff"
@@ -3593,6 +3595,7 @@ const standaloneAiffRoutes = [
   ["m4a-to-aiff", "m4a", audioFixturePath, false],
   ["aac-to-aiff", "aac", aacFixturePath, false],
   ["amr-to-aiff", "amr", amrFixturePath, true],
+  ["amr-wb-to-aiff", "amr-wb", amrWbFixturePath, false],
   ["mp3-to-aiff", "mp3", mp3FixturePath, false],
   ["flac-to-aiff", "flac", flacFixturePath, true],
   ["wav-to-aiff", "wav", wavFixturePath, true],
@@ -3602,7 +3605,7 @@ const standaloneAiffRoutes = [
 ] as const;
 
 for (const [route, input, inputPath, losslessPcm] of standaloneAiffRoutes) {
-  test(`browser FFmpeg writes genuine AIFF PCM for ${input.toUpperCase()} input`, async () => {
+  test(`${input === "amr-wb" ? "[amr-wb-aiff] " : ""}browser FFmpeg writes genuine AIFF PCM for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       aiffOutputPaths[input],
@@ -3610,6 +3613,7 @@ for (const [route, input, inputPath, losslessPcm] of standaloneAiffRoutes) {
       input === "amr" ? 30_000 : 300_000,
       inputPath,
       {
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : undefined,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("aiff");
           if (losslessPcm) {

@@ -88,7 +88,7 @@ test("AV1 WebM stream copy is public after its measured evidence passes", () => 
 });
 
 test("AMR-WB decode routes are public after bounded large-file evidence passes", () => {
-  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac", "amr-wb-to-mp3"]) {
+  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac", "amr-wb-to-mp3", "amr-wb-to-aiff"]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);
     assert.equal(profile.automatedTestStatus, "passed");
@@ -949,6 +949,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "3gp-to-aiff",
       "aac-to-aiff",
       "amr-to-aiff",
+      "amr-wb-to-aiff",
       "avi-to-aiff",
       "flac-to-aiff",
       "flv-to-aiff",

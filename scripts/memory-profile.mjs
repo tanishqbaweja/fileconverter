@@ -20,6 +20,7 @@ const AIFF_OUTPUT_PROFILES = [
   "m4a-to-aiff",
   "aac-to-aiff",
   "amr-to-aiff",
+  "amr-wb-to-aiff",
   "mp3-to-aiff",
   "flac-to-aiff",
   "wav-to-aiff",
