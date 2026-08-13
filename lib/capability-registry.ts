@@ -314,11 +314,11 @@ function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
 type WebmAudioOutput = "wav" | "flac" | "amr" | "mp3" | "aac";
 
 const webmAudioOutputEvidence: Record<WebmAudioOutput, number | null> = {
-  wav: null,
-  flac: null,
-  amr: null,
-  mp3: null,
-  aac: null,
+  wav: 222_941_314,
+  flac: 222_941_314,
+  amr: 222_941_314,
+  mp3: 222_941_314,
+  aac: 222_941_314,
 };
 
 function webmAudioOutputProfile(output: WebmAudioOutput): ConversionProfile {

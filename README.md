@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 325
+complete-Chromium memory profile have passed. The current registry publishes 330
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -27,7 +27,7 @@ routes:
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
-| Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
+| Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
@@ -888,6 +888,11 @@ Current exact-build results:
 | AVI/MP3 → AIFF | 3 | 159,500,442 B | 6,227,792 B | 205.3 MiB | 32 MiB | 1.05-1.48 s |
 | OGV/Vorbis → AIFF | 3 | 137,218,662 B | 74,880,054 B | 207.4 MiB | 32 MiB | 2.10-2.61 s |
 | WebM/Opus → AIFF | 3 | 222,941,314 B | 5,760,054 B | 213.2 MiB | 32 MiB | 1.46-1.70 s |
+| WebM/Opus → WAV | 3 | 222,941,314 B | 5,760,078 B | 190.4 MiB | 32 MiB | 1.36-1.78 s |
+| WebM/Opus → FLAC | 3 | 222,941,314 B | 888,268 B | 214.8 MiB | 32 MiB | 1.66-1.91 s |
+| WebM/Opus → AMR-NB | 3 | 222,941,314 B | 96,038 B | 227.5 MiB | 32 MiB | 2.10-2.29 s |
+| WebM/Opus → MP3 | 3 | 222,941,314 B | 960,813 B | 227.0 MiB | 32 MiB | 1.91-2.59 s |
+| WebM/Opus → AAC-LC | 3 | 222,941,314 B | 621,779 B | 183.7 MiB | 32 MiB | 3.91-4.50 s |
 | AMR-NB to WAV | 3 | 134,229,414 B | 1,342,294,158 B | 209.7 MiB | 32 MiB | cleanup passed |
 | AMR-NB to FLAC | 3 | 134,229,414 B | 760,765,211 B | 166.0 MiB | 32 MiB | cleanup passed |
 | AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
@@ -1133,6 +1138,18 @@ genuine signed 16-bit big-endian AIFF, fully traversed and decoded-audio
 PSNR-validated; reads stayed at or below 262,144 bytes, writes and queueing at
 16,384 bytes, and one operation was pending. Category cleanup removed about
 1.93 GiB of generated media, every converted copy, and the Chrome profile.
+
+The optimized WebM/Opus audio gate reuses those existing output profiles and
+the same one-worker, 32 MiB Wasm core. WAV, FLAC, AMR-NB, MP3, and AAC-LC each
+passed three isolated complete-Chrome runs on a 222,941,314-byte AV1/Opus WebM
+in 1.36-4.50 seconds. Worst incremental private memory was 227.5 MiB, leaving
+22.5 MiB below the fixed cap. Every output was byte-repeatable, fully decoded,
+and independently PSNR- or ASDR-validated; reads stayed at 262,144 bytes or
+less, writes at 16,384 bytes or less, and only one operation was pending. An
+exact fixture filter generates only the AV1/Opus source and its WebM packet-copy
+derivative, reducing peak category media from about 1.93 GiB to about 446 MiB.
+The category finalizer deleted both large fixtures, all outputs, and the Chrome
+profile while retaining only compact reports.
 
 The AMR gate used a genuine 134,229,414-byte raw AMR-NB source containing
 4,194,669 frames (83,893.38 seconds of decoded audio). AMR-to-WAV completed in

@@ -679,21 +679,18 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "amr",
   )) {
-    const pending = profile.input === "webm";
-    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
-    assert.equal(profile.public, !pending);
-    if (pending) assert.equal(profile.maxTestedBytes, null);
-    else assert.ok(profile.maxTestedBytes > 0);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes > 0);
     assert.ok(
       profile.fidelityLimitations.some((limitation) =>
         limitation.includes("8 kHz mono"),
       ),
     );
-    assert.equal(
+    assert.ok(
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
-      !pending,
     );
   }
   assert.deepEqual(
@@ -722,12 +719,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "mp3" && candidate.route === "re-encode",
   )) {
-    const pending = profile.input === "webm";
-    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
-    assert.equal(profile.public, !pending);
-    if (pending) assert.equal(profile.maxTestedBytes, null);
-    else assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), !pending);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.deepEqual(
@@ -755,12 +750,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "aac" && candidate.route === "re-encode",
   )) {
-    const pending = profile.input === "webm";
-    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
-    assert.equal(profile.public, !pending);
-    if (pending) assert.equal(profile.maxTestedBytes, null);
-    else assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), !pending);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.equal(
@@ -928,10 +921,10 @@ test("compound archives and mainstream images are detected by filename", () => {
       (candidate) => candidate.id === `webm-to-${output}`,
     );
     assert.ok(profile, `missing webm-to-${output}`);
-    assert.equal(profile.automatedTestStatus, "pending");
-    assert.equal(profile.maxTestedBytes, null);
-    assert.equal(profile.public, false);
-    assert.equal(publicProfilesFor("webm").includes(profile), false);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, 222_941_314);
+    assert.equal(profile.public, true);
+    assert.equal(publicProfilesFor("webm").includes(profile), true);
   }
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
   assert.equal(
