@@ -20,6 +20,21 @@ const resumeProfile = process.env.WITHIN_PROFILE_START ?? null;
 const endProfile = process.env.WITHIN_PROFILE_END ?? null;
 
 const categories = {
+  "wma-output": {
+    generator: "scripts/generate-wma-output-stress-fixtures.mjs",
+    profiles: [
+      ["m4a-to-wma", "audio-aac-wma-128m.m4a"],
+      ["m4a-to-wma", "audio-alac-128m.m4a"],
+      ["aac-to-wma", "audio-aac-128m.aac"],
+      ["mp3-to-wma", "audio-mp3-wma-128m.mp3"],
+      ["aiff-to-wma", "audio-pcm-192m.aiff"],
+      ["ogg-to-wma", "audio-vorbis-flac-128m.ogg"],
+      ["opus-to-wma", "audio-opus-flac-128m.opus"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

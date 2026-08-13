@@ -761,7 +761,13 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id)
       .sort(),
     [
+      "aac-to-wma",
+      "aiff-to-wma",
       "flac-to-wma",
+      "m4a-to-wma",
+      "mp3-to-wma",
+      "ogg-to-wma",
+      "opus-to-wma",
       "wav-to-wma",
       "wma-to-aac",
       "wma-to-aiff",
@@ -779,6 +785,32 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.ok(
     publicProfilesFor("wav").some((profile) => profile.id === "wav-to-wma"),
   );
+  const pendingStandaloneWmaRoutes = [
+    "m4a-to-wma",
+    "aac-to-wma",
+    "mp3-to-wma",
+    "aiff-to-wma",
+    "ogg-to-wma",
+    "opus-to-wma",
+  ];
+  for (const profileId of pendingStandaloneWmaRoutes) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    assert.equal(profile?.automatedTestStatus, "pending");
+    assert.equal(profile?.maxTestedBytes, null);
+    assert.equal(profile?.public, false);
+    assert.equal(
+      publicProfilesFor(profile?.input ?? "wma").some(
+        (candidate) => candidate.id === profileId,
+      ),
+      false,
+    );
+    assert.equal(
+      publicProfilesFor(profile?.input ?? "wma", true).some(
+        (candidate) => candidate.id === profileId,
+      ),
+      true,
+    );
+  }
   assert.deepEqual(
     ["aiff", "ogg", "opus"].map((input) =>
       publicProfilesFor(input).some(

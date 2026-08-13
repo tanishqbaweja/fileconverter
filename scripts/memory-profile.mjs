@@ -85,6 +85,16 @@ const VORBIS_OUTPUT_PROFILES = [
   "aiff-to-ogg",
   "opus-to-ogg",
 ];
+const WMA_OUTPUT_PROFILES = [
+  "m4a-to-wma",
+  "aac-to-wma",
+  "mp3-to-wma",
+  "aiff-to-wma",
+  "ogg-to-wma",
+  "opus-to-wma",
+  "wav-to-wma",
+  "flac-to-wma",
+];
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -350,8 +360,7 @@ if (
     "opus-to-flac",
     "wav-to-alac",
     "flac-to-alac",
-    "wav-to-wma",
-    "flac-to-wma",
+    ...WMA_OUTPUT_PROFILES,
     "mkv-to-mp4-mpeg4",
     "mkv-to-webm",
     "mkv-to-webm-vp9",
@@ -391,6 +400,7 @@ const isMediaProfile =
   AAC_OUTPUT_PROFILES.includes(profileId) ||
   OPUS_OUTPUT_PROFILES.includes(profileId) ||
   VORBIS_OUTPUT_PROFILES.includes(profileId) ||
+  WMA_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4" ||
   profileId === "mov-to-mp4" ||
   profileId === "3gp-to-mp4" ||
@@ -507,8 +517,7 @@ const isMediaProfile =
   profileId === "opus-to-flac" ||
   profileId === "wav-to-alac" ||
   profileId === "flac-to-alac" ||
-  profileId === "wav-to-wma" ||
-  profileId === "flac-to-wma" ||
+  WMA_OUTPUT_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp4-mpeg4" ||
   profileId === "mkv-to-webm" ||
   profileId === "mkv-to-webm-vp9" ||
@@ -1215,8 +1224,7 @@ async function validateMediaOutput(
     route === "opus-to-flac" ||
     route === "wav-to-alac" ||
     route === "flac-to-alac" ||
-    route === "wav-to-wma" ||
-    route === "flac-to-wma";
+    WMA_OUTPUT_PROFILES.includes(route);
   const pcmOutput =
     aiffOutput ||
     route === "mkv-to-wav" ||
@@ -1256,8 +1264,7 @@ async function validateMediaOutput(
     route === "opus-to-flac";
   const alacOutput =
     route === "wav-to-alac" || route === "flac-to-alac";
-  const wmaOutput =
-    route === "wav-to-wma" || route === "flac-to-wma";
+  const wmaOutput = WMA_OUTPUT_PROFILES.includes(route);
   const h264Output =
     route === "mkv-to-h264" ||
     route === "mp4-to-h264" ||
@@ -1395,6 +1402,9 @@ async function validateMediaOutput(
       : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
         ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
           1024 * 1024
+      : wmaOutput && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * 320_000 * 1.04) / 8) +
+          1024 * 1024
       : mpeg2TransportOutput || containerMpegTsCopy
         ? Math.ceil(source.bytes * 1.1)
       : pcmOutput
@@ -1472,7 +1482,8 @@ async function validateMediaOutput(
       mp3TranscodeOutput ||
       aacTranscodeOutput ||
       opusTranscodeOutput ||
-      vorbisTranscodeOutput;
+      vorbisTranscodeOutput ||
+      wmaOutput;
     const minimumQualityDb = amrOutput
       ? -3
       : mp3TranscodeOutput
@@ -1481,7 +1492,7 @@ async function validateMediaOutput(
           ? -6.5
           : opusTranscodeOutput
             ? -6.5
-            : vorbisTranscodeOutput
+            : vorbisTranscodeOutput || wmaOutput
               ? -6.5
               : (source.minimumDecodedAudioPsnrDb ?? 60);
     const comparisonFilter = amrOutput
@@ -1835,6 +1846,12 @@ async function validateMediaOutput(
   ) {
     throw new Error("Browser Vorbis output did not probe as genuine Ogg.");
   }
+  if (
+    wmaOutput &&
+    !String(probe.format?.format_name ?? "").split(",").includes("asf")
+  ) {
+    throw new Error("Browser WMA output did not probe as genuine ASF.");
+  }
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
@@ -1991,6 +2008,9 @@ async function validateMediaOutput(
         Number(audio?.sample_rate) > 48000 ||
         Number(audio?.bit_rate) <= 0 ||
         Number(audio?.bit_rate) > 220000)) ||
+    (wmaOutput &&
+      (Number(audio?.sample_rate) !== 48000 ||
+        Number(audio?.bit_rate) !== 320000)) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
@@ -2177,8 +2197,7 @@ async function validateMediaOutput(
     route === "aac-to-m4a" ||
     route === "wav-to-alac" ||
     route === "flac-to-alac" ||
-    route === "wav-to-wma" ||
-    route === "flac-to-wma";
+    WMA_OUTPUT_PROFILES.includes(route);
   const outputHasAudio =
     audioOnly ||
     webmAudioCopy ||

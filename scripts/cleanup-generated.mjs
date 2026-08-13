@@ -54,6 +54,8 @@ const taskTempRoots = [
   path.resolve(workRoot, "vorbis-process-temp"),
   path.resolve(workRoot, "3gp-amr-npm-cache"),
   path.resolve(workRoot, "3gp-amr-process-temp"),
+  path.resolve(workRoot, "wma-output-npm-cache"),
+  path.resolve(workRoot, "wma-output-process-temp"),
 ];
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
@@ -79,6 +81,13 @@ const sevenZipExperimentRoots = [
   path.resolve(workRoot, "sevenzip-name-check-2"),
 ];
 const detachedProfileLogs = [
+  path.resolve(workRoot, "wma-output-audit-m4a-aac.wma"),
+  path.resolve(workRoot, "wma-output-audit-m4a-alac.wma"),
+  path.resolve(workRoot, "wma-output-audit-aac.wma"),
+  path.resolve(workRoot, "wma-output-audit-mp3.wma"),
+  path.resolve(workRoot, "wma-output-audit-aiff.wma"),
+  path.resolve(workRoot, "wma-output-audit-ogg.wma"),
+  path.resolve(workRoot, "wma-output-audit-opus.wma"),
   path.resolve(workRoot, "3gp-amr-audit.3gp"),
   path.resolve(workRoot, "3gp-amr-audit.aiff"),
   path.resolve(workRoot, "3gp-amr-audit.mp3"),

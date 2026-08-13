@@ -12,6 +12,7 @@ const jobs = [
     outputs: [
       "audio-aac-50m.m4a",
       "audio-mp3-50m.mp3",
+      "audio-mp3-wma-128m.mp3",
       "audio-pcm-192m.aiff",
     ],
     selectable: true,

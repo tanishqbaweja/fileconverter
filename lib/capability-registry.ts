@@ -606,6 +606,48 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
   };
 }
 
+type StandaloneWmaInput = "m4a" | "aac" | "mp3" | "aiff" | "ogg" | "opus";
+
+function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfile {
+  const inputDescription = {
+    m4a: "AAC or ALAC in M4A",
+    aac: "raw AAC-LC ADTS",
+    mp3: "MP3",
+    aiff: "signed 16-bit PCM AIFF",
+    ogg: "Ogg Vorbis",
+    opus: "Ogg Opus",
+  }[input];
+  return {
+    id: `${input}-to-wma`,
+    input,
+    output: "wma",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The pending certified input is ${inputDescription}; other codec variants require separate evidence.`,
+      "Only the first audio stream is converted; artwork, chapters, and container-only metadata are excluded.",
+      "Compatible text tags are copied into ASF where representable.",
+    ],
+    fidelityLimitations: [
+      "Audio is resampled to 48 kHz when needed and encoded as lossy WMA2 at 320 kbit/s; layouts above stereo are downmixed to stereo.",
+      input === "aiff"
+        ? "Lossless PCM input becomes lossy WMA2."
+        : `WMA2 adds another lossy generation to ${inputDescription}${input === "m4a" ? " when its codec is AAC; ALAC input becomes lossy" : ""}.`,
+    ],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -4289,6 +4331,12 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     automatedTestStatus: "passed",
     public: true,
   },
+  standaloneWmaOutputProfile("m4a"),
+  standaloneWmaOutputProfile("aac"),
+  standaloneWmaOutputProfile("mp3"),
+  standaloneWmaOutputProfile("aiff"),
+  standaloneWmaOutputProfile("ogg"),
+  standaloneWmaOutputProfile("opus"),
   {
     id: "amr-to-wav",
     input: "amr",

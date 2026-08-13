@@ -134,6 +134,16 @@ const VORBIS_OUTPUT_PROFILES = new Set([
   "aiff-to-ogg",
   "opus-to-ogg",
 ]);
+const WMA_OUTPUT_PROFILES = new Set([
+  "m4a-to-wma",
+  "aac-to-wma",
+  "mp3-to-wma",
+  "aiff-to-wma",
+  "ogg-to-wma",
+  "opus-to-wma",
+  "wav-to-wma",
+  "flac-to-wma",
+]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
   "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
@@ -3058,8 +3068,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "opus-to-flac" ||
         profileId === "wav-to-alac" ||
         profileId === "flac-to-alac" ||
-        profileId === "wav-to-wma" ||
-        profileId === "flac-to-wma" ||
+        WMA_OUTPUT_PROFILES.has(profileId) ||
         AIFF_OUTPUT_PROFILES.has(profileId) ||
         AMR_OUTPUT_PROFILES.has(profileId) ||
         MP3_OUTPUT_PROFILES.has(profileId) ||
@@ -3709,8 +3718,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "opus-to-flac" ||
       profileId === "wav-to-alac" ||
       profileId === "flac-to-alac" ||
-      profileId === "wav-to-wma" ||
-      profileId === "flac-to-wma" ||
+      WMA_OUTPUT_PROFILES.has(profileId) ||
       AIFF_OUTPUT_PROFILES.has(profileId) ||
       AMR_OUTPUT_PROFILES.has(profileId) ||
       MP3_OUTPUT_PROFILES.has(profileId) ||
@@ -3866,8 +3874,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             : profileId === "wav-to-alac" ||
                 profileId === "flac-to-alac"
               ? 8
-            : profileId === "wav-to-wma" ||
-                profileId === "flac-to-wma"
+            : WMA_OUTPUT_PROFILES.has(profileId)
               ? 9
             : AIFF_OUTPUT_PROFILES.has(profileId)
               ? 28

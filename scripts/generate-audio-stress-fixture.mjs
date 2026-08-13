@@ -28,6 +28,13 @@ const fixtures = [
     losslessPcmReference: false,
   },
   {
+    name: "audio-mp3-wma-128m.mp3",
+    durationSeconds: 3_400,
+    source: "sine=frequency=997:sample_rate=48000",
+    codecArguments: ["-c:a", "libmp3lame", "-b:a", "320k"],
+    losslessPcmReference: false,
+  },
+  {
     name: "audio-flac-50m.flac",
     durationSeconds: 600,
     source:
