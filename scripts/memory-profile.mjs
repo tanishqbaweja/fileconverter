@@ -16,6 +16,7 @@ const fixturePath = path.resolve(
 );
 const profileId = process.argv[3] ?? "gzip-compress";
 const AIFF_OUTPUT_PROFILES = [
+  "3gp-to-aiff",
   "m4a-to-aiff",
   "aac-to-aiff",
   "amr-to-aiff",
@@ -38,6 +39,7 @@ const AMR_OUTPUT_PROFILES = [
   "opus-to-amr",
 ];
 const MP3_OUTPUT_PROFILES = [
+  "3gp-to-mp3",
   "m4a-to-mp3",
   "aac-to-mp3",
   "amr-to-mp3",
@@ -60,6 +62,7 @@ const AAC_OUTPUT_PROFILES = [
   "opus-to-aac",
 ];
 const OPUS_OUTPUT_PROFILES = [
+  "3gp-to-opus",
   "m4a-to-opus",
   "aac-to-opus",
   "amr-to-opus",
@@ -71,6 +74,7 @@ const OPUS_OUTPUT_PROFILES = [
   "ogg-to-opus",
 ];
 const VORBIS_OUTPUT_PROFILES = [
+  "3gp-to-ogg",
   "m4a-to-ogg",
   "aac-to-ogg",
   "amr-to-ogg",

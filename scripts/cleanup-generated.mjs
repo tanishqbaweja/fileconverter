@@ -52,6 +52,8 @@ const vorbisBenchmarkRoot = path.resolve(workRoot, "vorbis-benchmark");
 const taskTempRoots = [
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
+  path.resolve(workRoot, "3gp-amr-npm-cache"),
+  path.resolve(workRoot, "3gp-amr-process-temp"),
 ];
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "aiff-repro-build"),
@@ -77,6 +79,11 @@ const sevenZipExperimentRoots = [
   path.resolve(workRoot, "sevenzip-name-check-2"),
 ];
 const detachedProfileLogs = [
+  path.resolve(workRoot, "3gp-amr-audit.3gp"),
+  path.resolve(workRoot, "3gp-amr-audit.aiff"),
+  path.resolve(workRoot, "3gp-amr-audit.mp3"),
+  path.resolve(workRoot, "3gp-amr-audit.opus"),
+  path.resolve(workRoot, "3gp-amr-audit.ogg"),
   path.resolve(workRoot, "webm-profile-run.stdout.log"),
   path.resolve(workRoot, "webm-profile-run.stderr.log"),
   path.resolve(workRoot, "mp3-docker-build.stdout.log"),

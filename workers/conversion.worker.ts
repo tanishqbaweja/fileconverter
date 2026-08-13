@@ -65,6 +65,7 @@ const MAX_SVG_ELEMENTS = 10_000;
 const CANCELLATION_YIELD_BYTES = 1024 * 1024;
 const RESVG_WASM_URL = "/engines/svg/resvg.wasm";
 const AIFF_OUTPUT_PROFILES = new Set([
+  "3gp-to-aiff",
   "m4a-to-aiff",
   "aac-to-aiff",
   "amr-to-aiff",
@@ -87,6 +88,7 @@ const AMR_OUTPUT_PROFILES = new Set([
   "opus-to-amr",
 ]);
 const MP3_OUTPUT_PROFILES = new Set([
+  "3gp-to-mp3",
   "m4a-to-mp3",
   "aac-to-mp3",
   "amr-to-mp3",
@@ -109,6 +111,7 @@ const AAC_OUTPUT_PROFILES = new Set([
   "opus-to-aac",
 ]);
 const OPUS_OUTPUT_PROFILES = new Set([
+  "3gp-to-opus",
   "m4a-to-opus",
   "aac-to-opus",
   "amr-to-opus",
@@ -120,6 +123,7 @@ const OPUS_OUTPUT_PROFILES = new Set([
   "ogg-to-opus",
 ]);
 const VORBIS_OUTPUT_PROFILES = new Set([
+  "3gp-to-ogg",
   "m4a-to-ogg",
   "aac-to-ogg",
   "amr-to-ogg",

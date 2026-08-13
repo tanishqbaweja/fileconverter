@@ -552,6 +552,52 @@ function standaloneVorbisOutputProfile(
   };
 }
 
+type ThreeGpAmrOutput = "aiff" | "mp3" | "opus" | "ogg";
+
+function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
+  const outputDescription = {
+    aiff: "signed 16-bit big-endian PCM AIFF",
+    mp3: "128 kb/s mono MP3",
+    opus: "64 kb/s mono Opus in Ogg",
+    ogg: "quality-4 mono Vorbis in Ogg",
+  }[output];
+  const rateDescription = {
+    aiff: "the source 8 kHz sample rate",
+    mp3: "32 kHz for LAME compatibility",
+    opus: "the source 8 kHz rate internally; Ogg signals the standard 48 kHz Opus clock",
+    ogg: "the source 8 kHz sample rate",
+  }[output];
+  return {
+    id: `3gp-to-${output}`,
+    input: "3gp",
+    output,
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The pending certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
+      "Only the first audio stream is converted; video, subtitles, data, chapters, artwork, and additional streams are explicitly excluded.",
+      `Output is ${outputDescription}; compatible text tags are copied only where the destination can represent them.`,
+    ],
+    fidelityLimitations: [
+      output === "aiff"
+        ? "AMR-NB is decoded to signed 16-bit PCM; AIFF cannot restore information already discarded by the source voice codec."
+        : `AMR-NB is decoded and lossily encoded as ${outputDescription}; this cannot restore source information.`,
+      `The bounded encoder uses ${rateDescription} and one channel without unnecessary high-rate upsampling.`,
+    ],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -3933,6 +3979,10 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneVorbisOutputProfile("wma"),
   standaloneVorbisOutputProfile("aiff"),
   standaloneVorbisOutputProfile("opus"),
+  threeGpAmrOutputProfile("aiff"),
+  threeGpAmrOutputProfile("mp3"),
+  threeGpAmrOutputProfile("opus"),
+  threeGpAmrOutputProfile("ogg"),
   containerFlacProfile("mkv"),
   containerFlacProfile("mp4"),
   containerFlacProfile("mov"),

@@ -700,6 +700,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id)
       .sort(),
     [
+      "3gp-to-mp3",
       "aac-to-mp3",
       "aiff-to-mp3",
       "amr-to-mp3",
@@ -715,9 +716,13 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "mp3" && candidate.route === "re-encode",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+    const pending = profile.id === "3gp-to-mp3";
+    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
+    assert.equal(
+      pending ? profile.maxTestedBytes : profile.maxTestedBytes >= 128 * 1024 * 1024,
+      pending ? null : true,
+    );
+    assert.equal(publicProfilesFor(profile.input).includes(profile), !pending);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.deepEqual(
@@ -792,6 +797,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id)
       .sort(),
     [
+      "3gp-to-aiff",
       "aac-to-aiff",
       "amr-to-aiff",
       "flac-to-aiff",
@@ -811,12 +817,14 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "aiff",
   )) {
-    assert.equal(profile.automatedTestStatus, "passed");
-    assert.ok(profile.maxTestedBytes > 0);
-    assert.ok(
+    const pending = profile.id === "3gp-to-aiff";
+    assert.equal(profile.automatedTestStatus, pending ? "pending" : "passed");
+    assert.equal(pending ? profile.maxTestedBytes : profile.maxTestedBytes > 0, pending ? null : true);
+    assert.equal(
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
+      !pending,
     );
   }
   assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
@@ -888,6 +896,30 @@ test("compound archives and mainstream images are detected by filename", () => {
       (profile) => profile.id === "3gp-to-wav",
     ),
   );
+  const pendingThreeGpAmrRoutes = [
+    "3gp-to-aiff",
+    "3gp-to-mp3",
+    "3gp-to-opus",
+    "3gp-to-ogg",
+  ];
+  assert.deepEqual(
+    publicProfilesFor("3gp", true)
+      .filter((profile) => pendingThreeGpAmrRoutes.includes(profile.id))
+      .map((profile) => profile.id),
+    pendingThreeGpAmrRoutes,
+  );
+  for (const profileId of pendingThreeGpAmrRoutes) {
+    const profile = publicProfilesFor("3gp", true).find(
+      (candidate) => candidate.id === profileId,
+    );
+    assert.equal(profile?.automatedTestStatus, "pending");
+    assert.equal(profile?.maxTestedBytes, null);
+    assert.equal(profile?.public, false);
+    assert.equal(
+      publicProfilesFor("3gp").some((candidate) => candidate.id === profileId),
+      false,
+    );
+  }
   assert.deepEqual(
     publicProfilesFor("3gp", true)
       .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")

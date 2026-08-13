@@ -20,6 +20,20 @@ const resumeProfile = process.env.WITHIN_PROFILE_START ?? null;
 const endProfile = process.env.WITHIN_PROFILE_END ?? null;
 
 const categories = {
+  "3gp-amr": {
+    generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
+    profiles: [
+      ["3gp-to-wav", "audio-amr-nb-128m.3gp"],
+      ["3gp-to-flac", "audio-amr-nb-128m.3gp"],
+      ["3gp-to-aiff", "audio-amr-nb-128m.3gp"],
+      ["3gp-to-mp3", "audio-amr-nb-128m.3gp"],
+      ["3gp-to-opus", "audio-amr-nb-128m.3gp"],
+      ["3gp-to-ogg", "audio-amr-nb-128m.3gp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "vorbis-output": {
     generator: "scripts/generate-mp3-output-stress-fixtures.mjs",
     generatorArguments: [

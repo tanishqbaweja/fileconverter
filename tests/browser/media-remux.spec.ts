@@ -148,6 +148,14 @@ const vorbisTranscodeOutputPaths = {
   aiff: path.join(outputRoot, "aiff-convert-output.ogg"),
   opus: path.join(outputRoot, "opus-convert-output.ogg"),
 } as const;
+const threeGpAmrOutputPaths = {
+  wav: path.join(outputRoot, "3gp-amr-convert-output.wav"),
+  flac: path.join(outputRoot, "3gp-amr-convert-output.flac"),
+  aiff: path.join(outputRoot, "3gp-amr-convert-output.aiff"),
+  mp3: path.join(outputRoot, "3gp-amr-convert-output.mp3"),
+  opus: path.join(outputRoot, "3gp-amr-convert-output.opus"),
+  ogg: path.join(outputRoot, "3gp-amr-convert-output.ogg"),
+} as const;
 const mpeg4OutputPath = path.join(outputRoot, "reencode-output.mp4");
 const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
@@ -362,6 +370,11 @@ const amrFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.amr",
+);
+const threeGpAmrFixturePath = path.join(
+  projectRoot,
+  "work",
+  "audio-amr-source.3gp",
 );
 const aacFixturePath = path.join(
   projectRoot,
@@ -768,6 +781,10 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(vorbisTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(threeGpAmrOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  assertProjectLocal(threeGpAmrFixturePath);
   assertProjectLocal(mp4WebmOutputPath);
   assertProjectLocal(mp4Vp9WebmOutputPath);
   assertProjectLocal(movWebmOutputPath);
@@ -841,6 +858,7 @@ test.beforeAll(async () => {
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -855,6 +873,25 @@ test.beforeAll(async () => {
   }
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-y",
+      "-i",
+      amrFixturePath,
+      "-map",
+      "0:a:0",
+      "-c:a",
+      "copy",
+      "-f",
+      "3gp",
+      threeGpAmrFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
   await copyFile(complexFixturePath, complexMatroskaAsWebmFixturePath);
   await writeFile(
     corruptFixturePath,
@@ -1174,6 +1211,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(vorbisTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(threeGpAmrOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   await rm(mpeg4OutputPath, { force: true });
   await rm(webmOutputPath, { force: true });
   await rm(ogvWebmOutputPath, { force: true });
@@ -1246,6 +1286,7 @@ test.afterAll(async () => {
   await rm(mp4InputFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -1388,6 +1429,10 @@ async function runMediaRoute(
     | "mp4-to-aac"
     | "mov-to-aac"
     | "3gp-to-aac"
+    | "3gp-to-aiff"
+    | "3gp-to-mp3"
+    | "3gp-to-opus"
+    | "3gp-to-ogg"
     | "mpeg-ts-to-aac"
     | "flv-to-aac"
     | "mkv-to-ogg"
@@ -2414,6 +2459,10 @@ for (const route of [
   ["wma-to-ogg", wmaFixturePath],
   ["aiff-to-ogg", aiffFixturePath],
   ["opus-to-ogg", opusFixturePath],
+  ["3gp-to-aiff", threeGpAmrFixturePath],
+  ["3gp-to-mp3", threeGpAmrFixturePath],
+  ["3gp-to-opus", threeGpAmrFixturePath],
+  ["3gp-to-ogg", threeGpAmrFixturePath],
   ["mkv-to-ogg", incompatibleFixturePath],
   ["webm-to-ogg", av1VorbisWebmFixturePath],
   ["ogv-to-ogg", ogvFixturePath],
@@ -2442,7 +2491,9 @@ for (const route of [
   ["ogv-to-flac", ogvFixturePath],
 ] as const) {
   const standaloneAudioMarker =
-      /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
+      /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
+      ? "[3gp-amr] "
+      : /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
       ? "[standalone-aac] "
       : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(route[0])
         ? "[standalone-opus] "
@@ -3556,6 +3607,63 @@ test("[standalone-vorbis] browser FFmpeg encodes ALAC M4A as genuine Vorbis", as
     },
   );
 });
+
+const threeGpAmrOutputRoutes = [
+  ["3gp-to-wav", "wav", "pcm_s16le"],
+  ["3gp-to-flac", "flac", "flac"],
+  ["3gp-to-aiff", "aiff", "pcm_s16be"],
+  ["3gp-to-mp3", "mp3", "mp3"],
+  ["3gp-to-opus", "opus", "opus"],
+  ["3gp-to-ogg", "ogg", "vorbis"],
+] as const;
+
+for (const [route, output, codec] of threeGpAmrOutputRoutes) {
+  test(`[3gp-amr] browser FFmpeg converts AMR-NB in 3GP to ${output.toUpperCase()}`, async () => {
+    await runMediaRoute(
+      route,
+      threeGpAmrOutputPaths[output],
+      [codec],
+      1_000,
+      threeGpAmrFixturePath,
+      {
+        expectedDurationSeconds: 4.02,
+        durationToleranceSeconds: 0.3,
+        expectedWarningFragments: [],
+        validate: async (probe, outputPath) => {
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(Number(audio?.channels)).toBe(1);
+          if (output === "wav") {
+            expect(String(probe.format.format_name).split(",")).toContain("wav");
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+          } else if (output === "flac") {
+            expect(String(probe.format.format_name).split(",")).toContain("flac");
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+          } else if (output === "aiff") {
+            expect(String(probe.format.format_name).split(",")).toContain("aiff");
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+          } else if (output === "mp3") {
+            expect(String(probe.format.format_name).split(",")).toContain("mp3");
+            expect(Number(audio?.sample_rate)).toBe(32_000);
+            await expectMp3TranscodeQuality(threeGpAmrFixturePath, outputPath);
+          } else if (output === "opus") {
+            expect(String(probe.format.format_name).split(",")).toContain("ogg");
+            expect(Number(audio?.sample_rate)).toBe(48_000);
+            await expectOpusTranscodeQuality(threeGpAmrFixturePath, outputPath);
+          } else {
+            expect(String(probe.format.format_name).split(",")).toContain("ogg");
+            expect(Number(audio?.sample_rate)).toBe(8_000);
+            await expectOpusTranscodeQuality(threeGpAmrFixturePath, outputPath);
+          }
+        },
+      },
+    );
+  });
+}
 
 test("browser FFmpeg performs a genuine bounded video re-encode", async () => {
   await runMediaRoute(
