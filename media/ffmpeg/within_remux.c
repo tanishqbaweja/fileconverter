@@ -357,7 +357,7 @@ static int stream_is_supported(const AVStream *stream, int profile) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO;
   }
   return profile == 2 || profile == 18 || profile == 19 || profile == 20 ||
-                 profile == 21
+                 profile == 21 || profile == 35
              ? stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO
              : (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
                 stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO);
@@ -469,6 +469,10 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 21) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_OPUS;
+  }
+  if (profile == 35) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_AMR_NB;
   }
   const int avi_input =
       format->iformat && format->iformat->name &&
@@ -831,7 +835,8 @@ static int within_audio_transcode(int profile) {
   const int aiff_output = profile == 28;
   const int amr_output = profile == 29;
   const int mp3_output = profile == 30;
-  const int aac_output = profile == 31;
+  const int m4a_aac_output = profile == 34;
+  const int aac_output = profile == 31 || m4a_aac_output;
   const int opus_output = profile == 32;
   const int vorbis_output = profile == 33;
   int result = 0;
@@ -992,6 +997,9 @@ static int within_audio_transcode(int profile) {
                                ? 32000
                                : decoder->sample_rate <= 44100 ? 44100 : 48000;
   } else if (aac_output) {
+    if (m4a_aac_output) {
+      encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+    }
     encoder->sample_rate =
         decoder->sample_rate <= 8000
             ? 8000
@@ -1111,8 +1119,9 @@ static int within_audio_transcode(int profile) {
       &output_format, NULL,
       wma_output
           ? "asf"
-          : aac_output
-                ? "adts"
+          : m4a_aac_output
+                ? "ipod"
+          : aac_output ? "adts"
           : opus_output || vorbis_output
                 ? "ogg"
           : mp3_output
@@ -1158,7 +1167,7 @@ static int within_audio_transcode(int profile) {
   if (opus_output || vorbis_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
-  if (alac_output) {
+  if (alac_output || m4a_aac_output) {
     av_dict_set(&muxer_options, "movflags",
                 "empty_moov+default_base_moof", 0);
     av_dict_set(&muxer_options, "frag_duration", "5000000", 0);
@@ -1912,7 +1921,7 @@ int within_remux(int profile) {
 
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
       profile == 28 || profile == 29 || profile == 30 || profile == 31 ||
-      profile == 32 || profile == 33) {
+      profile == 32 || profile == 33 || profile == 34) {
     return within_audio_transcode(profile);
   }
   if (profile == 4) {
@@ -1934,7 +1943,7 @@ int within_remux(int profile) {
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&
       profile != 18 && profile != 19 && profile != 20 && profile != 21 &&
       profile != 22 && profile != 23 && profile != 24 && profile != 25 &&
-      profile != 26 && profile != 27) {
+       profile != 26 && profile != 27 && profile != 35) {
     within_message(2, "Unknown remux profile.");
     return AVERROR(EINVAL);
   }
@@ -1981,7 +1990,8 @@ int within_remux(int profile) {
       input_format->iformat->name &&
       strstr(input_format->iformat->name, "avi") == NULL;
   const int audio_extraction_output =
-      profile == 18 || profile == 19 || profile == 20 || profile == 21;
+      profile == 18 || profile == 19 || profile == 20 || profile == 21 ||
+      profile == 35;
   const int elementary_audio_input_requires_probe =
       (profile == 18 || profile == 19) && input_format->iformat &&
       input_format->iformat->name &&
@@ -2037,6 +2047,7 @@ int within_remux(int profile) {
   const int aac_output = profile == 19;
   const int vorbis_output = profile == 20;
   const int opus_output = profile == 21;
+  const int amr_copy_output = profile == 35;
   const int hevc_output = profile == 22;
   const int ogg_audio_output = vorbis_output || opus_output;
   const int elementary_output =
@@ -2074,7 +2085,8 @@ int within_remux(int profile) {
                                  : mp3_output             ? "MP3"
                                  : aac_output             ? "AAC"
                                  : vorbis_output          ? "Ogg Vorbis"
-                                 : opus_output            ? "Ogg Opus"
+                                  : opus_output            ? "Ogg Opus"
+                                  : amr_copy_output        ? "AMR-NB"
                                                           : "MP4";
   const char *muxer_name = h264_output
                                ? "h264"
@@ -2090,7 +2102,8 @@ int within_remux(int profile) {
                                : av1_webm_output        ? "webm"
                                : mp3_output             ? "mp3"
                                : aac_output             ? "adts"
-                               : ogg_audio_output       ? "ogg"
+                                : ogg_audio_output       ? "ogg"
+                                : amr_copy_output        ? "amr"
                                                         : "mp4";
   if (video_only_output || av1_webm_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
@@ -2122,7 +2135,8 @@ int within_remux(int profile) {
         mp3_output      ? AV_CODEC_ID_MP3
         : aac_output    ? AV_CODEC_ID_AAC
         : vorbis_output ? AV_CODEC_ID_VORBIS
-                        : AV_CODEC_ID_OPUS;
+        : opus_output   ? AV_CODEC_ID_OPUS
+                        : AV_CODEC_ID_AMR_NB;
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
       if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
@@ -2137,8 +2151,9 @@ int within_remux(int profile) {
                "No %s audio stream was found; this lossless extraction profile does not re-encode other audio codecs.",
                mp3_output      ? "MP3"
                : aac_output    ? "AAC"
-               : vorbis_output ? "Vorbis"
-                               : "Opus");
+                : vorbis_output ? "Vorbis"
+                : opus_output   ? "Opus"
+                                : "AMR-NB");
       within_message(2, message);
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
@@ -2190,6 +2205,8 @@ int within_remux(int profile) {
             ? "Source chapters are explicitly excluded from this raw AAC extraction profile."
         : ogg_audio_output
             ? "Source chapters are explicitly excluded from this Ogg audio extraction profile."
+        : amr_copy_output
+            ? "Source chapters are explicitly excluded from this raw AMR-NB extraction profile."
             : "Source chapters are explicitly excluded from this MP4 remux profile.");
   }
   result = avformat_alloc_output_context2(
@@ -2236,6 +2253,8 @@ int within_remux(int profile) {
             ? (int)index == audio_stream_index
         : ogg_audio_output
             ? (int)index == audio_stream_index
+        : amr_copy_output
+            ? (int)index == audio_stream_index
         : container_flv_output
             ? (int)index == video_stream_index ||
                   (int)index == audio_stream_index
@@ -2278,6 +2297,10 @@ int within_remux(int profile) {
             "Lossless M4A stream copy accepts AAC audio. This source "
             "audio codec needs a bounded re-encoding route that is not "
             "installed.");
+      } else if (amr_copy_output) {
+        within_message(
+            2,
+            "Lossless AMR extraction accepts AMR-NB audio. This source audio codec needs a separately verified conversion route.");
       } else {
         within_message(
             2,
@@ -2312,6 +2335,8 @@ int within_remux(int profile) {
                 ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
             : ogg_audio_output
                 ? "The source attached picture is explicitly excluded from this Ogg audio extraction profile."
+            : amr_copy_output
+                ? "The source attached picture is explicitly excluded from this raw AMR-NB extraction profile."
             : matroska_output
                 ? "The source attached picture is explicitly excluded from this Matroska stream-copy profile."
             : av1_webm_output
@@ -2376,6 +2401,16 @@ int within_remux(int profile) {
             vorbis_output
                 ? "Only the first compatible Vorbis audio stream is extracted; an additional or incompatible audio stream was explicitly excluded."
                 : "Only the first compatible Opus audio stream is extracted; an additional or incompatible audio stream was explicitly excluded.");
+      } else if (amr_copy_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        within_message(
+            1,
+            "The source video stream is explicitly excluded from the audio-only raw AMR-NB output.");
+      } else if (amr_copy_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(
+            1,
+            "Only the first compatible AMR-NB audio stream is extracted; an additional or incompatible audio stream was explicitly excluded.");
       } else if (container_flv_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -2405,6 +2440,8 @@ int within_remux(int profile) {
                   ? "The source subtitle stream is explicitly excluded from this raw AAC extraction profile."
                 : ogg_audio_output
                   ? "The source subtitle stream is explicitly excluded from this Ogg audio extraction profile."
+                : amr_copy_output
+                  ? "The source subtitle stream is explicitly excluded from this raw AMR-NB extraction profile."
                 : "The source subtitle stream cannot be stream-copied by this "
                   "profile and is explicitly excluded.");
       } else if (input_stream->codecpar->codec_type ==
@@ -2428,6 +2465,8 @@ int within_remux(int profile) {
                            ? "The source attachment is explicitly excluded from this raw AAC extraction profile."
                        : ogg_audio_output
                            ? "The source attachment is explicitly excluded from this Ogg audio extraction profile."
+                       : amr_copy_output
+                           ? "The source attachment is explicitly excluded from this raw AMR-NB extraction profile."
                            : "The source attachment cannot be represented by this MP4 profile and is explicitly excluded.");
       } else if (video_only_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -2454,6 +2493,8 @@ int within_remux(int profile) {
                   ? "A source stream type unsupported by this raw AAC extraction profile was explicitly excluded."
                 : ogg_audio_output
                   ? "A source stream type unsupported by this Ogg audio extraction profile was explicitly excluded."
+                : amr_copy_output
+                  ? "A source stream type unsupported by this raw AMR-NB extraction profile was explicitly excluded."
                 : matroska_output
                   ? "A source stream type unsupported by this Matroska profile was explicitly excluded."
                   : "A source stream type unsupported by MP4 was explicitly excluded.");

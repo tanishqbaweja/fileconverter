@@ -131,6 +131,11 @@ const AAC_OUTPUT_PROFILES = new Set([
   "ogg-to-aac",
   "opus-to-aac",
 ]);
+const M4A_TRANSCODE_OUTPUT_PROFILES = new Set([
+  "avi-to-m4a",
+  "ogv-to-m4a",
+  "webm-to-m4a",
+]);
 const OPUS_OUTPUT_PROFILES = new Set([
   "mp4-to-opus",
   "mov-to-opus",
@@ -3118,6 +3123,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         AAC_OUTPUT_PROFILES.has(profileId) ||
         OPUS_OUTPUT_PROFILES.has(profileId) ||
         VORBIS_OUTPUT_PROFILES.has(profileId) ||
+        M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId) ||
+        profileId === "3gp-to-amr" ||
         profileId === "mkv-to-webm" ||
         profileId === "3gp-to-webm" ||
         profileId === "mpeg-ts-to-webm" ||
@@ -3770,6 +3777,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       AAC_OUTPUT_PROFILES.has(profileId) ||
       OPUS_OUTPUT_PROFILES.has(profileId) ||
       VORBIS_OUTPUT_PROFILES.has(profileId) ||
+      M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId) ||
+      profileId === "3gp-to-amr" ||
       profileId === "mp4-to-webm" ||
       profileId === "mov-to-webm" ||
       profileId === "mkv-to-webm" ||
@@ -3935,6 +3944,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
               ? 32
             : VORBIS_OUTPUT_PROFILES.has(profileId)
               ? 33
+            : M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId)
+              ? 34
+            : profileId === "3gp-to-amr"
+              ? 35
             : profileId === "mp4-to-webm" ||
                 profileId === "mov-to-webm" ||
                 profileId === "mkv-to-webm" ||

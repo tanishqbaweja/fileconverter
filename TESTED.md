@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **350**
-- Public profiles with a retained successful Chrome stress report: **350**
+- Public passed conversion profiles: **354**
+- Public profiles with a retained successful Chrome stress report: **354**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -85,6 +85,10 @@ This is the living progress record. It is regenerated after each test/profile cy
 - **Container Opus duration-harness correction:** the first broad marker also reran six established packet-copy failure cases and otherwise passed 29/30. OGV-to-Opus produced a valid 4.0065-second Ogg Opus timeline because codec delay is represented in the Opus container; comparing it to the 3.84-second Vorbis timeline missed the generic 0.15-second tolerance by 0.0165 seconds. The corrected check uses a tighter 4.00 +/- 0.02-second Opus boundary, and the marker now selects only the twelve new routes. No codec, quality, memory, or destination constraint changed.
 - **Fast bounded container Opus/Vorbis/MP3 output:** MP4, MOV, MPEG-TS, FLV, AVI, and OGV-to-Opus passed 3/3 Chrome runs on 137,218,662-159,500,442-byte sources in 1.12-5.00 seconds at 203.1-231.6 MiB worst incremental private memory. MP4, MOV, MPEG-TS, FLV, and AVI-to-Vorbis passed in 1.46-2.41 seconds at 199.1-209.0 MiB; OGV-to-MP3 passed in 7.40-7.52 seconds at 176.5 MiB. All 36 outputs were byte-repeatable, independently probed, fully decoded, and ASDR validated. Every route retained 262,144-byte maximum reads, at most 9,226-byte writes/queueing, one pending operation, one worker, and 32 MiB Wasm, then deleted its converted copy.
 - **2026-08-13 container lossy-audio milestone verification:** the registry publishes 350 passed routes. Twelve routes completed 36/36 three-run Chrome stress conversions; the pre-promotion and post-promotion focused gates each passed 24/24, with the latter completing in 26.1 seconds. Unit tests passed 26/26; TypeScript, ESLint, the production build, native 12/12 feasibility, and exact unique 248-route manifest/build-source synchronization passed. The protected fixture remained SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`; every large source/output was deleted and only `work/.gitkeep` remains. OGV-to-AMR remains hidden on its retained quality failure. The full aggregate and two-export Docker reproducibility checks remain deliberately deferred until the system drive has safer headroom.
+- **Container M4A/AMR native feasibility:** direct native FFmpeg produced genuine outputs for AVI/MP3-to-M4A, OGV/Vorbis-to-M4A, WebM/Opus-to-M4A, and 3GP/AMR-NB-to-AMR in 0.18-0.24 seconds on focused fixtures. The three M4A outputs were AAC-LC, fully decoded, and cleared the unchanged -6.5 dB ASDR floor; raw AMR retained exact compressed packets. Every native audit file stayed under `work` and was deleted after validation.
+- **Container M4A/AMR focused corrections:** the first 6/8 browser gate found only harness issues: OGV M4A correctly represented AAC codec delay as 4.021333 seconds, and the AMR fixture initially lacked video needed to exercise the exclusion warning. A real video-plus-AMR 3GP then exposed an inaccurate generic MP4 warning, which was fixed in the production core. The final fixture contains 4.108375 seconds of AMR packets rather than an assumed 4.000 seconds; the corrected 0.02-second assertion remains backed by exact packet identity. The rebuilt final gate passed 8/8, including four forced-write failures with zero partial outputs.
+- **Fast bounded container M4A/AMR completion:** AVI/MP3-to-fragmented-M4A passed 3/3 Chrome runs on 159,500,442 bytes in 1.83-2.22 seconds at 228.4 MiB worst incremental private memory; OGV/Vorbis-to-M4A passed on 137,218,662 bytes in 18.74-19.57 seconds at 181.6 MiB; WebM/Opus-to-M4A passed on 222,941,314 bytes in 3.82-4.39 seconds at 229.5 MiB; and 3GP/AMR-NB packet extraction passed on 156,907,373 bytes in 2.56-2.73 seconds at 205.4 MiB. All twelve outputs were byte-repeatable; M4A was genuine AAC-LC, fully decoded, and ASDR-validated at -2.32773 to -3.89368 dB, while AMR retained exact packet SHA-256 `58dd33d84cf11ed7fa656584d9a327b84d40a88a4cecc9c85a8eb01eb57e56bb`. Reads stayed at 262,144 bytes, writes/queueing at or below 75,641 bytes, one operation was pending, one worker and 32 MiB Wasm were used, and category cleanup deleted every large source and converted copy.
+- **2026-08-13 container M4A/AMR milestone verification:** the registry publishes 354 passed routes. Four routes completed 12/12 three-run Chrome stress conversions, and the post-promotion focused gate passed 8/8 in 13.0 seconds. Unit tests passed 26/26; TypeScript, ESLint, the production build, and exact unique 252-route manifest/build-source synchronization passed. A fresh cached filtered Docker export matched the published wrapper, Wasm SHA-256 `35CAD2E39A229C92089CF51A22225E6BD0EC4817C0928FEDA3FC461AF34AAC50`, and manifest semantically. The protected fixture remained SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`. Cleanup deleted all three project-local build exports, browser artifacts, large stress sources, and converted copies; only `work/.gitkeep` remains and the disposable `output` tree contains zero files. The full aggregate and a second clean Docker export remain deliberately deferred while `C:` has only 3.04 GiB free.
 - **2026-08-13 container AIFF milestone verification:** the registry publishes 325 passed routes. Nine variants completed 27/27 three-run Chrome stress conversions; the pre-promotion and post-promotion focused gates each passed 17/17, with the latter completing in 19.2 seconds. Unit tests passed 26/26; TypeScript, ESLint, the production build, and exact unique 222-route manifest/build-source synchronization passed. The protected fixture remained byte-identical and all large media/output copies were deleted. The full aggregate and two-export Docker reproducibility checks remain deliberately deferred until the system drive has safer headroom.
 - **2026-08-13 container WMA2 milestone verification:** the registry publishes 317 passed routes. Nine routes completed 27/27 three-run Chrome stress conversions; the pre-promotion and post-promotion focused gates each passed 18/18, with the latter completing in 20.5 seconds. Unit tests passed 26/26; TypeScript, ESLint, the production build, and exact 214-route manifest/build-source synchronization passed. The protected fixture remained byte-identical and all generated media/output copies were deleted. The full aggregate and two-export Docker reproducibility checks remain deliberately deferred until the system drive has safer headroom.
 - **2026-08-13 WMA2 milestone verification:** the registry publishes 308 passed routes. Seven codec variants completed 21/21 three-run Chrome stress conversions, the post-promotion focused gate passed 13/13, unit tests passed 26/26, and TypeScript, ESLint, and the production build passed. A fresh full 641-plus-case aggregate and two-export Docker reproducibility check remain deliberately unclaimed because the previous long suite expanded the Windows pagefile until the system drive was nearly exhausted; all WMA milestone media and converted copies are repository-local and deleted.
@@ -134,6 +138,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |
 | 3gp-to-aac | 146,854,456 | 3 | 1,037,649 | 0.42 s–0.77 s | 186.7 MiB | 32.0 MiB | read 262,144 B / write 478 B | passed |
 | 3gp-to-aiff | 146,854,456 | 3 | 6,242,390 | 1.06 s–1.34 s | 197.7 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
+| 3gp-to-amr | 156,907,373 | 3 | 1,152,006 | 2.56 s–2.73 s | 205.4 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | 3gp-to-flac | 156,907,373 | 3 | 6,525,834 | 2.79 s–2.98 s | 194.3 MiB | 32.0 MiB | read 262,144 B / write 8,367 B | passed |
 | 3gp-to-flv | 146,854,522 | 3 | 146,903,508 | 1.09 s–1.40 s | 173.5 MiB | 32.0 MiB | read 262,144 B / write 115,489 B | passed |
 | 3gp-to-h264 | 146,854,456 | 3 | 145,801,019 | 1.61 s–2.00 s | 212.8 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
@@ -180,6 +185,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avi-to-amr | 159,500,442 | 3 | 103,814 | 1.75 s–2.20 s | 209.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | avi-to-flac | 159,500,442 | 3 | 1,017,396 | 1.26 s–1.60 s | 223.3 MiB | 32.0 MiB | read 262,144 B / write 8,316 B | passed |
 | avi-to-m2v | 136,465,056 | 3 | 136,166,136 | 1.76 s–2.03 s | 206.2 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
+| avi-to-m4a | 159,500,442 | 3 | 974,001 | 1.83 s–2.22 s | 228.4 MiB | 32.0 MiB | read 262,144 B / write 75,641 B | passed |
 | avi-to-m4v | 179,650,578 | 3 | 179,609,473 | 1.74 s–1.98 s | 201.9 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
 | avi-to-mkv | 159,500,442 | 3 | 159,424,026 | 0.95 s–1.25 s | 166.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mp3 | 182,803,272 | 3 | 1,441,205 | 1.25 s–1.51 s | 214.9 MiB | 32.0 MiB | read 262,144 B / write 629 B | passed |
@@ -380,6 +386,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ogv-to-aac | 137,218,662 | 3 | 2,626,674 | 21.10 s–21.68 s | 170.5 MiB | 32.0 MiB | read 262,144 B / write 540 B | passed |
 | ogv-to-aiff | 137,218,662 | 3 | 74,880,054 | 2.10 s–2.61 s | 207.4 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | ogv-to-flac | 137,218,662 | 3 | 10,205,021 | 3.39 s–3.75 s | 213.1 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| ogv-to-m4a | 137,218,662 | 3 | 2,538,107 | 18.74 s–19.57 s | 181.6 MiB | 32.0 MiB | read 262,144 B / write 17,011 B | passed |
 | ogv-to-mkv | 137,218,662 | 3 | 136,874,076 | 1.26 s–1.67 s | 167.4 MiB | 32.0 MiB | read 262,144 B / write 100,120 B | passed |
 | ogv-to-mp3 | 137,218,662 | 3 | 12,480,813 | 7.40 s–7.52 s | 176.5 MiB | 32.0 MiB | read 262,144 B / write 429 B | passed |
 | ogv-to-ogg | 137,218,662 | 3 | 1,346,492 | 0.56 s–0.93 s | 202.4 MiB | 32.0 MiB | read 262,144 B / write 3,502 B | passed |
@@ -453,6 +460,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webm-to-aiff | 222,941,314 | 3 | 5,760,054 | 1.46 s–1.70 s | 213.2 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | webm-to-amr | 222,941,314 | 3 | 96,038 | 2.10 s–2.29 s | 227.5 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | webm-to-flac | 222,941,314 | 3 | 888,268 | 1.66 s–1.91 s | 214.8 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| webm-to-m4a | 222,941,314 | 3 | 616,534 | 3.82 s–4.39 s | 229.5 MiB | 32.0 MiB | read 262,144 B / write 51,532 B | passed |
 | webm-to-mkv | 222,941,314 | 3 | 222,940,925 | 1.15 s–1.60 s | 178.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | webm-to-mp3 | 222,941,314 | 3 | 960,813 | 1.91 s–2.59 s | 227.0 MiB | 32.0 MiB | read 262,144 B / write 429 B | passed |
 | webm-to-ogg | 222,124,822 | 3 | 106,739 | 0.40 s–0.74 s | 185.0 MiB | 32.0 MiB | read 262,144 B / write 3,533 B | passed |
@@ -555,6 +563,7 @@ Stream ma |
 | --- | --- | --- | --- | ---: | --- |
 | 3gp-to-aac | video | ffmpeg-remux | stream-copy | 146,854,456 B | 3-run Chrome report |
 | 3gp-to-aiff | video | ffmpeg-audio | re-encode | 156,907,373 B | 3-run Chrome report |
+| 3gp-to-amr | video | ffmpeg-remux | stream-copy | 156,907,373 B | 3-run Chrome report |
 | 3gp-to-flac | video | ffmpeg-audio | re-encode | 156,907,373 B | 3-run Chrome report |
 | 3gp-to-flv | video | ffmpeg-remux | stream-copy | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,456 B | 3-run Chrome report |
@@ -601,6 +610,7 @@ Stream ma |
 | avi-to-amr | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-flac | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-m2v | video | ffmpeg-remux | stream-copy | 136,465,056 B | 3-run Chrome report |
+| avi-to-m4a | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-m4v | video | ffmpeg-remux | stream-copy | 179,650,578 B | 3-run Chrome report |
 | avi-to-mkv | video | ffmpeg-remux | stream-copy | 159,500,442 B | 3-run Chrome report |
 | avi-to-mp3 | video | ffmpeg-remux | stream-copy | 182,803,272 B | 3-run Chrome report |
@@ -801,6 +811,7 @@ Stream ma |
 | ogv-to-aac | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | ogv-to-aiff | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | ogv-to-flac | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
+| ogv-to-m4a | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | ogv-to-mkv | video | ffmpeg-remux | stream-copy | 137,218,662 B | 3-run Chrome report |
 | ogv-to-mp3 | video | ffmpeg-audio | re-encode | 137,218,662 B | 3-run Chrome report |
 | ogv-to-ogg | video | ffmpeg-remux | stream-copy | 137,218,662 B | 3-run Chrome report |
@@ -874,6 +885,7 @@ Stream ma |
 | webm-to-aiff | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-amr | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-flac | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
+| webm-to-m4a | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-mkv | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
 | webm-to-mp3 | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-ogg | video | ffmpeg-remux | stream-copy | 222,124,822 B | 3-run Chrome report |

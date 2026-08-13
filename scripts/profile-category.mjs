@@ -115,6 +115,19 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "container-m4a-amr": {
+    generator: "scripts/generate-container-m4a-amr-stress-fixtures.mjs",
+    passSelectedFixturesToGenerator: true,
+    profiles: [
+      ["avi-to-m4a", "mpeg4-mp3-webm-128m.avi"],
+      ["ogv-to-m4a", "theora-video-128m.ogv"],
+      ["webm-to-m4a", "av1-opus-128m.webm"],
+      ["3gp-to-amr", "audio-amr-nb-128m.3gp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "3gp-amr": {
     generator: "scripts/generate-3gp-amr-stress-fixture.mjs",
     profiles: [

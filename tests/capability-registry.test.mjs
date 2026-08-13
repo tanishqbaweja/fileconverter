@@ -338,6 +338,8 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "mp3-extract",
         "aac-extract",
         "ogg-audio-extract",
+        "m4a-aac-transcode",
+        "amr-extract",
       ],
     },
     {
@@ -652,6 +654,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id)
       .sort(),
     [
+      "3gp-to-amr",
       "aac-to-amr",
       "aiff-to-amr",
       "amr-to-aac",
@@ -764,6 +767,19 @@ test("compound archives and mainstream images are detected by filename", () => {
     ).length,
     certifiedContainerLossyRoutes.size,
   );
+  const certifiedContainerM4aRoutes = new Map([
+    ["avi-to-m4a", 159_500_442],
+    ["ogv-to-m4a", 137_218_662],
+    ["webm-to-m4a", 222_941_314],
+  ]);
+  for (const [profileId, testedBytes] of certifiedContainerM4aRoutes) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    assert.equal(profile?.route, "re-encode");
+    assert.equal(profile?.automatedTestStatus, "passed");
+    assert.equal(profile?.public, true);
+    assert.equal(profile?.maxTestedBytes, testedBytes);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
+  }
   assert.deepEqual(
     conversionProfiles
       .filter(
@@ -1037,11 +1053,19 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
   );
   const certifiedThreeGpAmrRoutes = [
+    "3gp-to-amr",
     "3gp-to-aiff",
     "3gp-to-mp3",
     "3gp-to-opus",
     "3gp-to-ogg",
   ];
+  const certifiedThreeGpAmrExtraction = conversionProfiles.find(
+    (profile) => profile.id === "3gp-to-amr",
+  );
+  assert.equal(certifiedThreeGpAmrExtraction?.route, "stream-copy");
+  assert.equal(certifiedThreeGpAmrExtraction?.automatedTestStatus, "passed");
+  assert.equal(certifiedThreeGpAmrExtraction?.public, true);
+  assert.equal(certifiedThreeGpAmrExtraction?.maxTestedBytes, 156_907_373);
   assert.deepEqual(
     publicProfilesFor("3gp", true)
       .filter((profile) => certifiedThreeGpAmrRoutes.includes(profile.id))

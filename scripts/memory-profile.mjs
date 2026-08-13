@@ -36,6 +36,7 @@ const AIFF_OUTPUT_PROFILES = [
   "webm-to-aiff",
 ];
 const AMR_OUTPUT_PROFILES = [
+  "3gp-to-amr",
   "webm-to-amr",
   "mkv-to-amr",
   "mp4-to-amr",
@@ -81,6 +82,11 @@ const AAC_OUTPUT_PROFILES = [
   "aiff-to-aac",
   "ogg-to-aac",
   "opus-to-aac",
+];
+const M4A_TRANSCODE_OUTPUT_PROFILES = [
+  "avi-to-m4a",
+  "ogv-to-m4a",
+  "webm-to-m4a",
 ];
 const OPUS_OUTPUT_PROFILES = [
   "mp4-to-opus",
@@ -269,6 +275,7 @@ if (
     ...AMR_OUTPUT_PROFILES,
     ...MP3_OUTPUT_PROFILES,
     ...AAC_OUTPUT_PROFILES,
+    ...M4A_TRANSCODE_OUTPUT_PROFILES,
     ...OPUS_OUTPUT_PROFILES,
     ...VORBIS_OUTPUT_PROFILES,
     "gzip-compress",
@@ -441,6 +448,7 @@ const isMediaProfile =
   AMR_OUTPUT_PROFILES.includes(profileId) ||
   MP3_OUTPUT_PROFILES.includes(profileId) ||
   AAC_OUTPUT_PROFILES.includes(profileId) ||
+  M4A_TRANSCODE_OUTPUT_PROFILES.includes(profileId) ||
   OPUS_OUTPUT_PROFILES.includes(profileId) ||
   VORBIS_OUTPUT_PROFILES.includes(profileId) ||
   WMA_OUTPUT_PROFILES.includes(profileId) ||
@@ -1204,7 +1212,9 @@ async function validateMediaOutput(
     route === "3gp-to-aac" ||
     route === "mpeg-ts-to-aac" ||
     route === "flv-to-aac";
-  const aacTranscodeOutput = AAC_OUTPUT_PROFILES.includes(route);
+  const m4aTranscodeOutput = M4A_TRANSCODE_OUTPUT_PROFILES.includes(route);
+  const aacTranscodeOutput =
+    AAC_OUTPUT_PROFILES.includes(route) || m4aTranscodeOutput;
   const aacOutput = aacPacketCopyOutput || aacTranscodeOutput;
   const oggPacketOutput =
     route === "mkv-to-ogg" ||
@@ -1233,6 +1243,7 @@ async function validateMediaOutput(
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "aac-to-m4a" ||
+    m4aTranscodeOutput ||
     route === "mkv-to-wav" ||
     route === "mov-to-wav" ||
     route === "3gp-to-wav" ||
@@ -1646,6 +1657,29 @@ async function validateMediaOutput(
       sha256: packetHashes[0],
     };
   }
+  if (route === "3gp-to-amr") {
+    const packetHashes = [];
+    for (const candidate of [sourcePath, localPath]) {
+      const { stdout: packetHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner", "-loglevel", "error", "-i", candidate,
+          "-map", "0:a:0", "-c:a", "copy", "-f", "hash",
+          "-hash", "sha256", "-",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      packetHashes.push(packetHash.trim().split("=")[1]);
+    }
+    if (!packetHashes[0] || packetHashes[0] !== packetHashes[1]) {
+      throw new Error("Browser AMR packets do not match the 3GP source payload.");
+    }
+    independentAudioValidation = {
+      method: "amr-packet-sha256",
+      passed: true,
+      sha256: packetHashes[0],
+    };
+  }
   if (mp3Output && !mp3TranscodeOutput) {
     const { stdout: packetHash } = await execFileAsync(
       "ffmpeg",
@@ -1879,9 +1913,15 @@ async function validateMediaOutput(
   }
   if (
     aacTranscodeOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("aac")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes(m4aTranscodeOutput ? "mov" : "aac")
   ) {
-    throw new Error("Browser AAC output did not probe as genuine AAC ADTS.");
+    throw new Error(
+      m4aTranscodeOutput
+        ? "Browser M4A output did not probe as genuine QuickTime/M4A."
+        : "Browser AAC output did not probe as genuine AAC ADTS.",
+    );
   }
   if (
     opusTranscodeOutput &&
@@ -2067,6 +2107,7 @@ async function validateMediaOutput(
       route === "flv-to-m4a" ||
       route === "mp4-to-m4a" ||
       route === "aac-to-m4a" ||
+      m4aTranscodeOutput ||
       route === "wav-to-alac" ||
       route === "flac-to-alac" ||
       oggPacketOutput ||
@@ -2244,6 +2285,7 @@ async function validateMediaOutput(
     route === "flv-to-m4a" ||
     route === "mp4-to-m4a" ||
     route === "aac-to-m4a" ||
+    m4aTranscodeOutput ||
     route === "wav-to-alac" ||
     route === "flac-to-alac" ||
     WMA_OUTPUT_PROFILES.includes(route);

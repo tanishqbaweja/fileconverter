@@ -478,6 +478,79 @@ function containerLossyAudioProfile(
   };
 }
 
+const containerM4aSourceCodec = {
+  avi: "MP3 in AVI",
+  ogv: "Vorbis in Ogg Video",
+  webm: "Opus in WebM",
+} as const;
+
+const containerM4aEvidence: Record<keyof typeof containerM4aSourceCodec, number> = {
+  avi: 159_500_442,
+  ogv: 137_218_662,
+  webm: 222_941_314,
+};
+
+function containerM4aProfile(
+  input: keyof typeof containerM4aSourceCodec,
+): ConversionProfile {
+  const evidence = containerM4aEvidence[input];
+  const sourceCodec = containerM4aSourceCodec[input];
+  return {
+    id: `${input}-to-m4a`,
+    input,
+    output: "m4a",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      "Compatible text tags are copied where M4A can represent them; source stream language and container-only fields may not be retained.",
+    ],
+    fidelityLimitations: [
+      `${sourceCodec} is decoded and lossily re-encoded as AAC-LC in fragmented M4A; this cannot restore source information.`,
+      "The fastest certified AAC coder settings preserve standard source rates through 48 kHz and encode at 128 kb/s mono or 192 kb/s stereo.",
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: "passed",
+    public: true,
+  };
+}
+
+const threeGpAmrExtractionProfile: ConversionProfile = {
+  id: "3gp-to-amr",
+  input: "3gp",
+  output: "amr",
+  engine: "ffmpeg-remux",
+  route: "stream-copy",
+  browserRequirements: [
+    "WebAssembly",
+    "SharedArrayBuffer",
+    "cross-origin isolation",
+    "File System Access",
+  ],
+  cpuClass: "low",
+  memoryClass: "bounded-low",
+  metadataLimitations: [
+    "The certified input combination uses AMR-NB audio in 3GP; AAC and other audio codecs require separately verified routes.",
+    "Only the first AMR-NB audio stream is copied; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container metadata are explicitly excluded.",
+    "Raw AMR-NB output cannot represent 3GP metadata or language tags.",
+  ],
+  fidelityLimitations: [
+    "Compressed 8 kHz mono AMR-NB packets are copied without decoding or re-encoding, so their encoded audio content is unchanged.",
+  ],
+  maxTestedBytes: 156_907_373,
+  automatedTestStatus: "passed",
+  public: true,
+};
+
 type WebmAudioOutput = "wav" | "flac" | "amr" | "mp3" | "aac";
 
 const webmAudioOutputEvidence: Record<WebmAudioOutput, number | null> = {
@@ -4384,6 +4457,10 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerLossyAudioProfile("flv", "ogg"),
   containerLossyAudioProfile("avi", "ogg"),
   containerLossyAudioProfile("ogv", "mp3"),
+  containerM4aProfile("avi"),
+  containerM4aProfile("ogv"),
+  containerM4aProfile("webm"),
+  threeGpAmrExtractionProfile,
   standaloneAmrOutputProfile("m4a"),
   standaloneAmrOutputProfile("aac"),
   standaloneAmrOutputProfile("mp3"),

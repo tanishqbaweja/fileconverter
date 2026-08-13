@@ -171,6 +171,15 @@ const containerLossyAudioOutputPaths = {
   "avi-to-ogg": path.join(outputRoot, "avi-convert-output.ogg"),
   "ogv-to-mp3": path.join(outputRoot, "ogv-convert-output.mp3"),
 } as const;
+const containerM4aOutputPaths = {
+  avi: path.join(outputRoot, "avi-convert-output.m4a"),
+  ogv: path.join(outputRoot, "ogv-convert-output.m4a"),
+  webm: path.join(outputRoot, "webm-convert-output.m4a"),
+} as const;
+const threeGpAmrExtractionOutputPath = path.join(
+  outputRoot,
+  "3gp-extract-output.amr",
+);
 const opusTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.opus"),
   aac: path.join(outputRoot, "aac-convert-output.opus"),
@@ -854,6 +863,10 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(containerLossyAudioOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerM4aOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  assertProjectLocal(threeGpAmrExtractionOutputPath);
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -966,11 +979,16 @@ test.beforeAll(async () => {
       "error",
       "-y",
       "-i",
+      threeGpInputFixturePath,
+      "-i",
       amrFixturePath,
       "-map",
-      "0:a:0",
-      "-c:a",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-c",
       "copy",
+      "-shortest",
       "-f",
       "3gp",
       threeGpAmrFixturePath,
@@ -1305,6 +1323,10 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(containerLossyAudioOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerM4aOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
+  await rm(threeGpAmrExtractionOutputPath, { force: true });
   for (const outputPath of Object.values(opusTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1587,6 +1609,10 @@ async function runMediaRoute(
     | "flv-to-m4a"
     | "mp4-to-m4a"
     | "aac-to-m4a"
+    | "avi-to-m4a"
+    | "ogv-to-m4a"
+    | "webm-to-m4a"
+    | "3gp-to-amr"
     | "mkv-to-wav"
     | "mov-to-wav"
     | "3gp-to-wav"
@@ -2662,6 +2688,10 @@ for (const route of [
   ["flv-to-ogg", flvInputFixturePath],
   ["avi-to-ogg", aviInputFixturePath],
   ["ogv-to-mp3", ogvFixturePath],
+  ["avi-to-m4a", aviInputFixturePath],
+  ["ogv-to-m4a", ogvFixturePath],
+  ["webm-to-m4a", av1OpusWebmFixturePath],
+  ["3gp-to-amr", threeGpAmrFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2717,6 +2747,8 @@ for (const route of [
           /^(?:mp4|mov|mpeg-ts|flv|avi)-to-ogg$/.test(route[0]) ||
           route[0] === "ogv-to-mp3"
         ? "[container-lossy-audio] "
+      : /^(?:avi|ogv|webm)-to-m4a$/.test(route[0]) || route[0] === "3gp-to-amr"
+        ? "[container-m4a-amr] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3919,6 +3951,65 @@ for (const [route, input, inputPath] of legacyContainerAacOutputRoutes) {
     );
   });
 }
+
+const containerM4aOutputRoutes = [
+  ["avi-to-m4a", "avi", aviInputFixturePath],
+  ["ogv-to-m4a", "ogv", ogvFixturePath],
+  ["webm-to-m4a", "webm", av1OpusWebmFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of containerM4aOutputRoutes) {
+  test(`[container-m4a-amr] browser FFmpeg converts ${input.toUpperCase()} audio to fragmented AAC M4A`, async () => {
+    await runMediaRoute(
+      route,
+      containerM4aOutputPaths[input],
+      ["aac"],
+      1_000,
+      inputPath,
+      {
+        expectedDurationSeconds: input === "ogv" ? 4.021333 : 4,
+        durationToleranceSeconds: input === "ogv" ? 0.02 : 0.12,
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("mov");
+          const audio = probe.streams.find(
+            (stream: { codec_type?: string }) => stream.codec_type === "audio",
+          );
+          expect(audio?.profile).toBe("LC");
+          expect(Number(audio?.channels)).toBe(1);
+          expect(Number(audio?.sample_rate)).toBe(48_000);
+          expect(Number(audio?.bit_rate)).toBeGreaterThan(0);
+          expect(Number(audio?.bit_rate)).toBeLessThanOrEqual(220_000);
+          await expectAacTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+test("[container-m4a-amr] browser FFmpeg losslessly extracts AMR-NB from 3GP", async () => {
+  await runMediaRoute(
+    "3gp-to-amr",
+    threeGpAmrExtractionOutputPath,
+    ["amr_nb"],
+    1_000,
+    threeGpAmrFixturePath,
+    {
+      expectedDurationSeconds: 4.108375,
+      durationToleranceSeconds: 0.02,
+      expectedWarningFragments: ["video stream"],
+      validate: async (probe, outputPath) => {
+        expect(String(probe.format.format_name).split(",")).toContain("amr");
+        const audio = probe.streams.find(
+          (stream: { codec_type?: string }) => stream.codec_type === "audio",
+        );
+        expect(Number(audio?.sample_rate)).toBe(8_000);
+        expect(Number(audio?.channels)).toBe(1);
+        await expectCompressedAudioPacketMatch(threeGpAmrFixturePath, outputPath);
+      },
+    },
+  );
+});
 
 const webmAudioOutputRoutes = [
   ["webm-to-wav", "wav", "pcm_s16le"],
