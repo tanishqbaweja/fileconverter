@@ -790,7 +790,8 @@ Current exact-build results:
 | MKV → VP9 WebM | 3 | 181,825,549 B | 65,122,757 B | 244.9 MiB | 88 MiB | 7.2–17.8 MiB |
 | MP4 → VP8 WebM | 3 | 147,136,619 B | 5,105,363 B | 226.9 MiB | 64 MiB | 11.4–14.3 MiB |
 | MP4 → VP9 WebM | 3 | 147,136,625 B | 4,143,084 B | 237.1 MiB | 64 MiB | 7.4–14.5 MiB |
-| MKV → MP4 scale | 1 clean session | 10,737,988,703 B | 10,746,764,426 B | 182.4 MiB | 49.4 MiB | −11.1 MiB |
+| MKV → MP4 scale (6 GiB) | 1 clean session | 6,443,020,778 B | 6,448,220,966 B | 194.8 MiB | 40 MiB | 6.1 MiB |
+| MKV → MP4 scale (10 GiB) | 1 clean session | 10,737,988,703 B | 10,746,764,442 B | 210.3 MiB | 40 MiB | −14.4 MiB |
 | MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
 | MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
 | MOV → WAV | 3 | 149,251,969 B | 414,733,404 B | 195.3 MiB | 32 MiB | 2.8–36.0 MiB |

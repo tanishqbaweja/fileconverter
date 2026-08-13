@@ -1840,6 +1840,15 @@ async function validateMediaOutput(
       audioSha256: hashes.get("a"),
     };
   }
+  const needsDecodedFrameCounts =
+    aacOutput ||
+    amrOutput ||
+    elementaryVideoOutput ||
+    av1WebmCopy ||
+    route === "avi-to-mkv";
+  // Packet-copy routes are validated by a full output hash, packet counts,
+  // metadata checks, and a complete copy traversal below. Decoding unchanged
+  // video solely to populate nb_read_frames adds hours at multi-GiB scale.
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -1848,7 +1857,7 @@ async function validateMediaOutput(
       "-show_format",
       "-show_streams",
       "-show_chapters",
-      "-count_frames",
+      ...(needsDecodedFrameCounts ? ["-count_frames"] : []),
       "-count_packets",
       "-of",
       "json",

@@ -177,7 +177,10 @@ export async function runMediaRemux({
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
   const synchronousFileReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
+  // Large MKV remuxes use one persistent BYOB stream. Repeated synchronous
+  // Blob slices make Chromium retain transient renderer buffers at scale.
   const synchronousInputReader =
+    remuxProfile === 1 ||
     (remuxProfile >= 19 && remuxProfile <= 21) ||
     remuxProfile === 23 ||
     remuxProfile === 24 ||

@@ -18,6 +18,9 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Active optimization log
 
+- **2026-08-13 multi-gigabyte MKV input diagnosis:** a genuine 6,443,020,778-byte MKV-to-MP4 browser run produced the correct 6,448,220,966-byte output in 96.24 seconds with bounded 256 KiB I/O, but repeated synchronous Blob slices drove incremental Chrome process-tree private memory to 371.9 MiB and failed the unchanged 250 MiB ceiling. The generated source and browser output were deleted after the compact result was recorded.
+- **Persistent BYOB scale fix:** MKV-to-MP4 now reuses one asynchronous BYOB byte stream for source reads. The same 6,443,020,778-byte fixture passed in 55.33 seconds at 194.8 MiB, and a valid 10,737,988,703-byte fixture passed in 92.85 seconds at 210.3 MiB. Both kept reads, writes, and peak queued output at 262,144 bytes, one pending write, and a fixed 40 MiB Wasm memory; full output SHA-256, all video/audio packet counts, metadata, complete packet traversal, and cleanup recovery passed. This is 42.5% faster on the controlled 6 GiB input while restoring compliance.
+- **Scale-validator optimization:** packet-copy profiles no longer decode every unchanged video frame merely to populate FFprobe frame counters. They still hash every output byte, count every packet, validate streams/metadata/duration, and perform a separate full packet-copy traversal. The 6 GiB end-to-end profiler fell from an estimated hour-scale validation path to 266 seconds without weakening the required whole-file checks.
 - **2026-08-12 standalone AAC baseline:** native FFmpeg 8.1.2 encoded the first 300 seconds of the protected HE-AAC source to 48 kHz stereo 192 kb/s AAC-LC ADTS with `aac_coder=fast` in 1.978 s (151.67x realtime, 7,189,807 bytes). The default `twoloop` coder took 5.058 s (59.31x realtime, 7,292,905 bytes), so `fast` was 2.56x quicker and slightly smaller. Independent ASDR measurements were -4.23181 dB for `fast` and -4.23055 dB for `twoloop`, a 0.00126 dB difference. The protected source remained SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`.
 - **Rejected validation attempt:** the first ASDR command trimmed the source inside the filter graph but did not bound the output, so FFmpeg continued decoding beyond the five-minute comparison window. It was terminated, replaced with an explicit 300-second output bound, and must not be repeated. Terminating the parent shell left one FFmpeg child holding the AAC output open; cleanup reported `EBUSY`, the exact orphan was identified by its repository-local command line and stopped, and the allowlisted cleanup then removed both outputs. All benchmark media is repository-local under `work/aac-benchmark`.
 - **Build-loop correction:** the first foreground Docker build outlived the command runner's timeout, and starting a logged replacement briefly created two identical clients. Their exact command lines were inspected, only the unlogged duplicate was stopped, and the remaining build completed from the shared cache. Future long engine builds must start once as a hidden logged process. A `.tmp.*` export left by the cancelled client is covered by the exact remux-engine cleanup rule.
@@ -491,6 +494,15 @@ This is the living progress record. It is regenerated after each test/profile cy
 | zip-to-tar-gz | 268,517,517 | 3 | 268,517,554 | 21.41 s–22.16 s | 194.5 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | zip-to-tar-xz | 268,517,517 | 3 | 268,449,796 | 55.77 s–56.03 s | 195.7 MiB | 48.0 MiB | read 262,144 B / write 65,536 B | passed |
 
+## Multi-gigabyte scaling evidence
+
+These clean-session runs use valid looped HEVC/AAC Matroska media generated from the protected real source. Payloads and browser copies are deleted after each report; only compact evidence remains.
+
+| Profile | Source bytes | Output bytes | Browser conversion | Incremental private memory | Peak Wasm | I/O bounds | Whole-file validation | Cleanup |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | --- | --- |
+| mkv-to-mp4 | 6,443,020,778 | 6,448,220,966 | 55.33 s | 194.8 MiB | 40.0 MiB | read 262,144 B / write 262,144 B / queued 262,144 B / 1 pending | SHA-256 + packet counts + full traversal | passed |
+| mkv-to-mp4 | 10,737,988,703 | 10,746,764,442 | 92.85 s | 210.3 MiB | 40.0 MiB | read 262,144 B / write 262,144 B / queued 262,144 B / 1 pending | SHA-256 + packet counts + full traversal | passed |
+
 ## Retained failure evidence
 
 These are historical failed attempts retained for diagnosis. A later passing report does not erase the failure or its measured boundary.
@@ -556,6 +568,7 @@ Stream ma |
 | 2026-08-13T07:33:29.594Z | m4a-to-wma | 134,807,097 | 0 | 134,807,097 | Browser media output size is outside the validated range: 303139894 bytes. |
 | 2026-08-13T07:44:26.940Z | aac-to-wma | 134,367,785 | 0 | 134,367,785 | Browser media metadata validation failed: audio-onlyxaudio-only, 2 channels, not-applicable, 4011.862s. |
 | 2026-08-13T09:50:34.230Z | ogv-to-amr | 137,218,662 | 0 | 137,218,662 | Browser decoded audio quality validation failed: -3.58873 dB. |
+| 2026-08-13T12:30:42.347Z | mkv-to-mp4 | 6,443,020,778 | 0 | 6,443,020,778 | Command failed: ffprobe -v error -show_format -show_streams -show_chapters -count_frames -count_packets -of json H:\Github Repositories\fileconverter\work\memory-profile-chrome\Def |
 
 ## Every public passed profile
 
