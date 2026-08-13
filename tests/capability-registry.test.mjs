@@ -686,9 +686,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "amr",
   )) {
-    const pendingContainerRoute = /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(
-      profile.id,
-    );
+    const pendingContainerRoute = profile.id === "ogv-to-amr";
     assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
     assert.equal(profile.public, !pendingContainerRoute);
     if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
@@ -764,12 +762,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "aac" && candidate.route === "re-encode",
   )) {
-    const pendingContainerRoute = /^(?:avi|ogv)-to-aac$/.test(profile.id);
-    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
-    assert.equal(profile.public, !pendingContainerRoute);
-    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
-    else assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), !pendingContainerRoute);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.equal(

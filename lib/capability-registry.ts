@@ -317,12 +317,12 @@ const containerAmrOutputEvidence: Record<
   ContainerAmrOutputInput,
   number | null
 > = {
-  mkv: null,
-  mp4: null,
-  mov: null,
-  "mpeg-ts": null,
-  flv: null,
-  avi: null,
+  mkv: 145_730_306,
+  mp4: 145_729_798,
+  mov: 145_729_853,
+  "mpeg-ts": 149_289_672,
+  flv: 145_778_223,
+  avi: 159_500_442,
   ogv: null,
 };
 
@@ -375,8 +375,8 @@ const legacyContainerAacOutputEvidence: Record<
   LegacyContainerAacOutputInput,
   number | null
 > = {
-  avi: null,
-  ogv: null,
+  avi: 159_500_442,
+  ogv: 137_218_662,
 };
 
 function legacyContainerAacOutputProfile(
