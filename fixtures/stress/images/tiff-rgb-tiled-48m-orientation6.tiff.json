@@ -1,0 +1,65 @@
+{
+  "generatedBy": "scripts/generate-tiff-stress-fixture.mjs",
+  "orientation": 6,
+  "bytes": 50338032,
+  "sha256": "5c19507bccb5755f99d4164a9b6db95a63aab7f0387d5313df913c4137312fc3",
+  "validationReference": "fixtures/stress/images/tiff-rgb-tiled-48m-orientation6-reference.png",
+  "validationReferenceBytes": 368824,
+  "validationReferenceSha256": "40d166c8d2bed4e82bf09d08f9ea035a3c6383260cc2ce0d6174b9d6f66661cd",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "tiff",
+        "codec_long_name": "TIFF image",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 2048,
+        "height": 8192,
+        "coded_width": 2048,
+        "coded_height": 8192,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "2048:8192",
+        "pix_fmt": "rgb24",
+        "level": -99,
+        "refs": 1,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/25",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\stress\\images\\tiff-rgb-tiled-48m-orientation6.tiff",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "tiff_pipe",
+      "format_long_name": "piped tiff sequence",
+      "size": "50338032",
+      "probe_score": 51
+    }
+  }
+}

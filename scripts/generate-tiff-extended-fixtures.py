@@ -69,6 +69,10 @@ for orientation, transformed in (
     (2, np.fliplr(rgb8)),
     (3, np.flipud(np.fliplr(rgb8))),
     (4, np.flipud(rgb8)),
+    (5, np.transpose(rgb8, (1, 0, 2))),
+    (6, np.rot90(rgb8, k=3)),
+    (7, np.flipud(np.fliplr(np.transpose(rgb8, (1, 0, 2))))),
+    (8, np.rot90(rgb8, k=1)),
 ):
     tifffile.imwrite(
         FIXTURES / f"test-pattern-orientation{orientation}.tiff",
@@ -115,14 +119,6 @@ for name, tile in (
         format="PNG",
         compress_level=9,
     )
-tifffile.imwrite(
-    FIXTURES / "unsupported-orientation5.tiff",
-    rgb8,
-    photometric="rgb",
-    compression=None,
-    metadata=None,
-    extratags=[(274, "H", 1, 5, False)],
-)
 with tifffile.TiffWriter(FIXTURES / "test-pattern-multipage.tiff") as writer:
     writer.write(rgb8, photometric="rgb", compression=None, metadata=None)
     writer.write(np.flipud(rgb8), photometric="rgb", compression=None, metadata=None)

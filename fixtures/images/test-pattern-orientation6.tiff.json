@@ -1,0 +1,61 @@
+{
+  "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
+  "bytes": 36435,
+  "sha256": "f99eb172f887c9b11962833e001bf1eead379d60f27603341d85936c8920af02",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "tiff",
+        "codec_long_name": "TIFF image",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 127,
+        "height": 95,
+        "coded_width": 127,
+        "coded_height": 95,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "127:95",
+        "pix_fmt": "rgb24",
+        "level": -99,
+        "refs": 1,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/25",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-orientation6.tiff",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "tiff_pipe",
+      "format_long_name": "piped tiff sequence",
+      "size": "36435",
+      "probe_score": 51
+    }
+  }
+}

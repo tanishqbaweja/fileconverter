@@ -73,6 +73,10 @@ const routes = [
   ["tiff-to-png", "test-pattern-orientation2.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation2-reference.png"],
   ["tiff-to-png", "test-pattern-orientation3.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation3-reference.png"],
   ["tiff-to-png", "test-pattern-orientation4.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation4-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation5.tiff", "png", "png", undefined, 95, 127, 1_000, undefined, "test-pattern-orientation5-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation6.tiff", "png", "png", undefined, 95, 127, 1_000, undefined, "test-pattern-orientation6-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation7.tiff", "png", "png", undefined, 95, 127, 1_000, undefined, "test-pattern-orientation7-reference.png"],
+  ["tiff-to-png", "test-pattern-orientation8.tiff", "png", "png", undefined, 95, 127, 1_000, undefined, "test-pattern-orientation8-reference.png"],
   ["tiff-to-png", "test-pattern-planar.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-reference.png"],
   ["tiff-to-png", "test-pattern-planar-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-tiled-reference.png"],
   ["tiff-to-png", "test-pattern-multipage.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-multipage-first-page-reference.png"],
@@ -510,7 +514,6 @@ test("TIFF converts through the bounded direct-save worker", async () => {
 });
 
 for (const [sourceName, expectedError] of [
-  ["unsupported-orientation5.tiff", "non-transposed orientation"],
   ["decompression-bomb.tiff", "16-megapixel safety limit"],
   ["truncated.tiff", "TIFF"],
   ["corrupt.tiff", "TIFF"],

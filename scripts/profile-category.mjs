@@ -909,6 +909,13 @@ const categories = {
       ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m.tiff"],
     ],
   },
+  "tiff-transposed": {
+    generator: "scripts/generate-tiff-stress-fixture.mjs",
+    generatorArguments: ["6"],
+    profiles: [
+      ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m-orientation6.tiff"],
+    ],
+  },
   svg: {
     generator: "scripts/generate-svg-stress-fixture.mjs",
     profiles: [

@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
   "bytes": 36435,
-  "sha256": "6c03ee33de708f24d5f235ffca6de2e3b615e5fa4c0c926a5978c7ae3a24b246",
+  "sha256": "1aa5f12ca74fe199a90ef2b7b3d0dbd2559a884aac924e2970d42ff7d3b04ca9",
   "probe": {
     "streams": [
       {
@@ -48,7 +48,7 @@
       }
     ],
     "format": {
-      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\unsupported-orientation5.tiff",
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-orientation7.tiff",
       "nb_streams": 1,
       "nb_programs": 0,
       "nb_stream_groups": 0,

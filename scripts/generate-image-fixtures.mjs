@@ -265,9 +265,17 @@ for (const name of [
   "test-pattern-orientation2.tiff",
   "test-pattern-orientation3.tiff",
   "test-pattern-orientation4.tiff",
+  "test-pattern-orientation5.tiff",
+  "test-pattern-orientation6.tiff",
+  "test-pattern-orientation7.tiff",
+  "test-pattern-orientation8.tiff",
   "test-pattern-orientation2-reference.png",
   "test-pattern-orientation3-reference.png",
   "test-pattern-orientation4-reference.png",
+  "test-pattern-orientation5-reference.png",
+  "test-pattern-orientation6-reference.png",
+  "test-pattern-orientation7-reference.png",
+  "test-pattern-orientation8-reference.png",
     "test-pattern-jpeg.tiff",
     "test-pattern-jpeg-reference.png",
     "test-pattern-planar.tiff",
@@ -276,7 +284,6 @@ for (const name of [
     "test-pattern-planar-tiled-reference.png",
     "test-pattern-multipage.tiff",
     "test-pattern-multipage-first-page-reference.png",
-  "unsupported-orientation5.tiff",
 ]) {
   const fixturePath = path.join(fixtureRoot, name);
   const bytes = await readFile(fixturePath);

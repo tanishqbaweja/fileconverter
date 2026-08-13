@@ -24,8 +24,10 @@
   "maximumStripBytes": 4194304,
   "maximumDecodedBlockBytes": 4194304,
   "maximumTileStripeBytes": 4194304,
+  "maximumTransposedStripeBytes": 16777216,
   "maximumExpansionRatio": 1000,
   "outstandingWrites": 1,
   "readCompressions": ["none", "packbits", "lzw", "deflate", "jpeg"],
+  "readOrientations": [1, 2, 3, 4, 5, 6, 7, 8],
   "profiles": ["tiff-to-png"]
 }

@@ -537,6 +537,7 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.maximumStripBytes, 4 * 1024 * 1024);
   assert.equal(manifest.maximumDecodedBlockBytes, 4 * 1024 * 1024);
   assert.equal(manifest.maximumTileStripeBytes, 4 * 1024 * 1024);
+  assert.equal(manifest.maximumTransposedStripeBytes, 16 * 1024 * 1024);
   assert.deepEqual(manifest.readCompressions, [
     "none",
     "packbits",
@@ -544,6 +545,7 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
     "deflate",
     "jpeg",
   ]);
+  assert.deepEqual(manifest.readOrientations, [1, 2, 3, 4, 5, 6, 7, 8]);
   assert.equal(manifest.outstandingWrites, 1);
 });
 

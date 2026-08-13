@@ -2,14 +2,19 @@
 
 from pathlib import Path
 import subprocess
+import sys
 
 import numpy as np
 import tifffile
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "fixtures" / "stress" / "images" / "tiff-rgb-tiled-48m.tiff"
-REFERENCE = ROOT / "fixtures" / "stress" / "images" / "tiff-rgb-tiled-48m-reference.png"
+ORIENTATION = int(sys.argv[1]) if len(sys.argv) > 1 else 1
+if ORIENTATION not in (1, 6):
+    raise ValueError("Stress TIFF orientation must be 1 or 6")
+SUFFIX = "-orientation6" if ORIENTATION == 6 else ""
+OUTPUT = ROOT / "fixtures" / "stress" / "images" / f"tiff-rgb-tiled-48m{SUFFIX}.tiff"
+REFERENCE = ROOT / "fixtures" / "stress" / "images" / f"tiff-rgb-tiled-48m{SUFFIX}-reference.png"
 HEIGHT = 2048
 WIDTH = 8192
 TILE_HEIGHT = 128
@@ -46,6 +51,20 @@ def row_blocks():
         ).astype(np.uint8)
 
 
+def transposed_row_blocks():
+    source_y = np.arange(HEIGHT - 1, -1, -1, dtype=np.int64)
+    for output_y in range(WIDTH):
+        source_x = np.full(HEIGHT, output_y, dtype=np.int64)
+        yield np.stack(
+            (
+                (source_x * 2 + source_y * 7) % 256,
+                (source_x * 11 + source_y * 3) % 256,
+                (source_x * 5 + source_y * 13) % 256,
+            ),
+            axis=-1,
+        ).astype(np.uint8)[None, ...]
+
+
 OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 tifffile.imwrite(
     OUTPUT,
@@ -56,7 +75,11 @@ tifffile.imwrite(
     photometric="rgb",
     compression=None,
     metadata=None,
+    extratags=[(274, "H", 1, ORIENTATION, False)],
 )
+
+reference_width = HEIGHT if ORIENTATION == 6 else WIDTH
+reference_height = WIDTH if ORIENTATION == 6 else HEIGHT
 
 encoder = subprocess.Popen(
     [
@@ -70,7 +93,7 @@ encoder = subprocess.Popen(
         "-pixel_format",
         "rgb24",
         "-video_size",
-        f"{WIDTH}x{HEIGHT}",
+        f"{reference_width}x{reference_height}",
         "-i",
         "pipe:0",
         "-frames:v",
@@ -84,7 +107,7 @@ encoder = subprocess.Popen(
     stdin=subprocess.PIPE,
 )
 assert encoder.stdin is not None
-for block in row_blocks():
+for block in transposed_row_blocks() if ORIENTATION == 6 else row_blocks():
     encoder.stdin.write(block.tobytes())
 encoder.stdin.close()
 if encoder.wait() != 0:

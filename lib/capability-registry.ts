@@ -3714,7 +3714,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "Accepts one strip- or tile-organized contiguous or separated-planar grayscale, RGB, or RGBA image at 8 or 16 bits per sample; 8-bit palette images are also accepted.",
-      "Supports none, PackBits, LZW, Deflate, and baseline JPEG compression plus TIFF orientations 1 through 4; multipage input converts only the first page with an explicit warning, while transposed and other photometric layouts are rejected explicitly.",
+      "Supports none, PackBits, LZW, Deflate, and baseline JPEG compression plus TIFF orientations 1 through 8; transposed orientations use bounded output-row stripes, and multipage input converts only the first page with an explicit warning.",
       "EXIF, ICC profiles, resolution, textual metadata, thumbnails, and private TIFF tags are not copied to PNG.",
     ],
     fidelityLimitations: [
