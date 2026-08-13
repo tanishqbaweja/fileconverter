@@ -62,6 +62,10 @@ const MAX_IMAGE_OUTPUT_BYTES = 64 * 1024 * 1024;
 const MAX_IMAGE_HEADER_BYTES = 1024 * 1024;
 const MAX_SVG_INPUT_BYTES = 4 * 1024 * 1024;
 const MAX_SVG_ELEMENTS = 10_000;
+const MAX_SVG_EFFECT_PIXELS = 6_000_000;
+const MAX_SVG_FILTERS = 1;
+const MAX_SVG_MASKS = 1;
+const MAX_SVG_FILTER_PRIMITIVES = 8;
 const CANCELLATION_YIELD_BYTES = 1024 * 1024;
 const RESVG_WASM_URL = "/engines/svg/resvg.wasm";
 const AIFF_OUTPUT_PROFILES = new Set([
@@ -658,6 +662,177 @@ function parseSvgLength(value: string | undefined, field: string): number | null
   return Math.round(pixels);
 }
 
+const supportedSvgFilterElements = new Set([
+  "fegaussianblur",
+  "feoffset",
+  "feflood",
+  "fecomposite",
+  "femerge",
+  "femergenode",
+  "feblend",
+]);
+
+function svgAttribute(source: string, name: string): string | undefined {
+  return source.match(
+    new RegExp(`(?:^|\\s)${name}\\s*=\\s*(["'])(.*?)\\1`, "i"),
+  )?.[2];
+}
+
+function parseSvgEffectCoordinate(
+  value: string | undefined,
+  field: string,
+): number {
+  if (value == null || !/^[+]?(?:\d+(?:\.\d*)?|\.\d+)(?:px)?$/i.test(value.trim())) {
+    throw new Error(
+      `SVG ${field} must be an explicit non-negative pixel coordinate.`,
+    );
+  }
+  const parsed = Number.parseFloat(value);
+  if (!Number.isFinite(parsed) || parsed < 0) {
+    throw new Error(`SVG ${field} must be a finite non-negative coordinate.`);
+  }
+  return parsed;
+}
+
+function inspectSvgEffects(
+  source: string,
+  elementNames: string[],
+  dimensions: ImageDimensions,
+): void {
+  const lowerNames = elementNames.map((name) => name.toLowerCase());
+  const unsupportedFilterElement = lowerNames.find(
+    (name) => name.startsWith("fe") && !supportedSvgFilterElements.has(name),
+  );
+  if (unsupportedFilterElement) {
+    throw new Error(
+      `SVG filter primitive ${unsupportedFilterElement} is outside the bounded filter profile.`,
+    );
+  }
+  const filterCount = lowerNames.filter((name) => name === "filter").length;
+  const maskCount = lowerNames.filter((name) => name === "mask").length;
+  const primitiveCount = lowerNames.filter((name) => name.startsWith("fe")).length;
+  if (filterCount > MAX_SVG_FILTERS || maskCount > MAX_SVG_MASKS) {
+    throw new Error(
+      `SVG input exceeds the bounded ${MAX_SVG_FILTERS}-filter or ${MAX_SVG_MASKS}-mask limit.`,
+    );
+  }
+  if (primitiveCount > MAX_SVG_FILTER_PRIMITIVES) {
+    throw new Error(
+      `SVG input exceeds the ${MAX_SVG_FILTER_PRIMITIVES}-primitive filter limit.`,
+    );
+  }
+  const declarations = {
+    filter: [...source.matchAll(/<\s*filter\b([^>]*)>/gi)].map((match) =>
+      svgAttribute(match[1], "id"),
+    ),
+    mask: [...source.matchAll(/<\s*mask\b([^>]*)>/gi)].map((match) =>
+      svgAttribute(match[1], "id"),
+    ),
+  };
+  for (const [kind, ids] of Object.entries(declarations)) {
+    if (
+      ids.some((id) => id == null || !/^[A-Za-z_][\w.:-]*$/.test(id)) ||
+      new Set(ids).size !== ids.length
+    ) {
+      throw new Error(`Every SVG ${kind} requires a unique local fragment id.`);
+    }
+  }
+  const references = [
+    ...source.matchAll(/\s(filter|mask)\s*=\s*(["'])(.*?)\2/gi),
+  ];
+  const filterReferences = references.filter(
+    (reference) => reference[1].toLowerCase() === "filter",
+  ).length;
+  const maskReferences = references.length - filterReferences;
+  if (filterReferences > MAX_SVG_FILTERS || maskReferences > MAX_SVG_MASKS) {
+    throw new Error(
+      "SVG input may apply its bounded filter and mask at most once each.",
+    );
+  }
+  for (const reference of references) {
+    const kind = reference[1].toLowerCase() as "filter" | "mask";
+    const target = reference[3]
+      .trim()
+      .match(/^url\(\s*#([A-Za-z_][\w.:-]*)\s*\)$/)?.[1];
+    if (!target || !declarations[kind].includes(target)) {
+      throw new Error(`SVG ${kind} must reference one declared local fragment.`);
+    }
+  }
+  if (filterCount === 0 && maskCount === 0) return;
+  if (dimensions.width * dimensions.height > MAX_SVG_EFFECT_PIXELS) {
+    throw new Error(
+      "SVG filters and masks are limited to a 6-megapixel raster budget.",
+    );
+  }
+
+  const effectRegions = [
+    ...source.matchAll(/<\s*(filter|mask)\b([^>]*)>/gi),
+  ];
+  for (const region of effectRegions) {
+    const kind = region[1].toLowerCase();
+    const attributes = region[2];
+    const units = svgAttribute(attributes, `${kind}Units`);
+    if (units !== "userSpaceOnUse") {
+      throw new Error(
+        `SVG ${kind} requires explicit ${kind}Units=\"userSpaceOnUse\" for bounded raster allocation.`,
+      );
+    }
+    if (
+      kind === "filter" &&
+      svgAttribute(attributes, "primitiveUnits") != null &&
+      svgAttribute(attributes, "primitiveUnits") !== "userSpaceOnUse"
+    ) {
+      throw new Error(
+        "SVG filter primitiveUnits must be userSpaceOnUse when specified.",
+      );
+    }
+    const x = parseSvgEffectCoordinate(svgAttribute(attributes, "x"), `${kind} x`);
+    const y = parseSvgEffectCoordinate(svgAttribute(attributes, "y"), `${kind} y`);
+    const width = parseSvgEffectCoordinate(
+      svgAttribute(attributes, "width"),
+      `${kind} width`,
+    );
+    const height = parseSvgEffectCoordinate(
+      svgAttribute(attributes, "height"),
+      `${kind} height`,
+    );
+    if (
+      width <= 0 ||
+      height <= 0 ||
+      x + width > dimensions.width ||
+      y + height > dimensions.height
+    ) {
+      throw new Error(
+        `SVG ${kind} region must stay within the ${dimensions.width}\u00d7${dimensions.height} raster.`,
+      );
+    }
+  }
+
+  for (const blur of source.matchAll(/<\s*feGaussianBlur\b([^>]*)>/gi)) {
+    const raw = svgAttribute(blur[1], "stdDeviation") ?? "0";
+    const values = raw.trim().split(/[\s,]+/).filter(Boolean).map(Number);
+    if (
+      values.length < 1 ||
+      values.length > 2 ||
+      values.some((value) => !Number.isFinite(value) || value < 0 || value > 32)
+    ) {
+      throw new Error("SVG Gaussian blur is limited to a 32-pixel deviation.");
+    }
+  }
+  for (const offset of source.matchAll(/<\s*feOffset\b([^>]*)>/gi)) {
+    for (const name of ["dx", "dy"] as const) {
+      const raw = svgAttribute(offset[1], name) ?? "0";
+      if (!/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:px)?$/i.test(raw.trim())) {
+        throw new Error(`SVG filter ${name} must be a finite pixel offset.`);
+      }
+      const value = Number.parseFloat(raw);
+      if (!Number.isFinite(value) || Math.abs(value) > MAX_IMAGE_DIMENSION) {
+        throw new Error(`SVG filter ${name} exceeds the bounded offset limit.`);
+      }
+    }
+  }
+}
+
 function parseSvgDimensions(source: string): ImageDimensions {
   if (/\0/.test(source)) {
     throw new Error("SVG input contains a NUL byte.");
@@ -687,10 +862,10 @@ function parseSvgDimensions(source: string): ImageDimensions {
     throw new Error("SVG input must contain one complete, unprefixed svg root element.");
   }
 
-  const disallowedElement = /<\s*\/?\s*(?:script|style|foreignObject|iframe|object|embed|image|use|a|audio|video|link|cursor|filter|mask|animate|animateMotion|animateTransform|set|mpath|text|tspan|textPath)\b/i;
+  const disallowedElement = /<\s*\/?\s*(?:script|style|foreignObject|iframe|object|embed|image|use|a|audio|video|link|cursor|animate|animateMotion|animateTransform|set|mpath|text|tspan|textPath)\b/i;
   if (disallowedElement.test(withoutComments)) {
     throw new Error(
-      "SVG scripts, CSS, external-resource, animation, filter, and masking elements are not accepted.",
+      "SVG scripts, CSS, external-resource, links, animation, and text elements are not accepted.",
     );
   }
   if (
@@ -734,6 +909,11 @@ function parseSvgDimensions(source: string): ImageDimensions {
       "SVG dimensions exceed the 8,192-pixel edge or 8-megapixel decoded safety limit.",
     );
   }
+  inspectSvgEffects(
+    withoutComments,
+    elements.map((match) => match[1]),
+    dimensions,
+  );
   return dimensions;
 }
 

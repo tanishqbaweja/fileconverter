@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-svg-effects-fixtures.mjs",
+  "bytes": 280,
+  "sha256": "e37c058d9657311d25b445972d328434d633ce52e3702c77192a07d370142b59",
+  "expectation": "rejected filter raster above the 6-megapixel effect budget"
+}

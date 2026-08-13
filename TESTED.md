@@ -18,6 +18,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Active optimization log
 
+- **2026-08-13 bounded SVG filters and masks:** the pinned Resvg browser engine now accepts one self-contained mask and one bounded Gaussian blur, offset, flood, composite, merge, or blend chain applied once each. Preflight caps the raster at 6,000,000 effect pixels, explicit in-raster user-space regions, eight primitives, a 32-pixel blur deviation, 10,000 total elements, one pending destination operation, and no scripts, CSS, text, animation, external resources, or unsupported filter primitives. A representative production-browser conversion matched an independently rendered Chrome SVG/Canvas reference above SSIM 0.9, six focused success/rejection cases passed, and the complete image suite passed 71/71.
+- **SVG effect ceiling measurement:** an 8,294,400-pixel filter-and-mask candidate produced repeatable valid output and recovered memory after every run, but its three-run Chrome process-tree peaks were 247.4, 242.8, and 268.8 MiB, so that ceiling is rejected without changing the 250 MiB rule. The final 3,000-by-2,000 fixture passed the exact final production bundle 3/3 in 6.18-6.34 seconds at 182.8 MiB worst incremental private memory with SSIM 0.990103 against the Chrome reference, repeatable full output SHA-256, 262,144-byte reads and writes/queueing, one pending operation, and cleanup recovery.
 - **2026-08-13 GZIP cleanup evidence refresh:** the GZIP category now profiles both compression and decompression and asks the shared fixture generator for GZIP only, avoiding the two unrelated 256 MiB-class BZIP2/XZ copies. GZIP decompression passed 3/3 production-Chrome runs on 268,517,399 bytes in 6.63–7.73 seconds at 177.3 MiB worst incremental complete-process-tree private memory. Output SHA-256 repeated exactly, reads stayed at 262,144 bytes, writes and queueing at 65,536 bytes, one operation was pending, and post-run memory recovered to within -6.3 to 3.1 MiB of loaded idle. Category cleanup deleted the generated 256 MiB source, its GZIP copy, browser output, and Chrome profile; only compact manifests and reports remain.
 - **2026-08-13 animated AVIF disclosure:** the bounded AVIF header inspection recognizes the `avis` major or compatible brand and requests Chrome's animation track only for those files; static AVIF retains its established still track. An eight-frame 512×384 fixture passed PNG, JPEG, WebP, BMP, and ICO first-frame browser conversions with the omission warning, and all 67 image cases passed. AVIF-to-PNG then passed 3/3 clean Chrome runs in 0.04–0.10 seconds at 100.8 MiB worst incremental private memory with repeatable output, 23,391-byte reads, 60,481-byte writes, one pending operation, independent first-frame visual validation, and cleanup recovery.
 - **2026-08-13 still-image repeatability diagnosis:** the retained static WebP-to-PNG runs alternate exactly between a 1,528,103-byte `BGRX` result (`b3ef2b94…`) and a 1,356,001-byte `I420` result (`21d0b53a…`); JPEG-to-BMP shows the same backend alternation (`5ee80a39…` versus `533e1e71…`). Requesting default sRGB conversion still produced two `BGRX` runs and one `I420` run, and removing the redundant intrinsic-size decoder hint did the same. Neither experiment improved speed, memory, or determinism, so both runtime changes were reverted. A genuine fix requires a pinned bounded software JPEG/WebP decoder rather than another unstable Chrome hint.
@@ -428,7 +430,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | srt-to-ass | 67,327,792 | 3 | 83,203,467 | 4.00 s–4.09 s | 177.0 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
-| svg-to-png | 327,564 | 3 | 196,588 | 0.44 s–0.65 s | 202.2 MiB | not exposed | read 196,608 B / write 196,588 B | passed |
+| svg-to-png | 470,390 | 3 | 3,543,078 | 6.18 s–6.34 s | 182.8 MiB | not exposed | read 262,144 B / write 262,144 B | passed |
 | tar-bz2-to-sevenzip | 270,592,763 | 3 | 268,435,574 | 25.06 s–25.69 s | 187.2 MiB | 64.0 MiB | read 262,144 B / write 65,536 B / scratch 61,440 B read/write | passed |
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-bz2-to-tar-gz | 270,592,763 | 3 | 268,517,551 | 51.26 s–52.65 s | 183.9 MiB | 8.0 MiB | read 262,144 B / write 16,384 B | passed |
@@ -579,6 +581,7 @@ Stream ma |
 | 2026-08-13T13:27:34.962Z | jpeg-to-bmp | 418,486 | 3 | 418,486 | Failed checks: repeatableOutputHash; measured 226.9 MiB against a 250.0 MiB limit. |
 | 2026-08-13T13:32:13.234Z | webp-to-png | 185,794 | 0 | 185,794 | Browser image validation failed: png 1024x768. |
 | 2026-08-13T13:41:41.850Z | webp-to-png | 263,320 | 3 | 263,320 | Failed checks: repeatableOutputHash; measured 101.3 MiB against a 250.0 MiB limit. |
+| 2026-08-13T14:13:45.368Z | svg-to-png | 364,917 | 3 | 364,917 | Failed checks: processTreePrivateMemory; measured 268.8 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
@@ -864,7 +867,7 @@ Stream ma |
 | srt-to-ass | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
-| svg-to-png | image | svg-browser | re-encode | 327,564 B | 3-run Chrome report |
+| svg-to-png | image | svg-browser | re-encode | 470,390 B | 3-run Chrome report |
 | tar-bz2-to-sevenzip | archive | libarchive7z-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-bz2-to-tar-gz | archive | archive-codec-pipeline | stream | 270,592,763 B | 3-run Chrome report |
@@ -945,7 +948,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB remains absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, JPEG XL, camera raw formats, extraction of every frame from animated GIF/WebP/AVIF and every page from multipage TIFF (the first frame/page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, filters, masks, and linked resources remain absent.
+- Images: HEIF/HEIC, JPEG XL, camera raw formats, extraction of every frame from animated GIF/WebP/AVIF and every page from multipage TIFF (the first frame/page is supported with an omission warning), transposed TIFF orientations, and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent.
 - Archives/compression: additional entry-level conversion among 7Z, XZ/TAR.XZ, BZIP2/TAR.BZ2, ZIP, and TAR.GZ where safe bounded routes are added.
 - Product validation: broader headed-browser/manual interaction evidence, more direct-destination profiles, and continued multi-gigabyte scaling coverage for newly added media routes.
 

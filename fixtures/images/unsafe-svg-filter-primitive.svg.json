@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-svg-effects-fixtures.mjs",
+  "bytes": 274,
+  "sha256": "5009c3a8357a09da3aefef135c6e1c1b51af5cf0c269eaa6e6ee9189f0abbb11",
+  "expectation": "rejected unsupported unbounded filter primitive"
+}

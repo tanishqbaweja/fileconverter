@@ -915,6 +915,13 @@ const categories = {
       ["svg-to-png", "fixtures/stress/images/svg-grid-8m.svg"],
     ],
   },
+  "svg-effects": {
+    generator: "scripts/generate-svg-effects-fixtures.mjs",
+    generatorArguments: ["stress"],
+    profiles: [
+      ["svg-to-png", "fixtures/stress/images/svg-effects-6m.svg"],
+    ],
+  },
 };
 
 if (!Object.hasOwn(categories, category)) {

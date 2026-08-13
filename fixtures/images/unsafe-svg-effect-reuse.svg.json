@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-svg-effects-fixtures.mjs",
+  "bytes": 315,
+  "sha256": "cf39defbd127af2bb7b0030b3ea9e7c1c5a2f0dda32e41eeb6c65f10fc46bb23",
+  "expectation": "rejected repeated application of one bounded filter"
+}

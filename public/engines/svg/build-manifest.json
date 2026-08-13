@@ -10,6 +10,12 @@
   "maximumPixels": 8388608,
   "maximumDimension": 8192,
   "maximumElements": 10000,
+  "maximumEffectPixels": 6000000,
+  "maximumFilters": 1,
+  "maximumMasks": 1,
+  "maximumFilterReferences": 1,
+  "maximumMaskReferences": 1,
+  "maximumFilterPrimitives": 8,
   "outputWriteChunkBytes": 262144,
   "outstandingWrites": 1,
   "profiles": [

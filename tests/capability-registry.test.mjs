@@ -565,6 +565,12 @@ test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {
   assert.equal(manifest.maximumOutputBytes, 64 * 1024 * 1024);
   assert.equal(manifest.maximumPixels, 8_388_608);
   assert.equal(manifest.maximumElements, 10_000);
+  assert.equal(manifest.maximumEffectPixels, 6_000_000);
+  assert.equal(manifest.maximumFilters, 1);
+  assert.equal(manifest.maximumMasks, 1);
+  assert.equal(manifest.maximumFilterReferences, 1);
+  assert.equal(manifest.maximumMaskReferences, 1);
+  assert.equal(manifest.maximumFilterPrimitives, 8);
   assert.equal(manifest.outputWriteChunkBytes, 256 * 1024);
   assert.equal(manifest.outstandingWrites, 1);
 });

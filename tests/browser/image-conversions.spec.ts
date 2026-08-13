@@ -77,6 +77,7 @@ const routes = [
   ["tiff-to-png", "test-pattern-planar-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-tiled-reference.png"],
   ["tiff-to-png", "test-pattern-multipage.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-multipage-first-page-reference.png"],
   ["svg-to-png", "test-pattern.svg", "png", "png", undefined, 640, 480],
+  ["svg-to-png", "test-pattern-effects.svg", "png", "png", undefined, 960, 540, 1_000, undefined, "test-pattern-effects-reference.png", "rgb24", 0.9],
 ] as const;
 
 let context: BrowserContext;
@@ -137,6 +138,7 @@ for (const [
   expectedPixelFormat,
   referenceName,
   referencePixelFormat = "rgb24",
+  minimumReferenceSsim,
 ] of routes) {
   test(`${profileId} from ${sourceName} produces a bounded independently decodable image`, async () => {
     const sourcePath = path.join(
@@ -258,8 +260,41 @@ for (const [
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
       if (referenceName) {
-        const frameBytes = async (imagePath: string) => {
-          const result = await execFileAsync(
+        const referencePath = path.join(
+          projectRoot,
+          "fixtures",
+          "images",
+          referenceName,
+        );
+        if (minimumReferenceSsim != null) {
+          const { stderr } = await execFileAsync(
+            "ffmpeg",
+            [
+              "-v",
+              "info",
+              "-i",
+              referencePath,
+              "-i",
+              outputPath,
+              "-lavfi",
+              "[0:v:0]format=rgb24[reference];[1:v:0]format=rgb24[converted];[reference][converted]ssim",
+              "-f",
+              "null",
+              "NUL",
+            ],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 8 * 1024 * 1024,
+            },
+          );
+          const similarity = Number.parseFloat(
+            stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+          );
+          expect(similarity).toBeGreaterThanOrEqual(minimumReferenceSsim);
+        } else {
+          const frameBytes = async (imagePath: string) => {
+            const result = await execFileAsync(
               "ffmpeg",
               [
                 "-v",
@@ -279,11 +314,12 @@ for (const [
                 encoding: "buffer",
               },
             );
-          return result.stdout;
-        };
-        expect(await frameBytes(outputPath)).toEqual(
-          await frameBytes(path.join(projectRoot, "fixtures", "images", referenceName)),
-        );
+            return result.stdout;
+          };
+          expect(await frameBytes(outputPath)).toEqual(
+            await frameBytes(referencePath),
+          );
+        }
       }
     } finally {
       validationSink?.destroy();
@@ -532,6 +568,9 @@ test("rejects an image decompression bomb before allocating a decoded surface", 
 for (const [sourceName, expectedError] of [
   ["unsafe-external.svg", "external-resource"],
   ["oversized.svg", "8-megapixel"],
+  ["unsafe-svg-effect-pixels.svg", "6-megapixel"],
+  ["unsafe-svg-filter-primitive.svg", "outside the bounded filter profile"],
+  ["unsafe-svg-effect-reuse.svg", "at most once"],
 ] as const) {
   test(`rejects unsafe SVG input ${sourceName} before rasterization`, async () => {
     const externalRequests: string[] = [];

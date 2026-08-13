@@ -1,0 +1,24 @@
+{
+  "generatedBy": "scripts/generate-svg-effects-fixtures.mjs",
+  "referenceRenderer": "151.0.7922.137 SVG and Canvas2D",
+  "bytes": 470390,
+  "sha256": "af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",
+  "width": 3000,
+  "height": 2000,
+  "elements": 6719,
+  "filters": 1,
+  "masks": 1,
+  "filterPrimitives": 7,
+  "validationReference": "fixtures/stress/images/svg-effects-6m-reference.png",
+  "validationBytes": 3834367,
+  "validationSha256": "df3a7c767f8c1dcd38ac9dbe3f37f81e2ffbdd77ea09096a230d1fc435d34ecd",
+  "probe": {
+    "streams": [
+      {
+        "width": 3000,
+        "height": 2000,
+        "nb_frames": "1"
+      }
+    ]
+  }
+}
