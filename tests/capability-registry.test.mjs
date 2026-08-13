@@ -730,41 +730,39 @@ test("compound archives and mainstream images are detected by filename", () => {
     (candidate) =>
       candidate.output === "mp3" && candidate.route === "re-encode",
   )) {
-    const pendingContainerRoute = profile.id === "ogv-to-mp3";
-    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
-    assert.equal(profile.public, !pendingContainerRoute);
-    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
-    else assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), !pendingContainerRoute);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
-  const pendingContainerLossyRoutes = new Set([
-    "mp4-to-opus",
-    "mov-to-opus",
-    "mpeg-ts-to-opus",
-    "flv-to-opus",
-    "avi-to-opus",
-    "ogv-to-opus",
-    "mp4-to-ogg",
-    "mov-to-ogg",
-    "mpeg-ts-to-ogg",
-    "flv-to-ogg",
-    "avi-to-ogg",
+  const certifiedContainerLossyRoutes = new Map([
+    ["mp4-to-opus", 145_729_798],
+    ["mov-to-opus", 145_729_853],
+    ["mpeg-ts-to-opus", 149_289_672],
+    ["flv-to-opus", 145_778_223],
+    ["avi-to-opus", 159_500_442],
+    ["ogv-to-opus", 137_218_662],
+    ["mp4-to-ogg", 145_729_798],
+    ["mov-to-ogg", 145_729_853],
+    ["mpeg-ts-to-ogg", 149_289_672],
+    ["flv-to-ogg", 145_778_223],
+    ["avi-to-ogg", 159_500_442],
   ]);
   for (const profile of conversionProfiles.filter((candidate) =>
-    pendingContainerLossyRoutes.has(candidate.id),
+    certifiedContainerLossyRoutes.has(candidate.id),
   )) {
-    assert.equal(profile.automatedTestStatus, "pending");
-    assert.equal(profile.public, false);
-    assert.equal(profile.maxTestedBytes, null);
-    assert.equal(publicProfilesFor(profile.input).includes(profile), false);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.equal(profile.maxTestedBytes, certifiedContainerLossyRoutes.get(profile.id));
+    assert.equal(publicProfilesFor(profile.input).includes(profile), true);
     assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
   }
   assert.equal(
     conversionProfiles.filter((candidate) =>
-      pendingContainerLossyRoutes.has(candidate.id),
+      certifiedContainerLossyRoutes.has(candidate.id),
     ).length,
-    pendingContainerLossyRoutes.size,
+    certifiedContainerLossyRoutes.size,
   );
   assert.deepEqual(
     conversionProfiles

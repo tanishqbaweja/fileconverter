@@ -417,18 +417,18 @@ type ContainerLossyAudioInput = "mp4" | "mov" | "mpeg-ts" | "flv" | "avi" | "ogv
 type ContainerLossyAudioOutput = "mp3" | "opus" | "ogg";
 
 const containerLossyAudioEvidence: Record<string, number | null> = {
-  "mp4-to-opus": null,
-  "mov-to-opus": null,
-  "mpeg-ts-to-opus": null,
-  "flv-to-opus": null,
-  "avi-to-opus": null,
-  "ogv-to-opus": null,
-  "mp4-to-ogg": null,
-  "mov-to-ogg": null,
-  "mpeg-ts-to-ogg": null,
-  "flv-to-ogg": null,
-  "avi-to-ogg": null,
-  "ogv-to-mp3": null,
+  "mp4-to-opus": 145_729_798,
+  "mov-to-opus": 145_729_853,
+  "mpeg-ts-to-opus": 149_289_672,
+  "flv-to-opus": 145_778_223,
+  "avi-to-opus": 159_500_442,
+  "ogv-to-opus": 137_218_662,
+  "mp4-to-ogg": 145_729_798,
+  "mov-to-ogg": 145_729_853,
+  "mpeg-ts-to-ogg": 149_289_672,
+  "flv-to-ogg": 145_778_223,
+  "avi-to-ogg": 159_500_442,
+  "ogv-to-mp3": 137_218_662,
 };
 
 function containerLossyAudioProfile(

@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 338
+complete-Chromium memory profile have passed. The current registry publishes 350
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -34,6 +34,12 @@ The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
 decode/re-encode work, use bounded direct destination writes, and explicitly
 disclose container-specific metadata or stream exclusions.
+
+Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
+MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
+lossy routes use the same fastest quality-certified encoders as standalone
+audio, exclude video and unsupported container metadata explicitly, and remain
+bounded by one direct destination operation.
 
 The registry records the exact tested size and limitations for every individual
 route; the UI exposes that same evidence. VP8 WebM and MPEG-4 Part 2 MP4 are
