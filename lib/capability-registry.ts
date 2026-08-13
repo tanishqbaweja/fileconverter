@@ -656,6 +656,71 @@ function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfil
   };
 }
 
+type ContainerWmaInput =
+  | "mkv"
+  | "mp4"
+  | "mov"
+  | "3gp"
+  | "mpeg-ts"
+  | "flv"
+  | "avi"
+  | "ogv"
+  | "webm";
+
+const containerWmaEvidence: Record<ContainerWmaInput, number | null> = {
+  mkv: null,
+  mp4: null,
+  mov: null,
+  "3gp": null,
+  "mpeg-ts": null,
+  flv: null,
+  avi: null,
+  ogv: null,
+  webm: null,
+};
+
+function containerWmaOutputProfile(input: ContainerWmaInput): ConversionProfile {
+  const inputDescription = {
+    mkv: "AAC in Matroska",
+    mp4: "AAC in MP4",
+    mov: "AAC in QuickTime MOV",
+    "3gp": "AAC in 3GP",
+    "mpeg-ts": "AAC in MPEG-TS",
+    flv: "AAC in FLV",
+    avi: "MP3 in AVI",
+    ogv: "Vorbis in Ogg Video",
+    webm: "Opus in WebM",
+  }[input];
+  const evidence = containerWmaEvidence[input];
+  return {
+    id: `${input}-to-wma`,
+    input,
+    output: "wma",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      `The certified input is ${inputDescription}; other codec variants require separate evidence.`,
+      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, and additional streams are explicitly excluded.",
+      "Compatible text and language tags are copied into ASF where representable; container-specific metadata is excluded.",
+    ],
+    fidelityLimitations: [
+      "Audio is resampled to 48 kHz when needed and encoded as lossy WMA2 at 320 kbit/s; layouts above stereo are downmixed to stereo.",
+      `WMA2 adds another lossy generation to ${inputDescription}.`,
+    ],
+    maxTestedBytes: evidence,
+    automatedTestStatus: evidence === null ? "pending" : "passed",
+    public: evidence !== null,
+  };
+}
+
 const h264ElementaryEvidence = {
   "h264-to-mp4": 145_801_019,
   "h264-to-webm": 145_801_019,
@@ -4345,6 +4410,15 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneWmaOutputProfile("aiff"),
   standaloneWmaOutputProfile("ogg"),
   standaloneWmaOutputProfile("opus"),
+  containerWmaOutputProfile("mkv"),
+  containerWmaOutputProfile("mp4"),
+  containerWmaOutputProfile("mov"),
+  containerWmaOutputProfile("3gp"),
+  containerWmaOutputProfile("mpeg-ts"),
+  containerWmaOutputProfile("flv"),
+  containerWmaOutputProfile("avi"),
+  containerWmaOutputProfile("ogv"),
+  containerWmaOutputProfile("webm"),
   {
     id: "amr-to-wav",
     input: "amr",

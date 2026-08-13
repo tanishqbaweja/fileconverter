@@ -94,6 +94,15 @@ const WMA_OUTPUT_PROFILES = [
   "opus-to-wma",
   "wav-to-wma",
   "flac-to-wma",
+  "mkv-to-wma",
+  "mp4-to-wma",
+  "mov-to-wma",
+  "3gp-to-wma",
+  "mpeg-ts-to-wma",
+  "flv-to-wma",
+  "avi-to-wma",
+  "ogv-to-wma",
+  "webm-to-wma",
 ];
 const manifestPath = path.resolve(
   projectRoot,

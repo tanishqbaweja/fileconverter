@@ -761,14 +761,23 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id)
       .sort(),
     [
+      "3gp-to-wma",
       "aac-to-wma",
       "aiff-to-wma",
+      "avi-to-wma",
       "flac-to-wma",
+      "flv-to-wma",
       "m4a-to-wma",
+      "mkv-to-wma",
+      "mov-to-wma",
       "mp3-to-wma",
+      "mp4-to-wma",
+      "mpeg-ts-to-wma",
       "ogg-to-wma",
+      "ogv-to-wma",
       "opus-to-wma",
       "wav-to-wma",
+      "webm-to-wma",
       "wma-to-aac",
       "wma-to-aiff",
       "wma-to-amr",
@@ -809,6 +818,28 @@ test("compound archives and mainstream images are detected by filename", () => {
         (candidate) => candidate.id === profileId,
       ),
       true,
+    );
+  }
+  for (const input of [
+    "mkv",
+    "mp4",
+    "mov",
+    "3gp",
+    "mpeg-ts",
+    "flv",
+    "avi",
+    "ogv",
+    "webm",
+  ]) {
+    const profile = conversionProfiles.find(
+      (candidate) => candidate.id === `${input}-to-wma`,
+    );
+    assert.equal(profile?.automatedTestStatus, "pending");
+    assert.equal(profile?.maxTestedBytes, null);
+    assert.equal(profile?.public, false);
+    assert.equal(
+      publicProfilesFor(input).some((candidate) => candidate.id === profile?.id),
+      false,
     );
   }
   assert.deepEqual(

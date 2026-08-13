@@ -156,6 +156,17 @@ const wmaTranscodeOutputPaths = {
   ogg: path.join(outputRoot, "ogg-convert-output.wma"),
   opus: path.join(outputRoot, "opus-convert-output.wma"),
 } as const;
+const containerWmaOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-convert-output.wma"),
+  mp4: path.join(outputRoot, "mp4-convert-output.wma"),
+  mov: path.join(outputRoot, "mov-convert-output.wma"),
+  "3gp": path.join(outputRoot, "3gp-convert-output.wma"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-convert-output.wma"),
+  flv: path.join(outputRoot, "flv-convert-output.wma"),
+  avi: path.join(outputRoot, "avi-convert-output.wma"),
+  ogv: path.join(outputRoot, "ogv-convert-output.wma"),
+  webm: path.join(outputRoot, "webm-convert-output.wma"),
+} as const;
 const threeGpAmrOutputPaths = {
   wav: path.join(outputRoot, "3gp-amr-convert-output.wav"),
   flac: path.join(outputRoot, "3gp-amr-convert-output.flac"),
@@ -792,6 +803,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(wmaTranscodeOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(containerWmaOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const outputPath of Object.values(threeGpAmrOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1225,6 +1239,9 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(wmaTranscodeOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  for (const outputPath of Object.values(containerWmaOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(threeGpAmrOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1496,6 +1513,15 @@ async function runMediaRoute(
     | "aiff-to-wma"
     | "ogg-to-wma"
     | "opus-to-wma"
+    | "mkv-to-wma"
+    | "mp4-to-wma"
+    | "mov-to-wma"
+    | "3gp-to-wma"
+    | "mpeg-ts-to-wma"
+    | "flv-to-wma"
+    | "avi-to-wma"
+    | "ogv-to-wma"
+    | "webm-to-wma"
     | "amr-to-wav"
     | "amr-to-flac"
     | "aiff-to-wav"
@@ -2484,6 +2510,15 @@ for (const route of [
   ["aiff-to-wma", aiffFixturePath],
   ["ogg-to-wma", oggFixturePath],
   ["opus-to-wma", opusFixturePath],
+  ["mkv-to-wma", fixturePath],
+  ["mp4-to-wma", mp4InputFixturePath],
+  ["mov-to-wma", movInputFixturePath],
+  ["3gp-to-wma", threeGpInputFixturePath],
+  ["mpeg-ts-to-wma", mpegTsInputFixturePath],
+  ["flv-to-wma", flvInputFixturePath],
+  ["avi-to-wma", aviInputFixturePath],
+  ["ogv-to-wma", ogvFixturePath],
+  ["webm-to-wma", av1OpusWebmFixturePath],
   ["3gp-to-aiff", threeGpAmrFixturePath],
   ["3gp-to-mp3", threeGpAmrFixturePath],
   ["3gp-to-opus", threeGpAmrFixturePath],
@@ -2526,6 +2561,8 @@ for (const route of [
         ? "[standalone-vorbis] "
       : /^(?:m4a|aac|mp3|aiff|ogg|opus)-to-wma$/.test(route[0])
         ? "[standalone-wma] "
+      : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(route[0])
+        ? "[container-wma] "
       : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -3183,6 +3220,39 @@ test("[standalone-wma] browser FFmpeg encodes ALAC M4A as genuine WMA2", async (
     },
   );
 });
+
+const containerWmaOutputRoutes = [
+  ["mkv-to-wma", "mkv", fixturePath],
+  ["mp4-to-wma", "mp4", mp4InputFixturePath],
+  ["mov-to-wma", "mov", movInputFixturePath],
+  ["3gp-to-wma", "3gp", threeGpInputFixturePath],
+  ["mpeg-ts-to-wma", "mpeg-ts", mpegTsInputFixturePath],
+  ["flv-to-wma", "flv", flvInputFixturePath],
+  ["avi-to-wma", "avi", aviInputFixturePath],
+  ["ogv-to-wma", "ogv", ogvFixturePath],
+  ["webm-to-wma", "webm", av1OpusWebmFixturePath],
+] as const;
+
+for (const [route, input, inputPath] of containerWmaOutputRoutes) {
+  test(`[container-wma] browser FFmpeg writes genuine WMA2 for ${input.toUpperCase()} input`, async () => {
+    await runMediaRoute(
+      route,
+      containerWmaOutputPaths[input],
+      ["wmav2"],
+      1_000,
+      inputPath,
+      {
+        expectedWarningFragments: ["video stream"],
+        validate: async (probe, outputPath) => {
+          expect(String(probe.format.format_name).split(",")).toContain("asf");
+          expect(probe.streams[0]?.sample_rate).toBe("48000");
+          expect(probe.streams[0]?.bit_rate).toBe("320000");
+          await expectWmaTranscodeQuality(inputPath, outputPath);
+        },
+      },
+    );
+  });
+}
 
 test("browser FFmpeg decodes AMR-NB to bounded PCM WAV", async () => {
   await runMediaRoute(
