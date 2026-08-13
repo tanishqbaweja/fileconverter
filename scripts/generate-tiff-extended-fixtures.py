@@ -97,14 +97,24 @@ with Image.open(FIXTURES / "test-pattern-jpeg.tiff") as jpeg_tiff:
         compress_level=9,
     )
 
-tifffile.imwrite(
-    FIXTURES / "unsupported-planar.tiff",
-    np.moveaxis(rgb8, -1, 0),
-    photometric="rgb",
-    planarconfig="separate",
-    compression=None,
-    metadata=None,
-)
+for name, tile in (
+    ("test-pattern-planar.tiff", None),
+    ("test-pattern-planar-tiled.tiff", (32, 32)),
+):
+    tifffile.imwrite(
+        FIXTURES / name,
+        np.moveaxis(rgb8, -1, 0),
+        photometric="rgb",
+        planarconfig="separate",
+        compression=None,
+        metadata=None,
+        tile=tile,
+    )
+    Image.fromarray(rgb8).save(
+        FIXTURES / name.replace(".tiff", "-reference.png"),
+        format="PNG",
+        compress_level=9,
+    )
 tifffile.imwrite(
     FIXTURES / "unsupported-orientation5.tiff",
     rgb8,

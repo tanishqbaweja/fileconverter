@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
-  "bytes": 36435,
-  "sha256": "90f2d9a96751347e4540c97de687bfa07e2d3397947f8a9cd5ce8399bec71f74",
+  "bytes": 37312,
+  "sha256": "478a31bdeb883135f3eccd904efd10bf3bc5c54f73008f6e3668efba0d47e3a3",
   "probe": {
     "streams": [
       {
@@ -48,13 +48,13 @@
       }
     ],
     "format": {
-      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\unsupported-planar.tiff",
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-planar-tiled.tiff",
       "nb_streams": 1,
       "nb_programs": 0,
       "nb_stream_groups": 0,
       "format_name": "tiff_pipe",
       "format_long_name": "piped tiff sequence",
-      "size": "36435",
+      "size": "37312",
       "probe_score": 51
     }
   }

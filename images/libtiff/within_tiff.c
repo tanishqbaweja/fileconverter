@@ -225,6 +225,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   png_structp png = NULL;
   png_infop info = NULL;
   unsigned char *row = NULL;
+  unsigned char *plane_row = NULL;
   unsigned char *converted = NULL;
   unsigned char *tile = NULL;
   unsigned char *tile_stripe = NULL;
@@ -278,9 +279,10 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     within_set_error("TIFF dimensions exceed the 8,192-pixel edge or 16-megapixel safety limit.");
     goto cleanup;
   }
-  if ((bits != 8 && bits != 16) || planar != PLANARCONFIG_CONTIG ||
+  if ((bits != 8 && bits != 16) ||
+      (planar != PLANARCONFIG_CONTIG && planar != PLANARCONFIG_SEPARATE) ||
       orientation < ORIENTATION_TOPLEFT || orientation > ORIENTATION_BOTLEFT) {
-    within_set_error("TIFF profile requires 8- or 16-bit contiguous pixels in a non-transposed orientation.");
+    within_set_error("TIFF profile requires 8- or 16-bit contiguous or separated pixels in a non-transposed orientation.");
     goto cleanup;
   }
   if (!TIFFLastDirectory(tiff)) {
@@ -309,6 +311,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     goto cleanup;
   }
   uint64_t row_bytes = (uint64_t)width * samples * bytes_per_sample;
+  uint64_t plane_row_bytes = (uint64_t)width * bytes_per_sample;
   int tiled = TIFFIsTiled(tiff);
   uint32_t tile_width = 0, tile_length = 0;
   uint64_t tile_size = 0, tile_row_bytes = 0, tile_stripe_bytes = 0;
@@ -322,7 +325,8 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     tile_size = TIFFTileSize64(tiff);
     tile_row_bytes = TIFFTileRowSize64(tiff);
     tile_stripe_bytes = row_bytes * tile_length;
-    uint64_t expected_tile_row = (uint64_t)tile_width * samples * bytes_per_sample;
+    uint64_t expected_tile_row = (uint64_t)tile_width * bytes_per_sample *
+                                 (planar == PLANARCONFIG_CONTIG ? samples : 1U);
     if (tile_size == 0 || tile_size > WITHIN_MAX_STRIP_BYTES ||
         tile_row_bytes != expected_tile_row ||
         tile_stripe_bytes == 0 || tile_stripe_bytes > WITHIN_MAX_STRIP_BYTES) {
@@ -332,7 +336,10 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   } else {
     uint64_t scanline_size = TIFFScanlineSize64(tiff);
     uint64_t strip_size = TIFFStripSize64(tiff);
-    if (scanline_size != row_bytes || scanline_size == 0 ||
+    uint64_t expected_scanline_size = planar == PLANARCONFIG_CONTIG
+                                          ? row_bytes
+                                          : plane_row_bytes;
+    if (scanline_size != expected_scanline_size || scanline_size == 0 ||
         scanline_size > WITHIN_MAX_STRIP_BYTES || strip_size == 0 ||
         strip_size > WITHIN_MAX_STRIP_BYTES) {
       within_set_error("TIFF scanline or decoded strip exceeds the 4 MiB safety limit.");
@@ -380,7 +387,10 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     }
   } else {
     row = (unsigned char *)_TIFFmalloc((tmsize_t)row_bytes);
-    if (!row) {
+    if (planar == PLANARCONFIG_SEPARATE) {
+      plane_row = (unsigned char *)_TIFFmalloc((tmsize_t)plane_row_bytes);
+    }
+    if (!row || (planar == PLANARCONFIG_SEPARATE && !plane_row)) {
       within_set_error("Could not allocate the bounded TIFF scanline.");
       goto cleanup;
     }
@@ -445,36 +455,69 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
                                ? tile_length
                                : height - cached_tile_y;
         memset(tile_stripe, 0, (size_t)row_bytes * cached_tile_rows);
-        for (uint32_t tile_x = 0; tile_x < width; tile_x += tile_width) {
-          ttile_t tile_index = TIFFComputeTile(tiff, tile_x, cached_tile_y, 0, 0);
-          tmsize_t decoded = TIFFReadEncodedTile(tiff, tile_index, tile,
-                                                 (tmsize_t)tile_size);
-          if (decoded < 0 || (uint64_t)decoded < tile_row_bytes * cached_tile_rows) {
-            if (!within_error_message[0]) {
-              within_set_error("TIFF tile decoding failed at tile %u.",
-                               (unsigned int)tile_index);
+        uint16_t plane_count = planar == PLANARCONFIG_SEPARATE ? samples : 1U;
+        for (uint16_t sample = 0; sample < plane_count; ++sample) {
+          for (uint32_t tile_x = 0; tile_x < width; tile_x += tile_width) {
+            ttile_t tile_index = TIFFComputeTile(tiff, tile_x, cached_tile_y, 0,
+                                                 sample);
+            tmsize_t decoded = TIFFReadEncodedTile(tiff, tile_index, tile,
+                                                   (tmsize_t)tile_size);
+            if (decoded < 0 || (uint64_t)decoded < tile_row_bytes * cached_tile_rows) {
+              if (!within_error_message[0]) {
+                within_set_error("TIFF tile decoding failed at tile %u.",
+                                 (unsigned int)tile_index);
+              }
+              goto cleanup;
             }
-            goto cleanup;
-          }
-          uint32_t columns = tile_width < width - tile_x
-                                 ? tile_width
-                                 : width - tile_x;
-          uint64_t copy_bytes = (uint64_t)columns * samples * bytes_per_sample;
-          for (uint32_t tile_row = 0; tile_row < cached_tile_rows; ++tile_row) {
-            memcpy(tile_stripe + (uint64_t)tile_row * row_bytes +
-                       (uint64_t)tile_x * samples * bytes_per_sample,
-                   tile + (uint64_t)tile_row * tile_row_bytes,
-                   (size_t)copy_bytes);
+            uint32_t columns = tile_width < width - tile_x
+                                   ? tile_width
+                                   : width - tile_x;
+            for (uint32_t tile_row = 0; tile_row < cached_tile_rows; ++tile_row) {
+              unsigned char *output = tile_stripe +
+                  (uint64_t)tile_row * row_bytes +
+                  (uint64_t)tile_x * samples * bytes_per_sample;
+              const unsigned char *input = tile +
+                  (uint64_t)tile_row * tile_row_bytes;
+              if (planar == PLANARCONFIG_CONTIG) {
+                memcpy(output, input,
+                       (size_t)columns * samples * bytes_per_sample);
+              } else {
+                for (uint32_t column = 0; column < columns; ++column) {
+                  memcpy(output + (uint64_t)column * samples * bytes_per_sample +
+                             (uint64_t)sample * bytes_per_sample,
+                         input + (uint64_t)column * bytes_per_sample,
+                         bytes_per_sample);
+                }
+              }
+            }
           }
         }
       }
       source_row = tile_stripe + (uint64_t)(source_y - cached_tile_y) * row_bytes;
     } else {
-      if (TIFFReadScanline(tiff, row, source_y, 0) < 0) {
-        if (!within_error_message[0]) {
-          within_set_error("TIFF scanline decoding failed at row %u.", source_y);
+      if (planar == PLANARCONFIG_CONTIG) {
+        if (TIFFReadScanline(tiff, row, source_y, 0) < 0) {
+          if (!within_error_message[0]) {
+            within_set_error("TIFF scanline decoding failed at row %u.", source_y);
+          }
+          goto cleanup;
         }
-        goto cleanup;
+      } else {
+        for (uint16_t sample = 0; sample < samples; ++sample) {
+          if (TIFFReadScanline(tiff, plane_row, source_y, sample) < 0) {
+            if (!within_error_message[0]) {
+              within_set_error("TIFF planar scanline decoding failed at row %u sample %u.",
+                               source_y, sample);
+            }
+            goto cleanup;
+          }
+          for (uint32_t x = 0; x < width; ++x) {
+            memcpy(row + (uint64_t)x * samples * bytes_per_sample +
+                       (uint64_t)sample * bytes_per_sample,
+                   plane_row + (uint64_t)x * bytes_per_sample,
+                   bytes_per_sample);
+          }
+        }
       }
       source_row = row;
     }
@@ -495,6 +538,7 @@ cleanup:
   if (tile_stripe) free(tile_stripe);
   if (tile) _TIFFfree(tile);
   if (row) _TIFFfree(row);
+  if (plane_row) _TIFFfree(plane_row);
   if (png) png_destroy_write_struct(&png, info ? &info : NULL);
   if (tiff) TIFFClose(tiff);
   return result;

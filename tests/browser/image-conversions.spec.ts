@@ -64,6 +64,8 @@ const routes = [
   ["tiff-to-png", "test-pattern-orientation2.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation2-reference.png"],
   ["tiff-to-png", "test-pattern-orientation3.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation3-reference.png"],
   ["tiff-to-png", "test-pattern-orientation4.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-orientation4-reference.png"],
+  ["tiff-to-png", "test-pattern-planar.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-reference.png"],
+  ["tiff-to-png", "test-pattern-planar-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-tiled-reference.png"],
   ["svg-to-png", "test-pattern.svg", "png", "png", undefined, 640, 480],
 ] as const;
 
@@ -453,7 +455,6 @@ test("TIFF converts through the bounded direct-save worker", async () => {
 });
 
 for (const [sourceName, expectedError] of [
-  ["unsupported-planar.tiff", "contiguous pixels"],
   ["unsupported-orientation5.tiff", "non-transposed orientation"],
   ["unsupported-multipage.tiff", "Multipage TIFF"],
   ["decompression-bomb.tiff", "16-megapixel safety limit"],
