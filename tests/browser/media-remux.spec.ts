@@ -201,6 +201,7 @@ const vorbisTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.ogg"),
   aac: path.join(outputRoot, "aac-convert-output.ogg"),
   amr: path.join(outputRoot, "amr-convert-output.ogg"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.ogg"),
   mp3: path.join(outputRoot, "mp3-convert-output.ogg"),
   flac: path.join(outputRoot, "flac-convert-output.ogg"),
   wav: path.join(outputRoot, "wav-convert-output.ogg"),
@@ -1731,6 +1732,7 @@ async function runMediaRoute(
     | "m4a-to-ogg"
     | "aac-to-ogg"
     | "amr-to-ogg"
+    | "amr-wb-to-ogg"
     | "mp3-to-ogg"
     | "flac-to-ogg"
     | "wav-to-ogg"
@@ -2656,6 +2658,7 @@ for (const route of [
   ["m4a-to-ogg", audioFixturePath],
   ["aac-to-ogg", aacFixturePath],
   ["amr-to-ogg", amrFixturePath],
+  ["amr-wb-to-ogg", amrWbFixturePath],
   ["mp3-to-ogg", mp3FixturePath],
   ["flac-to-ogg", flacFixturePath],
   ["wav-to-ogg", wavFixturePath],
@@ -2763,6 +2766,8 @@ for (const route of [
         ? "[standalone-opus] "
       : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|opus)-to-ogg$/.test(route[0])
         ? "[standalone-vorbis] "
+      : route[0] === "amr-wb-to-ogg"
+        ? "[standalone-vorbis] [amr-wb-vorbis] "
       : /^(?:m4a|aac|mp3|aiff|ogg|opus)-to-wma$/.test(route[0])
         ? "[standalone-wma] "
       : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(route[0])
@@ -4275,6 +4280,7 @@ const standaloneVorbisOutputRoutes = [
   ["m4a-to-ogg", "m4a", audioFixturePath],
   ["aac-to-ogg", "aac", aacFixturePath],
   ["amr-to-ogg", "amr", amrFixturePath],
+  ["amr-wb-to-ogg", "amr-wb", amrWbFixturePath],
   ["mp3-to-ogg", "mp3", mp3FixturePath],
   ["flac-to-ogg", "flac", flacFixturePath],
   ["wav-to-ogg", "wav", wavFixturePath],
@@ -4284,7 +4290,7 @@ const standaloneVorbisOutputRoutes = [
 ] as const;
 
 for (const [route, input, inputPath] of standaloneVorbisOutputRoutes) {
-  test(`[standalone-vorbis] browser FFmpeg writes genuine Vorbis for ${input.toUpperCase()} input`, async () => {
+  test(`[standalone-vorbis]${input === "amr-wb" ? "[amr-wb-vorbis]" : ""} browser FFmpeg writes genuine Vorbis for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       vorbisTranscodeOutputPaths[input],
@@ -4292,7 +4298,7 @@ for (const [route, input, inputPath] of standaloneVorbisOutputRoutes) {
       1_000,
       inputPath,
       {
-        expectedDurationSeconds: 4,
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : 4,
         durationToleranceSeconds: 0.3,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("ogg");
@@ -4304,6 +4310,8 @@ for (const [route, input, inputPath] of standaloneVorbisOutputRoutes) {
           expect(Number(audio?.sample_rate)).toBeLessThanOrEqual(48_000);
           if (input === "amr") {
             expect(Number(audio?.sample_rate)).toBe(8_000);
+          } else if (input === "amr-wb") {
+            expect(Number(audio?.sample_rate)).toBe(16_000);
           }
           const bitRate = Number(
             (probe.format as { bit_rate?: string }).bit_rate,

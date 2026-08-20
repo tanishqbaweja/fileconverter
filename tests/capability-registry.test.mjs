@@ -95,6 +95,7 @@ test("AMR-WB decode routes are public after bounded large-file evidence passes",
     "amr-wb-to-aiff",
     "amr-wb-to-opus",
     "amr-wb-to-aac",
+    "amr-wb-to-ogg",
   ]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);

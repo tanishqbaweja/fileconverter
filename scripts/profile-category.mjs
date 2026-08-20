@@ -357,6 +357,7 @@ const categories = {
       ["amr-wb-to-aiff", "audio-amr-wb-128m.awb"],
       ["amr-wb-to-opus", "audio-amr-wb-128m.awb"],
       ["amr-wb-to-aac", "audio-amr-wb-128m.awb"],
+      ["amr-wb-to-ogg", "audio-amr-wb-128m.awb"],
     ].map(([profileId, name]) => [
       profileId,
       `fixtures/stress/media/${name}`,

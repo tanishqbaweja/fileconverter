@@ -120,6 +120,7 @@ const VORBIS_OUTPUT_PROFILES = [
   "m4a-to-ogg",
   "aac-to-ogg",
   "amr-to-ogg",
+  "amr-wb-to-ogg",
   "mp3-to-ogg",
   "flac-to-ogg",
   "wav-to-ogg",

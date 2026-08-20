@@ -861,7 +861,8 @@ function standaloneOpusOutputProfile(
 
 type StandaloneVorbisOutputInput =
   | Exclude<StandaloneAiffInput, "ogg">
-  | "aiff";
+  | "aiff"
+  | "amr-wb";
 
 const standaloneVorbisOutputEvidence: Record<
   StandaloneVorbisOutputInput,
@@ -870,6 +871,7 @@ const standaloneVorbisOutputEvidence: Record<
   m4a: 140_941_469,
   aac: 134_367_785,
   amr: 134_229_414,
+  "amr-wb": 137_420_809,
   mp3: 50_401_224,
   flac: 138_185_686,
   wav: 153_600_106,
@@ -885,6 +887,7 @@ function standaloneVorbisOutputProfile(
     m4a: "AAC or 16-bit ALAC",
     aac: "AAC in ADTS",
     amr: "8 kHz mono AMR-NB",
+    "amr-wb": "16 kHz mono AMR-WB in 3GP/ISOBMFF .awb",
     mp3: "MP3",
     flac: "FLAC",
     wav: "signed 16-bit little-endian PCM WAV",
@@ -4508,6 +4511,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   standaloneVorbisOutputProfile("m4a"),
   standaloneVorbisOutputProfile("aac"),
   standaloneVorbisOutputProfile("amr"),
+  standaloneVorbisOutputProfile("amr-wb"),
   standaloneVorbisOutputProfile("mp3"),
   standaloneVorbisOutputProfile("flac"),
   standaloneVorbisOutputProfile("wav"),
