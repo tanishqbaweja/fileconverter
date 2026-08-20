@@ -1,4 +1,4 @@
-"""Create a deterministic animated WebP from the committed GIF fixture."""
+"""Create deterministic animated WebP and APNG fixtures from the committed GIF."""
 
 from pathlib import Path
 
@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = ROOT / "fixtures" / "images"
 SOURCE = FIXTURES / "animated-pattern.gif"
 OUTPUT = FIXTURES / "animated-pattern.webp"
+APNG_OUTPUT = FIXTURES / "animated-pattern.apng"
 REFERENCE = FIXTURES / "animated-pattern-first-frame-reference.png"
 
 with Image.open(SOURCE) as image:
@@ -28,4 +29,13 @@ frames[0].save(
     loop=0,
     lossless=True,
     method=4,
+)
+frames[0].save(
+    APNG_OUTPUT,
+    format="PNG",
+    save_all=True,
+    append_images=frames[1:],
+    duration=durations,
+    loop=0,
+    compress_level=1,
 )

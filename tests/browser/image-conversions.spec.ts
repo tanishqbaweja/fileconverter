@@ -383,6 +383,15 @@ for (const [
 
 for (const route of [
   {
+    profileId: "png-to-zip",
+    sourceName: "animated-pattern.apng",
+    sourceFormat: "png",
+    width: 1024,
+    height: 768,
+    referenceName: "animated-pattern-first-frame-reference.png",
+    minimumReferenceSsim: undefined,
+  },
+  {
     profileId: "gif-to-zip",
     sourceName: "animated-pattern.gif",
     sourceFormat: "gif",
@@ -629,6 +638,23 @@ for (const route of [
         const similarity = await measureSsim(referencePath, firstFramePath);
         expect(similarity).toBeGreaterThanOrEqual(route.minimumReferenceSsim);
       }
+      if (route.sourceFormat === "png") {
+        for (let index = 0; index < 8; index += 1) {
+          expect(manifest.frames[index].timestampMicros).toBe(index * 250_000);
+          expect(manifest.frames[index].durationMicros).toBe(250_000);
+          const archivedHash = createHash("sha256")
+            .update(
+              await rawPixels(
+                path.join(extractRoot, expectedNames[index]),
+              ),
+            )
+            .digest("hex");
+          const nativeHash = createHash("sha256")
+            .update(await rawPixels(sourcePath, index))
+            .digest("hex");
+          expect(archivedHash).toBe(nativeHash);
+        }
+      }
       if (route.sourceFormat === "avif") {
         expect(manifest.aggregateDecodedBytes).toBe(4_718_592);
         for (let index = 0; index < 8; index += 1) {
@@ -850,6 +876,7 @@ test("tiff-to-zip archives every page with exact decoded pixels", async () => {
 });
 
 for (const [profileId, sourceName] of [
+  ["png-to-zip", "animated-pattern.apng"],
   ["gif-to-zip", "animated-pattern.gif"],
   ["webp-to-zip", "animated-pattern.webp"],
   ["avif-to-zip", "animated-pattern.avif"],
@@ -891,6 +918,44 @@ for (const [profileId, sourceName] of [
     expect(leftovers).toEqual([]);
   });
 }
+
+test("APNG frame extraction cancellation removes the partial browser-owned ZIP", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.apng"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("png-to-zip");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 10_000 },
+    )
+    .toBe("running");
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-png-to-zip")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
 
 test("ICO output failure removes the partial browser-owned file", async () => {
   await page.goto("/?test=1&fault=write");

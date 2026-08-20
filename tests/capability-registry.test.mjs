@@ -767,6 +767,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "photo.JPG", type: "" }), "jpeg");
   assert.equal(detectFormat({ name: "still.webp", type: "" }), "webp");
   assert.equal(detectFormat({ name: "animation.GIF", type: "" }), "gif");
+  assert.equal(detectFormat({ name: "animation.APNG", type: "" }), "png");
   assert.equal(detectFormat({ name: "legacy-video.OGM", type: "" }), "ogv");
   assert.equal(detectFormat({ name: "elementary.M2V", type: "" }), "m2v");
   assert.equal(detectFormat({ name: "elementary.AVC", type: "" }), "h264");
@@ -1368,6 +1369,7 @@ test("compound archives and mainstream images are detected by filename", () => {
 
 test("animated frame archives expose only routes with complete browser evidence", () => {
   const expected = new Map([
+    ["png-to-zip", { public: true, status: "passed", bytes: 482_505 }],
     ["gif-to-zip", { public: true, status: "passed", bytes: 281_853 }],
     ["webp-to-zip", { public: true, status: "passed", bytes: 185_794 }],
     ["avif-to-zip", { public: true, status: "passed", bytes: 23_391 }],
@@ -1380,6 +1382,7 @@ test("animated frame archives expose only routes with complete browser evidence"
     assert.equal(profile.automatedTestStatus, evidence.status, id);
     assert.equal(profile.maxTestedBytes, evidence.bytes, id);
   }
+  assert.ok(publicProfilesFor("png").some((profile) => profile.id === "png-to-zip"));
   assert.ok(publicProfilesFor("gif").some((profile) => profile.id === "gif-to-zip"));
   assert.ok(
     publicProfilesFor("webp").some((profile) => profile.id === "webp-to-zip"),

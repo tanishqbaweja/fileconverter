@@ -1713,7 +1713,7 @@ async function runAnimatedImageToZip(
   }
   const inputFormat = profileId.split("-to-")[0];
   const inputMime = imageMimeTypes[inputFormat];
-  if (!inputMime || !["gif", "webp", "avif"].includes(inputFormat)) {
+  if (!inputMime || !["png", "gif", "webp", "avif"].includes(inputFormat)) {
     throw new Error("This bounded animation extraction route is not installed.");
   }
   const Decoder = (
@@ -4188,7 +4188,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         emitProgress,
         post,
       });
-    } else if (/^(?:gif|webp)-to-zip$/.test(profileId)) {
+    } else if (/^(?:png|gif|webp)-to-zip$/.test(profileId)) {
       await runAnimatedImageToZip(
         profileId,
         file,

@@ -1915,9 +1915,9 @@ export const formats = [
   },
   {
     id: "png",
-    label: "PNG image",
-    extensions: ["png"],
-    mimeTypes: ["image/png"],
+    label: "PNG / APNG image",
+    extensions: ["png", "apng"],
+    mimeTypes: ["image/png", "image/apng"],
     category: "image",
   },
   {
@@ -2236,11 +2236,13 @@ const icoOutputProfiles = [
 ] as const;
 
 const animatedFrameArchiveProfiles = [
+  ["png-to-zip", "png"],
   ["gif-to-zip", "gif"],
   ["webp-to-zip", "webp"],
 ] as const;
 
 const animatedFrameArchiveMaxTestedBytes = {
+  png: 482_505,
   gif: 281_853,
   webp: 185_794,
 } as const;

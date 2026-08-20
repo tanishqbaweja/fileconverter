@@ -256,6 +256,7 @@ await execFileAsync(
 
 for (const name of [
   "animated-pattern.webp",
+  "animated-pattern.apng",
   "animated-pattern-first-frame-reference.png",
   "test-pattern-tiled.tiff",
   "test-pattern-tiled-reference.png",
@@ -302,7 +303,7 @@ for (const name of [
           "fixtures/images/test-pattern-multipage-second-page-reference.png",
         ]
       : undefined;
-  if (name === "animated-pattern.webp") {
+  if (name === "animated-pattern.webp" || name === "animated-pattern.apng") {
     const referenceName = "animated-pattern-first-frame-reference.png";
     const { stdout: referenceOutput } = await execFileAsync(
       "ffprobe",

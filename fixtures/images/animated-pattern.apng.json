@@ -1,0 +1,24 @@
+{
+  "generatedBy": "scripts/generate-animated-webp-fixture.py",
+  "bytes": 482505,
+  "sha256": "8d4a828fd1cb6f2f7b79a0f089df11abebb009c823582134bf86b6ef09956ca4",
+  "probe": {
+    "streams": [
+      {
+        "codec_name": "apng",
+        "width": 1024,
+        "height": 768,
+        "pix_fmt": "rgba",
+        "r_frame_rate": "4/1",
+        "avg_frame_rate": "4/1",
+        "time_base": "1/100000",
+        "nb_frames": "8"
+      }
+    ],
+    "format": {
+      "format_name": "apng",
+      "size": "482505"
+    }
+  },
+  "validationReference": "fixtures/images/animated-pattern-first-frame-reference.png"
+}
