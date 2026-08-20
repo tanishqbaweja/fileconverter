@@ -3826,6 +3826,27 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "jxl-to-zip",
+    input: "jxl",
+    output: "zip",
+    engine: "libjxl-wasm",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Extracts up to 1,000 coalesced displayed frames from grayscale, grayscale-alpha, RGB, or RGBA JPEG XL at integer depths up to 16 bits, with an 8,192-pixel edge, 8,388,608-pixel limit, and 16 MiB decoded-surface limit per frame.",
+      "Each frame is written incrementally as a stored PNG ZIP entry; animation timing, timebase, timecodes, last-frame state, and loop count are recorded in animation.json.",
+      "The encoded orientation is applied and the target-data ICC profile is embedded in each PNG; EXIF, XMP, previews, thumbnails, frame names, text boxes, and non-alpha extra channels are not copied as independent metadata.",
+    ],
+    fidelityLimitations: [
+      "PNG losslessly preserves each bounded coalesced frame rendered by libjxl; lossy JPEG XL source information cannot be restored, and floating-point JPEG XL samples are not accepted.",
+    ],
+    maxTestedBytes: 1_315_111,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "mkv-to-mp4",
     input: "mkv",
     output: "mp4",

@@ -36,14 +36,14 @@ target_link_options(within-jxl PRIVATE
   -sFILESYSTEM=0
   -sASYNCIFY=1
   -sASYNCIFY_STACK_SIZE=1048576
-  "-sASYNCIFY_IMPORTS=['within_jxl_input_read','within_png_output_write']"
+  "-sASYNCIFY_IMPORTS=['within_jxl_input_read','within_png_output_write','within_jxl_frame_start','within_jxl_frame_end']"
   -sINITIAL_MEMORY=117440512
   -sALLOW_MEMORY_GROWTH=0
   -sSTACK_SIZE=1048576
   -sMALLOC=emmalloc
   -sASSERTIONS=0
   -sNO_EXIT_RUNTIME=1
-  "-sEXPORTED_FUNCTIONS=['_within_jxl_to_png','_within_jxl_error','_within_jxl_width','_within_jxl_height','_within_jxl_bits','_within_jxl_channels','_within_jxl_has_animation','_within_jxl_peak_decoder_allocation']"
+  "-sEXPORTED_FUNCTIONS=['_within_jxl_to_png','_within_jxl_to_png_frames','_within_jxl_error','_within_jxl_width','_within_jxl_height','_within_jxl_bits','_within_jxl_channels','_within_jxl_has_animation','_within_jxl_frame_count','_within_jxl_peak_decoder_allocation']"
   "-sEXPORTED_RUNTIME_METHODS=['ccall','UTF8ToString','HEAPU8']"
 )
 set_target_properties(within-jxl PROPERTIES

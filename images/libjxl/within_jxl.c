@@ -19,6 +19,7 @@
 #define WITHIN_MAX_DIMENSION 8192U
 #define WITHIN_MAX_PIXELS 8388608ULL
 #define WITHIN_MAX_ICC (4U * 1024U * 1024U)
+#define WITHIN_MAX_FRAMES 1000U
 #define WITHIN_STRIPE_ROWS 256U
 #define WITHIN_MAX_STRIPE (16U * 1024U * 1024U)
 #define WITHIN_DECODER_ALLOCATION_LIMIT (102U * 1024U * 1024U)
@@ -50,6 +51,7 @@ typedef struct {
   uint32_t channels;
   uint32_t bytes_per_sample;
   uint32_t row_bytes;
+  uint32_t stripe_rows;
   uint32_t stripe_start;
   uint32_t stripe_height;
   int initialized;
@@ -63,6 +65,12 @@ static uint32_t within_image_height;
 static uint32_t within_image_bits;
 static uint32_t within_image_channels;
 static int within_image_has_animation;
+static uint32_t within_animation_tps_numerator;
+static uint32_t within_animation_tps_denominator;
+static uint32_t within_animation_num_loops;
+static int within_animation_have_timecodes;
+static uint32_t within_completed_frames;
+static int within_archive_frames;
 static within_memory_state within_decoder_memory;
 
 EM_ASYNC_JS(int, within_jxl_input_read,
@@ -79,6 +87,31 @@ EM_ASYNC_JS(int, within_png_output_write,
             (uint64_t offset, const unsigned char *source, int length), {
   try {
     return await Module.withinBridge.write(Number(offset), HEAPU8.slice(source, source + length));
+  } catch (error) {
+    Module.withinBridge.message(String(error && error.message ? error.message : error));
+    return -1;
+  }
+});
+
+EM_ASYNC_JS(int, within_jxl_frame_start,
+            (uint32_t index, uint32_t duration, uint32_t timecode, int is_last,
+             uint32_t width, uint32_t height, uint32_t bits,
+             uint32_t channels, uint32_t tps_numerator,
+             uint32_t tps_denominator, uint32_t num_loops,
+             int have_timecodes), {
+  try {
+    return await Module.withinBridge.frameStart(
+      index, duration, timecode, is_last, width, height, bits, channels,
+      tps_numerator, tps_denominator, num_loops, have_timecodes);
+  } catch (error) {
+    Module.withinBridge.message(String(error && error.message ? error.message : error));
+    return -1;
+  }
+});
+
+EM_ASYNC_JS(int, within_jxl_frame_end, (uint32_t index), {
+  try {
+    return await Module.withinBridge.frameEnd(index);
   } catch (error) {
     Module.withinBridge.message(String(error && error.message ? error.message : error));
     return -1;
@@ -170,9 +203,9 @@ static int within_flush_stripe(within_output_state *output) {
     if (output->failed) return 0;
   }
   memset(output->row_counts, 0,
-         (size_t)WITHIN_STRIPE_ROWS * sizeof(*output->row_counts));
+         (size_t)output->stripe_rows * sizeof(*output->row_counts));
   memset(output->coverage, 0,
-         ((size_t)output->width * WITHIN_STRIPE_ROWS + 7U) / 8U);
+         ((size_t)output->width * output->stripe_rows + 7U) / 8U);
   return 1;
 }
 
@@ -196,7 +229,8 @@ static void within_image_callback(void *opaque, size_t x, size_t y,
     within_set_error("JPEG XL decoder returned an invalid pixel stripe.");
     return;
   }
-  uint32_t target_start = ((uint32_t)y / WITHIN_STRIPE_ROWS) * WITHIN_STRIPE_ROWS;
+  uint32_t target_start =
+      ((uint32_t)y / output->stripe_rows) * output->stripe_rows;
   if (target_start != output->stripe_start) {
     if (target_start < output->stripe_start || !within_flush_stripe(output)) {
       output->failed = 1;
@@ -204,8 +238,8 @@ static void within_image_callback(void *opaque, size_t x, size_t y,
     }
     output->stripe_start = target_start;
     output->stripe_height = output->height - target_start;
-    if (output->stripe_height > WITHIN_STRIPE_ROWS)
-      output->stripe_height = WITHIN_STRIPE_ROWS;
+    if (output->stripe_height > output->stripe_rows)
+      output->stripe_height = output->stripe_rows;
   }
   uint32_t local_y = (uint32_t)y - output->stripe_start;
   if (local_y >= output->stripe_height) {
@@ -247,10 +281,11 @@ static int within_start_png(within_output_state *output, const uint8_t *icc,
   size_t row_bytes = (size_t)within_image_width * within_image_channels *
                      (within_image_bits / 8U);
   uint32_t stripe_height = within_image_height;
-  if (stripe_height > WITHIN_STRIPE_ROWS) stripe_height = WITHIN_STRIPE_ROWS;
+  uint32_t stripe_rows = within_archive_frames ? within_image_height : WITHIN_STRIPE_ROWS;
+  if (stripe_height > stripe_rows) stripe_height = stripe_rows;
   size_t stripe_bytes = row_bytes * stripe_height;
   size_t coverage_bytes =
-      ((size_t)within_image_width * WITHIN_STRIPE_ROWS + 7U) / 8U;
+      ((size_t)within_image_width * stripe_rows + 7U) / 8U;
   if (row_bytes == 0 || stripe_bytes == 0 || stripe_bytes > WITHIN_MAX_STRIPE) {
     within_set_error("JPEG XL output stripe exceeds the 16 MiB safety limit.");
     return 0;
@@ -258,7 +293,7 @@ static int within_start_png(within_output_state *output, const uint8_t *icc,
   output->stripe = (uint8_t *)malloc(stripe_bytes);
   output->coverage = (uint8_t *)calloc(coverage_bytes, 1);
   output->row_counts =
-      (uint32_t *)calloc(WITHIN_STRIPE_ROWS, sizeof(*output->row_counts));
+      (uint32_t *)calloc(stripe_rows, sizeof(*output->row_counts));
   if (!output->stripe || !output->coverage || !output->row_counts) {
     within_set_error("Could not allocate the bounded JPEG XL output stripe.");
     return 0;
@@ -281,6 +316,7 @@ static int within_start_png(within_output_state *output, const uint8_t *icc,
   png_set_IHDR(output->png, output->info, within_image_width, within_image_height,
                (int)within_image_bits, color_type, PNG_INTERLACE_NONE,
                PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+  if (within_archive_frames) png_set_compression_level(output->png, 1);
   if (icc && icc_size > 0) {
     png_set_iCCP(output->png, output->info, "JPEG XL output profile",
                  PNG_COMPRESSION_TYPE_BASE, icc, (png_uint_32)icc_size);
@@ -292,13 +328,14 @@ static int within_start_png(within_output_state *output, const uint8_t *icc,
   output->channels = within_image_channels;
   output->bytes_per_sample = within_image_bits / 8U;
   output->row_bytes = (uint32_t)row_bytes;
+  output->stripe_rows = stripe_rows;
   output->stripe_start = 0;
   output->stripe_height = stripe_height;
   output->initialized = 1;
   return 1;
 }
 
-EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
+static int within_jxl_convert(uint32_t input_size, int archive_frames) {
   within_error_message[0] = '\0';
   within_output_position = 0;
   within_image_width = 0;
@@ -306,6 +343,12 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
   within_image_bits = 0;
   within_image_channels = 0;
   within_image_has_animation = 0;
+  within_animation_tps_numerator = 1;
+  within_animation_tps_denominator = 1;
+  within_animation_num_loops = 1;
+  within_animation_have_timecodes = 0;
+  within_completed_frames = 0;
+  within_archive_frames = archive_frames;
   memset(&within_decoder_memory, 0, sizeof(within_decoder_memory));
   if (input_size < 2 || input_size > WITHIN_MAX_INPUT) {
     within_set_error("JPEG XL input must be between 2 bytes and 64 MiB.");
@@ -350,7 +393,7 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
   size_t available = 0;
   int input_is_set = 0;
   int input_closed = 0;
-  int full_image = 0;
+  int frame_is_open = 0;
   int result = 0;
   for (;;) {
     if (!input_is_set) {
@@ -413,6 +456,18 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
           (info.bits_per_sample > 8 || info.alpha_bits > 8) ? 16U : 8U;
       within_image_channels = info.num_color_channels + (info.alpha_bits ? 1U : 0U);
       within_image_has_animation = info.have_animation ? 1 : 0;
+      if (info.have_animation) {
+        if (info.animation.tps_numerator == 0 ||
+            info.animation.tps_denominator == 0) {
+          within_set_error("JPEG XL animation has an invalid zero timebase.");
+          result = 21;
+          goto cleanup;
+        }
+        within_animation_tps_numerator = info.animation.tps_numerator;
+        within_animation_tps_denominator = info.animation.tps_denominator;
+        within_animation_num_loops = info.animation.num_loops;
+        within_animation_have_timecodes = info.animation.have_timecodes ? 1 : 0;
+      }
     } else if (status == JXL_DEC_COLOR_ENCODING) {
       if (JxlDecoderGetICCProfileSize(decoder, JXL_COLOR_PROFILE_TARGET_DATA,
                                       &icc_size) == JXL_DEC_SUCCESS) {
@@ -431,6 +486,33 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
         }
       } else {
         icc_size = 0;
+      }
+    } else if (status == JXL_DEC_FRAME) {
+      JxlFrameHeader frame_header;
+      if (JxlDecoderGetFrameHeader(decoder, &frame_header) != JXL_DEC_SUCCESS) {
+        within_set_error("Could not read JPEG XL frame timing metadata.");
+        result = 22;
+        goto cleanup;
+      }
+      if (archive_frames) {
+        if (frame_is_open || within_completed_frames >= WITHIN_MAX_FRAMES) {
+          within_set_error("JPEG XL animation exceeds the 1,000-frame safety limit.");
+          result = 23;
+          goto cleanup;
+        }
+        within_output_position = 0;
+        if (within_jxl_frame_start(
+                within_completed_frames, frame_header.duration,
+                frame_header.timecode, frame_header.is_last ? 1 : 0,
+                within_image_width, within_image_height, within_image_bits,
+                within_image_channels, within_animation_tps_numerator,
+                within_animation_tps_denominator, within_animation_num_loops,
+                within_animation_have_timecodes) != 0) {
+          within_set_error("JPEG XL destination rejected the next frame.");
+          result = 24;
+          goto cleanup;
+        }
+        frame_is_open = 1;
       }
     } else if (status == JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
       if (!within_image_width || output.initialized ||
@@ -462,8 +544,18 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
         result = 15;
         goto cleanup;
       }
-      full_image = 1;
-      break;
+      within_completed_frames++;
+      if (!archive_frames) break;
+      if (!frame_is_open ||
+          within_jxl_frame_end(within_completed_frames - 1U) != 0) {
+        within_set_error("JPEG XL destination could not finalize a frame.");
+        result = 25;
+        goto cleanup;
+      }
+      frame_is_open = 0;
+      within_output_release(&output);
+      memset(&output, 0, sizeof(output));
+      within_output_position = 0;
     } else if (status == JXL_DEC_NEED_MORE_INPUT) {
       size_t unused = JxlDecoderReleaseInput(decoder);
       input_is_set = 0;
@@ -492,6 +584,7 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
       result = 18;
       goto cleanup;
     } else if (status == JXL_DEC_SUCCESS) {
+      if (archive_frames && within_completed_frames > 0 && !frame_is_open) break;
       within_set_error("JPEG XL decoder ended before producing a complete image.");
       result = 19;
       goto cleanup;
@@ -504,8 +597,16 @@ cleanup:
   free(icc);
   free(input);
   within_output_release(&output);
-  if (!full_image && result == 0) result = 20;
+  if (within_completed_frames == 0 && result == 0) result = 20;
   return result;
+}
+
+EMSCRIPTEN_KEEPALIVE int within_jxl_to_png(uint32_t input_size) {
+  return within_jxl_convert(input_size, 0);
+}
+
+EMSCRIPTEN_KEEPALIVE int within_jxl_to_png_frames(uint32_t input_size) {
+  return within_jxl_convert(input_size, 1);
 }
 
 EMSCRIPTEN_KEEPALIVE const char *within_jxl_error(void) {
@@ -517,6 +618,9 @@ EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_bits(void) { return within_image_bits; 
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_channels(void) { return within_image_channels; }
 EMSCRIPTEN_KEEPALIVE int within_jxl_has_animation(void) {
   return within_image_has_animation;
+}
+EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_frame_count(void) {
+  return within_completed_frames;
 }
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_peak_decoder_allocation(void) {
   return (uint32_t)within_decoder_memory.peak;

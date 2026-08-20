@@ -931,6 +931,12 @@ const categories = {
       ["jxl-to-png", "fixtures/images/highres-pattern.jxl"],
     ],
   },
+  "jxl-animated": {
+    generator: "scripts/generate-animated-jxl-fixture.mjs",
+    profiles: [
+      ["jxl-to-zip", "fixtures/images/animated-pattern.jxl"],
+    ],
+  },
   "tiff-multipage": {
     generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
     profiles: [

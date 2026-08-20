@@ -1,0 +1,78 @@
+{
+  "generatedBy": "scripts/generate-animated-jxl-fixture.mjs",
+  "bytes": 1315111,
+  "sha256": "fc673074e1fd0a8108537bc206936ca05e84c414a21105193c23e7e3066235a7",
+  "frameCount": 8,
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "jpegxl_anim",
+        "codec_long_name": "JPEG XL animated",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 1024,
+        "height": 768,
+        "coded_width": 1024,
+        "coded_height": 768,
+        "has_b_frames": 0,
+        "pix_fmt": "rgba",
+        "level": -99,
+        "color_range": "pc",
+        "color_space": "gbr",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "refs": 1,
+        "r_frame_rate": "100/1",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/100",
+        "bits_per_raw_sample": "8",
+        "nb_read_frames": "8",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\animated-pattern.jxl",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "jpegxl_anim",
+      "format_long_name": "Animated JPEG XL",
+      "size": "1315111",
+      "probe_score": 100
+    }
+  },
+  "validationReference": "fixtures/images/animated-pattern.gif",
+  "encoding": {
+    "tool": "cjxl v0.12.0 4128790 [_AVX2_,SSE4,SSE2] {Clang 22.1.3}\r\nCopyright (c) the JPEG XL Project",
+    "libjxlVersion": "0.12.0",
+    "distance": 0,
+    "effort": 1,
+    "threads": 1,
+    "sourceFrames": 8,
+    "sourceFrameDurationMilliseconds": 250,
+    "releaseUrl": "https://github.com/libjxl/libjxl/releases/download/v0.12.0/jxl-x64-windows-static.zip",
+    "releaseSha256": "3025d7e308390796d20492322e606bc92decaee7b6bc99d3f7547870ae5db7de"
+  }
+}

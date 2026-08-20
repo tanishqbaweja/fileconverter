@@ -44,8 +44,13 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumIccBytes": 4194304,
   "maximumStripeRows": 256,
   "maximumStripeBytes": 16777216,
+  "maximumAnimationFrameDecodedBytes": 16777216,
+  "animationFramePngCompressionLevel": 1,
   "outstandingWrites": 1,
   "threads": 1,
-  "profiles": ["jxl-to-png"]
+  "maximumFrames": 1000,
+  "maximumAggregateDecodedBytes": 68719476736,
+  "maximumAggregateExpansionRatio": 1000,
+  "profiles": ["jxl-to-png", "jxl-to-zip"]
 }
 JSON

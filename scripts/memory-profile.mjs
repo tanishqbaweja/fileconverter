@@ -154,8 +154,8 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
-const isAnimatedFrameArchiveProfile = /^(?:gif|webp|avif)-to-zip$/.test(
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif|jxl)-to-zip|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+const isAnimatedFrameArchiveProfile = /^(?:gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
@@ -2828,7 +2828,11 @@ async function validateAnimatedFrameArchiveOutput(
       `Browser animation ZIP is outside the ZIP32 range: ${finalState.metrics.outputBytes} bytes.`,
     );
   }
-  const expectedFrames = Number(source.probe?.streams?.[0]?.nb_frames);
+  const expectedFrames = Number(
+    source.frameCount ??
+      source.probe?.streams?.[0]?.nb_frames ??
+      source.probe?.streams?.[0]?.nb_read_frames,
+  );
   if (!Number.isSafeInteger(expectedFrames) || expectedFrames < 1) {
     throw new Error("The animation stress manifest does not declare a frame count.");
   }
@@ -2924,7 +2928,7 @@ async function validateAnimatedFrameArchiveOutput(
     ) {
       throw new Error("Animation validation references must stay inside the project.");
     }
-    const rawFrame = async (imagePath) =>
+    const rawFrame = async (imagePath, frameIndex = 0) =>
       (
         await execFileAsync(
           "ffmpeg",
@@ -2933,6 +2937,10 @@ async function validateAnimatedFrameArchiveOutput(
             "error",
             "-i",
             imagePath,
+            "-vf",
+            `select=eq(n\\,${frameIndex})`,
+            "-fps_mode",
+            "vfr",
             "-frames:v",
             "1",
             "-pix_fmt",
@@ -2958,6 +2966,27 @@ async function validateAnimatedFrameArchiveOutput(
     if (firstFrameSha256 !== referenceFrameSha256) {
       throw new Error("Animation ZIP first frame differs from the independent reference.");
     }
+    const allFrameSha256 = [];
+    if (route === "jxl-to-zip") {
+      for (let index = 0; index < expectedFrames; index += 1) {
+        const archived = await rawFrame(
+          path.join(extractionRoot, expectedNames[index]),
+        );
+        const nativeSource = await rawFrame(sourcePath, index);
+        const archivedSha256 = createHash("sha256")
+          .update(archived)
+          .digest("hex");
+        const nativeSourceSha256 = createHash("sha256")
+          .update(nativeSource)
+          .digest("hex");
+        if (archivedSha256 !== nativeSourceSha256) {
+          throw new Error(
+            `JPEG XL frame ${index + 1} differs from independent native decoding.`,
+          );
+        }
+        allFrameSha256.push(archivedSha256);
+      }
+    }
     return {
       format: { format_name: "zip", size: String(finalState.metrics.outputBytes) },
       withinValidation: {
@@ -2965,6 +2994,7 @@ async function validateAnimatedFrameArchiveOutput(
         frameCount: expectedFrames,
         uniqueFrameHashes: new Set(frameHashes).size,
         firstFrameSha256,
+        allFrameSha256: allFrameSha256.length > 0 ? allFrameSha256 : undefined,
         timingManifest: true,
         decodedByNativeFfmpeg: true,
       },

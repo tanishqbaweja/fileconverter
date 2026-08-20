@@ -409,6 +409,15 @@ for (const route of [
     referenceName: "animated-avif-first-frame-reference.png",
     minimumReferenceSsim: 0.75,
   },
+  {
+    profileId: "jxl-to-zip",
+    sourceName: "animated-pattern.jxl",
+    sourceFormat: "jxl",
+    width: 1024,
+    height: 768,
+    referenceName: "animated-pattern-first-frame-reference.png",
+    minimumReferenceSsim: undefined,
+  },
 ] as const) {
   test(`${route.profileId} archives every frame with bounded timing metadata`, async () => {
     const sourcePath = path.join(
@@ -480,6 +489,9 @@ for (const route of [
         schema: string;
         sourceFormat: string;
         frameCount: number;
+        aggregateDecodedBytes?: number;
+        jpegXlLoopCount?: number | string;
+        ticksPerSecond?: { numerator: number; denominator: number };
         frames: Array<{
           file: string;
           index: number;
@@ -535,7 +547,10 @@ for (const route of [
       );
       expect(new Set(frameHashes).size).toBeGreaterThan(1);
 
-      const rawPixels = async (imagePath: string): Promise<Buffer> => {
+      const rawPixels = async (
+        imagePath: string,
+        frameIndex = 0,
+      ): Promise<Buffer> => {
         const result = await execFileAsync(
           "ffmpeg",
           [
@@ -543,6 +558,10 @@ for (const route of [
             "error",
             "-i",
             imagePath,
+            "-vf",
+            `select=eq(n\\,${frameIndex})`,
+            "-fps_mode",
+            "vfr",
             "-frames:v",
             "1",
             "-pix_fmt",
@@ -603,6 +622,29 @@ for (const route of [
           stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
         );
         expect(similarity).toBeGreaterThanOrEqual(route.minimumReferenceSsim);
+      }
+      if (route.sourceFormat === "jxl") {
+        expect(manifest.aggregateDecodedBytes).toBe(25_165_824);
+        expect(manifest.jpegXlLoopCount).toBe("infinite");
+        expect(manifest.ticksPerSecond).toEqual({
+          numerator: 100,
+          denominator: 1,
+        });
+        for (let index = 0; index < 8; index += 1) {
+          expect(manifest.frames[index].timestampMicros).toBe(index * 250_000);
+          expect(manifest.frames[index].durationMicros).toBe(250_000);
+          const archivedHash = createHash("sha256")
+            .update(
+              await rawPixels(
+                path.join(extractRoot, expectedNames[index]),
+              ),
+            )
+            .digest("hex");
+          const sourceHash = createHash("sha256")
+            .update(await rawPixels(sourcePath, index))
+            .digest("hex");
+          expect(archivedHash, `frame ${index + 1}`).toBe(sourceHash);
+        }
       }
     } finally {
       validationSink?.destroy();
@@ -769,6 +811,7 @@ test("tiff-to-zip archives every page with exact decoded pixels", async () => {
 for (const [profileId, sourceName] of [
   ["gif-to-zip", "animated-pattern.gif"],
   ["webp-to-zip", "animated-pattern.webp"],
+  ["jxl-to-zip", "animated-pattern.jxl"],
   ["tiff-to-zip", "test-pattern-multipage.tiff"],
 ] as const) {
   test(`${profileId} output failure removes the partial browser-owned ZIP`, async () => {
@@ -1088,6 +1131,120 @@ test("JPEG XL cancellation removes the partial browser-owned file", async () => 
     const names: string[] = [];
     for await (const [name] of root.entries()) {
       if (name.startsWith("within-test-jxl-to-png")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+test("animated JPEG XL ZIP converts through the bounded direct-save worker", async () => {
+  const outputName = "animated-pattern.zip";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.jxl"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("jxl-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(112 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 4).arrayBuffer()),
+      );
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBe(756_183);
+    expect(output.signature).toEqual([80, 75, 3, 4]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("animated JPEG XL cancellation removes the partial browser-owned ZIP", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.jxl"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("jxl-to-zip");
+  await page.locator('[data-testid="convert-button"]').click();
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-jxl-to-zip")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+test("animated JPEG XL rejects an oversized decoded frame without retained output", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "highres-pattern.jxl"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("jxl-to-zip");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error).toContain("16 MiB safety limit");
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-jxl-to-zip")) names.push(name);
     }
     return names;
   });

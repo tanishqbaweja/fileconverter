@@ -76,6 +76,7 @@
     "fixtures:legacy-container-flac-stress": "node scripts/generate-legacy-container-flac-stress-fixtures.mjs",
     "fixtures:images": "node scripts/generate-image-fixtures.mjs",
     "fixtures:jxl": "node scripts/generate-jxl-fixtures.mjs",
+    "fixtures:jxl-animation": "node scripts/generate-animated-jxl-fixture.mjs",
     "fixtures:tiff-stress": "node scripts/generate-tiff-stress-fixture.mjs",
     "fixtures:tiff-multipage-stress": "node scripts/generate-tiff-multipage-stress-fixture.mjs",
     "fixtures:tiff-transposed-stress": "node scripts/generate-tiff-stress-fixture.mjs 6",

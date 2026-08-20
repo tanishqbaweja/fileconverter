@@ -620,10 +620,19 @@ test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => 
   assert.equal(manifest.outputWriteBytes, 64 * 1024);
   assert.equal(manifest.maximumPixels, 8_388_608);
   assert.equal(manifest.maximumStripeBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.maximumAnimationFrameDecodedBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.maximumFrames, 1_000);
+  assert.equal(manifest.maximumAggregateDecodedBytes, 64 * 1024 ** 3);
+  assert.equal(manifest.maximumAggregateExpansionRatio, 1_000);
+  assert.equal(manifest.animationFramePngCompressionLevel, 1);
   assert.equal(manifest.outstandingWrites, 1);
   assert.equal(profiles[0].maxTestedBytes, 630_393);
   assert.equal(profiles[0].automatedTestStatus, "passed");
   assert.equal(profiles[0].public, true);
+  assert.equal(profiles[1].id, "jxl-to-zip");
+  assert.equal(profiles[1].maxTestedBytes, 1_315_111);
+  assert.equal(profiles[1].automatedTestStatus, "passed");
+  assert.equal(profiles[1].public, true);
   assert.equal(
     publicProfilesFor("jxl").some((profile) => profile.id === "jxl-to-png"),
     true,
@@ -632,6 +641,10 @@ test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => 
     publicProfilesFor("jxl", true).some(
       (profile) => profile.id === "jxl-to-png",
     ),
+    true,
+  );
+  assert.equal(
+    publicProfilesFor("jxl").some((profile) => profile.id === "jxl-to-zip"),
     true,
   );
 });
@@ -1329,6 +1342,7 @@ test("animated frame archives expose only routes with complete browser evidence"
     ["gif-to-zip", { public: true, status: "passed", bytes: 281_853 }],
     ["webp-to-zip", { public: true, status: "passed", bytes: 185_794 }],
     ["avif-to-zip", { public: false, status: "pending", bytes: null }],
+    ["jxl-to-zip", { public: true, status: "passed", bytes: 1_315_111 }],
   ]);
   for (const [id, evidence] of expected) {
     const profile = conversionProfiles.find((candidate) => candidate.id === id);
@@ -1340,6 +1354,9 @@ test("animated frame archives expose only routes with complete browser evidence"
   assert.ok(publicProfilesFor("gif").some((profile) => profile.id === "gif-to-zip"));
   assert.ok(
     publicProfilesFor("webp").some((profile) => profile.id === "webp-to-zip"),
+  );
+  assert.ok(
+    publicProfilesFor("jxl").some((profile) => profile.id === "jxl-to-zip"),
   );
   assert.equal(
     publicProfilesFor("avif").some((profile) => profile.id === "avif-to-zip"),

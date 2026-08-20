@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 366
+complete-Chromium memory profile have passed. The current registry publishes 367
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; JPEG XL to PNG or an all-frame PNG ZIP; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -148,7 +148,8 @@ Hard limits:
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
 - JPEG XL: fixed 112 MiB Wasm heap; 102 MiB tracked decoder allocation;
-  1 MiB retained input window; 16 MiB maximum output stripe
+  1 MiB retained input window; 16 MiB maximum output stripe or animation-frame
+  surface; 1,000 animation frames; 64 GiB and 1,000:1 aggregate decoded limits
 - ICO output: one PNG-compressed image; 256 px maximum per edge
 - archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
 - ZIP central directory: 8 MiB; ZIP64, encryption, links, and special files:
@@ -622,13 +623,16 @@ applied with bounded stripes. TIFF-to-PNG converts the first page with a
 visible omission warning; TIFF-to-ZIP scans at most 1,000 directories once and
 streams each decoded page immediately into an ordered PNG archive.
 
-JPEG-XL-to-PNG uses a separate reproducible libjxl/libpng Wasm engine because
+JPEG-XL-to-PNG and JPEG-XL-to-ZIP use a separate reproducible libjxl/libpng Wasm engine because
 Chromium does not expose JPEG XL through worker `ImageDecoder`. It retains at
 most a 1 MiB compressed-input window, decodes within a fixed 112 MiB heap and
-102 MiB tracked allocation ceiling, and writes one bounded PNG chunk at a time.
+102 MiB tracked allocation ceiling, and writes one bounded PNG/ZIP chunk at a time.
 Integer grayscale, grayscale-alpha, RGB, and RGBA through 16 bits are supported;
 orientation and target ICC are applied, associated alpha is unpremultiplied,
-and animation converts only the first rendered frame with a visible warning.
+and the still route converts only the first rendered frame with a visible warning.
+The animation route decodes and releases one displayed coalesced frame at a time,
+streams it directly into ZIP, and records exact timebase, duration, timecode, and
+loop metadata without retaining the complete frame set or completed archive.
 Floating-point samples and independent preservation of EXIF, XMP, thumbnails,
 preview images, text boxes, and non-alpha extra channels are excluded.
 
@@ -1024,6 +1028,7 @@ profiler:
 | Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
 | Images, tiled TIFF -> PNG | 50,338,032 B | 164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference |
 | Images, JPEG XL -> PNG | 630,393 B | 202.4 MiB | exact repeatable PNG hash, native decode, dimensions, SSIM 1.0 |
+| Images, animated JPEG XL -> PNG ZIP | 1,315,111 B | 229.1 MiB | repeatable ZIP hash; all eight frames exactly match independent native decode; timing manifest |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |

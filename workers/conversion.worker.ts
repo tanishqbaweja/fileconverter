@@ -44,7 +44,7 @@ import { runXmlToNdjson } from "./xml-conversion";
 import { runXzConversion } from "./xz-compression";
 import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
-import { runJxlToPng } from "./jxl-conversion";
+import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import {
   createTarValidationStream,
   TarStreamValidator,
@@ -4209,6 +4209,17 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (profileId === "jxl-to-png") {
       await runJxlToPng({
+        file,
+        writable: destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+        isCancelled: () => cancelled,
+        emitProgress,
+        post,
+      });
+    } else if (profileId === "jxl-to-zip") {
+      await runJxlToZip({
         file,
         writable: destination.writable,
         jobId,
