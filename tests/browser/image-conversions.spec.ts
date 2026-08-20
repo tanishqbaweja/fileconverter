@@ -1,8 +1,9 @@
 import { chromium, expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, rm, stat } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -129,6 +130,49 @@ test.afterAll(async () => {
   await rm(outputRoot, { recursive: true, force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
+
+async function copyAndDeleteBrowserOutput(
+  opfsName: string,
+  outputPath: string,
+): Promise<void> {
+  validationSink = createWriteStream(outputPath, { flags: "w" });
+  try {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(name);
+        const reader = (await handle.getFile()).stream().getReader();
+        for (;;) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          for (let offset = 0; offset < value.byteLength; offset += 64 * 1024) {
+            const part = value.subarray(
+              offset,
+              Math.min(offset + 64 * 1024, value.byteLength),
+            );
+            let binary = "";
+            for (let inner = 0; inner < part.byteLength; inner += 16 * 1024) {
+              binary += String.fromCharCode(
+                ...part.subarray(
+                  inner,
+                  Math.min(inner + 16 * 1024, part.byteLength),
+                ),
+              );
+            }
+            await window.__withinImageValidationChunk(btoa(binary));
+          }
+        }
+      } finally {
+        await root.removeEntry(name).catch(() => {});
+      }
+    }, opfsName);
+    validationSink.end();
+    await once(validationSink, "finish");
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+  }
+}
 
 for (const [
   profileId,
@@ -330,6 +374,278 @@ for (const [
       validationSink = null;
       await rm(outputPath, { force: true });
     }
+  });
+}
+
+for (const route of [
+  {
+    profileId: "gif-to-zip",
+    sourceName: "animated-pattern.gif",
+    sourceFormat: "gif",
+    width: 1024,
+    height: 768,
+    referenceName: "animated-pattern-first-frame-reference.png",
+    minimumReferenceSsim: undefined,
+  },
+  {
+    profileId: "webp-to-zip",
+    sourceName: "animated-pattern.webp",
+    sourceFormat: "webp",
+    width: 1024,
+    height: 768,
+    referenceName: "animated-pattern-first-frame-reference.png",
+    minimumReferenceSsim: undefined,
+  },
+  {
+    profileId: "avif-to-zip",
+    sourceName: "animated-pattern.avif",
+    sourceFormat: "avif",
+    width: 512,
+    height: 384,
+    referenceName: "animated-avif-first-frame-reference.png",
+    minimumReferenceSsim: 0.75,
+  },
+] as const) {
+  test(`${route.profileId} archives every frame with bounded timing metadata`, async () => {
+    const sourcePath = path.join(
+      projectRoot,
+      "fixtures",
+      "images",
+      route.sourceName,
+    );
+    const outputPath = path.join(outputRoot, `${route.profileId}.zip`);
+    const extractRoot = path.join(outputRoot, `${route.profileId}-entries`);
+    assertProjectLocal(outputPath);
+    assertProjectLocal(extractRoot);
+    try {
+      await page.goto("/?test=1");
+      await page.waitForFunction(
+        () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+      );
+      await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+      await page
+        .locator('[data-testid="format-select"]')
+        .selectOption(route.profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(
+          async () =>
+            page.evaluate(
+              () => window.__WITHIN_TEST__?.getState().jobState,
+            ),
+          { timeout: 60_000 },
+        )
+        .not.toBe("running");
+      const state = await page.evaluate(() =>
+        window.__WITHIN_TEST__?.getState(),
+      );
+      expect(state?.jobState, state?.error ?? state?.phase).toBe("complete");
+      expect(state?.warnings).toEqual([]);
+      expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+      expect(state?.metrics?.pendingOperations).toBe(0);
+      expect(state?.metrics?.queuedBytes).toBe(0);
+      await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+
+      await mkdir(extractRoot, { recursive: true });
+      const { stdout: listing } = await execFileAsync(
+        "tar",
+        ["-tf", outputPath],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+      );
+      const expectedNames = [
+        ...Array.from(
+          { length: 8 },
+          (_, index) => `frame-${String(index + 1).padStart(4, "0")}.png`,
+        ),
+        "animation.json",
+      ];
+      expect(listing.trim().split(/\r?\n/)).toEqual(expectedNames);
+      await execFileAsync(
+        "tar",
+        ["-xf", outputPath, "-C", extractRoot],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+      );
+      expect((await readdir(extractRoot)).sort()).toEqual(
+        [...expectedNames].sort(),
+      );
+      const manifest = JSON.parse(
+        await readFile(path.join(extractRoot, "animation.json"), "utf8"),
+      ) as {
+        schema: string;
+        sourceFormat: string;
+        frameCount: number;
+        frames: Array<{
+          file: string;
+          index: number;
+          width: number;
+          height: number;
+          timestampMicros: number;
+          durationMicros: number | null;
+        }>;
+      };
+      expect(manifest.schema).toBe("within-animation-frames-v1");
+      expect(manifest.sourceFormat).toBe(route.sourceFormat);
+      expect(manifest.frameCount).toBe(8);
+      expect(manifest.frames.map((frame) => frame.file)).toEqual(
+        expectedNames.slice(0, 8),
+      );
+      for (let index = 0; index < manifest.frames.length; index += 1) {
+        const frameRecord = manifest.frames[index];
+        expect(frameRecord.index).toBe(index);
+        expect(frameRecord.width).toBe(route.width);
+        expect(frameRecord.height).toBe(route.height);
+        if (index > 0) {
+          expect(frameRecord.timestampMicros).toBeGreaterThan(
+            manifest.frames[index - 1].timestampMicros,
+          );
+        }
+        expect(frameRecord.durationMicros).toBeGreaterThan(0);
+        const framePath = path.join(extractRoot, frameRecord.file);
+        const { stdout } = await execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-show_entries",
+            "stream=codec_name,width,height",
+            "-of",
+            "json",
+            framePath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+        );
+        expect(JSON.parse(stdout).streams[0]).toMatchObject({
+          codec_name: "png",
+          width: route.width,
+          height: route.height,
+        });
+      }
+      const frameHashes = await Promise.all(
+        expectedNames.slice(0, 8).map(async (name) =>
+          createHash("sha256")
+            .update(await readFile(path.join(extractRoot, name)))
+            .digest("hex"),
+        ),
+      );
+      expect(new Set(frameHashes).size).toBeGreaterThan(1);
+
+      const rawPixels = async (imagePath: string): Promise<Buffer> => {
+        const result = await execFileAsync(
+          "ffmpeg",
+          [
+            "-v",
+            "error",
+            "-i",
+            imagePath,
+            "-frames:v",
+            "1",
+            "-pix_fmt",
+            "rgb24",
+            "-f",
+            "rawvideo",
+            "-",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 32 * 1024 * 1024,
+            encoding: "buffer",
+          },
+        );
+        return result.stdout;
+      };
+      const firstFramePath = path.join(extractRoot, expectedNames[0]);
+      const referencePath = path.join(
+        projectRoot,
+        "fixtures",
+        "images",
+        route.referenceName,
+      );
+      if (route.minimumReferenceSsim == null) {
+        const firstFrameHash = createHash("sha256")
+          .update(await rawPixels(firstFramePath))
+          .digest("hex");
+        const referenceHash = createHash("sha256")
+          .update(await rawPixels(referencePath))
+          .digest("hex");
+        expect(firstFrameHash).toBe(referenceHash);
+      } else {
+        const { stderr } = await execFileAsync(
+          "ffmpeg",
+          [
+            "-v",
+            "info",
+            "-i",
+            referencePath,
+            "-i",
+            firstFramePath,
+            "-lavfi",
+            "[0:v:0]format=rgb24[reference];[1:v:0]format=rgb24[converted];[reference][converted]ssim",
+            "-frames:v",
+            "1",
+            "-f",
+            "null",
+            "NUL",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 8 * 1024 * 1024,
+          },
+        );
+        const similarity = Number.parseFloat(
+          stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+        );
+        expect(similarity).toBeGreaterThanOrEqual(route.minimumReferenceSsim);
+      }
+    } finally {
+      validationSink?.destroy();
+      validationSink = null;
+      await rm(outputPath, { force: true });
+      await rm(extractRoot, { recursive: true, force: true });
+    }
+  });
+}
+
+for (const [profileId, sourceName] of [
+  ["gif-to-zip", "animated-pattern.gif"],
+  ["webp-to-zip", "animated-pattern.webp"],
+] as const) {
+  test(`${profileId} output failure removes the partial browser-owned ZIP`, async () => {
+    await page.goto("/?test=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", sourceName),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    const leftovers = await page.evaluate(async (prefix) => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith(prefix)) names.push(name);
+      }
+      return names;
+    }, `within-test-${profileId}`);
+    expect(leftovers).toEqual([]);
   });
 }
 

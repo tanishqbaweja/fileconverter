@@ -2226,6 +2226,17 @@ const icoOutputProfiles = [
   ["bmp-to-ico", "bmp"],
 ] as const;
 
+const animatedFrameArchiveProfiles = [
+  ["gif-to-zip", "gif"],
+  ["webp-to-zip", "webp"],
+  ["avif-to-zip", "avif"],
+] as const;
+
+const animatedFrameArchiveMaxTestedBytes = {
+  gif: 281_853,
+  webp: 185_794,
+} as const;
+
 const imageMaxTestedBytes = {
   png: 780_611,
   jpeg: 418_486,
@@ -3692,6 +3703,32 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     maxTestedBytes: imageMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,
+  })),
+  ...animatedFrameArchiveProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "zip",
+    engine: "image-browser" as const,
+    route: "re-encode" as const,
+    browserRequirements: [
+      "ImageDecoder",
+      "OffscreenCanvas",
+      "File System Access",
+    ],
+    cpuClass: "medium" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "Every complete animation frame is rendered to a numbered PNG in a ZIP archive; frame timestamps, durations, dimensions, and repetition count are recorded in animation.json.",
+      "EXIF, ICC profiles, textual metadata, and format-specific animation metadata outside frame timing and repetition count are not preserved.",
+      "At most 1,000 frames, 8,388,608 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, and ZIP32 output are accepted.",
+    ],
+    fidelityLimitations: [
+      "PNG frames losslessly preserve the browser-decoded composited pixels, but the original animation compression and disposal operations are not retained as editable source data.",
+    ],
+    maxTestedBytes:
+      input === "avif" ? null : animatedFrameArchiveMaxTestedBytes[input],
+    automatedTestStatus: input === "avif" ? ("pending" as const) : ("passed" as const),
+    public: input !== "avif",
   })),
   {
     id: "svg-to-png",

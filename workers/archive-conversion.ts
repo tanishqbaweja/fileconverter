@@ -43,7 +43,7 @@ export interface ZipEntry {
   modifiedAtSeconds: number;
 }
 
-interface WrittenZipEntry {
+export interface WrittenZipEntry {
   nameBytes: Uint8Array<ArrayBuffer>;
   directory: boolean;
   method: number;
@@ -288,7 +288,7 @@ async function tarToZip(runtime: ArchiveRuntime): Promise<void> {
   await finishZip(runtime, entries);
 }
 
-async function finishZip(
+export async function finishZip(
   runtime: SequentialTarToZipRuntime,
   entries: readonly WrittenZipEntry[],
 ): Promise<void> {
@@ -949,7 +949,7 @@ function splitUstarName(name: string): [string, string] {
   throw new Error(`ZIP entry name is not representable in USTAR: ${name}.`);
 }
 
-function createZipLocalHeader(
+export function createZipLocalHeader(
   name: Uint8Array,
   flags: number,
   method: number,
@@ -969,7 +969,7 @@ function createZipLocalHeader(
   return bytes;
 }
 
-function createZipDataDescriptor(
+export function createZipDataDescriptor(
   crc32: number,
   compressedSize: number,
   uncompressedSize: number,
@@ -1193,7 +1193,7 @@ function readU32(bytes: Uint8Array, offset: number): number {
   ).getUint32(0, true);
 }
 
-function ensureZip32(value: number, field: string): void {
+export function ensureZip32(value: number, field: string): void {
   if (!Number.isSafeInteger(value) || value < 0 || value > ZIP32_MAX) {
     throw new Error(`${field} requires unsupported ZIP64 output.`);
   }
@@ -1220,7 +1220,7 @@ function dosToUnix(date: number, time: number): number {
   return Math.floor(Date.UTC(year, month - 1, day, hour, minute, second) / 1000);
 }
 
-function unixToDos(seconds: number): { dosTime: number; dosDate: number } {
+export function unixToDos(seconds: number): { dosTime: number; dosDate: number } {
   const date = new Date(Math.max(315_532_800, seconds) * 1000);
   const year = Math.min(2107, Math.max(1980, date.getUTCFullYear()));
   return {
@@ -1247,7 +1247,7 @@ const crcTable = (() => {
   return table;
 })();
 
-function updateCrc32(crc: number, bytes: Uint8Array): number {
+export function updateCrc32(crc: number, bytes: Uint8Array): number {
   let value = crc >>> 0;
   for (const byte of bytes) {
     value = crcTable[(value ^ byte) & 0xff] ^ (value >>> 8);

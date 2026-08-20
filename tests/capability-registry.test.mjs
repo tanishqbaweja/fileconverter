@@ -1263,6 +1263,29 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
 });
 
+test("animated frame archives expose only routes with complete browser evidence", () => {
+  const expected = new Map([
+    ["gif-to-zip", { public: true, status: "passed", bytes: 281_853 }],
+    ["webp-to-zip", { public: true, status: "passed", bytes: 185_794 }],
+    ["avif-to-zip", { public: false, status: "pending", bytes: null }],
+  ]);
+  for (const [id, evidence] of expected) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.public, evidence.public, id);
+    assert.equal(profile.automatedTestStatus, evidence.status, id);
+    assert.equal(profile.maxTestedBytes, evidence.bytes, id);
+  }
+  assert.ok(publicProfilesFor("gif").some((profile) => profile.id === "gif-to-zip"));
+  assert.ok(
+    publicProfilesFor("webp").some((profile) => profile.id === "webp-to-zip"),
+  );
+  assert.equal(
+    publicProfilesFor("avif").some((profile) => profile.id === "avif-to-zip"),
+    false,
+  );
+});
+
 test("safe archive and raw-compression conversion matrices are complete", () => {
   const archiveFormats = [
     "tar",

@@ -12,12 +12,13 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **362**
-- Public profiles with a retained successful Chrome stress report: **362**
+- Public passed conversion profiles: **364**
+- Public profiles with a retained successful Chrome stress report: **364**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-20 bounded animated-image frame archives:** GIF-to-ZIP and animated-WebP-to-ZIP now decode one complete composited frame at a time in Chromium, encode one PNG at a time, and immediately stream each stored entry into a ZIP32 destination with one pending write; no complete frame set or converted copy is retained in memory. Both routes passed exact first-frame RGB validation, all-eight-frame native PNG probing, ordered timing-manifest validation, distinct-frame checks, injected destination-failure cleanup, and 3/3 complete-Chrome runs. GIF converted 281,853 bytes to 838,296 bytes in 0.161-0.240 seconds at 153.8 MiB worst incremental private memory; WebP converted 185,794 bytes to 838,297 bytes in 0.180-0.250 seconds at 140.2 MiB. Outputs were repeatable and deleted after validation; validator extraction directories were project-local and removed after every run. AVIF-to-ZIP remains hidden: Chromium's browser-decoded first frame measured SSIM 0.766567 against the uncompressed generator reference versus the 0.97 promotion target, and changing `colorSpaceConversion` from `none` to `default` produced identical bytes. The target was not weakened, and the earlier multi-megabyte binary-diff assertion was replaced with bounded hash/SSIM diagnostics so this investigation cannot hang or loop again.
 - **2026-08-20 complete safe archive/compression matrix audit:** the public registry contains exactly all 30 ordered source/destination pairs among TAR, TAR.GZ, TAR.BZ2, TAR.XZ, ZIP, and 7Z, each with passed evidence and a positive measured maximum input size. It also contains all six ordered cross-transcodes among raw GZIP, BZIP2, and XZ plus bounded compress/decompress routes for each format. An exact registry regression now enforces uniqueness, public status, passed status, and retained size evidence for the complete matrix, so archive work is no longer listed as an open coverage gap.
 - **2026-08-20 headed production interaction audit:** a headed Chromium session exercised the built Wrangler application with a real 780,953-byte tracked MKV. The isolated-output `mkv-to-mp4` route saved a genuine `ftypisom` MP4 of 782,560 bytes (SHA-256 `dfde624f30c1db36b61dcd707986477f3f95ac1db34111f1db6fb1b98f240769`) in 404.55 ms with 262,144-byte maximum reads/writes, one pending operation, one worker, 32 MiB peak Wasm, and zero queued bytes at completion. The direct-handle adapter produced the same bytes in 399.53 ms with two workers, a 515,153-byte maximum write/queue, one pending operation, and 34,607,136 shared-buffer bytes including the fixed 32 MiB Wasm core. Manual temporary-storage cleanup correctly left that simulated user-selected destination untouched; the audit then explicitly deleted it. All observed requests were GETs to the localhost application, static assets, worker, and pinned engines, and Chromium reported no console warnings or errors.
 - **2026-08-20 headed cancellation and destination-failure audit:** the protected 2,958,573,265-byte root MKV was referenced in place and a lossless remux was cancelled after 1,307,820,664 input bytes and 1,210,199,466 output bytes at 21.49 seconds. The UI reported `Cancelled`, pending and queued bytes returned to zero, the worker returned ready, and browser storage was empty. An injected asynchronous direct-destination write rejection then stopped after 524,288 input bytes with zero committed output, one pending operation maximum, a ready replacement worker, and the expected user-facing bounded-write error. Aborting a user-selected `FileSystemFileHandle` transaction left only the documented released zero-byte placeholder because the browser exposes no parent-directory deletion capability; the repository-local harness verified size zero, explicitly deleted the entry, and confirmed empty storage. Success, cancellation, and failure screenshots plus a trace were visually reviewed before project-local artifact cleanup.
@@ -298,6 +299,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
 | gif-to-png | 281,853 | 3 | 101,506 | 0.03 s–0.08 s | 70.3 MiB | 0.0 MiB | read 196,608 B / write 101,506 B | passed |
 | gif-to-webp | 281,853 | 3 | 57,248 | 0.07 s–0.12 s | 67.3 MiB | 0.0 MiB | read 196,608 B / write 57,248 B | passed |
+| gif-to-zip | 281,853 | 3 | 838,296 | 0.16 s–0.24 s | 153.8 MiB | 0.0 MiB | read 216,317 B / write 107,183 B | passed |
 | gzip-compress | 268,435,456 | 3 | 268,517,399 | 27.84 s–31.04 s | 163.6 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | gzip-decompress | 268,517,399 | 3 | 268,435,456 | 6.63 s–7.73 s | 177.3 MiB | 0.0 MiB | read 262,144 B / write 65,536 B | passed |
 | gzip-to-bzip2 | 268,517,399 | 3 | 270,593,081 | 42.58 s–43.27 s | 159.2 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -523,6 +525,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webp-to-ico | 263,320 | 3 | 13,013 | 0.10 s–0.16 s | 77.6 MiB | 0.0 MiB | read 197,784 B / write 12,991 B | passed |
 | webp-to-jpeg | 263,320 | 3 | 364,322 | 0.13 s–0.18 s | 69.9 MiB | 0.0 MiB | read 131,072 B / write 262,144 B | passed |
 | webp-to-png | 263,320 | 3 | 1,528,103 | 0.12 s–0.17 s | 69.8 MiB | 0.0 MiB | read 197,784 B / write 262,144 B | passed |
+| webp-to-zip | 185,794 | 3 | 838,297 | 0.18 s–0.25 s | 140.2 MiB | 0.0 MiB | read 120,258 B / write 107,183 B | passed |
 | wma-to-aac | 142,503,082 | 3 | 46,316,859 | 29.67 s–30.28 s | 162.1 MiB | 32.0 MiB | read 262,144 B / write 582 B | passed |
 | wma-to-aiff | 142,503,082 | 3 | 364,798,054 | 7.03 s–7.38 s | 179.0 MiB | 32.0 MiB | read 262,144 B / write 32,768 B | passed |
 | wma-to-amr | 142,503,082 | 3 | 3,040,006 | 19.50 s–20.36 s | 149.8 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
@@ -745,6 +748,7 @@ Stream ma |
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-png | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-webp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
+| gif-to-zip | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gzip-compress | compression | compression-stream | stream | 268,435,456 B | 3-run Chrome report |
 | gzip-decompress | compression | compression-stream | stream | 268,517,399 B | 3-run Chrome report |
 | gzip-to-bzip2 | compression | compression-codec-pipeline | stream | 268,517,399 B | 3-run Chrome report |
@@ -970,6 +974,7 @@ Stream ma |
 | webp-to-ico | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-jpeg | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-png | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
+| webp-to-zip | image | image-browser | re-encode | 185,794 B | 3-run Chrome report |
 | wma-to-aac | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
 | wma-to-aiff | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
 | wma-to-amr | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
@@ -996,7 +1001,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB output is intentionally withheld pending explicit patent clearance, and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, JPEG XL, camera raw formats, extraction of every frame from animated GIF/WebP/AVIF and every page from multipage TIFF (the first frame/page is supported with an omission warning), and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent.
+- Images: HEIF/HEIC, JPEG XL, camera raw formats, publishable extraction of every AVIF animation frame, extraction of every page from multipage TIFF (the first page is supported with an omission warning), and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. GIF and animated WebP frame extraction to ZIP are certified.
 - Product validation: the baseline headed success/cancellation/failure/direct-destination flow is now evidenced; broader manual interaction coverage across additional profile families and continued multi-gigabyte scaling for newly added media routes remain.
 
 ## Cleanup invariant

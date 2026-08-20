@@ -8,7 +8,16 @@ import type {
   WorkerRequest,
   WorkerResponse,
 } from "../lib/conversion-protocol";
-import { runZipArchiveConversion } from "./archive-conversion";
+import {
+  createZipDataDescriptor,
+  createZipLocalHeader,
+  ensureZip32,
+  finishZip,
+  runZipArchiveConversion,
+  unixToDos,
+  updateCrc32,
+  type WrittenZipEntry,
+} from "./archive-conversion";
 import { runArchiveToSevenZip } from "./archive-to-sevenzip-conversion";
 import { runBzip2Conversion } from "./bzip2-compression";
 import { runCompressedTarToZip } from "./compressed-tar-conversion";
@@ -60,6 +69,8 @@ const MAX_IMAGE_DIMENSION = 8_192;
 const MAX_IMAGE_EXPANSION_RATIO = 1_000;
 const MAX_IMAGE_OUTPUT_BYTES = 64 * 1024 * 1024;
 const MAX_IMAGE_HEADER_BYTES = 1024 * 1024;
+const MAX_ANIMATION_FRAMES = 1_000;
+const MAX_ANIMATION_TOTAL_DECODED_BYTES = 64 * 1024 * 1024 * 1024;
 const MAX_SVG_INPUT_BYTES = 4 * 1024 * 1024;
 const MAX_SVG_ELEMENTS = 10_000;
 const MAX_SVG_EFFECT_PIXELS = 6_000_000;
@@ -586,6 +597,7 @@ async function runCompression(
 
 interface WithinImageTrack {
   frameCount: number;
+  repetitionCount?: number;
 }
 
 interface WithinImageDecoder {
@@ -1586,6 +1598,301 @@ async function runImageConversion(
       );
     }
     metrics.inputBytes = file.size;
+  } finally {
+    frame?.close();
+    decoder.close();
+    if (canvas) {
+      canvas.width = 1;
+      canvas.height = 1;
+    }
+  }
+}
+
+interface AnimationFrameRecord {
+  file: string;
+  index: number;
+  width: number;
+  height: number;
+  timestampMicros: number;
+  durationMicros: number | null;
+}
+
+async function writeStoredZipEntry(
+  name: string,
+  source: Blob | Uint8Array<ArrayBuffer>,
+  entries: WrittenZipEntry[],
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  const nameBytes = new TextEncoder().encode(name);
+  if (nameBytes.byteLength === 0 || nameBytes.byteLength > 65_535) {
+    throw new Error("Animation frame name exceeds the bounded ZIP name limit.");
+  }
+  const flags = 0x0808;
+  const method = 0;
+  const { dosTime, dosDate } = unixToDos(0);
+  const localHeaderOffset = metrics.outputBytes;
+  ensureZip32(localHeaderOffset, "ZIP local-header offset");
+  await writeBounded(
+    destination,
+    createZipLocalHeader(nameBytes, flags, method, dosTime, dosDate),
+    jobId,
+    "Writing animation ZIP header",
+    metrics,
+    startedAt,
+  );
+
+  let crc = 0xffff_ffff;
+  let size = 0;
+  const writePayload = async (chunk: Uint8Array<ArrayBuffer>): Promise<void> => {
+    assertActive();
+    size += chunk.byteLength;
+    ensureZip32(size, "ZIP frame size");
+    ensureZip32(metrics.outputBytes + chunk.byteLength, "ZIP output size");
+    crc = updateCrc32(crc, chunk);
+    await writeBounded(
+      destination,
+      chunk,
+      jobId,
+      "Writing animation frame",
+      metrics,
+      startedAt,
+    );
+  };
+  if (source instanceof Blob) {
+    const reader = source.stream().getReader();
+    try {
+      for (;;) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        await writePayload(value);
+      }
+    } finally {
+      await reader.cancel().catch(() => {});
+    }
+  } else {
+    await writePayload(source);
+  }
+  const finalCrc = (crc ^ 0xffff_ffff) >>> 0;
+  await writeBounded(
+    destination,
+    createZipDataDescriptor(finalCrc, size, size),
+    jobId,
+    "Writing animation ZIP descriptor",
+    metrics,
+    startedAt,
+  );
+  entries.push({
+    nameBytes,
+    directory: false,
+    method,
+    flags,
+    dosTime,
+    dosDate,
+    crc32: finalCrc,
+    compressedSize: size,
+    uncompressedSize: size,
+    localHeaderOffset,
+  });
+}
+
+async function runAnimatedImageToZip(
+  profileId: string,
+  file: File,
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  if (file.size < 1 || file.size > MAX_IMAGE_INPUT_BYTES) {
+    throw new Error("Animated image input must be between 1 byte and 64 MiB.");
+  }
+  const inputFormat = profileId.split("-to-")[0];
+  const inputMime = imageMimeTypes[inputFormat];
+  if (!inputMime || !["gif", "webp", "avif"].includes(inputFormat)) {
+    throw new Error("This bounded animation extraction route is not installed.");
+  }
+  const Decoder = (
+    globalThis as unknown as { ImageDecoder?: WithinImageDecoderConstructor }
+  ).ImageDecoder;
+  if (!Decoder || typeof OffscreenCanvas !== "function") {
+    throw new Error(
+      "This browser does not provide the ImageDecoder and OffscreenCanvas APIs required by this route.",
+    );
+  }
+  if (Decoder.isTypeSupported && !(await Decoder.isTypeSupported(inputMime))) {
+    throw new Error(`This browser does not provide an ImageDecoder for ${inputMime}.`);
+  }
+
+  const header = await readImageHeader(file, metrics);
+  const dimensions = parseImageDimensions(inputFormat, header);
+  const codedPixels = dimensions.width * dimensions.height;
+  if (
+    dimensions.width > MAX_IMAGE_DIMENSION ||
+    dimensions.height > MAX_IMAGE_DIMENSION ||
+    codedPixels > MAX_IMAGE_PIXELS
+  ) {
+    throw new Error(
+      "Animation dimensions exceed the 8,192-pixel edge or 8-megapixel frame safety limit.",
+    );
+  }
+
+  const decoder = new Decoder({
+    type: inputMime,
+    data: createBoundedImageInput(file, jobId, metrics, startedAt),
+    colorSpaceConversion: "none",
+    desiredWidth: dimensions.width,
+    desiredHeight: dimensions.height,
+    preferAnimation: true,
+  });
+  const entries: WrittenZipEntry[] = [];
+  const frames: AnimationFrameRecord[] = [];
+  let frame: VideoFrame | null = null;
+  let canvas: OffscreenCanvas | null = null;
+  try {
+    await decoder.tracks.ready;
+    const track = decoder.tracks.selectedTrack;
+    if (!track) throw new Error("The browser could not identify a decodable animation track.");
+    if (
+      !Number.isSafeInteger(track.frameCount) ||
+      track.frameCount < 1 ||
+      track.frameCount > MAX_ANIMATION_FRAMES
+    ) {
+      throw new Error(
+        `Animation frame count must be between 1 and ${MAX_ANIMATION_FRAMES.toLocaleString("en-US")}.`,
+      );
+    }
+    const aggregateDecodedBytes = codedPixels * 4 * track.frameCount;
+    if (
+      aggregateDecodedBytes > MAX_ANIMATION_TOTAL_DECODED_BYTES ||
+      aggregateDecodedBytes / Math.max(1, file.size) > MAX_IMAGE_EXPANSION_RATIO
+    ) {
+      throw new Error(
+        "Animation aggregate decoded size exceeds the 64 GiB or 1,000:1 expansion safety limit.",
+      );
+    }
+    const digits = Math.max(4, String(track.frameCount).length);
+    for (let index = 0; index < track.frameCount; index += 1) {
+      assertActive();
+      emitProgress(
+        jobId,
+        `Decoding animation frame ${index + 1} of ${track.frameCount}`,
+        metrics,
+        startedAt,
+        true,
+      );
+      const decoded = await decoder.decode({
+        frameIndex: index,
+        completeFramesOnly: true,
+      });
+      if (!decoded.complete) {
+        decoded.image.close();
+        throw new Error(`The browser returned an incomplete animation frame at index ${index}.`);
+      }
+      frame = decoded.image;
+      const width = frame.displayWidth;
+      const height = frame.displayHeight;
+      if (
+        width < 1 ||
+        height < 1 ||
+        width > MAX_IMAGE_DIMENSION ||
+        height > MAX_IMAGE_DIMENSION ||
+        width * height > MAX_IMAGE_PIXELS
+      ) {
+        throw new Error(`Animation frame ${index + 1} exceeds the bounded image budget.`);
+      }
+      if (!canvas || canvas.width !== width || canvas.height !== height) {
+        if (canvas) {
+          canvas.width = 1;
+          canvas.height = 1;
+        }
+        canvas = new OffscreenCanvas(width, height);
+      }
+      const context = canvas.getContext("2d", { alpha: true });
+      if (!context) throw new Error("The browser could not create a bounded animation surface.");
+      context.clearRect(0, 0, width, height);
+      context.drawImage(frame, 0, 0, width, height);
+      metrics.imageFrameFormat = frame.format;
+      metrics.imageColorSpace = {
+        primaries: frame.colorSpace.primaries,
+        transfer: frame.colorSpace.transfer,
+        matrix: frame.colorSpace.matrix,
+        fullRange: frame.colorSpace.fullRange,
+      };
+      const frameName = `frame-${String(index + 1).padStart(digits, "0")}.png`;
+      frames.push({
+        file: frameName,
+        index,
+        width,
+        height,
+        timestampMicros: frame.timestamp,
+        durationMicros: frame.duration ?? null,
+      });
+      frame.close();
+      frame = null;
+      const png = await canvas.convertToBlob({ type: "image/png" });
+      if (png.size < 1 || png.size > MAX_IMAGE_OUTPUT_BYTES) {
+        throw new Error(`Encoded animation frame ${index + 1} exceeds the 64 MiB frame limit.`);
+      }
+      await writeStoredZipEntry(
+        frameName,
+        png,
+        entries,
+        destination,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    }
+
+    const repetitionCount = track.repetitionCount;
+    const manifest = new TextEncoder().encode(
+      `${JSON.stringify(
+        {
+          schema: "within-animation-frames-v1",
+          sourceFormat: inputFormat,
+          frameCount: frames.length,
+          repetitionCount:
+            typeof repetitionCount === "number" && Number.isFinite(repetitionCount)
+              ? repetitionCount
+              : "infinite-or-unavailable",
+          frames,
+        },
+        null,
+        2,
+      )}\n`,
+    );
+    await writeStoredZipEntry(
+      "animation.json",
+      manifest,
+      entries,
+      destination,
+      jobId,
+      metrics,
+      startedAt,
+    );
+    await finishZip(
+      {
+        file,
+        metrics,
+        assertActive,
+        progress: (phase) => emitProgress(jobId, phase, metrics, startedAt),
+        write: (chunk, phase) =>
+          writeBounded(
+            destination,
+            chunk,
+            jobId,
+            phase,
+            metrics,
+            startedAt,
+          ),
+      },
+      entries,
+    );
+    metrics.inputBytes = file.size;
+    emitProgress(jobId, "Archived every animation frame", metrics, startedAt, true);
   } finally {
     frame?.close();
     decoder.close();
@@ -3861,6 +4168,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)$/.test(profileId)
     ) {
       await runImageConversion(
+        profileId,
+        file,
+        destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else if (/^(?:gif|webp|avif)-to-zip$/.test(profileId)) {
+      await runAnimatedImageToZip(
         profileId,
         file,
         destination.writable,

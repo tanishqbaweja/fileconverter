@@ -62,11 +62,12 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
       scaleReports.push(report);
     }
     if (
-      report.source?.generatedBy ===
+      !/^(?:gif|webp|avif)-to-zip$/.test(report.profileId) &&
+      (report.source?.generatedBy ===
         "scripts/generate-animated-webp-fixture.py" ||
-      String(report.source?.validationReference ?? "").includes(
-        "animated-avif-first-frame-reference",
-      )
+        String(report.source?.validationReference ?? "").includes(
+          "animated-avif-first-frame-reference",
+        ))
     ) {
       continue;
     }
@@ -118,6 +119,7 @@ const lines = [
   "",
   "## Active optimization log",
   "",
+  "- **2026-08-20 bounded animated-image frame archives:** GIF-to-ZIP and animated-WebP-to-ZIP now decode one complete composited frame at a time in Chromium, encode one PNG at a time, and immediately stream each stored entry into a ZIP32 destination with one pending write; no complete frame set or converted copy is retained in memory. Both routes passed exact first-frame RGB validation, all-eight-frame native PNG probing, ordered timing-manifest validation, distinct-frame checks, injected destination-failure cleanup, and 3/3 complete-Chrome runs. GIF converted 281,853 bytes to 838,296 bytes in 0.161-0.240 seconds at 153.8 MiB worst incremental private memory; WebP converted 185,794 bytes to 838,297 bytes in 0.180-0.250 seconds at 140.2 MiB. Outputs were repeatable and deleted after validation; validator extraction directories were project-local and removed after every run. AVIF-to-ZIP remains hidden: Chromium's browser-decoded first frame measured SSIM 0.766567 against the uncompressed generator reference versus the 0.97 promotion target, and changing `colorSpaceConversion` from `none` to `default` produced identical bytes. The target was not weakened, and the earlier multi-megabyte binary-diff assertion was replaced with bounded hash/SSIM diagnostics so this investigation cannot hang or loop again.",
   "- **2026-08-20 complete safe archive/compression matrix audit:** the public registry contains exactly all 30 ordered source/destination pairs among TAR, TAR.GZ, TAR.BZ2, TAR.XZ, ZIP, and 7Z, each with passed evidence and a positive measured maximum input size. It also contains all six ordered cross-transcodes among raw GZIP, BZIP2, and XZ plus bounded compress/decompress routes for each format. An exact registry regression now enforces uniqueness, public status, passed status, and retained size evidence for the complete matrix, so archive work is no longer listed as an open coverage gap.",
   "- **2026-08-20 headed production interaction audit:** a headed Chromium session exercised the built Wrangler application with a real 780,953-byte tracked MKV. The isolated-output `mkv-to-mp4` route saved a genuine `ftypisom` MP4 of 782,560 bytes (SHA-256 `dfde624f30c1db36b61dcd707986477f3f95ac1db34111f1db6fb1b98f240769`) in 404.55 ms with 262,144-byte maximum reads/writes, one pending operation, one worker, 32 MiB peak Wasm, and zero queued bytes at completion. The direct-handle adapter produced the same bytes in 399.53 ms with two workers, a 515,153-byte maximum write/queue, one pending operation, and 34,607,136 shared-buffer bytes including the fixed 32 MiB Wasm core. Manual temporary-storage cleanup correctly left that simulated user-selected destination untouched; the audit then explicitly deleted it. All observed requests were GETs to the localhost application, static assets, worker, and pinned engines, and Chromium reported no console warnings or errors.",
   "- **2026-08-20 headed cancellation and destination-failure audit:** the protected 2,958,573,265-byte root MKV was referenced in place and a lossless remux was cancelled after 1,307,820,664 input bytes and 1,210,199,466 output bytes at 21.49 seconds. The UI reported `Cancelled`, pending and queued bytes returned to zero, the worker returned ready, and browser storage was empty. An injected asynchronous direct-destination write rejection then stopped after 524,288 input bytes with zero committed output, one pending operation maximum, a ready replacement worker, and the expected user-facing bounded-write error. Aborting a user-selected `FileSystemFileHandle` transaction left only the documented released zero-byte placeholder because the browser exposes no parent-directory deletion capability; the repository-local harness verified size zero, explicitly deleted the entry, and confirmed empty storage. Success, cancellation, and failure screenshots plus a trace were visually reviewed before project-local artifact cleanup.",
@@ -372,7 +374,7 @@ lines.push(
   "",
   "- Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.",
   "- Audio: AMR-WB output is intentionally withheld pending explicit patent clearance, and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.",
-  "- Images: HEIF/HEIC, JPEG XL, camera raw formats, extraction of every frame from animated GIF/WebP/AVIF and every page from multipage TIFF (the first frame/page is supported with an omission warning), and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent.",
+  "- Images: HEIF/HEIC, JPEG XL, camera raw formats, publishable extraction of every AVIF animation frame, extraction of every page from multipage TIFF (the first page is supported with an omission warning), and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. GIF and animated WebP frame extraction to ZIP are certified.",
   "- Product validation: the baseline headed success/cancellation/failure/direct-destination flow is now evidenced; broader manual interaction coverage across additional profile families and continued multi-gigabyte scaling for newly added media routes remain.",
   "",
   "## Cleanup invariant",

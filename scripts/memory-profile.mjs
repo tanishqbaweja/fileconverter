@@ -154,7 +154,10 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|tiff-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-png|svg-to-png)$/.test(profileId);
+const isAnimatedFrameArchiveProfile = /^(?:gif|webp|avif)-to-zip$/.test(
+  profileId,
+);
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -929,13 +932,21 @@ try {
                 finalState,
                 profileId,
               )
-            : await validateImageOutput(
-                physicalOutputPath,
-                fixturePath,
-                fixtureManifest,
-                finalState,
-                profileId,
-              );
+            : isAnimatedFrameArchiveProfile
+              ? await validateAnimatedFrameArchiveOutput(
+                  physicalOutputPath,
+                  fixturePath,
+                  fixtureManifest,
+                  finalState,
+                  profileId,
+                )
+              : await validateImageOutput(
+                  physicalOutputPath,
+                  fixturePath,
+                  fixtureManifest,
+                  finalState,
+                  profileId,
+                );
       }
     } else {
       const validationPage = await context.newPage();
@@ -2791,6 +2802,164 @@ async function validateImageOutput(
     decodedByNativeFfmpeg: true,
   };
   return probe;
+}
+
+async function validateAnimatedFrameArchiveOutput(
+  localPath,
+  sourcePath,
+  source,
+  finalState,
+  route,
+) {
+  if (finalState.metrics.outputBytes < 1 || finalState.metrics.outputBytes > 4_294_967_295) {
+    throw new Error(
+      `Browser animation ZIP is outside the ZIP32 range: ${finalState.metrics.outputBytes} bytes.`,
+    );
+  }
+  const expectedFrames = Number(source.probe?.streams?.[0]?.nb_frames);
+  if (!Number.isSafeInteger(expectedFrames) || expectedFrames < 1) {
+    throw new Error("The animation stress manifest does not declare a frame count.");
+  }
+  const extractionRoot = path.join(
+    workRoot,
+    `animation-validation-${process.pid}-${route}`,
+  );
+  assertInside(workRoot, extractionRoot);
+  await removeWithRetries(extractionRoot);
+  await mkdir(extractionRoot, { recursive: true });
+  try {
+    const { stdout: listing } = await execFileAsync("tar", ["-tf", localPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    const expectedNames = [
+      ...Array.from(
+        { length: expectedFrames },
+        (_, index) => `frame-${String(index + 1).padStart(4, "0")}.png`,
+      ),
+      "animation.json",
+    ];
+    const listedNames = listing.trim().split(/\r?\n/);
+    if (JSON.stringify(listedNames) !== JSON.stringify(expectedNames)) {
+      throw new Error("Animation ZIP entries are incomplete or out of order.");
+    }
+    await execFileAsync("tar", ["-xf", localPath, "-C", extractionRoot], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    const manifest = JSON.parse(
+      await readFile(path.join(extractionRoot, "animation.json"), "utf8"),
+    );
+    if (
+      manifest.schema !== "within-animation-frames-v1" ||
+      manifest.sourceFormat !== route.split("-to-")[0] ||
+      manifest.frameCount !== expectedFrames ||
+      !Array.isArray(manifest.frames) ||
+      manifest.frames.length !== expectedFrames
+    ) {
+      throw new Error("Animation ZIP timing manifest is invalid.");
+    }
+    const width = Number(source.probe?.streams?.[0]?.width);
+    const height = Number(source.probe?.streams?.[0]?.height);
+    const frameHashes = [];
+    for (let index = 0; index < expectedFrames; index += 1) {
+      const name = expectedNames[index];
+      const frame = manifest.frames[index];
+      if (
+        frame.file !== name ||
+        frame.index !== index ||
+        frame.width !== width ||
+        frame.height !== height ||
+        !Number.isFinite(frame.timestampMicros) ||
+        !(frame.durationMicros > 0) ||
+        (index > 0 && frame.timestampMicros <= manifest.frames[index - 1].timestampMicros)
+      ) {
+        throw new Error(`Animation frame metadata is invalid at index ${index}.`);
+      }
+      const framePath = path.join(extractionRoot, name);
+      const { stdout } = await execFileAsync(
+        "ffprobe",
+        [
+          "-v",
+          "error",
+          "-show_entries",
+          "stream=codec_name,width,height",
+          "-of",
+          "json",
+          framePath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      const stream = JSON.parse(stdout).streams?.[0];
+      if (stream?.codec_name !== "png" || stream.width !== width || stream.height !== height) {
+        throw new Error(`Animation frame ${index + 1} is not the expected PNG image.`);
+      }
+      frameHashes.push((await hashFile(framePath)).sha256);
+    }
+    if (expectedFrames > 1 && new Set(frameHashes).size < 2) {
+      throw new Error("Animation ZIP contains only duplicate frame images.");
+    }
+    const referencePath = source.validationReference
+      ? path.resolve(projectRoot, source.validationReference)
+      : sourcePath;
+    const referenceRelative = path.relative(projectRoot, referencePath);
+    if (
+      !referenceRelative ||
+      referenceRelative.startsWith("..") ||
+      path.isAbsolute(referenceRelative)
+    ) {
+      throw new Error("Animation validation references must stay inside the project.");
+    }
+    const rawFrame = async (imagePath) =>
+      (
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-v",
+            "error",
+            "-i",
+            imagePath,
+            "-frames:v",
+            "1",
+            "-pix_fmt",
+            "rgb24",
+            "-f",
+            "rawvideo",
+            "-",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 32 * 1024 * 1024,
+            encoding: "buffer",
+          },
+        )
+      ).stdout;
+    const firstFrame = await rawFrame(path.join(extractionRoot, expectedNames[0]));
+    const referenceFrame = await rawFrame(referencePath);
+    const firstFrameSha256 = createHash("sha256").update(firstFrame).digest("hex");
+    const referenceFrameSha256 = createHash("sha256")
+      .update(referenceFrame)
+      .digest("hex");
+    if (firstFrameSha256 !== referenceFrameSha256) {
+      throw new Error("Animation ZIP first frame differs from the independent reference.");
+    }
+    return {
+      format: { format_name: "zip", size: String(finalState.metrics.outputBytes) },
+      withinValidation: {
+        method: "native-tar-list-extract-plus-ffprobe-and-rgb-hash",
+        frameCount: expectedFrames,
+        uniqueFrameHashes: new Set(frameHashes).size,
+        firstFrameSha256,
+        timingManifest: true,
+        decodedByNativeFfmpeg: true,
+      },
+    };
+  } finally {
+    await removeWithRetries(extractionRoot);
+  }
 }
 
 async function findProjectLocalPayload(root, expectedBytes) {
