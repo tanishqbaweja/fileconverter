@@ -1262,3 +1262,55 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
   );
 });
+
+test("safe archive and raw-compression conversion matrices are complete", () => {
+  const archiveFormats = [
+    "tar",
+    "tar-gz",
+    "tar-bz2",
+    "tar-xz",
+    "zip",
+    "sevenzip",
+  ];
+  for (const input of archiveFormats) {
+    for (const output of archiveFormats) {
+      if (input === output) continue;
+      const matches = conversionProfiles.filter(
+        (profile) => profile.input === input && profile.output === output,
+      );
+      assert.equal(matches.length, 1, `${input} -> ${output}`);
+      const [profile] = matches;
+      assert.equal(profile.public, true, profile.id);
+      assert.equal(profile.automatedTestStatus, "passed", profile.id);
+      assert.ok(profile.maxTestedBytes > 0, profile.id);
+      assert.equal(publicProfilesFor(input).includes(profile), true, profile.id);
+    }
+  }
+
+  const compressionFormats = ["gzip", "bzip2", "xz"];
+  for (const input of compressionFormats) {
+    for (const output of compressionFormats) {
+      if (input === output) continue;
+      const matches = conversionProfiles.filter(
+        (profile) => profile.input === input && profile.output === output,
+      );
+      assert.equal(matches.length, 1, `${input} -> ${output}`);
+      const [profile] = matches;
+      assert.equal(profile.public, true, profile.id);
+      assert.equal(profile.automatedTestStatus, "passed", profile.id);
+      assert.ok(profile.maxTestedBytes > 0, profile.id);
+    }
+  }
+
+  for (const format of compressionFormats) {
+    for (const direction of ["compress", "decompress"]) {
+      const profile = conversionProfiles.find(
+        (candidate) => candidate.id === `${format}-${direction}`,
+      );
+      assert.ok(profile, `${format}-${direction}`);
+      assert.equal(profile.public, true, profile.id);
+      assert.equal(profile.automatedTestStatus, "passed", profile.id);
+      assert.ok(profile.maxTestedBytes > 0, profile.id);
+    }
+  }
+});
