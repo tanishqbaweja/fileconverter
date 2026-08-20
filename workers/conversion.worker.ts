@@ -45,6 +45,7 @@ import { runXzConversion } from "./xz-compression";
 import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
+import { runAvifToZip } from "./avif-conversion";
 import {
   createTarValidationStream,
   TarStreamValidator,
@@ -4176,7 +4177,18 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         metrics,
         startedAt,
       );
-    } else if (/^(?:gif|webp|avif)-to-zip$/.test(profileId)) {
+    } else if (profileId === "avif-to-zip") {
+      await runAvifToZip({
+        file,
+        writable: destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+        isCancelled: () => cancelled,
+        emitProgress,
+        post,
+      });
+    } else if (/^(?:gif|webp)-to-zip$/.test(profileId)) {
       await runAnimatedImageToZip(
         profileId,
         file,

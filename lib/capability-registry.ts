@@ -18,6 +18,7 @@ export type EngineId =
   | "svg-browser"
   | "libtiff-wasm"
   | "libjxl-wasm"
+  | "libavif-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
   | "ffmpeg-video";
@@ -2237,7 +2238,6 @@ const icoOutputProfiles = [
 const animatedFrameArchiveProfiles = [
   ["gif-to-zip", "gif"],
   ["webp-to-zip", "webp"],
-  ["avif-to-zip", "avif"],
 ] as const;
 
 const animatedFrameArchiveMaxTestedBytes = {
@@ -3733,11 +3733,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     fidelityLimitations: [
       "PNG frames losslessly preserve the browser-decoded composited pixels, but the original animation compression and disposal operations are not retained as editable source data.",
     ],
-    maxTestedBytes:
-      input === "avif" ? null : animatedFrameArchiveMaxTestedBytes[input],
-    automatedTestStatus: input === "avif" ? ("pending" as const) : ("passed" as const),
-    public: input !== "avif",
+    maxTestedBytes: animatedFrameArchiveMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
   })),
+  {
+    id: "avif-to-zip",
+    input: "avif",
+    output: "zip",
+    engine: "libavif-wasm",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Extracts up to 1,000 frames from an AVIF animation track at 8, 10, 12, or 16-bit source depth, with an 8,192-pixel edge, 8,388,608-pixel limit, and 16 MiB decoded-surface limit per frame; still-item-only AVIF is rejected by this animation profile.",
+      "Each decoded frame is written incrementally as a stored PNG ZIP entry; exact timescale positions, durations, dimensions, channel counts, decoded sizes, and repetition count are recorded in animation.json.",
+      "ICC profiles up to 4 MiB are embedded in each PNG; EXIF, XMP, crop, rotation, mirror transforms, and format-specific metadata outside frame timing and repetition count are rejected or not copied.",
+    ],
+    fidelityLimitations: [
+      "PNG preserves the bounded RGB or RGBA frames decoded by pinned libavif/libaom and FFmpeg color conversion; chroma-subsampled lossy AVIF cannot reconstruct the pre-encoding source exactly.",
+    ],
+    maxTestedBytes: 23_391,
+    automatedTestStatus: "passed",
+    public: true,
+  },
   {
     id: "svg-to-png",
     input: "svg",

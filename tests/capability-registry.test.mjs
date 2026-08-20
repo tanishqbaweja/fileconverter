@@ -649,6 +649,35 @@ test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => 
   );
 });
 
+test("the public animated AVIF profile matches its fixed-memory Wasm manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/avif/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "libavif-wasm",
+  );
+  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.equal(manifest.libavifVersion, "1.4.1");
+  assert.equal(manifest.libaomVersion, "3.13.2");
+  assert.equal(manifest.ffmpegVersion, "8.1.2");
+  assert.equal(manifest.libpngVersion, "1.6.58");
+  assert.equal(manifest.zlibVersion, "1.3.2");
+  assert.equal(manifest.initialWasmMemoryBytes, 40 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 40 * 1024 * 1024);
+  assert.equal(manifest.inputReadBytes, 256 * 1024);
+  assert.equal(manifest.outputWriteBytes, 64 * 1024);
+  assert.equal(manifest.maximumPixels, 8_388_608);
+  assert.equal(manifest.maximumFrameSurfaceBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.maximumFrames, 1_000);
+  assert.equal(manifest.maximumAggregateDecodedBytes, 64 * 1024 ** 3);
+  assert.equal(manifest.maximumAggregateExpansionRatio, 1_000);
+  assert.equal(manifest.pngCompressionLevel, 1);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(profiles[0].maxTestedBytes, 23_391);
+  assert.equal(profiles[0].automatedTestStatus, "passed");
+  assert.equal(profiles[0].public, true);
+});
+
 test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/svg/build-manifest.json", "utf8"),
@@ -1341,7 +1370,7 @@ test("animated frame archives expose only routes with complete browser evidence"
   const expected = new Map([
     ["gif-to-zip", { public: true, status: "passed", bytes: 281_853 }],
     ["webp-to-zip", { public: true, status: "passed", bytes: 185_794 }],
-    ["avif-to-zip", { public: false, status: "pending", bytes: null }],
+    ["avif-to-zip", { public: true, status: "passed", bytes: 23_391 }],
     ["jxl-to-zip", { public: true, status: "passed", bytes: 1_315_111 }],
   ]);
   for (const [id, evidence] of expected) {
@@ -1358,9 +1387,8 @@ test("animated frame archives expose only routes with complete browser evidence"
   assert.ok(
     publicProfilesFor("jxl").some((profile) => profile.id === "jxl-to-zip"),
   );
-  assert.equal(
+  assert.ok(
     publicProfilesFor("avif").some((profile) => profile.id === "avif-to-zip"),
-    false,
   );
 });
 

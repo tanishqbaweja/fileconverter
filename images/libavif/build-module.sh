@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mkdir -p /src/build/wrapper /out
+emcmake cmake -S /src/wrapper -B /src/build/wrapper -DCMAKE_BUILD_TYPE=Release
+cmake --build /src/build/wrapper --target within-avif --parallel "$(nproc)"
+
+cp /src/libavif/LICENSE /out/LICENSE.libavif
+cp /src/libavif/ext/aom/LICENSE /out/LICENSE.libaom
+cp /src/libavif/ext/aom/PATENTS /out/PATENTS.libaom
+cp /src/ffmpeg/COPYING.LGPLv3 /out/LICENSE.ffmpeg
+cp /src/libpng/LICENSE /out/LICENSE.libpng
+cp /src/zlib/LICENSE /out/LICENSE.zlib
+sed -i 's/[[:space:]]*$//' \
+  /out/LICENSE.libavif /out/LICENSE.libaom /out/PATENTS.libaom \
+  /out/LICENSE.ffmpeg \
+  /out/LICENSE.libpng /out/LICENSE.zlib
+
+cat > /out/build-manifest.json <<'JSON'
+{
+  "engine": "within-avif",
+  "libavifVersion": "1.4.1",
+  "libavifCommit": "6543b22b5bc706c53f038a16fe515f921556d9b3",
+  "libavifSourceSha256": "d4aea31a4becb3273ba7968221be2e48148ba05eb8a68d14e671963e17785648",
+  "libaomVersion": "3.13.2",
+  "libaomCommit": "ad44980d7f3c7a2605c25d51ea96946949000841",
+  "ffmpegVersion": "8.1.2",
+  "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+  "libpngVersion": "1.6.58",
+  "libpngSourceSha256": "28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775",
+  "zlibVersion": "1.3.2",
+  "zlibSourceSha256": "d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3",
+  "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
+  "initialWasmMemoryBytes": 41943040,
+  "maximumWasmMemoryBytes": 41943040,
+  "inputReadBytes": 262144,
+  "maximumInputRequestBytes": 16777216,
+  "outputWriteBytes": 65536,
+  "maximumInputBytes": 67108864,
+  "maximumOutputBytesPerFrame": 100663296,
+  "maximumDimension": 8192,
+  "maximumPixels": 8388608,
+  "maximumFrameSurfaceBytes": 16777216,
+  "maximumIccBytes": 4194304,
+  "maximumFrames": 1000,
+  "maximumAggregateDecodedBytes": 68719476736,
+  "maximumAggregateExpansionRatio": 1000,
+  "pngCompressionLevel": 1,
+  "outstandingWrites": 1,
+  "threads": 1,
+  "profiles": ["avif-to-zip"]
+}
+JSON

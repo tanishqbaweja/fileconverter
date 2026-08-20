@@ -2957,16 +2957,65 @@ async function validateAnimatedFrameArchiveOutput(
           },
         )
       ).stdout;
-    const firstFrame = await rawFrame(path.join(extractionRoot, expectedNames[0]));
+    const firstFramePath = path.join(extractionRoot, expectedNames[0]);
+    const firstFrame = await rawFrame(firstFramePath);
     const referenceFrame = await rawFrame(referencePath);
     const firstFrameSha256 = createHash("sha256").update(firstFrame).digest("hex");
     const referenceFrameSha256 = createHash("sha256")
       .update(referenceFrame)
       .digest("hex");
-    if (firstFrameSha256 !== referenceFrameSha256) {
+    const measureSsim = async (expectedPath, actualPath) => {
+      const { stderr } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "info", "-i", expectedPath, "-i", actualPath,
+          "-lavfi",
+          "[0:v:0]format=rgb24[reference];[1:v:0]format=rgb24[converted];[reference][converted]ssim",
+          "-frames:v", "1", "-f", "null", "NUL",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      return Number.parseFloat(
+        stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+      );
+    };
+    const firstFrameSsim = route === "avif-to-zip"
+      ? await measureSsim(referencePath, firstFramePath)
+      : firstFrameSha256 === referenceFrameSha256
+        ? 1
+        : 0;
+    if (firstFrameSsim < 0.97) {
       throw new Error("Animation ZIP first frame differs from the independent reference.");
     }
     const allFrameSha256 = [];
+    const allFrameSsim = [];
+    if (route === "avif-to-zip") {
+      for (let index = 0; index < expectedFrames; index += 1) {
+        const nativeFramePath = path.join(
+          extractionRoot,
+          `native-avif-frame-${index + 1}.png`,
+        );
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-v", "error", "-i", sourcePath, "-map", "0:v:1",
+            "-vf", `select=eq(n\\,${index})`, "-fps_mode", "vfr",
+            "-frames:v", "1", nativeFramePath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+        const similarity = await measureSsim(
+          nativeFramePath,
+          path.join(extractionRoot, expectedNames[index]),
+        );
+        if (similarity < 0.97) {
+          throw new Error(
+            `AVIF frame ${index + 1} scored ${similarity} SSIM against independent native decoding.`,
+          );
+        }
+        allFrameSsim.push(similarity);
+      }
+    }
     if (route === "jxl-to-zip") {
       for (let index = 0; index < expectedFrames; index += 1) {
         const archived = await rawFrame(
@@ -2994,7 +3043,9 @@ async function validateAnimatedFrameArchiveOutput(
         frameCount: expectedFrames,
         uniqueFrameHashes: new Set(frameHashes).size,
         firstFrameSha256,
+        firstFrameSsim,
         allFrameSha256: allFrameSha256.length > 0 ? allFrameSha256 : undefined,
+        allFrameSsim: allFrameSsim.length > 0 ? allFrameSsim : undefined,
         timingManifest: true,
         decodedByNativeFfmpeg: true,
       },

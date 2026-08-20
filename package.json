@@ -115,6 +115,7 @@
     "build:archive7z": "docker build --file compression/libarchive7z/Dockerfile --output type=local,dest=public/engines/archive7z compression/libarchive7z",
     "build:tiff": "docker build --file images/libtiff/Dockerfile --output type=local,dest=public/engines/tiff images/libtiff",
     "build:jxl": "docker build --file images/libjxl/Dockerfile --output type=local,dest=public/engines/jxl images/libjxl",
+    "build:avif": "docker build --file images/libavif/Dockerfile --output type=local,dest=public/engines/avif images/libavif",
     "build:svg": "node scripts/build-svg-engine.mjs",
     "profile:memory": "node scripts/memory-profile.mjs",
     "profile:category": "node scripts/profile-category.mjs",

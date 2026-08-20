@@ -407,7 +407,7 @@ for (const route of [
     width: 512,
     height: 384,
     referenceName: "animated-avif-first-frame-reference.png",
-    minimumReferenceSsim: 0.75,
+    minimumReferenceSsim: 0.97,
   },
   {
     profileId: "jxl-to-zip",
@@ -586,24 +586,19 @@ for (const route of [
         "images",
         route.referenceName,
       );
-      if (route.minimumReferenceSsim == null) {
-        const firstFrameHash = createHash("sha256")
-          .update(await rawPixels(firstFramePath))
-          .digest("hex");
-        const referenceHash = createHash("sha256")
-          .update(await rawPixels(referencePath))
-          .digest("hex");
-        expect(firstFrameHash).toBe(referenceHash);
-      } else {
+      const measureSsim = async (
+        expectedPath: string,
+        actualPath: string,
+      ): Promise<number> => {
         const { stderr } = await execFileAsync(
           "ffmpeg",
           [
             "-v",
             "info",
             "-i",
-            referencePath,
+            expectedPath,
             "-i",
-            firstFramePath,
+            actualPath,
             "-lavfi",
             "[0:v:0]format=rgb24[reference];[1:v:0]format=rgb24[converted];[reference][converted]ssim",
             "-frames:v",
@@ -618,10 +613,56 @@ for (const route of [
             maxBuffer: 8 * 1024 * 1024,
           },
         );
-        const similarity = Number.parseFloat(
+        return Number.parseFloat(
           stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
         );
+      };
+      if (route.minimumReferenceSsim == null) {
+        const firstFrameHash = createHash("sha256")
+          .update(await rawPixels(firstFramePath))
+          .digest("hex");
+        const referenceHash = createHash("sha256")
+          .update(await rawPixels(referencePath))
+          .digest("hex");
+        expect(firstFrameHash).toBe(referenceHash);
+      } else {
+        const similarity = await measureSsim(referencePath, firstFramePath);
         expect(similarity).toBeGreaterThanOrEqual(route.minimumReferenceSsim);
+      }
+      if (route.sourceFormat === "avif") {
+        expect(manifest.aggregateDecodedBytes).toBe(4_718_592);
+        for (let index = 0; index < 8; index += 1) {
+          expect(manifest.frames[index].timestampMicros).toBe(index * 250_000);
+          expect(manifest.frames[index].durationMicros).toBe(250_000);
+          const nativeFramePath = path.join(
+            extractRoot,
+            `native-avif-frame-${index + 1}.png`,
+          );
+          await execFileAsync(
+            "ffmpeg",
+            [
+              "-v",
+              "error",
+              "-i",
+              sourcePath,
+              "-map",
+              "0:v:1",
+              "-vf",
+              `select=eq(n\\,${index})`,
+              "-fps_mode",
+              "vfr",
+              "-frames:v",
+              "1",
+              nativeFramePath,
+            ],
+            { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+          );
+          const similarity = await measureSsim(
+            nativeFramePath,
+            path.join(extractRoot, expectedNames[index]),
+          );
+          expect(similarity, `frame ${index + 1}`).toBeGreaterThanOrEqual(0.97);
+        }
       }
       if (route.sourceFormat === "jxl") {
         expect(manifest.aggregateDecodedBytes).toBe(25_165_824);
@@ -811,6 +852,7 @@ test("tiff-to-zip archives every page with exact decoded pixels", async () => {
 for (const [profileId, sourceName] of [
   ["gif-to-zip", "animated-pattern.gif"],
   ["webp-to-zip", "animated-pattern.webp"],
+  ["avif-to-zip", "animated-pattern.avif"],
   ["jxl-to-zip", "animated-pattern.jxl"],
   ["tiff-to-zip", "test-pattern-multipage.tiff"],
 ] as const) {
@@ -1218,6 +1260,162 @@ test("animated JPEG XL cancellation removes the partial browser-owned ZIP", asyn
   });
   expect(leftovers).toEqual([]);
 });
+
+test("animated AVIF ZIP converts through the bounded direct-save worker", async () => {
+  const outputName = "animated-pattern.zip";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.avif"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("avif-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(40 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 4).arrayBuffer()),
+      );
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBe(329_317);
+    expect(output.signature).toEqual([80, 75, 3, 4]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("animated AVIF cancellation removes the partial browser-owned ZIP", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.avif"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("avif-to-zip");
+  await page.locator('[data-testid="convert-button"]').click();
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-avif-to-zip")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+test("animated AVIF route rejects a high-resolution still item without retained output", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "highres-pattern.avif"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("avif-to-zip");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error).toContain("AVIF");
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-avif-to-zip")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+for (const invalidKind of ["truncated", "corrupt"] as const) {
+  test(`animated AVIF rejects ${invalidKind} input without retained output`, async () => {
+    const validBytes = await readFile(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.avif"),
+    );
+    const buffer = invalidKind === "truncated"
+      ? validBytes.subarray(0, 512)
+      : Buffer.from([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]);
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles({
+      name: `${invalidKind}.avif`,
+      mimeType: "image/avif",
+      buffer,
+    });
+    await page.locator('[data-testid="format-select"]').selectOption("avif-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.error).toContain("AVIF");
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-avif-to-zip")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
 
 test("animated JPEG XL rejects an oversized decoded frame without retained output", async () => {
   await page.goto("/?test=1");

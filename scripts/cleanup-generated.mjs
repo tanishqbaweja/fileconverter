@@ -52,6 +52,17 @@ const vorbisBenchmarkRoot = path.resolve(workRoot, "vorbis-benchmark");
 const wmaSpeechBenchmarkRoot = path.resolve(workRoot, "wma-speech-benchmark");
 const amrWbAuditRoot = path.resolve(workRoot, "amrwb-audit");
 const amrWbWmaAuditRoot = path.resolve(workRoot, "amrwb-wma-audit");
+const avifTemporaryRoots = [
+  path.resolve(workRoot, "avif-engine-test"),
+  path.resolve(workRoot, "avif-reproduction"),
+  path.resolve(workRoot, "avif-reproduction-final"),
+  path.resolve(workRoot, "libavif-audit"),
+];
+const avifDiagnosticFiles = [
+  path.resolve(workRoot, "animated-avif-browser-frame.png"),
+  path.resolve(workRoot, "browser-avif-frame.rgba"),
+  path.resolve(workRoot, "native-avif-frame.rgba"),
+];
 const taskTempRoots = [
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
@@ -259,6 +270,12 @@ assertInside(workRoot, vorbisBenchmarkRoot);
 assertInside(workRoot, wmaSpeechBenchmarkRoot);
 assertInside(workRoot, amrWbAuditRoot);
 assertInside(workRoot, amrWbWmaAuditRoot);
+for (const temporaryRoot of avifTemporaryRoots) {
+  assertInside(workRoot, temporaryRoot);
+}
+for (const diagnosticFile of avifDiagnosticFiles) {
+  assertInside(workRoot, diagnosticFile);
+}
 for (const temporaryRoot of taskTempRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -331,6 +348,12 @@ await removeWithRetries(vorbisBenchmarkRoot);
 await removeWithRetries(wmaSpeechBenchmarkRoot);
 await removeWithRetries(amrWbAuditRoot);
 await removeWithRetries(amrWbWmaAuditRoot);
+for (const temporaryRoot of avifTemporaryRoots) {
+  await removeWithRetries(temporaryRoot);
+}
+for (const diagnosticFile of avifDiagnosticFiles) {
+  await rm(diagnosticFile, { force: true });
+}
 for (const temporaryRoot of taskTempRoots) {
   await removeWithRetries(temporaryRoot);
 }

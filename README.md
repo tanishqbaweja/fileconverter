@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 367
+complete-Chromium memory profile have passed. The current registry publishes 368
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; JPEG XL to PNG or an all-frame PNG ZIP; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated AVIF or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -150,6 +150,9 @@ Hard limits:
 - JPEG XL: fixed 112 MiB Wasm heap; 102 MiB tracked decoder allocation;
   1 MiB retained input window; 16 MiB maximum output stripe or animation-frame
   surface; 1,000 animation frames; 64 GiB and 1,000:1 aggregate decoded limits
+- animated AVIF: fixed 40 MiB Wasm heap; 256 KiB reads; 64 KiB maximum
+  engine write; 16 MiB maximum frame surface; 1,000 animation frames; 64 GiB
+  and 1,000:1 aggregate decoded limits
 - ICO output: one PNG-compressed image; 256 px maximum per edge
 - archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
 - ZIP central directory: 8 MiB; ZIP64, encryption, links, and special files:
@@ -636,6 +639,17 @@ loop metadata without retaining the complete frame set or completed archive.
 Floating-point samples and independent preservation of EXIF, XMP, thumbnails,
 preview images, text boxes, and non-alpha extra channels are excluded.
 
+Animated-AVIF-to-ZIP uses a separate reproducible libavif/libaom/FFmpeg/libpng
+Wasm engine instead of Chromium `ImageDecoder`, whose certified first-frame RGB
+SSIM did not meet the unchanged 0.97 threshold. The fixed 40 MiB engine reads
+at most 256 KiB, decodes and releases one capped RGB/RGBA frame at a time,
+converts YUV with pinned bicubic libswscale, and writes level-1 PNG chunks of at
+most 64 KiB directly into stored ZIP entries with one pending destination
+operation. `animation.json` records exact timebase positions, durations,
+dimensions, sample depth, channels, decoded sizes, and repetition count. The
+profile accepts animation tracks only; still-item-only AVIF and crop, rotation,
+or mirror transforms are rejected, while EXIF and XMP are not copied.
+
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
 and emit real destination syntax. ASS output is written directly with a
@@ -786,6 +800,10 @@ Pinned inputs:
 - libjxl 0.12.0 commit
   `a7a9c787341cf703dede03c2009fa460cae5e5df`, with pinned Brotli, Highway,
   skcms, libpng 1.6.58, and zlib 1.3.2 inputs recorded in its manifest
+- libavif 1.4.1 commit
+  `6543b22b5bc706c53f038a16fe515f921556d9b3`, libaom 3.13.2 commit
+  `ad44980d7f3c7a2605c25d51ea96946949000841`, and pinned FFmpeg 8.1.2,
+  libpng 1.6.58, and zlib 1.3.2 inputs recorded in its manifest
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
 
@@ -798,13 +816,14 @@ npm run build:bzip2
 npm run build:xz
 npm run build:archive7z
 npm run build:jxl
+npm run build:avif
 npm run build
 ```
 
 The Docker builds verify each source archive before compilation. Exact
 configure switches and Emscripten flags are in `media/ffmpeg/`,
 `compression/bzip2/`, `compression/xz/`, `compression/libarchive7z/`, and
-`images/libjxl/`.
+`images/libjxl/` or `images/libavif/`.
 Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
