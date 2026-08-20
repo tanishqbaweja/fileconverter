@@ -30,7 +30,7 @@ emcc \
   -s MALLOC=emmalloc \
   -s ASSERTIONS=0 \
   -s NO_EXIT_RUNTIME=1 \
-  -s EXPORTED_FUNCTIONS='["_within_tiff_to_png","_within_tiff_error","_within_tiff_has_more_pages"]' \
+  -s EXPORTED_FUNCTIONS='["_within_tiff_scan_pages","_within_tiff_page_to_png","_within_tiff_error","_within_tiff_has_more_pages","_within_tiff_page_count","_within_tiff_page_width","_within_tiff_page_height","_within_tiff_page_bits","_within_tiff_page_samples"]' \
   -s EXPORTED_RUNTIME_METHODS='["ccall","UTF8ToString","HEAPU8"]' \
   -o /out/within-tiff.mjs
 
@@ -69,9 +69,11 @@ cat > /out/build-manifest.json <<'JSON'
   "maximumTileStripeBytes": 4194304,
   "maximumTransposedStripeBytes": 16777216,
   "maximumExpansionRatio": 1000,
+  "maximumPages": 1000,
+  "maximumAggregateDecodedBytes": 68719476736,
   "outstandingWrites": 1,
   "readCompressions": ["none", "packbits", "lzw", "deflate", "jpeg"],
   "readOrientations": [1, 2, 3, 4, 5, 6, 7, 8],
-  "profiles": ["tiff-to-png"]
+  "profiles": ["tiff-to-zip", "tiff-to-png"]
 }
 JSON

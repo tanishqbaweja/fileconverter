@@ -609,9 +609,163 @@ for (const route of [
   });
 }
 
+test("tiff-to-zip archives every page with exact decoded pixels", async () => {
+  const sourcePath = path.join(
+    projectRoot,
+    "fixtures",
+    "images",
+    "test-pattern-multipage.tiff",
+  );
+  const outputPath = path.join(outputRoot, "tiff-to-zip.zip");
+  const extractRoot = path.join(outputRoot, "tiff-to-zip-entries");
+  assertProjectLocal(outputPath);
+  assertProjectLocal(extractRoot);
+  try {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+    await page.locator('[data-testid="format-select"]').selectOption("tiff-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .not.toBe("running");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.jobState, state?.error ?? state?.phase).toBe("complete");
+    expect(state?.warnings).toEqual([]);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(40 * 1024 * 1024);
+    await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+
+    const expectedNames = ["page-0001.png", "page-0002.png", "pages.json"];
+    const { stdout: listing } = await execFileAsync("tar", ["-tf", outputPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    expect(listing.trim().split(/\r?\n/)).toEqual(expectedNames);
+    await mkdir(extractRoot, { recursive: true });
+    await execFileAsync("tar", ["-xf", outputPath, "-C", extractRoot], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const manifest = JSON.parse(
+      await readFile(path.join(extractRoot, "pages.json"), "utf8"),
+    ) as {
+      schema: string;
+      sourceFormat: string;
+      pageCount: number;
+      aggregateDecodedBytes: number;
+      pages: Array<{
+        file: string;
+        index: number;
+        width: number;
+        height: number;
+        bitsPerSample: number;
+        samplesPerPixel: number;
+        decodedBytes: number;
+      }>;
+    };
+    expect(manifest).toMatchObject({
+      schema: "within-tiff-pages-v1",
+      sourceFormat: "tiff",
+      pageCount: 2,
+      aggregateDecodedBytes: 72_390,
+    });
+    expect(manifest.pages.map((record) => record.file)).toEqual(
+      expectedNames.slice(0, 2),
+    );
+    const references = [
+      "test-pattern-multipage-first-page-reference.png",
+      "test-pattern-multipage-second-page-reference.png",
+    ];
+    const rawPixels = async (imagePath: string): Promise<Buffer> =>
+      (
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-v",
+            "error",
+            "-i",
+            imagePath,
+            "-frames:v",
+            "1",
+            "-pix_fmt",
+            "rgb24",
+            "-f",
+            "rawvideo",
+            "-",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 8 * 1024 * 1024,
+            encoding: "buffer",
+          },
+        )
+      ).stdout;
+    for (let index = 0; index < manifest.pages.length; index += 1) {
+      const record = manifest.pages[index];
+      expect(record).toMatchObject({
+        index,
+        width: 127,
+        height: 95,
+        bitsPerSample: 8,
+        samplesPerPixel: 3,
+        decodedBytes: 36_195,
+      });
+      const pagePath = path.join(extractRoot, record.file);
+      const { stdout } = await execFileAsync(
+        "ffprobe",
+        [
+          "-v",
+          "error",
+          "-show_entries",
+          "stream=codec_name,width,height,pix_fmt",
+          "-of",
+          "json",
+          pagePath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+      );
+      expect(JSON.parse(stdout).streams[0]).toMatchObject({
+        codec_name: "png",
+        width: 127,
+        height: 95,
+        pix_fmt: "rgb24",
+      });
+      const pageHash = createHash("sha256")
+        .update(await rawPixels(pagePath))
+        .digest("hex");
+      const referenceHash = createHash("sha256")
+        .update(
+          await rawPixels(
+            path.join(projectRoot, "fixtures", "images", references[index]),
+          ),
+        )
+        .digest("hex");
+      expect(pageHash).toBe(referenceHash);
+    }
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await rm(outputPath, { force: true });
+    await rm(extractRoot, { recursive: true, force: true });
+  }
+});
+
 for (const [profileId, sourceName] of [
   ["gif-to-zip", "animated-pattern.gif"],
   ["webp-to-zip", "animated-pattern.webp"],
+  ["tiff-to-zip", "test-pattern-multipage.tiff"],
 ] as const) {
   test(`${profileId} output failure removes the partial browser-owned ZIP`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -829,6 +983,56 @@ test("TIFF converts through the bounded direct-save worker", async () => {
   }
 });
 
+test("multipage TIFF ZIP converts through the bounded direct-save worker", async () => {
+  const outputName = "test-pattern-multipage.zip";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern-multipage.tiff"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("tiff-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(40 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 4).arrayBuffer()),
+      );
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(1_000);
+    expect(output.signature).toEqual([80, 75, 3, 4]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
 for (const [sourceName, expectedError] of [
   ["decompression-bomb.tiff", "16-megapixel safety limit"],
   ["truncated.tiff", "TIFF"],
@@ -852,6 +1056,44 @@ for (const [sourceName, expectedError] of [
     expect(state?.error).toContain(expectedError);
     expect(state?.metrics?.outputBytes).toBe(0);
     expect(state?.opfsName).toBeNull();
+  });
+}
+
+for (const [sourceName, expectedError] of [
+  ["unsafe-tiff-pages.tiff", "1,000-page safety limit"],
+  ["unsafe-tiff-aggregate.tiff", "1,000:1 aggregate decoded safety limit"],
+] as const) {
+  test(`rejects unsafe multipage TIFF input ${sourceName} without retained output`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", sourceName),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("tiff-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () =>
+          page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.error).toContain(expectedError);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-tiff-to-zip")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
   });
 }
 

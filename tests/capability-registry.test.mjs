@@ -565,6 +565,8 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   assert.equal(manifest.maximumDecodedBlockBytes, 4 * 1024 * 1024);
   assert.equal(manifest.maximumTileStripeBytes, 4 * 1024 * 1024);
   assert.equal(manifest.maximumTransposedStripeBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.maximumPages, 1_000);
+  assert.equal(manifest.maximumAggregateDecodedBytes, 64 * 1024 ** 3);
   assert.deepEqual(manifest.readCompressions, [
     "none",
     "packbits",
@@ -574,6 +576,21 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   ]);
   assert.deepEqual(manifest.readOrientations, [1, 2, 3, 4, 5, 6, 7, 8]);
   assert.equal(manifest.outstandingWrites, 1);
+});
+
+test("multipage TIFF ZIP is public only at its measured evidence limit", () => {
+  const profile = conversionProfiles.find(
+    (candidate) => candidate.id === "tiff-to-zip",
+  );
+  assert.ok(profile);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 50_374_456);
+  assert.equal(
+    publicProfilesFor("tiff").some(
+      (candidate) => candidate.id === "tiff-to-zip",
+    ),
+    true,
+  );
 });
 
 test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {

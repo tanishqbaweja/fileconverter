@@ -1,0 +1,8 @@
+{
+  "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
+  "bytes": 98752,
+  "sha256": "bf9f05ba9e1409c8d4abe8d0de2d072a90d399070e2f402b30303ab2000500fc",
+  "decodedBytes": 100663296,
+  "decodedToInputRatio": 1019.35450421257,
+  "expectation": "rejected with cleanup because aggregate decoded pages exceed the 1,000:1 safety limit"
+}

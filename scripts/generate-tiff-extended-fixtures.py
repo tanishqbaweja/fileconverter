@@ -127,3 +127,23 @@ Image.fromarray(rgb8).save(
     format="PNG",
     compress_level=9,
 )
+Image.fromarray(np.flipud(rgb8)).save(
+    FIXTURES / "test-pattern-multipage-second-page-reference.png",
+    format="PNG",
+    compress_level=9,
+)
+
+with tifffile.TiffWriter(FIXTURES / "unsafe-tiff-pages.tiff") as writer:
+    tiny_page = np.zeros((1, 1), dtype=np.uint8)
+    for _ in range(1001):
+        writer.write(tiny_page, photometric="minisblack", compression=None, metadata=None)
+
+tifffile.imwrite(
+    FIXTURES / "unsafe-tiff-aggregate.tiff",
+    np.zeros((2048, 8192, 3), dtype=np.uint16),
+    photometric="rgb",
+    compression="deflate",
+    compressionargs={"level": 9},
+    rowsperstrip=64,
+    metadata=None,
+)

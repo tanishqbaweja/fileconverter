@@ -3755,6 +3755,27 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "tiff-to-zip",
+    input: "tiff",
+    output: "zip",
+    engine: "libtiff-wasm",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Every accepted TIFF image directory is decoded to a numbered PNG and streamed immediately into ZIP32 output; pages.json records ordered dimensions, sample depth, channel count, and decoded size.",
+      "At most 1,000 pages, 16,777,216 pixels per page, 64 GiB aggregate decoded data, a 1,000:1 aggregate expansion ratio, and ZIP32 output are accepted.",
+      "EXIF, ICC profiles, resolution, textual metadata, thumbnails, and private TIFF tags are not copied to PNG pages.",
+    ],
+    fidelityLimitations: [
+      "Associated alpha is converted to PNG's unassociated alpha representation with bounded 8- or 16-bit rounding.",
+    ],
+    maxTestedBytes: 50_374_456,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "tiff-to-png",
     input: "tiff",
     output: "png",

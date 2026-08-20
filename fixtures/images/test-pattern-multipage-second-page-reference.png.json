@@ -1,18 +1,13 @@
 {
   "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
-  "bytes": 72835,
-  "sha256": "560168aa4237fbcaedba8ce2f516dbeb8ab4745523af6cf4eed7f3fb2b738c6e",
-  "pageCount": 2,
-  "validationReferences": [
-    "fixtures/images/test-pattern-multipage-first-page-reference.png",
-    "fixtures/images/test-pattern-multipage-second-page-reference.png"
-  ],
+  "bytes": 872,
+  "sha256": "b1903f18c8130eb7cbc5e1134ad837e5e01324221eb968e3b4eb8cb42f7d2435",
   "probe": {
     "streams": [
       {
         "index": 0,
-        "codec_name": "tiff",
-        "codec_long_name": "TIFF image",
+        "codec_name": "png",
+        "codec_long_name": "PNG (Portable Network Graphics) image",
         "codec_type": "video",
         "codec_tag_string": "[0][0][0][0]",
         "codec_tag": "0x0000",
@@ -21,10 +16,10 @@
         "coded_width": 127,
         "coded_height": 95,
         "has_b_frames": 0,
-        "sample_aspect_ratio": "1:1",
-        "display_aspect_ratio": "127:95",
         "pix_fmt": "rgb24",
         "level": -99,
+        "color_range": "pc",
+        "color_space": "gbr",
         "refs": 1,
         "r_frame_rate": "25/1",
         "avg_frame_rate": "25/1",
@@ -53,14 +48,14 @@
       }
     ],
     "format": {
-      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-multipage.tiff",
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-multipage-second-page-reference.png",
       "nb_streams": 1,
       "nb_programs": 0,
       "nb_stream_groups": 0,
-      "format_name": "tiff_pipe",
-      "format_long_name": "piped tiff sequence",
-      "size": "72835",
-      "probe_score": 51
+      "format_name": "png_pipe",
+      "format_long_name": "piped png sequence",
+      "size": "872",
+      "probe_score": 99
     }
   }
 }

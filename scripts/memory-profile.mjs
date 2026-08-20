@@ -154,10 +154,11 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-(?:png|zip)|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:gif|webp|avif)-to-zip$/.test(
   profileId,
 );
+const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -940,6 +941,13 @@ try {
                   finalState,
                   profileId,
                 )
+              : isTiffPageArchiveProfile
+                ? await validateTiffPageArchiveOutput(
+                    physicalOutputPath,
+                    fixtureManifest,
+                    finalState,
+                    profileId,
+                  )
               : await validateImageOutput(
                   physicalOutputPath,
                   fixturePath,
@@ -1102,7 +1110,11 @@ try {
         run.archiveCompression === "lzma2",
     ),
     imageOutputBytes: runSummaries.every(
-      (run) => !isImageProfile || run.outputBytes <= 64 * 1024 * 1024,
+      (run) =>
+        !isImageProfile ||
+        isAnimatedFrameArchiveProfile ||
+        isTiffPageArchiveProfile ||
+        run.outputBytes <= 64 * 1024 * 1024,
     ),
     wasmMemoryBytes: runSummaries.every(
       (run) =>
@@ -2954,6 +2966,183 @@ async function validateAnimatedFrameArchiveOutput(
         uniqueFrameHashes: new Set(frameHashes).size,
         firstFrameSha256,
         timingManifest: true,
+        decodedByNativeFfmpeg: true,
+      },
+    };
+  } finally {
+    await removeWithRetries(extractionRoot);
+  }
+}
+
+async function validateTiffPageArchiveOutput(
+  localPath,
+  source,
+  finalState,
+  route,
+) {
+  if (
+    finalState.metrics.outputBytes < 1 ||
+    finalState.metrics.outputBytes > 4_294_967_295
+  ) {
+    throw new Error(
+      `Browser TIFF ZIP is outside the ZIP32 range: ${finalState.metrics.outputBytes} bytes.`,
+    );
+  }
+  const references = source.validationReferences;
+  const expectedPages = Number(source.pageCount ?? references?.length);
+  if (
+    !Number.isSafeInteger(expectedPages) ||
+    expectedPages < 1 ||
+    expectedPages > 1_000 ||
+    !Array.isArray(references) ||
+    references.length !== expectedPages
+  ) {
+    throw new Error(
+      "The TIFF ZIP stress manifest must declare one project-local reference per page.",
+    );
+  }
+  const extractionRoot = path.join(
+    workRoot,
+    `tiff-page-validation-${process.pid}-${route}`,
+  );
+  assertInside(workRoot, extractionRoot);
+  await removeWithRetries(extractionRoot);
+  await mkdir(extractionRoot, { recursive: true });
+  try {
+    const expectedNames = [
+      ...Array.from(
+        { length: expectedPages },
+        (_, index) => `page-${String(index + 1).padStart(4, "0")}.png`,
+      ),
+      "pages.json",
+    ];
+    const { stdout: listing } = await execFileAsync("tar", ["-tf", localPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    if (
+      JSON.stringify(listing.trim().split(/\r?\n/)) !==
+      JSON.stringify(expectedNames)
+    ) {
+      throw new Error("TIFF ZIP entries are incomplete or out of order.");
+    }
+    await execFileAsync("tar", ["-xf", localPath, "-C", extractionRoot], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 8 * 1024 * 1024,
+    });
+    const manifest = JSON.parse(
+      await readFile(path.join(extractionRoot, "pages.json"), "utf8"),
+    );
+    if (
+      manifest.schema !== "within-tiff-pages-v1" ||
+      manifest.sourceFormat !== "tiff" ||
+      manifest.pageCount !== expectedPages ||
+      !Array.isArray(manifest.pages) ||
+      manifest.pages.length !== expectedPages
+    ) {
+      throw new Error("TIFF ZIP page manifest is invalid.");
+    }
+    let aggregateDecodedBytes = 0;
+    const decodedHashes = [];
+    const decodedHash = async (imagePath, pixelFormat) => {
+      const { stdout } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v",
+          "error",
+          "-i",
+          imagePath,
+          "-frames:v",
+          "1",
+          "-pix_fmt",
+          pixelFormat,
+          "-f",
+          "hash",
+          "-hash",
+          "sha256",
+          "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 8 * 1024 * 1024,
+        },
+      );
+      const hash = stdout.match(/SHA256=([0-9a-f]{64})/i)?.[1]?.toLowerCase();
+      if (!hash) throw new Error("FFmpeg did not return a TIFF page pixel hash.");
+      return hash;
+    };
+    for (let index = 0; index < expectedPages; index += 1) {
+      const record = manifest.pages[index];
+      const expectedName = expectedNames[index];
+      if (
+        record.file !== expectedName ||
+        record.index !== index ||
+        !Number.isSafeInteger(record.width) ||
+        !Number.isSafeInteger(record.height) ||
+        record.width < 1 ||
+        record.height < 1 ||
+        (record.bitsPerSample !== 8 && record.bitsPerSample !== 16) ||
+        !Number.isSafeInteger(record.samplesPerPixel) ||
+        record.samplesPerPixel < 1 ||
+        record.samplesPerPixel > 4 ||
+        !Number.isSafeInteger(record.decodedBytes) ||
+        record.decodedBytes < 1
+      ) {
+        throw new Error(`TIFF ZIP page metadata is invalid at index ${index}.`);
+      }
+      aggregateDecodedBytes += record.decodedBytes;
+      const pagePath = path.join(extractionRoot, expectedName);
+      const { stdout } = await execFileAsync(
+        "ffprobe",
+        [
+          "-v",
+          "error",
+          "-show_entries",
+          "stream=codec_name,width,height",
+          "-of",
+          "json",
+          pagePath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      const stream = JSON.parse(stdout).streams?.[0];
+      if (
+        stream?.codec_name !== "png" ||
+        stream.width !== record.width ||
+        stream.height !== record.height
+      ) {
+        throw new Error(`TIFF ZIP page ${index + 1} is not the expected PNG.`);
+      }
+      const referencePath = path.resolve(projectRoot, references[index]);
+      const referenceRelative = path.relative(projectRoot, referencePath);
+      if (
+        !referenceRelative ||
+        referenceRelative.startsWith("..") ||
+        path.isAbsolute(referenceRelative)
+      ) {
+        throw new Error("TIFF page references must stay inside the project.");
+      }
+      const pixelFormat = record.bitsPerSample === 16 ? "rgb48le" : "rgb24";
+      const pageHash = await decodedHash(pagePath, pixelFormat);
+      const referenceHash = await decodedHash(referencePath, pixelFormat);
+      if (pageHash !== referenceHash) {
+        throw new Error(`TIFF ZIP page ${index + 1} differs from its reference.`);
+      }
+      decodedHashes.push(pageHash);
+    }
+    if (manifest.aggregateDecodedBytes !== aggregateDecodedBytes) {
+      throw new Error("TIFF ZIP aggregate decoded size is inconsistent.");
+    }
+    return {
+      format: { format_name: "zip", size: String(finalState.metrics.outputBytes) },
+      withinValidation: {
+        method: "native-tar-list-extract-plus-ffprobe-and-decoded-sha256",
+        pageCount: expectedPages,
+        aggregateDecodedBytes,
+        decodedPageSha256: decodedHashes,
         decodedByNativeFfmpeg: true,
       },
     };

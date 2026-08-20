@@ -925,6 +925,15 @@ const categories = {
       ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m.tiff"],
     ],
   },
+  "tiff-multipage": {
+    generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
+    profiles: [
+      [
+        "tiff-to-zip",
+        "fixtures/stress/images/tiff-rgb-tiled-multipage-48m.tiff",
+      ],
+    ],
+  },
   "tiff-transposed": {
     generator: "scripts/generate-tiff-stress-fixture.mjs",
     generatorArguments: ["6"],

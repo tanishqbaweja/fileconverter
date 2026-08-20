@@ -284,6 +284,7 @@ for (const name of [
     "test-pattern-planar-tiled-reference.png",
     "test-pattern-multipage.tiff",
     "test-pattern-multipage-first-page-reference.png",
+    "test-pattern-multipage-second-page-reference.png",
 ]) {
   const fixturePath = path.join(fixtureRoot, name);
   const bytes = await readFile(fixturePath);
@@ -294,6 +295,13 @@ for (const name of [
   );
   const probe = JSON.parse(stdout);
   let validationReference;
+  const validationReferences =
+    name === "test-pattern-multipage.tiff"
+      ? [
+          "fixtures/images/test-pattern-multipage-first-page-reference.png",
+          "fixtures/images/test-pattern-multipage-second-page-reference.png",
+        ]
+      : undefined;
   if (name === "animated-pattern.webp") {
     const referenceName = "animated-pattern-first-frame-reference.png";
     const { stdout: referenceOutput } = await execFileAsync(
@@ -326,6 +334,9 @@ for (const name of [
         sha256: createHash("sha256").update(bytes).digest("hex"),
         probe,
         ...(validationReference ? { validationReference } : {}),
+        ...(validationReferences
+          ? { pageCount: validationReferences.length, validationReferences }
+          : {}),
       },
       null,
       2,

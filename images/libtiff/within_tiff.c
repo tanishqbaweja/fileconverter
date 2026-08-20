@@ -16,6 +16,7 @@
 #define WITHIN_MAX_PIXELS 16777216ULL
 #define WITHIN_MAX_STRIP_BYTES (4U * 1024U * 1024U)
 #define WITHIN_MAX_TRANSPOSE_BYTES (16U * 1024U * 1024U)
+#define WITHIN_MAX_PAGES 1000U
 #define WITHIN_MAX_RATIO 1000ULL
 
 typedef struct {
@@ -26,6 +27,12 @@ typedef struct {
 static char within_error_message[1024];
 static uint64_t within_output_position;
 static int within_has_more_pages;
+static uint64_t within_page_offsets[WITHIN_MAX_PAGES];
+static uint32_t within_page_count;
+static uint32_t within_page_width;
+static uint32_t within_page_height;
+static uint32_t within_page_bits;
+static uint32_t within_page_samples;
 
 EM_ASYNC_JS(int, within_tiff_input_read,
             (uint64_t offset, unsigned char *destination, int length), {
@@ -137,6 +144,25 @@ static void within_unmap(thandle_t handle, void *base, toff_t size) {
   (void)handle;
   (void)base;
   (void)size;
+}
+
+static TIFF *within_open_input(within_input *input) {
+  TIFFOpenOptions *options = TIFFOpenOptionsAlloc();
+  if (!options) {
+    within_set_error("Could not allocate bounded TIFF open options.");
+    return NULL;
+  }
+  TIFFOpenOptionsSetMaxSingleMemAlloc(options, 8U * 1024U * 1024U);
+  TIFFOpenOptionsSetWarnAboutUnknownTags(options, 0);
+  TIFF *tiff = TIFFClientOpenExt(
+      "within-input.tiff", "r", (thandle_t)input, within_read,
+      within_write_disabled, within_seek, within_close, within_size, within_map,
+      within_unmap, options);
+  TIFFOpenOptionsFree(options);
+  if (!tiff && !within_error_message[0]) {
+    within_set_error("TIFF header or directory is invalid.");
+  }
+  return tiff;
 }
 
 static void within_png_write(png_structp png, png_bytep data, png_size_t length) {
@@ -315,7 +341,62 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_has_more_pages(void) {
   return within_has_more_pages;
 }
 
-EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
+EMSCRIPTEN_KEEPALIVE uint32_t within_tiff_page_count(void) {
+  return within_page_count;
+}
+
+EMSCRIPTEN_KEEPALIVE uint32_t within_tiff_page_width(void) {
+  return within_page_width;
+}
+
+EMSCRIPTEN_KEEPALIVE uint32_t within_tiff_page_height(void) {
+  return within_page_height;
+}
+
+EMSCRIPTEN_KEEPALIVE uint32_t within_tiff_page_bits(void) {
+  return within_page_bits;
+}
+
+EMSCRIPTEN_KEEPALIVE uint32_t within_tiff_page_samples(void) {
+  return within_page_samples;
+}
+
+EMSCRIPTEN_KEEPALIVE int within_tiff_scan_pages(uint32_t input_size) {
+  within_error_message[0] = '\0';
+  within_page_count = 0;
+  within_input input = {(uint64_t)input_size, 0};
+  if (input_size < 8 || input_size > WITHIN_MAX_INPUT) {
+    within_set_error("TIFF input must be between 8 bytes and 64 MiB.");
+    return 2;
+  }
+  TIFFSetErrorHandler(within_tiff_error_handler);
+  TIFFSetWarningHandler(NULL);
+  TIFF *tiff = within_open_input(&input);
+  if (!tiff) return 3;
+  int result = 0;
+  for (;;) {
+    if (within_page_count >= WITHIN_MAX_PAGES) {
+      within_set_error("TIFF contains more than the 1,000-page safety limit.");
+      result = 4;
+      break;
+    }
+    within_page_offsets[within_page_count++] = TIFFCurrentDirOffset(tiff);
+    if (TIFFLastDirectory(tiff)) break;
+    if (!TIFFReadDirectory(tiff)) {
+      if (!within_error_message[0]) {
+        within_set_error("TIFF directory chain is invalid.");
+      }
+      result = 5;
+      break;
+    }
+  }
+  TIFFClose(tiff);
+  if (result != 0) within_page_count = 0;
+  return result;
+}
+
+EMSCRIPTEN_KEEPALIVE int within_tiff_page_to_png(uint32_t input_size,
+                                                uint32_t page_index) {
   TIFF *tiff = NULL;
   png_structp png = NULL;
   png_infop info = NULL;
@@ -331,6 +412,10 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   within_error_message[0] = '\0';
   within_output_position = 0;
   within_has_more_pages = 0;
+  within_page_width = 0;
+  within_page_height = 0;
+  within_page_bits = 0;
+  within_page_samples = 0;
 
   if (input_size < 8 || input_size > WITHIN_MAX_INPUT) {
     within_set_error("TIFF input must be between 8 bytes and 64 MiB.");
@@ -339,21 +424,17 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
 
   TIFFSetErrorHandler(within_tiff_error_handler);
   TIFFSetWarningHandler(NULL);
-  TIFFOpenOptions *options = TIFFOpenOptionsAlloc();
-  if (!options) {
-    within_set_error("Could not allocate bounded TIFF open options.");
+  if (within_page_count == 0 || page_index >= within_page_count) {
+    within_set_error("TIFF page index is outside the scanned page directory.");
     return 3;
   }
-  TIFFOpenOptionsSetMaxSingleMemAlloc(options, 8U * 1024U * 1024U);
-  TIFFOpenOptionsSetWarnAboutUnknownTags(options, 0);
-  tiff = TIFFClientOpenExt("within-input.tiff", "r", (thandle_t)&input,
-                           within_read, within_write_disabled, within_seek,
-                           within_close, within_size, within_map, within_unmap,
-                           options);
-  TIFFOpenOptionsFree(options);
+  tiff = within_open_input(&input);
   if (!tiff) {
-    if (!within_error_message[0]) within_set_error("TIFF header or directory is invalid.");
     return 4;
+  }
+  if (!TIFFSetSubDirectory(tiff, (toff_t)within_page_offsets[page_index])) {
+    within_set_error("TIFF page directory could not be selected.");
+    goto cleanup;
   }
 
   uint32_t width = 0, height = 0;
@@ -382,7 +463,7 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
     within_set_error("TIFF profile requires 8- or 16-bit contiguous or separated pixels in orientation 1 through 8.");
     goto cleanup;
   }
-  within_has_more_pages = !TIFFLastDirectory(tiff);
+  within_has_more_pages = page_index + 1U < within_page_count;
   if (!within_supported_compression(compression)) {
     within_set_error("TIFF compression is not supported; use none, PackBits, LZW, Deflate, or JPEG.");
     goto cleanup;
@@ -522,6 +603,10 @@ EMSCRIPTEN_KEEPALIVE int within_tiff_to_png(uint32_t input_size) {
   png_set_compression_level(png, 6);
   uint32_t png_width = transposed ? height : width;
   uint32_t png_height = transposed ? width : height;
+  within_page_width = png_width;
+  within_page_height = png_height;
+  within_page_bits = bits;
+  within_page_samples = samples;
   png_set_IHDR(png, info, png_width, png_height, bits, color_type,
                PNG_INTERLACE_NONE,
                PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);

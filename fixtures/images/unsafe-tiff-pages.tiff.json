@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-tiff-extended-fixtures.py",
+  "bytes": 192209,
+  "sha256": "4d909f02741a49517669fe53befc5365c2a0740469561fec1fdeca25c4a4b5b9",
+  "expectation": "rejected before decoding because the directory chain exceeds 1,000 pages"
+}
