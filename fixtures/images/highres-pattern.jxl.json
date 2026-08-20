@@ -1,0 +1,73 @@
+{
+  "generatedBy": "scripts/generate-jxl-fixtures.mjs",
+  "bytes": 630393,
+  "sha256": "53808c3bca30d913be3cb4e5e47b255e203393d2ab602a4286e729a2ebddff38",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "jpegxl",
+        "codec_long_name": "JPEG XL",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 3840,
+        "height": 2160,
+        "coded_width": 3840,
+        "coded_height": 2160,
+        "has_b_frames": 0,
+        "pix_fmt": "rgb24",
+        "level": -99,
+        "color_range": "pc",
+        "color_space": "gbr",
+        "color_transfer": "iec61966-2-1",
+        "color_primaries": "bt709",
+        "refs": 1,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/25",
+        "bits_per_raw_sample": "8",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\highres-pattern.jxl",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "jpegxl_pipe",
+      "format_long_name": "piped jpegxl sequence",
+      "size": "630393",
+      "probe_score": 98
+    }
+  },
+  "validationReference": "fixtures/images/highres-pattern.png",
+  "encoding": {
+    "codec": "libjxl",
+    "distance": 0,
+    "effort": 1,
+    "modular": 1,
+    "threads": 1,
+    "pixelFormat": "rgb24"
+  }
+}

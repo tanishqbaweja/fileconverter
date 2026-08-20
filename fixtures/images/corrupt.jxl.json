@@ -1,0 +1,6 @@
+{
+  "generatedBy": "scripts/generate-jxl-fixtures.mjs",
+  "bytes": 19,
+  "sha256": "3a91ab77d717fb680e1cc2cd64e2cca40e96442635a02321898a0c5a0790cd48",
+  "expectation": "rejected invalid JPEG XL signature or codestream"
+}

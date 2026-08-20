@@ -17,6 +17,7 @@ export type EngineId =
   | "image-browser"
   | "svg-browser"
   | "libtiff-wasm"
+  | "libjxl-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
   | "ffmpeg-video";
@@ -1947,6 +1948,13 @@ export const formats = [
     category: "image",
   },
   {
+    id: "jxl",
+    label: "JPEG XL image",
+    extensions: ["jxl"],
+    mimeTypes: ["image/jxl"],
+    category: "image",
+  },
+  {
     id: "bmp",
     label: "Bitmap image (BMP)",
     extensions: ["bmp", "dib"],
@@ -3793,6 +3801,27 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Associated alpha is converted to PNG's unassociated alpha representation with bounded 8- or 16-bit rounding.",
     ],
     maxTestedBytes: 50_348_250,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "jxl-to-png",
+    input: "jxl",
+    output: "png",
+    engine: "libjxl-wasm",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "Accepts grayscale, grayscale-alpha, RGB, and RGBA JPEG XL images with integer samples up to 16 bits, an 8,192-pixel edge limit, and an 8,388,608-pixel image limit.",
+      "The encoded orientation is applied, associated alpha is converted to PNG's unassociated representation, and the target-data ICC profile is embedded when libjxl supplies one.",
+      "Animation converts only the first fully rendered frame with an explicit warning; EXIF, XMP, preview images, thumbnails, text boxes, and non-alpha extra channels are not preserved as independent PNG metadata or channels.",
+    ],
+    fidelityLimitations: [
+      "PNG losslessly preserves the bounded 8- or 16-bit pixels rendered by libjxl; lossy JPEG XL source information cannot be restored, and floating-point JPEG XL samples are not accepted by this profile.",
+    ],
+    maxTestedBytes: 630_393,
     automatedTestStatus: "passed",
     public: true,
   },

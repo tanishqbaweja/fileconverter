@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 354
+complete-Chromium memory profile have passed. The current registry publishes 366
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
+| Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -147,6 +147,8 @@ Hard limits:
   and 1,048,576 rows; ODP pages: 10,000
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
+- JPEG XL: fixed 112 MiB Wasm heap; 102 MiB tracked decoder allocation;
+  1 MiB retained input window; 16 MiB maximum output stripe
 - ICO output: one PNG-compressed image; 256 px maximum per edge
 - archive entries: 10,000; total expanded bytes: 64 GiB; expansion ratio: 100:1
 - ZIP central directory: 8 MiB; ZIP64, encryption, links, and special files:
@@ -603,9 +605,9 @@ ICO output uses those same bounded decoders, scales proportionally only when an
 edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
 followed by an incrementally copied PNG payload. It preserves alpha but does not
 claim alternate icon sizes, animation, or metadata that the source cannot carry
-through this bounded profile. Stable Chrome does not expose ICO, SVG, HEIC/HEIF,
-or JPEG XL through worker `ImageDecoder`, so those formats are not advertised as
-inputs.
+through this bounded profile. Stable Chrome does not expose ICO, SVG, or
+HEIC/HEIF through worker `ImageDecoder`; unsupported browser-native inputs are
+not advertised.
 
 TIFF-to-PNG uses a separate reproducible libtiff/libpng/zlib/libjpeg-turbo Wasm
 engine because Chrome does not decode TIFF in a worker. It reads at most 256 KiB
@@ -613,11 +615,22 @@ at a time, decodes strip or tile blocks into one bounded raster stripe, and
 writes PNG chunks of at most 64 KiB with one pending destination operation. The
 heap is fixed at 40 MiB; decoded blocks and assembled tile stripes are capped at
 4 MiB. Contiguous or separated-planar 8- or 16-bit grayscale, RGB, and RGBA are
-accepted, as are 8-bit palette images, orientations 1 through 4, and none,
+accepted, as are 8-bit palette images, orientations 1 through 8, and none,
 PackBits, LZW, Deflate, or baseline JPEG compression. Separated planes are
-interleaved one scanline or bounded tile stripe at a time. Multipage input
-converts only its first page and shows a visible omission warning;
-transposed-orientation and other unsupported layouts fail explicitly.
+interleaved one scanline or bounded tile stripe at a time. Orientations are
+applied with bounded stripes. TIFF-to-PNG converts the first page with a
+visible omission warning; TIFF-to-ZIP scans at most 1,000 directories once and
+streams each decoded page immediately into an ordered PNG archive.
+
+JPEG-XL-to-PNG uses a separate reproducible libjxl/libpng Wasm engine because
+Chromium does not expose JPEG XL through worker `ImageDecoder`. It retains at
+most a 1 MiB compressed-input window, decodes within a fixed 112 MiB heap and
+102 MiB tracked allocation ceiling, and writes one bounded PNG chunk at a time.
+Integer grayscale, grayscale-alpha, RGB, and RGBA through 16 bits are supported;
+orientation and target ICC are applied, associated alpha is unpremultiplied,
+and animation converts only the first rendered frame with a visible warning.
+Floating-point samples and independent preservation of EXIF, XMP, thumbnails,
+preview images, text boxes, and non-alpha extra channels are excluded.
 
 Subtitle and structured-data engines are incremental UTF-8 parsers with a
 1 MiB cue/record/line ceiling. SRT, WebVTT, ASS, and TTML routes validate timing
@@ -703,7 +716,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. HEIC/HEIF, JPEG XL, camera raw,
+PDF is excluded by product scope. HEIC/HEIF, camera raw,
 animated-image output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
@@ -766,6 +779,9 @@ Pinned inputs:
   `fff1ffcf2b0da84d308a14de513a1aa23d4e9aa3464d17e64b9714bfdd0bbfb6`
 - libarchive 3.8.9 official source archive, SHA-256
   `888c934f9d95648ecb9163dc8e23ab80a476ecb81a8f1154704a227b5b676dde`
+- libjxl 0.12.0 commit
+  `a7a9c787341cf703dede03c2009fa460cae5e5df`, with pinned Brotli, Highway,
+  skcms, libpng 1.6.58, and zlib 1.3.2 inputs recorded in its manifest
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
 
@@ -777,12 +793,14 @@ npm run build:ffmpeg-remux
 npm run build:bzip2
 npm run build:xz
 npm run build:archive7z
+npm run build:jxl
 npm run build
 ```
 
 The Docker builds verify each source archive before compilation. Exact
-configure switches and Emscripten flags are in `media/ffmpeg/` and
-`compression/bzip2/`, `compression/xz/`, and `compression/libarchive7z/`.
+configure switches and Emscripten flags are in `media/ffmpeg/`,
+`compression/bzip2/`, `compression/xz/`, `compression/libarchive7z/`, and
+`images/libjxl/`.
 Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
@@ -1005,6 +1023,7 @@ profiler:
 | Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
 | Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
 | Images, tiled TIFF -> PNG | 50,338,032 B | 164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference |
+| Images, JPEG XL -> PNG | 630,393 B | 202.4 MiB | exact repeatable PNG hash, native decode, dimensions, SSIM 1.0 |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |
@@ -1454,6 +1473,7 @@ and browser profiles whether the category passes, fails, or is interrupted:
 npm run profile:audio
 npm run profile:images
 npm run profile:tiff
+npm run profile:jxl
 npm run profile:records
 npm run profile:subtitles
 npm run profile:archives

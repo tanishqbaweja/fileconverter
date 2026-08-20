@@ -925,6 +925,12 @@ const categories = {
       ["tiff-to-png", "fixtures/stress/images/tiff-rgb-tiled-48m.tiff"],
     ],
   },
+  jxl: {
+    generator: "scripts/generate-jxl-fixtures.mjs",
+    profiles: [
+      ["jxl-to-png", "fixtures/images/highres-pattern.jxl"],
+    ],
+  },
   "tiff-multipage": {
     generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
     profiles: [

@@ -215,6 +215,7 @@ const generatedStressExtensions = new Set([
   ".zip",
   ".tif",
   ".tiff",
+  ".jxl",
   ".svg",
 ]);
 const generatedStressNames = new Set([

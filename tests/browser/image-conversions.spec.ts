@@ -81,6 +81,10 @@ const routes = [
   ["tiff-to-png", "test-pattern-planar.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-reference.png"],
   ["tiff-to-png", "test-pattern-planar-tiled.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-planar-tiled-reference.png"],
   ["tiff-to-png", "test-pattern-multipage.tiff", "png", "png", undefined, 127, 95, 1_000, undefined, "test-pattern-multipage-first-page-reference.png"],
+  ["jxl-to-png", "test-pattern.jxl", "png", "png", undefined, 1024, 768, 1_000, "rgb24", "test-pattern.png", "rgb24"],
+  ["jxl-to-png", "transparent-pattern.jxl", "png", "png", "preserved", 1024, 768, 100, "rgba", "transparent-pattern.png", "rgba"],
+  ["jxl-to-png", "test-pattern-gray16.jxl", "png", "png", undefined, 127, 95, 100, "gray16be", "test-pattern-gray16-deflate.tiff", "gray16le"],
+  ["jxl-to-png", "highres-pattern.jxl", "png", "png", undefined, 3840, 2160, 100_000, "rgb24", "highres-pattern.png", "rgb24"],
   ["svg-to-png", "test-pattern.svg", "png", "png", undefined, 640, 480],
   ["svg-to-png", "test-pattern-effects.svg", "png", "png", undefined, 960, 540, 1_000, undefined, "test-pattern-effects-reference.png", "rgb24", 0.9],
 ] as const;
@@ -358,7 +362,7 @@ for (const [
               {
                 cwd: projectRoot,
                 windowsHide: true,
-                maxBuffer: 8 * 1024 * 1024,
+                maxBuffer: 32 * 1024 * 1024,
                 encoding: "buffer",
               },
             );
@@ -866,6 +870,36 @@ test("TIFF output failure removes the partial browser-owned file", async () => {
   expect(leftovers).toEqual([]);
 });
 
+test("JPEG XL output failure removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "test-pattern.jxl"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("jxl-to-png");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("error");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-jxl-to-png")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
 test("SVG output failure removes the partial browser-owned file", async () => {
   await page.goto("/?test=1&fault=write");
   await page.waitForFunction(
@@ -983,6 +1017,83 @@ test("TIFF converts through the bounded direct-save worker", async () => {
   }
 });
 
+test("JPEG XL converts through the bounded direct-save worker", async () => {
+  const outputName = "test-pattern.png";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern.jxl"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("jxl-to-png");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(112 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(
+        new Uint8Array(await file.slice(0, 8).arrayBuffer()),
+      );
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(1_000);
+    expect(output.signature).toEqual([137, 80, 78, 71, 13, 10, 26, 10]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("JPEG XL cancellation removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "highres-pattern.jxl"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("jxl-to-png");
+  await page.locator('[data-testid="convert-button"]').click();
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-jxl-to-png")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
 test("multipage TIFF ZIP converts through the bounded direct-save worker", async () => {
   const outputName = "test-pattern-multipage.zip";
   await page.goto("/?test=1&directory=1");
@@ -1056,6 +1167,30 @@ for (const [sourceName, expectedError] of [
     expect(state?.error).toContain(expectedError);
     expect(state?.metrics?.outputBytes).toBe(0);
     expect(state?.opfsName).toBeNull();
+  });
+}
+
+for (const sourceName of ["truncated.jxl", "corrupt.jxl"] as const) {
+  test(`rejects invalid JPEG XL input ${sourceName} without output`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", sourceName),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("jxl-to-png");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.error).toContain("JPEG XL");
+    expect(state?.metrics?.outputBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
   });
 }
 

@@ -154,7 +154,7 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-(?:png|zip)|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:gif|webp|avif)-to-zip|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:gif|webp|avif)-to-zip$/.test(
   profileId,
 );

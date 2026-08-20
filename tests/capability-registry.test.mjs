@@ -593,6 +593,49 @@ test("multipage TIFF ZIP is public only at its measured evidence limit", () => {
   );
 });
 
+test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/jxl/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "libjxl-wasm",
+  );
+  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.equal(manifest.libjxlVersion, "0.12.0");
+  assert.equal(
+    manifest.libjxlCommit,
+    "a7a9c787341cf703dede03c2009fa460cae5e5df",
+  );
+  assert.equal(manifest.libpngVersion, "1.6.58");
+  assert.equal(manifest.zlibVersion, "1.3.2");
+  assert.equal(
+    manifest.skcmsCommit,
+    "96d9171c94b937a1b5f0293de7309ac16311b722",
+  );
+  assert.equal(manifest.initialWasmMemoryBytes, 112 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 112 * 1024 * 1024);
+  assert.equal(manifest.decoderAllocationLimitBytes, 102 * 1024 * 1024);
+  assert.equal(manifest.inputReadBytes, 256 * 1024);
+  assert.equal(manifest.inputWindowBytes, 1024 * 1024);
+  assert.equal(manifest.outputWriteBytes, 64 * 1024);
+  assert.equal(manifest.maximumPixels, 8_388_608);
+  assert.equal(manifest.maximumStripeBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(profiles[0].maxTestedBytes, 630_393);
+  assert.equal(profiles[0].automatedTestStatus, "passed");
+  assert.equal(profiles[0].public, true);
+  assert.equal(
+    publicProfilesFor("jxl").some((profile) => profile.id === "jxl-to-png"),
+    true,
+  );
+  assert.equal(
+    publicProfilesFor("jxl", true).some(
+      (profile) => profile.id === "jxl-to-png",
+    ),
+    true,
+  );
+});
+
 test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/svg/build-manifest.json", "utf8"),
@@ -638,6 +681,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "payload.XZ", type: "" }), "xz");
   assert.equal(detectFormat({ name: "backup.7Z", type: "" }), "sevenzip");
   assert.equal(detectFormat({ name: "scan.TIFF", type: "" }), "tiff");
+  assert.equal(detectFormat({ name: "photo.JXL", type: "" }), "jxl");
   assert.ok(
     publicProfilesFor("bzip2", true).some(
       (profile) => profile.id === "bzip2-decompress",

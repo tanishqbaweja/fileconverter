@@ -1,0 +1,71 @@
+{
+  "generatedBy": "scripts/generate-jxl-fixtures.mjs",
+  "bytes": 15600,
+  "sha256": "b480a293d5af5fcfc46f764614259a227ae85e9773f22e708c49bbea7819683f",
+  "probe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "jpegxl",
+        "codec_long_name": "JPEG XL",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 127,
+        "height": 95,
+        "coded_width": 127,
+        "coded_height": 95,
+        "has_b_frames": 0,
+        "pix_fmt": "gray16le",
+        "level": -99,
+        "color_range": "pc",
+        "color_transfer": "bt470m",
+        "refs": 1,
+        "r_frame_rate": "25/1",
+        "avg_frame_rate": "25/1",
+        "time_base": "1/25",
+        "bits_per_raw_sample": "16",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\fixtures\\images\\test-pattern-gray16.jxl",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "jpegxl_pipe",
+      "format_long_name": "piped jpegxl sequence",
+      "size": "15600",
+      "probe_score": 51
+    }
+  },
+  "validationReference": "fixtures/images/test-pattern-gray16-deflate.tiff",
+  "encoding": {
+    "codec": "libjxl",
+    "distance": 0,
+    "effort": 1,
+    "modular": 1,
+    "threads": 1,
+    "pixelFormat": "gray16le"
+  }
+}
