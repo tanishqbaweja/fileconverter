@@ -438,8 +438,15 @@ and direct destination writes stay inside the same bounded audio pipeline; the
 16,384-sample FIFO is preallocated and grows only if its existing free space is
 insufficient. AMR is a narrowband speech format, so stereo, high frequencies,
 lossless identity, container metadata, artwork, chapters, and extra streams
-cannot be preserved. AMR-WB encoding remains out of scope; the separately
-certified `.awb` decoder routes do not claim an AMR-WB destination.
+cannot be preserved. AMR-WB encoding is intentionally not shipped: FFmpeg can
+connect to the Apache-licensed VisualOn `vo-amrwbenc` implementation, but
+VoiceAge currently identifies AMR-WB as an actively licensed patent portfolio.
+The project will not publish an AMR-WB destination without explicit patent
+clearance. This is a conservative distribution decision, not legal advice; the
+separately certified `.awb` decoder routes do not claim an AMR-WB destination.
+See the [FFmpeg encoder integration](https://ffmpeg.org/doxygen/8.0/libvo-amrwbenc_8c_source.html),
+[official VisualOn project](https://sourceforge.net/projects/opencore-amr/), and
+[VoiceAge portfolio notice](https://voiceage.com/Patent-Portfolio-Essential.html).
 
 M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, certified AMR-WB `.awb`, FLAC, WAV, WMA2, AIFF, Ogg
 Vorbis, and Ogg Opus can be encoded as genuine MP3 using pinned LAME 4.0. The
