@@ -991,7 +991,7 @@ static int within_audio_transcode(int profile) {
   if (amr_output) {
     encoder->sample_rate = 8000;
   } else if (wma_output) {
-    encoder->sample_rate = 48000;
+    encoder->sample_rate = decoder->sample_rate <= 16000 ? 32000 : 48000;
   } else if (mp3_output) {
     encoder->sample_rate = decoder->sample_rate == 8000 ||
                                    decoder->sample_rate == 16000
@@ -1075,7 +1075,7 @@ static int within_audio_transcode(int profile) {
     av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
     av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
   } else if (wma_output) {
-    encoder->bit_rate = 320000;
+    encoder->bit_rate = decoder->sample_rate <= 16000 ? 64000 : 320000;
   } else if (amr_output) {
     encoder->bit_rate = 12200;
   } else if (mp3_output) {

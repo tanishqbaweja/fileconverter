@@ -975,12 +975,13 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
   };
 }
 
-type StandaloneWmaInput = "m4a" | "aac" | "mp3" | "aiff" | "ogg" | "opus";
+type StandaloneWmaInput = "m4a" | "aac" | "amr-wb" | "mp3" | "aiff" | "ogg" | "opus";
 
 function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfile {
-  const evidence: Record<StandaloneWmaInput, number> = {
+  const evidence: Record<StandaloneWmaInput, number | null> = {
     m4a: 140_941_469,
     aac: 134_367_785,
+    "amr-wb": 137_420_809,
     mp3: 136_002_312,
     aiff: 201_600_102,
     ogg: 144_431_506,
@@ -989,6 +990,7 @@ function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfil
   const inputDescription = {
     m4a: "AAC or ALAC in M4A",
     aac: "raw AAC-LC ADTS",
+    "amr-wb": "mono 16 kHz AMR-WB in 3GP/ISOBMFF .awb",
     mp3: "MP3",
     aiff: "signed 16-bit PCM AIFF",
     ogg: "Ogg Vorbis",
@@ -1014,14 +1016,16 @@ function standaloneWmaOutputProfile(input: StandaloneWmaInput): ConversionProfil
       "Compatible text tags are copied into ASF where representable.",
     ],
     fidelityLimitations: [
-      "Audio is resampled to 48 kHz when needed and encoded as lossy WMA2 at 320 kbit/s; layouts above stereo are downmixed to stereo.",
+      input === "amr-wb"
+        ? "AMR-WB is resampled to 32 kHz and encoded as mono WMA2 at 64 kbit/s using the fastest quality-valid measured speech policy."
+        : "Audio is resampled to 48 kHz when needed and encoded as lossy WMA2 at 320 kbit/s; layouts above stereo are downmixed to stereo.",
       input === "aiff"
         ? "Lossless PCM input becomes lossy WMA2."
         : `WMA2 adds another lossy generation to ${inputDescription}${input === "m4a" ? " when its codec is AAC; ALAC input becomes lossy" : ""}.`,
     ],
     maxTestedBytes: evidence[input],
-    automatedTestStatus: "passed",
-    public: true,
+    automatedTestStatus: evidence[input] === null ? "pending" : "passed",
+    public: evidence[input] !== null,
   };
 }
 
@@ -4822,6 +4826,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   },
   standaloneWmaOutputProfile("m4a"),
   standaloneWmaOutputProfile("aac"),
+  standaloneWmaOutputProfile("amr-wb"),
   standaloneWmaOutputProfile("mp3"),
   standaloneWmaOutputProfile("aiff"),
   standaloneWmaOutputProfile("ogg"),

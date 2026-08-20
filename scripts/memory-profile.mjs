@@ -131,6 +131,7 @@ const VORBIS_OUTPUT_PROFILES = [
 const WMA_OUTPUT_PROFILES = [
   "m4a-to-wma",
   "aac-to-wma",
+  "amr-wb-to-wma",
   "mp3-to-wma",
   "aiff-to-wma",
   "ogg-to-wma",
@@ -2138,8 +2139,8 @@ async function validateMediaOutput(
         Number(audio?.bit_rate) <= 0 ||
         Number(audio?.bit_rate) > 220000)) ||
     (wmaOutput &&
-      (Number(audio?.sample_rate) !== 48000 ||
-        Number(audio?.bit_rate) !== 320000)) ||
+      (Number(audio?.sample_rate) !== (route === "amr-wb-to-wma" ? 32000 : 48000) ||
+        Number(audio?.bit_rate) !== (route === "amr-wb-to-wma" ? 64000 : 320000))) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||

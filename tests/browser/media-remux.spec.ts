@@ -212,6 +212,7 @@ const vorbisTranscodeOutputPaths = {
 const wmaTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.wma"),
   aac: path.join(outputRoot, "aac-convert-output.wma"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.wma"),
   mp3: path.join(outputRoot, "mp3-convert-output.wma"),
   aiff: path.join(outputRoot, "aiff-convert-output.wma"),
   ogg: path.join(outputRoot, "ogg-convert-output.wma"),
@@ -1657,6 +1658,7 @@ async function runMediaRoute(
     | "flac-to-wma"
     | "m4a-to-wma"
     | "aac-to-wma"
+    | "amr-wb-to-wma"
     | "mp3-to-wma"
     | "aiff-to-wma"
     | "ogg-to-wma"
@@ -2667,6 +2669,7 @@ for (const route of [
   ["opus-to-ogg", opusFixturePath],
   ["m4a-to-wma", audioFixturePath],
   ["aac-to-wma", aacFixturePath],
+  ["amr-wb-to-wma", amrWbFixturePath],
   ["mp3-to-wma", mp3FixturePath],
   ["aiff-to-wma", aiffFixturePath],
   ["ogg-to-wma", oggFixturePath],
@@ -2770,6 +2773,8 @@ for (const route of [
         ? "[standalone-vorbis] [amr-wb-vorbis] "
       : /^(?:m4a|aac|mp3|aiff|ogg|opus)-to-wma$/.test(route[0])
         ? "[standalone-wma] "
+      : route[0] === "amr-wb-to-wma"
+        ? "[standalone-wma] [amr-wb-wma] "
       : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(route[0])
         ? "[container-wma] "
       : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv|webm)-to-aiff$/.test(route[0])
@@ -3367,6 +3372,7 @@ test("browser FFmpeg encodes FLAC as WMA2", async () => {
 const standaloneWmaOutputRoutes = [
   ["m4a-to-wma", "m4a", audioFixturePath],
   ["aac-to-wma", "aac", aacFixturePath],
+  ["amr-wb-to-wma", "amr-wb", amrWbFixturePath],
   ["mp3-to-wma", "mp3", mp3FixturePath],
   ["aiff-to-wma", "aiff", aiffFixturePath],
   ["ogg-to-wma", "ogg", oggFixturePath],
@@ -3402,7 +3408,7 @@ async function expectWmaTranscodeQuality(
 }
 
 for (const [route, input, inputPath] of standaloneWmaOutputRoutes) {
-  test(`[standalone-wma] browser FFmpeg writes genuine WMA2 for ${input.toUpperCase()} input`, async () => {
+  test(`[standalone-wma]${input === "amr-wb" ? "[amr-wb-wma]" : ""} browser FFmpeg writes genuine WMA2 for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       wmaTranscodeOutputPaths[input],
@@ -3410,11 +3416,12 @@ for (const [route, input, inputPath] of standaloneWmaOutputRoutes) {
       1_000,
       inputPath,
       {
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : 4,
         expectedWarningFragments: [],
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("asf");
-          expect(probe.streams[0]?.sample_rate).toBe("48000");
-          expect(probe.streams[0]?.bit_rate).toBe("320000");
+          expect(probe.streams[0]?.sample_rate).toBe(input === "amr-wb" ? "32000" : "48000");
+          expect(probe.streams[0]?.bit_rate).toBe(input === "amr-wb" ? "64000" : "320000");
           await expectWmaTranscodeQuality(inputPath, outputPath);
         },
       },

@@ -183,6 +183,7 @@ const VORBIS_OUTPUT_PROFILES = new Set([
 const WMA_OUTPUT_PROFILES = new Set([
   "m4a-to-wma",
   "aac-to-wma",
+  "amr-wb-to-wma",
   "mp3-to-wma",
   "aiff-to-wma",
   "ogg-to-wma",
@@ -207,6 +208,7 @@ const AMR_WB_INPUT_PROFILES = new Set([
   "amr-wb-to-opus",
   "amr-wb-to-aac",
   "amr-wb-to-ogg",
+  "amr-wb-to-wma",
 ]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },

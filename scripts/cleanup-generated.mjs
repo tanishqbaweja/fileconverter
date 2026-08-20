@@ -49,7 +49,9 @@ const downloadedFfmpegArchive = path.resolve(workRoot, "ffmpeg-8.1.2.tar.xz");
 const aacBenchmarkRoot = path.resolve(workRoot, "aac-benchmark");
 const opusBenchmarkRoot = path.resolve(workRoot, "opus-benchmark");
 const vorbisBenchmarkRoot = path.resolve(workRoot, "vorbis-benchmark");
+const wmaSpeechBenchmarkRoot = path.resolve(workRoot, "wma-speech-benchmark");
 const amrWbAuditRoot = path.resolve(workRoot, "amrwb-audit");
+const amrWbWmaAuditRoot = path.resolve(workRoot, "amrwb-wma-audit");
 const taskTempRoots = [
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
@@ -74,6 +76,8 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "vorbis-engine-build"),
   path.resolve(workRoot, "vorbis-repro-build"),
   path.resolve(workRoot, "vorbis-repro-verify"),
+  path.resolve(workRoot, "remux-wma-build-20260820"),
+  path.resolve(workRoot, "remux-wma-repro-20260820"),
 ];
 const lameAuditRoot = path.resolve(workRoot, "lame-audit");
 const sevenZipAuditRoot = path.resolve(workRoot, "libarchive-audit");
@@ -250,7 +254,9 @@ assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
 assertInside(workRoot, opusBenchmarkRoot);
 assertInside(workRoot, vorbisBenchmarkRoot);
+assertInside(workRoot, wmaSpeechBenchmarkRoot);
 assertInside(workRoot, amrWbAuditRoot);
+assertInside(workRoot, amrWbWmaAuditRoot);
 for (const temporaryRoot of taskTempRoots) {
   assertInside(workRoot, temporaryRoot);
 }
@@ -320,7 +326,9 @@ await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
 await removeWithRetries(opusBenchmarkRoot);
 await removeWithRetries(vorbisBenchmarkRoot);
+await removeWithRetries(wmaSpeechBenchmarkRoot);
 await removeWithRetries(amrWbAuditRoot);
+await removeWithRetries(amrWbWmaAuditRoot);
 for (const temporaryRoot of taskTempRoots) {
   await removeWithRetries(temporaryRoot);
 }

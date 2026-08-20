@@ -96,6 +96,7 @@ test("AMR-WB decode routes are public after bounded large-file evidence passes",
     "amr-wb-to-opus",
     "amr-wb-to-aac",
     "amr-wb-to-ogg",
+    "amr-wb-to-wma",
   ]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);
@@ -862,6 +863,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       "3gp-to-wma",
       "aac-to-wma",
       "aiff-to-wma",
+      "amr-wb-to-wma",
       "avi-to-wma",
       "flac-to-wma",
       "flv-to-wma",
@@ -895,6 +897,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   const certifiedStandaloneWmaRoutes = new Map([
     ["m4a-to-wma", 140_941_469],
     ["aac-to-wma", 134_367_785],
+    ["amr-wb-to-wma", 137_420_809],
     ["mp3-to-wma", 136_002_312],
     ["aiff-to-wma", 201_600_102],
     ["ogg-to-wma", 144_431_506],

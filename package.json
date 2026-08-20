@@ -70,6 +70,7 @@
     "fixtures:amr-stress": "node scripts/generate-amr-stress-fixture.mjs",
     "fixtures:amr-wb-stress": "node scripts/generate-amr-wb-stress-fixture.mjs",
     "benchmark:mp3-sample-rates": "node scripts/benchmark-mp3-sample-rates.mjs",
+    "benchmark:wma-speech-policy": "node scripts/benchmark-wma-speech-policy.mjs",
     "fixtures:flac-inputs-stress": "node scripts/generate-flac-input-stress-fixtures.mjs",
     "fixtures:container-flac-stress": "node scripts/generate-container-flac-stress-fixtures.mjs",
     "fixtures:legacy-container-flac-stress": "node scripts/generate-legacy-container-flac-stress-fixtures.mjs",
