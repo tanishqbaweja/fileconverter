@@ -101,6 +101,7 @@ const OPUS_OUTPUT_PROFILES = [
   "m4a-to-opus",
   "aac-to-opus",
   "amr-to-opus",
+  "amr-wb-to-opus",
   "mp3-to-opus",
   "flac-to-opus",
   "wav-to-opus",

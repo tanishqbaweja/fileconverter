@@ -188,6 +188,7 @@ const opusTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.opus"),
   aac: path.join(outputRoot, "aac-convert-output.opus"),
   amr: path.join(outputRoot, "amr-convert-output.opus"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.opus"),
   mp3: path.join(outputRoot, "mp3-convert-output.opus"),
   flac: path.join(outputRoot, "flac-convert-output.opus"),
   wav: path.join(outputRoot, "wav-convert-output.opus"),
@@ -1718,6 +1719,7 @@ async function runMediaRoute(
     | "m4a-to-opus"
     | "aac-to-opus"
     | "amr-to-opus"
+    | "amr-wb-to-opus"
     | "mp3-to-opus"
     | "flac-to-opus"
     | "wav-to-opus"
@@ -2641,6 +2643,7 @@ for (const route of [
   ["m4a-to-opus", audioFixturePath],
   ["aac-to-opus", aacFixturePath],
   ["amr-to-opus", amrFixturePath],
+  ["amr-wb-to-opus", amrWbFixturePath],
   ["mp3-to-opus", mp3FixturePath],
   ["flac-to-opus", flacFixturePath],
   ["wav-to-opus", wavFixturePath],
@@ -2743,6 +2746,8 @@ for (const route of [
   const standaloneAudioMarker =
       route[0] === "amr-wb-to-mp3"
       ? "[amr-wb-mp3] "
+      : route[0] === "amr-wb-to-opus"
+      ? "[standalone-opus] [amr-wb-opus] "
       : /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
       ? "[webm-audio] "
       : /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
@@ -4137,6 +4142,7 @@ const standaloneOpusOutputRoutes = [
   ["m4a-to-opus", "m4a", audioFixturePath],
   ["aac-to-opus", "aac", aacFixturePath],
   ["amr-to-opus", "amr", amrFixturePath],
+  ["amr-wb-to-opus", "amr-wb", amrWbFixturePath],
   ["mp3-to-opus", "mp3", mp3FixturePath],
   ["flac-to-opus", "flac", flacFixturePath],
   ["wav-to-opus", "wav", wavFixturePath],
@@ -4174,7 +4180,7 @@ async function expectOpusTranscodeQuality(
 }
 
 for (const [route, input, inputPath] of standaloneOpusOutputRoutes) {
-  test(`[standalone-opus] browser FFmpeg writes genuine Opus for ${input.toUpperCase()} input`, async () => {
+  test(`[standalone-opus]${input === "amr-wb" ? "[amr-wb-opus]" : ""} browser FFmpeg writes genuine Opus for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       opusTranscodeOutputPaths[input],
@@ -4182,7 +4188,7 @@ for (const [route, input, inputPath] of standaloneOpusOutputRoutes) {
       1_000,
       inputPath,
       {
-        expectedDurationSeconds: 4,
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : 4,
         durationToleranceSeconds: 0.15,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("ogg");

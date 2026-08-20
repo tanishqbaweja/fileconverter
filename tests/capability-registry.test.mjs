@@ -88,7 +88,13 @@ test("AV1 WebM stream copy is public after its measured evidence passes", () => 
 });
 
 test("AMR-WB decode routes are public after bounded large-file evidence passes", () => {
-  for (const profileId of ["amr-wb-to-wav", "amr-wb-to-flac", "amr-wb-to-mp3", "amr-wb-to-aiff"]) {
+  for (const profileId of [
+    "amr-wb-to-wav",
+    "amr-wb-to-flac",
+    "amr-wb-to-mp3",
+    "amr-wb-to-aiff",
+    "amr-wb-to-opus",
+  ]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);
     assert.equal(profile.automatedTestStatus, "passed");

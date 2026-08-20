@@ -4982,6 +4982,26 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "amr-wb-to-opus",
+    input: "amr-wb",
+    output: "opus",
+    engine: "ffmpeg-audio",
+    route: "re-encode",
+    browserRequirements: ["WebAssembly", "SharedArrayBuffer", "cross-origin isolation", "File System Access"],
+    cpuClass: "medium",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input is mono 16 kHz AMR-WB in a 3GP/ISOBMFF .awb file.",
+      "Only the first audio stream is converted; container metadata, artwork, chapters, and additional streams are excluded.",
+    ],
+    fidelityLimitations: [
+      "Lossy AMR-WB audio is re-encoded as 64 kbit/s VBR Opus at its preserved 16 kHz processing rate; discarded source information cannot be restored.",
+    ],
+    maxTestedBytes: 137_420_809,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "mkv-to-webm",
     input: "mkv",
     output: "webm",

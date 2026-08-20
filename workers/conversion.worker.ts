@@ -153,6 +153,7 @@ const OPUS_OUTPUT_PROFILES = new Set([
   "m4a-to-opus",
   "aac-to-opus",
   "amr-to-opus",
+  "amr-wb-to-opus",
   "mp3-to-opus",
   "flac-to-opus",
   "wav-to-opus",
@@ -201,6 +202,7 @@ const AMR_WB_INPUT_PROFILES = new Set([
   "amr-wb-to-flac",
   "amr-wb-to-mp3",
   "amr-wb-to-aiff",
+  "amr-wb-to-opus",
 ]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
