@@ -77,6 +77,7 @@ const AAC_OUTPUT_PROFILES = [
   "ogv-to-aac",
   "m4a-to-aac",
   "amr-to-aac",
+  "amr-wb-to-aac",
   "mp3-to-aac",
   "flac-to-aac",
   "wav-to-aac",

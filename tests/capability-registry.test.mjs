@@ -94,6 +94,7 @@ test("AMR-WB decode routes are public after bounded large-file evidence passes",
     "amr-wb-to-mp3",
     "amr-wb-to-aiff",
     "amr-wb-to-opus",
+    "amr-wb-to-aac",
   ]) {
     const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
     assert.ok(profile);
@@ -824,6 +825,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     [
       "aiff-to-aac",
       "amr-to-aac",
+      "amr-wb-to-aac",
       "avi-to-aac",
       "flac-to-aac",
       "m4a-to-aac",

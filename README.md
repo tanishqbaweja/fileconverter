@@ -28,7 +28,7 @@ routes:
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
 | Images | PNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; TIFF to PNG | 50,348,250 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/Opus; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
@@ -458,17 +458,19 @@ Every output was fully decoded and compared
 against the decoded source with ASDR; MP3 cannot preserve lossless identity or
 all container metadata, artwork, chapters, and extra streams.
 
-M4A (AAC or 16-bit ALAC), raw AMR-NB, MP3, FLAC, WAV, WMA2, AIFF, Ogg
+M4A (AAC or 16-bit ALAC), raw AMR-NB, certified AMR-WB `.awb`, MP3, FLAC, WAV, WMA2, AIFF, Ogg
 Vorbis, and Ogg Opus can also be encoded as genuine raw AAC-LC. The fastest
 certified native AAC search coder disables TNS, PNS, intensity stereo, and M/S
 stereo after comparative ASDR testing. Standard input rates from 8 through
 48 kHz are preserved; other rates are rounded upward or capped at 48 kHz.
-Thirty isolated Chrome runs passed across ten source cases in 12.20-203.05
-seconds at 202.5 MiB worst complete-Chrome incremental private memory. The
+Thirty-three isolated Chrome runs passed across eleven source cases in 12.20-583.09
+seconds at 209.8 MiB worst complete-Chrome incremental private memory. The
 8 kHz AMR policy was 22.38x faster than unnecessary 32 kHz upsampling in the
 one-hour native benchmark and improved ASDR. Every browser result was
 repeatable, fully decoded and ASDR-validated, used 32 MiB Wasm, 262,144-byte
 maximum reads, at most 780-byte writes, and one destination operation in flight.
+The 12.516-hour AMR-WB source passed 3/3 in 459.75-583.09 seconds with
+repeatable 380,256,896-byte output and -2.70408 dB ASDR while preserving 16 kHz.
 AAC is lossy and raw ADTS cannot preserve container metadata, artwork, chapters,
 or extra streams.
 
@@ -923,6 +925,7 @@ Current exact-build results:
 | AMR-WB `.awb` to MP3 | 3 | 137,420,809 B | 360,449,037 B | 172.9 MiB | 32 MiB | 196.35-200.97 s |
 | AMR-WB `.awb` to AIFF | 3 | 137,420,809 B | 1,441,792,054 B | 214.9 MiB | 32 MiB | 71.72-73.45 s |
 | AMR-WB `.awb` to Opus | 3 | 137,420,809 B | 346,683,480 B | 180.2 MiB | 32 MiB | 152.87-154.81 s |
+| AMR-WB `.awb` to AAC-LC | 3 | 137,420,809 B | 380,256,896 B | 209.8 MiB | 32 MiB | 459.75-583.09 s |
 | AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
 | Ogg Vorbis to FLAC | 3 | 144,431,506 B | 397,265,921 B | 198.4 MiB | 32 MiB | read 262,144 B / write 16,617 B |
 | Ogg Opus to FLAC | 3 | 147,964,541 B | 386,531,887 B | 194.4 MiB | 32 MiB | read 262,144 B / write 16,213 B |

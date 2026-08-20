@@ -129,6 +129,7 @@ const AAC_OUTPUT_PROFILES = new Set([
   "ogv-to-aac",
   "m4a-to-aac",
   "amr-to-aac",
+  "amr-wb-to-aac",
   "mp3-to-aac",
   "flac-to-aac",
   "wav-to-aac",
@@ -203,6 +204,7 @@ const AMR_WB_INPUT_PROFILES = new Set([
   "amr-wb-to-mp3",
   "amr-wb-to-aiff",
   "amr-wb-to-opus",
+  "amr-wb-to-aac",
 ]);
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },

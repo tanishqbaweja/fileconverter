@@ -12,14 +12,15 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **359**
-- Public profiles with a retained successful Chrome stress report: **359**
+- Public passed conversion profiles: **360**
+- Public profiles with a retained successful Chrome stress report: **360**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
 - **2026-08-13 bounded AMR-WB to AIFF:** the existing signed-16-bit big-endian PCM path now accepts certified mono 16 kHz `.awb` input without adding a codec, worker, or Wasm memory. The 137,420,809-byte source passed 3/3 Chrome runs in 71.72-73.45 seconds at 214.9 MiB worst incremental complete-Chrome private memory. All 1,441,792,054-byte outputs were byte-identical, genuine AIFF PCM, fully traversed at 154.179 dB APSNR against native decoding, and bounded to 262,144-byte reads, 16,384-byte writes/queueing, one pending operation, one worker, and 32 MiB Wasm. Cleanup recovery passed and each 1.34 GiB converted copy was deleted before the next run.
 - **2026-08-13 bounded AMR-WB to Opus:** the established fastest quality-valid complexity-0 Opus path now accepts certified mono 16 kHz `.awb` input without adding a codec, worker, or Wasm memory. The 137,420,809-byte, 12.516-hour source passed 3/3 Chrome runs in 152.87-154.81 seconds at 180.2 MiB worst incremental complete-Chrome private memory. All 346,683,480-byte outputs were byte-identical (SHA-256 `bda2e01fd0e97eef14f2e05ef467e426f113743a7399f14aae11fc7e8dbfe131`), genuine mono Ogg Opus at 61,556 bit/s, fully traversed at 29.08 dB ASDR, and bounded to 262,144-byte reads, 8,645-byte writes/queueing, one pending operation, one worker, and 32 MiB Wasm. Cleanup recovery passed and each converted copy was deleted before the next run.
+- **2026-08-20 bounded AMR-WB to AAC:** the established fastest quality-valid AAC search coder and reduced tool set now accept certified mono 16 kHz `.awb` input without adding a codec, worker, or Wasm memory. The 137,420,809-byte, 12.516-hour source passed 3/3 Chrome runs in 459.75-583.09 seconds at 209.8 MiB worst incremental complete-Chrome private memory. All 380,256,896-byte outputs were byte-identical (SHA-256 `6b970d11e38f515bc4048b681c1c0e4a86052886c7e47c8dc470dedb06b08d65`), genuine mono 16 kHz AAC-LC at 67,971 bit/s, fully traversed at -2.70408 dB ASDR, and bounded to 262,144-byte reads, 767-byte writes/queueing, one pending operation, one worker, and 32 MiB Wasm. Cleanup recovery stayed within the 96 MiB limit and each converted copy was deleted before the next run.
 - **AMR-WB AIFF route-snapshot correction:** the sequential production build passed and 26/27 unit tests passed; the exact AIFF route list correctly reported the newly public `amr-wb-to-aiff` profile. The measured route was added to the expected registry snapshot before the clean rerun; TypeScript and ESLint already passed and no production behavior changed.
 - **2026-08-13 MP3 speech-rate optimization:** the LAME path no longer upsamples 8 kHz or 16 kHz mono speech to 32 kHz. In a controlled three-run native one-hour benchmark, preserving 8 kHz and using 32 kb/s reduced AMR-NB encoding from a 5.6073-second average to 1.9024 seconds (2.95x faster) and output from 57,601,196 to 14,400,908 bytes while ASDR changed only from 26.0367 to 26.0266 dB. Preserving 16 kHz at 64 kb/s reduced AMR-WB from 6.8571 to 3.5016 seconds (1.96x faster) and output from 57,601,196 to 28,800,908 bytes while retaining 25.8309 dB ASDR. The benchmark deletes each MP3 immediately after timing, probing, and quality comparison.
 - **Production-Chrome MP3 speed confirmation:** the existing 134,229,414-byte, roughly 23.3-hour AMR-NB route passed 3/3 in 171.14-179.38 seconds, 2.37-2.50x faster than its retained 417.56-428.36-second baseline. Output fell 75.0% from 1,342,295,469 to 335,574,477 bytes, worst incremental private memory fell from 177.0 to 168.7 MiB, and full-timeline ASDR remained 26.0269 dB. Every result was byte-repeatable, fully decoded, bounded to 262,144-byte reads and 333-byte writes/queueing, one pending operation, one worker, and 32 MiB Wasm, then deleted.
@@ -212,6 +213,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | amr-to-ogg | 134,229,414 | 3 | 154,581,919 | 239.78 s–243.43 s | 156.0 MiB | 32.0 MiB | read 262,144 B / write 2,536 B | passed |
 | amr-to-opus | 134,229,414 | 3 | 681,593,688 | 193.70 s–197.74 s | 155.6 MiB | 32.0 MiB | read 262,144 B / write 8,504 B | passed |
 | amr-to-wav | 134,229,414 | 3 | 1,342,294,158 | 61.54 s–62.01 s | 209.7 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
+| amr-wb-to-aac | 137,420,809 | 3 | 380,256,896 | 459.75 s–583.09 s | 209.8 MiB | 32.0 MiB | read 262,144 B / write 767 B | passed |
 | amr-wb-to-aiff | 137,420,809 | 3 | 1,441,792,054 | 71.72 s–73.45 s | 214.9 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | amr-wb-to-flac | 137,420,809 | 3 | 531,051,566 | 122.94 s–125.22 s | 159.8 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
 | amr-wb-to-mp3 | 137,420,809 | 3 | 360,449,037 | 196.35 s–200.97 s | 172.9 MiB | 32.0 MiB | read 262,144 B / write 333 B | passed |
@@ -656,6 +658,7 @@ Stream ma |
 | amr-to-ogg | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-opus | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
 | amr-to-wav | audio | ffmpeg-audio | re-encode | 134,229,414 B | 3-run Chrome report |
+| amr-wb-to-aac | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
 | amr-wb-to-aiff | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
 | amr-wb-to-flac | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
 | amr-wb-to-mp3 | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |

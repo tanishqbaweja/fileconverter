@@ -149,6 +149,7 @@ const mp3TranscodeOutputPaths = {
 const aacTranscodeOutputPaths = {
   m4a: path.join(outputRoot, "m4a-convert-output.aac"),
   amr: path.join(outputRoot, "amr-convert-output.aac"),
+  "amr-wb": path.join(outputRoot, "amr-wb-convert-output.aac"),
   mp3: path.join(outputRoot, "mp3-convert-output.aac"),
   flac: path.join(outputRoot, "flac-convert-output.aac"),
   wav: path.join(outputRoot, "wav-convert-output.aac"),
@@ -1709,6 +1710,7 @@ async function runMediaRoute(
     | "opus-to-mp3"
     | "m4a-to-aac"
     | "amr-to-aac"
+    | "amr-wb-to-aac"
     | "mp3-to-aac"
     | "flac-to-aac"
     | "wav-to-aac"
@@ -2633,6 +2635,7 @@ for (const route of [
   ["amr-wb-to-mp3", amrWbFixturePath],
   ["m4a-to-aac", audioFixturePath],
   ["amr-to-aac", amrFixturePath],
+  ["amr-wb-to-aac", amrWbFixturePath],
   ["mp3-to-aac", mp3FixturePath],
   ["flac-to-aac", flacFixturePath],
   ["wav-to-aac", wavFixturePath],
@@ -2754,6 +2757,8 @@ for (const route of [
       ? "[3gp-amr] "
       : /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
       ? "[standalone-aac] "
+      : route[0] === "amr-wb-to-aac"
+      ? "[standalone-aac] [amr-wb-aac] "
       : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(route[0])
         ? "[standalone-opus] "
       : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|opus)-to-ogg$/.test(route[0])
@@ -3905,6 +3910,7 @@ test("[container-lossy-audio] browser FFmpeg converts OGV Vorbis audio to genuin
 const standaloneAacOutputRoutes = [
   ["m4a-to-aac", "m4a", audioFixturePath],
   ["amr-to-aac", "amr", amrFixturePath],
+  ["amr-wb-to-aac", "amr-wb", amrWbFixturePath],
   ["mp3-to-aac", "mp3", mp3FixturePath],
   ["flac-to-aac", "flac", flacFixturePath],
   ["wav-to-aac", "wav", wavFixturePath],
@@ -3943,7 +3949,7 @@ async function expectAacTranscodeQuality(
 }
 
 for (const [route, input, inputPath] of standaloneAacOutputRoutes) {
-  test(`[standalone-aac] browser FFmpeg writes genuine AAC for ${input.toUpperCase()} input`, async () => {
+  test(`[standalone-aac]${input === "amr-wb" ? "[amr-wb-aac]" : ""} browser FFmpeg writes genuine AAC for ${input.toUpperCase()} input`, async () => {
     await runMediaRoute(
       route,
       aacTranscodeOutputPaths[input],
@@ -3951,7 +3957,7 @@ for (const [route, input, inputPath] of standaloneAacOutputRoutes) {
       1_000,
       inputPath,
       {
-        expectedDurationSeconds: 4,
+        expectedDurationSeconds: input === "amr-wb" ? 10.24 : 4,
         durationToleranceSeconds: 0.25,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("aac");
@@ -3964,6 +3970,8 @@ for (const [route, input, inputPath] of standaloneAacOutputRoutes) {
             .toContain(Number(audio?.sample_rate));
           if (input === "amr") {
             expect(Number(audio?.sample_rate)).toBe(8_000);
+          } else if (input === "amr-wb") {
+            expect(Number(audio?.sample_rate)).toBe(16_000);
           }
           expect(Number(audio?.bit_rate)).toBeGreaterThan(0);
           expect(Number(audio?.bit_rate)).toBeLessThanOrEqual(220_000);
