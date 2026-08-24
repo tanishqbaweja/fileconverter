@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 369
+complete-Chromium memory profile have passed. The current registry publishes 371
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -613,6 +613,21 @@ dimensions, timestamps, durations, and repetition count. The certified APNG
 case passed 3/3 in 0.165-0.243 seconds at 136.6 MiB worst incremental complete-
 Chrome private memory with eight exact native-decoder frame matches.
 
+GIF-to-APNG and animated-WebP-to-APNG keep Chrome's bounded native animation
+decoder but use a purpose-built deterministic APNG writer. Each complete frame
+is copied as RGBA in at most 256 KiB strips, PNG-Sub filtered, compressed through
+one browser-native `CompressionStream` zlib stream, and written immediately as
+64 KiB-bounded IDAT/fdAT chunks with one destination operation pending. No PNG
+Blob or complete frame set is retained. Both eight-frame 1,024×768 fixtures
+preserved all decoded RGBA pixels, exact 250 ms timing, and infinite looping.
+GIF completed in 0.373-0.462 seconds at 124.5 MiB worst incremental private
+memory; WebP completed in 0.405-0.506 seconds at 123.2 MiB. Both produced the
+same repeatable 510,774-byte APNG and SHA-256
+`7db18b94b2b92448a3a480829c0d9dd702e0d0bf8232a354285388b3127633e8`.
+The largest destination write was 16,400 bytes, the largest pixel strip was
+258,111 bytes, and the peak explicit JavaScript image working set was 516,159
+bytes before returning to zero at completion.
+
 ICO output uses those same bounded decoders, scales proportionally only when an
 edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
 followed by an incrementally copied PNG payload. It preserves alpha but does not
@@ -743,7 +758,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, camera raw,
-animated-image output, unsupported 7Z codecs, and
+animated GIF/WebP/AVIF/JPEG XL output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not

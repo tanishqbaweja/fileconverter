@@ -25,6 +25,9 @@ export interface ConversionMetrics {
     matrix: string | null;
     fullRange: boolean | null;
   };
+  imageWorkingBytes?: number;
+  peakImageWorkingBytes?: number;
+  maxImagePixelStripBytes?: number;
 }
 
 export type TestFault =

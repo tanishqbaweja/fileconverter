@@ -949,6 +949,13 @@ const categories = {
       ["png-to-zip", "fixtures/images/animated-pattern.apng"],
     ],
   },
+  "apng-output": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["gif-to-apng", "fixtures/images/animated-pattern.gif"],
+      ["webp-to-apng", "fixtures/images/animated-pattern.webp"],
+    ],
+  },
   "tiff-multipage": {
     generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
     profiles: [

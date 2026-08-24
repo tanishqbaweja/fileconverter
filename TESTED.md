@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-20 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-24 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,12 +12,16 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **369**
-- Public profiles with a retained successful Chrome stress report: **369**
+- Public passed conversion profiles: **371**
+- Public profiles with a retained successful Chrome stress report: **371**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-24 bounded animated APNG output:** the public `gif-to-apng` and `webp-to-apng` routes keep Chrome's native animation decoder, copy one complete composited frame as RGBA in strips no larger than 256 KiB, apply the deterministic PNG Sub filter, and feed one browser-native `CompressionStream` zlib stream per frame directly into 64 KiB-bounded IDAT/fdAT chunks. At most one destination operation is pending, no complete frame set or PNG Blob is retained, and the frame is closed before decoding the next. GIF passed 3/3 production-Chrome runs in 0.373-0.462 seconds at 124.5 MiB worst incremental complete-Chrome private memory; WebP passed 3/3 in 0.405-0.506 seconds at 123.2 MiB. Both produced the same repeatable 510,774-byte APNG and SHA-256 `7db18b94b2b92448a3a480829c0d9dd702e0d0bf8232a354285388b3127633e8` with at most 16,400-byte writes. The explicit JavaScript image working set peaked at 516,159 bytes and returned to zero after every run.
+- **APNG output correctness and cleanup:** independent chunk audits verified IHDR/acTL/fcTL/IDAT/fdAT/IEND order, gap-free shared sequence numbers, eight full-canvas RGBA frames, exact 1/4-second delay rationals, and infinite play control. Native FFprobe decoded all eight frames and their exact timestamps; FFmpeg output RGBA matched every frame decoded independently through pinned Pillow 11.3.0/libgif or libwebp. Focused success, injected-write-failure, cancellation, corrupt-input, and truncated-input tests passed 7/7, and every browser-owned partial output was removed.
+- **APNG speed and repeatability optimization:** the first native-canvas-PNG repackaging topology was correct but failed the unchanged repeatable-output gate: one three-run profile emitted 836,477 then 836,461 bytes with two hashes at 0.473-0.579 seconds and 165.0 MiB worst incremental memory. A one-pixel warm-up still emitted 836,489 then 836,461 bytes, and re-encoding the first real frame still alternated two hashes despite equal 836,477-byte sizes. The selected scanline/Sub-filter/CompressionStream topology removed the nondeterministic PNG Blob, cut final GIF time to 0.373-0.462 seconds, cut output to 510,774 bytes, and reduced worst incremental memory to 124.5 MiB without weakening pixel, timing, loop, cleanup, or repeatability checks. The failed experiments remain recorded below so these approaches are not retried.
+- **2026-08-24 APNG output milestone verification:** the registry publishes 371 passed routes and all 371 have retained successful Chrome stress evidence. The complete image suite passed 114/114 after its first full run exposed and the implementation fixed a compressor cancellation/backpressure race; the repaired cancellation case then passed 5/5 repeated runs before the clean full rerun. Unit tests passed 33/33, and the production build, TypeScript, ESLint, and diff checks passed. Browser output, validation copies, Playwright artifacts, and Chrome profiles remain project-local and cleanup-managed; the protected root fixture remains SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`.
 - **2026-08-20 bounded animated AVIF frame archives:** the public `avif-to-zip` route uses pinned libavif 1.4.1/libaom 3.13.2 decoding, FFmpeg 8.1.2 bicubic YUV-to-RGB conversion, and libpng 1.6.58 encoding in one fixed 40 MiB Wasm heap. It reads at most 262,144 bytes, decodes one explicitly capped 16 MiB RGB/RGBA frame surface at a time, streams each PNG directly into a stored ZIP entry with at most one 65,536-byte write pending, and releases the frame before continuing. The deterministic 23,391-byte eight-frame source passed two independent fresh Chrome sessions of three runs each at 191.3 MiB and 162.7 MiB worst incremental complete-Chrome private memory; the final retained session completed in 0.395-0.610 seconds. Every run produced the same 329,317-byte ZIP and SHA-256 `f18f324b35bb4401b77fe91d7395ddc3ee8b10d6acf61e014dff5e04f9349c47`, preserved exact 250 ms timing, and scored 0.982655 RGB SSIM against the uncompressed first-frame reference plus 0.991855-0.993651 across all eight frames against independent native decoding. Direct destination writing, cancellation, injected write failure, high-resolution still-item rejection, corrupt input, and truncated input all removed partial browser-owned output.
 - **Animated AVIF correctness and speed optimization:** Chromium ImageDecoder was not promoted because its first frame scored only 0.766567 RGB SSIM against the unchanged 0.97 target. libavif's built-in best-quality and nearest YUV conversion scored 0.812919 and 0.881802; the selected pinned FFmpeg bicubic color conversion raised the browser output to 0.982655 without weakening the threshold. A controlled three-run PNG level-0 build took 1.691-1.891 seconds, emitted 4,733,598 bytes, and reached 239.9 MiB, while level 1 took 0.376-0.584 seconds, emitted 329,317 bytes, and reached 214.4 MiB in its controlled comparison, so level 1 is both materially faster and lower-memory for the certified workload.
 - **Animated AVIF memory and reproducibility optimization:** the initial 96 MiB heap missed the unchanged process-tree limit at 250.6 MiB, and a 92 MiB rerun exposed first-run Chrome variance at 273.8 MiB despite an earlier favorable pass. The same strict eight-frame suite remained correct as the fixed heap was reduced through 64 and 48 MiB to the final 40 MiB configuration, which passed two fresh three-run sessions with at least 58.7 MiB measured margin in the worse session. A second pinned Docker export matched all nine published artifacts byte-for-byte: SHA-256 `34D568C2389106BBEF1A9D3F8E620BB159E6B17761057772C30E557046968EBD` for the build manifest, `4042844911F5C2E1B79D6D28F7A9331767A13BB38E4B1B5FE4FC50C371C3673B` for JavaScript glue, and `99F89091871A9EF5B7D2EEE9D2E5A90BA581309840251329AB6C147BCE84388F` for Wasm.
@@ -309,6 +313,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | flv-to-webm | 146,903,539 | 3 | 4,948,077 | 9.22 s–9.71 s | 220.6 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-webm-vp9 | 146,903,539 | 3 | 3,372,724 | 13.62 s–14.05 s | 222.1 MiB | 56.0 MiB | read 262,144 B / write 262,144 B | passed |
 | flv-to-wma | 146,903,486 | 3 | 4,880,702 | 1.29 s–1.91 s | 182.7 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
+| gif-to-apng | 281,853 | 3 | 510,774 | 0.37 s–0.46 s | 124.5 MiB | 0.0 MiB | read 262,144 B / write 16,400 B | passed |
 | gif-to-bmp | 281,853 | 3 | 2,359,350 | 0.05 s–0.11 s | 69.5 MiB | 0.0 MiB | read 131,072 B / write 196,608 B | passed |
 | gif-to-ico | 281,853 | 3 | 16,065 | 0.03 s–0.09 s | 80.2 MiB | 0.0 MiB | read 216,317 B / write 16,043 B | passed |
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
@@ -540,6 +545,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webm-to-opus | 222,941,314 | 3 | 922,267 | 0.40 s–0.76 s | 206.0 MiB | 32.0 MiB | read 262,144 B / write 15,406 B | passed |
 | webm-to-wav | 222,941,314 | 3 | 5,760,078 | 1.36 s–1.78 s | 190.4 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | webm-to-wma | 222,941,314 | 3 | 4,503,065 | 1.62 s–2.19 s | 237.5 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
+| webp-to-apng | 185,794 | 3 | 510,774 | 0.41 s–0.51 s | 123.2 MiB | 0.0 MiB | read 131,072 B / write 16,400 B | passed |
 | webp-to-bmp | 263,320 | 3 | 24,883,254 | 0.29 s–0.37 s | 196.5 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | webp-to-ico | 263,320 | 3 | 13,013 | 0.10 s–0.16 s | 77.6 MiB | 0.0 MiB | read 197,784 B / write 12,991 B | passed |
 | webp-to-jpeg | 263,320 | 3 | 364,322 | 0.13 s–0.18 s | 69.9 MiB | 0.0 MiB | read 131,072 B / write 262,144 B | passed |
@@ -646,6 +652,7 @@ Stream ma |
 | 2026-08-13T14:59:46.435Z | amr-wb-to-wav | 137,420,809 | 0 | 137,420,809 | Browser decoded audio content does not match the independently decoded source audio. |
 | 2026-08-20T09:51:42.545Z | jxl-to-png | 630,393 | 3 | 630,393 | Failed checks: processTreePrivateMemory; measured 275.9 MiB against a 250.0 MiB limit. |
 | 2026-08-20T11:44:06.259Z | avif-to-zip | 23,391 | 3 | 23,391 | Failed checks: processTreePrivateMemory; measured 273.8 MiB against a 250.0 MiB limit. |
+| 2026-08-24T00:42:48.439Z | gif-to-apng | 281,853 | 3 | 281,853 | Failed checks: repeatableOutputHash; measured 148.7 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
@@ -765,6 +772,7 @@ Stream ma |
 | flv-to-webm | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
 | flv-to-webm-vp9 | video | ffmpeg-video | re-encode | 146,903,539 B | 3-run Chrome report |
 | flv-to-wma | video | ffmpeg-audio | re-encode | 146,903,486 B | 3-run Chrome report |
+| gif-to-apng | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-bmp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-ico | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
@@ -996,6 +1004,7 @@ Stream ma |
 | webm-to-opus | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
 | webm-to-wav | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-wma | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
+| webp-to-apng | image | image-browser | re-encode | 185,794 B | 3-run Chrome report |
 | webp-to-bmp | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-ico | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-jpeg | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
@@ -1027,7 +1036,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB output is intentionally withheld pending explicit patent clearance, and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, camera raw formats, animated-image encoding, and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. Still JPEG XL to PNG, animated PNG/APNG/GIF/WebP/AVIF/JPEG XL frame archives, and multipage TIFF extraction to ZIP are certified.
+- Images: HEIF/HEIC, camera raw formats, animated GIF/WebP/AVIF/JPEG XL output, and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. GIF/WebP to APNG, still JPEG XL to PNG, animated PNG/APNG/GIF/WebP/AVIF/JPEG XL frame archives, and multipage TIFF extraction to ZIP are certified.
 - Product validation: the baseline headed success/cancellation/failure/direct-destination flow is now evidenced; broader manual interaction coverage across additional profile families and continued multi-gigabyte scaling for newly added media routes remain.
 
 ## Cleanup invariant

@@ -171,6 +171,7 @@
     "profile:container-webm": "node scripts/profile-category.mjs container-webm",
     "profile:legacy-container-webm": "node scripts/profile-category.mjs legacy-container-webm",
     "profile:images": "node scripts/profile-category.mjs images",
+    "profile:apng-output": "node scripts/profile-category.mjs apng-output",
     "profile:tiff": "node scripts/profile-category.mjs tiff",
     "profile:jxl": "node scripts/profile-category.mjs jxl",
     "profile:tiff-multipage": "node scripts/profile-category.mjs tiff-multipage",

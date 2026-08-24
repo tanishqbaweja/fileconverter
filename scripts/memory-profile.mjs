@@ -154,10 +154,11 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:png|gif|webp|avif|jxl)-to-zip|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
+const isAnimatedApngProfile = /^(?:gif|webp)-to-apng$/.test(profileId);
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
@@ -941,6 +942,13 @@ try {
                   finalState,
                   profileId,
                 )
+              : isAnimatedApngProfile
+                ? await validateAnimatedApngOutput(
+                    physicalOutputPath,
+                    fixturePath,
+                    fixtureManifest,
+                    finalState,
+                  )
               : isTiffPageArchiveProfile
                 ? await validateTiffPageArchiveOutput(
                     physicalOutputPath,
@@ -1050,6 +1058,10 @@ try {
       activeWorkerCount: finalState.metrics.activeWorkerCount ?? null,
       imageFrameFormat: finalState.metrics.imageFrameFormat ?? null,
       imageColorSpace: finalState.metrics.imageColorSpace ?? null,
+      imageWorkingBytes: finalState.metrics.imageWorkingBytes ?? null,
+      peakImageWorkingBytes: finalState.metrics.peakImageWorkingBytes ?? null,
+      maxImagePixelStripBytes:
+        finalState.metrics.maxImagePixelStripBytes ?? null,
       archiveCompression: finalState.metrics.archiveCompression ?? null,
       scratchBytes: finalState.metrics.scratchBytes ?? null,
       peakScratchBytes: finalState.metrics.peakScratchBytes ?? null,
@@ -3053,6 +3065,197 @@ async function validateAnimatedFrameArchiveOutput(
   } finally {
     await removeWithRetries(extractionRoot);
   }
+}
+
+async function validateAnimatedApngOutput(
+  localPath,
+  sourcePath,
+  source,
+  finalState,
+) {
+  const encoded = await readFile(localPath);
+  const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  if (!encoded.subarray(0, 8).equals(signature)) {
+    throw new Error("Browser APNG output has an invalid PNG signature.");
+  }
+  const chunks = [];
+  let offset = 8;
+  while (offset < encoded.byteLength) {
+    if (offset + 12 > encoded.byteLength) {
+      throw new Error("Browser APNG output ends inside a chunk header.");
+    }
+    const length = encoded.readUInt32BE(offset);
+    const type = encoded.toString("ascii", offset + 4, offset + 8);
+    const end = offset + 12 + length;
+    if (end > encoded.byteLength) {
+      throw new Error(`Browser APNG ${type} chunk exceeds the output boundary.`);
+    }
+    chunks.push({ type, data: encoded.subarray(offset + 8, offset + 8 + length) });
+    offset = end;
+  }
+  if (
+    chunks[0]?.type !== "IHDR" ||
+    chunks[1]?.type !== "acTL" ||
+    chunks.at(-1)?.type !== "IEND"
+  ) {
+    throw new Error("Browser APNG has an invalid IHDR/acTL/IEND layout.");
+  }
+  const { stdout: metadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", sourcePath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const sourceAnimation = JSON.parse(metadataJson);
+  const expectedFrames = Number(sourceAnimation.frameCount);
+  const width = Number(sourceAnimation.width);
+  const height = Number(sourceAnimation.height);
+  if (
+    !Number.isSafeInteger(expectedFrames) ||
+    expectedFrames < 1 ||
+    expectedFrames !== Number(source.frameCount ?? source.probe?.streams?.[0]?.nb_frames) ||
+    !Array.isArray(sourceAnimation.durationsMs) ||
+    sourceAnimation.durationsMs.length !== expectedFrames
+  ) {
+    throw new Error("The independent animation metadata does not match the stress manifest.");
+  }
+  const animationControl = chunks[1].data;
+  const expectedPlays = sourceAnimation.loop === 0 ? 0 : Number(sourceAnimation.loop) + 1;
+  if (
+    animationControl.byteLength !== 8 ||
+    animationControl.readUInt32BE(0) !== expectedFrames ||
+    animationControl.readUInt32BE(4) !== expectedPlays
+  ) {
+    throw new Error("Browser APNG frame or loop control differs from the source animation.");
+  }
+  const frameControls = chunks.filter((chunk) => chunk.type === "fcTL");
+  if (frameControls.length !== expectedFrames) {
+    throw new Error("Browser APNG does not contain one frame-control chunk per frame.");
+  }
+  for (let index = 0; index < frameControls.length; index += 1) {
+    const control = frameControls[index].data;
+    if (
+      control.byteLength !== 26 ||
+      control.readUInt32BE(4) !== width ||
+      control.readUInt32BE(8) !== height ||
+      control.readUInt32BE(12) !== 0 ||
+      control.readUInt32BE(16) !== 0 ||
+      control[24] !== 0 ||
+      control[25] !== 0
+    ) {
+      throw new Error(`Browser APNG frame control ${index + 1} is invalid.`);
+    }
+    const numerator = control.readUInt16BE(20);
+    const denominator = control.readUInt16BE(22) || 100;
+    const encodedDurationMs = (numerator * 1_000) / denominator;
+    if (Math.abs(encodedDurationMs - sourceAnimation.durationsMs[index]) > 0.001) {
+      throw new Error(`Browser APNG frame ${index + 1} timing differs from the source.`);
+    }
+  }
+  const sequenced = chunks.filter(
+    (chunk) => chunk.type === "fcTL" || chunk.type === "fdAT",
+  );
+  for (let index = 0; index < sequenced.length; index += 1) {
+    if (sequenced[index].data.readUInt32BE(0) !== index) {
+      throw new Error("Browser APNG animation sequence numbers contain a gap.");
+    }
+  }
+  const maximumFrameChunk = Math.max(
+    ...chunks
+      .filter((chunk) => chunk.type === "IDAT" || chunk.type === "fdAT")
+      .map((chunk) => chunk.data.byteLength),
+  );
+  if (!Number.isFinite(maximumFrameChunk) || maximumFrameChunk > 64 * 1024 - 12) {
+    throw new Error("Browser APNG frame chunks exceed the bounded 64 KiB write design.");
+  }
+
+  const { stdout: probeJson } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-count_frames", "-select_streams", "v:0",
+      "-show_entries", "stream=codec_name,width,height,nb_read_frames",
+      "-show_entries", "frame=pts_time,duration_time", "-of", "json", localPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const probe = JSON.parse(probeJson);
+  const stream = probe.streams?.[0];
+  if (
+    stream?.codec_name !== "apng" ||
+    stream.width !== width ||
+    stream.height !== height ||
+    Number(stream.nb_read_frames) !== expectedFrames ||
+    probe.frames?.length !== expectedFrames
+  ) {
+    throw new Error("Native FFprobe did not decode the complete APNG output.");
+  }
+  let expectedTimestampSeconds = 0;
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const frame = probe.frames[index];
+    const durationSeconds = sourceAnimation.durationsMs[index] / 1_000;
+    if (
+      Math.abs(Number(frame.pts_time) - expectedTimestampSeconds) > 0.000001 ||
+      Math.abs(Number(frame.duration_time) - durationSeconds) > 0.000001
+    ) {
+      throw new Error(`Native APNG timing validation failed at frame ${index + 1}.`);
+    }
+    expectedTimestampSeconds += durationSeconds;
+  }
+
+  const outputFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-i", localPath,
+          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
+          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 32 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const sourceFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 32 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const allFrameSha256 = [];
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const output = await outputFrame(index);
+    const reference = await sourceFrame(index);
+    const outputHash = createHash("sha256").update(output).digest("hex");
+    const referenceHash = createHash("sha256").update(reference).digest("hex");
+    if (outputHash !== referenceHash) {
+      throw new Error(`Browser APNG frame ${index + 1} differs from native source decoding.`);
+    }
+    allFrameSha256.push(outputHash);
+  }
+  return {
+    format: { format_name: "apng", size: String(finalState.metrics.outputBytes) },
+    streams: probe.streams,
+    withinValidation: {
+      method: "apng-chunk-audit-plus-ffprobe-and-all-frame-native-rgba-hash",
+      frameCount: expectedFrames,
+      loopCount: expectedPlays,
+      timingExact: true,
+      maximumFrameChunk,
+      allFrameSha256,
+      decodedByNativeFfmpeg: true,
+      sourceDecodedByPinnedPillow: true,
+    },
+  };
 }
 
 async function validateTiffPageArchiveOutput(

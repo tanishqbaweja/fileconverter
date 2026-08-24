@@ -722,6 +722,189 @@ for (const route of [
   });
 }
 
+for (const route of [
+  ["gif-to-apng", "animated-pattern.gif"],
+  ["webp-to-apng", "animated-pattern.webp"],
+] as const) {
+  test(`${route[0]} writes every decoded frame to a bounded valid APNG`, async () => {
+    const [profileId, sourceName] = route;
+    const sourcePath = path.join(projectRoot, "fixtures", "images", sourceName);
+    const outputPath = path.join(outputRoot, `${profileId}.apng`);
+    assertProjectLocal(outputPath);
+    try {
+      await page.goto("/?test=1");
+      await page.waitForFunction(
+        () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+      );
+      await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+      await page.locator('[data-testid="format-select"]').selectOption(profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(
+          async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+          { timeout: 60_000 },
+        )
+        .not.toBe("running");
+      const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+      expect(state?.jobState, state?.error ?? state?.phase).toBe("complete");
+      expect(state?.warnings).toEqual([]);
+      expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+      expect(state?.metrics?.peakPendingOperations).toBe(1);
+      expect(state?.metrics?.pendingOperations).toBe(0);
+      expect(state?.metrics?.queuedBytes).toBe(0);
+      expect(state?.metrics?.imageWorkingBytes).toBe(0);
+      expect(state?.metrics?.maxImagePixelStripBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.peakImageWorkingBytes).toBeLessThanOrEqual(512 * 1024);
+      await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+
+      const encoded = await readFile(outputPath);
+      expect(encoded.subarray(0, 8)).toEqual(
+        Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]),
+      );
+      const chunks: Array<{ type: string; data: Buffer }> = [];
+      let offset = 8;
+      while (offset < encoded.byteLength) {
+        expect(offset + 12).toBeLessThanOrEqual(encoded.byteLength);
+        const length = encoded.readUInt32BE(offset);
+        const type = encoded.toString("ascii", offset + 4, offset + 8);
+        const end = offset + 12 + length;
+        expect(end).toBeLessThanOrEqual(encoded.byteLength);
+        chunks.push({ type, data: encoded.subarray(offset + 8, offset + 8 + length) });
+        offset = end;
+      }
+      expect(offset).toBe(encoded.byteLength);
+      expect(chunks[0].type).toBe("IHDR");
+      expect(chunks[1].type).toBe("acTL");
+      expect(chunks.at(-1)?.type).toBe("IEND");
+      expect(chunks[1].data.readUInt32BE(0)).toBe(8);
+      expect(chunks[1].data.readUInt32BE(4)).toBe(0);
+      const frameControls = chunks.filter((chunk) => chunk.type === "fcTL");
+      expect(frameControls).toHaveLength(8);
+      for (const control of frameControls) {
+        expect(control.data.readUInt32BE(4)).toBe(1024);
+        expect(control.data.readUInt32BE(8)).toBe(768);
+        expect(control.data.readUInt32BE(12)).toBe(0);
+        expect(control.data.readUInt32BE(16)).toBe(0);
+        expect(control.data.readUInt16BE(20)).toBe(1);
+        expect(control.data.readUInt16BE(22)).toBe(4);
+        expect(control.data[24]).toBe(0);
+        expect(control.data[25]).toBe(0);
+      }
+      const sequenced = chunks.filter(
+        (chunk) => chunk.type === "fcTL" || chunk.type === "fdAT",
+      );
+      expect(sequenced.map((chunk) => chunk.data.readUInt32BE(0))).toEqual(
+        Array.from({ length: sequenced.length }, (_, index) => index),
+      );
+      expect(
+        Math.max(
+          ...chunks
+            .filter((chunk) => chunk.type === "IDAT" || chunk.type === "fdAT")
+            .map((chunk) => chunk.data.byteLength),
+        ),
+      ).toBeLessThanOrEqual(64 * 1024 - 12);
+
+      const { stdout: probeOutput } = await execFileAsync(
+        "ffprobe",
+        [
+          "-v",
+          "error",
+          "-count_frames",
+          "-select_streams",
+          "v:0",
+          "-show_entries",
+          "stream=codec_name,width,height,nb_read_frames",
+          "-show_entries",
+          "frame=pts_time,duration_time",
+          "-of",
+          "json",
+          outputPath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+      );
+      const probe = JSON.parse(probeOutput) as {
+        streams: Array<{
+          codec_name: string;
+          width: number;
+          height: number;
+          nb_read_frames: string;
+        }>;
+        frames: Array<{ pts_time: string; duration_time: string }>;
+      };
+      expect(probe.streams[0]).toMatchObject({
+        codec_name: "apng",
+        width: 1024,
+        height: 768,
+        nb_read_frames: "8",
+      });
+      expect(probe.frames).toHaveLength(8);
+      for (let index = 0; index < probe.frames.length; index += 1) {
+        expect(Number.parseFloat(probe.frames[index].pts_time)).toBeCloseTo(index * 0.25, 6);
+        expect(Number.parseFloat(probe.frames[index].duration_time)).toBeCloseTo(0.25, 6);
+      }
+
+      const rawFrame = async (imagePath: string, frameIndex: number): Promise<Buffer> =>
+        (
+          await execFileAsync(
+            "ffmpeg",
+            [
+              "-v",
+              "error",
+              "-i",
+              imagePath,
+              "-vf",
+              `select=eq(n\\,${frameIndex})`,
+              "-fps_mode",
+              "vfr",
+              "-frames:v",
+              "1",
+              "-pix_fmt",
+              "rgba",
+              "-f",
+              "rawvideo",
+              "-",
+            ],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 32 * 1024 * 1024,
+              encoding: "buffer",
+            },
+          )
+        ).stdout;
+      const sourceFrame = async (frameIndex: number): Promise<Buffer> => {
+        if (sourceName.endsWith(".webp")) {
+          return (
+            await execFileAsync(
+              "python",
+              [
+                "scripts/decode-pillow-animation-frame.py",
+                sourcePath,
+                String(frameIndex),
+              ],
+              {
+                cwd: projectRoot,
+                windowsHide: true,
+                maxBuffer: 32 * 1024 * 1024,
+                encoding: "buffer",
+              },
+            )
+          ).stdout;
+        }
+        return rawFrame(sourcePath, frameIndex);
+      };
+      for (let index = 0; index < 8; index += 1) {
+        expect(await rawFrame(outputPath, index)).toEqual(await sourceFrame(index));
+      }
+    } finally {
+      validationSink?.destroy();
+      validationSink = null;
+      await rm(outputPath, { force: true });
+    }
+  });
+}
+
 test("tiff-to-zip archives every page with exact decoded pixels", async () => {
   const sourcePath = path.join(
     projectRoot,
@@ -882,8 +1065,10 @@ for (const [profileId, sourceName] of [
   ["avif-to-zip", "animated-pattern.avif"],
   ["jxl-to-zip", "animated-pattern.jxl"],
   ["tiff-to-zip", "test-pattern-multipage.tiff"],
+  ["gif-to-apng", "animated-pattern.gif"],
+  ["webp-to-apng", "animated-pattern.webp"],
 ] as const) {
-  test(`${profileId} output failure removes the partial browser-owned ZIP`, async () => {
+  test(`${profileId} output failure removes the partial browser-owned output`, async () => {
     await page.goto("/?test=1&fault=write");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -956,6 +1141,84 @@ test("APNG frame extraction cancellation removes the partial browser-owned ZIP",
   });
   expect(leftovers).toEqual([]);
 });
+
+test("APNG encoding cancellation removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.gif"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("gif-to-apng");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 10_000 },
+    )
+    .toBe("running");
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-gif-to-apng")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+for (const invalidKind of ["truncated", "corrupt"] as const) {
+  test(`GIF-to-APNG rejects ${invalidKind} animation data without retained output`, async () => {
+    const source = await readFile(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.gif"),
+    );
+    const invalid = Buffer.from(source.subarray(0, 64));
+    if (invalidKind === "corrupt") invalid.fill(0xa5, 10);
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles({
+      name: `${invalidKind}.gif`,
+      mimeType: "image/gif",
+      buffer: invalid,
+    });
+    await page.locator('[data-testid="format-select"]').selectOption("gif-to-apng");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(
+        async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+        { timeout: 30_000 },
+      )
+      .toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-gif-to-apng")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
 
 test("ICO output failure removes the partial browser-owned file", async () => {
   await page.goto("/?test=1&fault=write");

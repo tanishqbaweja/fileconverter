@@ -46,6 +46,7 @@ import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import { runAvifToZip } from "./avif-conversion";
+import { runBrowserAnimationToApng } from "./apng-conversion";
 import {
   createTarValidationStream,
   TarStreamValidator,
@@ -1903,6 +1904,56 @@ async function runAnimatedImageToZip(
       canvas.height = 1;
     }
   }
+}
+
+async function runAnimatedImageToApng(
+  profileId: string,
+  file: File,
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  if (file.size < 1 || file.size > MAX_IMAGE_INPUT_BYTES) {
+    throw new Error("Animated image input must be between 1 byte and 64 MiB.");
+  }
+  const inputFormat = profileId.split("-to-")[0];
+  if (inputFormat !== "gif" && inputFormat !== "webp") {
+    throw new Error("This bounded APNG output route is not installed.");
+  }
+  const inputMime = imageMimeTypes[inputFormat];
+  const header = await readImageHeader(file, metrics);
+  const dimensions = parseImageDimensions(inputFormat, header);
+  const codedPixels = dimensions.width * dimensions.height;
+  if (
+    dimensions.width > MAX_IMAGE_DIMENSION ||
+    dimensions.height > MAX_IMAGE_DIMENSION ||
+    codedPixels > MAX_IMAGE_PIXELS
+  ) {
+    throw new Error(
+      "Animation dimensions exceed the 8,192-pixel edge or 8-megapixel frame safety limit.",
+    );
+  }
+  await runBrowserAnimationToApng({
+    file,
+    inputFormat,
+    inputMime,
+    width: dimensions.width,
+    height: dimensions.height,
+    metrics,
+    createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+    assertActive,
+    progress: (phase, force) => emitProgress(jobId, phase, metrics, startedAt, force),
+    write: (chunk, phase) =>
+      writeBounded(
+        destination,
+        chunk,
+        jobId,
+        phase,
+        metrics,
+        startedAt,
+      ),
+  });
 }
 
 async function* readLines(
@@ -4190,6 +4241,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (/^(?:png|gif|webp)-to-zip$/.test(profileId)) {
       await runAnimatedImageToZip(
+        profileId,
+        file,
+        destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else if (/^(?:gif|webp)-to-apng$/.test(profileId)) {
+      await runAnimatedImageToApng(
         profileId,
         file,
         destination.writable,

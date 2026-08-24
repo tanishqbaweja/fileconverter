@@ -1921,6 +1921,13 @@ export const formats = [
     category: "image",
   },
   {
+    id: "apng",
+    label: "Animated PNG (APNG)",
+    extensions: ["apng"],
+    mimeTypes: ["image/apng"],
+    category: "image",
+  },
+  {
     id: "jpeg",
     label: "JPEG image",
     extensions: ["jpg", "jpeg"],
@@ -2240,6 +2247,16 @@ const animatedFrameArchiveProfiles = [
   ["gif-to-zip", "gif"],
   ["webp-to-zip", "webp"],
 ] as const;
+
+const animatedApngOutputProfiles = [
+  ["gif-to-apng", "gif"],
+  ["webp-to-apng", "webp"],
+] as const;
+
+const animatedApngOutputMaxTestedBytes = {
+  gif: 281_853,
+  webp: 185_794,
+} as const;
 
 const animatedFrameArchiveMaxTestedBytes = {
   png: 482_505,
@@ -3736,6 +3753,31 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "PNG frames losslessly preserve the browser-decoded composited pixels, but the original animation compression and disposal operations are not retained as editable source data.",
     ],
     maxTestedBytes: animatedFrameArchiveMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
+  })),
+  ...animatedApngOutputProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "apng",
+    engine: "image-browser" as const,
+    route: "re-encode" as const,
+    browserRequirements: [
+      "ImageDecoder",
+      "CompressionStream",
+      "File System Access",
+    ],
+    cpuClass: "medium" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "Every browser-decoded composited frame is encoded as a complete APNG frame with its source duration and loop count; RGBA is copied and PNG-Sub filtered in strips no larger than 256 KiB.",
+      "EXIF, ICC profiles, textual metadata, source compression settings, frame rectangles, disposal operations, and blend operations are not copied.",
+      "At most 1,000 frames, 8,388,608 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, and durations representable by APNG's 16-bit rational fields are accepted.",
+    ],
+    fidelityLimitations: [
+      "APNG losslessly preserves Chromium's decoded composited pixels; timing is exact when its reduced rational fits APNG and otherwise uses the closest bounded 16-bit rational.",
+    ],
+    maxTestedBytes: animatedApngOutputMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,
   })),
