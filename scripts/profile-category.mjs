@@ -956,6 +956,29 @@ const categories = {
       `fixtures/images/${name}`,
     ]),
   },
+  "avif-output-static": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-avif", "test-pattern.png"],
+      ["jpeg-to-avif", "test-pattern.jpg"],
+      ["webp-to-avif", "test-pattern.webp"],
+      ["bmp-to-avif", "test-pattern.bmp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/images/${name}`,
+    ]),
+  },
+  "avif-output-animated": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-avif", "animated-pattern.apng"],
+      ["gif-to-avif", "animated-pattern.gif"],
+      ["webp-to-avif", "animated-pattern.webp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/images/${name}`,
+    ]),
+  },
   "jxl-animated": {
     generator: "scripts/generate-animated-jxl-fixture.mjs",
     profiles: [

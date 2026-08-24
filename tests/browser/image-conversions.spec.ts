@@ -25,14 +25,17 @@ const chromePath =
 const routes = [
   ["png-to-jpeg", "test-pattern.png", "jpg", "mjpeg"],
   ["png-to-webp", "test-pattern.png", "webp", "webp"],
+  ["png-to-avif", "test-pattern.png", "avif", "av1"],
   ["png-to-jxl", "test-pattern.png", "jxl", "jpegxl", undefined, 1024, 768, 1_000, "rgba", "test-pattern.png", "rgba"],
   ["png-to-gif", "test-pattern.png", "gif", "gif", undefined, 1024, 768, 1_000, undefined, "test-pattern.png", "rgb24", 0.90],
   ["jpeg-to-png", "test-pattern.jpg", "png", "png"],
   ["jpeg-to-webp", "test-pattern.jpg", "webp", "webp"],
+  ["jpeg-to-avif", "test-pattern.jpg", "avif", "av1"],
   ["jpeg-to-jxl", "test-pattern.jpg", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
   ["webp-to-png", "test-pattern.webp", "png", "png"],
   ["webp-to-jpeg", "test-pattern.webp", "jpg", "mjpeg"],
   ["webp-to-jxl", "test-pattern.webp", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
+  ["webp-to-avif", "test-pattern.webp", "avif", "av1"],
   ["webp-to-gif", "test-pattern.webp", "gif", "gif", undefined, 1024, 768, 1_000, undefined, "test-pattern.webp", "rgb24", 0.90],
   ["webp-to-png", "animated-pattern.webp", "png", "png", undefined, 1024, 768, 1_000, undefined, "animated-pattern-first-frame-reference.png"],
   ["webp-to-jpeg", "animated-pattern.webp", "jpg", "mjpeg"],
@@ -50,6 +53,7 @@ const routes = [
   ["bmp-to-jpeg", "test-pattern.bmp", "jpg", "mjpeg"],
   ["bmp-to-webp", "test-pattern.bmp", "webp", "webp"],
   ["bmp-to-jxl", "test-pattern.bmp", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
+  ["bmp-to-avif", "test-pattern.bmp", "avif", "av1"],
   ["png-to-bmp", "test-pattern.png", "bmp", "bmp"],
   ["jpeg-to-bmp", "test-pattern.jpg", "bmp", "bmp"],
   ["webp-to-bmp", "test-pattern.webp", "bmp", "bmp"],
@@ -485,6 +489,141 @@ test("GIF to JPEG XL preserves every frame, microsecond timing, and infinite loo
     await rm(outputPath, { force: true });
     await rm(archivePath, { force: true });
     await rm(extractRoot, { recursive: true, force: true });
+  }
+});
+
+test("animated transparent WebP to AVIF preserves frames, timing, looping, and alpha", async () => {
+  const sourcePath = path.join(
+    projectRoot,
+    "fixtures",
+    "images",
+    "animated-transparent.webp",
+  );
+  const avifPath = path.join(outputRoot, "webp-to-avif-animated.avif");
+  const avifArchivePath = path.join(outputRoot, "webp-to-avif-frames.zip");
+  const sourceArchivePath = path.join(outputRoot, "webp-source-frames.zip");
+  const avifFrames = path.join(outputRoot, "webp-to-avif-frames");
+  const sourceFrames = path.join(outputRoot, "webp-source-frames");
+  for (const target of [
+    avifPath,
+    avifArchivePath,
+    sourceArchivePath,
+    avifFrames,
+    sourceFrames,
+  ]) assertProjectLocal(target);
+
+  const convert = async (inputPath: string, profileId: string): Promise<string> => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(inputPath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 60_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.warnings).toEqual([]);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    return state!.opfsName!;
+  };
+
+  try {
+    const avifName = await convert(sourcePath, "webp-to-avif");
+    const avifState = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(avifState?.metrics?.wasmMemories?.["libaom-avif-encoder"]).toBe(
+      88 * 1024 * 1024,
+    );
+    expect(avifState?.metrics?.maxImagePixelStripBytes).toBeLessThanOrEqual(
+      256 * 1024,
+    );
+    expect(avifState?.metrics?.imageWorkingBytes).toBe(0);
+    await copyAndDeleteBrowserOutput(avifName, avifPath);
+
+    const avifZipName = await convert(avifPath, "avif-to-zip");
+    await copyAndDeleteBrowserOutput(avifZipName, avifArchivePath);
+    const sourceZipName = await convert(sourcePath, "webp-to-zip");
+    await copyAndDeleteBrowserOutput(sourceZipName, sourceArchivePath);
+    await mkdir(avifFrames, { recursive: true });
+    await mkdir(sourceFrames, { recursive: true });
+    await execFileAsync("tar", ["-xf", avifArchivePath, "-C", avifFrames], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    await execFileAsync("tar", ["-xf", sourceArchivePath, "-C", sourceFrames], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const avifManifest = JSON.parse(
+      await readFile(path.join(avifFrames, "animation.json"), "utf8"),
+    );
+    const sourceManifest = JSON.parse(
+      await readFile(path.join(sourceFrames, "animation.json"), "utf8"),
+    );
+    expect(avifManifest.frameCount).toBe(3);
+    expect(avifManifest.repetitionCount).toBe(sourceManifest.repetitionCount);
+    expect(
+      avifManifest.frames.map(
+        (record: { timestampMicros: number; durationMicros: number }) => [
+          record.timestampMicros,
+          record.durationMicros,
+        ],
+      ),
+    ).toEqual(
+      sourceManifest.frames.map(
+        (record: { timestampMicros: number; durationMicros: number }) => [
+          record.timestampMicros,
+          record.durationMicros,
+        ],
+      ),
+    );
+    for (let index = 1; index <= 3; index += 1) {
+      const name = `frame-${String(index).padStart(4, "0")}.png`;
+      const alphaBytes = async (inputPath: string): Promise<Buffer> =>
+        (
+          await execFileAsync(
+            "ffmpeg",
+            [
+              "-v",
+              "error",
+              "-i",
+              inputPath,
+              "-vf",
+              "alphaextract",
+              "-f",
+              "rawvideo",
+              "-pix_fmt",
+              "gray",
+              "-",
+            ],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 1024 * 1024,
+              encoding: "buffer",
+            },
+          )
+        ).stdout;
+      expect(await alphaBytes(path.join(avifFrames, name))).toEqual(
+        await alphaBytes(path.join(sourceFrames, name)),
+      );
+    }
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await rm(avifPath, { force: true });
+    await rm(avifArchivePath, { force: true });
+    await rm(sourceArchivePath, { force: true });
+    await rm(avifFrames, { recursive: true, force: true });
+    await rm(sourceFrames, { recursive: true, force: true });
   }
 });
 

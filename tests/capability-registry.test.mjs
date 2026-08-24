@@ -701,6 +701,42 @@ test("the public JPEG XL output profiles match their fixed-memory encoder manife
   ]);
 });
 
+test("the public AVIF output profiles match their split fixed-memory encoder manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync(
+      new URL(
+        "../public/engines/avif-encoder/build-manifest.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  assert.equal(manifest.initialWasmMemoryBytes, 80 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 80 * 1024 * 1024);
+  assert.equal(manifest.animatedInitialWasmMemoryBytes, 88 * 1024 * 1024);
+  assert.equal(manifest.animatedMaximumWasmMemoryBytes, 88 * 1024 * 1024);
+  assert.equal(manifest.maximumPixels, 786_432);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.deepEqual(
+    [...manifest.profiles].sort(),
+    [
+      "png-to-avif",
+      "jpeg-to-avif",
+      "webp-to-avif",
+      "gif-to-avif",
+      "bmp-to-avif",
+    ].sort(),
+  );
+  for (const id of manifest.profiles) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.engine, "libaom-avif-encoder-wasm");
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes > 0);
+  }
+});
+
 test("the public animated AVIF profile matches its fixed-memory Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/avif/build-manifest.json", "utf8"),

@@ -1,0 +1,118 @@
+diff --git a/libavformat/movenc.h b/libavformat/movenc.h
+index 8764d95..de14793 100644
+--- a/libavformat/movenc.h
++++ b/libavformat/movenc.h
+@@ -264,6 +264,8 @@ typedef struct MOVMuxContext {
+     int avif_extent_length[2];   // index 0 is YUV and 1 is Alpha.
+     int is_animated_avif;
+     int avif_loop_count;
++    int within_streaming_avif;
++    int within_animated_avif;
+ } MOVMuxContext;
+ 
+ #define FF_MOV_FLAG_RTP_HINT              (1 <<  0)
+diff --git a/libavformat/movenc.c b/libavformat/movenc.c
+index 7d5c9c7..d45ca66 100644
+--- a/libavformat/movenc.c
++++ b/libavformat/movenc.c
+@@ -3634,8 +3634,12 @@ static int mov_write_iloc_tag(AVIOContext *pb, MOVMuxContext *mov, AVFormatCont
+         avio_wb16(pb, i + 1); /* item_id */
+         avio_wb16(pb, 0); /* data_reference_index */
+         avio_wb16(pb, 1); /* extent_count */
+-        mov->avif_extent_pos[i] = avio_tell(pb);
+-        avio_wb32(pb, 0); /* extent_offset (written later) */
++        if (mov->within_streaming_avif) {
++            avio_wb32(pb, mov->tracks[i].cluster[0].pos);
++        } else {
++            mov->avif_extent_pos[i] = avio_tell(pb);
++            avio_wb32(pb, 0); /* extent_offset (written later) */
++        }
+         // For animated AVIF, we simply write the first packet's size.
+         avio_wb32(pb, mov->avif_extent_length[i]); /* extent_length */
+     }
+@@ -6778,7 +6782,8 @@ static int mov_write_single_packet(AVFormatContext *s, AVPacket *pkt)
+         return AVERROR_PATCHWELCOME;
+     }
+ 
+-    if (mov->flags & FF_MOV_FLAG_FRAGMENT || mov->mode == MODE_AVIF) {
++    if ((mov->flags & FF_MOV_FLAG_FRAGMENT || mov->mode == MODE_AVIF) &&
++        !(mov->mode == MODE_AVIF && mov->within_streaming_avif)) {
+         int ret;
+         if (mov->moov_written || mov->flags & FF_MOV_FLAG_EMPTY_MOOV) {
+             if (mov->frag_interleave && mov->fragments > 0) {
+@@ -8462,10 +8467,14 @@ static int mov_write_header(AVFormatContext *s)
+         }
+     }
+ 
+-    if (!(mov->flags & FF_MOV_FLAG_DELAY_MOOV) ||
+-        (mov->flags & FF_MOV_FLAG_HYBRID_FRAGMENTED)) {
++    if (mov->mode == MODE_AVIF && mov->within_streaming_avif) {
++        mov->is_animated_avif = mov->within_animated_avif;
+         if ((ret = mov_write_identification(pb, s)) < 0)
+             return ret;
++    } else if (!(mov->flags & FF_MOV_FLAG_DELAY_MOOV) ||
++               (mov->flags & FF_MOV_FLAG_HYBRID_FRAGMENTED)) {
++        if ((ret = mov_write_identification(pb, s)) < 0)
++            return ret;
+     }
+ 
+     if (mov->reserved_moov_size){
+@@ -8473,7 +8483,9 @@ static int mov_write_header(AVFormatContext *s)
+             avio_skip(pb, mov->reserved_moov_size);
+     }
+ 
+-    if (mov->flags & FF_MOV_FLAG_FRAGMENT) {
++    if (mov->mode == MODE_AVIF && mov->within_streaming_avif) {
++        mov_write_mdat_tag(pb, mov);
++    } else if (mov->flags & FF_MOV_FLAG_FRAGMENT) {
+         /* If no fragmentation options have been set, set a default. */
+         if (!(mov->flags & (FF_MOV_FLAG_FRAG_KEYFRAME |
+                             FF_MOV_FLAG_FRAG_CUSTOM |
+@@ -8815,6 +8826,40 @@ static int avif_write_trailer(AVFormatContext *s)
+     uint8_t *buf;
+     int buf_size, moov_size;
+ 
++    if (mov->within_streaming_avif) {
++        int animated = s->streams[0]->nb_frames > 1;
++        int64_t media_end = avio_tell(pb);
++        if (animated != mov->within_animated_avif) {
++            av_log(s, AV_LOG_ERROR,
++                   "Declared AVIF animation state does not match encoded packets\n");
++            return AVERROR_INVALIDDATA;
++        }
++        for (int i = 0; i < mov->nb_streams; i++) {
++            if (!mov->tracks[i].entry || !mov->avif_extent_length[i] ||
++                mov->tracks[i].cluster[0].pos > UINT32_MAX) {
++                av_log(s, AV_LOG_ERROR,
++                       "Streaming AVIF item extent is missing or exceeds 32 bits\n");
++                return AVERROR_INVALIDDATA;
++            }
++            mov->tracks[i].data_offset = 0;
++        }
++        mov->is_animated_avif = animated;
++        if (animated && mov->nb_streams > 1) {
++            mov->tracks[1].tref_tag = MKTAG('a', 'u', 'x', 'l');
++            mov->tracks[1].tref_id = 1;
++        }
++        mov_write_mdat_size(s);
++        avio_seek(pb, media_end, SEEK_SET);
++        if (mov_write_meta_tag(pb, mov, s) < 0)
++            return AVERROR_INVALIDDATA;
++        if (animated) {
++            int ret = mov_write_moov_tag(pb, mov, s);
++            if (ret < 0)
++                return ret;
++        }
++        return pb->error;
++    }
++
+     if (mov->moov_written) return 0;
+ 
+     mov->is_animated_avif = s->streams[0]->nb_frames > 1;
+@@ -8977,4 +9022,6 @@ static const AVOption avif_options[] = {
+     { "movie_timescale", "set movie timescale", offsetof(MOVMuxContext, movie_timescale), AV_OPT_TYPE_INT, {.i64 = MOV_TIMESCALE}, 1, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM},
+     { "loop", "Number of times to loop animated AVIF: 0 - infinite loop", offsetof(MOVMuxContext, avif_loop_count), AV_OPT_TYPE_INT, {.i64 = 0}, 0, INT_MAX, AV_OPT_FLAG_ENCODING_PARAM, .unit = 0 },
++    { "within_streaming", "stream AV1 packets directly and append bounded AVIF metadata", offsetof(MOVMuxContext, within_streaming_avif), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, AV_OPT_FLAG_ENCODING_PARAM },
++    { "within_animated", "declare animated AVIF before the first output byte", offsetof(MOVMuxContext, within_animated_avif), AV_OPT_TYPE_BOOL, {.i64 = 0}, 0, 1, AV_OPT_FLAG_ENCODING_PARAM },
+     { NULL },
+ };

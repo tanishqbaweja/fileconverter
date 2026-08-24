@@ -46,6 +46,7 @@ import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import { runImageToJxl } from "./jxl-encoding";
+import { runImageToAvif } from "./avif-encoding";
 import { runAvifToZip } from "./avif-conversion";
 import { runBrowserAnimationToApng } from "./apng-conversion";
 import { runBrowserAnimationToGif } from "./gif-conversion";
@@ -1480,7 +1481,7 @@ async function runImageConversion(
   const Decoder = (
     globalThis as unknown as { ImageDecoder?: WithinImageDecoderConstructor }
   ).ImageDecoder;
-  if (outputFormat !== "jxl") {
+  if (outputFormat !== "jxl" && outputFormat !== "avif") {
     if (!Decoder || typeof OffscreenCanvas !== "function") {
       throw new Error(
         "This browser does not provide the ImageDecoder and OffscreenCanvas APIs required by this route.",
@@ -1547,6 +1548,29 @@ async function runImageConversion(
       isCancelled: () => cancelled,
       emitProgress,
       post,
+    });
+    return;
+  }
+
+  if (outputFormat === "avif") {
+    await runImageToAvif({
+      file,
+      inputMime,
+      inputFormat,
+      inputHeader: header,
+      width: dimensions.width,
+      height: dimensions.height,
+      preferAnimation:
+        inputFormat === "gif" ||
+        (inputFormat === "png" && isAnimatedPng(header)) ||
+        (inputFormat === "webp" && isAnimatedWebp(header)),
+      writable: destination,
+      jobId,
+      metrics,
+      startedAt,
+      createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+      isCancelled: () => cancelled,
+      emitProgress,
     });
     return;
   }
@@ -4407,7 +4431,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         startedAt,
       );
     } else if (
-      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl)$/.test(profileId)
+      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl|avif)$/.test(profileId)
     ) {
       await runImageConversion(
         profileId,

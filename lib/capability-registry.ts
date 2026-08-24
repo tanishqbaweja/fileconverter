@@ -19,6 +19,7 @@ export type EngineId =
   | "libtiff-wasm"
   | "libjxl-wasm"
   | "libjxl-encoder-wasm"
+  | "libaom-avif-encoder-wasm"
   | "libavif-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
@@ -2243,6 +2244,22 @@ const jxlOutputProfiles = [
   ["bmp-to-jxl", "bmp"],
 ] as const;
 
+const avifOutputProfiles = [
+  ["png-to-avif", "png"],
+  ["jpeg-to-avif", "jpeg"],
+  ["webp-to-avif", "webp"],
+  ["gif-to-avif", "gif"],
+  ["bmp-to-avif", "bmp"],
+] as const;
+
+const avifOutputMaxTestedBytes = {
+  png: 482_505,
+  jpeg: 51_804,
+  webp: 185_794,
+  gif: 281_853,
+  bmp: 2_359_350,
+} as const;
+
 const icoOutputProfiles = [
   ["png-to-ico", "png"],
   ["jpeg-to-ico", "jpeg"],
@@ -3772,6 +3789,35 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "Pinned libjxl 0.12.0 effort 1 losslessly preserves Chromium's decoded 8-bit sRGB or sRGBA pixels; higher source bit depths and source color profiles are converted by Chromium before encoding.",
     ],
     maxTestedBytes: imageMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
+  })),
+  ...avifOutputProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "avif",
+    engine: "libaom-avif-encoder-wasm" as const,
+    route: "re-encode" as const,
+    browserRequirements:
+      input === "bmp"
+        ? ["WebAssembly", "Web Workers", "File System Access"]
+        : ["ImageDecoder", "WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "high" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "Static and animated inputs preserve every browser-decoded complete composited frame; animation uses an exact microsecond timebase and equivalent playback repetition semantics.",
+      "EXIF, ICC profiles, textual metadata, source compression settings, frame rectangles, disposal operations, and blend operations are not copied.",
+      "At most 1,000 frames, 786,432 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, 64 GiB aggregate decoded data, and 128 MiB encoded output are accepted by the measured complete-Chromium memory ceiling.",
+      ...(input === "bmp"
+        ? [
+            "BMP input is decoded directly from bounded rows and accepts uncompressed 24-bit or 32-bit Windows BMP pixel arrays; compressed, paletted, and bitfield BMP variants are rejected.",
+          ]
+        : []),
+    ],
+    fidelityLimitations: [
+      "Pinned libaom 3.13.2 realtime encoding uses one thread, cpu-used 8, zero lookahead, YUV 4:2:0 color at CRF 32, and lossless grayscale alpha; higher source bit depths and source color profiles are converted by Chromium before encoding.",
+    ],
+    maxTestedBytes: avifOutputMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,
   })),

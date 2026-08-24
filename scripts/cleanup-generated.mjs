@@ -53,7 +53,10 @@ const wmaSpeechBenchmarkRoot = path.resolve(workRoot, "wma-speech-benchmark");
 const amrWbAuditRoot = path.resolve(workRoot, "amrwb-audit");
 const amrWbWmaAuditRoot = path.resolve(workRoot, "amrwb-wma-audit");
 const avifTemporaryRoots = [
+  path.resolve(workRoot, "avif-output-audit"),
+  path.resolve(workRoot, "avif-encoder-probe"),
   path.resolve(workRoot, "avif-engine-test"),
+  path.resolve(workRoot, "avif-memory-fixtures"),
   path.resolve(workRoot, "avif-reproduction"),
   path.resolve(workRoot, "avif-reproduction-final"),
   path.resolve(workRoot, "libavif-audit"),

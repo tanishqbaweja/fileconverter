@@ -154,7 +154,7 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl|avif)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
@@ -2754,7 +2754,9 @@ async function validateImageOutput(
 ) {
   if (
     finalState.metrics.outputBytes < 1 ||
-    finalState.metrics.outputBytes > (route.endsWith("-to-jxl") ? 128 : 64) * 1024 * 1024
+    finalState.metrics.outputBytes >
+      (route.endsWith("-to-jxl") || route.endsWith("-to-avif") ? 128 : 64) *
+        1024 * 1024
   ) {
     throw new Error(
       `Browser image output is outside the bounded range: ${finalState.metrics.outputBytes} bytes.`,
@@ -2768,7 +2770,9 @@ async function validateImageOutput(
         ? "png"
         : outputFormat === "jxl"
           ? "jpegxl"
-          : outputFormat;
+          : outputFormat === "avif"
+            ? "av1"
+            : outputFormat;
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -2794,7 +2798,9 @@ async function validateImageOutput(
   const expectedWidth = Math.max(1, Math.round(sourceWidth * iconScale));
   const expectedHeight = Math.max(1, Math.round(sourceHeight * iconScale));
   if (
-    probe.streams?.length !== 1 ||
+    (outputFormat === "avif"
+      ? ![1, 2, 4].includes(probe.streams?.length)
+      : probe.streams?.length !== 1) ||
     stream?.codec_name !== expectedCodec ||
     stream?.width !== expectedWidth ||
     stream?.height !== expectedHeight
@@ -2858,6 +2864,7 @@ async function validateImageOutput(
   }
   if (
     outputFormat !== "jxl" &&
+    outputFormat !== "avif" &&
     Number(sourceStream?.nb_frames ?? 1) > 1 &&
     !finalState.warnings.some((warning) => warning.includes("first animation frame"))
   ) {

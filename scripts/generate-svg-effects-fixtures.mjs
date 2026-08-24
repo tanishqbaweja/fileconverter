@@ -8,8 +8,8 @@ import { chromium } from "@playwright/test";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const chromePath = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const mode = process.argv[2] ?? "all";
-if (!new Set(["all", "small", "stress"]).has(mode)) {
-  throw new Error("Choose SVG effects fixture mode: all, small, or stress.");
+if (!new Set(["all", "small", "medium", "stress"]).has(mode)) {
+  throw new Error("Choose SVG effects fixture mode: all, small, medium, or stress.");
 }
 
 const fixtures = [
@@ -21,6 +21,15 @@ const fixtures = [
     width: 960,
     height: 540,
     tile: 60,
+  },
+  {
+    mode: "medium",
+    root: path.join(projectRoot, "work", "avif-memory-fixtures"),
+    name: "avif-pattern-720p.svg",
+    referenceName: "avif-pattern-720p.png",
+    width: 1_280,
+    height: 720,
+    tile: 30,
   },
   {
     mode: "stress",
@@ -106,6 +115,11 @@ try {
           sha256: manifest.validationSha256,
           width: fixture.width,
           height: fixture.height,
+          probe: {
+            streams: [
+              { width: fixture.width, height: fixture.height, nb_frames: "1" },
+            ],
+          },
         },
         null,
         2,
