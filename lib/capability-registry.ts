@@ -3703,14 +3703,32 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     ],
     cpuClass: "medium" as const,
     memoryClass: "bounded-medium" as const,
-    metadataLimitations: [
-      "EXIF, ICC profiles, textual metadata, and animation are not preserved by this bounded still-image profile.",
-    ],
+    metadataLimitations:
+      output === "webp" && (input === "png" || input === "gif")
+        ? [
+            "Animated PNG/APNG and GIF inputs preserve every browser-decoded composited frame, equivalent playback repetition semantics, and millisecond-rounded timing in animated WebP; static inputs remain static.",
+            "EXIF, ICC profiles, textual metadata, source compression settings, frame rectangles, disposal operations, and blend operations are not copied.",
+            "At most 1,000 frames, 8,388,608 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, WebP's 24-bit millisecond duration field, and the 64 MiB encoded-output safety limit are accepted.",
+          ]
+        : [
+            "EXIF, ICC profiles, textual metadata, and animation are not preserved by this bounded still-image profile.",
+          ],
     fidelityLimitations:
       output === "jpeg"
         ? ["JPEG output is lossy and cannot preserve transparency."]
         : output === "webp"
-          ? ["WebP output uses lossy quality 0.90."]
+          ? [
+              input === "png" || input === "gif"
+                ? input === "png"
+                  ? "Static PNG input uses lossy WebP quality 0.90; animated PNG/APNG input encodes each complete frame at the browser encoder's lossless maximum quality and preserves alpha."
+                  : "Static or animated GIF input encodes every applicable complete frame at the browser WebP encoder's lossless maximum quality and preserves alpha."
+                : "WebP output uses lossy quality 0.90.",
+              ...(input === "png" || input === "gif"
+                ? [
+                    "Animated frame timing is rounded to the nearest nonzero millisecond because WebP cannot represent finer timing.",
+                  ]
+                : []),
+            ]
           : output === "bmp"
             ? ["BMP output uses 24-bit color and cannot preserve transparency."]
           : [],

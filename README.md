@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG or GIF to WebP; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -648,6 +648,22 @@ at 86.2 MiB with repeatable output and 0.978313 RGB SSIM against independent
 native decoding. A still frame with no source duration becomes a valid zero-delay
 GIF frame; animation frames still require explicit nonzero timing.
 
+Animated PNG/APNG-to-WebP and GIF-to-WebP keep one decoded composited frame and
+one browser-encoded lossless VP8L frame at a time. The worker extracts only the
+bounded per-frame WebP image chunks and writes them immediately into a streamed
+RIFF/VP8X/ANIM/ANMF container; the complete animation is never collected in a
+Blob or JavaScript buffer. A final 17-byte positioned write patches the RIFF size
+and alpha feature flag through the same random-access destination. APNG passed
+3/3 in 0.342-0.445 seconds at 148.5 MiB worst incremental private memory, while
+GIF passed in 0.323-0.424 seconds at 156.5 MiB. Both produced the same repeatable
+226,756-byte output and SHA-256
+`688d9ea27bf0b880fe49bb7ca2e469e0e71b375e618f4cef61ab87b884e71127`;
+all eight frames and alpha channels matched independent Pillow/libwebp decoding
+at SSIM 1.0. Reads stayed at 262,144 bytes, writes at 28,726 bytes, and the peak
+explicit JavaScript image working set was 28,726 bytes before returning to zero.
+Canvas quality 0.90 and 0.99 were rejected at 0.621542 and 0.654308 SSIM; quality
+1 is the fastest tested native setting that meets the unchanged 0.90 threshold.
+
 ICO output uses those same bounded decoders, scales proportionally only when an
 edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
 followed by an incrementally copied PNG payload. It preserves alpha but does not
@@ -778,7 +794,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, camera raw,
-animated WebP/AVIF/JPEG XL output, unsupported 7Z codecs, and
+animated AVIF/JPEG XL output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -1543,6 +1559,7 @@ npm run profile:audio
 npm run profile:images
 npm run profile:gif-output
 npm run profile:gif-output-static
+npm run profile:webp-output
 npm run profile:tiff
 npm run profile:jxl
 npm run profile:records

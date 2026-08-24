@@ -970,6 +970,13 @@ const categories = {
       ["webp-to-gif", "fixtures/images/test-pattern.webp"],
     ],
   },
+  "webp-output": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-webp", "fixtures/images/animated-pattern.apng"],
+      ["gif-to-webp", "fixtures/images/animated-pattern.gif"],
+    ],
+  },
   "tiff-multipage": {
     generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
     profiles: [

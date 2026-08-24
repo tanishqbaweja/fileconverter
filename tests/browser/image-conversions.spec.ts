@@ -3,7 +3,7 @@ import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, readFile, readdir, rm, stat } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -35,7 +35,6 @@ const routes = [
   ["webp-to-jpeg", "animated-pattern.webp", "jpg", "mjpeg"],
   ["gif-to-png", "animated-pattern.gif", "png", "png"],
   ["gif-to-jpeg", "animated-pattern.gif", "jpg", "mjpeg"],
-  ["gif-to-webp", "animated-pattern.gif", "webp", "webp"],
   ["avif-to-png", "test-pattern.avif", "png", "png"],
   ["avif-to-jpeg", "test-pattern.avif", "jpg", "mjpeg"],
   ["avif-to-webp", "test-pattern.avif", "webp", "webp"],
@@ -724,6 +723,312 @@ for (const route of [
   });
 }
 
+test("single-frame GIF remains a static bounded WebP", async () => {
+  const outputPath = path.join(outputRoot, "gif-to-webp-static.webp");
+  assertProjectLocal(outputPath);
+  try {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles({
+      name: "single-frame.gif",
+      mimeType: "image/gif",
+      buffer: Buffer.from(
+        "R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
+        "base64",
+      ),
+    });
+    await page.locator('[data-testid="format-select"]').selectOption("gif-to-webp");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.warnings).toEqual([]);
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    expect(state?.metrics?.imageWorkingBytes).toBe(0);
+    await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+    const encoded = await readFile(outputPath);
+    expect(encoded.subarray(0, 4).toString("ascii")).toBe("RIFF");
+    expect(encoded.readUInt32LE(4) + 8).toBe(encoded.byteLength);
+    expect(encoded.subarray(8, 12).toString("ascii")).toBe("WEBP");
+    if (encoded.subarray(12, 16).toString("ascii") === "VP8X") {
+      expect(encoded[20] & 0x02).toBe(0);
+    }
+    const { stdout } = await execFileAsync(
+      "ffprobe",
+      ["-v", "error", "-show_entries", "stream=codec_name,width,height", "-of", "json", outputPath],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+    expect(JSON.parse(stdout).streams[0]).toMatchObject({
+      codec_name: "webp",
+      width: 1,
+      height: 1,
+    });
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await rm(outputPath, { force: true });
+  }
+});
+
+for (const route of [
+  ["png-to-webp", "animated-pattern.apng"],
+  ["gif-to-webp", "animated-pattern.gif"],
+] as const) {
+  test(`${route[0]} preserves every animation frame in bounded WebP output`, async () => {
+    const [profileId, sourceName] = route;
+    const sourcePath = path.join(projectRoot, "fixtures", "images", sourceName);
+    const outputPath = path.join(outputRoot, `${profileId}-animated.webp`);
+    assertProjectLocal(outputPath);
+    try {
+      await page.goto("/?test=1");
+      await page.waitForFunction(
+        () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+      );
+      await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+      await page.locator('[data-testid="format-select"]').selectOption(profileId);
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(
+          async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+          { timeout: 60_000 },
+        )
+        .not.toBe("running");
+      const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+      expect(state?.jobState, state?.error ?? state?.phase).toBe("complete");
+      expect(state?.warnings).toEqual([]);
+      expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+      expect(state?.metrics?.peakPendingOperations).toBe(1);
+      expect(state?.metrics?.pendingOperations).toBe(0);
+      expect(state?.metrics?.queuedBytes).toBe(0);
+      expect(state?.metrics?.imageWorkingBytes).toBe(0);
+      expect(state?.metrics?.peakImageWorkingBytes).toBeLessThanOrEqual(256 * 1024);
+      await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+
+      const encoded = await readFile(outputPath);
+      expect(encoded.subarray(0, 4).toString("ascii")).toBe("RIFF");
+      expect(encoded.readUInt32LE(4) + 8).toBe(encoded.byteLength);
+      expect(encoded.subarray(8, 12).toString("ascii")).toBe("WEBP");
+      expect(encoded.subarray(12, 16).toString("ascii")).toBe("VP8X");
+      expect(encoded[20] & 0x02).toBe(0x02);
+      expect(encoded.readUIntLE(24, 3) + 1).toBe(1024);
+      expect(encoded.readUIntLE(27, 3) + 1).toBe(768);
+      const chunks: Array<{ type: string; offset: number; size: number }> = [];
+      let offset = 12;
+      while (offset < encoded.byteLength) {
+        expect(offset + 8).toBeLessThanOrEqual(encoded.byteLength);
+        const type = encoded.toString("ascii", offset, offset + 4);
+        const size = encoded.readUInt32LE(offset + 4);
+        const end = offset + 8 + size + (size & 1);
+        expect(end).toBeLessThanOrEqual(encoded.byteLength);
+        chunks.push({ type, offset, size });
+        offset = end;
+      }
+      expect(offset).toBe(encoded.byteLength);
+      expect(chunks.map((chunk) => chunk.type).slice(0, 2)).toEqual(["VP8X", "ANIM"]);
+      const animationControl = chunks[1];
+      expect(animationControl.size).toBe(6);
+      expect(encoded.readUInt16LE(animationControl.offset + 12)).toBe(0);
+      const frames = chunks.filter((chunk) => chunk.type === "ANMF");
+      expect(frames).toHaveLength(8);
+      for (const frameChunk of frames) {
+        const payload = frameChunk.offset + 8;
+        expect(encoded.readUIntLE(payload, 3)).toBe(0);
+        expect(encoded.readUIntLE(payload + 3, 3)).toBe(0);
+        expect(encoded.readUIntLE(payload + 6, 3) + 1).toBe(1024);
+        expect(encoded.readUIntLE(payload + 9, 3) + 1).toBe(768);
+        expect(encoded.readUIntLE(payload + 12, 3)).toBe(250);
+        expect(encoded[payload + 15]).toBe(1);
+        const imageType = encoded.toString("ascii", payload + 16, payload + 20);
+        expect(["ALPH", "VP8 ", "VP8L"]).toContain(imageType);
+      }
+
+      const { stdout: metadataText } = await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", outputPath, "--metadata"],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+      );
+      expect(JSON.parse(metadataText)).toEqual({
+        frameCount: 8,
+        width: 1024,
+        height: 768,
+        loop: 0,
+        durationsMs: Array.from({ length: 8 }, () => 250),
+      });
+      const decodePillowFrame = async (
+        imagePath: string,
+        frameIndex: number,
+      ): Promise<Buffer> =>
+        (
+          await execFileAsync(
+            "python",
+            ["scripts/decode-pillow-animation-frame.py", imagePath, String(frameIndex)],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 32 * 1024 * 1024,
+              encoding: "buffer",
+            },
+          )
+        ).stdout;
+      const sourceRawPath = path.join(outputRoot, `${profileId}-source.rgba`);
+      const outputRawPath = path.join(outputRoot, `${profileId}-output.rgba`);
+      assertProjectLocal(sourceRawPath);
+      assertProjectLocal(outputRawPath);
+      for (let index = 0; index < 8; index += 1) {
+        const [sourceFrame, outputFrame] = await Promise.all([
+          decodePillowFrame(sourcePath, index),
+          decodePillowFrame(outputPath, index),
+        ]);
+        expect(outputFrame.byteLength).toBe(sourceFrame.byteLength);
+        try {
+          await Promise.all([
+            writeFile(sourceRawPath, sourceFrame),
+            writeFile(outputRawPath, outputFrame),
+          ]);
+          const { stderr } = await execFileAsync(
+            "ffmpeg",
+            [
+              "-v",
+              "info",
+              "-f",
+              "rawvideo",
+              "-pixel_format",
+              "rgba",
+              "-video_size",
+              "1024x768",
+              "-i",
+              sourceRawPath,
+              "-f",
+              "rawvideo",
+              "-pixel_format",
+              "rgba",
+              "-video_size",
+              "1024x768",
+              "-i",
+              outputRawPath,
+              "-lavfi",
+              "[0:v:0]format=rgb24[source];[1:v:0]format=rgb24[output];[source][output]ssim",
+              "-frames:v",
+              "1",
+              "-f",
+              "null",
+              "NUL",
+            ],
+            { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+          );
+          const ssim = Number.parseFloat(
+            stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+          );
+          expect(ssim, `frame ${index + 1} SSIM`).toBeGreaterThanOrEqual(0.9);
+        } finally {
+          await Promise.all([
+            rm(sourceRawPath, { force: true }),
+            rm(outputRawPath, { force: true }),
+          ]);
+        }
+      }
+    } finally {
+      validationSink?.destroy();
+      validationSink = null;
+      await rm(outputPath, { force: true });
+    }
+  });
+}
+
+test("animated WebP output preserves finite looping, alpha, and disposal", async () => {
+  const profileId = "png-to-webp";
+  const sourcePath = path.join(
+    projectRoot,
+    "fixtures",
+    "images",
+    "animated-transparent.apng",
+  );
+  const outputPath = path.join(outputRoot, "png-to-webp-transparent.webp");
+  assertProjectLocal(outputPath);
+  const decodePillowFrame = async (
+    imagePath: string,
+    frameIndex: number,
+  ): Promise<Buffer> =>
+    (
+      await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", imagePath, String(frameIndex)],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 2 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  try {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.warnings).toEqual([]);
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    expect(state?.metrics?.imageWorkingBytes).toBe(0);
+    await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+    const encoded = await readFile(outputPath);
+    expect(encoded[20] & 0x12).toBe(0x12);
+    const { stdout } = await execFileAsync(
+      "python",
+      ["scripts/decode-pillow-animation-frame.py", outputPath, "--metadata"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+    expect(JSON.parse(stdout)).toEqual({
+      frameCount: 3,
+      width: 64,
+      height: 48,
+      loop: 2,
+      durationsMs: [100, 200, 300],
+    });
+    for (let index = 0; index < 3; index += 1) {
+      const [sourceFrame, outputFrame] = await Promise.all([
+        decodePillowFrame(sourcePath, index),
+        decodePillowFrame(outputPath, index),
+      ]);
+      expect(outputFrame.byteLength).toBe(sourceFrame.byteLength);
+      let squaredError = 0;
+      let visibleSamples = 0;
+      for (let offset = 0; offset < sourceFrame.byteLength; offset += 4) {
+        expect(outputFrame[offset + 3], `frame ${index + 1} alpha`).toBe(
+          sourceFrame[offset + 3],
+        );
+        if (sourceFrame[offset + 3] === 0) continue;
+        for (let channel = 0; channel < 3; channel += 1) {
+          const error = sourceFrame[offset + channel] - outputFrame[offset + channel];
+          squaredError += error * error;
+          visibleSamples += 1;
+        }
+      }
+      const mse = squaredError / visibleSamples;
+      const psnr = mse === 0 ? Number.POSITIVE_INFINITY : 10 * Math.log10((255 * 255) / mse);
+      expect(psnr, `frame ${index + 1} visible-pixel PSNR`).toBeGreaterThanOrEqual(30);
+    }
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await rm(outputPath, { force: true });
+  }
+});
+
 for (const route of [
   ["gif-to-apng", "animated-pattern.gif"],
   ["webp-to-apng", "animated-pattern.webp"],
@@ -1296,6 +1601,8 @@ for (const [profileId, sourceName] of [
   ["webp-to-apng", "animated-pattern.webp"],
   ["png-to-gif", "animated-pattern.apng"],
   ["webp-to-gif", "animated-pattern.webp"],
+  ["png-to-webp", "animated-pattern.apng"],
+  ["gif-to-webp", "animated-pattern.gif"],
 ] as const) {
   test(`${profileId} output failure removes the partial browser-owned output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -1448,6 +1755,41 @@ test("GIF encoding cancellation removes the partial browser-owned file", async (
   expect(leftovers).toEqual([]);
 });
 
+test("animated WebP encoding cancellation removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.apng"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("png-to-webp");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 10_000 },
+  ).toBe("running");
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  expect(state?.metrics?.imageWorkingBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-png-to-webp")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
 for (const invalidKind of ["truncated", "corrupt"] as const) {
   test(`GIF-to-APNG rejects ${invalidKind} animation data without retained output`, async () => {
     const source = await readFile(
@@ -1522,6 +1864,45 @@ for (const invalidKind of ["truncated", "corrupt"] as const) {
       const names: string[] = [];
       for await (const [name] of root.entries()) {
         if (name.startsWith("within-test-png-to-gif")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
+
+for (const invalidKind of ["truncated", "corrupt"] as const) {
+  test(`PNG-to-WebP rejects ${invalidKind} animation data without retained output`, async () => {
+    const source = await readFile(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.apng"),
+    );
+    const invalid = Buffer.from(source.subarray(0, 64));
+    if (invalidKind === "corrupt") invalid.fill(0xa5, 33);
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles({
+      name: `${invalidKind}.apng`,
+      mimeType: "image/apng",
+      buffer: invalid,
+    });
+    await page.locator('[data-testid="format-select"]').selectOption("png-to-webp");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    expect(state?.metrics?.imageWorkingBytes ?? 0).toBe(0);
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-png-to-webp")) names.push(name);
       }
       return names;
     });
@@ -1733,6 +2114,65 @@ test("animated GIF output converts through the bounded direct-save worker", asyn
     }, outputName);
     expect(output.bytes).toBe(415_740);
     expect(output.signature).toBe("GIF89a");
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
+  }
+});
+
+test("animated WebP output patches RIFF through the bounded direct-save worker", async () => {
+  const outputName = "animated-pattern.webp";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.apng"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("png-to-webp");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.imageWorkingBytes).toBe(0);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const header = new Uint8Array(await file.slice(0, 30).arrayBuffer());
+      const riffBytes = new DataView(
+        header.buffer,
+        header.byteOffset,
+        header.byteLength,
+      ).getUint32(4, true) + 8;
+      await root.removeEntry(name);
+      return {
+        bytes: file.size,
+        signature: new TextDecoder("ascii").decode(header.subarray(0, 4)),
+        webp: new TextDecoder("ascii").decode(header.subarray(8, 12)),
+        animationFlag: header[20] & 0x02,
+        riffBytes,
+      };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(1_000);
+    expect(output.signature).toBe("RIFF");
+    expect(output.webp).toBe("WEBP");
+    expect(output.animationFlag).toBe(0x02);
+    expect(output.riffBytes).toBe(output.bytes);
   } finally {
     await page.evaluate(async (name) => {
       const root = await navigator.storage.getDirectory();

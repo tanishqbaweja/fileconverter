@@ -160,6 +160,9 @@ const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
 );
 const isAnimatedApngProfile = /^(?:gif|webp)-to-apng$/.test(profileId);
 const isAnimatedGifProfile = /^(?:png|webp)-to-gif$/.test(profileId);
+const isAnimatedWebpProfile =
+  /^(?:png|gif)-to-webp$/.test(profileId) &&
+  Number(fixtureManifest.probe?.streams?.[0]?.nb_frames ?? 1) > 1;
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
@@ -952,6 +955,13 @@ try {
                   )
               : isAnimatedGifProfile
                 ? await validateAnimatedGifOutput(
+                    physicalOutputPath,
+                    fixturePath,
+                    fixtureManifest,
+                    finalState,
+                  )
+              : isAnimatedWebpProfile
+                ? await validateAnimatedWebpOutput(
                     physicalOutputPath,
                     fixturePath,
                     fixtureManifest,
@@ -3562,6 +3572,250 @@ async function validateAnimatedGifOutput(
       exactRgb332FrameMatch: sourceSsim == null,
       decodedByNativeFfmpeg: true,
       metadataDecodedByPinnedPillow: true,
+    },
+  };
+}
+
+async function validateAnimatedWebpOutput(
+  localPath,
+  sourcePath,
+  source,
+  finalState,
+) {
+  const encoded = await readFile(localPath);
+  if (
+    encoded.byteLength < 44 ||
+    encoded.subarray(0, 4).toString("ascii") !== "RIFF" ||
+    encoded.subarray(8, 12).toString("ascii") !== "WEBP" ||
+    encoded.readUInt32LE(4) + 8 !== encoded.byteLength
+  ) {
+    throw new Error("Browser animated WebP output has an invalid RIFF header or size.");
+  }
+  const chunks = [];
+  let offset = 12;
+  while (offset < encoded.byteLength) {
+    if (offset + 8 > encoded.byteLength) {
+      throw new Error("Browser animated WebP ends inside a chunk header.");
+    }
+    const type = encoded.toString("ascii", offset, offset + 4);
+    const size = encoded.readUInt32LE(offset + 4);
+    const payloadOffset = offset + 8;
+    const end = payloadOffset + size;
+    const paddedEnd = end + (size & 1);
+    if (paddedEnd > encoded.byteLength) {
+      throw new Error(`Browser animated WebP ${type} chunk exceeds the RIFF boundary.`);
+    }
+    chunks.push({ type, size, payloadOffset, end });
+    offset = paddedEnd;
+  }
+  if (offset !== encoded.byteLength || chunks[0]?.type !== "VP8X" || chunks[1]?.type !== "ANIM") {
+    throw new Error("Browser animated WebP has an invalid VP8X/ANIM chunk layout.");
+  }
+  const extended = chunks[0];
+  if (
+    extended.size !== 10 ||
+    (encoded[extended.payloadOffset] & 0x02) === 0 ||
+    encoded[extended.payloadOffset + 1] !== 0 ||
+    encoded[extended.payloadOffset + 2] !== 0 ||
+    encoded[extended.payloadOffset + 3] !== 0
+  ) {
+    throw new Error("Browser animated WebP has invalid VP8X feature flags.");
+  }
+  const readUint24Le = (at) => encoded.readUIntLE(at, 3);
+  const width = readUint24Le(extended.payloadOffset + 4) + 1;
+  const height = readUint24Le(extended.payloadOffset + 7) + 1;
+  const animationControl = chunks[1];
+  if (animationControl.size !== 6) {
+    throw new Error("Browser animated WebP has an invalid ANIM control size.");
+  }
+  const loopCount = encoded.readUInt16LE(animationControl.payloadOffset + 4);
+
+  const { stdout: sourceMetadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", sourcePath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const sourceAnimation = JSON.parse(sourceMetadataJson);
+  const expectedFrames = Number(sourceAnimation.frameCount);
+  const manifestFrames = Number(source.probe?.streams?.[0]?.nb_frames ?? 1);
+  const sourceLoop = Number(sourceAnimation.loop);
+  const expectedLoop =
+    sourceLoop === 0
+      ? 0
+      : path.extname(sourcePath).toLowerCase() === ".gif"
+        ? sourceLoop + 1
+        : sourceLoop;
+  if (
+    !Number.isSafeInteger(expectedFrames) ||
+    expectedFrames < 2 ||
+    expectedFrames !== manifestFrames ||
+    sourceAnimation.width !== width ||
+    sourceAnimation.height !== height ||
+    !Array.isArray(sourceAnimation.durationsMs) ||
+    sourceAnimation.durationsMs.length !== expectedFrames ||
+    !Number.isSafeInteger(expectedLoop) ||
+    expectedLoop < 0 ||
+    expectedLoop > 65_535 ||
+    loopCount !== expectedLoop
+  ) {
+    throw new Error("Browser animated WebP canvas, frame, or loop control differs from the source.");
+  }
+
+  const frames = chunks.filter((chunk) => chunk.type === "ANMF");
+  if (frames.length !== expectedFrames) {
+    throw new Error("Browser animated WebP does not contain one ANMF chunk per source frame.");
+  }
+  let maximumNestedChunk = 0;
+  for (let index = 0; index < frames.length; index += 1) {
+    const frame = frames[index];
+    if (frame.size < 24) {
+      throw new Error(`Browser animated WebP frame ${index + 1} is too short.`);
+    }
+    const frameX = readUint24Le(frame.payloadOffset) * 2;
+    const frameY = readUint24Le(frame.payloadOffset + 3) * 2;
+    const frameWidth = readUint24Le(frame.payloadOffset + 6) + 1;
+    const frameHeight = readUint24Le(frame.payloadOffset + 9) + 1;
+    const durationMs = readUint24Le(frame.payloadOffset + 12);
+    const flags = encoded[frame.payloadOffset + 15];
+    if (
+      frameX !== 0 ||
+      frameY !== 0 ||
+      frameWidth !== width ||
+      frameHeight !== height ||
+      durationMs !== Math.max(1, Math.round(sourceAnimation.durationsMs[index])) ||
+      flags !== 1
+    ) {
+      throw new Error(`Browser animated WebP frame ${index + 1} has invalid bounded controls.`);
+    }
+    let nestedOffset = frame.payloadOffset + 16;
+    let imageChunks = 0;
+    let alphaChunks = 0;
+    while (nestedOffset < frame.end) {
+      if (nestedOffset + 8 > frame.end) {
+        throw new Error(`Browser animated WebP frame ${index + 1} ends in a nested header.`);
+      }
+      const nestedType = encoded.toString("ascii", nestedOffset, nestedOffset + 4);
+      const nestedSize = encoded.readUInt32LE(nestedOffset + 4);
+      const nestedBytes = 8 + nestedSize + (nestedSize & 1);
+      if (nestedOffset + nestedBytes > frame.end) {
+        throw new Error(`Browser animated WebP frame ${index + 1} has an oversized nested chunk.`);
+      }
+      if (nestedType === "ALPH") alphaChunks += 1;
+      else if (nestedType === "VP8 " || nestedType === "VP8L") imageChunks += 1;
+      else {
+        throw new Error(
+          `Browser animated WebP frame ${index + 1} contains unsupported ${nestedType} data.`,
+        );
+      }
+      maximumNestedChunk = Math.max(maximumNestedChunk, nestedBytes);
+      nestedOffset += nestedBytes;
+    }
+    if (nestedOffset !== frame.end || imageChunks !== 1 || alphaChunks > 1) {
+      throw new Error(`Browser animated WebP frame ${index + 1} has invalid image chunks.`);
+    }
+  }
+
+  const { stdout: outputMetadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", localPath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const outputAnimation = JSON.parse(outputMetadataJson);
+  if (
+    outputAnimation.frameCount !== expectedFrames ||
+    outputAnimation.width !== width ||
+    outputAnimation.height !== height ||
+    outputAnimation.loop !== expectedLoop ||
+    outputAnimation.durationsMs.some(
+      (duration, index) => duration !== Math.max(1, Math.round(sourceAnimation.durationsMs[index])),
+    )
+  ) {
+    throw new Error("Pinned Pillow/libwebp did not decode the expected WebP animation metadata.");
+  }
+
+  const decodeFrame = async (imagePath, frameIndex) =>
+    (
+      await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", imagePath, String(frameIndex)],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 32 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const validationRoot = path.join(
+    workRoot,
+    `animated-webp-validation-${process.pid}-${Date.now()}`,
+  );
+  assertInside(workRoot, validationRoot);
+  await mkdir(validationRoot, { recursive: true });
+  const sourceRaw = path.join(validationRoot, "source.rgba");
+  const outputRaw = path.join(validationRoot, "output.rgba");
+  const allFrameSsim = [];
+  const allFrameSha256 = [];
+  try {
+    for (let index = 0; index < expectedFrames; index += 1) {
+      const [sourceFrame, outputFrame] = await Promise.all([
+        decodeFrame(sourcePath, index),
+        decodeFrame(localPath, index),
+      ]);
+      if (
+        sourceFrame.byteLength !== width * height * 4 ||
+        outputFrame.byteLength !== sourceFrame.byteLength
+      ) {
+        throw new Error(`Pinned Pillow returned an invalid frame size at index ${index}.`);
+      }
+      for (let pixel = 3; pixel < sourceFrame.byteLength; pixel += 4) {
+        if (sourceFrame[pixel] !== outputFrame[pixel]) {
+          throw new Error(`Browser animated WebP frame ${index + 1} changed alpha.`);
+        }
+      }
+      await Promise.all([
+        writeFile(sourceRaw, sourceFrame),
+        writeFile(outputRaw, outputFrame),
+      ]);
+      const { stderr } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "info",
+          "-f", "rawvideo", "-pixel_format", "rgba", "-video_size", `${width}x${height}`,
+          "-i", sourceRaw,
+          "-f", "rawvideo", "-pixel_format", "rgba", "-video_size", `${width}x${height}`,
+          "-i", outputRaw,
+          "-lavfi",
+          "[0:v:0]format=rgb24[source];[1:v:0]format=rgb24[output];[source][output]ssim",
+          "-frames:v", "1", "-f", "null", "NUL",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      const ssim = Number.parseFloat(
+        stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+      );
+      if (!Number.isFinite(ssim) || ssim < 0.9) {
+        throw new Error(`Browser animated WebP frame ${index + 1} measured SSIM ${ssim}.`);
+      }
+      allFrameSsim.push(ssim);
+      allFrameSha256.push(createHash("sha256").update(outputFrame).digest("hex"));
+    }
+  } finally {
+    await removeWithRetries(validationRoot);
+  }
+  return {
+    format: { format_name: "webp", size: String(finalState.metrics.outputBytes) },
+    withinValidation: {
+      method: "webp-riff-audit-plus-pinned-pillow-libwebp-metadata-and-all-frame-ssim",
+      frameCount: expectedFrames,
+      loopCount,
+      timingRoundedToMilliseconds: true,
+      maximumNestedChunk,
+      minimumFrameSsim: Math.min(...allFrameSsim),
+      allFrameSsim,
+      allFrameSha256,
+      alphaExact: true,
+      decodedByPinnedPillowLibwebp: true,
     },
   };
 }

@@ -48,6 +48,7 @@ import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import { runAvifToZip } from "./avif-conversion";
 import { runBrowserAnimationToApng } from "./apng-conversion";
 import { runBrowserAnimationToGif } from "./gif-conversion";
+import { runBrowserAnimationToWebp } from "./webp-animation";
 import {
   createTarValidationStream,
   TarStreamValidator,
@@ -485,6 +486,48 @@ async function writeBounded(
     try {
       await destination.write(writeChunk);
       metrics.outputBytes += part.byteLength;
+    } finally {
+      metrics.queuedBytes = 0;
+      metrics.pendingOperations = 0;
+    }
+    emitProgress(jobId, phase, metrics, startedAt);
+    await yieldForCancellation(metrics.outputBytes);
+  }
+}
+
+async function patchBounded(
+  destination: RandomAccessDestination,
+  position: number,
+  chunk: Uint8Array,
+  jobId: string,
+  phase: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  if (
+    !Number.isSafeInteger(position) ||
+    position < 0 ||
+    position + chunk.byteLength > metrics.outputBytes
+  ) {
+    throw new Error("A bounded output patch exceeds the written destination range.");
+  }
+  for (let offset = 0; offset < chunk.byteLength; offset += MAX_WRITE_CHUNK) {
+    assertActive();
+    const part = chunk.subarray(
+      offset,
+      Math.min(offset + MAX_WRITE_CHUNK, chunk.byteLength),
+    );
+    metrics.queuedBytes = part.byteLength;
+    metrics.peakQueuedBytes = Math.max(metrics.peakQueuedBytes, part.byteLength);
+    metrics.pendingOperations = 1;
+    metrics.peakPendingOperations = Math.max(metrics.peakPendingOperations, 1);
+    metrics.maxWriteChunkBytes = Math.max(metrics.maxWriteChunkBytes, part.byteLength);
+    try {
+      await destination.write({
+        type: "write",
+        position: position + offset,
+        data: part.slice(),
+      });
     } finally {
       metrics.queuedBytes = 0;
       metrics.pendingOperations = 0;
@@ -1445,6 +1488,36 @@ async function runImageConversion(
     throw new Error(
       "Image decompression ratio exceeds the 1,000:1 safety limit.",
     );
+  }
+
+  if (
+    outputFormat === "webp" &&
+    (inputFormat === "gif" || (inputFormat === "png" && isAnimatedPng(header)))
+  ) {
+    await runBrowserAnimationToWebp({
+      file,
+      inputMime,
+      width: dimensions.width,
+      height: dimensions.height,
+      maxOutputBytes: MAX_IMAGE_OUTPUT_BYTES,
+      metrics,
+      createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+      assertActive,
+      progress: (phase, force) => emitProgress(jobId, phase, metrics, startedAt, force),
+      write: (chunk, phase) =>
+        writeBounded(destination, chunk, jobId, phase, metrics, startedAt),
+      patch: (position, chunk, phase) =>
+        patchBounded(
+          destination,
+          position,
+          chunk,
+          jobId,
+          phase,
+          metrics,
+          startedAt,
+        ),
+    });
+    return;
   }
 
   const countedInput = createBoundedImageInput(

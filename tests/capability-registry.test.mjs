@@ -1434,6 +1434,33 @@ test("animated GIF outputs expose only routes with complete browser evidence", (
   );
 });
 
+test("animated WebP output profiles disclose all-frame lossless behavior", () => {
+  for (const [id, input, bytes] of [
+    ["png-to-webp", "png", 780_611],
+    ["gif-to-webp", "gif", 281_853],
+  ]) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.input, input, id);
+    assert.equal(profile.output, "webp", id);
+    assert.equal(profile.public, true, id);
+    assert.equal(profile.automatedTestStatus, "passed", id);
+    assert.equal(profile.maxTestedBytes, bytes, id);
+    assert.ok(
+      profile.metadataLimitations.some((limitation) =>
+        limitation.includes("preserve every browser-decoded composited frame"),
+      ),
+      `${id} must disclose all-frame behavior`,
+    );
+    assert.ok(
+      profile.fidelityLimitations.some((limitation) =>
+        limitation.includes("lossless maximum quality"),
+      ),
+      `${id} must disclose lossless animated-frame encoding`,
+    );
+  }
+});
+
 test("safe archive and raw-compression conversion matrices are complete", () => {
   const archiveFormats = [
     "tar",
