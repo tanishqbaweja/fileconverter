@@ -931,6 +931,31 @@ const categories = {
       ["jxl-to-png", "fixtures/images/highres-pattern.jxl"],
     ],
   },
+  "jxl-output-static": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-jxl", "highres-pattern.png"],
+      ["jpeg-to-jxl", "highres-pattern.jpg"],
+      ["webp-to-jxl", "highres-pattern.webp"],
+      ["avif-to-jxl", "highres-pattern.avif"],
+      ["bmp-to-jxl", "highres-pattern.bmp"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/images/${name}`,
+    ]),
+  },
+  "jxl-output-animated": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-jxl", "animated-pattern.apng"],
+      ["gif-to-jxl", "animated-pattern.gif"],
+      ["webp-to-jxl", "animated-pattern.webp"],
+      ["avif-to-jxl", "animated-pattern.avif"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/images/${name}`,
+    ]),
+  },
   "jxl-animated": {
     generator: "scripts/generate-animated-jxl-fixture.mjs",
     profiles: [

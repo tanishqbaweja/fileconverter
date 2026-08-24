@@ -12,12 +12,19 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **373**
-- Public profiles with a retained successful Chrome stress report: **373**
+- Public passed conversion profiles: **379**
+- Public profiles with a retained successful Chrome stress report: **379**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-24 bounded JPEG XL output:** six public PNG, JPEG, WebP, GIF, AVIF, and BMP input routes lazy-load a separately reproducible pinned libjxl 0.12.0 encoder. `JxlEncoderAddChunkedFrame` requests bounded pixel rectangles, one 64 KiB output-processor buffer waits for each destination write, the fixed Wasm heap is 56 MiB with a 44 MiB tracked encoder ceiling, and lossless effort 1 is libjxl's fastest lossless setting. The worker closes each decoded frame before encoding and reuses one RGBA allocation across animations. Exact microsecond durations and equivalent repetition semantics are encoded at a 1/1,000,000 timebase; no complete encoded output or frame set is retained.
+- **JPEG XL static speed and memory evidence:** the unchanged 3840×2160 fixtures passed three production-Chrome runs each: PNG in 0.372-0.550 seconds at 223.0 MiB, JPEG in 0.330-0.523 seconds at 192.4 MiB, WebP in 0.338-0.502 seconds at 229.4 MiB, AVIF in 0.352-0.537 seconds at 244.0 MiB, and the 24,883,254-byte BMP in 0.318-0.500 seconds at 224.0 MiB worst incremental complete-Chrome private memory. Output was byte-repeatable per route; PNG and BMP independently decoded to exact source pixels and all outputs were genuine 3840×2160 JPEG XL. Reads stayed at 262,144 bytes, output writes/queueing at 65,536 bytes, and one operation was pending.
+- **JPEG XL animation correctness and evidence:** eight-frame PNG/APNG, GIF, WebP, and AVIF sources passed 3/3 at 206.0, 222.0, 199.3, and 175.5 MiB respectively, completing in 0.474-1.135 seconds. Every output had eight frames, exact 250 ms durations, gap-free timestamps, an exact microsecond timebase, infinite looping, repeatable bytes, and cleanup recovery. Native FFmpeg decoded every output frame; pinned Pillow supplied independent source frames, and the separate bounded libjxl decoder verified encoded timebase, duration ticks, last-frame marker, and loop metadata. The lossless PNG/GIF/WebP fixtures matched all RGBA frames exactly; this AVIF fixture also measured per-frame SSIM 1.0 across the independent decoders.
+- **JPEG XL memory and speed optimization:** the first correct encoder reserved a fixed 96 MiB and failed the unchanged high-resolution PNG gate at 286.7 MiB. Measured codec rectangles peaked at only 256 KiB, so the fixed heap was reduced to the smallest proven 56 MiB configuration while keeping the 44 MiB animation allocation ceiling; PNG then passed at 223.0 MiB. Chromium's BMP decoder caused a separate correct-but-rejected 362.8 MiB result. A direct sequential 24/32-bit BMP row path now keeps one at-most-32 KiB row plus one capped RGB plane, cuts the same fixture to 224.0 MiB, improves time from 0.366-0.597 to 0.318-0.500 seconds, and emits the identical hash. Finally, repeated 3 MiB animation allocations produced a 260.0 MiB GIF outlier; reusing one buffer removed that churn and passed the clean rerun at 222.0 MiB with identical frames and output. These retained failures prevent repeating the rejected topologies.
+- **JPEG XL encoder reproducibility:** a second pinned Docker export matched the published JavaScript and Wasm byte-for-byte. SHA-256 is `F6C0A26A42BC4A1F1425ACF730947E6E64F664A58BF067E5DBDA48AD20A7B04E` for the build manifest, `15D504CC9AECCF9D20963329D93D7A6B860F21C46675C8DF690D963F8CA66879` for the JavaScript glue, and `FAFB17CBD0B2E3E03CA7F6E2DD632FC0978DA5436B46943B9246FA3A2006A315` for the Wasm module. The Docker build pins Emscripten, libjxl, Brotli, Highway, libpng, and skcms and publishes their licenses and patent notice beside the engine.
+- **JPEG XL failure, cancellation, and destination evidence:** focused production-browser tests cover six genuine input routes, exact static PNG pixels, all-frame GIF pixels/timing/looping, direct selected-destination writing, injected asynchronous write rejection, mid-animation cancellation, corrupt GIF, and truncated GIF. The encoder propagates errors, returns pending and queued bytes to zero, destroys the fixed engine, and removes every browser-owned partial output. The separately built metadata inspector discards each bounded PNG decode chunk and stores no converted copy.
+- **2026-08-24 JPEG XL output milestone verification:** the registry publishes 379 passed routes and all 379 have retained successful Chrome stress evidence. The complete image suite passed 147/147 after its first full run exposed and the implementation fixed an immediate-cancellation/native-finalization race; the repaired cancellation case then passed 5/5 repeated runs before the clean full rerun. Unit tests passed 36/36, and the production build, TypeScript, ESLint, and diff checks passed. Browser output, validation copies, Playwright artifacts, and Chrome profiles remain project-local and cleanup-managed; disposable converted copies are removed, while the protected root fixture remains 2,958,573,265 bytes with SHA-256 `31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34`.
 - **2026-08-24 bounded animated APNG output:** the public `gif-to-apng` and `webp-to-apng` routes keep Chrome's native animation decoder, copy one complete composited frame as RGBA in strips no larger than 256 KiB, apply the deterministic PNG Sub filter, and feed one browser-native `CompressionStream` zlib stream per frame directly into 64 KiB-bounded IDAT/fdAT chunks. At most one destination operation is pending, no complete frame set or PNG Blob is retained, and the frame is closed before decoding the next. GIF passed 3/3 production-Chrome runs in 0.373-0.462 seconds at 124.5 MiB worst incremental complete-Chrome private memory; WebP passed 3/3 in 0.405-0.506 seconds at 123.2 MiB. Both produced the same repeatable 510,774-byte APNG and SHA-256 `7db18b94b2b92448a3a480829c0d9dd702e0d0bf8232a354285388b3127633e8` with at most 16,400-byte writes. The explicit JavaScript image working set peaked at 516,159 bytes and returned to zero after every run.
 - **APNG output correctness and cleanup:** independent chunk audits verified IHDR/acTL/fcTL/IDAT/fdAT/IEND order, gap-free shared sequence numbers, eight full-canvas RGBA frames, exact 1/4-second delay rationals, and infinite play control. Native FFprobe decoded all eight frames and their exact timestamps; FFmpeg output RGBA matched every frame decoded independently through pinned Pillow 11.3.0/libgif or libwebp. Focused success, injected-write-failure, cancellation, corrupt-input, and truncated-input tests passed 7/7, and every browser-owned partial output was removed.
 - **APNG speed and repeatability optimization:** the first native-canvas-PNG repackaging topology was correct but failed the unchanged repeatable-output gate: one three-run profile emitted 836,477 then 836,461 bytes with two hashes at 0.473-0.579 seconds and 165.0 MiB worst incremental memory. A one-pixel warm-up still emitted 836,489 then 836,461 bytes, and re-encoding the first real frame still alternated two hashes despite equal 836,477-byte sizes. The selected scanline/Sub-filter/CompressionStream topology removed the nondeterministic PNG Blob, cut final GIF time to 0.373-0.462 seconds, cut output to 510,774 bytes, and reduced worst incremental memory to 124.5 MiB without weakening pixel, timing, loop, cleanup, or repeatability checks. The failed experiments remain recorded below so these approaches are not retried.
@@ -280,11 +287,13 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avif-to-bmp | 100,464 | 3 | 24,883,254 | 0.27 s–0.38 s | 171.5 MiB | 0.0 MiB | read 65,536 B / write 195,840 B | passed |
 | avif-to-ico | 100,464 | 3 | 13,545 | 0.09 s–0.15 s | 84.7 MiB | 0.0 MiB | read 100,464 B / write 13,523 B | passed |
 | avif-to-jpeg | 100,464 | 3 | 367,450 | 0.12 s–0.17 s | 69.3 MiB | 0.0 MiB | read 65,536 B / write 262,144 B | passed |
+| avif-to-jxl | 100,464 | 3 | 879,904 | 0.35 s–0.54 s | 244.0 MiB | 56.0 MiB | read 65,536 B / write 65,536 B | passed |
 | avif-to-png | 100,464 | 3 | 1,300,494 | 0.10 s–0.16 s | 72.3 MiB | 0.0 MiB | read 65,536 B / write 262,144 B | passed |
 | avif-to-webp | 100,464 | 3 | 250,656 | 0.39 s–0.45 s | 181.4 MiB | 0.0 MiB | read 65,536 B / write 250,656 B | passed |
 | avif-to-zip | 23,391 | 3 | 329,317 | 0.40 s–0.61 s | 162.7 MiB | 40.0 MiB | read 9,093 B / write 8,192 B | passed |
 | bmp-to-ico | 24,883,254 | 3 | 12,290 | 0.18 s–0.23 s | 86.3 MiB | 0.0 MiB | read 262,144 B / write 12,268 B | passed |
 | bmp-to-jpeg | 24,883,254 | 3 | 374,384 | 0.21 s–0.25 s | 70.8 MiB | 0.0 MiB | read 262,144 B / write 243,312 B | passed |
+| bmp-to-jxl | 24,883,254 | 3 | 681,383 | 0.32 s–0.50 s | 224.0 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | bmp-to-png | 24,883,254 | 3 | 1,019,495 | 0.18 s–0.24 s | 73.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | bmp-to-webp | 24,883,254 | 3 | 257,798 | 0.48 s–0.55 s | 239.6 MiB | 0.0 MiB | read 262,144 B / write 257,798 B | passed |
 | bzip2-compress | 268,435,456 | 3 | 270,593,081 | 39.16 s–39.85 s | 139.2 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
@@ -327,6 +336,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | gif-to-bmp | 281,853 | 3 | 2,359,350 | 0.05 s–0.11 s | 69.5 MiB | 0.0 MiB | read 131,072 B / write 196,608 B | passed |
 | gif-to-ico | 281,853 | 3 | 16,065 | 0.03 s–0.09 s | 80.2 MiB | 0.0 MiB | read 216,317 B / write 16,043 B | passed |
 | gif-to-jpeg | 281,853 | 3 | 87,358 | 0.03 s–0.08 s | 68.9 MiB | 0.0 MiB | read 216,317 B / write 87,358 B | passed |
+| gif-to-jxl | 281,853 | 3 | 2,258,628 | 0.92 s–1.10 s | 222.0 MiB | 56.0 MiB | read 196,608 B / write 62,430 B | passed |
 | gif-to-png | 281,853 | 3 | 101,506 | 0.03 s–0.08 s | 70.3 MiB | 0.0 MiB | read 196,608 B / write 101,506 B | passed |
 | gif-to-webp | 281,853 | 3 | 226,756 | 0.32 s–0.42 s | 156.5 MiB | 0.0 MiB | read 262,144 B / write 28,726 B | passed |
 | gif-to-zip | 281,853 | 3 | 838,296 | 0.16 s–0.24 s | 153.8 MiB | 0.0 MiB | read 216,317 B / write 107,183 B | passed |
@@ -340,6 +350,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | html-to-txt | 143,850,123 | 3 | 101,380,000 | 15.71 s–15.93 s | 231.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | jpeg-to-bmp | 418,486 | 3 | 24,883,254 | 0.28 s–0.36 s | 169.9 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | jpeg-to-ico | 418,486 | 3 | 12,998 | 0.09 s–0.14 s | 80.5 MiB | 0.0 MiB | read 196,608 B / write 12,976 B | passed |
+| jpeg-to-jxl | 418,486 | 3 | 987,715 | 0.33 s–0.52 s | 192.4 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | jpeg-to-png | 418,486 | 3 | 1,792,327 | 0.19 s–0.25 s | 72.9 MiB | 0.0 MiB | read 196,608 B / write 262,144 B | passed |
 | jpeg-to-webp | 418,486 | 3 | 244,588 | 0.56 s–0.67 s | 199.1 MiB | 0.0 MiB | read 196,608 B / write 244,588 B | passed |
 | json-to-csv | 293,633,883 | 3 | 139,913,895 | 24.37 s–25.13 s | 185.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -493,6 +504,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | png-to-gif | 84,034 | 3 | 35,817 | 0.08 s–0.15 s | 102.8 MiB | 0.0 MiB | read 84,034 B / write 7,680 B | passed |
 | png-to-ico | 780,611 | 3 | 12,290 | 0.11 s–0.17 s | 89.3 MiB | 0.0 MiB | read 262,144 B / write 12,268 B | passed |
 | png-to-jpeg | 780,611 | 3 | 374,384 | 0.22 s–0.30 s | 102.2 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| png-to-jxl | 780,611 | 3 | 682,393 | 0.37 s–0.55 s | 223.0 MiB | 56.0 MiB | read 262,144 B / write 65,536 B | passed |
 | png-to-webp | 482,505 | 3 | 226,756 | 0.34 s–0.44 s | 148.5 MiB | 0.0 MiB | read 262,144 B / write 28,726 B | passed |
 | png-to-zip | 482,505 | 3 | 838,296 | 0.16 s–0.24 s | 136.6 MiB | 0.0 MiB | read 262,144 B / write 107,183 B | passed |
 | pptx-to-txt | 135,296,355 | 3 | 92,391,679 | 10.50 s–10.93 s | 217.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -561,6 +573,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webp-to-gif | 28,496 | 3 | 36,735 | 0.08 s–0.16 s | 86.2 MiB | 0.0 MiB | read 28,496 B / write 7,936 B | passed |
 | webp-to-ico | 263,320 | 3 | 13,013 | 0.10 s–0.16 s | 77.6 MiB | 0.0 MiB | read 197,784 B / write 12,991 B | passed |
 | webp-to-jpeg | 263,320 | 3 | 364,322 | 0.13 s–0.18 s | 69.9 MiB | 0.0 MiB | read 131,072 B / write 262,144 B | passed |
+| webp-to-jxl | 263,320 | 3 | 911,215 | 0.34 s–0.50 s | 229.4 MiB | 56.0 MiB | read 196,608 B / write 65,536 B | passed |
 | webp-to-png | 263,320 | 3 | 1,528,103 | 0.12 s–0.17 s | 69.8 MiB | 0.0 MiB | read 197,784 B / write 262,144 B | passed |
 | webp-to-zip | 185,794 | 3 | 838,297 | 0.18 s–0.25 s | 140.2 MiB | 0.0 MiB | read 120,258 B / write 107,183 B | passed |
 | wma-to-aac | 142,503,082 | 3 | 46,316,859 | 29.67 s–30.28 s | 162.1 MiB | 32.0 MiB | read 262,144 B / write 582 B | passed |
@@ -666,6 +679,9 @@ Stream ma |
 | 2026-08-20T11:44:06.259Z | avif-to-zip | 23,391 | 3 | 23,391 | Failed checks: processTreePrivateMemory; measured 273.8 MiB against a 250.0 MiB limit. |
 | 2026-08-24T00:42:48.439Z | gif-to-apng | 281,853 | 3 | 281,853 | Failed checks: repeatableOutputHash; measured 148.7 MiB against a 250.0 MiB limit. |
 | 2026-08-24T02:03:15.098Z | webp-to-gif | 28,496 | 0 | 28,496 | sourceSsim is not defined |
+| 2026-08-24T03:15:26.929Z | png-to-jxl | 780,611 | 3 | 780,611 | Failed checks: processTreePrivateMemory; measured 286.7 MiB against a 250.0 MiB limit. |
+| 2026-08-24T03:35:41.653Z | bmp-to-jxl | 24,883,254 | 3 | 24,883,254 | Failed checks: processTreePrivateMemory; measured 362.8 MiB against a 250.0 MiB limit. |
+| 2026-08-24T03:44:52.913Z | gif-to-jxl | 281,853 | 3 | 281,853 | Failed checks: processTreePrivateMemory; measured 260.0 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
@@ -742,11 +758,13 @@ Stream ma |
 | avif-to-bmp | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-ico | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-jpeg | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
+| avif-to-jxl | image | libjxl-encoder-wasm | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-png | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-webp | image | image-browser | re-encode | 100,464 B | 3-run Chrome report |
 | avif-to-zip | image | libavif-wasm | re-encode | 23,391 B | 3-run Chrome report |
 | bmp-to-ico | image | image-browser | re-encode | 24,883,254 B | 3-run Chrome report |
 | bmp-to-jpeg | image | image-browser | re-encode | 24,883,254 B | 3-run Chrome report |
+| bmp-to-jxl | image | libjxl-encoder-wasm | re-encode | 24,883,254 B | 3-run Chrome report |
 | bmp-to-png | image | image-browser | re-encode | 24,883,254 B | 3-run Chrome report |
 | bmp-to-webp | image | image-browser | re-encode | 24,883,254 B | 3-run Chrome report |
 | bzip2-compress | compression | bzip2-wasm | stream | 268,435,456 B | 3-run Chrome report |
@@ -789,6 +807,7 @@ Stream ma |
 | gif-to-bmp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-ico | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-jpeg | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
+| gif-to-jxl | image | libjxl-encoder-wasm | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-png | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-webp | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
 | gif-to-zip | image | image-browser | re-encode | 281,853 B | 3-run Chrome report |
@@ -802,6 +821,7 @@ Stream ma |
 | html-to-txt | document | document-stream | stream | 143,850,123 B | 3-run Chrome report |
 | jpeg-to-bmp | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
 | jpeg-to-ico | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
+| jpeg-to-jxl | image | libjxl-encoder-wasm | re-encode | 418,486 B | 3-run Chrome report |
 | jpeg-to-png | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
 | jpeg-to-webp | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
 | json-to-csv | data | records-stream | stream | 293,633,883 B | 3-run Chrome report |
@@ -955,6 +975,7 @@ Stream ma |
 | png-to-gif | image | image-browser | re-encode | 482,505 B | 3-run Chrome report |
 | png-to-ico | image | image-browser | re-encode | 780,611 B | 3-run Chrome report |
 | png-to-jpeg | image | image-browser | re-encode | 780,611 B | 3-run Chrome report |
+| png-to-jxl | image | libjxl-encoder-wasm | re-encode | 780,611 B | 3-run Chrome report |
 | png-to-webp | image | image-browser | re-encode | 780,611 B | 3-run Chrome report |
 | png-to-zip | image | image-browser | re-encode | 482,505 B | 3-run Chrome report |
 | pptx-to-txt | presentation | presentation-stream | stream | 135,296,355 B | 3-run Chrome report |
@@ -1023,6 +1044,7 @@ Stream ma |
 | webp-to-gif | image | image-browser | re-encode | 185,794 B | 3-run Chrome report |
 | webp-to-ico | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-jpeg | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
+| webp-to-jxl | image | libjxl-encoder-wasm | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-png | image | image-browser | re-encode | 263,320 B | 3-run Chrome report |
 | webp-to-zip | image | image-browser | re-encode | 185,794 B | 3-run Chrome report |
 | wma-to-aac | audio | ffmpeg-audio | re-encode | 142,503,082 B | 3-run Chrome report |
@@ -1051,7 +1073,7 @@ This project is not complete yet. The specification still names major surfaces t
 
 - Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader OGV, 3GP, AVI, VP9, AV1, and MPEG-2 audio/codec combinations beyond the certified Matroska, WebM, extraction, and transcode routes also remain.
 - Audio: AMR-WB output is intentionally withheld pending explicit patent clearance, and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants plus user-selectable bitrate, sample-rate, channel-layout, and artwork/tag handling also remain.
-- Images: HEIF/HEIC, camera raw formats, animated AVIF/JPEG XL output, and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. GIF/WebP to APNG, APNG/WebP to GIF, APNG/GIF to animated WebP, still JPEG XL to PNG, animated PNG/APNG/GIF/WebP/AVIF/JPEG XL frame archives, and multipage TIFF extraction to ZIP are certified.
+- Images: HEIF/HEIC, camera raw formats, animated AVIF destination output, and broader SVG features such as text, CSS, animation, linked resources, and filter/mask features outside the certified bounded subset remain absent. PNG/JPEG/WebP/GIF/AVIF/BMP to lossless JPEG XL, GIF/WebP to APNG, APNG/WebP to GIF, APNG/GIF to animated WebP, still JPEG XL to PNG, animated PNG/APNG/GIF/WebP/AVIF/JPEG XL frame archives, and multipage TIFF extraction to ZIP are certified.
 - Product validation: the baseline headed success/cancellation/failure/direct-destination flow is now evidenced; broader manual interaction coverage across additional profile families and continued multi-gigabyte scaling for newly added media routes remain.
 
 ## Cleanup invariant

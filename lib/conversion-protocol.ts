@@ -11,6 +11,8 @@ export interface ConversionMetrics {
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
   wasmMemories?: Record<string, number>;
+  codecWorkingBytes?: number;
+  peakCodecWorkingBytes?: number;
   scratchBytes?: number;
   peakScratchBytes?: number;
   maxScratchReadChunkBytes?: number;

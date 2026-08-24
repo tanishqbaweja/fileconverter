@@ -18,6 +18,7 @@ export type EngineId =
   | "svg-browser"
   | "libtiff-wasm"
   | "libjxl-wasm"
+  | "libjxl-encoder-wasm"
   | "libavif-wasm"
   | "ffmpeg-remux"
   | "ffmpeg-audio"
@@ -2233,6 +2234,15 @@ const imageProfiles = [
   ["avif-to-bmp", "avif", "bmp"],
 ] as const;
 
+const jxlOutputProfiles = [
+  ["png-to-jxl", "png"],
+  ["jpeg-to-jxl", "jpeg"],
+  ["webp-to-jxl", "webp"],
+  ["gif-to-jxl", "gif"],
+  ["avif-to-jxl", "avif"],
+  ["bmp-to-jxl", "bmp"],
+] as const;
+
 const icoOutputProfiles = [
   ["png-to-ico", "png"],
   ["jpeg-to-ico", "jpeg"],
@@ -3732,6 +3742,35 @@ export const conversionProfiles: readonly ConversionProfile[] = [
           : output === "bmp"
             ? ["BMP output uses 24-bit color and cannot preserve transparency."]
           : [],
+    maxTestedBytes: imageMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
+  })),
+  ...jxlOutputProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "jxl",
+    engine: "libjxl-encoder-wasm" as const,
+    route: "re-encode" as const,
+    browserRequirements:
+      input === "bmp"
+        ? ["WebAssembly", "Web Workers", "File System Access"]
+        : ["ImageDecoder", "WebAssembly", "Web Workers", "File System Access"],
+    cpuClass: "medium" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "Static and animated inputs preserve every browser-decoded complete composited frame; animation uses an exact microsecond timebase and equivalent playback repetition semantics.",
+      "EXIF, ICC profiles, textual metadata, source compression settings, frame rectangles, disposal operations, and blend operations are not copied.",
+      "At most 1,000 frames, 8,388,608 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, 64 GiB aggregate decoded data, and 128 MiB encoded output are accepted.",
+      ...(input === "bmp"
+        ? [
+            "BMP input is decoded directly from bounded rows and accepts uncompressed 24-bit or 32-bit Windows BMP pixel arrays; compressed, paletted, and bitfield BMP variants are rejected.",
+          ]
+        : []),
+    ],
+    fidelityLimitations: [
+      "Pinned libjxl 0.12.0 effort 1 losslessly preserves Chromium's decoded 8-bit sRGB or sRGBA pixels; higher source bit depths and source color profiles are converted by Chromium before encoding.",
+    ],
     maxTestedBytes: imageMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,

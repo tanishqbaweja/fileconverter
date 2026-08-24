@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 373
+complete-Chromium memory profile have passed. The current registry publishes 379
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG or GIF to WebP; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO/JPEG XL destinations; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG or GIF to WebP; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -147,9 +147,13 @@ Hard limits:
   and 1,048,576 rows; ODP pages: 10,000
 - structured-data columns: 4,096
 - image input: 64 MiB; decoded surface: 8,388,608 pixels; edge: 8,192 px
-- JPEG XL: fixed 112 MiB Wasm heap; 102 MiB tracked decoder allocation;
+- JPEG XL input: fixed 112 MiB Wasm heap; 102 MiB tracked decoder allocation;
   1 MiB retained input window; 16 MiB maximum output stripe or animation-frame
   surface; 1,000 animation frames; 64 GiB and 1,000:1 aggregate decoded limits
+- JPEG XL output: fixed 56 MiB Wasm heap; 44 MiB tracked encoder allocation;
+  16 MiB pixel-callback ceiling; 64 KiB output writes; one pending write; one
+  reusable decoded animation-frame buffer; 1,000 frames, 128 MiB output, and the
+  same 8,388,608-pixel, 64 GiB, and 1,000:1 aggregate limits
 - animated AVIF: fixed 40 MiB Wasm heap; 256 KiB reads; 64 KiB maximum
   engine write; 16 MiB maximum frame surface; 1,000 animation frames; 64 GiB
   and 1,000:1 aggregate decoded limits
@@ -605,6 +609,28 @@ EXIF, ICC, text metadata, and animation are not preserved;
 JPEG and BMP composite transparency over white, and JPEG/WebP outputs are lossy
 at the disclosed quality.
 
+JPEG XL output is the animation-preserving exception. A separate lazy-loaded,
+reproducible libjxl 0.12.0 encoder requests bounded pixel rectangles through
+`JxlEncoderAddChunkedFrame`, writes through one 64 KiB output-processor buffer,
+and uses lossless effort 1, the fastest libjxl lossless setting. Static PNG,
+JPEG, WebP, AVIF, and BMP and complete animated PNG/APNG, GIF, WebP, and AVIF
+tracks are supported. The worker decodes and closes one frame at a time and
+reuses one RGBA allocation for every animation frame; it never retains a frame
+set or complete encoded output. Animation uses a 1/1,000,000 timebase and maps
+playback repetitions exactly. The independent validator checks every decoded
+frame and timestamp with FFmpeg/Pillow and checks timebase and loop metadata
+through the separately built bounded libjxl decoder. EXIF, ICC, text metadata,
+source compression choices, frame rectangles, blend, and disposal operations
+are not copied; Chromium's decoded 8-bit sRGB/sRGBA pixels are encoded exactly.
+
+BMP-to-JPEG-XL bypasses Chromium's high-memory BMP decoder. It reads the file
+sequentially in at most 256 KiB chunks, reuses one source row no larger than
+32 KiB, normalizes bottom-up or top-down uncompressed 24/32-bit BGR rows into a
+single capped RGB plane, and feeds that plane to the same chunked encoder. On
+the unchanged 24,883,254-byte 3840×2160 fixture, this cut worst incremental
+private memory from a rejected 362.8 MiB to 224.0 MiB and improved conversion
+from 0.366-0.597 seconds to 0.318-0.500 seconds with the identical output hash.
+
 PNG/APNG, GIF, and WebP frame-archive routes select Chrome's animation track,
 decode and release one composited frame at a time, encode that frame as PNG,
 and stream it immediately into a stored ZIP entry. Stored entries avoid a
@@ -794,7 +820,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, camera raw,
-animated AVIF/JPEG XL output, unsupported 7Z codecs, and
+animated AVIF output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -875,6 +901,7 @@ npm run build:bzip2
 npm run build:xz
 npm run build:archive7z
 npm run build:jxl
+npm run build:jxl-encoder
 npm run build:avif
 npm run build
 ```
@@ -882,7 +909,7 @@ npm run build
 The Docker builds verify each source archive before compilation. Exact
 configure switches and Emscripten flags are in `media/ffmpeg/`,
 `compression/bzip2/`, `compression/xz/`, `compression/libarchive7z/`, and
-`images/libjxl/` or `images/libavif/`.
+`images/libjxl/`, `images/libjxl-encoder/`, or `images/libavif/`.
 Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
@@ -1107,6 +1134,10 @@ profiler:
 | Images, tiled TIFF -> PNG | 50,338,032 B | 164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference |
 | Images, JPEG XL -> PNG | 630,393 B | 202.4 MiB | exact repeatable PNG hash, native decode, dimensions, SSIM 1.0 |
 | Images, animated JPEG XL -> PNG ZIP | 1,315,111 B | 229.1 MiB | repeatable ZIP hash; all eight frames exactly match independent native decode; timing manifest |
+| Images, PNG -> JPEG XL | 780,611 B | 223.0 MiB | repeatable lossless JXL hash; native decode, dimensions, SSIM 1.0 |
+| Images, AVIF -> JPEG XL | 100,464 B | 244.0 MiB | repeatable lossless JXL hash of Chromium-decoded pixels; independent native decode and dimensions |
+| Images, BMP -> JPEG XL | 24,883,254 B | 224.0 MiB | bounded direct BMP rows; repeatable exact lossless JXL pixels and native decode |
+| Images, animated GIF -> JPEG XL | 281,853 B | 222.0 MiB | eight exact RGBA frames; exact 250 ms timing, microsecond timebase, infinite loop, repeatable output |
 | Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
 | Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
 | Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |

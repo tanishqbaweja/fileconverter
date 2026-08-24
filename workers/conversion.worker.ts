@@ -45,6 +45,7 @@ import { runXzConversion } from "./xz-compression";
 import { runZipToCompressedTar } from "./zip-compressed-tar-conversion";
 import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
+import { runImageToJxl } from "./jxl-encoding";
 import { runAvifToZip } from "./avif-conversion";
 import { runBrowserAnimationToApng } from "./apng-conversion";
 import { runBrowserAnimationToGif } from "./gif-conversion";
@@ -270,6 +271,7 @@ function newMetrics(): ConversionMetrics {
     wasmMemories: {},
     sharedArrayBufferBytes: 0,
     activeWorkerCount: 1,
+    imageWorkingBytes: 0,
   };
 }
 
@@ -679,6 +681,7 @@ const imageMimeTypes: Record<string, string> = {
   avif: "image/avif",
   bmp: "image/bmp",
   ico: "image/x-icon",
+  jxl: "image/jxl",
 };
 
 interface ImageDimensions {
@@ -1455,22 +1458,6 @@ async function runImageConversion(
   if (!inputMime || !outputMime) {
     throw new Error("This bounded image route is not installed.");
   }
-  const Decoder = (
-    globalThis as unknown as { ImageDecoder?: WithinImageDecoderConstructor }
-  ).ImageDecoder;
-  if (!Decoder || typeof OffscreenCanvas !== "function") {
-    throw new Error(
-      "This browser does not provide the ImageDecoder and OffscreenCanvas APIs required by this route.",
-    );
-  }
-  if (
-    Decoder.isTypeSupported &&
-    !(await Decoder.isTypeSupported(inputMime))
-  ) {
-    throw new Error(
-      `This browser does not provide an ImageDecoder for ${inputMime}.`,
-    );
-  }
   const header = await readImageHeader(file, metrics);
   const dimensions = parseImageDimensions(inputFormat, header);
   const codedPixels = dimensions.width * dimensions.height;
@@ -1488,6 +1475,25 @@ async function runImageConversion(
     throw new Error(
       "Image decompression ratio exceeds the 1,000:1 safety limit.",
     );
+  }
+
+  const Decoder = (
+    globalThis as unknown as { ImageDecoder?: WithinImageDecoderConstructor }
+  ).ImageDecoder;
+  if (outputFormat !== "jxl") {
+    if (!Decoder || typeof OffscreenCanvas !== "function") {
+      throw new Error(
+        "This browser does not provide the ImageDecoder and OffscreenCanvas APIs required by this route.",
+      );
+    }
+    if (
+      Decoder.isTypeSupported &&
+      !(await Decoder.isTypeSupported(inputMime))
+    ) {
+      throw new Error(
+        `This browser does not provide an ImageDecoder for ${inputMime}.`,
+      );
+    }
   }
 
   if (
@@ -1518,6 +1524,35 @@ async function runImageConversion(
         ),
     });
     return;
+  }
+
+  if (outputFormat === "jxl") {
+    await runImageToJxl({
+      file,
+      inputMime,
+      inputFormat,
+      inputHeader: header,
+      width: dimensions.width,
+      height: dimensions.height,
+      preferAnimation:
+        inputFormat === "gif" ||
+        (inputFormat === "png" && isAnimatedPng(header)) ||
+        (inputFormat === "webp" && isAnimatedWebp(header)) ||
+        (inputFormat === "avif" && isAnimatedAvif(header)),
+      writable: destination,
+      jobId,
+      metrics,
+      startedAt,
+      createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+      isCancelled: () => cancelled,
+      emitProgress,
+      post,
+    });
+    return;
+  }
+
+  if (!Decoder) {
+    throw new Error("This browser does not provide the ImageDecoder API required by this route.");
   }
 
   const countedInput = createBoundedImageInput(
@@ -4372,7 +4407,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         startedAt,
       );
     } else if (
-      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)$/.test(profileId)
+      /^(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl)$/.test(profileId)
     ) {
       await runImageConversion(
         profileId,

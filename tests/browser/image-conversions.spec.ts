@@ -25,25 +25,31 @@ const chromePath =
 const routes = [
   ["png-to-jpeg", "test-pattern.png", "jpg", "mjpeg"],
   ["png-to-webp", "test-pattern.png", "webp", "webp"],
+  ["png-to-jxl", "test-pattern.png", "jxl", "jpegxl", undefined, 1024, 768, 1_000, "rgba", "test-pattern.png", "rgba"],
   ["png-to-gif", "test-pattern.png", "gif", "gif", undefined, 1024, 768, 1_000, undefined, "test-pattern.png", "rgb24", 0.90],
   ["jpeg-to-png", "test-pattern.jpg", "png", "png"],
   ["jpeg-to-webp", "test-pattern.jpg", "webp", "webp"],
+  ["jpeg-to-jxl", "test-pattern.jpg", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
   ["webp-to-png", "test-pattern.webp", "png", "png"],
   ["webp-to-jpeg", "test-pattern.webp", "jpg", "mjpeg"],
+  ["webp-to-jxl", "test-pattern.webp", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
   ["webp-to-gif", "test-pattern.webp", "gif", "gif", undefined, 1024, 768, 1_000, undefined, "test-pattern.webp", "rgb24", 0.90],
   ["webp-to-png", "animated-pattern.webp", "png", "png", undefined, 1024, 768, 1_000, undefined, "animated-pattern-first-frame-reference.png"],
   ["webp-to-jpeg", "animated-pattern.webp", "jpg", "mjpeg"],
   ["gif-to-png", "animated-pattern.gif", "png", "png"],
   ["gif-to-jpeg", "animated-pattern.gif", "jpg", "mjpeg"],
+  ["gif-to-jxl", "animated-pattern.gif", "jxl", "jpegxl_anim", undefined, 1024, 768, 1_000],
   ["avif-to-png", "test-pattern.avif", "png", "png"],
   ["avif-to-jpeg", "test-pattern.avif", "jpg", "mjpeg"],
   ["avif-to-webp", "test-pattern.avif", "webp", "webp"],
+  ["avif-to-jxl", "test-pattern.avif", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
   ["avif-to-png", "animated-pattern.avif", "png", "png", undefined, 512, 384],
   ["avif-to-jpeg", "animated-pattern.avif", "jpg", "mjpeg", undefined, 512, 384],
   ["avif-to-webp", "animated-pattern.avif", "webp", "webp", undefined, 512, 384],
   ["bmp-to-png", "test-pattern.bmp", "png", "png"],
   ["bmp-to-jpeg", "test-pattern.bmp", "jpg", "mjpeg"],
   ["bmp-to-webp", "test-pattern.bmp", "webp", "webp"],
+  ["bmp-to-jxl", "test-pattern.bmp", "jxl", "jpegxl", undefined, 1024, 768, 1_000],
   ["png-to-bmp", "test-pattern.png", "bmp", "bmp"],
   ["jpeg-to-bmp", "test-pattern.jpg", "bmp", "bmp"],
   ["webp-to-bmp", "test-pattern.webp", "bmp", "bmp"],
@@ -231,9 +237,10 @@ for (const [
       );
       expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
       if (
-        sourceName.endsWith(".gif") ||
-        sourceName === "animated-pattern.webp" ||
-        sourceName === "animated-pattern.avif"
+        !profileId.endsWith("-to-jxl") &&
+        (sourceName.endsWith(".gif") ||
+          sourceName === "animated-pattern.webp" ||
+          sourceName === "animated-pattern.avif")
       ) {
         expect(state?.warnings).toContain(
           "This still-image route converts only the first animation frame.",
@@ -381,6 +388,105 @@ for (const [
     }
   });
 }
+
+test("GIF to JPEG XL preserves every frame, microsecond timing, and infinite looping", async () => {
+  const sourcePath = path.join(projectRoot, "fixtures", "images", "animated-pattern.gif");
+  const outputPath = path.join(outputRoot, "gif-to-jxl-animated.jxl");
+  const archivePath = path.join(outputRoot, "gif-to-jxl-verify.zip");
+  const extractRoot = path.join(outputRoot, "gif-to-jxl-verify-entries");
+  for (const target of [outputPath, archivePath, extractRoot]) assertProjectLocal(target);
+  try {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+    await page.locator('[data-testid="format-select"]').selectOption("gif-to-jxl");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 60_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.warnings).toEqual([]);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    expect(state?.metrics?.imageWorkingBytes).toBe(0);
+    expect(state?.metrics?.wasmMemories?.["libjxl-encoder"]).toBe(56 * 1024 * 1024);
+    await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
+
+    const { stdout: probeText } = await execFileAsync(
+      "ffprobe",
+      ["-v", "error", "-show_streams", "-show_frames", "-of", "json", outputPath],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const probe = JSON.parse(probeText);
+    expect(probe.streams[0]).toMatchObject({
+      codec_name: "jpegxl_anim",
+      width: 1024,
+      height: 768,
+      pix_fmt: "rgba",
+      time_base: "1/1000000",
+    });
+    expect(probe.frames).toHaveLength(8);
+    for (let index = 0; index < 8; index += 1) {
+      expect(Number(probe.frames[index].pts_time)).toBeCloseTo(index * 0.25, 6);
+      expect(Number(probe.frames[index].duration_time)).toBeCloseTo(0.25, 6);
+    }
+    const decodeAllFrames = async (imagePath: string): Promise<Buffer> =>
+      (
+        await execFileAsync(
+          "ffmpeg",
+          ["-v", "error", "-i", imagePath, "-fps_mode", "passthrough", "-pix_fmt", "rgba", "-f", "rawvideo", "-"],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 32 * 1024 * 1024,
+            encoding: "buffer",
+          },
+        )
+      ).stdout;
+    expect(await decodeAllFrames(outputPath)).toEqual(await decodeAllFrames(sourcePath));
+
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(outputPath);
+    await page.locator('[data-testid="format-select"]').selectOption("jxl-to-zip");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 60_000 },
+    ).toBe("complete");
+    const verifyState = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    await copyAndDeleteBrowserOutput(verifyState!.opfsName!, archivePath);
+    await mkdir(extractRoot, { recursive: true });
+    await execFileAsync("tar", ["-xf", archivePath, "-C", extractRoot], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const manifest = JSON.parse(
+      await readFile(path.join(extractRoot, "animation.json"), "utf8"),
+    );
+    expect(manifest.jpegXlLoopCount).toBe("infinite");
+    expect(manifest.ticksPerSecond).toEqual({ numerator: 1_000_000, denominator: 1 });
+    expect(manifest.frames).toHaveLength(8);
+    expect(manifest.frames.map((record: { durationMicros: number }) => record.durationMicros)).toEqual(
+      Array.from({ length: 8 }, () => 250_000),
+    );
+  } finally {
+    validationSink?.destroy();
+    validationSink = null;
+    await rm(outputPath, { force: true });
+    await rm(archivePath, { force: true });
+    await rm(extractRoot, { recursive: true, force: true });
+  }
+});
 
 for (const route of [
   {
@@ -1603,6 +1709,7 @@ for (const [profileId, sourceName] of [
   ["webp-to-gif", "animated-pattern.webp"],
   ["png-to-webp", "animated-pattern.apng"],
   ["gif-to-webp", "animated-pattern.gif"],
+  ["gif-to-jxl", "animated-pattern.gif"],
 ] as const) {
   test(`${profileId} output failure removes the partial browser-owned output`, async () => {
     await page.goto("/?test=1&fault=write");
@@ -1789,6 +1896,76 @@ test("animated WebP encoding cancellation removes the partial browser-owned file
   });
   expect(leftovers).toEqual([]);
 });
+
+test("JPEG XL encoding cancellation removes the partial browser-owned file", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(
+    path.join(projectRoot, "fixtures", "images", "animated-pattern.gif"),
+  );
+  await page.locator('[data-testid="format-select"]').selectOption("gif-to-jxl");
+  await page.locator('[data-testid="convert-button"]').click();
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect.poll(
+    async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+    { timeout: 30_000 },
+  ).toBe("cancelled");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  expect(state?.metrics?.imageWorkingBytes).toBe(0);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-gif-to-jxl")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
+
+for (const invalidKind of ["truncated", "corrupt"] as const) {
+  test(`GIF-to-JPEG-XL rejects ${invalidKind} data without retained output`, async () => {
+    const source = await readFile(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.gif"),
+    );
+    const invalid = Buffer.from(source.subarray(0, 64));
+    if (invalidKind === "corrupt") invalid.fill(0xa5, 10);
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles({
+      name: `${invalidKind}.gif`,
+      mimeType: "image/gif",
+      buffer: invalid,
+    });
+    await page.locator('[data-testid="format-select"]').selectOption("gif-to-jxl");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("error");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.metrics?.queuedBytes).toBe(0);
+    expect(state?.metrics?.imageWorkingBytes ?? 0).toBe(0);
+    const leftovers = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names: string[] = [];
+      for await (const [name] of root.entries()) {
+        if (name.startsWith("within-test-gif-to-jxl")) names.push(name);
+      }
+      return names;
+    });
+    expect(leftovers).toEqual([]);
+  });
+}
 
 for (const invalidKind of ["truncated", "corrupt"] as const) {
   test(`GIF-to-APNG rejects ${invalidKind} animation data without retained output`, async () => {
@@ -2223,6 +2400,51 @@ test("TIFF converts through the bounded direct-save worker", async () => {
       const root = await navigator.storage.getDirectory();
       await root.removeEntry(name).catch(() => {});
     }, outputName);
+  }
+});
+
+test("JPEG XL output converts through the bounded direct-save worker", async () => {
+  const outputName = "test-pattern.jxl";
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    await root.removeEntry(name).catch(() => {});
+  }, outputName);
+  try {
+    await page.locator('[data-testid="file-input"]').setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern.png"),
+    );
+    await page.locator('[data-testid="format-select"]').selectOption("png-to-jxl");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect.poll(
+      async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    ).toBe("complete");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    expect(state?.batchOutputNames).toEqual([outputName]);
+    expect(state?.opfsName).toBeNull();
+    expect(state?.metrics?.peakPendingOperations).toBe(1);
+    expect(state?.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state?.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(64 * 1024);
+    expect(state?.metrics?.peakWasmMemoryBytes).toBe(56 * 1024 * 1024);
+    const output = await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      const handle = await root.getFileHandle(name);
+      const file = await handle.getFile();
+      const signature = Array.from(new Uint8Array(await file.slice(0, 2).arrayBuffer()));
+      await root.removeEntry(name);
+      return { bytes: file.size, signature };
+    }, outputName);
+    expect(output.bytes).toBeGreaterThan(1_000);
+    expect(output.signature).toEqual([0xff, 0x0a]);
+  } finally {
+    await page.evaluate(async (name) => {
+      const root = await navigator.storage.getDirectory();
+      await root.removeEntry(name).catch(() => {});
+    }, outputName).catch(() => {});
   }
 });
 

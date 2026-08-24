@@ -649,6 +649,58 @@ test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => 
   );
 });
 
+test("the public JPEG XL output profiles match their fixed-memory encoder manifest", () => {
+  const manifest = JSON.parse(
+    readFileSync("public/engines/jxl-encoder/build-manifest.json", "utf8"),
+  );
+  const profiles = conversionProfiles.filter(
+    (profile) => profile.engine === "libjxl-encoder-wasm",
+  );
+  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(manifest.profiles, [
+    "png-to-jxl",
+    "jpeg-to-jxl",
+    "webp-to-jxl",
+    "gif-to-jxl",
+    "avif-to-jxl",
+    "bmp-to-jxl",
+  ]);
+  assert.equal(manifest.libjxlVersion, "0.12.0");
+  assert.equal(
+    manifest.libjxlCommit,
+    "a7a9c787341cf703dede03c2009fa460cae5e5df",
+  );
+  assert.equal(manifest.initialWasmMemoryBytes, 56 * 1024 * 1024);
+  assert.equal(manifest.maximumWasmMemoryBytes, 56 * 1024 * 1024);
+  assert.equal(manifest.encoderAllocationLimitBytes, 44 * 1024 * 1024);
+  assert.equal(manifest.pixelCallbackLimitBytes, 16 * 1024 * 1024);
+  assert.equal(manifest.inputReadBytes, 256 * 1024);
+  assert.equal(manifest.maximumBmpRowBytes, 32 * 1024);
+  assert.equal(manifest.outputWriteBytes, 64 * 1024);
+  assert.equal(manifest.maximumOutputBytes, 128 * 1024 * 1024);
+  assert.equal(manifest.maximumPixels, 8_388_608);
+  assert.equal(manifest.maximumFrames, 1_000);
+  assert.equal(manifest.maximumAggregateDecodedBytes, 64 * 1024 ** 3);
+  assert.equal(manifest.maximumAggregateExpansionRatio, 1_000);
+  assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(manifest.threads, 1);
+  assert.equal(manifest.encoding, "lossless");
+  assert.equal(manifest.effort, 1);
+  assert.equal(manifest.animationTicksPerSecond, 1_000_000);
+  assert.equal(manifest.reusedAnimationFrameBuffer, true);
+  for (const profile of profiles) {
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.public, true);
+    assert.ok(profile.maxTestedBytes > 0);
+  }
+  const bmp = profiles.find((profile) => profile.id === "bmp-to-jxl");
+  assert.deepEqual(bmp?.browserRequirements, [
+    "WebAssembly",
+    "Web Workers",
+    "File System Access",
+  ]);
+});
+
 test("the public animated AVIF profile matches its fixed-memory Wasm manifest", () => {
   const manifest = JSON.parse(
     readFileSync("public/engines/avif/build-manifest.json", "utf8"),

@@ -154,7 +154,7 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
@@ -163,6 +163,11 @@ const isAnimatedGifProfile = /^(?:png|webp)-to-gif$/.test(profileId);
 const isAnimatedWebpProfile =
   /^(?:png|gif)-to-webp$/.test(profileId) &&
   Number(fixtureManifest.probe?.streams?.[0]?.nb_frames ?? 1) > 1;
+const isAnimatedJxlProfile =
+  /^(?:png|gif|webp|avif)-to-jxl$/.test(profileId) &&
+  fixtureManifest.probe?.streams?.some(
+    (stream) => Number(stream.nb_frames ?? stream.nb_read_frames ?? 1) > 1,
+  );
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
@@ -967,6 +972,14 @@ try {
                     fixtureManifest,
                     finalState,
                   )
+              : isAnimatedJxlProfile
+                ? await validateAnimatedJxlOutput(
+                    physicalOutputPath,
+                    fixturePath,
+                    fixtureManifest,
+                    finalState,
+                    profileId,
+                  )
               : isTiffPageArchiveProfile
                 ? await validateTiffPageArchiveOutput(
                     physicalOutputPath,
@@ -1072,6 +1085,8 @@ try {
       wasmMemoryBytes: finalState.metrics.wasmMemoryBytes ?? null,
       peakWasmMemoryBytes: finalState.metrics.peakWasmMemoryBytes ?? null,
       wasmMemories: finalState.metrics.wasmMemories ?? null,
+      codecWorkingBytes: finalState.metrics.codecWorkingBytes ?? null,
+      peakCodecWorkingBytes: finalState.metrics.peakCodecWorkingBytes ?? null,
       sharedArrayBufferBytes: finalState.metrics.sharedArrayBufferBytes ?? null,
       activeWorkerCount: finalState.metrics.activeWorkerCount ?? null,
       imageFrameFormat: finalState.metrics.imageFrameFormat ?? null,
@@ -2739,7 +2754,7 @@ async function validateImageOutput(
 ) {
   if (
     finalState.metrics.outputBytes < 1 ||
-    finalState.metrics.outputBytes > 64 * 1024 * 1024
+    finalState.metrics.outputBytes > (route.endsWith("-to-jxl") ? 128 : 64) * 1024 * 1024
   ) {
     throw new Error(
       `Browser image output is outside the bounded range: ${finalState.metrics.outputBytes} bytes.`,
@@ -2751,7 +2766,9 @@ async function validateImageOutput(
       ? "mjpeg"
       : outputFormat === "ico"
         ? "png"
-        : outputFormat;
+        : outputFormat === "jxl"
+          ? "jpegxl"
+          : outputFormat;
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
@@ -2840,6 +2857,7 @@ async function validateImageOutput(
     );
   }
   if (
+    outputFormat !== "jxl" &&
     Number(sourceStream?.nb_frames ?? 1) > 1 &&
     !finalState.warnings.some((warning) => warning.includes("first animation frame"))
   ) {
@@ -2851,6 +2869,241 @@ async function validateImageOutput(
     decodedByNativeFfmpeg: true,
   };
   return probe;
+}
+
+async function validateAnimatedJxlOutput(
+  localPath,
+  sourcePath,
+  source,
+  finalState,
+  route,
+) {
+  if (
+    finalState.metrics.outputBytes < 1 ||
+    finalState.metrics.outputBytes > 128 * 1024 * 1024
+  ) {
+    throw new Error(
+      `Browser JPEG XL output is outside the bounded range: ${finalState.metrics.outputBytes} bytes.`,
+    );
+  }
+  const { stdout: sourceMetadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", sourcePath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const sourceAnimation = JSON.parse(sourceMetadataJson);
+  const expectedFrames = Number(sourceAnimation.frameCount);
+  const width = Number(sourceAnimation.width);
+  const height = Number(sourceAnimation.height);
+  if (
+    !Number.isSafeInteger(expectedFrames) ||
+    expectedFrames < 2 ||
+    expectedFrames > 1_000 ||
+    !Number.isSafeInteger(width) ||
+    !Number.isSafeInteger(height) ||
+    width < 1 ||
+    height < 1 ||
+    !Array.isArray(sourceAnimation.durationsMs) ||
+    sourceAnimation.durationsMs.length !== expectedFrames
+  ) {
+    throw new Error("The animation source metadata is incomplete or outside the bounded limits.");
+  }
+  let expectedDurationsMs = sourceAnimation.durationsMs.map(Number);
+  if (expectedDurationsMs.some((duration) => !Number.isFinite(duration) || duration <= 0)) {
+    const { stdout: sourceProbeJson } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v", "error", "-show_entries", "frame=stream_index,duration_time",
+        "-show_entries", "stream=index,nb_frames", "-of", "json", sourcePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+    const sourceProbe = JSON.parse(sourceProbeJson);
+    const animationStream = [...(sourceProbe.streams ?? [])].sort(
+      (left, right) => Number(right.nb_frames ?? 0) - Number(left.nb_frames ?? 0),
+    )[0];
+    expectedDurationsMs = (sourceProbe.frames ?? [])
+      .filter((frame) => frame.stream_index === animationStream?.index)
+      .map((frame) => Number(frame.duration_time) * 1_000);
+  }
+  if (
+    expectedDurationsMs.length !== expectedFrames ||
+    expectedDurationsMs.some((duration) => !Number.isFinite(duration) || duration <= 0)
+  ) {
+    throw new Error("Independent source timing inspection did not return every animation frame.");
+  }
+
+  const [{ stdout: probeJson }, { stdout: decoderJson }] = await Promise.all([
+    execFileAsync(
+      "ffprobe",
+      [
+        "-v", "error", "-count_frames", "-select_streams", "v:0",
+        "-show_entries", "stream=codec_name,width,height,pix_fmt,time_base,nb_read_frames",
+        "-show_entries", "frame=pts_time,duration_time", "-of", "json", localPath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+    execFileAsync(
+      process.execPath,
+      ["scripts/inspect-jxl-animation.mjs", path.relative(projectRoot, localPath)],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+  ]);
+  const probe = JSON.parse(probeJson);
+  const decoder = JSON.parse(decoderJson);
+  const stream = probe.streams?.[0];
+  if (
+    stream?.codec_name !== "jpegxl_anim" ||
+    stream.width !== width ||
+    stream.height !== height ||
+    stream.time_base !== "1/1000000" ||
+    Number(stream.nb_read_frames) !== expectedFrames ||
+    probe.frames?.length !== expectedFrames ||
+    decoder.hasAnimation !== true ||
+    decoder.frameCount !== expectedFrames ||
+    decoder.width !== width ||
+    decoder.height !== height ||
+    decoder.frames?.length !== expectedFrames
+  ) {
+    throw new Error("Independent decoders did not identify the complete animated JPEG XL output.");
+  }
+  const expectedNumLoops = Number(sourceAnimation.loop) === 0
+    ? 0
+    : Number(sourceAnimation.loop) + 1;
+  let expectedTimestampMs = 0;
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const frame = probe.frames[index];
+    const decodedFrame = decoder.frames[index];
+    const durationMs = expectedDurationsMs[index];
+    if (
+      Math.abs(Number(frame.pts_time) * 1_000 - expectedTimestampMs) > 0.001 ||
+      Math.abs(Number(frame.duration_time) * 1_000 - durationMs) > 0.001 ||
+      decodedFrame.ticksPerSecondNumerator !== 1_000_000 ||
+      decodedFrame.ticksPerSecondDenominator !== 1 ||
+      decodedFrame.durationTicks !== Math.round(durationMs * 1_000) ||
+      decodedFrame.numLoops !== expectedNumLoops ||
+      decodedFrame.isLast !== (index === expectedFrames - 1)
+    ) {
+      throw new Error(`Animated JPEG XL timing or loop validation failed at frame ${index + 1}.`);
+    }
+    expectedTimestampMs += durationMs;
+  }
+
+  const outputFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-i", localPath,
+          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
+          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 40 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const sourceFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 40 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const allFrameSha256 = [];
+  const frameSimilarity = [];
+  const exactSource = /^(?:png|gif)-to-jxl$/.test(route);
+  const minimumSimilarity = 0.9;
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const [output, reference] = await Promise.all([
+      outputFrame(index),
+      sourceFrame(index),
+    ]);
+    if (
+      output.byteLength !== width * height * 4 ||
+      reference.byteLength !== output.byteLength
+    ) {
+      throw new Error(`Animated JPEG XL frame ${index + 1} has an invalid decoded size.`);
+    }
+    const outputHash = createHash("sha256").update(output).digest("hex");
+    const referenceHash = createHash("sha256").update(reference).digest("hex");
+    const similarity = rgbaGlobalSsim(reference, output);
+    if (
+      (exactSource && outputHash !== referenceHash) ||
+      (!exactSource && (!Number.isFinite(similarity) || similarity < minimumSimilarity))
+    ) {
+      throw new Error(
+        `Animated JPEG XL frame ${index + 1} differs from the independently decoded source at SSIM ${similarity}.`,
+      );
+    }
+    allFrameSha256.push(outputHash);
+    frameSimilarity.push(similarity);
+  }
+  return {
+    format: { format_name: "jpegxl_pipe", size: String(finalState.metrics.outputBytes) },
+    streams: probe.streams,
+    withinValidation: {
+      method: "ffprobe-all-frame-rgba-plus-bounded-libjxl-metadata-inspection",
+      frameCount: expectedFrames,
+      loopCount: expectedNumLoops === 0 ? "infinite" : expectedNumLoops,
+      ticksPerSecond: { numerator: 1_000_000, denominator: 1 },
+      timingExact: true,
+      allFrameSha256,
+      exactSourceFrameMatch: exactSource,
+      minimumFrameSsim: Math.min(...frameSimilarity),
+      minimumRequiredFrameSsim: exactSource ? 1 : minimumSimilarity,
+      decoderPeakAllocationBytes: decoder.peakDecoderAllocationBytes,
+      maximumDecoderPngChunkBytes: decoder.maximumPngChunkBytes,
+      decodedByNativeFfmpeg: true,
+      sourceDecodedByPinnedPillow: true,
+    },
+  };
+}
+
+function rgbaGlobalSsim(left, right) {
+  if (left.byteLength !== right.byteLength || left.byteLength % 4 !== 0) return NaN;
+  const count = left.byteLength / 4;
+  const sums = Array.from({ length: 3 }, () => ({
+    left: 0,
+    right: 0,
+    leftSquared: 0,
+    rightSquared: 0,
+    product: 0,
+  }));
+  for (let offset = 0; offset < left.byteLength; offset += 4) {
+    for (let channel = 0; channel < 3; channel += 1) {
+      const leftValue = left[offset + channel];
+      const rightValue = right[offset + channel];
+      const sum = sums[channel];
+      sum.left += leftValue;
+      sum.right += rightValue;
+      sum.leftSquared += leftValue * leftValue;
+      sum.rightSquared += rightValue * rightValue;
+      sum.product += leftValue * rightValue;
+    }
+  }
+  const c1 = (0.01 * 255) ** 2;
+  const c2 = (0.03 * 255) ** 2;
+  return sums.reduce((total, sum) => {
+    const leftMean = sum.left / count;
+    const rightMean = sum.right / count;
+    const leftVariance = sum.leftSquared / count - leftMean ** 2;
+    const rightVariance = sum.rightSquared / count - rightMean ** 2;
+    const covariance = sum.product / count - leftMean * rightMean;
+    return total +
+      ((2 * leftMean * rightMean + c1) * (2 * covariance + c2)) /
+        ((leftMean ** 2 + rightMean ** 2 + c1) *
+          (leftVariance + rightVariance + c2));
+  }, 0) / 3;
 }
 
 async function validateAnimatedFrameArchiveOutput(
