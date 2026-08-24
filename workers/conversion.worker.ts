@@ -47,6 +47,7 @@ import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import { runAvifToZip } from "./avif-conversion";
 import { runBrowserAnimationToApng } from "./apng-conversion";
+import { runBrowserAnimationToGif } from "./gif-conversion";
 import {
   createTarValidationStream,
   TarStreamValidator,
@@ -1122,6 +1123,35 @@ function isAnimatedWebp(bytes: Uint8Array): boolean {
   );
 }
 
+function isAnimatedPng(bytes: Uint8Array): boolean {
+  if (
+    bytes.byteLength < 33 ||
+    bytes[0] !== 0x89 ||
+    bytes[1] !== 0x50 ||
+    bytes[2] !== 0x4e ||
+    bytes[3] !== 0x47 ||
+    bytes[4] !== 0x0d ||
+    bytes[5] !== 0x0a ||
+    bytes[6] !== 0x1a ||
+    bytes[7] !== 0x0a
+  ) {
+    return false;
+  }
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const decoder = new TextDecoder("ascii");
+  let offset = 8;
+  while (offset + 12 <= bytes.byteLength) {
+    const length = view.getUint32(offset, false);
+    const end = offset + 12 + length;
+    if (end > bytes.byteLength) return false;
+    const type = decoder.decode(bytes.subarray(offset + 4, offset + 8));
+    if (type === "acTL") return true;
+    if (type === "IDAT" || type === "IEND") return false;
+    offset = end;
+  }
+  return false;
+}
+
 function isAnimatedAvif(bytes: Uint8Array): boolean {
   const ascii = (offset: number, length: number) =>
     new TextDecoder("ascii").decode(bytes.subarray(offset, offset + length));
@@ -1710,7 +1740,7 @@ async function runAnimatedImageToZip(
   startedAt: number,
 ): Promise<void> {
   if (file.size < 1 || file.size > MAX_IMAGE_INPUT_BYTES) {
-    throw new Error("Animated image input must be between 1 byte and 64 MiB.");
+    throw new Error("Image input must be between 1 byte and 64 MiB.");
   }
   const inputFormat = profileId.split("-to-")[0];
   const inputMime = imageMimeTypes[inputFormat];
@@ -1940,6 +1970,57 @@ async function runAnimatedImageToApng(
     inputMime,
     width: dimensions.width,
     height: dimensions.height,
+    metrics,
+    createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+    assertActive,
+    progress: (phase, force) => emitProgress(jobId, phase, metrics, startedAt, force),
+    write: (chunk, phase) =>
+      writeBounded(
+        destination,
+        chunk,
+        jobId,
+        phase,
+        metrics,
+        startedAt,
+      ),
+  });
+}
+
+async function runAnimatedImageToGif(
+  profileId: string,
+  file: File,
+  destination: RandomAccessDestination,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<void> {
+  if (file.size < 1 || file.size > MAX_IMAGE_INPUT_BYTES) {
+    throw new Error("Animated image input must be between 1 byte and 64 MiB.");
+  }
+  const inputFormat = profileId.split("-to-")[0];
+  if (inputFormat !== "png" && inputFormat !== "webp") {
+    throw new Error("This bounded GIF output route is not installed.");
+  }
+  const inputMime = imageMimeTypes[inputFormat];
+  const header = await readImageHeader(file, metrics);
+  const dimensions = parseImageDimensions(inputFormat, header);
+  const codedPixels = dimensions.width * dimensions.height;
+  if (
+    dimensions.width > MAX_IMAGE_DIMENSION ||
+    dimensions.height > MAX_IMAGE_DIMENSION ||
+    codedPixels > MAX_IMAGE_PIXELS
+  ) {
+    throw new Error(
+      "Animation dimensions exceed the 8,192-pixel edge or 8-megapixel frame safety limit.",
+    );
+  }
+  await runBrowserAnimationToGif({
+    file,
+    inputMime,
+    width: dimensions.width,
+    height: dimensions.height,
+    preferAnimation:
+      inputFormat === "png" ? isAnimatedPng(header) : isAnimatedWebp(header),
     metrics,
     createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
     assertActive,
@@ -4250,6 +4331,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       );
     } else if (/^(?:gif|webp)-to-apng$/.test(profileId)) {
       await runAnimatedImageToApng(
+        profileId,
+        file,
+        destination.writable,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else if (/^(?:png|webp)-to-gif$/.test(profileId)) {
+      await runAnimatedImageToGif(
         profileId,
         file,
         destination.writable,

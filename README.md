@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 371
+complete-Chromium memory profile have passed. The current registry publishes 373
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -26,7 +26,7 @@ routes:
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
+| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO destinations; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
 | Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; AV1/Opus MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
 | Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
 
@@ -628,6 +628,26 @@ The largest destination write was 16,400 bytes, the largest pixel strip was
 258,111 bytes, and the peak explicit JavaScript image working set was 516,159
 bytes before returning to zero at completion.
 
+APNG-to-GIF and animated-WebP-to-GIF use the same bounded native decoder with a
+purpose-built deterministic GIF89a writer. It copies RGBA in at most 256 KiB
+strips, applies a fixed 255-color RGB332 palette plus binary transparency, and
+streams LSB-first GIF LZW subblocks through one pending destination write. The
+encoder retains only one composited `VideoFrame`, one pixel strip, a fixed 4 MiB
+generation-stamped LZW dictionary, and a 128 KiB staging area; its measured peak
+explicit JavaScript image working set is 4,587,775 bytes and returns to zero.
+Every eight-frame output preserves equivalent loop playback and exact 250 ms timing,
+and independently decoded pixels match the documented quantizer exactly.
+APNG completed in 0.340-0.472 seconds at 119.1 MiB worst incremental private
+memory; WebP completed in 0.367-0.500 seconds at 132.6 MiB. Both produced the
+same repeatable 415,740-byte GIF and SHA-256
+`391853553fe9660aa671c805a15e9cdb40a735830e6d2b5acea6e82bca493439` with
+at most 11,520-byte writes.
+Static-track selection is header-driven rather than forced: PNG passed 3/3 in
+0.084-0.148 seconds at 102.8 MiB, and lossy WebP passed in 0.085-0.157 seconds
+at 86.2 MiB with repeatable output and 0.978313 RGB SSIM against independent
+native decoding. A still frame with no source duration becomes a valid zero-delay
+GIF frame; animation frames still require explicit nonzero timing.
+
 ICO output uses those same bounded decoders, scales proportionally only when an
 edge exceeds 256 pixels, and writes a standards-compliant one-entry icon header
 followed by an incrementally copied PNG payload. It preserves alpha but does not
@@ -758,7 +778,7 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 
 Absence from the registry means unsupported; the app does not guess a route.
 PDF is excluded by product scope. HEIC/HEIF, camera raw,
-animated GIF/WebP/AVIF/JPEG XL output, unsupported 7Z codecs, and
+animated WebP/AVIF/JPEG XL output, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
@@ -1483,6 +1503,8 @@ npm run test:browser
 The committed extended TIFF fixtures are reproducible with native FFmpeg and
 the pinned Python packages in `scripts/requirements-tiff-fixtures.txt`.
 `npm run fixtures:images` regenerates the small correctness matrix;
+`npm run fixtures:animated-transparent` regenerates the tiny deterministic APNG
+and WebP fixtures used to verify GIF alpha, disposal, timing, and finite loops;
 `npm run fixtures:tiff-stress` streams the large tiled fixture and its
 independent PNG reference inside `fixtures/stress/images`.
 
@@ -1519,6 +1541,8 @@ and browser profiles whether the category passes, fails, or is interrupted:
 ```powershell
 npm run profile:audio
 npm run profile:images
+npm run profile:gif-output
+npm run profile:gif-output-static
 npm run profile:tiff
 npm run profile:jxl
 npm run profile:records

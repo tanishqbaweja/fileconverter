@@ -956,6 +956,20 @@ const categories = {
       ["webp-to-apng", "fixtures/images/animated-pattern.webp"],
     ],
   },
+  "gif-output": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-gif", "fixtures/images/animated-pattern.apng"],
+      ["webp-to-gif", "fixtures/images/animated-pattern.webp"],
+    ],
+  },
+  "gif-output-static": {
+    generator: "scripts/generate-image-fixtures.mjs",
+    profiles: [
+      ["png-to-gif", "fixtures/images/test-pattern.png"],
+      ["webp-to-gif", "fixtures/images/test-pattern.webp"],
+    ],
+  },
   "tiff-multipage": {
     generator: "scripts/generate-tiff-multipage-stress-fixture.mjs",
     profiles: [

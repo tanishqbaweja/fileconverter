@@ -1415,6 +1415,25 @@ test("animated APNG outputs expose only routes with complete browser evidence", 
   assert.equal(detectFormat({ name: "converted.apng", type: "image/apng" }), "png");
 });
 
+test("animated GIF outputs expose only routes with complete browser evidence", () => {
+  const expected = new Map([
+    ["png-to-gif", 482_505],
+    ["webp-to-gif", 185_794],
+  ]);
+  for (const [id, bytes] of expected) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.output, "gif", id);
+    assert.equal(profile.public, true, id);
+    assert.equal(profile.automatedTestStatus, "passed", id);
+    assert.equal(profile.maxTestedBytes, bytes, id);
+  }
+  assert.ok(publicProfilesFor("png").some((profile) => profile.id === "png-to-gif"));
+  assert.ok(
+    publicProfilesFor("webp").some((profile) => profile.id === "webp-to-gif"),
+  );
+});
+
 test("safe archive and raw-compression conversion matrices are complete", () => {
   const archiveFormats = [
     "tar",

@@ -2253,6 +2253,16 @@ const animatedApngOutputProfiles = [
   ["webp-to-apng", "webp"],
 ] as const;
 
+const animatedGifOutputProfiles = [
+  ["png-to-gif", "png"],
+  ["webp-to-gif", "webp"],
+] as const;
+
+const animatedGifOutputMaxTestedBytes = {
+  png: 482_505,
+  webp: 185_794,
+} as const;
+
 const animatedApngOutputMaxTestedBytes = {
   gif: 281_853,
   webp: 185_794,
@@ -3778,6 +3788,28 @@ export const conversionProfiles: readonly ConversionProfile[] = [
       "APNG losslessly preserves Chromium's decoded composited pixels; timing is exact when its reduced rational fits APNG and otherwise uses the closest bounded 16-bit rational.",
     ],
     maxTestedBytes: animatedApngOutputMaxTestedBytes[input],
+    automatedTestStatus: "passed" as const,
+    public: true,
+  })),
+  ...animatedGifOutputProfiles.map(([id, input]) => ({
+    id,
+    input,
+    output: "gif",
+    engine: "image-browser" as const,
+    route: "re-encode" as const,
+    browserRequirements: ["ImageDecoder", "File System Access"],
+    cpuClass: "medium" as const,
+    memoryClass: "bounded-medium" as const,
+    metadataLimitations: [
+      "Every browser-decoded composited frame is encoded as a complete GIF frame with equivalent playback repetition semantics; RGBA is copied and quantized in strips no larger than 256 KiB.",
+      "EXIF, ICC profiles, textual metadata, source compression settings, frame rectangles, disposal operations, and blend operations are not copied.",
+      "At most 1,000 frames, 8,388,608 pixels per frame, a 1,000:1 aggregate decoded expansion ratio, and durations representable by GIF's 16-bit centisecond field are accepted.",
+    ],
+    fidelityLimitations: [
+      "GIF uses one deterministic RGB332 global palette with binary transparency; color is reduced to at most 255 opaque colors and alpha below 50% becomes transparent.",
+      "Animated frame timing is rounded to the nearest nonzero centisecond because GIF cannot represent finer timing; a still frame without source timing uses GIF's valid zero delay.",
+    ],
+    maxTestedBytes: animatedGifOutputMaxTestedBytes[input],
     automatedTestStatus: "passed" as const,
     public: true,
   })),

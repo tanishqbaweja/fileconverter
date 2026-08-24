@@ -154,11 +154,12 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
 const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
 const isAnimatedApngProfile = /^(?:gif|webp)-to-apng$/.test(profileId);
+const isAnimatedGifProfile = /^(?:png|webp)-to-gif$/.test(profileId);
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
@@ -949,6 +950,13 @@ try {
                     fixtureManifest,
                     finalState,
                   )
+              : isAnimatedGifProfile
+                ? await validateAnimatedGifOutput(
+                    physicalOutputPath,
+                    fixturePath,
+                    fixtureManifest,
+                    finalState,
+                  )
               : isTiffPageArchiveProfile
                 ? await validateTiffPageArchiveOutput(
                     physicalOutputPath,
@@ -1114,6 +1122,13 @@ try {
     ),
     scratchCleanup: runSummaries.every(
       (run) => !isSevenZipOutputProfile || run.scratchBytes === 0,
+    ),
+    boundedImageWorkingSet: runSummaries.every(
+      (run) =>
+        (!isAnimatedApngProfile && !isAnimatedGifProfile) ||
+        (run.imageWorkingBytes === 0 &&
+          run.maxImagePixelStripBytes <= 256 * 1024 &&
+          run.peakImageWorkingBytes <= 5 * 1024 * 1024),
     ),
     adaptiveArchiveCompression: runSummaries.every(
       (run) =>
@@ -3254,6 +3269,299 @@ async function validateAnimatedApngOutput(
       allFrameSha256,
       decodedByNativeFfmpeg: true,
       sourceDecodedByPinnedPillow: true,
+    },
+  };
+}
+
+async function validateAnimatedGifOutput(
+  localPath,
+  sourcePath,
+  source,
+  finalState,
+) {
+  const encoded = await readFile(localPath);
+  if (encoded.subarray(0, 6).toString("ascii") !== "GIF89a") {
+    throw new Error("Browser GIF output has an invalid GIF89a signature.");
+  }
+  const width = encoded.readUInt16LE(6);
+  const height = encoded.readUInt16LE(8);
+  const packed = encoded[10];
+  if ((packed & 0x80) === 0) {
+    throw new Error("Browser GIF output does not contain its required global palette.");
+  }
+  let offset = 13 + 3 * 2 ** ((packed & 0x07) + 1);
+  let loopCount = null;
+  let maximumDataSubblock = 0;
+  const frameControls = [];
+  const imageDescriptors = [];
+  let pendingControl = null;
+  const readSubblocks = () => {
+    const payloads = [];
+    for (;;) {
+      if (offset >= encoded.byteLength) {
+        throw new Error("Browser GIF output ends inside a data-subblock chain.");
+      }
+      const size = encoded[offset];
+      offset += 1;
+      if (size === 0) return payloads;
+      if (offset + size > encoded.byteLength) {
+        throw new Error("Browser GIF data subblock exceeds the output boundary.");
+      }
+      maximumDataSubblock = Math.max(maximumDataSubblock, size);
+      payloads.push(encoded.subarray(offset, offset + size));
+      offset += size;
+    }
+  };
+  let trailerSeen = false;
+  while (offset < encoded.byteLength) {
+    const marker = encoded[offset];
+    if (marker === 0x3b) {
+      offset += 1;
+      trailerSeen = true;
+      break;
+    }
+    if (marker === 0x21) {
+      if (offset + 2 > encoded.byteLength) {
+        throw new Error("Browser GIF ends inside an extension header.");
+      }
+      const label = encoded[offset + 1];
+      offset += 2;
+      if (label === 0xf9) {
+        if (
+          offset + 6 > encoded.byteLength ||
+          encoded[offset] !== 4 ||
+          encoded[offset + 5] !== 0
+        ) {
+          throw new Error("Browser GIF has an invalid graphic-control extension.");
+        }
+        pendingControl = {
+          packed: encoded[offset + 1],
+          delay: encoded.readUInt16LE(offset + 2),
+          transparentIndex: encoded[offset + 4],
+        };
+        offset += 6;
+        continue;
+      }
+      if (offset >= encoded.byteLength) {
+        throw new Error("Browser GIF ends inside an extension block.");
+      }
+      const headerSize = encoded[offset];
+      offset += 1;
+      if (offset + headerSize > encoded.byteLength) {
+        throw new Error("Browser GIF extension header exceeds the output boundary.");
+      }
+      const identifier = encoded.subarray(offset, offset + headerSize).toString("ascii");
+      offset += headerSize;
+      const payloads = readSubblocks();
+      if (
+        label === 0xff &&
+        identifier === "NETSCAPE2.0" &&
+        payloads[0]?.byteLength === 3 &&
+        payloads[0][0] === 1
+      ) {
+        loopCount = payloads[0].readUInt16LE(1);
+      }
+      continue;
+    }
+    if (marker === 0x2c) {
+      if (offset + 10 > encoded.byteLength || !pendingControl) {
+        throw new Error("Browser GIF image is missing a complete descriptor or frame control.");
+      }
+      const descriptor = {
+        left: encoded.readUInt16LE(offset + 1),
+        top: encoded.readUInt16LE(offset + 3),
+        width: encoded.readUInt16LE(offset + 5),
+        height: encoded.readUInt16LE(offset + 7),
+        packed: encoded[offset + 9],
+      };
+      offset += 10;
+      if ((descriptor.packed & 0x80) !== 0) {
+        offset += 3 * 2 ** ((descriptor.packed & 0x07) + 1);
+      }
+      if (offset >= encoded.byteLength || encoded[offset] !== 8) {
+        throw new Error("Browser GIF image has an invalid LZW minimum code size.");
+      }
+      offset += 1;
+      readSubblocks();
+      imageDescriptors.push(descriptor);
+      frameControls.push(pendingControl);
+      pendingControl = null;
+      continue;
+    }
+    throw new Error(`Browser GIF contains an unexpected block marker 0x${marker.toString(16)}.`);
+  }
+  if (!trailerSeen || offset !== encoded.byteLength || pendingControl) {
+    throw new Error("Browser GIF does not end cleanly at its trailer.");
+  }
+
+  const { stdout: sourceMetadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", sourcePath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const sourceAnimation = JSON.parse(sourceMetadataJson);
+  const expectedFrames = Number(sourceAnimation.frameCount);
+  if (
+    !Number.isSafeInteger(expectedFrames) ||
+    expectedFrames < 1 ||
+    expectedFrames !== Number(source.probe?.streams?.[0]?.nb_frames ?? 1) ||
+    sourceAnimation.width !== width ||
+    sourceAnimation.height !== height ||
+    !Array.isArray(sourceAnimation.durationsMs) ||
+    sourceAnimation.durationsMs.length !== expectedFrames ||
+    imageDescriptors.length !== expectedFrames ||
+    frameControls.length !== expectedFrames
+  ) {
+    throw new Error("Browser GIF frame structure differs from the source animation manifest.");
+  }
+  const expectedLoop =
+    expectedFrames === 1
+      ? null
+      : sourceAnimation.loop === 0
+        ? 0
+        : Math.max(0, Number(sourceAnimation.loop) - 1);
+  if (loopCount !== expectedLoop) {
+    throw new Error("Browser GIF loop control differs from the source animation.");
+  }
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const descriptor = imageDescriptors[index];
+    const control = frameControls[index];
+    if (
+      descriptor.left !== 0 ||
+      descriptor.top !== 0 ||
+      descriptor.width !== width ||
+      descriptor.height !== height ||
+      descriptor.packed !== 0 ||
+      ((control.packed >>> 2) & 0x07) !== 2 ||
+      (control.packed & 1) !== 1 ||
+      control.transparentIndex !== 0
+    ) {
+      throw new Error(`Browser GIF frame ${index + 1} has invalid bounded controls.`);
+    }
+    const expectedDelay = Math.round(sourceAnimation.durationsMs[index] / 10);
+    if (control.delay !== expectedDelay) {
+      throw new Error(`Browser GIF frame ${index + 1} timing differs from the source.`);
+    }
+  }
+  if (maximumDataSubblock > 255) {
+    throw new Error("Browser GIF contains an oversized image-data subblock.");
+  }
+
+  const { stdout: outputMetadataJson } = await execFileAsync(
+    "python",
+    ["scripts/decode-pillow-animation-frame.py", localPath, "--metadata"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const outputAnimation = JSON.parse(outputMetadataJson);
+  if (
+    outputAnimation.frameCount !== expectedFrames ||
+    outputAnimation.width !== width ||
+    outputAnimation.height !== height ||
+    outputAnimation.loop !== (expectedLoop ?? 0) ||
+    outputAnimation.durationsMs.some(
+      (duration, index) => duration !== Math.round(sourceAnimation.durationsMs[index] / 10) * 10,
+    )
+  ) {
+    throw new Error("Pinned Pillow did not decode the expected GIF timing and loop metadata.");
+  }
+
+  const outputFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-i", localPath,
+          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
+          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 32 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const sourceFrame = async (frameIndex) =>
+    (
+      await execFileAsync(
+        "python",
+        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 32 * 1024 * 1024,
+          encoding: "buffer",
+        },
+      )
+    ).stdout;
+  const quantize = (pixels) => {
+    const output = Buffer.allocUnsafe(pixels.byteLength);
+    for (let index = 0; index < pixels.byteLength; index += 4) {
+      if (pixels[index + 3] < 128) {
+        output.set([0, 0, 0, 0], index);
+        continue;
+      }
+      const quantized =
+        (pixels[index] & 0xe0) |
+        ((pixels[index + 1] & 0xe0) >>> 3) |
+        (pixels[index + 2] >>> 6);
+      const paletteIndex = quantized === 0 ? 1 : quantized;
+      output[index] =
+        paletteIndex <= 1 ? 0 : Math.round((((paletteIndex >>> 5) & 7) * 255) / 7);
+      output[index + 1] =
+        paletteIndex <= 1 ? 0 : Math.round((((paletteIndex >>> 2) & 7) * 255) / 7);
+      output[index + 2] =
+        paletteIndex <= 1 ? 0 : Math.round(((paletteIndex & 3) * 255) / 3);
+      output[index + 3] = 255;
+    }
+    return output;
+  };
+  const allFrameSha256 = [];
+  let sourceSsim = null;
+  for (let index = 0; index < expectedFrames; index += 1) {
+    const output = await outputFrame(index);
+    const expected = quantize(await sourceFrame(index));
+    const outputHash = createHash("sha256").update(output).digest("hex");
+    const expectedHash = createHash("sha256").update(expected).digest("hex");
+    if (outputHash !== expectedHash) {
+      if (expectedFrames !== 1 || path.extname(sourcePath).toLowerCase() !== ".webp") {
+        throw new Error(`Browser GIF frame ${index + 1} differs from RGB332 quantization.`);
+      }
+      const { stderr } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "info", "-i", sourcePath, "-i", localPath,
+          "-lavfi",
+          "[0:v:0]format=rgb24[source];[1:v:0]format=rgb24[converted];[source][converted]ssim",
+          "-frames:v", "1", "-f", "null", "NUL",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      sourceSsim = Number.parseFloat(
+        stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+      );
+      if (!Number.isFinite(sourceSsim) || sourceSsim < 0.9) {
+        throw new Error(
+          `Browser GIF static WebP visual validation failed at SSIM ${sourceSsim}.`,
+        );
+      }
+    }
+    allFrameSha256.push(outputHash);
+  }
+  return {
+    format: { format_name: "gif", size: String(finalState.metrics.outputBytes) },
+    withinValidation: {
+      method: "gif-block-audit-plus-pillow-metadata-and-native-frame-validation",
+      frameCount: expectedFrames,
+      loopCount,
+      timingRoundedToCentiseconds: true,
+      maximumDataSubblock,
+      allFrameSha256,
+      sourceSsim,
+      exactRgb332FrameMatch: sourceSsim == null,
+      decodedByNativeFfmpeg: true,
+      metadataDecodedByPinnedPillow: true,
     },
   };
 }

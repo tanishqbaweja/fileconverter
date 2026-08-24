@@ -1,0 +1,16 @@
+{
+  "generatedBy": "scripts/generate-transparent-animation-fixture.py",
+  "format": "webp",
+  "bytes": 364,
+  "sha256": "99c6855937baa2a7df5390cc0f9929da871d1b04c135da4ea152e404acffc9aa",
+  "width": 64,
+  "height": 48,
+  "frameCount": 3,
+  "durationsMs": [
+    100,
+    200,
+    300
+  ],
+  "sourceLoopField": 2,
+  "expectedGifRepetitionsAfterFirstPlay": 1
+}
