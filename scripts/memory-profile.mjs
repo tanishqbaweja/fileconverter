@@ -171,6 +171,7 @@ const isAnimatedJxlProfile =
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isDocxOutputProfile = profileId === "txt-to-docx";
 const isOdtOutputProfile = profileId === "txt-to-odt";
+const isEpubOutputProfile = profileId === "txt-to-epub";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -186,6 +187,7 @@ const isStreamingTextProfile =
   profileId === "txt-to-html" ||
   isDocxOutputProfile ||
   isOdtOutputProfile ||
+  isEpubOutputProfile ||
   profileId === "md-to-html" ||
   profileId === "html-to-txt" ||
   profileId === "docx-to-txt" ||
@@ -887,6 +889,7 @@ try {
       isArchiveTransformProfile ||
       isDocxOutputProfile ||
       isOdtOutputProfile ||
+      isEpubOutputProfile ||
       isBzip2CompressedOutput ||
       isXzCompressedOutput ||
       isGzipCompressedOutput
@@ -895,11 +898,17 @@ try {
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (isDocxOutputProfile || isOdtOutputProfile) {
+      if (
+        isDocxOutputProfile ||
+        isOdtOutputProfile ||
+        isEpubOutputProfile
+      ) {
         outputSha256 = (await hashFile(physicalOutputPath)).sha256;
         const decoded = isDocxOutputProfile
           ? await validateDocxOutput(physicalOutputPath)
-          : await validateOdtOutput(physicalOutputPath);
+          : isOdtOutputProfile
+            ? await validateOdtOutput(physicalOutputPath)
+            : await validateEpubOutput(physicalOutputPath);
         validationBytes = decoded.bytes;
         externalValidationSha256 = decoded.sha256;
         if (
@@ -908,7 +917,11 @@ try {
         ) {
           throw new Error(
             "Independent streamed " +
-              (isDocxOutputProfile ? "DOCX" : "ODT") +
+              (isDocxOutputProfile
+                ? "DOCX"
+                : isOdtOutputProfile
+                  ? "ODT"
+                  : "EPUB") +
               " validation failed on run " +
               run +
               ": " +
@@ -920,7 +933,9 @@ try {
           withinValidation: {
             method: isDocxOutputProfile
               ? "python-zipfile-sax-stream-sha256"
-              : "python-odf-zipfile-sax-stream-sha256",
+              : isOdtOutputProfile
+                ? "python-odf-zipfile-sax-stream-sha256"
+                : "python-epub-zipfile-sax-stream-sha256",
             passed: true,
             bytes: validationBytes,
             sha256: externalValidationSha256,
@@ -2838,6 +2853,161 @@ print(json.dumps({
     !Array.isArray(result.methods)
   ) {
     throw new Error("The independent ODT validator returned invalid evidence.");
+  }
+  return result;
+}
+
+async function validateEpubOutput(filePath) {
+  const python = String.raw`
+import hashlib, json, re, struct, sys, xml.sax, zipfile
+from xml.etree import ElementTree as ET
+
+MIME = "application/epub+zip"
+CONTAINER = "urn:oasis:names:tc:opendocument:xmlns:container"
+OPF = "http://www.idpf.org/2007/opf"
+DC = "http://purl.org/dc/elements/1.1/"
+XHTML = "http://www.w3.org/1999/xhtml"
+EPUB = "http://www.idpf.org/2007/ops"
+
+class ContentHandler(xml.sax.ContentHandler):
+    def __init__(self):
+        super().__init__()
+        self.hash = hashlib.sha256()
+        self.bytes = 0
+        self.in_pre = False
+        self.pre_count = 0
+        self.root_seen = False
+
+    def startElementNS(self, name, qname, attrs):
+        if not self.root_seen:
+            if name != (XHTML, "html"):
+                raise RuntimeError("EPUB content has an invalid XHTML root")
+            self.root_seen = True
+        if name == (XHTML, "pre"):
+            if self.in_pre or self.pre_count:
+                raise RuntimeError("EPUB content has multiple or nested pre blocks")
+            self.in_pre = True
+            self.pre_count += 1
+
+    def endElementNS(self, name, qname):
+        if name == (XHTML, "pre"):
+            if not self.in_pre:
+                raise RuntimeError("EPUB content pre state is invalid")
+            self.in_pre = False
+
+    def characters(self, content):
+        if self.in_pre:
+            encoded = content.encode("utf-8")
+            self.hash.update(encoded)
+            self.bytes += len(encoded)
+
+expected = [
+    "mimetype", "META-INF/container.xml", "EPUB/nav.xhtml",
+    "EPUB/content.xhtml", "EPUB/package.opf",
+]
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    infos = package.infolist()
+    entries = package.namelist()
+    methods = [item.compress_type for item in infos]
+    extras = [len(item.extra) for item in infos]
+    mimetype = package.read("mimetype").decode("ascii")
+    container = ET.fromstring(package.read("META-INF/container.xml"))
+    package_document = ET.fromstring(package.read("EPUB/package.opf"))
+    navigation = ET.fromstring(package.read("EPUB/nav.xhtml"))
+    handler = ContentHandler()
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_namespaces, True)
+    parser.setContentHandler(handler)
+    with package.open("EPUB/content.xhtml", "r") as content:
+        parser.parse(content)
+
+with open(sys.argv[1], "rb") as source:
+    local = source.read(128)
+signature = struct.unpack_from("<I", local, 0)[0]
+flags = struct.unpack_from("<H", local, 6)[0]
+method = struct.unpack_from("<H", local, 8)[0]
+name_length = struct.unpack_from("<H", local, 26)[0]
+extra_length = struct.unpack_from("<H", local, 28)[0]
+local_name = local[30:30 + name_length].decode("utf-8")
+payload_offset = 30 + name_length + extra_length
+first_payload = local[payload_offset:payload_offset + len(MIME)].decode("ascii")
+
+rootfile = container.find("{%s}rootfiles/{%s}rootfile" % (CONTAINER, CONTAINER))
+metadata = package_document.find("{%s}metadata" % OPF)
+manifest = package_document.find("{%s}manifest" % OPF)
+spine = package_document.find("{%s}spine" % OPF)
+if rootfile is None or metadata is None or manifest is None or spine is None:
+    raise RuntimeError("EPUB container or package structure is incomplete")
+identifier = metadata.find("{%s}identifier" % DC)
+title = metadata.find("{%s}title" % DC)
+language = metadata.find("{%s}language" % DC)
+modified = [item for item in metadata.findall("{%s}meta" % OPF)
+            if item.attrib.get("property") == "dcterms:modified"]
+manifest_items = {
+    item.attrib.get("id"): (item.attrib.get("href"), item.attrib.get("media-type"),
+                            item.attrib.get("properties"))
+    for item in manifest.findall("{%s}item" % OPF)
+}
+spine_items = [item.attrib.get("idref") for item in spine.findall("{%s}itemref" % OPF)]
+toc = [item for item in navigation.findall(".//{%s}nav" % XHTML)
+       if item.attrib.get("{%s}type" % EPUB) == "toc"]
+toc_link = toc[0].find("{%s}ol/{%s}li/{%s}a" % (XHTML, XHTML, XHTML)) if len(toc) == 1 else None
+
+if bad is not None:
+    raise RuntimeError("EPUB package CRC failed for " + bad)
+if entries != expected or methods != [0, 8, 8, 8, 8]:
+    raise RuntimeError("EPUB package entries or ZIP methods differ")
+if extras != [0, 0, 0, 0, 0]:
+    raise RuntimeError("EPUB ZIP entries contain extra fields")
+if infos[0].header_offset != 0 or signature != 0x04034B50:
+    raise RuntimeError("EPUB mimetype is not the first local entry")
+if flags & 0x08 or method != 0 or local_name != "mimetype" or extra_length != 0:
+    raise RuntimeError("EPUB mimetype local header is not stored canonically")
+if mimetype != MIME or first_payload != MIME:
+    raise RuntimeError("EPUB mimetype payload is invalid")
+if container.tag != "{%s}container" % CONTAINER or container.attrib.get("version") != "1.0":
+    raise RuntimeError("EPUB container root is invalid")
+if rootfile.attrib != {"full-path": "EPUB/package.opf", "media-type": "application/oebps-package+xml"}:
+    raise RuntimeError("EPUB rootfile declaration is invalid")
+if package_document.tag != "{%s}package" % OPF or package_document.attrib.get("version") != "3.0":
+    raise RuntimeError("EPUB package document root is invalid")
+if package_document.attrib.get("unique-identifier") != "pub-id":
+    raise RuntimeError("EPUB unique identifier reference is invalid")
+if (identifier is None or identifier.attrib.get("id") != "pub-id" or
+        not re.fullmatch(r"urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-8[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", identifier.text or "")):
+    raise RuntimeError("EPUB identifier is invalid")
+if title is None or title.text != "Converted text" or language is None or language.text != "und":
+    raise RuntimeError("EPUB required title or language metadata is invalid")
+if len(modified) != 1 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", modified[0].text or ""):
+    raise RuntimeError("EPUB modified metadata is invalid")
+if manifest_items != {
+    "nav": ("nav.xhtml", "application/xhtml+xml", "nav"),
+    "content": ("content.xhtml", "application/xhtml+xml", None),
+} or spine_items != ["content"]:
+    raise RuntimeError("EPUB manifest or spine is invalid")
+if navigation.tag != "{%s}html" % XHTML or len(toc) != 1 or toc_link is None or toc_link.attrib.get("href") != "content.xhtml":
+    raise RuntimeError("EPUB navigation document is invalid")
+if not handler.root_seen or handler.pre_count != 1 or handler.in_pre:
+    raise RuntimeError("EPUB content XHTML is incomplete")
+
+print(json.dumps({"bytes": handler.bytes, "sha256": handler.hash.hexdigest(),
+                  "entries": entries, "methods": methods}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256) ||
+    !Array.isArray(result.entries) ||
+    !Array.isArray(result.methods)
+  ) {
+    throw new Error("The independent EPUB validator returned invalid evidence.");
   }
   return result;
 }

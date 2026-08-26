@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 386
+complete-Chromium memory profile have passed. The current registry publishes 387
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -22,7 +22,7 @@ routes:
 | Archives | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
 | Subtitles | SRT <-> WebVTT; SRT/WebVTT -> ASS/TTML; ASS/TTML -> SRT/WebVTT | 101,393,068 B |
 | Documents | TXT -> DOCX, ODT, or safe preformatted HTML; DOCX/ODT -> visible TXT; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
-| Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
+| Ebooks | TXT -> valid reflowable EPUB; EPUB -> spine-ordered visible TXT | 134,219,595 B |
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
 | Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
@@ -795,6 +795,16 @@ the first stored local entry with no extra field, while the manifest and
 content XML stream through bounded raw DEFLATE. Explicit OpenDocument space and
 tab elements preserve whitespace that an ODF consumer would otherwise
 normalize. TXT is also escaped into a complete preformatted HTML document.
+TXT-to-EPUB follows EPUB 3.3 OCF packaging rules: the exact
+`application/epub+zip` mimetype is the first stored entry with no data
+descriptor or extra field. Container metadata, package metadata, one required
+navigation document, and one reflowable XHTML spine document then stream
+through bounded raw DEFLATE. Text is escaped incrementally into a preformatted
+block, with carriage returns represented explicitly so XML parsing preserves
+the original line endings. No complete text, XHTML document, or EPUB output is
+retained in memory. A 16 MiB bounded Web Crypto hash chain derives a stable UUIDv8
+from the complete local source so each publication has a persistent identifier
+without a second input pass.
 Markdown renders a
 bounded documented subset and escapes raw HTML. HTML-to-TXT tokenizes the input,
 decodes the supported entities, retains visible block/list/table text, and
@@ -1214,6 +1224,7 @@ profiler:
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
 | Documents, TXT -> DOCX | 67,130,000 B | 148.0 MiB | ZIP CRC/OOXML structure plus streamed SAX text SHA-256 |
 | Documents, TXT -> ODT | 67,130,000 B | 161.1 MiB | ODF ZIP/mimetype/manifest structure plus streamed SAX text SHA-256 |
+| Ebooks, TXT -> EPUB | 67,130,000 B | 135.5 MiB | EPUB OCF/package/navigation structure plus streamed SAX text SHA-256 |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 | Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
 | Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |

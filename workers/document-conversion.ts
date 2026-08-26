@@ -19,6 +19,7 @@ interface DocumentRuntime {
     | "txt-to-html"
     | "txt-to-docx"
     | "txt-to-odt"
+    | "txt-to-epub"
     | "md-to-html"
     | "html-to-txt";
   metrics: ConversionMetrics;
@@ -37,6 +38,8 @@ export async function runDocumentConversion(
     await textToDocx(runtime);
   } else if (runtime.profileId === "txt-to-odt") {
     await textToOdt(runtime);
+  } else if (runtime.profileId === "txt-to-epub") {
+    await textToEpub(runtime);
   } else if (runtime.profileId === "md-to-html") {
     await markdownToHtml(runtime);
   } else {
@@ -76,6 +79,24 @@ const ODT_CONTENT_PREFIX =
   "<office:body><office:text>";
 const ODT_CONTENT_SUFFIX =
   "</office:text></office:body></office:document-content>";
+const EPUB_MIMETYPE = "application/epub+zip";
+const EPUB_CONTAINER =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">' +
+  '<rootfiles><rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/></rootfiles>' +
+  "</container>";
+const EPUB_NAVIGATION =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="und">' +
+  '<head><meta charset="utf-8"/><title>Contents</title></head>' +
+  '<body><nav epub:type="toc" id="toc"><h1>Contents</h1><ol><li><a href="content.xhtml">Converted text</a></li></ol></nav></body>' +
+  "</html>";
+const EPUB_CONTENT_PREFIX =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="und">' +
+  '<head><meta charset="utf-8"/><title>Converted text</title></head><body><pre>';
+const EPUB_CONTENT_SUFFIX = "</pre></body></html>";
+const EPUB_IDENTIFIER_CHUNK_BYTES = 16 * 1024 * 1024;
 
 async function textToDocx(runtime: DocumentRuntime): Promise<void> {
   runtime.warn(
@@ -121,7 +142,7 @@ async function textToOdt(runtime: DocumentRuntime): Promise<void> {
     "The ODF 1.3 package writes its required uncompressed mimetype entry first, then streams manifest and content XML through bounded raw DEFLATE without retaining completed XML or ZIP data.",
   );
   const entries: WrittenZipEntry[] = [];
-  await writeStoredMimetypeEntry(runtime, entries);
+  await writeStoredMimetypeEntry(runtime, entries, ODT_MIMETYPE, "ODT");
   await writeDeflatedPackageEntry(
     runtime,
     entries,
@@ -143,16 +164,80 @@ async function textToOdt(runtime: DocumentRuntime): Promise<void> {
   await finishDocumentPackage(runtime, entries, "ODT");
 }
 
+async function textToEpub(runtime: DocumentRuntime): Promise<void> {
+  runtime.warn(
+    "Plain text becomes one reflowable EPUB 3.3 XHTML document. Whitespace and Unicode text are preserved in a preformatted block, but headings, chapters, language, links, styling, cover art, and book metadata cannot be inferred.",
+  );
+  runtime.warn(
+    "The EPUB container writes its required uncompressed mimetype entry first, then streams container metadata, navigation, content, and package metadata through bounded raw DEFLATE without retaining completed XHTML or ZIP data. A bounded content hash provides a persistent publication UUID.",
+  );
+  const entries: WrittenZipEntry[] = [];
+  await writeStoredMimetypeEntry(runtime, entries, EPUB_MIMETYPE, "EPUB");
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "META-INF/container.xml",
+    async (write) => write(new TextEncoder().encode(EPUB_CONTAINER)),
+  );
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "EPUB/nav.xhtml",
+    async (write) => write(new TextEncoder().encode(EPUB_NAVIGATION)),
+  );
+  let identifier = "";
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "EPUB/content.xhtml",
+    async (write) => {
+      const writer = createZipTextWriter(write);
+      await writer.write(EPUB_CONTENT_PREFIX);
+      identifier = await writeEscapedDocumentText(runtime, writer);
+      await writer.write(EPUB_CONTENT_SUFFIX);
+      await writer.flush();
+    },
+  );
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "EPUB/package.opf",
+    async (write) => {
+      const modified = new Date(runtime.file.lastModified)
+        .toISOString()
+        .replace(/\.\d{3}Z$/, "Z");
+      const packageDocument =
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="pub-id" xml:lang="und">' +
+        '<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">' +
+        '<dc:identifier id="pub-id">' +
+        identifier +
+        "</dc:identifier>" +
+        '<dc:title>Converted text</dc:title><dc:language>und</dc:language>' +
+        '<meta property="dcterms:modified">' +
+        modified +
+        "</meta></metadata>" +
+        '<manifest><item id="nav" href="nav.xhtml" media-type="application/xhtml+xml" properties="nav"/>' +
+        '<item id="content" href="content.xhtml" media-type="application/xhtml+xml"/></manifest>' +
+        '<spine><itemref idref="content"/></spine></package>';
+      await write(new TextEncoder().encode(packageDocument));
+    },
+  );
+  await finishDocumentPackage(runtime, entries, "EPUB");
+}
+
 async function writeStoredMimetypeEntry(
   runtime: DocumentRuntime,
   entries: WrittenZipEntry[],
+  mimetype: string,
+  label: string,
 ): Promise<void> {
   if (runtime.metrics.outputBytes !== 0) {
-    throw new Error("OpenDocument mimetype must be the first package entry.");
+    throw new Error(label + " mimetype must be the first package entry.");
   }
   const encoder = new TextEncoder();
   const nameBytes = encoder.encode("mimetype");
-  const payload = encoder.encode(ODT_MIMETYPE);
+  const payload = encoder.encode(mimetype);
   const flags = 0x0800;
   const method = 0;
   const { dosTime, dosDate } = unixToDos(0);
@@ -168,8 +253,12 @@ async function writeStoredMimetypeEntry(
   view.setUint32(14, crc32, true);
   view.setUint32(18, payload.byteLength, true);
   view.setUint32(22, payload.byteLength, true);
-  await writePackageChunk(runtime, header, "Writing ODT mimetype header");
-  await writePackageChunk(runtime, payload, "Writing ODT mimetype");
+  await writePackageChunk(
+    runtime,
+    header,
+    "Writing " + label + " mimetype header",
+  );
+  await writePackageChunk(runtime, payload, "Writing " + label + " mimetype");
   entries.push({
     nameBytes,
     directory: false,
@@ -182,6 +271,103 @@ async function writeStoredMimetypeEntry(
     uncompressedSize: payload.byteLength,
     localHeaderOffset: 0,
   });
+}
+
+async function writeEscapedDocumentText(
+  runtime: DocumentRuntime,
+  writer: ReturnType<typeof createZipTextWriter>,
+): Promise<string> {
+  const reader = boundedBlobStream(runtime.file, runtime).getReader();
+  const decoder = new TextDecoder("utf-8", { fatal: true });
+  const identifier = createEpubIdentifierHasher(runtime.metrics);
+  let first = true;
+  let completed = false;
+  try {
+    for (;;) {
+      runtime.assertActive();
+      const { done, value } = await reader.read();
+      if (done) {
+        completed = true;
+        break;
+      }
+      await identifier.update(value);
+      let text = decoder.decode(value, { stream: true });
+      if (first) {
+        text = text.replace(/^\uFEFF/, "");
+        first = false;
+      }
+      assertXmlText(text);
+      await writer.write(escapeEpubText(text));
+    }
+    const tail = decoder.decode();
+    assertXmlText(tail);
+    await writer.write(escapeEpubText(tail));
+    return await identifier.finish();
+  } finally {
+    runtime.metrics.codecWorkingBytes = 0;
+    if (!completed) await reader.cancel().catch(() => {});
+  }
+}
+
+function createEpubIdentifierHasher(metrics: ConversionMetrics) {
+  const buffer = new Uint8Array(32 + EPUB_IDENTIFIER_CHUNK_BYTES + 8);
+  metrics.codecWorkingBytes = buffer.byteLength;
+  metrics.peakCodecWorkingBytes = Math.max(
+    metrics.peakCodecWorkingBytes ?? 0,
+    buffer.byteLength,
+  );
+  let state = new Uint8Array(32);
+  let used = 0;
+  let total = 0;
+
+  const digestBlock = async (includeLength: boolean) => {
+    buffer.set(state, 0);
+    let length = 32 + used;
+    if (includeLength) {
+      new DataView(buffer.buffer).setBigUint64(length, BigInt(total), true);
+      length += 8;
+    }
+    state = new Uint8Array(
+      await crypto.subtle.digest("SHA-256", buffer.subarray(0, length)),
+    );
+    used = 0;
+  };
+
+  return {
+    async update(chunk: Uint8Array<ArrayBuffer>) {
+      let offset = 0;
+      total += chunk.byteLength;
+      while (offset < chunk.byteLength) {
+        const take = Math.min(
+          EPUB_IDENTIFIER_CHUNK_BYTES - used,
+          chunk.byteLength - offset,
+        );
+        buffer.set(chunk.subarray(offset, offset + take), 32 + used);
+        offset += take;
+        used += take;
+        if (used === EPUB_IDENTIFIER_CHUNK_BYTES) await digestBlock(false);
+      }
+    },
+    async finish() {
+      await digestBlock(true);
+      const uuid = state.slice(0, 16);
+      uuid[6] = (uuid[6] & 0x0f) | 0x80;
+      uuid[8] = (uuid[8] & 0x3f) | 0x80;
+      const hex = Array.from(uuid, (byte) => byte.toString(16).padStart(2, "0"));
+      return (
+        "urn:uuid:" +
+        hex.slice(0, 4).join("") +
+        "-" +
+        hex.slice(4, 6).join("") +
+        "-" +
+        hex.slice(6, 8).join("") +
+        "-" +
+        hex.slice(8, 10).join("") +
+        "-" +
+        hex.slice(10).join("")
+      );
+    },
+  };
 }
 
 async function finishDocumentPackage(
@@ -415,6 +601,10 @@ function escapeXml(value: string): string {
   return value.replace(/[&<>]/g, (character) =>
     character === "&" ? "&amp;" : character === "<" ? "&lt;" : "&gt;",
   );
+}
+
+function escapeEpubText(value: string): string {
+  return escapeXml(value).replace(/\r/g, "&#13;");
 }
 
 async function writeDocumentParagraphs(
