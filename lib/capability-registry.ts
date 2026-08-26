@@ -3467,6 +3467,32 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "txt-to-odt",
+    input: "txt",
+    output: "odt",
+    engine: "document-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "CompressionStream with raw DEFLATE",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Plain text has no document title, author, language, headings, styles, links, tables, embedded media, or package metadata to preserve.",
+      "Input must be valid UTF-8 with lines no longer than 1 MiB; XML 1.0-forbidden control characters are rejected.",
+      "The non-ZIP64 ODF 1.3 package is limited to 4 GiB.",
+    ],
+    fidelityLimitations: [
+      "Each source line becomes one OpenDocument paragraph; empty lines, leading and trailing spaces, repeated spaces, tabs, and Unicode text are represented explicitly.",
+      "The output intentionally applies no inferred formatting or page layout.",
+    ],
+    maxTestedBytes: 67_130_000,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "docx-to-txt",
     input: "docx",
     output: "txt",

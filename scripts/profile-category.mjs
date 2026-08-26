@@ -722,6 +722,7 @@ const categories = {
     generator: "scripts/generate-document-stress-fixtures.mjs",
     profiles: [
       ["txt-to-docx", "document-64m.txt"],
+      ["txt-to-odt", "document-64m.txt"],
       ["txt-to-html", "document-64m.txt"],
       ["md-to-html", "document-64m.md"],
       ["html-to-txt", "document-64m.html"],

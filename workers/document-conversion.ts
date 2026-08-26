@@ -15,7 +15,12 @@ const MAX_LINE_CHARS = 1024 * 1024;
 
 interface DocumentRuntime {
   file: File;
-  profileId: "txt-to-html" | "txt-to-docx" | "md-to-html" | "html-to-txt";
+  profileId:
+    | "txt-to-html"
+    | "txt-to-docx"
+    | "txt-to-odt"
+    | "md-to-html"
+    | "html-to-txt";
   metrics: ConversionMetrics;
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
   warn(message: string): void;
@@ -30,6 +35,8 @@ export async function runDocumentConversion(
     await textToHtml(runtime);
   } else if (runtime.profileId === "txt-to-docx") {
     await textToDocx(runtime);
+  } else if (runtime.profileId === "txt-to-odt") {
+    await textToOdt(runtime);
   } else if (runtime.profileId === "md-to-html") {
     await markdownToHtml(runtime);
   } else {
@@ -54,6 +61,21 @@ const DOCX_DOCUMENT_PREFIX =
   '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>' +
   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>';
 const DOCX_DOCUMENT_SUFFIX = "<w:sectPr/></w:body></w:document>";
+const ODT_MIMETYPE = "application/vnd.oasis.opendocument.text";
+const ODT_MANIFEST =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<manifest:manifest xmlns:manifest="urn:oasis:names:tc:opendocument:xmlns:manifest:1.0" manifest:version="1.3">' +
+  '<manifest:file-entry manifest:full-path="/" manifest:media-type="' +
+  ODT_MIMETYPE +
+  '"/><manifest:file-entry manifest:full-path="content.xml" manifest:media-type="text/xml"/>' +
+  "</manifest:manifest>";
+const ODT_CONTENT_PREFIX =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<office:document-content xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" ' +
+  'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0" office:version="1.3">' +
+  "<office:body><office:text>";
+const ODT_CONTENT_SUFFIX =
+  "</office:text></office:body></office:document-content>";
 
 async function textToDocx(runtime: DocumentRuntime): Promise<void> {
   runtime.warn(
@@ -63,50 +85,129 @@ async function textToDocx(runtime: DocumentRuntime): Promise<void> {
     "The bounded profile streams standards-compliant DEFLATE entries directly into the DOCX package without retaining completed XML or ZIP data.",
   );
   const entries: WrittenZipEntry[] = [];
-  await writeDocxEntry(
+  await writeDeflatedPackageEntry(
     runtime,
     entries,
     "[Content_Types].xml",
     async (write) => write(new TextEncoder().encode(DOCX_CONTENT_TYPES)),
   );
-  await writeDocxEntry(
+  await writeDeflatedPackageEntry(
     runtime,
     entries,
     "_rels/.rels",
     async (write) => write(new TextEncoder().encode(DOCX_RELATIONSHIPS)),
   );
-  await writeDocxEntry(
+  await writeDeflatedPackageEntry(
     runtime,
     entries,
     "word/document.xml",
     async (write) => {
       const writer = createZipTextWriter(write);
       await writer.write(DOCX_DOCUMENT_PREFIX);
-      await writeDocxParagraphs(runtime, writer);
+      await writeDocumentParagraphs(runtime, writer, wordParagraph);
       await writer.write(DOCX_DOCUMENT_SUFFIX);
       await writer.flush();
     },
   );
 
+  await finishDocumentPackage(runtime, entries, "DOCX");
+}
+
+async function textToOdt(runtime: DocumentRuntime): Promise<void> {
+  runtime.warn(
+    "Plain-text lines become OpenDocument paragraphs and tabs become text:tab elements. ODT cannot infer headings, styles, links, tables, page layout, language, or document metadata from plain text.",
+  );
+  runtime.warn(
+    "The ODF 1.3 package writes its required uncompressed mimetype entry first, then streams manifest and content XML through bounded raw DEFLATE without retaining completed XML or ZIP data.",
+  );
+  const entries: WrittenZipEntry[] = [];
+  await writeStoredMimetypeEntry(runtime, entries);
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "META-INF/manifest.xml",
+    async (write) => write(new TextEncoder().encode(ODT_MANIFEST)),
+  );
+  await writeDeflatedPackageEntry(
+    runtime,
+    entries,
+    "content.xml",
+    async (write) => {
+      const writer = createZipTextWriter(write);
+      await writer.write(ODT_CONTENT_PREFIX);
+      await writeDocumentParagraphs(runtime, writer, odtParagraph);
+      await writer.write(ODT_CONTENT_SUFFIX);
+      await writer.flush();
+    },
+  );
+  await finishDocumentPackage(runtime, entries, "ODT");
+}
+
+async function writeStoredMimetypeEntry(
+  runtime: DocumentRuntime,
+  entries: WrittenZipEntry[],
+): Promise<void> {
+  if (runtime.metrics.outputBytes !== 0) {
+    throw new Error("OpenDocument mimetype must be the first package entry.");
+  }
+  const encoder = new TextEncoder();
+  const nameBytes = encoder.encode("mimetype");
+  const payload = encoder.encode(ODT_MIMETYPE);
+  const flags = 0x0800;
+  const method = 0;
+  const { dosTime, dosDate } = unixToDos(0);
+  const crc32 = (updateCrc32(0xffff_ffff, payload) ^ 0xffff_ffff) >>> 0;
+  const header = createZipLocalHeader(
+    nameBytes,
+    flags,
+    method,
+    dosTime,
+    dosDate,
+  );
+  const view = new DataView(header.buffer);
+  view.setUint32(14, crc32, true);
+  view.setUint32(18, payload.byteLength, true);
+  view.setUint32(22, payload.byteLength, true);
+  await writePackageChunk(runtime, header, "Writing ODT mimetype header");
+  await writePackageChunk(runtime, payload, "Writing ODT mimetype");
+  entries.push({
+    nameBytes,
+    directory: false,
+    method,
+    flags,
+    dosTime,
+    dosDate,
+    crc32,
+    compressedSize: payload.byteLength,
+    uncompressedSize: payload.byteLength,
+    localHeaderOffset: 0,
+  });
+}
+
+async function finishDocumentPackage(
+  runtime: DocumentRuntime,
+  entries: WrittenZipEntry[],
+  label: string,
+): Promise<void> {
   const directoryOffset = runtime.metrics.outputBytes;
-  ensureZip32(directoryOffset, "DOCX central-directory offset");
+  ensureZip32(directoryOffset, label + " central-directory offset");
   for (const entry of entries) {
-    await writeDocxChunk(
+    await writePackageChunk(
       runtime,
       createZipCentralHeader(entry),
-      "Writing DOCX directory",
+      "Writing " + label + " directory",
     );
   }
   const directorySize = runtime.metrics.outputBytes - directoryOffset;
-  ensureZip32(directorySize, "DOCX central-directory size");
-  await writeDocxChunk(
+  ensureZip32(directorySize, label + " central-directory size");
+  await writePackageChunk(
     runtime,
     createZipEndRecord(entries.length, directorySize, directoryOffset),
-    "Finalizing DOCX",
+    "Finalizing " + label,
   );
 }
 
-async function writeDocxEntry(
+async function writeDeflatedPackageEntry(
   runtime: DocumentRuntime,
   entries: WrittenZipEntry[],
   name: string,
@@ -116,28 +217,28 @@ async function writeDocxEntry(
 ): Promise<void> {
   const nameBytes = new TextEncoder().encode(name);
   if (nameBytes.byteLength < 1 || nameBytes.byteLength > 65_535) {
-    throw new Error("A DOCX package entry name exceeds the ZIP32 limit.");
+    throw new Error("A document package entry name exceeds the ZIP32 limit.");
   }
   const flags = 0x0808;
   const method = 8;
   const { dosTime, dosDate } = unixToDos(0);
   const localHeaderOffset = runtime.metrics.outputBytes;
-  ensureZip32(localHeaderOffset, "DOCX local-header offset");
-  await writeDocxChunk(
+  ensureZip32(localHeaderOffset, "document package local-header offset");
+  await writePackageChunk(
     runtime,
     createZipLocalHeader(nameBytes, flags, method, dosTime, dosDate),
-    "Writing DOCX header",
+    "Writing document package header",
   );
 
-  const payload = await deflateDocxEntry(runtime, produce);
-  await writeDocxChunk(
+  const payload = await deflatePackageEntry(runtime, produce);
+  await writePackageChunk(
     runtime,
     createZipDataDescriptor(
       payload.crc32,
       payload.compressedSize,
       payload.uncompressedSize,
     ),
-    "Writing DOCX descriptor",
+    "Writing document package descriptor",
   );
   entries.push({
     nameBytes,
@@ -153,7 +254,7 @@ async function writeDocxEntry(
   });
 }
 
-async function deflateDocxEntry(
+async function deflatePackageEntry(
   runtime: DocumentRuntime,
   produce: (
     write: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
@@ -173,8 +274,8 @@ async function deflateDocxEntry(
         const { done, value } = await reader.read();
         if (done) return;
         compressedSize += value.byteLength;
-        ensureZip32(compressedSize, "DOCX compressed entry size");
-        await writeDocxChunk(runtime, value, "Writing DOCX content");
+        ensureZip32(compressedSize, "document package compressed entry size");
+        await writePackageChunk(runtime, value, "Writing document package content");
       }
     } catch (error) {
       pumpFailure = error;
@@ -187,7 +288,7 @@ async function deflateDocxEntry(
       runtime.assertActive();
       if (!chunk.byteLength) return;
       uncompressedSize += chunk.byteLength;
-      ensureZip32(uncompressedSize, "DOCX entry size");
+      ensureZip32(uncompressedSize, "document package entry size");
       crc = updateCrc32(crc, chunk);
       if (pumpFailure) throw pumpFailure;
       await writer.write(chunk);
@@ -210,12 +311,15 @@ async function deflateDocxEntry(
   };
 }
 
-async function writeDocxChunk(
+async function writePackageChunk(
   runtime: DocumentRuntime,
   chunk: Uint8Array<ArrayBuffer>,
   phase: string,
 ): Promise<void> {
-  ensureZip32(runtime.metrics.outputBytes + chunk.byteLength, "DOCX output size");
+  ensureZip32(
+    runtime.metrics.outputBytes + chunk.byteLength,
+    "document package output size",
+  );
   await runtime.write(chunk, phase);
   runtime.progress(phase);
 }
@@ -267,6 +371,40 @@ function wordParagraph(line: string): string {
   return `${output}</w:p>`;
 }
 
+function odtParagraph(line: string): string {
+  assertXmlText(line);
+  if (!line) return "<text:p/>";
+  let output = "<text:p>";
+  let cursor = 0;
+  let index = 0;
+  while (index < line.length) {
+    if (line[index] === "\t") {
+      output += escapeXml(line.slice(cursor, index));
+      output += "<text:tab/>";
+      index += 1;
+      cursor = index;
+      continue;
+    }
+    if (line[index] !== " ") {
+      index += 1;
+      continue;
+    }
+    let end = index + 1;
+    while (end < line.length && line[end] === " ") end += 1;
+    const count = end - index;
+    if (index === 0 || end === line.length || count > 1) {
+      output += escapeXml(line.slice(cursor, index));
+      output += count === 1
+        ? "<text:s/>"
+        : '<text:s text:c="' + String(count) + '"/>';
+      cursor = end;
+    }
+    index = end;
+  }
+  output += escapeXml(line.slice(cursor));
+  return output + "</text:p>";
+}
+
 function assertXmlText(value: string): void {
   if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/.test(value)) {
     throw new Error("Plain text contains a character forbidden by XML 1.0.");
@@ -279,9 +417,10 @@ function escapeXml(value: string): string {
   );
 }
 
-async function writeDocxParagraphs(
+async function writeDocumentParagraphs(
   runtime: DocumentRuntime,
   writer: ReturnType<typeof createZipTextWriter>,
+  createParagraph: (line: string) => string,
 ): Promise<void> {
   const reader = boundedBlobStream(runtime.file, runtime).getReader();
   const decoder = new TextDecoder("utf-8", { fatal: true });
@@ -293,7 +432,7 @@ async function writeDocxParagraphs(
     if (line.length > MAX_LINE_CHARS) {
       throw new Error("A document line exceeds the 1 MiB safety limit.");
     }
-    batch += wordParagraph(line);
+    batch += createParagraph(line);
     if (batch.length >= IO_CHUNK_BYTES) {
       const pending = writer.write(batch);
       batch = "";

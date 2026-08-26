@@ -12,12 +12,15 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **385**
-- Public profiles with a retained successful Chrome stress report: **385**
+- Public passed conversion profiles: **386**
+- Public profiles with a retained successful Chrome stress report: **386**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-26 bounded TXT to ODT:** the public route writes an ODF 1.3 package with the required ASCII mimetype entry first, stored without a data descriptor or extra field and with known CRC and sizes in its local header. Manifest and content XML then stream through raw DEFLATE into the seekable destination. Each line becomes one text paragraph; text:s and text:tab elements explicitly preserve leading, trailing, and repeated spaces plus tabs. One reusable 256 KiB encoder buffer, a 1 MiB line ceiling, ZIP32 checks, 16 KiB maximum compressed writes, and one pending operation keep memory independent of total size.
+- **TXT to ODT correctness, speed, and memory evidence:** the 67,130,000-byte source passed 3/3 production-Chrome runs in 2.63-2.73 seconds at 161.1 MiB worst complete-Chrome incremental private memory. Every run produced the same 3,750,464-byte SHA-256 1ff367b7b75280795f2406835fae68293c2686d416fe9d9097c7fdc1c91d3529. Python zipfile and raw-header inspection required exact entry order, methods 0/8/8, zero extra fields, the first uncompressed mimetype payload, manifest root/content entries, CRCs, and a valid office:document-content root; namespace-aware SAX reconstruction matched all 67,130,000 source bytes and SHA-256 6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea. The shared DEFLATE topology retains the same-source controlled evidence that beat stored XML for TXT to DOCX, and the ODT focused valid-output, forbidden-character, write-failure, and cancellation gate passed 4/4.
+- **TXT to ODT milestone verification:** the registry publishes 386 passed routes and all 386 have retained successful Chrome stress evidence. The post-promotion ODT browser gate passed 4/4, the refactored complete streaming-conversion suite passed 227/227, privacy/offline tests passed 12/12, unit tests passed 39/39, and the production build, TypeScript, targeted ESLint, and diff checks passed. Generated stress sources, converted copies, validation copies, Playwright profiles, and cancellation fixtures remain repository-local and cleanup-managed.
 - **2026-08-26 bounded TXT to DOCX:** the public route incrementally converts each valid UTF-8 source line into one WordprocessingML paragraph, preserves empty lines, spaces, Unicode, and tabs, and streams the three required OOXML package entries through browser-native raw DEFLATE into the existing seekable destination. One reusable 256 KiB encoder buffer, a 1 MiB line ceiling, ZIP32 size checks, CRC32 data descriptors, 16 KiB maximum compressed writes, and one pending operation keep memory and queueing independent of total input and output size. Completed XML and ZIP data are never retained.
 - **TXT to DOCX speed optimization:** the first valid stored-ZIP topology converted the 67,130,000-byte stress source in 5.780 seconds, emitted 153,441,297 bytes, and measured 169.0 MiB incremental private memory. Streaming DEFLATE improved the same browser workload to 5.181 seconds, 3,921,788 bytes, and 165.8 MiB. Removing roughly 1.37 million per-line promise turns and batching paragraph encoding into bounded chunks cut the final three-run conversion to 2.62-2.69 seconds while preserving the identical package hash; the selected topology is 53.5% faster than stored ZIP and reduces output by 97.4%.
 - **TXT to DOCX correctness and memory evidence:** the final 67,130,000-byte source passed 3/3 production-Chrome runs at 148.0 MiB worst complete-Chrome incremental private memory. Every run produced the same 3,921,788-byte SHA-256 ade1e680ff5817284efb426e50701be3fc1c1ea0c17fddab7b25db4c8ef625c1. Python zipfile traversed all CRCs and exact entries, required raw DEFLATE for all three entries, verified the OOXML main-document content type and root relationship, then a namespace-aware SAX parser streamed document.xml and reconstructed all 67,130,000 source bytes with SHA-256 6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea. Focused whitespace, tabs, empty paragraphs, Unicode, XML-forbidden-input, injected-write-failure, and large cancellation browser cases passed and removed every project-owned temporary or partial output.
@@ -560,6 +563,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | ttml-to-vtt | 82,349,061 | 3 | 63,088,906 | 4.63 s–4.73 s | 198.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | txt-to-docx | 67,130,000 | 3 | 3,921,788 | 2.62 s–2.69 s | 148.0 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | txt-to-html | 67,130,000 | 3 | 94,530,182 | 0.79 s–0.88 s | 128.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| txt-to-odt | 67,130,000 | 3 | 3,750,464 | 2.63 s–2.73 s | 161.1 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | vtt-to-ass | 73,788,904 | 3 | 83,203,467 | 3.84 s–4.34 s | 187.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-srt | 73,788,904 | 3 | 71,607,792 | 2.79 s–2.84 s | 200.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-ttml | 73,788,904 | 3 | 82,349,061 | 3.48 s–3.58 s | 204.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -1046,6 +1050,7 @@ Stream ma |
 | ttml-to-vtt | subtitle | subtitle-stream | stream | 82,349,061 B | 3-run Chrome report |
 | txt-to-docx | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
 | txt-to-html | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
+| txt-to-odt | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
 | vtt-to-ass | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-srt | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-ttml | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |

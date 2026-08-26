@@ -170,6 +170,7 @@ const isAnimatedJxlProfile =
   );
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isDocxOutputProfile = profileId === "txt-to-docx";
+const isOdtOutputProfile = profileId === "txt-to-odt";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -184,6 +185,7 @@ const isStreamingTextProfile =
   profileId === "ttml-to-vtt" ||
   profileId === "txt-to-html" ||
   isDocxOutputProfile ||
+  isOdtOutputProfile ||
   profileId === "md-to-html" ||
   profileId === "html-to-txt" ||
   profileId === "docx-to-txt" ||
@@ -884,6 +886,7 @@ try {
       isImageProfile ||
       isArchiveTransformProfile ||
       isDocxOutputProfile ||
+      isOdtOutputProfile ||
       isBzip2CompressedOutput ||
       isXzCompressedOutput ||
       isGzipCompressedOutput
@@ -892,9 +895,11 @@ try {
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (isDocxOutputProfile) {
+      if (isDocxOutputProfile || isOdtOutputProfile) {
         outputSha256 = (await hashFile(physicalOutputPath)).sha256;
-        const decoded = await validateDocxOutput(physicalOutputPath);
+        const decoded = isDocxOutputProfile
+          ? await validateDocxOutput(physicalOutputPath)
+          : await validateOdtOutput(physicalOutputPath);
         validationBytes = decoded.bytes;
         externalValidationSha256 = decoded.sha256;
         if (
@@ -902,12 +907,20 @@ try {
           externalValidationSha256 !== expectedValidationHash
         ) {
           throw new Error(
-            `Independent streamed DOCX validation failed on run ${run}: ${validationBytes} bytes.`,
+            "Independent streamed " +
+              (isDocxOutputProfile ? "DOCX" : "ODT") +
+              " validation failed on run " +
+              run +
+              ": " +
+              validationBytes +
+              " bytes.",
           );
         }
         mediaProbe = {
           withinValidation: {
-            method: "python-zipfile-sax-stream-sha256",
+            method: isDocxOutputProfile
+              ? "python-zipfile-sax-stream-sha256"
+              : "python-odf-zipfile-sax-stream-sha256",
             passed: true,
             bytes: validationBytes,
             sha256: externalValidationSha256,
@@ -2696,6 +2709,135 @@ print(json.dumps({
     !Array.isArray(result.methods)
   ) {
     throw new Error("The independent DOCX validator returned invalid evidence.");
+  }
+  return result;
+}
+
+async function validateOdtOutput(filePath) {
+  const python = String.raw`
+import hashlib, json, struct, sys, xml.sax, zipfile
+from xml.etree import ElementTree as ET
+
+MIME = "application/vnd.oasis.opendocument.text"
+OFFICE = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+TEXT = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+MANIFEST = "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0"
+
+class ContentHandler(xml.sax.ContentHandler):
+    def __init__(self):
+        super().__init__()
+        self.hash = hashlib.sha256()
+        self.bytes = 0
+        self.in_paragraph = False
+        self.root_seen = False
+
+    def add(self, value):
+        encoded = value.encode("utf-8")
+        self.hash.update(encoded)
+        self.bytes += len(encoded)
+
+    def startElementNS(self, name, qname, attrs):
+        if not self.root_seen:
+            if name != (OFFICE, "document-content"):
+                raise RuntimeError("ODT content has an invalid root")
+            self.root_seen = True
+        if name == (TEXT, "p"):
+            if self.in_paragraph:
+                raise RuntimeError("ODT contains nested text paragraphs")
+            self.in_paragraph = True
+        elif self.in_paragraph and name == (TEXT, "s"):
+            count = int(attrs.get((TEXT, "c"), "1"))
+            if count < 1 or count > 1048576:
+                raise RuntimeError("ODT explicit-space count is invalid")
+            self.add(" " * count)
+        elif self.in_paragraph and name == (TEXT, "tab"):
+            self.add("\t")
+
+    def endElementNS(self, name, qname):
+        if name == (TEXT, "p"):
+            if not self.in_paragraph:
+                raise RuntimeError("ODT paragraph state is invalid")
+            self.add("\n")
+            self.in_paragraph = False
+
+    def characters(self, content):
+        if self.in_paragraph:
+            self.add(content)
+
+expected = ["mimetype", "META-INF/manifest.xml", "content.xml"]
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    infos = package.infolist()
+    entries = package.namelist()
+    methods = [item.compress_type for item in infos]
+    extras = [len(item.extra) for item in infos]
+    mimetype = package.read("mimetype").decode("ascii")
+    manifest = ET.fromstring(package.read("META-INF/manifest.xml"))
+    handler = ContentHandler()
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_namespaces, True)
+    parser.setContentHandler(handler)
+    with package.open("content.xml", "r") as content:
+        parser.parse(content)
+
+with open(sys.argv[1], "rb") as source:
+    local = source.read(128)
+signature = struct.unpack_from("<I", local, 0)[0]
+flags = struct.unpack_from("<H", local, 6)[0]
+method = struct.unpack_from("<H", local, 8)[0]
+name_length = struct.unpack_from("<H", local, 26)[0]
+extra_length = struct.unpack_from("<H", local, 28)[0]
+local_name = local[30:30 + name_length].decode("utf-8")
+payload_offset = 30 + name_length + extra_length
+first_payload = local[payload_offset:payload_offset + len(MIME)].decode("ascii")
+
+manifest_entries = {
+    item.attrib.get("{%s}full-path" % MANIFEST):
+        item.attrib.get("{%s}media-type" % MANIFEST)
+    for item in manifest.findall("{%s}file-entry" % MANIFEST)
+}
+if bad is not None:
+    raise RuntimeError("ODT package CRC failed for " + bad)
+if entries != expected:
+    raise RuntimeError("ODT package entries differ: " + repr(entries))
+if methods != [0, 8, 8]:
+    raise RuntimeError("ODT ZIP methods differ: " + repr(methods))
+if extras != [0, 0, 0]:
+    raise RuntimeError("ODT ZIP entries contain extra fields")
+if infos[0].header_offset != 0 or signature != 0x04034B50:
+    raise RuntimeError("ODT mimetype is not the first local entry")
+if flags & 0x08 or method != 0 or local_name != "mimetype" or extra_length != 0:
+    raise RuntimeError("ODT mimetype local header is not stored canonically")
+if mimetype != MIME or first_payload != MIME:
+    raise RuntimeError("ODT mimetype payload is invalid")
+if manifest.tag != "{%s}manifest" % MANIFEST:
+    raise RuntimeError("ODT manifest root is invalid")
+if manifest_entries != {"/": MIME, "content.xml": "text/xml"}:
+    raise RuntimeError("ODT manifest entries are invalid")
+if not handler.root_seen or handler.in_paragraph:
+    raise RuntimeError("ODT content XML is incomplete")
+
+print(json.dumps({
+    "bytes": handler.bytes,
+    "sha256": handler.hash.hexdigest(),
+    "entries": entries,
+    "methods": methods,
+}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256) ||
+    !Array.isArray(result.entries) ||
+    !Array.isArray(result.methods)
+  ) {
+    throw new Error("The independent ODT validator returned invalid evidence.");
   }
   return result;
 }

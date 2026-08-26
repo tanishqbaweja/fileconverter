@@ -11,6 +11,10 @@
     "txt-to-docx": {
       "validationBytes": 67130000,
       "validationSha256": "6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea"
+    },
+    "txt-to-odt": {
+      "validationBytes": 67130000,
+      "validationSha256": "6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea"
     }
   }
 }

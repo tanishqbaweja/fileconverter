@@ -995,6 +995,182 @@ test("cancels streaming DOCX compression and removes the partial package", async
   expect(await appOwnedOpfsNames("within-test-txt-to-docx")).toEqual([]);
 });
 
+test("streams UTF-8 text to a conforming independently parsed ODT", async () => {
+  const outputPath = path.join(projectRoot, "work", "browser-txt-output.odt");
+  const sourcePath = path.join(projectRoot, "work", "browser-odt-source.txt");
+  try {
+    await writeFile(
+      sourcePath,
+      '  Symbols: <private> & "quoted".  \nTabs:\tfirst\tsecond\n\nUnicode: हिन्दी, 日本語, café.\n',
+      "utf8",
+    );
+    await selectFixture("work/browser-odt-source.txt", "txt-to-odt");
+    const state = await convert();
+    await copyAndDeleteSmallOpfsFile(state.opfsName!, outputPath);
+    const python = String.raw`
+import json, struct, sys, zipfile
+from xml.etree import ElementTree as ET
+
+mime = "application/vnd.oasis.opendocument.text"
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    infos = package.infolist()
+    names = package.namelist()
+    methods = [item.compress_type for item in infos]
+    extras = [len(item.extra) for item in infos]
+    flags = [item.flag_bits for item in infos]
+    mimetype = package.read("mimetype").decode("ascii")
+    manifest = ET.fromstring(package.read("META-INF/manifest.xml"))
+    content = ET.fromstring(package.read("content.xml"))
+
+with open(sys.argv[1], "rb") as source:
+    local = source.read(96)
+name_length = struct.unpack_from("<H", local, 26)[0]
+extra_length = struct.unpack_from("<H", local, 28)[0]
+payload_offset = 30 + name_length + extra_length
+first_payload = local[payload_offset:payload_offset + len(mime)].decode("ascii")
+
+manifest_ns = "urn:oasis:names:tc:opendocument:xmlns:manifest:1.0"
+office_ns = "urn:oasis:names:tc:opendocument:xmlns:office:1.0"
+text_ns = "urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+manifest_entries = {
+    item.attrib.get("{%s}full-path" % manifest_ns):
+        item.attrib.get("{%s}media-type" % manifest_ns)
+    for item in manifest.findall("{%s}file-entry" % manifest_ns)
+}
+
+def paragraph_text(paragraph):
+    parts = [paragraph.text or ""]
+    for child in list(paragraph):
+        if child.tag == "{%s}s" % text_ns:
+            parts.append(" " * int(child.attrib.get("{%s}c" % text_ns, "1")))
+        elif child.tag == "{%s}tab" % text_ns:
+            parts.append("\t")
+        else:
+            parts.append("".join(child.itertext()))
+        parts.append(child.tail or "")
+    return "".join(parts)
+
+office_text = content.find(
+    "{%s}body/{%s}text" % (office_ns, office_ns)
+)
+paragraphs = [
+    paragraph_text(item)
+    for item in office_text.findall("{%s}p" % text_ns)
+]
+print(json.dumps({
+    "bad": bad,
+    "names": names,
+    "methods": methods,
+    "extras": extras,
+    "flags": flags,
+    "mimetype": mimetype,
+    "first_payload": first_payload,
+    "manifest_entries": manifest_entries,
+    "content_root": content.tag,
+    "paragraphs": paragraphs,
+}))
+`;
+    const { stdout } = await execFileAsync("python", ["-c", python, outputPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const validation = JSON.parse(stdout);
+    expect(validation.bad).toBeNull();
+    expect(validation.names).toEqual([
+      "mimetype",
+      "META-INF/manifest.xml",
+      "content.xml",
+    ]);
+    expect(validation.methods).toEqual([0, 8, 8]);
+    expect(validation.extras).toEqual([0, 0, 0]);
+    expect(validation.flags[0] & 0x08).toBe(0);
+    expect(validation.mimetype).toBe(
+      "application/vnd.oasis.opendocument.text",
+    );
+    expect(validation.first_payload).toBe(validation.mimetype);
+    expect(validation.manifest_entries).toEqual({
+      "/": "application/vnd.oasis.opendocument.text",
+      "content.xml": "text/xml",
+    });
+    expect(validation.content_root).toBe(
+      "{urn:oasis:names:tc:opendocument:xmlns:office:1.0}document-content",
+    );
+    expect(validation.paragraphs).toEqual([
+      '  Symbols: <private> & "quoted".  ',
+      "Tabs:\tfirst\tsecond",
+      "",
+      "Unicode: हिन्दी, 日本語, café.",
+    ]);
+    expect(state.warnings.join(" ")).toContain("ODF 1.3");
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(await appOwnedOpfsNames("within-test-txt-to-odt")).toEqual([]);
+  } finally {
+    await rm(outputPath, { force: true });
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("rejects XML-forbidden text during ODT output and removes the partial package", async () => {
+  const sourcePath = path.join(projectRoot, "work", "invalid-odt-source.txt");
+  await writeFile(sourcePath, Buffer.from("valid\0invalid\n", "utf8"));
+  try {
+    await selectFixture("work/invalid-odt-source.txt", "txt-to-odt");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain("forbidden by XML 1.0");
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-txt-to-odt")).toEqual([]);
+  } finally {
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("ODT output propagates a bounded write failure and removes the partial package", async () => {
+  await openFaultMode("write");
+  await selectFixture("fixtures/documents/sample.txt", "txt-to-odt");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.opfsName).toBeNull();
+  expect(await appOwnedOpfsNames("within-test-txt-to-odt")).toEqual([]);
+});
+
+test("cancels streaming ODT compression and removes the partial package", async () => {
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(docxCancellationFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("txt-to-odt");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => {
+      const state = await currentState();
+      return state.jobState === "running"
+        ? (state.metrics?.inputBytes ?? 0)
+        : -1;
+    }, { timeout: 30_000 })
+    .toBeGreaterThan(1024 * 1024);
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("cancelled");
+  const state = await currentState();
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(await appOwnedOpfsNames("within-test-txt-to-odt")).toEqual([]);
+});
+
 test("streams DOCX main-document text with disclosed structural loss", async () => {
   await selectFixture("fixtures/documents/sample.docx", "docx-to-txt");
   const state = await convert();

@@ -138,6 +138,10 @@ await writeManifest(txtPath, txtBytes, txtHash, {
     validationBytes: txtBytes,
     validationSha256: txtHash.copy().digest("hex"),
   },
+  "txt-to-odt": {
+    validationBytes: txtBytes,
+    validationSha256: txtHash.copy().digest("hex"),
+  },
 });
 await writeManifest(markdownPath, markdownBytes, markdownHash, {
   "md-to-html": {

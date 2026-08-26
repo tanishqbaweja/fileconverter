@@ -48,6 +48,17 @@ test("TXT to DOCX is public only at its measured evidence limit", () => {
   assert.equal(publicProfilesFor("txt").includes(profile), true);
 });
 
+test("TXT to ODT is public only at its measured evidence limit", () => {
+  const profile = conversionProfiles.find(
+    (candidate) => candidate.id === "txt-to-odt",
+  );
+  assert.ok(profile);
+  assert.equal(profile.public, true);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 67_130_000);
+  assert.equal(publicProfilesFor("txt").includes(profile), true);
+});
+
 test("MPEG-2 elementary routes expose only their measured evidence", () => {
   const expected = new Map([
     ["m2v-to-mpeg-ts", 136_166_136],
