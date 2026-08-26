@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-24 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-26 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,12 +12,16 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **384**
-- Public profiles with a retained successful Chrome stress report: **384**
+- Public passed conversion profiles: **385**
+- Public profiles with a retained successful Chrome stress report: **385**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-08-26 bounded TXT to DOCX:** the public route incrementally converts each valid UTF-8 source line into one WordprocessingML paragraph, preserves empty lines, spaces, Unicode, and tabs, and streams the three required OOXML package entries through browser-native raw DEFLATE into the existing seekable destination. One reusable 256 KiB encoder buffer, a 1 MiB line ceiling, ZIP32 size checks, CRC32 data descriptors, 16 KiB maximum compressed writes, and one pending operation keep memory and queueing independent of total input and output size. Completed XML and ZIP data are never retained.
+- **TXT to DOCX speed optimization:** the first valid stored-ZIP topology converted the 67,130,000-byte stress source in 5.780 seconds, emitted 153,441,297 bytes, and measured 169.0 MiB incremental private memory. Streaming DEFLATE improved the same browser workload to 5.181 seconds, 3,921,788 bytes, and 165.8 MiB. Removing roughly 1.37 million per-line promise turns and batching paragraph encoding into bounded chunks cut the final three-run conversion to 2.62-2.69 seconds while preserving the identical package hash; the selected topology is 53.5% faster than stored ZIP and reduces output by 97.4%.
+- **TXT to DOCX correctness and memory evidence:** the final 67,130,000-byte source passed 3/3 production-Chrome runs at 148.0 MiB worst complete-Chrome incremental private memory. Every run produced the same 3,921,788-byte SHA-256 ade1e680ff5817284efb426e50701be3fc1c1ea0c17fddab7b25db4c8ef625c1. Python zipfile traversed all CRCs and exact entries, required raw DEFLATE for all three entries, verified the OOXML main-document content type and root relationship, then a namespace-aware SAX parser streamed document.xml and reconstructed all 67,130,000 source bytes with SHA-256 6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea. Focused whitespace, tabs, empty paragraphs, Unicode, XML-forbidden-input, injected-write-failure, and large cancellation browser cases passed and removed every project-owned temporary or partial output.
+- **TXT to DOCX milestone verification:** the registry publishes 385 passed routes and all 385 have retained successful Chrome stress evidence. The post-promotion DOCX browser gate passed 4/4, the complete streaming-conversion suite passed 223/223, unit tests passed 38/38, and the production build, TypeScript, targeted ESLint, and diff checks passed. Generated stress sources, converted copies, validation copies, Playwright profiles, and cancellation fixtures remain repository-local and cleanup-managed.
 - **2026-08-24 bounded AVIF output:** five public PNG, JPEG, WebP, GIF, and BMP routes lazy-load a reproducible pinned FFmpeg 8.1.2/libaom 3.13.2 encoder. A project-owned muxer patch writes `ftyp`/`free`/`mdat` first, streams compressed AV1 packets through the real seekable destination bridge, patches only the bounded `mdat` size, and appends `meta` plus animation `moov`; no complete output is retained in Wasm or JavaScript. Static work uses a fixed 80 MiB module and animation a separately lazy-loaded fixed 88 MiB module. Both use one thread, realtime mode, CPU-used 8, zero lookahead, reduced references, YUV420 CRF 32 color, lossless grayscale alpha, 256 KiB pixel strips, at most 64 KiB output writes, and one pending operation.
 - **AVIF static speed and memory evidence:** final-binary three-run production-Chrome profiles converted 1,024×768 PNG in 0.305-0.545 seconds at 192.9 MiB, JPEG in 0.294-0.515 seconds at 219.6 MiB, WebP in 0.307-0.535 seconds at 240.7 MiB, and direct-row BMP in 0.314-0.554 seconds at 192.0 MiB worst incremental complete-Chrome private memory. Every route emitted a repeatable genuine AV1 still image and passed independent native decoding, dimensions, and visual checks. Reads and pixel strips stayed at or below 262,144 bytes, writes and queueing at or below 17,488 bytes, and one operation was pending.
 - **AVIF animation correctness and evidence:** eight-frame APNG, GIF, and WebP each produced the same repeatable 183,123-byte AVIF with SHA-256 `30ad8c493c66412710fe10c6259e7fdeaaef44f8c12ca7fc0ffde007814363e8`, exact 250 ms durations, a microsecond timebase, infinite looping, and independently decoded frames. APNG completed in 1.097-1.403 seconds at 218.0 MiB, GIF in 1.082-1.398 seconds at 237.5 MiB, and WebP in 1.108-1.442 seconds at 220.9 MiB worst incremental private memory. A separate transparent finite-loop WebP browser gate preserved all three frames, exact 100/200/300 ms timing, repetition semantics, and alpha through both native libavif/FFmpeg and browser decoding. Writes and queueing peaked at 48,550 bytes with one operation pending.
@@ -554,6 +558,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | tsv-to-ndjson | 134,423,894 | 3 | 288,143,880 | 9.67 s–9.77 s | 226.5 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ttml-to-srt | 82,349,061 | 3 | 71,607,792 | 4.77 s–4.90 s | 194.9 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | ttml-to-vtt | 82,349,061 | 3 | 63,088,906 | 4.63 s–4.73 s | 198.4 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| txt-to-docx | 67,130,000 | 3 | 3,921,788 | 2.62 s–2.69 s | 148.0 MiB | 0.0 MiB | read 262,144 B / write 16,384 B | passed |
 | txt-to-html | 67,130,000 | 3 | 94,530,182 | 0.79 s–0.88 s | 128.8 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-ass | 73,788,904 | 3 | 83,203,467 | 3.84 s–4.34 s | 187.1 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | vtt-to-srt | 73,788,904 | 3 | 71,607,792 | 2.79 s–2.84 s | 200.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -701,6 +706,7 @@ Stream ma |
 | 2026-08-24T05:39:42.427Z | png-to-avif | 84,034 | 3 | 84,034 | Failed checks: processTreePrivateMemory; measured 254.8 MiB against a 250.0 MiB limit. |
 | 2026-08-24T05:52:43.477Z | webp-to-avif | 28,496 | 3 | 28,496 | Failed checks: processTreePrivateMemory; measured 254.8 MiB against a 250.0 MiB limit. |
 | 2026-08-24T05:57:28.706Z | gif-to-avif | 281,853 | 0 | 281,853 | Conversion run 1 failed: Aborted(OOM). Build with -sASSERTIONS for more info. |
+| 2026-08-26T05:32:05.302Z | txt-to-docx | 67,130,000 | 0 | 67,130,000 | Independent streamed DOCX validation failed on run 1: 68500000 bytes. |
 
 ## Every public passed profile
 
@@ -1038,6 +1044,7 @@ Stream ma |
 | tsv-to-ndjson | data | records-stream | stream | 134,423,894 B | 3-run Chrome report |
 | ttml-to-srt | subtitle | subtitle-stream | stream | 82,349,061 B | 3-run Chrome report |
 | ttml-to-vtt | subtitle | subtitle-stream | stream | 82,349,061 B | 3-run Chrome report |
+| txt-to-docx | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
 | txt-to-html | document | document-stream | stream | 67,130,000 B | 3-run Chrome report |
 | vtt-to-ass | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |
 | vtt-to-srt | subtitle | subtitle-stream | stream | 73,788,904 B | 3-run Chrome report |

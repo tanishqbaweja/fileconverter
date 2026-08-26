@@ -169,6 +169,7 @@ const isAnimatedJxlProfile =
     (stream) => Number(stream.nb_frames ?? stream.nb_read_frames ?? 1) > 1,
   );
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
+const isDocxOutputProfile = profileId === "txt-to-docx";
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -182,6 +183,7 @@ const isStreamingTextProfile =
   profileId === "ttml-to-srt" ||
   profileId === "ttml-to-vtt" ||
   profileId === "txt-to-html" ||
+  isDocxOutputProfile ||
   profileId === "md-to-html" ||
   profileId === "html-to-txt" ||
   profileId === "docx-to-txt" ||
@@ -881,6 +883,7 @@ try {
       isMediaProfile ||
       isImageProfile ||
       isArchiveTransformProfile ||
+      isDocxOutputProfile ||
       isBzip2CompressedOutput ||
       isXzCompressedOutput ||
       isGzipCompressedOutput
@@ -889,7 +892,30 @@ try {
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (
+      if (isDocxOutputProfile) {
+        outputSha256 = (await hashFile(physicalOutputPath)).sha256;
+        const decoded = await validateDocxOutput(physicalOutputPath);
+        validationBytes = decoded.bytes;
+        externalValidationSha256 = decoded.sha256;
+        if (
+          validationBytes !== expectedValidationBytes ||
+          externalValidationSha256 !== expectedValidationHash
+        ) {
+          throw new Error(
+            `Independent streamed DOCX validation failed on run ${run}: ${validationBytes} bytes.`,
+          );
+        }
+        mediaProbe = {
+          withinValidation: {
+            method: "python-zipfile-sax-stream-sha256",
+            passed: true,
+            bytes: validationBytes,
+            sha256: externalValidationSha256,
+            entries: decoded.entries,
+            compressionMethods: decoded.methods,
+          },
+        };
+      } else if (
         isBzip2CompressedOutput ||
         isXzCompressedOutput ||
         isGzipCompressedOutput
@@ -2572,6 +2598,106 @@ async function hashFile(filePath) {
     bytes += chunk.byteLength;
   }
   return { bytes, sha256: hash.digest("hex") };
+}
+
+async function validateDocxOutput(filePath) {
+  const python = String.raw`
+import hashlib, json, sys, xml.sax, zipfile
+from xml.etree import ElementTree as ET
+
+W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+
+class DocumentHandler(xml.sax.ContentHandler):
+    def __init__(self):
+        super().__init__()
+        self.hash = hashlib.sha256()
+        self.bytes = 0
+        self.in_text = False
+
+    def add(self, value):
+        encoded = value.encode("utf-8")
+        self.hash.update(encoded)
+        self.bytes += len(encoded)
+
+    def startElementNS(self, name, qname, attrs):
+        if name == (W, "t"):
+            self.in_text = True
+        elif name == (W, "tab"):
+            self.add("\t")
+
+    def endElementNS(self, name, qname):
+        if name == (W, "t"):
+            self.in_text = False
+        elif name == (W, "p"):
+            self.add("\n")
+
+    def characters(self, content):
+        if self.in_text:
+            self.add(content)
+
+expected = ["[Content_Types].xml", "_rels/.rels", "word/document.xml"]
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    entries = package.namelist()
+    methods = [item.compress_type for item in package.infolist()]
+    content_types = ET.fromstring(package.read("[Content_Types].xml"))
+    relationships = ET.fromstring(package.read("_rels/.rels"))
+    handler = DocumentHandler()
+    parser = xml.sax.make_parser()
+    parser.setFeature(xml.sax.handler.feature_namespaces, True)
+    parser.setContentHandler(handler)
+    with package.open("word/document.xml", "r") as document:
+        parser.parse(document)
+
+if bad is not None:
+    raise RuntimeError("DOCX package CRC failed for " + bad)
+if entries != expected:
+    raise RuntimeError("DOCX package entries differ: " + repr(entries))
+if methods != [8, 8, 8]:
+    raise RuntimeError("DOCX does not use DEFLATE for every entry: " + repr(methods))
+
+content_ns = "http://schemas.openxmlformats.org/package/2006/content-types"
+relationship_ns = "http://schemas.openxmlformats.org/package/2006/relationships"
+main_type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
+main_overrides = [
+    item for item in content_types.findall("{%s}Override" % content_ns)
+    if item.attrib.get("PartName") == "/word/document.xml"
+    and item.attrib.get("ContentType") == main_type
+]
+office_type = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
+office_relationships = [
+    item for item in relationships.findall("{%s}Relationship" % relationship_ns)
+    if item.attrib.get("Type") == office_type
+    and item.attrib.get("Target") == "word/document.xml"
+]
+if len(main_overrides) != 1:
+    raise RuntimeError("DOCX content types do not declare the main document")
+if len(office_relationships) != 1:
+    raise RuntimeError("DOCX root relationships do not target the main document")
+
+print(json.dumps({
+    "bytes": handler.bytes,
+    "sha256": handler.hash.hexdigest(),
+    "entries": entries,
+    "methods": methods,
+}))
+`;
+  const { stdout } = await execFileAsync(
+    "python",
+    ["-c", python, filePath],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
+  const result = JSON.parse(stdout);
+  if (
+    !Number.isSafeInteger(result.bytes) ||
+    result.bytes < 0 ||
+    !/^[0-9a-f]{64}$/.test(result.sha256) ||
+    !Array.isArray(result.entries) ||
+    !Array.isArray(result.methods)
+  ) {
+    throw new Error("The independent DOCX validator returned invalid evidence.");
+  }
+  return result;
 }
 
 async function validateBzip2Output(filePath) {

@@ -983,7 +983,7 @@ export function createZipDataDescriptor(
   return bytes;
 }
 
-function createZipCentralHeader(
+export function createZipCentralHeader(
   entry: WrittenZipEntry,
 ): Uint8Array<ArrayBuffer> {
   const bytes = new Uint8Array(46 + entry.nameBytes.byteLength);
@@ -1005,7 +1005,7 @@ function createZipCentralHeader(
   return bytes;
 }
 
-function createZipEndRecord(
+export function createZipEndRecord(
   entries: number,
   directorySize: number,
   directoryOffset: number,

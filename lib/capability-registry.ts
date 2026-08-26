@@ -3441,6 +3441,32 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     public: true,
   },
   {
+    id: "txt-to-docx",
+    input: "txt",
+    output: "docx",
+    engine: "document-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "CompressionStream with raw DEFLATE",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "Plain text has no document title, author, language, headings, styles, links, tables, embedded media, or package metadata to preserve.",
+      "Input must be valid UTF-8 with lines no longer than 1 MiB; XML 1.0-forbidden control characters are rejected.",
+      "The non-ZIP64 output is limited to 4 GiB and uses bounded streaming DEFLATE.",
+    ],
+    fidelityLimitations: [
+      "Each source line becomes one Word paragraph, empty lines remain empty paragraphs, tabs become Word tab elements, and Unicode text and spaces are preserved.",
+      "The output intentionally applies no inferred formatting or page layout.",
+    ],
+    maxTestedBytes: 67_130_000,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "docx-to-txt",
     input: "docx",
     output: "txt",

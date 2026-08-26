@@ -4336,6 +4336,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (
       profileId === "txt-to-html" ||
+      profileId === "txt-to-docx" ||
       profileId === "md-to-html" ||
       profileId === "html-to-txt"
     ) {

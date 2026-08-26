@@ -134,6 +134,10 @@ await writeManifest(txtPath, txtBytes, txtHash, {
     validationBytes: txtOutputBytes,
     validationSha256: txtOutputHash.digest("hex"),
   },
+  "txt-to-docx": {
+    validationBytes: txtBytes,
+    validationSha256: txtHash.copy().digest("hex"),
+  },
 });
 await writeManifest(markdownPath, markdownBytes, markdownHash, {
   "md-to-html": {

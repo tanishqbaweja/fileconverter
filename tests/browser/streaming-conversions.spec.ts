@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { createWriteStream, existsSync } from "node:fs";
 import { once } from "node:events";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { link, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { gunzipSync } from "node:zlib";
@@ -19,6 +19,11 @@ const cancellationFixturePath = path.join(
   projectRoot,
   "work",
   "cancellation-source.ndjson",
+);
+const docxCancellationFixturePath = path.join(
+  projectRoot,
+  "work",
+  "cancellation-source.txt",
 );
 const truncatedGzipFixturePath = path.join(projectRoot, "work", "truncated.gz");
 const corruptBzip2FixturePath = path.join(projectRoot, "work", "corrupt.bz2");
@@ -566,6 +571,7 @@ async function removeOpfsEntryAndReportSize(
 test.beforeAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
+  await rm(docxCancellationFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await writeFile(batchFixturePaths[0], "First private batch payload: café.\n", "utf8");
   await writeFile(batchFixturePaths[1], "Second private batch payload: 日本語.\n", "utf8");
@@ -628,6 +634,7 @@ test.beforeAll(async () => {
   }
   cancellationFixture.end();
   await once(cancellationFixture, "finish");
+  await link(cancellationFixturePath, docxCancellationFixturePath);
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
     headless: true,
@@ -672,6 +679,7 @@ test.afterAll(async () => {
   await context?.close();
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
+  await rm(docxCancellationFixturePath, { force: true });
   await rm(truncatedGzipFixturePath, { force: true });
   await rm(corruptBzip2FixturePath, { force: true });
   await rm(truncatedBzip2FixturePath, { force: true });
@@ -838,6 +846,153 @@ test("converts UTF-8 text to safe preformatted HTML", async () => {
   expect(result.text).toBe(
     'Within keeps files on this device.\nSymbols: <private> & "quoted".\nUnicode: हिन्दी, 日本語, café.\n',
   );
+});
+
+test("streams UTF-8 text to a valid independently parsed DOCX", async () => {
+  const outputPath = path.join(projectRoot, "work", "browser-txt-output.docx");
+  const sourcePath = path.join(projectRoot, "work", "browser-docx-source.txt");
+  try {
+    await writeFile(
+      sourcePath,
+      '  Symbols: <private> & "quoted".  \nTabs:\tfirst\tsecond\n\nUnicode: हिन्दी, 日本語, café.\n',
+      "utf8",
+    );
+    await selectFixture("work/browser-docx-source.txt", "txt-to-docx");
+    const state = await convert();
+    await copyAndDeleteSmallOpfsFile(state.opfsName!, outputPath);
+    const python = String.raw`
+import json, sys, zipfile
+from xml.etree import ElementTree as ET
+
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    names = package.namelist()
+    methods = [entry.compress_type for entry in package.infolist()]
+    content_types = ET.fromstring(package.read("[Content_Types].xml"))
+    relationships = ET.fromstring(package.read("_rels/.rels"))
+    root = ET.fromstring(package.read("word/document.xml"))
+
+ns = {"w": "http://schemas.openxmlformats.org/wordprocessingml/2006/main"}
+content_ns = "http://schemas.openxmlformats.org/package/2006/content-types"
+relationship_ns = "http://schemas.openxmlformats.org/package/2006/relationships"
+overrides = [node.attrib for node in content_types.findall("{%s}Override" % content_ns)]
+office_relationships = [
+    node.attrib for node in relationships.findall("{%s}Relationship" % relationship_ns)
+]
+paragraphs = []
+for paragraph in root.findall(".//w:body/w:p", ns):
+    parts = []
+    for node in paragraph.iter():
+        if node.tag == "{%s}t" % ns["w"]:
+            parts.append(node.text or "")
+        elif node.tag == "{%s}tab" % ns["w"]:
+            parts.append("\t")
+    paragraphs.append("".join(parts))
+print(json.dumps({
+    "bad": bad,
+    "names": names,
+    "methods": methods,
+    "overrides": overrides,
+    "relationships": office_relationships,
+    "paragraphs": paragraphs,
+}))
+`;
+    const { stdout } = await execFileAsync("python", ["-c", python, outputPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const validation = JSON.parse(stdout);
+    expect(validation.bad).toBeNull();
+    expect(validation.names).toEqual([
+      "[Content_Types].xml",
+      "_rels/.rels",
+      "word/document.xml",
+    ]);
+    expect(validation.methods).toEqual([8, 8, 8]);
+    expect(validation.overrides).toContainEqual({
+      PartName: "/word/document.xml",
+      ContentType:
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml",
+    });
+    expect(validation.relationships).toContainEqual({
+      Id: "rId1",
+      Type:
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument",
+      Target: "word/document.xml",
+    });
+    expect(validation.paragraphs).toEqual([
+      '  Symbols: <private> & "quoted".  ',
+      "Tabs:\tfirst\tsecond",
+      "",
+      "Unicode: हिन्दी, 日本語, café.",
+    ]);
+    expect(state.warnings.join(" ")).toContain("DEFLATE entries");
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(await appOwnedOpfsNames("within-test-txt-to-docx")).toEqual([]);
+  } finally {
+    await rm(outputPath, { force: true });
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("rejects XML-forbidden text during DOCX output and removes the partial package", async () => {
+  const sourcePath = path.join(projectRoot, "work", "invalid-docx-source.txt");
+  await writeFile(sourcePath, Buffer.from("valid\0invalid\n", "utf8"));
+  try {
+    await selectFixture("work/invalid-docx-source.txt", "txt-to-docx");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain("forbidden by XML 1.0");
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-txt-to-docx")).toEqual([]);
+  } finally {
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("DOCX output propagates a bounded write failure and removes the partial package", async () => {
+  await openFaultMode("write");
+  await selectFixture("fixtures/documents/sample.txt", "txt-to-docx");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.opfsName).toBeNull();
+  expect(await appOwnedOpfsNames("within-test-txt-to-docx")).toEqual([]);
+});
+
+test("cancels streaming DOCX compression and removes the partial package", async () => {
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(docxCancellationFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("txt-to-docx");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => {
+      const state = await currentState();
+      return state.jobState === "running"
+        ? (state.metrics?.inputBytes ?? 0)
+        : -1;
+    }, { timeout: 30_000 })
+    .toBeGreaterThan(1024 * 1024);
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("cancelled");
+  const state = await currentState();
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(await appOwnedOpfsNames("within-test-txt-to-docx")).toEqual([]);
 });
 
 test("streams DOCX main-document text with disclosed structural loss", async () => {

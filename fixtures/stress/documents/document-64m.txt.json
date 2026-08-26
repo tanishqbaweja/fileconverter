@@ -7,6 +7,10 @@
     "txt-to-html": {
       "validationBytes": 94530182,
       "validationSha256": "5a700bfd4b3ee47f04714dd0df60aee06c9e616dc00a12779189f775fe04f404"
+    },
+    "txt-to-docx": {
+      "validationBytes": 67130000,
+      "validationSha256": "6c56fa1b881eb377bf3d0e3984d152442083fc0ca3326f9f959d96736e11adea"
     }
   }
 }

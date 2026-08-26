@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 384
+complete-Chromium memory profile have passed. The current registry publishes 385
 routes:
 
 | Category | Verified routes | Largest tested source |
@@ -21,7 +21,7 @@ routes:
 | Compression | bytes -> GZIP/BZIP2/XZ; GZIP/BZIP2/XZ -> bytes | 270,593,081 B |
 | Archives | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
 | Subtitles | SRT <-> WebVTT; SRT/WebVTT -> ASS/TTML; ASS/TTML -> SRT/WebVTT | 101,393,068 B |
-| Documents | DOCX/ODT -> visible TXT; TXT -> safe preformatted HTML; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
+| Documents | TXT -> DOCX or safe preformatted HTML; DOCX/ODT -> visible TXT; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
 | Ebooks | EPUB -> spine-ordered visible TXT | 134,219,595 B |
 | Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
 | Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
@@ -785,7 +785,13 @@ entities, and never creates a DOM. Column-shape and XML normalization limits are
 disclosed.
 
 Document routes are deliberately semantic rather than extension renames. TXT
-is escaped into a complete preformatted HTML document. Markdown renders a
+to DOCX converts each source line to one Word paragraph, preserves empty lines,
+spaces, Unicode, and tabs, and incrementally writes a valid three-part OOXML
+package through browser-native streaming DEFLATE. It retains neither the
+completed XML nor ZIP package and explicitly discloses that plain text cannot
+provide styles, headings, links, tables, layout, language, media, or document
+metadata. TXT is also escaped into a complete preformatted HTML document.
+Markdown renders a
 bounded documented subset and escapes raw HTML. HTML-to-TXT tokenizes the input,
 decodes the supported entities, retains visible block/list/table text, and
 removes scripts, styles, templates, metadata, layout, images, SVG/canvas, and
@@ -1202,6 +1208,7 @@ profiler:
 | Archives, ZIP -> TAR.XZ | 268,517,517 B | 195.7 MiB | 3-run native entry size/SHA-256 validation |
 | Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
 | Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
+| Documents, TXT -> DOCX | 67,130,000 B | 148.0 MiB | ZIP CRC/OOXML structure plus streamed SAX text SHA-256 |
 | Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
 | Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
 | Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |
