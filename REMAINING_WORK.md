@@ -47,7 +47,7 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
-| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; the UI now exposes honest local source facts and explains the engine-side codec check | Present detailed media stream/codec inspection before conversion and build a broader automatic planner across missing combinations. |
+| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` now presents bounded pre-conversion WAV/RF64 and MP3 codec, duration, bitrate, rate, channel, bit-depth, and metadata signals | Extend the same bounded inspection contract to video/container and the remaining audio formats, then build a broader automatic planner across missing combinations. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and many route-specific validators/warnings cover preservation or explicit exclusions | Audit every public media profile field-by-field; expand preservation where the destination supports it instead of relying on first-stream policies. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | No production option model or controls were found; public re-encode profiles use fixed certified settings | Design bounded option schemas, planner support, UI controls, encoder validation, and separate evidence per memory-relevant profile. |
@@ -73,7 +73,7 @@ not the entire product specification.
 
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics plus a tested source-inspection panel for format/category, MIME, exact bytes, batch count, and modification time | Add pre-conversion media stream details and the missing relevant conversion controls; perform broader headed usability review. |
+| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel now adds tested WAV/MP3 stream details and discloses its exact bounded read ceiling | Extend stream details beyond WAV/MP3, add the missing relevant conversion controls, and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
@@ -111,9 +111,10 @@ not the entire product specification.
 
 1. Make reproducibility coverage manifest-driven and extend CI to every published
    engine without creating a single timeout-prone build job.
-2. Add detailed source inspection and a bounded option model, beginning with
-   audio bitrate/sample-rate/channel-layout and video resolution/bitrate/frame
-   rate/quality controls.
+2. Extend the bounded WAV/MP3 source inspector to the remaining audio and video
+   containers, and add a bounded option model beginning with audio
+   bitrate/sample-rate/channel-layout and video resolution/bitrate/frame-rate/
+   quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
    representable fields and make every exclusion explicit.
 4. Expand the passing Edge, Brave, and Opera smoke evidence into representative
@@ -133,8 +134,34 @@ not the entire product specification.
 - Do not claim Chrome evidence proves Edge, Brave, or Opera behavior.
 - Do not add a format solely because an extension can be emitted; structural and
   independent content validation remains mandatory.
+- A real WAV-to-MP3 bitrate/rate/channel ABI and UI draft was removed before
+  exposure because the changed FFmpeg Wasm could not be rebuilt and tested:
+  Docker Desktop 4.47.0 crashed on its `dockerInference` runtime socket, and the
+  user explicitly directed this goal not to use Docker. Do not restore those
+  controls against the old binary; use a non-Docker reproducible toolchain or a
+  separately authorized build environment first.
 
 ## Implementation and verification log
+
+### 2026-08-27 — bounded WAV and MP3 pre-conversion inspection
+
+- Added a browser-only source inspector for RIFF/RF64 WAVE and MPEG Layer III.
+  It reports container, codec, duration, bitrate, sample rate, channels/layout,
+  declared bit depth, and bounded metadata signals before conversion.
+- Normal WAV files use directed RIFF chunk reads: the retained fixture requires
+  only 52 bytes, including `fmt`, `LIST`, and `data` chunk headers. MP3 reads are
+  capped at 4,234 bytes across the ID3 header, first-frame window, and ID3v1
+  tail; large ID3v2 bodies are skipped by bounded random access rather than read.
+- Unsupported formats continue to receive an explicit honest message instead
+  of fabricated stream facts. Inspection errors do not become conversion
+  claims, and the UI states that no payload was uploaded or decoded.
+- Focused verification passed: six Node parser/bounds tests; TypeScript; ESLint;
+  production Chrome WAV+MP3 UI inspection; and the existing same-origin GET-only
+  CSV conversion/privacy test. Both browser tests removed their project-local
+  profile/OPFS state in teardown and created no converted validation copy.
+- Native audio controls remain missing. The unbuilt draft was removed after the
+  Docker failure described above, so the current public UI and Wasm stay in
+  agreement.
 
 ### 2026-08-27 — complete-engine CI reproducibility coverage
 

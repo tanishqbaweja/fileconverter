@@ -7,6 +7,10 @@ import {
   publicProfilesFor,
   type ConversionProfile,
 } from "../../lib/capability-registry";
+import {
+  inspectMediaSource,
+  type AudioSourceInspection,
+} from "../../lib/media-source-inspection";
 import type {
   ConversionMetrics,
   TestFault,
@@ -134,6 +138,16 @@ function formatDuration(milliseconds: number): string {
   if (seconds < 60) return `${seconds}s`;
   const minutes = Math.floor(seconds / 60);
   return `${minutes}m ${seconds % 60}s`;
+}
+
+function formatMediaDuration(seconds: number): string {
+  const wholeMinutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds - wholeMinutes * 60;
+  return `${wholeMinutes}:${remainingSeconds.toFixed(2).padStart(5, "0")}`;
+}
+
+function formatBitrate(bitsPerSecond: number): string {
+  return `${Math.round(bitsPerSecond / 1_000).toLocaleString("en-US")} kb/s`;
 }
 
 function outputName(file: File, profile: ConversionProfile): string {
@@ -277,6 +291,14 @@ export function ConverterApp() {
   const [batchFiles, setBatchFiles] = useState<File[]>([]);
   const [inputFormat, setInputFormat] = useState("binary");
   const [profileId, setProfileId] = useState<string | null>(null);
+  const [sourceMediaInspection, setSourceMediaInspection] =
+    useState<AudioSourceInspection | null>(null);
+  const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
+    "idle" | "inspecting" | "complete" | "unsupported" | "error"
+  >("idle");
+  const [sourceInspectionError, setSourceInspectionError] = useState<
+    string | null
+  >(null);
   const [destinationHandle, setDestinationHandle] =
     useState<FileSystemFileHandle | null>(null);
   const [destinationDirectoryHandle, setDestinationDirectoryHandle] =
@@ -343,6 +365,35 @@ export function ConverterApp() {
     () => conversionProfiles.find((profile) => profile.id === profileId) ?? null,
     [profileId],
   );
+
+  useEffect(() => {
+    let cancelled = false;
+    if (!file) return;
+    void (async () => {
+      await Promise.resolve();
+      if (cancelled) return;
+      setSourceMediaInspection(null);
+      setSourceInspectionStatus("inspecting");
+      setSourceInspectionError(null);
+      try {
+        const inspection = await inspectMediaSource(file, inputFormat);
+        if (cancelled) return;
+        setSourceMediaInspection(inspection);
+        setSourceInspectionStatus(inspection ? "complete" : "unsupported");
+      } catch (inspectionError: unknown) {
+        if (cancelled) return;
+        setSourceInspectionStatus("error");
+        setSourceInspectionError(
+          inspectionError instanceof Error
+            ? inspectionError.message
+            : "The bounded source inspection failed.",
+        );
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [file, inputFormat]);
 
   useEffect(() => {
     let disposed = false;
@@ -710,6 +761,9 @@ export function ConverterApp() {
       setBatchFiles(nextFiles);
       setInputFormat(detected);
       setProfileId(nextProfiles[0]?.id ?? null);
+      setSourceMediaInspection(null);
+      setSourceInspectionStatus("inspecting");
+      setSourceInspectionError(null);
       setDestinationHandle(null);
       setDestinationDirectoryHandle(null);
       setJobState("idle");
@@ -863,6 +917,9 @@ export function ConverterApp() {
     setBatchFiles([]);
     setInputFormat("binary");
     setProfileId(null);
+    setSourceMediaInspection(null);
+    setSourceInspectionStatus("idle");
+    setSourceInspectionError(null);
     setDestinationHandle(null);
     setDestinationDirectoryHandle(null);
     setMetrics(null);
@@ -1102,12 +1159,100 @@ export function ConverterApp() {
                       : "Varies by file"}
                   </dd>
                 </div>
+                {sourceMediaInspection ? (
+                  <>
+                    <div>
+                      <dt>Container</dt>
+                      <dd>{sourceMediaInspection.container}</dd>
+                    </div>
+                    <div>
+                      <dt>Audio codec</dt>
+                      <dd>{sourceMediaInspection.codec}</dd>
+                    </div>
+                    <div>
+                      <dt>Duration</dt>
+                      <dd>
+                        {sourceMediaInspection.durationSeconds
+                          ? formatMediaDuration(
+                              sourceMediaInspection.durationSeconds,
+                            )
+                          : "Unavailable"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Audio bitrate</dt>
+                      <dd>
+                        {sourceMediaInspection.bitrateBps
+                          ? formatBitrate(sourceMediaInspection.bitrateBps)
+                          : "Unavailable"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Sample rate</dt>
+                      <dd>
+                        {sourceMediaInspection.sampleRateHz
+                          ? `${sourceMediaInspection.sampleRateHz.toLocaleString("en-US")} Hz`
+                          : "Unavailable"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Channel layout</dt>
+                      <dd>{sourceMediaInspection.channelLayout ?? "Unavailable"}</dd>
+                    </div>
+                    <div>
+                      <dt>Bit depth</dt>
+                      <dd>
+                        {sourceMediaInspection.bitsPerSample
+                          ? `${sourceMediaInspection.bitsPerSample}-bit`
+                          : "Not declared"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Metadata signals</dt>
+                      <dd>
+                        {sourceMediaInspection.metadataSignals.length
+                          ? sourceMediaInspection.metadataSignals.join(", ")
+                          : "None found in bounded scan"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Inspection read</dt>
+                      <dd>
+                        {sourceMediaInspection.inspectedBytes.toLocaleString(
+                          "en-US",
+                        )}{" "}
+                        bytes (max{" "}
+                        {sourceMediaInspection.maximumInspectionBytes.toLocaleString(
+                          "en-US",
+                        )})
+                      </dd>
+                    </div>
+                  </>
+                ) : null}
               </dl>
-              <p>
-                Container streams and codecs are checked locally by the selected
-                engine before output is written. Any incompatible or excluded
-                source elements are reported as warnings.
-              </p>
+              <div data-testid="media-inspection-status">
+                {sourceInspectionStatus === "inspecting" ? (
+                  <p>Reading a bounded local header slice…</p>
+                ) : sourceInspectionStatus === "error" ? (
+                  <p>{sourceInspectionError}</p>
+                ) : sourceMediaInspection ? (
+                  <>
+                    {sourceMediaInspection.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                    <p>
+                      These stream facts came from bounded local header reads for
+                      {` ${file.name}`}; no media payload was uploaded or decoded.
+                    </p>
+                  </>
+                ) : (
+                  <p>
+                    Detailed pre-conversion parsing is not yet implemented for this
+                    format. The selected engine still checks container streams and
+                    codecs locally before output and reports exclusions as warnings.
+                  </p>
+                )}
+              </div>
             </details>
           ) : null}
 

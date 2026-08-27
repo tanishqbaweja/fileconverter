@@ -77,6 +77,18 @@ const m2vFixturePath = path.join(
   "media",
   "mpeg2-video-source.m2v",
 );
+const wavFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.wav",
+);
+const mp3FixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.mp3",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -143,7 +155,7 @@ test("conversion transmits no filename or file content", async () => {
     await expect(sourceInspection).toContainText("data");
     await expect(sourceInspection).toContainText("Exact input bytes");
     await expect(sourceInspection).toContainText(
-      "Container streams and codecs are checked locally",
+      "Detailed pre-conversion parsing is not yet implemented",
     );
     await page
       .locator('[data-testid="format-select"]')
@@ -177,6 +189,36 @@ test("conversion transmits no filename or file content", async () => {
     expect(request.url).not.toContain("sample.csv");
     expect(request.url).not.toContain("alpha");
   }
+});
+
+test("source inspection displays real WAV and MP3 facts from bounded local reads", async () => {
+  await page.goto("/?test=1");
+  await waitForWorker();
+  await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
+
+  const sourceInspection = page.getByTestId("source-inspection");
+  const status = page.getByTestId("media-inspection-status");
+  await expect(sourceInspection).toContainText("RIFF/WAVE");
+  await expect(sourceInspection).toContainText("PCM");
+  await expect(sourceInspection).toContainText("768 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("16-bit");
+  await expect(sourceInspection).toContainText("RIFF LIST metadata");
+  await expect(sourceInspection).toContainText("52 bytes (max 262,144)");
+  await expect(status).toContainText("bounded local header reads");
+  await expect(status).toContainText("no media payload was uploaded or decoded");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+  await expect(sourceInspection).toContainText("MPEG audio");
+  await expect(sourceInspection).toContainText("MPEG-1 Layer III (MP3)");
+  await expect(sourceInspection).toContainText("192 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("ID3v2.4 tag");
+  await expect(sourceInspection).toContainText("Info frame index");
+  await expect(sourceInspection).toContainText("4,234 bytes (max 4,234)");
+  await expect(status).not.toContainText("Duration is estimated");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {
