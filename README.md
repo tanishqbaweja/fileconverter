@@ -199,6 +199,14 @@ write in flight; the worker is terminated after the batch. The browser suite
 converts Unicode-named files in one batch, parses both outputs, checks the queue
 limits, and deletes every test-owned copy.
 
+The source-inspection panel reports the locally detected format and category,
+browser-provided MIME type, exact byte count, batch count, and modification time.
+For media, the selected engine additionally inspects streams and codecs before
+writing and reports incompatible or excluded elements as warnings. The generic
+panel does not pretend that filename/MIME inspection is a complete container
+probe; deeper pre-conversion stream presentation remains tracked in
+`REMAINING_WORK.md`.
+
 An abandonment test reloads the page during a real large streaming conversion.
 The next app start removes the locked job's released `within-*` partial while an
 unrelated browser-storage sentinel remains unchanged, proving cleanup is scoped
@@ -1682,6 +1690,15 @@ the browser profile and converted payload. CI exercises small fixtures;
 multi-gigabyte profiling is documented for a dedicated Windows runner with
 installed stable Chrome and native FFmpeg.
 
+`npm run audit:public-evidence` checks the current registry against the retained
+local stress reports. `npm run evidence:public:write` refreshes the tracked,
+compact `evidence/public-profile-evidence.json` index only after that raw audit
+passes. Fresh CI checkouts run `npm run audit:public-evidence:manifest` to verify
+the indexed 388 route IDs, tested sizes, report hashes, repeatability, and memory
+peaks against the current registry without committing hundreds of bulky raw
+reports. `npm run audit:engine-reproducibility` similarly ensures that every
+published engine directory has a reproducible build entry.
+
 ## Repository map
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI
@@ -1690,6 +1707,7 @@ installed stable Chrome and native FFmpeg.
   transforms; FFmpeg bridge, destinations, and lifecycle
 - `media/ffmpeg/`, `compression/bzip2/`, `compression/xz/`, and `compression/libarchive7z/` — reproducible native Wasm builds
 - `public/engines/` — auditable generated engine artifacts
+- `evidence/` — compact tracked indexes derived from retained local evidence
 - `scripts/` — fixtures, validators, cleanup, process-tree memory reports
 - `tests/browser/` — correctness, privacy, offline, and bounded-I/O tests
 - `worker/` — production security headers and static application handler

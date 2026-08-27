@@ -138,6 +138,13 @@ test("conversion transmits no filename or file content", async () => {
     await page.goto("/?test=1");
     await waitForWorker();
     await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+    const sourceInspection = page.getByTestId("source-inspection");
+    await expect(sourceInspection).toContainText("CSV");
+    await expect(sourceInspection).toContainText("data");
+    await expect(sourceInspection).toContainText("Exact input bytes");
+    await expect(sourceInspection).toContainText(
+      "Container streams and codecs are checked locally",
+    );
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("csv-to-tsv");

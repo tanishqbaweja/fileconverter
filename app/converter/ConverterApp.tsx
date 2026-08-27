@@ -1070,6 +1070,47 @@ export function ConverterApp() {
             )}
           </div>
 
+          {file ? (
+            <details className="source-inspection" data-testid="source-inspection">
+              <summary>Source inspection</summary>
+              <dl>
+                <div>
+                  <dt>Detected format</dt>
+                  <dd>{formatById(inputFormat)?.label ?? "Unknown"}</dd>
+                </div>
+                <div>
+                  <dt>Category</dt>
+                  <dd>{formatById(inputFormat)?.category ?? "Unknown"}</dd>
+                </div>
+                <div>
+                  <dt>Browser MIME</dt>
+                  <dd>{file.type || "Not provided"}</dd>
+                </div>
+                <div>
+                  <dt>Files</dt>
+                  <dd>{batchFiles.length}</dd>
+                </div>
+                <div>
+                  <dt>Exact input bytes</dt>
+                  <dd>{totalInputBytes.toLocaleString("en-US")}</dd>
+                </div>
+                <div>
+                  <dt>Last modified</dt>
+                  <dd>
+                    {batchFiles.length === 1
+                      ? new Date(file.lastModified).toLocaleString()
+                      : "Varies by file"}
+                  </dd>
+                </div>
+              </dl>
+              <p>
+                Container streams and codecs are checked locally by the selected
+                engine before output is written. Any incompatible or excluded
+                source elements are reported as warnings.
+              </p>
+            </details>
+          ) : null}
+
           {error && !file ? (
             <p className="error" role="alert">
               {error}

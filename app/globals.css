@@ -454,14 +454,16 @@ h1 em {
   opacity: 0.48;
 }
 
-.limitations {
+.limitations,
+.source-inspection {
   border-bottom: 1px solid var(--line);
   color: var(--muted);
   font-size: 0.72rem;
   padding: 0.9rem 0.25rem;
 }
 
-.limitations summary {
+.limitations summary,
+.source-inspection summary {
   cursor: pointer;
   font-weight: 700;
 }
@@ -470,6 +472,33 @@ h1 em {
   line-height: 1.5;
   margin-bottom: 0;
   padding-left: 1.25rem;
+}
+
+.source-inspection dl {
+  display: grid;
+  gap: 0.45rem 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0.8rem 0 0;
+}
+
+.source-inspection dl > div {
+  min-width: 0;
+}
+
+.source-inspection dt {
+  color: var(--muted);
+}
+
+.source-inspection dd {
+  color: var(--ink);
+  font-weight: 700;
+  margin: 0.15rem 0 0;
+  overflow-wrap: anywhere;
+}
+
+.source-inspection p {
+  line-height: 1.5;
+  margin: 0.8rem 0 0;
 }
 
 .convert-button {

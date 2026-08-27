@@ -9,6 +9,52 @@ permissions:
   contents: read
 
 jobs:
+  engine-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      engines: ${{ steps.manifest.outputs.engines }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Audit published engine coverage
+        run: npm run audit:engine-reproducibility
+
+      - id: manifest
+        name: Export engine build matrix
+        shell: bash
+        run: echo "engines=$(node scripts/engine-reproducibility-manifest.mjs)" >> "$GITHUB_OUTPUT"
+
+  reproduce-engines:
+    needs: engine-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix: ${{ fromJSON(needs.engine-matrix.outputs.engines) }}
+    name: Reproduce ${{ matrix.id }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+
+      - name: Install Node dependencies for the engine builder
+        if: matrix.installNodeModules
+        run: npm ci
+
+      - name: Rebuild pinned engine
+        run: ${{ matrix.command }}
+
+      - name: Verify reproducible engine artifacts
+        run: git diff --exit-code -- ${{ matrix.output }}
+
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 45
@@ -25,28 +71,18 @@ jobs:
       - run: sudo apt-get update
       - run: sudo apt-get install -y ffmpeg
 
-      - name: Rebuild pinned FFmpeg/Wasm core
-        run: npm run build:ffmpeg-remux
-
-      - name: Rebuild pinned BZIP2/Wasm core
-        run: npm run build:bzip2
-
-      - name: Rebuild pinned XZ/Wasm core
-        run: npm run build:xz
-
-      - name: Rebuild pinned libarchive 7Z/Wasm core
-        run: npm run build:archive7z
-
-      - name: Rebuild pinned TIFF/PNG Wasm core
-        run: npm run build:tiff
-
-      - name: Verify reproducible engine artifacts
-        run: git diff --exit-code -- public/engines/remux public/engines/bzip2 public/engines/xz public/engines/archive7z public/engines/tiff
+      - name: Audit public route evidence
+        run: npm run audit:public-evidence:manifest
 
       - run: npm run lint
       - run: npx tsc --noEmit --incremental false
       - run: npm test
-      - run: npm run test:browser
+
+      - name: Run network privacy and offline browser tests
+        run: npx playwright test tests/browser/privacy-offline.spec.ts
+
+      - name: Run browser conversions and independent validators
+        run: npx playwright test tests/browser/streaming-conversions.spec.ts tests/browser/media-remux.spec.ts tests/browser/image-conversions.spec.ts
 
       - name: Upload browser failure evidence
         if: failure()

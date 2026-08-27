@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-08-27",
+  "scope": "Production-build small conversion and network-privacy compatibility smoke test",
+  "test": "tests/browser/privacy-offline.spec.ts: conversion transmits no filename or file content",
+  "conversion": "csv-to-tsv",
+  "assertions": [
+    "real browser worker conversion completed",
+    "output was created in isolated browser storage and removed",
+    "every observed request was same-origin GET",
+    "no request body, fixture filename, or fixture content was transmitted"
+  ],
+  "results": [
+    {
+      "browser": "Google Chrome",
+      "version": "151.0.7922.174",
+      "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "result": "passed",
+      "playwrightDurationSeconds": 7.8
+    },
+    {
+      "browser": "Microsoft Edge",
+      "version": "151.0.4129.107",
+      "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+      "result": "passed",
+      "playwrightDurationSeconds": 8.3
+    },
+    {
+      "browser": "Brave",
+      "version": "151.1.93.138",
+      "executable": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+      "result": "passed",
+      "playwrightDurationSeconds": 8.5
+    },
+    {
+      "browser": "Opera GX",
+      "version": "134.0.5954.67",
+      "executable": "C:\\Users\\slato\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+      "result": "passed",
+      "playwrightDurationSeconds": 14.3,
+      "limitation": "Opera GX is an Opera Chromium variant; the standard Opera distribution was not installed."
+    }
+  ],
+  "limitations": [
+    "This is a small compatibility/privacy smoke test, not complete route, memory, offline-engine, or headed usability coverage in every browser.",
+    "Complete stress and process-tree memory evidence remains Chrome-based."
+  ]
+}
