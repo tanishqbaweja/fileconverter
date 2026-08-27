@@ -47,7 +47,7 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
-| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded pre-conversion details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, and FLV inputs, including primary video, audio/video/subtitle tracks, resolution, average frame rate, duration, sample rate, channel layout, and bitrate semantics available from each container | Extend the bounded inspection contract to MPEG-TS, AVI, and Ogg video, then build a broader automatic planner across missing combinations. |
+| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded pre-conversion details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, and MPEG-TS inputs, including primary video, audio/video/subtitle tracks, resolution, average frame rate, duration, sample rate, channel layout, and bitrate semantics available from each container | Extend the bounded inspection contract to AVI and Ogg video, then build a broader automatic planner across missing combinations. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and many route-specific validators/warnings cover preservation or explicit exclusions | Audit every public media profile field-by-field; expand preservation where the destination supports it instead of relying on first-stream policies. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | No production option model or controls were found; public re-encode profiles use fixed certified settings | Design bounded option schemas, planner support, UI controls, encoder validation, and separate evidence per memory-relevant profile. |
@@ -73,7 +73,7 @@ not the entire product specification.
 
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel has tested details for all named standalone audio families plus MP4/MOV/3GP, Matroska/WebM, and FLV multi-stream inputs and discloses exact bounded read ceilings/estimates | Extend stream details to MPEG-TS, AVI, and Ogg video, add the missing relevant conversion controls, and perform broader headed usability review. |
+| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel has tested details for all named standalone audio families plus MP4/MOV/3GP, Matroska/WebM, FLV, and MPEG-TS multi-stream inputs and discloses exact bounded read ceilings/estimates | Extend stream details to AVI and Ogg video, add the missing relevant conversion controls, and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
@@ -111,7 +111,7 @@ not the entire product specification.
 
 1. Make reproducibility coverage manifest-driven and extend CI to every published
    engine without creating a single timeout-prone build job.
-2. Extend the bounded multi-stream source inspector to MPEG-TS, AVI, and Ogg
+2. Extend the bounded multi-stream source inspector to AVI and Ogg
    video containers, and add a bounded option model beginning with audio
    bitrate/sample-rate/channel-layout and video resolution/bitrate/frame-rate/
    quality controls.
@@ -142,6 +142,19 @@ not the entire product specification.
   separately authorized build environment first.
 
 ## Implementation and verification log
+
+### 2026-08-27 — bounded MPEG-TS multi-stream source inspection
+
+- Added bounded 188/192/204-byte transport synchronization, PAT/PMT program
+  discovery, stream-type/PID mapping, PES timestamp sampling, H.264 Annex-B SPS
+  dimension parsing, and AAC ADTS rate/channel parsing. Defensive limits cover
+  head/tail reads, elementary-header collection, program sections, and streams.
+- The genuine retained H.264/AAC fixture matches its independent FFprobe
+  manifest: two streams, 640×360, 24 fps, 3.999667-second video, and 3.967833-
+  second mono 48 kHz AAC. One 64 KiB head read and one 64 KiB tail read provide
+  the result; no middle payload is read or decoded.
+- Focused malformed/bounds/parser coverage and production Chrome source-panel
+  coverage pass without conversion, engine loading, Docker, or output copies.
 
 ### 2026-08-27 — bounded FLV multi-stream source inspection
 

@@ -7,6 +7,7 @@ import {
   MAX_FLV_INSPECTION_BYTES,
   MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MATROSKA_INSPECTION_BYTES,
+  MAX_MPEG_TS_INSPECTION_BYTES,
   MAX_MP3_INSPECTION_BYTES,
 } from "../lib/media-source-inspection.ts";
 
@@ -421,6 +422,28 @@ test("bounded FLV inspection combines real codec tags and script metadata", asyn
   assert.deepEqual(source.reads, [[0, MAX_FLV_INSPECTION_BYTES]]);
 });
 
+test("bounded MPEG-TS inspection follows PAT/PMT, PES, SPS, and ADTS", async () => {
+  const source = await trackedNamedFixture("transport-source.mpegts");
+  const result = await inspectMediaSource(source, "mpeg-ts");
+  assert.ok(result);
+  assert.equal(result.container, "MPEG transport stream");
+  assert.equal(result.codec, "H.264/AVC");
+  assert.ok(Math.abs(result.durationSeconds - 3.999667) < 0.000001);
+  assert.equal(result.width, 640);
+  assert.equal(result.height, 360);
+  assert.equal(result.frameRate, 24);
+  assert.deepEqual(result.streams.map((stream) => stream.codec), ["H.264/AVC", "AAC"]);
+  assert.ok(Math.abs(result.streams[1].durationSeconds - 3.967833) < 0.000001);
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.deepEqual(result.metadataSignals, ["PAT/PMT program map"]);
+  assert.equal(result.inspectedBytes, MAX_MPEG_TS_INSPECTION_BYTES);
+  assert.deepEqual(source.reads, [
+    [0, 65_536],
+    [917_328, 982_864],
+  ]);
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
@@ -429,6 +452,10 @@ test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async
   await assert.rejects(inspectMediaSource(payload, "mp4"), /no ISO-BMFF ftyp box/);
   await assert.rejects(inspectMediaSource(payload, "mkv"), /valid EBML header/);
   await assert.rejects(inspectMediaSource(payload, "flv"), /valid FLV header/);
+  await assert.rejects(
+    inspectMediaSource(payload, "mpeg-ts"),
+    /valid MPEG transport stream/,
+  );
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {

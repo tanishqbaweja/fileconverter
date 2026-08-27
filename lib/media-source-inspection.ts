@@ -11,6 +11,8 @@ export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
 export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
 export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
+const MPEG_TS_WINDOW_BYTES = 64 * 1024;
+export const MAX_MPEG_TS_INSPECTION_BYTES = MPEG_TS_WINDOW_BYTES * 2;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface SourceStreamInspection {
@@ -1885,6 +1887,429 @@ async function inspectFlv(file: Blob): Promise<MediaSourceInspection> {
   };
 }
 
+interface TransportStreamTrack {
+  pid: number;
+  streamType: number;
+  codec: string;
+  mediaType: "audio" | "video" | "subtitle";
+  language: string | null;
+  prefixPts: number[];
+  tailPts: number[];
+  elementary: Uint8Array;
+  elementaryBytes: number;
+}
+
+function transportCodec(streamType: number): {
+  codec: string;
+  mediaType: "audio" | "video" | "subtitle";
+} {
+  return (
+    {
+      0x01: { codec: "MPEG-1 Video", mediaType: "video" },
+      0x02: { codec: "MPEG-2 Video", mediaType: "video" },
+      0x03: { codec: "MPEG-1 Audio", mediaType: "audio" },
+      0x04: { codec: "MPEG-2 Audio", mediaType: "audio" },
+      0x0f: { codec: "AAC", mediaType: "audio" },
+      0x10: { codec: "MPEG-4 Part 2", mediaType: "video" },
+      0x11: { codec: "AAC LATM", mediaType: "audio" },
+      0x1b: { codec: "H.264/AVC", mediaType: "video" },
+      0x24: { codec: "HEVC/H.265", mediaType: "video" },
+      0x81: { codec: "AC-3", mediaType: "audio" },
+    } as Record<
+      number,
+      { codec: string; mediaType: "audio" | "video" | "subtitle" }
+    >
+  )[streamType] ?? {
+    codec: `MPEG-TS stream type 0x${streamType.toString(16).padStart(2, "0")}`,
+    mediaType: "subtitle",
+  };
+}
+
+function parseTransportPts(bytes: Uint8Array, offset: number): number | null {
+  if (offset + 5 > bytes.byteLength || (bytes[offset] & 1) !== 1) return null;
+  return (
+    (bytes[offset] & 0x0e) * 536_870_912 +
+    bytes[offset + 1] * 4_194_304 +
+    (bytes[offset + 2] & 0xfe) * 16_384 +
+    bytes[offset + 3] * 128 +
+    (bytes[offset + 4] >>> 1)
+  );
+}
+
+function h264Dimensions(bytes: Uint8Array): { width: number; height: number } | null {
+  let start = -1;
+  let end = bytes.byteLength;
+  for (let index = 0; index + 4 < bytes.byteLength; index += 1) {
+    const fourBytePrefix =
+      bytes[index] === 0 &&
+      bytes[index + 1] === 0 &&
+      bytes[index + 2] === 0 &&
+      bytes[index + 3] === 1;
+    const threeBytePrefix =
+      bytes[index] === 0 &&
+      bytes[index + 1] === 0 &&
+      bytes[index + 2] === 1 &&
+      (index === 0 || bytes[index - 1] !== 0);
+    const prefix = fourBytePrefix || threeBytePrefix;
+    if (!prefix) continue;
+    const nal = index + (threeBytePrefix ? 3 : 4);
+    if (start >= 0) {
+      end = index;
+      break;
+    }
+    if ((bytes[nal] & 0x1f) === 7) start = nal + 1;
+  }
+  if (start < 0 || end <= start) return null;
+  const rbsp: number[] = [];
+  for (let index = start; index < end; index += 1) {
+    if (
+      index >= start + 2 &&
+      bytes[index] === 3 &&
+      bytes[index - 1] === 0 &&
+      bytes[index - 2] === 0
+    ) {
+      continue;
+    }
+    rbsp.push(bytes[index]);
+  }
+  let bit = 0;
+  const readBits = (count: number): number => {
+    if (count < 0 || count > 32 || bit + count > rbsp.length * 8) {
+      throw new Error("The H.264 SPS is truncated.");
+    }
+    let value = 0;
+    for (let index = 0; index < count; index += 1) {
+      value = value * 2 + ((rbsp[bit >>> 3] >>> (7 - (bit & 7))) & 1);
+      bit += 1;
+    }
+    return value;
+  };
+  const ue = (): number => {
+    let zeros = 0;
+    while (readBits(1) === 0) {
+      zeros += 1;
+      if (zeros > 31) throw new Error("The H.264 SPS code is invalid.");
+    }
+    return 2 ** zeros - 1 + (zeros ? readBits(zeros) : 0);
+  };
+  const se = (): number => {
+    const value = ue();
+    return (value & 1) === 1 ? (value + 1) / 2 : -(value / 2);
+  };
+  const skipScalingList = (size: number): void => {
+    let lastScale = 8;
+    let nextScale = 8;
+    for (let index = 0; index < size; index += 1) {
+      if (nextScale !== 0) nextScale = (lastScale + se() + 256) % 256;
+      lastScale = nextScale === 0 ? lastScale : nextScale;
+    }
+  };
+  try {
+    const profile = readBits(8);
+    readBits(16);
+    ue();
+    let chromaFormat = 1;
+    let separateColourPlane = 0;
+    if ([100, 110, 122, 244, 44, 83, 86, 118, 128, 138, 139, 134, 135].includes(profile)) {
+      chromaFormat = ue();
+      if (chromaFormat === 3) separateColourPlane = readBits(1);
+      ue();
+      ue();
+      readBits(1);
+      if (readBits(1)) {
+        const count = chromaFormat === 3 ? 12 : 8;
+        for (let index = 0; index < count; index += 1) {
+          if (readBits(1)) skipScalingList(index < 6 ? 16 : 64);
+        }
+      }
+    }
+    ue();
+    const picOrderCountType = ue();
+    if (picOrderCountType === 0) ue();
+    else if (picOrderCountType === 1) {
+      readBits(1);
+      se();
+      se();
+      const cycles = ue();
+      for (let index = 0; index < cycles; index += 1) se();
+    }
+    ue();
+    readBits(1);
+    const widthMbs = ue() + 1;
+    const heightMapUnits = ue() + 1;
+    const frameMbsOnly = readBits(1);
+    if (!frameMbsOnly) readBits(1);
+    readBits(1);
+    let cropLeft = 0;
+    let cropRight = 0;
+    let cropTop = 0;
+    let cropBottom = 0;
+    if (readBits(1)) {
+      cropLeft = ue();
+      cropRight = ue();
+      cropTop = ue();
+      cropBottom = ue();
+    }
+    const chromaArray = separateColourPlane ? 0 : chromaFormat;
+    const subWidth = chromaArray === 1 || chromaArray === 2 ? 2 : 1;
+    const subHeight = chromaArray === 1 ? 2 : 1;
+    const cropUnitX = chromaArray === 0 ? 1 : subWidth;
+    const cropUnitY =
+      chromaArray === 0 ? 2 - frameMbsOnly : subHeight * (2 - frameMbsOnly);
+    return {
+      width: widthMbs * 16 - cropUnitX * (cropLeft + cropRight),
+      height:
+        heightMapUnits * 16 * (2 - frameMbsOnly) -
+        cropUnitY * (cropTop + cropBottom),
+    };
+  } catch {
+    return null;
+  }
+}
+
+async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
+  const headLength = Math.min(file.size, MPEG_TS_WINDOW_BYTES);
+  const tailLength = Math.min(Math.max(0, file.size - headLength), MPEG_TS_WINDOW_BYTES);
+  if (headLength < 188 * 3) {
+    throw new Error("The selected file does not contain a valid MPEG transport stream.");
+  }
+  const head = new Uint8Array(await file.slice(0, headLength).arrayBuffer());
+  const tailStart = file.size - tailLength;
+  const tail = tailLength
+    ? new Uint8Array(await file.slice(tailStart, file.size).arrayBuffer())
+    : new Uint8Array();
+  const candidates = [
+    { stride: 188, sync: 0 },
+    { stride: 192, sync: 4 },
+    { stride: 204, sync: 0 },
+  ];
+  const layout = candidates.find(({ stride, sync }) => {
+    for (let index = 0; index < 3; index += 1) {
+      if (head[sync + index * stride] !== 0x47) return false;
+    }
+    return true;
+  });
+  if (!layout) {
+    throw new Error("The selected file does not contain a valid MPEG transport stream.");
+  }
+  let pmtPid: number | null = null;
+  const tracks = new Map<number, TransportStreamTrack>();
+  const readSectionPayload = (bytes: Uint8Array, sync: number): number | null => {
+    const control = (bytes[sync + 3] >>> 4) & 3;
+    if (control === 0 || control === 2) return null;
+    let offset = sync + 4;
+    if (control === 3) offset += 1 + bytes[offset];
+    if (offset >= bytes.byteLength) return null;
+    if ((bytes[sync + 1] & 0x40) !== 0) offset += 1 + bytes[offset];
+    return offset < bytes.byteLength ? offset : null;
+  };
+  const parsePatPmt = (bytes: Uint8Array): void => {
+    for (let sync = layout.sync; sync + 188 <= bytes.byteLength; sync += layout.stride) {
+      if (bytes[sync] !== 0x47) continue;
+      const pid = ((bytes[sync + 1] & 0x1f) << 8) | bytes[sync + 2];
+      const payload = readSectionPayload(bytes, sync);
+      if (payload === null) continue;
+      if (pid === 0 && bytes[payload] === 0x00 && payload + 12 <= sync + 188) {
+        const sectionLength = ((bytes[payload + 1] & 0x0f) << 8) | bytes[payload + 2];
+        const sectionEnd = Math.min(payload + 3 + sectionLength - 4, sync + 188);
+        for (let offset = payload + 8; offset + 4 <= sectionEnd; offset += 4) {
+          const program = (bytes[offset] << 8) | bytes[offset + 1];
+          if (program !== 0) {
+            pmtPid = ((bytes[offset + 2] & 0x1f) << 8) | bytes[offset + 3];
+            break;
+          }
+        }
+      } else if (pmtPid !== null && pid === pmtPid && bytes[payload] === 0x02) {
+        const sectionLength = ((bytes[payload + 1] & 0x0f) << 8) | bytes[payload + 2];
+        const sectionEnd = Math.min(payload + 3 + sectionLength - 4, sync + 188);
+        const programInfoLength =
+          ((bytes[payload + 10] & 0x0f) << 8) | bytes[payload + 11];
+        for (let offset = payload + 12 + programInfoLength; offset + 5 <= sectionEnd; ) {
+          const streamType = bytes[offset];
+          const elementaryPid = ((bytes[offset + 1] & 0x1f) << 8) | bytes[offset + 2];
+          const infoLength = ((bytes[offset + 3] & 0x0f) << 8) | bytes[offset + 4];
+          let language: string | null = null;
+          for (let descriptor = offset + 5; descriptor + 2 <= offset + 5 + infoLength; ) {
+            const length = bytes[descriptor + 1];
+            if (bytes[descriptor] === 0x0a && length >= 3) {
+              language = String.fromCharCode(
+                bytes[descriptor + 2],
+                bytes[descriptor + 3],
+                bytes[descriptor + 4],
+              );
+            }
+            descriptor += 2 + length;
+          }
+          const mapping = transportCodec(streamType);
+          tracks.set(elementaryPid, {
+            pid: elementaryPid,
+            streamType,
+            codec: mapping.codec,
+            mediaType: mapping.mediaType,
+            language,
+            prefixPts: [],
+            tailPts: [],
+            elementary: new Uint8Array(32 * 1024),
+            elementaryBytes: 0,
+          });
+          offset += 5 + infoLength;
+        }
+      }
+    }
+  };
+  parsePatPmt(head);
+  if (!tracks.size) {
+    throw new Error("The bounded MPEG-TS scan did not find a complete PAT/PMT program.");
+  }
+  const parsePackets = (bytes: Uint8Array, isTail: boolean): void => {
+    let firstSync = -1;
+    for (let candidate = 0; candidate < Math.min(layout.stride, bytes.byteLength); candidate += 1) {
+      if (
+        bytes[candidate] === 0x47 &&
+        candidate + layout.stride < bytes.byteLength &&
+        bytes[candidate + layout.stride] === 0x47
+      ) {
+        firstSync = candidate;
+        break;
+      }
+    }
+    if (firstSync < 0) return;
+    for (let sync = firstSync; sync + 188 <= bytes.byteLength; sync += layout.stride) {
+      if (bytes[sync] !== 0x47) continue;
+      const pid = ((bytes[sync + 1] & 0x1f) << 8) | bytes[sync + 2];
+      const track = tracks.get(pid);
+      if (!track) continue;
+      const control = (bytes[sync + 3] >>> 4) & 3;
+      if (control === 0 || control === 2) continue;
+      let payload = sync + 4;
+      if (control === 3) payload += 1 + bytes[payload];
+      if (payload >= sync + 188) continue;
+      if (
+        (bytes[sync + 1] & 0x40) !== 0 &&
+        payload + 14 <= sync + 188 &&
+        bytes[payload] === 0 && bytes[payload + 1] === 0 && bytes[payload + 2] === 1
+      ) {
+        if ((bytes[payload + 7] & 0x80) !== 0) {
+          const pts = parseTransportPts(bytes, payload + 9);
+          if (pts !== null) (isTail ? track.tailPts : track.prefixPts).push(pts);
+        }
+        payload += 9 + bytes[payload + 8];
+      }
+      if (!isTail && payload < sync + 188 && track.elementaryBytes < track.elementary.length) {
+        const length = Math.min(
+          sync + 188 - payload,
+          track.elementary.length - track.elementaryBytes,
+        );
+        track.elementary.set(bytes.subarray(payload, payload + length), track.elementaryBytes);
+        track.elementaryBytes += length;
+      }
+    }
+  };
+  parsePackets(head, false);
+  if (tail.length) parsePackets(tail, true);
+  const unwrapDelta = (first: number, last: number): number =>
+    last >= first ? last - first : last + 8_589_934_592 - first;
+  const streamResults: SourceStreamInspection[] = [...tracks.values()].map((track) => {
+    const elementary = track.elementary.subarray(0, track.elementaryBytes);
+    let width: number | null = null;
+    let height: number | null = null;
+    let frameRate: number | null = null;
+    let sampleRateHz: number | null = null;
+    let channels: number | null = null;
+    if (track.streamType === 0x1b) {
+      const dimensions = h264Dimensions(elementary);
+      width = dimensions?.width ?? null;
+      height = dimensions?.height ?? null;
+    }
+    if (track.mediaType === "video" && track.prefixPts.length >= 2) {
+      const orderedPts = [...new Set(track.prefixPts)].sort((a, b) => a - b);
+      if (orderedPts.length >= 2) {
+        const measured =
+          (90_000 * (orderedPts.length - 1)) /
+          (orderedPts.at(-1)! - orderedPts[0]);
+        const commonRates = [23.976, 24, 25, 29.97, 30, 50, 59.94, 60];
+        const nearest = commonRates.reduce((best, candidate) =>
+          Math.abs(candidate - measured) < Math.abs(best - measured) ? candidate : best,
+        );
+        frameRate =
+          Math.abs(nearest - measured) / nearest <= 0.02
+            ? nearest
+            : finitePositive(measured);
+      }
+    }
+    if (track.streamType === 0x0f) {
+      for (let index = 0; index + 7 <= elementary.length; index += 1) {
+        if (elementary[index] !== 0xff || (elementary[index + 1] & 0xf6) !== 0xf0) continue;
+        const rateIndex = (elementary[index + 2] >>> 2) & 0x0f;
+        const rates = [
+          96_000, 88_200, 64_000, 48_000, 44_100, 32_000, 24_000, 22_050,
+          16_000, 12_000, 11_025, 8_000, 7_350,
+        ];
+        sampleRateHz = rates[rateIndex] ?? null;
+        channels =
+          ((elementary[index + 2] & 1) << 2) |
+          (elementary[index + 3] >>> 6);
+        break;
+      }
+    }
+    const first = track.prefixPts[0];
+    const last = track.tailPts.at(-1) ?? track.prefixPts.at(-1);
+    let durationSeconds =
+      first !== undefined && last !== undefined
+        ? finitePositive(unwrapDelta(first, last) / 90_000)
+        : null;
+    if (durationSeconds && track.mediaType === "video" && frameRate) {
+      durationSeconds += 1 / frameRate;
+    } else if (durationSeconds && track.mediaType === "audio" && sampleRateHz) {
+      durationSeconds += 1_024 / sampleRateHz;
+    }
+    return {
+      mediaType: track.mediaType,
+      codec: track.codec,
+      durationSeconds,
+      bitrateBps: null,
+      sampleRateHz,
+      channels,
+      channelLayout: channelLayout(channels),
+      bitsPerSample: null,
+      width,
+      height,
+      frameRate,
+    };
+  });
+  const primary =
+    streamResults.find((stream) => stream.mediaType === "video") ??
+    streamResults.find((stream) => stream.mediaType === "audio");
+  if (!primary) throw new Error("The bounded MPEG-TS scan found no media stream.");
+  const durationSeconds = Math.max(
+    0,
+    ...streamResults.map((stream) => stream.durationSeconds ?? 0),
+  ) || null;
+  return {
+    mediaType: primary.mediaType as "audio" | "video",
+    container: layout.stride === 192 ? "M2TS" : "MPEG transport stream",
+    codec: primary.codec,
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      : null,
+    sampleRateHz: primary.sampleRateHz,
+    channels: primary.channels,
+    channelLayout: primary.channelLayout,
+    bitsPerSample: null,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams: streamResults,
+    metadataSignals: ["PAT/PMT program map"],
+    notes: [
+      "Streams come from bounded PAT/PMT and elementary headers; duration is estimated from bounded head/tail PES timestamps.",
+    ],
+    inspectedBytes: head.byteLength + tail.byteLength,
+    maximumInspectionBytes: MAX_MPEG_TS_INSPECTION_BYTES,
+  };
+}
+
 function guidHex(view: DataView, offset = 0): string {
   if (offset + 16 > view.byteLength) return "";
   let value = "";
@@ -2017,6 +2442,7 @@ export async function inspectMediaSource(
   }
   if (formatId === "mkv" || formatId === "webm") return inspectMatroska(file);
   if (formatId === "flv") return inspectFlv(file);
+  if (formatId === "mpeg-ts") return inspectMpegTs(file);
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }

@@ -149,6 +149,12 @@ const flvFixturePath = path.join(
   "media",
   "flash-video-source.flv",
 );
+const mpegTsFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "transport-source.mpegts",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -424,6 +430,18 @@ test("source inspection displays genuine audio and multi-stream video families f
   await expect(sourceInspection).toContainText("Mono");
   await expect(sourceInspection).toContainText("Script metadata");
   await expect(status).toContainText("FLV script metadata");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(mpegTsFixturePath);
+  await expect(sourceInspection).toContainText("MPEG transport stream");
+  await expect(sourceInspection).toContainText("H.264/AVC");
+  await expect(sourceInspection).toContainText("640×360");
+  await expect(sourceInspection).toContainText("24.00 fps");
+  await expect(sourceInspection).toContainText("AAC");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("PAT/PMT program map");
+  await expect(sourceInspection).toContainText("131,072 bytes (max 131,072)");
+  await expect(status).toContainText("head/tail PES timestamps");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {
