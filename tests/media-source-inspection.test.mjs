@@ -4,8 +4,8 @@ import test from "node:test";
 
 import {
   inspectMediaSource,
+  MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MP3_INSPECTION_BYTES,
-  MAX_WAV_INSPECTION_BYTES,
 } from "../lib/media-source-inspection.ts";
 
 function wavBlob({
@@ -260,11 +260,52 @@ test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async ()
   assert.ok(alacSource.reads.every(([start, end]) => end - start <= 396));
 });
 
+test("bounded ISO-BMFF inspection reports genuine MOV and 3GP video plus audio tracks", async () => {
+  for (const [name, format, container, inspectedBytes] of [
+    ["quicktime-source.mov", "mov", "QuickTime / MOV", 1_768],
+    ["mobile-video-source.3gp", "3gp", "3GP / ISO-BMFF", 1_728],
+  ]) {
+    const source = await trackedNamedFixture(name);
+    const result = await inspectMediaSource(source, format);
+    assert.ok(result);
+    assert.equal(result.mediaType, "video");
+    assert.equal(result.container, container);
+    assert.equal(result.codec, "H.264/AVC");
+    assert.equal(result.width, 640);
+    assert.equal(result.height, 360);
+    assert.ok(Math.abs(result.durationSeconds - 3.999) < 0.000001);
+    assert.ok(Math.abs(result.frameRate - 24.006) < 0.001);
+    assert.equal(result.bitrateBps, 1_740_889);
+    assert.equal(result.streams.length, 2);
+    assert.deepEqual(result.streams.map((stream) => stream.mediaType), [
+      "video",
+      "audio",
+    ]);
+    const audio = result.streams[1];
+    assert.equal(audio.codec, "AAC");
+    assert.equal(audio.durationSeconds, 4.011);
+    assert.equal(audio.bitrateBps, 125_008);
+    assert.equal(audio.sampleRateHz, 48_000);
+    assert.equal(audio.channelLayout, "Mono");
+    assert.equal(result.inspectedBytes, inspectedBytes);
+    assert.equal(result.maximumInspectionBytes, MAX_ISO_BMFF_INSPECTION_BYTES);
+    assert.ok(result.inspectedBytes < 2_000);
+    assert.ok(source.reads.every(([start, end]) => end - start <= 756));
+  }
+
+  const mp4Route = await inspectMediaSource(
+    await trackedNamedFixture("mobile-video-source.3gp"),
+    "mp4",
+  );
+  assert.equal(mp4Route?.codec, "H.264/AVC");
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
   await assert.rejects(inspectMediaSource(payload, "amr"), /valid AMR signature/);
   await assert.rejects(inspectMediaSource(payload, "m4a"), /no ISO-BMFF ftyp box/);
+  await assert.rejects(inspectMediaSource(payload, "mp4"), /no ISO-BMFF ftyp box/);
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {

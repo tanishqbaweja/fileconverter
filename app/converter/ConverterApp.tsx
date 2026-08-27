@@ -9,7 +9,8 @@ import {
 } from "../../lib/capability-registry";
 import {
   inspectMediaSource,
-  type AudioSourceInspection,
+  type MediaSourceInspection,
+  type SourceStreamInspection,
 } from "../../lib/media-source-inspection";
 import type {
   ConversionMetrics,
@@ -148,6 +149,20 @@ function formatMediaDuration(seconds: number): string {
 
 function formatBitrate(bitsPerSecond: number): string {
   return `${Math.round(bitsPerSecond / 1_000).toLocaleString("en-US")} kb/s`;
+}
+
+function describeSourceStream(stream: SourceStreamInspection): string {
+  const facts = [stream.codec];
+  if (stream.width && stream.height) facts.push(`${stream.width}×${stream.height}`);
+  if (stream.frameRate) facts.push(`${stream.frameRate.toFixed(2)} fps`);
+  if (stream.sampleRateHz) {
+    facts.push(`${stream.sampleRateHz.toLocaleString("en-US")} Hz`);
+  }
+  if (stream.channelLayout) facts.push(stream.channelLayout);
+  if (stream.bitsPerSample) facts.push(`${stream.bitsPerSample}-bit`);
+  if (stream.bitrateBps) facts.push(formatBitrate(stream.bitrateBps));
+  if (stream.durationSeconds) facts.push(formatMediaDuration(stream.durationSeconds));
+  return facts.join(" · ");
 }
 
 function outputName(file: File, profile: ConversionProfile): string {
@@ -292,7 +307,7 @@ export function ConverterApp() {
   const [inputFormat, setInputFormat] = useState("binary");
   const [profileId, setProfileId] = useState<string | null>(null);
   const [sourceMediaInspection, setSourceMediaInspection] =
-    useState<AudioSourceInspection | null>(null);
+    useState<MediaSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
     "idle" | "inspecting" | "complete" | "unsupported" | "error"
   >("idle");
@@ -1166,7 +1181,7 @@ export function ConverterApp() {
                       <dd>{sourceMediaInspection.container}</dd>
                     </div>
                     <div>
-                      <dt>Audio codec</dt>
+                      <dt>Primary codec</dt>
                       <dd>{sourceMediaInspection.codec}</dd>
                     </div>
                     <div>
@@ -1180,33 +1195,74 @@ export function ConverterApp() {
                       </dd>
                     </div>
                     <div>
-                      <dt>Audio bitrate</dt>
+                      <dt>Primary bitrate</dt>
                       <dd>
                         {sourceMediaInspection.bitrateBps
                           ? formatBitrate(sourceMediaInspection.bitrateBps)
                           : "Unavailable"}
                       </dd>
                     </div>
-                    <div>
-                      <dt>Sample rate</dt>
-                      <dd>
-                        {sourceMediaInspection.sampleRateHz
-                          ? `${sourceMediaInspection.sampleRateHz.toLocaleString("en-US")} Hz`
-                          : "Unavailable"}
-                      </dd>
-                    </div>
-                    <div>
-                      <dt>Channel layout</dt>
-                      <dd>{sourceMediaInspection.channelLayout ?? "Unavailable"}</dd>
-                    </div>
-                    <div>
-                      <dt>Bit depth</dt>
-                      <dd>
-                        {sourceMediaInspection.bitsPerSample
-                          ? `${sourceMediaInspection.bitsPerSample}-bit`
-                          : "Not declared"}
-                      </dd>
-                    </div>
+                    {sourceMediaInspection.mediaType === "audio" ? (
+                      <>
+                        <div>
+                          <dt>Sample rate</dt>
+                          <dd>
+                            {sourceMediaInspection.sampleRateHz
+                              ? `${sourceMediaInspection.sampleRateHz.toLocaleString("en-US")} Hz`
+                              : "Unavailable"}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Channel layout</dt>
+                          <dd>{sourceMediaInspection.channelLayout ?? "Unavailable"}</dd>
+                        </div>
+                        <div>
+                          <dt>Bit depth</dt>
+                          <dd>
+                            {sourceMediaInspection.bitsPerSample
+                              ? `${sourceMediaInspection.bitsPerSample}-bit`
+                              : "Not declared"}
+                          </dd>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <dt>Resolution</dt>
+                          <dd>
+                            {sourceMediaInspection.width && sourceMediaInspection.height
+                              ? `${sourceMediaInspection.width}×${sourceMediaInspection.height}`
+                              : "Unavailable"}
+                          </dd>
+                        </div>
+                        <div>
+                          <dt>Frame rate</dt>
+                          <dd>
+                            {sourceMediaInspection.frameRate
+                              ? `${sourceMediaInspection.frameRate.toFixed(2)} fps`
+                              : "Unavailable"}
+                          </dd>
+                        </div>
+                      </>
+                    )}
+                    {sourceMediaInspection.streams ? (
+                      <>
+                        <div>
+                          <dt>Stream count</dt>
+                          <dd>{sourceMediaInspection.streams.length}</dd>
+                        </div>
+                        {sourceMediaInspection.streams.map((stream, index) => (
+                          <div key={`${stream.mediaType}-${index}`}>
+                            <dt>
+                              Stream {index + 1} ({
+                                stream.mediaType === "video" ? "Video" : "Audio"
+                              })
+                            </dt>
+                            <dd>{describeSourceStream(stream)}</dd>
+                          </div>
+                        ))}
+                      </>
+                    ) : null}
                     <div>
                       <dt>Metadata signals</dt>
                       <dd>

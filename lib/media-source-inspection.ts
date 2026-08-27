@@ -11,8 +11,22 @@ export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
 export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
-export interface AudioSourceInspection {
-  mediaType: "audio";
+export interface SourceStreamInspection {
+  mediaType: "audio" | "video";
+  codec: string;
+  durationSeconds: number | null;
+  bitrateBps: number | null;
+  sampleRateHz: number | null;
+  channels: number | null;
+  channelLayout: string | null;
+  bitsPerSample: number | null;
+  width: number | null;
+  height: number | null;
+  frameRate: number | null;
+}
+
+export interface MediaSourceInspection {
+  mediaType: "audio" | "video";
   container: string;
   codec: string;
   durationSeconds: number | null;
@@ -21,11 +35,17 @@ export interface AudioSourceInspection {
   channels: number | null;
   channelLayout: string | null;
   bitsPerSample: number | null;
+  width?: number | null;
+  height?: number | null;
+  frameRate?: number | null;
+  streams?: readonly SourceStreamInspection[];
   metadataSignals: readonly string[];
   notes: readonly string[];
   inspectedBytes: number;
   maximumInspectionBytes: number;
 }
+
+export type AudioSourceInspection = MediaSourceInspection;
 
 function ascii(view: DataView, offset: number, length: number): string {
   if (offset < 0 || offset + length > view.byteLength) return "";
@@ -949,7 +969,7 @@ interface IsoBox {
   end: number;
 }
 
-interface IsoAudioTrack {
+interface IsoTrack {
   trackId: number | null;
   handler: string | null;
   codec: string | null;
@@ -958,8 +978,11 @@ interface IsoAudioTrack {
   bitsPerSample: number | null;
   timescale: number | null;
   durationUnits: number | null;
+  movieDurationUnits: number | null;
   encodedBytes: number | null;
   sampleCount: number | null;
+  width: number | null;
+  height: number | null;
 }
 
 function safeUint64Be(view: DataView, offset: number): number | null {
@@ -981,6 +1004,15 @@ function isoCodec(code: string): string {
       sowt: "PCM (little-endian)",
       twos: "PCM (big-endian)",
       ".mp3": "MP3",
+      avc1: "H.264/AVC",
+      avc3: "H.264/AVC",
+      hvc1: "HEVC/H.265",
+      hev1: "HEVC/H.265",
+      av01: "AV1",
+      vp08: "VP8",
+      vp09: "VP9",
+      mp4v: "MPEG-4 Part 2",
+      s263: "H.263",
     } as Record<string, string>
   )[code] ?? `ISO sample entry ${code}`;
 }
@@ -1033,11 +1065,13 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
   };
 
   const brands: string[] = [];
-  const tracks: IsoAudioTrack[] = [];
+  const tracks: IsoTrack[] = [];
   const trexDefaults = new Map<number, { duration: number; size: number }>();
   const fragmentDurations = new Map<number, number>();
   const fragmentMediaBytes = new Map<number, number>();
   const metadataSignals = new Set<string>();
+  let movieTimescale: number | null = null;
+  let movieHeader: IsoBox | null = null;
   const parseMoof = async (moof: IsoBox): Promise<void> => {
     for (let offset = moof.dataStart; offset + 8 <= moof.end; ) {
       const child = await readBox(offset, moof.end);
@@ -1135,13 +1169,13 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     start: number,
     end: number,
     depth: number,
-    track: IsoAudioTrack | null,
+    track: IsoTrack | null,
   ): Promise<void> => {
     if (depth > 8) throw new Error("The ISO-BMFF nesting ceiling was exceeded.");
     for (let offset = start; offset + 8 <= end; ) {
       const box = await readBox(offset, end);
       if (box.type === "trak") {
-        const nextTrack: IsoAudioTrack = {
+        const nextTrack: IsoTrack = {
           trackId: null,
           handler: null,
           codec: null,
@@ -1150,8 +1184,11 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
           bitsPerSample: null,
           timescale: null,
           durationUnits: null,
+          movieDurationUnits: null,
           encodedBytes: null,
           sampleCount: null,
+          width: null,
+          height: null,
         };
         await parseChildren(box.dataStart, box.end, depth + 1, nextTrack);
         tracks.push(nextTrack);
@@ -1162,15 +1199,19 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
       } else if (box.type === "ftyp" && box.end - box.dataStart >= 4) {
         const brand = await read(box.dataStart, 4);
         brands.push(ascii(brand, 0, 4));
+      } else if (box.type === "mvhd") {
+        movieHeader = box;
       } else if (box.type === "tkhd" && track) {
         const length = Math.min(32, box.end - box.dataStart);
         if (length >= 20) {
           const tkhd = await read(box.dataStart, length);
-          track.trackId = tkhd.getUint8(0) === 1
-            ? length >= 24
-              ? tkhd.getUint32(20, false)
-              : null
-            : tkhd.getUint32(12, false);
+          if (tkhd.getUint8(0) === 1) {
+            track.trackId = length >= 24 ? tkhd.getUint32(20, false) : null;
+            track.movieDurationUnits = null;
+          } else {
+            track.trackId = tkhd.getUint32(12, false);
+            track.movieDurationUnits = length >= 24 ? tkhd.getUint32(20, false) : null;
+          }
         }
       } else if (box.type === "trex" && box.end - box.dataStart >= 20) {
         const trex = await read(box.dataStart, 20);
@@ -1180,7 +1221,8 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         });
       } else if (box.type === "hdlr" && track && box.end - box.dataStart >= 12) {
         const handler = await read(box.dataStart, 12);
-        track.handler = ascii(handler, 8, 4);
+        const handlerType = ascii(handler, 8, 4);
+        if (["soun", "vide"].includes(handlerType)) track.handler = handlerType;
       } else if (box.type === "mdhd" && track) {
         const length = Math.min(36, box.end - box.dataStart);
         if (length >= 24) {
@@ -1200,7 +1242,7 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         if (entryCount > 0) {
           const entry = await readBox(box.dataStart + 8, box.end);
           const available = entry.end - entry.dataStart;
-          if (available >= 28) {
+          if (track.handler === "soun" && available >= 28) {
             const audio = await read(entry.dataStart, 28);
             track.codec = entry.type;
             track.channels = audio.getUint16(16, false);
@@ -1209,6 +1251,11 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
             if (["alac", "lpcm", "sowt", "twos"].includes(entry.type)) {
               track.bitsPerSample = declaredBits || null;
             }
+          } else if (track.handler === "vide" && available >= 28) {
+            const video = await read(entry.dataStart, 28);
+            track.codec = entry.type;
+            track.width = finitePositive(video.getUint16(24, false));
+            track.height = finitePositive(video.getUint16(26, false));
           }
         }
       } else if (box.type === "stsz" && track && box.end - box.dataStart >= 12) {
@@ -1245,77 +1292,123 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
   await parseChildren(0, file.size, 0, null);
   const majorBrand = brands[0];
   if (!majorBrand) throw new Error("The selected file has no ISO-BMFF ftyp box.");
-  const audioTrack = tracks.find(
-    (track) => track.handler === "soun" && track.codec !== null,
-  );
-  if (!audioTrack?.codec || !audioTrack.sampleRateHz || !audioTrack.channels) {
-    throw new Error("The bounded ISO-BMFF scan did not find a complete audio track.");
+  const containsVideo = tracks.some((track) => track.handler === "vide");
+  const resolvedMovieHeader = movieHeader as IsoBox | null;
+  if (containsVideo && resolvedMovieHeader) {
+    const length = Math.min(
+      24,
+      resolvedMovieHeader.end - resolvedMovieHeader.dataStart,
+    );
+    if (length >= 16) {
+      const mvhd = await read(resolvedMovieHeader.dataStart, length);
+      movieTimescale = mvhd.getUint8(0) === 1
+        ? length >= 24
+          ? mvhd.getUint32(20, false)
+          : null
+        : mvhd.getUint32(12, false);
+    }
   }
-  const durationUnits =
-    audioTrack.durationUnits ||
-    (audioTrack.trackId === null
-      ? null
-      : fragmentDurations.get(audioTrack.trackId) ?? null);
-  const durationSeconds =
-    audioTrack.timescale && durationUnits
-      ? finitePositive(durationUnits / audioTrack.timescale)
-      : null;
-  const encodedBytes =
-    audioTrack.encodedBytes ??
-    (audioTrack.trackId === null
-      ? null
-      : fragmentMediaBytes.get(audioTrack.trackId) ?? null);
-  const encodedBitrate =
-    durationSeconds && encodedBytes
-      ? finitePositive(Math.round((encodedBytes * 8) / durationSeconds))
-      : null;
-  const fixedMonoCodec = audioTrack.codec === "samr" || audioTrack.codec === "sawb";
-  const resolvedChannels = fixedMonoCodec ? 1 : audioTrack.channels;
-  const resolvedSampleRate =
-    audioTrack.codec === "samr"
-      ? 8_000
-      : audioTrack.codec === "sawb"
-        ? 16_000
-        : audioTrack.sampleRateHz;
-  const averageAmrFrameBytes =
-    fixedMonoCodec && encodedBytes && audioTrack.sampleCount
-      ? encodedBytes / audioTrack.sampleCount
-      : null;
-  const amrModeIndex = averageAmrFrameBytes
-    ? (audioTrack.codec === "sawb" ? AMR_WB_FRAME_BYTES : AMR_NB_FRAME_BYTES)
-        .findIndex((bytes) => bytes === averageAmrFrameBytes)
-    : -1;
-  const amrModeBitrate =
-    amrModeIndex >= 0
-      ? (audioTrack.codec === "sawb" ? AMR_WB_BITRATES : AMR_NB_BITRATES)[
-          amrModeIndex
-        ]
-      : null;
-  const reportedBitrate = finitePositive(amrModeBitrate ?? 0) ?? encodedBitrate;
+  const streams: SourceStreamInspection[] = tracks.flatMap((track) => {
+    if (!track.codec || !["soun", "vide"].includes(track.handler ?? "")) return [];
+    if (track.handler === "soun" && (!track.sampleRateHz || !track.channels)) return [];
+    if (track.handler === "vide" && (!track.width || !track.height)) return [];
+
+    const durationUnits =
+      track.durationUnits ||
+      (track.trackId === null
+        ? null
+        : fragmentDurations.get(track.trackId) ?? null);
+    const mediaDurationSeconds =
+      track.timescale && durationUnits
+        ? finitePositive(durationUnits / track.timescale)
+        : null;
+    const durationSeconds =
+      containsVideo && movieTimescale && track.movieDurationUnits
+        ? finitePositive(track.movieDurationUnits / movieTimescale)
+        : mediaDurationSeconds;
+    const encodedBytes =
+      track.encodedBytes ??
+      (track.trackId === null
+        ? null
+        : fragmentMediaBytes.get(track.trackId) ?? null);
+    const encodedBitrate =
+      mediaDurationSeconds && encodedBytes
+        ? finitePositive(Math.round((encodedBytes * 8) / mediaDurationSeconds))
+        : null;
+    const fixedMonoCodec = track.codec === "samr" || track.codec === "sawb";
+    const resolvedChannels = fixedMonoCodec ? 1 : track.channels;
+    const resolvedSampleRate =
+      track.codec === "samr"
+        ? 8_000
+        : track.codec === "sawb"
+          ? 16_000
+          : track.sampleRateHz;
+    const averageAmrFrameBytes =
+      fixedMonoCodec && encodedBytes && track.sampleCount
+        ? encodedBytes / track.sampleCount
+        : null;
+    const amrModeIndex = averageAmrFrameBytes
+      ? (track.codec === "sawb" ? AMR_WB_FRAME_BYTES : AMR_NB_FRAME_BYTES)
+          .findIndex((bytes) => bytes === averageAmrFrameBytes)
+      : -1;
+    const amrModeBitrate =
+      amrModeIndex >= 0
+        ? (track.codec === "sawb" ? AMR_WB_BITRATES : AMR_NB_BITRATES)[
+            amrModeIndex
+          ]
+        : null;
+    const mediaType = track.handler === "vide" ? "video" : "audio";
+    return [{
+      mediaType,
+      codec: isoCodec(track.codec),
+      durationSeconds,
+      bitrateBps: finitePositive(amrModeBitrate ?? 0) ?? encodedBitrate,
+      sampleRateHz: mediaType === "audio" ? resolvedSampleRate : null,
+      channels: mediaType === "audio" ? resolvedChannels : null,
+      channelLayout: mediaType === "audio" ? channelLayout(resolvedChannels) : null,
+      bitsPerSample: mediaType === "audio" ? track.bitsPerSample : null,
+      width: mediaType === "video" ? track.width : null,
+      height: mediaType === "video" ? track.height : null,
+      frameRate:
+        mediaType === "video" && durationSeconds && track.sampleCount
+          ? finitePositive(track.sampleCount / durationSeconds)
+          : null,
+    } satisfies SourceStreamInspection];
+  });
+  const primary = streams.find((stream) => stream.mediaType === "video") ?? streams[0];
+  if (!primary) {
+    throw new Error("The bounded ISO-BMFF scan did not find a complete audio or video track.");
+  }
   const container = majorBrand.toLowerCase().startsWith("3g")
     ? "3GP / ISO-BMFF"
     : majorBrand.trim().toLowerCase() === "m4a"
       ? "M4A / ISO-BMFF"
-      : `ISO-BMFF (${majorBrand.trim() || "unbranded"})`;
+      : majorBrand.trim().toLowerCase() === "qt"
+        ? "QuickTime / MOV"
+        : "MPEG-4 / ISO-BMFF";
   return {
-    mediaType: "audio",
+    mediaType: primary.mediaType,
     container,
-    codec: isoCodec(audioTrack.codec),
-    durationSeconds,
+    codec: primary.codec,
+    durationSeconds: primary.durationSeconds,
     bitrateBps:
-      reportedBitrate ??
-      (durationSeconds
-        ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      primary.bitrateBps ??
+      (primary.durationSeconds
+        ? finitePositive(Math.round((file.size * 8) / primary.durationSeconds))
         : null),
-    sampleRateHz: resolvedSampleRate,
-    channels: resolvedChannels,
-    channelLayout: channelLayout(resolvedChannels),
-    bitsPerSample: audioTrack.bitsPerSample,
+    sampleRateHz: primary.sampleRateHz,
+    channels: primary.channels,
+    channelLayout: primary.channelLayout,
+    bitsPerSample: primary.bitsPerSample,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams,
     metadataSignals: [...metadataSignals],
     notes: [
-      amrModeBitrate
+      streams.some((stream) => /^AMR-/.test(stream.codec) && stream.bitrateBps)
         ? "Bitrate is the AMR codec mode identified from bounded sample-size metadata."
-        : encodedBitrate
+        : streams.some((stream) => stream.bitrateBps)
           ? "Bitrate is calculated from encoded sample bytes and media duration."
         : "Bitrate is the average ISO-BMFF file bitrate, including container metadata.",
     ],
@@ -1451,7 +1544,9 @@ export async function inspectMediaSource(
   if (formatId === "aac") return inspectAac(file);
   if (formatId === "ogg" || formatId === "opus") return inspectOgg(file);
   if (formatId === "amr") return inspectAmr(file);
-  if (formatId === "m4a" || formatId === "amr-wb") return inspectIsoBmff(file);
+  if (["m4a", "amr-wb", "mp4", "mov", "3gp"].includes(formatId)) {
+    return inspectIsoBmff(file);
+  }
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }

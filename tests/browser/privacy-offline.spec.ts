@@ -124,6 +124,18 @@ const amrWbFixturePath = path.join(
   "amr-wb-source.awb",
 );
 const wmaFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.wma");
+const movFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "quicktime-source.mov",
+);
+const threeGpFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "mobile-video-source.3gp",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -226,7 +238,7 @@ test("conversion transmits no filename or file content", async () => {
   }
 });
 
-test("source inspection displays genuine audio families from bounded local reads", async () => {
+test("source inspection displays genuine audio and ISO video families from bounded local reads", async () => {
   await page.goto("/?test=1");
   await waitForWorker();
   await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
@@ -346,6 +358,26 @@ test("source inspection displays genuine audio families from bounded local reads
   await expect(sourceInspection).toContainText("Content description");
   await expect(sourceInspection).toContainText("Extended content description");
   await expect(sourceInspection).toContainText("326 bytes (max 65,536)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(movFixturePath);
+  await expect(sourceInspection).toContainText("QuickTime / MOV");
+  await expect(sourceInspection).toContainText("H.264/AVC");
+  await expect(sourceInspection).toContainText("640×360");
+  await expect(sourceInspection).toContainText("24.01 fps");
+  await expect(sourceInspection).toContainText("Stream count");
+  await expect(sourceInspection).toContainText("Stream 1 (Video)");
+  await expect(sourceInspection).toContainText("Stream 2 (Audio)");
+  await expect(sourceInspection).toContainText("AAC");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("1,768 bytes (max 65,536)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(threeGpFixturePath);
+  await expect(sourceInspection).toContainText("3GP / ISO-BMFF");
+  await expect(sourceInspection).toContainText("H.264/AVC");
+  await expect(sourceInspection).toContainText("640×360");
+  await expect(sourceInspection).toContainText("AAC");
+  await expect(sourceInspection).toContainText("1,728 bytes (max 65,536)");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {
