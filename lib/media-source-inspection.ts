@@ -13,6 +13,7 @@ export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
 export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
 const MPEG_TS_WINDOW_BYTES = 64 * 1024;
 export const MAX_MPEG_TS_INSPECTION_BYTES = MPEG_TS_WINDOW_BYTES * 2;
+export const MAX_AVI_INSPECTION_BYTES = 256 * 1024;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface SourceStreamInspection {
@@ -2310,6 +2311,211 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
   };
 }
 
+interface AviTrack {
+  type: string | null;
+  handler: string | null;
+  scale: number | null;
+  rate: number | null;
+  length: number | null;
+  codec: string | null;
+  bitrateBps: number | null;
+  sampleRateHz: number | null;
+  channels: number | null;
+  bitsPerSample: number | null;
+  width: number | null;
+  height: number | null;
+}
+
+function aviVideoCodec(code: string): string {
+  return ({
+    FMP4: "MPEG-4 Part 2",
+    DIVX: "MPEG-4 Part 2",
+    XVID: "MPEG-4 Part 2",
+    H264: "H.264/AVC",
+    avc1: "H.264/AVC",
+    HEVC: "HEVC/H.265",
+    hvc1: "HEVC/H.265",
+    VP80: "VP8",
+    VP90: "VP9",
+    AV01: "AV1",
+    MPG2: "MPEG-2 Video",
+  } as Record<string, string>)[code] ?? `AVI video codec ${code || "unknown"}`;
+}
+
+function aviAudioCodec(format: number): string {
+  return ({
+    0x0001: "PCM",
+    0x0050: "MPEG audio",
+    0x0055: "MP3",
+    0x00ff: "AAC",
+    0x0160: "Windows Media Audio 1",
+    0x0161: "Windows Media Audio 2",
+    0x2000: "AC-3",
+  } as Record<number, string>)[format] ??
+    `WAVE format 0x${format.toString(16).padStart(4, "0")}`;
+}
+
+async function inspectAvi(file: Blob): Promise<MediaSourceInspection> {
+  let inspectedBytes = 0;
+  let chunkCount = 0;
+  const read = async (offset: number, length: number): Promise<DataView> => {
+    if (
+      offset < 0 || length < 0 || offset + length > file.size ||
+      inspectedBytes + length > MAX_AVI_INSPECTION_BYTES
+    ) {
+      throw new Error("The AVI header exceeds the bounded inspection ceiling.");
+    }
+    const bytes = new Uint8Array(await file.slice(offset, offset + length).arrayBuffer());
+    inspectedBytes += bytes.byteLength;
+    return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  };
+  if (file.size < 12) throw new Error("The selected file has no valid RIFF/AVI header.");
+  const root = await read(0, 12);
+  if (ascii(root, 0, 4) !== "RIFF" || ascii(root, 8, 4) !== "AVI ") {
+    throw new Error("The selected file has no valid RIFF/AVI header.");
+  }
+  const riffEnd = Math.min(file.size, 8 + root.getUint32(4, true));
+  let microsecondsPerFrame: number | null = null;
+  let totalFrames: number | null = null;
+  let mainWidth: number | null = null;
+  let mainHeight: number | null = null;
+  const metadataSignals = new Set<string>();
+  const tracks: AviTrack[] = [];
+  const parse = async (
+    start: number,
+    end: number,
+    depth: number,
+    track: AviTrack | null,
+  ): Promise<void> => {
+    if (depth > 5) throw new Error("The AVI LIST nesting ceiling was exceeded.");
+    for (let offset = start; offset + 8 <= end; ) {
+      chunkCount += 1;
+      if (chunkCount > 512) throw new Error("The AVI chunk-count ceiling was exceeded.");
+      const header = await read(offset, 8);
+      const id = ascii(header, 0, 4);
+      const size = header.getUint32(4, true);
+      const chunkEnd = offset + 8 + size;
+      const paddedEnd = chunkEnd + (size & 1);
+      if (chunkEnd > end || paddedEnd <= offset) {
+        throw new Error(`AVI chunk ${id || "unknown"} has an invalid size.`);
+      }
+      if (id === "LIST" && size >= 4) {
+        const listHeader = await read(offset + 8, 4);
+        const listType = ascii(listHeader, 0, 4);
+        if (listType === "strl") {
+          const nextTrack: AviTrack = {
+            type: null,
+            handler: null,
+            scale: null,
+            rate: null,
+            length: null,
+            codec: null,
+            bitrateBps: null,
+            sampleRateHz: null,
+            channels: null,
+            bitsPerSample: null,
+            width: null,
+            height: null,
+          };
+          await parse(offset + 12, chunkEnd, depth + 1, nextTrack);
+          tracks.push(nextTrack);
+        } else if (["hdrl", "INFO", "odml"].includes(listType)) {
+          if (listType === "INFO") metadataSignals.add("RIFF INFO metadata");
+          await parse(offset + 12, chunkEnd, depth + 1, track);
+        }
+      } else if (id === "avih" && size >= 40) {
+        const avih = await read(offset + 8, Math.min(size, 56));
+        microsecondsPerFrame = finitePositive(avih.getUint32(0, true));
+        totalFrames = finitePositive(avih.getUint32(16, true));
+        mainWidth = finitePositive(avih.getUint32(32, true));
+        mainHeight = finitePositive(avih.getUint32(36, true));
+      } else if (id === "strh" && track && size >= 48) {
+        const strh = await read(offset + 8, Math.min(size, 56));
+        track.type = ascii(strh, 0, 4);
+        track.handler = ascii(strh, 4, 4);
+        track.scale = finitePositive(strh.getUint32(20, true));
+        track.rate = finitePositive(strh.getUint32(24, true));
+        track.length = finitePositive(strh.getUint32(32, true));
+      } else if (id === "strf" && track) {
+        if (track.type === "vids" && size >= 20) {
+          const strf = await read(offset + 8, Math.min(size, 40));
+          track.width = finitePositive(strf.getInt32(4, true)) ?? mainWidth;
+          track.height = finitePositive(Math.abs(strf.getInt32(8, true))) ?? mainHeight;
+          const compression = ascii(strf, 16, 4) || track.handler || "";
+          track.codec = aviVideoCodec(compression);
+        } else if (track.type === "auds" && size >= 16) {
+          const strf = await read(offset + 8, Math.min(size, 18));
+          track.codec = aviAudioCodec(strf.getUint16(0, true));
+          track.channels = finitePositive(strf.getUint16(2, true));
+          track.sampleRateHz = finitePositive(strf.getUint32(4, true));
+          track.bitrateBps = finitePositive(strf.getUint32(8, true) * 8);
+          track.bitsPerSample = finitePositive(strf.getUint16(14, true));
+        }
+      }
+      offset = paddedEnd;
+    }
+  };
+  await parse(12, riffEnd, 0, null);
+  const streams: SourceStreamInspection[] = tracks.flatMap((track) => {
+    if (!track.codec || !["vids", "auds"].includes(track.type ?? "")) return [];
+    const mediaType = track.type === "vids" ? "video" : "audio";
+    const durationSeconds =
+      track.scale && track.rate && track.length
+        ? finitePositive((track.length * track.scale) / track.rate)
+        : null;
+    const channels = mediaType === "audio" ? track.channels : null;
+    return [{
+      mediaType,
+      codec: track.codec,
+      durationSeconds,
+      bitrateBps: mediaType === "audio" ? track.bitrateBps : null,
+      sampleRateHz: mediaType === "audio" ? track.sampleRateHz : null,
+      channels,
+      channelLayout: mediaType === "audio" ? channelLayout(channels) : null,
+      bitsPerSample:
+        mediaType === "audio" && track.codec === "PCM" ? track.bitsPerSample : null,
+      width: mediaType === "video" ? track.width ?? mainWidth : null,
+      height: mediaType === "video" ? track.height ?? mainHeight : null,
+      frameRate:
+        mediaType === "video" && track.scale && track.rate
+          ? finitePositive(track.rate / track.scale)
+          : null,
+    } satisfies SourceStreamInspection];
+  });
+  const primary =
+    streams.find((stream) => stream.mediaType === "video") ??
+    streams.find((stream) => stream.mediaType === "audio");
+  if (!primary) throw new Error("The bounded AVI scan found no complete media stream.");
+  const mainDuration =
+    microsecondsPerFrame && totalFrames
+      ? finitePositive((microsecondsPerFrame * totalFrames) / 1_000_000)
+      : null;
+  const durationSeconds = primary.durationSeconds ?? mainDuration;
+  return {
+    mediaType: primary.mediaType as "audio" | "video",
+    container: "AVI",
+    codec: primary.codec,
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      : null,
+    sampleRateHz: primary.sampleRateHz,
+    channels: primary.channels,
+    channelLayout: primary.channelLayout,
+    bitsPerSample: primary.bitsPerSample,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams,
+    metadataSignals: [...metadataSignals],
+    notes: [
+      "AVI facts come from directed RIFF header/LIST reads; the movi payload is skipped without reading or decoding it.",
+    ],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_AVI_INSPECTION_BYTES,
+  };
+}
+
 function guidHex(view: DataView, offset = 0): string {
   if (offset + 16 > view.byteLength) return "";
   let value = "";
@@ -2443,6 +2649,7 @@ export async function inspectMediaSource(
   if (formatId === "mkv" || formatId === "webm") return inspectMatroska(file);
   if (formatId === "flv") return inspectFlv(file);
   if (formatId === "mpeg-ts") return inspectMpegTs(file);
+  if (formatId === "avi") return inspectAvi(file);
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }

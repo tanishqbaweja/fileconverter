@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   inspectMediaSource,
+  MAX_AVI_INSPECTION_BYTES,
   MAX_FLV_INSPECTION_BYTES,
   MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MATROSKA_INSPECTION_BYTES,
@@ -444,6 +445,32 @@ test("bounded MPEG-TS inspection follows PAT/PMT, PES, SPS, and ADTS", async () 
   ]);
 });
 
+test("directed AVI inspection skips movi while reporting both streams", async () => {
+  const source = await trackedNamedFixture("legacy-video-source.avi");
+  const result = await inspectMediaSource(source, "avi");
+  assert.ok(result);
+  assert.equal(result.container, "AVI");
+  assert.equal(result.codec, "MPEG-4 Part 2");
+  assert.ok(Math.abs(result.durationSeconds - 4.041667) < 0.000001);
+  assert.equal(result.bitrateBps, 2_585_725);
+  assert.equal(result.width, 640);
+  assert.equal(result.height, 360);
+  assert.equal(result.frameRate, 24);
+  assert.deepEqual(result.streams.map((stream) => stream.codec), [
+    "MPEG-4 Part 2",
+    "MP3",
+  ]);
+  assert.equal(result.streams[1].durationSeconds, 4.032);
+  assert.equal(result.streams[1].bitrateBps, 192_000);
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.deepEqual(result.metadataSignals, ["RIFF INFO metadata"]);
+  assert.equal(result.inspectedBytes, 394);
+  assert.equal(result.maximumInspectionBytes, MAX_AVI_INSPECTION_BYTES);
+  assert.ok(source.reads.every(([start, end]) => end - start <= 56));
+  assert.ok(source.reads.some(([start]) => start > 1_000_000));
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
@@ -456,6 +483,7 @@ test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async
     inspectMediaSource(payload, "mpeg-ts"),
     /valid MPEG transport stream/,
   );
+  await assert.rejects(inspectMediaSource(payload, "avi"), /valid RIFF\/AVI header/);
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {

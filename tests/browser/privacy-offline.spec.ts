@@ -155,6 +155,12 @@ const mpegTsFixturePath = path.join(
   "media",
   "transport-source.mpegts",
 );
+const aviFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "legacy-video-source.avi",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -442,6 +448,19 @@ test("source inspection displays genuine audio and multi-stream video families f
   await expect(sourceInspection).toContainText("PAT/PMT program map");
   await expect(sourceInspection).toContainText("131,072 bytes (max 131,072)");
   await expect(status).toContainText("head/tail PES timestamps");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(aviFixturePath);
+  await expect(sourceInspection).toContainText("AVI");
+  await expect(sourceInspection).toContainText("MPEG-4 Part 2");
+  await expect(sourceInspection).toContainText("640×360");
+  await expect(sourceInspection).toContainText("24.00 fps");
+  await expect(sourceInspection).toContainText("MP3");
+  await expect(sourceInspection).toContainText("192 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("RIFF INFO metadata");
+  await expect(sourceInspection).toContainText("394 bytes (max 262,144)");
+  await expect(status).toContainText("movi payload is skipped");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {
