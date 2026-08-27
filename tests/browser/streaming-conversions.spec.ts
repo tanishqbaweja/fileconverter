@@ -25,6 +25,11 @@ const docxCancellationFixturePath = path.join(
   "work",
   "cancellation-source.txt",
 );
+const markdownCancellationFixturePath = path.join(
+  projectRoot,
+  "work",
+  "cancellation-source.md",
+);
 const truncatedGzipFixturePath = path.join(projectRoot, "work", "truncated.gz");
 const corruptBzip2FixturePath = path.join(projectRoot, "work", "corrupt.bz2");
 const truncatedBzip2FixturePath = path.join(projectRoot, "work", "truncated.bz2");
@@ -234,6 +239,8 @@ interface TestState {
     wasmMemoryBytes?: number;
     peakWasmMemoryBytes?: number;
     wasmMemories?: Record<string, number>;
+    codecWorkingBytes?: number;
+    peakCodecWorkingBytes?: number;
     scratchBytes?: number;
     peakScratchBytes?: number;
     maxScratchReadChunkBytes?: number;
@@ -572,6 +579,7 @@ test.beforeAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
   await rm(docxCancellationFixturePath, { force: true });
+  await rm(markdownCancellationFixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
   await writeFile(batchFixturePaths[0], "First private batch payload: café.\n", "utf8");
   await writeFile(batchFixturePaths[1], "Second private batch payload: 日本語.\n", "utf8");
@@ -635,6 +643,18 @@ test.beforeAll(async () => {
   cancellationFixture.end();
   await once(cancellationFixture, "finish");
   await link(cancellationFixturePath, docxCancellationFixturePath);
+  const markdownCancellationFixture = createWriteStream(
+    markdownCancellationFixturePath,
+    { flags: "w" },
+  );
+  for (let index = 0; index < 65_536; index += 1) {
+    const section = `## Section ${index}\n\n${payload}\n\n`;
+    if (!markdownCancellationFixture.write(section)) {
+      await once(markdownCancellationFixture, "drain");
+    }
+  }
+  markdownCancellationFixture.end();
+  await once(markdownCancellationFixture, "finish");
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
     headless: true,
@@ -680,6 +700,7 @@ test.afterAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
   await rm(cancellationFixturePath, { force: true });
   await rm(docxCancellationFixturePath, { force: true });
+  await rm(markdownCancellationFixturePath, { force: true });
   await rm(truncatedGzipFixturePath, { force: true });
   await rm(corruptBzip2FixturePath, { force: true });
   await rm(truncatedBzip2FixturePath, { force: true });
@@ -1695,6 +1716,231 @@ test("renders a disclosed bounded Markdown subset as valid HTML", async () => {
     scripts: 0,
     escapedScriptText: true,
   });
+});
+
+test("streams Markdown structure to a conforming independently parsed EPUB", async () => {
+  const outputPath = path.join(projectRoot, "work", "browser-markdown-output.epub");
+  const sourcePath = path.join(projectRoot, "work", "browser-markdown-epub-source.md");
+  const source = `# Within book
+
+Private **conversion** with *bounded memory* and \`fixed buffers\`.
+
+- No upload
+- No filename telemetry
+
+> Files stay on this device.
+
+[Safe link](https://example.com/privacy)
+
+[Rejected encoded control](https://example.com/%00)
+
+---
+
+\`\`\`txt
+<raw code> & exact text
+\`\`\`
+
+<script>alert("escaped")</script>
+`;
+  try {
+    await writeFile(sourcePath, source, "utf8");
+    await selectFixture("work/browser-markdown-epub-source.md", "md-to-epub");
+    const state = await convert();
+    await copyAndDeleteSmallOpfsFile(state.opfsName!, outputPath);
+    const python = String.raw`
+import json, struct, sys, zipfile
+from xml.etree import ElementTree as ET
+
+MIME = "application/epub+zip"
+CONTAINER = "urn:oasis:names:tc:opendocument:xmlns:container"
+OPF = "http://www.idpf.org/2007/opf"
+DC = "http://purl.org/dc/elements/1.1/"
+XHTML = "http://www.w3.org/1999/xhtml"
+EPUB = "http://www.idpf.org/2007/ops"
+expected = ["mimetype", "META-INF/container.xml", "EPUB/nav.xhtml",
+            "EPUB/content.xhtml", "EPUB/package.opf"]
+with zipfile.ZipFile(sys.argv[1], "r") as package:
+    bad = package.testzip()
+    infos = package.infolist()
+    entries = package.namelist()
+    methods = [item.compress_type for item in infos]
+    extras = [len(item.extra) for item in infos]
+    mimetype = package.read("mimetype").decode("ascii")
+    container = ET.fromstring(package.read("META-INF/container.xml"))
+    navigation = ET.fromstring(package.read("EPUB/nav.xhtml"))
+    content = ET.fromstring(package.read("EPUB/content.xhtml"))
+    package_document = ET.fromstring(package.read("EPUB/package.opf"))
+with open(sys.argv[1], "rb") as source:
+    local = source.read(128)
+flags = struct.unpack_from("<H", local, 6)[0]
+method = struct.unpack_from("<H", local, 8)[0]
+name_length = struct.unpack_from("<H", local, 26)[0]
+extra_length = struct.unpack_from("<H", local, 28)[0]
+local_name = local[30:30 + name_length].decode("utf-8")
+payload_offset = 30 + name_length + extra_length
+first_payload = local[payload_offset:payload_offset + len(MIME)].decode("ascii")
+rootfile = container.find("{%s}rootfiles/{%s}rootfile" % (CONTAINER, CONTAINER))
+metadata = package_document.find("{%s}metadata" % OPF)
+manifest = package_document.find("{%s}manifest" % OPF)
+spine = package_document.find("{%s}spine" % OPF)
+toc = [item for item in navigation.findall(".//{%s}nav" % XHTML)
+       if item.attrib.get("{%s}type" % EPUB) == "toc"]
+body = content.find("{%s}body" % XHTML)
+first_paragraph = body.find("{%s}p" % XHTML)
+blockquote = body.find("{%s}blockquote/{%s}p" % (XHTML, XHTML))
+link = body.find(".//{%s}a" % XHTML)
+pre_code = body.find("{%s}pre/{%s}code" % (XHTML, XHTML))
+manifest_items = {
+    item.attrib.get("id"): (item.attrib.get("href"), item.attrib.get("media-type"),
+                            item.attrib.get("properties"))
+    for item in manifest.findall("{%s}item" % OPF)
+}
+print(json.dumps({
+    "bad": bad, "entries": entries, "methods": methods, "extras": extras,
+    "mimetype": mimetype,
+    "canonicalMimetype": infos[0].header_offset == 0 and not (flags & 0x08)
+        and method == 0 and local_name == "mimetype" and extra_length == 0
+        and first_payload == MIME,
+    "rootfile": rootfile.attrib if rootfile is not None else None,
+    "packageTitle": metadata.findtext("{%s}title" % DC),
+    "identifier": metadata.findtext("{%s}identifier" % DC),
+    "manifest": manifest_items,
+    "spine": [item.attrib.get("idref") for item in spine.findall("{%s}itemref" % OPF)],
+    "tocCount": len(toc),
+    "tocText": "".join(toc[0].itertext()) if len(toc) == 1 else None,
+    "contentTitle": content.findtext("{%s}head/{%s}title" % (XHTML, XHTML)),
+    "heading": body.findtext("{%s}h1" % XHTML),
+    "paragraph": "".join(first_paragraph.itertext()),
+    "strong": body.findtext(".//{%s}strong" % XHTML),
+    "emphasis": body.findtext(".//{%s}em" % XHTML),
+    "inlineCode": body.findtext("{%s}p/{%s}code" % (XHTML, XHTML)),
+    "listItems": ["".join(item.itertext()) for item in body.findall("{%s}ul/{%s}li" % (XHTML, XHTML))],
+    "blockquote": "".join(blockquote.itertext()),
+    "link": link.attrib if link is not None else None,
+    "linkText": "".join(link.itertext()) if link is not None else None,
+    "linkCount": len(body.findall(".//{%s}a" % XHTML)),
+    "rules": len(body.findall("{%s}hr" % XHTML)),
+    "fencedCode": "".join(pre_code.itertext()),
+    "scriptTags": len(body.findall(".//{%s}script" % XHTML)),
+    "escapedScript": '<script>alert("escaped")</script>' in "".join(body.itertext()),
+}))
+`;
+    const { stdout } = await execFileAsync("python", ["-c", python, outputPath], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 1024 * 1024,
+    });
+    const validation = JSON.parse(stdout);
+    expect(validation.bad).toBeNull();
+    expect(validation.entries).toEqual([
+      "mimetype",
+      "META-INF/container.xml",
+      "EPUB/nav.xhtml",
+      "EPUB/content.xhtml",
+      "EPUB/package.opf",
+    ]);
+    expect(validation.methods).toEqual([0, 8, 8, 8, 8]);
+    expect(validation.extras).toEqual([0, 0, 0, 0, 0]);
+    expect(validation.mimetype).toBe("application/epub+zip");
+    expect(validation.canonicalMimetype).toBe(true);
+    expect(validation.rootfile).toEqual({
+      "full-path": "EPUB/package.opf",
+      "media-type": "application/oebps-package+xml",
+    });
+    expect(validation.packageTitle).toBe("Converted Markdown");
+    expect(validation.identifier).toMatch(
+      /^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-8[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+    );
+    expect(validation.manifest).toEqual({
+      nav: ["nav.xhtml", "application/xhtml+xml", "nav"],
+      content: ["content.xhtml", "application/xhtml+xml", null],
+    });
+    expect(validation.spine).toEqual(["content"]);
+    expect(validation.tocCount).toBe(1);
+    expect(validation.tocText).toContain("Converted Markdown");
+    expect(validation.contentTitle).toBe("Converted Markdown");
+    expect(validation.heading).toBe("Within book");
+    expect(validation.paragraph).toBe(
+      "Private conversion with bounded memory and fixed buffers.",
+    );
+    expect(validation.strong).toBe("conversion");
+    expect(validation.emphasis).toBe("bounded memory");
+    expect(validation.inlineCode).toBe("fixed buffers");
+    expect(validation.listItems).toEqual(["No upload", "No filename telemetry"]);
+    expect(validation.blockquote).toBe("Files stay on this device.");
+    expect(validation.link).toEqual({
+      href: "https://example.com/privacy",
+      rel: "noreferrer",
+    });
+    expect(validation.linkText).toBe("Safe link");
+    expect(validation.linkCount).toBe(1);
+    expect(validation.rules).toBe(1);
+    expect(validation.fencedCode).toBe("<raw code> & exact text\n");
+    expect(validation.scriptTags).toBe(0);
+    expect(validation.escapedScript).toBe(true);
+    expect(state.warnings.join(" ")).toContain("Markdown-to-EPUB");
+    expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(state.metrics?.peakCodecWorkingBytes).toBe(16 * 1024 * 1024 + 40);
+    expect(state.metrics?.codecWorkingBytes).toBe(0);
+    expect(await appOwnedOpfsNames("within-test-md-to-epub")).toEqual([]);
+  } finally {
+    await rm(outputPath, { force: true });
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("rejects XML-forbidden Markdown during EPUB output and removes the partial package", async () => {
+  const sourcePath = path.join(projectRoot, "work", "invalid-markdown-epub.md");
+  await writeFile(sourcePath, Buffer.from("# Valid\n\ninvalid\0text\n", "utf8"));
+  try {
+    await selectFixture("work/invalid-markdown-epub.md", "md-to-epub");
+    await page.locator('[data-testid="convert-button"]').click();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error).toContain("forbidden by XML 1.0");
+    expect(state.opfsName).toBeNull();
+    expect(await appOwnedOpfsNames("within-test-md-to-epub")).toEqual([]);
+  } finally {
+    await rm(sourcePath, { force: true });
+  }
+});
+
+test("Markdown EPUB propagates a bounded write failure and removes the partial package", async () => {
+  await openFaultMode("write");
+  await selectFixture("fixtures/documents/sample.md", "md-to-epub");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.opfsName).toBeNull();
+  expect(await appOwnedOpfsNames("within-test-md-to-epub")).toEqual([]);
+});
+
+test("cancels streaming Markdown EPUB and removes the partial package", async () => {
+  await page.locator('[data-testid="file-input"]').setInputFiles(markdownCancellationFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("md-to-epub");
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(async () => {
+      const state = await currentState();
+      return state.jobState === "running" ? (state.metrics?.inputBytes ?? 0) : -1;
+    }, { timeout: 30_000 })
+    .toBeGreaterThan(1024 * 1024);
+  await page.getByRole("button", { name: "Cancel safely" }).click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("cancelled");
+  const state = await currentState();
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  expect(state.metrics?.codecWorkingBytes).toBe(0);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(await appOwnedOpfsNames("within-test-md-to-epub")).toEqual([]);
 });
 
 test("extracts visible HTML text while removing active and styled content", async () => {

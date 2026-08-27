@@ -21,6 +21,7 @@ interface DocumentRuntime {
     | "txt-to-odt"
     | "txt-to-epub"
     | "md-to-html"
+    | "md-to-epub"
     | "html-to-txt";
   metrics: ConversionMetrics;
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
@@ -42,6 +43,8 @@ export async function runDocumentConversion(
     await textToEpub(runtime);
   } else if (runtime.profileId === "md-to-html") {
     await markdownToHtml(runtime);
+  } else if (runtime.profileId === "md-to-epub") {
+    await markdownToEpub(runtime);
   } else {
     await htmlToText(runtime);
   }
@@ -85,17 +88,6 @@ const EPUB_CONTAINER =
   '<container version="1.0" xmlns="urn:oasis:names:tc:opendocument:xmlns:container">' +
   '<rootfiles><rootfile full-path="EPUB/package.opf" media-type="application/oebps-package+xml"/></rootfiles>' +
   "</container>";
-const EPUB_NAVIGATION =
-  '<?xml version="1.0" encoding="UTF-8"?>' +
-  '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="und">' +
-  '<head><meta charset="utf-8"/><title>Contents</title></head>' +
-  '<body><nav epub:type="toc" id="toc"><h1>Contents</h1><ol><li><a href="content.xhtml">Converted text</a></li></ol></nav></body>' +
-  "</html>";
-const EPUB_CONTENT_PREFIX =
-  '<?xml version="1.0" encoding="UTF-8"?>' +
-  '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="und">' +
-  '<head><meta charset="utf-8"/><title>Converted text</title></head><body><pre>';
-const EPUB_CONTENT_SUFFIX = "</pre></body></html>";
 const EPUB_IDENTIFIER_CHUNK_BYTES = 16 * 1024 * 1024;
 
 async function textToDocx(runtime: DocumentRuntime): Promise<void> {
@@ -171,6 +163,42 @@ async function textToEpub(runtime: DocumentRuntime): Promise<void> {
   runtime.warn(
     "The EPUB container writes its required uncompressed mimetype entry first, then streams container metadata, navigation, content, and package metadata through bounded raw DEFLATE without retaining completed XHTML or ZIP data. A bounded content hash provides a persistent publication UUID.",
   );
+  await writeEpubPackage(runtime, "Converted text", async (writer) => {
+    await writer.write("<pre>");
+    const identifier = await writeEscapedDocumentText(runtime, writer);
+    await writer.write("</pre>");
+    return identifier;
+  });
+}
+
+async function markdownToEpub(runtime: DocumentRuntime): Promise<void> {
+  runtime.warn(
+    "This bounded Markdown-to-EPUB profile preserves headings, paragraphs, lists, blockquotes, fenced code, safe links, emphasis, strong text, inline code, and rules in one reflowable XHTML spine document. Extensions and raw HTML are emitted as text.",
+  );
+  runtime.warn(
+    "The EPUB 3.3 package streams its required mimetype, container metadata, navigation, rendered XHTML, and package metadata with one bounded output operation. A same-pass bounded content hash provides a persistent publication UUID.",
+  );
+  await writeEpubPackage(runtime, "Converted Markdown", async (writer) => {
+    const identifier = createEpubIdentifierHasher(runtime.metrics);
+    try {
+      await renderMarkdownBody(runtime, writer, {
+        xhtml: true,
+        onChunk: (chunk) => identifier.update(chunk),
+      });
+      return await identifier.finish();
+    } finally {
+      runtime.metrics.codecWorkingBytes = 0;
+    }
+  });
+}
+
+async function writeEpubPackage(
+  runtime: DocumentRuntime,
+  title: string,
+  renderBody: (
+    writer: ReturnType<typeof createZipTextWriter>,
+  ) => Promise<string>,
+): Promise<void> {
   const entries: WrittenZipEntry[] = [];
   await writeStoredMimetypeEntry(runtime, entries, EPUB_MIMETYPE, "EPUB");
   await writeDeflatedPackageEntry(
@@ -183,7 +211,17 @@ async function textToEpub(runtime: DocumentRuntime): Promise<void> {
     runtime,
     entries,
     "EPUB/nav.xhtml",
-    async (write) => write(new TextEncoder().encode(EPUB_NAVIGATION)),
+    async (write) => {
+      const safeTitle = escapeXml(title);
+      const navigation =
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+        '<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops" xml:lang="und">' +
+        '<head><meta charset="utf-8"/><title>Contents</title></head>' +
+        '<body><nav epub:type="toc" id="toc"><h1>Contents</h1><ol><li><a href="content.xhtml">' +
+        safeTitle +
+        "</a></li></ol></nav></body></html>";
+      await write(new TextEncoder().encode(navigation));
+    },
   );
   let identifier = "";
   await writeDeflatedPackageEntry(
@@ -192,9 +230,15 @@ async function textToEpub(runtime: DocumentRuntime): Promise<void> {
     "EPUB/content.xhtml",
     async (write) => {
       const writer = createZipTextWriter(write);
-      await writer.write(EPUB_CONTENT_PREFIX);
-      identifier = await writeEscapedDocumentText(runtime, writer);
-      await writer.write(EPUB_CONTENT_SUFFIX);
+      await writer.write(
+        '<?xml version="1.0" encoding="UTF-8"?>' +
+          '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="und">' +
+          '<head><meta charset="utf-8"/><title>' +
+          escapeXml(title) +
+          "</title></head><body>",
+      );
+      identifier = await renderBody(writer);
+      await writer.write("</body></html>");
       await writer.flush();
     },
   );
@@ -213,7 +257,9 @@ async function textToEpub(runtime: DocumentRuntime): Promise<void> {
         '<dc:identifier id="pub-id">' +
         identifier +
         "</dc:identifier>" +
-        '<dc:title>Converted text</dc:title><dc:language>und</dc:language>' +
+        "<dc:title>" +
+        escapeXml(title) +
+        "</dc:title><dc:language>und</dc:language>" +
         '<meta property="dcterms:modified">' +
         modified +
         "</meta></metadata>" +
@@ -591,8 +637,10 @@ function odtParagraph(line: string): string {
   return output + "</text:p>";
 }
 
+const XML_FORBIDDEN_TEXT = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/;
+
 function assertXmlText(value: string): void {
-  if (/[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/.test(value)) {
+  if (XML_FORBIDDEN_TEXT.test(value)) {
     throw new Error("Plain text contains a character forbidden by XML 1.0.");
   }
 }
@@ -699,103 +747,163 @@ async function markdownToHtml(runtime: DocumentRuntime): Promise<void> {
   await writer.write(
     '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Converted Markdown</title></head>\n<body>\n',
   );
+  await renderMarkdownBody(runtime, writer, { xhtml: false });
+  await writer.write("</body>\n</html>\n");
+  await writer.flush();
+}
+
+interface MarkdownRenderOptions {
+  xhtml: boolean;
+  onChunk?: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>;
+}
+
+async function renderMarkdownBody(
+  runtime: DocumentRuntime,
+  writer: { write(value: string): Promise<void> },
+  options: MarkdownRenderOptions,
+): Promise<void> {
   let paragraph: string[] = [];
+  let paragraphChars = 0;
   let list: "ul" | "ol" | null = null;
   let inCode = false;
   let codeLanguage = "";
+  let outputBatch = "";
 
-  const closeParagraph = async () => {
-    if (!paragraph.length) return;
-    await writer.write(
-      `<p>${renderMarkdownInline(paragraph.join(" "))}</p>\n`,
-    );
+  const emit = (value: string): Promise<void> | null => {
+    if (outputBatch && outputBatch.length + value.length > IO_CHUNK_BYTES) {
+      const pending = writer.write(outputBatch);
+      outputBatch = "";
+      if (value.length >= IO_CHUNK_BYTES) {
+        return pending.then(() => writer.write(value));
+      }
+      outputBatch = value;
+      return pending;
+    }
+    if (value.length >= IO_CHUNK_BYTES) {
+      return writer.write(value);
+    }
+    outputBatch += value;
+    return null;
+  };
+
+  const closeParagraph = (): Promise<void> | null => {
+    if (!paragraph.length) return null;
+    const pending = emit(`<p>${renderMarkdownInline(paragraph.join(" "))}</p>\n`);
     paragraph = [];
+    paragraphChars = 0;
+    return pending;
   };
-  const closeList = async () => {
-    if (!list) return;
-    await writer.write(`</${list}>\n`);
+  const closeList = (): Promise<void> | null => {
+    if (!list) return null;
+    const pending = emit(`</${list}>\n`);
     list = null;
+    return pending;
   };
 
-  for await (const line of readLines(runtime)) {
+  for await (const line of readLines(runtime, options.onChunk)) {
     runtime.assertActive();
+    if (options.xhtml) assertXmlText(line);
     if (inCode) {
       if (/^ {0,3}```\s*$/.test(line)) {
-        await writer.write("</code></pre>\n");
+        const pending = emit("</code></pre>\n");
+        if (pending) await pending;
         inCode = false;
         codeLanguage = "";
       } else {
-        await writer.write(`${escapeHtml(line)}\n`);
+        const pending = emit(`${escapeHtml(line)}\n`);
+        if (pending) await pending;
       }
       continue;
     }
     const fence = line.match(/^ {0,3}```\s*([A-Za-z0-9_+-]*)\s*$/);
     if (fence) {
-      await closeParagraph();
-      await closeList();
+      let pending = closeParagraph();
+      if (pending) await pending;
+      pending = closeList();
+      if (pending) await pending;
       inCode = true;
       codeLanguage = fence[1];
-      await writer.write(
+      pending = emit(
         `<pre><code${codeLanguage ? ` class="language-${escapeHtml(codeLanguage)}"` : ""}>`,
       );
+      if (pending) await pending;
       continue;
     }
     if (!line.trim()) {
-      await closeParagraph();
-      await closeList();
+      let pending = closeParagraph();
+      if (pending) await pending;
+      pending = closeList();
+      if (pending) await pending;
       continue;
     }
     const heading = line.match(/^(#{1,6})\s+(.+?)\s*#*\s*$/);
     if (heading) {
-      await closeParagraph();
-      await closeList();
+      let pending = closeParagraph();
+      if (pending) await pending;
+      pending = closeList();
+      if (pending) await pending;
       const level = heading[1].length;
-      await writer.write(
+      pending = emit(
         `<h${level}>${renderMarkdownInline(heading[2])}</h${level}>\n`,
       );
+      if (pending) await pending;
       continue;
     }
     if (/^ {0,3}(?:-{3,}|\*{3,}|_{3,})\s*$/.test(line)) {
-      await closeParagraph();
-      await closeList();
-      await writer.write("<hr>\n");
+      let pending = closeParagraph();
+      if (pending) await pending;
+      pending = closeList();
+      if (pending) await pending;
+      pending = emit(options.xhtml ? "<hr/>\n" : "<hr>\n");
+      if (pending) await pending;
       continue;
     }
     const unordered = line.match(/^\s*[-+*]\s+(.+)$/);
     const ordered = line.match(/^\s*\d+[.)]\s+(.+)$/);
     if (unordered || ordered) {
-      await closeParagraph();
+      let pending = closeParagraph();
+      if (pending) await pending;
       const nextList = unordered ? "ul" : "ol";
       if (list !== nextList) {
-        await closeList();
+        pending = closeList();
+        if (pending) await pending;
         list = nextList;
-        await writer.write(`<${list}>\n`);
+        pending = emit(`<${list}>\n`);
+        if (pending) await pending;
       }
-      await writer.write(
+      pending = emit(
         `<li>${renderMarkdownInline((unordered ?? ordered)?.[1] ?? "")}</li>\n`,
       );
+      if (pending) await pending;
       continue;
     }
     const quote = line.match(/^>\s?(.*)$/);
     if (quote) {
-      await closeParagraph();
-      await closeList();
-      await writer.write(
+      let pending = closeParagraph();
+      if (pending) await pending;
+      pending = closeList();
+      if (pending) await pending;
+      pending = emit(
         `<blockquote><p>${renderMarkdownInline(quote[1])}</p></blockquote>\n`,
       );
+      if (pending) await pending;
       continue;
     }
-    await closeList();
-    paragraph.push(line.trim());
-    if (paragraph.reduce((sum, part) => sum + part.length, 0) > MAX_LINE_CHARS) {
+    const pending = closeList();
+    if (pending) await pending;
+    const part = line.trim();
+    paragraph.push(part);
+    paragraphChars += part.length;
+    if (paragraphChars > MAX_LINE_CHARS) {
       throw new Error("A Markdown paragraph exceeds the 1 MiB safety limit.");
     }
   }
   if (inCode) throw new Error("Markdown input ends inside a fenced code block.");
-  await closeParagraph();
-  await closeList();
-  await writer.write("</body>\n</html>\n");
-  await writer.flush();
+  let pending = closeParagraph();
+  if (pending) await pending;
+  pending = closeList();
+  if (pending) await pending;
+  if (outputBatch) await writer.write(outputBatch);
 }
 
 function renderMarkdownInline(value: string): string {
@@ -833,6 +941,7 @@ function renderMarkdownInline(value: string): string {
 
 function safeLink(value: string): string | null {
   const decoded = decodeURIComponentSafely(value).trim();
+  if (XML_FORBIDDEN_TEXT.test(decoded)) return null;
   if (
     decoded.startsWith("#") ||
     decoded.startsWith("/") ||
@@ -1116,41 +1225,51 @@ function escapeHtml(value: string): string {
 
 async function* readLines(
   runtime: DocumentRuntime,
+  onChunk?: (chunk: Uint8Array<ArrayBuffer>) => Promise<void>,
 ): AsyncGenerator<string> {
   const reader = boundedBlobStream(runtime.file, runtime).getReader();
   const decoder = new TextDecoder("utf-8", { fatal: true });
   let carry = "";
   let first = true;
-  for (;;) {
-    runtime.assertActive();
-    const { done, value } = await reader.read();
-    if (done) break;
-    let text = decoder.decode(value, { stream: true });
-    if (first) {
-      text = text.replace(/^\uFEFF/, "");
-      first = false;
-    }
-    carry += text;
-    let newline = carry.indexOf("\n");
-    while (newline >= 0) {
-      const line = carry.slice(0, newline).replace(/\r$/, "");
-      carry = carry.slice(newline + 1);
-      if (line.length > MAX_LINE_CHARS) {
+  let completed = false;
+  try {
+    for (;;) {
+      runtime.assertActive();
+      const { done, value } = await reader.read();
+      if (done) {
+        completed = true;
+        break;
+      }
+      if (onChunk) await onChunk(value);
+      let text = decoder.decode(value, { stream: true });
+      if (first) {
+        text = text.replace(/^\uFEFF/, "");
+        first = false;
+      }
+      carry += text;
+      let newline = carry.indexOf("\n");
+      while (newline >= 0) {
+        const line = carry.slice(0, newline).replace(/\r$/, "");
+        carry = carry.slice(newline + 1);
+        if (line.length > MAX_LINE_CHARS) {
+          throw new Error("A document line exceeds the 1 MiB safety limit.");
+        }
+        yield line;
+        newline = carry.indexOf("\n");
+      }
+      if (carry.length > MAX_LINE_CHARS) {
         throw new Error("A document line exceeds the 1 MiB safety limit.");
       }
-      yield line;
-      newline = carry.indexOf("\n");
     }
-    if (carry.length > MAX_LINE_CHARS) {
-      throw new Error("A document line exceeds the 1 MiB safety limit.");
+    carry += decoder.decode();
+    if (carry) {
+      if (carry.length > MAX_LINE_CHARS) {
+        throw new Error("A document line exceeds the 1 MiB safety limit.");
+      }
+      yield carry.replace(/\r$/, "");
     }
-  }
-  carry += decoder.decode();
-  if (carry) {
-    if (carry.length > MAX_LINE_CHARS) {
-      throw new Error("A document line exceeds the 1 MiB safety limit.");
-    }
-    yield carry.replace(/\r$/, "");
+  } finally {
+    if (!completed) await reader.cancel().catch(() => {});
   }
 }
 

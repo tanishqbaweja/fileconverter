@@ -171,7 +171,9 @@ const isAnimatedJxlProfile =
 const isTiffPageArchiveProfile = profileId === "tiff-to-zip";
 const isDocxOutputProfile = profileId === "txt-to-docx";
 const isOdtOutputProfile = profileId === "txt-to-odt";
-const isEpubOutputProfile = profileId === "txt-to-epub";
+const isMarkdownEpubOutputProfile = profileId === "md-to-epub";
+const isEpubOutputProfile =
+  profileId === "txt-to-epub" || isMarkdownEpubOutputProfile;
 const isStreamingTextProfile =
   /^(?:csv|tsv|ndjson|json)-to-(?:csv|tsv|ndjson|json)$/.test(profileId) ||
   profileId === "srt-to-vtt" ||
@@ -908,7 +910,10 @@ try {
           ? await validateDocxOutput(physicalOutputPath)
           : isOdtOutputProfile
             ? await validateOdtOutput(physicalOutputPath)
-            : await validateEpubOutput(physicalOutputPath);
+            : await validateEpubOutput(
+                physicalOutputPath,
+                isMarkdownEpubOutputProfile ? "markdown" : "text",
+              );
         validationBytes = decoded.bytes;
         externalValidationSha256 = decoded.sha256;
         if (
@@ -2857,7 +2862,10 @@ print(json.dumps({
   return result;
 }
 
-async function validateEpubOutput(filePath) {
+async function validateEpubOutput(filePath, contentMode) {
+  if (contentMode !== "text" && contentMode !== "markdown") {
+    throw new Error(`Unsupported EPUB validation mode: ${contentMode}`);
+  }
   const python = String.raw`
 import hashlib, json, re, struct, sys, xml.sax, zipfile
 from xml.etree import ElementTree as ET
@@ -2868,6 +2876,14 @@ OPF = "http://www.idpf.org/2007/opf"
 DC = "http://purl.org/dc/elements/1.1/"
 XHTML = "http://www.w3.org/1999/xhtml"
 EPUB = "http://www.idpf.org/2007/ops"
+MODE = sys.argv[2]
+TITLE = "Converted Markdown" if MODE == "markdown" else "Converted text"
+MARKDOWN_TAGS = {
+    "html", "head", "meta", "title", "body", "h1", "h2", "h3", "h4",
+    "h5", "h6", "p", "ul", "ol", "li", "blockquote", "pre", "code",
+    "a", "strong", "em", "hr",
+}
+TEXT_TAGS = {"html", "head", "meta", "title", "body", "pre"}
 
 class ContentHandler(xml.sax.ContentHandler):
     def __init__(self):
@@ -2877,26 +2893,49 @@ class ContentHandler(xml.sax.ContentHandler):
         self.in_pre = False
         self.pre_count = 0
         self.root_seen = False
+        self.in_body = False
+        self.body_count = 0
+        self.semantic_count = 0
 
     def startElementNS(self, name, qname, attrs):
         if not self.root_seen:
             if name != (XHTML, "html"):
                 raise RuntimeError("EPUB content has an invalid XHTML root")
             self.root_seen = True
+        if name[0] != XHTML:
+            raise RuntimeError("EPUB content contains a non-XHTML element")
+        allowed = MARKDOWN_TAGS if MODE == "markdown" else TEXT_TAGS
+        if name[1] not in allowed:
+            raise RuntimeError("EPUB content contains an unsupported element: " + name[1])
+        if name == (XHTML, "body"):
+            if self.in_body or self.body_count:
+                raise RuntimeError("EPUB content has multiple or nested body elements")
+            self.in_body = True
+            self.body_count += 1
+        elif self.in_body and name[1] in {
+            "h1", "h2", "h3", "h4", "h5", "h6", "p", "ul", "ol", "li",
+            "blockquote", "pre", "code", "a", "strong", "em", "hr",
+        }:
+            self.semantic_count += 1
         if name == (XHTML, "pre"):
-            if self.in_pre or self.pre_count:
+            if MODE == "text" and (self.in_pre or self.pre_count):
                 raise RuntimeError("EPUB content has multiple or nested pre blocks")
-            self.in_pre = True
+            if MODE == "text":
+                self.in_pre = True
             self.pre_count += 1
 
     def endElementNS(self, name, qname):
-        if name == (XHTML, "pre"):
+        if name == (XHTML, "pre") and MODE == "text":
             if not self.in_pre:
                 raise RuntimeError("EPUB content pre state is invalid")
             self.in_pre = False
+        if name == (XHTML, "body"):
+            if not self.in_body:
+                raise RuntimeError("EPUB content body state is invalid")
+            self.in_body = False
 
     def characters(self, content):
-        if self.in_pre:
+        if MODE == "text" and self.in_pre:
             encoded = content.encode("utf-8")
             self.hash.update(encoded)
             self.bytes += len(encoded)
@@ -2919,8 +2958,23 @@ with zipfile.ZipFile(sys.argv[1], "r") as package:
     parser = xml.sax.make_parser()
     parser.setFeature(xml.sax.handler.feature_namespaces, True)
     parser.setContentHandler(handler)
-    with package.open("EPUB/content.xhtml", "r") as content:
-        parser.parse(content)
+    if MODE == "markdown":
+        content_hash = hashlib.sha256()
+        content_bytes = 0
+        with package.open("EPUB/content.xhtml", "r") as content:
+            while True:
+                chunk = content.read(262144)
+                if not chunk:
+                    break
+                content_hash.update(chunk)
+                content_bytes += len(chunk)
+        with package.open("EPUB/content.xhtml", "r") as content:
+            parser.parse(content)
+    else:
+        with package.open("EPUB/content.xhtml", "r") as content:
+            parser.parse(content)
+        content_hash = handler.hash
+        content_bytes = handler.bytes
 
 with open(sys.argv[1], "rb") as source:
     local = source.read(128)
@@ -2977,7 +3031,7 @@ if package_document.attrib.get("unique-identifier") != "pub-id":
 if (identifier is None or identifier.attrib.get("id") != "pub-id" or
         not re.fullmatch(r"urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-8[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}", identifier.text or "")):
     raise RuntimeError("EPUB identifier is invalid")
-if title is None or title.text != "Converted text" or language is None or language.text != "und":
+if title is None or title.text != TITLE or language is None or language.text != "und":
     raise RuntimeError("EPUB required title or language metadata is invalid")
 if len(modified) != 1 or not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z", modified[0].text or ""):
     raise RuntimeError("EPUB modified metadata is invalid")
@@ -2986,17 +3040,22 @@ if manifest_items != {
     "content": ("content.xhtml", "application/xhtml+xml", None),
 } or spine_items != ["content"]:
     raise RuntimeError("EPUB manifest or spine is invalid")
-if navigation.tag != "{%s}html" % XHTML or len(toc) != 1 or toc_link is None or toc_link.attrib.get("href") != "content.xhtml":
+if (navigation.tag != "{%s}html" % XHTML or len(toc) != 1 or toc_link is None or
+        toc_link.attrib.get("href") != "content.xhtml" or toc_link.text != TITLE):
     raise RuntimeError("EPUB navigation document is invalid")
-if not handler.root_seen or handler.pre_count != 1 or handler.in_pre:
+if not handler.root_seen or handler.body_count != 1 or handler.in_body:
     raise RuntimeError("EPUB content XHTML is incomplete")
+if MODE == "text" and (handler.pre_count != 1 or handler.in_pre):
+    raise RuntimeError("EPUB text content is incomplete")
+if MODE == "markdown" and handler.semantic_count == 0:
+    raise RuntimeError("EPUB Markdown content contains no semantic structure")
 
-print(json.dumps({"bytes": handler.bytes, "sha256": handler.hash.hexdigest(),
+print(json.dumps({"bytes": content_bytes, "sha256": content_hash.hexdigest(),
                   "entries": entries, "methods": methods}))
 `;
   const { stdout } = await execFileAsync(
     "python",
-    ["-c", python, filePath],
+    ["-c", python, filePath, contentMode],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
   );
   const result = JSON.parse(stdout);

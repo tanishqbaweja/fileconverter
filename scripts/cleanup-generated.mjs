@@ -40,6 +40,14 @@ const cancellationFixture = path.resolve(
   workRoot,
   "cancellation-source.ndjson",
 );
+const documentCancellationFixture = path.resolve(
+  workRoot,
+  "cancellation-source.txt",
+);
+const markdownCancellationFixture = path.resolve(
+  workRoot,
+  "cancellation-source.md",
+);
 const webmBenchmarkFixture = path.resolve(
   stressFixturesRoot,
   "media",
@@ -266,6 +274,8 @@ const generatedStressNames = new Set([
 
 assertInside(workRoot, profileRoot);
 assertInside(workRoot, cancellationFixture);
+assertInside(workRoot, documentCancellationFixture);
+assertInside(workRoot, markdownCancellationFixture);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
 assertInside(workRoot, opusBenchmarkRoot);
@@ -316,6 +326,8 @@ if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(browserImageSmokeRoot);
   await removeWithRetries(browserMediaSmokeRoot);
   await rm(cancellationFixture, { force: true });
+  await rm(documentCancellationFixture, { force: true });
+  await rm(markdownCancellationFixture, { force: true });
   for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
   process.stdout.write("Disposable browser test artifacts removed.\n");
   process.exit(0);
@@ -344,6 +356,8 @@ await removeWithRetries(playwrightSmallProfileRoot);
 await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
 await rm(cancellationFixture, { force: true });
+await rm(documentCancellationFixture, { force: true });
+await rm(markdownCancellationFixture, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
 await removeWithRetries(opusBenchmarkRoot);

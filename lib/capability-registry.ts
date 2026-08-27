@@ -368,7 +368,7 @@ function containerAmrOutputProfile(
       `${sourceCodec} is downmixed and resampled to 8 kHz mono before lossy 12.2 kb/s AMR-NB encoding; this voice profile is not transparent for music.`,
     ],
     maxTestedBytes: evidence,
-    automatedTestStatus: evidence === null ? "pending" : "passed",
+    automatedTestStatus: evidence === null ? "failed" : "passed",
     public: evidence !== null,
   };
 }
@@ -3715,6 +3715,33 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     ],
     fidelityLimitations: [
       "Supports bounded headings, paragraphs, lists, blockquotes, rules, fenced code, links, emphasis, strong text, and inline code.",
+    ],
+    maxTestedBytes: 141_110_000,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
+    id: "md-to-epub",
+    input: "md",
+    output: "epub",
+    engine: "document-stream",
+    route: "stream",
+    browserRequirements: [
+      "Web Workers",
+      "Web Crypto",
+      "CompressionStream with raw DEFLATE",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-low",
+    metadataLimitations: [
+      "YAML front matter, footnotes, tables, task lists, definition lists, and Markdown extensions are not interpreted.",
+      "Raw HTML is escaped instead of executed; input must be valid UTF-8 with lines and accumulated paragraphs no longer than 1 MiB.",
+      "The non-ZIP64 EPUB 3.3 package is limited to 4 GiB and uses a generated content-derived UUIDv8 because Markdown carries no standardized publication identifier.",
+    ],
+    fidelityLimitations: [
+      "One reflowable XHTML spine document preserves bounded headings, paragraphs, lists, blockquotes, rules, fenced code, safe links, emphasis, strong text, and inline code.",
+      "The output uses a generated title, undetermined language, minimal navigation, and no inferred cover art or book metadata.",
     ],
     maxTestedBytes: 141_110_000,
     automatedTestStatus: "passed",

@@ -37,6 +37,21 @@ test("normal selector exposes only public profiles with passed evidence", () => 
   }
 });
 
+test("registry has no unresolved pending profiles and keeps failed evidence hidden", () => {
+  assert.deepEqual(
+    conversionProfiles
+      .filter((profile) => profile.automatedTestStatus === "pending")
+      .map((profile) => profile.id),
+    [],
+  );
+  const failed = conversionProfiles.filter(
+    (profile) => profile.automatedTestStatus === "failed",
+  );
+  assert.deepEqual(failed.map((profile) => profile.id), ["ogv-to-amr"]);
+  assert.equal(failed[0].public, false);
+  assert.equal(failed[0].maxTestedBytes, null);
+});
+
 test("TXT to DOCX is public only at its measured evidence limit", () => {
   const profile = conversionProfiles.find(
     (candidate) => candidate.id === "txt-to-docx",
@@ -68,6 +83,17 @@ test("TXT to EPUB is public only at its measured evidence limit", () => {
   assert.equal(profile.automatedTestStatus, "passed");
   assert.equal(profile.maxTestedBytes, 67_130_000);
   assert.equal(publicProfilesFor("txt").includes(profile), true);
+});
+
+test("Markdown to EPUB is public only at its measured evidence limit", () => {
+  const profile = conversionProfiles.find(
+    (candidate) => candidate.id === "md-to-epub",
+  );
+  assert.ok(profile);
+  assert.equal(profile.public, true);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 141_110_000);
+  assert.equal(publicProfilesFor("md").includes(profile), true);
 });
 
 test("MPEG-2 elementary routes expose only their measured evidence", () => {
@@ -949,10 +975,13 @@ test("compound archives and mainstream images are detected by filename", () => {
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "amr",
   )) {
-    const pendingContainerRoute = profile.id === "ogv-to-amr";
-    assert.equal(profile.automatedTestStatus, pendingContainerRoute ? "pending" : "passed");
-    assert.equal(profile.public, !pendingContainerRoute);
-    if (pendingContainerRoute) assert.equal(profile.maxTestedBytes, null);
+    const failedContainerRoute = profile.id === "ogv-to-amr";
+    assert.equal(
+      profile.automatedTestStatus,
+      failedContainerRoute ? "failed" : "passed",
+    );
+    assert.equal(profile.public, !failedContainerRoute);
+    if (failedContainerRoute) assert.equal(profile.maxTestedBytes, null);
     else assert.ok(profile.maxTestedBytes > 0);
     assert.ok(
       profile.fidelityLimitations.some((limitation) =>
@@ -963,7 +992,7 @@ test("compound archives and mainstream images are detected by filename", () => {
       publicProfilesFor(profile.input).some(
         (candidate) => candidate.id === profile.id,
       ),
-      !pendingContainerRoute,
+      !failedContainerRoute,
     );
   }
   assert.deepEqual(

@@ -7,6 +7,10 @@
     "md-to-html": {
       "validationBytes": 206870176,
       "validationSha256": "3a2acb43f81d6adc0ba721b9eea920afbc3caf7249266d4882b33c02cf92f27f"
+    },
+    "md-to-epub": {
+      "validationBytes": 206870185,
+      "validationSha256": "3c1bdd1445740b7063a1ec3c1b8b6a09a07e479eae7fd992630698e4fa56cede"
     }
   }
 }

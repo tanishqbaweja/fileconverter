@@ -4340,6 +4340,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "txt-to-odt" ||
       profileId === "txt-to-epub" ||
       profileId === "md-to-html" ||
+      profileId === "md-to-epub" ||
       profileId === "html-to-txt"
     ) {
       const documentDestination = destination.writable;

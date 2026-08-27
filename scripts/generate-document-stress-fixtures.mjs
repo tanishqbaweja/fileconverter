@@ -27,12 +27,14 @@ const markdownHash = createHash("sha256");
 const htmlHash = createHash("sha256");
 const txtOutputHash = createHash("sha256");
 const markdownOutputHash = createHash("sha256");
+const markdownEpubContentHash = createHash("sha256");
 const htmlOutputHash = createHash("sha256");
 let txtBytes = 0;
 let markdownBytes = 0;
 let htmlBytes = 0;
 let txtOutputBytes = 0;
 let markdownOutputBytes = 0;
+let markdownEpubContentBytes = 0;
 let htmlOutputBytes = 0;
 
 const txtHeader =
@@ -41,6 +43,11 @@ const txtFooter = "</pre></body>\n</html>\n";
 const markdownHeader =
   '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Converted Markdown</title></head>\n<body>\n';
 const markdownFooter = "</body>\n</html>\n";
+const markdownEpubContentHeader =
+  '<?xml version="1.0" encoding="UTF-8"?>' +
+  '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="und">' +
+  '<head><meta charset="utf-8"/><title>Converted Markdown</title></head><body>';
+const markdownEpubContentFooter = "</body></html>";
 const htmlHeader =
   '<!doctype html><html><head><script>upload("never")</script><style>.private{display:none}</style></head><body>';
 const htmlFooter = "</body></html>";
@@ -49,6 +56,8 @@ txtOutputHash.update(txtHeader);
 txtOutputBytes += Buffer.byteLength(txtHeader);
 markdownOutputHash.update(markdownHeader);
 markdownOutputBytes += Buffer.byteLength(markdownHeader);
+markdownEpubContentHash.update(markdownEpubContentHeader);
+markdownEpubContentBytes += Buffer.byteLength(markdownEpubContentHeader);
 htmlBytes += await write(htmlStream, htmlHash, htmlHeader);
 
 let record = 1;
@@ -110,6 +119,8 @@ while (
   txtOutputBytes += Buffer.byteLength(txtOutputText);
   markdownOutputHash.update(markdownOutputText);
   markdownOutputBytes += Buffer.byteLength(markdownOutputText);
+  markdownEpubContentHash.update(markdownOutputText);
+  markdownEpubContentBytes += Buffer.byteLength(markdownOutputText);
   htmlOutputHash.update(htmlOutputText);
   htmlOutputBytes += Buffer.byteLength(htmlOutputText);
 }
@@ -119,6 +130,8 @@ txtOutputHash.update(txtFooter);
 txtOutputBytes += Buffer.byteLength(txtFooter);
 markdownOutputHash.update(markdownFooter);
 markdownOutputBytes += Buffer.byteLength(markdownFooter);
+markdownEpubContentHash.update(markdownEpubContentFooter);
+markdownEpubContentBytes += Buffer.byteLength(markdownEpubContentFooter);
 
 txtStream.end();
 markdownStream.end();
@@ -151,6 +164,10 @@ await writeManifest(markdownPath, markdownBytes, markdownHash, {
   "md-to-html": {
     validationBytes: markdownOutputBytes,
     validationSha256: markdownOutputHash.digest("hex"),
+  },
+  "md-to-epub": {
+    validationBytes: markdownEpubContentBytes,
+    validationSha256: markdownEpubContentHash.digest("hex"),
   },
 });
 await writeManifest(htmlPath, htmlBytes, htmlHash, {
