@@ -3,6 +3,13 @@ export const MAX_MP3_INSPECTION_BYTES = 10 + 4_096 + 128;
 export const MAX_FLAC_INSPECTION_BYTES = 256 * 1024;
 export const MAX_AIFF_INSPECTION_BYTES = 256 * 1024;
 export const MAX_AAC_INSPECTION_BYTES = 10 + 32 * 7;
+const MAX_OGG_TAIL_BYTES = 66 * 1024;
+export const MAX_OGG_INSPECTION_BYTES =
+  27 + 255 + 256 + MAX_OGG_TAIL_BYTES;
+const MAX_AMR_FRAME_WINDOW_BYTES = 8 * 1024;
+export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
+export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
+export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface AudioSourceInspection {
   mediaType: "audio";
@@ -706,6 +713,733 @@ async function inspectAac(file: Blob): Promise<AudioSourceInspection> {
   };
 }
 
+interface OggPageHeader {
+  granule: number | null;
+  serial: number;
+  segmentBytes: Uint8Array;
+  bodyOffset: number;
+}
+
+async function readFirstOggPage(
+  file: Blob,
+): Promise<{ page: OggPageHeader; inspectedBytes: number }> {
+  if (file.size < 28) throw new Error("The selected file is too small to be Ogg.");
+  const fixedBytes = new Uint8Array(await file.slice(0, 27).arrayBuffer());
+  const fixed = new DataView(
+    fixedBytes.buffer,
+    fixedBytes.byteOffset,
+    fixedBytes.byteLength,
+  );
+  if (ascii(fixed, 0, 4) !== "OggS" || fixed.getUint8(4) !== 0) {
+    throw new Error("The selected file does not contain a valid Ogg page header.");
+  }
+  const segmentCount = fixed.getUint8(26);
+  const segmentBytes = new Uint8Array(
+    await file.slice(27, 27 + segmentCount).arrayBuffer(),
+  );
+  return {
+    page: {
+      granule: safeUint64(fixed, 6),
+      serial: fixed.getUint32(14, true),
+      segmentBytes,
+      bodyOffset: 27 + segmentCount,
+    },
+    inspectedBytes: fixedBytes.byteLength + segmentBytes.byteLength,
+  };
+}
+
+function firstOggPacketLength(segments: Uint8Array): number | null {
+  let length = 0;
+  for (const segment of segments) {
+    length += segment;
+    if (segment < 255) return length;
+  }
+  return null;
+}
+
+async function lastOggGranule(
+  file: Blob,
+  serial: number,
+): Promise<{ granule: number | null; inspectedBytes: number }> {
+  const length = Math.min(file.size, MAX_OGG_TAIL_BYTES);
+  const start = file.size - length;
+  const bytes = new Uint8Array(await file.slice(start).arrayBuffer());
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  for (let index = bytes.byteLength - 27; index >= 0; index -= 1) {
+    if (
+      bytes[index] !== 0x4f ||
+      bytes[index + 1] !== 0x67 ||
+      bytes[index + 2] !== 0x67 ||
+      bytes[index + 3] !== 0x53 ||
+      bytes[index + 4] !== 0
+    ) {
+      continue;
+    }
+    const segmentCount = bytes[index + 26];
+    if (index + 27 + segmentCount > bytes.byteLength) continue;
+    if (view.getUint32(index + 14, true) !== serial) continue;
+    let payloadBytes = 0;
+    for (let segment = 0; segment < segmentCount; segment += 1) {
+      payloadBytes += bytes[index + 27 + segment];
+    }
+    if (index + 27 + segmentCount + payloadBytes > bytes.byteLength) continue;
+    return {
+      granule: safeUint64(view, index + 6),
+      inspectedBytes: bytes.byteLength,
+    };
+  }
+  return { granule: null, inspectedBytes: bytes.byteLength };
+}
+
+async function inspectOgg(file: Blob): Promise<AudioSourceInspection> {
+  const first = await readFirstOggPage(file);
+  const packetLength = firstOggPacketLength(first.page.segmentBytes);
+  if (!packetLength || packetLength > 256) {
+    throw new Error("The first Ogg identification packet is missing or oversized.");
+  }
+  const packetBytes = new Uint8Array(
+    await file
+      .slice(first.page.bodyOffset, first.page.bodyOffset + packetLength)
+      .arrayBuffer(),
+  );
+  const packet = new DataView(
+    packetBytes.buffer,
+    packetBytes.byteOffset,
+    packetBytes.byteLength,
+  );
+  const last = await lastOggGranule(file, first.page.serial);
+  const metadataSignals: string[] = [];
+  const notes: string[] = [];
+  let codec: string;
+  let channels: number;
+  let sampleRateHz: number;
+  let durationSeconds: number | null;
+  let bitrateBps: number | null = null;
+
+  if (ascii(packet, 0, 8) === "OpusHead" && packet.byteLength >= 19) {
+    codec = "Opus";
+    channels = packet.getUint8(9);
+    sampleRateHz = 48_000;
+    const preSkip = packet.getUint16(10, true);
+    durationSeconds =
+      last.granule !== null
+        ? finitePositive((last.granule - preSkip) / sampleRateHz)
+        : null;
+    metadataSignals.push("OpusHead");
+  } else if (
+    packet.byteLength >= 30 &&
+    packet.getUint8(0) === 1 &&
+    ascii(packet, 1, 6) === "vorbis"
+  ) {
+    codec = "Vorbis";
+    channels = packet.getUint8(11);
+    sampleRateHz = packet.getUint32(12, true);
+    const nominalBitrate = packet.getInt32(20, true);
+    durationSeconds =
+      last.granule !== null
+        ? finitePositive(last.granule / sampleRateHz)
+        : null;
+    bitrateBps = finitePositive(nominalBitrate);
+    metadataSignals.push("Vorbis identification");
+  } else {
+    throw new Error("The Ogg identification packet is not supported Vorbis or Opus.");
+  }
+  if (!channels || !sampleRateHz) {
+    throw new Error("The Ogg audio identification packet is incomplete.");
+  }
+  if (!durationSeconds) {
+    notes.push("The final Ogg granule was not available inside the bounded tail scan.");
+  }
+  if (!bitrateBps && durationSeconds) {
+    bitrateBps = finitePositive(Math.round((file.size * 8) / durationSeconds));
+    notes.push("Bitrate is the average Ogg file bitrate, including container metadata.");
+  }
+  return {
+    mediaType: "audio",
+    container: "Ogg",
+    codec,
+    durationSeconds,
+    bitrateBps,
+    sampleRateHz,
+    channels,
+    channelLayout: channelLayout(channels),
+    bitsPerSample: null,
+    metadataSignals,
+    notes,
+    inspectedBytes:
+      first.inspectedBytes + packetBytes.byteLength + last.inspectedBytes,
+    maximumInspectionBytes: MAX_OGG_INSPECTION_BYTES,
+  };
+}
+
+const AMR_NB_FRAME_BYTES = [13, 14, 16, 18, 20, 21, 27, 32, 6] as const;
+const AMR_WB_FRAME_BYTES = [18, 24, 33, 37, 41, 47, 51, 59, 61, 6] as const;
+const AMR_NB_BITRATES = [
+  4_750, 5_150, 5_900, 6_700, 7_400, 7_950, 10_200, 12_200, 0,
+] as const;
+const AMR_WB_BITRATES = [
+  6_600, 8_850, 12_650, 14_250, 15_850, 18_250, 19_850, 23_050,
+  23_850, 0,
+] as const;
+
+async function inspectAmr(file: Blob): Promise<AudioSourceInspection> {
+  const signatureBytes = new Uint8Array(await file.slice(0, 9).arrayBuffer());
+  const signature = String.fromCharCode(...signatureBytes);
+  const wideband = signature.startsWith("#!AMR-WB\n");
+  const narrowband = signature.startsWith("#!AMR\n");
+  if (!wideband && !narrowband) {
+    throw new Error("The selected file does not contain a valid AMR signature.");
+  }
+  const signatureLength = wideband ? 9 : 6;
+  const frameWindow = new Uint8Array(
+    await file
+      .slice(signatureLength, signatureLength + MAX_AMR_FRAME_WINDOW_BYTES)
+      .arrayBuffer(),
+  );
+  const sizes = wideband ? AMR_WB_FRAME_BYTES : AMR_NB_FRAME_BYTES;
+  const bitrates = wideband ? AMR_WB_BITRATES : AMR_NB_BITRATES;
+  const typeCounts = new Map<number, number>();
+  let offset = 0;
+  let frameBytes = 0;
+  let frames = 0;
+  while (offset < frameWindow.byteLength && frames < 256) {
+    const frameType = (frameWindow[offset] >>> 3) & 0x0f;
+    const length = sizes[frameType];
+    if (!length || offset + length > frameWindow.byteLength) break;
+    typeCounts.set(frameType, (typeCounts.get(frameType) ?? 0) + 1);
+    frameBytes += length;
+    frames += 1;
+    offset += length;
+  }
+  if (frames < 2 || frameBytes <= 0) {
+    throw new Error("The bounded AMR scan did not find two valid speech frames.");
+  }
+  const dominantType = [...typeCounts.entries()].sort(
+    (left, right) => right[1] - left[1],
+  )[0]?.[0];
+  const durationSeconds = finitePositive(
+    (((file.size - signatureLength) / (frameBytes / frames)) * 20) / 1_000,
+  );
+  return {
+    mediaType: "audio",
+    container: wideband ? "AMR-WB storage" : "AMR-NB storage",
+    codec: wideband ? "AMR-WB" : "AMR-NB",
+    durationSeconds,
+    bitrateBps:
+      dominantType === undefined
+        ? null
+        : finitePositive(bitrates[dominantType] ?? 0),
+    sampleRateHz: wideband ? 16_000 : 8_000,
+    channels: 1,
+    channelLayout: "Mono",
+    bitsPerSample: null,
+    metadataSignals: [],
+    notes: [
+      `Duration is estimated from ${frames} frames inside an ${MAX_AMR_FRAME_WINDOW_BYTES.toLocaleString("en-US")}-byte bounded window.`,
+    ],
+    inspectedBytes: signatureBytes.byteLength + frameWindow.byteLength,
+    maximumInspectionBytes: MAX_AMR_INSPECTION_BYTES,
+  };
+}
+
+interface IsoBox {
+  type: string;
+  start: number;
+  dataStart: number;
+  end: number;
+}
+
+interface IsoAudioTrack {
+  trackId: number | null;
+  handler: string | null;
+  codec: string | null;
+  sampleRateHz: number | null;
+  channels: number | null;
+  bitsPerSample: number | null;
+  timescale: number | null;
+  durationUnits: number | null;
+  encodedBytes: number | null;
+  sampleCount: number | null;
+}
+
+function safeUint64Be(view: DataView, offset: number): number | null {
+  if (offset + 8 > view.byteLength) return null;
+  const value = view.getBigUint64(offset, false);
+  return value <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(value) : null;
+}
+
+function isoCodec(code: string): string {
+  return (
+    {
+      mp4a: "AAC",
+      alac: "ALAC",
+      samr: "AMR-NB",
+      sawb: "AMR-WB",
+      Opus: "Opus",
+      fLaC: "FLAC",
+      lpcm: "Linear PCM",
+      sowt: "PCM (little-endian)",
+      twos: "PCM (big-endian)",
+      ".mp3": "MP3",
+    } as Record<string, string>
+  )[code] ?? `ISO sample entry ${code}`;
+}
+
+async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
+  let inspectedBytes = 0;
+  let boxCount = 0;
+  const read = async (offset: number, length: number): Promise<DataView> => {
+    if (
+      offset < 0 ||
+      length < 0 ||
+      offset + length > file.size ||
+      inspectedBytes + length > MAX_ISO_BMFF_INSPECTION_BYTES
+    ) {
+      throw new Error("The ISO-BMFF structure exceeds the bounded inspection ceiling.");
+    }
+    const bytes = new Uint8Array(
+      await file.slice(offset, offset + length).arrayBuffer(),
+    );
+    inspectedBytes += bytes.byteLength;
+    return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  };
+  const readBox = async (offset: number, parentEnd: number): Promise<IsoBox> => {
+    if (offset + 8 > parentEnd) throw new Error("An ISO-BMFF box header is truncated.");
+    boxCount += 1;
+    if (boxCount > 1_024) {
+      throw new Error("The ISO-BMFF box-count ceiling was exceeded.");
+    }
+    const header = await read(offset, 8);
+    const size32 = header.getUint32(0, false);
+    const type = ascii(header, 4, 4);
+    let headerSize = 8;
+    let size = size32;
+    if (size32 === 1) {
+      const extended = await read(offset + 8, 8);
+      size = safeUint64Be(extended, 0) ?? 0;
+      headerSize = 16;
+    } else if (size32 === 0) {
+      size = parentEnd - offset;
+    }
+    if (size < headerSize || offset + size > parentEnd) {
+      throw new Error(`ISO-BMFF box ${type || "unknown"} has an invalid size.`);
+    }
+    return {
+      type,
+      start: offset,
+      dataStart: offset + headerSize,
+      end: offset + size,
+    };
+  };
+
+  const brands: string[] = [];
+  const tracks: IsoAudioTrack[] = [];
+  const trexDefaults = new Map<number, { duration: number; size: number }>();
+  const fragmentDurations = new Map<number, number>();
+  const fragmentMediaBytes = new Map<number, number>();
+  const metadataSignals = new Set<string>();
+  const parseMoof = async (moof: IsoBox): Promise<void> => {
+    for (let offset = moof.dataStart; offset + 8 <= moof.end; ) {
+      const child = await readBox(offset, moof.end);
+      if (child.type === "traf") {
+        let trackId: number | null = null;
+        let defaultDuration: number | null = null;
+        let defaultSize: number | null = null;
+        for (let trafOffset = child.dataStart; trafOffset + 8 <= child.end; ) {
+          const trafBox = await readBox(trafOffset, child.end);
+          if (trafBox.type === "tfhd" && trafBox.end - trafBox.dataStart >= 8) {
+            const length = Math.min(36, trafBox.end - trafBox.dataStart);
+            const tfhd = await read(trafBox.dataStart, length);
+            const flags = tfhd.getUint32(0, false) & 0x00ff_ffff;
+            trackId = tfhd.getUint32(4, false);
+            let cursor = 8;
+            if ((flags & 0x000001) !== 0) cursor += 8;
+            if ((flags & 0x000002) !== 0) cursor += 4;
+            if ((flags & 0x000008) !== 0 && cursor + 4 <= tfhd.byteLength) {
+              defaultDuration = tfhd.getUint32(cursor, false);
+              cursor += 4;
+            }
+            if ((flags & 0x000010) !== 0 && cursor + 4 <= tfhd.byteLength) {
+              defaultSize = tfhd.getUint32(cursor, false);
+            }
+          } else if (
+            trafBox.type === "trun" &&
+            trackId !== null &&
+            trafBox.end - trafBox.dataStart >= 8
+          ) {
+            const payloadLength = trafBox.end - trafBox.dataStart;
+            if (inspectedBytes + payloadLength <= MAX_ISO_BMFF_INSPECTION_BYTES) {
+              const trun = await read(trafBox.dataStart, payloadLength);
+              const flags = trun.getUint32(0, false) & 0x00ff_ffff;
+              const sampleCount = trun.getUint32(4, false);
+              let cursor = 8;
+              if ((flags & 0x000001) !== 0) cursor += 4;
+              if ((flags & 0x000004) !== 0) cursor += 4;
+              const fieldsPerSample =
+                ((flags & 0x000100) !== 0 ? 1 : 0) +
+                ((flags & 0x000200) !== 0 ? 1 : 0) +
+                ((flags & 0x000400) !== 0 ? 1 : 0) +
+                ((flags & 0x000800) !== 0 ? 1 : 0);
+              let duration = 0;
+              let mediaBytes = 0;
+              const inheritedDuration =
+                defaultDuration ?? trexDefaults.get(trackId)?.duration ?? null;
+              const inheritedSize =
+                defaultSize ?? trexDefaults.get(trackId)?.size ?? null;
+              if ((flags & 0x000100) === 0 && inheritedDuration !== null) {
+                duration = inheritedDuration * sampleCount;
+              }
+              if ((flags & 0x000200) === 0 && inheritedSize !== null) {
+                mediaBytes = inheritedSize * sampleCount;
+              }
+              if (fieldsPerSample > 0) {
+                for (let sample = 0; sample < sampleCount; sample += 1) {
+                  if (cursor + fieldsPerSample * 4 > trun.byteLength) {
+                    duration = 0;
+                    mediaBytes = 0;
+                    break;
+                  }
+                  if ((flags & 0x000100) !== 0) {
+                    duration += trun.getUint32(cursor, false);
+                    cursor += 4;
+                  }
+                  if ((flags & 0x000200) !== 0) {
+                    mediaBytes += trun.getUint32(cursor, false);
+                    cursor += 4;
+                  }
+                  if ((flags & 0x000400) !== 0) cursor += 4;
+                  if ((flags & 0x000800) !== 0) cursor += 4;
+                }
+              }
+              if (duration > 0) {
+                fragmentDurations.set(
+                  trackId,
+                  (fragmentDurations.get(trackId) ?? 0) + duration,
+                );
+              }
+              if (mediaBytes > 0) {
+                fragmentMediaBytes.set(
+                  trackId,
+                  (fragmentMediaBytes.get(trackId) ?? 0) + mediaBytes,
+                );
+              }
+            }
+          }
+          trafOffset = trafBox.end;
+        }
+      }
+      offset = child.end;
+    }
+  };
+  const parseChildren = async (
+    start: number,
+    end: number,
+    depth: number,
+    track: IsoAudioTrack | null,
+  ): Promise<void> => {
+    if (depth > 8) throw new Error("The ISO-BMFF nesting ceiling was exceeded.");
+    for (let offset = start; offset + 8 <= end; ) {
+      const box = await readBox(offset, end);
+      if (box.type === "trak") {
+        const nextTrack: IsoAudioTrack = {
+          trackId: null,
+          handler: null,
+          codec: null,
+          sampleRateHz: null,
+          channels: null,
+          bitsPerSample: null,
+          timescale: null,
+          durationUnits: null,
+          encodedBytes: null,
+          sampleCount: null,
+        };
+        await parseChildren(box.dataStart, box.end, depth + 1, nextTrack);
+        tracks.push(nextTrack);
+      } else if (["moov", "mdia", "minf", "stbl", "mvex"].includes(box.type)) {
+        await parseChildren(box.dataStart, box.end, depth + 1, track);
+      } else if (box.type === "moof") {
+        await parseMoof(box);
+      } else if (box.type === "ftyp" && box.end - box.dataStart >= 4) {
+        const brand = await read(box.dataStart, 4);
+        brands.push(ascii(brand, 0, 4));
+      } else if (box.type === "tkhd" && track) {
+        const length = Math.min(32, box.end - box.dataStart);
+        if (length >= 20) {
+          const tkhd = await read(box.dataStart, length);
+          track.trackId = tkhd.getUint8(0) === 1
+            ? length >= 24
+              ? tkhd.getUint32(20, false)
+              : null
+            : tkhd.getUint32(12, false);
+        }
+      } else if (box.type === "trex" && box.end - box.dataStart >= 20) {
+        const trex = await read(box.dataStart, 20);
+        trexDefaults.set(trex.getUint32(4, false), {
+          duration: trex.getUint32(12, false),
+          size: trex.getUint32(16, false),
+        });
+      } else if (box.type === "hdlr" && track && box.end - box.dataStart >= 12) {
+        const handler = await read(box.dataStart, 12);
+        track.handler = ascii(handler, 8, 4);
+      } else if (box.type === "mdhd" && track) {
+        const length = Math.min(36, box.end - box.dataStart);
+        if (length >= 24) {
+          const mdhd = await read(box.dataStart, length);
+          const version = mdhd.getUint8(0);
+          if (version === 0 && length >= 24) {
+            track.timescale = mdhd.getUint32(12, false);
+            track.durationUnits = mdhd.getUint32(16, false);
+          } else if (version === 1 && length >= 32) {
+            track.timescale = mdhd.getUint32(20, false);
+            track.durationUnits = safeUint64Be(mdhd, 24);
+          }
+        }
+      } else if (box.type === "stsd" && track && box.end - box.dataStart >= 16) {
+        const stsd = await read(box.dataStart, 8);
+        const entryCount = stsd.getUint32(4, false);
+        if (entryCount > 0) {
+          const entry = await readBox(box.dataStart + 8, box.end);
+          const available = entry.end - entry.dataStart;
+          if (available >= 28) {
+            const audio = await read(entry.dataStart, 28);
+            track.codec = entry.type;
+            track.channels = audio.getUint16(16, false);
+            const declaredBits = audio.getUint16(18, false);
+            track.sampleRateHz = audio.getUint32(24, false) >>> 16;
+            if (["alac", "lpcm", "sowt", "twos"].includes(entry.type)) {
+              track.bitsPerSample = declaredBits || null;
+            }
+          }
+        }
+      } else if (box.type === "stsz" && track && box.end - box.dataStart >= 12) {
+        const fixed = await read(box.dataStart, 12);
+        const sampleSize = fixed.getUint32(4, false);
+        const sampleCount = fixed.getUint32(8, false);
+        track.sampleCount = sampleCount || null;
+        if (sampleSize > 0) {
+          track.encodedBytes = sampleSize * sampleCount;
+        } else if (sampleCount > 0) {
+          const tableBytes = sampleCount * 4;
+          if (
+            12 + tableBytes <= box.end - box.dataStart &&
+            inspectedBytes + tableBytes <= MAX_ISO_BMFF_INSPECTION_BYTES
+          ) {
+            const sizes = await read(box.dataStart + 12, tableBytes);
+            let total = 0;
+            for (let index = 0; index < sampleCount; index += 1) {
+              total += sizes.getUint32(index * 4, false);
+            }
+            track.encodedBytes = total || null;
+          }
+        }
+      } else if (box.type === "udta") {
+        metadataSignals.add("User metadata box");
+      } else if (box.type === "meta") {
+        metadataSignals.add("Metadata box");
+      }
+      if (box.end <= offset) throw new Error("ISO-BMFF box traversal did not advance.");
+      offset = box.end;
+    }
+  };
+
+  await parseChildren(0, file.size, 0, null);
+  const majorBrand = brands[0];
+  if (!majorBrand) throw new Error("The selected file has no ISO-BMFF ftyp box.");
+  const audioTrack = tracks.find(
+    (track) => track.handler === "soun" && track.codec !== null,
+  );
+  if (!audioTrack?.codec || !audioTrack.sampleRateHz || !audioTrack.channels) {
+    throw new Error("The bounded ISO-BMFF scan did not find a complete audio track.");
+  }
+  const durationUnits =
+    audioTrack.durationUnits ||
+    (audioTrack.trackId === null
+      ? null
+      : fragmentDurations.get(audioTrack.trackId) ?? null);
+  const durationSeconds =
+    audioTrack.timescale && durationUnits
+      ? finitePositive(durationUnits / audioTrack.timescale)
+      : null;
+  const encodedBytes =
+    audioTrack.encodedBytes ??
+    (audioTrack.trackId === null
+      ? null
+      : fragmentMediaBytes.get(audioTrack.trackId) ?? null);
+  const encodedBitrate =
+    durationSeconds && encodedBytes
+      ? finitePositive(Math.round((encodedBytes * 8) / durationSeconds))
+      : null;
+  const fixedMonoCodec = audioTrack.codec === "samr" || audioTrack.codec === "sawb";
+  const resolvedChannels = fixedMonoCodec ? 1 : audioTrack.channels;
+  const resolvedSampleRate =
+    audioTrack.codec === "samr"
+      ? 8_000
+      : audioTrack.codec === "sawb"
+        ? 16_000
+        : audioTrack.sampleRateHz;
+  const averageAmrFrameBytes =
+    fixedMonoCodec && encodedBytes && audioTrack.sampleCount
+      ? encodedBytes / audioTrack.sampleCount
+      : null;
+  const amrModeIndex = averageAmrFrameBytes
+    ? (audioTrack.codec === "sawb" ? AMR_WB_FRAME_BYTES : AMR_NB_FRAME_BYTES)
+        .findIndex((bytes) => bytes === averageAmrFrameBytes)
+    : -1;
+  const amrModeBitrate =
+    amrModeIndex >= 0
+      ? (audioTrack.codec === "sawb" ? AMR_WB_BITRATES : AMR_NB_BITRATES)[
+          amrModeIndex
+        ]
+      : null;
+  const reportedBitrate = finitePositive(amrModeBitrate ?? 0) ?? encodedBitrate;
+  const container = majorBrand.toLowerCase().startsWith("3g")
+    ? "3GP / ISO-BMFF"
+    : majorBrand.trim().toLowerCase() === "m4a"
+      ? "M4A / ISO-BMFF"
+      : `ISO-BMFF (${majorBrand.trim() || "unbranded"})`;
+  return {
+    mediaType: "audio",
+    container,
+    codec: isoCodec(audioTrack.codec),
+    durationSeconds,
+    bitrateBps:
+      reportedBitrate ??
+      (durationSeconds
+        ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+        : null),
+    sampleRateHz: resolvedSampleRate,
+    channels: resolvedChannels,
+    channelLayout: channelLayout(resolvedChannels),
+    bitsPerSample: audioTrack.bitsPerSample,
+    metadataSignals: [...metadataSignals],
+    notes: [
+      amrModeBitrate
+        ? "Bitrate is the AMR codec mode identified from bounded sample-size metadata."
+        : encodedBitrate
+          ? "Bitrate is calculated from encoded sample bytes and media duration."
+        : "Bitrate is the average ISO-BMFF file bitrate, including container metadata.",
+    ],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_ISO_BMFF_INSPECTION_BYTES,
+  };
+}
+
+function guidHex(view: DataView, offset = 0): string {
+  if (offset + 16 > view.byteLength) return "";
+  let value = "";
+  for (let index = 0; index < 16; index += 1) {
+    value += view.getUint8(offset + index).toString(16).padStart(2, "0");
+  }
+  return value;
+}
+
+function asfAudioCodec(formatTag: number): string {
+  return (
+    {
+      0x000a: "Windows Media Audio Voice",
+      0x0160: "Windows Media Audio 1",
+      0x0161: "Windows Media Audio 2",
+      0x0162: "Windows Media Audio Pro",
+      0x0163: "Windows Media Audio Lossless",
+    } as Record<number, string>
+  )[formatTag] ?? `WAVE format 0x${formatTag.toString(16).padStart(4, "0")}`;
+}
+
+async function inspectAsf(file: Blob): Promise<AudioSourceInspection> {
+  const ASF_HEADER = "3026b2758e66cf11a6d900aa0062ce6c";
+  const FILE_PROPERTIES = "a1dcab8c47a9cf118ee400c00c205365";
+  const STREAM_PROPERTIES = "9107dcb7b7a9cf118ee600c00c205365";
+  const AUDIO_MEDIA = "409e69f84d5bcf11a8fd00805f5c442b";
+  const CONTENT_DESCRIPTION = "3326b2758e66cf11a6d900aa0062ce6c";
+  const EXTENDED_CONTENT = "40a4d0d207e3d21197f000a0c95ea850";
+  let inspectedBytes = 0;
+  const read = async (offset: number, length: number): Promise<DataView> => {
+    if (
+      offset < 0 ||
+      length < 0 ||
+      offset + length > file.size ||
+      inspectedBytes + length > MAX_ASF_INSPECTION_BYTES
+    ) {
+      throw new Error("The ASF object table exceeds the bounded inspection ceiling.");
+    }
+    const bytes = new Uint8Array(
+      await file.slice(offset, offset + length).arrayBuffer(),
+    );
+    inspectedBytes += bytes.byteLength;
+    return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  };
+  if (file.size < 30) throw new Error("The selected file is too small to be ASF.");
+  const header = await read(0, 30);
+  if (guidHex(header) !== ASF_HEADER) {
+    throw new Error("The selected file does not contain a valid ASF header object.");
+  }
+  const headerSize = safeUint64(header, 16);
+  const objectCount = header.getUint32(24, true);
+  if (!headerSize || headerSize > file.size || objectCount > 128) {
+    throw new Error("The ASF header size or object count is invalid.");
+  }
+
+  let durationSeconds: number | null = null;
+  let codec: string | null = null;
+  let bitrateBps: number | null = null;
+  let sampleRateHz: number | null = null;
+  let channels: number | null = null;
+  const metadataSignals: string[] = [];
+  let offset = 30;
+  for (let index = 0; index < objectCount && offset + 24 <= headerSize; index += 1) {
+    const objectHeader = await read(offset, 24);
+    const id = guidHex(objectHeader);
+    const size = safeUint64(objectHeader, 16);
+    if (!size || size < 24 || offset + size > headerSize) {
+      throw new Error("An ASF header object has an invalid size.");
+    }
+    const dataOffset = offset + 24;
+    const payloadBytes = size - 24;
+    if (id === FILE_PROPERTIES && payloadBytes >= 80) {
+      const properties = await read(dataOffset, 80);
+      const playDuration = safeUint64(properties, 40);
+      const prerollMs = safeUint64(properties, 56);
+      if (playDuration !== null && prerollMs !== null) {
+        durationSeconds = finitePositive(
+          playDuration / 10_000_000 - prerollMs / 1_000,
+        );
+      }
+    } else if (id === STREAM_PROPERTIES && payloadBytes >= 72) {
+      const stream = await read(dataOffset, 72);
+      if (guidHex(stream) === AUDIO_MEDIA) {
+        const formatTag = stream.getUint16(54, true);
+        codec = asfAudioCodec(formatTag);
+        channels = stream.getUint16(56, true);
+        sampleRateHz = stream.getUint32(58, true);
+        bitrateBps = finitePositive(stream.getUint32(62, true) * 8);
+      }
+    } else if (id === CONTENT_DESCRIPTION) {
+      metadataSignals.push("Content description");
+    } else if (id === EXTENDED_CONTENT) {
+      metadataSignals.push("Extended content description");
+    }
+    offset += size;
+  }
+  if (!codec || !channels || !sampleRateHz) {
+    throw new Error("The bounded ASF scan did not find a complete WMA audio stream.");
+  }
+  return {
+    mediaType: "audio",
+    container: "ASF",
+    codec,
+    durationSeconds,
+    bitrateBps,
+    sampleRateHz,
+    channels,
+    channelLayout: channelLayout(channels),
+    bitsPerSample: null,
+    metadataSignals,
+    notes: [],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_ASF_INSPECTION_BYTES,
+  };
+}
+
 export async function inspectMediaSource(
   file: Blob,
   formatId: string,
@@ -715,5 +1449,9 @@ export async function inspectMediaSource(
   if (formatId === "flac") return inspectFlac(file);
   if (formatId === "aiff") return inspectAiff(file);
   if (formatId === "aac") return inspectAac(file);
+  if (formatId === "ogg" || formatId === "opus") return inspectOgg(file);
+  if (formatId === "amr") return inspectAmr(file);
+  if (formatId === "m4a" || formatId === "amr-wb") return inspectIsoBmff(file);
+  if (formatId === "wma") return inspectAsf(file);
   return null;
 }

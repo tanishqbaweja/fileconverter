@@ -107,6 +107,23 @@ const aacFixturePath = path.join(
   "media",
   "audio-source.aac",
 );
+const oggFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.ogg");
+const opusFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.opus");
+const amrFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.amr");
+const m4aFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.m4a");
+const alacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-alac.m4a",
+);
+const amrWbFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "amr-wb-source.awb",
+);
+const wmaFixturePath = path.join(projectRoot, "fixtures", "media", "audio-source.wma");
 
 let context: BrowserContext;
 let page: Page;
@@ -209,7 +226,7 @@ test("conversion transmits no filename or file content", async () => {
   }
 });
 
-test("source inspection displays five genuine audio formats from bounded local reads", async () => {
+test("source inspection displays genuine audio families from bounded local reads", async () => {
   await page.goto("/?test=1");
   await waitForWorker();
   await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
@@ -266,6 +283,69 @@ test("source inspection displays five genuine audio formats from bounded local r
   await expect(sourceInspection).toContainText("Stereo");
   await expect(sourceInspection).toContainText("234 bytes (max 234)");
   await expect(status).toContainText("estimated from up to 32 bounded ADTS frame headers");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(oggFixturePath);
+  await expect(sourceInspection).toContainText("Vorbis");
+  await expect(sourceInspection).toContainText("96 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("Vorbis identification");
+  await expect(sourceInspection).toContainText("12,893 bytes (max 68,122)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(opusFixturePath);
+  await expect(sourceInspection).toContainText("Opus");
+  await expect(sourceInspection).toContainText("155 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("OpusHead");
+  await expect(sourceInspection).toContainText("67,631 bytes (max 68,122)");
+  await expect(status).toContainText("average Ogg file bitrate");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(amrFixturePath);
+  await expect(sourceInspection).toContainText("AMR-NB storage");
+  await expect(sourceInspection).toContainText("AMR-NB");
+  await expect(sourceInspection).toContainText("12 kb/s");
+  await expect(sourceInspection).toContainText("8,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("6,441 bytes (max 8,201)");
+  await expect(status).toContainText("estimated from 201 frames");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(m4aFixturePath);
+  await expect(sourceInspection).toContainText("M4A / ISO-BMFF");
+  await expect(sourceInspection).toContainText("AAC");
+  await expect(sourceInspection).toContainText("125 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("User metadata box");
+  await expect(sourceInspection).toContainText("1,068 bytes (max 65,536)");
+  await expect(status).toContainText("encoded sample bytes");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(alacFixturePath);
+  await expect(sourceInspection).toContainText("ALAC");
+  await expect(sourceInspection).toContainText("534 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Stereo");
+  await expect(sourceInspection).toContainText("16-bit");
+  await expect(sourceInspection).toContainText("780 bytes (max 65,536)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(amrWbFixturePath);
+  await expect(sourceInspection).toContainText("3GP / ISO-BMFF");
+  await expect(sourceInspection).toContainText("AMR-WB");
+  await expect(sourceInspection).toContainText("24 kb/s");
+  await expect(sourceInspection).toContainText("16,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("280 bytes (max 65,536)");
+  await expect(status).toContainText("AMR codec mode");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(wmaFixturePath);
+  await expect(sourceInspection).toContainText("ASF");
+  await expect(sourceInspection).toContainText("Windows Media Audio 2");
+  await expect(sourceInspection).toContainText("320 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Stereo");
+  await expect(sourceInspection).toContainText("Content description");
+  await expect(sourceInspection).toContainText("Extended content description");
+  await expect(sourceInspection).toContainText("326 bytes (max 65,536)");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {

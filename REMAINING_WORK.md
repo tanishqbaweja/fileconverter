@@ -47,7 +47,7 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
-| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` now presents bounded pre-conversion WAV/RF64, MP3, FLAC, AIFF/AIFC, and AAC/ADTS codec, duration, bitrate, rate, channel, bit-depth, and metadata signals | Extend the same bounded inspection contract to video/container and the remaining audio formats, then build a broader automatic planner across missing combinations. |
+| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` now presents bounded pre-conversion details for every named standalone audio family: WAV/RF64, MP3, FLAC, AIFF/AIFC, AAC/ADTS, Ogg Vorbis, Opus, raw AMR-NB, M4A AAC/ALAC, 3GP-contained AMR-WB, and ASF/WMA | Extend the same bounded inspection contract to video/container multi-stream inputs, then build a broader automatic planner across missing combinations. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and many route-specific validators/warnings cover preservation or explicit exclusions | Audit every public media profile field-by-field; expand preservation where the destination supports it instead of relying on first-stream policies. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | No production option model or controls were found; public re-encode profiles use fixed certified settings | Design bounded option schemas, planner support, UI controls, encoder validation, and separate evidence per memory-relevant profile. |
@@ -73,7 +73,7 @@ not the entire product specification.
 
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel now adds tested details for five audio format families and discloses exact bounded read ceilings | Extend stream details to the other audio/video/container families, add the missing relevant conversion controls, and perform broader headed usability review. |
+| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel now adds tested details for all named standalone audio families and discloses exact bounded read ceilings/estimates | Extend stream details to video/container multi-stream families, add the missing relevant conversion controls, and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
@@ -111,8 +111,8 @@ not the entire product specification.
 
 1. Make reproducibility coverage manifest-driven and extend CI to every published
    engine without creating a single timeout-prone build job.
-2. Extend the bounded five-family audio source inspector to the remaining audio
-   and video containers, and add a bounded option model beginning with audio
+2. Extend the bounded standalone-audio source inspector to multi-stream video
+   containers, and add a bounded option model beginning with audio
    bitrate/sample-rate/channel-layout and video resolution/bitrate/frame-rate/
    quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
@@ -142,6 +142,24 @@ not the entire product specification.
   separately authorized build environment first.
 
 ## Implementation and verification log
+
+### 2026-08-27 — complete standalone-audio source inspection surface
+
+- Added bounded Ogg page/identification/tail-granule parsing for Vorbis and Opus,
+  raw AMR-NB signature/frame-window parsing, and a 64 KiB-read-budget ISO-BMFF
+  box walker for M4A AAC, fragmented M4A ALAC, and AMR-WB inside real 3GP.
+- The ISO walker follows `moov`/track/sample tables and bounded fragment runs,
+  derives fragmented duration and encoded sample bytes, overrides misleading
+  generic sample-entry fields with mandatory AMR mono/rate semantics, and uses
+  AMR frame sizes to identify the exact 23.85 kb/s codec mode.
+- Added directed ASF header-object and `WAVEFORMATEX` inspection. The genuine WMA2
+  fixture reports its 320 kb/s stream rate rather than its 603 kb/s whole-file
+  container rate, plus both content-metadata object signals.
+- Fifteen focused parser tests pass across genuine fixtures, fragmented timing,
+  exact codec/container distinctions, format signatures, structural rejection,
+  and fixed read budgets. One production Chrome session passes the entire named
+  standalone-audio family set while switching files repeatedly; it creates no
+  converted copy and teardown removes its project-local browser profile.
 
 ### 2026-08-27 — FLAC, AIFF/AIFC, and AAC/ADTS source inspection
 

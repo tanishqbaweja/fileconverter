@@ -46,9 +46,11 @@ function trackingBlob(blob) {
 }
 
 async function trackedFixture(extension) {
-  const bytes = await readFile(
-    new URL(`../fixtures/media/audio-source.${extension}`, import.meta.url),
-  );
+  return trackedNamedFixture(`audio-source.${extension}`);
+}
+
+async function trackedNamedFixture(name) {
+  const bytes = await readFile(new URL(`../fixtures/media/${name}`, import.meta.url));
   return trackingBlob(new Blob([bytes]));
 }
 
@@ -178,6 +180,113 @@ test("renamed payloads are rejected by FLAC, AIFF, and AAC inspection", async ()
   await assert.rejects(inspectMediaSource(payload, "flac"), /FLAC signature/);
   await assert.rejects(inspectMediaSource(payload, "aiff"), /AIFF\/AIFC header/);
   await assert.rejects(inspectMediaSource(payload, "aac"), /valid ADTS/);
+});
+
+test("bounded Ogg inspection distinguishes genuine Vorbis and Opus", async () => {
+  const vorbisSource = await trackedFixture("ogg");
+  const vorbis = await inspectMediaSource(vorbisSource, "ogg");
+  assert.ok(vorbis);
+  assert.equal(vorbis.container, "Ogg");
+  assert.equal(vorbis.codec, "Vorbis");
+  assert.equal(vorbis.durationSeconds, 4);
+  assert.equal(vorbis.bitrateBps, 96_000);
+  assert.equal(vorbis.sampleRateHz, 48_000);
+  assert.equal(vorbis.channelLayout, "Mono");
+  assert.deepEqual(vorbis.metadataSignals, ["Vorbis identification"]);
+  assert.equal(vorbis.inspectedBytes, 12_893);
+
+  const opusSource = await trackedFixture("opus");
+  const opus = await inspectMediaSource(opusSource, "opus");
+  assert.ok(opus);
+  assert.equal(opus.container, "Ogg");
+  assert.equal(opus.codec, "Opus");
+  assert.equal(opus.durationSeconds, 4);
+  assert.equal(opus.bitrateBps, 155_362);
+  assert.equal(opus.sampleRateHz, 48_000);
+  assert.equal(opus.channelLayout, "Mono");
+  assert.deepEqual(opus.metadataSignals, ["OpusHead"]);
+  assert.equal(opus.inspectedBytes, 67_631);
+  assert.ok(opusSource.reads.every(([start, end]) => end - start <= 66 * 1_024));
+});
+
+test("bounded AMR inspection reports raw NB and 3GP-contained WB honestly", async () => {
+  const narrowSource = await trackedFixture("amr");
+  const narrow = await inspectMediaSource(narrowSource, "amr");
+  assert.ok(narrow);
+  assert.equal(narrow.container, "AMR-NB storage");
+  assert.equal(narrow.codec, "AMR-NB");
+  assert.ok(Math.abs(narrow.durationSeconds - 4.02) < 0.0001);
+  assert.equal(narrow.bitrateBps, 12_200);
+  assert.equal(narrow.sampleRateHz, 8_000);
+  assert.equal(narrow.channelLayout, "Mono");
+  assert.equal(narrow.inspectedBytes, 6_441);
+
+  const wideSource = await trackedNamedFixture("amr-wb-source.awb");
+  const wide = await inspectMediaSource(wideSource, "amr-wb");
+  assert.ok(wide);
+  assert.equal(wide.container, "3GP / ISO-BMFF");
+  assert.equal(wide.codec, "AMR-WB");
+  assert.equal(wide.durationSeconds, 10.24);
+  assert.equal(wide.bitrateBps, 23_850);
+  assert.equal(wide.sampleRateHz, 16_000);
+  assert.equal(wide.channelLayout, "Mono");
+  assert.equal(wide.inspectedBytes, 280);
+});
+
+test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async () => {
+  const aacSource = await trackedFixture("m4a");
+  const aac = await inspectMediaSource(aacSource, "m4a");
+  assert.ok(aac);
+  assert.equal(aac.container, "M4A / ISO-BMFF");
+  assert.equal(aac.codec, "AAC");
+  assert.ok(Math.abs(aac.durationSeconds - 4.021333) < 0.000001);
+  assert.equal(aac.bitrateBps, 125_324);
+  assert.equal(aac.sampleRateHz, 48_000);
+  assert.equal(aac.channelLayout, "Mono");
+  assert.deepEqual(aac.metadataSignals, ["User metadata box"]);
+  assert.equal(aac.inspectedBytes, 1_068);
+
+  const alacSource = await trackedNamedFixture("audio-source-alac.m4a");
+  const alac = await inspectMediaSource(alacSource, "m4a");
+  assert.ok(alac);
+  assert.equal(alac.container, "M4A / ISO-BMFF");
+  assert.equal(alac.codec, "ALAC");
+  assert.equal(alac.durationSeconds, 4);
+  assert.equal(alac.bitrateBps, 533_680);
+  assert.equal(alac.sampleRateHz, 48_000);
+  assert.equal(alac.channelLayout, "Stereo");
+  assert.equal(alac.bitsPerSample, 16);
+  assert.equal(alac.inspectedBytes, 780);
+  assert.ok(alacSource.reads.every(([start, end]) => end - start <= 396));
+});
+
+test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
+  const payload = new Blob([new Uint8Array(1_024)]);
+  await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
+  await assert.rejects(inspectMediaSource(payload, "amr"), /valid AMR signature/);
+  await assert.rejects(inspectMediaSource(payload, "m4a"), /no ISO-BMFF ftyp box/);
+});
+
+test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {
+  const source = await trackedFixture("wma");
+  const result = await inspectMediaSource(source, "wma");
+  assert.ok(result);
+  assert.equal(result.container, "ASF");
+  assert.equal(result.codec, "Windows Media Audio 2");
+  assert.ok(Math.abs(result.durationSeconds - 4) < 0.000001);
+  assert.equal(result.bitrateBps, 320_000);
+  assert.equal(result.sampleRateHz, 48_000);
+  assert.equal(result.channelLayout, "Stereo");
+  assert.deepEqual(result.metadataSignals, [
+    "Content description",
+    "Extended content description",
+  ]);
+  assert.equal(result.inspectedBytes, 326);
+  assert.ok(source.reads.every(([start, end]) => end - start <= 80));
+  await assert.rejects(
+    inspectMediaSource(new Blob([new Uint8Array(1_024)]), "wma"),
+    /valid ASF header object/,
+  );
 });
 
 test("unsupported formats do not pretend to have detailed inspection", async () => {
