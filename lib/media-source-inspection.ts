@@ -14,6 +14,7 @@ export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
 const MPEG_TS_WINDOW_BYTES = 64 * 1024;
 export const MAX_MPEG_TS_INSPECTION_BYTES = MPEG_TS_WINDOW_BYTES * 2;
 export const MAX_AVI_INSPECTION_BYTES = 256 * 1024;
+export const MAX_OGV_INSPECTION_BYTES = 64 * 1024 + MAX_OGG_TAIL_BYTES;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface SourceStreamInspection {
@@ -2516,6 +2517,191 @@ async function inspectAvi(file: Blob): Promise<MediaSourceInspection> {
   };
 }
 
+async function inspectOggVideo(file: Blob): Promise<MediaSourceInspection> {
+  const headLength = Math.min(file.size, 64 * 1024);
+  const tailLength = Math.min(
+    Math.max(0, file.size - headLength),
+    MAX_OGG_TAIL_BYTES,
+  );
+  if (headLength < 28) throw new Error("The selected file is too small to be Ogg video.");
+  const head = new Uint8Array(await file.slice(0, headLength).arrayBuffer());
+  const tail = tailLength
+    ? new Uint8Array(await file.slice(file.size - tailLength).arrayBuffer())
+    : new Uint8Array();
+  interface OggIdentification {
+    serial: number;
+    codec: "Theora" | "Vorbis";
+    width: number | null;
+    height: number | null;
+    frameRate: number | null;
+    sampleRateHz: number | null;
+    channels: number | null;
+    bitrateBps: number | null;
+    granuleShift: number;
+  }
+  const identifications: OggIdentification[] = [];
+  const lastGranules = new Map<number, number>();
+  const pages = (
+    bytes: Uint8Array,
+    onPage: (
+      view: DataView,
+      offset: number,
+      serial: number,
+      headerType: number,
+      packet: Uint8Array | null,
+    ) => void,
+  ): void => {
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    for (let offset = 0, pageCount = 0; offset + 27 <= bytes.byteLength; ) {
+      if (ascii(view, offset, 4) !== "OggS" || bytes[offset + 4] !== 0) {
+        offset += 1;
+        continue;
+      }
+      const segments = bytes[offset + 26];
+      if (offset + 27 + segments > bytes.byteLength) {
+        offset += 1;
+        continue;
+      }
+      let bodyBytes = 0;
+      let firstPacketBytes = 0;
+      let packetComplete = false;
+      for (let segment = 0; segment < segments; segment += 1) {
+        const length = bytes[offset + 27 + segment];
+        bodyBytes += length;
+        if (!packetComplete) {
+          firstPacketBytes += length;
+          if (length < 255) packetComplete = true;
+        }
+      }
+      const body = offset + 27 + segments;
+      const pageEnd = body + bodyBytes;
+      if (pageEnd > bytes.byteLength) {
+        offset += 1;
+        continue;
+      }
+      const packet = packetComplete
+        ? bytes.subarray(body, body + firstPacketBytes)
+        : null;
+      pageCount += 1;
+      if (pageCount > 512) throw new Error("The Ogg page-count ceiling was exceeded.");
+      onPage(
+        view,
+        offset,
+        view.getUint32(offset + 14, true),
+        bytes[offset + 5],
+        packet,
+      );
+      offset = pageEnd;
+    }
+  };
+  pages(head, (view, offset, serial, headerType, packet) => {
+    if ((headerType & 2) === 0 || !packet) return;
+    if (
+      packet.length >= 42 &&
+      packet[0] === 0x80 &&
+      String.fromCharCode(...packet.subarray(1, 7)) === "theora"
+    ) {
+      const packetView = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);
+      const numerator = packetView.getUint32(22, false);
+      const denominator = packetView.getUint32(26, false);
+      identifications.push({
+        serial,
+        codec: "Theora",
+        width: packet[14] * 65_536 + packet[15] * 256 + packet[16],
+        height: packet[17] * 65_536 + packet[18] * 256 + packet[19],
+        frameRate:
+          numerator && denominator ? finitePositive(numerator / denominator) : null,
+        sampleRateHz: null,
+        channels: null,
+        bitrateBps: finitePositive(
+          packet[37] * 65_536 + packet[38] * 256 + packet[39],
+        ),
+        granuleShift: ((packet[40] & 0x03) << 3) | (packet[41] >>> 5),
+      });
+    } else if (
+      packet.length >= 30 &&
+      packet[0] === 1 &&
+      String.fromCharCode(...packet.subarray(1, 7)) === "vorbis"
+    ) {
+      const packetView = new DataView(packet.buffer, packet.byteOffset, packet.byteLength);
+      identifications.push({
+        serial,
+        codec: "Vorbis",
+        width: null,
+        height: null,
+        frameRate: null,
+        sampleRateHz: packetView.getUint32(12, true),
+        channels: packet[11],
+        bitrateBps: finitePositive(packetView.getInt32(20, true)),
+        granuleShift: 0,
+      });
+    }
+    const granule = safeUint64(view, offset + 6);
+    if (granule !== null) lastGranules.set(serial, granule);
+  });
+  if (!identifications.some((stream) => stream.codec === "Theora")) {
+    throw new Error("The bounded Ogg scan did not find a Theora identification header.");
+  }
+  pages(tail, (view, offset, serial) => {
+    const granule = safeUint64(view, offset + 6);
+    if (granule !== null && granule > 0) lastGranules.set(serial, granule);
+  });
+  const streams: SourceStreamInspection[] = identifications.map((stream) => {
+    const granule = lastGranules.get(stream.serial) ?? null;
+    let durationSeconds: number | null = null;
+    if (granule !== null && stream.codec === "Theora" && stream.frameRate) {
+      const divisor = 2 ** stream.granuleShift;
+      const frameIndex = Math.floor(granule / divisor) + (granule % divisor);
+      durationSeconds = finitePositive(frameIndex / stream.frameRate);
+    } else if (granule !== null && stream.codec === "Vorbis" && stream.sampleRateHz) {
+      durationSeconds = finitePositive(granule / stream.sampleRateHz);
+    }
+    const mediaType = stream.codec === "Theora" ? "video" : "audio";
+    return {
+      mediaType,
+      codec: stream.codec,
+      durationSeconds,
+      bitrateBps: stream.bitrateBps,
+      sampleRateHz: mediaType === "audio" ? stream.sampleRateHz : null,
+      channels: mediaType === "audio" ? stream.channels : null,
+      channelLayout:
+        mediaType === "audio" ? channelLayout(stream.channels) : null,
+      bitsPerSample: null,
+      width: mediaType === "video" ? stream.width : null,
+      height: mediaType === "video" ? stream.height : null,
+      frameRate: mediaType === "video" ? stream.frameRate : null,
+    } satisfies SourceStreamInspection;
+  });
+  const primary = streams.find((stream) => stream.mediaType === "video")!;
+  const durationSeconds = Math.max(
+    0,
+    ...streams.map((stream) => stream.durationSeconds ?? 0),
+  ) || null;
+  return {
+    mediaType: "video",
+    container: "Ogg",
+    codec: primary.codec,
+    durationSeconds,
+    bitrateBps:
+      primary.bitrateBps ??
+      (durationSeconds ? finitePositive(Math.round((file.size * 8) / durationSeconds)) : null),
+    sampleRateHz: null,
+    channels: null,
+    channelLayout: null,
+    bitsPerSample: null,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams,
+    metadataSignals: ["Theora identification", "Vorbis identification"],
+    notes: [
+      "Ogg video facts come from bounded BOS identification packets and final per-stream granules.",
+    ],
+    inspectedBytes: head.byteLength + tail.byteLength,
+    maximumInspectionBytes: MAX_OGV_INSPECTION_BYTES,
+  };
+}
+
 function guidHex(view: DataView, offset = 0): string {
   if (offset + 16 > view.byteLength) return "";
   let value = "";
@@ -2650,6 +2836,7 @@ export async function inspectMediaSource(
   if (formatId === "flv") return inspectFlv(file);
   if (formatId === "mpeg-ts") return inspectMpegTs(file);
   if (formatId === "avi") return inspectAvi(file);
+  if (formatId === "ogv") return inspectOggVideo(file);
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }

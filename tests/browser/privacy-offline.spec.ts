@@ -161,6 +161,12 @@ const aviFixturePath = path.join(
   "media",
   "legacy-video-source.avi",
 );
+const ogvFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "theora-video-source.ogv",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -461,6 +467,18 @@ test("source inspection displays genuine audio and multi-stream video families f
   await expect(sourceInspection).toContainText("RIFF INFO metadata");
   await expect(sourceInspection).toContainText("394 bytes (max 262,144)");
   await expect(status).toContainText("movi payload is skipped");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(ogvFixturePath);
+  await expect(sourceInspection).toContainText("Ogg");
+  await expect(sourceInspection).toContainText("Theora");
+  await expect(sourceInspection).toContainText("640×360");
+  await expect(sourceInspection).toContainText("24.00 fps");
+  await expect(sourceInspection).toContainText("Vorbis");
+  await expect(sourceInspection).toContainText("96 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("133,120 bytes (max 133,120)");
+  await expect(status).toContainText("final per-stream granules");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {

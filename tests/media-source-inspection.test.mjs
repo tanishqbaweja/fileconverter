@@ -9,6 +9,7 @@ import {
   MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MATROSKA_INSPECTION_BYTES,
   MAX_MPEG_TS_INSPECTION_BYTES,
+  MAX_OGV_INSPECTION_BYTES,
   MAX_MP3_INSPECTION_BYTES,
 } from "../lib/media-source-inspection.ts";
 
@@ -471,6 +472,36 @@ test("directed AVI inspection skips movi while reporting both streams", async ()
   assert.ok(source.reads.some(([start]) => start > 1_000_000));
 });
 
+test("bounded Ogg video inspection reports Theora and Vorbis logical streams", async () => {
+  const source = await trackedNamedFixture("theora-video-source.ogv");
+  const result = await inspectMediaSource(source, "ogv");
+  assert.ok(result);
+  assert.equal(result.container, "Ogg");
+  assert.equal(result.codec, "Theora");
+  assert.equal(result.durationSeconds, 4);
+  assert.equal(result.bitrateBps, 1_427_744);
+  assert.equal(result.width, 640);
+  assert.equal(result.height, 360);
+  assert.equal(result.frameRate, 24);
+  assert.deepEqual(result.streams.map((stream) => stream.codec), [
+    "Theora",
+    "Vorbis",
+  ]);
+  assert.equal(result.streams[1].durationSeconds, 4);
+  assert.equal(result.streams[1].bitrateBps, 96_000);
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.deepEqual(result.metadataSignals, [
+    "Theora identification",
+    "Vorbis identification",
+  ]);
+  assert.equal(result.inspectedBytes, MAX_OGV_INSPECTION_BYTES);
+  assert.deepEqual(source.reads, [
+    [0, 65_536],
+    [646_288, 713_872],
+  ]);
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
@@ -484,6 +515,10 @@ test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async
     /valid MPEG transport stream/,
   );
   await assert.rejects(inspectMediaSource(payload, "avi"), /valid RIFF\/AVI header/);
+  await assert.rejects(
+    inspectMediaSource(payload, "ogv"),
+    /Theora identification header|too small to be Ogg video/,
+  );
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {
