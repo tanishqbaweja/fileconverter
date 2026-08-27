@@ -136,6 +136,13 @@ const threeGpFixturePath = path.join(
   "media",
   "mobile-video-source.3gp",
 );
+const protectedMkvPath = path.join(projectRoot, "test.mkv");
+const webmFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "webm-source.webm",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -238,7 +245,7 @@ test("conversion transmits no filename or file content", async () => {
   }
 });
 
-test("source inspection displays genuine audio and ISO video families from bounded local reads", async () => {
+test("source inspection displays genuine audio and multi-stream video families from bounded local reads", async () => {
   await page.goto("/?test=1");
   await waitForWorker();
   await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
@@ -378,6 +385,28 @@ test("source inspection displays genuine audio and ISO video families from bound
   await expect(sourceInspection).toContainText("640×360");
   await expect(sourceInspection).toContainText("AAC");
   await expect(sourceInspection).toContainText("1,728 bytes (max 65,536)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(webmFixturePath);
+  await expect(sourceInspection).toContainText("WebM");
+  await expect(sourceInspection).toContainText("VP9");
+  await expect(sourceInspection).toContainText("320×180");
+  await expect(sourceInspection).toContainText("Opus");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("65,536 bytes (max 65,536)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(protectedMkvPath);
+  await expect(sourceInspection).toContainText("Matroska");
+  await expect(sourceInspection).toContainText("HEVC/H.265");
+  await expect(sourceInspection).toContainText("1920×804");
+  await expect(sourceInspection).toContainText("24.00 fps");
+  await expect(sourceInspection).toContainText("Stream 1 (Video)");
+  await expect(sourceInspection).toContainText("Stream 2 (Audio)");
+  await expect(sourceInspection).toContainText("Stream 3 (Subtitle)");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("6 channels");
+  await expect(sourceInspection).toContainText("SubRip subtitle");
+  await expect(sourceInspection).toContainText("65,536 bytes (max 65,536)");
+  await expect(status).toContainText("average whole-file rate");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {

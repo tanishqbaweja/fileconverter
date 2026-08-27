@@ -9,10 +9,11 @@ export const MAX_OGG_INSPECTION_BYTES =
 const MAX_AMR_FRAME_WINDOW_BYTES = 8 * 1024;
 export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
 export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
+export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface SourceStreamInspection {
-  mediaType: "audio" | "video";
+  mediaType: "audio" | "video" | "subtitle";
   codec: string;
   durationSeconds: number | null;
   bitrateBps: number | null;
@@ -1387,7 +1388,7 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
         ? "QuickTime / MOV"
         : "MPEG-4 / ISO-BMFF";
   return {
-    mediaType: primary.mediaType,
+    mediaType: primary.mediaType as "audio" | "video",
     container,
     codec: primary.codec,
     durationSeconds: primary.durationSeconds,
@@ -1414,6 +1415,264 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
     ],
     inspectedBytes,
     maximumInspectionBytes: MAX_ISO_BMFF_INSPECTION_BYTES,
+  };
+}
+
+interface EbmlVint {
+  length: number;
+  value: number | null;
+}
+
+interface MatroskaTrack {
+  type: number | null;
+  codecId: string | null;
+  defaultDurationNs: number | null;
+  sampleRateHz: number | null;
+  outputSampleRateHz: number | null;
+  channels: number | null;
+  bitsPerSample: number | null;
+  width: number | null;
+  height: number | null;
+}
+
+function ebmlVint(
+  bytes: Uint8Array,
+  offset: number,
+  stripMarker: boolean,
+): EbmlVint | null {
+  if (offset >= bytes.byteLength || bytes[offset] === 0) return null;
+  let marker = 0x80;
+  let length = 1;
+  while (length <= 8 && (bytes[offset] & marker) === 0) {
+    marker >>>= 1;
+    length += 1;
+  }
+  if (length > 8 || offset + length > bytes.byteLength) return null;
+  let value = stripMarker ? bytes[offset] & (marker - 1) : bytes[offset];
+  let unknown = stripMarker && value === marker - 1;
+  for (let index = 1; index < length; index += 1) {
+    value = value * 256 + bytes[offset + index];
+    unknown = unknown && bytes[offset + index] === 0xff;
+    if (!Number.isSafeInteger(value)) return { length, value: null };
+  }
+  return { length, value: unknown ? null : value };
+}
+
+function matroskaCodec(codecId: string): string {
+  return (
+    {
+      "V_MPEG4/ISO/AVC": "H.264/AVC",
+      "V_MPEGH/ISO/HEVC": "HEVC/H.265",
+      V_VP8: "VP8",
+      V_VP9: "VP9",
+      V_AV1: "AV1",
+      "V_MPEG4/ISO/ASP": "MPEG-4 Part 2",
+      V_MPEG2: "MPEG-2 Video",
+      A_AAC: "AAC",
+      A_OPUS: "Opus",
+      A_VORBIS: "Vorbis",
+      "A_MPEG/L3": "MP3",
+      A_FLAC: "FLAC",
+      "A_PCM/INT/LIT": "PCM (little-endian)",
+      "A_PCM/INT/BIG": "PCM (big-endian)",
+      "S_TEXT/UTF8": "SubRip subtitle",
+      S_TEXT: "Text subtitle",
+      S_ASS: "ASS subtitle",
+      S_SSA: "SSA subtitle",
+      "S_TEXT/WEBVTT": "WebVTT subtitle",
+    } as Record<string, string>
+  )[codecId] ?? codecId;
+}
+
+async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
+  const inspectedBytes = Math.min(file.size, MAX_MATROSKA_INSPECTION_BYTES);
+  if (inspectedBytes < 8) {
+    throw new Error("The selected file does not contain a valid EBML header.");
+  }
+  const bytes = new Uint8Array(await file.slice(0, inspectedBytes).arrayBuffer());
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  let elementCount = 0;
+  let docType: string | null = null;
+  let timecodeScaleNs = 1_000_000;
+  let durationUnits: number | null = null;
+  const metadataSignals = new Set<string>();
+  const tracks: MatroskaTrack[] = [];
+
+  const integer = (start: number, length: number): number | null => {
+    if (length < 1 || length > 8 || start + length > bytes.byteLength) return null;
+    let value = 0;
+    for (let index = 0; index < length; index += 1) {
+      value = value * 256 + bytes[start + index];
+      if (!Number.isSafeInteger(value)) return null;
+    }
+    return value;
+  };
+  const float = (start: number, length: number): number | null => {
+    if (start + length > bytes.byteLength) return null;
+    if (length === 4) return finitePositive(view.getFloat32(start, false));
+    if (length === 8) return finitePositive(view.getFloat64(start, false));
+    return null;
+  };
+  const textValue = (start: number, length: number): string => {
+    if (start + length > bytes.byteLength || length > 256) return "";
+    let value = "";
+    for (let index = 0; index < length; index += 1) {
+      value += String.fromCharCode(bytes[start + index]);
+    }
+    return value.replace(/\0+$/u, "");
+  };
+
+  const parseChildren = (
+    start: number,
+    end: number,
+    depth: number,
+    track: MatroskaTrack | null,
+  ): void => {
+    if (depth > 7) throw new Error("The EBML nesting ceiling was exceeded.");
+    for (let offset = start; offset < end; ) {
+      elementCount += 1;
+      if (elementCount > 1_024) {
+        throw new Error("The EBML element-count ceiling was exceeded.");
+      }
+      const id = ebmlVint(bytes, offset, false);
+      if (!id || id.length > 4 || id.value === null) break;
+      const size = ebmlVint(bytes, offset + id.length, true);
+      if (!size) break;
+      const dataStart = offset + id.length + size.length;
+      if (dataStart > end) break;
+      const declaredEnd = size.value === null ? end : dataStart + size.value;
+      const dataEnd = Math.min(declaredEnd, end);
+      const complete = declaredEnd <= end;
+      const elementId = id.value;
+
+      if (elementId === 0x1f43b675) break;
+      if (elementId === 0xae) {
+        const nextTrack: MatroskaTrack = {
+          type: null,
+          codecId: null,
+          defaultDurationNs: null,
+          sampleRateHz: null,
+          outputSampleRateHz: null,
+          channels: null,
+          bitsPerSample: null,
+          width: null,
+          height: null,
+        };
+        parseChildren(dataStart, dataEnd, depth + 1, nextTrack);
+        tracks.push(nextTrack);
+      } else if (
+        [0x1a45dfa3, 0x18538067, 0x1549a966, 0x1654ae6b, 0xe0, 0xe1].includes(
+          elementId,
+        )
+      ) {
+        parseChildren(dataStart, dataEnd, depth + 1, track);
+      } else if (complete) {
+        const length = declaredEnd - dataStart;
+        if (elementId === 0x4282) docType = textValue(dataStart, length);
+        else if (elementId === 0x2ad7b1) {
+          timecodeScaleNs = integer(dataStart, length) ?? timecodeScaleNs;
+        } else if (elementId === 0x4489) durationUnits = float(dataStart, length);
+        else if (elementId === 0x7ba9) metadataSignals.add("Title");
+        else if (elementId === 0x1254c367) metadataSignals.add("Tags");
+        else if (elementId === 0x1043a770) metadataSignals.add("Chapters");
+        else if (elementId === 0x1941a469) metadataSignals.add("Attachments");
+        else if (track) {
+          if (elementId === 0x83) track.type = integer(dataStart, length);
+          else if (elementId === 0x86) track.codecId = textValue(dataStart, length);
+          else if (elementId === 0x23e383) {
+            track.defaultDurationNs = integer(dataStart, length);
+          } else if (elementId === 0xb0) track.width = integer(dataStart, length);
+          else if (elementId === 0xba) track.height = integer(dataStart, length);
+          else if (elementId === 0xb5) track.sampleRateHz = float(dataStart, length);
+          else if (elementId === 0x78b5) {
+            track.outputSampleRateHz = float(dataStart, length);
+          }
+          else if (elementId === 0x9f) track.channels = integer(dataStart, length);
+          else if (elementId === 0x6264) {
+            track.bitsPerSample = integer(dataStart, length);
+          }
+        }
+      }
+      if (!complete || declaredEnd <= offset) break;
+      offset = declaredEnd;
+    }
+  };
+
+  const rootId = ebmlVint(bytes, 0, false);
+  if (rootId?.value !== 0x1a45dfa3) {
+    throw new Error("The selected file does not contain a valid EBML header.");
+  }
+  parseChildren(0, bytes.byteLength, 0, null);
+  const resolvedDocType = docType as string | null;
+  if (
+    !resolvedDocType ||
+    !["matroska", "webm"].includes(resolvedDocType.toLowerCase())
+  ) {
+    throw new Error("The EBML document type is not Matroska or WebM.");
+  }
+  const durationSeconds = durationUnits
+    ? finitePositive((durationUnits * timecodeScaleNs) / 1_000_000_000)
+    : null;
+  const streams: SourceStreamInspection[] = tracks.flatMap((track) => {
+    if (!track.codecId || ![1, 2, 17].includes(track.type ?? 0)) return [];
+    const mediaType = track.type === 1
+      ? "video"
+      : track.type === 2
+        ? "audio"
+        : "subtitle";
+    const resolvedChannels = mediaType === "audio" ? track.channels : null;
+    return [{
+      mediaType,
+      codec: matroskaCodec(track.codecId),
+      durationSeconds,
+      bitrateBps: null,
+      sampleRateHz:
+        mediaType === "audio"
+          ? track.outputSampleRateHz ?? track.sampleRateHz
+          : null,
+      channels: resolvedChannels,
+      channelLayout: mediaType === "audio" ? channelLayout(resolvedChannels) : null,
+      bitsPerSample:
+        mediaType === "audio" && /(?:PCM|FLAC)/u.test(track.codecId)
+          ? track.bitsPerSample
+          : null,
+      width: mediaType === "video" ? track.width : null,
+      height: mediaType === "video" ? track.height : null,
+      frameRate:
+        mediaType === "video" && track.defaultDurationNs
+          ? finitePositive(1_000_000_000 / track.defaultDurationNs)
+          : null,
+    } satisfies SourceStreamInspection];
+  });
+  const primary =
+    streams.find((stream) => stream.mediaType === "video") ??
+    streams.find((stream) => stream.mediaType === "audio");
+  if (!primary) {
+    throw new Error("The bounded Matroska scan did not find a complete media track.");
+  }
+  return {
+    mediaType: primary.mediaType as "audio" | "video",
+    container:
+      resolvedDocType.toLowerCase() === "webm" ? "WebM" : "Matroska",
+    codec: primary.codec,
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      : null,
+    sampleRateHz: primary.sampleRateHz,
+    channels: primary.channels,
+    channelLayout: primary.channelLayout,
+    bitsPerSample: primary.bitsPerSample,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams,
+    metadataSignals: [...metadataSignals],
+    notes: [
+      "Primary bitrate is the average whole-file rate; bounded Matroska track headers do not declare per-track encoded byte totals.",
+    ],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_MATROSKA_INSPECTION_BYTES,
   };
 }
 
@@ -1547,6 +1806,7 @@ export async function inspectMediaSource(
   if (["m4a", "amr-wb", "mp4", "mov", "3gp"].includes(formatId)) {
     return inspectIsoBmff(file);
   }
+  if (formatId === "mkv" || formatId === "webm") return inspectMatroska(file);
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }

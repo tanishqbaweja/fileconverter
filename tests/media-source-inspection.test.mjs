@@ -1,10 +1,11 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { open, readFile } from "node:fs/promises";
 import test from "node:test";
 
 import {
   inspectMediaSource,
   MAX_ISO_BMFF_INSPECTION_BYTES,
+  MAX_MATROSKA_INSPECTION_BYTES,
   MAX_MP3_INSPECTION_BYTES,
 } from "../lib/media-source-inspection.ts";
 
@@ -300,12 +301,114 @@ test("bounded ISO-BMFF inspection reports genuine MOV and 3GP video plus audio t
   assert.equal(mp4Route?.codec, "H.264/AVC");
 });
 
+test("bounded Matroska inspection reports complex tracks and metadata", async () => {
+  const source = await trackedNamedFixture("complex-remux-source.mkv");
+  const result = await inspectMediaSource(source, "mkv");
+  assert.ok(result);
+  assert.equal(result.mediaType, "video");
+  assert.equal(result.container, "Matroska");
+  assert.equal(result.codec, "H.264/AVC");
+  assert.equal(result.durationSeconds, 4.021);
+  assert.equal(result.bitrateBps, 1_553_749);
+  assert.equal(result.width, 640);
+  assert.equal(result.height, 360);
+  assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
+  assert.deepEqual(result.streams.map((stream) => stream.mediaType), [
+    "video",
+    "audio",
+    "audio",
+    "subtitle",
+  ]);
+  assert.equal(result.streams[1].codec, "AAC");
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.equal(result.streams[3].codec, "SubRip subtitle");
+  assert.deepEqual(result.metadataSignals, [
+    "Title",
+    "Chapters",
+    "Attachments",
+    "Tags",
+  ]);
+  assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
+  assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+});
+
+test("bounded WebM inspection reports genuine VP9 and Opus tracks", async () => {
+  const source = await trackedNamedFixture("webm-source.webm");
+  const result = await inspectMediaSource(source, "webm");
+  assert.ok(result);
+  assert.equal(result.container, "WebM");
+  assert.equal(result.codec, "VP9");
+  assert.equal(result.durationSeconds, 2.008);
+  assert.equal(result.bitrateBps, 379_084);
+  assert.equal(result.width, 320);
+  assert.equal(result.height, 180);
+  assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
+  assert.deepEqual(result.streams.map((stream) => stream.codec), ["VP9", "Opus"]);
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
+  assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+});
+
+test("protected multi-gigabyte Matroska inspection reads only 64 KiB", async () => {
+  const handle = await open(new URL("../test.mkv", import.meta.url), "r");
+  const stat = await handle.stat();
+  const reads = [];
+  const source = {
+    size: stat.size,
+    slice(start = 0, end = stat.size) {
+      const boundedEnd = Math.min(end, stat.size);
+      reads.push([start, boundedEnd]);
+      return {
+        async arrayBuffer() {
+          const buffer = Buffer.alloc(boundedEnd - start);
+          const { bytesRead } = await handle.read(
+            buffer,
+            0,
+            buffer.byteLength,
+            start,
+          );
+          assert.equal(bytesRead, buffer.byteLength);
+          return buffer.buffer.slice(
+            buffer.byteOffset,
+            buffer.byteOffset + buffer.byteLength,
+          );
+        },
+      };
+    },
+  };
+  try {
+    const result = await inspectMediaSource(source, "mkv");
+    assert.ok(result);
+    assert.equal(result.container, "Matroska");
+    assert.equal(result.codec, "HEVC/H.265");
+    assert.equal(result.durationSeconds, 12_340.096);
+    assert.equal(result.width, 1_920);
+    assert.equal(result.height, 804);
+    assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
+    assert.deepEqual(result.streams.map((stream) => stream.mediaType), [
+      "video",
+      "audio",
+      "subtitle",
+    ]);
+    assert.equal(result.streams[1].codec, "AAC");
+    assert.equal(result.streams[1].sampleRateHz, 48_000);
+    assert.equal(result.streams[1].channels, 6);
+    assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
+    assert.deepEqual(reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+  } finally {
+    await handle.close();
+  }
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
   await assert.rejects(inspectMediaSource(payload, "amr"), /valid AMR signature/);
   await assert.rejects(inspectMediaSource(payload, "m4a"), /no ISO-BMFF ftyp box/);
   await assert.rejects(inspectMediaSource(payload, "mp4"), /no ISO-BMFF ftyp box/);
+  await assert.rejects(inspectMediaSource(payload, "mkv"), /valid EBML header/);
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {

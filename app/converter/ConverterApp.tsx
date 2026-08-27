@@ -1255,7 +1255,11 @@ export function ConverterApp() {
                           <div key={`${stream.mediaType}-${index}`}>
                             <dt>
                               Stream {index + 1} ({
-                                stream.mediaType === "video" ? "Video" : "Audio"
+                                stream.mediaType === "video"
+                                  ? "Video"
+                                  : stream.mediaType === "audio"
+                                    ? "Audio"
+                                    : "Subtitle"
                               })
                             </dt>
                             <dd>{describeSourceStream(stream)}</dd>

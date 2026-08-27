@@ -47,7 +47,7 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
-| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded pre-conversion details for every named standalone audio family plus multi-stream MP4/MOV/3GP inputs, including primary video, every audio/video track, resolution, average frame rate, per-track bitrate, duration, sample rate, and channel layout | Extend the bounded inspection contract to non-ISO video containers, then build a broader automatic planner across missing combinations. |
+| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded pre-conversion details for every named standalone audio family plus multi-stream MP4/MOV/3GP and Matroska/WebM inputs, including primary video, audio/video/subtitle tracks, resolution, average frame rate, duration, sample rate, channel layout, and bitrate semantics available from each container | Extend the bounded inspection contract to MPEG-TS, AVI, FLV, and Ogg video, then build a broader automatic planner across missing combinations. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and many route-specific validators/warnings cover preservation or explicit exclusions | Audit every public media profile field-by-field; expand preservation where the destination supports it instead of relying on first-stream policies. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | No production option model or controls were found; public re-encode profiles use fixed certified settings | Design bounded option schemas, planner support, UI controls, encoder validation, and separate evidence per memory-relevant profile. |
@@ -73,7 +73,7 @@ not the entire product specification.
 
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel has tested details for all named standalone audio families and MP4/MOV/3GP multi-stream inputs and discloses exact bounded read ceilings/estimates | Extend stream details to non-ISO video containers, add the missing relevant conversion controls, and perform broader headed usability review. |
+| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel has tested details for all named standalone audio families plus MP4/MOV/3GP and Matroska/WebM multi-stream inputs and discloses exact bounded read ceilings/estimates | Extend stream details to MPEG-TS, AVI, FLV, and Ogg video, add the missing relevant conversion controls, and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
@@ -111,8 +111,8 @@ not the entire product specification.
 
 1. Make reproducibility coverage manifest-driven and extend CI to every published
    engine without creating a single timeout-prone build job.
-2. Extend the bounded ISO multi-stream source inspector to non-ISO video
-   containers, and add a bounded option model beginning with audio
+2. Extend the bounded multi-stream source inspector to MPEG-TS, AVI, FLV, and
+   Ogg video containers, and add a bounded option model beginning with audio
    bitrate/sample-rate/channel-layout and video resolution/bitrate/frame-rate/
    quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
@@ -142,6 +142,30 @@ not the entire product specification.
   separately authorized build environment first.
 
 ## Implementation and verification log
+
+### 2026-08-27 — bounded Matroska/WebM multi-stream source inspection
+
+- Added a defensive EBML variable-integer walker with 64 KiB cumulative/input
+  ceiling, seven-level nesting limit, 1,024-element limit, signature/document-
+  type checks, and an explicit stop at the first Cluster. It reports Matroska or
+  WebM, duration/timecode scale, video dimensions/default frame duration,
+  effective audio output sample rate, channels, lossless bit depth, subtitles,
+  and title/chapter/attachment/tag signals present in the bounded header prefix.
+- Whole-file bitrate is explicitly labeled as a container average because EBML
+  track headers do not declare per-track encoded byte totals. HE-AAC uses its
+  declared output sampling frequency (48 kHz for the protected source), not its
+  24 kHz coded core frequency.
+- The genuine complex Matroska fixture exposes H.264, two AAC tracks, SubRip,
+  title, chapters, attachment presence, and tags. A new deterministic 95,150-byte
+  VP9/Opus WebM fixture is retained with a native-FFmpeg generator, ffprobe
+  manifest, and SHA-256; Docker is not involved.
+- Direct inspection of the protected 2,958,573,265-byte `test.mkv` performs one
+  65,536-byte read and reports HEVC, 1920×804, approximately 24 fps, AAC 48 kHz
+  six-channel audio, SubRip, and 12,340.096-second duration without loading,
+  hashing, converting, or copying the whole file.
+- Nineteen focused parser tests and the combined production Chrome source-panel
+  test pass. Browser teardown deletes its repository-local profile and creates
+  no converted output.
 
 ### 2026-08-27 — bounded MP4/MOV/3GP multi-stream source inspection
 
