@@ -1,5 +1,8 @@
 export const MAX_WAV_INSPECTION_BYTES = 256 * 1024;
 export const MAX_MP3_INSPECTION_BYTES = 10 + 4_096 + 128;
+export const MAX_FLAC_INSPECTION_BYTES = 256 * 1024;
+export const MAX_AIFF_INSPECTION_BYTES = 256 * 1024;
+export const MAX_AAC_INSPECTION_BYTES = 10 + 32 * 7;
 
 export interface AudioSourceInspection {
   mediaType: "audio";
@@ -373,11 +376,344 @@ async function inspectMp3(file: Blob): Promise<AudioSourceInspection> {
   };
 }
 
+async function inspectFlac(file: Blob): Promise<AudioSourceInspection> {
+  let inspectedBytes = 0;
+  const read = async (offset: number, length: number): Promise<DataView> => {
+    if (
+      offset < 0 ||
+      length < 0 ||
+      offset + length > file.size ||
+      offset + length > MAX_FLAC_INSPECTION_BYTES
+    ) {
+      throw new Error("The FLAC metadata exceeds the bounded inspection ceiling.");
+    }
+    const bytes = new Uint8Array(
+      await file.slice(offset, offset + length).arrayBuffer(),
+    );
+    inspectedBytes += bytes.byteLength;
+    return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  };
+  if (file.size < 42) throw new Error("The selected file is too small to be FLAC.");
+  const signature = await read(0, 4);
+  if (ascii(signature, 0, 4) !== "fLaC") {
+    throw new Error("The selected file does not contain a valid FLAC signature.");
+  }
+
+  let offset = 4;
+  let sampleRateHz: number | null = null;
+  let channels: number | null = null;
+  let bitsPerSample: number | null = null;
+  let totalSamples: number | null = null;
+  const metadataSignals: string[] = [];
+  const notes: string[] = [];
+  for (let blockIndex = 0; blockIndex < 64; blockIndex += 1) {
+    if (offset + 4 > file.size || offset + 4 > MAX_FLAC_INSPECTION_BYTES) {
+      notes.push("The FLAC metadata table exceeded the bounded inspection ceiling.");
+      break;
+    }
+    const header = await read(offset, 4);
+    const last = (header.getUint8(0) & 0x80) !== 0;
+    const type = header.getUint8(0) & 0x7f;
+    const length =
+      (header.getUint8(1) << 16) |
+      (header.getUint8(2) << 8) |
+      header.getUint8(3);
+    const dataOffset = offset + 4;
+    if (blockIndex === 0 && (type !== 0 || length !== 34)) {
+      throw new Error("The first FLAC metadata block is not STREAMINFO.");
+    }
+    if (dataOffset + length > file.size) {
+      throw new Error("A FLAC metadata block extends beyond the selected file.");
+    }
+    if (type === 0) {
+      const streamInfo = await read(dataOffset, 34);
+      sampleRateHz =
+        (streamInfo.getUint8(10) << 12) |
+        (streamInfo.getUint8(11) << 4) |
+        (streamInfo.getUint8(12) >>> 4);
+      channels = ((streamInfo.getUint8(12) & 0x0e) >>> 1) + 1;
+      bitsPerSample =
+        (((streamInfo.getUint8(12) & 1) << 4) |
+          (streamInfo.getUint8(13) >>> 4)) +
+        1;
+      totalSamples =
+        (streamInfo.getUint8(13) & 0x0f) * 0x1_0000_0000 +
+        streamInfo.getUint32(14, false);
+    } else {
+      const signal = (
+        {
+          2: "Application metadata",
+          3: "Seek table",
+          4: "Vorbis comments",
+          5: "Cue sheet",
+          6: "Embedded picture",
+        } as Record<number, string>
+      )[type];
+      if (signal) metadataSignals.push(signal);
+    }
+    offset = dataOffset + length;
+    if (last) break;
+  }
+  if (!sampleRateHz || !channels || !bitsPerSample || !totalSamples) {
+    throw new Error("The FLAC STREAMINFO block is incomplete.");
+  }
+  const durationSeconds = finitePositive(totalSamples / sampleRateHz);
+  notes.push("Bitrate is the average file bitrate, including bounded FLAC metadata.");
+  return {
+    mediaType: "audio",
+    container: "Native FLAC",
+    codec: "FLAC",
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      : null,
+    sampleRateHz,
+    channels,
+    channelLayout: channelLayout(channels),
+    bitsPerSample,
+    metadataSignals,
+    notes,
+    inspectedBytes,
+    maximumInspectionBytes: MAX_FLAC_INSPECTION_BYTES,
+  };
+}
+
+function readExtended80(view: DataView, offset: number): number | null {
+  if (offset + 10 > view.byteLength) return null;
+  const sign = (view.getUint8(offset) & 0x80) !== 0 ? -1 : 1;
+  const exponent =
+    ((view.getUint8(offset) & 0x7f) << 8) | view.getUint8(offset + 1);
+  const mantissa = view.getBigUint64(offset + 2, false);
+  if (exponent === 0 && mantissa === BigInt(0)) return 0;
+  if (exponent === 0x7fff) return null;
+  return (
+    sign *
+    (Number(mantissa) / 2 ** 63) *
+    2 ** (exponent - 16_383)
+  );
+}
+
+function aiffCodec(container: string, compression: string | null): string {
+  if (container === "AIFF") return "PCM (big-endian)";
+  return (
+    {
+      NONE: "PCM (big-endian)",
+      sowt: "PCM (little-endian)",
+      fl32: "IEEE 32-bit float PCM",
+      fl64: "IEEE 64-bit float PCM",
+      alaw: "G.711 A-law",
+      ulaw: "G.711 μ-law",
+      ima4: "IMA ADPCM",
+    } as Record<string, string>
+  )[compression ?? ""] ?? `AIFC codec ${compression ?? "unknown"}`;
+}
+
+async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
+  let inspectedBytes = 0;
+  const read = async (offset: number, length: number): Promise<DataView> => {
+    if (
+      offset < 0 ||
+      length < 0 ||
+      offset + length > file.size ||
+      offset + length > MAX_AIFF_INSPECTION_BYTES
+    ) {
+      throw new Error("The AIFF chunk table exceeds the bounded inspection ceiling.");
+    }
+    const bytes = new Uint8Array(
+      await file.slice(offset, offset + length).arrayBuffer(),
+    );
+    inspectedBytes += bytes.byteLength;
+    return new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  };
+  if (file.size < 12) throw new Error("The selected file is too small to be AIFF.");
+  const form = await read(0, 12);
+  const container = ascii(form, 8, 4);
+  if (ascii(form, 0, 4) !== "FORM" || !["AIFF", "AIFC"].includes(container)) {
+    throw new Error("The selected file does not contain a valid AIFF/AIFC header.");
+  }
+
+  let channels: number | null = null;
+  let sampleFrames: number | null = null;
+  let bitsPerSample: number | null = null;
+  let sampleRateHz: number | null = null;
+  let compression: string | null = null;
+  const metadataSignals: string[] = [];
+  const notes: string[] = [];
+  let chunkCount = 0;
+  for (let offset = 12; offset + 8 <= file.size; ) {
+    if (offset + 8 > MAX_AIFF_INSPECTION_BYTES || chunkCount >= 256) {
+      notes.push("The AIFF chunk table exceeded the bounded inspection ceiling.");
+      break;
+    }
+    chunkCount += 1;
+    const header = await read(offset, 8);
+    const id = ascii(header, 0, 4);
+    const length = header.getUint32(4, false);
+    const dataOffset = offset + 8;
+    if (dataOffset + length > file.size) break;
+    if (id === "COMM" && length >= 18) {
+      const comm = await read(dataOffset, Math.min(length, 22));
+      channels = comm.getUint16(0, false);
+      sampleFrames = comm.getUint32(2, false);
+      bitsPerSample = comm.getUint16(6, false);
+      const decodedRate = readExtended80(comm, 8);
+      sampleRateHz = decodedRate ? Math.round(decodedRate) : null;
+      if (container === "AIFC" && comm.byteLength >= 22) {
+        compression = ascii(comm, 18, 4);
+      }
+    } else if (["NAME", "AUTH", "ANNO", "(c) ", "ID3 "].includes(id)) {
+      metadataSignals.push(
+        ({ NAME: "Name", AUTH: "Author", ANNO: "Annotation", "(c) ": "Copyright", "ID3 ": "ID3 tag" } as Record<string, string>)[id],
+      );
+    } else if (id === "SSND") {
+      break;
+    }
+    const next = dataOffset + length + (length & 1);
+    if (next <= offset || next > file.size) break;
+    offset = next;
+  }
+  if (!channels || !sampleFrames || !bitsPerSample || !sampleRateHz) {
+    throw new Error("The bounded AIFF scan did not find a complete COMM chunk.");
+  }
+  const durationSeconds = finitePositive(sampleFrames / sampleRateHz);
+  return {
+    mediaType: "audio",
+    container,
+    codec: aiffCodec(container, compression),
+    durationSeconds,
+    bitrateBps: finitePositive(sampleRateHz * channels * bitsPerSample),
+    sampleRateHz,
+    channels,
+    channelLayout: channelLayout(channels),
+    bitsPerSample,
+    metadataSignals,
+    notes,
+    inspectedBytes,
+    maximumInspectionBytes: MAX_AIFF_INSPECTION_BYTES,
+  };
+}
+
+const AAC_SAMPLE_RATES = [
+  96_000, 88_200, 64_000, 48_000, 44_100, 32_000, 24_000, 22_050,
+  16_000, 12_000, 11_025, 8_000, 7_350,
+] as const;
+
+interface AdtsHeader {
+  codec: string;
+  sampleRateHz: number;
+  channels: number | null;
+  frameLength: number;
+  samples: number;
+}
+
+function parseAdtsHeader(view: DataView): AdtsHeader | null {
+  if (
+    view.byteLength < 7 ||
+    view.getUint8(0) !== 0xff ||
+    (view.getUint8(1) & 0xf6) !== 0xf0
+  ) {
+    return null;
+  }
+  const profile = ((view.getUint8(2) >>> 6) & 0x3) + 1;
+  const sampleRateIndex = (view.getUint8(2) >>> 2) & 0x0f;
+  const sampleRateHz = AAC_SAMPLE_RATES[sampleRateIndex];
+  if (!sampleRateHz) return null;
+  const channelConfig =
+    ((view.getUint8(2) & 1) << 2) | (view.getUint8(3) >>> 6);
+  const frameLength =
+    ((view.getUint8(3) & 3) << 11) |
+    (view.getUint8(4) << 3) |
+    (view.getUint8(5) >>> 5);
+  const headerLength = (view.getUint8(1) & 1) !== 0 ? 7 : 9;
+  if (frameLength < headerLength) return null;
+  return {
+    codec: `AAC ${(["Main", "LC", "SSR", "LTP"] as const)[profile - 1]}`,
+    sampleRateHz,
+    channels: channelConfig || null,
+    frameLength,
+    samples: 1_024 * ((view.getUint8(6) & 3) + 1),
+  };
+}
+
+async function inspectAac(file: Blob): Promise<AudioSourceInspection> {
+  const firstBytes = new Uint8Array(await file.slice(0, 10).arrayBuffer());
+  let inspectedBytes = firstBytes.byteLength;
+  let audioOffset = 0;
+  const metadataSignals: string[] = [];
+  if (
+    firstBytes.byteLength === 10 &&
+    String.fromCharCode(...firstBytes.slice(0, 3)) === "ID3"
+  ) {
+    const tagBytes = synchsafeSize(firstBytes);
+    if (tagBytes === null) throw new Error("The AAC ID3v2 size is malformed.");
+    audioOffset = 10 + tagBytes + ((firstBytes[5] & 0x10) !== 0 ? 10 : 0);
+    metadataSignals.push(`ID3v2.${firstBytes[3]} tag`);
+  }
+
+  let offset = audioOffset;
+  let firstHeader: AdtsHeader | null = null;
+  let frameBytes = 0;
+  let frameSamples = 0;
+  let frames = 0;
+  for (; frames < 32 && offset + 7 <= file.size; frames += 1) {
+    const bytes = new Uint8Array(await file.slice(offset, offset + 7).arrayBuffer());
+    inspectedBytes += bytes.byteLength;
+    const header = parseAdtsHeader(
+      new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength),
+    );
+    if (!header) {
+      if (frames < 2) throw new Error("The AAC frame sequence is not valid ADTS.");
+      break;
+    }
+    if (
+      firstHeader &&
+      (header.sampleRateHz !== firstHeader.sampleRateHz ||
+        header.channels !== firstHeader.channels ||
+        header.codec !== firstHeader.codec)
+    ) {
+      throw new Error("The AAC ADTS frame configuration changes inside the bounded scan.");
+    }
+    firstHeader ??= header;
+    frameBytes += header.frameLength;
+    frameSamples += header.samples;
+    offset += header.frameLength;
+  }
+  if (!firstHeader || frames < 2 || frameBytes <= 0 || frameSamples <= 0) {
+    throw new Error("The bounded AAC scan did not find two consistent ADTS frames.");
+  }
+  const averageFrameBytes = frameBytes / frames;
+  const averageFrameSamples = frameSamples / frames;
+  const estimatedFrames = (file.size - audioOffset) / averageFrameBytes;
+  const durationSeconds = finitePositive(
+    (estimatedFrames * averageFrameSamples) / firstHeader.sampleRateHz,
+  );
+  return {
+    mediaType: "audio",
+    container: "ADTS",
+    codec: firstHeader.codec,
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round(((file.size - audioOffset) * 8) / durationSeconds))
+      : null,
+    sampleRateHz: firstHeader.sampleRateHz,
+    channels: firstHeader.channels,
+    channelLayout: channelLayout(firstHeader.channels),
+    bitsPerSample: null,
+    metadataSignals,
+    notes: ["Duration and bitrate are estimated from up to 32 bounded ADTS frame headers."],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_AAC_INSPECTION_BYTES,
+  };
+}
+
 export async function inspectMediaSource(
   file: Blob,
   formatId: string,
 ): Promise<AudioSourceInspection | null> {
   if (formatId === "wav") return inspectWav(file);
   if (formatId === "mp3") return inspectMp3(file);
+  if (formatId === "flac") return inspectFlac(file);
+  if (formatId === "aiff") return inspectAiff(file);
+  if (formatId === "aac") return inspectAac(file);
   return null;
 }

@@ -89,6 +89,24 @@ const mp3FixturePath = path.join(
   "media",
   "audio-source.mp3",
 );
+const flacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.flac",
+);
+const aiffFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.aiff",
+);
+const aacFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source.aac",
+);
 
 let context: BrowserContext;
 let page: Page;
@@ -191,7 +209,7 @@ test("conversion transmits no filename or file content", async () => {
   }
 });
 
-test("source inspection displays real WAV and MP3 facts from bounded local reads", async () => {
+test("source inspection displays five genuine audio formats from bounded local reads", async () => {
   await page.goto("/?test=1");
   await waitForWorker();
   await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
@@ -219,6 +237,35 @@ test("source inspection displays real WAV and MP3 facts from bounded local reads
   await expect(sourceInspection).toContainText("Info frame index");
   await expect(sourceInspection).toContainText("4,234 bytes (max 4,234)");
   await expect(status).not.toContainText("Duration is estimated");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(flacFixturePath);
+  await expect(sourceInspection).toContainText("Native FLAC");
+  await expect(sourceInspection).toContainText("129 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("16-bit");
+  await expect(sourceInspection).toContainText("Vorbis comments");
+  await expect(sourceInspection).toContainText("50 bytes (max 262,144)");
+  await expect(status).toContainText("average file bitrate");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(aiffFixturePath);
+  await expect(sourceInspection).toContainText("AIFF");
+  await expect(sourceInspection).toContainText("PCM (big-endian)");
+  await expect(sourceInspection).toContainText("768 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Mono");
+  await expect(sourceInspection).toContainText("16-bit");
+  await expect(sourceInspection).toContainText("Name");
+  await expect(sourceInspection).toContainText("54 bytes (max 262,144)");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(aacFixturePath);
+  await expect(sourceInspection).toContainText("ADTS");
+  await expect(sourceInspection).toContainText("AAC LC");
+  await expect(sourceInspection).toContainText("268 kb/s");
+  await expect(sourceInspection).toContainText("48,000 Hz");
+  await expect(sourceInspection).toContainText("Stereo");
+  await expect(sourceInspection).toContainText("234 bytes (max 234)");
+  await expect(status).toContainText("estimated from up to 32 bounded ADTS frame headers");
 });
 
 test("installed app shell loads offline without eagerly downloading engines", async () => {
