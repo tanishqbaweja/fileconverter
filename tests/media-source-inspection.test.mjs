@@ -4,6 +4,7 @@ import test from "node:test";
 
 import {
   inspectMediaSource,
+  MAX_FLV_INSPECTION_BYTES,
   MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MATROSKA_INSPECTION_BYTES,
   MAX_MP3_INSPECTION_BYTES,
@@ -402,6 +403,24 @@ test("protected multi-gigabyte Matroska inspection reads only 64 KiB", async () 
   }
 });
 
+test("bounded FLV inspection combines real codec tags and script metadata", async () => {
+  const source = await trackedNamedFixture("flash-video-source.flv");
+  const result = await inspectMediaSource(source, "flv");
+  assert.ok(result);
+  assert.equal(result.container, "FLV");
+  assert.equal(result.codec, "H.264/AVC");
+  assert.equal(result.durationSeconds, 4.031);
+  assert.equal(result.width, 640);
+  assert.equal(result.height, 360);
+  assert.equal(result.frameRate, 24);
+  assert.deepEqual(result.streams.map((stream) => stream.codec), ["H.264/AVC", "AAC"]);
+  assert.equal(result.streams[1].sampleRateHz, 48_000);
+  assert.equal(result.streams[1].channelLayout, "Mono");
+  assert.deepEqual(result.metadataSignals, ["Script metadata"]);
+  assert.equal(result.inspectedBytes, MAX_FLV_INSPECTION_BYTES);
+  assert.deepEqual(source.reads, [[0, MAX_FLV_INSPECTION_BYTES]]);
+});
+
 test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async () => {
   const payload = new Blob([new Uint8Array(1_024)]);
   await assert.rejects(inspectMediaSource(payload, "ogg"), /valid Ogg page header/);
@@ -409,6 +428,7 @@ test("renamed payloads are rejected by Ogg, AMR, and ISO-BMFF inspection", async
   await assert.rejects(inspectMediaSource(payload, "m4a"), /no ISO-BMFF ftyp box/);
   await assert.rejects(inspectMediaSource(payload, "mp4"), /no ISO-BMFF ftyp box/);
   await assert.rejects(inspectMediaSource(payload, "mkv"), /valid EBML header/);
+  await assert.rejects(inspectMediaSource(payload, "flv"), /valid FLV header/);
 });
 
 test("bounded ASF inspection reports WMA stream rather than container bitrate", async () => {

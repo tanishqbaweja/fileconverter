@@ -10,6 +10,7 @@ const MAX_AMR_FRAME_WINDOW_BYTES = 8 * 1024;
 export const MAX_AMR_INSPECTION_BYTES = 9 + MAX_AMR_FRAME_WINDOW_BYTES;
 export const MAX_ISO_BMFF_INSPECTION_BYTES = 64 * 1024;
 export const MAX_MATROSKA_INSPECTION_BYTES = 64 * 1024;
+export const MAX_FLV_INSPECTION_BYTES = 64 * 1024;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
 
 export interface SourceStreamInspection {
@@ -1676,6 +1677,214 @@ async function inspectMatroska(file: Blob): Promise<MediaSourceInspection> {
   };
 }
 
+function flvVideoCodec(code: number): string {
+  return ({
+    2: "Sorenson Spark",
+    3: "Screen Video",
+    4: "VP6",
+    5: "VP6 with alpha",
+    7: "H.264/AVC",
+    12: "HEVC/H.265",
+  } as Record<number, string>)[code] ?? `FLV video codec ${code}`;
+}
+
+function flvAudioCodec(code: number): string {
+  return ({
+    0: "Linear PCM",
+    1: "ADPCM",
+    2: "MP3",
+    3: "Linear PCM (little-endian)",
+    10: "AAC",
+    11: "Speex",
+  } as Record<number, string>)[code] ?? `FLV audio codec ${code}`;
+}
+
+async function inspectFlv(file: Blob): Promise<MediaSourceInspection> {
+  const inspectedBytes = Math.min(file.size, MAX_FLV_INSPECTION_BYTES);
+  if (inspectedBytes < 13) {
+    throw new Error("The selected file does not contain a valid FLV header.");
+  }
+  const bytes = new Uint8Array(await file.slice(0, inspectedBytes).arrayBuffer());
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (ascii(view, 0, 3) !== "FLV" || view.getUint8(3) !== 1) {
+    throw new Error("The selected file does not contain a valid FLV header.");
+  }
+  const dataOffset = view.getUint32(5, false);
+  if (dataOffset < 9 || dataOffset + 4 > bytes.byteLength) {
+    throw new Error("The FLV data offset is invalid or outside the bounded scan.");
+  }
+  const metadata = new Map<string, string | number | boolean>();
+  let videoCodec: string | null = null;
+  let audioCodec: string | null = null;
+  let headerChannels: number | null = null;
+  let tagCount = 0;
+
+  const parseScript = (start: number, end: number): void => {
+    const parseValue = (
+      offset: number,
+      depth: number,
+    ): { value: unknown; next: number } | null => {
+      if (depth > 5 || offset >= end) return null;
+      const type = bytes[offset];
+      let cursor = offset + 1;
+      if (type === 0 && cursor + 8 <= end) {
+        return { value: view.getFloat64(cursor, false), next: cursor + 8 };
+      }
+      if (type === 1 && cursor < end) {
+        return { value: bytes[cursor] !== 0, next: cursor + 1 };
+      }
+      if (type === 2 && cursor + 2 <= end) {
+        const length = view.getUint16(cursor, false);
+        cursor += 2;
+        if (cursor + length > end) return null;
+        return { value: ascii(view, cursor, length), next: cursor + length };
+      }
+      if (type === 3 || type === 8) {
+        if (type === 8) {
+          if (cursor + 4 > end) return null;
+          cursor += 4;
+        }
+        const object: Record<string, unknown> = {};
+        for (let count = 0; count < 128 && cursor + 3 <= end; count += 1) {
+          const keyLength = view.getUint16(cursor, false);
+          cursor += 2;
+          if (keyLength === 0 && bytes[cursor] === 9) {
+            return { value: object, next: cursor + 1 };
+          }
+          if (cursor + keyLength > end) return null;
+          const key = ascii(view, cursor, keyLength);
+          cursor += keyLength;
+          const child = parseValue(cursor, depth + 1);
+          if (!child) return null;
+          object[key] = child.value;
+          cursor = child.next;
+        }
+      }
+      return null;
+    };
+    const name = parseValue(start, 0);
+    if (!name || name.value !== "onMetaData") return;
+    const body = parseValue(name.next, 0);
+    if (!body || typeof body.value !== "object" || body.value === null) return;
+    for (const [key, value] of Object.entries(body.value)) {
+      if (["string", "number", "boolean"].includes(typeof value)) {
+        metadata.set(key.toLowerCase(), value as string | number | boolean);
+      }
+    }
+  };
+
+  for (let offset = dataOffset + 4; offset + 11 <= bytes.byteLength; ) {
+    tagCount += 1;
+    if (tagCount > 512) throw new Error("The FLV tag-count ceiling was exceeded.");
+    const type = bytes[offset];
+    const dataSize =
+      bytes[offset + 1] * 65_536 + bytes[offset + 2] * 256 + bytes[offset + 3];
+    const dataStart = offset + 11;
+    const dataEnd = dataStart + dataSize;
+    if (dataEnd + 4 > bytes.byteLength) break;
+    if (type === 18) parseScript(dataStart, dataEnd);
+    else if (type === 9 && dataSize > 0 && videoCodec === null) {
+      videoCodec = flvVideoCodec(bytes[dataStart] & 0x0f);
+    } else if (type === 8 && dataSize > 0 && audioCodec === null) {
+      const soundFormat = bytes[dataStart] >>> 4;
+      audioCodec = flvAudioCodec(soundFormat);
+      headerChannels = (bytes[dataStart] & 1) === 1 ? 2 : 1;
+      if (
+        soundFormat === 10 &&
+        dataSize >= 4 &&
+        bytes[dataStart + 1] === 0
+      ) {
+        const audioSpecificConfig =
+          bytes[dataStart + 2] * 256 + bytes[dataStart + 3];
+        const frequencyIndex = (audioSpecificConfig >>> 7) & 0x0f;
+        const channelConfig = (audioSpecificConfig >>> 3) & 0x0f;
+        const aacRates = [
+          96_000, 88_200, 64_000, 48_000, 44_100, 32_000, 24_000, 22_050,
+          16_000, 12_000, 11_025, 8_000, 7_350,
+        ];
+        if (!metadata.has("audiosamplerate") && aacRates[frequencyIndex]) {
+          metadata.set("audiosamplerate", aacRates[frequencyIndex]);
+        }
+        if (channelConfig > 0) headerChannels = channelConfig;
+      }
+    }
+    offset = dataEnd + 4;
+  }
+  if (!videoCodec && !audioCodec) {
+    throw new Error("The bounded FLV scan did not find a complete media tag.");
+  }
+  const numberMetadata = (key: string): number | null => {
+    const value = metadata.get(key);
+    return typeof value === "number" ? finitePositive(value) : null;
+  };
+  const durationSeconds = numberMetadata("duration");
+  const width = numberMetadata("width");
+  const height = numberMetadata("height");
+  const frameRate = numberMetadata("framerate");
+  const videoBitrate = numberMetadata("videodatarate");
+  const audioBitrate = numberMetadata("audiodatarate");
+  const sampleRateHz = numberMetadata("audiosamplerate");
+  const declaredChannels = numberMetadata("audiochannels");
+  const channels = declaredChannels ? Math.round(declaredChannels) : headerChannels;
+  const streams: SourceStreamInspection[] = [];
+  if (videoCodec) {
+    streams.push({
+      mediaType: "video",
+      codec: videoCodec,
+      durationSeconds,
+      bitrateBps: videoBitrate ? Math.round(videoBitrate * 1_000) : null,
+      sampleRateHz: null,
+      channels: null,
+      channelLayout: null,
+      bitsPerSample: null,
+      width,
+      height,
+      frameRate,
+    });
+  }
+  if (audioCodec) {
+    streams.push({
+      mediaType: "audio",
+      codec: audioCodec,
+      durationSeconds,
+      bitrateBps: audioBitrate ? Math.round(audioBitrate * 1_000) : null,
+      sampleRateHz,
+      channels,
+      channelLayout: channelLayout(channels),
+      bitsPerSample: null,
+      width: null,
+      height: null,
+      frameRate: null,
+    });
+  }
+  const primary = streams.find((stream) => stream.mediaType === "video") ?? streams[0];
+  return {
+    mediaType: primary.mediaType as "audio" | "video",
+    container: "FLV",
+    codec: primary.codec,
+    durationSeconds,
+    bitrateBps:
+      primary.bitrateBps ??
+      (durationSeconds ? finitePositive(Math.round((file.size * 8) / durationSeconds)) : null),
+    sampleRateHz: primary.sampleRateHz,
+    channels: primary.channels,
+    channelLayout: primary.channelLayout,
+    bitsPerSample: null,
+    width: primary.width,
+    height: primary.height,
+    frameRate: primary.frameRate,
+    streams,
+    metadataSignals: metadata.size > 0 ? ["Script metadata"] : [],
+    notes: [
+      metadata.size > 0
+        ? "Duration, dimensions, rates, and declared data rates come from bounded FLV script metadata."
+        : "Only codec tags were available inside the bounded FLV scan.",
+    ],
+    inspectedBytes,
+    maximumInspectionBytes: MAX_FLV_INSPECTION_BYTES,
+  };
+}
+
 function guidHex(view: DataView, offset = 0): string {
   if (offset + 16 > view.byteLength) return "";
   let value = "";
@@ -1807,6 +2016,7 @@ export async function inspectMediaSource(
     return inspectIsoBmff(file);
   }
   if (formatId === "mkv" || formatId === "webm") return inspectMatroska(file);
+  if (formatId === "flv") return inspectFlv(file);
   if (formatId === "wma") return inspectAsf(file);
   return null;
 }
