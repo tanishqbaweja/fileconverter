@@ -4789,8 +4789,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "This initial route accepts signed 16-bit big-endian PCM AIFF input.",
+      "Only AIFF text tags recognized by the demuxer and representable by WAV are offered to the destination; markers, instrument/application chunks, embedded artwork, and other AIFF-specific metadata are not preserved.",
     ],
-    fidelityLimitations: [],
+    fidelityLimitations: [
+      "Signed 16-bit PCM samples are converted from big-endian AIFF to little-endian WAV without lossy encoding or bit-depth reduction.",
+    ],
     maxTestedBytes: 201_600_102,
     automatedTestStatus: "passed",
     public: true,
@@ -5012,8 +5015,11 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "This initial route accepts signed 16-bit little-endian PCM WAV input.",
+      "Only RIFF text tags recognized by the demuxer and representable as FLAC comments are offered to the destination; cue points, broadcast/iXML/application chunks, embedded artwork, and other WAV-specific metadata are not preserved.",
     ],
-    fidelityLimitations: [],
+    fidelityLimitations: [
+      "FLAC losslessly preserves the decoded signed 16-bit PCM samples.",
+    ],
     maxTestedBytes: 201_600_106,
     automatedTestStatus: "passed",
     public: true,

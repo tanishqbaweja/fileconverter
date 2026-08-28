@@ -53,7 +53,7 @@ not the entire product specification.
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile and this host has no non-Docker Emscripten/static-library build path; public re-encode profiles therefore remain fixed and no false UI controls are exposed | Establish a pinned non-Docker rebuild path, extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
 | M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, absent non-Docker local toolchain, and the decision not to publish UI-only controls | After a pinned non-Docker rebuild path exists, add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
-| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | Some container/language metadata is preserved or exclusions are disclosed | Implement supported tag/artwork paths and clear per-destination limitations; independently validate them. |
+| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` and its executable registry gate prove all 259 public FFmpeg profiles now state metadata/container and route semantics; the audit corrected missing AIFF→WAV and WAV→FLAC chunk/tag exclusions | Implement additional supported tag/artwork paths and independently validate actual field retention per destination; disclosure completeness does not itself prove preservation. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
 ## Images, archives, subtitles, data, ebooks, and documents
@@ -173,13 +173,21 @@ not the entire product specification.
   MP4/Matroska copy, incompatible rejection, first-stream extraction, all-stream
   M4A AAC copy, missing-codec blocking, OGV audio preservation, audio
   re-encoding, and AV1 WebM copy/exclusion.
-- Production build, ESLint, TypeScript, and all 74 unit tests pass. Headed Chrome
+- Production build, ESLint, TypeScript, and all 75 unit tests pass. Headed Chrome
   152 against the retained 780,953-byte complex Matroska fixture showed the
   correct four-stream plan for both `mkv-to-mp4` and `mkv-to-webm-vp9`; it also
   blocked `mkv-to-mp3` before start because the fixture has no MP3 stream. The
   UI rendered without clipping and emitted zero console errors. Evidence is in
   `evidence/media-conversion-plan-browser-2026-08-28.json`; the headed check made
   no converted output and its disposable CLI screenshots/state were deleted.
+- A registry-wide disclosure gate now evaluates all 259 public FFmpeg profiles.
+  It requires explicit metadata/container semantics, copy-versus-re-encode
+  wording, first-stream and video exclusion disclosures for all 65 container-
+  video-to-audio re-encode profiles, and first/additional-stream policy for all
+  17 container video re-encode profiles. It found and corrected the two real
+  gaps (`aiff-to-wav` and `wav-to-flac`); compact counts and corrections are in
+  `evidence/media-disclosure-audit-2026-08-28.json`. This closes disclosure
+  consistency, not the still-open field-retention implementation audit.
 
 ### 2026-08-27 — bounded Ogg/Theora multi-stream source inspection
 

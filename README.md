@@ -275,6 +275,14 @@ AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
 streams.
 
+An executable registry audit requires every one of the 259 public FFmpeg
+profiles to disclose its route semantics and its metadata/container behavior.
+Stream-copy routes must identify copying or remuxing; re-encode routes must
+identify decoding/encoding or an equivalent lossless/lossy conversion; audio
+extraction and container video re-encode routes must state their first/additional
+stream and video-exclusion policies. This disclosure gate prevents silent or
+ambiguous claims, but it does not replace independent field-retention tests.
+
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and
 compatible general metadata. The SRT stream and attached PNG cannot be

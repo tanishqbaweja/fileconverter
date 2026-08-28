@@ -1,0 +1,39 @@
+{
+  "auditDate": "2026-08-28",
+  "source": "lib/capability-registry.ts",
+  "executableGate": "every public FFmpeg profile discloses route and metadata behavior",
+  "publicFfmpegProfiles": 259,
+  "checks": {
+    "nonemptyMetadataLimitations": {
+      "passed": 259,
+      "failed": 0
+    },
+    "explicitMetadataOrContainerSemantics": {
+      "passed": 259,
+      "failed": 0
+    },
+    "routeMatchesCopyOrReencodeDisclosure": {
+      "passed": 259,
+      "failed": 0
+    },
+    "containerVideoToAudioNamesFirstStreamAndVideoExclusion": {
+      "passed": 65,
+      "failed": 0
+    },
+    "containerVideoReencodeNamesFirstOrAdditionalStreamPolicy": {
+      "passed": 17,
+      "failed": 0
+    }
+  },
+  "correctedProfiles": [
+    {
+      "profileId": "aiff-to-wav",
+      "correction": "Discloses representable text-tag handling plus excluded AIFF markers, instrument/application chunks, artwork, and format-specific metadata; also states lossless signed-16-bit PCM byte-order conversion."
+    },
+    {
+      "profileId": "wav-to-flac",
+      "correction": "Discloses representable RIFF-text-to-FLAC-comment handling plus excluded cue, broadcast/iXML/application chunks, artwork, and format-specific metadata; also states lossless signed-16-bit PCM preservation."
+    }
+  ],
+  "generatedOrConvertedArtifacts": 0
+}

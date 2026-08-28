@@ -61,6 +61,60 @@ test("initial selection prefers an exact same-category stream copy", () => {
   );
 });
 
+test("every public FFmpeg profile discloses route and metadata behavior", () => {
+  const publicMedia = conversionProfiles.filter(
+    (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
+  );
+  assert.equal(publicMedia.length, 259);
+  for (const profile of publicMedia) {
+    const metadata = profile.metadataLimitations.join(" ");
+    const allLimitations = [
+      ...profile.metadataLimitations,
+      ...profile.fidelityLimitations,
+    ].join(" ");
+    assert.ok(profile.metadataLimitations.length > 0, `${profile.id}: metadata`);
+    assert.match(
+      metadata,
+      /metadata|tag|chapter|artwork|attachment|language|title|comment|marker|chunk|container/i,
+      `${profile.id}: explicit metadata/container disclosure`,
+    );
+    if (profile.route === "stream-copy") {
+      assert.match(
+        allLimitations,
+        /cop(?:y|ied)|without re-encoding|mux|wrap|extract|unchanged/i,
+        `${profile.id}: stream-copy semantics`,
+      );
+    } else {
+      assert.match(
+        allLimitations,
+        /decode|encod|convert|PCM|lossy|lossless|resampl/i,
+        `${profile.id}: re-encode semantics`,
+      );
+    }
+    const inputCategory = formats.find(
+      (format) => format.id === profile.input,
+    )?.category;
+    const outputCategory = formats.find(
+      (format) => format.id === profile.output,
+    )?.category;
+    if (
+      inputCategory === "video" &&
+      outputCategory === "audio" &&
+      profile.route === "re-encode"
+    ) {
+      assert.match(metadata, /first audio|first compatible|only the first/i);
+      assert.match(metadata, /video.*exclud|exclud.*video/i);
+    }
+    if (
+      profile.engine === "ffmpeg-video" &&
+      profile.input !== "h264" &&
+      profile.input !== "m2v"
+    ) {
+      assert.match(metadata, /additional|only the first/i);
+    }
+  }
+});
+
 test("registry has no unresolved pending profiles and keeps failed evidence hidden", () => {
   assert.deepEqual(
     conversionProfiles
