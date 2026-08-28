@@ -282,6 +282,13 @@ identify decoding/encoding or an equivalent lossless/lossy conversion; audio
 extraction and container video re-encode routes must state their first/additional
 stream and video-exclusion policies. This disclosure gate prevents silent or
 ambiguous claims, but it does not replace independent field-retention tests.
+The first focused field-retention gate now exercises `wav-to-flac` and
+`aiff-to-wav` through the production browser worker. Native FFprobe must parse
+the genuine destination codec, the destination `title` must equal the source
+title, and the complete decoded signed-16-bit PCM hash must match exactly. The
+two-route gate passed in 12.2 seconds; its converted copies and Playwright state
+were then removed. See
+`evidence/audio-metadata-retention-browser-2026-08-28.json`.
 
 For the supplied `test.mkv`, the MP4 route preserves the main HEVC video, AAC
 5.1 audio, language, color/aspect information, dispositions, timestamps, and

@@ -1,0 +1,56 @@
+{
+  "auditDate": "2026-08-28",
+  "execution": {
+    "mode": "production browser conversion",
+    "dockerUsed": false,
+    "playwrightVersion": "1.62.1",
+    "ffprobeVersion": "N-122712-g7e3781e3ca-20260211",
+    "command": "npx playwright test tests/browser/media-remux.spec.ts --grep \"losslessly encodes PCM WAV as FLAC|converts AIFF PCM to PCM WAV\" --reporter=line",
+    "result": "2 passed",
+    "elapsedSeconds": 12.2
+  },
+  "routes": [
+    {
+      "profileId": "wav-to-flac",
+      "input": {
+        "path": "fixtures/media/audio-source.wav",
+        "bytes": 384098,
+        "sha256": "fdaf4c478e304bedd9ef65ce4fd584d7d069f11eade874361a38bf1f31b54a01",
+        "title": "Within deterministic WAV fixture"
+      },
+      "outputCodec": "flac",
+      "assertions": [
+        "The output is independently parsed by native ffprobe as FLAC.",
+        "The output title exactly equals the source title.",
+        "The complete decoded signed-16-bit PCM hash exactly equals the source decoded PCM hash.",
+        "The browser route satisfies the existing bounded read, write, pending-operation, and Wasm-memory assertions."
+      ]
+    },
+    {
+      "profileId": "aiff-to-wav",
+      "input": {
+        "path": "fixtures/media/audio-source.aiff",
+        "bytes": 384096,
+        "sha256": "7d7b0a4c514a21253c290cab910564decd7a8db6624e8cfd44699f1d63fd5118",
+        "title": "Within deterministic AIFF fixture"
+      },
+      "outputCodec": "pcm_s16le",
+      "assertions": [
+        "The output is independently parsed by native ffprobe as signed 16-bit little-endian PCM WAV.",
+        "The output title exactly equals the source title.",
+        "The complete decoded signed-16-bit PCM hash exactly equals the source decoded PCM hash.",
+        "The browser route satisfies the existing bounded read, write, pending-operation, and Wasm-memory assertions."
+      ]
+    }
+  ],
+  "decodedPcmReferenceSha256": "24cbaf02a0bdd495d0017a662b8629e3104d9906148745cb5d7c23300f8f0542",
+  "cleanup": {
+    "command": "npm run clean:test-artifacts",
+    "convertedOutputsRetained": 0,
+    "playwrightArtifactsRetained": 0,
+    "workDirectoryContents": [
+      ".gitkeep"
+    ]
+  },
+  "scope": "This proves title-tag and decoded-PCM retention for these two routes only. It does not prove preservation of format-specific chunks, artwork, or every other public media route."
+}

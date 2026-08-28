@@ -3266,6 +3266,14 @@ test("browser FFmpeg losslessly encodes PCM WAV as FLAC", async () => {
     ["flac"],
     20_000,
     wavFixturePath,
+    {
+      validate: async (probe, outputPath) => {
+        expect(probe.format.tags?.title).toBe(
+          "Within deterministic WAV fixture",
+        );
+        await expectDecodedPcmMatch(wavFixturePath, outputPath);
+      },
+    },
   );
 });
 
@@ -3548,6 +3556,14 @@ test("browser FFmpeg converts AIFF PCM to PCM WAV", async () => {
     ["pcm_s16le"],
     300_000,
     aiffFixturePath,
+    {
+      validate: async (probe, outputPath) => {
+        expect(probe.format.tags?.title).toBe(
+          "Within deterministic AIFF fixture",
+        );
+        await expectDecodedPcmMatch(aiffFixturePath, outputPath);
+      },
+    },
   );
 });
 
