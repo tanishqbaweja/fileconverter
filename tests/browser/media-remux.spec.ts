@@ -624,6 +624,11 @@ interface MediaProbe {
   };
 }
 
+function recognizedCodecName(stream: ProbeStream): string | undefined {
+  return stream.codec_name ??
+    (stream.codec_type === "attachment" ? "attachment" : undefined);
+}
+
 interface MediaRouteOptions {
   expectedWarningFragments?: readonly string[];
   expectedDurationSeconds?: number;
@@ -2056,7 +2061,7 @@ async function runMediaRoute(
     );
     const probe = JSON.parse(stdout) as MediaProbe;
     const unidentifiedStreams = probe.streams.filter(
-      (stream) => !stream.codec_name,
+      (stream) => !recognizedCodecName(stream),
     );
     if (unidentifiedStreams.length) {
       expect(probe.format.format_name?.split(",")).toContain("flv");
@@ -2068,8 +2073,8 @@ async function runMediaRoute(
     }
     expect(
       probe.streams
-        .filter((stream) => stream.codec_name)
-        .map((stream) => stream.codec_name),
+        .map(recognizedCodecName)
+        .filter((codec): codec is string => Boolean(codec)),
     ).toEqual(expectedCodecs);
     const video = probe.streams.find((stream) => stream.codec_type === "video");
     const [rateNumerator, rateDenominator] = String(
