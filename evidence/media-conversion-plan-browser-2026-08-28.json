@@ -1,0 +1,55 @@
+{
+  "auditDate": "2026-08-28",
+  "application": "production build served by the repository's Wrangler configuration",
+  "browser": {
+    "engine": "Chrome",
+    "majorVersion": 152,
+    "platform": "Windows"
+  },
+  "fixture": {
+    "path": "fixtures/media/complex-remux-source.mkv",
+    "bytes": 780953,
+    "sourceStreams": [
+      "H.264/AVC video",
+      "AAC audio",
+      "AAC audio",
+      "SubRip subtitle"
+    ],
+    "metadataSignals": ["Title", "Chapters", "Attachments", "Tags"]
+  },
+  "checks": [
+    {
+      "profileId": "mkv-to-mp4",
+      "route": "stream-copy",
+      "expectedActions": ["copy", "copy", "copy", "exclude"],
+      "observedActions": ["copy", "copy", "copy", "exclude"],
+      "startEnabled": true,
+      "passed": true
+    },
+    {
+      "profileId": "mkv-to-webm-vp9",
+      "route": "re-encode",
+      "expectedActions": ["re-encode", "exclude", "exclude", "exclude"],
+      "observedActions": ["re-encode", "exclude", "exclude", "exclude"],
+      "passed": true
+    },
+    {
+      "profileId": "mkv-to-mp3",
+      "route": "stream-copy",
+      "sourceContainsRequiredCodec": false,
+      "observedBlockers": [
+        "Stream 2 (AAC) is incompatible with this fixed profile.",
+        "This profile requires MP3 audio."
+      ],
+      "startEnabled": false,
+      "passed": true
+    }
+  ],
+  "visualInspection": {
+    "passed": true,
+    "notes": "Action badges, stream labels, details, and metadata summary rendered without overlap or clipping at the headed browser's default viewport."
+  },
+  "consoleErrors": 0,
+  "convertedOutputsCreated": 0,
+  "retainedBrowserArtifacts": 0
+}

@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-08-27. This is the living requirement audit for the original
+Updated 2026-08-28. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -47,12 +47,12 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
-| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/planner and route-specific probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded pre-conversion details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs, including primary video, audio/video/subtitle tracks, resolution, average frame rate, duration, sample rate, channel layout, and bitrate semantics available from each container | Build a broader automatic copy-versus-re-encode planner across missing combinations and extend inspection only when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and many route-specific validators/warnings cover preservation or explicit exclusions | Audit every public media profile field-by-field; expand preservation where the destination supports it instead of relying on first-stream policies. |
+| M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex remux fixture and route validators cover preservation; the production UI now presents per-stream copy/re-encode/exclude/reject outcomes plus detected metadata signals before start, verified by `evidence/media-conversion-plan-browser-2026-08-28.json` | Complete a field-level audit for every public media profile and expand actual preservation where the destination supports it, especially tags/artwork and first-stream policies. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
-| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | No production option model or controls were found; public re-encode profiles use fixed certified settings | Design bounded option schemas, planner support, UI controls, encoder validation, and separate evidence per memory-relevant profile. |
+| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile and this host has no non-Docker Emscripten/static-library build path; public re-encode profiles therefore remain fixed and no false UI controls are exposed | Establish a pinned non-Docker rebuild path, extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
-| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `TESTED.md` explicitly lists these controls as remaining | Add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
+| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, absent non-Docker local toolchain, and the decision not to publish UI-only controls | After a pinned non-Docker rebuild path exists, add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
 | M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | Some container/language metadata is preserved or exclusions are disclosed | Implement supported tag/artwork paths and clear per-destination limitations; independently validate them. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
@@ -73,7 +73,7 @@ not the entire product specification.
 
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
-| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements these core states and metrics; the source panel has tested details for all named standalone audio and multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs and discloses exact bounded read ceilings/estimates | Add the missing relevant conversion controls and perform broader headed usability review. |
+| U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements the core states and metrics; source details cover all named standalone audio and multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; the source-aware plan visibly states every inspected stream outcome before start | Add genuine conversion controls after the engine ABI supports them and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
@@ -138,8 +138,42 @@ not the entire product specification.
   user explicitly directed this goal not to use Docker. Do not restore those
   controls against the old binary; use a non-Docker reproducible toolchain or a
   separately authorized build environment first.
+- The 2026-08-28 non-Docker ABI audit found no hidden control channel to reuse:
+  the public request has no options object, `workers/media-remux.ts` passes only
+  one integer, `_within_remux` exports only `int within_remux(int profile)`, and
+  the host/repository contain neither Emscripten nor the pinned FFmpeg static
+  libraries. No engine was downloaded or duplicated, no Docker/WSL environment
+  was started, and no UI-only control was added. See
+  `evidence/media-option-abi-audit-2026-08-28.json`.
 
 ## Implementation and verification log
+
+### 2026-08-28 — fixed-ABI audit and source-aware conversion plan
+
+- Persisted the request/worker/native ABI and non-Docker toolchain probe in
+  `evidence/media-option-abi-audit-2026-08-28.json`, including exact absent
+  option fields, the single-number Wasm call, installed-tool findings, and disk
+  preflight. This prevents another loop that attempts to attach controls to a
+  binary that cannot receive them.
+- Added `lib/media-conversion-plan.ts`. It applies the actual fixed FFmpeg
+  profile policy to every bounded-inspection stream and reports **Copy**,
+  **Re-encode**, **Exclude**, or **Reject** before conversion. Codec-incompatible
+  stream-copy inputs are shown as rejections; they are never described as an
+  implicit transcode or extension rename.
+- The production UI now displays those outcomes, details first-stream and
+  destination policies, connects detected metadata signals to the exact
+  destination limitations, and disables Start when bounded inspection proves a
+  required codec/stream is absent or incompatible. Eight policy tests cover
+  MP4/Matroska copy, incompatible rejection, first-stream extraction, all-stream
+  M4A AAC copy, missing-codec blocking, OGV audio preservation, audio
+  re-encoding, and AV1 WebM copy/exclusion.
+- Production build, ESLint, TypeScript, and all 73 unit tests pass. Headed Chrome
+  152 against the retained 780,953-byte complex Matroska fixture showed the
+  correct four-stream plan for both `mkv-to-mp4` and `mkv-to-webm-vp9`; it also
+  blocked `mkv-to-mp3` before start because the fixture has no MP3 stream. The
+  UI rendered without clipping and emitted zero console errors. Evidence is in
+  `evidence/media-conversion-plan-browser-2026-08-28.json`; the headed check made
+  no converted output and its disposable CLI screenshots/state were deleted.
 
 ### 2026-08-27 — bounded Ogg/Theora multi-stream source inspection
 

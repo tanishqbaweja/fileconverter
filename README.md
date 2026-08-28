@@ -201,11 +201,16 @@ limits, and deletes every test-owned copy.
 
 The source-inspection panel reports the locally detected format and category,
 browser-provided MIME type, exact byte count, batch count, and modification time.
-For media, the selected engine additionally inspects streams and codecs before
-writing and reports incompatible or excluded elements as warnings. The generic
-panel does not pretend that filename/MIME inspection is a complete container
-probe; deeper pre-conversion stream presentation remains tracked in
-`REMAINING_WORK.md`.
+Bounded parsers present available container, codec, duration, bitrate, audio,
+video, subtitle, and metadata signals for the supported media families before a
+conversion starts. Selecting a media destination produces a source-aware plan
+for every inspected stream: copy, re-encode, exclude, or reject. The plan uses
+the fixed certified FFmpeg profile policy, and incompatible stream-copy inputs
+are labeled as rejections rather than silently renamed or transcoded. The
+Start action is disabled when the bounded scan proves a required stream or
+codec is absent or incompatible, avoiding a guaranteed-to-fail engine run. The
+engine still validates the complete container during conversion and emits
+runtime warnings for elements outside the bounded preflight scan.
 
 An abandonment test reloads the page during a real large streaming conversion.
 The next app start removes the locked job's released `within-*` partial while an

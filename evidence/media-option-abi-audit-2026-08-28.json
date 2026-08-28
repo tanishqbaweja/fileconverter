@@ -1,0 +1,73 @@
+{
+  "auditDate": "2026-08-28",
+  "scope": "Existing production audio/video control propagation and non-Docker rebuild availability",
+  "constraints": {
+    "dockerAllowed": false,
+    "convertedArtifactsRepositoryLocal": true,
+    "disposableArtifactsCreated": false
+  },
+  "requestProtocol": {
+    "source": "lib/conversion-protocol.ts",
+    "startFields": [
+      "type",
+      "jobId",
+      "profileId",
+      "file",
+      "destination",
+      "testFault"
+    ],
+    "conversionOptionsField": false
+  },
+  "workerBridge": {
+    "source": "workers/media-remux.ts",
+    "exportCalled": "within_remux",
+    "argumentTypes": ["number"],
+    "arguments": ["remuxProfile"],
+    "dynamicAudioOrVideoSettings": false
+  },
+  "nativeAbi": {
+    "source": "media/ffmpeg/within_remux.c",
+    "signature": "int within_remux(int profile)",
+    "publishedExport": "_within_remux",
+    "settingsModel": "35 fixed integer profiles with encoder values compiled into the Wasm binaries",
+    "dynamicBitrate": false,
+    "dynamicSampleRate": false,
+    "dynamicChannelLayout": false,
+    "dynamicResolution": false,
+    "dynamicFrameRate": false,
+    "dynamicCodec": false,
+    "dynamicQuality": false
+  },
+  "publishedBinaries": {
+    "directory": "public/engines/remux",
+    "modules": [
+      "within-remux",
+      "within-direct",
+      "within-mpeg4",
+      "within-webm",
+      "within-vp9"
+    ],
+    "manifest": "public/engines/remux/build-manifest.json"
+  },
+  "nonDockerToolchainProbe": {
+    "windowsEmccFound": false,
+    "windowsEmsdkFound": false,
+    "repositoryEmccFound": false,
+    "repositoryFfmpegStaticLibrariesFound": false,
+    "wslDistributions": [
+      {
+        "name": "docker-desktop",
+        "state": "Stopped",
+        "used": false
+      }
+    ],
+    "cDriveFreeBytesAtProbe": 4777844736,
+    "hDriveFreeBytesAtProbe": 2097799225344
+  },
+  "conclusion": {
+    "canAddGenuineDynamicControlsWithoutRebuildingWasm": false,
+    "canRebuildCurrentPinnedEngineLocallyWithoutDockerOrInstallingAFullToolchain": false,
+    "uiOnlyControlsPermitted": false,
+    "nextSafeWork": "Keep fixed certified profiles public, add source-aware copy/re-encode/exclusion planning, and resume dynamic controls only after a pinned non-Docker Emscripten plus FFmpeg-library build path exists."
+  }
+}

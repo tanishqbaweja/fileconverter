@@ -12,6 +12,10 @@ import {
   type MediaSourceInspection,
   type SourceStreamInspection,
 } from "../../lib/media-source-inspection";
+import {
+  planMediaConversion,
+  type MediaPlanAction,
+} from "../../lib/media-conversion-plan";
 import type {
   ConversionMetrics,
   TestFault,
@@ -163,6 +167,13 @@ function describeSourceStream(stream: SourceStreamInspection): string {
   if (stream.bitrateBps) facts.push(formatBitrate(stream.bitrateBps));
   if (stream.durationSeconds) facts.push(formatMediaDuration(stream.durationSeconds));
   return facts.join(" · ");
+}
+
+function mediaPlanActionLabel(action: MediaPlanAction): string {
+  if (action === "copy") return "Copy";
+  if (action === "re-encode") return "Re-encode";
+  if (action === "reject") return "Reject";
+  return "Exclude";
 }
 
 function outputName(file: File, profile: ConversionProfile): string {
@@ -379,6 +390,13 @@ export function ConverterApp() {
   const selectedProfile = useMemo(
     () => conversionProfiles.find((profile) => profile.id === profileId) ?? null,
     [profileId],
+  );
+  const mediaConversionPlan = useMemo(
+    () =>
+      selectedProfile && sourceMediaInspection
+        ? planMediaConversion(selectedProfile, sourceMediaInspection)
+        : null,
+    [selectedProfile, sourceMediaInspection],
   );
 
   useEffect(() => {
@@ -1373,6 +1391,59 @@ export function ConverterApp() {
                 </div>
               </div>
 
+              {mediaConversionPlan ? (
+                <section
+                  className="conversion-plan"
+                  data-testid="media-conversion-plan"
+                  aria-labelledby="media-conversion-plan-heading"
+                >
+                  <div className="conversion-plan-heading">
+                    <strong id="media-conversion-plan-heading">
+                      Conversion plan
+                    </strong>
+                    <span>Based on the bounded source scan</span>
+                  </div>
+                  {mediaConversionPlan.blockingReasons.length ? (
+                    <div className="conversion-plan-blocker" role="alert">
+                      <strong>This fixed profile cannot accept the inspected source.</strong>
+                      <ul>
+                        {mediaConversionPlan.blockingReasons.map((reason) => (
+                          <li key={reason}>{reason}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null}
+                  <ul>
+                    {mediaConversionPlan.streams.map((stream) => (
+                      <li
+                        key={`${stream.mediaType}-${stream.streamIndex}`}
+                        data-testid={`media-plan-stream-${stream.streamIndex}`}
+                      >
+                        <span
+                          className={`plan-action plan-action-${stream.action}`}
+                        >
+                          {mediaPlanActionLabel(stream.action)}
+                        </span>
+                        <span>
+                          <strong>
+                            Stream {stream.streamIndex + 1}: {stream.codec}
+                          </strong>
+                          {stream.detail}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p>{mediaConversionPlan.metadataSummary}</p>
+                  {batchFiles.length > 1 ? (
+                    <p>
+                      This preview describes the first selected file. Every batch
+                      item is inspected and validated by the conversion engine
+                      before output is committed.
+                    </p>
+                  ) : null}
+                </section>
+              ) : null}
+
               {!testMode ? (
                 <button
                   className="destination-button"
@@ -1523,6 +1594,7 @@ export function ConverterApp() {
                   onClick={startConversion}
                   disabled={
                     !selectedProfile ||
+                    Boolean(mediaConversionPlan?.blockingReasons.length) ||
                     (!testMode &&
                       (batchFiles.length > 1
                         ? !destinationDirectoryHandle
