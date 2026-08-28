@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { copyFile, mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -845,6 +845,62 @@ async function expectVideoPacketMatch(
   expect(await videoPacketSha256(outputPath)).toBe(
     await videoPacketSha256(sourcePath),
   );
+}
+
+async function inspectFlvAacSignals(outputPath: string): Promise<{
+  enhancedMultitrackHeaders: number;
+  legacySequenceHeaders: number;
+  legacyMediaPackets: number;
+}> {
+  const bytes = await readFile(outputPath);
+  expect(bytes.subarray(0, 3).toString("ascii")).toBe("FLV");
+  const dataOffset = bytes.readUInt32BE(5);
+  expect(dataOffset).toBeGreaterThanOrEqual(9);
+  expect(dataOffset + 4).toBeLessThanOrEqual(bytes.length);
+  expect(bytes.readUInt32BE(dataOffset)).toBe(0);
+  let offset = dataOffset + 4;
+  let enhancedMultitrackHeaders = 0;
+  let legacySequenceHeaders = 0;
+  let legacyMediaPackets = 0;
+  const unexpectedAudioSignals: string[] = [];
+  while (offset + 15 <= bytes.length) {
+    const tagType = bytes[offset];
+    const dataSize = bytes.readUIntBE(offset + 1, 3);
+    const payload = offset + 11;
+    const next = payload + dataSize + 4;
+    expect(next).toBeLessThanOrEqual(bytes.length);
+    expect(bytes.readUInt32BE(payload + dataSize)).toBe(11 + dataSize);
+    if (tagType === 8 && dataSize > 0) {
+      const soundFormat = bytes[payload] >>> 4;
+      if (soundFormat === 10 && dataSize > 1) {
+        if (bytes[payload + 1] === 0) {
+          legacySequenceHeaders += 1;
+        }
+        else if (bytes[payload + 1] === 1) legacyMediaPackets += 1;
+        else unexpectedAudioSignals.push(`AAC packet type ${bytes[payload + 1]}`);
+      } else if (
+        soundFormat === 9 &&
+        (bytes[payload] & 0x0f) === 4 &&
+        dataSize === 7 &&
+        bytes.subarray(payload + 1, payload + 5).toString("ascii") === "mp4a"
+      ) {
+        enhancedMultitrackHeaders += 1;
+      } else {
+        unexpectedAudioSignals.push(`sound format ${soundFormat}`);
+      }
+    }
+    offset = next;
+  }
+  expect(offset).toBe(bytes.length);
+  expect(unexpectedAudioSignals).toEqual([]);
+  expect(legacySequenceHeaders).toBeGreaterThan(0);
+  expect(legacyMediaPackets).toBeGreaterThan(0);
+  expect(enhancedMultitrackHeaders).toBeLessThanOrEqual(1);
+  return {
+    enhancedMultitrackHeaders,
+    legacySequenceHeaders,
+    legacyMediaPackets,
+  };
 }
 
 test.beforeAll(async () => {
@@ -1981,7 +2037,6 @@ async function runMediaRoute(
     }
 
     await copyAndDeleteBrowserStorageEntry(state.opfsName!, outputPath);
-
     const { size } = await stat(outputPath);
     expect(size).toBeGreaterThan(minimumBytes);
     const { stdout } = await execFileAsync(
@@ -2000,8 +2055,21 @@ async function runMediaRoute(
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
     const probe = JSON.parse(stdout) as MediaProbe;
+    const unidentifiedStreams = probe.streams.filter(
+      (stream) => !stream.codec_name,
+    );
+    if (unidentifiedStreams.length) {
+      expect(probe.format.format_name?.split(",")).toContain("flv");
+      expect(unidentifiedStreams).toHaveLength(1);
+      expect(unidentifiedStreams[0]?.codec_type).toBe("audio");
+      expect(
+        (await inspectFlvAacSignals(outputPath)).enhancedMultitrackHeaders,
+      ).toBe(1);
+    }
     expect(
-      probe.streams.map((stream) => stream.codec_name ?? stream.codec_type),
+      probe.streams
+        .filter((stream) => stream.codec_name)
+        .map((stream) => stream.codec_name),
     ).toEqual(expectedCodecs);
     const video = probe.streams.find((stream) => stream.codec_type === "video");
     const [rateNumerator, rateDenominator] = String(
@@ -5225,7 +5293,8 @@ for (const route of [
       durationToleranceSeconds: 0.25,
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("flv");
-        expect(probe.streams).toHaveLength(2);
+        expect(probe.streams.filter((stream) => stream.codec_name)).toHaveLength(2);
+        await inspectFlvAacSignals(outputPath);
         await expectVideoPacketMatch(route[1], outputPath);
         await expectAacAccessUnitMatch(route[1], outputPath);
       },

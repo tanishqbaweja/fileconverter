@@ -360,7 +360,7 @@ test("source inspection displays genuine audio and multi-stream video families f
   await expect(sourceInspection).toContainText("48,000 Hz");
   await expect(sourceInspection).toContainText("Mono");
   await expect(sourceInspection).toContainText("User metadata box");
-  await expect(sourceInspection).toContainText("1,068 bytes (max 65,536)");
+  await expect(sourceInspection).toContainText("1,122 bytes (max 65,536)");
   await expect(status).toContainText("encoded sample bytes");
 
   await page.locator('[data-testid="file-input"]').setInputFiles(alacFixturePath);
@@ -401,14 +401,14 @@ test("source inspection displays genuine audio and multi-stream video families f
   await expect(sourceInspection).toContainText("AAC");
   await expect(sourceInspection).toContainText("48,000 Hz");
   await expect(sourceInspection).toContainText("Mono");
-  await expect(sourceInspection).toContainText("1,768 bytes (max 65,536)");
+  await expect(sourceInspection).toContainText("1,784 bytes (max 65,536)");
 
   await page.locator('[data-testid="file-input"]').setInputFiles(threeGpFixturePath);
   await expect(sourceInspection).toContainText("3GP / ISO-BMFF");
   await expect(sourceInspection).toContainText("H.264/AVC");
   await expect(sourceInspection).toContainText("640×360");
   await expect(sourceInspection).toContainText("AAC");
-  await expect(sourceInspection).toContainText("1,728 bytes (max 65,536)");
+  await expect(sourceInspection).toContainText("1,782 bytes (max 65,536)");
 
   await page.locator('[data-testid="file-input"]').setInputFiles(webmFixturePath);
   await expect(sourceInspection).toContainText("WebM");

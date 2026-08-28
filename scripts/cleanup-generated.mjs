@@ -52,6 +52,7 @@ const hostedHevcFallbackFixture = path.resolve(
   workRoot,
   "ci-hevc-fallback.mov",
 );
+const mediaDebugOutput = path.resolve(workRoot, "debug-output.flv");
 const webmBenchmarkFixture = path.resolve(
   stressFixturesRoot,
   "media",
@@ -281,6 +282,7 @@ assertInside(workRoot, cancellationFixture);
 assertInside(workRoot, documentCancellationFixture);
 assertInside(workRoot, markdownCancellationFixture);
 assertInside(workRoot, hostedHevcFallbackFixture);
+assertInside(workRoot, mediaDebugOutput);
 assertInside(workRoot, downloadedFfmpegArchive);
 assertInside(workRoot, aacBenchmarkRoot);
 assertInside(workRoot, opusBenchmarkRoot);
@@ -334,6 +336,7 @@ if (process.argv.includes("--test-artifacts-only")) {
   await rm(documentCancellationFixture, { force: true });
   await rm(markdownCancellationFixture, { force: true });
   await rm(hostedHevcFallbackFixture, { force: true });
+  await rm(mediaDebugOutput, { force: true });
   for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
   process.stdout.write("Disposable browser test artifacts removed.\n");
   process.exit(0);
@@ -365,6 +368,7 @@ await rm(cancellationFixture, { force: true });
 await rm(documentCancellationFixture, { force: true });
 await rm(markdownCancellationFixture, { force: true });
 await rm(hostedHevcFallbackFixture, { force: true });
+await rm(mediaDebugOutput, { force: true });
 await rm(downloadedFfmpegArchive, { force: true });
 await removeWithRetries(aacBenchmarkRoot);
 await removeWithRetries(opusBenchmarkRoot);

@@ -20,7 +20,7 @@ not the entire product specification.
 | ID | Requirement | Status | Current evidence | Remaining work |
 | --- | --- | --- | --- | --- |
 | P-01 | Real conversions execute entirely in the browser; the server serves only application assets | Verified complete | Worker implementations under `workers/`; custom engines under `public/engines/`; production-browser tests under `tests/browser/`; privacy description in `README.md` | Keep network tests mandatory as routes are added. |
-| P-02 | Never transmit files, filenames, decoded data, extracted text, temporary data, or outputs | Verified complete | `tests/browser/privacy-offline.spec.ts` rejects non-GET, cross-origin, filename, and fixture-content requests; `README.md` documents the same boundary | Add the privacy project as an explicit CI step rather than relying only on the aggregate browser command. |
+| P-02 | Never transmit files, filenames, decoded data, extracted text, temporary data, or outputs | Verified complete | `tests/browser/privacy-offline.spec.ts` rejects non-GET, cross-origin, filename, and fixture-content requests; `.github/workflows/ci.yml` runs it as an explicit hosted gate; `README.md` documents the same boundary | Keep the explicit privacy gate mandatory as routes are added. |
 | P-03 | No PDF input, output, or tooling | Verified complete | Registry/unit gate and `TESTED.md` report zero PDF profiles | Preserve this prohibition. |
 | P-04 | Broadest technically practical mainstream format coverage | Partially implemented | 388 public passed profiles across all named categories in `TESTED.md`; exact gaps are listed at its end | Complete feasibility audits and implement or defensibly reject the missing media, audio-control, HEIF/HEIC, raw-image, and SVG surfaces below. |
 | P-05 | Public selector exposes only genuine, tested routes from the central registry | Verified complete | `lib/capability-registry.ts`, `publicProfilesFor`, registry unit tests, and the generated `TESTED.md` table | Re-run the registry/report consistency audit after every promotion. |
@@ -93,8 +93,8 @@ not the entire product specification.
 | T-06 | Headed manual review of real UI success, progress, destination, cancellation, understandable errors, and responsiveness | Partially implemented | `TESTED.md` records one headed MKV success/direct/cancel/write-failure audit with reviewed screenshots/trace | Repeat headed audits across representative image, audio, archive, data/document, ebook/subtitle, quota/permission, reload, and batch families. |
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
-| T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | Docker/source recipes exist for FFmpeg, BZIP2, XZ, 7Z, TIFF, JXL, and AVIF; SVG has a deterministic build script; `scripts/engine-reproducibility-manifest.mjs` now audits all 11 published engine directories | Execute the new CI matrix and inspect all 11 clean artifact comparisons before upgrading this claim to verified complete. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | `.github/workflows/ci.yml` now has explicit privacy/offline and conversion/validator steps plus a parallel 11-engine reproducibility matrix | Obtain a successful hosted CI run; tune only job topology/timeouts if a clean cold build exceeds runner limits. |
+| T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits declarations for all 11 published engine directories, and the SVG artifact has passed an exact clean hosted rebuild without Docker. The other ten binary-engine recipes currently require Docker. | Establish pinned non-Docker toolchains/recipes for FFmpeg, BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode, then require exact clean artifact comparisons for each. Do not describe declaration coverage as binary reproducibility. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | `.github/workflows/ci.yml` runs the base gates explicitly, partitions all 871 browser conversion tests into independent image/media/streaming jobs, audits all 11 engine declarations, and rebuilds the one currently non-Docker engine (SVG). | Obtain one fully successful hosted run for the corrected partitioned workflow; retain the independent job topology and add non-Docker engine rebuild jobs only as toolchains become available. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons
@@ -109,8 +109,8 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Make reproducibility coverage manifest-driven and extend CI to every published
-   engine without creating a single timeout-prone build job.
+1. Build pinned non-Docker toolchains for the ten binary-engine families that
+   still have Docker-only recipes, then add fail-independent exact rebuild jobs.
 2. Add a bounded option model beginning with audio bitrate/sample-rate/channel-
    layout and video resolution/bitrate/frame-rate/quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
@@ -364,19 +364,22 @@ not the entire product specification.
   Docker failure described above, so the current public UI and Wasm stay in
   agreement.
 
-### 2026-08-27 — complete-engine CI reproducibility coverage
+### 2026-08-27 — engine declaration audit and non-Docker reproducibility scope
 
 - Added one checked manifest for every directory under `public/engines` and a
   local `npm run audit:engine-reproducibility` command. It currently covers all
   11 published engine directories and fails if a directory or package build
   command is omitted.
-- Replaced the five-engine sequential CI subset with a fail-independent,
-  four-at-a-time matrix covering FFmpeg/remux, BZIP2, XZ, compact XZ decode,
-  libarchive/7Z, TIFF, JXL decode/encode, AVIF decode/encode, and SVG.
+- The manifest now separates declaration coverage from executable non-Docker
+  rebuild coverage. On the current hosted/local toolchains, SVG is the only
+  executable clean rebuild; the ten binary-engine entries retain Docker-based
+  recipes and are not falsely counted as non-Docker artifact comparisons.
 - Split network privacy/offline tests into an explicit CI step; the remaining
   production-browser suites retain their independent validators.
-- Local verification passed: manifest audit 11/11, ESLint, TypeScript, workflow
-  parse, and unit tests 42/42. Hosted cold-build reproducibility remains pending.
+- Local verification passed: manifest declaration audit 11/11, ESLint,
+  TypeScript, workflow parse, and unit tests 42/42. The exact non-Docker SVG
+  rebuild also passes hosted; equivalent non-Docker rebuild paths for the other
+  ten engines remain pending.
 
 ### 2026-08-27 — cross-browser production conversion smoke
 
