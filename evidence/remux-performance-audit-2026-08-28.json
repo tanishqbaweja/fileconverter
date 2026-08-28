@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-08-28",
+  "scope": "Controlled production-browser MKV-to-MP4 direct-destination buffer/core comparison",
+  "dockerUsed": false,
+  "source": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "modified": false
+  },
+  "environment": {
+    "browser": "Google Chrome 152.0.7977.64",
+    "headless": true,
+    "destinationMode": "direct-handle",
+    "runCountPerCandidate": 3,
+    "command": "WITHIN_RUN_COUNT=3 WITHIN_DESTINATION_MODE=direct-handle npm run profile:memory -- test.mkv mkv-to-mp4 fixtures/media/test-mkv.manifest.json"
+  },
+  "acceptance": {
+    "primaryMemoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "incrementalPrivateMiBLimit": 250,
+    "maximumPendingWrites": 1,
+    "requiredValidation": "Full output SHA-256, independent media validation, repeatability, bounded I/O, and cleanup recovery"
+  },
+  "retained": {
+    "name": "1 MiB direct-remux specialist",
+    "productionSelector": "DIRECT_REMUX_WRITE_CHUNK",
+    "rawReport": "outputs/reports/2026-08-28T06-45-23-327Z-mkv-to-mp4-direct-handle-stress.json",
+    "elapsedMs": [
+      36831.71999999881,
+      35451.64999999106,
+      36064.289999991655
+    ],
+    "medianElapsedMs": 36064.289999991655,
+    "medianThroughputMBps": 82.13530719724928,
+    "outputBytes": 2962151538,
+    "outputSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 1048576,
+    "maximumQueuedBytes": 1048576,
+    "peakPendingWrites": 1,
+    "peakWasmBytes": 46596096,
+    "worstIncrementalPrivateMiB": 249.24609375,
+    "cleanupDeltaFromLoadedMiB": [
+      -21.08203125,
+      -22.74609375,
+      -13.72265625
+    ],
+    "passed": true
+  },
+  "rejected": {
+    "name": "256 KiB standard-remux core on the same direct destination",
+    "temporaryChange": "workers/conversion.worker.ts selected MAX_WRITE_CHUNK instead of DIRECT_REMUX_WRITE_CHUNK for direct MKV-to-MP4",
+    "reverted": true,
+    "rawReportDeletedAfterCompaction": "outputs/reports/2026-08-28T06-52-11-368Z-mkv-to-mp4-direct-handle-stress.{json,csv,html}",
+    "elapsedMs": [
+      43146.484999999404,
+      43141.090000003576,
+      42331.79500000179
+    ],
+    "medianElapsedMs": 43141.090000003576,
+    "medianThroughputMBps": 68.66195402109113,
+    "outputBytes": 2962151538,
+    "outputSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "peakPendingWrites": 1,
+    "peakWasmBytes": 58130432,
+    "worstIncrementalPrivateMiB": 237.1640625,
+    "cleanupDeltaFromLoadedMiB": [
+      30.3046875,
+      26.265625,
+      33.796875
+    ],
+    "passed": true,
+    "rejectionReason": "It preserved correctness and used less process memory, but its median elapsed time was 16.40385071404393% longer than the retained specialist."
+  },
+  "comparison": {
+    "identicalSource": true,
+    "identicalBrowserAndDestinationPath": true,
+    "identicalOutputBytes": true,
+    "identicalOutputSha256": true,
+    "retainedElapsedReductionPercent": 16.40385071404393,
+    "retainedThroughputGainPercent": 19.622734843840135,
+    "decision": "Retain the 1 MiB direct-remux specialist because it is the fastest compliant candidate in this controlled current-build A/B."
+  },
+  "historicalContext": {
+    "report": "outputs/reports/2026-07-31T23-21-28-798Z-mkv-to-mp4-direct-handle-stress.json",
+    "browser": "Google Chrome 150.0.7871.188",
+    "elapsedRangeMs": [
+      17418.260000020266,
+      23300.789999991655
+    ],
+    "outputBytes": 2962151522,
+    "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+    "interpretation": "This older result is faster, but it used a different Chrome version and an older engine output/build, so it is not an isolated candidate comparison. The current A/B changes only the core selector; investigation of the historical build/browser regression remains part of P-08."
+  },
+  "tenGiBClarification": {
+    "report": "outputs/reports/2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",
+    "inputBytes": 10737988703,
+    "outputBytes": 10746764442,
+    "elapsedMs": 92853.255,
+    "incrementalPrivateMiB": 210.33984375,
+    "clarification": "The approximately 210 MiB figure is incremental private memory, not output size. The genuine browser remux output was 10,746,764,442 bytes and was independently validated before deletion."
+  },
+  "cleanup": {
+    "allConvertedOutputsDeleted": true,
+    "candidateRawReportTripletDeleted": true,
+    "retainedArtifacts": [
+      "this compact evidence file",
+      "the accepted raw report triplet under outputs/reports"
+    ]
+  }
+}

@@ -65,7 +65,8 @@ Browser File
   -> bounded worker slice/BYOB reader (<= 256 KiB)
   -> dedicated conversion worker
   -> custom FFmpeg AVIOContext / streaming transform
-  -> one positional write in flight (<= 256 KiB)
+  -> one positional write in flight (normally <= 256 KiB;
+     direct MKV-to-MP4 specialist <= 1 MiB)
   -> user-selected destination
 ```
 
@@ -78,10 +79,12 @@ AAC, Ogg Vorbis, and Ogg Opus extraction always uses this reusable path so a
 large source never creates a second source-sized synchronous Blob allocation. A genuine
 FFmpeg seek cancels that reader and opens a new bounded stream at the requested
 offset. Bytes are copied once from the browser-owned BYOB view into FFmpeg's
-256 KiB AVIO input buffer. FFmpeg's output callback exposes at most 256 KiB. A
+256 KiB AVIO input buffer. FFmpeg's ordinary output callbacks expose at most
+256 KiB. The direct MKV-to-MP4 route uses a separately bounded 1 MiB specialist
+to reduce browser/Wasm crossings while retaining one-write backpressure. A
 dedicated destination worker owns the user-selected
 `FileSystemWritableFileStream` and its writer for the full job. The conversion
-worker copies one chunk into a 256 KiB `SharedArrayBuffer`, waits with Atomics,
+worker copies one chunk into a profile-bounded `SharedArrayBuffer`, waits with Atomics,
 and cannot queue another operation until the destination worker acknowledges
 the write. Random offsets, truncate, close, abort, and a bounded 4 KiB error
 message use the same one-command bridge. Browsers without that isolated-worker
@@ -1032,7 +1035,7 @@ The unmodified project-root fixture:
 The deterministic complex remux fixture is 780,953 bytes with SHA-256
 `ef3675ef5a258230de70970a4c3e0f0545d74538661fe7df98a48f1b525f1ad2`.
 
-Chrome 150.0.7871.188 was launched as a clean process tree. The acceptance
+Chrome was launched as a clean process tree for every retained report. The acceptance
 formula is exactly:
 
 ```text
@@ -1048,7 +1051,7 @@ Current exact-build results:
 | MKV to WAV, 256 KiB direct coalescer | 1 | 2,958,573,265 B | 7,107,834,734 B | 186.7 MiB | 32 MiB | 9.0 MiB |
 | MP3 to WAV, 256 KiB direct coalescer | 3 | 50,401,224 B | 201,600,128 B | 191.9 MiB | 32 MiB | 8.5-32.0 MiB |
 | MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
-| MKV → MP4, 1 MiB shared direct writer | 3 | 2,958,573,265 B | 2,962,151,522 B | 247.5 MiB | 53.6 MiB | 13.8–17.0 MiB |
+| MKV → MP4, 1 MiB shared direct writer (Chrome 152) | 3 | 2,958,573,265 B | 2,962,151,538 B | 249.2 MiB | 44.4 MiB | −22.7–−13.7 MiB |
 | MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
 | MP4 → M4A | 3 | 2,964,855,971 B | 249,427,976 B | 203.3 MiB | 73.8 MiB | −4.0–−0.6 MiB |
 | MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
@@ -1210,6 +1213,28 @@ Current exact-build results:
 | XZ decompress | 3 | 268,448,840 B | 268,435,456 B | 203.0 MiB | 48 MiB | cleanup passed |
 | TAR -> TAR.XZ | 3 | 268,436,992 B | 268,449,796 B | 175.0 MiB | 48 MiB | cleanup passed |
 | TAR.XZ -> TAR | 3 | 268,449,796 B | 268,436,992 B | 173.7 MiB | 48 MiB | cleanup passed |
+
+The 10 GiB row's **210.3 MiB is incremental Chrome private memory**, not the
+converted-file size. That production-browser remux genuinely read
+10,737,988,703 bytes and wrote 10,746,764,442 bytes in 92.853 seconds; the full
+output was hashed, packet-traversed, independently validated, and then deleted.
+
+The current direct-writer core was also compared with the ordinary 256 KiB core
+on the exact protected 2,958,573,265-byte source in Chrome 152. Both three-run
+sets produced the same 2,962,151,538-byte SHA-256 output. The retained 1 MiB
+specialist's median was 36.064 seconds (82.14 MB/s), versus 43.141 seconds
+(68.66 MB/s) for the candidate: 16.4% less elapsed time and 19.6% more
+throughput. Both stayed below 250 MiB with one pending write. The slower
+candidate was reverted and its converted outputs and bulky reports were
+deleted after the compact comparison was recorded in
+`evidence/remux-performance-audit-2026-08-28.json`.
+
+A historical Chrome 150 report completed an older engine build in 17.42–23.30
+seconds, but its output bytes/hash differ from the current build and the browser
+version also changed. It is therefore not treated as a controlled candidate for
+the current A/B. Investigating that historical build/browser performance gap
+remains open under P-08 rather than being mislabeled as a proven regression in
+one component.
 
 The optimized level-1 BZIP2 encoder completed its 256 MiB-class runs in
 38.94-39.85 seconds; decompression completed in 23.50-23.94 seconds. All four

@@ -25,8 +25,8 @@ not the entire product specification.
 | P-04 | Broadest technically practical mainstream format coverage | Partially implemented | 388 public passed profiles across all named categories in `TESTED.md`; exact gaps are listed at its end | Complete feasibility audits and implement or defensibly reject the missing media, audio-control, HEIF/HEIC, raw-image, and SVG surfaces below. |
 | P-05 | Public selector exposes only genuine, tested routes from the central registry | Verified complete | `lib/capability-registry.ts`, `publicProfilesFor`, registry unit tests, and the generated `TESTED.md` table | Re-run the registry/report consistency audit after every promotion. |
 | P-06 | Every public profile remains at or below 250 MiB complete-Chromium incremental private memory | Verified complete for the current registry | `npm run audit:public-evidence` now proves 388/388 have strict passing reports, three-run evidence, and evidence at the published maximum; `scripts/memory-profile.mjs` uses the required process-tree formula and per-process sampling | Apply the same gate to every new route. |
-| P-07 | Memory remains approximately independent of total file size | Partially implemented | Valid 6 GiB and 10 GiB MKV-to-MP4 remux runs stayed at 194.8 and 210.3 MiB; bounded category reports cover smaller stress sizes | Add progressive multi-gigabyte evidence for representative newly added media families and at least one genuine re-encode topology where disk/time permits. Do not describe remux evidence as re-encode evidence. |
-| P-08 | Optimize conversion speed without weakening correctness, privacy, fidelity, cleanup, or memory | Partially implemented | `TESTED.md` contains measured accepted and rejected optimizations, including BYOB media input and Markdown/TXT-to-EPUB improvements | Continue benchmark-before/after work per remaining route; record rejected candidates here and in `TESTED.md`. |
+| P-07 | Memory remains approximately independent of total file size | Partially implemented | Valid 6 GiB and 10 GiB MKV-to-MP4 remux runs stayed at 194.8 and 210.3 MiB; the latter figure is memory, while its genuine output was 10,746,764,442 bytes; bounded category reports cover smaller stress sizes | Add progressive multi-gigabyte evidence for representative newly added media families and at least one genuine re-encode topology where disk/time permits. Do not describe remux evidence as re-encode evidence. |
+| P-08 | Optimize conversion speed without weakening correctness, privacy, fidelity, cleanup, or memory | Partially implemented | `TESTED.md` contains measured accepted and rejected optimizations. `evidence/remux-performance-audit-2026-08-28.json` records an identical three-run 2.958 GB A/B: the retained 1 MiB direct specialist's 36.064 s median is 16.4% faster than the 256 KiB candidate, with identical output SHA-256 and both under 250 MiB | Continue benchmark-before/after work per remaining route; record rejected candidates here and in `TESTED.md`. |
 
 ## Bounded architecture and storage
 
@@ -132,6 +132,11 @@ not the entire product specification.
 - Do not claim Chrome evidence proves Edge, Brave, or Opera behavior.
 - Do not add a format solely because an extension can be emitted; structural and
   independent content validation remains mandatory.
+- Do not replace the direct MKV-to-MP4 specialist with the ordinary 256 KiB
+  core. Under an identical three-run Chrome 152/direct-destination comparison,
+  that candidate produced the same output but raised median elapsed time from
+  36.064 to 43.141 seconds (16.4% slower). It was reverted; compact evidence is
+  retained in `evidence/remux-performance-audit-2026-08-28.json`.
 - A real WAV-to-MP3 bitrate/rate/channel ABI and UI draft was removed before
   exposure because the changed FFmpeg Wasm could not be rebuilt and tested:
   Docker Desktop 4.47.0 crashed on its `dockerInference` runtime socket, and the
@@ -155,6 +160,13 @@ not the entire product specification.
   option fields, the single-number Wasm call, installed-tool findings, and disk
   preflight. This prevents another loop that attempts to attach controls to a
   binary that cannot receive them.
+- Benchmarked the direct MKV-to-MP4 production path against the ordinary 256 KiB
+  core using the same protected 2.958 GB source, direct selected destination,
+  Chrome 152 build, validator, and three-run gate. Both candidates wrote the
+  identical 2,962,151,538-byte output hash and remained below 250 MiB, but the
+  retained 1 MiB specialist improved median throughput by 19.6% (82.14 versus
+  68.66 MB/s). The temporary selector change was reverted, converted copies and
+  rejected raw reports were deleted, and no Docker environment was used.
 - Added `lib/media-conversion-plan.ts`. It applies the actual fixed FFmpeg
   profile policy to every bounded-inspection stream and reports **Copy**,
   **Re-encode**, **Exclude**, or **Reject** before conversion. Codec-incompatible
