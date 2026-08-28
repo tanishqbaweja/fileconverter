@@ -1075,14 +1075,25 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  const hevcFixtureArgs = existsSync(protectedHevcSourcePath)
+    ? [
+        "-i", protectedHevcSourcePath, "-t", "4",
+        "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
+        "-map_metadata", "0", "-f", "mov", hevcMovFixturePath,
+      ]
+    : [
+        "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=4",
+        "-f", "lavfi", "-i", "sine=frequency=880:sample_rate=48000:duration=4",
+        "-map", "0:v:0", "-map", "1:a:0",
+        "-c:v", "libx265", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+        "-x265-params", "pools=1:frame-threads=1",
+        "-c:a", "aac", "-b:a", "96k", "-shortest",
+        "-metadata", "title=Within synthetic hosted HEVC fixture",
+        "-f", "mov", hevcMovFixturePath,
+      ];
   await execFileAsync(
     "ffmpeg",
-    [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-i", protectedHevcSourcePath, "-t", "4",
-      "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
-      "-map_metadata", "0", "-f", "mov", hevcMovFixturePath,
-    ],
+    ["-hide_banner", "-loglevel", "error", "-nostdin", "-y", ...hevcFixtureArgs],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   await Promise.all([

@@ -73,7 +73,10 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: sudo apt-get update
-      - run: sudo apt-get install -y ffmpeg
+      - name: Install independent native validators
+        run: |
+          sudo apt-get install -y ffmpeg libarchive-tools
+          python -m pip install --disable-pip-version-check -r scripts/requirements-ci-validators.txt
 
       - name: Audit public route evidence
         run: npm run audit:public-evidence:manifest

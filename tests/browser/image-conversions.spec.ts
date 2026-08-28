@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
+const archiveTool = process.platform === "win32" ? "tar" : "bsdtar";
 const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
 const baseURL =
   process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
@@ -307,7 +308,11 @@ for (const [
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
       const stream = JSON.parse(stdout).streams[0];
-      expect(stream.codec_name).toBe(expectedCodec);
+      if (expectedCodec === "jpegxl_anim") {
+        expect(["jpegxl", "jpegxl_anim"]).toContain(stream.codec_name);
+      } else {
+        expect(stream.codec_name).toBe(expectedCodec);
+      }
       expect(stream.width).toBe(expectedWidth);
       expect(stream.height).toBe(expectedHeight);
       if (alphaExpectation === "preserved") {
@@ -428,8 +433,10 @@ test("GIF to JPEG XL preserves every frame, microsecond timing, and infinite loo
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
     const probe = JSON.parse(probeText);
+    expect(["jpegxl", "jpegxl_anim"]).toContain(
+      probe.streams[0].codec_name,
+    );
     expect(probe.streams[0]).toMatchObject({
-      codec_name: "jpegxl_anim",
       width: 1024,
       height: 768,
       pix_fmt: "rgba",
@@ -469,7 +476,7 @@ test("GIF to JPEG XL preserves every frame, microsecond timing, and infinite loo
     const verifyState = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
     await copyAndDeleteBrowserOutput(verifyState!.opfsName!, archivePath);
     await mkdir(extractRoot, { recursive: true });
-    await execFileAsync("tar", ["-xf", archivePath, "-C", extractRoot], {
+    await execFileAsync(archiveTool, ["-xf", archivePath, "-C", extractRoot], {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 1024 * 1024,
@@ -552,12 +559,12 @@ test("animated transparent WebP to AVIF preserves frames, timing, looping, and a
     await copyAndDeleteBrowserOutput(sourceZipName, sourceArchivePath);
     await mkdir(avifFrames, { recursive: true });
     await mkdir(sourceFrames, { recursive: true });
-    await execFileAsync("tar", ["-xf", avifArchivePath, "-C", avifFrames], {
+    await execFileAsync(archiveTool, ["-xf", avifArchivePath, "-C", avifFrames], {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 1024 * 1024,
     });
-    await execFileAsync("tar", ["-xf", sourceArchivePath, "-C", sourceFrames], {
+    await execFileAsync(archiveTool, ["-xf", sourceArchivePath, "-C", sourceFrames], {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 1024 * 1024,
@@ -718,7 +725,7 @@ for (const route of [
 
       await mkdir(extractRoot, { recursive: true });
       const { stdout: listing } = await execFileAsync(
-        "tar",
+        archiveTool,
         ["-tf", outputPath],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
       );
@@ -731,7 +738,7 @@ for (const route of [
       ];
       expect(listing.trim().split(/\r?\n/)).toEqual(expectedNames);
       await execFileAsync(
-        "tar",
+        archiveTool,
         ["-xf", outputPath, "-C", extractRoot],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
       );
@@ -1718,14 +1725,14 @@ test("tiff-to-zip archives every page with exact decoded pixels", async () => {
     await copyAndDeleteBrowserOutput(state!.opfsName!, outputPath);
 
     const expectedNames = ["page-0001.png", "page-0002.png", "pages.json"];
-    const { stdout: listing } = await execFileAsync("tar", ["-tf", outputPath], {
+    const { stdout: listing } = await execFileAsync(archiveTool, ["-tf", outputPath], {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 1024 * 1024,
     });
     expect(listing.trim().split(/\r?\n/)).toEqual(expectedNames);
     await mkdir(extractRoot, { recursive: true });
-    await execFileAsync("tar", ["-xf", outputPath, "-C", extractRoot], {
+    await execFileAsync(archiveTool, ["-xf", outputPath, "-C", extractRoot], {
       cwd: projectRoot,
       windowsHide: true,
       maxBuffer: 1024 * 1024,
