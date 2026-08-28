@@ -4,6 +4,7 @@ import {
   conversionProfiles,
   detectFormat,
   formatById,
+  preferredProfileFor,
   publicProfilesFor,
   type ConversionProfile,
 } from "../../lib/capability-registry";
@@ -793,7 +794,7 @@ export function ConverterApp() {
       setFile(nextFile);
       setBatchFiles(nextFiles);
       setInputFormat(detected);
-      setProfileId(nextProfiles[0]?.id ?? null);
+      setProfileId(preferredProfileFor(detected, nextProfiles)?.id ?? null);
       setSourceMediaInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);

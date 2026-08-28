@@ -212,6 +212,11 @@ codec is absent or incompatible, avoiding a guaranteed-to-fail engine run. The
 engine still validates the complete container during conversion and emits
 runtime warnings for elements outside the bounded preflight scan.
 
+Initial route selection prefers an exact format-specific conversion and, for
+video, a certified same-category container stream copy before any elementary
+extraction or re-encode. Generic GZIP/BZIP2/XZ remain available in the selector
+but are the default only when no format-specific profile exists.
+
 An abandonment test reloads the page during a real large streaming conversion.
 The next app start removes the locked job's released `within-*` partial while an
 unrelated browser-storage sentinel remains unchanged, proving cleanup is scoped

@@ -5,6 +5,7 @@ import {
   conversionProfiles,
   detectFormat,
   formats,
+  preferredProfileFor,
   publicProfilesFor,
 } from "../lib/capability-registry.ts";
 
@@ -35,6 +36,29 @@ test("normal selector exposes only public profiles with passed evidence", () => 
       assert.ok(profile.maxTestedBytes > 0);
     }
   }
+});
+
+test("initial selection prefers an exact same-category stream copy", () => {
+  assert.equal(
+    preferredProfileFor("mkv", publicProfilesFor("mkv"))?.id,
+    "mkv-to-mp4",
+  );
+  assert.equal(
+    preferredProfileFor("mp4", publicProfilesFor("mp4"))?.id,
+    "mp4-to-mkv",
+  );
+  assert.equal(
+    preferredProfileFor("ogv", publicProfilesFor("ogv"))?.id,
+    "ogv-to-mkv",
+  );
+  assert.equal(
+    preferredProfileFor("csv", publicProfilesFor("csv"))?.id,
+    "csv-to-tsv",
+  );
+  assert.equal(
+    preferredProfileFor("binary", publicProfilesFor("binary"))?.id,
+    "gzip-compress",
+  );
 });
 
 test("registry has no unresolved pending profiles and keeps failed evidence hidden", () => {

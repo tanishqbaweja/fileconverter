@@ -5917,3 +5917,33 @@ export function publicProfilesFor(
         (profile.public && profile.automatedTestStatus === "passed")),
   );
 }
+
+export function preferredProfileFor(
+  input: string,
+  candidates: readonly ConversionProfile[],
+): ConversionProfile | null {
+  const videoElementaryOutputs = new Set(["h264", "hevc", "m2v", "m4v"]);
+  const exact = candidates.filter((profile) => profile.input === input);
+  const inputCategory = formatById(input)?.category;
+  const sameCategory = inputCategory
+    ? exact.filter(
+        (profile) => formatById(profile.output)?.category === inputCategory,
+      )
+    : [];
+  const preferredSameCategory =
+    inputCategory === "video"
+      ? sameCategory.filter(
+          (profile) => !videoElementaryOutputs.has(profile.output),
+        )
+      : sameCategory;
+  return (
+    preferredSameCategory.find((profile) => profile.route === "stream-copy") ??
+    preferredSameCategory[0] ??
+    sameCategory.find((profile) => profile.route === "stream-copy") ??
+    sameCategory[0] ??
+    exact.find((profile) => profile.route === "stream-copy") ??
+    exact[0] ??
+    candidates[0] ??
+    null
+  );
+}

@@ -17,6 +17,14 @@
     ],
     "metadataSignals": ["Title", "Chapters", "Attachments", "Tags"]
   },
+  "defaultSelection": {
+    "detectedInput": "mkv",
+    "selectedProfileId": "mkv-to-mp4",
+    "selectedRoute": "stream-copy",
+    "genericCompressionSelected": false,
+    "conversionPlanVisibleWithoutManualRouteChange": true,
+    "passed": true
+  },
   "checks": [
     {
       "profileId": "mkv-to-mp4",

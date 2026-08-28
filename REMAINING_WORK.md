@@ -160,6 +160,12 @@ not the entire product specification.
   **Re-encode**, **Exclude**, or **Reject** before conversion. Codec-incompatible
   stream-copy inputs are shown as rejections; they are never described as an
   implicit transcode or extension rename.
+- Corrected initial route selection: it now prefers an exact same-category
+  profile and, for video, a standards-compliant non-elementary stream copy. A
+  selected Matroska file therefore opens on `mkv-to-mp4`, not generic GZIP;
+  MP4 opens on `mp4-to-mkv`, OGV on `ogv-to-mkv`, and raw/unknown binary still
+  falls back to GZIP. This removes a manual step and starts from the fastest
+  preservation-valid media topology.
 - The production UI now displays those outcomes, details first-stream and
   destination policies, connects detected metadata signals to the exact
   destination limitations, and disables Start when bounded inspection proves a
@@ -167,7 +173,7 @@ not the entire product specification.
   MP4/Matroska copy, incompatible rejection, first-stream extraction, all-stream
   M4A AAC copy, missing-codec blocking, OGV audio preservation, audio
   re-encoding, and AV1 WebM copy/exclusion.
-- Production build, ESLint, TypeScript, and all 73 unit tests pass. Headed Chrome
+- Production build, ESLint, TypeScript, and all 74 unit tests pass. Headed Chrome
   152 against the retained 780,953-byte complex Matroska fixture showed the
   correct four-stream plan for both `mkv-to-mp4` and `mkv-to-webm-vp9`; it also
   blocked `mkv-to-mp3` before start because the fixture has no MP3 stream. The
