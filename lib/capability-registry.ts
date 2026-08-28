@@ -935,13 +935,13 @@ type ThreeGpAmrOutput = "aiff" | "mp3" | "opus" | "ogg";
 function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
   const outputDescription = {
     aiff: "signed 16-bit big-endian PCM AIFF",
-    mp3: "128 kb/s mono MP3",
+    mp3: "32 kb/s mono MP3",
     opus: "64 kb/s mono Opus in Ogg",
     ogg: "quality-4 mono Vorbis in Ogg",
   }[output];
   const rateDescription = {
     aiff: "the source sample rate (8 kHz for AMR-NB or 48 kHz for the certified AAC-LC variant)",
-    mp3: "32 kHz for LAME compatibility",
+    mp3: "the source 8 kHz sample rate",
     opus: "the source 8 kHz rate internally; Ogg signals the standard 48 kHz Opus clock",
     ogg: "the source 8 kHz sample rate",
   }[output];

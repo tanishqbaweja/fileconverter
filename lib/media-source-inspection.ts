@@ -1018,9 +1018,45 @@ function isoCodec(code: string): string {
       vp08: "VP8",
       vp09: "VP9",
       mp4v: "MPEG-4 Part 2",
+      m2v1: "MPEG-2 Video",
+      m2v2: "MPEG-2 Video",
       s263: "H.263",
     } as Record<string, string>
   )[code] ?? `ISO sample entry ${code}`;
+}
+
+function isoEsdsObjectType(view: DataView): number | null {
+  const descriptor = (offset: number) => {
+    if (offset >= view.byteLength) return null;
+    const tag = view.getUint8(offset);
+    let cursor = offset + 1;
+    let length = 0;
+    for (let index = 0; index < 4; index += 1) {
+      if (cursor >= view.byteLength) return null;
+      const value = view.getUint8(cursor++);
+      length = length * 128 + (value & 0x7f);
+      if ((value & 0x80) === 0) {
+        return cursor + length <= view.byteLength
+          ? { tag, dataStart: cursor, end: cursor + length }
+          : null;
+      }
+    }
+    return null;
+  };
+  const es = descriptor(4);
+  if (!es || es.tag !== 0x03 || es.dataStart + 3 > es.end) return null;
+  let cursor = es.dataStart + 3;
+  const flags = view.getUint8(es.dataStart + 2);
+  if ((flags & 0x80) !== 0) cursor += 2;
+  if ((flags & 0x40) !== 0) {
+    if (cursor >= es.end) return null;
+    cursor += 1 + view.getUint8(cursor);
+  }
+  if ((flags & 0x20) !== 0) cursor += 2;
+  const decoder = descriptor(cursor);
+  return decoder && decoder.tag === 0x04 && decoder.dataStart < decoder.end
+    ? view.getUint8(decoder.dataStart)
+    : null;
 }
 
 async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
@@ -1257,11 +1293,54 @@ async function inspectIsoBmff(file: Blob): Promise<AudioSourceInspection> {
             if (["alac", "lpcm", "sowt", "twos"].includes(entry.type)) {
               track.bitsPerSample = declaredBits || null;
             }
+            const audioEntryVersion = audio.getUint16(8, false);
+            const audioHeaderBytes =
+              audioEntryVersion === 1 ? 44 : audioEntryVersion === 2 ? 64 : 28;
+            if (entry.type === "mp4a" && available >= audioHeaderBytes + 8) {
+              for (
+                let childOffset = entry.dataStart + audioHeaderBytes;
+                childOffset + 8 <= entry.end;
+              ) {
+                const child = await readBox(childOffset, entry.end);
+                if (child.type === "esds") {
+                  const payload = await read(
+                    child.dataStart,
+                    child.end - child.dataStart,
+                  );
+                  const objectType = isoEsdsObjectType(payload);
+                  if (objectType === 0x69 || objectType === 0x6b) {
+                    track.codec = ".mp3";
+                  }
+                  break;
+                }
+                childOffset = child.end;
+              }
+            }
           } else if (track.handler === "vide" && available >= 28) {
             const video = await read(entry.dataStart, 28);
             track.codec = entry.type;
             track.width = finitePositive(video.getUint16(24, false));
             track.height = finitePositive(video.getUint16(26, false));
+            if (entry.type === "mp4v" && available >= 86) {
+              for (
+                let childOffset = entry.dataStart + 78;
+                childOffset + 8 <= entry.end;
+              ) {
+                const child = await readBox(childOffset, entry.end);
+                if (child.type === "esds") {
+                  const payload = await read(
+                    child.dataStart,
+                    child.end - child.dataStart,
+                  );
+                  const objectType = isoEsdsObjectType(payload);
+                  if (objectType !== null && objectType >= 0x60 && objectType <= 0x65) {
+                    track.codec = "m2v1";
+                  }
+                  break;
+                }
+                childOffset = child.end;
+              }
+            }
           }
         }
       } else if (box.type === "stsz" && track && box.end - box.dataStart >= 12) {
@@ -2218,6 +2297,7 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
     let frameRate: number | null = null;
     let sampleRateHz: number | null = null;
     let channels: number | null = null;
+    let codec = track.codec;
     if (track.streamType === 0x1b) {
       const dimensions = h264Dimensions(elementary);
       width = dimensions?.width ?? null;
@@ -2254,6 +2334,14 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
         break;
       }
     }
+    if (track.streamType === 0x03 || track.streamType === 0x04) {
+      const mp3 = findMp3Frame(elementary);
+      if (mp3) {
+        codec = "MP3";
+        sampleRateHz = mp3.sampleRateHz;
+        channels = mp3.channels;
+      }
+    }
     const first = track.prefixPts[0];
     const last = track.tailPts.at(-1) ?? track.prefixPts.at(-1);
     let durationSeconds =
@@ -2267,7 +2355,7 @@ async function inspectMpegTs(file: Blob): Promise<MediaSourceInspection> {
     }
     return {
       mediaType: track.mediaType,
-      codec: track.codec,
+      codec,
       durationSeconds,
       bitrateBps: null,
       sampleRateHz,
@@ -2340,6 +2428,7 @@ function aviVideoCodec(code: string): string {
     VP90: "VP9",
     AV01: "AV1",
     MPG2: "MPEG-2 Video",
+    mpg2: "MPEG-2 Video",
   } as Record<string, string>)[code] ?? `AVI video codec ${code || "unknown"}`;
 }
 

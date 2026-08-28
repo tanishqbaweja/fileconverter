@@ -250,7 +250,7 @@ test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async ()
   assert.equal(aac.sampleRateHz, 48_000);
   assert.equal(aac.channelLayout, "Mono");
   assert.deepEqual(aac.metadataSignals, ["User metadata box"]);
-  assert.equal(aac.inspectedBytes, 1_068);
+  assert.equal(aac.inspectedBytes, 1_122);
 
   const alacSource = await trackedNamedFixture("audio-source-alac.m4a");
   const alac = await inspectMediaSource(alacSource, "m4a");
@@ -268,8 +268,8 @@ test("bounded ISO-BMFF inspection handles AAC and fragmented ALAC M4A", async ()
 
 test("bounded ISO-BMFF inspection reports genuine MOV and 3GP video plus audio tracks", async () => {
   for (const [name, format, container, inspectedBytes] of [
-    ["quicktime-source.mov", "mov", "QuickTime / MOV", 1_768],
-    ["mobile-video-source.3gp", "3gp", "3GP / ISO-BMFF", 1_728],
+    ["quicktime-source.mov", "mov", "QuickTime / MOV", 1_784],
+    ["mobile-video-source.3gp", "3gp", "3GP / ISO-BMFF", 1_782],
   ]) {
     const source = await trackedNamedFixture(name);
     const result = await inspectMediaSource(source, format);

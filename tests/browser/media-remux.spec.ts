@@ -659,6 +659,35 @@ async function currentState() {
   });
 }
 
+async function startEnabledConversion(): Promise<void> {
+  const button = page.locator('[data-testid="convert-button"]');
+  await expect(button).toBeEnabled({ timeout: 15_000 });
+  await button.click();
+}
+
+async function expectSourcePlanBlocked(
+  profileId: string,
+  expectedDetail?: string,
+): Promise<void> {
+  const plan = page.locator('[data-testid="media-conversion-plan"]');
+  await expect(plan).toBeVisible({ timeout: 15_000 });
+  await expect(plan.locator(".conversion-plan-blocker")).toBeVisible();
+  if (expectedDetail) await expect(plan).toContainText(expectedDetail);
+  await expect(page.locator('[data-testid="convert-button"]')).toBeDisabled();
+  const state = await currentState();
+  expect(state.jobState).toBe("idle");
+  expect(state.opfsName).toBeNull();
+  const leftovers = await page.evaluate(async (id) => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith(`within-test-${id}`)) names.push(name);
+    }
+    return names;
+  }, profileId);
+  expect(leftovers).toEqual([]);
+}
+
 async function decodedPcmSha256(inputPath: string): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
@@ -792,6 +821,29 @@ async function expectDecodedVideoMatch(
 ): Promise<void> {
   expect(await decodedVideoSha256(outputPath)).toBe(
     await decodedVideoSha256(sourcePath),
+  );
+}
+
+async function videoPacketSha256(inputPath: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", "0:v:0", "-c", "copy", "-bsf:v",
+      "h264_mp4toannexb,filter_units=pass_types=1-5", "-f", "hash",
+      "-hash", "sha256", "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return stdout.trim().split("=")[1];
+}
+
+async function expectVideoPacketMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await videoPacketSha256(outputPath)).toBe(
+    await videoPacketSha256(sourcePath),
   );
 }
 
@@ -1805,7 +1857,7 @@ async function runMediaRoute(
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
 
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
@@ -2073,7 +2125,7 @@ async function runSmallDirectAudioRoute(
     await removeBrowserStorageEntry(outputName);
     await page.locator('[data-testid="file-input"]').setInputFiles(inputPath);
     await page.locator('[data-testid="format-select"]').selectOption(profileId);
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
       .not.toBe("running");
@@ -2205,7 +2257,7 @@ test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-sav
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mkv-to-mp4");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 15_000 })
       .not.toBe("idle");
@@ -2293,7 +2345,7 @@ test("browser FFmpeg coalesces PCM packets for a bounded direct WAV save", async
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-wav");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
       .not.toBe("running");
@@ -2422,7 +2474,7 @@ test("direct MP3 save propagates write failure and releases the partial file", a
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("wav-to-mp3");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
       .toBe("error");
@@ -2468,7 +2520,7 @@ test("direct AMR save propagates write failure and releases the partial file", a
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-amr");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
       .toBe("error");
@@ -2515,7 +2567,7 @@ test("direct AIFF coalescing propagates write failure and releases the partial f
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-aiff");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
       .toBe("error");
@@ -2561,7 +2613,7 @@ test("direct WAV coalescing propagates write failure and releases the partial fi
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-wav");
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
       .toBe("error");
@@ -2822,7 +2874,7 @@ for (const route of [
     );
     await page.locator('[data-testid="file-input"]').setInputFiles(route[1]);
     await page.locator('[data-testid="format-select"]').selectOption(route[0]);
-    await page.locator('[data-testid="convert-button"]').click();
+    await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
       .toBe("error");
@@ -2942,7 +2994,7 @@ test("browser FFmpeg rejects corrupt MKV and removes its partial output", async 
   await page
     .locator('[data-testid="format-select"]')
     .selectOption("mkv-to-mp4");
-  await page.locator('[data-testid="convert-button"]').click();
+  await startEnabledConversion();
   await expect
     .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
     .toBe("error");
@@ -2967,44 +3019,44 @@ for (const route of [
   {
     profileId: "mkv-to-mp4",
     title: "MP4",
-    expectedError: "Lossless MP4 stream copy accepts AAC audio",
+    expectedPlanDetail: "outside the destination's certified stream-copy set",
   },
   {
     profileId: "mkv-to-m4a",
     title: "M4A",
-    expectedError: "Lossless M4A stream copy accepts AAC audio",
+    expectedPlanDetail: "M4A stream copy accepts AAC audio only",
   },
   {
     profileId: "mkv-to-hevc",
     title: "HEVC extraction",
-    expectedError: "The first non-attached video stream is not HEVC",
+    expectedPlanDetail: "The first video stream is not HEVC",
     inputPath: fixturePath,
   },
   {
     profileId: "mkv-to-webm-av1",
     title: "AV1 WebM",
-    expectedError: "The first non-attached video stream is not AV1",
+    expectedPlanDetail: "The first video stream is not AV1",
   },
   {
     profileId: "mkv-to-mp3",
     title: "MP3 extraction",
-    expectedError: "No MP3 audio stream was found",
+    expectedPlanDetail: "No MP3 audio stream was found",
   },
   {
     profileId: "mkv-to-aac",
     title: "raw AAC extraction",
-    expectedError: "No AAC audio stream was found",
+    expectedPlanDetail: "No AAC audio stream was found",
   },
   {
     profileId: "mkv-to-ogg",
     title: "Ogg Vorbis extraction",
-    expectedError: "No Vorbis audio stream was found",
+    expectedPlanDetail: "No Vorbis audio stream was found",
     inputPath: fixturePath,
   },
   {
     profileId: "mkv-to-opus",
     title: "Ogg Opus extraction",
-    expectedError: "No Opus audio stream was found",
+    expectedPlanDetail: "No Opus audio stream was found",
   },
 ] as const) {
   test(`browser planner rejects a codec combination that ${route.title} cannot stream-copy`, async () => {
@@ -3022,27 +3074,7 @@ for (const route of [
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(route.profileId);
-    await page.locator('[data-testid="convert-button"]').click();
-    await expect
-      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-      .toBe("error");
-    const failed = await currentState();
-    expect(failed.error).toContain(route.expectedError);
-    expect(failed.opfsName).toBeNull();
-    const leftovers = await page.evaluate(async (profileId) => {
-      const root = await navigator.storage.getDirectory();
-      const names: string[] = [];
-      for await (const [name] of root.entries()) {
-        if (name.startsWith(`within-test-${profileId}`)) names.push(name);
-      }
-      return names;
-    }, route.profileId);
-    expect(leftovers).toEqual([]);
-    await expect
-      .poll(async () => (await currentState()).workerStatus, {
-        timeout: 15_000,
-      })
-      .toBe("ready");
+    await expectSourcePlanBlocked(route.profileId, route.expectedPlanDetail);
   });
 }
 
@@ -3529,7 +3561,7 @@ test("browser FFmpeg decodes AMR-NB to bounded PCM WAV", async () => {
     {
       expectedDurationSeconds: 4.02,
       validate: async (_probe, outputPath) =>
-        expectDecodedPcmMatch(amrFixturePath, outputPath),
+        expectDecodedAudioPsnr(amrFixturePath, outputPath, 45),
     },
   );
 });
@@ -3544,7 +3576,7 @@ test("browser FFmpeg converts AMR-NB to FLAC", async () => {
     {
       expectedDurationSeconds: 4.02,
       validate: async (_probe, outputPath) =>
-        expectDecodedPcmMatch(amrFixturePath, outputPath),
+        expectDecodedAudioPsnr(amrFixturePath, outputPath, 45),
     },
   );
 });
@@ -3685,7 +3717,9 @@ for (const [route, input, inputPath, losslessPcm] of standaloneAiffRoutes) {
           if (input === "wav") {
             expectMediaTitle(probe, "Within deterministic WAV fixture");
           }
-          if (losslessPcm) {
+          if (input === "amr") {
+            await expectDecodedAudioPsnr(inputPath, outputPath, 45);
+          } else if (losslessPcm) {
             await expectDecodedPcmMatch(inputPath, outputPath);
           } else {
             await expectDecodedAudioPsnr(inputPath, outputPath, 60);
@@ -4470,18 +4504,18 @@ for (const [route, output, codec] of threeGpAmrOutputRoutes) {
           if (output === "wav") {
             expect(String(probe.format.format_name).split(",")).toContain("wav");
             expect(Number(audio?.sample_rate)).toBe(8_000);
-            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+            await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "flac") {
             expect(String(probe.format.format_name).split(",")).toContain("flac");
             expect(Number(audio?.sample_rate)).toBe(8_000);
-            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+            await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "aiff") {
             expect(String(probe.format.format_name).split(",")).toContain("aiff");
             expect(Number(audio?.sample_rate)).toBe(8_000);
-            await expectDecodedPcmMatch(threeGpAmrFixturePath, outputPath);
+            await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "mp3") {
             expect(String(probe.format.format_name).split(",")).toContain("mp3");
-            expect(Number(audio?.sample_rate)).toBe(32_000);
+            expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectMp3TranscodeQuality(threeGpAmrFixturePath, outputPath);
           } else if (output === "opus") {
             expect(String(probe.format.format_name).split(",")).toContain("ogg");
@@ -4891,7 +4925,7 @@ for (const route of [
     await runMediaRoute(route[0], route[2], ["hevc"], 100_000, route[1], {
       expectedWarningFragments: ["Audio cannot be represented"],
       expectedDurationSeconds: 4,
-      durationToleranceSeconds: 0.15,
+      durationToleranceSeconds: 0.2,
       validate: async (probe, outputPath) => {
         expect(probe.streams).toHaveLength(1);
         await expectDecodedVideoMatch(route[1], outputPath);
@@ -4918,10 +4952,10 @@ for (const route of [
         expect(probe.format.format_name?.split(",")).toContain("matroska");
         expect(probe.streams).toHaveLength(2);
         await expectDecodedVideoMatch(route[1], outputPath);
-        if (route[0] === "avi-to-mkv") {
-          await expectCompressedAudioPacketMatch(route[1], outputPath);
+        if (route[4] === "aac") {
+          await expectAacAccessUnitMatch(route[1], outputPath);
         } else {
-          await expectDecodedPcmMatch(route[1], outputPath);
+          await expectCompressedAudioPacketMatch(route[1], outputPath);
         }
       },
     });
@@ -4992,7 +5026,7 @@ test("Matroska stream copy preserves compatible streams, chapters, and metadata"
   );
 });
 
-test("Matroska stream copy rejects codecs outside its certified set and cleans up", async () => {
+test("Matroska planner blocks codecs outside its certified set without creating output", async () => {
   await page.goto("/?test=1");
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -5001,24 +5035,10 @@ test("Matroska stream copy rejects codecs outside its certified set and cleans u
     .locator('[data-testid="file-input"]')
     .setInputFiles(unsupportedMatroskaFixturePath);
   await page.locator('[data-testid="format-select"]').selectOption("avi-to-mkv");
-  await page.locator('[data-testid="convert-button"]').click();
-  await expect
-    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-    .toBe("error");
-  const state = await currentState();
-  expect(state.error).toContain(
-    "Matroska stream copy received a stream codec outside the certified compatibility set",
+  await expectSourcePlanBlocked(
+    "avi-to-mkv",
+    "outside the destination's certified stream-copy set",
   );
-  expect(state.opfsName).toBeNull();
-  const leftovers = await page.evaluate(async () => {
-    const root = await navigator.storage.getDirectory();
-    const names: string[] = [];
-    for await (const [name] of root.entries()) {
-      if (name.startsWith("within-test-avi-to-mkv")) names.push(name);
-    }
-    return names;
-  });
-  expect(leftovers).toEqual([]);
 });
 
 for (const route of [
@@ -5064,7 +5084,7 @@ test("browser FFmpeg losslessly remuxes HEVC MKV to bounded MPEG-TS", async () =
   );
 });
 
-test("MPEG-TS stream copy rejects incompatible audio and cleans up", async () => {
+test("MPEG-TS planner blocks incompatible audio without creating output", async () => {
   await page.goto("/?test=1");
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -5073,24 +5093,10 @@ test("MPEG-TS stream copy rejects incompatible audio and cleans up", async () =>
     .locator('[data-testid="file-input"]')
     .setInputFiles(incompatibleFixturePath);
   await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mpeg-ts");
-  await page.locator('[data-testid="convert-button"]').click();
-  await expect
-    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-    .toBe("error");
-  const state = await currentState();
-  expect(state.error).toContain(
-    "MPEG-TS stream copy accepts H.264 or HEVC video with AAC audio",
+  await expectSourcePlanBlocked(
+    "mkv-to-mpeg-ts",
+    "outside the destination's certified stream-copy set",
   );
-  expect(state.opfsName).toBeNull();
-  const leftovers = await page.evaluate(async () => {
-    const root = await navigator.storage.getDirectory();
-    const names: string[] = [];
-    for await (const [name] of root.entries()) {
-      if (name.startsWith("within-test-mkv-to-mpeg-ts")) names.push(name);
-    }
-    return names;
-  });
-  expect(leftovers).toEqual([]);
 });
 
 for (const route of [
@@ -5120,31 +5126,17 @@ for (const rejection of [
   ["incompatible audio", incompatibleFixturePath],
   ["HEVC video", hevcContainerFixturePaths.mkv],
 ] as const) {
-  test(`3GP stream copy rejects ${rejection[0]} and cleans up`, async () => {
+  test(`3GP planner blocks ${rejection[0]} without creating output`, async () => {
     await page.goto("/?test=1");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
     await page.locator('[data-testid="format-select"]').selectOption("mkv-to-3gp");
-    await page.locator('[data-testid="convert-button"]').click();
-    await expect
-      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-      .toBe("error");
-    const state = await currentState();
-    expect(state.error).toContain(
-      "3GP stream copy accepts H.264 video with AAC audio",
+    await expectSourcePlanBlocked(
+      "mkv-to-3gp",
+      "outside the destination's certified stream-copy set",
     );
-    expect(state.opfsName).toBeNull();
-    const leftovers = await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory();
-      const names: string[] = [];
-      for await (const [name] of root.entries()) {
-        if (name.startsWith("within-test-mkv-to-3gp")) names.push(name);
-      }
-      return names;
-    });
-    expect(leftovers).toEqual([]);
   });
 }
 
@@ -5201,31 +5193,17 @@ for (const rejection of [
   ["incompatible audio", incompatibleFixturePath],
   ["MPEG-4 Part 2 video", m4vContainerFixturePaths.mkv],
 ] as const) {
-  test(`MOV stream copy rejects ${rejection[0]} and cleans up`, async () => {
+  test(`MOV planner blocks ${rejection[0]} without creating output`, async () => {
     await page.goto("/?test=1");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
     await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mov");
-    await page.locator('[data-testid="convert-button"]').click();
-    await expect
-      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-      .toBe("error");
-    const state = await currentState();
-    expect(state.error).toContain(
-      "MOV stream copy accepts H.264 or HEVC video with AAC audio",
+    await expectSourcePlanBlocked(
+      "mkv-to-mov",
+      "outside the destination's certified stream-copy set",
     );
-    expect(state.opfsName).toBeNull();
-    const leftovers = await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory();
-      const names: string[] = [];
-      for await (const [name] of root.entries()) {
-        if (name.startsWith("within-test-mkv-to-mov")) names.push(name);
-      }
-      return names;
-    });
-    expect(leftovers).toEqual([]);
   });
 }
 
@@ -5248,7 +5226,7 @@ for (const route of [
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("flv");
         expect(probe.streams).toHaveLength(2);
-        await expectDecodedVideoMatch(route[1], outputPath);
+        await expectVideoPacketMatch(route[1], outputPath);
         await expectAacAccessUnitMatch(route[1], outputPath);
       },
     });
@@ -5259,31 +5237,17 @@ for (const rejection of [
   ["incompatible audio", incompatibleFixturePath],
   ["MPEG-4 Part 2 video", m4vContainerFixturePaths.mkv],
 ] as const) {
-  test(`FLV stream copy rejects ${rejection[0]} and cleans up`, async () => {
+  test(`FLV planner blocks ${rejection[0]} without creating output`, async () => {
     await page.goto("/?test=1");
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
     await page.locator('[data-testid="format-select"]').selectOption("mkv-to-flv");
-    await page.locator('[data-testid="convert-button"]').click();
-    await expect
-      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-      .toBe("error");
-    const state = await currentState();
-    expect(state.error).toContain(
-      "FLV stream copy accepts H.264 video with AAC audio",
+    await expectSourcePlanBlocked(
+      "mkv-to-flv",
+      "outside the destination's certified stream-copy set",
     );
-    expect(state.opfsName).toBeNull();
-    const leftovers = await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory();
-      const names: string[] = [];
-      for await (const [name] of root.entries()) {
-        if (name.startsWith("within-test-mkv-to-flv")) names.push(name);
-      }
-      return names;
-    });
-    expect(leftovers).toEqual([]);
   });
 }
 

@@ -910,6 +910,26 @@ for (const route of [
       }
       if (route.sourceFormat === "avif") {
         expect(manifest.aggregateDecodedBytes).toBe(4_718_592);
+        const { stdout: sourceProbeJson } = await execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-select_streams",
+            "v",
+            "-show_entries",
+            "stream=index",
+            "-of",
+            "json",
+            sourcePath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+        );
+        const sourceVideoStreams = JSON.parse(sourceProbeJson).streams as Array<{
+          index: number;
+        }>;
+        const nativeVideoIndex = sourceVideoStreams.at(-1)?.index;
+        expect(nativeVideoIndex).toBeDefined();
         for (let index = 0; index < 8; index += 1) {
           expect(manifest.frames[index].timestampMicros).toBe(index * 250_000);
           expect(manifest.frames[index].durationMicros).toBe(250_000);
@@ -925,7 +945,7 @@ for (const route of [
               "-i",
               sourcePath,
               "-map",
-              "0:v:1",
+              `0:${nativeVideoIndex}`,
               "-vf",
               `select=eq(n\\,${index})`,
               "-fps_mode",

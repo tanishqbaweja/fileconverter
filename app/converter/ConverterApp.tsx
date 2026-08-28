@@ -1595,6 +1595,7 @@ export function ConverterApp() {
                   onClick={startConversion}
                   disabled={
                     !selectedProfile ||
+                    (mediaProfile && sourceInspectionStatus === "inspecting") ||
                     Boolean(mediaConversionPlan?.blockingReasons.length) ||
                     (!testMode &&
                       (batchFiles.length > 1
