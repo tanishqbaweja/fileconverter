@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
 import { open, readFile } from "node:fs/promises";
 import test from "node:test";
 
@@ -355,56 +356,66 @@ test("bounded WebM inspection reports genuine VP9 and Opus tracks", async () => 
   assert.deepEqual(source.reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
 });
 
-test("protected multi-gigabyte Matroska inspection reads only 64 KiB", async () => {
-  const handle = await open(new URL("../test.mkv", import.meta.url), "r");
-  const stat = await handle.stat();
-  const reads = [];
-  const source = {
-    size: stat.size,
-    slice(start = 0, end = stat.size) {
-      const boundedEnd = Math.min(end, stat.size);
-      reads.push([start, boundedEnd]);
-      return {
-        async arrayBuffer() {
-          const buffer = Buffer.alloc(boundedEnd - start);
-          const { bytesRead } = await handle.read(
-            buffer,
-            0,
-            buffer.byteLength,
-            start,
-          );
-          assert.equal(bytesRead, buffer.byteLength);
-          return buffer.buffer.slice(
-            buffer.byteOffset,
-            buffer.byteOffset + buffer.byteLength,
-          );
-        },
-      };
-    },
-  };
-  try {
-    const result = await inspectMediaSource(source, "mkv");
-    assert.ok(result);
-    assert.equal(result.container, "Matroska");
-    assert.equal(result.codec, "HEVC/H.265");
-    assert.equal(result.durationSeconds, 12_340.096);
-    assert.equal(result.width, 1_920);
-    assert.equal(result.height, 804);
-    assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
-    assert.deepEqual(result.streams.map((stream) => stream.mediaType), [
-      "video",
-      "audio",
-      "subtitle",
-    ]);
-    assert.equal(result.streams[1].codec, "AAC");
-    assert.equal(result.streams[1].sampleRateHz, 48_000);
-    assert.equal(result.streams[1].channels, 6);
-    assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
-    assert.deepEqual(reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
-  } finally {
-    await handle.close();
-  }
-});
+const protectedMkvUrl = new URL("../test.mkv", import.meta.url);
+
+test(
+  "protected multi-gigabyte Matroska inspection reads only 64 KiB",
+  {
+    skip: existsSync(protectedMkvUrl)
+      ? false
+      : "test.mkv is an intentionally untracked local stress fixture",
+  },
+  async () => {
+    const handle = await open(protectedMkvUrl, "r");
+    const stat = await handle.stat();
+    const reads = [];
+    const source = {
+      size: stat.size,
+      slice(start = 0, end = stat.size) {
+        const boundedEnd = Math.min(end, stat.size);
+        reads.push([start, boundedEnd]);
+        return {
+          async arrayBuffer() {
+            const buffer = Buffer.alloc(boundedEnd - start);
+            const { bytesRead } = await handle.read(
+              buffer,
+              0,
+              buffer.byteLength,
+              start,
+            );
+            assert.equal(bytesRead, buffer.byteLength);
+            return buffer.buffer.slice(
+              buffer.byteOffset,
+              buffer.byteOffset + buffer.byteLength,
+            );
+          },
+        };
+      },
+    };
+    try {
+      const result = await inspectMediaSource(source, "mkv");
+      assert.ok(result);
+      assert.equal(result.container, "Matroska");
+      assert.equal(result.codec, "HEVC/H.265");
+      assert.equal(result.durationSeconds, 12_340.096);
+      assert.equal(result.width, 1_920);
+      assert.equal(result.height, 804);
+      assert.ok(Math.abs(result.frameRate - 24) < 0.000001);
+      assert.deepEqual(result.streams.map((stream) => stream.mediaType), [
+        "video",
+        "audio",
+        "subtitle",
+      ]);
+      assert.equal(result.streams[1].codec, "AAC");
+      assert.equal(result.streams[1].sampleRateHz, 48_000);
+      assert.equal(result.streams[1].channels, 6);
+      assert.equal(result.inspectedBytes, MAX_MATROSKA_INSPECTION_BYTES);
+      assert.deepEqual(reads, [[0, MAX_MATROSKA_INSPECTION_BYTES]]);
+    } finally {
+      await handle.close();
+    }
+  },
+);
 
 test("bounded FLV inspection combines real codec tags and script metadata", async () => {
   const source = await trackedNamedFixture("flash-video-source.flv");

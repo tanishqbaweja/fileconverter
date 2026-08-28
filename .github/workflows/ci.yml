@@ -24,9 +24,9 @@ jobs:
         run: npm run audit:engine-reproducibility
 
       - id: manifest
-        name: Export engine build matrix
+        name: Export non-Docker engine build matrix
         shell: bash
-        run: echo "engines=$(node scripts/engine-reproducibility-manifest.mjs)" >> "$GITHUB_OUTPUT"
+        run: echo "engines=$(node scripts/engine-reproducibility-manifest.mjs --non-docker)" >> "$GITHUB_OUTPUT"
 
   reproduce-engines:
     needs: engine-matrix
@@ -36,7 +36,7 @@ jobs:
       fail-fast: false
       max-parallel: 4
       matrix: ${{ fromJSON(needs.engine-matrix.outputs.engines) }}
-    name: Reproduce ${{ matrix.id }}
+    name: Reproduce non-Docker ${{ matrix.id }}
     steps:
       - uses: actions/checkout@v4
 
@@ -51,6 +51,10 @@ jobs:
 
       - name: Rebuild pinned engine
         run: ${{ matrix.command }}
+
+      - name: Normalize generated artifact permissions
+        shell: bash
+        run: find "${{ matrix.output }}" -type f -exec chmod 0644 {} +
 
       - name: Verify reproducible engine artifacts
         run: git diff --exit-code -- ${{ matrix.output }}
