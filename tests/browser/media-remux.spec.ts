@@ -600,6 +600,11 @@ interface ProbeStream {
   codec_type: string;
   width?: number;
   height?: number;
+  sample_aspect_ratio?: string;
+  display_aspect_ratio?: string;
+  color_range?: string;
+  chroma_location?: string;
+  field_order?: string;
   sample_rate?: string;
   channels?: number;
   bit_rate?: string;
@@ -4928,13 +4933,34 @@ test("Matroska stream copy preserves compatible streams, chapters, and metadata"
         expect(probe.format.tags?.COMMENT).toBe(
           "Deterministic multi-stream metadata",
         );
-        expect(probe.streams.filter((stream) => stream.codec_type === "audio"))
-          .toHaveLength(2);
+        const video = probe.streams.find(
+          (stream) => stream.codec_type === "video",
+        );
+        expect(video).toMatchObject({
+          width: 640,
+          height: 360,
+          sample_aspect_ratio: "1:1",
+          display_aspect_ratio: "16:9",
+          color_range: "tv",
+          chroma_location: "left",
+          field_order: "progressive",
+        });
+        expect(video?.tags?.title).toBe("Variable timing video");
+        const audio = probe.streams.filter(
+          (stream) => stream.codec_type === "audio",
+        );
+        expect(audio).toHaveLength(2);
         expect(
-          probe.streams
-            .filter((stream) => stream.codec_type === "audio")
-            .map((stream) => stream.tags?.language),
+          audio.map((stream) => stream.tags?.language),
         ).toEqual(["eng", "spa"]);
+        expect(audio.map((stream) => stream.tags?.title)).toEqual([
+          "Primary English audio",
+          "Secondary Spanish audio",
+        ]);
+        expect(audio.map((stream) => stream.disposition?.default)).toEqual([
+          1,
+          0,
+        ]);
         expect(
           probe.streams.find((stream) => stream.codec_type === "subtitle")
             ?.tags?.language,

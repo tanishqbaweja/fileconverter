@@ -312,6 +312,13 @@ for the three unrepresentable source elements; and fully decodes the output with
 native FFmpeg. Rebuilding the fixture produces the same SHA-256. A separate
 corrupt-MKV browser case proves FFmpeg errors reach the interface, its partial
 OPFS output is removed, and a replacement worker becomes ready.
+The focused Matroska field-retention gate also asserts 640×360 geometry, 1:1
+sample aspect, 16:9 display aspect, TV color range, left chroma location,
+progressive field order, stream titles/languages/default disposition,
+attachment filename/MIME type, chapter titles, and container title/comment.
+That production-browser check passed in 10.3 seconds and removed its converted
+copy afterward; see
+`evidence/complex-matroska-field-retention-browser-2026-08-28.json`.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
