@@ -627,6 +627,16 @@ interface MediaRouteOptions {
   validate?: (probe: MediaProbe, outputPath: string) => Promise<void>;
 }
 
+function expectMediaTitle(probe: MediaProbe, expected: string): void {
+  const tagSets = [probe.format.tags, ...probe.streams.map((stream) => stream.tags)];
+  const titles = tagSets.flatMap((tags) =>
+    Object.entries(tags ?? {})
+      .filter(([key]) => key.toLowerCase() === "title")
+      .map(([, value]) => value),
+  );
+  expect(titles).toContain(expected);
+}
+
 function assertProjectLocal(target: string): void {
   const relative = path.relative(projectRoot, target);
   if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
@@ -3268,9 +3278,7 @@ test("browser FFmpeg losslessly encodes PCM WAV as FLAC", async () => {
     wavFixturePath,
     {
       validate: async (probe, outputPath) => {
-        expect(probe.format.tags?.title).toBe(
-          "Within deterministic WAV fixture",
-        );
+        expectMediaTitle(probe, "Within deterministic WAV fixture");
         await expectDecodedPcmMatch(wavFixturePath, outputPath);
       },
     },
@@ -3306,7 +3314,12 @@ test("browser FFmpeg losslessly encodes PCM WAV as ALAC M4A", async () => {
     ["alac"],
     20_000,
     wavFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(wavFixturePath, outputPath) },
+    {
+      validate: async (probe, outputPath) => {
+        expectMediaTitle(probe, "Within deterministic WAV fixture");
+        await expectDecodedPcmMatch(wavFixturePath, outputPath);
+      },
+    },
   );
 });
 
@@ -3352,6 +3365,7 @@ test("browser FFmpeg encodes PCM WAV as WMA2", async () => {
     wavFixturePath,
     {
       validate: async (probe, outputPath) => {
+        expectMediaTitle(probe, "Within deterministic WAV fixture");
         expect(probe.streams[0]?.sample_rate).toBe("48000");
         expect(probe.streams[0]?.bit_rate).toBe("320000");
         await expectDecodedAudioPsnr(wavFixturePath, outputPath, 60);
@@ -3558,9 +3572,7 @@ test("browser FFmpeg converts AIFF PCM to PCM WAV", async () => {
     aiffFixturePath,
     {
       validate: async (probe, outputPath) => {
-        expect(probe.format.tags?.title).toBe(
-          "Within deterministic AIFF fixture",
-        );
+        expectMediaTitle(probe, "Within deterministic AIFF fixture");
         await expectDecodedPcmMatch(aiffFixturePath, outputPath);
       },
     },
@@ -3654,6 +3666,9 @@ for (const [route, input, inputPath, losslessPcm] of standaloneAiffRoutes) {
         expectedDurationSeconds: input === "amr-wb" ? 10.24 : undefined,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("aiff");
+          if (input === "wav") {
+            expectMediaTitle(probe, "Within deterministic WAV fixture");
+          }
           if (losslessPcm) {
             await expectDecodedPcmMatch(inputPath, outputPath);
           } else {
@@ -3870,6 +3885,9 @@ for (const [route, input, inputPath] of standaloneMp3OutputRoutes) {
         expectedDurationSeconds: input === "amr-wb" ? 10.24 : undefined,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("mp3");
+          if (input === "wav") {
+            expectMediaTitle(probe, "Within deterministic WAV fixture");
+          }
           const audio = probe.streams.find(
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
           );
@@ -4228,6 +4246,9 @@ for (const [route, input, inputPath] of standaloneOpusOutputRoutes) {
         durationToleranceSeconds: 0.15,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          if (input === "wav") {
+            expectMediaTitle(probe, "Within deterministic WAV fixture");
+          }
           const audio = probe.streams.find(
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
           );
@@ -4325,6 +4346,9 @@ for (const [route, input, inputPath] of standaloneVorbisOutputRoutes) {
         durationToleranceSeconds: 0.3,
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("ogg");
+          if (input === "wav") {
+            expectMediaTitle(probe, "Within deterministic WAV fixture");
+          }
           const audio = probe.streams.find(
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
           );

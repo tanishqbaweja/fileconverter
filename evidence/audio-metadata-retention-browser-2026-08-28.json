@@ -5,10 +5,20 @@
     "dockerUsed": false,
     "playwrightVersion": "1.62.1",
     "ffprobeVersion": "N-122712-g7e3781e3ca-20260211",
-    "command": "npx playwright test tests/browser/media-remux.spec.ts --grep \"losslessly encodes PCM WAV as FLAC|converts AIFF PCM to PCM WAV\" --reporter=line",
-    "result": "2 passed",
-    "elapsedSeconds": 12.2
+    "command": "npx playwright test tests/browser/media-remux.spec.ts --grep \"losslessly encodes PCM WAV as FLAC|converts AIFF PCM to PCM WAV|losslessly encodes PCM WAV as ALAC M4A|encodes PCM WAV as WMA2|writes genuine AIFF PCM for WAV input|writes genuine MP3 for WAV input|writes genuine Opus for WAV input|writes genuine Vorbis for WAV input\" --reporter=line",
+    "result": "8 passed",
+    "elapsedSeconds": 17.5
   },
+  "destinationFamilies": [
+    "WAV/RIFF",
+    "FLAC/Vorbis comments",
+    "AIFF text chunks",
+    "ALAC/M4A",
+    "WMA/ASF",
+    "MP3/ID3",
+    "Opus/Ogg comments",
+    "Vorbis/Ogg comments"
+  ],
   "routes": [
     {
       "profileId": "wav-to-flac",
@@ -27,6 +37,26 @@
       ]
     },
     {
+      "profileId": "wav-to-alac",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "alac",
+      "assertions": [
+        "The output is independently parsed as ALAC in M4A.",
+        "The output title exactly equals the source title.",
+        "The complete decoded signed-16-bit PCM hash exactly equals the source decoded PCM hash."
+      ]
+    },
+    {
+      "profileId": "wav-to-wma",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "wmav2",
+      "assertions": [
+        "The output is independently parsed as WMA2 in ASF.",
+        "The output title exactly equals the source title.",
+        "The 48 kHz and 320 kb/s policy plus the existing decoded-audio quality threshold pass."
+      ]
+    },
+    {
       "profileId": "aiff-to-wav",
       "input": {
         "path": "fixtures/media/audio-source.aiff",
@@ -41,6 +71,46 @@
         "The complete decoded signed-16-bit PCM hash exactly equals the source decoded PCM hash.",
         "The browser route satisfies the existing bounded read, write, pending-operation, and Wasm-memory assertions."
       ]
+    },
+    {
+      "profileId": "wav-to-aiff",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "pcm_s16be",
+      "assertions": [
+        "The output is independently parsed as signed 16-bit big-endian PCM AIFF.",
+        "The output title exactly equals the source title.",
+        "The complete decoded signed-16-bit PCM hash exactly equals the source decoded PCM hash."
+      ]
+    },
+    {
+      "profileId": "wav-to-mp3",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "mp3",
+      "assertions": [
+        "The output is independently parsed as MP3.",
+        "The output title exactly equals the source title.",
+        "The fixed channel, sample-rate, bitrate, and decoded-audio quality thresholds pass."
+      ]
+    },
+    {
+      "profileId": "wav-to-opus",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "opus",
+      "assertions": [
+        "The output is independently parsed as Opus in Ogg.",
+        "The output title exactly equals the source title, whether FFprobe exposes the comment at format or stream scope.",
+        "The fixed channel, 48 kHz, bitrate-ceiling, and decoded-audio quality thresholds pass."
+      ]
+    },
+    {
+      "profileId": "wav-to-ogg",
+      "input": "fixtures/media/audio-source.wav",
+      "outputCodec": "vorbis",
+      "assertions": [
+        "The output is independently parsed as Vorbis in Ogg.",
+        "The output title exactly equals the source title, whether FFprobe exposes the comment at format or stream scope.",
+        "The fixed channel, sample-rate, bitrate-ceiling, and decoded-audio quality thresholds pass."
+      ]
     }
   ],
   "decodedPcmReferenceSha256": "24cbaf02a0bdd495d0017a662b8629e3104d9906148745cb5d7c23300f8f0542",
@@ -52,5 +122,5 @@
       ".gitkeep"
     ]
   },
-  "scope": "This proves title-tag and decoded-PCM retention for these two routes only. It does not prove preservation of format-specific chunks, artwork, or every other public media route."
+  "scope": "This proves title-tag retention for one representative production route in each tag-capable audio destination family. Raw AAC/ADTS and raw AMR are excluded because those outputs cannot represent these tags. This does not prove preservation of format-specific chunks, artwork, every source-container mapping, or every other public media route."
 }

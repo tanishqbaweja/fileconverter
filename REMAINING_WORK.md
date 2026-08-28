@@ -53,7 +53,7 @@ not the entire product specification.
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile and this host has no non-Docker Emscripten/static-library build path; public re-encode profiles therefore remain fixed and no false UI controls are exposed | Establish a pinned non-Docker rebuild path, extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
 | M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, absent non-Docker local toolchain, and the decision not to publish UI-only controls | After a pinned non-Docker rebuild path exists, add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
-| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` proves all 259 public FFmpeg profiles state metadata/container and route semantics; `evidence/audio-metadata-retention-browser-2026-08-28.json` independently proves exact title-tag and decoded-PCM retention for WAV→FLAC and AIFF→WAV | Implement additional supported tag/artwork paths and independently validate actual field retention for the remaining destinations; disclosure completeness and two focused routes do not prove universal preservation. |
+| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` proves all 259 public FFmpeg profiles state metadata/container and route semantics; `evidence/audio-metadata-retention-browser-2026-08-28.json` independently proves title retention for representative WAV, FLAC, AIFF, ALAC/M4A, WMA/ASF, MP3/ID3, Opus/Ogg, and Vorbis/Ogg destinations, with exact PCM checks for lossless routes | Implement supported artwork paths and independently validate remaining source-container/field mappings; representative destination coverage does not prove every public route. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
 ## Images, archives, subtitles, data, ebooks, and documents
@@ -188,13 +188,15 @@ not the entire product specification.
   gaps (`aiff-to-wav` and `wav-to-flac`); compact counts and corrections are in
   `evidence/media-disclosure-audit-2026-08-28.json`. This closes disclosure
   consistency, not the still-open field-retention implementation audit.
-- The two corrected audio routes now have real field-retention evidence rather
-  than source-only claims. Production-browser WAV→FLAC and AIFF→WAV outputs were
-  independently identified by native FFprobe, retained the exact source title,
-  and decoded to the exact source PCM hash. Both passed in 12.2 seconds; the
-  converted copies and Playwright artifacts were deleted afterward. Evidence is
-  in `evidence/audio-metadata-retention-browser-2026-08-28.json`. This is the
-  first bounded slice of the still-open destination-by-destination audit.
+- The audio field-retention gate now covers all eight tag-capable destination
+  families with representative production-browser routes: WAV, FLAC, AIFF,
+  ALAC/M4A, WMA/ASF, MP3/ID3, Opus/Ogg, and Vorbis/Ogg. Native FFprobe found the
+  exact source title in every genuine output; lossless routes also matched exact
+  decoded PCM, and lossy routes retained their codec/rate/quality checks. The
+  matrix passed 8/8 in 17.5 seconds; converted copies and Playwright artifacts
+  were deleted afterward. Raw AAC/ADTS and AMR are correctly excluded because
+  they cannot carry these tags. Evidence is in
+  `evidence/audio-metadata-retention-browser-2026-08-28.json`.
 
 ### 2026-08-27 — bounded Ogg/Theora multi-stream source inspection
 
