@@ -1785,6 +1785,10 @@ non-Docker rebuilds; the remaining nine engine directories do not, so this is
 not presented as full binary reproducibility. FFmpeg's separate exact run,
 inputs, output hashes, and cleanup are recorded in
 `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
+The integrated main-branch gate is GitHub Actions run
+[`33252270830`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33252270830):
+all seven jobs passed, including 871 browser conversions and both exact
+no-Docker engine comparisons.
 
 ## Repository map
 

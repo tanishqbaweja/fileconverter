@@ -15,6 +15,31 @@
     "dockerCommandsUsed": false,
     "uploadedArtifactsRemaining": 0
   },
+  "mainVerificationRun": {
+    "id": 33252270830,
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33252270830",
+    "commit": "098a7a773350fcaabef1ad0413a6c6a75d264273",
+    "branch": "main",
+    "startedAtUtc": "2026-08-29T12:20:52Z",
+    "completedAtUtc": "2026-08-29T12:33:37Z",
+    "conclusion": "success",
+    "jobsPassed": 7,
+    "jobsFailed": 0,
+    "ffmpegComparisonElapsedSeconds": 470,
+    "browserConversionsPassed": 871,
+    "browserConversionsFailed": 0,
+    "browserPartitions": {
+      "streaming": 235,
+      "images": 152,
+      "media": 484
+    },
+    "unitTestsPassed": 75,
+    "privacyOfflineTestsPassed": 13,
+    "exactSvgReproduction": "passed",
+    "exactFfmpegReproduction": "passed",
+    "dockerCommandsUsed": false,
+    "uploadedArtifactsRemaining": 0
+  },
   "toolchain": {
     "operatingSystem": "GitHub-hosted Ubuntu runner",
     "containerUsed": false,

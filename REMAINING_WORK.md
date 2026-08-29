@@ -94,7 +94,7 @@ not the entire product specification.
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
 | T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories. SVG and all five FFmpeg modules now pass exact clean hosted rebuilds without Docker; `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json` records the FFmpeg inputs, hashes, source split, and successful run. | Establish pinned non-Docker toolchains/recipes for the remaining nine engine directories: BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode. Require an exact clean artifact comparison for each; declaration coverage alone is not binary reproducibility. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Hosted run `33182400184` passed the partitioned build/test/privacy/871-conversion baseline and exact SVG rebuild. FFmpeg's exact no-Docker reconstruction passed separately in run `33242017745`, and the proven recipe is now included in the fail-independent CI engine matrix. | Verify the integrated FFmpeg job on `main`, preserve the partitioned baseline, and add exact non-Docker rebuild jobs for the remaining nine engine directories. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Main run `33252270830` passed all seven jobs at `098a7a7`: build/lint/TypeScript/unit/evidence, privacy/offline 13/13, image 152/152, media 484/484, streaming 235/235, exact SVG, and exact FFmpeg without Docker. | Preserve this integrated baseline and add exact non-Docker rebuild jobs for the remaining nine engine directories. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons
@@ -184,6 +184,10 @@ not the entire product specification.
   FFmpeg entry and runs the same comparison independently alongside SVG. The
   remaining nine binary-engine directories still require equivalent no-Docker
   recipes before T-09/T-10 can be closed.
+- Main run `33252270830` then passed all seven integrated jobs at `098a7a7`:
+  871/871 browser conversions, 75/75 unit tests, 13/13 privacy/offline cases,
+  exact SVG, and exact FFmpeg. The FFmpeg build/comparison took 470 seconds,
+  its cleanup passed, and the complete run retained zero uploaded artifacts.
 
 ### 2026-08-28 — fixed-ABI audit and source-aware conversion plan
 
