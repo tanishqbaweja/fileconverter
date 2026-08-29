@@ -49,7 +49,28 @@ jobs:
         if: matrix.installNodeModules
         run: npm ci
 
+      - name: Install native FFmpeg build prerequisites
+        if: matrix.emscriptenVersion
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            autoconf automake ca-certificates curl libtool make patch \
+            pkg-config xz-utils
+
+      - name: Install pinned Emscripten SDK without Docker
+        if: matrix.emscriptenVersion
+        shell: bash
+        run: |
+          git clone --filter=blob:none --no-checkout \
+            https://github.com/emscripten-core/emsdk.git work/emsdk
+          git -C work/emsdk checkout "${{ matrix.emsdkCommit }}"
+          test "$(git -C work/emsdk rev-parse HEAD)" = \
+            "${{ matrix.emsdkCommit }}"
+          work/emsdk/emsdk install "${{ matrix.emscriptenVersion }}"
+          work/emsdk/emsdk activate "${{ matrix.emscriptenVersion }}"
+
       - name: Rebuild pinned engine
+        shell: bash
         run: ${{ matrix.command }}
 
       - name: Normalize generated artifact permissions
@@ -58,6 +79,23 @@ jobs:
 
       - name: Verify reproducible engine artifacts
         run: git diff --exit-code -- ${{ matrix.output }}
+
+      - name: Remove repository-local engine build data
+        if: always() && matrix.emscriptenVersion
+        shell: bash
+        run: |
+          if test -L /src && test "$(readlink -f /src)" = \
+              "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build"; then
+            sudo unlink /src
+          fi
+          if test -L /out && test "$(readlink -f /out)" = \
+              "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"; then
+            sudo unlink /out
+          fi
+          rm -rf -- \
+            "$GITHUB_WORKSPACE/work/emsdk" \
+            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
+            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
 
   verify:
     runs-on: ubuntu-latest

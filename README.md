@@ -997,23 +997,39 @@ Pinned inputs:
   libpng 1.6.58, and zlib 1.3.2 inputs recorded in its manifest
 - `emscripten/emsdk:6.0.4-x64` image digest
   `sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b`
+- Emscripten SDK 6.0.4 no-Docker installer revision
+  `224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f`
 
-Build the auditable artifacts:
+The supported no-Docker FFmpeg comparison runs on Linux through the manual
+`Reproduce FFmpeg without Docker` GitHub Actions workflow and, on `main`, as a
+required fail-independent CI matrix entry. After that workflow installs and
+activates the pinned SDK, its exact build command is:
+
+```bash
+source work/emsdk/emsdk_env.sh
+bash media/ffmpeg/reproduce-nondocker.sh
+```
+
+It verifies every archive, rebuilds all five modules, compares the complete
+published directory byte-for-byte, keeps scratch files inside `work/`, and
+removes them on success or failure. Run
+[`33242017745`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33242017745)
+passed the comparison in 557 seconds with no Docker command. The authoritative
+hashes, diagnosed failures, source revisions, and cleanup result are in
+`evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
+
+Build the application and Node-built SVG artifact locally:
 
 ```powershell
 npm ci
-npm run build:ffmpeg-remux
-npm run build:bzip2
-npm run build:xz
-npm run build:archive7z
-npm run build:jxl
-npm run build:jxl-encoder
-npm run build:avif
+npm run build:svg
 npm run build
 ```
 
-The Docker builds verify each source archive before compilation. Exact
-configure switches and Emscripten flags are in `media/ffmpeg/`,
+The remaining nine binary-engine directories retain pinned legacy container
+recipes, but those recipes are not used by the current no-Docker work and are
+not counted as exact no-Docker reproduction. Exact configure switches and
+Emscripten flags are in `media/ffmpeg/`,
 `compression/bzip2/`, `compression/xz/`, `compression/libarchive7z/`, and
 `images/libjxl/`, `images/libjxl-encoder/`, or `images/libavif/`.
 Generated settings are recorded in the corresponding
@@ -1764,8 +1780,11 @@ The corrected partitioned hosted baseline is recorded in
 passed the production build, lint, TypeScript, unit/evidence gates, 13 privacy
 and offline cases, and all 871 conversion/validator cases split into 152 image,
 484 media, and 235 streaming tests. The engine audit covers declarations for
-all 11 published directories; only SVG currently has a proven exact clean
-non-Docker rebuild, so this is not presented as full binary reproducibility.
+all 11 published directories. SVG and FFmpeg now have proven exact clean
+non-Docker rebuilds; the remaining nine engine directories do not, so this is
+not presented as full binary reproducibility. FFmpeg's separate exact run,
+inputs, output hashes, and cleanup are recorded in
+`evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
 
 ## Repository map
 

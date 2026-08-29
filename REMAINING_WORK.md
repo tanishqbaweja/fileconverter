@@ -50,9 +50,9 @@ not the entire product specification.
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | `evidence/complex-matroska-field-retention-browser-2026-08-28.json` proves a genuine complex Matroska copy preserves stream order/codecs, geometry, aspect, color-range/chroma/field-order fields, titles, languages, disposition, subtitle, attachment, chapters, container tags, and exact decoded content; the production UI also presents per-stream outcomes from bounded inspection | Extend field-level evidence to other destination topologies and add a fixture with representable rotation/color-primaries/transfer/matrix fields; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
-| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile and this host has no non-Docker Emscripten/static-library build path; public re-encode profiles therefore remain fixed and no false UI controls are exposed | Establish a pinned non-Docker rebuild path, extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
+| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile. The exact non-Docker FFmpeg rebuild path is now established, but the ABI and UI still expose only certified fixed profiles. | Extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
-| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, absent non-Docker local toolchain, and the decision not to publish UI-only controls | After a pinned non-Docker rebuild path exists, add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
+| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, and the decision not to publish UI-only controls. The pinned no-Docker rebuild is now proven exact. | Add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
 | M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` proves all 259 public FFmpeg profiles state metadata/container and route semantics; `evidence/audio-metadata-retention-browser-2026-08-28.json` independently proves title retention for representative WAV, FLAC, AIFF, ALAC/M4A, WMA/ASF, MP3/ID3, Opus/Ogg, and Vorbis/Ogg destinations, with exact PCM checks for lossless routes | Implement supported artwork paths and independently validate remaining source-container/field mappings; representative destination coverage does not prove every public route. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
@@ -93,8 +93,8 @@ not the entire product specification.
 | T-06 | Headed manual review of real UI success, progress, destination, cancellation, understandable errors, and responsiveness | Partially implemented | `TESTED.md` records one headed MKV success/direct/cancel/write-failure audit with reviewed screenshots/trace | Repeat headed audits across representative image, audio, archive, data/document, ebook/subtitle, quota/permission, reload, and batch families. |
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
-| T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits declarations for all 11 published engine directories, and the SVG artifact has passed an exact clean hosted rebuild without Docker. The other ten binary-engine recipes currently require Docker. | Establish pinned non-Docker toolchains/recipes for FFmpeg, BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode, then require exact clean artifact comparisons for each. Do not describe declaration coverage as binary reproducibility. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Hosted run `33182400184` passed all six jobs: build/lint/TypeScript/unit/evidence, privacy/offline 13/13, image 152/152, media 484/484, streaming 235/235, 11-directory declaration audit, and exact non-Docker SVG rebuild. `evidence/hosted-ci-audit-2026-08-28.json` records the run. | Preserve the now-proven partitioned baseline and add exact non-Docker rebuild jobs for the ten binary-engine families; declaration coverage is not sufficient to close the original every-engine reproducibility requirement. |
+| T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories. SVG and all five FFmpeg modules now pass exact clean hosted rebuilds without Docker; `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json` records the FFmpeg inputs, hashes, source split, and successful run. | Establish pinned non-Docker toolchains/recipes for the remaining nine engine directories: BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode. Require an exact clean artifact comparison for each; declaration coverage alone is not binary reproducibility. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Hosted run `33182400184` passed the partitioned build/test/privacy/871-conversion baseline and exact SVG rebuild. FFmpeg's exact no-Docker reconstruction passed separately in run `33242017745`, and the proven recipe is now included in the fail-independent CI engine matrix. | Verify the integrated FFmpeg job on `main`, preserve the partitioned baseline, and add exact non-Docker rebuild jobs for the remaining nine engine directories. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons
@@ -109,8 +109,8 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Build pinned non-Docker toolchains for the ten binary-engine families that
-   still have Docker-only recipes, then add fail-independent exact rebuild jobs.
+1. Build pinned non-Docker toolchains for the nine engine directories that still
+   have Docker-only recipes, then add fail-independent exact rebuild jobs.
 2. Add a bounded option model beginning with audio bitrate/sample-rate/channel-
    layout and video resolution/bitrate/frame-rate/quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
@@ -138,20 +138,52 @@ not the entire product specification.
   36.064 to 43.141 seconds (16.4% slower). It was reverted; compact evidence is
   retained in `evidence/remux-performance-audit-2026-08-28.json`.
 - A real WAV-to-MP3 bitrate/rate/channel ABI and UI draft was removed before
-  exposure because the changed FFmpeg Wasm could not be rebuilt and tested:
+  exposure because the changed FFmpeg Wasm could not then be rebuilt and tested:
   Docker Desktop 4.47.0 crashed on its `dockerInference` runtime socket, and the
-  user explicitly directed this goal not to use Docker. Do not restore those
-  controls against the old binary; use a non-Docker reproducible toolchain or a
-  separately authorized build environment first.
-- The 2026-08-28 non-Docker ABI audit found no hidden control channel to reuse:
+  user explicitly directed this goal not to use Docker. The no-Docker toolchain
+  is now proven, but the removed draft remains rejected until its native ABI,
+  correctness, speed, memory, and profile evidence are implemented together.
+- The 2026-08-28 non-Docker ABI audit found no hidden control channel to reuse at
+  that time:
   the public request has no options object, `workers/media-remux.ts` passes only
   one integer, `_within_remux` exports only `int within_remux(int profile)`, and
   the host/repository contain neither Emscripten nor the pinned FFmpeg static
-  libraries. No engine was downloaded or duplicated, no Docker/WSL environment
-  was started, and no UI-only control was added. See
+  libraries. No engine was downloaded or duplicated during that audit, no
+  Docker/WSL environment was started, and no UI-only control was added. The
+  later repository-local hosted toolchain closes only the build-environment
+  blocker; it does not itself add an options ABI. See
   `evidence/media-option-abi-audit-2026-08-28.json`.
 
 ## Implementation and verification log
+
+### 2026-08-29 — exact FFmpeg reproduction without Docker
+
+- Added a Linux-hosted, pinned Emscripten 6.0.4 reproduction path that verifies
+  every upstream source archive, builds all five FFmpeg modules, recursively
+  compares JavaScript/Wasm/manifests/licenses against the published directory,
+  and keeps all scratch data under repository-local `work/`. GitHub Actions run
+  `33242017745` completed the exact comparison in 557 seconds without Docker;
+  its always-run cleanup passed and zero hosted artifacts remain.
+- Diagnosed the failed attempts instead of treating differing binaries as a
+  success. The original isolated `/src` build sat outside the repository's ESM
+  package scope, so a scratch CommonJS boundary is required for Autoconf's
+  extensionless Emscripten probes. Current-source rebuilds then matched the
+  general core exactly but correctly exposed older source provenance for the
+  four video specialists.
+- Git history and a mechanical source-hash check identified specialist commit
+  `79e4db4`. A SHA-256-pinned reverse patch reconstructs it from the current
+  wrapper after the general core builds. This reproduces the certified binaries
+  byte-for-byte instead of replacing them and invalidating their retained
+  three-run speed and complete-Chromium memory evidence.
+- The rejected current-wrapper specialist candidates still passed 4/4 genuine
+  production-browser direct-save, MPEG-4, VP8, and VP9 conversions in 18.7
+  seconds. Their diagnostic artifact, converted copies, and scratch tree were
+  deleted; the protected `test.mkv` remained byte-identical. Full details are in
+  `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
+- The ordinary CI engine matrix now installs the exact pinned SDK only for the
+  FFmpeg entry and runs the same comparison independently alongside SVG. The
+  remaining nine binary-engine directories still require equivalent no-Docker
+  recipes before T-09/T-10 can be closed.
 
 ### 2026-08-28 — fixed-ABI audit and source-aware conversion plan
 
