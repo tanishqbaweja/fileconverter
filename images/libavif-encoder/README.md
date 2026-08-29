@@ -14,3 +14,7 @@ CRF 32, and lossless grayscale alpha. Static and animated
 outputs carry BT.709/sRGB color tags; animated timing uses an exact microsecond
 timebase. Public routes still require independent browser correctness,
 repeatability, and complete-Chromium incremental-private-memory evidence.
+
+The exact no-Docker decoder/encoder reproduction commands are documented with
+the shared pinned builder in `../libavif/README.md`; CI runs the encoder as an
+independent artifact-comparison job.

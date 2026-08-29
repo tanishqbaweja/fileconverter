@@ -100,6 +100,10 @@ const engines = [
     output: "public/engines/avif",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash images/libavif/reproduce-nondocker.sh decoder",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "avif-encoder",
@@ -107,6 +111,10 @@ const engines = [
     output: "public/engines/avif-encoder",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash images/libavif/reproduce-nondocker.sh encoder",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "svg",
