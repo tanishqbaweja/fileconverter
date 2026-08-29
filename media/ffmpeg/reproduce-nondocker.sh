@@ -103,7 +103,11 @@ run_build_step() {
     if [[ -f "${source_directory}/config.log" ]]; then
       printf 'Configure diagnostics from %s:\n' \
         "${source_directory}/config.log" >&2
-      tail -n 160 "${source_directory}/config.log" >&2
+      grep -n -E \
+        'conftest|cannot run|Permission denied|not found|Exec format|SyntaxError|Error:' \
+        "${source_directory}/config.log" | tail -n 160 >&2 || true
+      printf 'End of configure log:\n' >&2
+      tail -n 40 "${source_directory}/config.log" >&2
     fi
     fail "Build step failed: ${script_path}"
   fi
