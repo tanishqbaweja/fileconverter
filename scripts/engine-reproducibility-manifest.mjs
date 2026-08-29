@@ -34,6 +34,10 @@ const engines = [
     output: "public/engines/xz",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash compression/xz/reproduce-nondocker.sh full",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "xz-decoder",
@@ -41,6 +45,10 @@ const engines = [
     output: "public/engines/xz-decoder",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash compression/xz/reproduce-nondocker.sh decoder",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "archive7z",

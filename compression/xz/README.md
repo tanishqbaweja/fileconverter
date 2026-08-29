@@ -26,6 +26,20 @@ npm run build:xz
 npm run build:xz-decoder
 ```
 
+The Docker recipes remain the canonical clean exports. CI also performs exact
+non-Docker comparisons with the same pinned Emscripten 6.0.4 SDK:
+
+```sh
+source work/emsdk/emsdk_env.sh
+bash compression/xz/reproduce-nondocker.sh full
+bash compression/xz/reproduce-nondocker.sh decoder
+```
+
+Each verifier requires Linux, keeps its download/build/output under `work/`,
+refuses unexpected `/src` or `/out` paths, checks free space and the upstream
+archive hash, compares every generated file byte-for-byte, and removes only the
+scratch paths it created on success or failure.
+
 The build verifies the upstream archive SHA-256 before compilation and exports
 the generated ES module, Wasm binary, `LICENSE.xz` 0BSD liblzma license, and build manifest
 to `public/engines/xz/` and the specialist decoder artifacts to
