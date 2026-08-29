@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-08-28. This is the living requirement audit for the original
+Updated 2026-08-29. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -94,7 +94,7 @@ not the entire product specification.
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
 | T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits declarations for all 11 published engine directories, and the SVG artifact has passed an exact clean hosted rebuild without Docker. The other ten binary-engine recipes currently require Docker. | Establish pinned non-Docker toolchains/recipes for FFmpeg, BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode, then require exact clean artifact comparisons for each. Do not describe declaration coverage as binary reproducibility. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | `.github/workflows/ci.yml` runs the base gates explicitly, partitions all 871 browser conversion tests into independent image/media/streaming jobs, audits all 11 engine declarations, and rebuilds the one currently non-Docker engine (SVG). | Obtain one fully successful hosted run for the corrected partitioned workflow; retain the independent job topology and add non-Docker engine rebuild jobs only as toolchains become available. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Hosted run `33182400184` passed all six jobs: build/lint/TypeScript/unit/evidence, privacy/offline 13/13, image 152/152, media 484/484, streaming 235/235, 11-directory declaration audit, and exact non-Docker SVG rebuild. `evidence/hosted-ci-audit-2026-08-28.json` records the run. | Preserve the now-proven partitioned baseline and add exact non-Docker rebuild jobs for the ten binary-engine families; declaration coverage is not sufficient to close the original every-engine reproducibility requirement. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons

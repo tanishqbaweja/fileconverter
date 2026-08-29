@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-08-28",
+  "run": {
+    "id": 33182400184,
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33182400184",
+    "commit": "d8cc4a82a6ca63a42bfd0b57d3a00480cdf0aa42",
+    "startedAtUtc": "2026-08-28T14:53:11Z",
+    "completedAtUtc": "2026-08-28T15:04:37Z",
+    "conclusion": "success",
+    "dockerCommandsUsed": false
+  },
+  "environment": {
+    "runner": "ubuntu-latest",
+    "runnerImage": "ubuntu24/20260823.283",
+    "nodeMajor": 24,
+    "browser": "workflow-installed Chromium"
+  },
+  "jobs": [
+    {
+      "name": "engine-matrix",
+      "jobId": 98886650642,
+      "conclusion": "success",
+      "elapsedSeconds": 7,
+      "evidence": {
+        "publishedEngineDirectoriesDeclared": 11,
+        "claimBoundary": "Declaration coverage only; it is not an artifact rebuild for the ten Docker-only binary-engine recipes."
+      }
+    },
+    {
+      "name": "verify",
+      "jobId": 98886650387,
+      "conclusion": "success",
+      "elapsedSeconds": 121,
+      "evidence": {
+        "productionBuild": "passed",
+        "eslint": "passed",
+        "typescript": "passed",
+        "publicEvidenceManifest": {
+          "passedProfiles": 388,
+          "result": "passed"
+        },
+        "unit": {
+          "passed": 74,
+          "failed": 0,
+          "skipped": 1,
+          "skipReason": "The protected untracked test.mkv is intentionally absent from a fresh hosted checkout."
+        },
+        "privacyOfflineBrowser": {
+          "passed": 13,
+          "failed": 0,
+          "elapsedSeconds": 47.6
+        }
+      }
+    },
+    {
+      "name": "Browser conversions (streaming-conversions)",
+      "jobId": 98886650812,
+      "conclusion": "success",
+      "elapsedSeconds": 283,
+      "conversionStep": {
+        "passed": 235,
+        "failed": 0,
+        "elapsedSeconds": 214
+      }
+    },
+    {
+      "name": "Browser conversions (image-conversions)",
+      "jobId": 98886650743,
+      "conclusion": "success",
+      "elapsedSeconds": 390,
+      "conversionStep": {
+        "passed": 152,
+        "failed": 0,
+        "elapsedSeconds": 281
+      }
+    },
+    {
+      "name": "Browser conversions (media-remux)",
+      "jobId": 98886650713,
+      "conclusion": "success",
+      "elapsedSeconds": 683,
+      "conversionStep": {
+        "passed": 484,
+        "failed": 0,
+        "elapsedSeconds": 614
+      }
+    },
+    {
+      "name": "Reproduce non-Docker svg",
+      "jobId": 98886692751,
+      "conclusion": "success",
+      "elapsedSeconds": 30,
+      "evidence": {
+        "cleanRebuild": true,
+        "exactGitDiff": true,
+        "dockerCommandsUsed": false
+      }
+    }
+  ],
+  "totals": {
+    "browserConversionTestsPassed": 871,
+    "browserConversionTestsFailed": 0,
+    "privacyOfflineTestsPassed": 13,
+    "unitTestsPassed": 74,
+    "unitTestsSkipped": 1,
+    "jobsPassed": 6,
+    "jobsFailed": 0
+  },
+  "portabilityCorrectionsProven": [
+    "Bounded source inspection waits for the source-aware plan before media start.",
+    "Privacy read ceilings match the expanded bounded parser coverage.",
+    "FLV validation accepts the one exact enhanced mp4a header exposed as a codec-less stream by newer FFprobe while rejecting enhanced media payloads.",
+    "Codec-less Matroska attachments are recognized as attachments rather than unidentified media streams."
+  ],
+  "cleanup": {
+    "failureArtifactsUploaded": false,
+    "reason": "Every hosted job passed, so failure-only artifact upload steps were skipped.",
+    "localDisposableArtifactsRemovedBeforePush": true,
+    "protectedFixture": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34"
+    }
+  }
+}

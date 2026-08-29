@@ -1759,6 +1759,14 @@ peaks against the current registry without committing hundreds of bulky raw
 reports. `npm run audit:engine-reproducibility` similarly ensures that every
 published engine directory has a reproducible build entry.
 
+The corrected partitioned hosted baseline is recorded in
+`evidence/hosted-ci-audit-2026-08-28.json`. GitHub Actions run `33182400184`
+passed the production build, lint, TypeScript, unit/evidence gates, 13 privacy
+and offline cases, and all 871 conversion/validator cases split into 152 image,
+484 media, and 235 streaming tests. The engine audit covers declarations for
+all 11 published directories; only SVG currently has a proven exact clean
+non-Docker rebuild, so this is not presented as full binary reproducibility.
+
 ## Repository map
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI
