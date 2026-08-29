@@ -22,6 +22,19 @@ Build reproducibly from the repository root:
 npm run build:bzip2
 ```
 
+The Docker recipe remains the canonical clean export. CI also performs an exact
+non-Docker comparison with the same pinned Emscripten 6.0.4 SDK:
+
+```sh
+source work/emsdk/emsdk_env.sh
+bash compression/bzip2/reproduce-nondocker.sh
+```
+
+That verifier requires Linux, keeps downloads/build/output under `work/`,
+refuses unexpected `/src` or `/out` paths, checks available space and the
+upstream archive hash, compares every generated file byte-for-byte, and removes
+its scratch tree on success or failure.
+
 The build verifies the upstream source SHA-256 before compilation and exports
 the generated ES module, Wasm binary, upstream license, and machine-readable
 manifest to `public/engines/bzip2/`.

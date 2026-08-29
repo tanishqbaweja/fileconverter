@@ -89,6 +89,8 @@ const taskTempRoots = [
 ];
 const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "ffmpeg-mp3-options-candidate"),
+  path.resolve(workRoot, "bzip2-nondocker-build"),
+  path.resolve(workRoot, "bzip2-nondocker-output"),
   path.resolve(workRoot, "remux-build"),
   path.resolve(workRoot, "remux-build-2"),
   path.resolve(workRoot, "remux-build-final"),
