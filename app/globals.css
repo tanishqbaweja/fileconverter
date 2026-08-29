@@ -432,6 +432,55 @@ h1 em {
   font-size: 0.86rem;
 }
 
+.encoding-options {
+  background: color-mix(in srgb, var(--paper) 88%, var(--coral) 12%);
+  border: 1px solid var(--line);
+  border-radius: 0.8rem;
+  margin: 0.8rem 0 0;
+  padding: 0.8rem 0.9rem 0.9rem;
+}
+
+.encoding-options legend {
+  font-size: 0.8rem;
+  font-weight: 780;
+  padding: 0 0.25rem;
+}
+
+.encoding-options > p {
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin: 0 0 0.7rem;
+}
+
+.encoding-options-grid {
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.encoding-options-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.encoding-options-grid label > span {
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+
+.encoding-options-grid select {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.55rem;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  min-width: 0;
+  padding: 0.55rem;
+  width: 100%;
+}
+
 .destination-button {
   background: transparent;
   border: 1px solid var(--line);
@@ -1002,6 +1051,7 @@ footer p {
   }
 
   .control-grid,
+  .encoding-options-grid,
   .data-flow,
   .matrix {
     grid-template-columns: 1fr;

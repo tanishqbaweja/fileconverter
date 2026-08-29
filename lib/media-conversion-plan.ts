@@ -3,6 +3,7 @@ import type {
   MediaSourceInspection,
   SourceStreamInspection,
 } from "./media-source-inspection";
+import type { AudioConversionOptions } from "./media-conversion-options";
 
 export type MediaPlanAction = "copy" | "re-encode" | "exclude" | "reject";
 
@@ -363,14 +364,38 @@ function planStreamCopy(
 function planAudioReencode(
   profile: ConversionProfile,
   streams: readonly SourceStreamInspection[],
+  audioOptions?: AudioConversionOptions,
 ): readonly MediaStreamPlan[] {
   let selected = false;
   return streams.map((stream, index) => {
     if (!selected && stream.mediaType === "audio") {
       selected = true;
+      const customMp3 =
+        profile.output === "mp3" &&
+        audioOptions &&
+        (audioOptions.bitRateBps !== 0 ||
+          audioOptions.sampleRateHz !== 0 ||
+          audioOptions.channels !== 0);
+      const selectedMp3Settings = customMp3
+        ? [
+            audioOptions.bitRateBps
+              ? `${audioOptions.bitRateBps / 1_000} kb/s`
+              : "automatic bitrate",
+            audioOptions.sampleRateHz
+              ? `${audioOptions.sampleRateHz.toLocaleString("en-US")} Hz`
+              : "automatic sample rate",
+            audioOptions.channels === 1
+              ? "mono"
+              : audioOptions.channels === 2
+                ? "stereo"
+                : "automatic channel layout",
+          ].join(", ")
+        : null;
       const fidelity = LOSSLESS_AUDIO_OUTPUTS.has(profile.output)
         ? "losslessly encodes the decoded signal"
-        : "encodes the decoded signal with the fixed certified lossy settings";
+        : selectedMp3Settings
+          ? `encodes the decoded signal as MP3 using ${selectedMp3Settings}`
+          : "encodes the decoded signal with the certified automatic lossy settings";
       return planItem(
         stream,
         index,
@@ -432,6 +457,7 @@ function planVideoReencode(
 export function planMediaConversion(
   profile: ConversionProfile,
   inspection: MediaSourceInspection,
+  audioOptions?: AudioConversionOptions,
 ): MediaConversionPlan | null {
   if (
     profile.engine !== "ffmpeg-remux" &&
@@ -445,7 +471,7 @@ export function planMediaConversion(
     profile.route === "stream-copy"
       ? planStreamCopy(profile, streams)
       : profile.engine === "ffmpeg-audio"
-        ? planAudioReencode(profile, streams)
+        ? planAudioReencode(profile, streams, audioOptions)
         : planVideoReencode(profile, streams);
   const blockingReasons = plannedStreams
     .filter((stream) => stream.action === "reject")

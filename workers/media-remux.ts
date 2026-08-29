@@ -1,4 +1,5 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
+import type { AudioConversionOptions } from "../lib/media-conversion-options";
 import type { RandomAccessDestination } from "./random-access-destination";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
@@ -48,8 +49,8 @@ interface RemuxModule {
   ccall: (
     name: string,
     returnType: "number",
-    argumentTypes: readonly ["number"],
-    arguments_: readonly [number],
+    argumentTypes: readonly ["number", "number", "number", "number"],
+    arguments_: readonly [number, number, number, number],
     options: { async: true },
   ) => Promise<number>;
 }
@@ -65,6 +66,7 @@ export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
   remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35;
+  audioOptions?: AudioConversionOptions;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -95,6 +97,7 @@ export async function runMediaRemux({
   file,
   writable,
   remuxProfile,
+  audioOptions,
   jobId,
   metrics,
   startedAt,
@@ -541,8 +544,13 @@ export async function runMediaRemux({
   const result = await engineModule.ccall(
     "within_remux",
     "number",
-    ["number"],
-    [remuxProfile],
+    ["number", "number", "number", "number"],
+    [
+      remuxProfile,
+      audioOptions?.bitRateBps ?? 0,
+      audioOptions?.sampleRateHz ?? 0,
+      audioOptions?.channels ?? 0,
+    ],
     { async: true },
   );
   if (isCancelled()) {

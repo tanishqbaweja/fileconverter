@@ -8,6 +8,7 @@ import type {
   WorkerRequest,
   WorkerResponse,
 } from "../lib/conversion-protocol";
+import { validateAudioConversionOptions } from "../lib/media-conversion-options";
 import {
   createZipDataDescriptor,
   createZipLocalHeader,
@@ -3782,6 +3783,13 @@ async function runRecords(
 
 async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   const { jobId, profileId, file } = message;
+  const mp3OptionsProfile = MP3_OUTPUT_PROFILES.has(profileId)
+    ? { engine: "ffmpeg-audio", output: "mp3" }
+    : { engine: "unsupported", output: "unsupported" };
+  const audioOptions = validateAudioConversionOptions(
+    mp3OptionsProfile,
+    message.audioOptions,
+  );
   const compressionTranscode =
     COMPRESSION_TRANSCODES[
       profileId as keyof typeof COMPRESSION_TRANSCODES
@@ -4683,6 +4691,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       await runMediaRemux({
         file,
         writable: destination.writable,
+        audioOptions,
         remuxProfile:
           profileId === "mkv-to-mp3" ||
           profileId === "mp4-to-mp3" ||

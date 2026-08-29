@@ -828,7 +828,26 @@ static int drain_audio_decoder(WithinAudioPipeline *pipeline,
   }
 }
 
-static int within_audio_transcode(int profile) {
+static int valid_mp3_bit_rate(int bit_rate) {
+  static const int allowed[] = {0, 64000, 96000, 128000,
+                                192000, 256000, 320000};
+  for (unsigned int index = 0; index < sizeof(allowed) / sizeof(allowed[0]);
+       index++) {
+    if (bit_rate == allowed[index]) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+static int valid_mp3_sample_rate(int sample_rate) {
+  return sample_rate == 0 || sample_rate == 32000 || sample_rate == 44100 ||
+         sample_rate == 48000;
+}
+
+static int within_audio_transcode(int profile, int requested_bit_rate,
+                                  int requested_sample_rate,
+                                  int requested_channels) {
   const int flac_output = profile == 6;
   const int alac_output = profile == 8;
   const int wma_output = profile == 9;
@@ -860,6 +879,27 @@ static int within_audio_transcode(int profile) {
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
   WithinAudioPipeline pipeline = {0};
+
+  if (!mp3_output &&
+      (requested_bit_rate != 0 || requested_sample_rate != 0 ||
+       requested_channels != 0)) {
+    within_message(2, "Audio options are not supported by this output profile.");
+    return AVERROR(EINVAL);
+  }
+  if (mp3_output && !valid_mp3_bit_rate(requested_bit_rate)) {
+    within_message(2, "MP3 bitrate must be automatic or 64-320 kb/s.");
+    return AVERROR(EINVAL);
+  }
+  if (mp3_output && !valid_mp3_sample_rate(requested_sample_rate)) {
+    within_message(2,
+                   "MP3 sample rate must be automatic, 32, 44.1, or 48 kHz.");
+    return AVERROR(EINVAL);
+  }
+  if (mp3_output && requested_channels != 0 && requested_channels != 1 &&
+      requested_channels != 2) {
+    within_message(2, "MP3 channel layout must be automatic, mono, or stereo.");
+    return AVERROR(EINVAL);
+  }
 
   if (input.size <= 0) {
     within_message(2, "The input file is empty.");
@@ -993,7 +1033,9 @@ static int within_audio_transcode(int profile) {
   } else if (wma_output) {
     encoder->sample_rate = decoder->sample_rate <= 16000 ? 32000 : 48000;
   } else if (mp3_output) {
-    encoder->sample_rate = decoder->sample_rate == 8000 ||
+    encoder->sample_rate = requested_sample_rate != 0
+                               ? requested_sample_rate
+                               : decoder->sample_rate == 8000 ||
                                    decoder->sample_rate == 16000
                                ? decoder->sample_rate
                                : decoder->sample_rate <= 32000
@@ -1060,8 +1102,11 @@ static int within_audio_transcode(int profile) {
              vorbis_output) {
     av_channel_layout_default(
         &encoder->ch_layout,
-        decoder->ch_layout.nb_channels > 2 ? 2
-                                           : decoder->ch_layout.nb_channels);
+        mp3_output && requested_channels != 0
+            ? requested_channels
+            : decoder->ch_layout.nb_channels > 2
+                  ? 2
+                  : decoder->ch_layout.nb_channels);
     result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
   } else {
     result =
@@ -1079,7 +1124,9 @@ static int within_audio_transcode(int profile) {
   } else if (amr_output) {
     encoder->bit_rate = 12200;
   } else if (mp3_output) {
-    encoder->bit_rate = encoder->ch_layout.nb_channels == 1
+    encoder->bit_rate = requested_bit_rate != 0
+                            ? requested_bit_rate
+                            : encoder->ch_layout.nb_channels == 1
                             ? encoder->sample_rate == 8000
                                   ? 32000
                                   : encoder->sample_rate == 16000 ? 64000 : 128000
@@ -1896,7 +1943,8 @@ static int within_ogv_to_vp9(void) {
 }
 
 EMSCRIPTEN_KEEPALIVE
-int within_remux(int profile) {
+int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+                 int audio_channels) {
   int result = 0;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
@@ -1928,7 +1976,12 @@ int within_remux(int profile) {
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
       profile == 28 || profile == 29 || profile == 30 || profile == 31 ||
       profile == 32 || profile == 33 || profile == 34) {
-    return within_audio_transcode(profile);
+    return within_audio_transcode(profile, audio_bit_rate, audio_sample_rate,
+                                  audio_channels);
+  }
+  if (audio_bit_rate != 0 || audio_sample_rate != 0 || audio_channels != 0) {
+    within_message(2, "Audio options are not supported by this profile.");
+    return AVERROR(EINVAL);
   }
   if (profile == 4) {
     return within_video_to_mpeg4();

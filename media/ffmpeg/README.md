@@ -42,7 +42,7 @@ removes the scratch data. `within-remux` uses wrapper source commit `fb20467`.
 The four certified video specialists retain wrapper source commit `79e4db4`;
 `patches/specialist-source-79e4db.patch` reconstructs that exact source from the
 current wrapper before linking. Its SHA-256 is
-`6d397db605a9ce533413da9b71fdb84e96f10e397d160dee7e4a07356abaa113`.
+`5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941`.
 This preserves their existing correctness, speed, and three-run memory evidence
 instead of silently replacing the binaries after general-core-only audio policy
 changes. The published build manifest records both source revisions.

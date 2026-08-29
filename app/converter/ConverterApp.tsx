@@ -24,6 +24,13 @@ import type {
   WorkerResponse,
 } from "../../lib/conversion-protocol";
 import {
+  DEFAULT_AUDIO_CONVERSION_OPTIONS,
+  MP3_BIT_RATES_BPS,
+  MP3_SAMPLE_RATES_HZ,
+  supportsMp3EncodingOptions,
+  type AudioConversionOptions,
+} from "../../lib/media-conversion-options";
+import {
   type DragEvent,
   type ChangeEvent,
   useCallback,
@@ -66,6 +73,7 @@ interface TestBridge {
     error: string | null;
     warnings: string[];
     selectedProfileId: string | null;
+    audioOptions: AudioConversionOptions;
     opfsName: string | null;
     opfsNames: string[];
     batchOutputNames: string[];
@@ -87,6 +95,7 @@ interface ActiveBatch {
   testMode: boolean;
   testDirectoryMode: boolean;
   testFault?: TestFault;
+  audioOptions?: AudioConversionOptions;
   runId: string;
   index: number;
   opfsNames: string[];
@@ -318,6 +327,9 @@ export function ConverterApp() {
   const [batchFiles, setBatchFiles] = useState<File[]>([]);
   const [inputFormat, setInputFormat] = useState("binary");
   const [profileId, setProfileId] = useState<string | null>(null);
+  const [audioOptions, setAudioOptions] = useState<AudioConversionOptions>({
+    ...DEFAULT_AUDIO_CONVERSION_OPTIONS,
+  });
   const [sourceMediaInspection, setSourceMediaInspection] =
     useState<MediaSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
@@ -392,12 +404,22 @@ export function ConverterApp() {
     () => conversionProfiles.find((profile) => profile.id === profileId) ?? null,
     [profileId],
   );
+  const mp3EncodingOptionsEnabled = supportsMp3EncodingOptions(selectedProfile);
   const mediaConversionPlan = useMemo(
     () =>
       selectedProfile && sourceMediaInspection
-        ? planMediaConversion(selectedProfile, sourceMediaInspection)
+        ? planMediaConversion(
+            selectedProfile,
+            sourceMediaInspection,
+            mp3EncodingOptionsEnabled ? audioOptions : undefined,
+          )
         : null,
-    [selectedProfile, sourceMediaInspection],
+    [
+      audioOptions,
+      mp3EncodingOptionsEnabled,
+      selectedProfile,
+      sourceMediaInspection,
+    ],
   );
 
   useEffect(() => {
@@ -489,6 +511,7 @@ export function ConverterApp() {
         profileId: batch.profile.id,
         file: nextFile,
         destination,
+        audioOptions: batch.audioOptions,
         testFault: batch.testFault,
       };
       worker.postMessage(request);
@@ -721,6 +744,7 @@ export function ConverterApp() {
       error,
       warnings,
       selectedProfileId: profileId,
+      audioOptions,
       opfsName,
       opfsNames,
       batchOutputNames: completedBatchOutputNames,
@@ -738,6 +762,7 @@ export function ConverterApp() {
     completedBatchOutputNames,
     phase,
     profileId,
+    audioOptions,
     batchCompleted,
     batchFiles.length,
     startupCleanupComplete,
@@ -775,6 +800,7 @@ export function ConverterApp() {
         setBatchFiles([]);
         setInputFormat("binary");
         setProfileId(null);
+        setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
         setDestinationHandle(null);
         setDestinationDirectoryHandle(null);
         setJobState("idle");
@@ -795,6 +821,7 @@ export function ConverterApp() {
       setBatchFiles(nextFiles);
       setInputFormat(detected);
       setProfileId(preferredProfileFor(detected, nextProfiles)?.id ?? null);
+      setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
       setSourceMediaInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
@@ -908,6 +935,9 @@ export function ConverterApp() {
     const batch: ActiveBatch = {
       files,
       profile: selectedProfile,
+      audioOptions: mp3EncodingOptionsEnabled
+        ? { ...audioOptions }
+        : undefined,
       outputNames: batchOutputNames(files, selectedProfile),
       destinationHandle,
       destinationDirectoryHandle: testDirectoryMode
@@ -1361,6 +1391,7 @@ export function ConverterApp() {
                     value={profileId ?? ""}
                     onChange={(event) => {
                       setProfileId(event.target.value);
+                      setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
                       setDestinationHandle(null);
                       setDestinationDirectoryHandle(null);
                       setJobState("idle");
@@ -1391,6 +1422,75 @@ export function ConverterApp() {
                   </strong>
                 </div>
               </div>
+
+              {mp3EncodingOptionsEnabled ? (
+                <fieldset className="encoding-options" disabled={jobState === "running"}>
+                  <legend>MP3 encoding options</legend>
+                  <p>
+                    Automatic retains the fastest certified source-aware policy.
+                    Custom values are applied by the native encoder, not just the UI.
+                  </p>
+                  <div className="encoding-options-grid">
+                    <label>
+                      <span>Bitrate</span>
+                      <select
+                        data-testid="audio-bitrate-select"
+                        value={audioOptions.bitRateBps}
+                        onChange={(event) =>
+                          setAudioOptions((current) => ({
+                            ...current,
+                            bitRateBps: Number(event.target.value) as AudioConversionOptions["bitRateBps"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        {MP3_BIT_RATES_BPS.map((value) => (
+                          <option key={value} value={value}>
+                            {value / 1_000} kb/s
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Sample rate</span>
+                      <select
+                        data-testid="audio-sample-rate-select"
+                        value={audioOptions.sampleRateHz}
+                        onChange={(event) =>
+                          setAudioOptions((current) => ({
+                            ...current,
+                            sampleRateHz: Number(event.target.value) as AudioConversionOptions["sampleRateHz"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        {MP3_SAMPLE_RATES_HZ.map((value) => (
+                          <option key={value} value={value}>
+                            {value.toLocaleString("en-US")} Hz
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Channels</span>
+                      <select
+                        data-testid="audio-channels-select"
+                        value={audioOptions.channels}
+                        onChange={(event) =>
+                          setAudioOptions((current) => ({
+                            ...current,
+                            channels: Number(event.target.value) as AudioConversionOptions["channels"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        <option value={1}>Mono</option>
+                        <option value={2}>Stereo</option>
+                      </select>
+                    </label>
+                  </div>
+                </fieldset>
+              ) : null}
 
               {mediaConversionPlan ? (
                 <section

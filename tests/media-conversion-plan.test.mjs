@@ -177,6 +177,18 @@ test("audio re-encode plan converts only the first audio stream", () => {
   assert.match(plan.metadataSummary, /container title/);
 });
 
+test("MP3 plan discloses the native custom bitrate, rate, and layout", () => {
+  const plan = planMediaConversion(
+    profile("wav-to-mp3"),
+    inspection([stream("audio", "PCM")]),
+    { bitRateBps: 256_000, sampleRateHz: 44_100, channels: 1 },
+  );
+  assert.ok(plan);
+  assert.match(plan.streams[0].detail, /256 kb\/s/);
+  assert.match(plan.streams[0].detail, /44,100 Hz/);
+  assert.match(plan.streams[0].detail, /mono/);
+});
+
 test("AV1 WebM copy excludes incompatible streams instead of claiming transcoding", () => {
   const plan = planMediaConversion(
     profile("mkv-to-webm-av1"),
