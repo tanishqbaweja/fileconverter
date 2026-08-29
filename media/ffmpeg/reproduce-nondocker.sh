@@ -98,8 +98,13 @@ download_and_extract() {
 
 [[ "$(uname -s)" == "Linux" ]] ||
   fail "The non-Docker FFmpeg reproduction path currently requires Linux."
+if [[ -n "${EMSDK_NODE:-}" ]]; then
+  [[ -x "${EMSDK_NODE}" ]] ||
+    fail "EMSDK_NODE does not identify an executable: ${EMSDK_NODE}"
+  export PATH="$(dirname "${EMSDK_NODE}"):${PATH}"
+fi
 for command_name in emcc emconfigure emmake emar emranlib emnm curl tar \
-  sha256sum patch pkg-config make diff readlink; do
+  sha256sum patch pkg-config make diff readlink node; do
   require_command "${command_name}"
 done
 

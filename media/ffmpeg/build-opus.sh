@@ -7,7 +7,6 @@ cd /src/opus
 
 emconfigure ./configure \
   --prefix="${PREFIX}" \
-  --host=wasm32-unknown-emscripten \
   --disable-shared \
   --enable-static \
   --disable-doc \
