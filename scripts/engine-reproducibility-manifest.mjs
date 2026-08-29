@@ -1,4 +1,4 @@
-import { readdir, readFile } from "node:fs/promises";
+import { access, readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,6 +12,10 @@ const engines = [
     output: "public/engines/remux",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash media/ffmpeg/reproduce-nondocker.sh",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "bzip2",
@@ -124,6 +128,15 @@ async function auditManifest() {
         `Engine ${engine.id} build environment does not match package script ${scriptName}.`,
       );
     }
+    if (engine.nonDockerCommand) {
+      const scriptMatch = engine.nonDockerCommand.match(/bash\s+([^\s&]+)/);
+      if (!scriptMatch) {
+        throw new Error(
+          `Engine ${engine.id} has an invalid non-Docker command.`,
+        );
+      }
+      await access(path.join(projectRoot, scriptMatch[1]));
+    }
   }
 
   process.stdout.write(
@@ -135,7 +148,15 @@ if (process.argv.includes("--check")) {
   await auditManifest();
 } else {
   const selectedEngines = process.argv.includes("--non-docker")
-    ? engines.filter((engine) => engine.buildEnvironment !== "docker")
+    ? engines
+        .filter(
+          (engine) =>
+            engine.buildEnvironment !== "docker" || engine.nonDockerCommand,
+        )
+        .map((engine) => ({
+          ...engine,
+          command: engine.nonDockerCommand ?? engine.command,
+        }))
     : engines;
   process.stdout.write(JSON.stringify({ include: selectedEngines }));
 }

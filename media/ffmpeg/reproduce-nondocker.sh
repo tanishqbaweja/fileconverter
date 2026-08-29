@@ -96,10 +96,32 @@ download_and_extract() {
   rm -- "${archive}"
 }
 
+run_build_step() {
+  local script_path="$1"
+  local source_directory="$2"
+  if ! "${script_path}"; then
+    if [[ -f "${source_directory}/config.log" ]]; then
+      printf 'Configure diagnostics from %s:\n' \
+        "${source_directory}/config.log" >&2
+      grep -n -E \
+        'conftest|cannot run|Permission denied|not found|Exec format|SyntaxError|Error:' \
+        "${source_directory}/config.log" | tail -n 160 >&2 || true
+      printf 'End of configure log:\n' >&2
+      tail -n 40 "${source_directory}/config.log" >&2
+    fi
+    fail "Build step failed: ${script_path}"
+  fi
+}
+
 [[ "$(uname -s)" == "Linux" ]] ||
   fail "The non-Docker FFmpeg reproduction path currently requires Linux."
+if [[ -n "${EMSDK_NODE:-}" ]]; then
+  [[ -x "${EMSDK_NODE}" ]] ||
+    fail "EMSDK_NODE does not identify an executable: ${EMSDK_NODE}"
+  export PATH="$(dirname "${EMSDK_NODE}"):${PATH}"
+fi
 for command_name in emcc emconfigure emmake emar emranlib emnm curl tar \
-  sha256sum patch pkg-config make diff readlink; do
+  sha256sum patch pkg-config make diff readlink node; do
   require_command "${command_name}"
 done
 
@@ -111,6 +133,10 @@ assert_work_path "${OUTPUT_ROOT}"
 [[ ! -e /out && ! -L /out ]] || fail "Refusing to replace existing /out"
 
 mkdir -p "${WORK_ROOT}" "${BUILD_ROOT}" "${OUTPUT_ROOT}"
+# Emscripten's Autoconf probes are extensionless CommonJS programs. Keep the
+# repository's top-level `type: module` package scope from changing their Node
+# interpretation; the original isolated /src build has the same boundary.
+printf '{"type":"commonjs"}\n' > "${BUILD_ROOT}/package.json"
 available_kib="$(df -Pk "${WORK_ROOT}" | awk 'NR == 2 { print $4 }')"
 [[ "${available_kib}" =~ ^[0-9]+$ ]] || fail "Could not determine free disk space."
 (( available_kib >= MINIMUM_FREE_KIB )) ||
@@ -123,6 +149,7 @@ cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/specialist-source-79e4db.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
 cd "${BUILD_ROOT}"
@@ -151,14 +178,31 @@ download_and_extract \
   "libvorbis-${LIBVORBIS_VERSION}" libvorbis
 
 ./build-vpx.sh
-./build-opencore-amr.sh
-./build-lame.sh
-./build-opus.sh
-./build-ogg.sh
-./build-vorbis.sh
+run_build_step ./build-opencore-amr.sh "${BUILD_ROOT}/opencore-amr"
+run_build_step ./build-lame.sh "${BUILD_ROOT}/lame"
+run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
+run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
+run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
-WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER:-all}" ./build-remux.sh
+requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
+if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
+  WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
+fi
+if [[ "${requested_core}" != "within-remux" ]]; then
+  # The four specialist artifacts were certified at 79e4db, before later
+  # general-core-only audio policy changes. Reconstruct that exact source so
+  # their retained correctness, performance, and memory evidence stays valid.
+  patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
+    < specialist-source-79e4db.patch
+  if [[ "${requested_core}" == "all" ]]; then
+    for specialist_core in within-direct within-mpeg4 within-webm within-vp9; do
+      WITHIN_BUILD_CORE_FILTER="${specialist_core}" ./build-remux.sh
+    done
+  else
+    WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
+  fi
+fi
 
 if ! diff --recursive --brief --no-dereference \
     "${EXPECTED_ROOT}" "${OUTPUT_ROOT}"; then

@@ -34,6 +34,19 @@ value, builds static OpenCORE AMR, libopus, libogg, libvorbis, and a VP8/VP9-enc
 configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
+The supported no-Docker reproduction path is the manual GitHub Actions workflow
+`Reproduce FFmpeg without Docker`. It installs the SDK revision pinned by the
+Emscripten 6.0.4 tag, keeps all build/output data under repository-local
+`work/`, compares every exported byte against `public/engines/remux`, and always
+removes the scratch data. `within-remux` uses wrapper source commit `fb20467`.
+The four certified video specialists retain wrapper source commit `79e4db4`;
+`patches/specialist-source-79e4db.patch` reconstructs that exact source from the
+current wrapper before linking. Its SHA-256 is
+`6d397db605a9ce533413da9b71fdb84e96f10e397d160dee7e4a07356abaa113`.
+This preserves their existing correctness, speed, and three-run memory evidence
+instead of silently replacing the binaries after general-core-only audio policy
+changes. The published build manifest records both source revisions.
+
 The build emits five lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
 stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a

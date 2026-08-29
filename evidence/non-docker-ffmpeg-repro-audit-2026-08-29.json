@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "auditDate": "2026-08-29",
+  "result": "exact-reproduction-passed",
+  "finalRun": {
+    "id": 33242017745,
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33242017745",
+    "commit": "d2191d41c86d4905b9ea5c5805e9c64eea08a410",
+    "branch": "codex/ffmpeg-nondocker",
+    "startedAtUtc": "2026-08-29T07:57:28Z",
+    "completedAtUtc": "2026-08-29T08:07:31Z",
+    "comparisonElapsedSeconds": 557,
+    "conclusion": "success",
+    "exactComparisonMessage": "Exact non-Docker FFmpeg artifact comparison passed.",
+    "dockerCommandsUsed": false,
+    "uploadedArtifactsRemaining": 0
+  },
+  "toolchain": {
+    "operatingSystem": "GitHub-hosted Ubuntu runner",
+    "containerUsed": false,
+    "emscriptenVersion": "6.0.4",
+    "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+    "entrypoint": "media/ffmpeg/reproduce-nondocker.sh",
+    "workflow": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "scratchRoot": "work/",
+    "minimumFreeDiskGiB": 20
+  },
+  "sourceProvenance": {
+    "generalCoreSourceCommit": "fb20467030ea41f54b9b353c049b64192e2ca8df",
+    "specialistCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
+    "specialistSourcePatch": "media/ffmpeg/patches/specialist-source-79e4db.patch",
+    "specialistSourcePatchSha256": "6d397db605a9ce533413da9b71fdb84e96f10e397d160dee7e4a07356abaa113",
+    "specialistSourceSha256": "b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b",
+    "reasonForSplit": "The general core received later audio-policy changes. The four already-certified video specialists were built from the earlier wrapper source, so exact reconstruction preserves their retained correctness, speed, and memory evidence."
+  },
+  "publishedWasmSha256": {
+    "within-direct.wasm": "b2ae0910ea76d4235a6249810f5f3e09ea239d5c6f3af447aeaa3825c68f1d81",
+    "within-mpeg4.wasm": "bb73b22712e40697c916e36ccf9dc32c90aed02bc40e31efe8bec96bf4f1d62a",
+    "within-remux.wasm": "927d910c3912a928dd8dccc9bd3108a2135fff60e0eca0dba0a9c42267854d40",
+    "within-vp9.wasm": "7e2266d010919a92055f5d3b29dd6185a105b689ee0440cb80e2a75d8a474a8b",
+    "within-webm.wasm": "7e2266d010919a92055f5d3b29dd6185a105b689ee0440cb80e2a75d8a474a8b"
+  },
+  "currentSourceCandidate": {
+    "status": "tested-and-rejected-for-publication",
+    "reason": "It passed the focused production-browser conversions, but replacing four certified specialist binaries would invalidate their retained three-run speed and complete-Chromium memory evidence.",
+    "focusedProductionBrowserTests": {
+      "passed": 4,
+      "failed": 0,
+      "elapsedSeconds": 18.7,
+      "routes": [
+        "direct asynchronous save",
+        "MPEG-4 Part 2 re-encode",
+        "VP8 WebM re-encode",
+        "VP9 WebM re-encode"
+      ]
+    },
+    "wasmSha256": {
+      "within-direct.wasm": "02d0d81c39ae4253493b5608bf0728a4c196d17fa190d9ae22646c8593b9c8f0",
+      "within-mpeg4.wasm": "9f1bd99a67be57066233bec682b6b614726cd3596fcf26f3cc1e6406ca7f1f76",
+      "within-vp9.wasm": "e01d4f86c8d68ba9be261f0f4d259b84891e50ca01f3890da77872cd7cbcfc17",
+      "within-webm.wasm": "e01d4f86c8d68ba9be261f0f4d259b84891e50ca01f3890da77872cd7cbcfc17"
+    },
+    "publishedBinariesChanged": false
+  },
+  "diagnosticRuns": [
+    {
+      "id": 33239513064,
+      "commit": "e8d4a6a",
+      "result": "failed",
+      "finding": "The workflow invoked a non-executable checkout script directly."
+    },
+    {
+      "id": 33239590306,
+      "commit": "7bbaa3c",
+      "result": "failed",
+      "finding": "LAME configure required an explicit cross-compilation host."
+    },
+    {
+      "id": 33239674525,
+      "commit": "0d52b00",
+      "result": "failed",
+      "finding": "LAME's old config.sub rejected the Emscripten host triplet."
+    },
+    {
+      "id": 33239812952,
+      "commit": "397be06",
+      "result": "failed",
+      "finding": "libvorbis's old config.sub rejected the Emscripten host triplet."
+    },
+    {
+      "id": 33239990143,
+      "commit": "0456140",
+      "result": "failed",
+      "finding": "All modules linked, but host-triplet workarounds produced different Wasm bytes."
+    },
+    {
+      "ids": [33240526602, 33240646693, 33240756768],
+      "result": "failed",
+      "finding": "Autoconf's extensionless Node probes inherited the repository package.json type=module scope and failed because require was unavailable."
+    },
+    {
+      "id": 33240858036,
+      "commit": "c518c26",
+      "result": "partial-match",
+      "finding": "A scratch CommonJS boundary restored the original configure environment. The general core matched; history then identified the earlier certified source for four specialists."
+    },
+    {
+      "id": 33241338616,
+      "result": "diagnostic-success",
+      "finding": "A bounded mismatch artifact enabled the four-route browser check. It was deleted after diagnosis."
+    }
+  ],
+  "localVerification": {
+    "productionBuild": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "unit": {
+      "passed": 75,
+      "failed": 0
+    },
+    "engineDeclarationAudit": {
+      "passed": 11,
+      "failed": 0
+    },
+    "manifestJsonParse": "passed",
+    "patchHashMatchesManifest": true,
+    "shellSyntax": "passed",
+    "gitDiffCheck": "passed"
+  },
+  "cleanup": {
+    "repositoryLocalBuildAndOutputRemoved": true,
+    "workDirectoryRemainingEntries": [".gitkeep"],
+    "diagnosticArtifactIdDeleted": 9711545004,
+    "remoteRunArtifactsRemaining": 0,
+    "convertedCopiesRetained": 0,
+    "protectedFixture": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31F36695B5B44C62125A9E4264E84DC085ACCD21C02CC3487AAE597F54B9DB34"
+    }
+  }
+}
