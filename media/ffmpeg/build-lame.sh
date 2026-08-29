@@ -7,6 +7,7 @@ cd /src/lame
 
 emconfigure ./configure \
   --prefix="${PREFIX}" \
+  --host=wasm32-unknown-emscripten \
   --disable-shared \
   --enable-static \
   --disable-frontend \
