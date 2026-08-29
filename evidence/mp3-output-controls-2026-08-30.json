@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-30T00:18:00+05:30",
+  "scope": "Bounded user-selectable MP3 bitrate, sample rate, and channel layout",
+  "dockerUsed": false,
+  "commits": {
+    "optionSource": "67dbbd53cee1965cd08acf349b835895bf5d6822",
+    "publishedEngine": "f21bc983b09193cd1d07c12e5d6078d2b7f8b248"
+  },
+  "controls": {
+    "bitRateBps": [0, 64000, 96000, 128000, 192000, 256000, 320000],
+    "sampleRateHz": [0, 32000, 44100, 48000],
+    "channels": [0, 1, 2],
+    "zeroPolicy": "certified source-aware automatic setting",
+    "encoderSpeedPolicy": "LAME compression_level=9 (unchanged fastest certified policy)",
+    "validationLayers": [
+      "browser option contract",
+      "conversion worker",
+      "native Wasm wrapper"
+    ]
+  },
+  "focusedChrome": {
+    "command": "npx playwright test tests/browser/media-options.spec.ts --workers=1",
+    "result": "3 passed",
+    "elapsedSeconds": 15.3,
+    "cases": [
+      "UI, conversion-plan, and request-state propagation",
+      "genuine WAV-to-MP3 at 256000 b/s, 44100 Hz, mono; full native decode; ASDR > 20 dB",
+      "320000 b/s, 48000 Hz, stereo direct-write failure; zero or absent partial output"
+    ],
+    "bounds": {
+      "maximumReadChunkBytes": 262144,
+      "maximumWriteChunkBytes": 262144,
+      "maximumPendingOperations": 1,
+      "finalPendingOperations": 0,
+      "finalQueuedBytes": 0
+    }
+  },
+  "stress": {
+    "report": "outputs/reports/2026-08-29T13-07-07-399Z-wav-to-mp3-stress.json",
+    "reportSha256": "62396be7d217c1bc489e58ea070e96ff9bd1949cd854b71f1ff69bbc7d9ad552",
+    "source": {
+      "bytes": 153600106,
+      "sha256": "139166101286a7d5f2a8f5bebf68ccc4aef0cadda19c3c8941625531db5e6018",
+      "durationSeconds": 800
+    },
+    "settings": {
+      "bitRateBps": 320000,
+      "sampleRateHz": 48000,
+      "channels": 2
+    },
+    "runs": [
+      {
+        "run": 1,
+        "elapsedMs": 12730.22,
+        "realtimeFactor": 62.84,
+        "incrementalPrivateMiB": 143.02,
+        "cleanupDeltaFromLoadedMiB": 10.18
+      },
+      {
+        "run": 2,
+        "elapsedMs": 12595.57,
+        "realtimeFactor": 63.51,
+        "incrementalPrivateMiB": 191.68,
+        "cleanupDeltaFromLoadedMiB": 11.34
+      },
+      {
+        "run": 3,
+        "elapsedMs": 9606.18,
+        "realtimeFactor": 83.28,
+        "incrementalPrivateMiB": 175.42,
+        "cleanupDeltaFromLoadedMiB": 27.21
+      }
+    ],
+    "worstIncrementalPrivateMiB": 191.68359375,
+    "limitMiB": 250,
+    "peakWasmMemoryBytes": 33554432,
+    "maximumReadChunkBytes": 262144,
+    "maximumWriteChunkBytes": 1057,
+    "peakQueuedBytes": 1057,
+    "peakPendingOperations": 1,
+    "output": {
+      "bytes": 32002657,
+      "sha256": "e9384cd1947d9de6aee88349d39bfe707ee50e7ab4603f7f03a40dc2cbc84bd5",
+      "codec": "mp3",
+      "bitRateBps": 320000,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "durationSeconds": 800,
+      "repeatable": true,
+      "fullyDecodedByNativeFfmpeg": true,
+      "channelAsdrDb": [7.71745, 7.72091]
+    },
+    "allProfilerChecksPassed": true,
+    "firstAttempt": {
+      "status": "unclaimed harness failure",
+      "report": "outputs/reports/2026-08-29T13-03-59-656Z-wav-to-mp3-stress-failure.json",
+      "reason": "The encoder produced the valid 320 kb/s output, but the profiler still applied the automatic 192 kb/s size ceiling.",
+      "resolution": "Derive the bounded expected size from the selected bitrate; no encoder or acceptance threshold changed."
+    }
+  },
+  "reproducibility": {
+    "candidateRun": {
+      "id": 33253466681,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33253466681",
+      "status": "expected comparison failure before publication",
+      "differences": ["build-manifest.json", "within-remux.wasm"],
+      "unchangedFiles": 15,
+      "candidateManifestSha256": "11a79748ad56eff10f189346061e689990c22986dd9eb27347b75d83ee732457",
+      "candidateWasmSha256": "572fb3e58a68ba3f8ef346a7807982605a5b1e9b831087a9e632ba48ee59b252",
+      "artifactDeleted": true
+    },
+    "publishedRun": {
+      "id": 33268736116,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33268736116",
+      "commit": "f21bc983b09193cd1d07c12e5d6078d2b7f8b248",
+      "result": "success",
+      "comparison": "17/17 published FFmpeg files byte-identical",
+      "buildAndCompareSeconds": 539,
+      "cleanup": "success",
+      "retainedArtifacts": 0
+    },
+    "publishedHashes": {
+      "build-manifest.json": "11a79748ad56eff10f189346061e689990c22986dd9eb27347b75d83ee732457",
+      "within-remux.mjs": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e",
+      "within-remux.wasm": "572fb3e58a68ba3f8ef346a7807982605a5b1e9b831087a9e632ba48ee59b252",
+      "within-direct.wasm": "b2ae0910ea76d4235a6249810f5f3e09ea239d5c6f3af447aeaa3825c68f1d81",
+      "within-mpeg4.wasm": "bb73b22712e40697c916e36ccf9dc32c90aed02bc40e31efe8bec96bf4f1d62a",
+      "within-webm.wasm": "7e2266d010919a92055f5d3b29dd6185a105b689ee0440cb80e2a75d8a474a8b",
+      "within-vp9.wasm": "7e2266d010919a92055f5d3b29dd6185a105b689ee0440cb80e2a75d8a474a8b"
+    }
+  },
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "validationCopiesDeleted": true,
+    "browserProfileDeleted": true,
+    "localCandidateDeleted": true,
+    "remoteCandidateArtifactDeleted": true,
+    "workDirectoryContainsOnlyGitkeep": true
+  },
+  "protectedFixture": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "remaining": [
+    "user-selectable audio codec/quality",
+    "explicit lossless/lossy choice",
+    "equivalent controls for other practical audio destinations"
+  ]
+}

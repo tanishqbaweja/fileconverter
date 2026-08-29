@@ -519,8 +519,20 @@ after native timing and decoded-quality comparisons. Speech at 8 or 16 kHz
 keeps its source rate and uses 32 or 64 kb/s mono respectively; other mono
 output uses 128 kb/s, stereo uses 192 kb/s, and other rates normalize to 32,
 44.1, or 48 kHz.
-The browser path retains one worker, 32 MiB Wasm, 256 KiB reads, sub-kilobyte
-direct writes, and one destination operation in flight. The optimized
+Every MP3-output route also exposes a bounded advanced panel: automatic or
+64/96/128/192/256/320 kb/s, automatic or 32/44.1/48 kHz, and automatic/mono/
+stereo. `Automatic` preserves the source-aware policy above. The browser
+contract, conversion worker, and native Wasm wrapper each enforce the same
+allowlist; these controls do not expand the worker count, queue, or 32 MiB Wasm
+heap. A maximum-setting 320 kb/s, 48 kHz stereo run converted the genuine
+153,600,106-byte, 800-second WAV three times in 9.61-12.73 seconds at 191.7 MiB
+worst complete-Chrome incremental private memory. All outputs were the same
+genuine 32,002,657-byte MP3, fully decoded and quality-checked independently.
+The exact focused, stress, cleanup, and no-Docker reproduction record is kept in
+[`evidence/mp3-output-controls-2026-08-30.json`](evidence/mp3-output-controls-2026-08-30.json).
+The browser path retains one worker, 32 MiB Wasm, 256 KiB reads, packet-sized
+direct writes (1,057 bytes at the measured maximum setting), and one destination
+operation in flight. The optimized
 23.3-hour AMR-NB source passed 3/3 in 171.14-179.38 seconds at 168.7 MiB,
 down from 417.56-428.36 seconds, while output fell from 1,342,295,469 to
 335,574,477 bytes and ASDR remained 26.0269 dB. The 12.516-hour AMR-WB source

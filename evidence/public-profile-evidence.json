@@ -6217,18 +6217,18 @@
       "profileId": "wav-to-mp3",
       "maxTestedBytes": 153600106,
       "repeatableEvidence": {
-        "report": "2026-08-12T17-53-19-580Z-wav-to-mp3-stress.json",
-        "reportSha256": "c7cf3d3a0b4ae6370f8c5d378754cb75318753dc4b19a51f3801a33d810ad840",
+        "report": "2026-08-29T13-07-07-399Z-wav-to-mp3-stress.json",
+        "reportSha256": "62396be7d217c1bc489e58ea070e96ff9bd1949cd854b71f1ff69bbc7d9ad552",
         "runs": 3,
         "sourceBytes": 153600106,
-        "incrementalPrivateMiB": 159.43359375
+        "incrementalPrivateMiB": 191.68359375
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-12T17-53-19-580Z-wav-to-mp3-stress.json",
-        "reportSha256": "c7cf3d3a0b4ae6370f8c5d378754cb75318753dc4b19a51f3801a33d810ad840",
+        "report": "2026-08-29T13-07-07-399Z-wav-to-mp3-stress.json",
+        "reportSha256": "62396be7d217c1bc489e58ea070e96ff9bd1949cd854b71f1ff69bbc7d9ad552",
         "runs": 3,
         "sourceBytes": 153600106,
-        "incrementalPrivateMiB": 159.43359375
+        "incrementalPrivateMiB": 191.68359375
       }
     },
     {

@@ -569,6 +569,10 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
     preservedSpeechSampleRates: [8000, 16000],
     monoBitRatesBySampleRate: { 8000: 32000, 16000: 64000, default: 128000 },
     stereoBitRate: 192000,
+    selectableBitRates: [64000, 96000, 128000, 192000, 256000, 320000],
+    selectableSampleRates: [32000, 44100, 48000],
+    selectableChannels: [1, 2],
+    zeroSelectsCertifiedAutomaticPolicy: true,
   });
   assert.ok(manifest.enabledEncoders.includes("libopus"));
   assert.equal(manifest.opencoreAmrVersion, "0.1.6");

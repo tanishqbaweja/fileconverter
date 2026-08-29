@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-08-29. This is the living requirement audit for the original
+Updated 2026-08-30. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -52,7 +52,7 @@ not the entire product specification.
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile. The exact non-Docker FFmpeg rebuild path is now established, but the ABI and UI still expose only certified fixed profiles. | Extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
-| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Missing | `evidence/media-option-abi-audit-2026-08-28.json` records the fixed one-integer native ABI, absent option payload, and the decision not to publish UI-only controls. The pinned no-Docker rebuild is now proven exact. | Add validated bounded controls and keep each materially different memory topology as a separately gated profile. |
+| M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Partially implemented | MP3 output now exposes validated automatic/64–320 kb/s, automatic/32/44.1/48 kHz, and automatic/mono/stereo controls across the UI, request, worker, JS/Wasm ABI, and native allowlist. `tests/browser/media-options.spec.ts` passed 3/3 genuine Chrome success/quality/failure-cleanup cases; the maximum 320 kb/s, 48 kHz stereo topology passed 3/3 on 153,600,106 bytes at 191.7 MiB in `outputs/reports/2026-08-29T13-07-07-399Z-wav-to-mp3-stress.json`; hosted run `33268736116` reproduced all 17 FFmpeg files exactly without Docker. Compact evidence is in `evidence/mp3-output-controls-2026-08-30.json`. | Extend the bounded model to codec/quality and explicit lossless/lossy choices, then to other practical audio destinations. Each materially different memory/encoder topology still requires its own correctness, quality, speed, memory, failure, and cleanup evidence. |
 | M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` proves all 259 public FFmpeg profiles state metadata/container and route semantics; `evidence/audio-metadata-retention-browser-2026-08-28.json` independently proves title retention for representative WAV, FLAC, AIFF, ALAC/M4A, WMA/ASF, MP3/ID3, Opus/Ogg, and Vorbis/Ogg destinations, with exact PCM checks for lossless routes | Implement supported artwork paths and independently validate remaining source-container/field mappings; representative destination coverage does not prove every public route. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
@@ -111,8 +111,9 @@ not the entire product specification.
 
 1. Build pinned non-Docker toolchains for the nine engine directories that still
    have Docker-only recipes, then add fail-independent exact rebuild jobs.
-2. Add a bounded option model beginning with audio bitrate/sample-rate/channel-
-   layout and video resolution/bitrate/frame-rate/quality controls.
+2. Extend the verified MP3 bitrate/sample-rate/channel model to practical audio
+   codec/quality/lossless choices and video resolution/bitrate/frame-rate/
+   codec/quality controls.
 3. Audit stream/metadata preservation for every public media route; implement
    representable fields and make every exclusion explicit.
 4. Expand the passing Edge, Brave, and Opera smoke evidence into representative
@@ -137,24 +138,53 @@ not the entire product specification.
   that candidate produced the same output but raised median elapsed time from
   36.064 to 43.141 seconds (16.4% slower). It was reverted; compact evidence is
   retained in `evidence/remux-performance-audit-2026-08-28.json`.
-- A real WAV-to-MP3 bitrate/rate/channel ABI and UI draft was removed before
-  exposure because the changed FFmpeg Wasm could not then be rebuilt and tested:
-  Docker Desktop 4.47.0 crashed on its `dockerInference` runtime socket, and the
-  user explicitly directed this goal not to use Docker. The no-Docker toolchain
-  is now proven, but the removed draft remains rejected until its native ABI,
-  correctness, speed, memory, and profile evidence are implemented together.
-- The 2026-08-28 non-Docker ABI audit found no hidden control channel to reuse at
-  that time:
-  the public request has no options object, `workers/media-remux.ts` passes only
-  one integer, `_within_remux` exports only `int within_remux(int profile)`, and
-  the host/repository contain neither Emscripten nor the pinned FFmpeg static
-  libraries. No engine was downloaded or duplicated during that audit, no
-  Docker/WSL environment was started, and no UI-only control was added. The
-  later repository-local hosted toolchain closes only the build-environment
-  blocker; it does not itself add an options ABI. See
-  `evidence/media-option-abi-audit-2026-08-28.json`.
+- The 2026-08-28 UI-only MP3-controls draft remains a useful rejected approach:
+  without a rebuildable native ABI it could not prove that the encoder honored
+  its settings. The 2026-08-30 implementation replaces it with a validated
+  request/worker/JS/Wasm/native contract and a no-Docker rebuilt engine; the old
+  audit remains in `evidence/media-option-abi-audit-2026-08-28.json` as the
+  before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-08-30 — bounded MP3 bitrate, sample-rate, and channel controls
+
+- Added one bounded option contract for every MP3-output route: automatic or
+  64/96/128/192/256/320 kb/s, automatic or 32/44.1/48 kHz, and automatic/mono/
+  stereo. Unsupported values and non-MP3 use are rejected independently in the
+  browser contract, conversion worker, and native wrapper. Automatic retains
+  the previously certified source-aware policy and fastest LAME
+  `compression_level=9`; the controls add no extra worker, queue, or Wasm heap.
+- Focused production Chrome passed 3/3: UI/request/plan propagation; genuine
+  WAV-to-MP3 at exactly 256 kb/s, 44.1 kHz mono with full native decode and ASDR
+  above 20 dB; and injected direct-write failure with no retained partial file.
+  Reads/writes stayed at or below 256 KiB, one operation was pending, and every
+  OPFS/validation copy was deleted in `finally`.
+- The maximum selectable topology converted a genuine 153,600,106-byte,
+  800-second WAV three times in 9.61–12.73 seconds (62.8–83.3× realtime).
+  Every output was the same genuine 32,002,657-byte 320 kb/s, 48 kHz stereo MP3
+  with SHA-256 `e9384cd1947d9de6aee88349d39bfe707ee50e7ab4603f7f03a40dc2cbc84bd5`.
+  Worst complete-Chrome incremental private memory was 191.7 MiB, Wasm stayed
+  at 32 MiB, reads at 262,144 bytes, writes/queueing at 1,057 bytes, pending
+  operations at one, and cleanup recovery within 27.3 MiB of loaded idle.
+- The first stress attempt produced the valid 32,002,657-byte output but the
+  profiler still applied the automatic 192 kb/s size ceiling. It was correctly
+  left unclaimed, the ceiling was derived from the selected bitrate, and the
+  same unchanged encoder then passed all three runs. The compact failed report
+  remains so this harness mistake is not diagnosed again as an engine failure.
+- The hosted no-Docker candidate comparison changed only the expected general
+  Wasm and manifest; all four specialist modules, JavaScript glue files, and
+  six licenses remained byte-identical. Its bounded artifact, the 153.6 MB
+  source, every converted/validation copy, and the Chrome profile were deleted;
+  `work/` returned to only `.gitkeep`, and `test.mkv` remained byte-identical.
+- After publication, GitHub Actions run `33268736116` rebuilt and compared all
+  17 FFmpeg files byte-for-byte in 539 seconds at commit `f21bc98`. Cleanup
+  passed, the mismatch-upload step was skipped, and zero artifacts remain.
+  `evidence/mp3-output-controls-2026-08-30.json` retains the exact hashes and
+  focused/stress/reproducibility facts.
+- M-07 remains partial: selectable codec/quality, explicit lossless/lossy choice,
+  and equivalent controls for other practical audio destinations are not yet
+  implemented or claimed.
 
 ### 2026-08-29 — exact FFmpeg reproduction without Docker
 
