@@ -39,7 +39,7 @@ jobs:
         shell: bash
         run: |
           source work/emsdk/emsdk_env.sh
-          media/ffmpeg/reproduce-nondocker.sh
+          bash media/ffmpeg/reproduce-nondocker.sh
 
       - name: Remove repository-local build data
         if: always()
