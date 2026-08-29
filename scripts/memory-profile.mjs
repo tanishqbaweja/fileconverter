@@ -1637,22 +1637,24 @@ async function validateMediaOutput(
   const compressedAudioOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
   const mp3SourceSampleRate = Number(sourceAudioForSize?.sample_rate);
-  const mp3OutputSampleRate =
-    mp3SourceSampleRate === 8_000 || mp3SourceSampleRate === 16_000
+  const mp3OutputSampleRate = audioOptions.sampleRateHz ||
+    (mp3SourceSampleRate === 8_000 || mp3SourceSampleRate === 16_000
       ? mp3SourceSampleRate
       : mp3SourceSampleRate <= 32_000
         ? 32_000
         : mp3SourceSampleRate <= 44_100
           ? 44_100
-          : 48_000;
-  const mp3OutputBitRate =
-    Number(sourceAudioForSize?.channels) === 1
+          : 48_000);
+  const mp3OutputChannels =
+    audioOptions.channels || Math.min(Number(sourceAudioForSize?.channels), 2);
+  const mp3OutputBitRate = audioOptions.bitRateBps ||
+    (mp3OutputChannels === 1
       ? mp3OutputSampleRate === 8_000
         ? 32_000
         : mp3OutputSampleRate === 16_000
           ? 64_000
           : 128_000
-      : 192_000;
+      : 192_000);
   const opusOutputBitRate =
     Number(sourceAudioForSize?.channels) === 1 ? 64_000 : 128_000;
   const vorbisOutputBitRate = 220_000;
