@@ -73,6 +73,8 @@ jobs:
       - name: Rebuild pinned engine
         shell: bash
         run: ${{ matrix.command }}
+        env:
+          WITHIN_KEEP_NONDOCKER_OUTPUT: "1"
 
       - name: Normalize generated artifact permissions
         shell: bash
@@ -81,32 +83,34 @@ jobs:
       - name: Verify reproducible engine artifacts
         run: git diff --exit-code -- ${{ matrix.output }}
 
+      - name: Upload bounded engine mismatch evidence
+        if: failure() && matrix.emscriptenVersion
+        uses: actions/upload-artifact@v4
+        with:
+          name: engine-mismatch-${{ matrix.id }}
+          path: work/*-nondocker-output/
+          if-no-files-found: ignore
+          retention-days: 1
+
       - name: Remove repository-local engine build data
         if: always() && matrix.emscriptenVersion
         shell: bash
         run: |
-          if test -L /src && test "$(readlink -f /src)" = \
-              "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build"; then
-            sudo unlink /src
-          fi
-          if test -L /out && test "$(readlink -f /out)" = \
-              "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"; then
-            sudo unlink /out
-          fi
-          if test -L /src && test "$(readlink -f /src)" = \
-              "$GITHUB_WORKSPACE/work/bzip2-nondocker-build"; then
-            sudo unlink /src
-          fi
-          if test -L /out && test "$(readlink -f /out)" = \
-              "$GITHUB_WORKSPACE/work/bzip2-nondocker-output"; then
-            sudo unlink /out
-          fi
+          for link_path in /src /out; do
+            if test -L "$link_path"; then
+              link_target="$(readlink -f "$link_path")"
+              case "$link_target" in
+                "$GITHUB_WORKSPACE/work/"*-nondocker-build|\
+                "$GITHUB_WORKSPACE/work/"*-nondocker-output)
+                  sudo unlink "$link_path"
+                  ;;
+              esac
+            fi
+          done
           rm -rf -- \
             "$GITHUB_WORKSPACE/work/emsdk" \
-            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
-            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output" \
-            "$GITHUB_WORKSPACE/work/bzip2-nondocker-build" \
-            "$GITHUB_WORKSPACE/work/bzip2-nondocker-output"
+            "$GITHUB_WORKSPACE/work/"*-nondocker-build \
+            "$GITHUB_WORKSPACE/work/"*-nondocker-output
 
   verify:
     runs-on: ubuntu-latest
