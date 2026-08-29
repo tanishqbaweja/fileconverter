@@ -149,6 +149,7 @@ cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/specialist-source-79e4db.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
 cd "${BUILD_ROOT}"
@@ -184,7 +185,24 @@ run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
-WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER:-all}" ./build-remux.sh
+requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
+if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
+  WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
+fi
+if [[ "${requested_core}" != "within-remux" ]]; then
+  # The four specialist artifacts were certified at 79e4db, before later
+  # general-core-only audio policy changes. Reconstruct that exact source so
+  # their retained correctness, performance, and memory evidence stays valid.
+  patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
+    < specialist-source-79e4db.patch
+  if [[ "${requested_core}" == "all" ]]; then
+    for specialist_core in within-direct within-mpeg4 within-webm within-vp9; do
+      WITHIN_BUILD_CORE_FILTER="${specialist_core}" ./build-remux.sh
+    done
+  else
+    WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
+  fi
+fi
 
 if ! diff --recursive --brief --no-dereference \
     "${EXPECTED_ROOT}" "${OUTPUT_ROOT}"; then
