@@ -88,6 +88,7 @@ const taskTempRoots = [
   path.resolve(workRoot, "wma-output-process-temp"),
 ];
 const ffmpegReproBuildRoots = [
+  path.resolve(workRoot, "ffmpeg-mp3-options-candidate"),
   path.resolve(workRoot, "remux-build"),
   path.resolve(workRoot, "remux-build-2"),
   path.resolve(workRoot, "remux-build-final"),

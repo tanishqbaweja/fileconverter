@@ -176,3 +176,51 @@ test("native MP3 conversion honors the selected bitrate, sample rate, and channe
   expect(asdrValues).not.toEqual([]);
   expect(Math.min(...asdrValues)).toBeGreaterThan(20);
 });
+
+test("custom MP3 conversion releases a partial direct output after write failure", async ({
+  page,
+}) => {
+  await page.goto("/?test=1&directory=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("wav-to-mp3");
+  await page.locator('[data-testid="audio-bitrate-select"]').selectOption("320000");
+  await page.locator('[data-testid="audio-sample-rate-select"]').selectOption("48000");
+  await page.locator('[data-testid="audio-channels-select"]').selectOption("2");
+
+  const convertButton = page.locator('[data-testid="convert-button"]');
+  await expect(convertButton).toBeEnabled({ timeout: 15_000 });
+  await convertButton.click();
+  await expect
+    .poll(
+      () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("error");
+
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const abandonedSize = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle("audio-source.mp3");
+      const size = (await handle.getFile()).size;
+      await root.removeEntry("audio-source.mp3");
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return null;
+      }
+      throw error;
+    }
+  });
+  expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+});
