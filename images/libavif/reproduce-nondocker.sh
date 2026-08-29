@@ -156,7 +156,8 @@ if [[ "${VARIANT}" == "decoder" ]]; then
   ./build-module.sh
 else
   cp "${ENCODER_DIR}/ffmpeg-avif-streaming.patch" ffmpeg-avif-streaming.patch
-  patch --directory=ffmpeg --strip=1 --input=ffmpeg-avif-streaming.patch
+  patch --directory=ffmpeg --strip=1 \
+    --input="${BUILD_ROOT}/ffmpeg-avif-streaming.patch"
   cp "${ENCODER_DIR}/build-aom.sh" build-aom.sh
   cp "${ENCODER_DIR}/build-ffmpeg.sh" build-ffmpeg.sh
   cp "${ENCODER_DIR}/build-module.sh" build-module.sh

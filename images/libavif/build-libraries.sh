@@ -27,6 +27,7 @@ emmake make -j"$(nproc)" CFLAGS='-O3 -flto'
 
 cd /src/libpng
 emconfigure ./configure \
+  --host=wasm32-unknown-emscripten \
   --disable-shared \
   --enable-static \
   --disable-tools \
