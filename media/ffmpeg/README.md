@@ -38,7 +38,7 @@ The supported no-Docker reproduction path is the manual GitHub Actions workflow
 `Reproduce FFmpeg without Docker`. It installs the SDK revision pinned by the
 Emscripten 6.0.4 tag, keeps all build/output data under repository-local
 `work/`, compares every exported byte against `public/engines/remux`, and always
-removes the scratch data. `within-remux` uses wrapper source commit `fb20467`.
+removes the scratch data. `within-remux` uses wrapper source commit `67dbbd5`.
 The four certified video specialists retain wrapper source commit `79e4db4`;
 `patches/specialist-source-79e4db.patch` reconstructs that exact source from the
 current wrapper before linking. Its SHA-256 is

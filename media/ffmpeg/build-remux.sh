@@ -109,7 +109,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "generalCoreSourceCommit": "fb20467030ea41f54b9b353c049b64192e2ca8df",
+  "generalCoreSourceCommit": "67dbbd53cee1965cd08acf349b835895bf5d6822",
   "specialistCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
   "specialistSourcePatchSha256": "5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941",
   "licenses": ["FFmpeg LGPL-3.0-or-later", "LAME LGPL-2.0-or-later", "libopus BSD-3-Clause", "libogg BSD-3-Clause", "libvorbis BSD-3-Clause", "libvpx BSD-3-Clause", "OpenCORE AMR Apache-2.0"],
