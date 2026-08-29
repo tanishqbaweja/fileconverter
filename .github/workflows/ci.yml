@@ -1,6 +1,7 @@
 name: CI
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
   pull_request:
@@ -92,10 +93,20 @@ jobs:
               "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"; then
             sudo unlink /out
           fi
+          if test -L /src && test "$(readlink -f /src)" = \
+              "$GITHUB_WORKSPACE/work/bzip2-nondocker-build"; then
+            sudo unlink /src
+          fi
+          if test -L /out && test "$(readlink -f /out)" = \
+              "$GITHUB_WORKSPACE/work/bzip2-nondocker-output"; then
+            sudo unlink /out
+          fi
           rm -rf -- \
             "$GITHUB_WORKSPACE/work/emsdk" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
-            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
+            "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output" \
+            "$GITHUB_WORKSPACE/work/bzip2-nondocker-build" \
+            "$GITHUB_WORKSPACE/work/bzip2-nondocker-output"
 
   verify:
     runs-on: ubuntu-latest
