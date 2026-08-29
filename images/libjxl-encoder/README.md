@@ -25,3 +25,6 @@ A second pinned Docker export reproduced the published JavaScript and Wasm
 byte-for-byte. The current SHA-256 values are `15D504CC9AECCF9D20963329D93D7A6B860F21C46675C8DF690D963F8CA66879`
 for `within-jxl-encoder.mjs` and `FAFB17CBD0B2E3E03CA7F6E2DD632FC0978DA5436B46943B9246FA3A2006A315`
 for `within-jxl-encoder.wasm`.
+
+The exact non-Docker reproduction command is documented with the shared pinned
+builder in `../libjxl/README.md` and runs as an independent `jxl-encoder` CI job.

@@ -32,3 +32,18 @@ the project-local extracted release, or `PATH`; it rejects other versions. The
 official Windows static-release URL and SHA-256 are pinned in the generator.
 This native tool is development-only and is never shipped to or invoked by the
 browser application.
+
+The Docker recipes remain the canonical clean exports. CI also performs exact
+non-Docker decoder and encoder comparisons with the same pinned Emscripten 6.0.4
+SDK and libjxl commit:
+
+```sh
+source work/emsdk/emsdk_env.sh
+bash images/libjxl/reproduce-nondocker.sh decoder
+bash images/libjxl/reproduce-nondocker.sh encoder
+```
+
+Each verifier requires Linux, keeps its clone, downloads, build, and output
+under `work/`, verifies every pinned source identity, refuses unexpected `/src`
+or `/out` paths, compares all artifacts byte-for-byte, and removes only the
+scratch paths it created on success or failure.
