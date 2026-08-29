@@ -133,6 +133,10 @@ assert_work_path "${OUTPUT_ROOT}"
 [[ ! -e /out && ! -L /out ]] || fail "Refusing to replace existing /out"
 
 mkdir -p "${WORK_ROOT}" "${BUILD_ROOT}" "${OUTPUT_ROOT}"
+# Emscripten's Autoconf probes are extensionless CommonJS programs. Keep the
+# repository's top-level `type: module` package scope from changing their Node
+# interpretation; the original isolated /src build has the same boundary.
+printf '{"type":"commonjs"}\n' > "${BUILD_ROOT}/package.json"
 available_kib="$(df -Pk "${WORK_ROOT}" | awk 'NR == 2 { print $4 }')"
 [[ "${available_kib}" =~ ^[0-9]+$ ]] || fail "Could not determine free disk space."
 (( available_kib >= MINIMUM_FREE_KIB )) ||
