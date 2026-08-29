@@ -96,6 +96,19 @@ download_and_extract() {
   rm -- "${archive}"
 }
 
+run_build_step() {
+  local script_path="$1"
+  local source_directory="$2"
+  if ! "${script_path}"; then
+    if [[ -f "${source_directory}/config.log" ]]; then
+      printf 'Configure diagnostics from %s:\n' \
+        "${source_directory}/config.log" >&2
+      tail -n 160 "${source_directory}/config.log" >&2
+    fi
+    fail "Build step failed: ${script_path}"
+  fi
+}
+
 [[ "$(uname -s)" == "Linux" ]] ||
   fail "The non-Docker FFmpeg reproduction path currently requires Linux."
 if [[ -n "${EMSDK_NODE:-}" ]]; then
@@ -156,11 +169,11 @@ download_and_extract \
   "libvorbis-${LIBVORBIS_VERSION}" libvorbis
 
 ./build-vpx.sh
-./build-opencore-amr.sh
-./build-lame.sh
-./build-opus.sh
-./build-ogg.sh
-./build-vorbis.sh
+run_build_step ./build-opencore-amr.sh "${BUILD_ROOT}/opencore-amr"
+run_build_step ./build-lame.sh "${BUILD_ROOT}/lame"
+run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
+run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
+run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
 WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER:-all}" ./build-remux.sh
