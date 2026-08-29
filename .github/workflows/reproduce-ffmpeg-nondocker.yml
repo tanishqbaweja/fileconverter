@@ -37,9 +37,20 @@ jobs:
 
       - name: Rebuild and compare every FFmpeg module
         shell: bash
+        env:
+          WITHIN_KEEP_NONDOCKER_OUTPUT: "1"
         run: |
           source work/emsdk/emsdk_env.sh
           bash media/ffmpeg/reproduce-nondocker.sh
+
+      - name: Retain mismatched artifacts for bounded diagnosis
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
+          path: work/ffmpeg-nondocker-output/
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Remove repository-local build data
         if: always()
