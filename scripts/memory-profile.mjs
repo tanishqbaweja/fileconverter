@@ -9,12 +9,33 @@ import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 
 const execFileAsync = promisify(execFile);
+
+function parseBoundedIntegerEnvironment(name, allowed) {
+  const raw = process.env[name] ?? "0";
+  const value = Number.parseInt(raw, 10);
+  if (!allowed.includes(value) || String(value) !== raw) {
+    throw new Error(`${name} must be one of: ${allowed.join(", ")}.`);
+  }
+  return value;
+}
+
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixturePath = path.resolve(
   projectRoot,
   process.argv[2] ?? "fixtures/stress/deterministic-256m.bin",
 );
 const profileId = process.argv[3] ?? "gzip-compress";
+const audioOptions = {
+  bitRateBps: parseBoundedIntegerEnvironment(
+    "WITHIN_AUDIO_BIT_RATE_BPS",
+    [0, 64_000, 96_000, 128_000, 192_000, 256_000, 320_000],
+  ),
+  sampleRateHz: parseBoundedIntegerEnvironment(
+    "WITHIN_AUDIO_SAMPLE_RATE_HZ",
+    [0, 32_000, 44_100, 48_000],
+  ),
+  channels: parseBoundedIntegerEnvironment("WITHIN_AUDIO_CHANNELS", [0, 1, 2]),
+};
 const AIFF_OUTPUT_PROFILES = [
   "3gp-to-aiff",
   "m4a-to-aiff",
@@ -71,6 +92,14 @@ const MP3_OUTPUT_PROFILES = [
   "ogg-to-mp3",
   "opus-to-mp3",
 ];
+if (
+  Object.values(audioOptions).some((value) => value !== 0) &&
+  !MP3_OUTPUT_PROFILES.includes(profileId)
+) {
+  throw new Error(
+    "Custom audio options are currently supported only for MP3 output profiles.",
+  );
+}
 const AAC_OUTPUT_PROFILES = [
   "webm-to-aac",
   "avi-to-aac",
@@ -831,6 +860,17 @@ try {
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
+    if (MP3_OUTPUT_PROFILES.includes(profileId)) {
+      await page
+        .locator('[data-testid="audio-bitrate-select"]')
+        .selectOption(String(audioOptions.bitRateBps));
+      await page
+        .locator('[data-testid="audio-sample-rate-select"]')
+        .selectOption(String(audioOptions.sampleRateHz));
+      await page
+        .locator('[data-testid="audio-channels-select"]')
+        .selectOption(String(audioOptions.channels));
+    }
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().jobState !== "idle",
@@ -1251,6 +1291,7 @@ try {
     },
     source: fixtureManifest,
     profileId,
+    audioOptions,
     destinationMode,
     formula:
       "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
@@ -1299,6 +1340,7 @@ try {
       await writeFailureReports({
         generatedAt: new Date().toISOString(),
         profileId,
+        audioOptions,
         destinationMode,
         source: fixtureManifest,
         formula:
