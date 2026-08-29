@@ -34,3 +34,16 @@ Build reproducibly from the repository root:
 ```sh
 npm run build:archive7z
 ```
+
+The Docker recipe remains the canonical clean export. CI also performs an exact
+non-Docker comparison with the same pinned Emscripten 6.0.4 SDK:
+
+```sh
+source work/emsdk/emsdk_env.sh
+bash compression/libarchive7z/reproduce-nondocker.sh
+```
+
+The verifier requires Linux, keeps both source archives and all build/output
+data under `work/`, checks free space plus both upstream hashes, refuses
+unexpected `/src` or `/out` paths, compares every artifact byte-for-byte, and
+removes only the scratch paths it created on success or failure.

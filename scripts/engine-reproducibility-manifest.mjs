@@ -56,6 +56,10 @@ const engines = [
     output: "public/engines/archive7z",
     installNodeModules: false,
     buildEnvironment: "docker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash compression/libarchive7z/reproduce-nondocker.sh",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
     id: "tiff",

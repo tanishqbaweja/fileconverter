@@ -95,6 +95,8 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "xz-nondocker-output"),
   path.resolve(workRoot, "xz-decoder-nondocker-build"),
   path.resolve(workRoot, "xz-decoder-nondocker-output"),
+  path.resolve(workRoot, "archive7z-nondocker-build"),
+  path.resolve(workRoot, "archive7z-nondocker-output"),
   path.resolve(workRoot, "remux-build"),
   path.resolve(workRoot, "remux-build-2"),
   path.resolve(workRoot, "remux-build-final"),
