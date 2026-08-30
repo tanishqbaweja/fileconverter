@@ -114,6 +114,7 @@ if [[ "${VARIANT}" == "encoder" ]]; then
   # AOM embeds this toolchain path in the Wasm binary. Re-activate through the
   # canonical pinned path used by the published build.
   source /emsdk/emsdk_env.sh >/dev/null
+  export WITHIN_EMSCRIPTEN_TOOLCHAIN_FILE=/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 fi
 cd "${BUILD_ROOT}"
 
