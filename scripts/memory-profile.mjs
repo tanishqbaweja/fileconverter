@@ -19,6 +19,14 @@ function parseBoundedIntegerEnvironment(name, allowed) {
   return value;
 }
 
+function parseBoundedStringEnvironment(name, allowed, defaultValue) {
+  const value = process.env[name] ?? defaultValue;
+  if (!allowed.includes(value)) {
+    throw new Error(`${name} must be one of: ${allowed.join(", ")}.`);
+  }
+  return value;
+}
+
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixturePath = path.resolve(
   projectRoot,
@@ -35,6 +43,30 @@ const audioOptions = {
     [0, 32_000, 44_100, 48_000],
   ),
   channels: parseBoundedIntegerEnvironment("WITHIN_AUDIO_CHANNELS", [0, 1, 2]),
+};
+const videoOptions = {
+  codec: parseBoundedStringEnvironment(
+    "WITHIN_VIDEO_CODEC",
+    ["automatic", "vp8", "vp9", "mpeg4"],
+    "automatic",
+  ),
+  maxWidth: parseBoundedIntegerEnvironment(
+    "WITHIN_VIDEO_MAX_WIDTH",
+    [0, 320, 480, 640],
+  ),
+  bitRateBps: parseBoundedIntegerEnvironment(
+    "WITHIN_VIDEO_BIT_RATE_BPS",
+    [0, 300_000, 600_000, 1_000_000, 2_000_000, 4_000_000],
+  ),
+  frameRateFps: parseBoundedIntegerEnvironment(
+    "WITHIN_VIDEO_FRAME_RATE_FPS",
+    [0, 15, 24, 25, 30],
+  ),
+  quality: parseBoundedStringEnvironment(
+    "WITHIN_VIDEO_QUALITY",
+    ["automatic", "smaller", "balanced", "higher"],
+    "automatic",
+  ),
 };
 const AIFF_OUTPUT_PROFILES = [
   "3gp-to-aiff",
@@ -98,6 +130,22 @@ if (
 ) {
   throw new Error(
     "Custom audio options are currently supported only for MP3 output profiles.",
+  );
+}
+const isVideoOptionsProfile =
+  /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
+    profileId,
+  ) || /^(?:mkv|m2v)-to-mp4-mpeg4$/.test(profileId);
+if (
+  (videoOptions.codec !== "automatic" ||
+    videoOptions.maxWidth !== 0 ||
+    videoOptions.bitRateBps !== 0 ||
+    videoOptions.frameRateFps !== 0 ||
+    videoOptions.quality !== "automatic") &&
+  !isVideoOptionsProfile
+) {
+  throw new Error(
+    "Custom video options are supported only for public video re-encode profiles.",
   );
 }
 const AAC_OUTPUT_PROFILES = [
@@ -871,6 +919,23 @@ try {
         .locator('[data-testid="audio-channels-select"]')
         .selectOption(String(audioOptions.channels));
     }
+    if (isVideoOptionsProfile) {
+      await page
+        .locator('[data-testid="video-codec-select"]')
+        .selectOption(videoOptions.codec);
+      await page
+        .locator('[data-testid="video-width-select"]')
+        .selectOption(String(videoOptions.maxWidth));
+      await page
+        .locator('[data-testid="video-bitrate-select"]')
+        .selectOption(String(videoOptions.bitRateBps));
+      await page
+        .locator('[data-testid="video-frame-rate-select"]')
+        .selectOption(String(videoOptions.frameRateFps));
+      await page
+        .locator('[data-testid="video-quality-select"]')
+        .selectOption(videoOptions.quality);
+    }
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().jobState !== "idle",
@@ -1292,6 +1357,7 @@ try {
     source: fixtureManifest,
     profileId,
     audioOptions,
+    videoOptions,
     destinationMode,
     formula:
       "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
@@ -1341,6 +1407,7 @@ try {
         generatedAt: new Date().toISOString(),
         profileId,
         audioOptions,
+        videoOptions,
         destinationMode,
         source: fixtureManifest,
         formula:

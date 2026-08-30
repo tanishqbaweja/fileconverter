@@ -111,7 +111,7 @@ RUN chmod +x /src/build-remux.sh \
          WITHIN_BUILD_CORE_FILTER=within-remux /src/build-remux.sh; \
        fi \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ]; then \
-         for video_core in within-mpeg4 within-webm within-vp9; do \
+         for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do \
            WITHIN_BUILD_CORE_FILTER="${video_core}" /src/build-remux.sh; \
          done; \
          patch --reverse --directory=/src --strip=1 < /src/direct-source-79e4db.patch; \

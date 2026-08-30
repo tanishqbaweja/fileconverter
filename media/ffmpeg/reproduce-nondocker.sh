@@ -190,7 +190,7 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
-  for video_core in within-mpeg4 within-webm within-vp9; do
+  for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do
     WITHIN_BUILD_CORE_FILTER="${video_core}" ./build-remux.sh
   done
   # The direct 10 GiB remux core is intentionally unchanged. Reconstruct its

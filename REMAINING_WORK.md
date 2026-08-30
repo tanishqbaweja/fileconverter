@@ -174,6 +174,21 @@ not the entire product specification.
   bytes pass independent codec/dimension/bitrate/frame-rate/quality validation,
   cleanup faults, speed comparison, and the complete-Chromium three-run memory
   ceiling.
+- Hosted no-Docker run `33327587571` then compiled the nine-value ABI in 9m52s.
+  It proved the direct-remux loader/binary and all loaders/licenses remained
+  byte-identical while only the expected manifest and four Wasm binaries
+  changed. The candidate passed genuine direct VP9 and MPEG-4 output checks,
+  isolated bitrate/quality effects, cancellation, and injected-write cleanup.
+- The maximum VP9 settings passed 3/3 on the 936,003-byte source at 234.7 MiB,
+  but the required 181,825,549-byte three-run stress gate peaked at 264.1 MiB
+  despite fixed 80 MiB Wasm and bounded I/O. That candidate is therefore not a
+  completed/public result. Its 349.3/351.9/348.6-second runs were repeatable and
+  correct, but renderer retention on runs two and three exceeded the hard limit.
+- The next measured candidate keeps automatic/smaller/balanced on the fastest
+  eight-worker core and routes only `higher` WebM quality to a separate lazy
+  four-worker/two-codec-thread specialist. This targets the measured allocation
+  source without weakening quality, memory accounting, or automatic speed; it
+  still requires a new no-Docker build and the same stress gate.
 
 ### 2026-08-30 — exact clean no-Docker reproduction for all engines
 

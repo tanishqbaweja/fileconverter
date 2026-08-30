@@ -77,7 +77,7 @@ build_selected_core() {
 }
 
 case "${CORE_FILTER}" in
-  all|within-remux|within-direct|within-mpeg4|within-webm|within-vp9) ;;
+  all|within-remux|within-direct|within-mpeg4|within-webm|within-vp9|within-webm-quality) ;;
   *)
     echo "Unknown WITHIN_BUILD_CORE_FILTER: ${CORE_FILTER}" >&2
     exit 2
@@ -89,6 +89,7 @@ build_selected_core within-direct 1 0 0 1048576
 build_selected_core within-mpeg4 2 4 1
 build_selected_core within-webm 4 8 0
 build_selected_core within-vp9 4 8 0
+build_selected_core within-webm-quality 2 4 0
 
 cat > "${OUTPUT}/build-manifest.json" <<EOF
 {
@@ -120,7 +121,8 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
-    {"name": "within-vp9", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm-vp9", "mp4-to-webm-vp9", "mov-to-webm-vp9", "3gp-to-webm-vp9", "mpeg-ts-to-webm-vp9", "flv-to-webm-vp9", "avi-to-webm-vp9", "ogv-to-webm-vp9", "m2v-to-webm-vp9", "h264-to-webm-vp9"]}
+    {"name": "within-vp9", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm-vp9", "mp4-to-webm-vp9", "mov-to-webm-vp9", "3gp-to-webm-vp9", "mpeg-ts-to-webm-vp9", "flv-to-webm-vp9", "avi-to-webm-vp9", "ogv-to-webm-vp9", "m2v-to-webm-vp9", "h264-to-webm-vp9"]},
+    {"name": "within-webm-quality", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["higher-quality-vp8", "higher-quality-vp9"]}
   ],
   "wasmSimd": true,
   "avioInputBufferBytes": 262144,

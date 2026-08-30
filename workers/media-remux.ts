@@ -15,12 +15,15 @@ const THREADED_VIDEO_MODULE_URL = "/engines/remux/within-webm.mjs";
 const THREADED_VIDEO_WASM_URL = "/engines/remux/within-webm.wasm";
 const VP9_MODULE_URL = "/engines/remux/within-vp9.mjs";
 const VP9_WASM_URL = "/engines/remux/within-vp9.wasm";
+const WEBM_QUALITY_MODULE_URL = "/engines/remux/within-webm-quality.mjs";
+const WEBM_QUALITY_WASM_URL = "/engines/remux/within-webm-quality.wasm";
 const DIRECT_REMUX_MODULE_URL = "/engines/remux/within-direct.mjs";
 const DIRECT_REMUX_WASM_URL = "/engines/remux/within-direct.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
 const MPEG4_WORKER_POOL_SIZE = 4;
 const WEBM_WORKER_POOL_SIZE = 8;
 const VP9_WORKER_POOL_SIZE = 8;
+const WEBM_QUALITY_WORKER_POOL_SIZE = 4;
 const MAX_ENGINE_ERRORS = 32;
 const MAX_ENGINE_ERROR_CHARS = 512;
 const ROTATE_REQUIRED = -4096;
@@ -139,6 +142,12 @@ export async function runMediaRemux({
     if (remuxProfile === 5) remuxProfile = 10;
     if (remuxProfile === 7) remuxProfile = 11;
   }
+  const useWebmQualityCore =
+    videoOptions?.quality === "higher" &&
+    (remuxProfile === 5 ||
+      remuxProfile === 7 ||
+      remuxProfile === 10 ||
+      remuxProfile === 11);
   const phase =
     remuxProfile === 1
       ? "Lossless remux"
@@ -227,7 +236,9 @@ export async function runMediaRemux({
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =
-    remuxProfile === 4
+    useWebmQualityCore
+      ? WEBM_QUALITY_WORKER_POOL_SIZE
+      : remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE
       : remuxProfile === 5 || remuxProfile === 7
         ? WEBM_WORKER_POOL_SIZE
@@ -544,6 +555,8 @@ export async function runMediaRemux({
   const moduleUrl =
     useDirectRemuxCore
       ? DIRECT_REMUX_MODULE_URL
+      : useWebmQualityCore
+        ? WEBM_QUALITY_MODULE_URL
       : remuxProfile === 4
       ? MPEG4_MODULE_URL
       : remuxProfile === 5 || remuxProfile === 7
@@ -554,6 +567,8 @@ export async function runMediaRemux({
   const wasmUrl =
     useDirectRemuxCore
       ? DIRECT_REMUX_WASM_URL
+      : useWebmQualityCore
+        ? WEBM_QUALITY_WASM_URL
       : remuxProfile === 4
       ? MPEG4_WASM_URL
       : remuxProfile === 5 || remuxProfile === 7

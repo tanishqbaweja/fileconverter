@@ -47,7 +47,7 @@ only after current video specialists link. Its SHA-256 is
 This preserves the direct core's existing byte identity, speed, and three-run
 memory evidence while allowing independently certified video-option ABI work.
 
-The build emits five lazy-loaded WebAssembly SIMD modules from the same pinned
+The build emits six lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
 stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a
 1 MiB output AVIO buffer to reduce synchronous browser-file write crossings.
@@ -72,6 +72,9 @@ policy byte-for-byte. Lower frame-rate caps uniformly discard decoded frames
 before scaling; they never duplicate frames. VP8/VP9 selection loads only the
 chosen specialist, while higher WebM quality lowers `cpu-used` from 8 to 6 and
 all presets retain zero lookahead and fixed worker/memory ceilings.
+The `higher` WebM quality policy lazy-loads `within-webm-quality` instead: its
+four-worker pool and two codec threads bound repeated-run renderer memory while
+automatic, smaller, and balanced retain the faster eight-worker specialists.
 
 The input `AVIOContext` buffer is 256 KiB. Output is 256 KiB except for the
 direct-save MKV-to-MP4 specialist's fixed 1 MiB buffer. JavaScript still handles

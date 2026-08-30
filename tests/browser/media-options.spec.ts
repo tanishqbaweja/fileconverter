@@ -1,6 +1,6 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { execFile } from "node:child_process";
-import { mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -8,6 +8,11 @@ const projectRoot = path.resolve(import.meta.dirname, "..", "..");
 const execFileAsync = promisify(execFile);
 const validationRoot = path.join(projectRoot, "work", "media-options-validation");
 const customMp3Path = path.join(validationRoot, "audio-source-custom.mp3");
+const customVp9Path = path.join(validationRoot, "video-source-custom.webm");
+const customMpeg4Path = path.join(validationRoot, "video-source-custom.mp4");
+const lowBitrateVideoPath = path.join(validationRoot, "video-low-bitrate.webm");
+const higherQualityVideoPath = path.join(validationRoot, "video-higher-quality.webm");
+const smallerVideoPath = path.join(validationRoot, "video-smaller.webm");
 const wavFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -22,6 +27,94 @@ const videoFixturePath = path.join(
 );
 
 test.use({ channel: "chrome" });
+
+async function waitForCompletedConversion(page: Page): Promise<NonNullable<Awaited<ReturnType<NonNullable<typeof window.__WITHIN_TEST__>["getState"]>>>> {
+  await expect(page.locator('[data-testid="convert-button"]')).toBeEnabled({
+    timeout: 15_000,
+  });
+  await page.locator('[data-testid="convert-button"]').click();
+  await expect
+    .poll(
+      () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 120_000 },
+    )
+    .not.toBe("running");
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  if (!state) throw new Error("The browser test bridge returned no state.");
+  expect(state.jobState, state.error ?? state.phase).toBe("complete");
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  return state;
+}
+
+async function copyAndDeleteSmallBrowserOutput(
+  page: Page,
+  entryName: string,
+  outputPath: string,
+): Promise<void> {
+  const base64 = await page.evaluate(async (name) => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const file = await (await root.getFileHandle(name)).getFile();
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      let binary = "";
+      for (let offset = 0; offset < bytes.byteLength; offset += 16 * 1024) {
+        binary += String.fromCharCode(
+          ...bytes.subarray(offset, Math.min(offset + 16 * 1024, bytes.byteLength)),
+        );
+      }
+      return btoa(binary);
+    } finally {
+      await root.removeEntry(name).catch(() => {});
+    }
+  }, entryName);
+  await mkdir(validationRoot, { recursive: true });
+  await writeFile(outputPath, Buffer.from(base64, "base64"));
+}
+
+async function probeVideo(outputPath: string) {
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-count_frames", "-select_streams", "v:0",
+      "-show_entries",
+      "stream=codec_name,width,height,r_frame_rate,avg_frame_rate,nb_read_frames:format=duration",
+      "-of", "json", outputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as {
+    streams: Array<{
+      codec_name?: string;
+      width?: number;
+      height?: number;
+      r_frame_rate?: string;
+      avg_frame_rate?: string;
+      nb_read_frames?: string;
+    }>;
+    format: { duration?: string };
+  };
+}
+
+async function measureScaledVideoPsnr(outputPath: string): Promise<number> {
+  const { stderr } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-nostdin", "-i", videoFixturePath, "-i", outputPath,
+      "-filter_complex",
+      "[0:v:0]scale=320:180:flags=bilinear,fps=15,setpts=PTS-STARTPTS[reference];[1:v:0]setpts=PTS-STARTPTS[converted];[converted][reference]psnr",
+      "-f", "null", "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const match = /PSNR[^\n]*average:([0-9.]+)/i.exec(stderr);
+  if (!match) throw new Error(`FFmpeg did not report PSNR: ${stderr}`);
+  return Number(match[1]);
+}
 
 test.afterEach(async ({ page }) => {
   await page
@@ -143,6 +236,233 @@ test("video controls update every bounded setting and synchronize the codec prof
       frameRateFps: 0,
       quality: "automatic",
     });
+});
+
+test("native video controls produce genuine bounded VP9 and MPEG-4 outputs", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-webm");
+  await page.locator('[data-testid="video-codec-select"]').selectOption("vp9");
+  await page.locator('[data-testid="video-width-select"]').selectOption("320");
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("1000000");
+  await page.locator('[data-testid="video-frame-rate-select"]').selectOption("15");
+  await page.locator('[data-testid="video-quality-select"]').selectOption("higher");
+  const vp9State = await waitForCompletedConversion(page);
+  expect(vp9State.opfsName).toBeNull();
+  const vp9Entry = vp9State.batchOutputNames[0];
+  expect(vp9Entry).toBeTruthy();
+  await copyAndDeleteSmallBrowserOutput(page, vp9Entry, customVp9Path);
+  const vp9Probe = await probeVideo(customVp9Path);
+  expect(vp9Probe.streams).toHaveLength(1);
+  expect(vp9Probe.streams[0]).toMatchObject({
+    codec_name: "vp9",
+    width: 320,
+    height: 180,
+    r_frame_rate: "15/1",
+    avg_frame_rate: "15/1",
+    nb_read_frames: "60",
+  });
+  expect(Number(vp9Probe.format.duration)).toBeGreaterThan(3.9);
+  expect(Number(vp9Probe.format.duration)).toBeLessThan(4.1);
+
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-mp4-mpeg4");
+  await page.locator('[data-testid="video-codec-select"]').selectOption("mpeg4");
+  await page.locator('[data-testid="video-width-select"]').selectOption("480");
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("2000000");
+  await page.locator('[data-testid="video-frame-rate-select"]').selectOption("15");
+  await page.locator('[data-testid="video-quality-select"]').selectOption("balanced");
+  const mpeg4State = await waitForCompletedConversion(page);
+  expect(mpeg4State.opfsName).toBeNull();
+  const mpeg4Entry = mpeg4State.batchOutputNames[0];
+  expect(mpeg4Entry).toBeTruthy();
+  await copyAndDeleteSmallBrowserOutput(page, mpeg4Entry, customMpeg4Path);
+  const mpeg4Probe = await probeVideo(customMpeg4Path);
+  expect(mpeg4Probe.streams).toHaveLength(1);
+  expect(mpeg4Probe.streams[0]).toMatchObject({
+    codec_name: "mpeg4",
+    width: 480,
+    height: 270,
+    r_frame_rate: "15/1",
+    avg_frame_rate: "15/1",
+    nb_read_frames: "60",
+  });
+  expect(Number(mpeg4Probe.format.duration)).toBeGreaterThan(3.9);
+  expect(Number(mpeg4Probe.format.duration)).toBeLessThan(4.1);
+
+  await execFileAsync(
+    "ffmpeg",
+    ["-hide_banner", "-loglevel", "error", "-i", customVp9Path, "-f", "null", "NUL"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    ["-hide_banner", "-loglevel", "error", "-i", customMpeg4Path, "-f", "null", "NUL"],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+});
+
+test("native video bitrate and quality policies materially affect encoded output", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-webm");
+  await page.locator('[data-testid="video-codec-select"]').selectOption("vp8");
+  await page.locator('[data-testid="video-width-select"]').selectOption("320");
+  await page.locator('[data-testid="video-frame-rate-select"]').selectOption("15");
+
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("300000");
+  await page.locator('[data-testid="video-quality-select"]').selectOption("higher");
+  const lowBitrateState = await waitForCompletedConversion(page);
+  await copyAndDeleteSmallBrowserOutput(
+    page,
+    lowBitrateState.batchOutputNames[0],
+    lowBitrateVideoPath,
+  );
+
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("4000000");
+  const higherQualityState = await waitForCompletedConversion(page);
+  await copyAndDeleteSmallBrowserOutput(
+    page,
+    higherQualityState.batchOutputNames[0],
+    higherQualityVideoPath,
+  );
+
+  await page.locator('[data-testid="video-quality-select"]').selectOption("smaller");
+  const smallerState = await waitForCompletedConversion(page);
+  await copyAndDeleteSmallBrowserOutput(
+    page,
+    smallerState.batchOutputNames[0],
+    smallerVideoPath,
+  );
+
+  const [lowBitrateBytes, higherQualityBytes, smallerBytes] = await Promise.all([
+    stat(lowBitrateVideoPath).then((value) => value.size),
+    stat(higherQualityVideoPath).then((value) => value.size),
+    stat(smallerVideoPath).then((value) => value.size),
+  ]);
+  expect(higherQualityBytes).toBeGreaterThan(lowBitrateBytes * 1.05);
+  expect(higherQualityBytes).toBeGreaterThan(smallerBytes);
+
+  const [higherQualityPsnr, smallerPsnr] = await Promise.all([
+    measureScaledVideoPsnr(higherQualityVideoPath),
+    measureScaledVideoPsnr(smallerVideoPath),
+  ]);
+  expect(higherQualityPsnr).toBeGreaterThan(smallerPsnr);
+});
+
+test("maximum custom video topology releases a partial direct output after write failure", async ({
+  page,
+}) => {
+  await page.goto("/?test=1&directory=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-webm-vp9");
+  await page.locator('[data-testid="video-codec-select"]').selectOption("vp9");
+  await page.locator('[data-testid="video-width-select"]').selectOption("640");
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("4000000");
+  await page.locator('[data-testid="video-frame-rate-select"]').selectOption("30");
+  await page.locator('[data-testid="video-quality-select"]').selectOption("higher");
+
+  const convertButton = page.locator('[data-testid="convert-button"]');
+  await expect(convertButton).toBeEnabled({ timeout: 15_000 });
+  await convertButton.click();
+  await expect
+    .poll(
+      () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("error");
+
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const abandonedSize = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle("remux-source.webm");
+      const size = (await handle.getFile()).size;
+      await root.removeEntry("remux-source.webm");
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return null;
+      }
+      throw error;
+    }
+  });
+  expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+});
+
+test("maximum custom video topology cancels and removes its direct output", async ({
+  page,
+}) => {
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-webm-vp9");
+  await page.locator('[data-testid="video-codec-select"]').selectOption("vp9");
+  await page.locator('[data-testid="video-width-select"]').selectOption("640");
+  await page.locator('[data-testid="video-bitrate-select"]').selectOption("4000000");
+  await page.locator('[data-testid="video-frame-rate-select"]').selectOption("30");
+  await page.locator('[data-testid="video-quality-select"]').selectOption("higher");
+
+  await page.locator('[data-testid="convert-button"]').click();
+  const cancelButton = page.getByRole("button", { name: "Cancel safely" });
+  await expect(cancelButton).toBeVisible({ timeout: 15_000 });
+  await cancelButton.click();
+  await expect
+    .poll(
+      () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+      { timeout: 30_000 },
+    )
+    .toBe("cancelled");
+
+  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+  expect(state?.opfsName).toBeNull();
+  expect(state?.metrics?.pendingOperations).toBe(0);
+  expect(state?.metrics?.queuedBytes).toBe(0);
+  const abandonedSize = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle("remux-source.webm");
+      const size = (await handle.getFile()).size;
+      await root.removeEntry("remux-source.webm");
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return null;
+      }
+      throw error;
+    }
+  });
+  expect(abandonedSize === null || abandonedSize === 0).toBe(true);
 });
 
 test("native MP3 conversion honors the selected bitrate, sample rate, and channels", async ({
