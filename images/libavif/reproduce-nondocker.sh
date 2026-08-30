@@ -23,7 +23,6 @@ LIBPNG_VERSION=1.6.58
 LIBPNG_SHA256=28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775
 ZLIB_VERSION=1.3.2
 ZLIB_SHA256=d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3
-EMSCRIPTEN_VERSION=6.0.4
 
 case "${VARIANT}" in
   decoder) ENGINE_ID=avif ;;
@@ -37,9 +36,6 @@ EXPECTED_ROOT="${PROJECT_ROOT}/public/engines/${ENGINE_ID}"
 BUILD_ROOT_CREATED=0
 OUTPUT_ROOT_CREATED=0
 PINNED_EMSDK_ROOT="${EMSDK:-}"
-PINNED_EMSDK_MARKER=.within-fileconverter-owner
-PINNED_EMSDK_MOVED=0
-PINNED_EMSDK_BOOTSTRAP_CREATED=0
 
 fail() { printf '%s\n' "$*" >&2; exit 1; }
 require_command() {
@@ -64,31 +60,13 @@ remove_owned_symlink() {
     fi
   fi
 }
-restore_owned_emsdk() {
-  if [[ "${PINNED_EMSDK_MOVED}" != "1" ]]; then return; fi
-  if [[ ! -d /emsdk || -L /emsdk ]]; then
-    printf 'Cannot restore the owned SDK because /emsdk is not the expected directory.\n' >&2
-    return
-  fi
-  local recorded_owner
-  recorded_owner="$(run_privileged cat "/emsdk/${PINNED_EMSDK_MARKER}" 2>/dev/null || true)"
-  if [[ "${recorded_owner}" != "${PINNED_EMSDK_ROOT}" || -e "${PINNED_EMSDK_ROOT}" ]]; then
-    printf 'Leaving unexpected /emsdk directory untouched.\n' >&2
-    return
-  fi
-  run_privileged mv /emsdk "${PINNED_EMSDK_ROOT}"
-  rm -- "${PINNED_EMSDK_ROOT}/${PINNED_EMSDK_MARKER}"
-  PINNED_EMSDK_MOVED=0
-}
 cleanup() {
   local status=$?
   remove_owned_symlink /src "${BUILD_ROOT}"
   remove_owned_symlink /out "${OUTPUT_ROOT}"
-  if [[ "${PINNED_EMSDK_MOVED}" == "1" && \
-      "${PINNED_EMSDK_BOOTSTRAP_CREATED}" == "1" ]]; then
-    run_privileged rm -f -- /emsdk/hello.c /emsdk/hello.o
+  if [[ -n "${PINNED_EMSDK_ROOT}" ]]; then
+    remove_owned_symlink /emsdk "${PINNED_EMSDK_ROOT}"
   fi
-  restore_owned_emsdk
   if [[ "${BUILD_ROOT_CREATED}" == "1" ]]; then rm -rf -- "${BUILD_ROOT}"; fi
   if [[ "${OUTPUT_ROOT_CREATED}" == "1" && "${KEEP_OUTPUT}" != "1" ]]; then
     rm -rf -- "${OUTPUT_ROOT}"
@@ -131,27 +109,12 @@ run_privileged ln -s "${OUTPUT_ROOT}" /out
 if [[ "${VARIANT}" == "encoder" ]]; then
   [[ -n "${PINNED_EMSDK_ROOT}" && -d "${PINNED_EMSDK_ROOT}" ]] ||
     fail "The activated EMSDK root is unavailable."
-  assert_work_path "${PINNED_EMSDK_ROOT}"
   [[ ! -e /emsdk && ! -L /emsdk ]] || fail "Refusing to replace existing /emsdk"
-  printf '%s\n' "${PINNED_EMSDK_ROOT}" > \
-    "${PINNED_EMSDK_ROOT}/${PINNED_EMSDK_MARKER}"
-  # AOM and LLVM embed their canonical toolchain identity. Temporarily moving
-  # the owned SDK to the published build's physical path prevents Python and
-  # LLVM from resolving a symlink back to a runner-specific workspace path.
-  run_privileged mv "${PINNED_EMSDK_ROOT}" /emsdk
-  PINNED_EMSDK_MOVED=1
-  export EMSDK=/emsdk
-  unset EMSDK_NODE
-  PINNED_EMSDK_BOOTSTRAP_CREATED=1
-  (
-    cd /emsdk
-    ./emsdk activate "${EMSCRIPTEN_VERSION}" >/dev/null
-    printf 'int main() { return 0; }\n' > hello.c
-    ./upstream/emscripten/emcc -c hello.c
-    rm -- hello.c hello.o
-  )
-  PINNED_EMSDK_BOOTSTRAP_CREATED=0
+  run_privileged ln -s "${PINNED_EMSDK_ROOT}" /emsdk
+  # AOM embeds this toolchain path in the Wasm binary. Re-activate through the
+  # canonical pinned path used by the published build.
   source /emsdk/emsdk_env.sh >/dev/null
+  export WITHIN_EMSCRIPTEN_TOOLCHAIN_FILE=/emsdk/upstream/emscripten/cmake/Modules/Platform/Emscripten.cmake
 fi
 cd "${BUILD_ROOT}"
 

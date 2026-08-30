@@ -363,7 +363,11 @@ export async function runImageToAvif(options: ImageToAvifOptions): Promise<void>
     : new Decoder!({
         type: inputMime,
         data: options.createInput(),
-        colorSpaceConversion: "none",
+        // The same encoded image can be surfaced by Chromium as planar YUV or
+        // packed RGB. Normalize both through its managed sRGB conversion before
+        // copying RGBA; otherwise decoder-selected format/color metadata can
+        // change the AV1 bitstream between identical runs.
+        colorSpaceConversion: "default",
         desiredWidth: width,
         desiredHeight: height,
         preferAnimation: options.preferAnimation,
