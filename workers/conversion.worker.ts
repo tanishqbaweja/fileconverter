@@ -8,7 +8,11 @@ import type {
   WorkerRequest,
   WorkerResponse,
 } from "../lib/conversion-protocol";
-import { validateAudioConversionOptions } from "../lib/media-conversion-options";
+import {
+  validateAudioConversionOptions,
+  validateVideoConversionOptions,
+  videoOptionProfileForId,
+} from "../lib/media-conversion-options";
 import {
   createZipDataDescriptor,
   createZipLocalHeader,
@@ -3790,6 +3794,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     mp3OptionsProfile,
     message.audioOptions,
   );
+  const videoOptionsProfile = videoOptionProfileForId(profileId) ?? {
+    engine: "unsupported",
+    output: "unsupported",
+  };
+  const videoOptions = validateVideoConversionOptions(
+    videoOptionsProfile,
+    message.videoOptions,
+  );
   const compressionTranscode =
     COMPRESSION_TRANSCODES[
       profileId as keyof typeof COMPRESSION_TRANSCODES
@@ -4692,6 +4704,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         file,
         writable: destination.writable,
         audioOptions,
+        videoOptions,
         remuxProfile:
           profileId === "mkv-to-mp3" ||
           profileId === "mp4-to-mp3" ||

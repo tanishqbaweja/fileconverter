@@ -14,6 +14,12 @@ const wavFixturePath = path.join(
   "media",
   "audio-source.wav",
 );
+const videoFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "remux-source.mkv",
+);
 
 test.use({ channel: "chrome" });
 
@@ -74,6 +80,69 @@ test("MP3 controls update the bounded native conversion request and plan", async
       page.evaluate(() => window.__WITHIN_TEST__?.getState().audioOptions),
     )
     .toEqual({ bitRateBps: 0, sampleRateHz: 0, channels: 0 });
+});
+
+test("video controls update every bounded setting and synchronize the codec profile", async ({
+  page,
+}) => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-webm");
+
+  const codec = page.locator('[data-testid="video-codec-select"]');
+  const width = page.locator('[data-testid="video-width-select"]');
+  const bitrate = page.locator('[data-testid="video-bitrate-select"]');
+  const frameRate = page.locator('[data-testid="video-frame-rate-select"]');
+  const quality = page.locator('[data-testid="video-quality-select"]');
+  await expect(codec).toHaveValue("automatic");
+  await expect(width).toHaveValue("0");
+  await expect(bitrate).toHaveValue("0");
+  await expect(frameRate).toHaveValue("0");
+  await expect(quality).toHaveValue("automatic");
+
+  await codec.selectOption("vp9");
+  await expect(page.locator('[data-testid="format-select"]')).toHaveValue(
+    "mkv-to-webm-vp9",
+  );
+  await width.selectOption("480");
+  await bitrate.selectOption("1000000");
+  await frameRate.selectOption("24");
+  await quality.selectOption("higher");
+
+  const plan = page.locator('[data-testid="media-conversion-plan"]');
+  await expect(plan).toContainText("VP9");
+  await expect(plan).toContainText("480px");
+  await expect(plan).toContainText("1000 kb/s");
+  await expect(plan).toContainText("24 fps cap");
+  await expect(plan).toContainText("higher-visual-quality");
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().videoOptions),
+    )
+    .toEqual({
+      codec: "vp9",
+      maxWidth: 480,
+      bitRateBps: 1_000_000,
+      frameRateFps: 24,
+      quality: "higher",
+    });
+
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mp4");
+  await expect(codec).toHaveCount(0);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().videoOptions),
+    )
+    .toEqual({
+      codec: "automatic",
+      maxWidth: 0,
+      bitRateBps: 0,
+      frameRateFps: 0,
+      quality: "automatic",
+    });
 });
 
 test("native MP3 conversion honors the selected bitrate, sample rate, and channels", async ({

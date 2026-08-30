@@ -1,4 +1,7 @@
-import type { AudioConversionOptions } from "./media-conversion-options";
+import type {
+  AudioConversionOptions,
+  VideoConversionOptions,
+} from "./media-conversion-options";
 
 export interface ConversionMetrics {
   inputBytes: number;
@@ -49,6 +52,7 @@ export interface StartConversionMessage {
     | { mode: "handle"; handle: FileSystemFileHandle }
     | { mode: "opfs-test"; name: string };
   audioOptions?: AudioConversionOptions;
+  videoOptions?: VideoConversionOptions;
   /** Localhost-only Playwright fault injection; never sent for user destinations. */
   testFault?: TestFault;
 }

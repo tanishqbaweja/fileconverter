@@ -38,14 +38,14 @@ The supported no-Docker reproduction path is the manual GitHub Actions workflow
 `Reproduce FFmpeg without Docker`. It installs the SDK revision pinned by the
 Emscripten 6.0.4 tag, keeps all build/output data under repository-local
 `work/`, compares every exported byte against `public/engines/remux`, and always
-removes the scratch data. `within-remux` uses wrapper source commit `67dbbd5`.
-The four certified video specialists retain wrapper source commit `79e4db4`;
-`patches/specialist-source-79e4db.patch` reconstructs that exact source from the
-current wrapper before linking. Its SHA-256 is
-`5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941`.
-This preserves their existing correctness, speed, and three-run memory evidence
-instead of silently replacing the binaries after general-core-only audio policy
-changes. The published build manifest records both source revisions.
+removes the scratch data. The general audio/remux core and three video encoder
+specialists use the current wrapper identified by its manifest SHA-256. The
+unchanged direct 10 GiB remux specialist alone retains wrapper source commit
+`79e4db4`; `patches/direct-source-79e4db.patch` reconstructs that exact source
+only after current video specialists link. Its SHA-256 is
+`ab5b790455b5ddf227b16aabd4bda60de0c00e4479834dfd812517f0ba65ec28`.
+This preserves the direct core's existing byte identity, speed, and three-run
+memory evidence while allowing independently certified video-option ABI work.
 
 The build emits five lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
@@ -64,6 +64,14 @@ tile columns. Current stable
 Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The
 scalar file I/O bridge stays single-flight, and each module's shared Wasm memory
 retains its 32 MiB initial and 96 MiB maximum sizes.
+
+The video ABI accepts only fixed allowlists for codec, no-upscale maximum width,
+bitrate, no-upconvert frame-rate cap, and quality policy. Automatic mode retains
+the previously certified 640 px/600 kbit/s WebM or source-size/2 Mbit/s MPEG-4
+policy byte-for-byte. Lower frame-rate caps uniformly discard decoded frames
+before scaling; they never duplicate frames. VP8/VP9 selection loads only the
+chosen specialist, while higher WebM quality lowers `cpu-used` from 8 to 6 and
+all presets retain zero lookahead and fixed worker/memory ceilings.
 
 The input `AVIOContext` buffer is 256 KiB. Output is 256 KiB except for the
 direct-save MKV-to-MP4 specialist's fixed 1 MiB buffer. JavaScript still handles

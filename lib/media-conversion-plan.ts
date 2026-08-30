@@ -3,7 +3,10 @@ import type {
   MediaSourceInspection,
   SourceStreamInspection,
 } from "./media-source-inspection";
-import type { AudioConversionOptions } from "./media-conversion-options";
+import type {
+  AudioConversionOptions,
+  VideoConversionOptions,
+} from "./media-conversion-options";
 
 export type MediaPlanAction = "copy" | "re-encode" | "exclude" | "reject";
 
@@ -415,6 +418,7 @@ function planAudioReencode(
 function planVideoReencode(
   profile: ConversionProfile,
   streams: readonly SourceStreamInspection[],
+  videoOptions?: VideoConversionOptions,
 ): readonly MediaStreamPlan[] {
   let videoSelected = false;
   let audioSelected = false;
@@ -422,11 +426,46 @@ function planVideoReencode(
   return streams.map((stream, index) => {
     if (!videoSelected && stream.mediaType === "video") {
       videoSelected = true;
+      const defaultCodec = profile.output.includes("vp9")
+        ? "VP9"
+        : profile.output.includes("webm")
+          ? "VP8"
+          : "MPEG-4 Part 2";
+      const codec =
+        !videoOptions || videoOptions.codec === "automatic"
+          ? defaultCodec
+          : videoOptions.codec === "vp8"
+            ? "VP8"
+            : videoOptions.codec === "vp9"
+              ? "VP9"
+              : "MPEG-4 Part 2";
+      const webm = profile.output.includes("webm");
+      const widthPolicy = videoOptions?.maxWidth
+        ? `at most ${videoOptions.maxWidth}px wide without upscaling`
+        : webm
+          ? "the certified 640px no-upscale width cap"
+          : "the source dimensions";
+      const bitrate = videoOptions?.bitRateBps
+        ? `${videoOptions.bitRateBps / 1_000} kb/s`
+        : webm
+          ? "the certified 600 kb/s target"
+          : "the certified 2,000 kb/s target";
+      const frameRate = videoOptions?.frameRateFps
+        ? `a ${videoOptions.frameRateFps} fps cap (never frame-rate upconversion)`
+        : "the source average frame rate";
+      const quality =
+        !videoOptions || videoOptions.quality === "automatic"
+          ? "the fastest certified automatic quality policy"
+          : videoOptions.quality === "smaller"
+            ? "the smaller-file quality policy"
+            : videoOptions.quality === "balanced"
+              ? "the balanced quality policy"
+              : "the higher-visual-quality policy";
       return planItem(
         stream,
         index,
         "re-encode",
-        `The first video stream is decoded and encoded with the fixed certified ${profile.output.includes("vp9") ? "VP9" : profile.output.includes("webm") ? "VP8" : "MPEG-4 Part 2"} settings.`,
+        `The first video stream is decoded and encoded as ${codec} using ${widthPolicy}, ${bitrate}, ${frameRate}, and ${quality}.`,
       );
     }
     if (
@@ -458,6 +497,7 @@ export function planMediaConversion(
   profile: ConversionProfile,
   inspection: MediaSourceInspection,
   audioOptions?: AudioConversionOptions,
+  videoOptions?: VideoConversionOptions,
 ): MediaConversionPlan | null {
   if (
     profile.engine !== "ffmpeg-remux" &&
@@ -472,7 +512,7 @@ export function planMediaConversion(
       ? planStreamCopy(profile, streams)
       : profile.engine === "ffmpeg-audio"
         ? planAudioReencode(profile, streams, audioOptions)
-        : planVideoReencode(profile, streams);
+        : planVideoReencode(profile, streams, videoOptions);
   const blockingReasons = plannedStreams
     .filter((stream) => stream.action === "reject")
     .map(

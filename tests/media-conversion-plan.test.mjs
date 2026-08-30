@@ -158,6 +158,27 @@ test("OGV video conversion re-encodes video and copies first Vorbis audio", () =
   assert.match(plan.streams[0].detail, /VP9/);
 });
 
+test("video plan discloses codec, width, bitrate, frame-rate, and quality controls", () => {
+  const plan = planMediaConversion(
+    profile("mkv-to-webm"),
+    inspection([stream("video", "H.264/AVC")]),
+    undefined,
+    {
+      codec: "vp9",
+      maxWidth: 480,
+      bitRateBps: 1_000_000,
+      frameRateFps: 24,
+      quality: "higher",
+    },
+  );
+  assert.ok(plan);
+  assert.match(plan.streams[0].detail, /VP9/);
+  assert.match(plan.streams[0].detail, /480px/);
+  assert.match(plan.streams[0].detail, /1000 kb\/s/);
+  assert.match(plan.streams[0].detail, /24 fps cap/);
+  assert.match(plan.streams[0].detail, /higher-visual-quality/);
+});
+
 test("audio re-encode plan converts only the first audio stream", () => {
   const plan = planMediaConversion(
     profile("mkv-to-flac"),

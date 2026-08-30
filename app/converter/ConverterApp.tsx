@@ -25,10 +25,16 @@ import type {
 } from "../../lib/conversion-protocol";
 import {
   DEFAULT_AUDIO_CONVERSION_OPTIONS,
+  DEFAULT_VIDEO_CONVERSION_OPTIONS,
   MP3_BIT_RATES_BPS,
   MP3_SAMPLE_RATES_HZ,
+  VIDEO_BIT_RATES_BPS,
+  VIDEO_FRAME_RATES_FPS,
+  VIDEO_MAX_WIDTHS,
   supportsMp3EncodingOptions,
+  supportsVideoEncodingOptions,
   type AudioConversionOptions,
+  type VideoConversionOptions,
 } from "../../lib/media-conversion-options";
 import {
   type DragEvent,
@@ -74,6 +80,7 @@ interface TestBridge {
     warnings: string[];
     selectedProfileId: string | null;
     audioOptions: AudioConversionOptions;
+    videoOptions: VideoConversionOptions;
     opfsName: string | null;
     opfsNames: string[];
     batchOutputNames: string[];
@@ -96,6 +103,7 @@ interface ActiveBatch {
   testDirectoryMode: boolean;
   testFault?: TestFault;
   audioOptions?: AudioConversionOptions;
+  videoOptions?: VideoConversionOptions;
   runId: string;
   index: number;
   opfsNames: string[];
@@ -330,6 +338,9 @@ export function ConverterApp() {
   const [audioOptions, setAudioOptions] = useState<AudioConversionOptions>({
     ...DEFAULT_AUDIO_CONVERSION_OPTIONS,
   });
+  const [videoOptions, setVideoOptions] = useState<VideoConversionOptions>({
+    ...DEFAULT_VIDEO_CONVERSION_OPTIONS,
+  });
   const [sourceMediaInspection, setSourceMediaInspection] =
     useState<MediaSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
@@ -405,6 +416,8 @@ export function ConverterApp() {
     [profileId],
   );
   const mp3EncodingOptionsEnabled = supportsMp3EncodingOptions(selectedProfile);
+  const videoEncodingOptionsEnabled =
+    supportsVideoEncodingOptions(selectedProfile);
   const mediaConversionPlan = useMemo(
     () =>
       selectedProfile && sourceMediaInspection
@@ -412,6 +425,7 @@ export function ConverterApp() {
             selectedProfile,
             sourceMediaInspection,
             mp3EncodingOptionsEnabled ? audioOptions : undefined,
+            videoEncodingOptionsEnabled ? videoOptions : undefined,
           )
         : null,
     [
@@ -419,6 +433,8 @@ export function ConverterApp() {
       mp3EncodingOptionsEnabled,
       selectedProfile,
       sourceMediaInspection,
+      videoEncodingOptionsEnabled,
+      videoOptions,
     ],
   );
 
@@ -512,6 +528,7 @@ export function ConverterApp() {
         file: nextFile,
         destination,
         audioOptions: batch.audioOptions,
+        videoOptions: batch.videoOptions,
         testFault: batch.testFault,
       };
       worker.postMessage(request);
@@ -745,6 +762,7 @@ export function ConverterApp() {
       warnings,
       selectedProfileId: profileId,
       audioOptions,
+      videoOptions,
       opfsName,
       opfsNames,
       batchOutputNames: completedBatchOutputNames,
@@ -763,6 +781,7 @@ export function ConverterApp() {
     phase,
     profileId,
     audioOptions,
+    videoOptions,
     batchCompleted,
     batchFiles.length,
     startupCleanupComplete,
@@ -801,6 +820,7 @@ export function ConverterApp() {
         setInputFormat("binary");
         setProfileId(null);
         setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
+        setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
         setDestinationHandle(null);
         setDestinationDirectoryHandle(null);
         setJobState("idle");
@@ -822,6 +842,7 @@ export function ConverterApp() {
       setInputFormat(detected);
       setProfileId(preferredProfileFor(detected, nextProfiles)?.id ?? null);
       setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
+      setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
       setSourceMediaInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
@@ -938,6 +959,9 @@ export function ConverterApp() {
       audioOptions: mp3EncodingOptionsEnabled
         ? { ...audioOptions }
         : undefined,
+      videoOptions: videoEncodingOptionsEnabled
+        ? { ...videoOptions }
+        : undefined,
       outputNames: batchOutputNames(files, selectedProfile),
       destinationHandle,
       destinationDirectoryHandle: testDirectoryMode
@@ -981,6 +1005,8 @@ export function ConverterApp() {
     setBatchFiles([]);
     setInputFormat("binary");
     setProfileId(null);
+    setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
+    setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
     setSourceMediaInspection(null);
     setSourceInspectionStatus("idle");
     setSourceInspectionError(null);
@@ -1392,6 +1418,7 @@ export function ConverterApp() {
                     onChange={(event) => {
                       setProfileId(event.target.value);
                       setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
+                      setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
                       setDestinationHandle(null);
                       setDestinationDirectoryHandle(null);
                       setJobState("idle");
@@ -1486,6 +1513,150 @@ export function ConverterApp() {
                         <option value={0}>Automatic</option>
                         <option value={1}>Mono</option>
                         <option value={2}>Stereo</option>
+                      </select>
+                    </label>
+                  </div>
+                </fieldset>
+              ) : null}
+
+              {videoEncodingOptionsEnabled ? (
+                <fieldset
+                  className="encoding-options"
+                  disabled={jobState === "running"}
+                >
+                  <legend>Video encoding options</legend>
+                  <p>
+                    Automatic retains the fastest certified profile. Width and
+                    frame rate are no-upscale caps; the encoder never invents
+                    resolution or frames above the source.
+                  </p>
+                  <div className="encoding-options-grid">
+                    <label>
+                      <span>Codec</span>
+                      <select
+                        data-testid="video-codec-select"
+                        value={videoOptions.codec}
+                        onChange={(event) => {
+                          const codec =
+                            event.target.value as VideoConversionOptions["codec"];
+                          setVideoOptions((current) => ({
+                            ...current,
+                            codec,
+                          }));
+                          if (selectedProfile && codec === "vp9") {
+                            const vp9Id = selectedProfile.id.endsWith("-vp9")
+                              ? selectedProfile.id
+                              : `${selectedProfile.id}-vp9`;
+                            if (
+                              conversionProfiles.some(
+                                (profile) => profile.id === vp9Id,
+                              )
+                            ) {
+                              setProfileId(vp9Id);
+                            }
+                          } else if (
+                            selectedProfile &&
+                            codec === "vp8" &&
+                            selectedProfile.id.endsWith("-vp9")
+                          ) {
+                            setProfileId(selectedProfile.id.slice(0, -4));
+                          }
+                        }}
+                      >
+                        <option value="automatic">
+                          Automatic ({selectedProfile?.output === "webm-vp9"
+                            ? "VP9"
+                            : selectedProfile?.output === "webm"
+                              ? "VP8"
+                              : "MPEG-4 Part 2"})
+                        </option>
+                        {selectedProfile?.output === "webm" ||
+                        selectedProfile?.output === "webm-vp9" ? (
+                          <>
+                            <option value="vp8">VP8</option>
+                            <option value="vp9">VP9</option>
+                          </>
+                        ) : (
+                          <option value="mpeg4">MPEG-4 Part 2</option>
+                        )}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Maximum width</span>
+                      <select
+                        data-testid="video-width-select"
+                        value={videoOptions.maxWidth}
+                        onChange={(event) =>
+                          setVideoOptions((current) => ({
+                            ...current,
+                            maxWidth: Number(event.target.value) as VideoConversionOptions["maxWidth"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        {VIDEO_MAX_WIDTHS.map((value) => (
+                          <option key={value} value={value}>
+                            {value}px cap
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Bitrate</span>
+                      <select
+                        data-testid="video-bitrate-select"
+                        value={videoOptions.bitRateBps}
+                        onChange={(event) =>
+                          setVideoOptions((current) => ({
+                            ...current,
+                            bitRateBps: Number(event.target.value) as VideoConversionOptions["bitRateBps"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        {VIDEO_BIT_RATES_BPS.map((value) => (
+                          <option key={value} value={value}>
+                            {value / 1_000} kb/s
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Maximum frame rate</span>
+                      <select
+                        data-testid="video-frame-rate-select"
+                        value={videoOptions.frameRateFps}
+                        onChange={(event) =>
+                          setVideoOptions((current) => ({
+                            ...current,
+                            frameRateFps: Number(event.target.value) as VideoConversionOptions["frameRateFps"],
+                          }))
+                        }
+                      >
+                        <option value={0}>Automatic</option>
+                        {VIDEO_FRAME_RATES_FPS.map((value) => (
+                          <option key={value} value={value}>
+                            {value} fps cap
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Quality policy</span>
+                      <select
+                        data-testid="video-quality-select"
+                        value={videoOptions.quality}
+                        onChange={(event) =>
+                          setVideoOptions((current) => ({
+                            ...current,
+                            quality: event.target.value as VideoConversionOptions["quality"],
+                          }))
+                        }
+                      >
+                        <option value="automatic">Automatic (fastest certified)</option>
+                        <option value="smaller">Smaller file</option>
+                        <option value="balanced">Balanced</option>
+                        <option value="higher">Higher visual quality</option>
                       </select>
                     </label>
                   </div>

@@ -50,7 +50,7 @@ not the entire product specification.
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
 | M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | `evidence/complex-matroska-field-retention-browser-2026-08-28.json` proves a genuine complex Matroska copy preserves stream order/codecs, geometry, aspect, color-range/chroma/field-order fields, titles, languages, disposition, subtitle, attachment, chapters, container tags, and exact decoded content; the production UI also presents per-stream outcomes from bounded inspection | Extend field-level evidence to other destination topologies and add a fixture with representable rotation/color-primaries/transfer/matrix fields; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
-| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Missing | `evidence/media-option-abi-audit-2026-08-28.json` proves the published request/worker/Wasm ABI carries only one fixed integer profile. The exact non-Docker FFmpeg rebuild path is now established, but the ABI and UI still expose only certified fixed profiles. | Extend the native ABI and request schema, then add bounded controls, encoder validation, and separate evidence per memory-relevant profile. |
+| M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Partially implemented | The source now carries a single validated option object across UI, conversion plan, request, worker, nine-integer JS/Wasm ABI, and the native allowlist for all 22 public video re-encode profiles. It exposes VP8/VP9/MPEG-4 selection, 320/480/640 px no-upscale caps, 300–4,000 kb/s, 15/24/25/30 fps no-upconvert caps, and three quality policies while automatic retains the certified constants. TypeScript, 84/84 unit tests, and 4/4 production-browser option/MP3-compatibility tests pass. | Rebuild and publish the three video specialists without Docker; prove real option effects, decoder validity, visual quality, timing, codec switching, cancellation/write-failure cleanup, speed, three-run <=250 MiB maximum-topology memory, and automatic-default regression before calling this complete. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
 | M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Partially implemented | MP3 output now exposes validated automatic/64–320 kb/s, automatic/32/44.1/48 kHz, and automatic/mono/stereo controls across the UI, request, worker, JS/Wasm ABI, and native allowlist. `tests/browser/media-options.spec.ts` passed 3/3 genuine Chrome success/quality/failure-cleanup cases; the maximum 320 kb/s, 48 kHz stereo topology passed 3/3 on 153,600,106 bytes at 191.7 MiB in `outputs/reports/2026-08-29T13-07-07-399Z-wav-to-mp3-stress.json`; hosted run `33268736116` reproduced all 17 FFmpeg files exactly without Docker. Compact evidence is in `evidence/mp3-output-controls-2026-08-30.json`. | Extend the bounded model to codec/quality and explicit lossless/lossy choices, then to other practical audio destinations. Each materially different memory/encoder topology still requires its own correctness, quality, speed, memory, failure, and cleanup evidence. |
 | M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented | `evidence/media-disclosure-audit-2026-08-28.json` proves all 259 public FFmpeg profiles state metadata/container and route semantics; `evidence/audio-metadata-retention-browser-2026-08-28.json` independently proves title retention for representative WAV, FLAC, AIFF, ALAC/M4A, WMA/ASF, MP3/ID3, Opus/Ogg, and Vorbis/Ogg destinations, with exact PCM checks for lossless routes | Implement supported artwork paths and independently validate remaining source-container/field mappings; representative destination coverage does not prove every public route. |
@@ -109,9 +109,9 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Extend the verified MP3 bitrate/sample-rate/channel model to practical audio
-   codec/quality/lossless choices and video resolution/bitrate/frame-rate/
-   codec/quality controls.
+1. Finish publication and evidence for the implemented video controls, then
+   extend the verified MP3 model to practical audio codec/quality/lossless
+   choices.
 2. Audit stream/metadata preservation for every public media route; implement
    representable fields and make every exclusion explicit.
 3. Expand the passing Edge, Brave, and Opera smoke evidence into representative
@@ -144,6 +144,36 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-08-30 — video-control source and native ABI checkpoint
+
+- Added one bounded video option contract for all 22 public re-encode profiles:
+  automatic/VP8/VP9/MPEG-4 codec selection, automatic/320/480/640 px no-upscale
+  width, automatic/300–4,000 kb/s bitrate, automatic/15/24/25/30 fps
+  no-upconvert frame-rate cap, and automatic/smaller/balanced/higher quality.
+- The production UI, preflight stream plan, request, worker validator, JS/Wasm
+  bridge, and C wrapper all carry the same values. Switching VP8/VP9 also moves
+  the selector to the matching public profile so the displayed destination is
+  not misleading. Unsupported profiles, cross-container codecs, and arbitrary
+  values are rejected independently in TypeScript and native code.
+- Native width caps preserve aspect ratio and never upscale. Lower frame-rate
+  caps uniformly discard decoded frames before scaling; caps at or above the
+  source retain source-average timing rather than inventing frames. Automatic
+  mode leaves the earlier width, bitrate, frame-rate, quality, thread, and
+  zero-lookahead branches unchanged.
+- Updated the no-Docker build order so the current MPEG-4/VP8/VP9 specialists
+  can change while the high-throughput direct-remux core remains byte-certified
+  at `79e4db4`. The generated reverse patch reconstructs the exact historical
+  C blob (`307fd688fb11f322ae7e3552f0dd0e5012615901`); the disposable verification
+  copy was deleted immediately.
+- Current source gates pass: TypeScript, ESLint, production build, 84/84 unit
+  tests, 4/4 production-browser media-option tests, and the 11-engine recipe
+  declaration audit. The browser cases also prove the nine-value JS bridge is
+  backward-compatible with the currently published four-value MP3 core.
+- This is explicitly partial. No custom-video claim is public until new Wasm
+  bytes pass independent codec/dimension/bitrate/frame-rate/quality validation,
+  cleanup faults, speed comparison, and the complete-Chromium three-run memory
+  ceiling.
 
 ### 2026-08-30 — exact clean no-Docker reproduction for all engines
 

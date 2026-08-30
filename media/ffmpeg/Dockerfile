@@ -104,21 +104,23 @@ RUN chmod +x /src/build-libraries.sh /src/wasm-pkg-config.sh \
 
 COPY build-remux.sh /src/build-remux.sh
 COPY within_remux.c /src/within_remux.c
-COPY patches/specialist-source-79e4db.patch /src/specialist-source-79e4db.patch
+COPY patches/direct-source-79e4db.patch /src/direct-source-79e4db.patch
 ARG WITHIN_BUILD_CORE_FILTER=all
 RUN chmod +x /src/build-remux.sh \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ] || [ "${WITHIN_BUILD_CORE_FILTER}" = within-remux ]; then \
          WITHIN_BUILD_CORE_FILTER=within-remux /src/build-remux.sh; \
        fi \
-    && if [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
-         patch --reverse --directory=/src --strip=1 < /src/specialist-source-79e4db.patch; \
-         if [ "${WITHIN_BUILD_CORE_FILTER}" = all ]; then \
-           for specialist_core in within-direct within-mpeg4 within-webm within-vp9; do \
-             WITHIN_BUILD_CORE_FILTER="${specialist_core}" /src/build-remux.sh; \
-           done; \
-         else \
-           WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER}" /src/build-remux.sh; \
-         fi; \
+    && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ]; then \
+         for video_core in within-mpeg4 within-webm within-vp9; do \
+           WITHIN_BUILD_CORE_FILTER="${video_core}" /src/build-remux.sh; \
+         done; \
+         patch --reverse --directory=/src --strip=1 < /src/direct-source-79e4db.patch; \
+         WITHIN_BUILD_CORE_FILTER=within-direct /src/build-remux.sh; \
+       elif [ "${WITHIN_BUILD_CORE_FILTER}" = within-direct ]; then \
+         patch --reverse --directory=/src --strip=1 < /src/direct-source-79e4db.patch; \
+         WITHIN_BUILD_CORE_FILTER=within-direct /src/build-remux.sh; \
+       elif [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
+         WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER}" /src/build-remux.sh; \
        fi
 
 FROM scratch AS artifact

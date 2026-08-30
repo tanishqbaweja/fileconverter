@@ -1379,6 +1379,11 @@ typedef struct WithinVideoPipeline {
   struct SwsContext *scaler;
   AVPacket *encoded_packet;
   int64_t next_pts;
+  int frame_rate_limited;
+  int64_t frame_rate_accumulator;
+  int64_t frame_rate_step;
+  int64_t frame_rate_threshold;
+  int64_t decoded_frame_count;
 } WithinVideoPipeline;
 
 static int write_video_packets(WithinVideoPipeline *pipeline,
@@ -1424,6 +1429,18 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
     }
     if (result < 0) {
       return result;
+    }
+    if (pipeline->frame_rate_limited) {
+      if (pipeline->decoded_frame_count++ > 0) {
+        pipeline->frame_rate_accumulator += pipeline->frame_rate_step;
+        if (pipeline->frame_rate_accumulator <
+            pipeline->frame_rate_threshold) {
+          av_frame_unref(pipeline->decoded_frame);
+          continue;
+        }
+        pipeline->frame_rate_accumulator -=
+            pipeline->frame_rate_threshold;
+      }
     }
     AVFrame *frame_to_encode = pipeline->decoded_frame;
     if (pipeline->converted_frame) {
@@ -1471,9 +1488,29 @@ static int drain_video_decoder(WithinVideoPipeline *pipeline,
   }
 }
 
-static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
+static int valid_video_max_width(int max_width) {
+  return max_width == 0 || max_width == 320 || max_width == 480 ||
+         max_width == 640;
+}
+
+static int valid_video_bit_rate(int bit_rate) {
+  return bit_rate == 0 || bit_rate == 300000 || bit_rate == 600000 ||
+         bit_rate == 1000000 || bit_rate == 2000000 || bit_rate == 4000000;
+}
+
+static int valid_video_frame_rate(int frame_rate) {
+  return frame_rate == 0 || frame_rate == 15 || frame_rate == 24 ||
+         frame_rate == 25 || frame_rate == 30;
+}
+
+static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
+                                 int requested_codec, int requested_max_width,
+                                 int requested_bit_rate,
+                                 int requested_frame_rate,
+                                 int requested_quality) {
   const int webm = webm_codec != 0;
   const int vp9 = webm_codec == 2;
+  const int effective_codec = vp9 ? 2 : webm ? 1 : 3;
   int result = 0;
   int video_stream_index = -1;
   int audio_stream_index = -1;
@@ -1495,6 +1532,15 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   WithinInput input = {.position = 0, .size = (int64_t)within_input_size()};
   WithinOutput output = {.position = 0, .size = 0};
   WithinVideoPipeline pipeline = {0};
+
+  if ((requested_codec != 0 && requested_codec != effective_codec) ||
+      !valid_video_max_width(requested_max_width) ||
+      !valid_video_bit_rate(requested_bit_rate) ||
+      !valid_video_frame_rate(requested_frame_rate) ||
+      requested_quality < 0 || requested_quality > 3) {
+    within_message(2, "Video encoding options are outside the bounded allowlist.");
+    return AVERROR(EINVAL);
+  }
 
   if (input.size <= 0) {
     return AVERROR_INVALIDDATA;
@@ -1649,6 +1695,22 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   if (frame_rate.num <= 0 || frame_rate.den <= 0) {
     frame_rate = (AVRational){24, 1};
   }
+  const AVRational source_frame_rate = frame_rate;
+  if (requested_frame_rate > 0) {
+    const AVRational requested = (AVRational){requested_frame_rate, 1};
+    if (av_cmp_q(requested, source_frame_rate) < 0) {
+      frame_rate = requested;
+      within_message(
+          1,
+          "The selected frame-rate cap drops decoded frames uniformly; it "
+          "does not duplicate frames or upconvert the source frame rate.");
+    } else {
+      within_message(
+          1,
+          "The selected frame-rate cap is at or above the source average, so "
+          "the source average frame rate is retained without upconversion.");
+    }
+  }
   const AVCodec *encoder_codec = avcodec_find_encoder(
       vp9 ? AV_CODEC_ID_VP9 : webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
   if (!encoder_codec) {
@@ -1662,8 +1724,10 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   }
   encoder->width = decoder->width;
   encoder->height = decoder->height;
-  if (webm && encoder->width > 640) {
-    encoder->width = 640;
+  const int maximum_width =
+      requested_max_width > 0 ? requested_max_width : webm ? 640 : 0;
+  if (maximum_width > 0 && encoder->width > maximum_width) {
+    encoder->width = maximum_width;
     encoder->height =
         (int)(((int64_t)decoder->height * encoder->width) / decoder->width);
     encoder->height &= ~1;
@@ -1672,8 +1736,11 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
     }
     within_message(
         1,
-        "The WebM profile downscales video to at most 640 pixels wide to "
-        "enforce its CPU and memory budget.");
+        requested_max_width > 0
+            ? "The selected width cap proportionally downscales the video "
+              "without upscaling smaller sources."
+            : "The WebM profile downscales video to at most 640 pixels wide "
+              "to enforce its CPU and memory budget.");
   }
   within_message(
       1,
@@ -1685,7 +1752,9 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   encoder->pix_fmt = AV_PIX_FMT_YUV420P;
   encoder->time_base = av_inv_q(frame_rate);
   encoder->framerate = frame_rate;
-  encoder->bit_rate = webm ? 600 * 1000 : 2 * 1000 * 1000;
+  encoder->bit_rate = requested_bit_rate > 0
+                          ? requested_bit_rate
+                          : webm ? 600 * 1000 : 2 * 1000 * 1000;
   encoder->gop_size = webm ? 120 : 48;
   encoder->max_b_frames = 0;
 #if defined(WITHIN_MPEG4_THREADED)
@@ -1700,11 +1769,33 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
   encoder->colorspace = decoder->colorspace;
   encoder->color_range = decoder->color_range;
   encoder->chroma_sample_location = decoder->chroma_sample_location;
+  if (!webm && requested_quality > 0) {
+    if (requested_quality == 1) {
+      encoder->qmin = 8;
+      encoder->qmax = 24;
+    } else if (requested_quality == 2) {
+      encoder->qmin = 4;
+      encoder->qmax = 16;
+    } else {
+      encoder->qmin = 2;
+      encoder->qmax = 8;
+    }
+  }
   if (webm) {
     av_dict_set(&encoder_options, "deadline", "realtime", 0);
     av_dict_set(&encoder_options, "cpu-used", "8", 0);
     av_dict_set(&encoder_options, "lag-in-frames", "0", 0);
     av_dict_set(&encoder_options, "auto-alt-ref", "0", 0);
+    if (requested_quality > 0) {
+      av_dict_set(&encoder_options, "crf",
+                  requested_quality == 1
+                      ? "40"
+                      : requested_quality == 2 ? "32" : "24",
+                  0);
+      if (requested_quality == 3) {
+        av_dict_set(&encoder_options, "cpu-used", "6", 0);
+      }
+    }
     if (vp9) {
       av_dict_set(&encoder_options, "row-mt", "1", 0);
       av_dict_set(&encoder_options, "tile-columns", "1", 0);
@@ -1828,6 +1919,13 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio) {
       .scaler = scaler,
       .encoded_packet = encoded_packet,
       .next_pts = 0,
+      .frame_rate_limited = av_cmp_q(frame_rate, source_frame_rate) < 0,
+      .frame_rate_accumulator = 0,
+      .frame_rate_step =
+          (int64_t)frame_rate.num * source_frame_rate.den,
+      .frame_rate_threshold =
+          (int64_t)source_frame_rate.num * frame_rate.den,
+      .decoded_frame_count = 0,
   };
 
   while ((result = av_read_frame(input_format, input_packet)) >= 0) {
@@ -1922,29 +2020,57 @@ cleanup:
   return result < 0 ? result : 0;
 }
 
-static int within_video_to_mpeg4(void) {
-  return within_video_reencode(0, 0);
+static int within_video_to_mpeg4(int requested_codec,
+                                 int requested_max_width,
+                                 int requested_bit_rate,
+                                 int requested_frame_rate,
+                                 int requested_quality) {
+  return within_video_reencode(0, 0, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
 }
 
-static int within_video_to_webm(void) {
-  return within_video_reencode(1, 0);
+static int within_video_to_webm(int requested_codec, int requested_max_width,
+                                int requested_bit_rate,
+                                int requested_frame_rate,
+                                int requested_quality) {
+  return within_video_reencode(1, 0, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
 }
 
-static int within_ogv_to_webm(void) {
-  return within_video_reencode(1, 1);
+static int within_ogv_to_webm(int requested_codec, int requested_max_width,
+                              int requested_bit_rate,
+                              int requested_frame_rate,
+                              int requested_quality) {
+  return within_video_reencode(1, 1, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
 }
 
-static int within_video_to_vp9(void) {
-  return within_video_reencode(2, 0);
+static int within_video_to_vp9(int requested_codec, int requested_max_width,
+                               int requested_bit_rate,
+                               int requested_frame_rate,
+                               int requested_quality) {
+  return within_video_reencode(2, 0, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
 }
 
-static int within_ogv_to_vp9(void) {
-  return within_video_reencode(2, 1);
+static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
+                             int requested_bit_rate,
+                             int requested_frame_rate,
+                             int requested_quality) {
+  return within_video_reencode(2, 1, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
 }
 
 EMSCRIPTEN_KEEPALIVE
 int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
-                 int audio_channels) {
+                 int audio_channels, int video_codec, int video_max_width,
+                 int video_bit_rate, int video_frame_rate,
+                 int video_quality) {
   int result = 0;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
@@ -1976,6 +2102,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   if (profile == 3 || profile == 6 || profile == 8 || profile == 9 ||
       profile == 28 || profile == 29 || profile == 30 || profile == 31 ||
       profile == 32 || profile == 33 || profile == 34) {
+    if (video_codec != 0 || video_max_width != 0 || video_bit_rate != 0 ||
+        video_frame_rate != 0 || video_quality != 0) {
+      within_message(2, "Video options are not supported by this profile.");
+      return AVERROR(EINVAL);
+    }
     return within_audio_transcode(profile, audio_bit_rate, audio_sample_rate,
                                   audio_channels);
   }
@@ -1984,19 +2115,29 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     return AVERROR(EINVAL);
   }
   if (profile == 4) {
-    return within_video_to_mpeg4();
+    return within_video_to_mpeg4(video_codec, video_max_width, video_bit_rate,
+                                 video_frame_rate, video_quality);
   }
   if (profile == 5) {
-    return within_video_to_webm();
+    return within_video_to_webm(video_codec, video_max_width, video_bit_rate,
+                                video_frame_rate, video_quality);
   }
   if (profile == 7) {
-    return within_ogv_to_webm();
+    return within_ogv_to_webm(video_codec, video_max_width, video_bit_rate,
+                              video_frame_rate, video_quality);
   }
   if (profile == 10) {
-    return within_video_to_vp9();
+    return within_video_to_vp9(video_codec, video_max_width, video_bit_rate,
+                               video_frame_rate, video_quality);
   }
   if (profile == 11) {
-    return within_ogv_to_vp9();
+    return within_ogv_to_vp9(video_codec, video_max_width, video_bit_rate,
+                             video_frame_rate, video_quality);
+  }
+  if (video_codec != 0 || video_max_width != 0 || video_bit_rate != 0 ||
+      video_frame_rate != 0 || video_quality != 0) {
+    within_message(2, "Video options are not supported by this profile.");
+    return AVERROR(EINVAL);
   }
   if (profile != 1 && profile != 2 && profile != 12 && profile != 13 &&
       profile != 14 && profile != 15 && profile != 16 && profile != 17 &&

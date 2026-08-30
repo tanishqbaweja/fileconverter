@@ -1,5 +1,10 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
-import type { AudioConversionOptions } from "../lib/media-conversion-options";
+import {
+  videoCodecCode,
+  videoQualityCode,
+  type AudioConversionOptions,
+  type VideoConversionOptions,
+} from "../lib/media-conversion-options";
 import type { RandomAccessDestination } from "./random-access-destination";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
@@ -49,8 +54,28 @@ interface RemuxModule {
   ccall: (
     name: string,
     returnType: "number",
-    argumentTypes: readonly ["number", "number", "number", "number"],
-    arguments_: readonly [number, number, number, number],
+    argumentTypes: readonly [
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+    ],
+    arguments_: readonly [
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+      number,
+    ],
     options: { async: true },
   ) => Promise<number>;
 }
@@ -67,6 +92,7 @@ export interface MediaRemuxOptions {
   writable: RandomAccessDestination;
   remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35;
   audioOptions?: AudioConversionOptions;
+  videoOptions?: VideoConversionOptions;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -98,6 +124,7 @@ export async function runMediaRemux({
   writable,
   remuxProfile,
   audioOptions,
+  videoOptions,
   jobId,
   metrics,
   startedAt,
@@ -105,6 +132,13 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  if (videoOptions?.codec === "vp8") {
+    if (remuxProfile === 10) remuxProfile = 5;
+    if (remuxProfile === 11) remuxProfile = 7;
+  } else if (videoOptions?.codec === "vp9") {
+    if (remuxProfile === 5) remuxProfile = 10;
+    if (remuxProfile === 7) remuxProfile = 11;
+  }
   const phase =
     remuxProfile === 1
       ? "Lossless remux"
@@ -544,12 +578,27 @@ export async function runMediaRemux({
   const result = await engineModule.ccall(
     "within_remux",
     "number",
-    ["number", "number", "number", "number"],
+    [
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+      "number",
+    ],
     [
       remuxProfile,
       audioOptions?.bitRateBps ?? 0,
       audioOptions?.sampleRateHz ?? 0,
       audioOptions?.channels ?? 0,
+      videoCodecCode(videoOptions?.codec ?? "automatic"),
+      videoOptions?.maxWidth ?? 0,
+      videoOptions?.bitRateBps ?? 0,
+      videoOptions?.frameRateFps ?? 0,
+      videoQualityCode(videoOptions?.quality ?? "automatic"),
     ],
     { async: true },
   );
