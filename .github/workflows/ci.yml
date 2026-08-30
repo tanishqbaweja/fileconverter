@@ -2,6 +2,25 @@ name: CI
 
 on:
   workflow_dispatch:
+    inputs:
+      engine:
+        description: Exact non-Docker engine comparison to run
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - ffmpeg-remux
+          - bzip2
+          - xz
+          - xz-decoder
+          - archive7z
+          - tiff
+          - jxl
+          - jxl-encoder
+          - avif
+          - avif-encoder
+          - svg
   push:
     branches: ["main"]
   pull_request:
@@ -27,7 +46,14 @@ jobs:
       - id: manifest
         name: Export non-Docker engine build matrix
         shell: bash
-        run: echo "engines=$(node scripts/engine-reproducibility-manifest.mjs --non-docker)" >> "$GITHUB_OUTPUT"
+        env:
+          SELECTED_ENGINE: ${{ inputs.engine || 'all' }}
+        run: |
+          args=(--non-docker)
+          if test "$SELECTED_ENGINE" != all; then
+            args+=(--engine "$SELECTED_ENGINE")
+          fi
+          echo "engines=$(node scripts/engine-reproducibility-manifest.mjs "${args[@]}")" >> "$GITHUB_OUTPUT"
 
   reproduce-engines:
     needs: engine-matrix
@@ -122,6 +148,7 @@ jobs:
             "$GITHUB_WORKSPACE/work/"*-nondocker-output
 
   verify:
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
@@ -156,6 +183,7 @@ jobs:
           if-no-files-found: ignore
 
   browser-conversions:
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:

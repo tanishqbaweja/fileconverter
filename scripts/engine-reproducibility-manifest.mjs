@@ -183,7 +183,7 @@ async function auditManifest() {
 if (process.argv.includes("--check")) {
   await auditManifest();
 } else {
-  const selectedEngines = process.argv.includes("--non-docker")
+  let selectedEngines = process.argv.includes("--non-docker")
     ? engines
         .filter(
           (engine) =>
@@ -194,5 +194,16 @@ if (process.argv.includes("--check")) {
           command: engine.nonDockerCommand ?? engine.command,
         }))
     : engines;
+  const engineArgument = process.argv.indexOf("--engine");
+  if (engineArgument >= 0) {
+    const engineId = process.argv[engineArgument + 1];
+    if (!engineId || engineId.startsWith("--")) {
+      throw new Error("--engine requires an engine id.");
+    }
+    selectedEngines = selectedEngines.filter((engine) => engine.id === engineId);
+    if (selectedEngines.length !== 1) {
+      throw new Error(`Unknown or unavailable engine id: ${engineId}`);
+    }
+  }
   process.stdout.write(JSON.stringify({ include: selectedEngines }));
 }
