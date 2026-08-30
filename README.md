@@ -1012,22 +1012,41 @@ Pinned inputs:
 - Emscripten SDK 6.0.4 no-Docker installer revision
   `224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f`
 
-The supported no-Docker FFmpeg comparison runs on Linux through the manual
-`Reproduce FFmpeg without Docker` GitHub Actions workflow and, on `main`, as a
-required fail-independent CI matrix entry. After that workflow installs and
-activates the pinned SDK, its exact build command is:
+The supported no-Docker comparisons run on Linux as fail-independent CI matrix
+entries. After the workflow installs and activates the pinned SDK, the exact
+commands are:
 
 ```bash
 source work/emsdk/emsdk_env.sh
 bash media/ffmpeg/reproduce-nondocker.sh
+bash compression/bzip2/reproduce-nondocker.sh
+bash compression/xz/reproduce-nondocker.sh full
+bash compression/xz/reproduce-nondocker.sh decoder
+bash compression/libarchive7z/reproduce-nondocker.sh
+bash images/libtiff/reproduce-nondocker.sh
+bash images/libjxl/reproduce-nondocker.sh decoder
+bash images/libjxl/reproduce-nondocker.sh encoder
+bash images/libavif/reproduce-nondocker.sh decoder
+bash images/libavif/reproduce-nondocker.sh encoder
 ```
 
-It verifies every archive, rebuilds all five modules, compares the complete
-published directory byte-for-byte, keeps scratch files inside `work/`, and
-removes them on success or failure. Run
+Each recipe verifies every archive/revision, rebuilds into repository-local
+`work/`, compares the complete published directory byte-for-byte, and removes
+scratch/output data on success or failure. FFmpeg run
 [`33242017745`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33242017745)
-passed the comparison in 557 seconds with no Docker command. The authoritative
-hashes, diagnosed failures, source revisions, and cleanup result are in
+passed in 557 seconds. The fail-independent all-engine run
+[`33297796443`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33297796443)
+proved SVG, FFmpeg, BZIP2, both XZ variants, 7Z, both JPEG XL variants, and the
+AVIF decoder exactly; TIFF passed its targeted transient-download rerun
+[`33298467168`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33298467168).
+The clean AVIF encoder bytes were separately browser-certified, published, and
+reproduced exactly by run
+[`33311548748`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33311548748)
+after diagnosing the former persistent BuildKit cache as non-reproducible
+provenance. No Docker command is part of any supported comparison. The
+authoritative job IDs, hashes, diagnosis, profile evidence, and cleanup result
+are in `evidence/non-docker-all-engine-repro-2026-08-30.json`; the earlier
+FFmpeg-specific source audit remains in
 `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
 
 Build the application and Node-built SVG artifact locally:
@@ -1038,12 +1057,12 @@ npm run build:svg
 npm run build
 ```
 
-The remaining nine binary-engine directories retain pinned legacy container
-recipes, but those recipes are not used by the current no-Docker work and are
-not counted as exact no-Docker reproduction. Exact configure switches and
+All 11 published engine directories now have executable exact clean no-Docker
+reproduction. Legacy container recipes remain only as historical build
+documentation and are not required by CI. Exact configure switches and
 Emscripten flags are in `media/ffmpeg/`,
 `compression/bzip2/`, `compression/xz/`, `compression/libarchive7z/`, and
-`images/libjxl/`, `images/libjxl-encoder/`, or `images/libavif/`.
+`images/libtiff/`, `images/libjxl/`, or `images/libavif/`.
 Generated settings are recorded in the corresponding
 machine-readable manifests under `public/engines/`.
 
@@ -1791,12 +1810,11 @@ The corrected partitioned hosted baseline is recorded in
 `evidence/hosted-ci-audit-2026-08-28.json`. GitHub Actions run `33182400184`
 passed the production build, lint, TypeScript, unit/evidence gates, 13 privacy
 and offline cases, and all 871 conversion/validator cases split into 152 image,
-484 media, and 235 streaming tests. The engine audit covers declarations for
-all 11 published directories. SVG and FFmpeg now have proven exact clean
-non-Docker rebuilds; the remaining nine engine directories do not, so this is
-not presented as full binary reproducibility. FFmpeg's separate exact run,
-inputs, output hashes, and cleanup are recorded in
-`evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
+484 media, and 235 streaming tests. The engine audit now covers declarations and
+executable exact clean no-Docker rebuilds for all 11 published directories. The
+all-engine job IDs, source inputs, output hashes, AVIF provenance diagnosis, and
+cleanup are recorded in
+`evidence/non-docker-all-engine-repro-2026-08-30.json`.
 The integrated main-branch gate is GitHub Actions run
 [`33252270830`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33252270830):
 all seven jobs passed, including 871 browser conversions and both exact

@@ -1,0 +1,104 @@
+{
+  "generatedAt": "2026-08-30T12:30:00.000Z",
+  "scope": "Exact clean no-Docker reproduction for every published engine directory, plus AVIF encoder clean-build publication and browser re-certification.",
+  "repository": "https://github.com/tanishqbaweja/fileconverter",
+  "branch": "codex/media-options",
+  "sdk": {
+    "emscriptenVersion": "6.0.4",
+    "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+    "containerUsed": false
+  },
+  "hostedAllEngineRun": {
+    "id": 33297796443,
+    "commit": "4b3ca692a0a857d82d93829f58ef7bd39a45d460",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33297796443",
+    "jobs": [
+      { "engine": "svg", "jobId": 99220360197, "seconds": 34, "result": "exact" },
+      { "engine": "xz", "jobId": 99220360198, "seconds": 108, "result": "exact" },
+      { "engine": "archive7z", "jobId": 99220360206, "seconds": 307, "result": "exact" },
+      { "engine": "bzip2", "jobId": 99220360212, "seconds": 85, "result": "exact" },
+      { "engine": "jxl", "jobId": 99220360215, "seconds": 218, "result": "exact" },
+      { "engine": "avif", "jobId": 99220360222, "seconds": 417, "result": "exact" },
+      { "engine": "xz-decoder", "jobId": 99220360226, "seconds": 124, "result": "exact" },
+      { "engine": "ffmpeg-remux", "jobId": 99220360252, "seconds": 574, "result": "exact" },
+      { "engine": "jxl-encoder", "jobId": 99220360255, "seconds": 280, "result": "exact" }
+    ],
+    "notes": [
+      "TIFF stopped before compilation on a transient pinned zlib download checksum failure and passed its targeted clean rerun.",
+      "AVIF encoder produced stable clean bytes that differed from the previously published cache-contaminated bytes; the clean artifacts were browser-certified before publication."
+    ]
+  },
+  "tiffTargetedRun": {
+    "id": 33298467168,
+    "jobId": 99222101415,
+    "commit": "d0608f2af297760af0c14fa1606e2618345b0947",
+    "seconds": 167,
+    "result": "exact",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33298467168"
+  },
+  "avifEncoder": {
+    "publicationCommit": "39b98ba3ab4fc77431850d656c57607a943337b7",
+    "publicationRun": {
+      "id": 33311548748,
+      "jobId": 99257432329,
+      "seconds": 324,
+      "status": "exact",
+      "cleanup": "passed",
+      "mismatchArtifactUploaded": false,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33311548748"
+    },
+    "provenanceDiagnosis": {
+      "cause": "The former container recipe reused /src/build through a persistent BuildKit cache mount, so the published Wasm was not the result of a clean source-only build.",
+      "publishedStaticWasm": { "bytes": 4508341, "sha256": "9b6f3d90a0a730f39186452dc0f414889ad95ff414b0c1189697fcc2f1493973" },
+      "publishedAnimationWasm": { "bytes": 4508341, "sha256": "6e47ba204b5aa03f6060ae5dafdc9694ca113e1010dbfd1038acb9a962fcd3ff" },
+      "cleanStaticWasm": { "bytes": 4509195, "sha256": "4c28a20a06cb480344d2488307fe41c3842255f1df5607e7058bc974a9ec0a03" },
+      "cleanAnimationWasm": { "bytes": 4509195, "sha256": "4f1d2902897f39f32bc22078bdce2d1ffb67ca70978a4bac0783f1430955085f" },
+      "binaryDiff": "Every Wasm section except code was identical; 22 of 2,824 function bodies differed and the clean build was 854 bytes larger. Data, JavaScript glue, manifests, and licenses were identical.",
+      "cleanBuildStability": "The clean static and animation hashes repeated across the explicit canonical toolchain path, physical-SDK diagnostic, and canonical hello-bootstrap diagnostic."
+    },
+    "decoderNormalization": {
+      "failedReport": "outputs/reports/2026-08-30T07-34-43-466Z-webp-to-avif-stress.json",
+      "failure": "Chromium alternated between I420 and BGRX decoder surfaces, producing two valid but byte-different AVIF outputs from the same WebP input.",
+      "fix": "Use managed default color-space conversion before the existing RGBA copy so planar YUV and packed RGB surfaces normalize to the same sRGB/BT.709 encoder input.",
+      "tenRunReport": "outputs/reports/2026-08-30T12-11-42-679Z-webp-to-avif-stress.json",
+      "tenRunResult": {
+        "runs": 10,
+        "outputBytes": 17753,
+        "sha256": "671e4cdf68a44405051bb72c3be7c0d15d13143f70542f3f93b51434bef81f30",
+        "elapsedMs": { "min": 298.38, "max": 546.38 },
+        "peakIncrementalPrivateMiB": 213.9
+      }
+    },
+    "finalProfiles": [
+      { "profile": "png-to-avif", "kind": "static", "report": "outputs/reports/2026-08-30T12-14-10-859Z-png-to-avif-stress.json", "runs": 3, "outputBytes": 17785, "sha256": "4dd3d53f6f8bd3d050a0e4aa092fee8ad0d01fdab46e558a26330dd72a91c4c7", "elapsedMs": { "min": 301.26, "max": 533.46 }, "peakIncrementalPrivateMiB": 207.3 },
+      { "profile": "jpeg-to-avif", "kind": "static", "report": "outputs/reports/2026-08-30T12-15-38-711Z-jpeg-to-avif-stress.json", "runs": 3, "outputBytes": 17467, "sha256": "71a5c02379df965a7dd5ef6f5a501d310944808ba80366457db59fa21899bafd", "elapsedMs": { "min": 310.25, "max": 522.9 }, "peakIncrementalPrivateMiB": 213.4 },
+      { "profile": "webp-to-avif", "kind": "static", "report": "outputs/reports/2026-08-30T12-11-42-679Z-webp-to-avif-stress.json", "runs": 10, "outputBytes": 17753, "sha256": "671e4cdf68a44405051bb72c3be7c0d15d13143f70542f3f93b51434bef81f30", "elapsedMs": { "min": 298.38, "max": 546.38 }, "peakIncrementalPrivateMiB": 213.9 },
+      { "profile": "bmp-to-avif", "kind": "static", "report": "outputs/reports/2026-08-30T12-18-09-699Z-bmp-to-avif-stress.json", "runs": 3, "outputBytes": 17785, "sha256": "4dd3d53f6f8bd3d050a0e4aa092fee8ad0d01fdab46e558a26330dd72a91c4c7", "elapsedMs": { "min": 335.36, "max": 539.12 }, "peakIncrementalPrivateMiB": 224.3 },
+      { "profile": "png-to-avif", "kind": "animated-apng", "report": "outputs/reports/2026-08-30T12-20-02-975Z-png-to-avif-stress.json", "runs": 3, "outputBytes": 183123, "sha256": "30ad8c493c66412710fe10c6259e7fdeaaef44f8c12ca7fc0ffde007814363e8", "elapsedMs": { "min": 1111.52, "max": 1480.49 }, "peakIncrementalPrivateMiB": 223.8 },
+      { "profile": "gif-to-avif", "kind": "animated", "report": "outputs/reports/2026-08-30T12-21-49-815Z-gif-to-avif-stress.json", "runs": 3, "outputBytes": 183123, "sha256": "30ad8c493c66412710fe10c6259e7fdeaaef44f8c12ca7fc0ffde007814363e8", "elapsedMs": { "min": 1078.13, "max": 1443.8 }, "peakIncrementalPrivateMiB": 217.0 },
+      { "profile": "webp-to-avif", "kind": "animated", "report": "outputs/reports/2026-08-30T12-23-35-702Z-webp-to-avif-stress.json", "runs": 3, "outputBytes": 183123, "sha256": "30ad8c493c66412710fe10c6259e7fdeaaef44f8c12ca7fc0ffde007814363e8", "elapsedMs": { "min": 1133.59, "max": 1614.95 }, "peakIncrementalPrivateMiB": 212.6 }
+    ],
+    "focusedBrowser": { "tests": 5, "passed": 5, "seconds": 15.5 },
+    "fullImageBrowser": { "tests": 152, "passed": 152, "seconds": 264 },
+    "standaloneProbe": {
+      "cases": ["opaque-still", "alpha-still", "alpha-animation"],
+      "staticHeapBytes": 83886080,
+      "animationHeapBytes": 92274688,
+      "maxWriteBytes": 2542,
+      "truncatePerCase": 1,
+      "flushPerCase": 1,
+      "result": "passed"
+    }
+  },
+  "cleanup": {
+    "generatedFilesLocation": "Repository-local work/, fixtures/stress/, outputs/, and test-results/ paths only.",
+    "workDirectoryAfterCleanup": [".gitkeep"],
+    "convertedCopiesRetained": false,
+    "hostedArtifactsRemainingForDiagnosticAndPublicationRuns": 0,
+    "protectedFixture": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  }
+}

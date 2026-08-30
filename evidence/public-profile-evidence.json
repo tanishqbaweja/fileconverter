@@ -1357,18 +1357,18 @@
       "profileId": "bmp-to-avif",
       "maxTestedBytes": 2359350,
       "repeatableEvidence": {
-        "report": "2026-08-24T06-23-08-029Z-bmp-to-avif-stress.json",
-        "reportSha256": "e95df087f6ef260db3a85f2a7db4126d2e2e1f0fa0851f3bbf8d7725ee51cdfa",
+        "report": "2026-08-30T12-18-09-699Z-bmp-to-avif-stress.json",
+        "reportSha256": "4aa276326e268552c625b909a2f699a5c20fc35d34e9684b3aea778f5f785c52",
         "runs": 3,
         "sourceBytes": 2359350,
-        "incrementalPrivateMiB": 191.99609375
+        "incrementalPrivateMiB": 224.2578125
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-24T06-23-08-029Z-bmp-to-avif-stress.json",
-        "reportSha256": "e95df087f6ef260db3a85f2a7db4126d2e2e1f0fa0851f3bbf8d7725ee51cdfa",
+        "report": "2026-08-30T12-18-09-699Z-bmp-to-avif-stress.json",
+        "reportSha256": "4aa276326e268552c625b909a2f699a5c20fc35d34e9684b3aea778f5f785c52",
         "runs": 3,
         "sourceBytes": 2359350,
-        "incrementalPrivateMiB": 191.99609375
+        "incrementalPrivateMiB": 224.2578125
       }
     },
     {
@@ -2131,18 +2131,18 @@
       "profileId": "gif-to-avif",
       "maxTestedBytes": 281853,
       "repeatableEvidence": {
-        "report": "2026-08-24T06-26-26-525Z-gif-to-avif-stress.json",
-        "reportSha256": "80cfbc8f7b483171556c16eac4e3f7a260ed422388439e351e5ac13c7973619b",
+        "report": "2026-08-30T12-21-49-815Z-gif-to-avif-stress.json",
+        "reportSha256": "b24b16ea18a3dff73ddb2dc16609aa370030e15073b51aa998043eb2f97ca518",
         "runs": 3,
         "sourceBytes": 281853,
-        "incrementalPrivateMiB": 237.4609375
+        "incrementalPrivateMiB": 217
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-24T06-26-26-525Z-gif-to-avif-stress.json",
-        "reportSha256": "80cfbc8f7b483171556c16eac4e3f7a260ed422388439e351e5ac13c7973619b",
+        "report": "2026-08-30T12-21-49-815Z-gif-to-avif-stress.json",
+        "reportSha256": "b24b16ea18a3dff73ddb2dc16609aa370030e15073b51aa998043eb2f97ca518",
         "runs": 3,
         "sourceBytes": 281853,
-        "incrementalPrivateMiB": 237.4609375
+        "incrementalPrivateMiB": 217
       }
     },
     {
@@ -2419,18 +2419,18 @@
       "profileId": "jpeg-to-avif",
       "maxTestedBytes": 51804,
       "repeatableEvidence": {
-        "report": "2026-08-24T06-20-19-976Z-jpeg-to-avif-stress.json",
-        "reportSha256": "9bf9307c350beb2682f90cae75e30b410de8eaecc933da195256a685417edd65",
+        "report": "2026-08-30T12-15-38-711Z-jpeg-to-avif-stress.json",
+        "reportSha256": "5c50845371b8857bd944cd51f9cde4269d3540e458630aa1a417033214fb55f0",
         "runs": 3,
         "sourceBytes": 51804,
-        "incrementalPrivateMiB": 219.61328125
+        "incrementalPrivateMiB": 213.41796875
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-24T06-20-19-976Z-jpeg-to-avif-stress.json",
-        "reportSha256": "9bf9307c350beb2682f90cae75e30b410de8eaecc933da195256a685417edd65",
+        "report": "2026-08-30T12-15-38-711Z-jpeg-to-avif-stress.json",
+        "reportSha256": "5c50845371b8857bd944cd51f9cde4269d3540e458630aa1a417033214fb55f0",
         "runs": 3,
         "sourceBytes": 51804,
-        "incrementalPrivateMiB": 219.61328125
+        "incrementalPrivateMiB": 213.41796875
       }
     },
     {
@@ -5191,11 +5191,11 @@
       "profileId": "png-to-avif",
       "maxTestedBytes": 482505,
       "repeatableEvidence": {
-        "report": "2026-08-24T06-24-54-268Z-png-to-avif-stress.json",
-        "reportSha256": "ea3cf02bc24a997d39153b7e498636be985d5beb8c71012c2eb89a33082e914c",
+        "report": "2026-08-30T12-20-02-975Z-png-to-avif-stress.json",
+        "reportSha256": "774b4a26157aa263343c7d188078d5cf06fe5ac037b56903b8fc57d0b4cd74d4",
         "runs": 3,
         "sourceBytes": 482505,
-        "incrementalPrivateMiB": 217.99609375
+        "incrementalPrivateMiB": 223.8359375
       },
       "maximumSizeEvidence": {
         "report": "2026-08-24T05-23-32-721Z-png-to-avif-stress.json",
@@ -6505,18 +6505,18 @@
       "profileId": "webp-to-avif",
       "maxTestedBytes": 185794,
       "repeatableEvidence": {
-        "report": "2026-08-24T06-27-58-767Z-webp-to-avif-stress.json",
-        "reportSha256": "99741fad4b2226df93112dd5e941d5fad129285f8f4af96cdbcc38c71eadeac6",
-        "runs": 3,
-        "sourceBytes": 185794,
-        "incrementalPrivateMiB": 220.8984375
+        "report": "2026-08-30T12-11-42-679Z-webp-to-avif-stress.json",
+        "reportSha256": "09a05ebdf078b2d1219db922659ed74b7e5cfa2eb7b24359c4c02dbdba531070",
+        "runs": 10,
+        "sourceBytes": 28496,
+        "incrementalPrivateMiB": 213.87109375
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-24T06-27-58-767Z-webp-to-avif-stress.json",
-        "reportSha256": "99741fad4b2226df93112dd5e941d5fad129285f8f4af96cdbcc38c71eadeac6",
+        "report": "2026-08-30T12-23-35-702Z-webp-to-avif-stress.json",
+        "reportSha256": "383be8ef635c2c8da3659fe845ceac06fe1bb0e13871327765bbcac7964cde89",
         "runs": 3,
         "sourceBytes": 185794,
-        "incrementalPrivateMiB": 220.8984375
+        "incrementalPrivateMiB": 212.61328125
       }
     },
     {

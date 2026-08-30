@@ -93,8 +93,8 @@ not the entire product specification.
 | T-06 | Headed manual review of real UI success, progress, destination, cancellation, understandable errors, and responsiveness | Partially implemented | `TESTED.md` records one headed MKV success/direct/cancel/write-failure audit with reviewed screenshots/trace | Repeat headed audits across representative image, audio, archive, data/document, ebook/subtitle, quota/permission, reload, and batch families. |
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
-| T-09 | Every published binary is pinned, reproducible, and auditable from source | Partially implemented | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories. SVG and all five FFmpeg modules now pass exact clean hosted rebuilds without Docker; `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json` records the FFmpeg inputs, hashes, source split, and successful run. | Establish pinned non-Docker toolchains/recipes for the remaining nine engine directories: BZIP2, XZ, compact XZ, 7Z, TIFF, JXL decode/encode, and AVIF decode/encode. Require an exact clean artifact comparison for each; declaration coverage alone is not binary reproducibility. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Main run `33252270830` passed all seven jobs at `098a7a7`: build/lint/TypeScript/unit/evidence, privacy/offline 13/13, image 152/152, media 484/484, streaming 235/235, exact SVG, and exact FFmpeg without Docker. | Preserve this integrated baseline and add exact non-Docker rebuild jobs for the remaining nine engine directories. |
+| T-09 | Every published binary is pinned, reproducible, and auditable from source | Verified complete | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories and supplies an executable exact no-Docker recipe for each. Hosted run `33297796443`, TIFF rerun `33298467168`, and clean AVIF-encoder publication run `33311548748` prove every directory against pinned Emscripten 6.0.4; `evidence/non-docker-all-engine-repro-2026-08-30.json` records job IDs, sources, hashes, AVIF cache diagnosis, browser re-certification, and cleanup. | Keep each fail-independent exact comparison mandatory whenever its source or published bytes change. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Main run `33252270830` passed the integrated build/unit/privacy/871-browser baseline, and the current CI matrix now contains exact clean no-Docker jobs for all 11 engine directories. | Run the final integrated `engine=all` workflow against the completed branch and retain its exact all-job result; keep the partitioned browser and fail-independent engine jobs mandatory. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons
@@ -109,19 +109,17 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Build pinned non-Docker toolchains for the nine engine directories that still
-   have Docker-only recipes, then add fail-independent exact rebuild jobs.
-2. Extend the verified MP3 bitrate/sample-rate/channel model to practical audio
+1. Extend the verified MP3 bitrate/sample-rate/channel model to practical audio
    codec/quality/lossless choices and video resolution/bitrate/frame-rate/
    codec/quality controls.
-3. Audit stream/metadata preservation for every public media route; implement
+2. Audit stream/metadata preservation for every public media route; implement
    representable fields and make every exclusion explicit.
-4. Expand the passing Edge, Brave, and Opera smoke evidence into representative
+3. Expand the passing Edge, Brave, and Opera smoke evidence into representative
    route and headed interaction coverage.
-5. Perform bounded feasibility work for HEIF/HEIC, camera raw, broader SVG, and
+4. Perform bounded feasibility work for HEIF/HEIC, camera raw, broader SVG, and
    the missing media combinations. Promote only fully evidenced routes.
-6. Expand headed interaction audits and representative multi-gigabyte scaling.
-7. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
+5. Expand headed interaction audits and representative multi-gigabyte scaling.
+6. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
    reproducibility, registry/report-consistency, cleanup, and protected-fixture
    gates before removing all partial/missing statuses.
 
@@ -146,6 +144,35 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-08-30 — exact clean no-Docker reproduction for all engines
+
+- Added pinned Linux no-Docker recipes and fail-independent matrix entries for
+  BZIP2, full and decoder-only XZ, 7Z, TIFF, JPEG XL decode/encode, and AVIF
+  decode/encode, joining the established SVG and five-module FFmpeg entries.
+  Hosted run `33297796443` proved nine entries exactly in parallel; TIFF's only
+  failure was a pre-build transient zlib download checksum and its unchanged
+  recipe passed targeted run `33298467168` in 167 seconds.
+- The clean AVIF encoder consistently produced 4,509,195-byte static/animation
+  Wasm files with SHA-256 `4c28a20a06cb480344d2488307fe41c3842255f1df5607e7058bc974a9ec0a03`
+  and `4f1d2902897f39f32bc22078bdce2d1ffb67ca70978a4bac0783f1430955085f`.
+  The former 4,508,341-byte files came from a persistent BuildKit cache mount,
+  so source-only clean builds could not reproduce them. Three SDK-path
+  diagnostics repeated the clean hashes; code was the only differing Wasm
+  section, with 22 of 2,824 function bodies changed and an 854-byte increase.
+- Before publishing the clean bytes, all seven static/animated profiles passed
+  3/3 at 207.3–224.3 MiB and static WebP passed an additional 10/10 gate.
+  Chromium's prior I420/BGRX alternation was normalized through managed sRGB
+  conversion before the existing bounded RGBA copy. The focused genuine
+  browser/native decoder gate passed 5/5 and the standalone fixed-heap,
+  positioned-write, truncate, flush, and box-order probe passed every case. The
+  complete clean-binary image regression then passed 152/152 in 4.4 minutes.
+- Temporary engine exports, converted outputs, validation copies, probe files,
+  and Chrome profiles remained repository-local and were deleted after compact
+  evidence was recorded. `work/` returned to only `.gitkeep`; protected
+  `test.mkv` remained 2,958,573,265 bytes with SHA-256
+  `31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34`.
+  Full details are in `evidence/non-docker-all-engine-repro-2026-08-30.json`.
 
 ### 2026-08-30 — bounded MP3 bitrate, sample-rate, and channel controls
 
@@ -210,10 +237,10 @@ not the entire product specification.
   seconds. Their diagnostic artifact, converted copies, and scratch tree were
   deleted; the protected `test.mkv` remained byte-identical. Full details are in
   `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
-- The ordinary CI engine matrix now installs the exact pinned SDK only for the
-  FFmpeg entry and runs the same comparison independently alongside SVG. The
-  remaining nine binary-engine directories still require equivalent no-Docker
-  recipes before T-09/T-10 can be closed.
+- The ordinary CI engine matrix now installs the exact pinned SDK for each
+  binary-engine entry and runs every comparison independently alongside SVG.
+  The all-engine implementation and final AVIF clean-byte publication are
+  recorded in the 2026-08-30 section above.
 - Main run `33252270830` then passed all seven integrated jobs at `098a7a7`:
   871/871 browser conversions, 75/75 unit tests, 13/13 privacy/offline cases,
   exact SVG, and exact FFmpeg. The FFmpeg build/comparison took 470 seconds,
