@@ -99,6 +99,7 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "archive7z-nondocker-output"),
   path.resolve(workRoot, "tiff-nondocker-build"),
   path.resolve(workRoot, "tiff-nondocker-output"),
+  path.resolve(workRoot, "tiff-mismatch-candidate"),
   path.resolve(workRoot, "jxl-nondocker-build"),
   path.resolve(workRoot, "jxl-nondocker-output"),
   path.resolve(workRoot, "jxl-encoder-nondocker-build"),

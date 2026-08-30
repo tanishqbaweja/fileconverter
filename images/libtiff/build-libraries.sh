@@ -3,6 +3,9 @@ set -euo pipefail
 
 export CFLAGS="-O3 -flto"
 export LDFLAGS="-O3 -flto"
+# libjpeg-turbo embeds a YYYYMMDD build string. Pin the published build date so
+# clean builds remain byte-identical instead of varying with wall-clock time.
+export SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-1786579200}"
 
 cd /src/zlib
 emconfigure ./configure --static
