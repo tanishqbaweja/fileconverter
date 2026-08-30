@@ -108,6 +108,7 @@ const ffmpegReproBuildRoots = [
   path.resolve(workRoot, "avif-nondocker-output"),
   path.resolve(workRoot, "avif-encoder-nondocker-build"),
   path.resolve(workRoot, "avif-encoder-nondocker-output"),
+  path.resolve(workRoot, "avif-encoder-mismatch-candidate"),
   path.resolve(workRoot, "remux-build"),
   path.resolve(workRoot, "remux-build-2"),
   path.resolve(workRoot, "remux-build-final"),

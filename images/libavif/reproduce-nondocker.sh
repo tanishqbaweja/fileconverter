@@ -35,6 +35,7 @@ OUTPUT_ROOT="${WORK_ROOT}/${ENGINE_ID}-nondocker-output"
 EXPECTED_ROOT="${PROJECT_ROOT}/public/engines/${ENGINE_ID}"
 BUILD_ROOT_CREATED=0
 OUTPUT_ROOT_CREATED=0
+PINNED_EMSDK_ROOT="${EMSDK:-}"
 
 fail() { printf '%s\n' "$*" >&2; exit 1; }
 require_command() {
@@ -63,6 +64,9 @@ cleanup() {
   local status=$?
   remove_owned_symlink /src "${BUILD_ROOT}"
   remove_owned_symlink /out "${OUTPUT_ROOT}"
+  if [[ -n "${PINNED_EMSDK_ROOT}" ]]; then
+    remove_owned_symlink /emsdk "${PINNED_EMSDK_ROOT}"
+  fi
   if [[ "${BUILD_ROOT_CREATED}" == "1" ]]; then rm -rf -- "${BUILD_ROOT}"; fi
   if [[ "${OUTPUT_ROOT_CREATED}" == "1" && "${KEEP_OUTPUT}" != "1" ]]; then
     rm -rf -- "${OUTPUT_ROOT}"
@@ -102,6 +106,15 @@ available_kib="$(df -Pk "${WORK_ROOT}" | awk 'NR == 2 { print $4 }')"
 
 run_privileged ln -s "${BUILD_ROOT}" /src
 run_privileged ln -s "${OUTPUT_ROOT}" /out
+if [[ "${VARIANT}" == "encoder" ]]; then
+  [[ -n "${PINNED_EMSDK_ROOT}" && -d "${PINNED_EMSDK_ROOT}" ]] ||
+    fail "The activated EMSDK root is unavailable."
+  [[ ! -e /emsdk && ! -L /emsdk ]] || fail "Refusing to replace existing /emsdk"
+  run_privileged ln -s "${PINNED_EMSDK_ROOT}" /emsdk
+  # AOM embeds this toolchain path in the Wasm binary. Re-activate through the
+  # canonical pinned path used by the published build.
+  source /emsdk/emsdk_env.sh >/dev/null
+fi
 cd "${BUILD_ROOT}"
 
 curl --fail --location --retry 3 \
