@@ -23,6 +23,7 @@ LIBPNG_VERSION=1.6.58
 LIBPNG_SHA256=28eb403f51f0f7405249132cecfe82ea5c0ef97f1b32c5a65828814ae0d34775
 ZLIB_VERSION=1.3.2
 ZLIB_SHA256=d7a0654783a4da529d1bb793b7ad9c3318020af77667bcae35f95d0e42a792f3
+EMSCRIPTEN_VERSION=6.0.4
 
 case "${VARIANT}" in
   decoder) ENGINE_ID=avif ;;
@@ -38,6 +39,7 @@ OUTPUT_ROOT_CREATED=0
 PINNED_EMSDK_ROOT="${EMSDK:-}"
 PINNED_EMSDK_MARKER=.within-fileconverter-owner
 PINNED_EMSDK_MOVED=0
+PINNED_EMSDK_BOOTSTRAP_CREATED=0
 
 fail() { printf '%s\n' "$*" >&2; exit 1; }
 require_command() {
@@ -82,6 +84,10 @@ cleanup() {
   local status=$?
   remove_owned_symlink /src "${BUILD_ROOT}"
   remove_owned_symlink /out "${OUTPUT_ROOT}"
+  if [[ "${PINNED_EMSDK_MOVED}" == "1" && \
+      "${PINNED_EMSDK_BOOTSTRAP_CREATED}" == "1" ]]; then
+    run_privileged rm -f -- /emsdk/hello.c /emsdk/hello.o
+  fi
   restore_owned_emsdk
   if [[ "${BUILD_ROOT_CREATED}" == "1" ]]; then rm -rf -- "${BUILD_ROOT}"; fi
   if [[ "${OUTPUT_ROOT_CREATED}" == "1" && "${KEEP_OUTPUT}" != "1" ]]; then
@@ -134,6 +140,17 @@ if [[ "${VARIANT}" == "encoder" ]]; then
   # LLVM from resolving a symlink back to a runner-specific workspace path.
   run_privileged mv "${PINNED_EMSDK_ROOT}" /emsdk
   PINNED_EMSDK_MOVED=1
+  export EMSDK=/emsdk
+  unset EMSDK_NODE
+  PINNED_EMSDK_BOOTSTRAP_CREATED=1
+  (
+    cd /emsdk
+    ./emsdk activate "${EMSCRIPTEN_VERSION}" >/dev/null
+    printf 'int main() { return 0; }\n' > hello.c
+    ./upstream/emscripten/emcc -c hello.c
+    rm -- hello.c hello.o
+  )
+  PINNED_EMSDK_BOOTSTRAP_CREATED=0
   source /emsdk/emsdk_env.sh >/dev/null
 fi
 cd "${BUILD_ROOT}"
