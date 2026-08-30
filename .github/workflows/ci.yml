@@ -96,6 +96,15 @@ jobs:
         if: always() && matrix.emscriptenVersion
         shell: bash
         run: |
+          if test -d /emsdk && ! test -L /emsdk && \
+              test -f /emsdk/.within-fileconverter-owner; then
+            sdk_owner="$(sudo cat /emsdk/.within-fileconverter-owner)"
+            if test "$sdk_owner" = "$GITHUB_WORKSPACE/work/emsdk" && \
+                ! test -e "$sdk_owner"; then
+              sudo mv /emsdk "$sdk_owner"
+              rm -- "$sdk_owner/.within-fileconverter-owner"
+            fi
+          fi
           for link_path in /src /out; do
             if test -L "$link_path"; then
               link_target="$(readlink -f "$link_path")"
