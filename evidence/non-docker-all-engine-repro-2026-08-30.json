@@ -36,6 +36,38 @@
     "result": "exact",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33298467168"
   },
+  "finalIntegratedRun": {
+    "id": 33312105530,
+    "commit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33312105530",
+    "result": "16/16 jobs passed",
+    "verification": {
+      "jobId": 99258918468,
+      "seconds": 135,
+      "publicProfilesAudited": 388,
+      "unitTests": { "passed": 78, "skippedProtectedFixture": 1, "total": 79 },
+      "privacyOfflineTests": { "passed": 13, "total": 13 }
+    },
+    "browserJobs": [
+      { "suite": "image-conversions", "jobId": 99258918392, "tests": 152, "passed": 152, "seconds": 354 },
+      { "suite": "media-remux", "jobId": 99258918439, "tests": 484, "passed": 484, "seconds": 684 },
+      { "suite": "streaming-conversions", "jobId": 99258918441, "tests": 235, "passed": 235, "seconds": 290 }
+    ],
+    "engineJobs": [
+      { "engine": "bzip2", "jobId": 99258941820, "seconds": 78 },
+      { "engine": "ffmpeg-remux", "jobId": 99258941825, "seconds": 624 },
+      { "engine": "archive7z", "jobId": 99258941832, "seconds": 324 },
+      { "engine": "jxl-encoder", "jobId": 99258941841, "seconds": 273 },
+      { "engine": "tiff", "jobId": 99258941847, "seconds": 207 },
+      { "engine": "avif-encoder", "jobId": 99258941848, "seconds": 424 },
+      { "engine": "xz-decoder", "jobId": 99258941849, "seconds": 130 },
+      { "engine": "jxl", "jobId": 99258941850, "seconds": 167 },
+      { "engine": "avif", "jobId": 99258941872, "seconds": 358 },
+      { "engine": "svg", "jobId": 99258941876, "seconds": 39 },
+      { "engine": "xz", "jobId": 99258941924, "seconds": 129 }
+    ],
+    "uploadedArtifacts": 0
+  },
   "avifEncoder": {
     "publicationCommit": "39b98ba3ab4fc77431850d656c57607a943337b7",
     "publicationRun": {

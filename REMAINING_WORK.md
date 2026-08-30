@@ -94,7 +94,7 @@ not the entire product specification.
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Verified complete for current route promotion evidence | Retained reports and profiler checks; historical failures remain in `outputs/reports` | Define which routes are “major” in the audit and add clean-session repeats where evidence is only same-session. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs | Verified complete | `scripts/memory-profile.mjs` and compact retained reports | Preserve compact reports while deleting payloads. |
 | T-09 | Every published binary is pinned, reproducible, and auditable from source | Verified complete | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories and supplies an executable exact no-Docker recipe for each. Hosted run `33297796443`, TIFF rerun `33298467168`, and clean AVIF-encoder publication run `33311548748` prove every directory against pinned Emscripten 6.0.4; `evidence/non-docker-all-engine-repro-2026-08-30.json` records job IDs, sources, hashes, AVIF cache diagnosis, browser re-certification, and cleanup. | Keep each fail-independent exact comparison mandatory whenever its source or published bytes change. |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Main run `33252270830` passed the integrated build/unit/privacy/871-browser baseline, and the current CI matrix now contains exact clean no-Docker jobs for all 11 engine directories. | Run the final integrated `engine=all` workflow against the completed branch and retain its exact all-job result; keep the partitioned browser and fail-independent engine jobs mandatory. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Verified complete for the current branch | Final integrated run `33312105530` passed 16/16 jobs at `5e46a66`: verification/build/lint/TypeScript/evidence, 13/13 privacy/offline, all 871 browser conversions (152 image, 484 media, 235 streaming), and exact clean no-Docker reproduction for all 11 engine directories. | Keep the partitioned browser, privacy, and fail-independent engine jobs mandatory; rerun the affected partitions whenever behavior or published engine bytes change. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results | Verified complete for current implementation | `README.md` documents all named areas and links the generated route ledger | Update it whenever remaining work changes behavior or evidence. |
 
 ## Intentionally unsupported surfaces with current reasons
@@ -173,6 +173,10 @@ not the entire product specification.
   `test.mkv` remained 2,958,573,265 bytes with SHA-256
   `31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34`.
   Full details are in `evidence/non-docker-all-engine-repro-2026-08-30.json`.
+- Final integrated run `33312105530` passed all 16 jobs at `5e46a66`: 13/13
+  privacy/offline tests, 152/152 image, 484/484 media, and 235/235 streaming
+  browser cases, plus all 11 exact engine rebuilds. Every failure-upload step
+  was skipped and the run retains zero artifacts, closing T-10 for this branch.
 
 ### 2026-08-30 — bounded MP3 bitrate, sample-rate, and channel controls
 

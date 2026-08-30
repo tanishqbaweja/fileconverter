@@ -1819,6 +1819,12 @@ The integrated main-branch gate is GitHub Actions run
 [`33252270830`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33252270830):
 all seven jobs passed, including 871 browser conversions and both exact
 no-Docker engine comparisons.
+The final all-engine branch gate is run
+[`33312105530`](https://github.com/tanishqbaweja/fileconverter/actions/runs/33312105530):
+all 16 jobs passed, including 13/13 privacy/offline tests, all 871 browser
+conversions, and exact clean no-Docker reproduction for every one of the 11
+published engine directories. All failure-artifact uploads were skipped and the
+run retains zero artifacts.
 
 ## Repository map
 
