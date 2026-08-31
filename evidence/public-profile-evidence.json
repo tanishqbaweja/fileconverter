@@ -3283,18 +3283,18 @@
       "profileId": "mkv-to-webm-vp9",
       "maxTestedBytes": 181825549,
       "repeatableEvidence": {
-        "report": "2026-08-01T21-40-48-008Z-mkv-to-webm-vp9-stress.json",
-        "reportSha256": "29a4479385bb651f0bc1e9c801418badbfa7675c0da513cf1656e2a254710615",
+        "report": "2026-08-31T06-01-28-820Z-mkv-to-webm-vp9-stress.json",
+        "reportSha256": "084153c35cf1a100551d90c8811a7cec64eeefe303dac96b2098324fd5d1ffb0",
         "runs": 3,
         "sourceBytes": 181825549,
-        "incrementalPrivateMiB": 244.90625
+        "incrementalPrivateMiB": 232.90234375
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-01T21-40-48-008Z-mkv-to-webm-vp9-stress.json",
-        "reportSha256": "29a4479385bb651f0bc1e9c801418badbfa7675c0da513cf1656e2a254710615",
+        "report": "2026-08-31T06-01-28-820Z-mkv-to-webm-vp9-stress.json",
+        "reportSha256": "084153c35cf1a100551d90c8811a7cec64eeefe303dac96b2098324fd5d1ffb0",
         "runs": 3,
         "sourceBytes": 181825549,
-        "incrementalPrivateMiB": 244.90625
+        "incrementalPrivateMiB": 232.90234375
       }
     },
     {

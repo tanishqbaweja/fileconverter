@@ -546,6 +546,12 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "h264-to-webm-vp9",
       ],
     },
+    {
+      name: "within-webm-quality",
+      wasmPthreadPoolSize: 4,
+      videoCodecThreads: 2,
+      profiles: ["higher-quality-vp8", "higher-quality-vp9"],
+    },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));

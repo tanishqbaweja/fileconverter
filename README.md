@@ -324,15 +324,26 @@ copy afterward; see
 `evidence/complex-matroska-field-retention-browser-2026-08-28.json`.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
-HEVC, converts only the first non-attached video stream at 2 Mbit/s, and
+HEVC and converts only the first non-attached video stream. Automatic mode uses
+the certified 2 Mbit/s policy; the conversion controls can instead select a
+bounded bitrate, proportional no-upscale width cap, no-upconvert frame-rate cap,
+and smaller/balanced/higher quality policy. It
 explicitly excludes audio, subtitles, attachments, and chapters. Its current
 evidence includes the protected 2,958,573,265-byte fixture, so the normal selector exposes it.
 The VP8 profile similarly converts the first video stream to a video-only WebM,
-bounds output to 640 pixels wide, uses four decoder threads, four encoder
+bounds automatic output to 640 pixels wide, uses four decoder threads, four encoder
 threads, four token partitions, realtime deadline, `cpu-used=8`, and zero
 lookahead, and reports excluded audio, subtitles, attachments, and chapters.
 It is loaded from a dedicated eight-worker pthread module so audio and remux
 routes do not pay that pool's memory cost.
+
+Every public video re-encode route exposes the same validated controls: automatic
+or VP8/VP9/MPEG-4 where its destination container permits it, automatic or
+320/480/640-pixel proportional no-upscale width, automatic or 300/600/1,000/
+2,000/4,000 kbit/s, automatic or 15/24/25/30 fps without frame duplication, and
+automatic/smaller/balanced/higher quality. Unsupported combinations and values
+are rejected independently by the browser, worker, and native Wasm wrapper.
+Automatic retains the previously certified fastest profile unchanged.
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
@@ -343,10 +354,17 @@ paths, while 147 MiB high-bitrate H.264/AAC sources exercise bounded streaming,
 downscaling, complete decode, repeatability, and cleanup in three-run Chrome
 profiles.
 
-The VP9 profiles use a separate lazy-loaded eight-worker module, so selecting a
-VP8, audio, or stream-copy route never downloads or starts the VP9 specialist.
-They retain the same 640-pixel width, 600 kbit/s, realtime, `cpu-used=8`, and
-zero-lookahead bounds while enabling row multithreading and two tile columns.
+The automatic, smaller, and balanced VP9 profiles use a separate lazy-loaded
+eight-worker module, so selecting VP8, audio, or stream-copy never downloads or
+starts the VP9 specialist. Explicit higher-quality VP8/VP9 uses a separate
+four-worker/two-codec-thread module. On the 181,825,549-byte maximum-settings
+VP9 stress source, that topology completed three repeatable runs in 397.7–399.7
+seconds at 232.9 MiB peak incremental process-tree private memory; the rejected
+eight-worker higher-quality topology was faster at 348.6–351.9 seconds but
+exceeded the unchanged 250 MiB limit at 264.1 MiB.
+Automatic VP9 retains the same 640-pixel width, 600 kbit/s, realtime,
+`cpu-used=8`, and zero-lookahead bounds while enabling row multithreading and
+two tile columns.
 The VP9 encoder uses four threads. Inputs wider than 1,280 pixels limit only the
 memory-heavy decoder to two threads; the downscaled encoder stays four-threaded.
 This topology improved the 136 MiB M2V benchmark from 85.49 to 69.06 seconds

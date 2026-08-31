@@ -33,12 +33,14 @@ async function waitForCompletedConversion(page: Page): Promise<NonNullable<Await
     timeout: 15_000,
   });
   await page.locator('[data-testid="convert-button"]').click();
-  await expect
-    .poll(
-      () => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
-      { timeout: 120_000 },
-    )
-    .not.toBe("running");
+  await page.waitForFunction(
+    () => {
+      const jobState = window.__WITHIN_TEST__?.getState().jobState;
+      return jobState !== undefined && jobState !== "idle" && jobState !== "running";
+    },
+    undefined,
+    { timeout: 120_000 },
+  );
   const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
   if (!state) throw new Error("The browser test bridge returned no state.");
   expect(state.jobState, state.error ?? state.phase).toBe("complete");
@@ -256,6 +258,8 @@ test("native video controls produce genuine bounded VP9 and MPEG-4 outputs", asy
   await page.locator('[data-testid="video-quality-select"]').selectOption("higher");
   const vp9State = await waitForCompletedConversion(page);
   expect(vp9State.opfsName).toBeNull();
+  // Four Wasm pthreads plus the media worker and direct-write helper.
+  expect(vp9State.metrics?.activeWorkerCount).toBe(6);
   const vp9Entry = vp9State.batchOutputNames[0];
   expect(vp9Entry).toBeTruthy();
   await copyAndDeleteSmallBrowserOutput(page, vp9Entry, customVp9Path);
@@ -362,6 +366,8 @@ test("native video bitrate and quality policies materially affect encoded output
     measureScaledVideoPsnr(smallerVideoPath),
   ]);
   expect(higherQualityPsnr).toBeGreaterThan(smallerPsnr);
+  expect(higherQualityState.metrics?.activeWorkerCount).toBe(6);
+  expect(smallerState.metrics?.activeWorkerCount).toBe(10);
 });
 
 test("maximum custom video topology releases a partial direct output after write failure", async ({

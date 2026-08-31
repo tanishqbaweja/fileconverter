@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-08-31T11:48:00+05:30",
+  "scope": "Bounded user-selectable video codec, resolution, bitrate, frame-rate cap, and quality for all 22 public video re-encode profiles",
+  "dockerUsed": false,
+  "sourceCommit": "f0e3d2b5c09f3b6bd4719d0c5819488fc6ad5f88",
+  "controls": {
+    "codec": ["automatic", "vp8", "vp9", "mpeg4"],
+    "maximumWidthPixels": [0, 320, 480, 640],
+    "bitRateBps": [0, 300000, 600000, 1000000, 2000000, 4000000],
+    "maximumFrameRateFps": [0, 15, 24, 25, 30],
+    "quality": ["automatic", "smaller", "balanced", "higher"],
+    "zeroPolicy": "retain the previously certified fastest automatic profile",
+    "widthPolicy": "proportional cap with no upscaling",
+    "frameRatePolicy": "uniform decoded-frame dropping only; never duplicate frames or increase source frame rate",
+    "validationLayers": [
+      "browser option contract and profile synchronization",
+      "conversion worker",
+      "native Wasm allowlist"
+    ]
+  },
+  "focusedChrome": {
+    "command": "npx playwright test tests/browser/media-options.spec.ts --workers=1",
+    "result": "8 passed",
+    "elapsedSeconds": 19.9,
+    "genuineOutputs": [
+      {
+        "codec": "vp9",
+        "width": 320,
+        "height": 180,
+        "frameRate": "15/1",
+        "decodedFrames": 60,
+        "durationSeconds": 4,
+        "fullyDecodedByNativeFfmpeg": true
+      },
+      {
+        "codec": "mpeg4",
+        "width": 480,
+        "height": 270,
+        "frameRate": "15/1",
+        "decodedFrames": 60,
+        "durationSeconds": 4,
+        "fullyDecodedByNativeFfmpeg": true
+      }
+    ],
+    "bitrateAndQuality": {
+      "lowBitrateBytes": 81452,
+      "higherQualityBytes": 107340,
+      "smallerBytes": 82600,
+      "higherQualityPsnrDb": 26.428492,
+      "smallerPsnrDb": 26.388165,
+      "higherQualityTotalConversionWorkers": 6,
+      "smallerTotalConversionWorkers": 10
+    },
+    "failureAndCleanup": [
+      "maximum-settings direct-write failure leaves no nonempty partial output",
+      "maximum-settings cancellation leaves no nonempty partial output",
+      "pending operations return to zero",
+      "queued bytes return to zero"
+    ]
+  },
+  "automaticDefaultRegression": {
+    "command": "npx playwright test tests/browser/media-remux.spec.ts --workers=1 --grep <all 22 public video re-encode cases>",
+    "result": "22 passed",
+    "elapsedSeconds": 48.9,
+    "profileCount": 22,
+    "inputs": ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv", "avi", "ogv", "m2v", "h264"],
+    "outputs": ["mpeg4", "vp8", "vp9"],
+    "policy": "automatic retains the prior fastest specialist and its exact default encoding branch"
+  },
+  "sourceGates": {
+    "typescript": "passed",
+    "eslint": "passed",
+    "productionBuild": "passed as the Playwright web-server prerequisite",
+    "unit": "84/84 passed",
+    "engineReproducibilityDeclarations": "11/11 covered",
+    "publicEvidence": "388/388 public profiles matched; zero pending, non-passing, or PDF routes"
+  },
+  "reproducibility": {
+    "firstCandidate": {
+      "runId": 33327587571,
+      "jobId": 99300366385,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33327587571",
+      "result": "expected pre-publication comparison failure",
+      "buildSeconds": 592,
+      "differences": [
+        "build-manifest.json",
+        "within-remux.wasm",
+        "within-mpeg4.wasm",
+        "within-webm.wasm",
+        "within-vp9.wasm"
+      ],
+      "unchanged": [
+        "every loader",
+        "every license",
+        "within-direct.mjs",
+        "within-direct.wasm"
+      ],
+      "artifactDeleted": true
+    },
+    "acceptedCandidate": {
+      "runId": 33329599236,
+      "jobId": 99305691478,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33329599236",
+      "result": "expected pre-publication comparison failure",
+      "buildSeconds": 624,
+      "onlyDifferences": [
+        "build-manifest.json",
+        "within-webm-quality.mjs",
+        "within-webm-quality.wasm"
+      ],
+      "publishedHashes": {
+        "build-manifest.json": "da58f88e3197629653bb9b59334f67560017a317dc4768fe0b825f7894c6d9ba",
+        "within-webm-quality.mjs": "cc5a54a2a41fed21864be102943c6793a6131edfbfe3dfc8693bae0465668d47",
+        "within-webm-quality.wasm": "1919cbb669393fdc6a2f2ab2a5c7d99e7de38a33eb91810e17a7dc5d6e79bff1"
+      }
+    },
+    "directCorePin": {
+      "historicalCommit": "79e4db4",
+      "historicalWithinRemuxBlob": "307fd688fb11f322ae7e3552f0dd0e5012615901",
+      "reversePatchSha256": "ab5b79040a338b93de3667e09a29df225505b4f46bc1ab1fae44791e62846ac9",
+      "withinDirectWasmSha256": "b2ae0910ea76d4235a6249810f5f3e09ea239d5c6f3af447aeaa3825c68f1d81"
+    }
+  },
+  "topologyComparison": {
+    "rejectedFastHigherQuality": {
+      "report": "outputs/reports/2026-08-30T18-53-31-918Z-mkv-to-webm-vp9-stress.json",
+      "reportSha256": "8fb60d02ffe9fa0f399880144cded6cb2ae5054cbe232e03421f3557a958130b",
+      "elapsedMs": [349273.225, 351903.015, 348572.8],
+      "worstIncrementalPrivateMiB": 264.09765625,
+      "wasmMemoryBytes": 83886080,
+      "engineWorkers": 9,
+      "result": "rejected because it exceeded the unchanged 250 MiB process-tree limit"
+    },
+    "acceptedHigherQuality": {
+      "policy": "separate lazy four-pthread/two-codec-thread specialist used only for explicit higher WebM quality",
+      "smallSource": {
+        "report": "outputs/reports/2026-08-31T05-39-37-647Z-mkv-to-webm-vp9-stress.json",
+        "reportSha256": "bf4e59583a13874e63ba47d5d2d4dccf63893d6eb40e2890701ea0c17a420052",
+        "sourceBytes": 936003,
+        "elapsedMs": [1544.355, 1237.01, 1146.32],
+        "worstIncrementalPrivateMiB": 202.30859375,
+        "wasmMemoryBytes": 50331648,
+        "engineWorkers": 5
+      },
+      "maximumStress": {
+        "report": "outputs/reports/2026-08-31T06-01-28-820Z-mkv-to-webm-vp9-stress.json",
+        "reportSha256": "084153c35cf1a100551d90c8811a7cec64eeefe303dac96b2098324fd5d1ffb0",
+        "sourceBytes": 181825549,
+        "sourceSha256": "a572e4b818af40e3dfbb9f94b8d38d6a86bcb1f01115d1a7c66e59a4eb99383e",
+        "settings": {
+          "codec": "vp9",
+          "maxWidth": 640,
+          "bitRateBps": 4000000,
+          "frameRateFps": 30,
+          "quality": "higher"
+        },
+        "elapsedMs": [399741.975, 397697.99, 398104.17],
+        "incrementalPrivateMiB": [170.39453125, 232.90234375, 213.41015625],
+        "limitMiB": 250,
+        "wasmMemoryBytes": 75497472,
+        "engineWorkers": 5,
+        "maximumReadChunkBytes": 262144,
+        "maximumWriteChunkBytes": 262144,
+        "peakQueuedBytes": 262144,
+        "peakPendingOperations": 1,
+        "output": {
+          "bytes": 50010269,
+          "sha256": "4822e4c3ff2b22389b640ac4416f8c45092ecee613398301573dae213300dce7",
+          "codec": "vp9",
+          "width": 640,
+          "height": 268,
+          "frameRate": "24/1",
+          "repeatable": true,
+          "fullyDecodedByNativeFfmpeg": true
+        },
+        "allProfilerChecksPassed": true
+      }
+    }
+  },
+  "protectedFixture": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "cleanupPolicy": {
+    "convertedOutputsDeleted": true,
+    "browserProfilesAndArtifactsDeleted": true,
+    "generatedStressSourcesDeleted": true,
+    "downloadedCandidateDeleted": true,
+    "workDirectoryContainsOnlyGitkeep": true,
+    "retained": "compact evidence and published engine bytes only"
+  }
+}

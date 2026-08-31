@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-08-30 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-08-31 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -427,7 +427,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-wav | 2,958,573,265 | 3 | 7,107,834,734 | 156.72 s–161.53 s | 178.0 MiB | 32.0 MiB | read 262,144 B / write 24,576 B | passed |
 | mkv-to-webm | 2,958,573,265 | 3 | 921,524,214 | 2682.01 s–2687.09 s | 208.8 MiB | 80.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-webm-av1 | 222,942,211 | 3 | 222,940,541 | 1.98 s–2.40 s | 213.6 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
-| mkv-to-webm-vp9 | 181,825,549 | 3 | 65,122,757 | 329.00 s–330.04 s | 244.9 MiB | 88.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mkv-to-webm-vp9 | 181,825,549 | 3 | 50,010,269 | 397.70 s–399.74 s | 232.9 MiB | 72.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-wma | 146,855,294 | 3 | 4,880,823 | 1.42 s–1.74 s | 211.2 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | mov-to-3gp | 147,136,645 | 3 | 147,128,570 | 0.78 s–1.10 s | 205.5 MiB | 67.9 MiB | read 262,144 B / write 262,144 B | passed |
 | mov-to-aac | 146,854,612 | 3 | 1,037,637 | 0.46 s–0.78 s | 184.7 MiB | 32.0 MiB | read 262,144 B / write 478 B | passed |
@@ -730,6 +730,7 @@ Stream ma |
 | 2026-08-26T05:32:05.302Z | txt-to-docx | 67,130,000 | 0 | 67,130,000 | Independent streamed DOCX validation failed on run 1: 68500000 bytes. |
 | 2026-08-29T13:03:59.656Z | wav-to-mp3 | 153,600,106 | 0 | 153,600,106 | Browser media output size is outside the validated range: 32002657 bytes. |
 | 2026-08-30T07:34:43.466Z | webp-to-avif | 28,496 | 3 | 28,496 | Failed checks: repeatableOutputHash; measured 227.2 MiB against a 250.0 MiB limit. |
+| 2026-08-30T18:53:31.918Z | mkv-to-webm-vp9 | 181,825,549 | 3 | 181,825,549 | Failed checks: processTreePrivateMemory; measured 264.1 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
