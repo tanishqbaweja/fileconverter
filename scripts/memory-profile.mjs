@@ -34,15 +34,30 @@ const fixturePath = path.resolve(
 );
 const profileId = process.argv[3] ?? "gzip-compress";
 const audioOptions = {
+  codec: parseBoundedStringEnvironment(
+    "WITHIN_AUDIO_CODEC",
+    ["automatic", "mp3", "aac", "opus", "vorbis", "wma", "amr", "flac", "alac", "pcm"],
+    "automatic",
+  ),
+  compression: parseBoundedStringEnvironment(
+    "WITHIN_AUDIO_COMPRESSION",
+    ["automatic", "lossy", "lossless"],
+    "automatic",
+  ),
   bitRateBps: parseBoundedIntegerEnvironment(
     "WITHIN_AUDIO_BIT_RATE_BPS",
     [0, 64_000, 96_000, 128_000, 192_000, 256_000, 320_000],
   ),
   sampleRateHz: parseBoundedIntegerEnvironment(
     "WITHIN_AUDIO_SAMPLE_RATE_HZ",
-    [0, 32_000, 44_100, 48_000],
+    [0, 24_000, 32_000, 44_100, 48_000],
   ),
   channels: parseBoundedIntegerEnvironment("WITHIN_AUDIO_CHANNELS", [0, 1, 2]),
+  quality: parseBoundedStringEnvironment(
+    "WITHIN_AUDIO_QUALITY",
+    ["automatic", "smaller", "balanced", "higher"],
+    "automatic",
+  ),
 };
 const videoOptions = {
   codec: parseBoundedStringEnvironment(
@@ -124,14 +139,6 @@ const MP3_OUTPUT_PROFILES = [
   "ogg-to-mp3",
   "opus-to-mp3",
 ];
-if (
-  Object.values(audioOptions).some((value) => value !== 0) &&
-  !MP3_OUTPUT_PROFILES.includes(profileId)
-) {
-  throw new Error(
-    "Custom audio options are currently supported only for MP3 output profiles.",
-  );
-}
 const isVideoOptionsProfile =
   /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
     profileId,
@@ -225,6 +232,31 @@ const WMA_OUTPUT_PROFILES = [
   "ogv-to-wma",
   "webm-to-wma",
 ];
+const isAudioOptionsProfile =
+  MP3_OUTPUT_PROFILES.includes(profileId) ||
+  AAC_OUTPUT_PROFILES.includes(profileId) ||
+  M4A_TRANSCODE_OUTPUT_PROFILES.includes(profileId) ||
+  OPUS_OUTPUT_PROFILES.includes(profileId) ||
+  VORBIS_OUTPUT_PROFILES.includes(profileId) ||
+  WMA_OUTPUT_PROFILES.includes(profileId) ||
+  AMR_OUTPUT_PROFILES.includes(profileId) ||
+  AIFF_OUTPUT_PROFILES.includes(profileId) ||
+  profileId.endsWith("-to-wav") ||
+  profileId.endsWith("-to-flac") ||
+  profileId === "wav-to-alac" ||
+  profileId === "flac-to-alac";
+const hasCustomAudioOptions =
+  audioOptions.codec !== "automatic" ||
+  audioOptions.compression !== "automatic" ||
+  audioOptions.bitRateBps !== 0 ||
+  audioOptions.sampleRateHz !== 0 ||
+  audioOptions.channels !== 0 ||
+  audioOptions.quality !== "automatic";
+if (hasCustomAudioOptions && !isAudioOptionsProfile) {
+  throw new Error(
+    "Custom audio options are supported only for public audio re-encode profiles.",
+  );
+}
 const manifestPath = path.resolve(
   projectRoot,
   process.argv[4] ?? `${fixturePath}.json`,
@@ -908,7 +940,13 @@ try {
     await page
       .locator('[data-testid="format-select"]')
       .selectOption(profileId);
-    if (MP3_OUTPUT_PROFILES.includes(profileId)) {
+    if (isAudioOptionsProfile) {
+      await page
+        .locator('[data-testid="audio-codec-select"]')
+        .selectOption(audioOptions.codec);
+      await page
+        .locator('[data-testid="audio-compression-select"]')
+        .selectOption(audioOptions.compression);
       await page
         .locator('[data-testid="audio-bitrate-select"]')
         .selectOption(String(audioOptions.bitRateBps));
@@ -918,6 +956,9 @@ try {
       await page
         .locator('[data-testid="audio-channels-select"]')
         .selectOption(String(audioOptions.channels));
+      await page
+        .locator('[data-testid="audio-quality-select"]')
+        .selectOption(audioOptions.quality);
     }
     if (isVideoOptionsProfile) {
       await page

@@ -1,0 +1,295 @@
+diff --git a/media/ffmpeg/within_remux.c b/media/ffmpeg/within_remux.c
+index 091c37e..1c3b45a 100644
+--- a/media/ffmpeg/within_remux.c
++++ b/media/ffmpeg/within_remux.c
+@@ -828,7 +828,7 @@ static int drain_audio_decoder(WithinAudioPipeline *pipeline,
+   }
+ }
+ 
+-static int valid_mp3_bit_rate(int bit_rate) {
++static int valid_audio_bit_rate(int bit_rate) {
+   static const int allowed[] = {0, 64000, 96000, 128000,
+                                 192000, 256000, 320000};
+   for (unsigned int index = 0; index < sizeof(allowed) / sizeof(allowed[0]);
+@@ -840,14 +840,48 @@ static int valid_mp3_bit_rate(int bit_rate) {
+   return 0;
+ }
+ 
+-static int valid_mp3_sample_rate(int sample_rate) {
++static int valid_audio_sample_rate(int sample_rate, int codec) {
++  if (codec == 9) {
++    return sample_rate == 0;
++  }
++  if (codec == 3) {
++    return sample_rate == 0 || sample_rate == 24000 || sample_rate == 48000;
++  }
+   return sample_rate == 0 || sample_rate == 32000 || sample_rate == 44100 ||
+          sample_rate == 48000;
+ }
+ 
++static int audio_codec_for_profile(int profile) {
++  if (profile == 30) return 1;
++  if (profile == 31 || profile == 34) return 2;
++  if (profile == 32) return 3;
++  if (profile == 33) return 4;
++  if (profile == 6) return 5;
++  if (profile == 8) return 6;
++  if (profile == 3 || profile == 28) return 7;
++  if (profile == 9) return 8;
++  if (profile == 29) return 9;
++  return 0;
++}
++
++static int audio_compression_for_codec(int codec) {
++  return codec == 5 || codec == 6 || codec == 7 ? 2 : 1;
++}
++
++static int audio_codec_supports_bit_rate(int codec) {
++  return codec == 1 || codec == 2 || codec == 3 || codec == 8;
++}
++
++static int audio_codec_supports_quality(int codec) {
++  return codec == 1 || codec == 2 || codec == 3 || codec == 4 || codec == 8;
++}
++
+ static int within_audio_transcode(int profile, int requested_bit_rate,
+                                   int requested_sample_rate,
+-                                  int requested_channels) {
++                                  int requested_channels,
++                                  int requested_codec,
++                                  int requested_compression,
++                                  int requested_quality) {
+   const int flac_output = profile == 6;
+   const int alac_output = profile == 8;
+   const int wma_output = profile == 9;
+@@ -858,6 +892,8 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+   const int aac_output = profile == 31 || m4a_aac_output;
+   const int opus_output = profile == 32;
+   const int vorbis_output = profile == 33;
++  const int profile_codec = audio_codec_for_profile(profile);
++  const int profile_compression = audio_compression_for_codec(profile_codec);
+   int result = 0;
+   int audio_stream_index = -1;
+   AVFormatContext *input_format = NULL;
+@@ -880,24 +916,40 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+   WithinOutput output = {.position = 0, .size = 0};
+   WithinAudioPipeline pipeline = {0};
+ 
+-  if (!mp3_output &&
+-      (requested_bit_rate != 0 || requested_sample_rate != 0 ||
+-       requested_channels != 0)) {
+-    within_message(2, "Audio options are not supported by this output profile.");
++  if (profile_codec == 0) {
++    within_message(2, "Unknown audio transcode profile.");
+     return AVERROR(EINVAL);
+   }
+-  if (mp3_output && !valid_mp3_bit_rate(requested_bit_rate)) {
+-    within_message(2, "MP3 bitrate must be automatic or 64-320 kb/s.");
++  if (requested_codec != 0 && requested_codec != profile_codec) {
++    within_message(2, "Audio codec does not match the selected output profile.");
+     return AVERROR(EINVAL);
+   }
+-  if (mp3_output && !valid_mp3_sample_rate(requested_sample_rate)) {
++  if (requested_compression != 0 &&
++      requested_compression != profile_compression) {
+     within_message(2,
+-                   "MP3 sample rate must be automatic, 32, 44.1, or 48 kHz.");
++                   "Audio compression does not match the selected codec.");
+     return AVERROR(EINVAL);
+   }
+-  if (mp3_output && requested_channels != 0 && requested_channels != 1 &&
+-      requested_channels != 2) {
+-    within_message(2, "MP3 channel layout must be automatic, mono, or stereo.");
++  if (requested_quality < 0 || requested_quality > 3 ||
++      (requested_quality != 0 &&
++       !audio_codec_supports_quality(profile_codec))) {
++    within_message(2, "Audio quality is not supported by this output codec.");
++    return AVERROR(EINVAL);
++  }
++  if (requested_bit_rate != 0 &&
++      (!audio_codec_supports_bit_rate(profile_codec) ||
++       !valid_audio_bit_rate(requested_bit_rate))) {
++    within_message(2,
++                   "Audio bitrate must be automatic or an allowlisted 64-320 kb/s value.");
++    return AVERROR(EINVAL);
++  }
++  if (!valid_audio_sample_rate(requested_sample_rate, profile_codec)) {
++    within_message(2, "Audio sample rate is outside the codec allowlist.");
++    return AVERROR(EINVAL);
++  }
++  if (requested_channels < 0 || requested_channels > 2 ||
++      (profile_codec == 9 && requested_channels != 0)) {
++    within_message(2, "Audio channel layout is outside the codec allowlist.");
+     return AVERROR(EINVAL);
+   }
+ 
+@@ -1028,8 +1080,13 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+     result = AVERROR(ENOMEM);
+     goto cleanup;
+   }
++  if (m4a_aac_output) {
++    encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
++  }
+   if (amr_output) {
+     encoder->sample_rate = 8000;
++  } else if (requested_sample_rate != 0) {
++    encoder->sample_rate = requested_sample_rate;
+   } else if (wma_output) {
+     encoder->sample_rate = decoder->sample_rate <= 16000 ? 32000 : 48000;
+   } else if (mp3_output) {
+@@ -1042,9 +1099,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+                                      ? 32000
+                                      : decoder->sample_rate <= 44100 ? 44100 : 48000;
+   } else if (aac_output) {
+-    if (m4a_aac_output) {
+-      encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+-    }
+     encoder->sample_rate =
+         decoder->sample_rate <= 8000
+             ? 8000
+@@ -1098,15 +1152,18 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+   if (amr_output) {
+     av_channel_layout_default(&encoder->ch_layout, 1);
+     result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
++  } else if (requested_channels != 0) {
++    av_channel_layout_default(&encoder->ch_layout, requested_channels);
++    result = encoder->ch_layout.nb_channels == requested_channels
++                 ? 0
++                 : AVERROR(EINVAL);
+   } else if (wma_output || mp3_output || aac_output || opus_output ||
+              vorbis_output) {
+     av_channel_layout_default(
+         &encoder->ch_layout,
+-        mp3_output && requested_channels != 0
+-            ? requested_channels
+-            : decoder->ch_layout.nb_channels > 2
+-                  ? 2
+-                  : decoder->ch_layout.nb_channels);
++        decoder->ch_layout.nb_channels > 2
++            ? 2
++            : decoder->ch_layout.nb_channels);
+     result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
+   } else {
+     result =
+@@ -1120,12 +1177,39 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+     av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
+     av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
+   } else if (wma_output) {
+-    encoder->bit_rate = decoder->sample_rate <= 16000 ? 64000 : 320000;
++    encoder->bit_rate = requested_bit_rate != 0
++                            ? requested_bit_rate
++                            : requested_quality == 1
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 64000
++                                        : 96000
++                            : requested_quality == 2
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 128000
++                                        : 192000
++                            : requested_quality == 3
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 192000
++                                        : 320000
++                                  : decoder->sample_rate <= 16000 ? 64000
++                                                                   : 320000;
+   } else if (amr_output) {
+     encoder->bit_rate = 12200;
+   } else if (mp3_output) {
+     encoder->bit_rate = requested_bit_rate != 0
+                             ? requested_bit_rate
++                            : requested_quality == 1
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 64000
++                                        : 96000
++                            : requested_quality == 2
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 128000
++                                        : 192000
++                            : requested_quality == 3
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 256000
++                                        : 320000
+                             : encoder->ch_layout.nb_channels == 1
+                             ? encoder->sample_rate == 8000
+                                   ? 32000
+@@ -1136,8 +1220,19 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+       av_dict_set(&encoder_options, "joint_stereo", "1", 0);
+     }
+   } else if (aac_output) {
+-    encoder->bit_rate =
+-        encoder->ch_layout.nb_channels == 1 ? 128000 : 192000;
++    encoder->bit_rate = requested_bit_rate != 0
++                            ? requested_bit_rate
++                            : requested_quality == 1
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 64000
++                                        : 96000
++                            : requested_quality == 3
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 192000
++                                        : 256000
++                                  : encoder->ch_layout.nb_channels == 1
++                                        ? 128000
++                                        : 192000;
+     av_dict_set(&encoder_options, "aac_coder", "fast", 0);
+     av_dict_set(&encoder_options, "aac_tns", "0", 0);
+     av_dict_set(&encoder_options, "aac_pns", "0", 0);
+@@ -1145,14 +1240,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+     av_dict_set(&encoder_options, "aac_ms", "0", 0);
+   } else if (opus_output) {
+     encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
+-    encoder->bit_rate =
+-        encoder->ch_layout.nb_channels == 1 ? 64000 : 128000;
++    encoder->bit_rate = requested_bit_rate != 0
++                            ? requested_bit_rate
++                            : requested_quality == 1
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 48000
++                                        : 64000
++                            : requested_quality == 3
++                                  ? encoder->ch_layout.nb_channels == 1
++                                        ? 128000
++                                        : 192000
++                                  : encoder->ch_layout.nb_channels == 1
++                                        ? 64000
++                                        : 128000;
+     av_dict_set(&encoder_options, "application", "audio", 0);
+     av_dict_set(&encoder_options, "compression_level", "0", 0);
+     av_dict_set(&encoder_options, "vbr", "on", 0);
+   } else if (vorbis_output) {
+     encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER | AV_CODEC_FLAG_QSCALE;
+-    encoder->global_quality = 4 * FF_QP2LAMBDA;
++    encoder->global_quality =
++        (requested_quality == 1 ? 1 : requested_quality == 3 ? 7 : 4) *
++        FF_QP2LAMBDA;
+   }
+   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
+   av_dict_free(&encoder_options);
+@@ -2068,9 +2176,10 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
+ 
+ EMSCRIPTEN_KEEPALIVE
+ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+-                 int audio_channels, int video_codec, int video_max_width,
+-                 int video_bit_rate, int video_frame_rate,
+-                 int video_quality) {
++                 int audio_channels, int audio_codec,
++                 int audio_compression, int audio_quality, int video_codec,
++                 int video_max_width, int video_bit_rate,
++                 int video_frame_rate, int video_quality) {
+   int result = 0;
+   AVFormatContext *input_format = NULL;
+   AVFormatContext *output_format = NULL;
+@@ -2108,9 +2217,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+       return AVERROR(EINVAL);
+     }
+     return within_audio_transcode(profile, audio_bit_rate, audio_sample_rate,
+-                                  audio_channels);
++                                  audio_channels, audio_codec,
++                                  audio_compression, audio_quality);
+   }
+-  if (audio_bit_rate != 0 || audio_sample_rate != 0 || audio_channels != 0) {
++  if (audio_bit_rate != 0 || audio_sample_rate != 0 || audio_channels != 0 ||
++      audio_codec != 0 || audio_compression != 0 || audio_quality != 0) {
+     within_message(2, "Audio options are not supported by this profile.");
+     return AVERROR(EINVAL);
+   }

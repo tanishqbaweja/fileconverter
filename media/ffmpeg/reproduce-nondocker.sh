@@ -149,6 +149,7 @@ cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
@@ -190,6 +191,10 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
+  # The audio ABI belongs only to the general remux core. Revert that bounded
+  # delta before reconstructing every already-certified video/direct core.
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
   for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do
     WITHIN_BUILD_CORE_FILTER="${video_core}" ./build-remux.sh
   done
@@ -199,10 +204,14 @@ if [[ "${requested_core}" == "all" ]]; then
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" != "within-remux" ]]; then
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
   WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
 fi
 

@@ -132,7 +132,7 @@ test.afterEach(async ({ page }) => {
   await rm(validationRoot, { recursive: true, force: true });
 });
 
-test("MP3 controls update the bounded native conversion request and plan", async ({
+test("audio controls update the bounded native conversion request and plan", async ({
   page,
 }) => {
   await page.goto("/?test=1");
@@ -145,6 +145,12 @@ test("MP3 controls update the bounded native conversion request and plan", async
   const bitrate = page.locator('[data-testid="audio-bitrate-select"]');
   const sampleRate = page.locator('[data-testid="audio-sample-rate-select"]');
   const channels = page.locator('[data-testid="audio-channels-select"]');
+  const codec = page.locator('[data-testid="audio-codec-select"]');
+  const compression = page.locator('[data-testid="audio-compression-select"]');
+  const quality = page.locator('[data-testid="audio-quality-select"]');
+  await expect(codec).toHaveValue("automatic");
+  await expect(compression).toHaveValue("automatic");
+  await expect(quality).toHaveValue("automatic");
   await expect(bitrate).toHaveValue("0");
   await expect(sampleRate).toHaveValue("0");
   await expect(channels).toHaveValue("0");
@@ -152,6 +158,7 @@ test("MP3 controls update the bounded native conversion request and plan", async
   await bitrate.selectOption("256000");
   await sampleRate.selectOption("44100");
   await channels.selectOption("1");
+  await quality.selectOption("balanced");
 
   await expect(page.locator('[data-testid="media-conversion-plan"]')).toContainText(
     "256 kb/s",
@@ -166,15 +173,42 @@ test("MP3 controls update the bounded native conversion request and plan", async
     .poll(() =>
       page.evaluate(() => window.__WITHIN_TEST__?.getState().audioOptions),
     )
-    .toEqual({ bitRateBps: 256_000, sampleRateHz: 44_100, channels: 1 });
+    .toEqual({
+      codec: "automatic",
+      compression: "automatic",
+      bitRateBps: 256_000,
+      sampleRateHz: 44_100,
+      channels: 1,
+      quality: "balanced",
+    });
 
-  await page.locator('[data-testid="format-select"]').selectOption("wav-to-flac");
-  await expect(bitrate).toHaveCount(0);
+  await codec.selectOption("flac");
+  await expect(page.locator('[data-testid="format-select"]')).toHaveValue("wav-to-flac");
+  await expect(bitrate.locator("option")).toHaveCount(1);
   await expect
     .poll(() =>
       page.evaluate(() => window.__WITHIN_TEST__?.getState().audioOptions),
     )
-    .toEqual({ bitRateBps: 0, sampleRateHz: 0, channels: 0 });
+    .toEqual({
+      codec: "flac",
+      compression: "automatic",
+      bitRateBps: 0,
+      sampleRateHz: 44_100,
+      channels: 1,
+      quality: "automatic",
+    });
+
+  await compression.selectOption("lossy");
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().selectedProfileId),
+    )
+    .toMatch(/^wav-to-(?:mp3|aac|opus|ogg|wma|amr)$/);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().audioOptions),
+    )
+    .toMatchObject({ codec: "automatic", compression: "lossy" });
 });
 
 test("video controls update every bounded setting and synchronize the codec profile", async ({

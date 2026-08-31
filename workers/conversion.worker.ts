@@ -233,6 +233,41 @@ const AMR_WB_INPUT_PROFILES = new Set([
   "amr-wb-to-ogg",
   "amr-wb-to-wma",
 ]);
+
+function audioOptionProfileForId(profileId: string): {
+  id: string;
+  engine: string;
+  output: string;
+} {
+  const output = MP3_OUTPUT_PROFILES.has(profileId)
+    ? "mp3"
+    : AAC_OUTPUT_PROFILES.has(profileId)
+      ? "aac"
+      : M4A_TRANSCODE_OUTPUT_PROFILES.has(profileId)
+        ? "m4a"
+        : OPUS_OUTPUT_PROFILES.has(profileId)
+          ? "opus"
+          : VORBIS_OUTPUT_PROFILES.has(profileId)
+            ? "ogg"
+            : WMA_OUTPUT_PROFILES.has(profileId)
+              ? "wma"
+              : AMR_OUTPUT_PROFILES.has(profileId)
+                ? "amr"
+                : AIFF_OUTPUT_PROFILES.has(profileId)
+                  ? "aiff"
+                  : profileId.endsWith("-to-wav")
+                    ? "wav"
+                    : profileId.endsWith("-to-flac")
+                      ? "flac"
+                      : profileId === "wav-to-alac" || profileId === "flac-to-alac"
+                        ? "alac"
+                        : "unsupported";
+  return {
+    id: profileId,
+    engine: output === "unsupported" ? "unsupported" : "ffmpeg-audio",
+    output,
+  };
+}
 const COMPRESSION_TRANSCODES = {
   "gzip-to-bzip2": { source: "gzip", target: "bzip2", validateTar: false },
   "gzip-to-xz": { source: "gzip", target: "xz", validateTar: false },
@@ -3787,11 +3822,8 @@ async function runRecords(
 
 async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   const { jobId, profileId, file } = message;
-  const mp3OptionsProfile = MP3_OUTPUT_PROFILES.has(profileId)
-    ? { engine: "ffmpeg-audio", output: "mp3" }
-    : { engine: "unsupported", output: "unsupported" };
   const audioOptions = validateAudioConversionOptions(
-    mp3OptionsProfile,
+    audioOptionProfileForId(profileId),
     message.audioOptions,
   );
   const videoOptionsProfile = videoOptionProfileForId(profileId) ?? {

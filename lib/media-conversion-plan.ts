@@ -3,10 +3,12 @@ import type {
   MediaSourceInspection,
   SourceStreamInspection,
 } from "./media-source-inspection";
-import type {
-  AudioConversionOptions,
-  VideoConversionOptions,
-} from "./media-conversion-options";
+import {
+  audioCodecForProfile,
+  audioCompressionForCodec,
+  type AudioConversionOptions,
+  type VideoConversionOptions,
+} from "./media-conversion-options.ts";
 
 export type MediaPlanAction = "copy" | "re-encode" | "exclude" | "reject";
 
@@ -373,14 +375,23 @@ function planAudioReencode(
   return streams.map((stream, index) => {
     if (!selected && stream.mediaType === "audio") {
       selected = true;
-      const customMp3 =
-        profile.output === "mp3" &&
+      const profileCodec = audioCodecForProfile(profile);
+      const customAudio =
         audioOptions &&
-        (audioOptions.bitRateBps !== 0 ||
+        (audioOptions.codec !== "automatic" ||
+          audioOptions.compression !== "automatic" ||
+          audioOptions.bitRateBps !== 0 ||
           audioOptions.sampleRateHz !== 0 ||
-          audioOptions.channels !== 0);
-      const selectedMp3Settings = customMp3
+          audioOptions.channels !== 0 ||
+          audioOptions.quality !== "automatic");
+      const selectedAudioSettings = customAudio
         ? [
+            audioOptions.codec === "automatic"
+              ? `automatic codec (${profileCodec ?? profile.output})`
+              : audioOptions.codec.toUpperCase(),
+            audioOptions.compression === "automatic"
+              ? `automatic ${audioCompressionForCodec(profileCodec ?? "automatic") ?? "compression"}`
+              : audioOptions.compression,
             audioOptions.bitRateBps
               ? `${audioOptions.bitRateBps / 1_000} kb/s`
               : "automatic bitrate",
@@ -392,12 +403,17 @@ function planAudioReencode(
               : audioOptions.channels === 2
                 ? "stereo"
                 : "automatic channel layout",
+            audioOptions.quality === "automatic"
+              ? "automatic quality"
+              : `${audioOptions.quality} quality`,
           ].join(", ")
         : null;
       const fidelity = LOSSLESS_AUDIO_OUTPUTS.has(profile.output)
-        ? "losslessly encodes the decoded signal"
-        : selectedMp3Settings
-          ? `encodes the decoded signal as MP3 using ${selectedMp3Settings}`
+        ? selectedAudioSettings
+          ? `encodes the decoded signal with lossless compression using ${selectedAudioSettings}`
+          : "losslessly encodes the decoded signal"
+        : selectedAudioSettings
+          ? `encodes the decoded signal using ${selectedAudioSettings}`
           : "encodes the decoded signal with the certified automatic lossy settings";
       return planItem(
         stream,

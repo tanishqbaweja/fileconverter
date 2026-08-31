@@ -202,7 +202,14 @@ test("MP3 plan discloses the native custom bitrate, rate, and layout", () => {
   const plan = planMediaConversion(
     profile("wav-to-mp3"),
     inspection([stream("audio", "PCM")]),
-    { bitRateBps: 256_000, sampleRateHz: 44_100, channels: 1 },
+    {
+      codec: "mp3",
+      compression: "lossy",
+      bitRateBps: 256_000,
+      sampleRateHz: 44_100,
+      channels: 1,
+      quality: "balanced",
+    },
   );
   assert.ok(plan);
   assert.match(plan.streams[0].detail, /256 kb\/s/);

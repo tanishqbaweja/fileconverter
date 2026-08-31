@@ -26,12 +26,15 @@ import type {
 import {
   DEFAULT_AUDIO_CONVERSION_OPTIONS,
   DEFAULT_VIDEO_CONVERSION_OPTIONS,
+  AUDIO_QUALITIES,
   MP3_BIT_RATES_BPS,
-  MP3_SAMPLE_RATES_HZ,
   VIDEO_BIT_RATES_BPS,
   VIDEO_FRAME_RATES_FPS,
   VIDEO_MAX_WIDTHS,
-  supportsMp3EncodingOptions,
+  audioCodecForProfile,
+  audioCompressionForCodec,
+  audioSampleRatesForCodec,
+  supportsAudioEncodingOptions,
   supportsVideoEncodingOptions,
   type AudioConversionOptions,
   type VideoConversionOptions,
@@ -415,7 +418,12 @@ export function ConverterApp() {
     () => conversionProfiles.find((profile) => profile.id === profileId) ?? null,
     [profileId],
   );
-  const mp3EncodingOptionsEnabled = supportsMp3EncodingOptions(selectedProfile);
+  const audioEncodingOptionsEnabled = supportsAudioEncodingOptions(selectedProfile);
+  const selectedAudioCodec = audioCodecForProfile(selectedProfile);
+  const selectableAudioProfiles = useMemo(
+    () => profiles.filter((profile) => supportsAudioEncodingOptions(profile)),
+    [profiles],
+  );
   const videoEncodingOptionsEnabled =
     supportsVideoEncodingOptions(selectedProfile);
   const mediaConversionPlan = useMemo(
@@ -424,13 +432,13 @@ export function ConverterApp() {
         ? planMediaConversion(
             selectedProfile,
             sourceMediaInspection,
-            mp3EncodingOptionsEnabled ? audioOptions : undefined,
+            audioEncodingOptionsEnabled ? audioOptions : undefined,
             videoEncodingOptionsEnabled ? videoOptions : undefined,
           )
         : null,
     [
       audioOptions,
-      mp3EncodingOptionsEnabled,
+      audioEncodingOptionsEnabled,
       selectedProfile,
       sourceMediaInspection,
       videoEncodingOptionsEnabled,
@@ -956,7 +964,7 @@ export function ConverterApp() {
     const batch: ActiveBatch = {
       files,
       profile: selectedProfile,
-      audioOptions: mp3EncodingOptionsEnabled
+      audioOptions: audioEncodingOptionsEnabled
         ? { ...audioOptions }
         : undefined,
       videoOptions: videoEncodingOptionsEnabled
@@ -1450,14 +1458,86 @@ export function ConverterApp() {
                 </div>
               </div>
 
-              {mp3EncodingOptionsEnabled ? (
+              {audioEncodingOptionsEnabled && selectedAudioCodec ? (
                 <fieldset className="encoding-options" disabled={jobState === "running"}>
-                  <legend>MP3 encoding options</legend>
+                  <legend>Audio encoding options</legend>
                   <p>
-                    Automatic retains the fastest certified source-aware policy.
-                    Custom values are applied by the native encoder, not just the UI.
+                    Automatic retains the fastest certified profile. Codec and
+                    compression choices move to a genuinely tested destination;
+                    custom values are applied by the native encoder.
                   </p>
                   <div className="encoding-options-grid">
+                    <label>
+                      <span>Codec</span>
+                      <select
+                        data-testid="audio-codec-select"
+                        value={audioOptions.codec}
+                        onChange={(event) => {
+                          const codec = event.target.value as AudioConversionOptions["codec"];
+                          const compression = audioCompressionForCodec(codec);
+                          setAudioOptions((current) => ({
+                            ...current,
+                            codec,
+                            compression: "automatic",
+                            bitRateBps: compression === "lossless" ? 0 : current.bitRateBps,
+                            quality: compression === "lossless" ? "automatic" : current.quality,
+                          }));
+                          if (codec === "automatic") return;
+                          const replacement = selectableAudioProfiles.find(
+                            (profile) => audioCodecForProfile(profile) === codec,
+                          );
+                          if (replacement) setProfileId(replacement.id);
+                        }}
+                      >
+                        <option value="automatic">
+                          Automatic ({selectedAudioCodec.toUpperCase()})
+                        </option>
+                        {[...new Set(
+                          selectableAudioProfiles
+                            .map((profile) => audioCodecForProfile(profile))
+                            .filter((codec): codec is NonNullable<typeof codec> => codec !== null),
+                        )].map((codec) => (
+                          <option key={codec} value={codec}>
+                            {codec === "pcm" ? "PCM" : codec.toUpperCase()}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label>
+                      <span>Compression</span>
+                      <select
+                        data-testid="audio-compression-select"
+                        value={audioOptions.compression}
+                        onChange={(event) => {
+                          const compression = event.target.value as AudioConversionOptions["compression"];
+                          setAudioOptions((current) => ({
+                            ...current,
+                            codec: "automatic",
+                            compression,
+                            bitRateBps: compression === "lossless" ? 0 : current.bitRateBps,
+                            quality: compression === "lossless" ? "automatic" : current.quality,
+                          }));
+                          if (compression === "automatic") return;
+                          const replacement = selectableAudioProfiles.find((profile) => {
+                            const codec = audioCodecForProfile(profile);
+                            return codec && audioCompressionForCodec(codec) === compression;
+                          });
+                          if (replacement) setProfileId(replacement.id);
+                        }}
+                      >
+                        <option value="automatic">
+                          Automatic ({audioCompressionForCodec(selectedAudioCodec)})
+                        </option>
+                        {selectableAudioProfiles.some((profile) => {
+                          const codec = audioCodecForProfile(profile);
+                          return codec && audioCompressionForCodec(codec) === "lossy";
+                        }) ? <option value="lossy">Lossy</option> : null}
+                        {selectableAudioProfiles.some((profile) => {
+                          const codec = audioCodecForProfile(profile);
+                          return codec && audioCompressionForCodec(codec) === "lossless";
+                        }) ? <option value="lossless">Lossless</option> : null}
+                      </select>
+                    </label>
                     <label>
                       <span>Bitrate</span>
                       <select
@@ -1471,7 +1551,12 @@ export function ConverterApp() {
                         }
                       >
                         <option value={0}>Automatic</option>
-                        {MP3_BIT_RATES_BPS.map((value) => (
+                        {(selectedAudioCodec === "mp3" ||
+                        selectedAudioCodec === "aac" ||
+                        selectedAudioCodec === "opus" ||
+                        selectedAudioCodec === "wma"
+                          ? MP3_BIT_RATES_BPS
+                          : []).map((value) => (
                           <option key={value} value={value}>
                             {value / 1_000} kb/s
                           </option>
@@ -1491,7 +1576,7 @@ export function ConverterApp() {
                         }
                       >
                         <option value={0}>Automatic</option>
-                        {MP3_SAMPLE_RATES_HZ.map((value) => (
+                        {audioSampleRatesForCodec(selectedAudioCodec).map((value) => (
                           <option key={value} value={value}>
                             {value.toLocaleString("en-US")} Hz
                           </option>
@@ -1513,6 +1598,40 @@ export function ConverterApp() {
                         <option value={0}>Automatic</option>
                         <option value={1}>Mono</option>
                         <option value={2}>Stereo</option>
+                      </select>
+                    </label>
+                    <label>
+                      <span>Quality policy</span>
+                      <select
+                        data-testid="audio-quality-select"
+                        value={audioOptions.quality}
+                        onChange={(event) =>
+                          setAudioOptions((current) => ({
+                            ...current,
+                            quality: event.target.value as AudioConversionOptions["quality"],
+                          }))
+                        }
+                      >
+                        {AUDIO_QUALITIES.map((quality) => (
+                          <option
+                            key={quality}
+                            value={quality}
+                            disabled={
+                              quality !== "automatic" &&
+                              !["mp3", "aac", "opus", "vorbis", "wma"].includes(
+                                selectedAudioCodec,
+                              )
+                            }
+                          >
+                            {quality === "automatic"
+                              ? "Automatic (fastest certified)"
+                              : quality === "smaller"
+                                ? "Smaller file"
+                                : quality === "balanced"
+                                  ? "Balanced"
+                                  : "Higher quality"}
+                          </option>
+                        ))}
                       </select>
                     </label>
                   </div>

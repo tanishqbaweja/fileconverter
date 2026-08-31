@@ -9,17 +9,54 @@ export const MP3_BIT_RATES_BPS = [
 
 export const MP3_SAMPLE_RATES_HZ = [32_000, 44_100, 48_000] as const;
 
+export const OPUS_SAMPLE_RATES_HZ = [24_000, 48_000] as const;
+export const AUDIO_CODECS = [
+  "automatic",
+  "mp3",
+  "aac",
+  "opus",
+  "vorbis",
+  "wma",
+  "amr",
+  "flac",
+  "alac",
+  "pcm",
+] as const;
+export const AUDIO_QUALITIES = [
+  "automatic",
+  "smaller",
+  "balanced",
+  "higher",
+] as const;
+export const AUDIO_COMPRESSION_MODES = [
+  "automatic",
+  "lossy",
+  "lossless",
+] as const;
+
 export type Mp3BitRateBps = 0 | (typeof MP3_BIT_RATES_BPS)[number];
 export type Mp3SampleRateHz = 0 | (typeof MP3_SAMPLE_RATES_HZ)[number];
+export type AudioSampleRateHz =
+  | Mp3SampleRateHz
+  | (typeof OPUS_SAMPLE_RATES_HZ)[number];
 export type AudioChannelCount = 0 | 1 | 2;
+export type AudioCodec = (typeof AUDIO_CODECS)[number];
+export type AudioQuality = (typeof AUDIO_QUALITIES)[number];
+export type AudioCompressionMode = (typeof AUDIO_COMPRESSION_MODES)[number];
 
 export interface AudioConversionOptions {
+  /** Automatic retains the selected route's certified codec. */
+  codec: AudioCodec;
+  /** Automatic retains the selected route's certified compression class. */
+  compression: AudioCompressionMode;
   /** Zero retains the route's certified automatic policy. */
   bitRateBps: Mp3BitRateBps;
   /** Zero retains the route's certified automatic policy. */
-  sampleRateHz: Mp3SampleRateHz;
+  sampleRateHz: AudioSampleRateHz;
   /** Zero retains the source up to the route's certified stereo ceiling. */
   channels: AudioChannelCount;
+  /** Automatic retains the route's fastest certified quality policy. */
+  quality: AudioQuality;
 }
 
 export const VIDEO_MAX_WIDTHS = [320, 480, 640] as const;
@@ -59,9 +96,12 @@ export interface VideoConversionOptions {
 }
 
 export const DEFAULT_AUDIO_CONVERSION_OPTIONS: AudioConversionOptions = {
+  codec: "automatic",
+  compression: "automatic",
   bitRateBps: 0,
   sampleRateHz: 0,
   channels: 0,
+  quality: "automatic",
 };
 
 export const DEFAULT_VIDEO_CONVERSION_OPTIONS: VideoConversionOptions = {
@@ -99,6 +139,10 @@ export const VIDEO_PROFILE_DEFAULT_CODEC_BY_ID = {
 
 const MP3_BIT_RATE_SET = new Set<number>(MP3_BIT_RATES_BPS);
 const MP3_SAMPLE_RATE_SET = new Set<number>(MP3_SAMPLE_RATES_HZ);
+const OPUS_SAMPLE_RATE_SET = new Set<number>(OPUS_SAMPLE_RATES_HZ);
+const AUDIO_CODEC_SET = new Set<string>(AUDIO_CODECS);
+const AUDIO_QUALITY_SET = new Set<string>(AUDIO_QUALITIES);
+const AUDIO_COMPRESSION_SET = new Set<string>(AUDIO_COMPRESSION_MODES);
 const VIDEO_MAX_WIDTH_SET = new Set<number>(VIDEO_MAX_WIDTHS);
 const VIDEO_BIT_RATE_SET = new Set<number>(VIDEO_BIT_RATES_BPS);
 const VIDEO_FRAME_RATE_SET = new Set<number>(VIDEO_FRAME_RATES_FPS);
@@ -108,6 +152,76 @@ export function supportsMp3EncodingOptions(
   profile: { engine: string; output: string } | null,
 ): boolean {
   return profile?.engine === "ffmpeg-audio" && profile.output === "mp3";
+}
+
+type AudioOptionProfile = {
+  engine: string;
+  output: string;
+  id?: string;
+};
+
+const AUDIO_CODEC_BY_OUTPUT = {
+  mp3: "mp3",
+  aac: "aac",
+  m4a: "aac",
+  opus: "opus",
+  ogg: "vorbis",
+  wma: "wma",
+  amr: "amr",
+  flac: "flac",
+  alac: "alac",
+  wav: "pcm",
+  aiff: "pcm",
+} as const satisfies Readonly<Record<string, Exclude<AudioCodec, "automatic">>>;
+
+const LOSSLESS_AUDIO_CODECS = new Set<AudioCodec>(["flac", "alac", "pcm"]);
+const QUALITY_AUDIO_CODECS = new Set<AudioCodec>([
+  "mp3",
+  "aac",
+  "opus",
+  "vorbis",
+  "wma",
+]);
+const BIT_RATE_AUDIO_CODECS = new Set<AudioCodec>([
+  "mp3",
+  "aac",
+  "opus",
+  "wma",
+]);
+
+export function audioCodecForProfile(
+  profile: AudioOptionProfile | null,
+): Exclude<AudioCodec, "automatic"> | null {
+  if (profile?.engine !== "ffmpeg-audio") return null;
+  return (
+    AUDIO_CODEC_BY_OUTPUT[
+      profile.output as keyof typeof AUDIO_CODEC_BY_OUTPUT
+    ] ?? null
+  );
+}
+
+export function audioCompressionForCodec(
+  codec: AudioCodec,
+): Exclude<AudioCompressionMode, "automatic"> | null {
+  if (codec === "automatic") return null;
+  return LOSSLESS_AUDIO_CODECS.has(codec) ? "lossless" : "lossy";
+}
+
+export function supportsAudioEncodingOptions(
+  profile: AudioOptionProfile | null,
+): boolean {
+  return audioCodecForProfile(profile) !== null;
+}
+
+export function audioBitRatesForCodec(codec: AudioCodec): readonly Mp3BitRateBps[] {
+  return BIT_RATE_AUDIO_CODECS.has(codec) ? MP3_BIT_RATES_BPS : [];
+}
+
+export function audioSampleRatesForCodec(
+  codec: AudioCodec,
+): readonly number[] {
+  if (codec === "amr") return [];
+  return codec === "opus" ? OPUS_SAMPLE_RATES_HZ : MP3_SAMPLE_RATES_HZ;
 }
 
 export function supportsVideoEncodingOptions(
@@ -192,31 +306,114 @@ export function videoQualityCode(quality: VideoQuality): number {
 }
 
 export function validateAudioConversionOptions(
-  profile: { engine: string; output: string },
+  profile: AudioOptionProfile,
   options?: AudioConversionOptions,
 ): AudioConversionOptions {
   if (!options) return DEFAULT_AUDIO_CONVERSION_OPTIONS;
-  if (!supportsMp3EncodingOptions(profile)) {
+  const profileCodec = audioCodecForProfile(profile);
+  if (!profileCodec) {
     throw new Error("Audio encoding options are not supported by this profile.");
+  }
+  if (!AUDIO_CODEC_SET.has(options.codec)) {
+    throw new Error("Audio codec is outside the bounded allowlist.");
+  }
+  if (options.codec !== "automatic" && options.codec !== profileCodec) {
+    throw new Error(`Selected audio codec does not match the ${profileCodec} output profile.`);
+  }
+  if (!AUDIO_COMPRESSION_SET.has(options.compression)) {
+    throw new Error("Audio compression must be automatic, lossy, or lossless.");
+  }
+  const profileCompression = audioCompressionForCodec(profileCodec);
+  if (
+    options.compression !== "automatic" &&
+    options.compression !== profileCompression
+  ) {
+    throw new Error(
+      `Selected ${options.compression} compression does not match the ${profileCodec} codec.`,
+    );
+  }
+  if (!AUDIO_QUALITY_SET.has(options.quality)) {
+    throw new Error("Audio quality must be automatic, smaller, balanced, or higher.");
+  }
+  if (
+    options.quality !== "automatic" &&
+    !QUALITY_AUDIO_CODECS.has(profileCodec)
+  ) {
+    throw new Error(`${profileCodec} does not expose a lossy quality policy.`);
   }
   if (
     options.bitRateBps !== 0 &&
-    !MP3_BIT_RATE_SET.has(options.bitRateBps)
+    (!BIT_RATE_AUDIO_CODECS.has(profileCodec) ||
+      !MP3_BIT_RATE_SET.has(options.bitRateBps))
   ) {
-    throw new Error("MP3 bitrate must be automatic or 64-320 kb/s.");
+    throw new Error(
+      `${profileCodec} bitrate must be automatic or an allowlisted 64-320 kb/s value.`,
+    );
   }
   if (
     options.sampleRateHz !== 0 &&
-    !MP3_SAMPLE_RATE_SET.has(options.sampleRateHz)
+    (profileCodec === "amr" ||
+      !(profileCodec === "opus" ? OPUS_SAMPLE_RATE_SET : MP3_SAMPLE_RATE_SET).has(
+        options.sampleRateHz,
+      ))
   ) {
-    throw new Error("MP3 sample rate must be automatic, 32, 44.1, or 48 kHz.");
+    throw new Error(
+      profileCodec === "opus"
+        ? "Opus sample rate must be automatic, 24, or 48 kHz."
+        : `${profileCodec} sample rate must be automatic, 32, 44.1, or 48 kHz.`,
+    );
   }
-  if (options.channels !== 0 && options.channels !== 1 && options.channels !== 2) {
-    throw new Error("MP3 channel layout must be automatic, mono, or stereo.");
+  if (
+    options.channels !== 0 &&
+    (profileCodec === "amr" ||
+      (options.channels !== 1 && options.channels !== 2))
+  ) {
+    throw new Error(
+      `${profileCodec} channel layout must be automatic${profileCodec === "amr" ? " (fixed mono)" : ", mono, or stereo"}.`,
+    );
   }
   return {
+    codec: options.codec,
+    compression: options.compression,
     bitRateBps: options.bitRateBps,
     sampleRateHz: options.sampleRateHz,
     channels: options.channels,
+    quality: options.quality,
   };
+}
+
+export function audioCodecCode(codec: AudioCodec): number {
+  return codec === "mp3"
+    ? 1
+    : codec === "aac"
+      ? 2
+      : codec === "opus"
+        ? 3
+        : codec === "vorbis"
+          ? 4
+          : codec === "flac"
+            ? 5
+            : codec === "alac"
+              ? 6
+              : codec === "pcm"
+                ? 7
+                : codec === "wma"
+                  ? 8
+                  : codec === "amr"
+                    ? 9
+                    : 0;
+}
+
+export function audioQualityCode(quality: AudioQuality): number {
+  return quality === "smaller"
+    ? 1
+    : quality === "balanced"
+      ? 2
+      : quality === "higher"
+        ? 3
+        : 0;
+}
+
+export function audioCompressionCode(compression: AudioCompressionMode): number {
+  return compression === "lossy" ? 1 : compression === "lossless" ? 2 : 0;
 }

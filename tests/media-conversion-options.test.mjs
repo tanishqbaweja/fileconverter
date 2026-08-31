@@ -4,6 +4,12 @@ import {
   DEFAULT_AUDIO_CONVERSION_OPTIONS,
   DEFAULT_VIDEO_CONVERSION_OPTIONS,
   VIDEO_PROFILE_DEFAULT_CODEC_BY_ID,
+  audioCodecCode,
+  audioCodecForProfile,
+  audioCompressionCode,
+  audioCompressionForCodec,
+  audioQualityCode,
+  supportsAudioEncodingOptions,
   supportsMp3EncodingOptions,
   supportsVideoEncodingOptions,
   validateAudioConversionOptions,
@@ -14,7 +20,11 @@ import {
 } from "../lib/media-conversion-options.ts";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
-const mp3Profile = { engine: "ffmpeg-audio", output: "mp3" };
+const mp3Profile = { id: "wav-to-mp3", engine: "ffmpeg-audio", output: "mp3" };
+const aacProfile = { id: "wav-to-aac", engine: "ffmpeg-audio", output: "aac" };
+const opusProfile = { id: "wav-to-opus", engine: "ffmpeg-audio", output: "opus" };
+const flacProfile = { id: "wav-to-flac", engine: "ffmpeg-audio", output: "flac" };
+const amrProfile = { id: "wav-to-amr", engine: "ffmpeg-audio", output: "amr" };
 
 test("MP3 encoding options default to the certified automatic policy", () => {
   assert.deepEqual(
@@ -26,12 +36,23 @@ test("MP3 encoding options default to the certified automatic policy", () => {
 test("MP3 encoding options accept every bounded custom dimension together", () => {
   assert.deepEqual(
     validateAudioConversionOptions(mp3Profile, {
+      codec: "mp3",
+      compression: "lossy",
       bitRateBps: 320_000,
       sampleRateHz: 48_000,
       channels: 2,
+      quality: "higher",
     }),
-    { bitRateBps: 320_000, sampleRateHz: 48_000, channels: 2 },
+    {
+      codec: "mp3",
+      compression: "lossy",
+      bitRateBps: 320_000,
+      sampleRateHz: 48_000,
+      channels: 2,
+      quality: "higher",
+    },
   );
+  assert.equal(supportsAudioEncodingOptions(mp3Profile), true);
   assert.equal(supportsMp3EncodingOptions(mp3Profile), true);
   assert.equal(
     supportsMp3EncodingOptions({ engine: "ffmpeg-remux", output: "mp3" }),
@@ -39,38 +60,131 @@ test("MP3 encoding options accept every bounded custom dimension together", () =
   );
 });
 
-test("audio options reject unsupported profiles and out-of-contract values", () => {
+test("audio options support practical lossy/lossless codecs and native codes", () => {
+  assert.equal(audioCodecForProfile(aacProfile), "aac");
+  assert.equal(audioCodecForProfile(flacProfile), "flac");
+  assert.equal(audioCompressionForCodec("aac"), "lossy");
+  assert.equal(audioCompressionForCodec("flac"), "lossless");
+  assert.deepEqual(
+    ["automatic", "mp3", "aac", "opus", "vorbis", "flac", "alac", "pcm", "wma", "amr"].map(audioCodecCode),
+    [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+  );
+  assert.deepEqual(
+    ["automatic", "smaller", "balanced", "higher"].map(audioQualityCode),
+    [0, 1, 2, 3],
+  );
+  assert.deepEqual(
+    ["automatic", "lossy", "lossless"].map(audioCompressionCode),
+    [0, 1, 2],
+  );
+  const opusOptions = {
+    codec: "opus",
+    compression: "lossy",
+    bitRateBps: 256_000,
+    sampleRateHz: 24_000,
+    channels: 2,
+    quality: "balanced",
+  };
+  assert.deepEqual(validateAudioConversionOptions(opusProfile, opusOptions), opusOptions);
+  assert.equal(
+    validateAudioConversionOptions(flacProfile, {
+      codec: "flac",
+      compression: "lossless",
+      bitRateBps: 0,
+      sampleRateHz: 48_000,
+      channels: 2,
+      quality: "automatic",
+    }).compression,
+    "lossless",
+  );
+});
+
+test("audio options reject unsupported profiles and cross-policy values", () => {
+  const validMp3 = {
+    codec: "mp3",
+    compression: "lossy",
+    bitRateBps: 128_000,
+    sampleRateHz: 44_100,
+    channels: 2,
+    quality: "balanced",
+  };
   assert.throws(
     () =>
       validateAudioConversionOptions(
-        { engine: "ffmpeg-audio", output: "aac" },
-        { bitRateBps: 128_000, sampleRateHz: 44_100, channels: 2 },
+        { engine: "ffmpeg-remux", output: "mp3" },
+        validMp3,
       ),
     /not supported/,
   );
+  assert.throws(() => validateAudioConversionOptions(aacProfile, validMp3), /does not match/);
   assert.throws(
     () =>
-      validateAudioConversionOptions(mp3Profile, {
-        bitRateBps: 129_000,
-        sampleRateHz: 44_100,
-        channels: 2,
+      validateAudioConversionOptions(flacProfile, {
+        ...validMp3,
+        codec: "flac",
+      }),
+    /lossy compression/,
+  );
+  assert.throws(
+    () =>
+      validateAudioConversionOptions(flacProfile, {
+        ...validMp3,
+        codec: "flac",
+        compression: "lossless",
+        quality: "automatic",
       }),
     /bitrate/,
   );
   assert.throws(
     () =>
-      validateAudioConversionOptions(mp3Profile, {
-        bitRateBps: 128_000,
-        sampleRateHz: 22_050,
-        channels: 2,
+      validateAudioConversionOptions(flacProfile, {
+        ...validMp3,
+        codec: "flac",
+        compression: "lossless",
+        bitRateBps: 0,
+        quality: "balanced",
+      }),
+    /quality policy/,
+  );
+  assert.throws(
+    () =>
+      validateAudioConversionOptions(opusProfile, {
+        ...validMp3,
+        codec: "opus",
+        sampleRateHz: 44_100,
+      }),
+    /Opus sample rate/,
+  );
+  assert.throws(
+    () =>
+      validateAudioConversionOptions(amrProfile, {
+        ...validMp3,
+        codec: "amr",
+        bitRateBps: 0,
+        quality: "automatic",
       }),
     /sample rate/,
   );
   assert.throws(
     () =>
       validateAudioConversionOptions(mp3Profile, {
-        bitRateBps: 128_000,
-        sampleRateHz: 44_100,
+        ...validMp3,
+        bitRateBps: 129_000,
+      }),
+    /bitrate/,
+  );
+  assert.throws(
+    () =>
+      validateAudioConversionOptions(mp3Profile, {
+        ...validMp3,
+        sampleRateHz: 22_050,
+      }),
+    /sample rate/,
+  );
+  assert.throws(
+    () =>
+      validateAudioConversionOptions(mp3Profile, {
+        ...validMp3,
         channels: 6,
       }),
     /channel layout/,
