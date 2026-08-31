@@ -8,6 +8,7 @@ const projectRoot = path.resolve(import.meta.dirname, "..", "..");
 const execFileAsync = promisify(execFile);
 const validationRoot = path.join(projectRoot, "work", "media-options-validation");
 const customMp3Path = path.join(validationRoot, "audio-source-custom.mp3");
+const audioMatrixRoot = path.join(validationRoot, "audio-matrix");
 const customVp9Path = path.join(validationRoot, "video-source-custom.webm");
 const customMpeg4Path = path.join(validationRoot, "video-source-custom.mp4");
 const lowBitrateVideoPath = path.join(validationRoot, "video-low-bitrate.webm");
@@ -74,7 +75,7 @@ async function copyAndDeleteSmallBrowserOutput(
       await root.removeEntry(name).catch(() => {});
     }
   }, entryName);
-  await mkdir(validationRoot, { recursive: true });
+  await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, Buffer.from(base64, "base64"));
 }
 
@@ -102,6 +103,28 @@ async function probeVideo(outputPath: string) {
   };
 }
 
+async function probeAudio(outputPath: string) {
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-count_frames", "-select_streams", "a:0", "-show_entries",
+      "stream=codec_name,sample_rate,channels,bit_rate,nb_read_frames:format=duration",
+      "-of", "json", outputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as {
+    streams: Array<{
+      codec_name?: string;
+      sample_rate?: string;
+      channels?: number;
+      bit_rate?: string;
+      nb_read_frames?: string;
+    }>;
+    format: { duration?: string };
+  };
+}
+
 async function measureScaledVideoPsnr(outputPath: string): Promise<number> {
   const { stderr } = await execFileAsync(
     "ffmpeg",
@@ -123,7 +146,7 @@ test.afterEach(async ({ page }) => {
     .evaluate(async () => {
       const root = await navigator.storage.getDirectory();
       for await (const [name] of root.entries()) {
-        if (name === "audio-source.mp3" || name.startsWith("within-")) {
+        if (name.startsWith("audio-source.") || name.startsWith("within-")) {
           await root.removeEntry(name, { recursive: true }).catch(() => {});
         }
       }
@@ -197,6 +220,26 @@ test("audio controls update the bounded native conversion request and plan", asy
       channels: 1,
       quality: "automatic",
     });
+
+  await codec.selectOption("amr");
+  await expect(page.locator('[data-testid="format-select"]')).toHaveValue("wav-to-amr");
+  await expect(bitrate.locator("option")).toHaveCount(1);
+  await expect(sampleRate.locator("option")).toHaveCount(1);
+  await expect(channels.locator("option")).toHaveCount(1);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().audioOptions),
+    )
+    .toEqual({
+      codec: "amr",
+      compression: "automatic",
+      bitRateBps: 0,
+      sampleRateHz: 0,
+      channels: 0,
+      quality: "automatic",
+    });
+
+  await codec.selectOption("flac");
 
   await compression.selectOption("lossy");
   await expect
@@ -604,6 +647,188 @@ test("native MP3 conversion honors the selected bitrate, sample rate, and channe
   ].map((match) => Number(match[1]));
   expect(asdrValues).not.toEqual([]);
   expect(Math.min(...asdrValues)).toBeGreaterThan(20);
+});
+
+test("native audio controls produce genuine practical lossy and lossless codecs", async ({
+  page,
+}) => {
+  const cases = [
+    {
+      profile: "wav-to-aac",
+      codec: "aac",
+      extension: "aac",
+      expectedCodec: "aac",
+      bitRate: 256_000,
+      sampleRate: 44_100,
+      channels: 1,
+      quality: "higher",
+    },
+    {
+      profile: "wav-to-opus",
+      codec: "opus",
+      extension: "opus",
+      expectedCodec: "opus",
+      bitRate: 192_000,
+      sampleRate: 24_000,
+      expectedSampleRate: 48_000,
+      channels: 2,
+      quality: "higher",
+    },
+    {
+      profile: "wav-to-ogg",
+      codec: "vorbis",
+      extension: "ogg",
+      expectedCodec: "vorbis",
+      bitRate: 0,
+      sampleRate: 32_000,
+      channels: 1,
+      quality: "higher",
+    },
+    {
+      profile: "wav-to-wma",
+      codec: "wma",
+      extension: "wma",
+      expectedCodec: "wmav2",
+      bitRate: 192_000,
+      sampleRate: 44_100,
+      channels: 2,
+      quality: "balanced",
+    },
+    {
+      profile: "wav-to-flac",
+      codec: "flac",
+      extension: "flac",
+      expectedCodec: "flac",
+      bitRate: 0,
+      sampleRate: 32_000,
+      channels: 1,
+      quality: "automatic",
+    },
+    {
+      profile: "wav-to-alac",
+      codec: "alac",
+      extension: "m4a",
+      expectedCodec: "alac",
+      bitRate: 0,
+      sampleRate: 48_000,
+      channels: 2,
+      quality: "automatic",
+    },
+    {
+      profile: "wav-to-aiff",
+      codec: "pcm",
+      extension: "aiff",
+      expectedCodec: "pcm_s16be",
+      bitRate: 0,
+      sampleRate: 44_100,
+      channels: 1,
+      quality: "automatic",
+    },
+    {
+      profile: "wav-to-amr",
+      codec: "amr",
+      extension: "amr",
+      expectedCodec: "amr_nb",
+      bitRate: 0,
+      sampleRate: 8_000,
+      channels: 1,
+      quality: "automatic",
+    },
+  ] as const;
+
+  for (const conversion of cases) {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(conversion.profile);
+    await page
+      .locator('[data-testid="audio-codec-select"]')
+      .selectOption(conversion.codec);
+    if (conversion.bitRate !== 0) {
+      await page
+        .locator('[data-testid="audio-bitrate-select"]')
+        .selectOption(String(conversion.bitRate));
+    }
+    if (conversion.codec !== "amr") {
+      await page
+        .locator('[data-testid="audio-sample-rate-select"]')
+        .selectOption(String(conversion.sampleRate));
+      await page
+        .locator('[data-testid="audio-channels-select"]')
+        .selectOption(String(conversion.channels));
+    }
+    if (conversion.quality !== "automatic") {
+      await page
+        .locator('[data-testid="audio-quality-select"]')
+        .selectOption(conversion.quality);
+    }
+
+    const state = await waitForCompletedConversion(page);
+    expect(state.opfsName).toBeTruthy();
+    const outputPath = path.join(
+      audioMatrixRoot,
+      `${conversion.codec}.${conversion.extension}`,
+    );
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    const probe = await probeAudio(outputPath);
+    expect(probe.streams).toHaveLength(1);
+    expect(probe.streams[0]?.codec_name).toBe(conversion.expectedCodec);
+    expect(probe.streams[0]?.sample_rate).toBe(
+      String("expectedSampleRate" in conversion
+        ? conversion.expectedSampleRate
+        : conversion.sampleRate),
+    );
+    expect(probe.streams[0]?.channels).toBe(conversion.channels);
+    const measuredDurationSeconds =
+      conversion.codec === "amr"
+        ? Number(probe.streams[0]?.nb_read_frames) * 0.02
+        : Number(probe.format.duration);
+    const durationToleranceSeconds = conversion.codec === "aac" ? 0.2 : 0.1;
+    expect(
+      Math.abs(measuredDurationSeconds - 4),
+      `${conversion.codec} output duration delta`,
+    ).toBeLessThanOrEqual(durationToleranceSeconds);
+    await execFileAsync(
+      "ffmpeg",
+      ["-hide_banner", "-loglevel", "error", "-i", outputPath, "-f", "null", "NUL"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
+});
+
+test("native audio quality policies materially change AAC bitrate and size", async ({
+  page,
+}) => {
+  const results: Array<{ quality: "smaller" | "higher"; bytes: number; bitRate: number }> = [];
+  for (const quality of ["smaller", "higher"] as const) {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
+    await page.locator('[data-testid="format-select"]').selectOption("wav-to-aac");
+    await page.locator('[data-testid="audio-quality-select"]').selectOption(quality);
+    const state = await waitForCompletedConversion(page);
+    expect(state.opfsName).toBeTruthy();
+    const outputPath = path.join(validationRoot, `aac-${quality}.aac`);
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    const probe = await probeAudio(outputPath);
+    expect(probe.streams[0]?.codec_name).toBe("aac");
+    results.push({
+      quality,
+      bytes: (await stat(outputPath)).size,
+      bitRate: Number(probe.streams[0]?.bit_rate),
+    });
+  }
+
+  const smaller = results.find((result) => result.quality === "smaller")!;
+  const higher = results.find((result) => result.quality === "higher")!;
+  expect(higher.bitRate).toBeGreaterThan(smaller.bitRate * 1.3);
+  expect(higher.bytes).toBeGreaterThan(smaller.bytes * 1.3);
 });
 
 test("custom MP3 conversion releases a partial direct output after write failure", async ({

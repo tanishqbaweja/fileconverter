@@ -6127,18 +6127,18 @@
       "profileId": "wav-to-aac",
       "maxTestedBytes": 153600106,
       "repeatableEvidence": {
-        "report": "2026-08-12T20-48-24-428Z-wav-to-aac-stress.json",
-        "reportSha256": "c6482a9b6f752319d460a3a29dbaa8864fa14e7b6190a875665126f31e2215df",
+        "report": "2026-08-31T19-33-58-392Z-wav-to-aac-stress.json",
+        "reportSha256": "a3ae613957579b7cebd4426a1f35877da0e3a73eceaaa5a763c9824fa47e1b4d",
         "runs": 3,
         "sourceBytes": 153600106,
-        "incrementalPrivateMiB": 153.8203125
+        "incrementalPrivateMiB": 192.59375
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-12T20-48-24-428Z-wav-to-aac-stress.json",
-        "reportSha256": "c6482a9b6f752319d460a3a29dbaa8864fa14e7b6190a875665126f31e2215df",
+        "report": "2026-08-31T19-33-58-392Z-wav-to-aac-stress.json",
+        "reportSha256": "a3ae613957579b7cebd4426a1f35877da0e3a73eceaaa5a763c9824fa47e1b4d",
         "runs": 3,
         "sourceBytes": 153600106,
-        "incrementalPrivateMiB": 153.8203125
+        "incrementalPrivateMiB": 192.59375
       }
     },
     {

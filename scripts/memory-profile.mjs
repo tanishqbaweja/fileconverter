@@ -1742,8 +1742,14 @@ async function validateMediaOutput(
   const sourceAudioForSize = source.probe.streams.find(
     (stream) => stream.codec_type === "audio",
   );
-  const compressedAudioOutputBitRate =
-    Number(sourceAudioForSize?.channels) === 1 ? 128_000 : 192_000;
+  const selectedAudioChannels =
+    audioOptions.channels || Math.min(Number(sourceAudioForSize?.channels), 2);
+  const compressedAudioOutputBitRate = audioOptions.bitRateBps ||
+    (audioOptions.quality === "smaller"
+      ? selectedAudioChannels === 1 ? 64_000 : 96_000
+      : audioOptions.quality === "higher"
+        ? selectedAudioChannels === 1 ? 192_000 : 256_000
+        : selectedAudioChannels === 1 ? 128_000 : 192_000);
   const mp3SourceSampleRate = Number(sourceAudioForSize?.sample_rate);
   const mp3OutputSampleRate = audioOptions.sampleRateHz ||
     (mp3SourceSampleRate === 8_000 || mp3SourceSampleRate === 16_000
@@ -1753,18 +1759,27 @@ async function validateMediaOutput(
         : mp3SourceSampleRate <= 44_100
           ? 44_100
           : 48_000);
-  const mp3OutputChannels =
-    audioOptions.channels || Math.min(Number(sourceAudioForSize?.channels), 2);
+  const mp3OutputChannels = selectedAudioChannels;
   const mp3OutputBitRate = audioOptions.bitRateBps ||
-    (mp3OutputChannels === 1
+    (audioOptions.quality === "smaller"
+      ? mp3OutputChannels === 1 ? 64_000 : 96_000
+      : audioOptions.quality === "balanced"
+        ? mp3OutputChannels === 1 ? 128_000 : 192_000
+        : audioOptions.quality === "higher"
+          ? mp3OutputChannels === 1 ? 256_000 : 320_000
+      : mp3OutputChannels === 1
       ? mp3OutputSampleRate === 8_000
         ? 32_000
         : mp3OutputSampleRate === 16_000
           ? 64_000
           : 128_000
       : 192_000);
-  const opusOutputBitRate =
-    Number(sourceAudioForSize?.channels) === 1 ? 64_000 : 128_000;
+  const opusOutputBitRate = audioOptions.bitRateBps ||
+    (audioOptions.quality === "smaller"
+      ? selectedAudioChannels === 1 ? 48_000 : 64_000
+      : audioOptions.quality === "higher"
+        ? selectedAudioChannels === 1 ? 128_000 : 192_000
+        : selectedAudioChannels === 1 ? 64_000 : 128_000);
   const vorbisOutputBitRate = 220_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
@@ -2385,6 +2400,18 @@ async function validateMediaOutput(
           ) & ~1,
         )
       : sourceVideo?.height;
+  const expectedTranscodedAudioChannels =
+    audioOptions.channels || Math.min(2, sourceAudio?.channels ?? 0);
+  const measuredAudioBitRate = Number(audio?.bit_rate);
+  const customAacBitRateMatches =
+    measuredAudioBitRate >= compressedAudioOutputBitRate * 0.6 &&
+    measuredAudioBitRate <= compressedAudioOutputBitRate * 1.15;
+  const customOpusBitRateMatches =
+    measuredAudioBitRate >= opusOutputBitRate * 0.6 &&
+    measuredAudioBitRate <= opusOutputBitRate * 1.25;
+  const customWmaBitRateMatches =
+    measuredAudioBitRate >= audioOptions.bitRateBps * 0.6 &&
+    measuredAudioBitRate <= audioOptions.bitRateBps * 1.15;
   if (
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
@@ -2394,16 +2421,20 @@ async function validateMediaOutput(
         (amrOutput
           ? 1
         : mp3TranscodeOutput
-          ? Math.min(2, sourceAudio?.channels ?? 0)
+          ? expectedTranscodedAudioChannels
         : aacTranscodeOutput
-          ? Math.min(2, sourceAudio?.channels ?? 0)
+          ? expectedTranscodedAudioChannels
         : opusTranscodeOutput
-          ? Math.min(2, sourceAudio?.channels ?? 0)
+          ? expectedTranscodedAudioChannels
         : vorbisTranscodeOutput
-          ? Math.min(2, sourceAudio?.channels ?? 0)
+          ? expectedTranscodedAudioChannels
         : wmaOutput
-          ? Math.min(2, sourceAudio?.channels ?? 0)
+          ? expectedTranscodedAudioChannels
           : sourceAudio?.channels)) ||
+    (audioOnly &&
+      audioOptions.sampleRateHz !== 0 &&
+      !opusTranscodeOutput &&
+      Number(audio?.sample_rate) !== audioOptions.sampleRateHz) ||
     (amrOutput &&
       (Number(audio?.sample_rate) !== 8000 ||
         Number(audio?.bit_rate) !== 12400)) ||
@@ -2411,22 +2442,28 @@ async function validateMediaOutput(
       (Number(audio?.sample_rate) !== mp3OutputSampleRate ||
         Number(audio?.bit_rate) !== mp3OutputBitRate)) ||
     (aacTranscodeOutput &&
-      (![8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000]
-          .includes(Number(audio?.sample_rate)) ||
-        Number(audio?.bit_rate) <= 0 ||
-        Number(audio?.bit_rate) > 220000)) ||
+      ((audioOptions.sampleRateHz === 0 &&
+        ![8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000]
+          .includes(Number(audio?.sample_rate))) ||
+        (hasCustomAudioOptions
+          ? !customAacBitRateMatches
+          : measuredAudioBitRate <= 0 || measuredAudioBitRate > 220000))) ||
     (opusTranscodeOutput &&
       (Number(audio?.sample_rate) !== 48000 ||
-        Number(audio?.bit_rate) <= 0 ||
-        Number(audio?.bit_rate) > 160000)) ||
+        (hasCustomAudioOptions
+          ? !customOpusBitRateMatches
+          : measuredAudioBitRate <= 0 || measuredAudioBitRate > 160000))) ||
     (vorbisTranscodeOutput &&
       (Number(audio?.sample_rate) <= 0 ||
         Number(audio?.sample_rate) > 48000 ||
-        Number(audio?.bit_rate) <= 0 ||
-        Number(audio?.bit_rate) > 220000)) ||
+        measuredAudioBitRate <= 0 ||
+        measuredAudioBitRate > (audioOptions.quality === "higher" ? 500000 : 220000))) ||
     (wmaOutput &&
-      (Number(audio?.sample_rate) !== (route === "amr-wb-to-wma" ? 32000 : 48000) ||
-        Number(audio?.bit_rate) !== (route === "amr-wb-to-wma" ? 64000 : 320000))) ||
+      (Number(audio?.sample_rate) !==
+          (audioOptions.sampleRateHz || (route === "amr-wb-to-wma" ? 32000 : 48000)) ||
+        (audioOptions.bitRateBps !== 0
+          ? !customWmaBitRateMatches
+          : measuredAudioBitRate !== (route === "amr-wb-to-wma" ? 64000 : 320000)))) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||

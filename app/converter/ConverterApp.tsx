@@ -33,6 +33,7 @@ import {
   VIDEO_MAX_WIDTHS,
   audioCodecForProfile,
   audioCompressionForCodec,
+  normalizeAudioConversionOptionsForCodec,
   audioSampleRatesForCodec,
   supportsAudioEncodingOptions,
   supportsVideoEncodingOptions,
@@ -1424,7 +1425,20 @@ export function ConverterApp() {
                     data-testid="format-select"
                     value={profileId ?? ""}
                     onChange={(event) => {
-                      setProfileId(event.target.value);
+                      const nextProfileId = event.target.value;
+                      const nextProfile = profiles.find(
+                        (profile) => profile.id === nextProfileId,
+                      );
+                      const nextAudioCodec = audioCodecForProfile(nextProfile ?? null);
+                      if (nextAudioCodec) {
+                        setAudioOptions((current) =>
+                          normalizeAudioConversionOptionsForCodec(
+                            current,
+                            nextAudioCodec,
+                          ),
+                        );
+                      }
+                      setProfileId(nextProfileId);
                       setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
                       setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
                       setDestinationHandle(null);
@@ -1474,14 +1488,14 @@ export function ConverterApp() {
                         value={audioOptions.codec}
                         onChange={(event) => {
                           const codec = event.target.value as AudioConversionOptions["codec"];
-                          const compression = audioCompressionForCodec(codec);
-                          setAudioOptions((current) => ({
-                            ...current,
-                            codec,
-                            compression: "automatic",
-                            bitRateBps: compression === "lossless" ? 0 : current.bitRateBps,
-                            quality: compression === "lossless" ? "automatic" : current.quality,
-                          }));
+                          const effectiveCodec =
+                            codec === "automatic" ? selectedAudioCodec : codec;
+                          setAudioOptions((current) =>
+                            normalizeAudioConversionOptionsForCodec(
+                              { ...current, codec, compression: "automatic" },
+                              effectiveCodec,
+                            ),
+                          );
                           if (codec === "automatic") return;
                           const replacement = selectableAudioProfiles.find(
                             (profile) => audioCodecForProfile(profile) === codec,
@@ -1510,18 +1524,26 @@ export function ConverterApp() {
                         value={audioOptions.compression}
                         onChange={(event) => {
                           const compression = event.target.value as AudioConversionOptions["compression"];
-                          setAudioOptions((current) => ({
-                            ...current,
-                            codec: "automatic",
-                            compression,
-                            bitRateBps: compression === "lossless" ? 0 : current.bitRateBps,
-                            quality: compression === "lossless" ? "automatic" : current.quality,
-                          }));
-                          if (compression === "automatic") return;
-                          const replacement = selectableAudioProfiles.find((profile) => {
-                            const codec = audioCodecForProfile(profile);
-                            return codec && audioCompressionForCodec(codec) === compression;
-                          });
+                          const replacement =
+                            compression === "automatic"
+                              ? null
+                              : selectableAudioProfiles.find((profile) => {
+                                  const codec = audioCodecForProfile(profile);
+                                  return codec && audioCompressionForCodec(codec) === compression;
+                                });
+                          const replacementCodec = audioCodecForProfile(
+                            replacement ?? null,
+                          );
+                          setAudioOptions((current) =>
+                            normalizeAudioConversionOptionsForCodec(
+                              {
+                                ...current,
+                                codec: "automatic",
+                                compression,
+                              },
+                              replacementCodec ?? selectedAudioCodec,
+                            ),
+                          );
                           if (replacement) setProfileId(replacement.id);
                         }}
                       >
@@ -1596,8 +1618,12 @@ export function ConverterApp() {
                         }
                       >
                         <option value={0}>Automatic</option>
-                        <option value={1}>Mono</option>
-                        <option value={2}>Stereo</option>
+                        {selectedAudioCodec !== "amr" ? (
+                          <>
+                            <option value={1}>Mono</option>
+                            <option value={2}>Stereo</option>
+                          </>
+                        ) : null}
                       </select>
                     </label>
                     <label>

@@ -224,6 +224,38 @@ export function audioSampleRatesForCodec(
   return codec === "opus" ? OPUS_SAMPLE_RATES_HZ : MP3_SAMPLE_RATES_HZ;
 }
 
+export function normalizeAudioConversionOptionsForCodec(
+  options: AudioConversionOptions,
+  codec: Exclude<AudioCodec, "automatic">,
+): AudioConversionOptions {
+  const compression = audioCompressionForCodec(codec);
+  const bitRates = audioBitRatesForCodec(codec);
+  const sampleRates = audioSampleRatesForCodec(codec);
+  return {
+    codec:
+      options.codec === "automatic" || options.codec === codec
+        ? options.codec
+        : "automatic",
+    compression:
+      options.compression === "automatic" || options.compression === compression
+        ? options.compression
+        : "automatic",
+    bitRateBps:
+      options.bitRateBps === 0 || bitRates.includes(options.bitRateBps)
+        ? options.bitRateBps
+        : 0,
+    sampleRateHz:
+      options.sampleRateHz === 0 || sampleRates.includes(options.sampleRateHz)
+        ? options.sampleRateHz
+        : 0,
+    channels: codec === "amr" ? 0 : options.channels,
+    quality:
+      options.quality === "automatic" || QUALITY_AUDIO_CODECS.has(codec)
+        ? options.quality
+        : "automatic",
+  };
+}
+
 export function supportsVideoEncodingOptions(
   profile: { engine: string; output: string } | null,
 ): boolean {

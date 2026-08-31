@@ -1,0 +1,144 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-01T01:15:00+05:30",
+  "scope": "Bounded audio codec, compression, bitrate, sample-rate, channel-layout, and quality controls",
+  "dockerUsed": false,
+  "controls": {
+    "codecs": ["automatic", "mp3", "aac", "opus", "vorbis", "wma", "amr", "flac", "alac", "pcm"],
+    "compression": ["automatic", "lossy", "lossless"],
+    "bitRateBps": [0, 64000, 96000, 128000, 192000, 256000, 320000],
+    "sampleRateHz": [0, 8000, 16000, 22050, 24000, 32000, 44100, 48000],
+    "channels": [0, 1, 2],
+    "quality": ["automatic", "smaller", "balanced", "higher"],
+    "validationLayers": [
+      "UI and route normalization",
+      "conversion-plan and worker request validation",
+      "codec-aware JS/Wasm ABI dispatch",
+      "native FFmpeg allowlist"
+    ],
+    "legacyAbiCompatibility": "The general audio core receives twelve integers; the four certified video/direct specialist cores retain their nine-integer ABI."
+  },
+  "focusedChrome": {
+    "command": "npx playwright test tests/browser/media-options.spec.ts --workers=1",
+    "result": "10 passed",
+    "elapsedSeconds": 28.4,
+    "practicalCodecMatrix": [
+      "AAC",
+      "Opus",
+      "Vorbis",
+      "WMA2",
+      "FLAC",
+      "ALAC",
+      "AIFF PCM",
+      "AMR-NB"
+    ],
+    "validation": [
+      "genuine production-browser conversion",
+      "independent FFprobe codec/rate/channel/packet inspection",
+      "complete native FFmpeg decode traversal",
+      "AAC smaller-versus-higher measured bitrate and byte-size separation",
+      "video option regression through the unchanged specialist ABI",
+      "cancellation and direct-write-failure cleanup"
+    ]
+  },
+  "stress": {
+    "report": "outputs/reports/2026-08-31T19-33-58-392Z-wav-to-aac-stress.json",
+    "reportSha256": "a3ae613957579b7cebd4426a1f35877da0e3a73eceaaa5a763c9824fa47e1b4d",
+    "source": {
+      "bytes": 153600106,
+      "sha256": "139166101286a7d5f2a8f5bebf68ccc4aef0cadda19c3c8941625531db5e6018",
+      "durationSeconds": 800
+    },
+    "settings": {
+      "codec": "aac",
+      "compression": "automatic",
+      "bitRateBps": 320000,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "quality": "higher"
+    },
+    "runs": [
+      {
+        "run": 1,
+        "elapsedMs": 13842.83,
+        "realtimeFactor": 57.79,
+        "incrementalPrivateMiB": 192.59375,
+        "cleanupDeltaFromLoadedMiB": 7.171875
+      },
+      {
+        "run": 2,
+        "elapsedMs": 13527.465,
+        "realtimeFactor": 59.14,
+        "incrementalPrivateMiB": 183.1015625,
+        "cleanupDeltaFromLoadedMiB": 8.4140625
+      },
+      {
+        "run": 3,
+        "elapsedMs": 13352.66,
+        "realtimeFactor": 59.91,
+        "incrementalPrivateMiB": 189.9140625,
+        "cleanupDeltaFromLoadedMiB": 15.046875
+      }
+    ],
+    "worstIncrementalPrivateMiB": 192.59375,
+    "limitMiB": 250,
+    "peakWasmMemoryBytes": 33554432,
+    "maximumReadChunkBytes": 262144,
+    "maximumWriteChunkBytes": 938,
+    "peakQueuedBytes": 938,
+    "peakPendingOperations": 1,
+    "output": {
+      "bytes": 32308761,
+      "sha256": "9f6f3463f994b78525522ccada5c5cae48aa11c92d32cd7c2026d600f8f087a3",
+      "codec": "aac",
+      "profile": "LC",
+      "measuredBitRateBps": 322753,
+      "sampleRateHz": 48000,
+      "channels": 2,
+      "encodedFrames": 37501,
+      "encodedDurationSeconds": 800.0213333333334,
+      "repeatable": true,
+      "fullyDecodedByNativeFfmpeg": true,
+      "channelAsdrDb": [-2.87996, -2.87797]
+    },
+    "allProfilerChecksPassed": true,
+    "firstAttempt": {
+      "status": "unclaimed harness failure",
+      "report": "outputs/reports/2026-08-31T19-25-07-800Z-wav-to-aac-stress-failure.json",
+      "reason": "The valid 320 kb/s output was rejected by the profiler's older automatic-AAC 220 kb/s ceiling before run evidence was recorded.",
+      "resolution": "Validate explicit AAC, Opus, and WMA requests against their selected bitrate and selected rate/channel policy; no encoder, quality, memory, or cleanup threshold changed."
+    }
+  },
+  "engine": {
+    "sourceSha256": "8704323cffc34ced57151a45caf1502fe415f0fd046671637384d83be6abc594",
+    "audioPatchSha256": "e46bb17c3839e4dfcb42023f277b58e091d0908b2ef07c4402a317d2b33f52a0",
+    "buildManifestSha256": "2996ece155dc31751b8f39f5eedf8c38c89d36cff69cf614223dff2a3cd61329",
+    "publishedWasmSha256": "fc920e94583e5be5a6b8c16fd0b044da53e8a72f9219e665311e0cfbd4187386",
+    "candidateRun": {
+      "id": 33366619204,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33366619204",
+      "result": "expected pre-publication comparison failure",
+      "changedFiles": ["within-remux.wasm"],
+      "unchangedPublishedFiles": 18,
+      "candidateWasmSha256": "fc920e94583e5be5a6b8c16fd0b044da53e8a72f9219e665311e0cfbd4187386"
+    },
+    "finalPublishedReproduction": "pending after checkpoint publication"
+  },
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "validationCopiesDeleted": true,
+    "browserProfileDeleted": true,
+    "localCandidateDeleted": true,
+    "remoteCandidateArtifactDeleted": false
+  },
+  "protectedFixture": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "remainingOutsideThisControlRequirement": [
+    "embedded artwork preservation",
+    "remaining source-container and metadata-field mappings tracked under M-08"
+  ]
+}

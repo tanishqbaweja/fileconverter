@@ -60,34 +60,8 @@ interface RemuxModule {
   ccall: (
     name: string,
     returnType: "number",
-    argumentTypes: readonly [
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-    ],
-    arguments_: readonly [
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-      number,
-    ],
+    argumentTypes: readonly "number"[],
+    arguments_: readonly number[],
     options: { async: true },
   ) => Promise<number>;
 }
@@ -599,37 +573,44 @@ export async function runMediaRemux({
   });
   assertActive();
 
+  const usesCertifiedSpecialistAbi =
+    useDirectRemuxCore ||
+    useWebmQualityCore ||
+    remuxProfile === 4 ||
+    remuxProfile === 5 ||
+    remuxProfile === 7 ||
+    remuxProfile === 10 ||
+    remuxProfile === 11;
+  const videoArguments = [
+    videoCodecCode(videoOptions?.codec ?? "automatic"),
+    videoOptions?.maxWidth ?? 0,
+    videoOptions?.bitRateBps ?? 0,
+    videoOptions?.frameRateFps ?? 0,
+    videoQualityCode(videoOptions?.quality ?? "automatic"),
+  ];
+  const arguments_ = usesCertifiedSpecialistAbi
+    ? [
+        remuxProfile,
+        audioOptions?.bitRateBps ?? 0,
+        audioOptions?.sampleRateHz ?? 0,
+        audioOptions?.channels ?? 0,
+        ...videoArguments,
+      ]
+    : [
+        remuxProfile,
+        audioOptions?.bitRateBps ?? 0,
+        audioOptions?.sampleRateHz ?? 0,
+        audioOptions?.channels ?? 0,
+        audioCodecCode(audioOptions?.codec ?? "automatic"),
+        audioCompressionCode(audioOptions?.compression ?? "automatic"),
+        audioQualityCode(audioOptions?.quality ?? "automatic"),
+        ...videoArguments,
+      ];
   const result = await engineModule.ccall(
     "within_remux",
     "number",
-    [
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-      "number",
-    ],
-    [
-      remuxProfile,
-      audioOptions?.bitRateBps ?? 0,
-      audioOptions?.sampleRateHz ?? 0,
-      audioOptions?.channels ?? 0,
-      audioCodecCode(audioOptions?.codec ?? "automatic"),
-      audioCompressionCode(audioOptions?.compression ?? "automatic"),
-      audioQualityCode(audioOptions?.quality ?? "automatic"),
-      videoCodecCode(videoOptions?.codec ?? "automatic"),
-      videoOptions?.maxWidth ?? 0,
-      videoOptions?.bitRateBps ?? 0,
-      videoOptions?.frameRateFps ?? 0,
-      videoQualityCode(videoOptions?.quality ?? "automatic"),
-    ],
+    arguments_.map(() => "number" as const),
+    arguments_,
     { async: true },
   );
   if (isCancelled()) {

@@ -9,6 +9,7 @@ import {
   audioCompressionCode,
   audioCompressionForCodec,
   audioQualityCode,
+  normalizeAudioConversionOptionsForCodec,
   supportsAudioEncodingOptions,
   supportsMp3EncodingOptions,
   supportsVideoEncodingOptions,
@@ -97,6 +98,41 @@ test("audio options support practical lossy/lossless codecs and native codes", (
     }).compression,
     "lossless",
   );
+});
+
+test("audio codec switches discard stale cross-codec settings", () => {
+  const current = {
+    codec: "mp3",
+    compression: "lossy",
+    bitRateBps: 320_000,
+    sampleRateHz: 44_100,
+    channels: 2,
+    quality: "higher",
+  };
+  assert.deepEqual(normalizeAudioConversionOptionsForCodec(current, "amr"), {
+    codec: "automatic",
+    compression: "lossy",
+    bitRateBps: 0,
+    sampleRateHz: 0,
+    channels: 0,
+    quality: "automatic",
+  });
+  assert.deepEqual(normalizeAudioConversionOptionsForCodec(current, "opus"), {
+    codec: "automatic",
+    compression: "lossy",
+    bitRateBps: 320_000,
+    sampleRateHz: 0,
+    channels: 2,
+    quality: "higher",
+  });
+  assert.deepEqual(normalizeAudioConversionOptionsForCodec(current, "flac"), {
+    codec: "automatic",
+    compression: "automatic",
+    bitRateBps: 0,
+    sampleRateHz: 44_100,
+    channels: 2,
+    quality: "automatic",
+  });
 });
 
 test("audio options reject unsupported profiles and cross-policy values", () => {
