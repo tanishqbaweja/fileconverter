@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { execFile } from "node:child_process";
-import { mkdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -19,6 +19,12 @@ const wavFixturePath = path.join(
   "fixtures",
   "media",
   "audio-source.wav",
+);
+const artworkFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-artwork.m4a",
 );
 const videoFixturePath = path.join(
   projectRoot,
@@ -123,6 +129,43 @@ async function probeAudio(outputPath: string) {
     }>;
     format: { duration?: string };
   };
+}
+
+async function probeAudioWithArtwork(outputPath: string) {
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-show_streams", "-show_format", "-of", "json",
+      outputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as {
+    streams: Array<{
+      codec_name?: string;
+      codec_type?: string;
+      width?: number;
+      height?: number;
+      disposition?: { attached_pic?: number };
+      tags?: Record<string, string>;
+    }>;
+    format: { tags?: Record<string, string> };
+  };
+}
+
+async function extractedArtworkSha256(inputPath: string): Promise<string> {
+  const extractionPath = path.join(validationRoot, `${path.basename(inputPath)}.cover.png`);
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-y", "-i", inputPath,
+      "-map", "0:v:0", "-c:v", "copy", extractionPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const bytes = await readFile(extractionPath);
+  const digest = await crypto.subtle.digest("SHA-256", bytes);
+  return Buffer.from(digest).toString("hex");
 }
 
 async function measureScaledVideoPsnr(outputPath: string): Promise<number> {
@@ -798,6 +841,88 @@ test("native audio controls produce genuine practical lossy and lossless codecs"
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
   }
+});
+
+test("bounded audio metadata preserves compatible tags and cover art", async ({
+  page,
+}) => {
+  const sourceArtworkSha256 = await extractedArtworkSha256(artworkFixturePath);
+  const expectedTags = {
+    title: "Within artwork title",
+    artist: "Within artist",
+    album: "Within album",
+    genre: "Test genre",
+    date: "2026",
+    track: "3/9",
+    comment: "Within comment",
+  } as const;
+
+  for (const conversion of [
+    { profile: "m4a-to-mp3", extension: "mp3", codec: "mp3" },
+    { profile: "m4a-to-flac", extension: "flac", codec: "flac" },
+  ] as const) {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(artworkFixturePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(conversion.profile);
+    const state = await waitForCompletedConversion(page);
+    expect(state.warnings).toEqual([]);
+    expect(state.opfsName).toBeTruthy();
+
+    const outputPath = path.join(
+      validationRoot,
+      `artwork-output.${conversion.extension}`,
+    );
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    const probe = await probeAudioWithArtwork(outputPath);
+    const audio = probe.streams.filter((stream) => stream.codec_type === "audio");
+    const artwork = probe.streams.filter(
+      (stream) => stream.disposition?.attached_pic === 1,
+    );
+    expect(audio).toHaveLength(1);
+    expect(audio[0]?.codec_name).toBe(conversion.codec);
+    expect(artwork).toHaveLength(1);
+    expect(artwork[0]?.codec_name).toBe("png");
+    expect(artwork[0]?.width).toBe(64);
+    expect(artwork[0]?.height).toBe(64);
+    for (const [key, value] of Object.entries(expectedTags)) {
+      expect(probe.format.tags?.[key]).toBe(value);
+    }
+    expect(await extractedArtworkSha256(outputPath)).toBe(sourceArtworkSha256);
+    await execFileAsync(
+      "ffmpeg",
+      ["-hide_banner", "-loglevel", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
+
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(artworkFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("m4a-to-aac");
+  const excludedState = await waitForCompletedConversion(page);
+  expect(
+    excludedState.warnings.some((warning) =>
+      warning.includes("cover art is explicitly excluded"),
+    ),
+  ).toBe(true);
+  expect(excludedState.opfsName).toBeTruthy();
+  const rawAacPath = path.join(validationRoot, "artwork-excluded.aac");
+  await copyAndDeleteSmallBrowserOutput(page, excludedState.opfsName!, rawAacPath);
+  const rawAacProbe = await probeAudioWithArtwork(rawAacPath);
+  expect(rawAacProbe.streams).toHaveLength(1);
+  expect(rawAacProbe.streams[0]?.codec_name).toBe("aac");
+  expect(
+    rawAacProbe.streams.some(
+      (stream) => stream.disposition?.attached_pic === 1,
+    ),
+  ).toBe(false);
 });
 
 test("native audio quality policies materially change AAC bitrate and size", async ({

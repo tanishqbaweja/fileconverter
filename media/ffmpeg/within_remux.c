@@ -25,6 +25,9 @@
 #define WITHIN_AVIO_OUTPUT_BUFFER_SIZE WITHIN_AVIO_BUFFER_SIZE
 #endif
 #define WITHIN_AUDIO_FIFO_MAX_SAMPLES 16384
+#define WITHIN_ARTWORK_MAX_BYTES (4 * 1024 * 1024)
+#define WITHIN_ARTWORK_MAX_DIMENSION 4096
+#define WITHIN_ARTWORK_MAX_PIXELS (16 * 1024 * 1024)
 #define WITHIN_ROTATE_REQUIRED (-4096)
 #ifndef WITHIN_VIDEO_THREADS
 #define WITHIN_VIDEO_THREADS 1
@@ -326,6 +329,9 @@ static int64_t output_seek(void *opaque, int64_t offset, int whence) {
   return next;
 }
 
+static int supported_audio_artwork_codec(enum AVCodecID codec_id);
+static int bounded_audio_artwork_stream(const AVStream *stream);
+
 static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
     return 0;
@@ -455,8 +461,9 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
     return 0;
   }
   if (profile == 18) {
-    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
-           stream->codecpar->codec_id == AV_CODEC_ID_MP3;
+    return (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+            stream->codecpar->codec_id == AV_CODEC_ID_MP3) ||
+           bounded_audio_artwork_stream(stream);
   }
   if (profile == 19) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
@@ -876,6 +883,26 @@ static int audio_codec_supports_quality(int codec) {
   return codec == 1 || codec == 2 || codec == 3 || codec == 4 || codec == 8;
 }
 
+static int supported_audio_artwork_codec(enum AVCodecID codec_id) {
+  return codec_id == AV_CODEC_ID_MJPEG || codec_id == AV_CODEC_ID_PNG;
+}
+
+static int bounded_audio_artwork_stream(const AVStream *stream) {
+  if (!stream || !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) ||
+      !supported_audio_artwork_codec(stream->codecpar->codec_id)) {
+    return 0;
+  }
+  if (stream->attached_pic.size <= 0 ||
+      stream->attached_pic.size > WITHIN_ARTWORK_MAX_BYTES ||
+      stream->codecpar->width <= 0 || stream->codecpar->height <= 0 ||
+      stream->codecpar->width > WITHIN_ARTWORK_MAX_DIMENSION ||
+      stream->codecpar->height > WITHIN_ARTWORK_MAX_DIMENSION) {
+    return 0;
+  }
+  return (int64_t)stream->codecpar->width * stream->codecpar->height <=
+         WITHIN_ARTWORK_MAX_PIXELS;
+}
+
 static int within_audio_transcode(int profile, int requested_bit_rate,
                                   int requested_sample_rate,
                                   int requested_channels,
@@ -896,6 +923,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   const int profile_compression = audio_compression_for_codec(profile_codec);
   int result = 0;
   int audio_stream_index = -1;
+  int artwork_stream_index = -1;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
@@ -907,6 +935,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   SwrContext *resampler = NULL;
   AVPacket *input_packet = NULL;
   AVPacket *encoded_packet = NULL;
+  AVPacket *artwork_packet = NULL;
   AVFrame *decoded_frame = NULL;
   AVFrame *converted_frame = NULL;
   AVAudioFifo *fifo = NULL;
@@ -1002,8 +1031,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       audio_stream_index = (int)index;
       continue;
     }
-    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC ||
-        stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
+    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
+      if (!mp3_output && !flac_output) {
+        within_message(
+            1,
+            "The source cover art is explicitly excluded because this bounded audio destination cannot represent it reliably.");
+      } else if (artwork_stream_index >= 0) {
+        within_message(
+            1,
+            "Only the first bounded JPEG or PNG cover image is preserved; additional artwork is explicitly excluded.");
+      } else if (!supported_audio_artwork_codec(stream->codecpar->codec_id)) {
+        within_message(
+            1,
+            "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3/FLAC artwork accepts JPEG or PNG.");
+      } else if (!bounded_audio_artwork_stream(stream)) {
+        within_message(
+            1,
+            "The source cover art exceeds the bounded 4 MiB, 4096-pixel-side, or 16-megapixel limit and is explicitly excluded.");
+      } else {
+        artwork_stream_index = (int)index;
+      }
+    } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_ATTACHMENT) {
       within_message(
           1,
           "The source attachment is explicitly excluded from audio-only output.");
@@ -1311,6 +1359,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
 
+  AVStream *artwork_output_stream = NULL;
+  if (artwork_stream_index >= 0) {
+    AVStream *artwork_input_stream =
+        input_format->streams[artwork_stream_index];
+    artwork_output_stream = avformat_new_stream(output_format, NULL);
+    if (!artwork_output_stream) {
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+    result = avcodec_parameters_copy(artwork_output_stream->codecpar,
+                                     artwork_input_stream->codecpar);
+    if (result < 0) {
+      report_av_error("Cover-art stream metadata copy failed", result);
+      goto cleanup;
+    }
+    artwork_output_stream->codecpar->codec_tag = 0;
+    artwork_output_stream->time_base = artwork_input_stream->time_base;
+    if (artwork_output_stream->time_base.num <= 0 ||
+        artwork_output_stream->time_base.den <= 0) {
+      artwork_output_stream->time_base = (AVRational){1, 1000};
+    }
+    artwork_output_stream->disposition = AV_DISPOSITION_ATTACHED_PIC;
+    av_dict_copy(&artwork_output_stream->metadata,
+                 artwork_input_stream->metadata, 0);
+  }
+
   output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
     result = AVERROR(ENOMEM);
@@ -1338,6 +1412,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   if (result < 0) {
     report_av_error("Audio header write failed", result);
     goto cleanup;
+  }
+
+  if (artwork_output_stream) {
+    AVStream *artwork_input_stream =
+        input_format->streams[artwork_stream_index];
+    AVRational artwork_input_time_base = artwork_input_stream->time_base;
+    if (artwork_input_time_base.num <= 0 || artwork_input_time_base.den <= 0) {
+      artwork_input_time_base = (AVRational){1, 1000};
+    }
+    artwork_packet = av_packet_clone(&artwork_input_stream->attached_pic);
+    if (!artwork_packet) {
+      result = AVERROR(ENOMEM);
+      goto cleanup;
+    }
+    artwork_packet->pts = 0;
+    artwork_packet->dts = 0;
+    artwork_packet->duration = 0;
+    artwork_packet->pos = -1;
+    av_packet_rescale_ts(artwork_packet, artwork_input_time_base,
+                         artwork_output_stream->time_base);
+    artwork_packet->stream_index = artwork_output_stream->index;
+    result = av_interleaved_write_frame(output_format, artwork_packet);
+    if (result < 0) {
+      report_av_error("Cover-art packet write failed", result);
+      goto cleanup;
+    }
   }
 
   result = swr_alloc_set_opts2(
@@ -1448,6 +1548,7 @@ cleanup:
   av_dict_free(&muxer_options);
   av_packet_free(&input_packet);
   av_packet_free(&encoded_packet);
+  av_packet_free(&artwork_packet);
   av_frame_free(&decoded_frame);
   av_frame_free(&converted_frame);
   av_audio_fifo_free(fifo);
@@ -1622,6 +1723,7 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   int result = 0;
   int video_stream_index = -1;
   int audio_stream_index = -1;
+  int mp3_artwork_stream_index = -1;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
@@ -2469,6 +2571,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
+    if (mp3_output) {
+      for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+        if (bounded_audio_artwork_stream(input_format->streams[index])) {
+          mp3_artwork_stream_index = (int)index;
+          break;
+        }
+      }
+    }
   }
   if (container_flv_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
@@ -2559,7 +2669,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         : av1_webm_output
             ? stream_is_supported(input_stream, profile) && copy_compatible
         : mp3_output
-            ? (int)index == audio_stream_index
+            ? (int)index == audio_stream_index ||
+                  (int)index == mp3_artwork_stream_index
         : aac_output
             ? (int)index == audio_stream_index
         : ogg_audio_output
@@ -2641,7 +2752,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                 ? "The source cover-art stream is explicitly excluded from "
                   "this audio-only M4A profile."
             : mp3_output
-                ? "The source attached picture is explicitly excluded from this MP3 extraction profile."
+                ? !supported_audio_artwork_codec(input_stream->codecpar->codec_id)
+                  ? "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3 artwork accepts JPEG or PNG."
+                  : !bounded_audio_artwork_stream(input_stream)
+                    ? "The source cover art exceeds the bounded 4 MiB, 4096-pixel-side, or 16-megapixel limit and is explicitly excluded."
+                    : "Only the first bounded JPEG or PNG cover image is preserved; additional artwork is explicitly excluded."
             : aac_output
                 ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
             : ogg_audio_output
