@@ -122,7 +122,18 @@
       "unchangedPublishedFiles": 18,
       "candidateWasmSha256": "fc920e94583e5be5a6b8c16fd0b044da53e8a72f9219e665311e0cfbd4187386"
     },
-    "finalPublishedReproduction": "pending after checkpoint publication"
+    "finalPublishedReproduction": {
+      "id": 33432010221,
+      "jobId": 99619374234,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33432010221",
+      "commit": "28e0767cf0532b0cef9e6cd34769bae33cdcd8d0",
+      "result": "success",
+      "comparison": "exact non-Docker FFmpeg artifact comparison passed",
+      "elapsedSeconds": 568,
+      "cleanup": "success",
+      "mismatchUpload": "skipped",
+      "retainedArtifacts": 0
+    }
   },
   "cleanup": {
     "generatedStressSourceDeleted": true,
@@ -130,7 +141,7 @@
     "validationCopiesDeleted": true,
     "browserProfileDeleted": true,
     "localCandidateDeleted": true,
-    "remoteCandidateArtifactDeleted": false
+    "remoteCandidateArtifactDeleted": true
   },
   "protectedFixture": {
     "path": "test.mkv",
