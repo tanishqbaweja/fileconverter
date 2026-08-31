@@ -1,5 +1,5 @@
 diff --git a/media/ffmpeg/within_remux.c b/media/ffmpeg/within_remux.c
-index 091c37e..7b5077e 100644
+index 091c37e..17e3325 100644
 --- a/media/ffmpeg/within_remux.c
 +++ b/media/ffmpeg/within_remux.c
 @@ -25,6 +25,9 @@
@@ -432,15 +432,7 @@ index 091c37e..7b5077e 100644
    av_frame_free(&decoded_frame);
    av_frame_free(&converted_frame);
    av_audio_fifo_free(fifo);
-@@ -1514,6 +1723,7 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
-   int result = 0;
-   int video_stream_index = -1;
-   int audio_stream_index = -1;
-+  int mp3_artwork_stream_index = -1;
-   AVFormatContext *input_format = NULL;
-   AVFormatContext *output_format = NULL;
-   AVIOContext *input_io = NULL;
-@@ -2068,9 +2278,10 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
+@@ -2068,10 +2277,12 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
  
  EMSCRIPTEN_KEEPALIVE
  int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
@@ -452,8 +444,10 @@ index 091c37e..7b5077e 100644
 +                 int video_max_width, int video_bit_rate,
 +                 int video_frame_rate, int video_quality) {
    int result = 0;
++  int mp3_artwork_stream_index = -1;
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
+   AVIOContext *input_io = NULL;
 @@ -2108,9 +2319,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        return AVERROR(EINVAL);
      }

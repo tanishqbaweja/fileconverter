@@ -1723,7 +1723,6 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   int result = 0;
   int video_stream_index = -1;
   int audio_stream_index = -1;
-  int mp3_artwork_stream_index = -1;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
@@ -2283,6 +2282,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  int video_max_width, int video_bit_rate,
                  int video_frame_rate, int video_quality) {
   int result = 0;
+  int mp3_artwork_stream_index = -1;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
