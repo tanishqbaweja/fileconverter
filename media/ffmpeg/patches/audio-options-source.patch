@@ -1,5 +1,5 @@
 diff --git a/media/ffmpeg/within_remux.c b/media/ffmpeg/within_remux.c
-index 091c37e..17e3325 100644
+index 091c37e..6592a22 100644
 --- a/media/ffmpeg/within_remux.c
 +++ b/media/ffmpeg/within_remux.c
 @@ -25,6 +25,9 @@
@@ -43,7 +43,7 @@ index 091c37e..17e3325 100644
    static const int allowed[] = {0, 64000, 96000, 128000,
                                  192000, 256000, 320000};
    for (unsigned int index = 0; index < sizeof(allowed) / sizeof(allowed[0]);
-@@ -840,14 +847,68 @@ static int valid_mp3_bit_rate(int bit_rate) {
+@@ -840,14 +847,139 @@ static int valid_mp3_bit_rate(int bit_rate) {
    return 0;
  }
  
@@ -88,20 +88,91 @@ index 091c37e..17e3325 100644
 +  return codec_id == AV_CODEC_ID_MJPEG || codec_id == AV_CODEC_ID_PNG;
 +}
 +
++static uint16_t artwork_read_be16(const uint8_t *data) {
++  return (uint16_t)(((uint16_t)data[0] << 8) | data[1]);
++}
++
++static uint32_t artwork_read_be32(const uint8_t *data) {
++  return ((uint32_t)data[0] << 24) | ((uint32_t)data[1] << 16) |
++         ((uint32_t)data[2] << 8) | data[3];
++}
++
++static int jpeg_start_of_frame_marker(uint8_t marker) {
++  return (marker >= 0xc0 && marker <= 0xc3) ||
++         (marker >= 0xc5 && marker <= 0xc7) ||
++         (marker >= 0xc9 && marker <= 0xcb) ||
++         (marker >= 0xcd && marker <= 0xcf);
++}
++
++static int audio_artwork_dimensions(const AVStream *stream, int *width,
++                                    int *height) {
++  if (!stream || !width || !height) return 0;
++  *width = stream->codecpar->width;
++  *height = stream->codecpar->height;
++  if (*width > 0 && *height > 0) return 1;
++
++  const uint8_t *data = stream->attached_pic.data;
++  const int size = stream->attached_pic.size;
++  if (!data || size <= 0) return 0;
++
++  if (stream->codecpar->codec_id == AV_CODEC_ID_PNG) {
++    static const uint8_t png_signature[8] = {
++        0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a};
++    if (size < 24 || memcmp(data, png_signature, sizeof(png_signature)) != 0 ||
++        memcmp(data + 12, "IHDR", 4) != 0) {
++      return 0;
++    }
++    const uint32_t parsed_width = artwork_read_be32(data + 16);
++    const uint32_t parsed_height = artwork_read_be32(data + 20);
++    if (parsed_width == 0 || parsed_height == 0 || parsed_width > INT_MAX ||
++        parsed_height > INT_MAX) {
++      return 0;
++    }
++    *width = (int)parsed_width;
++    *height = (int)parsed_height;
++    return 1;
++  }
++
++  if (stream->codecpar->codec_id != AV_CODEC_ID_MJPEG || size < 4 ||
++      data[0] != 0xff || data[1] != 0xd8) {
++    return 0;
++  }
++  int offset = 2;
++  while (offset + 3 < size) {
++    while (offset < size && data[offset] == 0xff) offset += 1;
++    if (offset >= size) return 0;
++    const uint8_t marker = data[offset++];
++    if (marker == 0xd9 || marker == 0xda) return 0;
++    if (marker == 0x01 || (marker >= 0xd0 && marker <= 0xd8)) continue;
++    if (offset + 2 > size) return 0;
++    const int segment_length = artwork_read_be16(data + offset);
++    if (segment_length < 2 || segment_length > size - offset) return 0;
++    if (jpeg_start_of_frame_marker(marker)) {
++      if (segment_length < 7) return 0;
++      *height = artwork_read_be16(data + offset + 3);
++      *width = artwork_read_be16(data + offset + 5);
++      return *width > 0 && *height > 0;
++    }
++    offset += segment_length;
++  }
++  return 0;
++}
++
 +static int bounded_audio_artwork_stream(const AVStream *stream) {
 +  if (!stream || !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) ||
 +      !supported_audio_artwork_codec(stream->codecpar->codec_id)) {
 +    return 0;
 +  }
++  int width = 0;
++  int height = 0;
 +  if (stream->attached_pic.size <= 0 ||
 +      stream->attached_pic.size > WITHIN_ARTWORK_MAX_BYTES ||
-+      stream->codecpar->width <= 0 || stream->codecpar->height <= 0 ||
-+      stream->codecpar->width > WITHIN_ARTWORK_MAX_DIMENSION ||
-+      stream->codecpar->height > WITHIN_ARTWORK_MAX_DIMENSION) {
++      !audio_artwork_dimensions(stream, &width, &height) ||
++      width > WITHIN_ARTWORK_MAX_DIMENSION ||
++      height > WITHIN_ARTWORK_MAX_DIMENSION) {
 +    return 0;
 +  }
-+  return (int64_t)stream->codecpar->width * stream->codecpar->height <=
-+         WITHIN_ARTWORK_MAX_PIXELS;
++  return (int64_t)width * height <= WITHIN_ARTWORK_MAX_PIXELS;
 +}
 +
  static int within_audio_transcode(int profile, int requested_bit_rate,
@@ -114,7 +185,7 @@ index 091c37e..17e3325 100644
    const int flac_output = profile == 6;
    const int alac_output = profile == 8;
    const int wma_output = profile == 9;
-@@ -858,8 +919,11 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -858,8 +990,11 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    const int aac_output = profile == 31 || m4a_aac_output;
    const int opus_output = profile == 32;
    const int vorbis_output = profile == 33;
@@ -126,7 +197,7 @@ index 091c37e..17e3325 100644
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
    AVIOContext *input_io = NULL;
-@@ -871,6 +935,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -871,6 +1006,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    SwrContext *resampler = NULL;
    AVPacket *input_packet = NULL;
    AVPacket *encoded_packet = NULL;
@@ -134,7 +205,7 @@ index 091c37e..17e3325 100644
    AVFrame *decoded_frame = NULL;
    AVFrame *converted_frame = NULL;
    AVAudioFifo *fifo = NULL;
-@@ -880,24 +945,40 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -880,24 +1016,40 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    WithinOutput output = {.position = 0, .size = 0};
    WithinAudioPipeline pipeline = {0};
  
@@ -144,32 +215,32 @@ index 091c37e..17e3325 100644
 -    within_message(2, "Audio options are not supported by this output profile.");
 +  if (profile_codec == 0) {
 +    within_message(2, "Unknown audio transcode profile.");
++    return AVERROR(EINVAL);
++  }
++  if (requested_codec != 0 && requested_codec != profile_codec) {
++    within_message(2, "Audio codec does not match the selected output profile.");
++    return AVERROR(EINVAL);
++  }
++  if (requested_compression != 0 &&
++      requested_compression != profile_compression) {
++    within_message(2,
++                   "Audio compression does not match the selected codec.");
      return AVERROR(EINVAL);
    }
 -  if (mp3_output && !valid_mp3_bit_rate(requested_bit_rate)) {
 -    within_message(2, "MP3 bitrate must be automatic or 64-320 kb/s.");
-+  if (requested_codec != 0 && requested_codec != profile_codec) {
-+    within_message(2, "Audio codec does not match the selected output profile.");
-     return AVERROR(EINVAL);
-   }
--  if (mp3_output && !valid_mp3_sample_rate(requested_sample_rate)) {
-+  if (requested_compression != 0 &&
-+      requested_compression != profile_compression) {
-     within_message(2,
--                   "MP3 sample rate must be automatic, 32, 44.1, or 48 kHz.");
-+                   "Audio compression does not match the selected codec.");
-+    return AVERROR(EINVAL);
-+  }
 +  if (requested_quality < 0 || requested_quality > 3 ||
 +      (requested_quality != 0 &&
 +       !audio_codec_supports_quality(profile_codec))) {
 +    within_message(2, "Audio quality is not supported by this output codec.");
-+    return AVERROR(EINVAL);
-+  }
+     return AVERROR(EINVAL);
+   }
+-  if (mp3_output && !valid_mp3_sample_rate(requested_sample_rate)) {
 +  if (requested_bit_rate != 0 &&
 +      (!audio_codec_supports_bit_rate(profile_codec) ||
 +       !valid_audio_bit_rate(requested_bit_rate))) {
-+    within_message(2,
+     within_message(2,
+-                   "MP3 sample rate must be automatic, 32, 44.1, or 48 kHz.");
 +                   "Audio bitrate must be automatic or an allowlisted 64-320 kb/s value.");
 +    return AVERROR(EINVAL);
 +  }
@@ -186,7 +257,7 @@ index 091c37e..17e3325 100644
      return AVERROR(EINVAL);
    }
  
-@@ -950,8 +1031,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -950,8 +1102,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
        audio_stream_index = (int)index;
        continue;
      }
@@ -216,7 +287,7 @@ index 091c37e..17e3325 100644
        within_message(
            1,
            "The source attachment is explicitly excluded from audio-only output.");
-@@ -1028,8 +1128,13 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1028,8 +1199,13 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      result = AVERROR(ENOMEM);
      goto cleanup;
    }
@@ -230,7 +301,7 @@ index 091c37e..17e3325 100644
    } else if (wma_output) {
      encoder->sample_rate = decoder->sample_rate <= 16000 ? 32000 : 48000;
    } else if (mp3_output) {
-@@ -1042,9 +1147,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1042,9 +1218,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
                                       ? 32000
                                       : decoder->sample_rate <= 44100 ? 44100 : 48000;
    } else if (aac_output) {
@@ -240,7 +311,7 @@ index 091c37e..17e3325 100644
      encoder->sample_rate =
          decoder->sample_rate <= 8000
              ? 8000
-@@ -1098,15 +1200,18 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1098,15 +1271,18 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    if (amr_output) {
      av_channel_layout_default(&encoder->ch_layout, 1);
      result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
@@ -264,7 +335,7 @@ index 091c37e..17e3325 100644
      result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
    } else {
      result =
-@@ -1120,12 +1225,39 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1120,12 +1296,39 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
      av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
    } else if (wma_output) {
@@ -305,7 +376,7 @@ index 091c37e..17e3325 100644
                              : encoder->ch_layout.nb_channels == 1
                              ? encoder->sample_rate == 8000
                                    ? 32000
-@@ -1136,8 +1268,19 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1136,8 +1339,19 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
        av_dict_set(&encoder_options, "joint_stereo", "1", 0);
      }
    } else if (aac_output) {
@@ -327,7 +398,7 @@ index 091c37e..17e3325 100644
      av_dict_set(&encoder_options, "aac_coder", "fast", 0);
      av_dict_set(&encoder_options, "aac_tns", "0", 0);
      av_dict_set(&encoder_options, "aac_pns", "0", 0);
-@@ -1145,14 +1288,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1145,14 +1359,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      av_dict_set(&encoder_options, "aac_ms", "0", 0);
    } else if (opus_output) {
      encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -358,7 +429,7 @@ index 091c37e..17e3325 100644
    }
    result = avcodec_open2(encoder, encoder_codec, &encoder_options);
    av_dict_free(&encoder_options);
-@@ -1203,6 +1359,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1203,6 +1430,41 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
    av_dict_copy(&output_format->metadata, input_format->metadata, 0);
  
@@ -377,6 +448,15 @@ index 091c37e..17e3325 100644
 +      report_av_error("Cover-art stream metadata copy failed", result);
 +      goto cleanup;
 +    }
++    int artwork_width = 0;
++    int artwork_height = 0;
++    if (!audio_artwork_dimensions(artwork_input_stream, &artwork_width,
++                                  &artwork_height)) {
++      result = AVERROR_INVALIDDATA;
++      goto cleanup;
++    }
++    artwork_output_stream->codecpar->width = artwork_width;
++    artwork_output_stream->codecpar->height = artwork_height;
 +    artwork_output_stream->codecpar->codec_tag = 0;
 +    artwork_output_stream->time_base = artwork_input_stream->time_base;
 +    if (artwork_output_stream->time_base.num <= 0 ||
@@ -391,7 +471,7 @@ index 091c37e..17e3325 100644
    output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
    if (!output_buffer) {
      result = AVERROR(ENOMEM);
-@@ -1232,6 +1414,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1232,6 +1494,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      goto cleanup;
    }
  
@@ -424,7 +504,7 @@ index 091c37e..17e3325 100644
    result = swr_alloc_set_opts2(
        &resampler, &encoder->ch_layout, encoder->sample_fmt,
        encoder->sample_rate, &decoder->ch_layout, decoder->sample_fmt,
-@@ -1340,6 +1548,7 @@ cleanup:
+@@ -1340,6 +1628,7 @@ cleanup:
    av_dict_free(&muxer_options);
    av_packet_free(&input_packet);
    av_packet_free(&encoded_packet);
@@ -432,7 +512,7 @@ index 091c37e..17e3325 100644
    av_frame_free(&decoded_frame);
    av_frame_free(&converted_frame);
    av_audio_fifo_free(fifo);
-@@ -2068,10 +2277,12 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
+@@ -2068,10 +2357,12 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
  
  EMSCRIPTEN_KEEPALIVE
  int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
@@ -448,7 +528,7 @@ index 091c37e..17e3325 100644
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
    AVIOContext *input_io = NULL;
-@@ -2108,9 +2319,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2108,9 +2399,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        return AVERROR(EINVAL);
      }
      return within_audio_transcode(profile, audio_bit_rate, audio_sample_rate,
@@ -462,7 +542,7 @@ index 091c37e..17e3325 100644
      within_message(2, "Audio options are not supported by this profile.");
      return AVERROR(EINVAL);
    }
-@@ -2358,6 +2571,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2358,6 +2651,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        result = AVERROR_STREAM_NOT_FOUND;
        goto cleanup;
      }
@@ -477,7 +557,7 @@ index 091c37e..17e3325 100644
    }
    if (container_flv_output) {
      for (unsigned int index = 0; index < input_format->nb_streams; index++) {
-@@ -2448,7 +2669,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2448,7 +2749,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
          : av1_webm_output
              ? stream_is_supported(input_stream, profile) && copy_compatible
          : mp3_output
@@ -487,7 +567,7 @@ index 091c37e..17e3325 100644
          : aac_output
              ? (int)index == audio_stream_index
          : ogg_audio_output
-@@ -2530,7 +2752,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2530,7 +2832,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  ? "The source cover-art stream is explicitly excluded from "
                    "this audio-only M4A profile."
              : mp3_output
@@ -500,3 +580,22 @@ index 091c37e..17e3325 100644
              : aac_output
                  ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
              : ogg_audio_output
+@@ -2714,6 +3020,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+       report_av_error("Stream metadata copy failed", result);
+       goto cleanup;
+     }
++    if (mp3_output &&
++        (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
++      int artwork_width = 0;
++      int artwork_height = 0;
++      if (!audio_artwork_dimensions(input_stream, &artwork_width,
++                                    &artwork_height)) {
++        result = AVERROR_INVALIDDATA;
++        goto cleanup;
++      }
++      output_stream->codecpar->width = artwork_width;
++      output_stream->codecpar->height = artwork_height;
++    }
+     if (input_format->iformat && input_format->iformat->name &&
+         (strstr(input_format->iformat->name, "mpegts") ||
+          strcmp(input_format->iformat->name, "aac") == 0) &&

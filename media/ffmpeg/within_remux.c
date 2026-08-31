@@ -887,20 +887,91 @@ static int supported_audio_artwork_codec(enum AVCodecID codec_id) {
   return codec_id == AV_CODEC_ID_MJPEG || codec_id == AV_CODEC_ID_PNG;
 }
 
+static uint16_t artwork_read_be16(const uint8_t *data) {
+  return (uint16_t)(((uint16_t)data[0] << 8) | data[1]);
+}
+
+static uint32_t artwork_read_be32(const uint8_t *data) {
+  return ((uint32_t)data[0] << 24) | ((uint32_t)data[1] << 16) |
+         ((uint32_t)data[2] << 8) | data[3];
+}
+
+static int jpeg_start_of_frame_marker(uint8_t marker) {
+  return (marker >= 0xc0 && marker <= 0xc3) ||
+         (marker >= 0xc5 && marker <= 0xc7) ||
+         (marker >= 0xc9 && marker <= 0xcb) ||
+         (marker >= 0xcd && marker <= 0xcf);
+}
+
+static int audio_artwork_dimensions(const AVStream *stream, int *width,
+                                    int *height) {
+  if (!stream || !width || !height) return 0;
+  *width = stream->codecpar->width;
+  *height = stream->codecpar->height;
+  if (*width > 0 && *height > 0) return 1;
+
+  const uint8_t *data = stream->attached_pic.data;
+  const int size = stream->attached_pic.size;
+  if (!data || size <= 0) return 0;
+
+  if (stream->codecpar->codec_id == AV_CODEC_ID_PNG) {
+    static const uint8_t png_signature[8] = {
+        0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a};
+    if (size < 24 || memcmp(data, png_signature, sizeof(png_signature)) != 0 ||
+        memcmp(data + 12, "IHDR", 4) != 0) {
+      return 0;
+    }
+    const uint32_t parsed_width = artwork_read_be32(data + 16);
+    const uint32_t parsed_height = artwork_read_be32(data + 20);
+    if (parsed_width == 0 || parsed_height == 0 || parsed_width > INT_MAX ||
+        parsed_height > INT_MAX) {
+      return 0;
+    }
+    *width = (int)parsed_width;
+    *height = (int)parsed_height;
+    return 1;
+  }
+
+  if (stream->codecpar->codec_id != AV_CODEC_ID_MJPEG || size < 4 ||
+      data[0] != 0xff || data[1] != 0xd8) {
+    return 0;
+  }
+  int offset = 2;
+  while (offset + 3 < size) {
+    while (offset < size && data[offset] == 0xff) offset += 1;
+    if (offset >= size) return 0;
+    const uint8_t marker = data[offset++];
+    if (marker == 0xd9 || marker == 0xda) return 0;
+    if (marker == 0x01 || (marker >= 0xd0 && marker <= 0xd8)) continue;
+    if (offset + 2 > size) return 0;
+    const int segment_length = artwork_read_be16(data + offset);
+    if (segment_length < 2 || segment_length > size - offset) return 0;
+    if (jpeg_start_of_frame_marker(marker)) {
+      if (segment_length < 7) return 0;
+      *height = artwork_read_be16(data + offset + 3);
+      *width = artwork_read_be16(data + offset + 5);
+      return *width > 0 && *height > 0;
+    }
+    offset += segment_length;
+  }
+  return 0;
+}
+
 static int bounded_audio_artwork_stream(const AVStream *stream) {
   if (!stream || !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) ||
       !supported_audio_artwork_codec(stream->codecpar->codec_id)) {
     return 0;
   }
+  int width = 0;
+  int height = 0;
   if (stream->attached_pic.size <= 0 ||
       stream->attached_pic.size > WITHIN_ARTWORK_MAX_BYTES ||
-      stream->codecpar->width <= 0 || stream->codecpar->height <= 0 ||
-      stream->codecpar->width > WITHIN_ARTWORK_MAX_DIMENSION ||
-      stream->codecpar->height > WITHIN_ARTWORK_MAX_DIMENSION) {
+      !audio_artwork_dimensions(stream, &width, &height) ||
+      width > WITHIN_ARTWORK_MAX_DIMENSION ||
+      height > WITHIN_ARTWORK_MAX_DIMENSION) {
     return 0;
   }
-  return (int64_t)stream->codecpar->width * stream->codecpar->height <=
-         WITHIN_ARTWORK_MAX_PIXELS;
+  return (int64_t)width * height <= WITHIN_ARTWORK_MAX_PIXELS;
 }
 
 static int within_audio_transcode(int profile, int requested_bit_rate,
@@ -1374,6 +1445,15 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       report_av_error("Cover-art stream metadata copy failed", result);
       goto cleanup;
     }
+    int artwork_width = 0;
+    int artwork_height = 0;
+    if (!audio_artwork_dimensions(artwork_input_stream, &artwork_width,
+                                  &artwork_height)) {
+      result = AVERROR_INVALIDDATA;
+      goto cleanup;
+    }
+    artwork_output_stream->codecpar->width = artwork_width;
+    artwork_output_stream->codecpar->height = artwork_height;
     artwork_output_stream->codecpar->codec_tag = 0;
     artwork_output_stream->time_base = artwork_input_stream->time_base;
     if (artwork_output_stream->time_base.num <= 0 ||
@@ -2939,6 +3019,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     if (result < 0) {
       report_av_error("Stream metadata copy failed", result);
       goto cleanup;
+    }
+    if (mp3_output &&
+        (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
+      int artwork_width = 0;
+      int artwork_height = 0;
+      if (!audio_artwork_dimensions(input_stream, &artwork_width,
+                                    &artwork_height)) {
+        result = AVERROR_INVALIDDATA;
+        goto cleanup;
+      }
+      output_stream->codecpar->width = artwork_width;
+      output_stream->codecpar->height = artwork_height;
     }
     if (input_format->iformat && input_format->iformat->name &&
         (strstr(input_format->iformat->name, "mpegts") ||

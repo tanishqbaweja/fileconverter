@@ -154,6 +154,7 @@ async function probeAudioWithArtwork(outputPath: string) {
 }
 
 async function extractedArtworkSha256(inputPath: string): Promise<string> {
+  await mkdir(validationRoot, { recursive: true });
   const extractionPath = path.join(validationRoot, `${path.basename(inputPath)}.cover.png`);
   await execFileAsync(
     "ffmpeg",
