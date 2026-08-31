@@ -199,6 +199,11 @@ not the entire product specification.
   50,010,269-byte VP9 WebM hash each time. The small maximum-settings gate also
   passed at 202.3 MiB in 1.544/1.237/1.146 seconds. The retained evidence records
   both the rejected faster topology and this accepted bounded one.
+- After publication, hosted no-Docker run `33363432256` rebuilt and compared all
+  19 FFmpeg files exactly at pushed commit `94923a3`. The mismatch-upload step
+  was skipped, hosted cleanup passed, and the completed run retains zero
+  artifacts. This closes M-05 for the 22 currently public video re-encode
+  profiles without changing automatic-mode speed or the 250 MiB limit.
 
 ### 2026-08-30 — exact clean no-Docker reproduction for all engines
 

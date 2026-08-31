@@ -115,6 +115,19 @@
         "within-webm-quality.wasm": "1919cbb669393fdc6a2f2ab2a5c7d99e7de38a33eb91810e17a7dc5d6e79bff1"
       }
     },
+    "publishedRun": {
+      "runId": 33363432256,
+      "jobId": 99399172702,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33363432256",
+      "commit": "94923a37cf618b88ddd30bdaffd4bd8402239c90",
+      "result": "success",
+      "comparison": "19/19 published FFmpeg files byte-identical",
+      "elapsedSeconds": 747,
+      "dockerUsed": false,
+      "mismatchArtifactStep": "skipped",
+      "hostedCleanup": "success",
+      "retainedArtifacts": 0
+    },
     "directCorePin": {
       "historicalCommit": "79e4db4",
       "historicalWithinRemuxBlob": "307fd688fb11f322ae7e3552f0dd0e5012615901",
