@@ -1316,7 +1316,7 @@ function containerMpegTsProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding; subtitles, attachments, attached pictures, chapters, language tags, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
+      "All compatible video and audio streams are copied without re-encoding and compatible H.264 color fields remain in the compressed video; subtitles, attachments, attached pictures, chapters, language tags, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
       "MPEG-TS begins on a standards-compliant transport timestamp offset and cannot preserve MP4/MOV AAC priming metadata, so decoded audio trim may differ even though compressed AAC access units are unchanged.",
     ],
     fidelityLimitations: [],
@@ -1355,7 +1355,7 @@ function containerThreeGpProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding and compatible stream language tags are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded.",
+      "All compatible video and audio streams are copied without re-encoding; compatible stream language tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded.",
       "The bounded fragmented-3GP layout avoids duration-sized muxer indexes. Some older players may need to scan fragments before displaying an accurate duration or seeking.",
     ],
     fidelityLimitations: [],
@@ -1394,7 +1394,7 @@ function containerMovProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding and compatible stream language and general tags are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded.",
+      "All compatible video and audio streams are copied without re-encoding; compatible stream language/general tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded.",
       "The bounded fragmented-QuickTime layout avoids duration-sized muxer indexes. Some players may need to scan fragments before displaying an accurate duration or seeking.",
     ],
     fidelityLimitations: [],
@@ -1433,7 +1433,7 @@ function containerFlvProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
-      "FLV carries only the first H.264 video stream and first AAC audio stream without re-encoding; additional streams, subtitles, attachments, attached pictures, chapters, language tags, and unsupported general metadata are explicitly excluded.",
+      "FLV carries only the first H.264 video stream and first AAC audio stream without re-encoding, with compatible H.264 color fields remaining in the compressed video; additional streams, subtitles, attachments, attached pictures, chapters, language tags, display rotation, and unsupported general metadata are explicitly excluded.",
       "The FLV trailer seeks back only to update fixed-size duration and file-size metadata; output memory remains bounded independently of total duration and file size.",
     ],
     fidelityLimitations: [],

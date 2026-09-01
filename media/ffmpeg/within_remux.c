@@ -332,6 +332,20 @@ static int64_t output_seek(void *opaque, int64_t offset, int whence) {
 static int supported_audio_artwork_codec(enum AVCodecID codec_id);
 static int bounded_audio_artwork_stream(const AVStream *stream);
 
+static int stream_has_display_matrix(const AVStream *stream) {
+  if (!stream || !stream->codecpar) {
+    return 0;
+  }
+  for (int index = 0; index < stream->codecpar->nb_coded_side_data; index++) {
+    const AVPacketSideData *side_data =
+        &stream->codecpar->coded_side_data[index];
+    if (side_data->type == AV_PKT_DATA_DISPLAYMATRIX && side_data->size > 0) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
     return 0;
@@ -2710,6 +2724,24 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     within_message(
         1,
         "FLV cannot reliably represent chapters, subtitles, attachments, language tags, or additional video and audio streams; any such source elements are explicitly excluded.");
+  }
+  int source_has_display_rotation = 0;
+  for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+    if (input_format->streams[index]->codecpar->codec_type ==
+            AVMEDIA_TYPE_VIDEO &&
+        stream_has_display_matrix(input_format->streams[index])) {
+      source_has_display_rotation = 1;
+      break;
+    }
+  }
+  if (source_has_display_rotation && container_mpegts_output) {
+    within_message(
+        1,
+        "Source display-rotation metadata cannot be represented by MPEG-TS and is explicitly excluded; compressed video pixels remain unrotated.");
+  } else if (source_has_display_rotation && container_flv_output) {
+    within_message(
+        1,
+        "Source display-rotation metadata cannot be represented by FLV and is explicitly excluded; compressed video pixels remain unrotated.");
   }
   if (input_format->nb_chapters > 0 && !matroska_output) {
     within_message(

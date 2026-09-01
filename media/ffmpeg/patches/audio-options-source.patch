@@ -12,12 +12,26 @@ index 091c37e..6592a22 100644
  #define WITHIN_ROTATE_REQUIRED (-4096)
  #ifndef WITHIN_VIDEO_THREADS
  #define WITHIN_VIDEO_THREADS 1
-@@ -326,6 +329,9 @@ static int64_t output_seek(void *opaque, int64_t offset, int whence) {
+@@ -326,6 +329,23 @@ static int64_t output_seek(void *opaque, int64_t offset, int whence) {
    return next;
  }
  
 +static int supported_audio_artwork_codec(enum AVCodecID codec_id);
 +static int bounded_audio_artwork_stream(const AVStream *stream);
++
++static int stream_has_display_matrix(const AVStream *stream) {
++  if (!stream || !stream->codecpar) {
++    return 0;
++  }
++  for (int index = 0; index < stream->codecpar->nb_coded_side_data; index++) {
++    const AVPacketSideData *side_data =
++        &stream->codecpar->coded_side_data[index];
++    if (side_data->type == AV_PKT_DATA_DISPLAYMATRIX && side_data->size > 0) {
++      return 1;
++    }
++  }
++  return 0;
++}
 +
  static int stream_is_supported(const AVStream *stream, int profile) {
    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
@@ -585,7 +599,32 @@ index 091c37e..6592a22 100644
    }
    if (container_flv_output) {
      for (unsigned int index = 0; index < input_format->nb_streams; index++) {
-@@ -2448,7 +2777,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2381,6 +2710,24 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+         1,
+         "FLV cannot reliably represent chapters, subtitles, attachments, language tags, or additional video and audio streams; any such source elements are explicitly excluded.");
+   }
++  int source_has_display_rotation = 0;
++  for (unsigned int index = 0; index < input_format->nb_streams; index++) {
++    if (input_format->streams[index]->codecpar->codec_type ==
++            AVMEDIA_TYPE_VIDEO &&
++        stream_has_display_matrix(input_format->streams[index])) {
++      source_has_display_rotation = 1;
++      break;
++    }
++  }
++  if (source_has_display_rotation && container_mpegts_output) {
++    within_message(
++        1,
++        "Source display-rotation metadata cannot be represented by MPEG-TS and is explicitly excluded; compressed video pixels remain unrotated.");
++  } else if (source_has_display_rotation && container_flv_output) {
++    within_message(
++        1,
++        "Source display-rotation metadata cannot be represented by FLV and is explicitly excluded; compressed video pixels remain unrotated.");
++  }
+   if (input_format->nb_chapters > 0 && !matroska_output) {
+     within_message(
+         1,
+@@ -2448,7 +2795,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
          : av1_webm_output
              ? stream_is_supported(input_stream, profile) && copy_compatible
          : mp3_output
@@ -595,7 +634,7 @@ index 091c37e..6592a22 100644
          : aac_output
              ? (int)index == audio_stream_index
          : ogg_audio_output
-@@ -2530,7 +2860,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2530,7 +2878,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  ? "The source cover-art stream is explicitly excluded from "
                    "this audio-only M4A profile."
              : mp3_output
@@ -608,7 +647,7 @@ index 091c37e..6592a22 100644
              : aac_output
                  ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
              : ogg_audio_output
-@@ -2714,6 +3048,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2714,6 +3066,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        report_av_error("Stream metadata copy failed", result);
        goto cleanup;
      }

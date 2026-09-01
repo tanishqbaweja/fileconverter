@@ -654,7 +654,7 @@ function expectMediaTitle(probe: MediaProbe, expected: string): void {
   expect(titles).toContain(expected);
 }
 
-function expectComplexVideoFields(video: ProbeStream | undefined): void {
+function expectComplexVideoColorFields(video: ProbeStream | undefined): void {
   expect(video).toMatchObject({
     width: 640,
     height: 360,
@@ -667,11 +667,26 @@ function expectComplexVideoFields(video: ProbeStream | undefined): void {
     chroma_location: "left",
     field_order: "progressive",
   });
+}
+
+function displayRotation(video: ProbeStream | undefined): number | undefined {
+  return video?.side_data_list?.find(
+    (entry) => entry.side_data_type === "Display Matrix",
+  )?.rotation;
+}
+
+function expectComplexVideoFields(video: ProbeStream | undefined): void {
+  expectComplexVideoColorFields(video);
+  expect(displayRotation(video)).toBe(90);
+}
+
+function expectRotationExcluded(video: ProbeStream | undefined): void {
+  expectComplexVideoColorFields(video);
   expect(
-    video?.side_data_list?.find(
+    video?.side_data_list?.some(
       (entry) => entry.side_data_type === "Display Matrix",
-    )?.rotation,
-  ).toBe(90);
+    ) ?? false,
+  ).toBe(false);
 }
 
 function assertProjectLocal(target: string): void {
@@ -5118,6 +5133,112 @@ test("Matroska stream copy preserves compatible streams, chapters, and metadata"
     },
   );
 });
+
+for (const route of [
+  ["mkv-to-mov", containerMovOutputPaths.mkv, "mov"],
+  ["mkv-to-3gp", containerThreeGpOutputPaths.mkv, "3gp"],
+] as const) {
+  test(`${route[2].toUpperCase()} stream copy preserves complex representable fields`, async () => {
+    await runMediaRoute(
+      route[0],
+      route[1],
+      ["h264", "aac", "aac"],
+      400_000,
+      complexFixturePath,
+      {
+        expectedWarningFragments: [
+          "Subtitles are explicitly excluded",
+          "attachment is explicitly excluded",
+          "chapters are explicitly excluded",
+        ],
+        validate: async (probe, outputPath) => {
+          expectComplexVideoFields(
+            probe.streams.find((stream) => stream.codec_type === "video"),
+          );
+          const audio = probe.streams.filter(
+            (stream) => stream.codec_type === "audio",
+          );
+          expect(audio.map((stream) => stream.tags?.language)).toEqual([
+            "eng",
+            "spa",
+          ]);
+          expect(audio.map((stream) => stream.disposition?.default)).toEqual([
+            1,
+            0,
+          ]);
+          if (route[2] === "mov") {
+            expect(probe.format.tags?.title).toBe(
+              "Within complex remux fixture",
+            );
+            expect(probe.format.tags?.comment).toBe(
+              "Deterministic multi-stream metadata",
+            );
+          }
+          await expectDecodedVideoMatch(complexFixturePath, outputPath);
+          await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
+          await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);
+        },
+      },
+    );
+  });
+}
+
+for (const route of [
+  [
+    "mkv-to-mpeg-ts",
+    containerMpegTsOutputPaths.mkv,
+    ["h264", "aac", "aac"],
+    [
+      "display-rotation metadata cannot be represented by MPEG-TS",
+      "Subtitles are explicitly excluded",
+      "attachment is explicitly excluded",
+      "chapters are explicitly excluded",
+    ],
+  ],
+  [
+    "mkv-to-flv",
+    containerFlvOutputPaths.mkv,
+    ["h264", "aac"],
+    [
+      "display-rotation metadata cannot be represented by FLV",
+      "Only the first AAC audio stream",
+      "Subtitles are explicitly excluded",
+      "attachment is explicitly excluded",
+      "chapters are explicitly excluded",
+    ],
+  ],
+] as const) {
+  test(`${route[0]} retains color while disclosing rotation and topology exclusions`, async () => {
+    await runMediaRoute(
+      route[0],
+      route[1],
+      [...route[2]],
+      400_000,
+      complexFixturePath,
+      {
+        expectedWarningFragments: route[3],
+        validate: async (probe, outputPath) => {
+          expectRotationExcluded(
+            probe.streams.find((stream) => stream.codec_type === "video"),
+          );
+          expect(probe.chapters ?? []).toEqual([]);
+          expect(probe.format.tags?.title).toBeUndefined();
+          const audio = probe.streams.filter(
+            (stream) => stream.codec_type === "audio",
+          );
+          expect(audio.every((stream) => stream.tags?.language == null)).toBe(
+            true,
+          );
+          await expectDecodedVideoMatch(complexFixturePath, outputPath);
+          await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
+          if (route[0] === "mkv-to-mpeg-ts") {
+            await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);
+          }
+        },
+      },
+    );
+  });
+}
 
 test("Matroska planner blocks codecs outside its certified set without creating output", async () => {
   await page.goto("/?test=1");
