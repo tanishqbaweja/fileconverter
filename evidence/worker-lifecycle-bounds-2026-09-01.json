@@ -1,0 +1,102 @@
+{
+  "auditDate": "2026-09-01",
+  "scope": "All production TypeScript modules under workers/, both message-loop entrypoints, their application owners, and worker response protocols",
+  "dockerUsed": false,
+  "sourceAudit": {
+    "workerModuleCount": 30,
+    "messageLoopEntrypoints": [
+      "workers/conversion.worker.ts",
+      "workers/direct-file-writer.worker.ts"
+    ],
+    "helperModulesWithoutMutableCrossJobState": 28,
+    "conversionWorkerMutableState": [
+      "activeJobId",
+      "cancelled",
+      "lastCancellationYieldBytes",
+      "lastProgressAt",
+      "resvgInitialization"
+    ],
+    "conversionWorkerTerminalReset": ["activeJobId", "cancelled"],
+    "directWriterMutableState": [
+      "busy",
+      "control",
+      "errorBytes",
+      "faultInjected",
+      "ownedPayload",
+      "payload",
+      "position",
+      "streamWriter",
+      "testFault"
+    ],
+    "directWriterTerminationPaths": [
+      "initialization failure",
+      "command timeout",
+      "destination close",
+      "destination abort"
+    ],
+    "moduleScopedConstContainersMutatedAfterInitialization": 0,
+    "recurringWorkerTimers": 0,
+    "binaryDataInWorkerResponses": false,
+    "futureInventoryChangesFailAudit": true
+  },
+  "hardLimits": {
+    "batchFiles": 256,
+    "retainedUiWarnings": 8,
+    "workerWarningOrErrorCharacters": 2048,
+    "progressPhaseCharacters": 256,
+    "minimumProgressIntervalMilliseconds": 125,
+    "maximumNonForcedProgressMessagesPerSecond": 8,
+    "directWriterPayloadBytes": 262144,
+    "directWriterErrorBytes": 4096,
+    "directWriterControlWords": 8,
+    "directWriterPendingCommands": 1,
+    "nativeDiagnosticRings": {
+      "auditedModules": 7,
+      "maximumEntries": "8 for image/archive specialists; 32 for FFmpeg",
+      "maximumCharactersPerEntry": 512
+    }
+  },
+  "implementedCorrections": [
+    "A batch larger than 256 files is rejected before format inspection, destination creation, or conversion so File references, output names, and result state cannot grow without a hard ceiling.",
+    "Mixed-format and oversized batch rejection clears prior source-inspection, option, metric, warning, memory, destination, and result state so a rejected selection cannot retain the previous file's per-job objects.",
+    "All conversion-worker progress phases, warnings, and errors are centrally truncated before postMessage.",
+    "Direct-writer initialization and command errors use the same central text ceiling in addition to the existing fixed 4 KiB shared error channel.",
+    "The existing eight-warning UI ring now uses the shared named limit and truncates the batch-prefixed warning before retention."
+  ],
+  "browserVerification": {
+    "mode": "production Chrome with Playwright video capture disabled",
+    "command": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/streaming-conversions.spec.ts --grep <worker-lifecycle focused expression> --reporter=line",
+    "result": "10 passed",
+    "elapsedSeconds": 20.2,
+    "postReviewBatchStateResult": "3 passed",
+    "postReviewBatchStateElapsedSeconds": 11.7,
+    "cases": [
+      "two Unicode-named files converted sequentially in one worker with every output deleted",
+      "mixed-format batch rejected before output",
+      "257-file batch rejected at the 256-file retained-state ceiling before output",
+      "bounded output-write failure removed partial output",
+      "quota failure removed partial output",
+      "revoked permission removed partial output",
+      "worker crash removed abandoned output and replacement worker became ready",
+      "reload removed abandoned app-owned output while preserving unrelated storage",
+      "large OPFS conversion cancellation removed partial output",
+      "direct-save cancellation released the destination lock and left no data"
+    ]
+  },
+  "verification": {
+    "productionBuild": "passed",
+    "typescript": "passed",
+    "eslint": "passed",
+    "unitTests": "92 passed",
+    "newLifecycleAuditTests": "5 passed",
+    "publishedWasmChanged": false
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "completionClaim": "A-08 is verified complete for the current production worker inventory. New or removed worker modules, new module-scoped mutable state, mutable module containers, binary response payloads, missing termination paths, or removed hard limits fail the unit audit and require explicit review."
+}

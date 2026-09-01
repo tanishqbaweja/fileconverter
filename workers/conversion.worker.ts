@@ -14,6 +14,11 @@ import {
   videoOptionProfileForId,
 } from "../lib/media-conversion-options";
 import {
+  MAX_PROGRESS_PHASE_CHARS,
+  MAX_WORKER_RESPONSE_TEXT_CHARS,
+  MIN_PROGRESS_INTERVAL_MS,
+} from "../lib/resource-limits";
+import {
   createZipDataDescriptor,
   createZipLocalHeader,
   ensureZip32,
@@ -293,6 +298,20 @@ let lastCancellationYieldBytes = 0;
 let resvgInitialization: Promise<void> | null = null;
 
 function post(message: WorkerResponse): void {
+  if (message.type === "progress") {
+    workerScope.postMessage({
+      ...message,
+      phase: message.phase.slice(0, MAX_PROGRESS_PHASE_CHARS),
+    });
+    return;
+  }
+  if (message.type === "warning" || message.type === "error") {
+    workerScope.postMessage({
+      ...message,
+      message: message.message.slice(0, MAX_WORKER_RESPONSE_TEXT_CHARS),
+    });
+    return;
+  }
   workerScope.postMessage(message);
 }
 
@@ -486,7 +505,7 @@ function emitProgress(
   force = false,
 ): void {
   const now = performance.now();
-  if (!force && now - lastProgressAt < 125) return;
+  if (!force && now - lastProgressAt < MIN_PROGRESS_INTERVAL_MS) return;
   lastProgressAt = now;
   updateElapsed(metrics, startedAt);
   post({ type: "progress", jobId, phase, metrics: { ...metrics } });

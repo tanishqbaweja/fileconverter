@@ -198,9 +198,18 @@ restarts the conversion worker, and explicitly deletes the entry.
 Files with the same detected input format can be selected as a batch. The user
 chooses one destination folder, existing names are never overwritten, and files
 are converted strictly sequentially through the same bounded engine with one
-write in flight; the worker is terminated after the batch. The browser suite
-converts Unicode-named files in one batch, parses both outputs, checks the queue
-limits, and deletes every test-owned copy.
+write in flight; the worker is terminated after the batch. A batch is capped at
+256 files before format inspection or destination creation, bounding retained
+`File` handles, output names, and result slots. Worker progress is throttled to
+at most eight non-forced messages per second; phase text is capped at 256
+characters, warning/error text at 2,048 characters, and the UI retains only the
+latest eight warnings. The browser suite converts Unicode-named files in one
+batch, rejects a 257-file batch before output, parses both valid outputs, checks
+the queue limits, and deletes every test-owned copy. A source audit covers all
+30 worker modules and both message loops; its static tests reject new
+cross-job mutable state, mutable module containers, binary response payloads,
+missing terminal cleanup, or an unreviewed worker inventory change. See
+`evidence/worker-lifecycle-bounds-2026-09-01.json`.
 
 The source-inspection panel reports the locally detected format and category,
 browser-provided MIME type, exact byte count, batch count, and modification time.

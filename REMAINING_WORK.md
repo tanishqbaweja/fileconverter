@@ -39,7 +39,7 @@ not the entire product specification.
 | A-05 | OPFS is fallback/scratch only, with quota checks, warnings, persistence handling, fixed-buffer copy, automatic cleanup, and manual management | Verified complete | Storage estimate, startup/manual cleanup UI, abandonment/reload/quota/failure tests, fixed-buffer destinations | Continue route-specific scratch cleanup tests. |
 | A-06 | Generated fixtures and converted copies remain project-local and disposable data is removed | Verified complete | `scripts/cleanup-generated.mjs`, category `finally` cleanup, cleanup ledger, current `work/.gitkeep` convention | Preflight free space before every new large run and inspect cleanup after every failure. |
 | A-07 | Expensive work runs in dedicated workers; engines are lazy-loaded and terminated/released | Verified complete for current engines | `workers/conversion.worker.ts`, route-specific workers, worker lifecycle tests and metrics | Verify the invariant for every new engine. |
-| A-08 | Fixed-size logs/samples/messages; references released; Wasm initial/max memory explicit and fail-safe | Partially implemented | Bounded runtime metrics and fixed Wasm builds are documented and stress-tested | Perform a source-level lifecycle audit across every worker; add static/unit checks for newly introduced unbounded histories or messages. |
+| A-08 | Fixed-size logs/samples/messages; references released; Wasm initial/max memory explicit and fail-safe | Verified complete for current workers | `tests/worker-lifecycle.test.mjs` inventories all 30 worker modules and both message loops, rejects unreviewed module-scoped mutable state and mutation of module containers, proves terminal worker cleanup, forbids binary response payloads, and locks fixed diagnostic/message/batch bounds. Batches stop at 256 files before inspection/output; progress is throttled to at most 8 non-forced messages/s; phases are 256 characters, warning/errors 2,048 characters, the UI retains 8 warnings, direct writes use one 256 KiB payload plus a 4 KiB error channel, and native diagnostic rings retain 8 or 32 entries of 512 characters. Production Chrome passed 10/10 sequential-batch, ceiling, write/quota/permission, crash/restart, reload, OPFS cancel, and direct-cancel cases in 20.2 seconds. Fixed Wasm manifests and profile memory evidence remain separately enforced. `evidence/worker-lifecycle-bounds-2026-09-01.json` records the audit. | Re-run and explicitly extend the inventory/allowlist whenever a worker or retained-state path changes. |
 | A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Verified complete for the current Chrome profiler | `scripts/memory-profile.mjs` samples the Windows Chrome tree, page/worker heaps, storage, and route metrics; retained JSON/CSV/HTML reports include null-capable samples and graphs | Validate equivalent process-tree collection on any additional supported runner OS before claiming cross-platform profiling. |
 
 ## Media engines and format coverage
@@ -141,6 +141,41 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-01 — bounded worker-lifecycle checkpoint
+
+- Audited every one of the 30 production TypeScript modules under `workers/`.
+  Only `conversion.worker.ts` and `direct-file-writer.worker.ts` own message
+  loops. The other 28 modules have no mutable module-scoped state, and the
+  audit rejects mutation of initialized module-level arrays, maps, sets, or
+  typed arrays.
+- The conversion worker retains only five reviewed scalar/initialization values
+  between commands and resets job/cancellation state in `finally`; the app
+  terminates it after success, cancellation, error, crash, or unmount. The
+  direct writer's nine reviewed values are exactly the writer, three fixed
+  shared-buffer views, one fixed owned payload, position/busy/fault state; its
+  owner terminates it after init failure, timeout, close, or abort.
+- Added shared hard limits: 256 files per batch, eight retained UI warnings,
+  2,048 characters per warning/error response, 256 characters per progress
+  phase, and a 125 ms minimum interval between non-forced progress messages.
+  The existing one-command 256 KiB direct payload, 4 KiB error channel, fixed
+  Wasm manifests, and 8/32-entry 512-character native diagnostic rings remain
+  enforced.
+- The first source audit found the previously unbounded batch selection; the UI
+  now rejects file 257 before format inspection, output naming, or destination
+  creation. Mixed-format and oversized rejection also releases prior inspection,
+  option, metric, warning, memory, destination, and result state. Central worker
+  response truncation prevents an engine or browser
+  exception from creating an oversized structured-clone message or retained UI
+  string.
+- Five lifecycle unit audits pass, bringing the complete unit suite to 92/92.
+  Production Chrome passed 10/10 focused cases in 20.2 seconds: two sequential
+  Unicode batch jobs, mixed and over-limit rejection, write/quota/permission
+  cleanup, crash/restart, reload cleanup, OPFS cancellation, and direct-save
+  cancellation with lock release. Production build, TypeScript, and ESLint
+  pass. A post-review 3/3 batch rerun in 11.7 seconds verified the additional
+  rejected-selection state release. No Wasm binary changed and no Docker
+  command ran.
 
 ### 2026-09-01 — cross-source media-field mapping checkpoint
 

@@ -41,6 +41,11 @@ import {
   type VideoConversionOptions,
 } from "../../lib/media-conversion-options";
 import {
+  MAX_BATCH_FILES,
+  MAX_RETAINED_WARNINGS,
+  MAX_WORKER_RESPONSE_TEXT_CHARS,
+} from "../../lib/resource-limits";
+import {
   type DragEvent,
   type ChangeEvent,
   useCallback,
@@ -587,7 +592,11 @@ export function ConverterApp() {
             batch && batch.files.length > 1
               ? `${batch.files[batch.index]?.name ?? `File ${batch.index + 1}`}: ${message.message}`
               : message.message;
-          setWarnings((current) => [...current.slice(-7), warning]);
+          const boundedWarning = warning.slice(0, MAX_WORKER_RESPONSE_TEXT_CHARS);
+          setWarnings((current) => [
+            ...current.slice(1 - MAX_RETAINED_WARNINGS),
+            boundedWarning,
+          ]);
         } else if (message.type === "complete") {
           const batch = activeBatchRef.current;
           activeOpfsNameRef.current = null;
@@ -817,6 +826,34 @@ export function ConverterApp() {
   const acceptFiles = useCallback(
     (nextFiles: File[]) => {
       if (jobState === "running") return;
+      if (nextFiles.length > MAX_BATCH_FILES) {
+        setFile(null);
+        setBatchFiles([]);
+        setInputFormat("binary");
+        setProfileId(null);
+        setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
+        setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
+        setSourceMediaInspection(null);
+        setSourceInspectionStatus("idle");
+        setSourceInspectionError(null);
+        setDestinationHandle(null);
+        setDestinationDirectoryHandle(null);
+        setJobState("idle");
+        setPhase("Ready");
+        setMetrics(null);
+        setWarnings([]);
+        setJsHeap(null);
+        setPeakJsHeap(null);
+        setOpfsName(null);
+        setOpfsNames([]);
+        setCompletedBatchOutputNames([]);
+        setBatchCompleted(0);
+        setError(
+          `A batch is limited to ${MAX_BATCH_FILES} files so file handles, output names, and result state remain bounded.`,
+        );
+        if (fileInputRef.current) fileInputRef.current.value = "";
+        return;
+      }
       const nextFile = nextFiles[0];
       if (!nextFile) return;
       const detected = detectFormat(nextFile);
@@ -830,11 +867,17 @@ export function ConverterApp() {
         setProfileId(null);
         setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
         setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
+        setSourceMediaInspection(null);
+        setSourceInspectionStatus("idle");
+        setSourceInspectionError(null);
         setDestinationHandle(null);
         setDestinationDirectoryHandle(null);
         setJobState("idle");
+        setPhase("Ready");
         setMetrics(null);
         setWarnings([]);
+        setJsHeap(null);
+        setPeakJsHeap(null);
         setOpfsName(null);
         setOpfsNames([]);
         setCompletedBatchOutputNames([]);

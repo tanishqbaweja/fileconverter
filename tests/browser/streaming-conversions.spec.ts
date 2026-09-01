@@ -7,6 +7,7 @@ import { link, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { gunzipSync } from "node:zlib";
+import { MAX_BATCH_FILES } from "../../lib/resource-limits";
 
 const execFileAsync = promisify(execFile);
 
@@ -1685,6 +1686,23 @@ test("rejects a mixed-format batch before creating any output", async () => {
     "Batch files must share one detected format",
   );
   expect((await currentState()).batchTotal).toBe(0);
+  await expect(page.locator('[data-testid="format-select"]')).toBeHidden();
+  expect(await appOwnedOpfsNames("within-test-")).toEqual([]);
+});
+
+test("rejects a batch above the retained-state ceiling before creating output", async () => {
+  const payloads = Array.from({ length: MAX_BATCH_FILES + 1 }, (_, index) => ({
+    name: `bounded-batch-${index.toString().padStart(3, "0")}.txt`,
+    mimeType: "text/plain",
+    buffer: Buffer.from("bounded batch fixture\n"),
+  }));
+  await page.locator('[data-testid="file-input"]').setInputFiles(payloads);
+  await expect(page.getByRole("alert")).toContainText(
+    `A batch is limited to ${MAX_BATCH_FILES} files`,
+  );
+  const state = await currentState();
+  expect(state.batchTotal).toBe(0);
+  expect(state.batchOutputNames).toEqual([]);
   await expect(page.locator('[data-testid="format-select"]')).toBeHidden();
   expect(await appOwnedOpfsNames("within-test-")).toEqual([]);
 });

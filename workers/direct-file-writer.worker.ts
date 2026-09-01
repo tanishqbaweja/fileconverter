@@ -17,6 +17,7 @@ import {
   type DirectWriterRequest,
   type DirectWriterResponse,
 } from "./direct-writer-protocol";
+import { MAX_WORKER_RESPONSE_TEXT_CHARS } from "../lib/resource-limits";
 
 const writerScope: DedicatedWorkerGlobalScope = self as never;
 const encoder = new TextEncoder();
@@ -37,9 +38,12 @@ function post(message: DirectWriterResponse): void {
 
 function errorText(error: unknown): string {
   if (error instanceof DOMException || error instanceof Error) {
-    return `${error.name}: ${error.message}`;
+    return `${error.name}: ${error.message}`.slice(
+      0,
+      MAX_WORKER_RESPONSE_TEXT_CHARS,
+    );
   }
-  return String(error);
+  return String(error).slice(0, MAX_WORKER_RESPONSE_TEXT_CHARS);
 }
 
 function injectTestFault(): void {

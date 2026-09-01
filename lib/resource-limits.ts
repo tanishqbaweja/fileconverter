@@ -1,0 +1,5 @@
+export const MAX_BATCH_FILES = 256;
+export const MAX_RETAINED_WARNINGS = 8;
+export const MAX_WORKER_RESPONSE_TEXT_CHARS = 2_048;
+export const MAX_PROGRESS_PHASE_CHARS = 256;
+export const MIN_PROGRESS_INTERVAL_MS = 125;
