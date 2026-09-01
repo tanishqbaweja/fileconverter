@@ -414,6 +414,14 @@ test("container MPEG-TS copy routes are public only at their measured evidence l
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
+      profile.metadataLimitations.some((limitation) =>
+        limitation.includes("stream language tags") &&
+        limitation.includes("color fields are preserved")
+      ),
+      true,
+      `${id}: MPEG-TS language/color retention disclosure`,
+    );
+    assert.equal(
       publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
       true,
     );
@@ -433,6 +441,13 @@ test("container 3GP copy routes are public only at their measured evidence limit
     assert.ok(profile, `missing ${id}`);
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      profile.metadataLimitations.some((limitation) =>
+        limitation.includes("marks its first compatible track as default")
+      ),
+      true,
+      `${id}: 3GP forced-default disclosure`,
+    );
     assert.equal(
       publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
       true,
@@ -454,6 +469,13 @@ test("container MOV copy routes are public only at their measured evidence limit
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
+      profile.metadataLimitations.some((limitation) =>
+        limitation.includes("marks its first compatible track as default")
+      ),
+      true,
+      `${id}: MOV forced-default disclosure`,
+    );
+    assert.equal(
       publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
       true,
     );
@@ -473,6 +495,13 @@ test("container FLV copy routes are public only at their measured evidence limit
     assert.ok(profile, `missing ${id}`);
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
+    assert.equal(
+      profile.metadataLimitations.some((limitation) =>
+        limitation.includes("supported title metadata are preserved")
+      ),
+      true,
+      `${id}: FLV title retention disclosure`,
+    );
     assert.equal(
       publicProfilesFor(profile.input).some((candidate) => candidate.id === id),
       true,
