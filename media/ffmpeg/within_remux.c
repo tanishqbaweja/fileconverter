@@ -2743,6 +2743,33 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         1,
         "Source display-rotation metadata cannot be represented by FLV and is explicitly excluded; compressed video pixels remain unrotated.");
   }
+  if (container_threegp_output || container_mov_output) {
+    int source_has_video = 0;
+    int source_has_audio = 0;
+    int source_has_default_video = 0;
+    int source_has_default_audio = 0;
+    for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+      AVStream *stream = input_format->streams[index];
+      if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
+          !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
+        source_has_video = 1;
+        source_has_default_video |=
+            !!(stream->disposition & AV_DISPOSITION_DEFAULT);
+      } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        source_has_audio = 1;
+        source_has_default_audio |=
+            !!(stream->disposition & AV_DISPOSITION_DEFAULT);
+      }
+    }
+    if ((source_has_video && !source_has_default_video) ||
+        (source_has_audio && !source_has_default_audio)) {
+      within_message(
+          1,
+          container_threegp_output
+              ? "The bounded 3GP muxer marks the first compatible video or audio track as default when that media type has no source default; compressed payloads are unchanged."
+              : "The bounded MOV muxer marks the first compatible video or audio track as default when that media type has no source default; compressed payloads are unchanged.");
+    }
+  }
   if (input_format->nb_chapters > 0 && !matroska_output) {
     within_message(
         1,

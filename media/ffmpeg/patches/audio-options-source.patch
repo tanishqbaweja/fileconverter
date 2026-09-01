@@ -599,7 +599,7 @@ index 091c37e..6592a22 100644
    }
    if (container_flv_output) {
      for (unsigned int index = 0; index < input_format->nb_streams; index++) {
-@@ -2381,6 +2710,24 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2381,6 +2710,51 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
          1,
          "FLV cannot reliably represent chapters, subtitles, attachments, language tags, or additional video and audio streams; any such source elements are explicitly excluded.");
    }
@@ -621,10 +621,37 @@ index 091c37e..6592a22 100644
 +        1,
 +        "Source display-rotation metadata cannot be represented by FLV and is explicitly excluded; compressed video pixels remain unrotated.");
 +  }
++  if (container_threegp_output || container_mov_output) {
++    int source_has_video = 0;
++    int source_has_audio = 0;
++    int source_has_default_video = 0;
++    int source_has_default_audio = 0;
++    for (unsigned int index = 0; index < input_format->nb_streams; index++) {
++      AVStream *stream = input_format->streams[index];
++      if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
++          !(stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
++        source_has_video = 1;
++        source_has_default_video |=
++            !!(stream->disposition & AV_DISPOSITION_DEFAULT);
++      } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
++        source_has_audio = 1;
++        source_has_default_audio |=
++            !!(stream->disposition & AV_DISPOSITION_DEFAULT);
++      }
++    }
++    if ((source_has_video && !source_has_default_video) ||
++        (source_has_audio && !source_has_default_audio)) {
++      within_message(
++          1,
++          container_threegp_output
++              ? "The bounded 3GP muxer marks the first compatible video or audio track as default when that media type has no source default; compressed payloads are unchanged."
++              : "The bounded MOV muxer marks the first compatible video or audio track as default when that media type has no source default; compressed payloads are unchanged.");
++    }
++  }
    if (input_format->nb_chapters > 0 && !matroska_output) {
      within_message(
          1,
-@@ -2448,7 +2795,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2448,7 +2822,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
          : av1_webm_output
              ? stream_is_supported(input_stream, profile) && copy_compatible
          : mp3_output
@@ -634,7 +661,7 @@ index 091c37e..6592a22 100644
          : aac_output
              ? (int)index == audio_stream_index
          : ogg_audio_output
-@@ -2530,7 +2878,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2530,7 +2905,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  ? "The source cover-art stream is explicitly excluded from "
                    "this audio-only M4A profile."
              : mp3_output
@@ -647,7 +674,7 @@ index 091c37e..6592a22 100644
              : aac_output
                  ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
              : ogg_audio_output
-@@ -2714,6 +3066,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2714,6 +3093,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        report_av_error("Stream metadata copy failed", result);
        goto cleanup;
      }

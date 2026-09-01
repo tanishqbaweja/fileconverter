@@ -654,6 +654,110 @@ function expectMediaTitle(probe: MediaProbe, expected: string): void {
   expect(titles).toContain(expected);
 }
 
+async function probeMediaFile(inputPath: string): Promise<MediaProbe> {
+  const { stdout } = await execFileAsync(
+    "ffprobe",
+    [
+      "-v", "error", "-show_format", "-show_streams", "-show_chapters",
+      "-count_frames", "-of", "json", inputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  return JSON.parse(stdout) as MediaProbe;
+}
+
+function expectRepresentableMediaFieldsCopied(
+  source: MediaProbe,
+  output: MediaProbe,
+  options: {
+    copyLanguage?: boolean;
+    copyDefaultDisposition?: boolean;
+    destinationForcesDefaultTracks?: boolean;
+    copyTitles?: boolean;
+  } = {},
+): void {
+  const {
+    copyLanguage = true,
+    copyDefaultDisposition = true,
+    destinationForcesDefaultTracks = false,
+    copyTitles = true,
+  } = options;
+  const sourceVideo = source.streams.find(
+    (stream) => stream.codec_type === "video",
+  );
+  const outputVideo = output.streams.find(
+    (stream) => stream.codec_type === "video",
+  );
+  expect(sourceVideo).toBeDefined();
+  expect(outputVideo).toBeDefined();
+  const implicitLimitedRange =
+    sourceVideo?.codec_name === "h264" &&
+    sourceVideo.color_range === "tv" &&
+    sourceVideo.color_space == null &&
+    sourceVideo.color_transfer == null &&
+    sourceVideo.color_primaries == null;
+  for (const field of [
+    "width",
+    "height",
+    "sample_aspect_ratio",
+    "display_aspect_ratio",
+    "color_range",
+    "color_space",
+    "color_transfer",
+    "color_primaries",
+    "chroma_location",
+    "field_order",
+  ] as const) {
+    if (
+      sourceVideo?.[field] != null &&
+      !(field === "color_range" && implicitLimitedRange)
+    ) {
+      expect(outputVideo?.[field], field).toBe(sourceVideo[field]);
+    }
+  }
+  if (displayRotation(sourceVideo) != null) {
+    expect(displayRotation(outputVideo)).toBe(displayRotation(sourceVideo));
+  }
+
+  const sourceAudio = source.streams.find(
+    (stream) => stream.codec_type === "audio",
+  );
+  const outputAudio = output.streams.find(
+    (stream) => stream.codec_type === "audio",
+  );
+  expect(sourceAudio).toBeDefined();
+  expect(outputAudio).toBeDefined();
+  expect(outputAudio?.sample_rate).toBe(sourceAudio?.sample_rate);
+  expect(outputAudio?.channels).toBe(sourceAudio?.channels);
+  if (copyLanguage && sourceAudio?.tags?.language != null) {
+    expect(outputAudio?.tags?.language).toBe(sourceAudio.tags.language);
+  }
+  if (copyDefaultDisposition && sourceAudio?.disposition?.default != null) {
+    expect(outputVideo?.disposition?.default).toBe(
+      sourceVideo?.disposition?.default,
+    );
+    expect(outputAudio?.disposition?.default).toBe(
+      sourceAudio.disposition.default,
+    );
+  }
+  if (destinationForcesDefaultTracks) {
+    expect(outputVideo?.disposition?.default).toBe(1);
+    expect(outputAudio?.disposition?.default).toBe(1);
+  }
+
+  if (copyTitles) {
+    const sourceTitles = [
+      source.format.tags,
+      ...source.streams.map((stream) => stream.tags),
+    ].flatMap((tags) =>
+      Object.entries(tags ?? {})
+        .filter(([key]) => key.toLowerCase() === "title")
+        .map(([, value]) => value),
+    );
+    for (const title of new Set(sourceTitles)) expectMediaTitle(output, title);
+  }
+}
+
 function expectComplexVideoColorFields(video: ProbeStream | undefined): void {
   expect(video).toMatchObject({
     width: 640,
@@ -5071,6 +5175,10 @@ for (const route of [
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("matroska");
         expect(probe.streams).toHaveLength(2);
+        expectRepresentableMediaFieldsCopied(
+          await probeMediaFile(route[1]),
+          probe,
+        );
         await expectDecodedVideoMatch(route[1], outputPath);
         if (route[4] === "aac") {
           await expectAacAccessUnitMatch(route[1], outputPath);
@@ -5153,6 +5261,7 @@ for (const route of [
       complexFixturePath,
       {
         expectedWarningFragments: [
+          "marks the first compatible video or audio track as default",
           "Subtitles are explicitly excluded",
           "attachment is explicitly excluded",
           "chapters are explicitly excluded",
@@ -5286,6 +5395,11 @@ for (const route of [
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("mpegts");
         expect(probe.streams).toHaveLength(2);
+        expectRepresentableMediaFieldsCopied(
+          await probeMediaFile(route[1]),
+          probe,
+          { copyDefaultDisposition: false, copyTitles: false },
+        );
         await expectDecodedVideoMatch(route[1], outputPath);
         await expectAacAccessUnitMatch(route[1], outputPath);
       },
@@ -5330,21 +5444,32 @@ test("MPEG-TS planner blocks incompatible audio without creating output", async 
 });
 
 for (const route of [
-  ["mkv-to-3gp", fixturePath, containerThreeGpOutputPaths.mkv, false],
-  ["mp4-to-3gp", mp4InputFixturePath, containerThreeGpOutputPaths.mp4, false],
-  ["mov-to-3gp", movInputFixturePath, containerThreeGpOutputPaths.mov, false],
-  ["mpeg-ts-to-3gp", mpegTsInputFixturePath, containerThreeGpOutputPaths["mpeg-ts"], true],
-  ["flv-to-3gp", flvInputFixturePath, containerThreeGpOutputPaths.flv, false],
+  ["mkv-to-3gp", fixturePath, containerThreeGpOutputPaths.mkv, false, true],
+  ["mp4-to-3gp", mp4InputFixturePath, containerThreeGpOutputPaths.mp4, false, false],
+  ["mov-to-3gp", movInputFixturePath, containerThreeGpOutputPaths.mov, false, false],
+  ["mpeg-ts-to-3gp", mpegTsInputFixturePath, containerThreeGpOutputPaths["mpeg-ts"], true, true],
+  ["flv-to-3gp", flvInputFixturePath, containerThreeGpOutputPaths.flv, false, true],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded 3GP`, async () => {
     await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: [],
+      expectedWarningFragments: route[4]
+        ? ["marks the first compatible video or audio track as default"]
+        : [],
       expectedDurationSeconds: 4,
       durationToleranceSeconds: 0.25,
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("3gp");
         expect(probe.format.tags?.major_brand).toBe("3gp6");
         expect(probe.streams).toHaveLength(2);
+        expectRepresentableMediaFieldsCopied(
+          await probeMediaFile(route[1]),
+          probe,
+          {
+            copyDefaultDisposition: false,
+            destinationForcesDefaultTracks: true,
+            copyTitles: false,
+          },
+        );
         await expectDecodedVideoMatch(route[1], outputPath);
         await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
       },
@@ -5371,21 +5496,31 @@ for (const rejection of [
 }
 
 for (const route of [
-  ["mkv-to-mov", fixturePath, containerMovOutputPaths.mkv, false],
-  ["mp4-to-mov", mp4InputFixturePath, containerMovOutputPaths.mp4, false],
-  ["3gp-to-mov", threeGpInputFixturePath, containerMovOutputPaths["3gp"], false],
-  ["mpeg-ts-to-mov", mpegTsInputFixturePath, containerMovOutputPaths["mpeg-ts"], true],
-  ["flv-to-mov", flvInputFixturePath, containerMovOutputPaths.flv, false],
+  ["mkv-to-mov", fixturePath, containerMovOutputPaths.mkv, false, true],
+  ["mp4-to-mov", mp4InputFixturePath, containerMovOutputPaths.mp4, false, false],
+  ["3gp-to-mov", threeGpInputFixturePath, containerMovOutputPaths["3gp"], false, false],
+  ["mpeg-ts-to-mov", mpegTsInputFixturePath, containerMovOutputPaths["mpeg-ts"], true, true],
+  ["flv-to-mov", flvInputFixturePath, containerMovOutputPaths.flv, false, true],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded MOV`, async () => {
     await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: [],
+      expectedWarningFragments: route[4]
+        ? ["marks the first compatible video or audio track as default"]
+        : [],
       expectedDurationSeconds: 4,
       durationToleranceSeconds: 0.25,
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("mov");
         expect(probe.format.tags?.major_brand).toBe("qt  ");
         expect(probe.streams).toHaveLength(2);
+        expectRepresentableMediaFieldsCopied(
+          await probeMediaFile(route[1]),
+          probe,
+          {
+            copyDefaultDisposition: false,
+            destinationForcesDefaultTracks: true,
+          },
+        );
         await expectDecodedVideoMatch(route[1], outputPath);
         await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
       },
@@ -5456,6 +5591,11 @@ for (const route of [
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("flv");
         expect(probe.streams.filter((stream) => stream.codec_name)).toHaveLength(2);
+        expectRepresentableMediaFieldsCopied(
+          await probeMediaFile(route[1]),
+          probe,
+          { copyLanguage: false, copyDefaultDisposition: false },
+        );
         await inspectFlvAacSignals(outputPath);
         await expectVideoPacketMatch(route[1], outputPath);
         await expectAacAccessUnitMatch(route[1], outputPath);
