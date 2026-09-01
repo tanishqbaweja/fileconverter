@@ -53,7 +53,7 @@ not the entire product specification.
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
 | M-07 | User-selectable audio bitrate, sample rate, channel layout, codec/quality, lossless/lossy choice | Verified complete for the published practical audio surface | Validated codec, compression, bitrate, rate, channel, and quality controls span UI, route normalization, request/worker, codec-aware JS/Wasm ABI, and native allowlists. Production Chrome passed 10/10 including genuine AAC, Opus, Vorbis, WMA2, FLAC, ALAC, AIFF/PCM, AMR-NB, MP3, video-regression, quality-ordering, cancellation, and write-failure paths. Maximum AAC 320 kb/s/48 kHz/stereo passed 3/3 on 153,600,106 bytes in 13.35–13.84 seconds at 192.6 MiB worst complete-Chrome incremental private memory with 256 KiB reads, 938-byte writes/queueing, one pending operation, and fixed 32 MiB Wasm. Hosted run `33432010221` reproduced the published FFmpeg artifacts exactly without Docker in 568 seconds, ran cleanup, skipped mismatch upload, and retained zero artifacts. `evidence/audio-output-controls-2026-09-01.json` records the exact gate. | Re-run the same gates for any new codec, setting, or worker topology. Tags and embedded artwork remain separately tracked under M-08. |
-| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented; bounded common-tag and MP3/FLAC artwork subset verified | `evidence/audio-artwork-retention-2026-09-01.json` records the complete bounded subset. MP3 and FLAC outputs copy seven common text tags where representable and packet-copy the first attached JPEG/PNG without decode when it is at most 4 MiB, 4,096 pixels per side, and 16 megapixels; unsupported, additional, oversized, malformed, or unrepresentable art is explicitly excluded. Deterministic AAC/M4A and MP3/MP4 fixtures retain the exact 178-byte PNG packet. Production Chrome passed genuine M4A-to-MP3, M4A-to-FLAC, MP4-MP3 stream-copy, standalone MP3-to-FLAC, standalone FLAC-to-MP3, and raw-AAC exclusion cases with exact tags/artwork and full native decode; the complete 11/11 media-options regression then passed in 51.2 seconds. The 134,402,091-byte random-access fixture passed FLAC 3/3 in 0.376–0.733 seconds at 95.9 MiB worst complete-Chromium incremental private memory and MP3 3/3 in 0.234–0.551 seconds at 88.4 MiB; exact output, artwork, tags, packet/decode, bounded I/O, one pending operation, fixed 32 MiB Wasm, and cleanup all passed. Two H.264-bearing designs were rejected at 270.8 and 253.7 MiB because unrelated excluded-video renderer overhead crossed the unchanged limit. No-Docker publication run `33461545716` rebuilt every FFmpeg artifact exactly at commit `04c92b8` in 10m32s, skipped mismatch upload, completed repository-local cleanup, and retained zero artifacts. All four obsolete branch mismatch archives were deleted, leaving zero Actions artifacts on the branch. Prior representative title retention remains in `evidence/audio-metadata-retention-browser-2026-08-28.json`. | Independently validate remaining source-container-specific field mappings and any future destination-specific artwork representation; representative coverage does not imply every metadata field in every public route. |
+| M-08 | Audio tags, embedded artwork, and metadata preservation | Partially implemented; bounded common-tag and MP3/FLAC artwork subset verified | `evidence/audio-artwork-retention-2026-09-01.json` records the complete bounded subset. MP3 and FLAC outputs copy seven common text tags where representable and packet-copy the first attached JPEG/PNG without decode when it is at most 4 MiB, 4,096 pixels per side, and 16 megapixels; unsupported, additional, oversized, malformed, or unrepresentable art is explicitly excluded. Deterministic AAC/M4A, MP3/MP4, Ogg Vorbis, and Ogg Opus fixtures retain the exact 178-byte PNG packet. Production Chrome passed genuine M4A-to-MP3, M4A-to-FLAC, MP4-MP3 stream-copy, standalone MP3-to-FLAC, standalone FLAC-to-MP3, Vorbis-to-MP3/FLAC, Opus-to-MP3/FLAC, and raw-AAC exclusion cases with exact tags/artwork and full native decode; the complete 11/11 media-options regression passed in 50.8 seconds. The Ogg mapping promotes only the seven allowlisted stream comments and does not duplicate `METADATA_BLOCK_PICTURE`. The 134,402,091-byte random-access fixture passed FLAC 3/3 in 0.376–0.733 seconds at 95.9 MiB worst complete-Chromium incremental private memory and MP3 3/3 in 0.234–0.551 seconds at 88.4 MiB; exact output, artwork, tags, packet/decode, bounded I/O, one pending operation, fixed 32 MiB Wasm, and cleanup all passed. Two H.264-bearing designs were rejected at 270.8 and 253.7 MiB because unrelated excluded-video renderer overhead crossed the unchanged limit. No-Docker publication run `33480650192` rebuilt every FFmpeg artifact exactly at commit `b087c58` in 8m56s, skipped mismatch upload, completed repository-local cleanup, and retained zero artifacts. The candidate archive and four older branch mismatch archives were deleted, leaving zero Actions artifacts on the branch. Prior representative title retention remains in `evidence/audio-metadata-retention-browser-2026-08-28.json`. | Independently validate remaining source-container-specific field mappings and any future destination-specific artwork representation; representative coverage does not imply every metadata field in every public route. |
 | M-09 | WebCodecs optional acceleration with capability detection and controlled-memory CPU/Wasm fallback | Partially implemented | Capability detection and browser-native image decoding are present; media routes use controlled Wasm | Benchmark practical video/audio WebCodecs paths before adopting them; document rejection if they cannot preserve container/metadata or deterministic fallback behavior. |
 
 ## Images, archives, subtitles, data, ebooks, and documents
@@ -109,17 +109,14 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Finish publication and evidence for the implemented video controls, then
-   extend the verified MP3 model to practical audio codec/quality/lossless
-   choices.
-2. Audit stream/metadata preservation for every public media route; implement
+1. Audit stream/metadata preservation for every public media route; implement
    representable fields and make every exclusion explicit.
-3. Expand the passing Edge, Brave, and Opera smoke evidence into representative
+2. Expand the passing Edge, Brave, and Opera smoke evidence into representative
    route and headed interaction coverage.
-4. Perform bounded feasibility work for HEIF/HEIC, camera raw, broader SVG, and
+3. Perform bounded feasibility work for HEIF/HEIC, camera raw, broader SVG, and
    the missing media combinations. Promote only fully evidenced routes.
-5. Expand headed interaction audits and representative multi-gigabyte scaling.
-6. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
+4. Expand headed interaction audits and representative multi-gigabyte scaling.
+5. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
    reproducibility, registry/report-consistency, cleanup, and protected-fixture
    gates before removing all partial/missing statuses.
 
@@ -144,6 +141,32 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-01 — Ogg Vorbis/Opus tag and artwork mapping checkpoint
+
+- Added deterministic Vorbis and Opus fixtures using standard
+  `METADATA_BLOCK_PICTURE` comments. Both regenerate byte-for-byte, expose the
+  same exact 178-byte PNG as a bounded attached picture, and carry the seven
+  certified text fields as stream-scoped Ogg comments.
+- The native audio wrapper now promotes only `title`, `artist`, `album`,
+  `genre`, `date`, `track`, and `comment` from container scope or, when needed,
+  the selected audio stream into MP3/FLAC destination metadata. It does not copy
+  the base64 picture comment into destination tags; artwork remains one bounded
+  packet-copy stream under the existing 4 MiB/4,096-side/16-megapixel limits.
+- The first production-browser run preserved artwork but correctly failed when
+  Ogg text tags were absent at destination scope. The published fix passed
+  Vorbis-to-MP3, Vorbis-to-FLAC, Opus-to-MP3, and Opus-to-FLAC with exact tags,
+  exact artwork, bounded I/O, and full native audio decode. The focused gate
+  passed 1/1 in 21.0 seconds and the complete media-options file passed 11/11 in
+  50.8 seconds.
+- Candidate run `33479466650` produced the expected two-file diff while all 18
+  peer artifacts remained exact. Publication run `33480650192` then rebuilt
+  every committed FFmpeg artifact exactly without Docker in 8m56s, skipped
+  mismatch upload, and completed repository-local cleanup. The local download,
+  browser outputs, Playwright state, and remote candidate archive were deleted;
+  the branch retains zero Actions artifacts.
+- M-08 remains partial: these verified source mappings do not imply every field
+  or every public source/destination topology is covered.
 
 ### 2026-08-30 — video-control source and native ABI checkpoint
 

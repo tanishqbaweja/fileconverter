@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-01T02:22:00.000Z",
+  "recordedAt": "2026-09-01T07:17:00.000Z",
   "scope": "Bounded common audio tags and attached artwork for MP3 and FLAC destinations",
   "status": "verified-published-and-exactly-reproduced",
   "implementation": {
     "source": "media/ffmpeg/within_remux.c",
-    "sourceSha256": "a44934536ea6ca65ac8c33b0fb36803f84e02811769afc47259b06d41d55ac60",
+    "sourceSha256": "d031abcb62a014aaacef00ea54654781e70862f9d4716717dcc3a7abce4a8dd3",
     "sourcePatch": "media/ffmpeg/patches/audio-options-source.patch",
-    "sourcePatchSha256": "ee3e9fa5b1b6525cae17d13d55436e8bef575bfad5450ffd0485640a8f5d9951",
+    "sourcePatchSha256": "8a4457dd16cdb166c1d91eb653c5b6e1519eaf784aecf59c67eaa55b9d897509",
     "publishedCandidate": {
       "path": "public/engines/remux/within-remux.wasm",
-      "bytes": 9630164,
-      "sha256": "4bb54fccdcc973d66712728ae051bce933354b6cb87ac10d78f73effe3df615e"
+      "bytes": 9630736,
+      "sha256": "b4f34226e54f3708a1f09ae8531f2ba785c1c0ccae886dc43177c06d7bf25b6d"
     },
     "behavior": {
       "destinations": ["mp3", "flac"],
@@ -24,7 +24,8 @@
       "maximumHeightPixels": 4096,
       "maximumPixels": 16777216,
       "unsupportedAdditionalOversizedOrMalformedArtwork": "explicitly excluded with warnings",
-      "otherAudioDestinations": "artwork explicitly excluded"
+      "otherAudioDestinations": "artwork explicitly excluded",
+      "oggTextTagMapping": "the seven allowlisted stream-scoped Vorbis comments are promoted to MP3/FLAC destination scope without duplicating METADATA_BLOCK_PICTURE"
     }
   },
   "deterministicFixtures": [
@@ -46,19 +47,47 @@
       "artworkBytes": 178,
       "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
       "determinism": "two independent generations matched byte-for-byte"
+    },
+    {
+      "path": "fixtures/media/audio-source-vorbis-artwork.ogg",
+      "bytes": 13765,
+      "sha256": "e2675c1768a30b93175224ec149284936e9730c1d635e049df86740058e8eb21",
+      "audioCodec": "vorbis",
+      "textTagScope": "audio stream Vorbis comments",
+      "artworkRepresentation": "METADATA_BLOCK_PICTURE",
+      "artworkCodec": "png",
+      "artworkBytes": 178,
+      "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+      "determinism": "two independent generations matched byte-for-byte"
+    },
+    {
+      "path": "fixtures/media/audio-source-opus-artwork.opus",
+      "bytes": 77830,
+      "sha256": "e5ce83fb9c86844e51ce479699c68ca5a746b8230277670a5a0814f85614c86e",
+      "audioCodec": "opus",
+      "textTagScope": "audio stream Opus comments",
+      "artworkRepresentation": "METADATA_BLOCK_PICTURE",
+      "artworkCodec": "png",
+      "artworkBytes": 178,
+      "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+      "determinism": "two independent generations matched byte-for-byte"
     }
   ],
   "productionBrowserCorrectness": {
     "focusedCommand": "npx playwright test tests/browser/media-options.spec.ts --grep \"bounded audio metadata preserves compatible tags and cover art\"",
-    "focusedResult": "passed 1/1 in 13.1 seconds after adding standalone MP3-to-FLAC and FLAC-to-MP3 chaining",
+    "focusedResult": "passed 1/1 in 21.0 seconds after adding Vorbis/Opus stream-scoped comment and METADATA_BLOCK_PICTURE mappings",
     "fullFileCommand": "$env:WITHIN_TEST_PORT='3101'; npx playwright test tests/browser/media-options.spec.ts",
-    "fullFileResult": "passed 11/11 in 51.2 seconds after adding the standalone source mappings",
+    "fullFileResult": "passed 11/11 in 50.8 seconds after publishing the Ogg metadata mapping core",
     "validatedCases": [
       "M4A AAC to MP3 genuine transcode with exact seven tags and exact PNG artwork packet",
       "M4A AAC to FLAC genuine transcode with exact seven tags, exact PNG artwork packet, full packet traversal, and full decoded-audio APSNR",
       "MP4 MP3 to MP3 stream-copy with exact normalized MP3 packet SHA-256, exact seven tags, and exact PNG artwork packet",
       "Browser-produced standalone MP3 to FLAC with exact seven tags, exact PNG artwork packet, and full native audio decode",
       "Browser-produced standalone FLAC to MP3 with exact seven tags, exact PNG artwork packet, and full native audio decode",
+      "Ogg Vorbis to MP3 with exact seven stream-scoped comments, exact PNG artwork packet, and full native audio decode",
+      "Ogg Vorbis to FLAC with exact seven stream-scoped comments, exact PNG artwork packet, and full native audio decode",
+      "Ogg Opus to MP3 with exact seven stream-scoped comments, exact PNG artwork packet, and full native audio decode",
+      "Ogg Opus to FLAC with exact seven stream-scoped comments, exact PNG artwork packet, and full native audio decode",
       "M4A AAC to raw AAC with explicit artwork exclusion"
     ]
   },
@@ -128,6 +157,9 @@
     },
     {
       "reason": "initial validator compared the hash result object to a string and classified the expected preserved picture as an excluded attachment; the harness was fixed without changing converter behavior or validation thresholds"
+    },
+    {
+      "reason": "the first Ogg browser run preserved the exact artwork but exposed that stream-scoped Vorbis/Opus text comments were not promoted to MP3/FLAC destination scope; a seven-key allowlist fixed the native mapping without copying the base64 picture comment or weakening validation"
     }
   ],
   "nonDockerReproduction": {
@@ -153,11 +185,34 @@
       "peerArtifactsExact": 18,
       "result": "final candidate extracted; repository-local download deleted after verification"
     },
-    "publicationRun": {
+    "priorPublicationRun": {
       "id": 33461545716,
       "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33461545716",
       "commit": "04c92b8a42b0c4a81b2d28687a48577de7ea7497",
       "jobSeconds": 632,
+      "exactArtifactComparison": true,
+      "mismatchUploadSkipped": true,
+      "repositoryLocalBuildCleanup": true,
+      "retainedArtifacts": 0,
+      "dockerUsed": false
+    },
+    "oggMetadataCandidateRun": {
+      "id": 33479466650,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33479466650",
+      "commit": "40abb734cbc97106a766d8a6b420451ae2b292e6",
+      "jobSeconds": 660,
+      "candidateSha256": "b4f34226e54f3708a1f09ae8531f2ba785c1c0ccae886dc43177c06d7bf25b6d",
+      "peerArtifactsExact": 18,
+      "mismatchArtifactId": 9789650723,
+      "repositoryLocalBuildCleanup": true,
+      "result": "expected two-file candidate diff: build manifest plus within-remux Wasm; local candidate download deleted after hash verification and browser validation"
+    },
+    "latestPublicationRun": {
+      "id": 33480650192,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33480650192",
+      "commit": "b087c589809662ae79633373da769c58518b2301",
+      "jobSeconds": 536,
+      "buildAndCompareSeconds": 488,
       "exactArtifactComparison": true,
       "mismatchUploadSkipped": true,
       "repositoryLocalBuildCleanup": true,
@@ -177,7 +232,8 @@
       9774752988,
       9775385968,
       9737377369,
-      9736812954
+      9736812954,
+      9789650723
     ],
     "branchActionsArtifactsRemaining": 0,
     "protectedTestMkv": {

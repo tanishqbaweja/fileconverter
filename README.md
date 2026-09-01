@@ -574,9 +574,16 @@ Chrome preserved the exact picture bytes and all seven tags for genuine
 M4A-to-MP3, M4A-to-FLAC, and MP4-MP3 stream-copy cases; raw AAC independently
 proved explicit exclusion. Chaining those genuine browser outputs back through
 standalone MP3-to-FLAC and FLAC-to-MP3 also preserved the exact tags and cover
-while passing full native audio decode. A 134,402,091-byte random-access stress source passed
-three MP4-to-FLAC runs in 0.376-0.733 seconds at 95.9 MiB worst incremental
-private memory and three MP4-to-MP3 runs in 0.234-0.551 seconds at 88.4 MiB.
+while passing full native audio decode. Deterministic Ogg Vorbis and Ogg Opus
+fixtures use the standard `METADATA_BLOCK_PICTURE` representation; the demuxer
+exposes that picture as the same bounded attached-picture stream. Production
+Chrome also preserved its exact bytes and all seven stream-scoped Ogg comments
+through Vorbis-to-MP3, Vorbis-to-FLAC, Opus-to-MP3, and Opus-to-FLAC. Only the
+seven allowlisted comments are promoted to destination scope, so the base64
+picture comment is not duplicated into output metadata. A 134,402,091-byte
+random-access stress source passed three MP4-to-FLAC runs in 0.376-0.733 seconds
+at 95.9 MiB worst incremental private memory and three MP4-to-MP3 runs in
+0.234-0.551 seconds at 88.4 MiB.
 Reads stayed at 256 KiB, Wasm at 32 MiB, and only one destination operation was
 pending. Exact hashes, rejected higher-memory fixtures, cleanup, and the
 no-Docker build record are in
