@@ -1,0 +1,151 @@
+{
+  "auditDate": "2026-09-01",
+  "execution": {
+    "mode": "production Chrome stream-copy conversion with independent native FFmpeg and FFprobe validation",
+    "dockerUsed": false,
+    "crossDestinationCommand": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'with bounded (MPEG-TS|3GP|MOV|FLV)' --reporter=line",
+    "crossDestinationResult": "20 passed",
+    "crossDestinationElapsedSeconds": 42.5,
+    "matroskaAndComplexCommand": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'with bounded Matroska|complex representable fields' --reporter=line",
+    "matroskaAndComplexResult": "10 passed",
+    "matroskaAndComplexElapsedSeconds": 24.3,
+    "mediaOptionsResult": "11 passed",
+    "mediaOptionsElapsedSeconds": 43.4,
+    "playwrightVideoCaptureDisabled": true
+  },
+  "routeMatrix": {
+    "matroskaDestinations": [
+      "mp4-to-mkv",
+      "mov-to-mkv",
+      "3gp-to-mkv",
+      "mpeg-ts-to-mkv",
+      "flv-to-mkv",
+      "avi-to-mkv",
+      "webm-to-mkv",
+      "ogv-to-mkv"
+    ],
+    "mpegTsDestinations": [
+      "mkv-to-mpeg-ts",
+      "mp4-to-mpeg-ts",
+      "mov-to-mpeg-ts",
+      "3gp-to-mpeg-ts",
+      "flv-to-mpeg-ts"
+    ],
+    "threeGpDestinations": [
+      "mkv-to-3gp",
+      "mp4-to-3gp",
+      "mov-to-3gp",
+      "mpeg-ts-to-3gp",
+      "flv-to-3gp"
+    ],
+    "movDestinations": [
+      "mkv-to-mov",
+      "mp4-to-mov",
+      "3gp-to-mov",
+      "mpeg-ts-to-mov",
+      "flv-to-mov"
+    ],
+    "flvDestinations": [
+      "mkv-to-flv",
+      "mp4-to-flv",
+      "mov-to-flv",
+      "3gp-to-flv",
+      "mpeg-ts-to-flv"
+    ],
+    "totalRoutes": 28
+  },
+  "fieldAssertions": {
+    "conditionalSourceFields": [
+      "coded width and height",
+      "sample and display aspect ratio",
+      "explicit color range, space, transfer, and primaries",
+      "chroma location",
+      "field order",
+      "display rotation where representable",
+      "audio sample rate and channel count",
+      "language tags where representable",
+      "default dispositions where representable",
+      "stream and container titles where representable"
+    ],
+    "payloadAssertions": [
+      "decoded video matches the source for every route",
+      "AAC access units or ISO-BMFF AAC packets match the source",
+      "non-AAC Matroska audio packets match the source",
+      "FLV H.264 packets match the source"
+    ],
+    "destinationPolicies": {
+      "matroska": "Copies every asserted field represented by the source and both compatible streams.",
+      "mpegTs": "Copies compatible language tags and explicit H.264 color fields; default dispositions, rotation, general metadata, chapters, attachments, and unsupported subtitles are disclosed exclusions.",
+      "threeGp": "Copies representable ISO-BMFF fields; the muxer necessarily marks the first compatible video or audio track as default when that media type has no source default, and the worker now discloses that mapping.",
+      "mov": "Copies representable ISO-BMFF fields and supported titles; the muxer necessarily marks the first compatible video or audio track as default when that media type has no source default, and the worker now discloses that mapping.",
+      "flv": "Copies compatible H.264 color fields and supported title metadata; language, disposition, rotation, chapters, attachments, unsupported subtitles, and additional audio are disclosed exclusions."
+    }
+  },
+  "nativeAudit": {
+    "repoLocalOnly": true,
+    "simpleH264TraceHeaders": "No VUI color-description or full-range flags are present; FFprobe's tv range is therefore an implicit H.264 limited-range interpretation rather than an explicit source declaration.",
+    "complexH264TraceHeaders": "The complex fixture explicitly carries video_full_range_flag=0 and BT.709 primaries, transfer, and matrix values, all of which remain asserted at compatible destinations.",
+    "nativeContainerCopies": "Native FFmpeg copies of the simple Matroska fixture to MPEG-TS, 3GP, MOV, and FLV likewise reported no explicit color fields.",
+    "nativeIsoBmffDisposition": "Native FFmpeg still marks the first video and audio streams default in 3GP and MOV after explicit source-side default dispositions are cleared.",
+    "auditDirectoryDeleted": true
+  },
+  "diagnosticHistory": [
+    {
+      "attempt": "first 20-route destination matrix before wrapper rebuild",
+      "result": "12 passed, 8 failed in 1.3 minutes",
+      "productDefectsFound": 1,
+      "details": "Four failures were validator false positives caused by treating implicit H.264 limited range as explicit metadata. Four exposed the genuine, previously undisclosed 3GP/MOV forced-default mapping for MPEG-TS and FLV sources."
+    },
+    {
+      "attempt": "native trace-header and muxer audit",
+      "result": "confirmed implicit-color semantics and unavoidable first-track default behavior",
+      "resolution": "The validator now requires only explicitly declared color fields, while the native wrapper and public registry disclose the forced-default mapping."
+    }
+  ],
+  "enginePublication": {
+    "sourceCommit": "6c21a71e4aa62a298baf1f794fddd81b142a051f",
+    "publishedCommit": "b9e41b52791fff5f4596e9e4bf010444cc1faab1",
+    "currentWrapperSourceSha256": "c5b569c86add46e28ecbb17930f366020282719170f496be2182c4a8979e566f",
+    "reversePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+    "previousWasm": {
+      "bytes": 9631227,
+      "sha256": "27512046bd46fef42f471e5829b8ca2aa759943320cdc5fb7a8bdd21c073c4a7"
+    },
+    "publishedWasm": {
+      "bytes": 9631801,
+      "sha256": "1bffbf46dd79a768650d9784652fa52f066410847ba7d2e2406e5a748e5357b5"
+    }
+  },
+  "hostedNoDockerReproduction": {
+    "candidateRunId": 33539788980,
+    "candidateRunUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33539788980",
+    "candidateResult": "expected mismatch: only within-remux.wasm differed; every companion artifact was byte-exact",
+    "candidateArtifactId": 9813510981,
+    "candidateArtifactBytes": 19055836,
+    "publicationRunId": 33541452435,
+    "publicationRunUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33541452435",
+    "publicationResult": "success: every FFmpeg artifact rebuilt byte-exact",
+    "publicationElapsedSeconds": 633,
+    "mismatchUploadSkipped": true,
+    "hostedRepositoryLocalCleanupPassed": true,
+    "publicationArtifactsRetained": 0,
+    "candidateArtifactDeleted": true
+  },
+  "boundedRuntimeAssertions": {
+    "maxReadChunkBytesCeiling": 262144,
+    "maxWriteChunkBytesCeiling": 262144,
+    "peakPendingOperationsCeiling": 1,
+    "peakWasmMemoryBytesCeiling": 134217728
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserTestArtifactsRetained": 0,
+    "nativeAuditCopiesRetained": 0,
+    "candidateDownloadsRetained": 0,
+    "candidateArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "This proves representable field and compressed-payload behavior for the 28 currently compatible source/destination pairs in the focused matrix. M-03 remains partial: equally complex MOV, 3GP, MPEG-TS, FLV, AVI, WebM, and Ogg-origin fixtures plus attached-picture dispositions are not yet completely covered."
+}

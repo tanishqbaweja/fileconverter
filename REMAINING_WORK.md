@@ -48,7 +48,7 @@ not the entire product specification.
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | `evidence/complex-matroska-field-retention-browser-2026-09-01.json` and `evidence/complex-container-field-retention-browser-2026-09-01.json` prove genuine complex Matroska-source copies across all six compatible stream-copy destinations: Matroska, MP4, MOV, 3GP, MPEG-TS, and FLV. Matroska preserves all five streams, chapters, tags, and dispositions. MP4/MOV/3GP retain representable geometry, aspect, exact 90° display rotation, explicit BT.709 fields, both AAC payloads, languages, and dispositions while disclosing topology exclusions. MPEG-TS/FLV retain BT.709 and exact unrotated compressed pictures while explicitly disclosing unrepresentable rotation; MPEG-TS retains both AAC tracks/languages and FLV retains its first AAC plus title. The full shared-core browser regression passed 488/488. | Extend field-level evidence across complex MOV/3GP/MPEG-TS/FLV/AVI/WebM source mappings; attached-picture dispositions remain explicitly excluded by the fixed binary. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | The two complex-field evidence files prove genuine Matroska-origin copies across all six compatible destinations, including exact media payloads and explicit topology exclusions. `evidence/cross-source-field-retention-browser-2026-09-01.json` adds 28 compatible source/destination routes into Matroska, MPEG-TS, 3GP, MOV, and FLV, conditionally asserting every present representable geometry, aspect, explicit color, chroma, field-order, rotation, audio-layout, language, disposition, and title field plus decoded or compressed payload equality. Production Chrome passed the 20-route destination gate, eight Matroska routes plus two complex MOV/3GP routes, and 11 shared media-options regressions. MPEG-TS/FLV exclusion policies are now accurate, and 3GP/MOV explicitly disclose their unavoidable first-track default mapping. | Build equally complex MOV/3GP/MPEG-TS/FLV/AVI/WebM/Ogg-origin fixtures and validate every compatible destination mapping; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
@@ -141,6 +141,39 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-01 — cross-source media-field mapping checkpoint
+
+- Added destination-aware source/output probes to 28 compatible stream-copy
+  routes spanning Matroska, MP4, MOV, 3GP, MPEG-TS, FLV, AVI, WebM, and Ogg
+  origins and Matroska, MPEG-TS, 3GP, MOV, and FLV destinations. Assertions are
+  conditional on fields actually declared by each source and pair field checks
+  with decoded-picture, exact AAC access-unit/packet, or compressed-packet
+  equality.
+- The first 20-route destination run passed 12 and failed eight. A repo-local
+  native `trace_headers` audit proved four were validator false positives: the
+  simple H.264 source does not explicitly declare color information, and
+  FFprobe's `tv` value is the codec's implicit limited-range interpretation.
+  The other four exposed a real disclosure gap: native FFmpeg necessarily marks
+  the first video/audio stream default in MOV and 3GP when a source media type
+  has no default, even after its dispositions are explicitly cleared.
+- The validator now distinguishes explicit from implicit H.264 color fields.
+  The native wrapper and all public MOV/3GP copy routes disclose the unavoidable
+  default mapping; MPEG-TS and FLV disclosures state the compatible fields they
+  retain and those they exclude. Unit tests lock these policies for every route.
+- The rebuilt production core passed the 20-route gate 20/20 in 42.5 seconds,
+  the eight Matroska routes plus two complex MOV/3GP checks 10/10 in 24.3
+  seconds, and media-options 11/11 in 43.4 seconds. Build, TypeScript, ESLint,
+  87/87 unit tests, the 11-engine manifest, 388/388 public evidence records,
+  and reverse-patch reconstruction also passed. No Docker command ran.
+- Candidate run `33539788980` changed only `within-remux.wasm`; all 18 peer
+  artifacts were byte-exact. After publication at `b9e41b5`, run `33541452435`
+  rebuilt every FFmpeg artifact byte-exact in 10m33s, skipped mismatch upload,
+  passed hosted cleanup, and retained zero artifacts. The local candidate and
+  its remote mismatch archive were deleted immediately after this proof.
+- This remains a partial M-03 checkpoint. The compact evidence does not promote
+  representative simple fields into claims about equally complex non-Matroska
+  origins or attached-picture dispositions.
 
 ### 2026-09-01 — Ogg Vorbis/Opus tag and artwork mapping checkpoint
 

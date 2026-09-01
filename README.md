@@ -345,6 +345,25 @@ disabled with `WITHIN_TEST_VIDEO=off`, avoiding an optional recorder download
 and disposable video copies. See
 `evidence/complex-container-field-retention-browser-2026-09-01.json`.
 
+A complementary cross-source matrix now checks 28 compatible stream-copy
+routes into Matroska, MPEG-TS, 3GP, MOV, and FLV. Each route independently
+probes the source and output, asserts every present representable geometry,
+aspect, explicit color, chroma, field-order, rotation, audio-layout, language,
+disposition, and title field, and also compares decoded or compressed media
+payloads. The final production-browser gates passed 20/20 destination routes
+in 42.5 seconds, eight Matroska routes plus two complex MOV/3GP routes in 24.3
+seconds, and the shared media-options regression 11/11 in 43.4 seconds. A
+repo-local native audit established that the simple H.264 fixture's reported
+limited range is implicit rather than an explicit VUI declaration; explicit
+BT.709 fields on the complex fixture remain fully asserted. It also confirmed
+that 3GP and MOV necessarily mark the first compatible track of a media type as
+default when the source has none, so the worker and public route disclosures now
+state that mapping. Candidate run `33539788980` changed only the general remux
+Wasm, and no-Docker publication run `33541452435` then rebuilt every FFmpeg
+artifact byte-exact in 10m33s with hosted cleanup and zero retained artifacts.
+See
+`evidence/cross-source-field-retention-browser-2026-09-01.json`.
+
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
 the certified 2 Mbit/s policy; the conversion controls can instead select a
