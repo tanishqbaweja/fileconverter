@@ -572,7 +572,9 @@ Seven common tags (`title`, `artist`, `album`, `genre`, `date`, `track`, and
 `comment`) are copied where the destination can represent them. Production
 Chrome preserved the exact picture bytes and all seven tags for genuine
 M4A-to-MP3, M4A-to-FLAC, and MP4-MP3 stream-copy cases; raw AAC independently
-proved explicit exclusion. A 134,402,091-byte random-access stress source passed
+proved explicit exclusion. Chaining those genuine browser outputs back through
+standalone MP3-to-FLAC and FLAC-to-MP3 also preserved the exact tags and cover
+while passing full native audio decode. A 134,402,091-byte random-access stress source passed
 three MP4-to-FLAC runs in 0.376-0.733 seconds at 95.9 MiB worst incremental
 private memory and three MP4-to-MP3 runs in 0.234-0.551 seconds at 88.4 MiB.
 Reads stayed at 256 KiB, Wasm at 32 MiB, and only one destination operation was

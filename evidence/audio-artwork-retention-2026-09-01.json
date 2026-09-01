@@ -50,13 +50,15 @@
   ],
   "productionBrowserCorrectness": {
     "focusedCommand": "npx playwright test tests/browser/media-options.spec.ts --grep \"bounded audio metadata preserves compatible tags and cover art\"",
-    "focusedResult": "passed 1/1 in 11.1 seconds",
-    "fullFileCommand": "npx playwright test tests/browser/media-options.spec.ts",
-    "fullFileResult": "passed 11/11 in 36.6 seconds",
+    "focusedResult": "passed 1/1 in 13.1 seconds after adding standalone MP3-to-FLAC and FLAC-to-MP3 chaining",
+    "fullFileCommand": "$env:WITHIN_TEST_PORT='3101'; npx playwright test tests/browser/media-options.spec.ts",
+    "fullFileResult": "passed 11/11 in 51.2 seconds after adding the standalone source mappings",
     "validatedCases": [
       "M4A AAC to MP3 genuine transcode with exact seven tags and exact PNG artwork packet",
       "M4A AAC to FLAC genuine transcode with exact seven tags, exact PNG artwork packet, full packet traversal, and full decoded-audio APSNR",
       "MP4 MP3 to MP3 stream-copy with exact normalized MP3 packet SHA-256, exact seven tags, and exact PNG artwork packet",
+      "Browser-produced standalone MP3 to FLAC with exact seven tags, exact PNG artwork packet, and full native audio decode",
+      "Browser-produced standalone FLAC to MP3 with exact seven tags, exact PNG artwork packet, and full native audio decode",
       "M4A AAC to raw AAC with explicit artwork exclusion"
     ]
   },

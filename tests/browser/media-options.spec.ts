@@ -878,6 +878,32 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
     track: "3/9",
     comment: "Within comment",
   } as const;
+  const verifyTagsAndArtwork = async (
+    outputPath: string,
+    expectedCodec: "mp3" | "flac",
+  ) => {
+    const probe = await probeAudioWithArtwork(outputPath);
+    const audio = probe.streams.filter((stream) => stream.codec_type === "audio");
+    const artwork = probe.streams.filter(
+      (stream) => stream.disposition?.attached_pic === 1,
+    );
+    expect(audio).toHaveLength(1);
+    expect(audio[0]?.codec_name).toBe(expectedCodec);
+    expect(artwork).toHaveLength(1);
+    expect(artwork[0]?.codec_name).toBe("png");
+    expect(artwork[0]?.width).toBe(64);
+    expect(artwork[0]?.height).toBe(64);
+    for (const [key, value] of Object.entries(expectedTags)) {
+      expect(probe.format.tags?.[key]).toBe(value);
+    }
+    expect(await extractedArtworkSha256(outputPath)).toBe(sourceArtworkSha256);
+    await execFileAsync(
+      "ffmpeg",
+      ["-hide_banner", "-loglevel", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  };
+  const generatedArtworkOutputs = new Map<"mp3" | "flac", string>();
 
   for (const conversion of [
     { profile: "m4a-to-mp3", extension: "mp3", codec: "mp3" },
@@ -900,26 +926,41 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
       `artwork-output.${conversion.extension}`,
     );
     await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
-    const probe = await probeAudioWithArtwork(outputPath);
-    const audio = probe.streams.filter((stream) => stream.codec_type === "audio");
-    const artwork = probe.streams.filter(
-      (stream) => stream.disposition?.attached_pic === 1,
+    await verifyTagsAndArtwork(outputPath, conversion.codec);
+    generatedArtworkOutputs.set(conversion.codec, outputPath);
+  }
+
+  for (const conversion of [
+    {
+      profile: "mp3-to-flac",
+      inputCodec: "mp3",
+      outputCodec: "flac",
+    },
+    {
+      profile: "flac-to-mp3",
+      inputCodec: "flac",
+      outputCodec: "mp3",
+    },
+  ] as const) {
+    const inputPath = generatedArtworkOutputs.get(conversion.inputCodec);
+    expect(inputPath).toBeTruthy();
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
-    expect(audio).toHaveLength(1);
-    expect(audio[0]?.codec_name).toBe(conversion.codec);
-    expect(artwork).toHaveLength(1);
-    expect(artwork[0]?.codec_name).toBe("png");
-    expect(artwork[0]?.width).toBe(64);
-    expect(artwork[0]?.height).toBe(64);
-    for (const [key, value] of Object.entries(expectedTags)) {
-      expect(probe.format.tags?.[key]).toBe(value);
-    }
-    expect(await extractedArtworkSha256(outputPath)).toBe(sourceArtworkSha256);
-    await execFileAsync(
-      "ffmpeg",
-      ["-hide_banner", "-loglevel", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
-      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    await page.locator('[data-testid="file-input"]').setInputFiles(inputPath!);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(conversion.profile);
+    const state = await waitForCompletedConversion(page);
+    expect(state.warnings).toEqual([]);
+    expect(state.opfsName).toBeTruthy();
+    const outputPath = path.join(
+      validationRoot,
+      `artwork-${conversion.inputCodec}-to-${conversion.outputCodec}.${conversion.outputCodec}`,
     );
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    await verifyTagsAndArtwork(outputPath, conversion.outputCodec);
   }
 
   const sourceMp3PayloadSha256 = await copiedAudioPayloadSha256(
