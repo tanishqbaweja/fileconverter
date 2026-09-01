@@ -32,6 +32,18 @@ const mp3ArtworkFixturePath = path.join(
   "media",
   "audio-source-mp3-artwork.mp4",
 );
+const vorbisArtworkFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-vorbis-artwork.ogg",
+);
+const opusArtworkFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-opus-artwork.opus",
+);
 const videoFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -928,6 +940,51 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
     await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
     await verifyTagsAndArtwork(outputPath, conversion.codec);
     generatedArtworkOutputs.set(conversion.codec, outputPath);
+  }
+
+  for (const conversion of [
+    {
+      profile: "ogg-to-mp3",
+      input: vorbisArtworkFixturePath,
+      inputCodec: "vorbis",
+      outputCodec: "mp3",
+    },
+    {
+      profile: "ogg-to-flac",
+      input: vorbisArtworkFixturePath,
+      inputCodec: "vorbis",
+      outputCodec: "flac",
+    },
+    {
+      profile: "opus-to-mp3",
+      input: opusArtworkFixturePath,
+      inputCodec: "opus",
+      outputCodec: "mp3",
+    },
+    {
+      profile: "opus-to-flac",
+      input: opusArtworkFixturePath,
+      inputCodec: "opus",
+      outputCodec: "flac",
+    },
+  ] as const) {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(conversion.input);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(conversion.profile);
+    const state = await waitForCompletedConversion(page);
+    expect(state.warnings).toEqual([]);
+    expect(state.opfsName).toBeTruthy();
+    const outputPath = path.join(
+      validationRoot,
+      `artwork-${conversion.inputCodec}-to-${conversion.outputCodec}.${conversion.outputCodec}`,
+    );
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    await verifyTagsAndArtwork(outputPath, conversion.outputCodec);
   }
 
   for (const conversion of [

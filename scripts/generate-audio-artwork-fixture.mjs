@@ -14,8 +14,37 @@ const extractionFixturePath = path.join(
   fixtureRoot,
   "audio-source-mp3-artwork.mp4",
 );
+const vorbisFixturePath = path.join(
+  fixtureRoot,
+  "audio-source-vorbis-artwork.ogg",
+);
+const opusFixturePath = path.join(
+  fixtureRoot,
+  "audio-source-opus-artwork.opus",
+);
 const artworkPath = path.join(workRoot, "cover.png");
 const intermediateMp3Path = path.join(workRoot, "audio.mp3");
+
+function metadataBlockPicture(artworkBytes) {
+  const mime = Buffer.from("image/png", "utf8");
+  const uint32 = (value) => {
+    const bytes = Buffer.alloc(4);
+    bytes.writeUInt32BE(value);
+    return bytes;
+  };
+  return Buffer.concat([
+    uint32(3),
+    uint32(mime.byteLength),
+    mime,
+    uint32(0),
+    uint32(64),
+    uint32(64),
+    uint32(32),
+    uint32(0),
+    uint32(artworkBytes.byteLength),
+    artworkBytes,
+  ]).toString("base64");
+}
 
 await mkdir(fixtureRoot, { recursive: true });
 await rm(workRoot, { recursive: true, force: true });
@@ -154,9 +183,46 @@ try {
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
 
-  const [fixtureBytes, artworkBytes, { stdout: probe }] = await Promise.all([
+  const artworkBytes = await readFile(artworkPath);
+  const pictureMetadata = metadataBlockPicture(artworkBytes);
+  for (const fixture of [
+    {
+      path: vorbisFixturePath,
+      codecArguments: ["-c:a", "libvorbis", "-q:a", "5"],
+    },
+    {
+      path: opusFixturePath,
+      codecArguments: ["-c:a", "libopus", "-b:a", "128k"],
+    },
+  ]) {
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-y",
+        "-i",
+        fixturePath,
+        "-map",
+        "0:a:0",
+        ...fixture.codecArguments,
+        "-map_metadata",
+        "0",
+        "-metadata",
+        `METADATA_BLOCK_PICTURE=${pictureMetadata}`,
+        "-fflags",
+        "+bitexact",
+        "-flags:a",
+        "+bitexact",
+        fixture.path,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
+
+  const [fixtureBytes, { stdout: probe }] = await Promise.all([
     readFile(fixturePath),
-    readFile(artworkPath),
     execFileAsync(
       "ffprobe",
       [
@@ -252,7 +318,77 @@ try {
     )}\n`,
     "utf8",
   );
-  process.stdout.write(`${fixturePath}\n${extractionFixturePath}\n`);
+
+  for (const [audioCodec, standaloneFixturePath] of [
+    ["vorbis", vorbisFixturePath],
+    ["opus", opusFixturePath],
+  ]) {
+    const [standaloneFixtureBytes, { stdout: standaloneProbe }] =
+      await Promise.all([
+        readFile(standaloneFixturePath),
+        execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-show_format",
+            "-show_streams",
+            "-of",
+            "json",
+            standaloneFixturePath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        ),
+      ]);
+    const parsedProbe = JSON.parse(standaloneProbe);
+    const attachedPictures = parsedProbe.streams.filter(
+      (stream) => stream.disposition?.attached_pic === 1,
+    );
+    if (
+      attachedPictures.length !== 1 ||
+      attachedPictures[0].codec_name !== "png" ||
+      attachedPictures[0].width !== 64 ||
+      attachedPictures[0].height !== 64
+    ) {
+      throw new Error(`${audioCodec} artwork fixture failed structural validation.`);
+    }
+    await writeFile(
+      `${standaloneFixturePath}.json`,
+      `${JSON.stringify(
+        {
+          generatedBy: "scripts/generate-audio-artwork-fixture.mjs",
+          bytes: standaloneFixtureBytes.byteLength,
+          sha256: createHash("sha256")
+            .update(standaloneFixtureBytes)
+            .digest("hex"),
+          artwork: {
+            codec: "png",
+            width: 64,
+            height: 64,
+            bytes: artworkBytes.byteLength,
+            sha256: createHash("sha256").update(artworkBytes).digest("hex"),
+          },
+          audioCodec,
+          expectedTags: {
+            title: "Within artwork title",
+            artist: "Within artist",
+            album: "Within album",
+            genre: "Test genre",
+            date: "2026",
+            track: "3/9",
+            comment: "Within comment",
+          },
+          probe: parsedProbe,
+        },
+        null,
+        2,
+      )}\n`,
+      "utf8",
+    );
+  }
+  process.stdout.write(
+    `${fixturePath}\n${extractionFixturePath}\n${vorbisFixturePath}\n${opusFixturePath}\n`,
+  );
 } finally {
   await rm(workRoot, { recursive: true, force: true });
 }

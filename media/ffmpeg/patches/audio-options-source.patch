@@ -43,7 +43,7 @@ index 091c37e..6592a22 100644
    static const int allowed[] = {0, 64000, 96000, 128000,
                                  192000, 256000, 320000};
    for (unsigned int index = 0; index < sizeof(allowed) / sizeof(allowed[0]);
-@@ -840,14 +847,139 @@ static int valid_mp3_bit_rate(int bit_rate) {
+@@ -840,14 +847,158 @@ static int valid_mp3_bit_rate(int bit_rate) {
    return 0;
  }
  
@@ -175,6 +175,25 @@ index 091c37e..6592a22 100644
 +  return (int64_t)width * height <= WITHIN_ARTWORK_MAX_PIXELS;
 +}
 +
++static int merge_common_audio_text_metadata(
++    AVDictionary **destination, const AVDictionary *container_metadata,
++    const AVDictionary *stream_metadata) {
++  static const char *keys[] = {
++      "title", "artist", "album", "genre", "date", "track", "comment"};
++  for (unsigned int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
++    AVDictionaryEntry *entry =
++        av_dict_get(container_metadata, keys[index], NULL, 0);
++    if (!entry) {
++      entry = av_dict_get(stream_metadata, keys[index], NULL, 0);
++    }
++    if (entry) {
++      const int result = av_dict_set(destination, keys[index], entry->value, 0);
++      if (result < 0) return result;
++    }
++  }
++  return 0;
++}
++
  static int within_audio_transcode(int profile, int requested_bit_rate,
                                    int requested_sample_rate,
 -                                  int requested_channels) {
@@ -185,7 +204,7 @@ index 091c37e..6592a22 100644
    const int flac_output = profile == 6;
    const int alac_output = profile == 8;
    const int wma_output = profile == 9;
-@@ -858,8 +990,11 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -858,8 +1009,11 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    const int aac_output = profile == 31 || m4a_aac_output;
    const int opus_output = profile == 32;
    const int vorbis_output = profile == 33;
@@ -197,7 +216,7 @@ index 091c37e..6592a22 100644
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
    AVIOContext *input_io = NULL;
-@@ -871,6 +1006,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -871,6 +1025,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    SwrContext *resampler = NULL;
    AVPacket *input_packet = NULL;
    AVPacket *encoded_packet = NULL;
@@ -205,7 +224,7 @@ index 091c37e..6592a22 100644
    AVFrame *decoded_frame = NULL;
    AVFrame *converted_frame = NULL;
    AVAudioFifo *fifo = NULL;
-@@ -880,24 +1016,40 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -880,24 +1035,40 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    WithinOutput output = {.position = 0, .size = 0};
    WithinAudioPipeline pipeline = {0};
  
@@ -257,7 +276,7 @@ index 091c37e..6592a22 100644
      return AVERROR(EINVAL);
    }
  
-@@ -950,8 +1102,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -950,8 +1121,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
        audio_stream_index = (int)index;
        continue;
      }
@@ -287,7 +306,7 @@ index 091c37e..6592a22 100644
        within_message(
            1,
            "The source attachment is explicitly excluded from audio-only output.");
-@@ -1028,8 +1199,13 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1028,8 +1218,13 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      result = AVERROR(ENOMEM);
      goto cleanup;
    }
@@ -301,7 +320,7 @@ index 091c37e..6592a22 100644
    } else if (wma_output) {
      encoder->sample_rate = decoder->sample_rate <= 16000 ? 32000 : 48000;
    } else if (mp3_output) {
-@@ -1042,9 +1218,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1042,9 +1237,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
                                       ? 32000
                                       : decoder->sample_rate <= 44100 ? 44100 : 48000;
    } else if (aac_output) {
@@ -311,7 +330,7 @@ index 091c37e..6592a22 100644
      encoder->sample_rate =
          decoder->sample_rate <= 8000
              ? 8000
-@@ -1098,15 +1271,18 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1098,15 +1290,18 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    if (amr_output) {
      av_channel_layout_default(&encoder->ch_layout, 1);
      result = encoder->ch_layout.nb_channels == 1 ? 0 : AVERROR(EINVAL);
@@ -335,7 +354,7 @@ index 091c37e..6592a22 100644
      result = encoder->ch_layout.nb_channels > 0 ? 0 : AVERROR(EINVAL);
    } else {
      result =
-@@ -1120,12 +1296,39 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1120,12 +1315,39 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      av_dict_set(&encoder_options, "min_prediction_order", "4", 0);
      av_dict_set(&encoder_options, "max_prediction_order", "4", 0);
    } else if (wma_output) {
@@ -376,7 +395,7 @@ index 091c37e..6592a22 100644
                              : encoder->ch_layout.nb_channels == 1
                              ? encoder->sample_rate == 8000
                                    ? 32000
-@@ -1136,8 +1339,19 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1136,8 +1358,19 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
        av_dict_set(&encoder_options, "joint_stereo", "1", 0);
      }
    } else if (aac_output) {
@@ -398,7 +417,7 @@ index 091c37e..6592a22 100644
      av_dict_set(&encoder_options, "aac_coder", "fast", 0);
      av_dict_set(&encoder_options, "aac_tns", "0", 0);
      av_dict_set(&encoder_options, "aac_pns", "0", 0);
-@@ -1145,14 +1359,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1145,14 +1378,27 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      av_dict_set(&encoder_options, "aac_ms", "0", 0);
    } else if (opus_output) {
      encoder->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
@@ -429,9 +448,18 @@ index 091c37e..6592a22 100644
    }
    result = avcodec_open2(encoder, encoder_codec, &encoder_options);
    av_dict_free(&encoder_options);
-@@ -1203,6 +1430,41 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1203,6 +1449,50 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
    av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
    av_dict_copy(&output_format->metadata, input_format->metadata, 0);
++  if (mp3_output || flac_output) {
++    result = merge_common_audio_text_metadata(
++        &output_format->metadata, input_format->metadata,
++        input_stream->metadata);
++    if (result < 0) {
++      report_av_error("Common audio metadata copy failed", result);
++      goto cleanup;
++    }
++  }
  
 +  AVStream *artwork_output_stream = NULL;
 +  if (artwork_stream_index >= 0) {
@@ -471,7 +499,7 @@ index 091c37e..6592a22 100644
    output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
    if (!output_buffer) {
      result = AVERROR(ENOMEM);
-@@ -1232,6 +1494,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
+@@ -1232,6 +1522,32 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
      goto cleanup;
    }
  
@@ -504,7 +532,7 @@ index 091c37e..6592a22 100644
    result = swr_alloc_set_opts2(
        &resampler, &encoder->ch_layout, encoder->sample_fmt,
        encoder->sample_rate, &decoder->ch_layout, decoder->sample_fmt,
-@@ -1340,6 +1628,7 @@ cleanup:
+@@ -1340,6 +1656,7 @@ cleanup:
    av_dict_free(&muxer_options);
    av_packet_free(&input_packet);
    av_packet_free(&encoded_packet);
@@ -512,7 +540,7 @@ index 091c37e..6592a22 100644
    av_frame_free(&decoded_frame);
    av_frame_free(&converted_frame);
    av_audio_fifo_free(fifo);
-@@ -2068,10 +2357,12 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
+@@ -2068,10 +2385,12 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
  
  EMSCRIPTEN_KEEPALIVE
  int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
@@ -528,7 +556,7 @@ index 091c37e..6592a22 100644
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
    AVIOContext *input_io = NULL;
-@@ -2108,9 +2399,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2108,9 +2427,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        return AVERROR(EINVAL);
      }
      return within_audio_transcode(profile, audio_bit_rate, audio_sample_rate,
@@ -542,7 +570,7 @@ index 091c37e..6592a22 100644
      within_message(2, "Audio options are not supported by this profile.");
      return AVERROR(EINVAL);
    }
-@@ -2358,6 +2651,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2358,6 +2679,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        result = AVERROR_STREAM_NOT_FOUND;
        goto cleanup;
      }
@@ -557,7 +585,7 @@ index 091c37e..6592a22 100644
    }
    if (container_flv_output) {
      for (unsigned int index = 0; index < input_format->nb_streams; index++) {
-@@ -2448,7 +2749,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2448,7 +2777,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
          : av1_webm_output
              ? stream_is_supported(input_stream, profile) && copy_compatible
          : mp3_output
@@ -567,7 +595,7 @@ index 091c37e..6592a22 100644
          : aac_output
              ? (int)index == audio_stream_index
          : ogg_audio_output
-@@ -2530,7 +2832,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2530,7 +2860,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  ? "The source cover-art stream is explicitly excluded from "
                    "this audio-only M4A profile."
              : mp3_output
@@ -580,7 +608,7 @@ index 091c37e..6592a22 100644
              : aac_output
                  ? "The source attached picture is explicitly excluded from this raw AAC extraction profile."
              : ogg_audio_output
-@@ -2714,6 +3020,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+@@ -2714,6 +3048,18 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        report_av_error("Stream metadata copy failed", result);
        goto cleanup;
      }

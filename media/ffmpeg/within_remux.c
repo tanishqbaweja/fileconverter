@@ -974,6 +974,25 @@ static int bounded_audio_artwork_stream(const AVStream *stream) {
   return (int64_t)width * height <= WITHIN_ARTWORK_MAX_PIXELS;
 }
 
+static int merge_common_audio_text_metadata(
+    AVDictionary **destination, const AVDictionary *container_metadata,
+    const AVDictionary *stream_metadata) {
+  static const char *keys[] = {
+      "title", "artist", "album", "genre", "date", "track", "comment"};
+  for (unsigned int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
+    AVDictionaryEntry *entry =
+        av_dict_get(container_metadata, keys[index], NULL, 0);
+    if (!entry) {
+      entry = av_dict_get(stream_metadata, keys[index], NULL, 0);
+    }
+    if (entry) {
+      const int result = av_dict_set(destination, keys[index], entry->value, 0);
+      if (result < 0) return result;
+    }
+  }
+  return 0;
+}
+
 static int within_audio_transcode(int profile, int requested_bit_rate,
                                   int requested_sample_rate,
                                   int requested_channels,
@@ -1429,6 +1448,15 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   }
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
+  if (mp3_output || flac_output) {
+    result = merge_common_audio_text_metadata(
+        &output_format->metadata, input_format->metadata,
+        input_stream->metadata);
+    if (result < 0) {
+      report_av_error("Common audio metadata copy failed", result);
+      goto cleanup;
+    }
+  }
 
   AVStream *artwork_output_stream = NULL;
   if (artwork_stream_index >= 0) {
