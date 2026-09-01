@@ -853,11 +853,16 @@ async function expectDecodedAudioPsnr(
   for (const value of psnrValues) expect(value).toBeGreaterThanOrEqual(minimumPsnrDb);
 }
 
-async function decodedVideoSha256(inputPath: string): Promise<string> {
+async function decodedVideoSha256(
+  inputPath: string,
+  noAutorotate = false,
+): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-hide_banner", "-loglevel", "error",
+      ...(noAutorotate ? ["-noautorotate"] : []),
+      "-i", inputPath,
       "-map", "0:v:0", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough", "-f", "hash",
       "-hash", "sha256", "-",
     ],
@@ -869,9 +874,10 @@ async function decodedVideoSha256(inputPath: string): Promise<string> {
 async function expectDecodedVideoMatch(
   sourcePath: string,
   outputPath: string,
+  noAutorotate = false,
 ): Promise<void> {
-  expect(await decodedVideoSha256(outputPath)).toBe(
-    await decodedVideoSha256(sourcePath),
+  expect(await decodedVideoSha256(outputPath, noAutorotate)).toBe(
+    await decodedVideoSha256(sourcePath, noAutorotate),
   );
 }
 
@@ -5222,14 +5228,24 @@ for (const route of [
             probe.streams.find((stream) => stream.codec_type === "video"),
           );
           expect(probe.chapters ?? []).toEqual([]);
-          expect(probe.format.tags?.title).toBeUndefined();
           const audio = probe.streams.filter(
             (stream) => stream.codec_type === "audio",
           );
-          expect(audio.every((stream) => stream.tags?.language == null)).toBe(
-            true,
-          );
-          await expectDecodedVideoMatch(complexFixturePath, outputPath);
+          if (route[0] === "mkv-to-mpeg-ts") {
+            expect(probe.format.tags?.title).toBeUndefined();
+            expect(audio.map((stream) => stream.tags?.language)).toEqual([
+              "eng",
+              "spa",
+            ]);
+          } else {
+            expect(probe.format.tags?.title).toBe(
+              "Within complex remux fixture",
+            );
+            expect(audio.map((stream) => stream.tags?.language)).toEqual([
+              undefined,
+            ]);
+          }
+          await expectDecodedVideoMatch(complexFixturePath, outputPath, true);
           await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
           if (route[0] === "mkv-to-mpeg-ts") {
             await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);

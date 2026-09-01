@@ -3,6 +3,8 @@ import { defineConfig } from "@playwright/test";
 const testPort = Number.parseInt(process.env.WITHIN_TEST_PORT ?? "3000", 10);
 const baseURL =
   process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
+const captureVideo =
+  process.env.WITHIN_TEST_VIDEO === "off" ? "off" : "retain-on-failure";
 
 export default defineConfig({
   testDir: "./tests/browser",
@@ -17,7 +19,7 @@ export default defineConfig({
     baseURL,
     trace: "retain-on-failure",
     screenshot: "only-on-failure",
-    video: "retain-on-failure",
+    video: captureVideo,
   },
   webServer: {
     command:
