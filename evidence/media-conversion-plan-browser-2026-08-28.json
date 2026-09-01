@@ -9,6 +9,7 @@
   "fixture": {
     "path": "fixtures/media/complex-remux-source.mkv",
     "bytes": 780953,
+    "revisionNote": "This audit used the pre-rotation fixture revision retained on 2026-08-28. The current tracked fixture adds rotation and explicit color fields and is covered by evidence/complex-matroska-field-retention-browser-2026-09-01.json.",
     "sourceStreams": [
       "H.264/AVC video",
       "AAC audio",

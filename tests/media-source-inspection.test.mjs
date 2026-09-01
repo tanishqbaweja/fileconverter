@@ -313,8 +313,8 @@ test("bounded Matroska inspection reports complex tracks and metadata", async ()
   assert.equal(result.mediaType, "video");
   assert.equal(result.container, "Matroska");
   assert.equal(result.codec, "H.264/AVC");
-  assert.equal(result.durationSeconds, 4.021);
-  assert.equal(result.bitrateBps, 1_553_749);
+  assert.equal(result.durationSeconds, 4.031);
+  assert.equal(result.bitrateBps, 1_549_966);
   assert.equal(result.width, 640);
   assert.equal(result.height, 360);
   assert.ok(Math.abs(result.frameRate - 24) < 0.000001);

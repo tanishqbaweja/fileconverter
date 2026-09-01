@@ -307,22 +307,28 @@ duration so audio-only sample tables cannot grow with total duration. The WAV
 profile converts only the first audio stream, preserves its channel count and
 sample rate, and discloses the container metadata it cannot represent.
 
-The reproducible `complex-remux-source.mkv` fixture adds VFR H.264, two AAC
-tracks with English and Spanish language tags and distinct dispositions, French
-SRT, two named chapters, a text attachment, and container metadata. A real
+The reproducible `complex-remux-source.mkv` fixture adds VFR H.264 with a 90°
+display matrix and explicit limited-range BT.709 primaries, transfer, and
+matrix fields; two AAC tracks with English and Spanish language tags and
+distinct dispositions; French SRT; two named chapters; a text attachment; and
+container metadata. A real
 browser MKV-to-MP4 test preserves both audio tracks, VFR packet timing,
-dispositions, languages, and compatible metadata; verifies explicit warnings
-for the three unrepresentable source elements; and fully decodes the output with
-native FFmpeg. Rebuilding the fixture produces the same SHA-256. A separate
+dispositions, languages, display rotation, every explicit BT.709 field, and
+compatible metadata; verifies explicit warnings for the three unrepresentable
+source elements; and fully decodes the output with native FFmpeg. Rebuilding
+the fixture produces the same SHA-256. A separate
 corrupt-MKV browser case proves FFmpeg errors reach the interface, its partial
 OPFS output is removed, and a replacement worker becomes ready.
 The focused Matroska field-retention gate also asserts 640×360 geometry, 1:1
-sample aspect, 16:9 display aspect, TV color range, left chroma location,
+sample aspect, 16:9 display aspect, TV color range, BT.709 color space,
+transfer, and primaries, the exact 90° display matrix, left chroma location,
 progressive field order, stream titles/languages/default disposition,
 attachment filename/MIME type, chapter titles, and container title/comment.
-That production-browser check passed in 10.3 seconds and removed its converted
-copy afterward; see
-`evidence/complex-matroska-field-retention-browser-2026-08-28.json`.
+The combined MP4 and Matroska production-browser checks passed 2/2 in 14.7
+seconds, independently probed and fully decoded both outputs, matched every VFR
+video frame and both AAC access-unit streams to the source, and removed both
+converted copies afterward; see
+`evidence/complex-matroska-field-retention-browser-2026-09-01.json`.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
@@ -1127,8 +1133,8 @@ The unmodified project-root fixture:
   attached PNG 250×140
 - chapters: none
 
-The deterministic complex remux fixture is 780,953 bytes with SHA-256
-`ef3675ef5a258230de70970a4c3e0f0545d74538661fe7df98a48f1b525f1ad2`.
+The deterministic complex remux fixture is 780,989 bytes with SHA-256
+`33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f65f`.
 
 Chrome was launched as a clean process tree for every retained report. The acceptance
 formula is exactly:

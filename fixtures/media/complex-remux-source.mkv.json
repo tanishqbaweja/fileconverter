@@ -1,7 +1,7 @@
 {
   "generatedBy": "scripts/generate-media-fixture.mjs",
-  "bytes": 780953,
-  "sha256": "ef3675ef5a258230de70970a4c3e0f0545d74538661fe7df98a48f1b525f1ad2",
+  "bytes": 780989,
+  "sha256": "33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f65f",
   "probe": {
     "streams": [
       {
@@ -23,6 +23,9 @@
         "pix_fmt": "yuv420p",
         "level": 30,
         "color_range": "tv",
+        "color_space": "bt709",
+        "color_transfer": "bt709",
+        "color_primaries": "bt709",
         "chroma_location": "left",
         "field_order": "progressive",
         "refs": 1,
@@ -34,7 +37,7 @@
         "start_pts": 0,
         "start_time": "0.000000",
         "bits_per_raw_sample": "8",
-        "extradata_size": 40,
+        "extradata_size": 42,
         "disposition": {
           "default": 0,
           "dub": 0,
@@ -59,8 +62,15 @@
         "tags": {
           "title": "Variable timing video",
           "ENCODER": "Lavc libx264",
-          "DURATION": "00:00:04.000000000"
-        }
+          "DURATION": "00:00:03.999000000"
+        },
+        "side_data_list": [
+          {
+            "side_data_type": "Display Matrix",
+            "displaymatrix": "\n00000000:            0      -65536           0\n00000001:        65536           0           0\n00000002:            0           0  1073741824\n",
+            "rotation": 90
+          }
+        ]
       },
       {
         "index": 1,
@@ -108,7 +118,7 @@
           "language": "eng",
           "title": "Primary English audio",
           "ENCODER": "Lavc aac",
-          "DURATION": "00:00:04.021000000"
+          "DURATION": "00:00:04.031000000"
         }
       },
       {
@@ -157,7 +167,7 @@
           "language": "spa",
           "title": "Secondary Spanish audio",
           "ENCODER": "Lavc aac",
-          "DURATION": "00:00:04.021000000"
+          "DURATION": "00:00:04.031000000"
         }
       },
       {
@@ -209,8 +219,8 @@
         "time_base": "1/90000",
         "start_pts": 0,
         "start_time": "0.000000",
-        "duration_ts": 361890,
-        "duration": "4.021000",
+        "duration_ts": 362790,
+        "duration": "4.031000",
         "extradata_size": 33,
         "disposition": {
           "default": 0,
@@ -271,9 +281,9 @@
       "format_name": "matroska,webm",
       "format_long_name": "Matroska / WebM",
       "start_time": "0.000000",
-      "duration": "4.021000",
-      "size": "780953",
-      "bit_rate": "1553748",
+      "duration": "4.031000",
+      "size": "780989",
+      "bit_rate": "1549965",
       "probe_score": 100,
       "tags": {
         "title": "Within complex remux fixture",

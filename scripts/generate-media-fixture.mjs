@@ -18,6 +18,7 @@ const oggFixturePath = path.join(fixtureRoot, "audio-source.ogg");
 const opusFixturePath = path.join(fixtureRoot, "audio-source.opus");
 const complexFixturePath = path.join(fixtureRoot, "complex-remux-source.mkv");
 const complexWorkRoot = path.join(projectRoot, "work", "complex-media-fixture");
+const complexEncodedPath = path.join(complexWorkRoot, "complex-encoded.mkv");
 
 await mkdir(fixtureRoot, { recursive: true });
 await execFileAsync(
@@ -345,7 +346,7 @@ try {
       "-map_chapters",
       "4",
       "-vf",
-      "select='if(lt(t,2),not(mod(n,2)),1)'",
+      "setparams=range=limited:color_primaries=bt709:color_trc=bt709:colorspace=bt709,select='if(lt(t,2),not(mod(n,2)),1)'",
       "-fps_mode:v:0",
       "vfr",
       "-c:v",
@@ -391,6 +392,32 @@ try {
       "-flags:v",
       "+bitexact",
       "-flags:a",
+      "+bitexact",
+      complexEncodedPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-y",
+      "-display_rotation:v:0",
+      "90",
+      "-noautorotate",
+      "-i",
+      complexEncodedPath,
+      "-map",
+      "0",
+      "-map_metadata",
+      "0",
+      "-map_chapters",
+      "0",
+      "-c",
+      "copy",
+      "-fflags",
       "+bitexact",
       complexFixturePath,
     ],

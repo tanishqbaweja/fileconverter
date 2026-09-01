@@ -603,8 +603,15 @@ interface ProbeStream {
   sample_aspect_ratio?: string;
   display_aspect_ratio?: string;
   color_range?: string;
+  color_space?: string;
+  color_transfer?: string;
+  color_primaries?: string;
   chroma_location?: string;
   field_order?: string;
+  side_data_list?: Array<{
+    side_data_type?: string;
+    rotation?: number;
+  }>;
   sample_rate?: string;
   channels?: number;
   bit_rate?: string;
@@ -645,6 +652,26 @@ function expectMediaTitle(probe: MediaProbe, expected: string): void {
       .map(([, value]) => value),
   );
   expect(titles).toContain(expected);
+}
+
+function expectComplexVideoFields(video: ProbeStream | undefined): void {
+  expect(video).toMatchObject({
+    width: 640,
+    height: 360,
+    sample_aspect_ratio: "1:1",
+    display_aspect_ratio: "16:9",
+    color_range: "tv",
+    color_space: "bt709",
+    color_transfer: "bt709",
+    color_primaries: "bt709",
+    chroma_location: "left",
+    field_order: "progressive",
+  });
+  expect(
+    video?.side_data_list?.find(
+      (entry) => entry.side_data_type === "Display Matrix",
+    )?.rotation,
+  ).toBe(90);
 }
 
 function assertProjectLocal(target: string): void {
@@ -737,12 +764,15 @@ async function expectMp3PacketMatch(
   );
 }
 
-async function aacAccessUnitSha256(inputPath: string): Promise<string> {
+async function aacAccessUnitSha256(
+  inputPath: string,
+  audioStreamIndex = 0,
+): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
       "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", "0:a:0", "-c", "copy", "-bsf:a", "aac_adtstoasc",
+      "-map", `0:a:${audioStreamIndex}`, "-c", "copy", "-bsf:a", "aac_adtstoasc",
       "-f", "hash", "-hash", "sha256", "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -753,9 +783,10 @@ async function aacAccessUnitSha256(inputPath: string): Promise<string> {
 async function expectAacAccessUnitMatch(
   sourcePath: string,
   outputPath: string,
+  audioStreamIndex = 0,
 ): Promise<void> {
-  expect(await aacAccessUnitSha256(outputPath)).toBe(
-    await aacAccessUnitSha256(sourcePath),
+  expect(await aacAccessUnitSha256(outputPath, audioStreamIndex)).toBe(
+    await aacAccessUnitSha256(sourcePath, audioStreamIndex),
   );
 }
 
@@ -812,7 +843,7 @@ async function decodedVideoSha256(inputPath: string): Promise<string> {
     "ffmpeg",
     [
       "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", "0:v:0", "-pix_fmt", "yuv420p", "-f", "hash",
+      "-map", "0:v:0", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough", "-f", "hash",
       "-hash", "sha256", "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -2980,6 +3011,9 @@ test("browser remux preserves multiple audio tracks and VFR timing while disclos
     {
       expectedWarningFragments: ["subtitle", "attachment", "chapter"],
       validate: async (probe, outputPath) => {
+        expectComplexVideoFields(
+          probe.streams.find((stream) => stream.codec_type === "video"),
+        );
         const audio = probe.streams.filter(
           (stream) => stream.codec_type === "audio",
         );
@@ -3032,22 +3066,14 @@ test("browser remux preserves multiple audio tracks and VFR timing while disclos
         expect([...deltasMs].some((delta) => delta >= 41 && delta <= 43)).toBe(
           true,
         );
-
+        await expectDecodedVideoMatch(complexFixturePath, outputPath);
+        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
+        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);
         await execFileAsync(
           "ffmpeg",
           [
-            "-hide_banner",
-            "-loglevel",
-            "error",
-            "-i",
-            outputPath,
-            "-map",
-            "0:v:0",
-            "-map",
-            "0:a",
-            "-f",
-            "null",
-            "-",
+            "-hide_banner", "-loglevel", "error", "-i", outputPath,
+            "-map", "0:v:0", "-map", "0:a", "-f", "null", "-",
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
@@ -5054,15 +5080,7 @@ test("Matroska stream copy preserves compatible streams, chapters, and metadata"
         const video = probe.streams.find(
           (stream) => stream.codec_type === "video",
         );
-        expect(video).toMatchObject({
-          width: 640,
-          height: 360,
-          sample_aspect_ratio: "1:1",
-          display_aspect_ratio: "16:9",
-          color_range: "tv",
-          chroma_location: "left",
-          field_order: "progressive",
-        });
+        expectComplexVideoFields(video);
         expect(video?.tags?.title).toBe("Variable timing video");
         const audio = probe.streams.filter(
           (stream) => stream.codec_type === "audio",
@@ -5094,6 +5112,8 @@ test("Matroska stream copy preserves compatible streams, chapters, and metadata"
         ]);
         await expectDecodedVideoMatch(complexFixturePath, outputPath);
         await expectDecodedPcmMatch(complexFixturePath, outputPath);
+        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
+        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);
       },
     },
   );

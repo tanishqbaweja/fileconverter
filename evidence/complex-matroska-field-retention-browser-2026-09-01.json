@@ -1,0 +1,102 @@
+{
+  "auditDate": "2026-09-01",
+  "execution": {
+    "mode": "production browser conversion",
+    "dockerUsed": false,
+    "command": "npx playwright test tests/browser/media-remux.spec.ts --grep \"browser remux preserves multiple audio tracks|Matroska stream copy preserves compatible streams\" --reporter=line",
+    "result": "2 passed",
+    "elapsedSeconds": 14.7,
+    "engineBinaryChanged": false
+  },
+  "profileIds": ["mkv-to-mp4", "webm-to-mkv"],
+  "input": {
+    "path": "fixtures/media/complex-remux-source.mkv",
+    "browserFilenameAlias": "complex-remux-source.webm",
+    "bytes": 780989,
+    "sha256": "33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f",
+    "deterministicAcrossConsecutiveGenerations": true,
+    "peerTrackedFixturesChanged": 0
+  },
+  "fixtureConstruction": {
+    "colorMethod": "setparams before H.264 encoding",
+    "rotationMethod": "second native fixture-generation stream-copy pass with display rotation 90 and autorotation disabled",
+    "rejectedMethod": "Applying display rotation directly to the synthetic input autorotated pixels and did not retain a display matrix.",
+    "nativeToolsUsedOnlyForFixtureGenerationAndIndependentValidation": true
+  },
+  "independentlyProbedMatroskaOutput": {
+    "container": "matroska",
+    "streamCodecsInOrder": ["h264", "aac", "aac", "subrip", "attachment"],
+    "containerTags": {
+      "title": "Within complex remux fixture",
+      "COMMENT": "Deterministic multi-stream metadata"
+    },
+    "videoFields": {
+      "width": 640,
+      "height": 360,
+      "sampleAspectRatio": "1:1",
+      "displayAspectRatio": "16:9",
+      "colorRange": "tv",
+      "colorSpace": "bt709",
+      "colorTransfer": "bt709",
+      "colorPrimaries": "bt709",
+      "rotationDegrees": 90,
+      "rotationSideDataType": "Display Matrix",
+      "chromaLocation": "left",
+      "fieldOrder": "progressive",
+      "title": "Variable timing video"
+    },
+    "audioFields": {
+      "languages": ["eng", "spa"],
+      "titles": ["Primary English audio", "Secondary Spanish audio"],
+      "defaultDispositions": [1, 0]
+    },
+    "subtitleLanguage": "fra",
+    "attachment": {
+      "filename": "within-notes.txt",
+      "mimetype": "text/plain"
+    },
+    "chapterTitles": ["Opening", "Closing"],
+    "decodedVideoSha256MatchesSource": true,
+    "decodedAudioPcmSha256MatchesSource": true,
+    "aacAccessUnitSha256MatchesSource": [true, true]
+  },
+  "independentlyProbedMp4Output": {
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "streamCodecsInOrder": ["h264", "aac", "aac"],
+    "videoFields": {
+      "width": 640,
+      "height": 360,
+      "sampleAspectRatio": "1:1",
+      "displayAspectRatio": "16:9",
+      "colorRange": "tv",
+      "colorSpace": "bt709",
+      "colorTransfer": "bt709",
+      "colorPrimaries": "bt709",
+      "rotationDegrees": 90,
+      "rotationSideDataType": "Display Matrix",
+      "chromaLocation": "left",
+      "fieldOrder": "progressive"
+    },
+    "audioLanguages": ["eng", "spa"],
+    "defaultAudioDispositions": [1, 0],
+    "vfrTimingRetained": true,
+    "decodedVideoSha256MatchesSource": true,
+    "aacAccessUnitSha256MatchesSource": [true, true],
+    "fullNativeDecodePassed": true,
+    "aacPrimingNote": "Cross-container decoded PCM length is not an identity criterion because Matroska and MP4 represent AAC encoder delay and padding differently; both compressed access-unit streams are exact.",
+    "explicitlyDisclosedExclusions": ["subtitle", "attachment", "chapter"]
+  },
+  "boundedRuntimeAssertions": {
+    "maxReadChunkBytesCeiling": 262144,
+    "maxWriteChunkBytesCeiling": 262144,
+    "peakPendingOperationsCeiling": 1,
+    "peakWasmMemoryBytesCeiling": 134217728
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserTestArtifactsRetained": 0,
+    "diagnosticCopiesRetained": 0,
+    "workDirectoryContents": [".gitkeep"]
+  },
+  "scope": "This proves field retention for certified Matroska and MP4 stream-copy topologies. It is not re-encode evidence, does not claim every destination topology, and does not claim support for attached-picture dispositions, which the fixed native profile explicitly excludes."
+}

@@ -48,7 +48,7 @@ not the entire product specification.
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | `evidence/complex-matroska-field-retention-browser-2026-08-28.json` proves a genuine complex Matroska copy preserves stream order/codecs, geometry, aspect, color-range/chroma/field-order fields, titles, languages, disposition, subtitle, attachment, chapters, container tags, and exact decoded content; the production UI also presents per-stream outcomes from bounded inspection | Extend field-level evidence to other destination topologies and add a fixture with representable rotation/color-primaries/transfer/matrix fields; attached-picture dispositions remain explicitly excluded by the fixed binary. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | `evidence/complex-matroska-field-retention-browser-2026-09-01.json` proves genuine complex-source copies to Matroska and MP4 preserve geometry, aspect, explicit BT.709 range/primaries/transfer/matrix fields, an exact 90° display matrix, chroma/field-order fields, compatible titles/languages/dispositions/tags, every decoded VFR video frame, and both AAC access-unit streams. The Matroska topology additionally preserves all five streams, subtitle, attachment, and chapters; MP4 explicitly discloses its three exclusions and fully decodes despite container-specific AAC priming. The production UI presents the same per-stream outcomes from bounded inspection. | Extend field-level evidence to remaining destination topologies; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
@@ -366,19 +366,25 @@ not the entire product specification.
   M4A AAC copy, missing-codec blocking, OGV audio preservation, audio
   re-encoding, and AV1 WebM copy/exclusion.
 - Production build, ESLint, TypeScript, and all 75 unit tests pass. Headed Chrome
-  152 against the retained 780,953-byte complex Matroska fixture showed the
+  152 against the then-current 780,953-byte pre-rotation complex Matroska
+  fixture revision showed the
   correct four-stream plan for both `mkv-to-mp4` and `mkv-to-webm-vp9`; it also
   blocked `mkv-to-mp3` before start because the fixture has no MP3 stream. The
   UI rendered without clipping and emitted zero console errors. Evidence is in
   `evidence/media-conversion-plan-browser-2026-08-28.json`; the headed check made
   no converted output and its disposable CLI screenshots/state were deleted.
-- The complex Matroska retention gate now asserts output stream order/codecs,
-  geometry, sample/display aspect, color range, chroma location, field order,
-  video/audio titles, languages, default disposition, subtitle language,
-  attachment identity/type, chapter titles, container tags, and exact decoded
-  video/audio equality. The genuine production-browser copy passed in 10.3
-  seconds and its output was deleted. Evidence is in
-  `evidence/complex-matroska-field-retention-browser-2026-08-28.json`.
+- The complex Matroska retention gate now uses a byte-deterministic 780,989-byte
+  fixture with explicit limited-range BT.709 primaries/transfer/matrix and a
+  90° display matrix. It asserts output stream order/codecs, geometry,
+  sample/display aspect, every named color field, rotation, chroma location,
+  field order, video/audio titles, languages, default disposition, subtitle
+  language, attachment identity/type, chapter titles, container tags, and exact
+  decoded video/audio equality. Genuine production-browser copies to Matroska
+  and MP4 passed 2/2 in 14.7 seconds without an engine rebuild, with exact VFR
+  decoded-frame and both AAC access-unit hashes; MP4 also proved explicit
+  subtitle/attachment/chapter exclusions. Both outputs were deleted.
+  Evidence is in
+  `evidence/complex-matroska-field-retention-browser-2026-09-01.json`.
 - A registry-wide disclosure gate now evaluates all 259 public FFmpeg profiles.
   It requires explicit metadata/container semantics, copy-versus-re-encode
   wording, first-stream and video exclusion disclosures for all 65 container-
