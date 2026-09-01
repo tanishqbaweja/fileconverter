@@ -1,0 +1,135 @@
+{
+  "auditDate": "2026-09-01",
+  "execution": {
+    "mode": "production Chrome stream-copy conversion with independent native FFmpeg validation",
+    "dockerUsed": false,
+    "focusedCommand": "npx playwright test tests/browser/media-remux.spec.ts --grep \"complex representable fields|retains color while disclosing rotation\" --reporter=line",
+    "focusedResult": "4 passed",
+    "focusedElapsedSeconds": 14.1,
+    "legacyComplexGateResult": "2 passed",
+    "legacyComplexGateElapsedSeconds": 10.9,
+    "mediaOptionsResult": "11 passed",
+    "mediaOptionsElapsedSeconds": 40.9,
+    "fullMediaRemuxResult": "488 passed",
+    "fullMediaRemuxElapsedMinutes": 8.7,
+    "playwrightVideoCaptureDisabled": true
+  },
+  "profileIds": [
+    "mkv-to-mov",
+    "mkv-to-3gp",
+    "mkv-to-mpeg-ts",
+    "mkv-to-flv"
+  ],
+  "input": {
+    "path": "fixtures/media/complex-remux-source.mkv",
+    "bytes": 780989,
+    "sha256": "33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f",
+    "video": "VFR H.264, 640x360, 1:1 sample aspect, limited-range BT.709, 90-degree Display Matrix",
+    "audio": "two AAC tracks with eng/spa language tags and default dispositions 1/0",
+    "otherTopology": "French SubRip, two named chapters, text attachment, stream titles, container title/comment"
+  },
+  "browserOutcomes": {
+    "mov": {
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "rotationDegrees": 90,
+      "allExplicitBt709FieldsRetained": true,
+      "geometryAspectChromaAndFieldOrderRetained": true,
+      "audioLanguages": ["eng", "spa"],
+      "defaultAudioDispositions": [1, 0],
+      "containerTitleAndCommentRetained": true,
+      "decodedVfrVideoMatchesSource": true,
+      "aacAccessUnitsMatchSource": [true, true],
+      "explicitlyDisclosedExclusions": ["subtitle", "attachment", "chapter"]
+    },
+    "threeGp": {
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "rotationDegrees": 90,
+      "allExplicitBt709FieldsRetained": true,
+      "geometryAspectChromaAndFieldOrderRetained": true,
+      "audioLanguages": ["eng", "spa"],
+      "defaultAudioDispositions": [1, 0],
+      "decodedVfrVideoMatchesSource": true,
+      "aacAccessUnitsMatchSource": [true, true],
+      "explicitlyDisclosedExclusions": ["subtitle", "attachment", "chapter"]
+    },
+    "mpegTs": {
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "displayRotationRepresentable": false,
+      "allExplicitBt709FieldsRetained": true,
+      "audioLanguages": ["eng", "spa"],
+      "unrotatedDecodedVfrVideoMatchesSource": true,
+      "aacAccessUnitsMatchSource": [true, true],
+      "explicitlyDisclosedExclusions": ["display rotation", "subtitle", "attachment", "chapter"]
+    },
+    "flv": {
+      "streamCodecsInOrder": ["h264", "aac"],
+      "displayRotationRepresentable": false,
+      "allExplicitBt709FieldsRetained": true,
+      "containerTitleRetained": true,
+      "audioLanguageRepresentable": false,
+      "unrotatedDecodedVfrVideoMatchesSource": true,
+      "firstAacAccessUnitsMatchSource": true,
+      "explicitlyDisclosedExclusions": ["display rotation", "additional AAC stream", "subtitle", "attachment", "chapter"]
+    }
+  },
+  "validatorCorrections": [
+    {
+      "attempt": "post-rebuild metadata assertions",
+      "result": "2 passed, 2 failed",
+      "cause": "The browser build retained MPEG-TS language tags and the FLV container title; the earlier native feasibility audit had predicted those fields would be absent.",
+      "productDefect": false,
+      "resolution": "Assert the stronger browser retention actually observed."
+    },
+    {
+      "attempt": "equal decode defaults after explicit rotation exclusion",
+      "result": "2 passed, 2 failed",
+      "cause": "Native FFmpeg autorotated the source but correctly did not rotate MPEG-TS/FLV pixels after their unrepresentable Display Matrix was excluded.",
+      "productDefect": false,
+      "resolution": "Compare passthrough VFR decoded pixels with autorotation disabled on both sides."
+    }
+  ],
+  "enginePublication": {
+    "sourceCommit": "83afb01995781f04b82f73fe69aa17803024f700",
+    "publishedCommit": "1bd1f3ce5624d1db076bce2b3432d7dd11670344",
+    "currentWrapperSourceSha256": "1d9924ff7b07b4b9b084ce7b7413074d1be65e3d59e0e1c31a9f43d8d49e5682",
+    "reversePatchSha256": "9f4a3e49eb4a7f4b6779066e585b5e88096d7e82576e87cdc6aa761b01daea44",
+    "previousWasm": {
+      "bytes": 9630736,
+      "sha256": "b4f34226e54f3708a1f09ae8531f2ba785c1c0ccae886dc43177c06d7bf25b6d"
+    },
+    "publishedWasm": {
+      "bytes": 9631227,
+      "sha256": "27512046bd46fef42f471e5829b8ca2aa759943320cdc5fb7a8bdd21c073c4a7"
+    }
+  },
+  "hostedNoDockerReproduction": {
+    "candidateRunId": 33511638898,
+    "candidateRunUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33511638898",
+    "candidateResult": "expected mismatch: only within-remux.wasm differed; every companion artifact was byte-exact",
+    "candidateArtifactId": 9802286161,
+    "candidateArtifactBytes": 19055603,
+    "publicationRunId": 33514702550,
+    "publicationRunUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33514702550",
+    "publicationResult": "success: every FFmpeg artifact rebuilt byte-exact",
+    "publicationElapsedSeconds": 611,
+    "mismatchUploadSkipped": true,
+    "hostedRepositoryLocalCleanupPassed": true,
+    "publicationArtifactsRetained": 0
+  },
+  "boundedRuntimeAssertions": {
+    "maxReadChunkBytesCeiling": 262144,
+    "maxWriteChunkBytesCeiling": 262144,
+    "peakPendingOperationsCeiling": 1,
+    "peakWasmMemoryBytesCeiling": 134217728
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserTestArtifactsRetained": 0,
+    "candidateDownloadsRetained": 0,
+    "candidateArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "Together with complex-matroska-field-retention-browser-2026-09-01.json, this closes field-level evidence for the six compatible Matroska-source stream-copy destinations: Matroska, MP4, MOV, 3GP, MPEG-TS, and FLV. Cross-source field mappings and attached-picture dispositions remain open under M-03/M-08."
+}

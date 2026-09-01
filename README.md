@@ -330,6 +330,21 @@ video frame and both AAC access-unit streams to the source, and removed both
 converted copies afterward; see
 `evidence/complex-matroska-field-retention-browser-2026-09-01.json`.
 
+The same complex source now covers every other compatible stream-copy
+destination. MOV and 3GP retain the 90° display matrix, all explicit BT.709
+fields, geometry/aspect fields, both AAC tracks, languages, dispositions, exact
+VFR decoded pictures, and exact AAC access units. MPEG-TS retains both AAC
+tracks, their languages, all explicit BT.709 fields, and exact unrotated video
+and audio payloads; FLV retains the first AAC track, container title, BT.709
+fields, and exact unrotated payloads. Because MPEG-TS and FLV cannot represent
+the display matrix, the worker now explicitly warns that rotation metadata is
+excluded while compressed pixels remain unrotated. The four-route focused gate
+passed 4/4 in 14.1 seconds, the complete media-options gate passed 11/11, and
+the full shared-core remux suite passed 488/488. Test video capture can be
+disabled with `WITHIN_TEST_VIDEO=off`, avoiding an optional recorder download
+and disposable video copies. See
+`evidence/complex-container-field-retention-browser-2026-09-01.json`.
+
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
 the certified 2 Mbit/s policy; the conversion controls can instead select a
