@@ -268,6 +268,7 @@ const generatedStressExtensions = new Set([
 ]);
 const generatedStressNames = new Set([
   "tiff-rgb-tiled-multipage-48m.tiff.json",
+  "audio-artwork-128m.mp4.json",
   "audio-amr-wb-128m.awb.json",
   "records-128m.json",
   "h264-aac-128m.3gp.json",

@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-01T02:20:00.000Z",
+  "scope": "Bounded common audio tags and attached artwork for MP3 and FLAC destinations",
+  "status": "candidate-verified-publication-reproduction-pending",
+  "implementation": {
+    "source": "media/ffmpeg/within_remux.c",
+    "sourceSha256": "a44934536ea6ca65ac8c33b0fb36803f84e02811769afc47259b06d41d55ac60",
+    "sourcePatch": "media/ffmpeg/patches/audio-options-source.patch",
+    "sourcePatchSha256": "ee3e9fa5b1b6525cae17d13d55436e8bef575bfad5450ffd0485640a8f5d9951",
+    "publishedCandidate": {
+      "path": "public/engines/remux/within-remux.wasm",
+      "bytes": 9630164,
+      "sha256": "4bb54fccdcc973d66712728ae051bce933354b6cb87ac10d78f73effe3df615e"
+    },
+    "behavior": {
+      "destinations": ["mp3", "flac"],
+      "textTags": ["title", "artist", "album", "genre", "date", "track", "comment"],
+      "artworkCodecs": ["jpeg", "png"],
+      "firstArtworkOnly": true,
+      "packetCopiedWithoutDecode": true,
+      "maximumArtworkBytes": 4194304,
+      "maximumWidthPixels": 4096,
+      "maximumHeightPixels": 4096,
+      "maximumPixels": 16777216,
+      "unsupportedAdditionalOversizedOrMalformedArtwork": "explicitly excluded with warnings",
+      "otherAudioDestinations": "artwork explicitly excluded"
+    }
+  },
+  "deterministicFixtures": [
+    {
+      "path": "fixtures/media/audio-source-artwork.m4a",
+      "bytes": 64973,
+      "sha256": "d635822fd1cf6d88596e7b86e0a06db2529d112a81097a246bac863b9d19682a",
+      "audioCodec": "aac",
+      "artworkCodec": "png",
+      "artworkBytes": 178,
+      "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    {
+      "path": "fixtures/media/audio-source-mp3-artwork.mp4",
+      "bytes": 18933,
+      "sha256": "1c71b2daa1581fd353ec355ff556ea776bad7727db9c51759da20f7f35dd72b2",
+      "audioCodec": "mp3",
+      "artworkCodec": "png",
+      "artworkBytes": 178,
+      "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+      "determinism": "two independent generations matched byte-for-byte"
+    }
+  ],
+  "productionBrowserCorrectness": {
+    "focusedCommand": "npx playwright test tests/browser/media-options.spec.ts --grep \"bounded audio metadata preserves compatible tags and cover art\"",
+    "focusedResult": "passed 1/1 in 11.1 seconds",
+    "fullFileCommand": "npx playwright test tests/browser/media-options.spec.ts",
+    "fullFileResult": "passed 11/11 in 36.6 seconds",
+    "validatedCases": [
+      "M4A AAC to MP3 genuine transcode with exact seven tags and exact PNG artwork packet",
+      "M4A AAC to FLAC genuine transcode with exact seven tags, exact PNG artwork packet, full packet traversal, and full decoded-audio APSNR",
+      "MP4 MP3 to MP3 stream-copy with exact normalized MP3 packet SHA-256, exact seven tags, and exact PNG artwork packet",
+      "M4A AAC to raw AAC with explicit artwork exclusion"
+    ]
+  },
+  "stressFixture": {
+    "generatedBy": "scripts/generate-audio-artwork-stress-fixture.mjs",
+    "bytes": 134402091,
+    "sha256": "50f13a716158b47fbb0ce97f427f40c096fd35cdf9c396daf5b245b58af7242d",
+    "durationSeconds": 60,
+    "topology": "AAC plus MP3 plus one 64x64 PNG attached picture in MP4 with a 132000000-byte reserved moov/free region",
+    "purpose": "exercise a large random-access skip without unrelated excluded video renderer memory",
+    "retained": false
+  },
+  "acceptedStressReports": [
+    {
+      "path": "outputs/reports/2026-09-01T01-54-32-104Z-mp4-to-flac-stress.json",
+      "profile": "mp4-to-flac",
+      "runs": 3,
+      "elapsedMs": [733.24, 384.375, 375.775],
+      "incrementalPrivateMiB": [95.90625, 88.80078125, 95.734375],
+      "worstIncrementalPrivateMiB": 95.90625,
+      "limitMiB": 250,
+      "outputBytes": 901333,
+      "outputSha256": "9f8762ab4eaafc03f0e35a9247a96b5c9db209ae77878d338c549dcfd0fc7030",
+      "decodedAudioApsnrDb": 154.166,
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueueBytes": 10450,
+      "maximumPendingOperations": 1,
+      "fixedWasmBytes": 33554432,
+      "exactArtwork": true,
+      "exactTags": true,
+      "cleanupRecovery": true
+    },
+    {
+      "path": "outputs/reports/2026-09-01T01-56-41-397Z-mp4-to-mp3-stress.json",
+      "profile": "mp4-to-mp3",
+      "runs": 3,
+      "elapsedMs": [550.62, 254.26, 233.95],
+      "incrementalPrivateMiB": [84.37890625, 88.41796875, 81.78125],
+      "worstIncrementalPrivateMiB": 88.41796875,
+      "limitMiB": 250,
+      "outputBytes": 1441668,
+      "outputSha256": "cbcd91c0cbe129baeef86737a47020c53b056ff86484ac0b34c169d125e59cee",
+      "exactMp3PacketSha256": "f21c73b082afcf9e56f4dbdc8cd104ffd197d56769ba556afd2680e158225dad",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueueBytes": 1152,
+      "maximumPendingOperations": 1,
+      "fixedWasmBytes": 33554432,
+      "exactArtwork": true,
+      "exactTags": true,
+      "cleanupRecovery": true
+    }
+  ],
+  "rejectedApproaches": [
+    {
+      "path": "outputs/reports/2026-09-01T01-47-58-001Z-mp4-to-flac-stress.json",
+      "sourceBytes": 182319598,
+      "topology": "H.264 plus AAC plus MP3 plus artwork",
+      "runIncrementalPrivateMiB": [211.12109375, 212.03125, 270.7578125],
+      "reason": "source exceeded the public route maximum and unrelated excluded video pushed the third complete-Chromium run over 250 MiB; threshold was not weakened"
+    },
+    {
+      "path": "outputs/reports/2026-09-01T01-51-07-174Z-mp4-to-flac-stress.json",
+      "sourceBytes": 137357037,
+      "topology": "H.264 plus AAC plus MP3 plus artwork",
+      "runIncrementalPrivateMiB": [210.96875, 253.69921875, 221.1328125],
+      "reason": "source fit the public route maximum but unrelated excluded video renderer overhead exceeded 250 MiB; the fixture was redesigned to isolate the audio/artwork topology and the threshold was not weakened"
+    },
+    {
+      "reason": "initial validator compared the hash result object to a string and classified the expected preserved picture as an excluded attachment; the harness was fixed without changing converter behavior or validation thresholds"
+    }
+  ],
+  "nonDockerReproduction": {
+    "dockerUsed": false,
+    "compileFailureRun": {
+      "id": 33435235488,
+      "commit": "fe42ca85a6e7c9263a6c1151d4619328f16248f8",
+      "result": "Clang exposed a misplaced declaration; cleanup passed and no artifact was retained"
+    },
+    "firstCandidateRun": {
+      "id": 33436034707,
+      "commit": "3e38c6821a777bf5d0a3555276469ec8942254ff",
+      "buildSeconds": 624,
+      "candidateSha256": "49249417b37ca00a7de3dfa5766dddc9b51a72fbd357f5d92d8c92af58b505b1",
+      "peerArtifactsExact": 18,
+      "result": "rejected because the minimal build did not populate decoded artwork dimensions"
+    },
+    "finalCandidateRun": {
+      "id": 33437825464,
+      "commit": "3e1951bd5d335eff04509339e47974dd7c7e4505",
+      "buildSeconds": 620,
+      "candidateSha256": "4bb54fccdcc973d66712728ae051bce933354b6cb87ac10d78f73effe3df615e",
+      "peerArtifactsExact": 18,
+      "result": "final candidate extracted; repository-local download deleted after verification"
+    },
+    "publicationRun": null
+  },
+  "cleanup": {
+    "generatedStressFixtureDeleted": true,
+    "stressManifestDeleted": true,
+    "convertedOutputsDeleted": true,
+    "validationCopiesDeleted": true,
+    "browserProfileDeleted": true,
+    "candidateDownloadDirectoriesDeleted": true,
+    "remoteMismatchArtifactsPendingDeletionAfterPublication": [9774752988, 9775385968],
+    "protectedTestMkv": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "unchanged": true
+    }
+  }
+}

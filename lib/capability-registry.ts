@@ -64,6 +64,25 @@ export interface ConversionProfile {
   public: boolean;
 }
 
+export const boundedAudioArtworkDisclosure =
+  "The first attached JPEG or PNG cover is packet-copied without decoding when it is at most 4 MiB, at most 4096 pixels on each side, and at most 16 megapixels.";
+export const boundedAudioArtworkExclusions =
+  "Additional pictures, unsupported image codecs, oversized or malformed pictures, and artwork the destination cannot represent are explicitly excluded with warnings.";
+
+function withBoundedAudioArtworkDisclosure(
+  profile: ConversionProfile,
+): ConversionProfile {
+  if (profile.output !== "mp3" && profile.output !== "flac") return profile;
+  return {
+    ...profile,
+    metadataLimitations: [
+      ...profile.metadataLimitations,
+      boundedAudioArtworkDisclosure,
+      boundedAudioArtworkExclusions,
+    ],
+  };
+}
+
 const legacyContainerWebmEvidence = {
   "3gp": 146_854_522,
   "mpeg-ts": 150_441_548,
@@ -172,8 +191,8 @@ function containerFlacProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       `The certified input combination uses ${sourceCodec} audio; other audio codecs require separately verified extraction routes.`,
-      "Only the first audio stream is converted; video, subtitles, attachments, data, additional audio streams, and chapters are explicitly excluded.",
-      "Compatible text and language metadata are copied where FLAC can represent them; container-specific fields and artwork are excluded.",
+      "Only the first audio stream is converted; video, subtitles, non-artwork attachments, data, additional audio streams, and chapters are explicitly excluded.",
+      "Compatible text and language metadata are copied where FLAC can represent them; container-specific fields are excluded.",
     ],
     fidelityLimitations: [
       `FLAC losslessly preserves the decoded signed 16-bit ${sourceCodec} representation but cannot restore information already discarded by ${sourceCodec} compression.`,
@@ -463,7 +482,9 @@ function containerLossyAudioProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
-      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
+      output === "mp3"
+        ? "Only the first audio stream is converted; video, subtitles, non-artwork attachments, data, chapters, additional audio streams, and container-specific metadata are explicitly excluded."
+        : "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
       output === "mp3"
         ? "Compatible text tags are mapped to ID3 where possible; stream language and container-only fields may not be retained."
         : "Compatible text tags are copied into Ogg comments where possible; stream language and container-only fields may not be retained.",
@@ -590,11 +611,13 @@ function webmAudioOutputProfile(output: WebmAudioOutput): ConversionProfile {
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified input is AV1 video with one 48 kHz mono Opus audio stream in WebM; other WebM audio codecs require separate evidence.",
-      "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional streams, and container-specific metadata are explicitly excluded.",
+      output === "flac" || output === "mp3"
+        ? "Only the first audio stream is converted; video, subtitles, non-artwork attachments, data, chapters, additional streams, and container-specific metadata are explicitly excluded."
+        : "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional streams, and container-specific metadata are explicitly excluded.",
       output === "flac"
-        ? "Compatible text and language metadata are copied where FLAC can represent them; embedded artwork is excluded."
+        ? "Compatible text and language metadata are copied where FLAC can represent them."
         : output === "mp3"
-          ? "Compatible text tags are mapped to ID3 where possible; WebM-only fields and artwork are excluded."
+          ? "Compatible text tags are mapped to ID3 where possible; WebM-only fields are excluded."
           : output === "wav"
             ? "WebM metadata and artwork are excluded because this bounded PCM WAV profile does not preserve them."
             : "Raw AMR-NB and ADTS outputs do not preserve WebM metadata or artwork.",
@@ -725,7 +748,7 @@ function standaloneMp3OutputProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       `The certified input codec is ${sourceCodec}.`,
-      "Only the first audio stream is converted; chapters, artwork, attachments, and additional streams are explicitly excluded.",
+      "Only the first audio stream is converted; chapters, non-artwork attachments, and additional streams are explicitly excluded.",
       "Compatible text tags are mapped to ID3 where possible; stream language and container-specific fields may not be retained.",
       "Mono output is fixed at 128 kb/s and one channel; stereo output is fixed at 192 kb/s and at most two channels.",
     ],
@@ -964,7 +987,9 @@ function threeGpAmrOutputProfile(output: ThreeGpAmrOutput): ConversionProfile {
         ? "The certified input variants are a 3GP container whose first audio stream is either 8 kHz mono AMR-NB or 48 kHz mono AAC-LC; other codecs require separate evidence."
         : "The certified input is a 3GP container whose first audio stream is 8 kHz mono AMR-NB; AAC-in-3GP retains its separately tested routes.",
       "The 128 MiB-class bounded profile uses a genuine 720-second H.264/AMR-NB 3GP and traverses the large interleaved video payload; pathological multi-hour files with millions of audio packets and packet-count-sized indexes remain excluded.",
-      "Only the first audio stream is converted; video, subtitles, data, chapters, artwork, and additional streams are explicitly excluded.",
+      output === "mp3"
+        ? "Only the first audio stream is converted; video, subtitles, data, chapters, and additional streams are explicitly excluded."
+        : "Only the first audio stream is converted; video, subtitles, data, chapters, artwork, and additional streams are explicitly excluded.",
       `Output is ${outputDescription}; compatible text tags are copied only where the destination can represent them.`,
     ],
     fidelityLimitations: [
@@ -1616,7 +1641,7 @@ function containerMp3Profile(
     metadataLimitations: [
       "The first compatible MP3 audio stream is copied without decoding or re-encoding; a source without MP3 audio is rejected rather than transcoded implicitly.",
       "Video, subtitles, attachments, data, chapters, and additional or incompatible audio streams are explicitly excluded with warnings.",
-      "Compatible text metadata is mapped to ID3 where the MP3 muxer can represent it; container timing, stream language, artwork, and container-specific fields may not be retained.",
+      "Compatible text metadata is mapped to ID3 where the MP3 muxer can represent it; container timing, stream language, and container-specific fields may not be retained.",
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
@@ -2310,7 +2335,7 @@ const imageMaxTestedBytes = {
   bmp: 24_883_254,
 } as const;
 
-export const conversionProfiles: readonly ConversionProfile[] = [
+export const conversionProfiles: readonly ConversionProfile[] = ([
   {
     id: "gzip-compress",
     input: "binary",
@@ -4966,7 +4991,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "Container-specific MPEG-4 metadata and artwork are not carried into this FLAC profile.",
+      "Compatible text metadata is copied where FLAC can represent it; MPEG-4-only fields are not carried into this FLAC profile.",
     ],
     fidelityLimitations: [
       "For AAC input, FLAC preserves decoded 16-bit PCM but cannot restore discarded source information; 16-bit ALAC input remains sample-exact.",
@@ -4990,7 +5015,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "ID3 metadata and embedded artwork are not carried into this FLAC profile.",
+      "Compatible ID3 text metadata is copied where FLAC can represent it; ID3-only fields are not carried into this FLAC profile.",
     ],
     fidelityLimitations: [
       "MP3 is lossy; FLAC preserves the decoded 16-bit PCM but cannot restore discarded source information.",
@@ -5015,7 +5040,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "This initial route accepts signed 16-bit little-endian PCM WAV input.",
-      "Only RIFF text tags recognized by the demuxer and representable as FLAC comments are offered to the destination; cue points, broadcast/iXML/application chunks, embedded artwork, and other WAV-specific metadata are not preserved.",
+      "Only RIFF text tags recognized by the demuxer and representable as FLAC comments are offered to the destination; cue points, broadcast/iXML/application chunks, and other WAV-specific metadata are not preserved.",
     ],
     fidelityLimitations: [
       "FLAC losslessly preserves the decoded signed 16-bit PCM samples.",
@@ -5039,7 +5064,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified input is signed 16-bit big-endian PCM AIFF; AIFF-only chunks and embedded artwork are excluded.",
+      "The certified input is signed 16-bit big-endian PCM AIFF; AIFF-only chunks are excluded.",
       "Compatible text metadata is copied when FLAC can represent it.",
     ],
     fidelityLimitations: [],
@@ -5063,7 +5088,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified input codec is Vorbis in Ogg; other Ogg audio codecs use separately tested profiles.",
-      "Compatible Vorbis comments are copied into FLAC; embedded artwork is excluded.",
+      "Compatible Vorbis comments are copied into FLAC.",
     ],
     fidelityLimitations: [
       "Vorbis is lossy; FLAC preserves the decoded 16-bit representation but cannot restore discarded source information.",
@@ -5087,7 +5112,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     cpuClass: "medium",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified input codec is Opus in Ogg; compatible comments are copied into FLAC and embedded artwork is excluded.",
+      "The certified input codec is Opus in Ogg; compatible comments are copied into FLAC.",
     ],
     fidelityLimitations: [
       "Opus is lossy; FLAC preserves the decoded 16-bit representation but cannot restore discarded source information.",
@@ -5186,7 +5211,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified input codec is WMA2; broader WMA-family variants remain outside the tested public matrix.",
-      "ASF artwork and container-only tags are excluded.",
+      "Compatible ASF text tags are copied where FLAC can represent them; ASF-only fields are excluded.",
     ],
     fidelityLimitations: [
       "FLAC preserves the decoded 16-bit representation but cannot restore information already lost by WMA compression.",
@@ -5351,7 +5376,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified input is mono 16 kHz AMR-WB in a 3GP/ISOBMFF .awb file.",
-      "Only the first audio stream is converted; container metadata, artwork, chapters, and additional streams are excluded.",
+      "Only the first audio stream is converted; container-only metadata, chapters, and additional streams are excluded.",
     ],
     fidelityLimitations: [
       "FLAC losslessly preserves the decoded signed 16-bit representation but cannot restore information discarded by AMR-WB compression.",
@@ -5376,7 +5401,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified input is mono 16 kHz AMR-WB in a 3GP/ISOBMFF .awb file.",
-      "Only the first audio stream is converted; container metadata, artwork, chapters, and additional streams are excluded.",
+      "Only the first audio stream is converted; container-only metadata, chapters, and additional streams are excluded.",
     ],
     fidelityLimitations: [
       "Lossy AMR-WB audio is re-encoded as mono 16 kHz, 64 kbit/s MP3; discarded source information cannot be restored.",
@@ -5886,7 +5911,7 @@ export const conversionProfiles: readonly ConversionProfile[] = [
   containerOggAudioProfile("ogv", "ogg"),
   containerOggAudioProfile("mkv", "opus"),
   containerOggAudioProfile("webm", "opus"),
-];
+] satisfies readonly ConversionProfile[]).map(withBoundedAudioArtworkDisclosure);
 
 export function formatById(id: string): FormatDefinition | undefined {
   return formats.find((format) => format.id === id);

@@ -26,6 +26,12 @@ const artworkFixturePath = path.join(
   "media",
   "audio-source-artwork.m4a",
 );
+const mp3ArtworkFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-mp3-artwork.mp4",
+);
 const videoFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -167,6 +173,21 @@ async function extractedArtworkSha256(inputPath: string): Promise<string> {
   const bytes = await readFile(extractionPath);
   const digest = await crypto.subtle.digest("SHA-256", bytes);
   return Buffer.from(digest).toString("hex");
+}
+
+async function copiedAudioPayloadSha256(inputPath: string): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", "0:a:0", "-c", "copy", "-f", "hash", "-hash", "sha256",
+      "pipe:1",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const match = /SHA256=([0-9a-f]{64})/i.exec(stdout);
+  if (!match) throw new Error(`FFmpeg did not report an audio hash: ${stdout}`);
+  return match[1].toLowerCase();
 }
 
 async function measureScaledVideoPsnr(outputPath: string): Promise<number> {
@@ -900,6 +921,44 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
   }
+
+  const sourceMp3PayloadSha256 = await copiedAudioPayloadSha256(
+    mp3ArtworkFixturePath,
+  );
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(mp3ArtworkFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mp4-to-mp3");
+  const extractionState = await waitForCompletedConversion(page);
+  expect(extractionState.warnings).toEqual([]);
+  expect(extractionState.opfsName).toBeTruthy();
+  const extractedMp3Path = path.join(validationRoot, "artwork-stream-copy.mp3");
+  await copyAndDeleteSmallBrowserOutput(
+    page,
+    extractionState.opfsName!,
+    extractedMp3Path,
+  );
+  const extractedMp3Probe = await probeAudioWithArtwork(extractedMp3Path);
+  expect(
+    extractedMp3Probe.streams.filter((stream) => stream.codec_type === "audio"),
+  ).toHaveLength(1);
+  expect(extractedMp3Probe.streams[0]?.codec_name).toBe("mp3");
+  expect(
+    extractedMp3Probe.streams.filter(
+      (stream) => stream.disposition?.attached_pic === 1,
+    ),
+  ).toHaveLength(1);
+  for (const [key, value] of Object.entries(expectedTags)) {
+    expect(extractedMp3Probe.format.tags?.[key]).toBe(value);
+  }
+  expect(await extractedArtworkSha256(extractedMp3Path)).toBe(
+    sourceArtworkSha256,
+  );
+  expect(await copiedAudioPayloadSha256(extractedMp3Path)).toBe(
+    sourceMp3PayloadSha256,
+  );
 
   await page.goto("/?test=1");
   await page.waitForFunction(

@@ -2,12 +2,56 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
+  boundedAudioArtworkDisclosure,
+  boundedAudioArtworkExclusions,
   conversionProfiles,
   detectFormat,
   formats,
   preferredProfileFor,
   publicProfilesFor,
 } from "../lib/capability-registry.ts";
+
+test("every public MP3 and FLAC output discloses bounded artwork retention", () => {
+  const artworkOutputs = conversionProfiles.filter(
+    (profile) =>
+      profile.public && (profile.output === "mp3" || profile.output === "flac"),
+  );
+  assert.ok(artworkOutputs.length > 0);
+  for (const profile of artworkOutputs) {
+    assert.ok(
+      profile.metadataLimitations.includes(boundedAudioArtworkDisclosure),
+      `${profile.id}: bounded artwork disclosure`,
+    );
+    assert.ok(
+      profile.metadataLimitations.includes(boundedAudioArtworkExclusions),
+      `${profile.id}: bounded artwork exclusions`,
+    );
+    assert.equal(
+      profile.metadataLimitations.some(
+        (limitation) =>
+          limitation !== boundedAudioArtworkExclusions &&
+          /artwork|embedded art|cover-art/i.test(
+            limitation.replaceAll("non-artwork", ""),
+          ) &&
+          /excluded|not carried|not preserved|may not be retained|cannot preserve/i.test(
+            limitation,
+          ),
+      ),
+      false,
+      `${profile.id}: contradictory artwork claim`,
+    );
+  }
+
+  for (const profile of conversionProfiles.filter(
+    (candidate) => candidate.output !== "mp3" && candidate.output !== "flac",
+  )) {
+    assert.equal(
+      profile.metadataLimitations.includes(boundedAudioArtworkDisclosure),
+      false,
+      `${profile.id}: must not claim MP3/FLAC artwork support`,
+    );
+  }
+});
 
 test("registry contains no PDF input, output, or route", () => {
   assert.equal(

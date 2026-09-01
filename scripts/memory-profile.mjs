@@ -2201,6 +2201,9 @@ async function validateMediaOutput(
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
   const probe = JSON.parse(stdout);
+  const attachedPictures = probe.streams.filter(
+    (stream) => stream.disposition?.attached_pic === 1,
+  );
   if (
     matroskaCopy &&
     !String(probe.format?.format_name ?? "")
@@ -2288,7 +2291,69 @@ async function validateMediaOutput(
   if (independentAudioValidation) {
     probe.withinValidation = independentAudioValidation;
   }
-  const codecs = probe.streams.map((stream) => stream.codec_name);
+  if (source.artwork) {
+    if (!(mp3Output || flacOutput) || attachedPictures.length !== 1) {
+      throw new Error(
+        `Browser audio artwork validation expected one attached picture; received ${attachedPictures.length}.`,
+      );
+    }
+    const outputArtwork = attachedPictures[0];
+    if (
+      outputArtwork.codec_name !== source.artwork.codec ||
+      outputArtwork.width !== source.artwork.width ||
+      outputArtwork.height !== source.artwork.height
+    ) {
+      throw new Error(
+        `Browser audio artwork metadata changed: ${outputArtwork.codec_name ?? "unknown"} ${outputArtwork.width ?? 0}x${outputArtwork.height ?? 0}.`,
+      );
+    }
+    const artworkValidationPath = path.join(
+      path.dirname(localPath),
+      `.artwork-validation-${process.pid}.${source.artwork.codec === "png" ? "png" : "jpg"}`,
+    );
+    try {
+      await execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner", "-loglevel", "error", "-y", "-i", localPath,
+          "-map", "0:v:0", "-c", "copy", artworkValidationPath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      const artworkValidation = await hashFile(artworkValidationPath);
+      if (
+        artworkValidation.bytes !== source.artwork.bytes ||
+        artworkValidation.sha256 !== source.artwork.sha256
+      ) {
+        throw new Error(
+          `Browser audio artwork bytes do not exactly match the source artwork: ${artworkValidation.bytes} bytes/${artworkValidation.sha256} != ${source.artwork.bytes} bytes/${source.artwork.sha256}.`,
+        );
+      }
+      for (const [key, value] of Object.entries(source.expectedTags ?? {})) {
+        if (probe.format?.tags?.[key] !== value) {
+          throw new Error(
+            `Browser audio tag ${key} changed: ${probe.format?.tags?.[key] ?? "missing"}.`,
+          );
+        }
+      }
+      probe.withinArtworkValidation = {
+        method: "attached-picture-packet-sha256",
+        passed: true,
+        codec: outputArtwork.codec_name,
+        width: outputArtwork.width,
+        height: outputArtwork.height,
+        bytes: artworkValidation.bytes,
+        sha256: artworkValidation.sha256,
+        tags: source.expectedTags ?? {},
+      };
+    } finally {
+      await rm(artworkValidationPath, { force: true });
+    }
+  }
+  const primaryStreams = probe.streams.filter(
+    (stream) => stream.disposition?.attached_pic !== 1,
+  );
+  const codecs = primaryStreams.map((stream) => stream.codec_name);
   const sourceVideo = source.probe.streams.find(
     (stream) =>
       stream.codec_type === "video" && !stream.disposition?.attached_pic,
@@ -2345,10 +2410,10 @@ async function validateMediaOutput(
   ) {
     throw new Error(`Unexpected browser media streams: ${codecs.join(", ")}.`);
   }
-  const video = probe.streams.find((stream) => stream.codec_type === "video");
-  const audio = probe.streams.find((stream) => stream.codec_type === "audio");
+  const video = primaryStreams.find((stream) => stream.codec_type === "video");
+  const audio = primaryStreams.find((stream) => stream.codec_type === "audio");
   const [videoRateNumerator, videoRateDenominator] = String(
-    probe.streams.find((stream) => stream.codec_type === "video")?.avg_frame_rate ?? "0/0",
+    primaryStreams.find((stream) => stream.codec_type === "video")?.avg_frame_rate ?? "0/0",
   ).split("/").map(Number);
   const decodedVideoDuration =
     Number(video?.nb_read_frames) * videoRateDenominator / videoRateNumerator;
@@ -2579,11 +2644,14 @@ async function validateMediaOutput(
   const sourceHasSubtitle = source.probe.streams.some(
     (stream) => stream.codec_type === "subtitle",
   );
-  const sourceHasAttachment = source.probe.streams.some(
-    (stream) =>
-      stream.codec_type === "attachment" ||
-      stream.disposition?.attached_pic,
-  );
+  const sourceAttachedPictureCount = source.probe.streams.filter(
+    (stream) => stream.disposition?.attached_pic === 1,
+  ).length;
+  const preservedArtworkCount =
+    source.artwork && (mp3Output || flacOutput) ? 1 : 0;
+  const sourceHasAttachment =
+    source.probe.streams.some((stream) => stream.codec_type === "attachment") ||
+    sourceAttachedPictureCount > preservedArtworkCount;
   if (
     (!matroskaCopy &&
       sourceHasSubtitle &&

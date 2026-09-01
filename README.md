@@ -264,7 +264,8 @@ MKV, MP4, MOV, 3GP, MPEG-TS, and FLV can also extract the first certified AAC
 stream to FLAC. These routes use the same custom AVIO callbacks and bounded
 8,192-sample FIFO as standalone AAC-to-FLAC, copy compatible text and language
 metadata, and explicitly warn about excluded video, additional streams,
-attachments, chapters, artwork, and container-only fields. FLAC losslessly
+non-artwork attachments, chapters, and container-only fields. The first bounded
+JPEG/PNG cover is preserved under the common MP3/FLAC artwork policy below. FLAC losslessly
 preserves the decoded signed 16-bit representation; it cannot restore data
 already lost by AAC compression.
 
@@ -433,8 +434,9 @@ runs per route on 181,340,062–185,645,300-byte sources completed in 1.20–2.1
 seconds with 32 MiB Wasm and 214.9–243.9 MiB worst incremental process-tree
 private memory. All eighteen outputs retained the same exact MP3 packet SHA-256,
 fully decoded with native FFmpeg, and were deleted with the six large sources.
-Standalone MP3 cannot represent container timing/trim, language, artwork, or
-container-only metadata; compatible text fields are mapped to ID3 where possible.
+Standalone MP3 cannot represent container timing/trim, language, or every
+container-only field; compatible text fields are mapped to ID3 where possible,
+and the first bounded JPEG/PNG cover is retained under the policy below.
 
 Certified AAC audio in MKV, MP4, MOV, 3GP, MPEG-TS, or FLV takes the same
 lossless packet-copy route into raw ADTS AAC. Only the first compatible AAC
@@ -501,7 +503,8 @@ same bounded decoder, resampler, FIFO, and direct-output callbacks. Signed
 discarded by their source codecs, so their FLAC results are independently
 checked against the decoded source with APSNR rather than byte-comparing the
 compressed streams. Compatible text comments are copied; container-only chunks
-and embedded artwork are explicitly outside these audio-only profiles.
+are explicitly outside these audio-only profiles, while the first bounded
+JPEG/PNG cover is retained in FLAC under the common artwork policy below.
 
 M4A (AAC or 16-bit ALAC), raw AAC, raw AMR-NB, MP3, FLAC, WAV, WMA2, Ogg
 Vorbis, and Ogg Opus can be written as genuine AIFF containing signed 16-bit
@@ -557,7 +560,25 @@ down from 417.56-428.36 seconds, while output fell from 1,342,295,469 to
 passed 3/3 in 196.35-200.97 seconds at 172.9 MiB with 25.8266 dB ASDR.
 Every output was fully decoded and compared
 against the decoded source with ASDR; MP3 cannot preserve lossless identity or
-all container metadata, artwork, chapters, and extra streams.
+all container metadata, chapters, and extra streams. Compatible common text tags
+and the first bounded JPEG/PNG cover are preserved where present.
+
+MP3 and FLAC destinations share one bounded artwork path. The first attached
+JPEG or PNG cover is packet-copied without decoding only when the packet is at
+most 4 MiB, each side is at most 4,096 pixels, and the image is at most
+16 megapixels. Additional pictures, other codecs, oversized or malformed images,
+and artwork a destination cannot represent are excluded with an explicit warning.
+Seven common tags (`title`, `artist`, `album`, `genre`, `date`, `track`, and
+`comment`) are copied where the destination can represent them. Production
+Chrome preserved the exact picture bytes and all seven tags for genuine
+M4A-to-MP3, M4A-to-FLAC, and MP4-MP3 stream-copy cases; raw AAC independently
+proved explicit exclusion. A 134,402,091-byte random-access stress source passed
+three MP4-to-FLAC runs in 0.376-0.733 seconds at 95.9 MiB worst incremental
+private memory and three MP4-to-MP3 runs in 0.234-0.551 seconds at 88.4 MiB.
+Reads stayed at 256 KiB, Wasm at 32 MiB, and only one destination operation was
+pending. Exact hashes, rejected higher-memory fixtures, cleanup, and the
+no-Docker build record are in
+[`evidence/audio-artwork-retention-2026-09-01.json`](evidence/audio-artwork-retention-2026-09-01.json).
 
 M4A (AAC or 16-bit ALAC), raw AMR-NB, certified AMR-WB `.awb`, MP3, FLAC, WAV, WMA2, AIFF, Ogg
 Vorbis, and Ogg Opus can also be encoded as genuine raw AAC-LC. The fastest
