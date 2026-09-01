@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "recordedAt": "2026-09-01T02:20:00.000Z",
+  "recordedAt": "2026-09-01T02:22:00.000Z",
   "scope": "Bounded common audio tags and attached artwork for MP3 and FLAC destinations",
-  "status": "candidate-verified-publication-reproduction-pending",
+  "status": "verified-published-and-exactly-reproduced",
   "implementation": {
     "source": "media/ffmpeg/within_remux.c",
     "sourceSha256": "a44934536ea6ca65ac8c33b0fb36803f84e02811769afc47259b06d41d55ac60",
@@ -151,7 +151,17 @@
       "peerArtifactsExact": 18,
       "result": "final candidate extracted; repository-local download deleted after verification"
     },
-    "publicationRun": null
+    "publicationRun": {
+      "id": 33461545716,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33461545716",
+      "commit": "04c92b8a42b0c4a81b2d28687a48577de7ea7497",
+      "jobSeconds": 632,
+      "exactArtifactComparison": true,
+      "mismatchUploadSkipped": true,
+      "repositoryLocalBuildCleanup": true,
+      "retainedArtifacts": 0,
+      "dockerUsed": false
+    }
   },
   "cleanup": {
     "generatedStressFixtureDeleted": true,
@@ -160,7 +170,14 @@
     "validationCopiesDeleted": true,
     "browserProfileDeleted": true,
     "candidateDownloadDirectoriesDeleted": true,
-    "remoteMismatchArtifactsPendingDeletionAfterPublication": [9774752988, 9775385968],
+    "remoteMismatchArtifactsPendingDeletionAfterPublication": [],
+    "remoteMismatchArtifactsDeleted": [
+      9774752988,
+      9775385968,
+      9737377369,
+      9736812954
+    ],
+    "branchActionsArtifactsRemaining": 0,
     "protectedTestMkv": {
       "bytes": 2958573265,
       "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
