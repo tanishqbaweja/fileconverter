@@ -58,6 +58,19 @@ profile, retained Chrome stress evidence, exact I/O bounds, cleanup status, and
 explicit remaining gaps. Regenerate it after profiling with
 `npm run tested:ledger`.
 
+Before enabling a selected route, the app functionally validates the browser
+features that route requires. It validates core and SIMD WebAssembly modules,
+round-trips GZIP, zlib DEFLATE, and raw DEFLATE streams, opens OPFS, measures browser storage,
+digests data with Web Crypto, checks the selected image MIME type with
+ImageDecoder, creates an OffscreenCanvas context, exercises
+SharedArrayBuffer/Atomics, and queries concrete WebCodecs encoder
+configurations. Every requirement string in the registry has an exact
+fail-closed mapping. Missing features are listed in the converter and disable
+the start action; the app never falls back to uploading or full-file buffering.
+File and directory picker API availability is checked before interaction, while
+real handle permissions, writes, failures, cancellation, and cleanup are tested
+after the required user gesture.
+
 ## Bounded-memory architecture
 
 ```text

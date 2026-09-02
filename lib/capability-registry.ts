@@ -2344,7 +2344,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     output: "gzip",
     engine: "compression-stream",
     route: "stream",
-    browserRequirements: ["CompressionStream", "File System Access"],
+    browserRequirements: ["CompressionStream with GZIP", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
     metadataLimitations: ["GZIP stores a single byte stream, not a directory tree."],
@@ -2359,7 +2359,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     output: "binary",
     engine: "compression-stream",
     route: "stream",
-    browserRequirements: ["DecompressionStream", "File System Access"],
+    browserRequirements: ["DecompressionStream with GZIP", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
     metadataLimitations: [
@@ -2476,7 +2476,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     output: "tar-gz",
     engine: "compression-stream",
     route: "stream",
-    browserRequirements: ["CompressionStream", "File System Access"],
+    browserRequirements: ["CompressionStream with GZIP", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
     metadataLimitations: [
@@ -2729,7 +2729,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     output: "tar",
     engine: "compression-stream",
     route: "stream",
-    browserRequirements: ["DecompressionStream", "File System Access"],
+    browserRequirements: ["DecompressionStream with GZIP", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
     metadataLimitations: [
@@ -3555,7 +3555,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3580,7 +3580,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3605,7 +3605,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3632,7 +3632,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3658,7 +3658,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3683,7 +3683,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -3709,7 +3709,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "stream",
     browserRequirements: [
       "Web Workers",
-      "DecompressionStream",
+      "DecompressionStream with raw DEFLATE",
       "File System Access",
     ],
     cpuClass: "low",
@@ -4011,7 +4011,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     route: "re-encode" as const,
     browserRequirements: [
       "ImageDecoder",
-      "CompressionStream",
+      "CompressionStream with DEFLATE",
       "File System Access",
     ],
     cpuClass: "medium" as const,

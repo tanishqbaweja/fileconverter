@@ -1,0 +1,66 @@
+{
+  "auditDate": "2026-09-02",
+  "scope": "Runtime capability detection for every browser requirement used by the 388 public conversion profiles",
+  "dockerUsed": false,
+  "registryAudit": {
+    "publicProfiles": 388,
+    "distinctRequirementNames": 14,
+    "mappedRequirementNames": 14,
+    "unknownRequirementsFailClosed": true,
+    "inputMimeSpecificImageDecoder": true,
+    "mediaCoreRequiresWasmSimd": true
+  },
+  "functionalProbes": {
+    "timeoutMilliseconds": 3000,
+    "webAssemblyCoreModuleValidation": true,
+    "webAssemblySimdModuleValidation": true,
+    "gzipCompressionAndDecompressionRoundTrip": true,
+    "zlibDeflateCompressionAndDecompressionRoundTrip": true,
+    "rawDeflateCompressionAndDecompressionRoundTrip": true,
+    "originPrivateFileSystemOpen": true,
+    "finiteStorageEstimate": true,
+    "webCryptoSha256Digest": true,
+    "imageDecoderMimeConfigurations": [
+      "image/avif",
+      "image/gif",
+      "image/jpeg",
+      "image/png",
+      "image/webp"
+    ],
+    "offscreenCanvas2dContext": true,
+    "sharedArrayBufferAtomicsRead": true,
+    "webCodecsVideoConfigurations": ["VP8", "VP9", "H.264"],
+    "webCodecsAudioConfigurations": ["Opus"]
+  },
+  "preGestureApiChecks": {
+    "fileSavePicker": true,
+    "directoryPicker": true,
+    "reason": "Picker functionality and permissions require a user gesture; real handle writes, failures, cancellation, and cleanup are covered by destination browser tests."
+  },
+  "browserVerification": {
+    "browser": "installed production Google Chrome",
+    "mode": "headless production build over localhost with production security headers and Playwright video disabled",
+    "result": "2 passed",
+    "elapsedSeconds": 14.4,
+    "cases": [
+      "real functional capability probes passed for the mandatory current-engine requirements",
+      "an injected failed WebAssembly validator blocked a Wasm media profile, named core and SIMD failures, and disabled conversion"
+    ],
+    "completePrivacyOfflineRegression": "15 passed in 48.7 seconds, including nine cached engine/direct-writer conversion families"
+  },
+  "verification": {
+    "typescript": "passed",
+    "eslint": "passed",
+    "unitTests": "95 passed",
+    "capabilityAuditTests": "3 passed",
+    "publishedWasmChanged": false
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "completionClaim": "U-04 is verified complete for the current engine and registry inventory. Any new browser-requirement string fails closed until it receives an explicit functional mapping and test."
+}

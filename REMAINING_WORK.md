@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-01. This is the living requirement audit for the original
+Updated 2026-09-02. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -76,7 +76,7 @@ not the entire product specification.
 | U-01 | Responsive polished UI with drag/drop, picker, detection, output selection, destination, storage mode, real progress, throughput, elapsed/remaining time, engine, memory, warnings, cancellation, errors, and cleanup | Partially implemented | `app/converter/ConverterApp.tsx` implements the core states and metrics; source details cover all named standalone audio and multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; the source-aware plan visibly states every inspected stream outcome before start | Add genuine conversion controls after the engine ABI supports them and perform broader headed usability review. |
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
-| U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Partially implemented | `detectCapabilities` covers the main browser primitives and displays limited-browser state | Audit required Wasm feature detection and engine-specific codec/configuration probes; distinguish API presence from functional support. |
+| U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Verified complete for current engines | `lib/browser-capabilities.ts` performs bounded functional validation of core and SIMD Wasm, GZIP/zlib-DEFLATE/raw-DEFLATE round trips, OPFS open, storage estimate, SHA-256, MIME-specific ImageDecoder support, OffscreenCanvas, SAB/Atomics, and WebCodecs encoder configurations. All 14 exact registry requirement strings map fail-closed; the selected profile is disabled with precise missing reasons. Production Chrome passed both the real capability gate and an injected Wasm-failure blocker. `evidence/functional-browser-capabilities-2026-09-02.json` records the audit. File/directory picker availability is necessarily checked before the user gesture; actual handle permissions and writes remain covered by the destination tests. | Extend the exact mapping and functional probe whenever a new engine feature or registry requirement is introduced. |
 | U-05 | Current stable Chrome, Edge, Brave, and Opera targets with clear unsupported state | Partially implemented | The same production-build CSV-to-TSV conversion/privacy test now passes Chrome 151, Edge 151, Brave 151, and Opera GX 134; compact evidence is in `evidence/browser-compatibility-2026-08-27.json` | Expand beyond one small smoke route, test standard Opera when available, and retain Chrome-only wording for stress/process-memory claims. |
 | U-06 | Installable PWA and offline conversion after assets/engine are cached; service worker never handles user data | Verified complete for tested engines | Service worker and `privacy-offline.spec.ts` exercise app shell and multiple cached engines offline | Add focused offline coverage for every new engine family. |
 | U-07 | CSP, COOP/COEP/CORP, no analytics/ads/telemetry, no user-data service-worker path | Verified complete | Production headers, network tests, and README security section | Keep explicit CI privacy coverage. |
@@ -141,6 +141,29 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-02 — functional runtime-capability checkpoint
+
+- Replaced the former browser-API presence snapshot with bounded functional
+  probes for core WebAssembly and SIMD validation, GZIP, zlib-DEFLATE, and raw-DEFLATE
+  compression/decompression round trips, OPFS opening, available-storage
+  estimation, Web Crypto SHA-256, input-MIME-specific ImageDecoder support,
+  OffscreenCanvas 2D context creation, SharedArrayBuffer/Atomics, and supported
+  VP8, VP9, H.264, and Opus WebCodecs configurations.
+- Audited every public profile and mapped all 14 exact browser-requirement
+  strings. Unknown future requirements fail closed. Readiness now evaluates the
+  selected profile rather than a generic browser checklist, requires SIMD for
+  the published FFmpeg media cores, and shows each exact missing capability in
+  a visible blocker while disabling conversion.
+- Production Chrome passed 2/2 focused cases in 14.4 seconds: the real runtime
+  reported functional Wasm/SIMD, GZIP/zlib/raw DEFLATE, OPFS, storage estimate,
+  SharedArrayBuffer/isolation, SHA-256, canvas, and PNG decode; an injected
+  failed Wasm validator blocked a genuine Wasm media profile with both core and
+  SIMD reasons. The complete privacy/offline suite then passed 15/15 in 48.7
+  seconds, including nine cached engine/direct-writer conversion families. The
+  three new source/mapping audits pass within 95/95 unit tests; production
+  build, TypeScript, and ESLint pass. No Wasm binary changed and no Docker
+  command ran.
 
 ### 2026-09-01 — bounded worker-lifecycle checkpoint
 

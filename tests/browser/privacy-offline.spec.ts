@@ -206,6 +206,69 @@ test.afterAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
 });
 
+test("functional browser capability probes pass in production Chrome", async () => {
+  await page.goto("/?test=1");
+  await waitForWorker();
+  await expect
+    .poll(async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().capabilities))
+    .not.toBeNull();
+
+  const capabilities = await page.evaluate(
+    () => window.__WITHIN_TEST__!.getState().capabilities!,
+  );
+  expect(capabilities).toMatchObject({
+    secure: true,
+    wasm: true,
+    wasmSimd: true,
+    workers: true,
+    fileSystemAccess: true,
+    opfs: true,
+    storageEstimate: true,
+    compressionGzip: true,
+    compressionDeflate: true,
+    compressionDeflateRaw: true,
+    sharedArrayBuffer: true,
+    crossOriginIsolated: true,
+    webCrypto: true,
+    offscreenCanvas: true,
+  });
+  expect(capabilities.imageDecoderTypes["image/png"]).toBe(true);
+  expect(typeof capabilities.webCodecsVideo).toBe("boolean");
+  expect(typeof capabilities.webCodecsAudio).toBe("boolean");
+  await expect(page.getByTestId("capability-blocker")).toHaveCount(0);
+});
+
+test("a failed functional Wasm probe blocks a Wasm profile with an exact reason", async () => {
+  const blockedPage = await context.newPage();
+  try {
+    await blockedPage.addInitScript(() => {
+      Object.defineProperty(WebAssembly, "validate", {
+        configurable: true,
+        value: () => false,
+      });
+    });
+    await blockedPage.goto("/?test=1");
+    await blockedPage.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await blockedPage
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(m2vFixturePath);
+    await blockedPage
+      .locator('[data-testid="format-select"]')
+      .selectOption("m2v-to-webm-vp9");
+
+    const blocker = blockedPage.getByTestId("capability-blocker");
+    await expect(blocker).toContainText("WebAssembly");
+    await expect(blocker).toContainText(
+      "WebAssembly SIMD required by the media core",
+    );
+    await expect(blockedPage.getByTestId("convert-button")).toBeDisabled();
+  } finally {
+    await blockedPage.close();
+  }
+});
+
 test("conversion transmits no filename or file content", async () => {
   const observed: Array<{
     method: string;

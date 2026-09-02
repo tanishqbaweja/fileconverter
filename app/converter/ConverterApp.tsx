@@ -9,6 +9,11 @@ import {
   type ConversionProfile,
 } from "../../lib/capability-registry";
 import {
+  browserRequirementSatisfied,
+  detectBrowserCapabilities,
+  type BrowserCapabilities,
+} from "../../lib/browser-capabilities";
+import {
   inspectMediaSource,
   type MediaSourceInspection,
   type SourceStreamInspection,
@@ -57,21 +62,6 @@ import {
 
 type JobState = "idle" | "running" | "complete" | "cancelled" | "error";
 
-interface BrowserCapabilities {
-  secure: boolean;
-  wasm: boolean;
-  workers: boolean;
-  fileSystemAccess: boolean;
-  directoryAccess: boolean;
-  opfs: boolean;
-  compression: boolean;
-  sharedArrayBuffer: boolean;
-  crossOriginIsolated: boolean;
-  webCodecs: boolean;
-  imageDecoder: boolean;
-  offscreenCanvas: boolean;
-}
-
 interface PerformanceWithMemory extends Performance {
   memory?: {
     usedJSHeapSize: number;
@@ -97,6 +87,7 @@ interface TestBridge {
     batchTotal: number;
     startupCleanupComplete: boolean;
     workerStatus: "starting" | "ready" | "error";
+    capabilities: BrowserCapabilities | null;
   };
 }
 
@@ -320,25 +311,6 @@ async function destinationMatchesSource(
   );
 }
 
-function capabilitySnapshot(): BrowserCapabilities {
-  return {
-    secure: window.isSecureContext,
-    wasm: typeof WebAssembly === "object",
-    workers: typeof Worker === "function",
-    fileSystemAccess: typeof window.showSaveFilePicker === "function",
-    directoryAccess: typeof window.showDirectoryPicker === "function",
-    opfs: typeof navigator.storage?.getDirectory === "function",
-    compression:
-      typeof CompressionStream === "function" &&
-      typeof DecompressionStream === "function",
-    sharedArrayBuffer: typeof SharedArrayBuffer === "function",
-    crossOriginIsolated: window.crossOriginIsolated,
-    webCodecs: typeof window.VideoEncoder === "function",
-    imageDecoder: typeof window.ImageDecoder === "function",
-    offscreenCanvas: typeof window.OffscreenCanvas === "function",
-  };
-}
-
 export function ConverterApp() {
   const [file, setFile] = useState<File | null>(null);
   const [batchFiles, setBatchFiles] = useState<File[]>([]);
@@ -483,10 +455,17 @@ export function ConverterApp() {
 
   useEffect(() => {
     let disposed = false;
-    let replacementTimer = 0;
-    const capabilityFrame = window.requestAnimationFrame(() => {
-      setCapabilities(capabilitySnapshot());
+    void detectBrowserCapabilities().then((detected) => {
+      if (!disposed) setCapabilities(detected);
     });
+    return () => {
+      disposed = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let disposed = false;
+    let replacementTimer = 0;
 
     const beginBatchItem = async (
       worker: Worker,
@@ -702,7 +681,6 @@ export function ConverterApp() {
     return () => {
       disposed = true;
       beginBatchItemRef.current = null;
-      window.cancelAnimationFrame(capabilityFrame);
       window.clearTimeout(replacementTimer);
       workerRef.current?.terminate();
       workerRef.current = null;
@@ -788,6 +766,7 @@ export function ConverterApp() {
       batchTotal: batchFiles.length,
       startupCleanupComplete,
       workerStatus: workerFailed ? "error" : workerReady ? "ready" : "starting",
+      capabilities,
     };
   }, [
     error,
@@ -802,6 +781,7 @@ export function ConverterApp() {
     videoOptions,
     batchCompleted,
     batchFiles.length,
+    capabilities,
     startupCleanupComplete,
     testMode,
     warnings,
@@ -1108,53 +1088,68 @@ export function ConverterApp() {
     selectedProfile?.engine === "ffmpeg-remux" ||
     selectedProfile?.engine === "ffmpeg-audio" ||
     selectedProfile?.engine === "ffmpeg-video";
-  const compressionProfile =
-    selectedProfile?.browserRequirements.some(
-      (requirement) =>
-        requirement.includes("CompressionStream") ||
-        requirement.includes("DecompressionStream"),
-    ) ?? false;
-  const wasmCompressionProfile =
-    selectedProfile?.engine === "bzip2-wasm" ||
-    selectedProfile?.engine === "xz-wasm" ||
-    selectedProfile?.engine === "libarchive7z-wasm" ||
-    selectedProfile?.engine === "svg-browser";
-  const imageProfile = selectedProfile?.engine === "image-browser";
-  const featureReady =
-    capabilities?.secure &&
-    capabilities.workers &&
-    workerReady &&
-    (!mediaProfile ||
-      (capabilities.wasm &&
-        capabilities.sharedArrayBuffer &&
-        capabilities.crossOriginIsolated)) &&
-    (!wasmCompressionProfile || capabilities.wasm) &&
-    (!compressionProfile || capabilities.compression) &&
-    (!imageProfile ||
-      (capabilities.imageDecoder && capabilities.offscreenCanvas)) &&
-    (testMode ||
-      (batchFiles.length > 1
-        ? capabilities.directoryAccess
-        : capabilities.fileSystemAccess));
+  const inputMimeType = formatById(inputFormat)?.mimeTypes[0];
+  const missingCapabilities: string[] = [];
+  if (capabilities) {
+    if (!capabilities.secure) missingCapabilities.push("a secure HTTPS or localhost context");
+    if (!capabilities.workers) {
+      missingCapabilities.push("the Web Worker API");
+    } else if (!workerReady) {
+      missingCapabilities.push("a conversion worker that starts successfully");
+    }
+    for (const requirement of selectedProfile?.browserRequirements ?? []) {
+      if (testMode && requirement === "File System Access") continue;
+      if (!browserRequirementSatisfied(requirement, capabilities, inputMimeType)) {
+        missingCapabilities.push(requirement);
+      }
+    }
+    if (mediaProfile && !capabilities.wasmSimd) {
+      missingCapabilities.push("WebAssembly SIMD required by the media core");
+    }
+    if (!testMode && batchFiles.length > 1 && !capabilities.directoryAccess) {
+      missingCapabilities.push("the destination-folder picker API");
+    }
+    if (testMode && !capabilities.opfs) {
+      missingCapabilities.push("functional Origin Private File System test storage");
+    }
+  }
+  const uniqueMissingCapabilities = [...new Set(missingCapabilities)];
+  const featureReady = Boolean(capabilities && uniqueMissingCapabilities.length === 0);
 
   const capabilityItems: [string, boolean][] = capabilities
     ? [
         ["Private context", capabilities.secure],
         [
-          "Direct save",
+          "Direct-save picker API",
           batchFiles.length > 1
             ? capabilities.directoryAccess
             : capabilities.fileSystemAccess,
         ],
-        ["Workers", capabilities.workers],
-        ["Wasm", capabilities.wasm],
+        ["Conversion worker running", capabilities.workers && workerReady],
+        ["Wasm core validated", capabilities.wasm],
+        ...(mediaProfile
+          ? ([["Wasm SIMD validated", capabilities.wasmSimd]] as [string, boolean][])
+          : []),
         ["Shared buffers", capabilities.sharedArrayBuffer],
-        [
-          "Image codecs",
-          capabilities.imageDecoder && capabilities.offscreenCanvas,
-        ],
-        ["OPFS fallback", capabilities.opfs],
+        ...(selectedProfile?.browserRequirements.includes("ImageDecoder")
+          ? ([
+              [
+                `Image decoder: ${inputMimeType ?? "selected input"}`,
+                inputMimeType
+                  ? capabilities.imageDecoderTypes[inputMimeType] === true
+                  : capabilities.imageDecoder,
+              ],
+            ] as [string, boolean][])
+          : []),
+        ["Offscreen canvas functional", capabilities.offscreenCanvas],
+        ["OPFS opened", capabilities.opfs],
+        ["Storage quota measured", capabilities.storageEstimate],
         ["Cross-origin isolated", capabilities.crossOriginIsolated],
+        ["Web Crypto digest functional", capabilities.webCrypto],
+        [
+          "WebCodecs config (optional)",
+          capabilities.webCodecsVideo || capabilities.webCodecsAudio,
+        ],
       ]
     : [];
 
@@ -1207,6 +1202,17 @@ export function ConverterApp() {
               {featureReady ? "Ready" : "Check browser"}
             </span>
           </div>
+
+          {capabilities && selectedProfile && uniqueMissingCapabilities.length ? (
+            <div className="conversion-plan-blocker" role="alert" data-testid="capability-blocker">
+              <strong>This profile cannot run with the capabilities verified in this browser.</strong>
+              <ul>
+                {uniqueMissingCapabilities.map((missing) => (
+                  <li key={missing}>{missing}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div
             className={`drop-zone ${dragging ? "dragging" : ""} ${file ? "has-file" : ""}`}
