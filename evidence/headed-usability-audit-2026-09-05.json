@@ -1,5 +1,5 @@
 {
-  "auditedCommit": "af97202760f8e84b7bef576afe48982340558c11",
+  "auditedBuildBaseCommit": "d5b9ad20061217825847fa1910b8a4bde351d355",
   "dates": ["2026-09-02", "2026-09-05"],
   "scope": "Headed production UI review; this is not an independent output-validation or process-tree memory certification.",
   "server": "Wrangler production build on localhost:3110",
@@ -16,7 +16,10 @@
     {"profile": "srt-to-vtt", "inputBytes": 118, "outputBytes": 132, "elapsedMs": 6.95}
   ],
   "quotaFailure": {"state": "error", "error": "The destination ran out of quota after a bounded write.", "opfsName": null, "appOwnedLeftovers": []},
-  "defectFixed": "Failed and cancelled jobs displayed Calculating or a stale estimate for remaining time. They now display Not applicable.",
+  "defectsFixed": [
+    "Failed and cancelled jobs displayed Calculating or a stale estimate for remaining time. They now display Not applicable.",
+    "A later encoding-control CSS rule suppressed the global keyboard focus outline on selects. The override was removed and every tested dropdown now shows the coral focus outline."
+  ],
   "permissionFailureAfterFix": {
     "state": "error",
     "error": "Destination permission was revoked after a bounded write.",
@@ -26,11 +29,33 @@
     "documentScrollWidth": 375,
     "visualReview": "Two-column metrics, complete error message, and retry button readable without horizontal overflow."
   },
-  "checks": {"productionBuild": "passed", "typescript": "passed", "componentEslint": "passed"},
-  "cleanup": {"currentBrowser": "closed", "productionServer": "stopped", "currentOpfsEntries": [], "artifactDirectory": "output/playwright/headed-u01-2026-09-02", "artifactRemoval": "Automatic approval review rejected exact-path recursive deletion: blocked by policy. Artifacts remain in the approved repository output folder."},
+  "reloadRecovery": {
+    "startupCleanupComplete": true,
+    "removed": "within-reload-audit-partial.tmp",
+    "preservedSentinel": "user-owned-sentinel.txt",
+    "preservedSentinelText": "preserve me",
+    "sentinelRemovedAfterVerification": true,
+    "cleanupMessage": "Removed 1 stale app-owned temporary file.",
+    "workerStatusAfterReload": "ready"
+  },
+  "mobileVideoControls": {
+    "viewport": [390, 844],
+    "profile": "m2v-to-webm-vp9",
+    "values": {"codec": "vp9", "maximumWidth": "320", "bitrate": "1000000", "maximumFrameRate": "15", "quality": "higher"},
+    "documentScrollWidth": 375,
+    "visualReview": "All five controls, labels, selected values, route, storage mode, tested-size statement, and limitations disclosure fit without horizontal scrolling."
+  },
+  "keyboardFocusReview": {
+    "order": ["Within home", "file-input", "Remove", "Source inspection", "format-select", "video-codec-select", "video-width-select", "video-bitrate-select", "video-frame-rate-select", "video-quality-select", "limitations", "convert-button", "Clear temporary storage", "Codec notices"],
+    "allVisible": true,
+    "allOutlineStyles": "solid",
+    "videoCodecOutline": "rgba(246, 94, 67, 0.42) solid 2.66667px",
+    "videoCodecOutlineOffset": "2.66667px"
+  },
+  "checks": {"productionBuild": "passed", "typescript": "passed", "componentEslint": "passed", "headedConsoleErrors": 0, "headedConsoleWarnings": 0, "nonStaticNetworkRequests": 0, "finalOpfsEntries": []},
+  "cleanup": {"currentBrowser": "closed", "productionServer": "stopped", "currentOpfsEntries": [], "artifactDirectory": "output/playwright/headed-u01-2026-09-02", "artifactRemoval": "removed by npm run clean:test-artifacts"},
   "limitations": [
     "Small UI runs did not collect complete process-tree memory or independently decode each output; existing route certification remains separate.",
-    "Reload recovery, mobile encoding controls, keyboard/focus accessibility, and final broad UI review remain open.",
     "The September 2 browser session ended before final profile-wide storage verification. Prefix-based intermediate cleanup alone does not prove removal of every direct-adapter output.",
     "CLI run-code initially rejected statement syntax; its installed version requires an async function taking page. This was resolved without rerunning completed conversions."
   ]

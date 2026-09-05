@@ -10,7 +10,7 @@ import {
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const reportRoot = path.join(projectRoot, "outputs", "reports");
 const ledgerPath = path.join(projectRoot, "TESTED.md");
-const headedAuditNote = "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota failure and mobile permission failure were reviewed. Failed/cancelled jobs now show Not applicable for remaining time. Production build, TypeScript and component ESLint pass. See evidence/headed-usability-audit-2026-09-05.json for exact scope and remaining checks; these small UI runs do not add output-validation or process-tree memory certification.";
+const headedAuditNote = "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.";
 const ledgerDate = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Kolkata",
   year: "numeric",
