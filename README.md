@@ -1064,14 +1064,26 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. HEIC/HEIF, camera raw,
-unsupported 7Z codecs, and
+PDF is excluded by product scope. Camera raw, unsupported 7Z codecs, and
 additional legacy/proprietary media codecs are not published because this build
 does not yet contain a bounded, auditable browser engine and independent
 large-fixture evidence for them. Unsupported office and ebook files are not
 flattened to plain text and called converted. ZIP64 and files requiring an
 individual ZIP entry or completed ZIP above 4 GiB are rejected instead of
 silently wrapping or truncating sizes.
+
+HEIF/HEIC is an explicit, evidence-backed exclusion rather than an unaudited
+omission. Production Chrome 152 reports `false` for HEIC, HEIF, and both
+sequence MIME types through `ImageDecoder`, although its `VideoDecoder` reports
+HEVC `hvc1` and `hev1` configurations on this machine. Pinned libheif 1.23.3
+therefore offers a plausible conditional container-parser plus browser-codec
+design, but upstream marks that backend experimental, its stock Emscripten
+script enables a growing heap, and the project has neither the required narrow
+fixed-memory wrapper/security acceptance suite nor documented HEVC still-image
+patent clearance. No route is published on that incomplete basis. Exact source,
+security, copy-topology, licensing, probe, and revisit evidence is in
+`evidence/heif-heic-feasibility-2026-09-05.json`; this is a conservative product
+distribution decision, not legal advice.
 
 The same rule applies to codec/container combinations. A listed container name
 does not imply every codec can be copied into it. The planner exposes only the

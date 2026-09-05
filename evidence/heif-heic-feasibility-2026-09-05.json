@@ -1,0 +1,166 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-05T23:15:00+05:30",
+  "requirement": "N-03",
+  "scope": "HEIF/HEIC browser-native, decoder, bounded-memory, security, and distribution-licensing feasibility",
+  "status": "intentionally-unsupported",
+  "dockerUsed": false,
+  "publicProfiles": 0,
+  "decision": "Do not publish HEIF/HEIC input or output routes in the current build. A conditional HEIC decode prototype is technically plausible, but no candidate currently satisfies the combined stable-browser, fixed-memory, security-maintenance, legal-clearance, reproducibility, fidelity, and acceptance-evidence requirements.",
+  "productionBrowserProbe": {
+    "browser": "Google Chrome",
+    "version": "152.0.7977.77",
+    "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "origin": "http://127.0.0.1:3017/?test=1",
+    "secureContext": true,
+    "crossOriginIsolated": true,
+    "imageDecoder": {
+      "image/avif": true,
+      "image/heic": false,
+      "image/heic-sequence": false,
+      "image/heif": false,
+      "image/heif-sequence": false
+    },
+    "videoDecoder": {
+      "hvc1.1.6.L93.B0": true,
+      "hev1.1.6.L93.B0": true,
+      "av01.0.01M.08": true
+    },
+    "interpretation": "Chrome has no complete browser-native HEIF/HEIC ImageDecoder path. This machine does expose HEVC VideoDecoder configurations, so a separate HEIF parser plus the browser codec is a possible conditional design, not a complete or portable conversion route.",
+    "focusedRegression": {
+      "command": "npx playwright test tests/browser/privacy-offline.spec.ts --grep functional browser capability probes",
+      "result": "1 passed",
+      "elapsedSeconds": 8.3
+    },
+    "fullPrivacyOfflineRegression": {
+      "command": "npx playwright test tests/browser/privacy-offline.spec.ts",
+      "result": "15 passed",
+      "elapsedSeconds": 46.4
+    }
+  },
+  "candidateAudit": {
+    "containerLibrary": {
+      "name": "libheif",
+      "tag": "v1.23.3",
+      "commit": "78c9746aea226b22885e8d35241353ce669c4ea5",
+      "releasedAt": "2026-09-01T21:38:10Z",
+      "copyrightLicense": "LGPL-3.0-or-later",
+      "readerApi": "heif_context_read_from_reader exposes seek/read/range callbacks and is suitable for a custom bounded bridge.",
+      "securityLimits": "The library exposes configurable image, item, tile, entity, metadata, and allocation limits; a production wrapper would have to lower and enforce them rather than disable them."
+    },
+    "browserCodecDesign": {
+      "backend": "libheif WebCodecs HEVC decoder plugin",
+      "upstreamStatus": "experimental",
+      "asyncBridge": "Asyncify.handleSleep",
+      "codecAvailability": "runtime-dependent and not guaranteed by the WebCodecs specification",
+      "observedCopies": [
+        "A bounded HEVC item is exposed from Wasm memory to EncodedVideoChunk.",
+        "The plugin allocates a complete decoded VideoFrame-sized JavaScript Uint8Array (or Canvas ImageData for formats with no copyable native format).",
+        "Decoded planes are copied again into libheif-owned Wasm image planes before color conversion/output."
+      ],
+      "boundedPrototypeRequirements": [
+        "Reject before decode above a fixed 8-megapixel, 8192-pixel-edge, compressed-item-byte, item-count, tile-count, derivation-depth, metadata-byte, and expansion-ratio budget.",
+        "Compile only the HEIF container and WebCodecs HEVC decoder path: no libde265, encoders, dynamic plugins, uncompressed codec, JPEG 2000, VVC, or experimental container APIs.",
+        "Replace the stock growing heap with explicit equal INITIAL_MEMORY and MAXIMUM_MEMORY values and fail before allocation pressure crosses the profile budget.",
+        "Use the existing bounded synchronous file bridge for reader callbacks, a dedicated disposable worker, strict cancellation/time limits, and incremental direct PNG output with one pending write.",
+        "Probe the exact hvc1/hev1 configuration derived from the file before conversion and show an unsupported-browser result when it is unavailable.",
+        "Independently validate dimensions, alpha, orientation/transforms, bit depth, color profile/CICP, EXIF/XMP behavior, grids, thumbnails, and malformed-input cleanup before any route is public."
+      ]
+    },
+    "stockEmscriptenBuildRejection": {
+      "reasons": [
+        "The upstream script enables ALLOW_MEMORY_GROWTH and therefore does not provide the required fixed Wasm maximum.",
+        "The WebCodecs backend is explicitly experimental and adds Asyncify.",
+        "The script defaults to bundled libde265 1.0.15, while the current security release is 1.1.2; this project would disable libde265 rather than ship that default.",
+        "The upstream JavaScript-facing path is not the project's bounded random-access reader and direct incremental destination abstraction."
+      ]
+    },
+    "localToolchain": {
+      "emcc": false,
+      "emcmake": false,
+      "cmake": false,
+      "ninja": false,
+      "meson": false,
+      "note": "This is not itself a rejection reason; any accepted engine would use the existing pinned no-Docker Emscripten CI pattern."
+    }
+  },
+  "securityAssessment": {
+    "upstreamPolicy": "Only the latest libheif release receives fixes; there is no maintained LTS branch and libheif/libde265 have one independent maintainer with no security team.",
+    "currentChurn": "The official policy records 37 libheif advisories from January through August 2026, including 3 critical and 13 high, and six primarily security-driven releases.",
+    "latestRelease": "libheif 1.23.3 was four days old at this audit and fixed one critical, three high, and several medium/low issues plus hardening defects. libde265 1.1.2 was three days old and fixed two use-after-free paths plus parser hardening, although libde265 is not required by the preferred browser-codec design.",
+    "wasmBoundary": "Wasm containment reduces native-process compromise risk, but parser bugs can still corrupt output, expose bytes retained inside the worker, exhaust the fixed heap/CPU budget, deadlock, or crash a conversion. Dedicated-worker termination and strict limits are necessary but not yet sufficient evidence.",
+    "shippingResult": "Do not add an untrusted-file parser while the required narrow build, adversarial corpus, update policy, and acceptance suite are absent."
+  },
+  "licensingAssessment": {
+    "notLegalAdvice": true,
+    "openSourceLicense": "libheif is LGPL-3.0-or-later and would require corresponding notices/source/relinking compliance for a distributed Wasm build.",
+    "codecPatentStatus": "The open-source license does not establish HEVC patent clearance. Access Advance states that its pool licenses HEVC decoders and encoders in consumer products, including software; Via LA also operates an HEVC patent portfolio program.",
+    "projectClearance": "No project-owned legal analysis, patent-pool license, or written clearance for offering HEVC still-image decoding was found.",
+    "shippingResult": "Withhold the route pending explicit qualified legal clearance, consistently with the project's AMR-WB policy. Browser-provided decoding is the preferred technical design but is not treated here as automatic patent clearance."
+  },
+  "revisitConditions": [
+    "Document qualified legal clearance for the exact browser-provided HEVC decode and any HEIF encode design and target jurisdictions.",
+    "Pin a then-current libheif release/commit and establish an actionable security-update policy with no known unpatched applicable advisory.",
+    "Build a no-Docker, HEVC-only, no-plugin, non-experimental-surface Wasm wrapper with fixed initial/maximum memory and the bounded reader/direct writer architecture above.",
+    "Pass genuine production-browser success, corrupt/adversarial, unsupported-codec, cancellation, timeout, write-failure, cleanup, privacy/offline, independent fidelity, three-run process-tree memory, and cross-browser capability gates.",
+    "Keep the route capability-gated; never fall back to a full-file buffer, server conversion, native helper, or extension rename."
+  ],
+  "sources": [
+    {
+      "purpose": "libheif release and security fixes",
+      "url": "https://github.com/strukturag/libheif/releases/tag/v1.23.3"
+    },
+    {
+      "purpose": "libheif security model, advisory counts, supported-version policy, and maintenance capacity",
+      "url": "https://github.com/strukturag/libheif/blob/v1.23.3/SECURITY.md"
+    },
+    {
+      "purpose": "stock Emscripten flags and optional WebCodecs/libde265 configuration",
+      "url": "https://github.com/strukturag/libheif/blob/v1.23.3/build-emscripten.sh"
+    },
+    {
+      "purpose": "experimental browser HEVC plugin, Asyncify, and decoded-frame copy topology",
+      "url": "https://github.com/strukturag/libheif/blob/v1.23.3/libheif/plugins/decoder_webcodecs.cc"
+    },
+    {
+      "purpose": "bounded/random-access reader API",
+      "url": "https://github.com/strukturag/libheif/blob/v1.23.3/libheif/api/libheif/heif_context.h"
+    },
+    {
+      "purpose": "libheif copyright license",
+      "url": "https://github.com/strukturag/libheif/blob/v1.23.3/COPYING"
+    },
+    {
+      "purpose": "libde265 current security release",
+      "url": "https://github.com/strukturag/libde265/releases/tag/v1.1.2"
+    },
+    {
+      "purpose": "WebCodecs support is optional per user agent",
+      "url": "https://w3c.github.io/webcodecs/"
+    },
+    {
+      "purpose": "current Chromium image decoder source inventory has no HEIF/HEIC decoder",
+      "url": "https://chromium.googlesource.com/chromium/src.git/+/refs/heads/main/third_party/blink/renderer/platform/image-decoders/"
+    },
+    {
+      "purpose": "Chromium's HEIC/HEIF MIME change was file-picker selection, not decoding",
+      "url": "https://chromium.googlesource.com/chromium/src.git/+/8bc39c9f42b2413af14e177f0c29cfeaebd2d6b7"
+    },
+    {
+      "purpose": "Access Advance HEVC software/decoder licensing statement",
+      "url": "https://accessadvance.com/topic-what-do-we-license/"
+    },
+    {
+      "purpose": "Via LA HEVC patent portfolio program",
+      "url": "https://www.via-la.com/wp-content/uploads/HEVCweb.pdf"
+    }
+  ],
+  "cleanup": {
+    "convertedOutputsCreated": 0,
+    "fixturesCreated": 0,
+    "temporaryUpstreamClone": "work/heif-feasibility-upstream",
+    "temporaryUpstreamCloneRemovedAfterAudit": true,
+    "playwrightArtifactsRemovedAfterAudit": true,
+    "protectedFixtureTouched": false
+  }
+}

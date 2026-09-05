@@ -9,6 +9,10 @@ const CAPABILITY_PROBE_TIMEOUT_MS = 3_000;
 const IMAGE_DECODER_MIME_TYPES = [
   "image/avif",
   "image/gif",
+  "image/heic",
+  "image/heic-sequence",
+  "image/heif",
+  "image/heif-sequence",
   "image/jpeg",
   "image/png",
   "image/webp",

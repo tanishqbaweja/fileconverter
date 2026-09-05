@@ -232,6 +232,11 @@ test("functional browser capability probes pass in production Chrome", async () 
     webCrypto: true,
     offscreenCanvas: true,
   });
+  expect(capabilities.imageDecoderTypes["image/avif"]).toBe(true);
+  expect(capabilities.imageDecoderTypes["image/heic"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/heic-sequence"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/heif"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/heif-sequence"]).toBe(false);
   expect(capabilities.imageDecoderTypes["image/png"]).toBe(true);
   expect(typeof capabilities.webCodecsVideo).toBe("boolean");
   expect(typeof capabilities.webCodecsAudio).toBe("boolean");
