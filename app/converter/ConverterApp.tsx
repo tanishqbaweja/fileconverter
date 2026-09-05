@@ -1996,7 +1996,9 @@ export function ConverterApp() {
                     <div>
                       <dt>Estimated remaining</dt>
                       <dd>
-                        {estimatedRemainingMs == null
+                        {jobState === "error" || jobState === "cancelled"
+                          ? "Not applicable"
+                          : estimatedRemainingMs == null
                           ? "Calculating"
                           : formatDuration(estimatedRemainingMs)}
                       </dd>

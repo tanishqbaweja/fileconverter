@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-09-02 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-09-05 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -1149,3 +1149,5 @@ This project is not complete yet. The specification still names major surfaces t
 Stress generators write only under `fixtures/stress`, browser copies stay under project-owned test/profile locations, and category runners invoke cleanup in `finally`. The protected root `test.mkv` is never deleted or modified.
 
 Regenerate this ledger with `npm run tested:ledger` after new evidence is produced.
+
+Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota failure and mobile permission failure were reviewed. Failed/cancelled jobs now show Not applicable for remaining time. Production build, TypeScript and component ESLint pass. See evidence/headed-usability-audit-2026-09-05.json for exact scope and remaining checks; these small UI runs do not add output-validation or process-tree memory certification.
