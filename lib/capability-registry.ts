@@ -4097,7 +4097,9 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     metadataLimitations: [
       "Only self-contained UTF-8 SVG with explicit paired width and height, or the standard 300\u00d7150 intrinsic default, is accepted within a 4 MiB source and 8-megapixel raster budget.",
       "One self-contained mask and one bounded Gaussian blur, offset, flood, composite, merge, or blend filter chain may each be applied once within a 6-megapixel effect budget and eight total filter primitives; every effect region must be explicit and remain inside the raster.",
-      "Scripts, CSS, event handlers, external resources, links, animation, text, unsupported filter primitives, DTDs, custom entities, CDATA, and processing instructions are rejected before rasterization.",
+      "Scripts, event handlers, external resources, and links are rejected before rasterization; URL references are limited to declared local paint, clip, filter, and mask fragments.",
+      "Text is rejected because system fonts are disabled and no pinned font set is shipped; CSS and use-element expansion are rejected because the current lexical preflight cannot safely bound their cascade, resource, or expanded-element costs.",
+      "Animation is rejected because the static renderer exposes no bounded deterministic timeline or frame interface; unsupported filter primitives, DTDs, custom entities, CDATA, and processing instructions are also rejected.",
       "Vector structure, text editability, metadata, and color profiles are not retained in PNG output.",
     ],
     fidelityLimitations: [],

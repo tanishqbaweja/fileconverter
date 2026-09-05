@@ -3168,6 +3168,95 @@ for (const [sourceName, expectedError] of [
   });
 }
 
+test("SVG policy rejects text, CSS, animation, links, scripts, events, and use expansion before rasterization", async () => {
+  const cases = [
+    {
+      name: "text",
+      body: '<text x="8" y="24">private text</text>',
+      expected: "text elements",
+    },
+    {
+      name: "style-element",
+      body: "<style>rect { fill: red; }</style><rect width=\"32\" height=\"32\"/>",
+      expected: "CSS",
+    },
+    {
+      name: "inline-style",
+      body: '<rect width="32" height="32" style="fill:red"/>',
+      expected: "inline CSS",
+    },
+    {
+      name: "animation",
+      body: '<rect width="32" height="32"><animate attributeName="x" dur="1s"/></rect>',
+      expected: "animation",
+    },
+    {
+      name: "external-link",
+      body: '<a href="https://example.invalid/private-name"><rect width="32" height="32"/></a>',
+      expected: "links",
+    },
+    {
+      name: "script",
+      body: "<script>throw new Error('must not run')</script>",
+      expected: "scripts",
+    },
+    {
+      name: "event-handler",
+      body: '<rect width="32" height="32" onclick="fetch(\'https://example.invalid/event\')"/>',
+      expected: "event handlers",
+    },
+    {
+      name: "use-expansion",
+      body: '<defs><rect id="r" width="32" height="32"/></defs><use href="#r"/>',
+      expected: "external-resource",
+    },
+  ] as const;
+  const externalRequests: string[] = [];
+  const observe = (request: { url(): string }) => {
+    if (request.url().includes("example.invalid")) {
+      externalRequests.push(request.url());
+    }
+  };
+  page.on("request", observe);
+  try {
+    for (const scenario of cases) {
+      await page.goto("/?test=1");
+      await page.waitForFunction(
+        () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+      );
+      const source =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32">' +
+        scenario.body +
+        "</svg>";
+      await page.locator('[data-testid="file-input"]').setInputFiles({
+        name: `unsafe-${scenario.name}.svg`,
+        mimeType: "image/svg+xml",
+        buffer: Buffer.from(source, "utf8"),
+      });
+      await page
+        .locator('[data-testid="format-select"]')
+        .selectOption("svg-to-png");
+      await page.locator('[data-testid="convert-button"]').click();
+      await expect
+        .poll(
+          async () =>
+            page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState),
+          { timeout: 30_000 },
+        )
+        .toBe("error");
+      const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+      expect(state?.error, scenario.name).toContain(scenario.expected);
+      expect(state?.metrics?.outputBytes, scenario.name).toBe(0);
+      expect(state?.metrics?.pendingOperations, scenario.name).toBe(0);
+      expect(state?.metrics?.queuedBytes, scenario.name).toBe(0);
+      expect(state?.opfsName, scenario.name).toBeNull();
+    }
+    expect(externalRequests).toEqual([]);
+  } finally {
+    page.off("request", observe);
+  }
+});
+
 declare global {
   interface Window {
     __withinImageValidationChunk(base64: string): Promise<void>;

@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-05T21:48:44+05:30",
+  "requirement": "N-05",
+  "scope": "Safe bounded behavior for SVG geometry, paint, text/fonts, CSS, animation, links/resources, filters, masks, scripts, events, and output fidelity",
+  "status": "advertised bounded subset directly evidenced; excluded surfaces fail closed",
+  "dockerUsed": false,
+  "profileId": "svg-to-png",
+  "features": [
+    {
+      "id": "geometry-paint-gradients-clipping",
+      "status": "supported",
+      "behavior": "Self-contained vector geometry, direct presentation attributes, solid paint, local gradients, and local clip paths render through pinned resvg-wasm."
+    },
+    {
+      "id": "filters",
+      "status": "supported",
+      "behavior": "At most one explicitly bounded, singly applied filter chain may use Gaussian blur, offset, flood, composite, merge, or blend with at most eight total primitives and a 32-pixel blur deviation."
+    },
+    {
+      "id": "masks",
+      "status": "supported",
+      "behavior": "At most one self-contained, singly applied mask is accepted with userSpaceOnUse and an explicit region wholly inside the raster."
+    },
+    {
+      "id": "text-fonts",
+      "status": "intentionally-rejected",
+      "behavior": "Text and text-path elements are rejected before renderer initialization because system fonts are disabled and the application ships no pinned, reproducible font set."
+    },
+    {
+      "id": "css",
+      "status": "intentionally-rejected",
+      "behavior": "Style elements, inline style attributes, and imports are rejected because the lexical preflight cannot safely bound the complete CSS cascade and resource graph."
+    },
+    {
+      "id": "animation",
+      "status": "intentionally-rejected",
+      "behavior": "SMIL animation and set elements are rejected because the pinned static renderer exposes no bounded deterministic timeline, frame-count, or frame-duration interface."
+    },
+    {
+      "id": "links-external-resources",
+      "status": "intentionally-rejected",
+      "behavior": "Links, images, media, embedded objects, external references, and non-local paint URLs are rejected before renderer initialization; browser tests observe zero matching outbound requests."
+    },
+    {
+      "id": "scripts-event-handlers",
+      "status": "intentionally-rejected",
+      "behavior": "Scripts and event-handler attributes are rejected before renderer initialization and never execute."
+    },
+    {
+      "id": "use-expansion",
+      "status": "intentionally-rejected",
+      "behavior": "Use elements and href attributes are rejected because a lexical source-element count does not bound recursively expanded instance trees."
+    },
+    {
+      "id": "xml-active-constructs",
+      "status": "intentionally-rejected",
+      "behavior": "DTDs, custom entities, CDATA, processing instructions after the optional XML declaration, prefixed elements, and malformed roots fail before rasterization."
+    },
+    {
+      "id": "png-output-fidelity",
+      "status": "output-loss",
+      "behavior": "The rasterized pixels are retained in PNG, but editable vector structure, document metadata, and color profiles are not retained."
+    }
+  ],
+  "registryDisclosures": [
+    "Only self-contained UTF-8 SVG with explicit paired width and height, or the standard 300×150 intrinsic default, is accepted within a 4 MiB source and 8-megapixel raster budget.",
+    "One self-contained mask and one bounded Gaussian blur, offset, flood, composite, merge, or blend filter chain may each be applied once within a 6-megapixel effect budget and eight total filter primitives; every effect region must be explicit and remain inside the raster.",
+    "Scripts, event handlers, external resources, and links are rejected before rasterization; URL references are limited to declared local paint, clip, filter, and mask fragments.",
+    "Text is rejected because system fonts are disabled and no pinned font set is shipped; CSS and use-element expansion are rejected because the current lexical preflight cannot safely bound their cascade, resource, or expanded-element costs.",
+    "Animation is rejected because the static renderer exposes no bounded deterministic timeline or frame interface; unsupported filter primitives, DTDs, custom entities, CDATA, and processing instructions are also rejected.",
+    "Vector structure, text editability, metadata, and color profiles are not retained in PNG output."
+  ],
+  "fixedBounds": {
+    "maximumInputBytes": 4194304,
+    "maximumOutputBytes": 67108864,
+    "maximumPixels": 8388608,
+    "maximumDimension": 8192,
+    "maximumElements": 10000,
+    "maximumEffectPixels": 6000000,
+    "maximumFilters": 1,
+    "maximumMasks": 1,
+    "maximumFilterReferences": 1,
+    "maximumMaskReferences": 1,
+    "maximumFilterPrimitives": 8,
+    "maximumBlurDeviationPixels": 32,
+    "outputWriteChunkBytes": 262144,
+    "outstandingWrites": 1
+  },
+  "engine": {
+    "manifest": "public/engines/svg/build-manifest.json",
+    "package": "@resvg/resvg-wasm@2.6.2",
+    "wasmBytes": 2478606,
+    "wasmSha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+    "systemFontsLoaded": false,
+    "reproducibility": "npm run build:svg copies the integrity-pinned package Wasm and is covered by the all-engine non-Docker reproducibility gate."
+  },
+  "directEvidence": [
+    {
+      "path": "workers/conversion.worker.ts",
+      "snippets": [
+        "const supportedSvgFilterElements = new Set",
+        "font: { loadSystemFonts: false }",
+        "SVG scripts, CSS, external-resource, links, animation, and text elements are not accepted.",
+        "SVG external references, inline CSS, and event handlers are not accepted.",
+        "SVG paint URLs must be local fragment references.",
+        "SVG filters and masks are limited to a 6-megapixel raster budget.",
+        "SVG Gaussian blur is limited to a 32-pixel deviation."
+      ]
+    },
+    {
+      "path": "tests/browser/image-conversions.spec.ts",
+      "snippets": [
+        "`${profileId} from ${sourceName} produces a bounded independently decodable image`",
+        "minimumReferenceSsim",
+        "rejects unsafe SVG input",
+        "expect(externalRequests).toEqual([])",
+        "SVG policy rejects text, CSS, animation, links, scripts, events, and use expansion before rasterization"
+      ]
+    },
+    {
+      "path": "fixtures/images/test-pattern-effects.svg.json",
+      "snippets": [
+        "\"filters\": 1",
+        "\"masks\": 1",
+        "\"filterPrimitives\": 7",
+        "\"validationReference\": \"fixtures/images/test-pattern-effects-reference.png\""
+      ]
+    }
+  ],
+  "stress": {
+    "report": "outputs/reports/2026-08-13T14-24-32-424Z-svg-to-png-stress.json",
+    "sourceBytes": 470390,
+    "width": 3000,
+    "height": 2000,
+    "pixels": 6000000,
+    "elements": 6719,
+    "filters": 1,
+    "masks": 1,
+    "filterPrimitives": 7,
+    "runs": 3,
+    "elapsedMilliseconds": [6337.164999991655, 6184.204999983311, 6290.300000011921],
+    "worstIncrementalPrivateMiB": 182.76171875,
+    "limitMiB": 250,
+    "outputBytes": 3543078,
+    "repeatableOutputSha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+    "minimumObservedReferenceSsim": 0.990103,
+    "maximumReadChunkBytes": 262144,
+    "maximumWriteChunkBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "cleanupRecovery": true
+  },
+  "focusedBrowserRun": {
+    "command": "npx playwright test tests/browser/image-conversions.spec.ts --workers=1 --grep SVG|svg-to-png",
+    "browser": "production Chromium project",
+    "result": "10 passed",
+    "elapsedSeconds": 23.9,
+    "coverage": [
+      "basic self-contained SVG rasterization",
+      "mask and seven-primitive filter-chain rasterization with independent SSIM validation",
+      "direct selected-destination output",
+      "bounded write-failure cleanup",
+      "8-megapixel and 6-megapixel effect limits",
+      "unsupported filter and repeated-effect rejection",
+      "text, CSS, animation, link, script, event-handler, and use-element rejection before rasterization",
+      "zero matching external requests"
+    ]
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserPolicyInputsAreInMemoryTestPayloads": true,
+    "browserOwnedPartialOutputsRetained": 0,
+    "compactEvidenceRetained": true
+  }
+}

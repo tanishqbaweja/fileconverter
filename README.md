@@ -898,6 +898,23 @@ through this bounded profile. Stable Chrome does not expose ICO, SVG, or
 HEIC/HEIF through worker `ImageDecoder`; unsupported browser-native inputs are
 not advertised.
 
+SVG-to-PNG therefore uses the pinned `@resvg/resvg-wasm` 2.6.2 engine with
+system fonts disabled. The accepted self-contained subset covers vector
+geometry, direct presentation attributes, local gradients and clipping, and at
+most one explicitly bounded mask plus one singly applied filter chain of up to
+eight Gaussian-blur, offset, flood, composite, merge, or blend primitives.
+Inputs are capped at 4 MiB, 10,000 lexical elements, 8,192 pixels per edge, and
+8 megapixels; filters and masks use a stricter 6-megapixel budget and must name
+explicit in-raster `userSpaceOnUse` regions. Text/fonts, CSS, animation,
+links/external resources, scripts, event handlers, and `use` expansion fail
+before renderer initialization. Those exclusions avoid device-dependent fonts,
+unbounded cascade/instance expansion, nondeterministic timelines, and network or
+execution paths. A 3,000×2,000 effects fixture with 6,719 elements, one mask,
+and seven filter primitives passed three production-Chrome runs at 182.762 MiB
+worst incremental private memory and 0.990103 SSIM against an independent
+reference. Exact supported/excluded behavior is recorded in
+`evidence/svg-safety-fidelity-matrix-2026-09-05.json`.
+
 TIFF-to-PNG uses a separate reproducible libtiff/libpng/zlib/libjpeg-turbo Wasm
 engine because Chrome does not decode TIFF in a worker. It reads at most 256 KiB
 at a time, decodes strip or tile blocks into one bounded raster stripe, and
