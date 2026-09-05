@@ -1064,10 +1064,10 @@ DTDs, custom entities, non-UTF-8 XML, and malformed package structures.
 ## Deliberately unsupported routes
 
 Absence from the registry means unsupported; the app does not guess a route.
-PDF is excluded by product scope. Camera raw, unsupported 7Z codecs, and
-additional legacy/proprietary media codecs are not published because this build
-does not yet contain a bounded, auditable browser engine and independent
-large-fixture evidence for them. Unsupported office and ebook files are not
+PDF is excluded by product scope. Unsupported 7Z codecs and additional
+legacy/proprietary media codecs are not published because this build does not
+yet contain a bounded, auditable browser engine and independent large-fixture
+evidence for them. Unsupported office and ebook files are not
 flattened to plain text and called converted. ZIP64 and files requiring an
 individual ZIP entry or completed ZIP above 4 GiB are rejected instead of
 silently wrapping or truncating sizes.
@@ -1084,6 +1084,23 @@ patent clearance. No route is published on that incomplete basis. Exact source,
 security, copy-topology, licensing, probe, and revisit evidence is in
 `evidence/heif-heic-feasibility-2026-09-05.json`; this is a conservative product
 distribution decision, not legal advice.
+
+Camera RAW is also an explicit audited exclusion. Production Chrome 152 reports
+no native `ImageDecoder` support for representative DNG, CR2, NEF, or ARW MIME
+types. LibRaw 0.22.2 can read through a custom seekable datastream, so a bounded
+prototype is possible, but its stock limits permit multi-gigabyte allocations,
+its processing retains a complete image surface, and upstream explicitly calls
+its dcraw-derived converter basic and outside production-quality rendering.
+The audited LibRaw-Wasm 1.6.0 wrapper is not suitable as-is: it starts with a
+256 MiB growing heap, copies the complete input into Wasm, calls the full-memory
+output helper, and copies the complete result back to JavaScript. RawSpeed is
+fast and continuously fuzzed but intentionally supplies only first-stage sensor
+data, not most metadata, color/white-balance correction, demosaicing, or a
+viewable image. No RAW route is published until a fixed-memory, bounded-reader,
+incremental-writer, production-quality pipeline passes per-camera fidelity,
+adversarial, cleanup, cross-browser, and complete-process memory gates. Exact
+versions, source findings, Chrome results, and revisit conditions are in
+`evidence/camera-raw-feasibility-2026-09-05.json`.
 
 The same rule applies to codec/container combinations. A listed container name
 does not imply every codec can be copied into it. The planner exposes only the

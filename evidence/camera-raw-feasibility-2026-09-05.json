@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-05T22:14:29+05:30",
+  "requirement": "N-04",
+  "scope": "Camera-RAW browser-native, decoder, bounded-memory, rendering-quality, security, and reproducibility feasibility",
+  "status": "intentionally-unsupported",
+  "dockerUsed": false,
+  "publicProfiles": 0,
+  "decision": "Do not publish camera-RAW input or output routes in the current build. A custom LibRaw reader is technically possible, but neither LibRaw's built-in renderer, the audited LibRaw-Wasm wrapper, nor RawSpeed alone currently satisfies the combined production-quality rendering, bounded-memory, untrusted-input, reproducibility, and acceptance-evidence requirements.",
+  "productionBrowserProbe": {
+    "browser": "Google Chrome",
+    "version": "152.0.7977.77",
+    "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "origin": "http://127.0.0.1:3017/?test=1",
+    "secureContext": true,
+    "crossOriginIsolated": true,
+    "imageDecoder": {
+      "image/avif": true,
+      "image/png": true,
+      "image/x-adobe-dng": false,
+      "image/x-canon-cr2": false,
+      "image/x-nikon-nef": false,
+      "image/x-sony-arw": false
+    },
+    "interpretation": "Current production Chrome provides no native ImageDecoder route for the representative DNG, CR2, NEF, and ARW MIME types. The AVIF and PNG controls prove that the capability API itself was functional in the same session.",
+    "focusedRegression": {
+      "command": "npx playwright test tests/browser/privacy-offline.spec.ts --grep functional browser capability probes",
+      "result": "1 passed",
+      "elapsedSeconds": 7.4
+    },
+    "fullPrivacyOfflineRegression": {
+      "command": "npx playwright test tests/browser/privacy-offline.spec.ts",
+      "result": "15 passed",
+      "elapsedSeconds": 51.9
+    }
+  },
+  "candidateAudit": {
+    "libraw": {
+      "name": "LibRaw",
+      "tag": "0.22.2",
+      "commit": "b93f6e45c194f5df9b02a43b1af9a54b4f41f33f",
+      "releasedAt": "2026-07-16T07:07:22Z",
+      "copyrightLicense": "LGPL-2.1-or-later OR CDDL-1.0",
+      "maintenanceAssessment": "The latest stable release is current and actively maintained. Its release notes include multiple bounds, allocation-overflow, recursion-depth, buffer-overrun, and previous-memory exposure fixes; this audit does not label LibRaw unmaintained or inherently unsafe.",
+      "readerApi": "LibRaw_abstract_datastream provides read, seek, tell, get-character, line-read, EOF, and size-style access suitable for a project-owned bounded random-access bridge without a complete input copy.",
+      "defaultLimits": {
+        "maxRawAllocationMiB": 2048,
+        "maxThumbnailMiB": 512,
+        "maxProfileMiB": 256,
+        "normalNonDngAndCr3FileBytes": 2147483647,
+        "assessment": "The stock limits exceed this product's complete-Chromium 250 MiB ceiling and would have to be replaced by much smaller compile-time and runtime limits. Some decoders consult max_raw_memory_mb, but project admission cannot assume that one field bounds every parser, raw, processed, metadata, profile, thumbnail, thread, and JavaScript allocation."
+      },
+      "memoryTopology": [
+        "dcraw_process() calls raw2image_ex(), whose own source comment states that it allocates imgdata.image and copies data.",
+        "The decoded raw storage and complete processed imgdata.image can coexist during processing.",
+        "dcraw_make_mem_image() allocates a second complete RGB output and copy_mem_image() fills it row by row.",
+        "A custom wrapper could stream rows directly from imgdata.image and avoid dcraw_make_mem_image(), but it would not remove the complete processed surface. A small hard pixel cap might make that surface fit, but only complete-Chromium measurements can prove the total budget."
+      ],
+      "renderingQuality": "Upstream describes its RAW conversion as basic, inherited from dcraw, retained for compatibility/testing, and outside LibRaw's production-quality rendering scope; further development of that renderer is not planned. A broad production converter therefore needs a separate maintained color-management, white-balance, demosaic, orientation/crop, highlight, and output pipeline plus fidelity references.",
+      "untrustedInputAssessment": "The stable release is the proper candidate, not a public snapshot. Upstream warns that public snapshots are unsuitable for anonymously supplied specially constructed files. Because this browser product accepts user-selected files of unknown provenance, a pinned stable build still requires project-owned malformed/adversarial corpora, fuzzing coverage, timeouts, allocation limits, and rapid security-update handling before publication."
+    },
+    "librawWasm": {
+      "name": "LibRaw-Wasm",
+      "tag": "v1.6.0",
+      "commit": "32fd36a9883a10c1632bc20073f1ea88cc60487a",
+      "releasedAt": "2026-07-02T06:20:39Z",
+      "wrapperLicense": "ISC",
+      "bundledLibRawTag": "0.22.1",
+      "rejectionReasons": [
+        "The build pins LibRaw 0.22.1 rather than the audited current stable 0.22.2.",
+        "The build sets INITIAL_MEMORY=256MB and ALLOW_MEMORY_GROWTH=1, already incompatible with a 250 MiB complete-process incremental ceiling and the fixed-Wasm requirement.",
+        "The public API accepts a complete Uint8Array; the C++ wrapper copies it into a same-sized std::vector in Wasm memory.",
+        "imageData() calls dcraw_make_mem_image() and then allocates and copies another complete JavaScript typed array.",
+        "The integration test fetches complete files into ArrayBuffer and duplicates them with slice(0).",
+        "Its browser worker and source-built release practices are useful, but the current I/O and output topology cannot be adopted as this project's large-file architecture."
+      ]
+    },
+    "rawSpeed": {
+      "name": "RawSpeed",
+      "branch": "develop",
+      "commit": "c835b05aecfacb7343f7c424abd620aa12116c3f",
+      "copyrightLicense": "LGPL-2.1",
+      "positiveFindings": [
+        "It is designed for fast RAW decoding and is continuously fuzzed through OSS-Fuzz.",
+        "It supports many common camera families and supplies raw sensor data and CFA information."
+      ],
+      "rejectionReasons": [
+        "Upstream explicitly decodes from memory rather than a file stream, conflicting with the required bounded random-access input architecture.",
+        "It intentionally does not provide most metadata, color correction, white-balance correction, demosaicing, or a viewable image.",
+        "It can be a first-stage decoder, but it is not a complete conversion engine; a separate maintained rendering and metadata pipeline would still be required and independently validated."
+      ]
+    }
+  },
+  "shippingAssessment": {
+    "notImpossible": true,
+    "technicalRoute": "A future route could use a current stable LibRaw parser behind a strict custom datastream and fixed Wasm heap, avoid dcraw_make_mem_image(), enforce a deliberately small camera/file/pixel allowlist, and feed rows into a separate audited production-quality rendering/output pipeline.",
+    "currentBlockers": [
+      "No browser-native RAW decoder is available on the tested production Chrome.",
+      "No audited candidate currently combines bounded random-access input, fixed total memory, complete metadata/color/demosaic rendering, incremental output, and untrusted-file hardening.",
+      "No representative per-camera fidelity corpus or independent reference-render acceptance thresholds exist in this repository.",
+      "No three-run process-tree memory, cancellation, write-failure, cleanup, privacy/offline, or cross-browser evidence exists for a RAW route."
+    ],
+    "result": "Keep all camera-RAW extensions absent from the capability registry and public selector. This is a measured admission decision, not a claim that RAW conversion is impossible."
+  },
+  "revisitConditions": [
+    "Pin the then-current stable LibRaw or another actively maintained decoder and establish a no-Docker, source-reproducible build plus prompt security-update policy.",
+    "Use a project-owned bounded seekable reader with no complete JavaScript input buffer, a fixed Wasm maximum, strict metadata/profile/thumbnail/parser/time limits, and a dedicated disposable worker.",
+    "Start with an exact camera/model and format allowlist plus conservative dimensions, edge length, pixel count, compressed bytes, raw allocation, decoded surface, and thread limits; prove the complete Chromium process tree stays at or below 250 MiB rather than assuming it from buffer arithmetic.",
+    "Avoid dcraw_make_mem_image() and stream output rows with one pending direct write, or replace the full-surface pipeline with a genuinely tiled/strip-based renderer. Use a maintained production-quality color, white-balance, demosaic, orientation/crop, and profile pipeline rather than presenting LibRaw's basic renderer as equivalent to camera software.",
+    "Independently compare representative DNG, CR2/CR3, NEF/NRW, ARW, RAF, ORF, and RW2 fixtures against trusted reference renders and metadata, with documented color, crop, orientation, bit-depth, highlight, black/white-level, and embedded-preview behavior.",
+    "Pass malformed/adversarial and fuzz corpora plus genuine production-browser success, unsupported-camera, cancellation, timeout, write-failure, cleanup, privacy/offline, three-run memory/recovery, and Chrome/Edge/Brave/Opera gates before adding any public profile."
+  ],
+  "sources": [
+    {
+      "purpose": "LibRaw current stable release and hardening fixes",
+      "url": "https://github.com/LibRaw/LibRaw/releases/tag/0.22.2"
+    },
+    {
+      "purpose": "LibRaw scope, renderer-quality statement, snapshot warning, and dual licensing",
+      "url": "https://github.com/LibRaw/LibRaw/blob/0.22.2/README.md"
+    },
+    {
+      "purpose": "LibRaw abstract seekable datastream interface",
+      "url": "https://github.com/LibRaw/LibRaw/blob/0.22.2/doc/API-CXX.html"
+    },
+    {
+      "purpose": "LibRaw default allocation, profile, file, and thumbnail limits",
+      "url": "https://github.com/LibRaw/LibRaw/blob/0.22.2/doc/Install-LibRaw.html"
+    },
+    {
+      "purpose": "LibRaw processed-surface allocation and copy",
+      "url": "https://github.com/LibRaw/LibRaw/blob/0.22.2/src/postprocessing/dcraw_process.cpp"
+    },
+    {
+      "purpose": "LibRaw complete memory-image allocation and copy",
+      "url": "https://github.com/LibRaw/LibRaw/blob/0.22.2/src/postprocessing/mem_image.cpp"
+    },
+    {
+      "purpose": "LibRaw supported-camera inventory",
+      "url": "https://www.libraw.org/supported-cameras"
+    },
+    {
+      "purpose": "LibRaw-Wasm release",
+      "url": "https://github.com/ybouane/LibRaw-Wasm/releases/tag/v1.6.0"
+    },
+    {
+      "purpose": "LibRaw-Wasm pinned dependencies and growing 256 MiB heap",
+      "url": "https://github.com/ybouane/LibRaw-Wasm/blob/32fd36a9883a10c1632bc20073f1ea88cc60487a/compileLibraw.sh"
+    },
+    {
+      "purpose": "LibRaw-Wasm complete-input and complete-output copy topology",
+      "url": "https://github.com/ybouane/LibRaw-Wasm/blob/32fd36a9883a10c1632bc20073f1ea88cc60487a/libraw_wrapper.cpp"
+    },
+    {
+      "purpose": "RawSpeed memory-input and incomplete-renderer scope",
+      "url": "https://github.com/darktable-org/rawspeed/blob/c835b05aecfacb7343f7c424abd620aa12116c3f/README.rst"
+    }
+  ],
+  "cleanup": {
+    "convertedOutputsCreated": 0,
+    "fixturesCreated": 0,
+    "temporaryUpstreamClones": [
+      "work/camera-raw-feasibility-upstream",
+      "work/libraw-wasm-feasibility-upstream"
+    ],
+    "temporaryUpstreamClonesRemovedAfterAudit": true,
+    "playwrightArtifactsRemovedAfterAudit": true,
+    "protectedFixtureTouched": false
+  }
+}

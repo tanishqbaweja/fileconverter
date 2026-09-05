@@ -16,6 +16,10 @@ const IMAGE_DECODER_MIME_TYPES = [
   "image/jpeg",
   "image/png",
   "image/webp",
+  "image/x-adobe-dng",
+  "image/x-canon-cr2",
+  "image/x-nikon-nef",
+  "image/x-sony-arw",
 ] as const;
 
 export interface BrowserCapabilities {

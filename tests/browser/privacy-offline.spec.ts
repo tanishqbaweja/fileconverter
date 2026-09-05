@@ -238,6 +238,10 @@ test("functional browser capability probes pass in production Chrome", async () 
   expect(capabilities.imageDecoderTypes["image/heif"]).toBe(false);
   expect(capabilities.imageDecoderTypes["image/heif-sequence"]).toBe(false);
   expect(capabilities.imageDecoderTypes["image/png"]).toBe(true);
+  expect(capabilities.imageDecoderTypes["image/x-adobe-dng"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/x-canon-cr2"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/x-nikon-nef"]).toBe(false);
+  expect(capabilities.imageDecoderTypes["image/x-sony-arw"]).toBe(false);
   expect(typeof capabilities.webCodecsVideo).toBe("boolean");
   expect(typeof capabilities.webCodecsAudio).toBe("boolean");
   await expect(page.getByTestId("capability-blocker")).toHaveCount(0);
