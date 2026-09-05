@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "requirement": "M-03",
+  "auditDate": "2026-09-05",
+  "status": "partial-checkpoint",
+  "dockerUsed": false,
+  "execution": {
+    "mode": "production Chrome stream-copy conversion with independent native FFmpeg and FFprobe validation",
+    "command": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'complex (MOV|3GP) source retains every representable field' --reporter=line",
+    "result": "8 passed",
+    "elapsedSeconds": 24.8,
+    "browser": "Google Chrome",
+    "browserVersion": "152.0.7977.77",
+    "playwrightVideoCaptureDisabled": true,
+    "nativeToolBoundary": "Native FFmpeg generated the deterministic small source fixtures and independently validated outputs; every conversion under test executed through the production browser Wasm pipeline."
+  },
+  "sourceInputs": {
+    "mov": {
+      "generatedPath": "work/complex-remux-source.mov",
+      "bytes": 782828,
+      "sha256": "6b261f3aabecaf42fbf351fe0f81e39c03032025868749fc172f1f9a25285a37",
+      "container": "QuickTime MOV",
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "video": "640x360 H.264, 1:1 sample aspect, 16:9 display aspect, limited-range BT.709, chroma-left, progressive, 90-degree Display Matrix, default disposition",
+      "audio": "two 48 kHz mono AAC tracks with eng/spa language tags and default dispositions 1/0",
+      "generalMetadata": {
+        "title": "Within complex remux fixture",
+        "comment": "Deterministic multi-stream metadata"
+      },
+      "chapters": 0
+    },
+    "threeGp": {
+      "generatedPath": "work/complex-remux-source.3gp",
+      "bytes": 782251,
+      "sha256": "203417b19f7c1507008064fdf5c2dc2e7bb2d2983c1b7f81e4bc15a00efe1816",
+      "container": "3GP with 3gp6 major brand",
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "video": "640x360 H.264, 1:1 sample aspect, 16:9 display aspect, limited-range BT.709, chroma-left, progressive, 90-degree Display Matrix, default disposition",
+      "audio": "two 48 kHz mono AAC tracks with eng/spa language tags and default dispositions 1/0",
+      "generalMetadata": "not representable by the generated 3GP source",
+      "chapters": 0
+    }
+  },
+  "routeMatrix": {
+    "profileIds": [
+      "mov-to-mkv",
+      "mov-to-mpeg-ts",
+      "mov-to-3gp",
+      "mov-to-flv",
+      "3gp-to-mkv",
+      "3gp-to-mpeg-ts",
+      "3gp-to-mov",
+      "3gp-to-flv"
+    ],
+    "totalRoutes": 8,
+    "allPublicPassedStreamCopy": true
+  },
+  "assertions": {
+    "sourceFields": [
+      "stream order and codecs",
+      "coded width and height",
+      "sample and display aspect ratio",
+      "explicit color range, space, transfer, and primaries",
+      "chroma location",
+      "field order",
+      "display rotation",
+      "audio sample rate and channel count",
+      "language tags",
+      "default dispositions",
+      "general metadata where the source container represents it"
+    ],
+    "payloads": [
+      "normalized H.264 packets match exactly",
+      "decoded VFR video matches exactly with autorotation disabled for destinations that exclude rotation",
+      "each retained AAC access-unit stream matches exactly"
+    ],
+    "boundedRuntime": {
+      "maxReadChunkBytesCeiling": 262144,
+      "maxWriteChunkBytesCeiling": 262144,
+      "peakPendingOperationsCeiling": 1,
+      "peakWasmMemoryBytesCeiling": 134217728
+    }
+  },
+  "destinationOutcomes": {
+    "matroska": {
+      "routes": ["mov-to-mkv", "3gp-to-mkv"],
+      "retained": ["rotation", "all explicit color fields", "geometry and aspect", "both AAC tracks", "eng/spa languages", "default dispositions", "MOV title/comment"],
+      "payloadEquality": "exact H.264 packets, decoded video, and both AAC access-unit streams"
+    },
+    "mpegTs": {
+      "routes": ["mov-to-mpeg-ts", "3gp-to-mpeg-ts"],
+      "retained": ["all explicit color fields", "geometry and aspect", "both AAC tracks", "eng/spa languages"],
+      "excludedWithWarning": ["display rotation"],
+      "containerLimitations": ["general metadata", "default dispositions"],
+      "payloadEquality": "exact H.264 packets, exact unrotated decoded video, and both AAC access-unit streams"
+    },
+    "isoBmff": {
+      "routes": ["mov-to-3gp", "3gp-to-mov"],
+      "retained": ["rotation", "all explicit color fields", "geometry and aspect", "both AAC tracks", "eng/spa languages", "default dispositions"],
+      "payloadEquality": "exact H.264 packets, decoded video, and both AAC access-unit streams"
+    },
+    "flv": {
+      "routes": ["mov-to-flv", "3gp-to-flv"],
+      "retained": ["all explicit color fields", "geometry and aspect", "first AAC track", "MOV title where supported"],
+      "excludedWithWarning": ["display rotation", "additional AAC audio"],
+      "containerLimitations": ["language tags", "default dispositions"],
+      "payloadEquality": "exact H.264 packets, exact unrotated decoded video, and first AAC access-unit stream"
+    }
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "generatedSourceFixturesRetained": 0,
+    "browserTestArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvTouched": false,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "This closes complex MOV- and 3GP-origin field/payload mappings for every currently compatible Matroska, MPEG-TS, ISO-BMFF, and FLV destination. M-03 remains partial for equally complex MPEG-TS, FLV, AVI, WebM, and Ogg origins plus attached-picture dispositions."
+}

@@ -48,7 +48,7 @@ not the entire product specification.
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | The two complex-field evidence files prove genuine Matroska-origin copies across all six compatible destinations, including exact media payloads and explicit topology exclusions. `evidence/cross-source-field-retention-browser-2026-09-01.json` adds 28 compatible source/destination routes into Matroska, MPEG-TS, 3GP, MOV, and FLV, conditionally asserting every present representable geometry, aspect, explicit color, chroma, field-order, rotation, audio-layout, language, disposition, and title field plus decoded or compressed payload equality. Production Chrome passed the 20-route destination gate, eight Matroska routes plus two complex MOV/3GP routes, and 11 shared media-options regressions. MPEG-TS/FLV exclusion policies are now accurate, and 3GP/MOV explicitly disclose their unavoidable first-track default mapping. | Build equally complex MOV/3GP/MPEG-TS/FLV/AVI/WebM/Ogg-origin fixtures and validate every compatible destination mapping; attached-picture dispositions remain explicitly excluded by the fixed binary. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | The two complex-field evidence files prove genuine Matroska-origin copies across all six compatible destinations, including exact media payloads and explicit topology exclusions. `evidence/cross-source-field-retention-browser-2026-09-01.json` adds 28 compatible source/destination routes into Matroska, MPEG-TS, 3GP, MOV, and FLV, conditionally asserting every present representable field and decoded or compressed payload equality. `evidence/complex-iso-source-field-retention-browser-2026-09-05.json` now closes the eight compatible complex MOV/3GP-origin mappings: Chrome 152 passed 8/8 with exact normalized H.264, exact retained AAC access units, decoded-picture equality, representable rotation/color/aspect/language/disposition/general metadata, explicit MPEG-TS/FLV rotation warnings, and explicit FLV additional-audio warnings under bounded I/O and fixed Wasm. | Build equally complex MPEG-TS/FLV/AVI/WebM/Ogg-origin fixtures and validate every compatible destination mapping; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
@@ -114,8 +114,9 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Audit stream/metadata preservation for every public media route; implement
-   representable fields and make every exclusion explicit.
+1. Finish complex-source stream/metadata preservation for MPEG-TS, FLV, AVI,
+   WebM, and Ogg origins, then validate attached-picture dispositions; implement
+   every representable field and make every exclusion explicit.
 2. Expand the passing Edge, Brave, and Opera smoke evidence into representative
    route and headed interaction coverage.
 3. Perform bounded feasibility work for the missing media combinations. Revisit
@@ -154,6 +155,28 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-05 — complex MOV/3GP source-retention checkpoint
+
+- Generated deterministic small MOV and 3GP inputs from the tracked complex
+  Matroska fixture using native FFmpeg solely as a fixture generator. Their
+  exact identities are 782,828-byte SHA-256
+  `6b261f3aabecaf42fbf351fe0f81e39c03032025868749fc172f1f9a25285a37`
+  and 782,251-byte SHA-256
+  `203417b19f7c1507008064fdf5c2dc2e7bb2d2983c1b7f81e4bc15a00efe1816`.
+- Production Chrome 152 converted both sources through every compatible
+  Matroska, MPEG-TS, MOV/3GP, and FLV destination. The focused eight-route gate
+  passed 8/8 in 24.8 seconds with exact H.264 packets, decoded-picture equality,
+  exact retained AAC access units, representable field assertions, container-
+  specific warnings, 256 KiB read/write ceilings, one pending operation, and a
+  fixed 128 MiB Wasm ceiling. Native tools only generated and independently
+  validated; all conversions ran in the production browser pipeline.
+- Both generated inputs, all converted outputs, and browser artifacts were
+  deleted. `work` again contains only `.gitkeep`; `test.mkv` remains byte-exact.
+  Compact evidence is in
+  `evidence/complex-iso-source-field-retention-browser-2026-09-05.json`. M-03
+  remains partial for complex MPEG-TS, FLV, AVI, WebM, and Ogg origins and
+  attached-picture dispositions.
 
 ### 2026-09-02 — functional runtime-capability checkpoint
 

@@ -386,6 +386,23 @@ artifact byte-exact in 10m33s with hosted cleanup and zero retained artifacts.
 See
 `evidence/cross-source-field-retention-browser-2026-09-01.json`.
 
+The next complex-source checkpoint generates deterministic MOV and 3GP inputs
+from the tracked complex Matroska fixture, then converts each one through every
+compatible Matroska, MPEG-TS, ISO-BMFF, and FLV destination in the production
+browser. All eight routes retain exact normalized H.264 packets and every
+retained AAC access-unit stream. Rotation, explicit limited-range BT.709,
+geometry/aspect, languages, dispositions, and source-supported general metadata
+are asserted where representable; MPEG-TS and FLV explicitly warn when rotation
+is excluded, and FLV also warns when it drops the second AAC track. The focused
+Chrome 152 gate passed 8/8 in 24.8 seconds under 256 KiB read/write ceilings,
+one pending operation, and the fixed 128 MiB Wasm ceiling. Native FFmpeg was
+used only to generate the small deterministic fixtures and independently inspect
+browser outputs. Both generated inputs, all eight outputs, and browser artifacts
+were deleted afterward. See
+`evidence/complex-iso-source-field-retention-browser-2026-09-05.json`. M-03
+remains partial for equally complex MPEG-TS, FLV, AVI, WebM, and Ogg origins and
+attached-picture dispositions.
+
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
 the certified 2 Mbit/s policy; the conversion controls can instead select a
