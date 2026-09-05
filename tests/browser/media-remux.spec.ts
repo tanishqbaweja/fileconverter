@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { copyFile, mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -352,10 +352,6 @@ const containerFlvOutputPaths = {
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.flv"),
 } as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
-const complexMatroskaOutputPath = path.join(
-  outputRoot,
-  "complex-remux-output.mkv",
-);
 const fixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -396,11 +392,16 @@ const complexTransportSourceOutputPaths = {
   "flv-to-3gp": path.join(outputRoot, "complex-flv-source-output.3gp"),
   "flv-to-mov": path.join(outputRoot, "complex-flv-source-output.mov"),
 } as const;
-const complexMatroskaAsWebmFixturePath = path.join(
-  projectRoot,
-  "work",
-  "complex-remux-source.webm",
-);
+const complexLegacyWebSourceFixturePaths = {
+  avi: path.join(projectRoot, "work", "complex-legacy-source.avi"),
+  webm: path.join(projectRoot, "work", "complex-web-source.webm"),
+  ogv: path.join(projectRoot, "work", "complex-ogg-source.ogv"),
+} as const;
+const complexLegacyWebSourceOutputPaths = {
+  "avi-to-mkv": path.join(outputRoot, "complex-avi-source-output.mkv"),
+  "webm-to-mkv": path.join(outputRoot, "complex-webm-source-output.mkv"),
+  "ogv-to-mkv": path.join(outputRoot, "complex-ogv-source-output.mkv"),
+} as const;
 const corruptFixturePath = path.join(
   projectRoot,
   "work",
@@ -533,6 +534,12 @@ const opusFixturePath = path.join(
   "media",
   "audio-source.opus",
 );
+const webVttFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "subtitles",
+  "voice-sample.vtt",
+);
 const ogvFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -651,7 +658,11 @@ interface ProbeStream {
 
 interface MediaProbe {
   streams: ProbeStream[];
-  chapters?: Array<{ tags?: Record<string, string> }>;
+  chapters?: Array<{
+    start_time?: string;
+    end_time?: string;
+    tags?: Record<string, string>;
+  }>;
   format: {
     duration?: string;
     format_name?: string;
@@ -898,17 +909,24 @@ async function expectDecodedPcmMatch(
   );
 }
 
-async function mp3PacketSha256(inputPath: string): Promise<string> {
+async function compressedPacketSha256(
+  inputPath: string,
+  streamSelector: `a:${number}` | `s:${number}` | `v:${number}`,
+): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
       "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", "0:a:0", "-c", "copy", "-f", "hash",
+      "-map", `0:${streamSelector}`, "-c", "copy", "-f", "hash",
       "-hash", "sha256", "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   return stdout.trim().split("=")[1];
+}
+
+async function mp3PacketSha256(inputPath: string): Promise<string> {
+  return compressedPacketSha256(inputPath, "a:0");
 }
 
 async function expectMp3PacketMatch(
@@ -965,9 +983,30 @@ async function expectIsoBmffAacPacketMatch(
 async function expectCompressedAudioPacketMatch(
   sourcePath: string,
   outputPath: string,
+  audioStreamIndex = 0,
 ): Promise<void> {
-  expect(await mp3PacketSha256(outputPath)).toBe(
-    await mp3PacketSha256(sourcePath),
+  expect(
+    await compressedPacketSha256(outputPath, `a:${audioStreamIndex}`),
+  ).toBe(
+    await compressedPacketSha256(sourcePath, `a:${audioStreamIndex}`),
+  );
+}
+
+async function expectCompressedVideoPacketMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await compressedPacketSha256(outputPath, "v:0")).toBe(
+    await compressedPacketSha256(sourcePath, "v:0"),
+  );
+}
+
+async function expectSubtitlePacketMatch(
+  sourcePath: string,
+  outputPath: string,
+): Promise<void> {
+  expect(await compressedPacketSha256(outputPath, "s:0")).toBe(
+    await compressedPacketSha256(sourcePath, "s:0"),
   );
 }
 
@@ -1278,8 +1317,12 @@ test.beforeAll(async () => {
     if (input !== "mkv") assertProjectLocal(fixture);
   }
   assertProjectLocal(complexMp4OutputPath);
-  assertProjectLocal(complexMatroskaOutputPath);
-  assertProjectLocal(complexMatroskaAsWebmFixturePath);
+  for (const fixture of Object.values(complexLegacyWebSourceFixturePaths)) {
+    assertProjectLocal(fixture);
+  }
+  for (const outputPath of Object.values(complexLegacyWebSourceOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   for (const fixture of Object.values(complexIsoSourceFixturePaths)) {
     assertProjectLocal(fixture);
   }
@@ -1304,7 +1347,9 @@ test.beforeAll(async () => {
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(unsupportedMatroskaFixturePath, { force: true });
-  await rm(complexMatroskaAsWebmFixturePath, { force: true });
+  for (const fixture of Object.values(complexLegacyWebSourceFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
   for (const fixture of Object.values(complexIsoSourceFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -1353,7 +1398,6 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
-  await copyFile(complexFixturePath, complexMatroskaAsWebmFixturePath);
   const complexIsoSourceArgs = [
     "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
     "-i", complexFixturePath,
@@ -1384,6 +1428,76 @@ test.beforeAll(async () => {
         ...complexIsoSourceArgs,
         "-brand", "3gp6", "-f", "3gp",
         complexIsoSourceFixturePaths["3gp"],
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+  ]);
+  await Promise.all([
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-i", aviInputFixturePath, "-i", mp3FixturePath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
+        "-c", "copy", "-map_metadata", "-1",
+        "-metadata", "title=Within complex AVI source",
+        "-metadata", "comment=Deterministic AVI field retention",
+        "-metadata:s:v:0", "title=Primary MPEG-4 video",
+        "-metadata:s:a:0", "title=Primary English MP3",
+        "-metadata:s:a:1", "title=Secondary Spanish MP3",
+        "-disposition:v:0", "default",
+        "-disposition:a:0", "default",
+        "-disposition:a:1", "0",
+        "-f", "avi", complexLegacyWebSourceFixturePaths.avi,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-i", av1OpusFixturePath, "-i", opusFixturePath,
+        "-i", webVttFixturePath, "-i", complexFixturePath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
+        "-map", "2:s:0", "-c", "copy", "-map_metadata", "-1",
+        "-map_chapters", "3",
+        "-metadata", "title=Within complex WebM source",
+        "-metadata", "comment=Deterministic WebM field retention",
+        "-metadata:s:v:0", "title=Primary AV1 video",
+        "-metadata:s:a:0", "language=eng",
+        "-metadata:s:a:0", "title=Primary English Opus",
+        "-metadata:s:a:1", "language=spa",
+        "-metadata:s:a:1", "title=Secondary Spanish Opus",
+        "-metadata:s:s:0", "language=fra",
+        "-metadata:s:s:0", "title=French WebVTT captions",
+        "-disposition:v:0", "default",
+        "-disposition:a:0", "default",
+        "-disposition:a:1", "0",
+        "-disposition:s:0", "default",
+        "-fflags", "+bitexact",
+        "-f", "webm", complexLegacyWebSourceFixturePaths.webm,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-i", ogvFixturePath, "-i", oggFixturePath,
+        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
+        "-c", "copy", "-map_metadata", "-1",
+        "-metadata", "title=Within complex Ogg source",
+        "-metadata", "comment=Deterministic Ogg field retention",
+        "-metadata:s:v:0", "title=Primary Theora video",
+        "-metadata:s:a:0", "language=eng",
+        "-metadata:s:a:0", "title=Primary English Vorbis",
+        "-metadata:s:a:1", "language=spa",
+        "-metadata:s:a:1", "title=Secondary Spanish Vorbis",
+        "-disposition:v:0", "default",
+        "-disposition:a:0", "default",
+        "-disposition:a:1", "0",
+        "-fflags", "+bitexact",
+        "-f", "ogv", complexLegacyWebSourceFixturePaths.ogv,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
@@ -1836,12 +1950,16 @@ test.afterAll(async () => {
     await rm(outputPath, { force: true });
   }
   await rm(complexMp4OutputPath, { force: true });
-  await rm(complexMatroskaOutputPath, { force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
   await rm(multiVideoFixturePath, { force: true });
   await rm(unsupportedMatroskaFixturePath, { force: true });
-  await rm(complexMatroskaAsWebmFixturePath, { force: true });
+  for (const fixture of Object.values(complexLegacyWebSourceFixturePaths)) {
+    await rm(fixture, { force: true });
+  }
+  for (const outputPath of Object.values(complexLegacyWebSourceOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const fixture of Object.values(complexIsoSourceFixturePaths)) {
     await rm(fixture, { force: true });
   }
@@ -2217,6 +2335,9 @@ async function runMediaRoute(
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
     expect(state.opfsName).toBeTruthy();
     if (options.expectedWarningFragments) {
+      if (options.expectedWarningFragments.length === 0) {
+        expect(state.warnings).toEqual([]);
+      }
       for (const fragment of options.expectedWarningFragments) {
         expect(
           state.warnings.some((warning) => warning.includes(fragment)),
@@ -5324,63 +5445,112 @@ for (const route of [
   });
 }
 
-test("Matroska stream copy preserves compatible streams, chapters, and metadata", async () => {
-  await runMediaRoute(
-    "webm-to-mkv",
-    complexMatroskaOutputPath,
-    ["h264", "aac", "aac", "subrip", "attachment"],
-    400_000,
-    complexMatroskaAsWebmFixturePath,
-    {
-      expectedWarningFragments: [],
-      skipDurationValidation: true,
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("matroska");
-        expect(probe.format.tags?.title).toBe("Within complex remux fixture");
-        expect(probe.format.tags?.COMMENT).toBe(
-          "Deterministic multi-stream metadata",
-        );
-        const video = probe.streams.find(
-          (stream) => stream.codec_type === "video",
-        );
-        expectComplexVideoFields(video);
-        expect(video?.tags?.title).toBe("Variable timing video");
-        const audio = probe.streams.filter(
-          (stream) => stream.codec_type === "audio",
-        );
-        expect(audio).toHaveLength(2);
-        expect(
-          audio.map((stream) => stream.tags?.language),
-        ).toEqual(["eng", "spa"]);
-        expect(audio.map((stream) => stream.tags?.title)).toEqual([
-          "Primary English audio",
-          "Secondary Spanish audio",
-        ]);
-        expect(audio.map((stream) => stream.disposition?.default)).toEqual([
-          1,
-          0,
-        ]);
-        expect(
-          probe.streams.find((stream) => stream.codec_type === "subtitle")
-            ?.tags?.language,
-        ).toBe("fra");
-        const attachment = probe.streams.find(
-          (stream) => stream.codec_type === "attachment",
-        );
-        expect(attachment?.tags?.filename).toBe("within-notes.txt");
-        expect(attachment?.tags?.mimetype).toBe("text/plain");
-        expect(probe.chapters?.map((chapter) => chapter.tags?.title)).toEqual([
-          "Opening",
-          "Closing",
-        ]);
-        await expectDecodedVideoMatch(complexFixturePath, outputPath);
-        await expectDecodedPcmMatch(complexFixturePath, outputPath);
-        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 0);
-        await expectAacAccessUnitMatch(complexFixturePath, outputPath, 1);
+for (const route of [
+  {
+    sourceKind: "AVI",
+    profileId: "avi-to-mkv" as const,
+    sourcePath: complexLegacyWebSourceFixturePaths.avi,
+    outputPath: complexLegacyWebSourceOutputPaths["avi-to-mkv"],
+    codecs: ["mpeg4", "mp3", "mp3"],
+    title: "Within complex AVI source",
+    comment: "Deterministic AVI field retention",
+    videoTitle: "Primary MPEG-4 video",
+    audioTitles: ["Primary English MP3", "Secondary Spanish MP3"],
+    audioLanguages: [undefined, undefined],
+    audioDefaults: [0, 0],
+  },
+  {
+    sourceKind: "WebM",
+    profileId: "webm-to-mkv" as const,
+    sourcePath: complexLegacyWebSourceFixturePaths.webm,
+    outputPath: complexLegacyWebSourceOutputPaths["webm-to-mkv"],
+    codecs: ["av1", "opus", "opus", "webvtt"],
+    title: "Within complex WebM source",
+    comment: "Deterministic WebM field retention",
+    videoTitle: "Primary AV1 video",
+    audioTitles: ["Primary English Opus", "Secondary Spanish Opus"],
+    audioLanguages: ["eng", "spa"],
+    audioDefaults: [1, 0],
+  },
+  {
+    sourceKind: "Ogg",
+    profileId: "ogv-to-mkv" as const,
+    sourcePath: complexLegacyWebSourceFixturePaths.ogv,
+    outputPath: complexLegacyWebSourceOutputPaths["ogv-to-mkv"],
+    codecs: ["theora", "vorbis", "vorbis"],
+    title: undefined,
+    comment: "Deterministic Ogg field retention",
+    videoTitle: "Primary Theora video",
+    audioTitles: ["Primary English Vorbis", "Secondary Spanish Vorbis"],
+    audioLanguages: ["eng", "spa"],
+    audioDefaults: [0, 0],
+  },
+] as const) {
+  test(`complex ${route.sourceKind} source retains every representable field in Matroska`, async () => {
+    await runMediaRoute(
+      route.profileId,
+      route.outputPath,
+      [...route.codecs],
+      100_000,
+      route.sourcePath,
+      {
+        expectedWarningFragments: [],
+        skipDurationValidation: route.sourceKind !== "AVI",
+        validate: async (probe, outputPath) => {
+          const sourceProbe = await probeMediaFile(route.sourcePath);
+          expect(probe.format.format_name?.split(",")).toContain("matroska");
+          expectRepresentableMediaFieldsCopied(sourceProbe, probe);
+          if (route.title) expect(mediaTag(probe.format.tags, "title")).toBe(route.title);
+          expect(
+            [
+              probe.format.tags,
+              ...probe.streams.map((stream) => stream.tags),
+            ].some((tags) => mediaTag(tags, "comment") === route.comment),
+          ).toBe(true);
+          const video = probe.streams.find(
+            (stream) => stream.codec_type === "video",
+          );
+          expect(mediaTag(video?.tags, "title")).toBe(route.videoTitle);
+          const audio = probe.streams.filter(
+            (stream) => stream.codec_type === "audio",
+          );
+          expect(audio).toHaveLength(2);
+          expect(audio.map((stream) => mediaTag(stream.tags, "title"))).toEqual(
+            route.audioTitles,
+          );
+          expect(audio.map((stream) => mediaTag(stream.tags, "language"))).toEqual(
+            route.audioLanguages,
+          );
+          expect(audio.map((stream) => stream.disposition?.default)).toEqual(
+            route.audioDefaults,
+          );
+          await expectDecodedVideoMatch(route.sourcePath, outputPath);
+          await expectCompressedVideoPacketMatch(route.sourcePath, outputPath);
+          await expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 0);
+          await expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 1);
+          if (route.sourceKind === "WebM") {
+            const subtitle = probe.streams.find(
+              (stream) => stream.codec_type === "subtitle",
+            );
+            expect(mediaTag(subtitle?.tags, "language")).toBe("fra");
+            expect(mediaTag(subtitle?.tags, "title")).toBe(
+              "French WebVTT captions",
+            );
+            expect(subtitle?.disposition?.default).toBe(1);
+            expect(probe.chapters).toHaveLength(2);
+            expect(
+              probe.chapters?.map((chapter) => [
+                Number(chapter.start_time),
+                Number(chapter.end_time),
+              ]),
+            ).toEqual([[0, 2], [2, 4]]);
+            await expectSubtitlePacketMatch(route.sourcePath, outputPath);
+          }
+        },
       },
-    },
-  );
-});
+    );
+  });
+}
 
 for (const route of [
   ["mkv-to-mov", containerMovOutputPaths.mkv, "mov"],

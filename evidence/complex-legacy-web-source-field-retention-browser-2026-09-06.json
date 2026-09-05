@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 1,
+  "requirement": "M-03",
+  "auditDate": "2026-09-06",
+  "status": "partial-checkpoint",
+  "dockerUsed": false,
+  "execution": {
+    "mode": "production Chrome stream-copy conversion with independent native FFmpeg and FFprobe validation",
+    "command": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'complex (AVI|WebM|Ogg) source retains every representable field' --reporter=line",
+    "result": "3 passed",
+    "elapsedSeconds": 16.8,
+    "affectedMatroskaRegressionCommand": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'with bounded Matroska|complex (AVI|WebM|Ogg) source retains every representable field' --reporter=line",
+    "affectedMatroskaRegressionResult": "11 passed",
+    "affectedMatroskaRegressionElapsedSeconds": 27.7,
+    "browser": "Google Chrome",
+    "browserVersion": "152.0.7977.77",
+    "playwrightVideoCaptureDisabled": true,
+    "nativeToolBoundary": "Native FFmpeg generated only deterministic small source fixtures and independently validated browser outputs; every conversion under test executed through the production browser Wasm pipeline."
+  },
+  "sourceInputs": {
+    "avi": {
+      "generatedPath": "work/complex-legacy-source.avi",
+      "bytes": 1411626,
+      "sha256": "747842faadb824636ae4a7af7b9a68b14ed05dff69956e888065d870a7569d36",
+      "byteRepeatableAcrossTwoGenerations": true,
+      "container": "AVI",
+      "streamCodecsInOrder": ["mpeg4", "mp3", "mp3"],
+      "video": "640x360 MPEG-4 Part 2, 1:1 sample aspect, 16:9 display aspect, chroma-left",
+      "audio": "two 48 kHz mono MP3 tracks; AVI retains stream titles but not requested language/default fields",
+      "generalMetadata": {
+        "title": "Within complex AVI source",
+        "comment": "Deterministic AVI field retention"
+      },
+      "chapters": 0
+    },
+    "webm": {
+      "generatedPath": "work/complex-web-source.webm",
+      "bytes": 1747654,
+      "sha256": "04f04ce906a8fdd020b24c860a7fb96a86de1fcdee6bab63bff2ab8e8845552c",
+      "byteRepeatableAcrossTwoGenerations": true,
+      "container": "genuine WebM",
+      "streamCodecsInOrder": ["av1", "opus", "opus", "webvtt"],
+      "video": "640x360 AV1, 1:1 sample aspect, 16:9 display aspect, limited range, progressive",
+      "audio": "two 48 kHz mono Opus tracks with eng/spa languages, distinct titles, and 1/0 default dispositions",
+      "subtitle": "one French default WebVTT track with title",
+      "generalMetadata": {
+        "title": "Within complex WebM source",
+        "comment": "Deterministic WebM field retention"
+      },
+      "chapters": [[0, 2], [2, 4]]
+    },
+    "ogg": {
+      "generatedPath": "work/complex-ogg-source.ogv",
+      "bytes": 726777,
+      "sha256": "fe09e5d71bc1f7536f6cff710c1aaeb286d8bda39417ac8db68de291b17f67dc",
+      "byteRepeatableAcrossTwoGenerations": true,
+      "container": "genuine Ogg video",
+      "streamCodecsInOrder": ["theora", "vorbis", "vorbis"],
+      "video": "640x360 Theora, 1:1 sample aspect, 16:9 display aspect, chroma-center",
+      "audio": "two 48 kHz mono Vorbis tracks with eng/spa comments and distinct titles; Ogg carries no default dispositions",
+      "generalMetadata": "FFmpeg's Ogg muxer represents the requested comment and title fields as per-stream Vorbis/Theora comments, not container tags",
+      "chapters": 0
+    }
+  },
+  "routeMatrix": {
+    "profileIds": ["avi-to-mkv", "webm-to-mkv", "ogv-to-mkv"],
+    "totalRoutes": 3,
+    "allPublicPassedStreamCopy": true,
+    "allGeneratedSourcesUseTheirGenuineContainer": true
+  },
+  "assertions": {
+    "sourceFields": [
+      "stream order and codecs",
+      "coded width and height",
+      "sample and display aspect ratio",
+      "source-present color/chroma/field descriptors",
+      "audio sample rate and channel count",
+      "every representable language, title, comment, and default disposition",
+      "WebVTT language, title, and default disposition",
+      "both WebM chapter time ranges"
+    ],
+    "payloads": [
+      "each compressed video packet stream matches exactly",
+      "decoded video matches exactly",
+      "each of the two compressed audio packet streams matches exactly",
+      "the WebVTT subtitle packet stream matches exactly"
+    ],
+    "boundedRuntime": {
+      "maxReadChunkBytesCeiling": 262144,
+      "maxWriteChunkBytesCeiling": 262144,
+      "peakPendingOperationsCeiling": 1,
+      "peakWasmMemoryBytesCeiling": 134217728
+    },
+    "warnings": "none for any of the three fully compatible source topologies"
+  },
+  "destinationOutcomes": {
+    "aviToMatroska": "all MPEG-4 Part 2 and both MP3 streams, source-present fields, stream titles, title/comment, and exact payloads retained",
+    "webmToMatroska": "all AV1, both Opus, and WebVTT streams plus languages, titles, dispositions, general metadata, chapter timing, and exact payloads retained",
+    "oggToMatroska": "Theora and both Vorbis streams plus per-stream languages/titles/comments, geometry, audio layout, zero-default semantics, and exact payloads retained"
+  },
+  "diagnosticHistory": [
+    {
+      "attempt": "first three-route production-browser gate",
+      "result": "3 passed in 15.6 seconds",
+      "finding": "The conversion behavior passed, but the follow-up reproducibility audit found changing WebM SegmentUID and Ogg stream serial values, so this run was not accepted as deterministic-fixture evidence."
+    },
+    {
+      "attempt": "bit-exact fixture generation and repeatability audit",
+      "result": "all three source byte sizes and SHA-256 hashes matched across two consecutive generations",
+      "resolution": "The WebM and Ogg fixture recipes now use FFmpeg +bitexact muxing; AVI was already byte-repeatable."
+    },
+    {
+      "attempt": "corrected three-route production-browser gate",
+      "result": "3 passed in 16.8 seconds",
+      "resolution": "Exact packet/decode, field, warning, bounded-I/O, queue, and Wasm assertions all passed with deterministic genuine source containers."
+    },
+    {
+      "attempt": "retire mislabeled source coverage",
+      "result": "the old complex Matroska file copied to a .webm filename was removed from the active browser suite",
+      "resolution": "WebM coverage now depends only on a standards-compliant AV1/Opus/WebVTT WebM source; the historical alias is not counted as genuine WebM evidence."
+    }
+  ],
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "generatedSourceFixturesRetained": 0,
+    "diagnosticCopiesRetained": 0,
+    "protectedTestMkvTouched": false,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "This closes complex AVI-, genuine WebM-, and genuine Ogg-origin field and payload mappings for every currently compatible public destination, which is Matroska for each family. M-03 remains partial only for resolving attached-picture disposition behavior across applicable video-container profiles."
+}

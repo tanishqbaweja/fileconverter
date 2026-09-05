@@ -98,12 +98,12 @@ test("retained reports directly prove repeatability, greater-than-4-GiB, and com
   );
   assert.equal(complex.execution.result, index.retainedReportFacts.complexFixture.result);
   assert.deepEqual(
-    complex.independentlyProbedMatroskaOutput.streamCodecsInOrder,
-    index.retainedReportFacts.complexFixture.streamCodecsInOrder,
+    complex.sourceInputs.webm.streamCodecsInOrder,
+    index.retainedReportFacts.complexFixture.webmStreamCodecsInOrder,
   );
   assert.deepEqual(
-    complex.independentlyProbedMatroskaOutput.chapterTitles,
-    index.retainedReportFacts.complexFixture.chapterTitles,
+    complex.sourceInputs.webm.chapters,
+    index.retainedReportFacts.complexFixture.webmChapterRanges,
   );
   assert.equal(complex.cleanup.convertedOutputsRetained, 0);
 });

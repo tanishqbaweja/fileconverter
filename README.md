@@ -414,8 +414,23 @@ passing as two empty hashes. The complete affected extraction/remux regression
 then passed 46/46 in 1.4 minutes. Both generated sources, all outputs, packet-level
 diagnostic copies, and browser artifact files were removed. See
 `evidence/complex-transport-source-field-retention-browser-2026-09-06.json`.
-M-03 remains partial for equally complex AVI, WebM, and Ogg origins and
-attached-picture dispositions.
+
+Complex AVI, genuine WebM, and genuine Ogg-video origins now close the remaining
+source-container field matrix. Byte-repeatable fixtures carry MPEG-4 Part 2 plus
+two MP3 tracks, AV1 plus two Opus tracks and WebVTT, and Theora plus two Vorbis
+tracks respectively. The WebM source also carries two chapter ranges; every
+source keeps the titles, languages, dispositions, comments, and geometry its
+container actually represents. Production Chrome 152 passed 3/3 in 16.8 seconds
+with exact compressed video, both compressed audio streams, WebVTT packets,
+decoded pictures, zero warnings, 256 KiB I/O ceilings, one pending operation,
+and fixed 128 MiB Wasm. The first repeatability audit found random WebM segment
+UIDs and Ogg serials; `+bitexact` fixed both, after which consecutive source
+bytes and hashes matched. The complete Matroska remux slice then passed 11/11 in
+27.7 seconds. The old test that copied a Matroska file to a `.webm`
+name was removed and is not counted as WebM evidence. All generated inputs and
+outputs were deleted. See
+`evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`.
+M-03 remains partial only for attached-picture dispositions.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
