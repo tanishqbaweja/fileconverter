@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "requirement": "M-03",
+  "auditDate": "2026-09-06",
+  "status": "partial-checkpoint",
+  "dockerUsed": false,
+  "execution": {
+    "mode": "production Chrome stream-copy conversion with independent native FFmpeg and FFprobe validation",
+    "command": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'complex (MPEG-TS|FLV) source retains every representable field' --reporter=line",
+    "result": "8 passed",
+    "elapsedSeconds": 27,
+    "affectedAacRegressionCommand": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-remux.spec.ts --grep 'losslessly extracts AAC access units|with bounded Matroska|Matroska stream copy preserves compatible streams|stream copy preserves complex representable fields|retains color while disclosing rotation|complex .* source retains every representable field|with bounded MPEG-TS|with bounded FLV|browser remux preserves multiple audio tracks' --reporter=line",
+    "affectedAacRegressionResult": "46 passed",
+    "affectedAacRegressionElapsedMinutes": 1.4,
+    "browser": "Google Chrome",
+    "browserVersion": "152.0.7977.77",
+    "playwrightVideoCaptureDisabled": true,
+    "nativeToolBoundary": "Native FFmpeg generated the deterministic small source fixtures and independently validated outputs; every conversion under test executed through the production browser Wasm pipeline."
+  },
+  "sourceInputs": {
+    "mpegTs": {
+      "generatedPath": "work/complex-remux-source.mpegts",
+      "bytes": 818364,
+      "sha256": "ce8da311a71a3919ad46d1933cac4554027547639b234ec6bcee01d0849ce73c",
+      "byteRepeatableAcrossTwoGenerations": true,
+      "container": "MPEG-2 Transport Stream",
+      "streamCodecsInOrder": ["h264", "aac", "aac"],
+      "video": "640x360 H.264, 1:1 sample aspect, 16:9 display aspect, limited-range BT.709, chroma-left, progressive, no representable Display Matrix or default disposition",
+      "audio": "two 48 kHz mono AAC tracks with eng/spa language descriptors and no representable default dispositions",
+      "generalMetadata": "not representable by MPEG-TS",
+      "chapters": 0
+    },
+    "flv": {
+      "generatedPath": "work/complex-remux-source.flv",
+      "bytes": 732932,
+      "sha256": "1e70ed53d9c5e5d8f79dcf97e5a166169ae43a10981e0f336f2b9bf935725262",
+      "byteRepeatableAcrossTwoGenerations": true,
+      "container": "FLV",
+      "streamCodecsInOrder": ["h264", "aac"],
+      "video": "640x360 H.264, 1:1 sample aspect, 16:9 display aspect, limited-range BT.709, chroma-left, progressive, no representable Display Matrix or default disposition",
+      "audio": "one 48 kHz mono AAC track without representable language or default disposition",
+      "generalMetadata": {
+        "title": "Within complex remux fixture",
+        "comment": "Deterministic multi-stream metadata"
+      },
+      "chapters": 0
+    }
+  },
+  "routeMatrix": {
+    "profileIds": [
+      "mpeg-ts-to-mkv",
+      "mpeg-ts-to-3gp",
+      "mpeg-ts-to-mov",
+      "mpeg-ts-to-flv",
+      "flv-to-mkv",
+      "flv-to-mpeg-ts",
+      "flv-to-3gp",
+      "flv-to-mov"
+    ],
+    "totalRoutes": 8,
+    "allPublicPassedStreamCopy": true
+  },
+  "assertions": {
+    "sourceFields": [
+      "stream order and codecs",
+      "coded width and height",
+      "sample and display aspect ratio",
+      "explicit color range, space, transfer, and primaries",
+      "chroma location",
+      "field order",
+      "absence of unrepresentable display rotation",
+      "audio sample rate and channel count",
+      "MPEG-TS language descriptors",
+      "absence of source default dispositions",
+      "FLV title and comment"
+    ],
+    "payloads": [
+      "normalized H.264 packets match exactly",
+      "decoded VFR video matches exactly",
+      "each retained AAC access-unit stream matches exactly with ADTS normalization only on ADTS-bearing inputs"
+    ],
+    "boundedRuntime": {
+      "maxReadChunkBytesCeiling": 262144,
+      "maxWriteChunkBytesCeiling": 262144,
+      "peakPendingOperationsCeiling": 1,
+      "peakWasmMemoryBytesCeiling": 134217728
+    }
+  },
+  "destinationOutcomes": {
+    "matroska": {
+      "routes": ["mpeg-ts-to-mkv", "flv-to-mkv"],
+      "retained": ["all explicit color fields", "geometry and aspect", "every source AAC track", "MPEG-TS languages", "FLV title/comment", "source zero-default dispositions"],
+      "payloadEquality": "exact H.264 packets, decoded video, and every AAC access-unit stream"
+    },
+    "mpegTs": {
+      "routes": ["flv-to-mpeg-ts"],
+      "retained": ["all explicit color fields", "geometry and aspect", "AAC track"],
+      "containerLimitations": ["FLV title/comment", "language tags", "default dispositions", "display rotation"],
+      "payloadEquality": "exact H.264 packets, decoded video, and AAC access units"
+    },
+    "isoBmff": {
+      "routes": ["mpeg-ts-to-3gp", "mpeg-ts-to-mov", "flv-to-3gp", "flv-to-mov"],
+      "retained": ["all explicit color fields", "geometry and aspect", "every source AAC track", "MPEG-TS languages", "FLV title/comment in MOV"],
+      "mappedWithWarning": ["the first compatible video and audio tracks become default when the source has no default"],
+      "threeGpLanguageMapping": "a source without a language becomes the explicit ISO-639 undefined code und",
+      "payloadEquality": "exact H.264 packets, decoded video, and every AAC access-unit stream"
+    },
+    "flv": {
+      "routes": ["mpeg-ts-to-flv"],
+      "retained": ["all explicit color fields", "geometry and aspect", "first AAC track"],
+      "excludedWithWarning": ["additional AAC audio", "MPEG-TS language tags"],
+      "containerLimitations": ["default dispositions", "display rotation"],
+      "payloadEquality": "exact H.264 packets, decoded video, and first AAC access-unit stream"
+    }
+  },
+  "diagnosticHistory": [
+    {
+      "attempt": "initial eight-route focused gate",
+      "result": "4 passed, 4 failed",
+      "productDefectsFound": 0,
+      "details": "Two failures exposed a test helper that applied aac_adtstoasc to already-normalized ISO-BMFF AAC packets, producing empty hashes. Packet-level FFprobe proved both output tracks contained 189 packets. The other failures were exact 3GP undefined-language and case-normalized MOV comment semantics."
+    },
+    {
+      "attempt": "packet-level diagnostic and corrected validator",
+      "result": "8 passed in 27.0 seconds, followed by 46/46 affected AAC/remux regressions in 1.4 minutes",
+      "resolution": "AAC access-unit hashing now applies ADTS removal only to ADTS-bearing .aac and MPEG-TS inputs; non-ADTS containers hash their demuxed access units directly. Metadata keys are compared case-insensitively and the 3GP und mapping is asserted explicitly."
+    }
+  ],
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "generatedSourceFixturesRetained": 0,
+    "diagnosticCopiesRetained": 0,
+    "browserTestArtifactFilesRetainedAfterCleanup": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvTouched": false,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "This closes complex MPEG-TS- and FLV-origin field/payload mappings for every currently compatible Matroska, MPEG-TS, ISO-BMFF, and FLV destination. M-03 remains partial for equally complex AVI, WebM, and Ogg origins plus attached-picture dispositions."
+}

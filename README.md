@@ -399,8 +399,22 @@ one pending operation, and the fixed 128 MiB Wasm ceiling. Native FFmpeg was
 used only to generate the small deterministic fixtures and independently inspect
 browser outputs. Both generated inputs, all eight outputs, and browser artifacts
 were deleted afterward. See
-`evidence/complex-iso-source-field-retention-browser-2026-09-05.json`. M-03
-remains partial for equally complex MPEG-TS, FLV, AVI, WebM, and Ogg origins and
+`evidence/complex-iso-source-field-retention-browser-2026-09-05.json`.
+
+Complex MPEG-TS and FLV origins now have the same field-level treatment across
+their eight compatible destinations. The deterministic MPEG-TS source retains
+two AAC tracks with `eng`/`spa` descriptors; the deterministic FLV source
+retains one AAC track plus title/comment metadata. Production Chrome 152 passed
+8/8 in 27.0 seconds with exact normalized H.264 and retained AAC access-unit
+payloads, decoded-picture equality, container-specific language/default/title
+mappings, bounded 256 KiB I/O, one pending operation, and fixed 128 MiB Wasm.
+This audit also repaired the AAC validator: `aac_adtstoasc` is now applied only
+to ADTS-bearing `.aac` and MPEG-TS inputs, preventing non-ADTS comparisons from
+passing as two empty hashes. The complete affected extraction/remux regression
+then passed 46/46 in 1.4 minutes. Both generated sources, all outputs, packet-level
+diagnostic copies, and browser artifact files were removed. See
+`evidence/complex-transport-source-field-retention-browser-2026-09-06.json`.
+M-03 remains partial for equally complex AVI, WebM, and Ogg origins and
 attached-picture dispositions.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or

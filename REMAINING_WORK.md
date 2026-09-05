@@ -48,7 +48,7 @@ not the entire product specification.
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | The two complex-field evidence files prove genuine Matroska-origin copies across all six compatible destinations, including exact media payloads and explicit topology exclusions. `evidence/cross-source-field-retention-browser-2026-09-01.json` adds 28 compatible source/destination routes into Matroska, MPEG-TS, 3GP, MOV, and FLV, conditionally asserting every present representable field and decoded or compressed payload equality. `evidence/complex-iso-source-field-retention-browser-2026-09-05.json` now closes the eight compatible complex MOV/3GP-origin mappings: Chrome 152 passed 8/8 with exact normalized H.264, exact retained AAC access units, decoded-picture equality, representable rotation/color/aspect/language/disposition/general metadata, explicit MPEG-TS/FLV rotation warnings, and explicit FLV additional-audio warnings under bounded I/O and fixed Wasm. | Build equally complex MPEG-TS/FLV/AVI/WebM/Ogg-origin fixtures and validate every compatible destination mapping; attached-picture dispositions remain explicitly excluded by the fixed binary. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex Matroska, MOV, 3GP, MPEG-TS, and FLV origins now have direct production-browser field/payload evidence across every compatible Matroska, MPEG-TS, 3GP, MOV, and FLV destination. `evidence/cross-source-field-retention-browser-2026-09-01.json`, `evidence/complex-iso-source-field-retention-browser-2026-09-05.json`, and `evidence/complex-transport-source-field-retention-browser-2026-09-06.json` assert exact normalized H.264, every retained AAC access-unit stream, decoded-picture equality, representable color/aspect/rotation/language/disposition/general metadata, and explicit container mappings/exclusions under bounded I/O and fixed Wasm. The newest 8/8 Chrome gate also fixed the AAC validator so non-ADTS containers cannot pass through two empty hashes. | Build equally complex AVI/WebM/Ogg-origin fixtures and validate every compatible destination mapping; attached-picture dispositions remain explicitly excluded by the fixed binary. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
@@ -114,8 +114,8 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Finish complex-source stream/metadata preservation for MPEG-TS, FLV, AVI,
-   WebM, and Ogg origins, then validate attached-picture dispositions; implement
+1. Finish complex-source stream/metadata preservation for AVI, WebM, and Ogg
+   origins, then validate attached-picture dispositions; implement
    every representable field and make every exclusion explicit.
 2. Expand the passing Edge, Brave, and Opera smoke evidence into representative
    route and headed interaction coverage.
@@ -155,6 +155,31 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-06 — complex MPEG-TS/FLV source-retention checkpoint
+
+- Native FFmpeg, used only as a deterministic fixture generator, produced a
+  byte-repeatable 818,364-byte MPEG-TS source (SHA-256
+  `ce8da311a71a3919ad46d1933cac4554027547639b234ec6bcee01d0849ce73c`)
+  with H.264 plus two AAC tracks and `eng`/`spa` descriptors, and a byte-
+  repeatable 732,932-byte FLV source (SHA-256
+  `1e70ed53d9c5e5d8f79dcf97e5a166169ae43a10981e0f336f2b9bf935725262`)
+  with H.264, AAC, title, and comment.
+- The initial browser gate passed 4/8. Packet-level diagnosis found no product
+  loss: the allegedly empty ISO-BMFF AAC stream actually had 189 packets. The
+  validator had incorrectly applied an ADTS-removal filter to already-normalized
+  AAC, allowing older non-ADTS comparisons to collapse to empty hashes. It now
+  strips ADTS only for `.aac` and MPEG-TS inputs. The other two mismatches were
+  accurate 3GP `und` language and case-normalized MOV comment mappings.
+- The corrected production Chrome 152 gate passed 8/8 in 27.0 seconds with
+  exact normalized H.264, decoded video, every retained AAC access-unit stream,
+  representable fields, required warnings, 256 KiB I/O ceilings, one pending
+  operation, and fixed 128 MiB Wasm. The strengthened extraction/remux
+  regression then passed 46/46 in 1.4 minutes. All sources, outputs, diagnostic
+  copies, and browser artifact files were deleted. No Docker command ran. Evidence is
+  in `evidence/complex-transport-source-field-retention-browser-2026-09-06.json`.
+  M-03 remains partial for complex AVI, WebM, and Ogg origins plus attached-
+  picture dispositions.
 
 ### 2026-09-05 — complex MOV/3GP source-retention checkpoint
 
