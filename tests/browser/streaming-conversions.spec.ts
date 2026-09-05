@@ -743,6 +743,7 @@ test("converts WebVTT to SRT and discloses unsupported positioning", async () =>
   expect(output).toContain("1\r\n00:00:01,250 --> 00:00:03,900\r\n");
   expect(output).not.toContain("position:20%");
   expect(output).toContain("2\r\n00:00:04,100 --> 00:00:07,000\r\n");
+  expect(state.warnings.join(" ")).toContain("positioning");
 });
 
 test("converts SRT to structurally valid TTML with basic styling", async () => {
@@ -770,6 +771,15 @@ test("converts WebVTT to TTML and discloses removed cue settings", async () => {
   expect(state.warnings.some((warning) => warning.includes("positioning"))).toBe(
     true,
   );
+});
+
+test("maps WebVTT voice labels to visible TTML text with explicit semantic loss", async () => {
+  await selectFixture("fixtures/subtitles/voice-sample.vtt", "vtt-to-ttml");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
+  expect(output).toContain("[Narrator] <span tts:fontWeight=\"bold\">Hello</span><br/>second line");
+  expect(state.warnings.join(" ")).toContain("visible bracketed text");
+  expect(output).not.toContain("voice-cue");
 });
 
 test("streams SRT to structurally valid ASS with basic styling", async () => {
@@ -2058,6 +2068,22 @@ test("streams ASS dialogue to WebVTT and preserves a speaker label", async () =>
   const output = await readAndDeleteOpfsText(state.opfsName!);
   expect(output.startsWith("WEBVTT\r\n\r\n")).toBe(true);
   expect(output).toContain("00:00:01.250 --> 00:00:03.900");
+  expect(output).toContain("<v Narrator>Hello\r\nfrom Within, safely.");
+});
+
+test("accepts the SSA filename and MIME aliases through the ASS conversion worker", async () => {
+  const buffer = await readFile(
+    path.join(projectRoot, "fixtures/subtitles/sample.ass"),
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles({
+    name: "sample.ssa",
+    mimeType: "text/x-ssa",
+    buffer,
+  });
+  await expect(page.locator('[data-testid="format-select"]')).toBeVisible();
+  await page.locator('[data-testid="format-select"]').selectOption("ass-to-vtt");
+  const state = await convert();
+  const output = await readAndDeleteOpfsText(state.opfsName!);
   expect(output).toContain("<v Narrator>Hello\r\nfrom Within, safely.");
 });
 

@@ -1,0 +1,275 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-05T14:57:53+05:30",
+  "requirement": "N-07",
+  "scope": "Field-level preservation and explicit-loss contract for every public SRT, WebVTT, ASS/SSA, and TTML conversion route",
+  "status": "directly indexed",
+  "dockerUsed": false,
+  "fieldNames": [
+    "timing",
+    "multilineText",
+    "styling",
+    "positioningAndRegions",
+    "speakers",
+    "cueIdentifiers",
+    "documentMetadata"
+  ],
+  "allowedFieldStatuses": [
+    "preserved",
+    "normalized",
+    "mapped",
+    "excluded",
+    "not-in-source",
+    "generated"
+  ],
+  "disclosureSurface": {
+    "path": "app/converter/ConverterApp.tsx",
+    "snippets": [
+      "selectedProfile.metadataLimitations.length",
+      "...selectedProfile.metadataLimitations",
+      "...selectedProfile.fidelityLimitations"
+    ],
+    "meaning": "The selected route's static metadata and fidelity limitations are shown before conversion; data-dependent worker warnings are also shown during and after conversion."
+  },
+  "aliases": {
+    "canonicalFormat": "ass",
+    "label": "Advanced SubStation Alpha (ASS/SSA)",
+    "extensions": ["ass", "ssa"],
+    "mimeTypes": ["text/x-ssa", "text/x-ass"],
+    "evidence": [
+      {
+        "path": "lib/capability-registry.ts",
+        "snippets": [
+          "label: \"Advanced SubStation Alpha (ASS/SSA)\"",
+          "extensions: [\"ass\", \"ssa\"]",
+          "mimeTypes: [\"text/x-ssa\", \"text/x-ass\"]"
+        ]
+      },
+      {
+        "path": "tests/capability-registry.test.mjs",
+        "snippets": ["detectFormat({ name: \"captions.SSA\", type: \"\" }), \"ass\""]
+      },
+      {
+        "path": "tests/browser/streaming-conversions.spec.ts",
+        "snippets": [
+          "accepts the SSA filename and MIME aliases through the ASS conversion worker",
+          "name: \"sample.ssa\"",
+          "mimeType: \"text/x-ssa\""
+        ]
+      }
+    ]
+  },
+  "routes": [
+    {
+      "profileId": "srt-to-vtt",
+      "fields": {
+        "timing": {"status": "preserved", "detail": "Millisecond cue times are preserved; only the decimal separator is normalized for WebVTT."},
+        "multilineText": {"status": "preserved", "detail": "Cue text and line boundaries are retained."},
+        "styling": {"status": "preserved", "detail": "Basic italic, bold, and underline cue markup and entities remain representable."},
+        "positioningAndRegions": {"status": "not-in-source", "detail": "SRT defines no native WebVTT positioning or regions."},
+        "speakers": {"status": "not-in-source", "detail": "SRT defines no native speaker field; visible labels remain ordinary cue text."},
+        "cueIdentifiers": {"status": "excluded", "detail": "Numeric SRT sequence numbers are omitted because WebVTT does not require them."},
+        "documentMetadata": {"status": "not-in-source", "detail": "SRT has no document header metadata; a deterministic WEBVTT header is generated."}
+      },
+      "registryDisclosures": [
+        "Numeric SRT sequence numbers are omitted because WebVTT cues do not require them; SRT has no document-level metadata to map.",
+        "Cue timing, multiline text, entities, and basic italic, bold, and underline markup are preserved; SRT has no native WebVTT positioning, region, or speaker metadata."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["converts SRT to valid WebVTT with bounded writes", "<i>Hello</i> from Within."]},
+      "stressReport": "outputs/reports/2026-07-31T09-06-27-644Z-srt-to-vtt-stress.json"
+    },
+    {
+      "profileId": "vtt-to-srt",
+      "fields": {
+        "timing": {"status": "preserved", "detail": "Millisecond cue times are preserved with the SRT comma separator."},
+        "multilineText": {"status": "preserved", "detail": "Cue text and line boundaries are retained."},
+        "styling": {"status": "preserved", "detail": "Basic italic, bold, and underline markup is retained; WebVTT-only class and ruby semantics are not mapped."},
+        "positioningAndRegions": {"status": "excluded", "detail": "Cue settings and regions are removed and a runtime warning is emitted when settings occur."},
+        "speakers": {"status": "normalized", "detail": "WebVTT voice markup is carried as cue markup, not mapped to a native SRT speaker field because none exists."},
+        "cueIdentifiers": {"status": "excluded", "detail": "WebVTT cue identifiers are removed and sequential SRT numbers are generated."},
+        "documentMetadata": {"status": "excluded", "detail": "WEBVTT header metadata is not representable in SRT."}
+      },
+      "registryDisclosures": [
+        "WebVTT header metadata and cue identifiers are not representable in this numbered SRT profile and are removed.",
+        "Cue timing, multiline text, and basic italic, bold, and underline markup are preserved; cue positioning and region settings are removed.",
+        "WebVTT voice, class, and ruby markup is carried through as cue markup rather than mapped to SRT-native speaker or style metadata, which SRT does not define."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["converts WebVTT to SRT and discloses unsupported positioning", "toContain(\"positioning\")"]},
+      "stressReport": "outputs/reports/2026-07-31T09-08-06-320Z-vtt-to-srt-stress.json"
+    },
+    {
+      "profileId": "srt-to-ass",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "Millisecond times are rounded to ASS centiseconds; sub-centisecond cues are expanded to one centisecond."},
+        "multilineText": {"status": "mapped", "detail": "Line boundaries are mapped to ASS \\N breaks."},
+        "styling": {"status": "mapped", "detail": "Italic, bold, and underline markup maps to ASS override tags; unsupported tags are removed."},
+        "positioningAndRegions": {"status": "not-in-source", "detail": "SRT defines no native positioning or regions; the generated ASS dialogue uses the default style."},
+        "speakers": {"status": "not-in-source", "detail": "SRT defines no native speaker field."},
+        "cueIdentifiers": {"status": "excluded", "detail": "Numeric SRT sequence numbers are not ASS event identifiers and are omitted."},
+        "documentMetadata": {"status": "generated", "detail": "A deterministic ASS script header and default style replace unavailable SRT document metadata."}
+      },
+      "registryDisclosures": [
+        "A deterministic default ASS style is generated because SRT has no script-level style sheet, canvas size, or font metadata.",
+        "ASS stores centisecond timestamps; input times are rounded to the nearest centisecond and cues shorter than one centisecond are expanded to one centisecond.",
+        "Cue timing, multiline text, entities, and basic italic, bold, and underline markup are preserved; unsupported HTML-like tags are removed."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["streams SRT to structurally valid ASS with basic styling", "Second cue\\\\Nwith two lines.", "centisecond timing"]},
+      "stressReport": "outputs/reports/2026-08-09T22-07-30-343Z-srt-to-ass-stress.json"
+    },
+    {
+      "profileId": "vtt-to-ass",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "Millisecond times are rounded to ASS centiseconds; sub-centisecond cues are expanded to one centisecond."},
+        "multilineText": {"status": "mapped", "detail": "Line boundaries are mapped to ASS \\N breaks."},
+        "styling": {"status": "mapped", "detail": "Italic, bold, and underline markup maps to ASS override tags; CSS classes and unsupported markup are removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "WebVTT cue settings and regions are removed with explicit disclosure."},
+        "speakers": {"status": "mapped", "detail": "A WebVTT voice label maps to the ASS Dialogue Name field."},
+        "cueIdentifiers": {"status": "excluded", "detail": "WebVTT cue identifiers are removed."},
+        "documentMetadata": {"status": "generated", "detail": "WebVTT header metadata is removed and a deterministic ASS header/default style is generated."}
+      },
+      "registryDisclosures": [
+        "A deterministic default ASS style is generated; WebVTT header metadata, cue identifiers, positioning, regions, CSS classes, and unsupported markup are explicitly excluded.",
+        "ASS stores centisecond timestamps; input times are rounded to the nearest centisecond and cues shorter than one centisecond are expanded to one centisecond.",
+        "Cue timing, multiline text, entities, voice labels, and basic italic, bold, and underline markup are preserved."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["streams WebVTT voice labels, timing, and multiline styling to ASS", "Default,Narrator", "cue identifiers"]},
+      "stressReport": "outputs/reports/2026-08-09T22-09-22-676Z-vtt-to-ass-stress.json"
+    },
+    {
+      "profileId": "ass-to-srt",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "ASS centisecond times are expressed exactly on the SRT millisecond grid."},
+        "multilineText": {"status": "mapped", "detail": "ASS hard/soft line breaks map to SRT line boundaries."},
+        "styling": {"status": "excluded", "detail": "ASS override tags, style sheets, karaoke, and effects are removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "ASS positioning and margins are not representable in this SRT profile."},
+        "speakers": {"status": "mapped", "detail": "The ASS Dialogue Name field becomes a visible bracketed speaker prefix."},
+        "cueIdentifiers": {"status": "generated", "detail": "Sequential SRT cue numbers are generated."},
+        "documentMetadata": {"status": "excluded", "detail": "ASS script metadata and styles are removed."}
+      },
+      "registryDisclosures": [
+        "ASS script metadata, styles, positioning, karaoke, and effects are not representable in SRT.",
+        "Dialogue text and speaker names are preserved; ASS override tags are removed."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["streams ASS dialogue to SRT with explicit style loss", "[Narrator] Hello", "ASS styles"]},
+      "stressReport": "outputs/reports/2026-07-31T09-09-44-515Z-ass-to-srt-stress.json"
+    },
+    {
+      "profileId": "ass-to-vtt",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "ASS centisecond times are expressed exactly on the WebVTT millisecond grid."},
+        "multilineText": {"status": "mapped", "detail": "ASS hard/soft line breaks map to WebVTT line boundaries."},
+        "styling": {"status": "excluded", "detail": "ASS override tags, style sheets, karaoke, and effects are removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "ASS positioning and margins are not represented."},
+        "speakers": {"status": "mapped", "detail": "The ASS Dialogue Name field maps to a WebVTT voice tag."},
+        "cueIdentifiers": {"status": "excluded", "detail": "ASS dialogue rows provide no portable cue identifier for this WebVTT profile."},
+        "documentMetadata": {"status": "generated", "detail": "ASS script metadata is removed and a deterministic WEBVTT header is generated."}
+      },
+      "registryDisclosures": [
+        "ASS script metadata, styles, positioning, karaoke, and effects are not represented in this WebVTT profile.",
+        "Dialogue text and speaker names are preserved; ASS override tags are removed."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["streams ASS dialogue to WebVTT and preserves a speaker label", "<v Narrator>Hello"]},
+      "stressReport": "outputs/reports/2026-07-31T09-11-22-757Z-ass-to-vtt-stress.json"
+    },
+    {
+      "profileId": "srt-to-ttml",
+      "fields": {
+        "timing": {"status": "preserved", "detail": "Millisecond cue times are preserved as TTML clock times."},
+        "multilineText": {"status": "mapped", "detail": "Cue line boundaries map to TTML br elements."},
+        "styling": {"status": "mapped", "detail": "Italic, bold, and underline markup maps to TTML span styling."},
+        "positioningAndRegions": {"status": "not-in-source", "detail": "SRT defines no native regions or positioning."},
+        "speakers": {"status": "not-in-source", "detail": "SRT defines no native speaker field; labels already present in text remain text."},
+        "cueIdentifiers": {"status": "excluded", "detail": "Numeric SRT sequence numbers are omitted."},
+        "documentMetadata": {"status": "generated", "detail": "A minimal deterministic TTML wrapper is generated because SRT has no document metadata."}
+      },
+      "registryDisclosures": [
+        "SRT has no TTML regions, style sheets, language metadata, or document metadata.",
+        "Numeric SRT sequence numbers are omitted and a minimal deterministic TTML document wrapper is generated.",
+        "Cue timing, line breaks, and basic italic, bold, and underline markup are represented; SRT has no native speaker field, so any speaker label already present as cue text remains text."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["converts SRT to structurally valid TTML with basic styling", "Second cue<br/>with two lines."]},
+      "stressReport": "outputs/reports/2026-07-31T09-51-47-623Z-srt-to-ttml-stress.json"
+    },
+    {
+      "profileId": "vtt-to-ttml",
+      "fields": {
+        "timing": {"status": "preserved", "detail": "Millisecond cue times are preserved as TTML clock times."},
+        "multilineText": {"status": "mapped", "detail": "Cue line boundaries map to TTML br elements."},
+        "styling": {"status": "mapped", "detail": "Italic, bold, and underline markup maps to TTML span styling; CSS classes are removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "WebVTT cue settings and regions are removed with explicit disclosure."},
+        "speakers": {"status": "mapped", "detail": "Voice labels become visible bracketed speaker text, not TTML speaker metadata."},
+        "cueIdentifiers": {"status": "excluded", "detail": "WebVTT cue identifiers are removed."},
+        "documentMetadata": {"status": "generated", "detail": "WebVTT header metadata is removed and a minimal deterministic TTML wrapper is generated."}
+      },
+      "registryDisclosures": [
+        "WebVTT regions, cue positioning, header metadata, cue identifiers, and CSS classes are not represented; a minimal deterministic TTML document wrapper is generated.",
+        "Cue timing, line breaks, and basic italic, bold, and underline markup are represented; WebVTT voice labels become visible bracketed speaker text rather than TTML speaker metadata."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["maps WebVTT voice labels to visible TTML text with explicit semantic loss", "[Narrator] <span tts:fontWeight=", "visible bracketed text", "output).not.toContain(\"voice-cue\")"]},
+      "stressReport": "outputs/reports/2026-07-31T09-53-26-995Z-vtt-to-ttml-stress.json"
+    },
+    {
+      "profileId": "ttml-to-srt",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "Supported clock, seconds, and millisecond expressions normalize to integer-millisecond SRT times."},
+        "multilineText": {"status": "mapped", "detail": "TTML br elements map to SRT line boundaries."},
+        "styling": {"status": "mapped", "detail": "Basic italic, bold, and underline span styling maps to cue markup; advanced styling is removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "TTML regions and positioning are removed."},
+        "speakers": {"status": "excluded", "detail": "No TTML speaker-metadata mapping is implemented; visible speaker text remains text."},
+        "cueIdentifiers": {"status": "generated", "detail": "TTML cue identifiers are removed and sequential SRT cue numbers are generated."},
+        "documentMetadata": {"status": "excluded", "detail": "TTML document metadata, animations, DTDs, and custom entities are not retained."}
+      },
+      "registryDisclosures": [
+        "Accepts UTF-8 TTML with clock, seconds, or millisecond time expressions; DTDs and custom entities are rejected.",
+        "TTML cue identifiers, regions, animations, metadata, and advanced styling are not representable in SRT and are removed.",
+        "Basic italic, bold, underline, and line-break markup is preserved."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["converts bounded TTML to SRT with timing and line breaks", "Second cue\\r\\nwith two lines."]},
+      "stressReport": "outputs/reports/2026-07-31T09-55-04-208Z-ttml-to-srt-stress.json"
+    },
+    {
+      "profileId": "ttml-to-vtt",
+      "fields": {
+        "timing": {"status": "normalized", "detail": "Supported clock, seconds, and millisecond expressions normalize to integer-millisecond WebVTT times."},
+        "multilineText": {"status": "mapped", "detail": "TTML br elements map to WebVTT line boundaries."},
+        "styling": {"status": "mapped", "detail": "Basic italic, bold, and underline span styling maps to cue markup; advanced styling is removed."},
+        "positioningAndRegions": {"status": "excluded", "detail": "TTML regions and positioning are removed."},
+        "speakers": {"status": "excluded", "detail": "No TTML speaker-metadata mapping is implemented; visible speaker text remains text."},
+        "cueIdentifiers": {"status": "excluded", "detail": "TTML cue identifiers are removed."},
+        "documentMetadata": {"status": "generated", "detail": "TTML document metadata and animations are removed and a deterministic WEBVTT header is generated."}
+      },
+      "registryDisclosures": [
+        "Accepts UTF-8 TTML with clock, seconds, or millisecond time expressions; DTDs and custom entities are rejected.",
+        "TTML cue identifiers, regions, animations, metadata, and advanced styling are not represented in this WebVTT profile and are removed.",
+        "Basic italic, bold, underline, and line-break markup is preserved."
+      ],
+      "browserEvidence": {"path": "tests/browser/streaming-conversions.spec.ts", "snippets": ["converts bounded TTML to WebVTT with basic styling", "output.startsWith(\"WEBVTT\\r\\n\\r\\n\")"]},
+      "stressReport": "outputs/reports/2026-07-31T09-56-50-352Z-ttml-to-vtt-stress.json"
+    }
+  ],
+  "stressSummary": {
+    "allRoutesHaveThreeRunProductionChromeReports": true,
+    "largestSourceBytes": 101393068,
+    "worstIncrementalPrivateMiB": 204.47265625,
+    "limitMiB": 250,
+    "allCleanupRecoveryChecksPassed": true,
+    "convertedOutputsRetained": 0
+  },
+  "focusedBrowserRun": {
+    "command": "npx playwright test tests/browser/streaming-conversions.spec.ts --workers=1 --grep SRT|WebVTT|VTT|ASS|TTML|subtitle|SSA",
+    "browser": "production Chromium project",
+    "result": "16 passed",
+    "elapsedSeconds": 20.3,
+    "newDirectProof": [
+      "SSA filename and text/x-ssa MIME aliases execute the ASS conversion worker",
+      "WebVTT voice labels become disclosed visible bracketed TTML text",
+      "WebVTT positioning loss produces a runtime warning"
+    ]
+  },
+  "cleanup": {
+    "matrixGenerationCreatedConvertedFiles": false,
+    "browserTestsDeleteEachOPFSOutputAfterAssertion": true,
+    "stressOutputsRetained": false,
+    "compactReportsRetained": true
+  }
+}

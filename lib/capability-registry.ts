@@ -3271,8 +3271,12 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     browserRequirements: ["Web Workers", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
-    metadataLimitations: [],
-    fidelityLimitations: ["SRT has no native WebVTT cue-setting metadata."],
+    metadataLimitations: [
+      "Numeric SRT sequence numbers are omitted because WebVTT cues do not require them; SRT has no document-level metadata to map.",
+    ],
+    fidelityLimitations: [
+      "Cue timing, multiline text, entities, and basic italic, bold, and underline markup are preserved; SRT has no native WebVTT positioning, region, or speaker metadata.",
+    ],
     maxTestedBytes: 67_327_792,
     automatedTestStatus: "passed",
     public: true,
@@ -3286,8 +3290,13 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     browserRequirements: ["Web Workers", "File System Access"],
     cpuClass: "low",
     memoryClass: "bounded-low",
-    metadataLimitations: ["WebVTT header metadata is not representable in SRT."],
-    fidelityLimitations: ["Cue positioning and region settings are removed."],
+    metadataLimitations: [
+      "WebVTT header metadata and cue identifiers are not representable in this numbered SRT profile and are removed.",
+    ],
+    fidelityLimitations: [
+      "Cue timing, multiline text, and basic italic, bold, and underline markup are preserved; cue positioning and region settings are removed.",
+      "WebVTT voice, class, and ruby markup is carried through as cue markup rather than mapped to SRT-native speaker or style metadata, which SRT does not define.",
+    ],
     maxTestedBytes: 73_788_904,
     automatedTestStatus: "passed",
     public: true,
@@ -3381,9 +3390,10 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     memoryClass: "bounded-low",
     metadataLimitations: [
       "SRT has no TTML regions, style sheets, language metadata, or document metadata.",
+      "Numeric SRT sequence numbers are omitted and a minimal deterministic TTML document wrapper is generated.",
     ],
     fidelityLimitations: [
-      "Cue timing, line breaks, voice labels, and basic italic, bold, and underline markup are represented.",
+      "Cue timing, line breaks, and basic italic, bold, and underline markup are represented; SRT has no native speaker field, so any speaker label already present as cue text remains text.",
     ],
     maxTestedBytes: 67_327_792,
     automatedTestStatus: "passed",
@@ -3399,10 +3409,10 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     cpuClass: "low",
     memoryClass: "bounded-low",
     metadataLimitations: [
-      "WebVTT regions, cue positioning, header metadata, and CSS classes are not represented.",
+      "WebVTT regions, cue positioning, header metadata, cue identifiers, and CSS classes are not represented; a minimal deterministic TTML document wrapper is generated.",
     ],
     fidelityLimitations: [
-      "Cue timing, line breaks, voice labels, and basic italic, bold, and underline markup are represented.",
+      "Cue timing, line breaks, and basic italic, bold, and underline markup are represented; WebVTT voice labels become visible bracketed speaker text rather than TTML speaker metadata.",
     ],
     maxTestedBytes: 73_788_904,
     automatedTestStatus: "passed",
@@ -3419,7 +3429,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     memoryClass: "bounded-low",
     metadataLimitations: [
       "Accepts UTF-8 TTML with clock, seconds, or millisecond time expressions; DTDs and custom entities are rejected.",
-      "TTML regions, animations, metadata, and advanced styling are not representable in SRT.",
+      "TTML cue identifiers, regions, animations, metadata, and advanced styling are not representable in SRT and are removed.",
     ],
     fidelityLimitations: [
       "Basic italic, bold, underline, and line-break markup is preserved.",
@@ -3439,7 +3449,7 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     memoryClass: "bounded-low",
     metadataLimitations: [
       "Accepts UTF-8 TTML with clock, seconds, or millisecond time expressions; DTDs and custom entities are rejected.",
-      "TTML regions, animations, metadata, and advanced styling are not represented in this WebVTT profile.",
+      "TTML cue identifiers, regions, animations, metadata, and advanced styling are not represented in this WebVTT profile and are removed.",
     ],
     fidelityLimitations: [
       "Basic italic, bold, underline, and line-break markup is preserved.",

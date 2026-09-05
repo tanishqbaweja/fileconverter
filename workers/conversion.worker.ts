@@ -2418,8 +2418,9 @@ async function runTextSubtitleToTtml(
   post({
     type: "warning",
     jobId,
-    message:
-      "Only cue timing, line breaks, basic italic/bold/underline markup, and voice labels are represented in this bounded TTML profile.",
+    message: srtInput
+      ? "Only cue timing, line breaks, and basic italic/bold/underline markup are represented in this bounded TTML profile; SRT has no native speaker field."
+      : "Only cue timing, line breaks, and basic italic/bold/underline markup are represented in this bounded TTML profile; WebVTT voice labels become visible bracketed text rather than TTML speaker metadata.",
   });
 
   let block: string[] = [];
