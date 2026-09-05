@@ -11,6 +11,7 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const reportRoot = path.join(projectRoot, "outputs", "reports");
 const ledgerPath = path.join(projectRoot, "TESTED.md");
 const headedAuditNote = "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.";
+const requirementTestIndexNote = "T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.";
 const ledgerDate = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Kolkata",
   year: "numeric",
@@ -473,7 +474,11 @@ lines.push(
   "Regenerate this ledger with `npm run tested:ledger` after new evidence is produced.",
 );
 
-await writeFile(ledgerPath, `${lines.join("\n")}\n\n${headedAuditNote}\n`, "utf8");
+await writeFile(
+  ledgerPath,
+  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n`,
+  "utf8",
+);
 process.stdout.write(`${ledgerPath}\n`);
 
 function cell(value) {
