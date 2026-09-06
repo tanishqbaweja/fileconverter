@@ -430,7 +430,18 @@ bytes and hashes matched. The complete Matroska remux slice then passed 11/11 in
 name was removed and is not counted as WebM evidence. All generated inputs and
 outputs were deleted. See
 `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`.
-M-03 remains partial only for attached-picture dispositions.
+
+Attached-picture retention now closes the last M-03 gap for the current public
+profiles. All eight container-to-Matroska routes preserve up to eight bounded
+JPEG/PNG pictures by copying their compressed bytes into native Matroska
+attachments without image decode or re-encode. The primary cover is exposed by
+FFmpeg-compatible players as `attached_pic`; unsupported, oversized, malformed,
+or excess pictures are explicitly excluded. Production Chrome matched the exact
+178-byte PNG hash, every decoded H.264 picture, and every AAC access unit while
+holding I/O to 256 KiB, one pending operation, and fixed Wasm. The affected
+Matroska gate passed 14/14, and the no-Docker publication run reproduced every
+FFmpeg artifact byte-for-byte. See
+`evidence/matroska-attached-picture-browser-2026-09-06.json`.
 
 The MPEG-4 video profile is intentionally narrow: it accepts YUV420P H.264 or
 HEVC and converts only the first non-attached video stream. Automatic mode uses
@@ -522,7 +533,9 @@ deleted the source and all three outputs.
 Certified MP4, MOV, 3GP, MPEG-TS, FLV, AVI, WebM, and OGV inputs can also use
 the fastest lossless route into Matroska: compatible video, audio, subtitle,
 attachment, chapter, stream, and general metadata are packet-copied without a
-decode/re-encode pass. The asynchronous 256 KiB BYOB reader avoids retaining a
+decode/re-encode pass. Bounded JPEG/PNG attached pictures use the same fast
+byte-copy principle and are represented as native Matroska cover attachments.
+The asynchronous 256 KiB BYOB reader avoids retaining a
 second source-sized Blob. Across 24 Chrome stress runs on 137,218,662- to
 222,941,314-byte inputs, conversion completed in 0.87-1.67 seconds at
 166.2-183.7 MiB worst incremental private memory with 32 MiB Wasm and one

@@ -48,7 +48,7 @@ not the entire product specification.
 | --- | --- | --- | --- | --- |
 | M-01 | Custom reproducible FFmpeg Wasm libraries, native wrappers, custom AVIO, genuine mux/demux/decode/encode | Verified complete | `media/ffmpeg/Dockerfile`, `within_remux.c`, pinned manifests, published remux engines, browser/native validation | Extend only through reproducible specialist builds. |
 | M-02 | Automatically inspect codecs/streams and select standards-compliant stream copy when possible, otherwise bounded re-encode | Partially implemented | Registry/worker probes select certified copy or encode paths; `lib/media-source-inspection.ts` presents bounded details for every named standalone audio family plus multi-stream MP4/MOV/3GP, Matroska/WebM, FLV, MPEG-TS, AVI, and Ogg/Theora inputs; `lib/media-conversion-plan.ts` now applies the selected fixed profile to every inspected stream and distinguishes copy, re-encode, exclusion, and codec rejection before start | Build automatic copy-versus-re-encode selection across missing codec combinations; the current selector still asks the user to choose a separately certified destination profile. Extend inspection when new containers are added. |
-| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Partially implemented | Complex Matroska, MOV, 3GP, MPEG-TS, FLV, AVI, genuine WebM, and genuine Ogg origins now have direct production-browser field/payload evidence across every compatible public destination. The latest `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json` gate passed 3/3 in Chrome 152 with exact MPEG-4 Part 2/AV1/Theora video packets, both MP3/Opus/Vorbis audio streams, WebVTT packets, decoded-picture equality, every source-representable tag/language/disposition/chapter field, zero warnings, bounded 256 KiB I/O, one pending operation, and fixed Wasm. It also removed the former renamed-Matroska `.webm` test and made WebM/Ogg fixture generation byte-repeatable with `+bitexact`. The prior ISO/transport evidence remains in `evidence/complex-iso-source-field-retention-browser-2026-09-05.json` and `evidence/complex-transport-source-field-retention-browser-2026-09-06.json`. A bounded byte-copy conversion from MP4 attached pictures to native Matroska attachments is implemented in source and awaiting the non-Docker Wasm rebuild plus production-browser gate. | Rebuild the fixed remux Wasm without Docker, prove exact cover/media payload retention in production Chrome, then record and publish the result. |
+| M-03 | Preserve all compatible streams, timestamps, chapters, subtitles, attachments, language, rotation, aspect, color, and metadata; explicitly disclose exclusions | Verified complete for the current public profiles | Complex Matroska, MOV, 3GP, MPEG-TS, FLV, AVI, genuine WebM, and genuine Ogg origins have direct production-browser field/payload evidence across every compatible public destination, including `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`. `evidence/matroska-attached-picture-browser-2026-09-06.json` closes the remaining attached-picture gap: exact bounded PNG payload, H.264 pictures, AAC access units, representation metadata, I/O, queueing, fixed Wasm, cleanup, and no-Docker exact reproduction all pass. | Apply the same field matrix, explicit-exclusion policy, and browser/native gate to every future public media profile. |
 | M-04 | Mainstream containers and practical codecs named by the specification | Partially implemented | Extensive MKV/MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV and H.264/HEVC/VP8/VP9/AV1/MPEG-2/MPEG-4 routes are public | Investigate the additional OGV, 3GP, AVI, VP9, AV1, MPEG-2 audio/codec combinations and elementary/raw outputs listed in `TESTED.md`. |
 | M-05 | User-selectable video resolution, bitrate, frame rate, codec, and quality where re-encoding/compatibility requires them | Verified complete for all 22 public video re-encode profiles | A single independently validated option object spans UI, plan, request, worker, nine-integer JS/Wasm ABI, and native allowlist. Genuine browser output proves codec, dimensions, frame count/rate, bitrate, visual-quality ordering, cancellation/write-failure cleanup, and backward compatibility. The no-Docker higher-quality specialist passed the 181,825,549-byte maximum-settings three-run gate at 232.9 MiB with byte-repeatable fully decoded output; automatic keeps the prior fastest core unchanged. | Re-run the same gates for any new codec, setting, or worker topology. |
 | M-06 | Mainstream audio conversion and extraction | Verified complete for the currently advertised fixed profiles | Broad standalone/container audio matrix, independent decode/quality tests, and stress reports | Extend variants only after the controls/metadata model is defined. |
@@ -114,17 +114,14 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Resolve attached-picture dispositions across applicable video-container
-   profiles; implement every representable field and make every exclusion
-   explicit.
-2. Expand the passing Edge, Brave, and Opera smoke evidence into representative
+1. Expand the passing Edge, Brave, and Opera smoke evidence into representative
    route and headed interaction coverage.
-3. Perform bounded feasibility work for the missing media combinations. Revisit
+2. Perform bounded feasibility work for the missing media combinations. Revisit
    the evidenced HEIF/HEIC and camera-RAW exclusions only when their documented
    legal, security, quality, and fixed-memory conditions change. Promote only
    fully evidenced routes.
-4. Expand headed interaction audits and representative multi-gigabyte scaling.
-5. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
+3. Expand headed interaction audits and representative multi-gigabyte scaling.
+4. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
    reproducibility, registry/report-consistency, cleanup, and protected-fixture
    gates before removing all partial/missing statuses.
 
@@ -170,13 +167,22 @@ not the entire product specification.
   decode/re-encode: at most eight JPEG/PNG pictures, 4 MiB and 4,096 pixels per
   side and 16 megapixels each, with an 8 MiB aggregate ceiling. Unsupported,
   oversized, or excess pictures remain explicit exclusions. Source, manifest,
-  registry disclosure, and production-browser regression are staged; the Wasm
-  rebuild and browser evidence are still pending, so M-03 remains partial.
+  registry disclosure, and production-browser regression passed. The focused
+  Chrome gate passed 1/1 in 15.1 seconds and the affected Matroska gate passed
+  14/14 in 35.6 seconds with exact cover, video, and audio payloads.
 - No-Docker run `34029206301` built the new general remux core, then exposed a
   stale specialist reconstruction assumption: the historical direct-core patch
   could not reverse across the newly added source hunks. Its partial artifact
   was not published. A dedicated reversible artwork patch now removes only this
   feature before rebuilding the unchanged video/direct specialists.
+- Candidate run `34029718417` then rebuilt all 19 artifacts, changed only
+  `within-remux.wasm`, and supplied the published 9,633,875-byte SHA-256
+  `44b302dd43f69aaf8045666b24e60d3b90f56a51263a42fe3764e2ac000749d0`.
+  Publication run `34030378326` reproduced every artifact byte-for-byte without
+  Docker in 10m34s. Both remote candidate archives and every local download,
+  source fixture, and converted output were deleted. Compact evidence is in
+  `evidence/matroska-attached-picture-browser-2026-09-06.json`. Together with
+  the preceding field matrix, M-03 is verified for every current public profile.
 
 ### 2026-09-06 — complex MPEG-TS/FLV source-retention checkpoint
 

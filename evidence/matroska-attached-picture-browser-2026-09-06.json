@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "requirement": "M-03",
+  "auditDate": "2026-09-06",
+  "status": "verified-current-public-profiles",
+  "dockerUsed": false,
+  "implementation": {
+    "profileFamily": "all eight public container-to-Matroska stream-copy profiles",
+    "sourceRepresentation": "FFmpeg attached-picture stream",
+    "destinationRepresentation": "native Matroska attachment re-exposed by FFmpeg-compatible players as attached_pic",
+    "imageHandling": "byte-for-byte packet copy without image decode or re-encode",
+    "bounds": {
+      "supportedCodecs": ["mjpeg", "png"],
+      "maximumImages": 8,
+      "maximumBytesPerImage": 4194304,
+      "maximumTotalBytes": 8388608,
+      "maximumDimension": 4096,
+      "maximumPixelsPerImage": 16777216
+    },
+    "exclusions": "unsupported, malformed, oversized, or excess attached pictures are excluded with a precise user-visible warning"
+  },
+  "nativeFeasibility": [
+    {
+      "candidate": "naive attached-picture stream copy to Matroska",
+      "result": "rejected",
+      "reason": "the image became a one-frame video track and attached_pic was cleared"
+    },
+    {
+      "candidate": "copy compressed picture bytes into a native Matroska attachment",
+      "result": "accepted",
+      "reason": "FFprobe re-exposed cover.png as a 64x64 PNG attached picture with image/png and the exact source payload hash"
+    }
+  ],
+  "sourceFixture": {
+    "path": "work/video-artwork-source.mp4",
+    "retained": false,
+    "generatedBytes": 937426,
+    "container": "MP4",
+    "streamCodecsInOrder": ["h264", "aac", "png"],
+    "attachedPicture": {
+      "codec": "png",
+      "width": 64,
+      "height": 64,
+      "compressedBytes": 178,
+      "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    }
+  },
+  "browserValidation": {
+    "browser": "Google Chrome",
+    "browserVersion": "152.0.7977.77",
+    "focusedCommand": "npx playwright test tests/browser/media-remux.spec.ts --grep 'preserves bounded attached picture' --reporter=line",
+    "focusedResult": "1 passed",
+    "focusedElapsedSeconds": 15.1,
+    "affectedCommand": "npx playwright test tests/browser/media-remux.spec.ts --grep 'Matroska|matroska' --reporter=line",
+    "affectedResult": "14 passed",
+    "affectedElapsedSeconds": 35.6,
+    "assertions": [
+      "output is genuine Matroska with H.264, AAC, and PNG streams",
+      "the output PNG has attached_pic=1, width 64, height 64, filename cover.png, and MIME image/png",
+      "the output cover compressed-payload SHA-256 equals the source",
+      "every decoded H.264 picture equals the source",
+      "every AAC access unit equals the source",
+      "maximum read and write chunks are at most 262144 bytes",
+      "at most one destination operation is pending",
+      "Wasm memory is at most the fixed 134217728-byte ceiling"
+    ]
+  },
+  "buildValidation": {
+    "candidateRun": 34029718417,
+    "candidateCommit": "1af94c081abec6eca9ee7d53fb17cad1b3699cd4",
+    "candidateOutcome": "expected mismatch: only within-remux.wasm differed across all 19 artifacts",
+    "publishedCommit": "ea170091f32bd8ac1f8d39d45a8f22da6fea9c36",
+    "publishedWasmBytes": 9633875,
+    "publishedWasmSha256": "44b302dd43f69aaf8045666b24e60d3b90f56a51263a42fe3764e2ac000749d0",
+    "publicationRun": 34030378326,
+    "publicationResult": "success: every FFmpeg artifact reproduced byte-for-byte",
+    "publicationElapsed": "10m34s",
+    "candidateArtifactsRetained": 0,
+    "publicationMismatchArtifactsRetained": 0
+  },
+  "qualityGates": {
+    "unit": "129 passed",
+    "productionBuild": "passed",
+    "eslint": "passed"
+  },
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "generatedSourceFixturesRetained": 0,
+    "candidateDownloadsRetained": 0,
+    "remoteCandidateArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvTouched": false,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "scope": "Together with the preceding complex-source and destination field-retention checkpoints, this closes M-03 for every currently public profile. It does not claim that every container can represent arbitrary attachments; unrepresentable fields remain explicit per-profile exclusions."
+}
