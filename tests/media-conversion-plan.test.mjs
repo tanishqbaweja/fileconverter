@@ -221,7 +221,7 @@ test("MP3 plan discloses the native custom bitrate, rate, and layout", () => {
   assert.match(plan.streams[0].detail, /mono/);
 });
 
-test("AV1 WebM copy excludes incompatible streams instead of claiming transcoding", () => {
+test("compatible WebM copy accepts AV1, VP8, and VP9 and excludes incompatible streams", () => {
   const plan = planMediaConversion(
     profile("mkv-to-webm-av1"),
     inspection([
@@ -236,6 +236,53 @@ test("AV1 WebM copy excludes incompatible streams instead of claiming transcodin
     "copy",
     "exclude",
   ]);
+
+  for (const codec of ["VP8", "VP9"]) {
+    const compatiblePlan = planMediaConversion(
+      profile("mkv-to-webm-av1"),
+      inspection([stream("video", codec), stream("audio", "Vorbis")]),
+    );
+    assert.ok(compatiblePlan);
+    assert.deepEqual(
+      compatiblePlan.streams.map(({ action }) => action),
+      ["copy", "copy"],
+      codec,
+    );
+    assert.deepEqual(compatiblePlan.blockingReasons, [], codec);
+  }
+
+  const blocked = planMediaConversion(
+    profile("mkv-to-webm-av1"),
+    inspection([stream("video", "H.264/AVC"), stream("audio", "Opus")]),
+  );
+  assert.ok(blocked);
+  assert.equal(blocked.streams[0].action, "reject");
+  assert.match(blocked.streams[0].detail, /not AV1, VP8, or VP9/);
+});
+
+test("automatic generic WebM selection prefers compatible copy but respects an explicit VP9 encode", () => {
+  const candidates = conversionProfiles.filter((candidate) => candidate.input === "mkv");
+  const source = inspection([
+    stream("video", "VP8"),
+    stream("audio", "Opus"),
+  ]);
+  const automatic = selectAutomaticMediaProfile(
+    profile("mkv-to-webm"),
+    candidates,
+    source,
+  );
+  assert.equal(automatic.changed, true);
+  assert.equal(automatic.profile.id, "mkv-to-webm-av1");
+  assert.equal(automatic.profile.route, "stream-copy");
+  assert.match(automatic.reason, /without decoding or re-encoding/);
+
+  const explicit = selectAutomaticMediaProfile(
+    profile("mkv-to-webm-vp9"),
+    candidates,
+    source,
+  );
+  assert.equal(explicit.changed, false);
+  assert.equal(explicit.profile.id, "mkv-to-webm-vp9");
 });
 
 test("automatic media selection keeps a standards-compliant stream copy", () => {

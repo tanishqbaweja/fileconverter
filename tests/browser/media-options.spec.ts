@@ -19,6 +19,10 @@ const automaticMpeg4OutputPath = path.join(
   validationRoot,
   "automatic-mpeg4-output.mp4",
 );
+const compatibleWebmSourcePaths = {
+  vp8: path.join(validationRoot, "automatic-vp8-source.mkv"),
+  vp9: path.join(validationRoot, "automatic-vp9-source.mkv"),
+} as const;
 const lowBitrateVideoPath = path.join(validationRoot, "video-low-bitrate.webm");
 const higherQualityVideoPath = path.join(validationRoot, "video-higher-quality.webm");
 const smallerVideoPath = path.join(validationRoot, "video-smaller.webm");
@@ -207,6 +211,24 @@ async function copiedAudioPayloadSha256(inputPath: string): Promise<string> {
   );
   const match = /SHA256=([0-9a-f]{64})/i.exec(stdout);
   if (!match) throw new Error(`FFmpeg did not report an audio hash: ${stdout}`);
+  return match[1].toLowerCase();
+}
+
+async function copiedStreamPayloadSha256(
+  inputPath: string,
+  streamSpecifier: "v:0" | "a:0",
+): Promise<string> {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-i", inputPath,
+      "-map", `0:${streamSpecifier}`, "-c", "copy", "-f", "hash", "-hash", "sha256",
+      "pipe:1",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const match = /SHA256=([0-9a-f]{64})/i.exec(stdout);
+  if (!match) throw new Error(`FFmpeg did not report a stream hash: ${stdout}`);
   return match[1].toLowerCase();
 }
 
@@ -482,6 +504,76 @@ test("bounded inspection automatically keeps copy or selects the certified re-en
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+});
+
+test("generic WebM automatically stream-copies compatible VP8 and VP9 Matroska", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  await mkdir(validationRoot, { recursive: true });
+
+  for (const codec of ["vp8", "vp9"] as const) {
+    const encoder = codec === "vp8" ? "libvpx" : "libvpx-vp9";
+    const sourcePath = compatibleWebmSourcePaths[codec];
+    const outputPath = path.join(validationRoot, `automatic-${codec}-copy.webm`);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+        "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24",
+        "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000",
+        "-t", "2", "-c:v", encoder, "-deadline", "realtime", "-cpu-used", "8",
+        "-b:v", "500k", "-g", "24", "-c:a", "libopus", "-b:a", "64000",
+        "-metadata", `title=Automatic ${codec.toUpperCase()} copy source`,
+        "-metadata:s:a:0", "language=eng", "-f", "matroska", sourcePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-webm");
+    await expect
+      .poll(() =>
+        page.evaluate(() => window.__WITHIN_TEST__?.getState().selectedProfileId),
+      )
+      .toBe("mkv-to-webm-av1");
+    await expect(page.locator('[data-testid="automatic-route-notice"]')).toContainText(
+      "without decoding or re-encoding",
+    );
+    await expect(page.locator('[data-testid="media-conversion-plan"]')).toContainText(
+      "Copy",
+    );
+
+    const state = await waitForCompletedConversion(page);
+    expect(state.opfsName).toBeNull();
+    await copyAndDeleteSmallBrowserOutput(
+      page,
+      state.batchOutputNames[0],
+      outputPath,
+    );
+    const probe = await probeVideo(outputPath);
+    expect(probe.streams[0]).toMatchObject({
+      codec_name: codec,
+      width: 320,
+      height: 180,
+      nb_read_frames: "48",
+    });
+    expect(await copiedStreamPayloadSha256(outputPath, "v:0")).toBe(
+      await copiedStreamPayloadSha256(sourcePath, "v:0"),
+    );
+    expect(await copiedStreamPayloadSha256(outputPath, "a:0")).toBe(
+      await copiedStreamPayloadSha256(sourcePath, "a:0"),
+    );
+    await execFileAsync(
+      "ffmpeg",
+      ["-hide_banner", "-loglevel", "error", "-xerror", "-i", outputPath, "-f", "null", "NUL"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
 });
 
 test("native video controls produce genuine bounded VP9 and MPEG-4 outputs", async ({

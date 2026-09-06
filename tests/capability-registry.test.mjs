@@ -254,13 +254,14 @@ test("M4V elementary routes expose only their measured evidence", () => {
   }
 });
 
-test("AV1 WebM stream copy is public after its measured evidence passes", () => {
+test("compatible WebM stream copy is public after its measured evidence passes", () => {
   const profile = conversionProfiles.find(
     (candidate) => candidate.id === "mkv-to-webm-av1",
   );
   assert.ok(profile);
   assert.equal(profile.automatedTestStatus, "passed");
   assert.equal(profile.maxTestedBytes, 222_942_211);
+  assert.match(profile.metadataLimitations.join(" "), /AV1, VP8, or VP9/);
   assert.equal(
     publicProfilesFor("mkv").some(
       (candidate) => candidate.id === "mkv-to-webm-av1",
@@ -588,7 +589,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "flv-copy",
         "m4v-extract",
         "m4v-wrap",
-        "av1-webm-copy",
+        "compatible-webm-copy",
         "matroska-copy",
         "mp3-extract",
         "aac-extract",

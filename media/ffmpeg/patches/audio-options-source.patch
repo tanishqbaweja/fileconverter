@@ -652,7 +652,7 @@ index 091c37e..6592a22 100644
      within_message(
          1,
 @@ -2448,7 +2822,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
-         : av1_webm_output
+         : compatible_webm_output
              ? stream_is_supported(input_stream, profile) && copy_compatible
          : mp3_output
 -            ? (int)index == audio_stream_index

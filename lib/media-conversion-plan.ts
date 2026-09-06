@@ -332,7 +332,9 @@ function planContainerCopy(
   });
 }
 
-function planAv1WebmCopy(
+const WEBM_COPY_VIDEO_CODECS = new Set(["AV1", "VP8", "VP9"]);
+
+function planCompatibleWebmCopy(
   streams: readonly SourceStreamInspection[],
 ): readonly MediaStreamPlan[] {
   let firstVideoSeen = false;
@@ -340,17 +342,17 @@ function planAv1WebmCopy(
     const codec = normalizedCodec(stream.codec);
     if (stream.mediaType === "video" && !firstVideoSeen) {
       firstVideoSeen = true;
-      if (codec !== "AV1") {
+      if (!WEBM_COPY_VIDEO_CODECS.has(codec)) {
         return planItem(
           stream,
           index,
           "reject",
-          "The first video stream is not AV1; this fixed copy profile rejects the conversion even if a later AV1 stream exists.",
+          "The first video stream is not AV1, VP8, or VP9; this fixed copy profile rejects the conversion even if a later compatible stream exists.",
         );
       }
     }
     const compatible =
-      (stream.mediaType === "video" && codec === "AV1") ||
+      (stream.mediaType === "video" && WEBM_COPY_VIDEO_CODECS.has(codec)) ||
       (stream.mediaType === "audio" && (codec === "Opus" || codec === "Vorbis"));
     return planItem(
       stream,
@@ -358,7 +360,7 @@ function planAv1WebmCopy(
       compatible ? "copy" : "exclude",
       compatible
         ? "This stream is copied without decoding or re-encoding into WebM."
-        : "Only AV1 video and compatible Opus or Vorbis audio are included by this fixed WebM copy profile.",
+        : "Only AV1, VP8, or VP9 video and compatible Opus or Vorbis audio are included by this fixed WebM copy profile.",
     );
   });
 }
@@ -367,7 +369,7 @@ function planStreamCopy(
   profile: ConversionProfile,
   streams: readonly SourceStreamInspection[],
 ): readonly MediaStreamPlan[] {
-  if (profile.output === "webm-av1") return planAv1WebmCopy(streams);
+  if (profile.output === "webm-av1") return planCompatibleWebmCopy(streams);
   if (VIDEO_ELEMENTARY_OUTPUTS.has(profile.output)) {
     return planVideoOnlyCopy(profile, streams);
   }
@@ -634,6 +636,35 @@ export function selectAutomaticMediaProfile(
   inspection: MediaSourceInspection,
 ): AutomaticMediaProfileSelection {
   const selectedPlan = planMediaConversion(selectedProfile, inspection);
+  const outputFamily = mediaOutputFamily(selectedProfile.output);
+
+  // A generic destination means "best compatible route". Prefer a lossless
+  // packet-copy profile before accepting a decode/re-encode path. Codec-specific
+  // destinations such as webm-vp9 remain explicit user choices.
+  if (
+    selectedProfile.route === "re-encode" &&
+    selectedProfile.output === outputFamily
+  ) {
+    for (const candidate of candidates) {
+      if (
+        candidate.id === selectedProfile.id ||
+        candidate.input !== selectedProfile.input ||
+        candidate.route !== "stream-copy" ||
+        mediaOutputFamily(candidate.output) !== outputFamily
+      ) {
+        continue;
+      }
+      const candidatePlan = planMediaConversion(candidate, inspection);
+      if (!candidatePlan || candidatePlan.blockingReasons.length) continue;
+      return {
+        profile: candidate,
+        plan: candidatePlan,
+        changed: true,
+        reason: `The bounded source inspection found a standards-compliant ${outputFamily.toUpperCase()} stream-copy route. The converter automatically selected ${candidate.id} to preserve the compatible compressed streams without decoding or re-encoding.`,
+      };
+    }
+  }
+
   if (
     selectedProfile.route !== "stream-copy" ||
     !selectedPlan?.blockingReasons.length
@@ -646,7 +677,6 @@ export function selectAutomaticMediaProfile(
     };
   }
 
-  const outputFamily = mediaOutputFamily(selectedProfile.output);
   for (const candidate of candidates) {
     if (
       candidate.id === selectedProfile.id ||

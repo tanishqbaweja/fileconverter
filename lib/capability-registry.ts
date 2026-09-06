@@ -1602,7 +1602,7 @@ function av1WebmProfile(): ConversionProfile {
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The first non-attached video stream must be AV1. All AV1 video streams and compatible Opus or Vorbis audio streams are copied without re-encoding.",
+      "The first non-attached video stream must be AV1, VP8, or VP9. All compatible WebM video streams and Opus or Vorbis audio streams are copied without re-encoding.",
       "Incompatible video or audio, subtitles, attachments, data streams, and chapters are explicitly excluded with warnings.",
       "Compatible stream dispositions, language tags, codec descriptors, and general metadata are copied where WebM can represent them.",
       "The bounded live-WebM layout omits a duration field and cue index so muxer memory cannot grow with file duration; players can still decode sequentially but may need to scan before seeking accurately.",
@@ -2169,7 +2169,7 @@ export const formats = [
   },
   {
     id: "webm-av1",
-    label: "WebM video (AV1 stream copy)",
+    label: "WebM video (compatible stream copy)",
     extensions: ["webm"],
     mimeTypes: ["video/webm"],
     category: "video",

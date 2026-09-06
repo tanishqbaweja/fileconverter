@@ -471,7 +471,9 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   }
   if (profile == 17) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-      return stream->codecpar->codec_id == AV_CODEC_ID_AV1;
+      return stream->codecpar->codec_id == AV_CODEC_ID_AV1 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VP8 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_VP9;
     }
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_OPUS ||
@@ -2625,7 +2627,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       mpeg2_transport_output || container_mpegts_output;
   const int m4v_output = profile == 15;
   const int m4v_mp4_output = profile == 16;
-  const int av1_webm_output = profile == 17;
+  const int compatible_webm_output = profile == 17;
   const int mp3_output = profile == 18;
   const int aac_output = profile == 19;
   const int vorbis_output = profile == 20;
@@ -2642,14 +2644,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
           ? AV_CODEC_ID_H264
           : hevc_output ? AV_CODEC_ID_HEVC
           : (mpeg2_output || mpeg2_transport_output) ? AV_CODEC_ID_MPEG2VIDEO
-          : av1_webm_output                          ? AV_CODEC_ID_AV1
+          : compatible_webm_output                   ? AV_CODEC_ID_AV1
                                                      : AV_CODEC_ID_MPEG4;
   const char *video_label = h264_output
                                 ? "H.264"
                                 : hevc_output
                                     ? "HEVC"
-                                : av1_webm_output
-                                    ? "AV1"
+                                : compatible_webm_output
+                                    ? "AV1, VP8, or VP9"
                                 : (mpeg2_output || mpeg2_transport_output)
                                       ? "MPEG-2"
                                       : "MPEG-4 Part 2";
@@ -2664,7 +2666,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                  : mpeg2_output ? "MPEG-2"
                                  : mpeg2_transport_output ? "MPEG-TS"
                                  : m4v_output             ? "M4V"
-                                 : av1_webm_output        ? "WebM"
+                                 : compatible_webm_output ? "WebM"
                                  : mp3_output             ? "MP3"
                                  : aac_output             ? "AAC"
                                  : vorbis_output          ? "Ogg Vorbis"
@@ -2682,13 +2684,13 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                : mpeg2_output ? "mpeg2video"
                                : mpeg2_transport_output ? "mpegts"
                                : m4v_output             ? "m4v"
-                               : av1_webm_output        ? "webm"
+                               : compatible_webm_output ? "webm"
                                : mp3_output             ? "mp3"
                                : aac_output             ? "adts"
                                 : ogg_audio_output       ? "ogg"
                                 : amr_copy_output        ? "amr"
                                                         : "mp4";
-  if (video_only_output || av1_webm_output) {
+  if (video_only_output || compatible_webm_output) {
     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
       AVStream *stream = input_format->streams[index];
       if (!(stream->disposition & AV_DISPOSITION_ATTACHED_PIC) &&
@@ -2702,8 +2704,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
-    if (input_format->streams[video_stream_index]->codecpar->codec_id !=
-        expected_video_codec) {
+    const enum AVCodecID source_video_codec =
+        input_format->streams[video_stream_index]->codecpar->codec_id;
+    const int compatible_webm_video =
+        source_video_codec == AV_CODEC_ID_AV1 ||
+        source_video_codec == AV_CODEC_ID_VP8 ||
+        source_video_codec == AV_CODEC_ID_VP9;
+    if ((compatible_webm_output && !compatible_webm_video) ||
+        (!compatible_webm_output && source_video_codec != expected_video_codec)) {
       char message[192] = {0};
       snprintf(message, sizeof(message),
                "The first non-attached video stream is not %s and cannot be copied by this profile.",
@@ -2831,8 +2839,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
             ? "Source chapters are explicitly excluded from this bounded MOV remux profile."
         : container_flv_output
             ? "Source chapters are explicitly excluded from this bounded FLV remux profile."
-        : av1_webm_output
-            ? "Source chapters are explicitly excluded from this AV1 WebM remux profile."
+        : compatible_webm_output
+            ? "Source chapters are explicitly excluded from this compatible WebM stream-copy profile."
         : profile == 2
             ? "Source chapters are explicitly excluded from the audio-only M4A output."
         : mp3_output
@@ -2855,7 +2863,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     report_av_error(message, result);
     goto cleanup;
   }
-  if (av1_webm_output || matroska_output || container_mpegts_output ||
+  if (compatible_webm_output || matroska_output || container_mpegts_output ||
       container_threegp_output || container_mov_output ||
       container_flv_output ||
       audio_extraction_output) {
@@ -2881,7 +2889,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     int selected_stream =
         video_only_output
             ? (int)index == video_stream_index
-        : av1_webm_output
+        : compatible_webm_output
             ? stream_is_supported(input_stream, profile) && copy_compatible
         : mp3_output
             ? (int)index == audio_stream_index ||
@@ -2992,8 +3000,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                   : !bounded_audio_artwork_stream(input_stream)
                     ? "The source attached picture exceeds the bounded 4 MiB, 4096-pixel-side, or 16-megapixel Matroska cover limit and is explicitly excluded."
                     : "Matroska cover preservation is limited to eight images and 8 MiB total; an additional attached picture is explicitly excluded."
-            : av1_webm_output
-                ? "The source attached picture is explicitly excluded from this AV1 WebM profile."
+            : compatible_webm_output
+                ? "The source attached picture is explicitly excluded from this compatible WebM stream-copy profile."
                 : "The source attached picture is explicitly excluded from "
                   "this MP4 remux profile.");
       } else if (elementary_output &&
@@ -3008,14 +3016,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(1,
                        "This M4V wrapping profile includes only the MPEG-4 Part 2 video stream; source audio was explicitly excluded.");
-      } else if (av1_webm_output &&
+      } else if (compatible_webm_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(1,
                        "Only Opus or Vorbis audio can be copied into this WebM profile; incompatible source audio was explicitly excluded.");
-      } else if (av1_webm_output &&
+      } else if (compatible_webm_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(1,
-                       "Only AV1 video can be copied by this WebM profile; an incompatible video stream was explicitly excluded.");
+                       "Only AV1, VP8, or VP9 video can be copied by this WebM profile; an incompatible video stream was explicitly excluded.");
       } else if (profile == 2 &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
@@ -3110,8 +3118,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                            ? "The source attachment is explicitly excluded from this FLV remux profile."
                        : video_only_output
                            ? "The source attachment is explicitly excluded from this video-only output."
-                       : av1_webm_output
-                           ? "The source attachment is explicitly excluded from this AV1 WebM profile."
+                       : compatible_webm_output
+                           ? "The source attachment is explicitly excluded from this compatible WebM stream-copy profile."
                        : mp3_output
                            ? "The source attachment is explicitly excluded from this MP3 extraction profile."
                        : aac_output
@@ -3138,8 +3146,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                   ? "A source stream type unsupported by this MOV remux profile was explicitly excluded."
                 : container_flv_output
                   ? "A source stream type unsupported by this FLV remux profile was explicitly excluded."
-                : av1_webm_output
-                  ? "A source stream type unsupported by this AV1 WebM profile was explicitly excluded."
+                : compatible_webm_output
+                  ? "A source stream type unsupported by this compatible WebM stream-copy profile was explicitly excluded."
                 : mp3_output
                   ? "A source stream type unsupported by this MP3 extraction profile was explicitly excluded."
                 : aac_output
@@ -3441,7 +3449,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
   output_format->max_interleave_delta = 2 * AV_TIME_BASE;
 
-  if (av1_webm_output || matroska_live_output) {
+  if (compatible_webm_output || matroska_live_output) {
     /* Live Matroska/WebM omits the duration/cue index so muxer memory cannot grow with
        total file duration. Five-second/5 MiB clusters bound muxer buffering. AVI uses
        indexed Matroska because FFmpeg live mode writes an invalid duration for VFW. */
