@@ -20,6 +20,7 @@ import {
 } from "../../lib/media-source-inspection";
 import {
   planMediaConversion,
+  selectAutomaticMediaProfile,
   type MediaPlanAction,
 } from "../../lib/media-conversion-plan";
 import type {
@@ -77,6 +78,7 @@ interface TestBridge {
     metrics: ConversionMetrics | null;
     error: string | null;
     warnings: string[];
+    automaticRouteNotice: string | null;
     selectedProfileId: string | null;
     audioOptions: AudioConversionOptions;
     videoOptions: VideoConversionOptions;
@@ -338,6 +340,9 @@ export function ConverterApp() {
   const [phase, setPhase] = useState("Ready");
   const [metrics, setMetrics] = useState<ConversionMetrics | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [automaticRouteNotice, setAutomaticRouteNotice] = useState<string | null>(
+    null,
+  );
   const [error, setError] = useState<string | null>(null);
   const [dragging, setDragging] = useState(false);
   const [capabilities, setCapabilities] =
@@ -438,6 +443,21 @@ export function ConverterApp() {
         if (cancelled) return;
         setSourceMediaInspection(inspection);
         setSourceInspectionStatus(inspection ? "complete" : "unsupported");
+        if (inspection && batchFiles.length === 1) {
+          const candidates = publicProfilesFor(inputFormat, testMode);
+          const initialProfile = preferredProfileFor(inputFormat, candidates);
+          if (initialProfile) {
+            const automatic = selectAutomaticMediaProfile(
+              initialProfile,
+              candidates,
+              inspection,
+            );
+            if (automatic.changed) {
+              setProfileId(automatic.profile.id);
+              setAutomaticRouteNotice(automatic.reason);
+            }
+          }
+        }
       } catch (inspectionError: unknown) {
         if (cancelled) return;
         setSourceInspectionStatus("error");
@@ -451,7 +471,7 @@ export function ConverterApp() {
     return () => {
       cancelled = true;
     };
-  }, [file, inputFormat]);
+  }, [batchFiles.length, file, inputFormat, testMode]);
 
   useEffect(() => {
     let disposed = false;
@@ -756,6 +776,7 @@ export function ConverterApp() {
       metrics,
       error,
       warnings,
+      automaticRouteNotice,
       selectedProfileId: profileId,
       audioOptions,
       videoOptions,
@@ -785,6 +806,7 @@ export function ConverterApp() {
     startupCleanupComplete,
     testMode,
     warnings,
+    automaticRouteNotice,
     workerFailed,
     workerReady,
   ]);
@@ -806,6 +828,7 @@ export function ConverterApp() {
   const acceptFiles = useCallback(
     (nextFiles: File[]) => {
       if (jobState === "running") return;
+      setAutomaticRouteNotice(null);
       if (nextFiles.length > MAX_BATCH_FILES) {
         setFile(null);
         setBatchFiles([]);
@@ -1478,7 +1501,18 @@ export function ConverterApp() {
                       const nextProfile = profiles.find(
                         (profile) => profile.id === nextProfileId,
                       );
-                      const nextAudioCodec = audioCodecForProfile(nextProfile ?? null);
+                      const automatic =
+                        nextProfile && sourceMediaInspection && batchFiles.length === 1
+                          ? selectAutomaticMediaProfile(
+                              nextProfile,
+                              profiles,
+                              sourceMediaInspection,
+                            )
+                          : null;
+                      const effectiveProfile = automatic?.profile ?? nextProfile;
+                      const nextAudioCodec = audioCodecForProfile(
+                        effectiveProfile ?? null,
+                      );
                       if (nextAudioCodec) {
                         setAudioOptions((current) =>
                           normalizeAudioConversionOptionsForCodec(
@@ -1487,7 +1521,7 @@ export function ConverterApp() {
                           ),
                         );
                       }
-                      setProfileId(nextProfileId);
+                      setProfileId(effectiveProfile?.id ?? nextProfileId);
                       setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
                       setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
                       setDestinationHandle(null);
@@ -1499,6 +1533,7 @@ export function ConverterApp() {
                       setOpfsNames([]);
                       setCompletedBatchOutputNames([]);
                       setBatchCompleted(0);
+                      setAutomaticRouteNotice(automatic?.reason ?? null);
                     }}
                     disabled={jobState === "running"}
                   >
@@ -1908,6 +1943,16 @@ export function ConverterApp() {
                     </p>
                   ) : null}
                 </section>
+              ) : null}
+
+              {automaticRouteNotice ? (
+                <p
+                  className="warning"
+                  data-testid="automatic-route-notice"
+                  role="status"
+                >
+                  {automaticRouteNotice}
+                </p>
               ) : null}
 
               {!testMode ? (

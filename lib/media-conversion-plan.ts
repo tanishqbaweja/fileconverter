@@ -26,6 +26,13 @@ export interface MediaConversionPlan {
   metadataSummary: string;
 }
 
+export interface AutomaticMediaProfileSelection {
+  profile: ConversionProfile;
+  plan: MediaConversionPlan | null;
+  changed: boolean;
+  reason: string | null;
+}
+
 const AUDIO_EXTRACTION_CODECS: Readonly<Record<string, string>> = {
   m4a: "AAC",
   mp3: "MP3",
@@ -37,6 +44,19 @@ const AUDIO_EXTRACTION_CODECS: Readonly<Record<string, string>> = {
 
 const VIDEO_ELEMENTARY_OUTPUTS = new Set(["h264", "hevc", "m2v", "m4v"]);
 const LOSSLESS_AUDIO_OUTPUTS = new Set(["wav", "aiff", "flac", "alac"]);
+const VIDEO_REENCODE_DECODER_CODECS = new Set([
+  "H.264",
+  "HEVC",
+  "MPEG-4 Part 2",
+  "MPEG-2 Video",
+  "Theora",
+]);
+
+export function mediaOutputFamily(output: string): string {
+  if (output === "mp4-mpeg4") return "mp4";
+  if (output === "webm-vp9" || output === "webm-av1") return "webm";
+  return output;
+}
 
 function normalizedCodec(codec: string): string {
   const value = codec.toLowerCase();
@@ -442,6 +462,15 @@ function planVideoReencode(
   return streams.map((stream, index) => {
     if (!videoSelected && stream.mediaType === "video") {
       videoSelected = true;
+      const sourceCodec = normalizedCodec(stream.codec);
+      if (!VIDEO_REENCODE_DECODER_CODECS.has(sourceCodec)) {
+        return planItem(
+          stream,
+          index,
+          "reject",
+          `The selected bounded video engine has no certified ${sourceCodec} decoder; it will not pretend to re-encode this stream.`,
+        );
+      }
       const defaultCodec = profile.output.includes("vp9")
         ? "VP9"
         : profile.output.includes("webm")
@@ -596,5 +625,51 @@ export function planMediaConversion(
     streams: plannedStreams,
     blockingReasons: [...new Set(blockingReasons)],
     metadataSummary: metadataSummary(inspection),
+  };
+}
+
+export function selectAutomaticMediaProfile(
+  selectedProfile: ConversionProfile,
+  candidates: readonly ConversionProfile[],
+  inspection: MediaSourceInspection,
+): AutomaticMediaProfileSelection {
+  const selectedPlan = planMediaConversion(selectedProfile, inspection);
+  if (
+    selectedProfile.route !== "stream-copy" ||
+    !selectedPlan?.blockingReasons.length
+  ) {
+    return {
+      profile: selectedProfile,
+      plan: selectedPlan,
+      changed: false,
+      reason: null,
+    };
+  }
+
+  const outputFamily = mediaOutputFamily(selectedProfile.output);
+  for (const candidate of candidates) {
+    if (
+      candidate.id === selectedProfile.id ||
+      candidate.input !== selectedProfile.input ||
+      candidate.route !== "re-encode" ||
+      mediaOutputFamily(candidate.output) !== outputFamily
+    ) {
+      continue;
+    }
+    const candidatePlan = planMediaConversion(candidate, inspection);
+    if (!candidatePlan || candidatePlan.blockingReasons.length) continue;
+    return {
+      profile: candidate,
+      plan: candidatePlan,
+      changed: true,
+      reason: `The bounded source inspection found that ${selectedProfile.id} cannot copy every required stream into ${outputFamily.toUpperCase()}. The converter automatically selected the certified ${candidate.id} decode-and-re-encode fallback.`,
+    };
+  }
+
+  return {
+    profile: selectedProfile,
+    plan: selectedPlan,
+    changed: false,
+    reason: null,
   };
 }

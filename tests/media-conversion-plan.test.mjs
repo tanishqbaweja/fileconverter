@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { conversionProfiles } from "../lib/capability-registry.ts";
-import { planMediaConversion } from "../lib/media-conversion-plan.ts";
+import {
+  mediaOutputFamily,
+  planMediaConversion,
+  selectAutomaticMediaProfile,
+} from "../lib/media-conversion-plan.ts";
 
 function profile(id) {
   const result = conversionProfiles.find((candidate) => candidate.id === id);
@@ -232,4 +236,84 @@ test("AV1 WebM copy excludes incompatible streams instead of claiming transcodin
     "copy",
     "exclude",
   ]);
+});
+
+test("automatic media selection keeps a standards-compliant stream copy", () => {
+  const selected = profile("mkv-to-mp4");
+  const choice = selectAutomaticMediaProfile(
+    selected,
+    conversionProfiles.filter((candidate) => candidate.input === "mkv"),
+    inspection([
+      stream("video", "H.264/AVC"),
+      stream("audio", "AAC"),
+    ]),
+  );
+  assert.equal(choice.changed, false);
+  assert.equal(choice.profile.id, "mkv-to-mp4");
+  assert.deepEqual(choice.plan.streams.map(({ action }) => action), ["copy", "copy"]);
+});
+
+test("automatic media selection falls back from incompatible MP4 copy to certified encode", () => {
+  const choice = selectAutomaticMediaProfile(
+    profile("mkv-to-mp4"),
+    conversionProfiles.filter((candidate) => candidate.input === "mkv"),
+    inspection([
+      stream("video", "MPEG-2 Video"),
+      stream("audio", "AAC"),
+    ]),
+  );
+  assert.equal(choice.changed, true);
+  assert.equal(choice.profile.id, "mkv-to-mp4-mpeg4");
+  assert.deepEqual(choice.plan.streams.map(({ action }) => action), [
+    "re-encode",
+    "exclude",
+  ]);
+  assert.match(choice.reason, /automatically selected/);
+});
+
+test("automatic media selection falls back from incompatible AV1 copy to VP8", () => {
+  const choice = selectAutomaticMediaProfile(
+    profile("mkv-to-webm-av1"),
+    conversionProfiles.filter((candidate) => candidate.input === "mkv"),
+    inspection([
+      stream("video", "HEVC"),
+      stream("audio", "AAC"),
+    ]),
+  );
+  assert.equal(choice.changed, true);
+  assert.equal(choice.profile.id, "mkv-to-webm");
+  assert.equal(choice.plan.streams[0].action, "re-encode");
+});
+
+test("automatic media selection does not choose an uncertified decoder", () => {
+  const choice = selectAutomaticMediaProfile(
+    profile("mkv-to-mp4"),
+    conversionProfiles.filter((candidate) => candidate.input === "mkv"),
+    inspection([stream("video", "VP9"), stream("audio", "Opus")]),
+  );
+  assert.equal(choice.changed, false);
+  assert.equal(choice.profile.id, "mkv-to-mp4");
+  assert.ok(choice.plan.blockingReasons.length > 0);
+});
+
+test("automatic selection inventories every current copy-plus-encode destination family", () => {
+  const families = new Map();
+  for (const candidate of conversionProfiles.filter(
+    (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
+  )) {
+    const key = `${candidate.input}:${mediaOutputFamily(candidate.output)}`;
+    const routes = families.get(key) ?? new Set();
+    routes.add(candidate.route);
+    families.set(key, routes);
+  }
+  assert.deepEqual(
+    [...families]
+      .filter(
+        ([, routes]) =>
+          routes.has("stream-copy") && routes.has("re-encode"),
+      )
+      .map(([key]) => key)
+      .sort(),
+    ["mkv:mp4", "mkv:webm"],
+  );
 });

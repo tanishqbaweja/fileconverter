@@ -1,0 +1,113 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-07T19:30:00+05:30",
+  "requirement": "M-02",
+  "status": "verified-current-registry",
+  "scope": "Source-inspection-driven selection between every same-destination stream-copy and re-encode pairing currently certified in the public registry",
+  "dockerUsed": false,
+  "implementation": {
+    "planner": "lib/media-conversion-plan.ts",
+    "ui": "app/converter/ConverterApp.tsx",
+    "selectionPolicy": [
+      "Inspect the selected browser File with bounded source parsers before conversion.",
+      "Keep the selected stream-copy profile when every required inspected stream is standards-compliant for that destination.",
+      "When copy is blocked, choose a public, passing re-encode profile only when it has the same physical destination family and a certified decoder for the inspected video codec.",
+      "If no certified fallback exists, retain the explicit blocker; never rename, silently transcode, or choose an untested decoder."
+    ],
+    "currentCopyAndEncodeFamilies": [
+      {
+        "input": "mkv",
+        "destinationFamily": "mp4",
+        "copyProfile": "mkv-to-mp4",
+        "reencodeProfile": "mkv-to-mp4-mpeg4"
+      },
+      {
+        "input": "mkv",
+        "destinationFamily": "webm",
+        "copyProfile": "mkv-to-webm-av1",
+        "reencodeProfiles": ["mkv-to-webm", "mkv-to-webm-vp9"],
+        "fastestAutomaticFallback": "mkv-to-webm"
+      }
+    ],
+    "certifiedVideoDecoderSet": [
+      "H.264",
+      "HEVC",
+      "MPEG-4 Part 2",
+      "MPEG-2 Video",
+      "Theora"
+    ]
+  },
+  "unitGate": {
+    "command": "node --test tests/media-conversion-plan.test.mjs",
+    "result": "15 passed",
+    "assertions": [
+      "H.264/AAC Matroska remains on lossless MKV-to-MP4 stream copy",
+      "MPEG-2 Matroska falls back from blocked MP4 copy to certified MPEG-4 Part 2 re-encode",
+      "HEVC Matroska falls back from blocked AV1 WebM copy to certified VP8 re-encode",
+      "VP9 is not routed into a video specialist that has no certified VP9 decoder",
+      "the exhaustive current registry inventory contains exactly the MKV-to-MP4 and MKV-to-WebM copy-plus-encode families"
+    ]
+  },
+  "browserGate": {
+    "browser": "installed Chrome 152.0.7977.77",
+    "focusedCommand": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/media-options.spec.ts --grep \"bounded inspection automatically\" --reporter=line",
+    "focusedResult": "1 passed",
+    "focusedElapsedSeconds": 14.8,
+    "fullCommand": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/media-options.spec.ts --reporter=line",
+    "fullResult": "12 passed",
+    "fullElapsedSeconds": 53,
+    "generatedSource": {
+      "pathDuringTest": "work/media-options-validation/automatic-mpeg2-source.mkv",
+      "bytes": 1099657,
+      "sha256": "a42d705acb91e6eafe562e73faf847cf32cd44939ab9174634cff1042e9e3199",
+      "format": "Matroska",
+      "videoCodec": "MPEG-2 Video",
+      "width": 640,
+      "height": 360,
+      "frameRate": "24/1",
+      "frames": 96,
+      "durationSeconds": 4.042,
+      "nativeRole": "deterministic valid fixture generation only"
+    },
+    "compatibleCase": {
+      "source": "fixtures/media/remux-source.mkv",
+      "videoCodec": "H.264",
+      "audioCodec": "AAC",
+      "selectedProfile": "mkv-to-mp4",
+      "route": "stream-copy",
+      "automaticSwitch": false
+    },
+    "fallbackCase": {
+      "initialProfile": "mkv-to-mp4",
+      "initialPlan": "blocked because MPEG-2 is outside the certified MP4 copy set",
+      "selectedProfile": "mkv-to-mp4-mpeg4",
+      "route": "decode-reencode",
+      "outputCodec": "mpeg4",
+      "outputWidth": 640,
+      "outputHeight": 360,
+      "decodedFrames": 96,
+      "completeNativeDecode": true,
+      "renamedExtensionExcluded": true
+    },
+    "bounds": {
+      "maximumReadChunkBytes": 262144,
+      "maximumWriteChunkBytes": 262144,
+      "maximumQueuedBytes": 262144,
+      "maximumPendingOperations": 1,
+      "terminalPendingOperations": 0,
+      "terminalQueuedBytes": 0
+    }
+  },
+  "limitations": [
+    "Automatic fallback can select only a route already public, passing, and certified for the inspected codec; absent combinations remain explicitly blocked and are tracked under M-04.",
+    "A heterogeneous-codec batch is not auto-routed from the first file; every item retains native preflight validation and an incompatible item fails before its output is committed.",
+    "The current registry has two physical destination families with both copy and encode choices. The unit inventory must change when another family is added."
+  ],
+  "cleanup": {
+    "generatedSourceDeleted": true,
+    "convertedOutputDeleted": true,
+    "failedAttemptTraceDeleted": true,
+    "browserProfileDeleted": true,
+    "workDirectoryContainsOnlyGitkeep": true
+  }
+}

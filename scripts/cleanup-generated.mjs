@@ -80,6 +80,7 @@ const avifDiagnosticFiles = [
   path.resolve(workRoot, "native-avif-frame.rgba"),
 ];
 const taskTempRoots = [
+  path.resolve(workRoot, "automatic-route-audit"),
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
   path.resolve(workRoot, "3gp-amr-npm-cache"),

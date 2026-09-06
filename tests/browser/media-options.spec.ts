@@ -11,6 +11,14 @@ const customMp3Path = path.join(validationRoot, "audio-source-custom.mp3");
 const audioMatrixRoot = path.join(validationRoot, "audio-matrix");
 const customVp9Path = path.join(validationRoot, "video-source-custom.webm");
 const customMpeg4Path = path.join(validationRoot, "video-source-custom.mp4");
+const automaticMpeg2MkvPath = path.join(
+  validationRoot,
+  "automatic-mpeg2-source.mkv",
+);
+const automaticMpeg4OutputPath = path.join(
+  validationRoot,
+  "automatic-mpeg4-output.mp4",
+);
 const lowBitrateVideoPath = path.join(validationRoot, "video-low-bitrate.webm");
 const higherQualityVideoPath = path.join(validationRoot, "video-higher-quality.webm");
 const smallerVideoPath = path.join(validationRoot, "video-smaller.webm");
@@ -392,6 +400,88 @@ test("video controls update every bounded setting and synchronize the codec prof
       frameRateFps: 0,
       quality: "automatic",
     });
+});
+
+test("bounded inspection automatically keeps copy or selects the certified re-encode fallback", async ({
+  page,
+}) => {
+  test.setTimeout(180_000);
+  await mkdir(validationRoot, { recursive: true });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-y",
+      "-fflags",
+      "+genpts+bitexact",
+      "-r",
+      "24",
+      "-i",
+      path.join(projectRoot, "fixtures", "media", "mpeg2-video-source.m2v"),
+      "-map",
+      "0:v:0",
+      "-c:v",
+      "copy",
+      automaticMpeg2MkvPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(videoFixturePath);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().selectedProfileId),
+    )
+    .toBe("mkv-to-mp4");
+  await expect(page.locator('[data-testid="automatic-route-notice"]')).toHaveCount(0);
+
+  await page.locator('[data-testid="file-input"]').setInputFiles(automaticMpeg2MkvPath);
+  await expect
+    .poll(() =>
+      page.evaluate(() => window.__WITHIN_TEST__?.getState().selectedProfileId),
+    )
+    .toBe("mkv-to-mp4-mpeg4");
+  await expect(page.locator('[data-testid="automatic-route-notice"]')).toContainText(
+    "automatically selected",
+  );
+  await expect(page.locator('[data-testid="media-conversion-plan"]')).toContainText(
+    "Re-encode",
+  );
+
+  const state = await waitForCompletedConversion(page);
+  expect(state.opfsName).toBeNull();
+  await copyAndDeleteSmallBrowserOutput(
+    page,
+    state.batchOutputNames[0],
+    automaticMpeg4OutputPath,
+  );
+  const probe = await probeVideo(automaticMpeg4OutputPath);
+  expect(probe.streams[0]).toMatchObject({
+    codec_name: "mpeg4",
+    width: 640,
+    height: 360,
+    nb_read_frames: "96",
+  });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-i",
+      automaticMpeg4OutputPath,
+      "-f",
+      "null",
+      "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
 });
 
 test("native video controls produce genuine bounded VP9 and MPEG-4 outputs", async ({

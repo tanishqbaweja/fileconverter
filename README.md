@@ -230,10 +230,16 @@ Bounded parsers present available container, codec, duration, bitrate, audio,
 video, subtitle, and metadata signals for the supported media families before a
 conversion starts. Selecting a media destination produces a source-aware plan
 for every inspected stream: copy, re-encode, exclude, or reject. The plan uses
-the fixed certified FFmpeg profile policy, and incompatible stream-copy inputs
-are labeled as rejections rather than silently renamed or transcoded. The
-Start action is disabled when the bounded scan proves a required stream or
-codec is absent or incompatible, avoiding a guaranteed-to-fail engine run. The
+the fixed certified FFmpeg profile policy. When the same physical destination
+has both a public copy profile and a public re-encode profile, compatible input
+stays on lossless copy and an incompatible copy plan automatically switches to
+the certified encoder only if that encoder supports the inspected codec. The UI
+names the switch before conversion. If no tested fallback exists, the input is
+explicitly rejected rather than renamed or silently sent to an uncertified
+decoder. The Start action is disabled when the bounded scan proves a required
+stream or codec is absent or incompatible, avoiding a guaranteed-to-fail engine
+run. `evidence/automatic-media-routing-2026-09-07.json` records the exhaustive
+current pairing inventory and a genuine Chrome fallback conversion. The
 engine still validates the complete container during conversion and emits
 runtime warnings for elements outside the bounded preflight scan.
 
