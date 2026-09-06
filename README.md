@@ -1191,6 +1191,19 @@ Current Chrome, Edge, Brave, and Opera are the primary targets. Missing features
 produce a visible limited-browser state; there is no full-memory or server-side
 fallback.
 
+The 2026-09-07 installed-browser matrix ran genuine structured-data, document,
+archive, image, and media conversions in Chrome 152, Edge 152, Brave 1.94.121,
+and Opera GX 134, plus a real selected-destination write and traversal-failure
+cleanup. Chrome, Edge, and Brave passed headed visual review. Opera GX passed in
+an isolated headless process because its installed build routed headed
+automation into the user's existing singleton GX Corner tab; standard Opera was
+not installed and is not claimed. Brave completed direct file output but did
+not expose folder selection in the tested build, so the UI correctly leaves
+batch-folder destinations unavailable there. Complete process-tree memory and
+multi-gigabyte stress results remain Chrome-only. See
+`evidence/browser-compatibility-matrix-2026-09-07.json` for exact versions,
+hashes, validators, SSIM, timings, privacy observations, and limitations.
+
 ## Reproducible Wasm builds
 
 Pinned inputs:

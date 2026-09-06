@@ -354,6 +354,7 @@ if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(playwrightSmallProfileRoot);
   await removeWithRetries(browserImageSmokeRoot);
   await removeWithRetries(browserMediaSmokeRoot);
+  await removeCompatibilityTestRoots();
   await rm(cancellationFixture, { force: true });
   await rm(documentCancellationFixture, { force: true });
   await rm(markdownCancellationFixture, { force: true });
@@ -386,6 +387,7 @@ await removeWithRetries(playwrightPrivacyProfileRoot);
 await removeWithRetries(playwrightSmallProfileRoot);
 await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
+await removeCompatibilityTestRoots();
 await rm(cancellationFixture, { force: true });
 await rm(documentCancellationFixture, { force: true });
 await rm(markdownCancellationFixture, { force: true });
@@ -499,6 +501,26 @@ async function removeWithRetries(target) {
       }
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
+  }
+}
+
+async function removeCompatibilityTestRoots() {
+  const prefixes = [
+    "browser-compatibility-",
+    "playwright-profile-compatibility-",
+  ];
+  for (const entry of await readdir(workRoot, { withFileTypes: true }).catch(
+    () => [],
+  )) {
+    if (
+      !entry.isDirectory() ||
+      !prefixes.some((prefix) => entry.name.startsWith(prefix))
+    ) {
+      continue;
+    }
+    const target = path.resolve(workRoot, entry.name);
+    assertInside(workRoot, target);
+    await removeWithRetries(target);
   }
 }
 

@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-06. This is the living requirement audit for the original
+Updated 2026-09-07. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -77,7 +77,7 @@ not the entire product specification.
 | U-02 | Prominent on-device privacy indicator | Verified complete | Privacy chip and explanatory UI | Preserve prominence through redesigns. |
 | U-03 | Pause only where truly supportable | Verified complete by omission | No misleading pause control is advertised | Add pause only if an engine can safely suspend all producer/consumer work. |
 | U-04 | Runtime detection for Wasm/features, workers, File System Access, OPFS, SAB/isolation, storage, WebCodecs, and engine requirements | Verified complete for current engines | `lib/browser-capabilities.ts` performs bounded functional validation of core and SIMD Wasm, GZIP/zlib-DEFLATE/raw-DEFLATE round trips, OPFS open, storage estimate, SHA-256, MIME-specific ImageDecoder support, OffscreenCanvas, SAB/Atomics, and WebCodecs encoder configurations. All 14 exact registry requirement strings map fail-closed; the selected profile is disabled with precise missing reasons. Production Chrome passed both the real capability gate and an injected Wasm-failure blocker. `evidence/functional-browser-capabilities-2026-09-02.json` records the audit. File/directory picker availability is necessarily checked before the user gesture; actual handle permissions and writes remain covered by the destination tests. | Extend the exact mapping and functional probe whenever a new engine feature or registry requirement is introduced. |
-| U-05 | Current stable Chrome, Edge, Brave, and Opera targets with clear unsupported state | Partially implemented | The same production-build CSV-to-TSV conversion/privacy test now passes Chrome 151, Edge 151, Brave 151, and Opera GX 134; compact evidence is in `evidence/browser-compatibility-2026-08-27.json` | Expand beyond one small smoke route, test standard Opera when available, and retain Chrome-only wording for stress/process-memory claims. |
+| U-05 | Current stable Chrome, Edge, Brave, and Opera targets with clear unsupported state | Verified complete for installed/practically testable browsers | `tests/browser/browser-compatibility.spec.ts` ran the same production-build CSV/TSV, TXT/DOCX, TAR/ZIP, PNG/WebP, and H.264/AAC MKV/MP4 matrix in installed Chrome 152, Edge 152, Brave 1.94.121, and Opera GX 134. Every browser also passed direct destination output, traversal rejection/cleanup, functional capability, and same-origin GET-only privacy checks. Chrome, Edge, and Brave were headed and visually reviewed; Opera GX passed in an isolated headless process because its installed build routes headed automation to the user's existing singleton GX Corner session. Standard Opera was not installed and is not claimed. Brave's missing folder picker is disclosed while its direct file picker works. Exact evidence is in `evidence/browser-compatibility-matrix-2026-09-07.json`. | Re-run against future stable builds. Keep standard Opera, Brave folder selection, Opera GX headed automation, exhaustive-route coverage, and Chrome-only process-memory scope stated exactly until new evidence changes them. |
 | U-06 | Installable PWA and offline conversion after assets/engine are cached; service worker never handles user data | Verified complete for tested engines | Service worker and `privacy-offline.spec.ts` exercise app shell and multiple cached engines offline | Add focused offline coverage for every new engine family. |
 | U-07 | CSP, COOP/COEP/CORP, no analytics/ads/telemetry, no user-data service-worker path | Verified complete | Production headers, network tests, and README security section | Keep explicit CI privacy coverage. |
 
@@ -152,6 +152,41 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-07 — representative installed-browser compatibility matrix
+
+- Added a repeatable production-build Playwright matrix for installed Google
+  Chrome 152.0.7977.77, Microsoft Edge 152.0.4191.66, Brave 1.94.121, and
+  Opera GX 134.0.5954.67. Each browser genuinely converted CSV to TSV, TXT to
+  DOCX, TAR to ZIP, PNG to WebP, and H.264/AAC MKV to MP4 inside the production
+  browser workers. The same run also exercised the normal-page direct file
+  destination, functional capability probes, unsafe-TAR rejection, cleanup,
+  and conversion-wide same-origin GET-only privacy.
+- Independent validation required exact TSV semantics; a valid DOCX ZIP/XML
+  package with Unicode paragraphs; all TAR entry names, sizes, and hashes in
+  the ZIP; a complete WebP decode with 1024x768 dimensions and at least 0.90
+  SSIM; and exact source/output H.264 and AAC packet hashes plus a complete MP4
+  decode. Chrome, Edge, and Opera GX produced a 0.988655-SSIM WebP; Brave
+  produced different valid bytes at 0.988719 SSIM. The other four route outputs
+  were byte-identical in all browsers. Reads, writes, and queueing never
+  exceeded 256 KiB, and at most one destination operation was pending.
+- The final matrix passed 4/4 in 48.5 seconds. Chrome, Edge, and Brave ran
+  headed and their completed media UI screenshots were reviewed without layout
+  or diagnostic defects. Opera GX passed in an isolated headless process; two
+  headed attempts were rejected after its singleton GX Corner startup captured
+  navigation, and the user's existing Opera session was not stopped. Standard
+  Opera was not installed, so no standard-Opera result is claimed. Brave
+  exposed `showSaveFilePicker` and completed direct output but did not expose
+  `showDirectoryPicker`, so folder/batch destinations remain visibly
+  unsupported in that installed build.
+- All four observed only localhost GET requests, no request body, filename, or
+  fixture-content token, zero console/page/request failures, zero partial
+  traversal outputs, and zero retained converted output or profile. Complete
+  process-tree memory and multi-gigabyte stress claims remain Chrome-only. Raw
+  JSON, screenshots, traces, and failure artifacts were deleted after compact
+  evidence was retained in
+  `evidence/browser-compatibility-matrix-2026-09-07.json`. No Docker command
+  ran, and `test.mkv` remained byte-identical.
 
 ### 2026-09-06 — Matroska attached-picture work in progress
 

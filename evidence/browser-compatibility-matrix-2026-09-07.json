@@ -1,0 +1,189 @@
+{
+  "schemaVersion": 1,
+  "requirement": "U-05",
+  "auditDate": "2026-09-07",
+  "status": "verified-installed-browsers",
+  "dockerUsed": false,
+  "test": {
+    "source": "tests/browser/browser-compatibility.spec.ts",
+    "command": "$env:WITHIN_CROSS_BROWSER_HEADED='1'; $env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/browser-compatibility.spec.ts --reporter=line",
+    "result": "4 passed",
+    "elapsedSeconds": 48.5,
+    "productionServer": "production build served by Wrangler on localhost with production security headers",
+    "conversionLocation": "the production browser workers and website-delivered engines; native FFmpeg, FFprobe, Python zipfile, and ElementTree were validators only"
+  },
+  "matrix": {
+    "routesPerBrowser": [
+      {
+        "profileId": "csv-to-tsv",
+        "category": "structured data",
+        "inputBytes": 87,
+        "validator": "exact UTF-8 TSV bytes and quoted-field/newline semantics"
+      },
+      {
+        "profileId": "txt-to-docx",
+        "category": "document",
+        "inputBytes": 113,
+        "validator": "Python zipfile package integrity, exact package members, XML parse, and Unicode paragraphs"
+      },
+      {
+        "profileId": "tar-to-zip",
+        "category": "archive",
+        "inputBytes": 4096,
+        "validator": "Python zipfile testzip plus all three names, sizes, and payload SHA-256 hashes from the tracked TAR manifest"
+      },
+      {
+        "profileId": "png-to-webp",
+        "category": "image",
+        "inputBytes": 84034,
+        "validator": "FFprobe WebP/1024x768 structure, complete FFmpeg decode, and SSIM at least 0.90"
+      },
+      {
+        "profileId": "mkv-to-mp4",
+        "category": "media stream-copy remux",
+        "inputBytes": 936003,
+        "validator": "FFprobe H.264/AAC structure and duration, exact source/output H.264 and AAC packet hashes, and complete FFmpeg decode"
+      }
+    ],
+    "additionalPerBrowser": [
+      "normal-page CSV-to-TSV conversion through the real user-selected direct destination writer",
+      "unsafe TAR path-traversal rejection with no partial OPFS output",
+      "all observed conversion requests are same-origin GET with no bodies, filenames, or fixture-content tokens",
+      "functional Wasm/SIMD, workers, File System Access, OPFS, SharedArrayBuffer/isolation, Web Crypto, OffscreenCanvas, image decoder, and WebCodecs probes",
+      "zero page errors, console errors, or failed same-origin requests"
+    ]
+  },
+  "browsers": [
+    {
+      "id": "chrome",
+      "name": "Google Chrome",
+      "productVersion": "152.0.7977.77",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "mode": "headed",
+      "directoryAccess": true,
+      "durationMs": 7706,
+      "routes": {
+        "csv-to-tsv": { "elapsedMs": 15.79, "outputBytes": 90, "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264" },
+        "txt-to-docx": { "elapsedMs": 42.02, "outputBytes": 1096, "sha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471" },
+        "tar-to-zip": { "elapsedMs": 72.47, "outputBytes": 490, "sha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3" },
+        "png-to-webp": { "elapsedMs": 56.37, "outputBytes": 28410, "sha256": "08f98bed74f281f307ddde3552511320a9f4f8afc5871cb6cb234009dca2a5e5", "ssim": 0.988655 },
+        "mkv-to-mp4": { "elapsedMs": 447.115, "outputBytes": 937317, "sha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9" }
+      },
+      "network": { "requestCount": 88, "methods": ["GET"], "origins": ["http://127.0.0.1:3000"], "requestBodies": 0, "privateTokensObserved": 0 },
+      "cleanup": { "partialFailureOutputs": 0, "convertedOutputsRetained": 0, "profileRetained": false },
+      "diagnosticErrors": 0
+    },
+    {
+      "id": "edge",
+      "name": "Microsoft Edge",
+      "productVersion": "152.0.4191.66",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36 Edg/152.0.0.0",
+      "mode": "headed",
+      "directoryAccess": true,
+      "durationMs": 7615,
+      "routes": {
+        "csv-to-tsv": { "elapsedMs": 12.34, "outputBytes": 90, "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264" },
+        "txt-to-docx": { "elapsedMs": 41.65, "outputBytes": 1096, "sha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471" },
+        "tar-to-zip": { "elapsedMs": 70.77, "outputBytes": 490, "sha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3" },
+        "png-to-webp": { "elapsedMs": 59.745, "outputBytes": 28410, "sha256": "08f98bed74f281f307ddde3552511320a9f4f8afc5871cb6cb234009dca2a5e5", "ssim": 0.988655 },
+        "mkv-to-mp4": { "elapsedMs": 477.525, "outputBytes": 937317, "sha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9" }
+      },
+      "network": { "requestCount": 88, "methods": ["GET"], "origins": ["http://127.0.0.1:3000"], "requestBodies": 0, "privateTokensObserved": 0 },
+      "cleanup": { "partialFailureOutputs": 0, "convertedOutputsRetained": 0, "profileRetained": false },
+      "diagnosticErrors": 0
+    },
+    {
+      "id": "brave",
+      "name": "Brave",
+      "productVersion": "152.1.94.121",
+      "vendorRelease": "1.94.121",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.0.0 Safari/537.36",
+      "mode": "headed",
+      "directoryAccess": false,
+      "durationMs": 7503,
+      "routes": {
+        "csv-to-tsv": { "elapsedMs": 30.575, "outputBytes": 90, "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264" },
+        "txt-to-docx": { "elapsedMs": 42.61, "outputBytes": 1096, "sha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471" },
+        "tar-to-zip": { "elapsedMs": 77.235, "outputBytes": 490, "sha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3" },
+        "png-to-webp": { "elapsedMs": 57.33, "outputBytes": 28442, "sha256": "c9d101e561c4004e58be7f63c53772dfbc9a10ff1c445437504263549b13d4e0", "ssim": 0.988719 },
+        "mkv-to-mp4": { "elapsedMs": 445.49, "outputBytes": 937317, "sha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9" }
+      },
+      "network": { "requestCount": 88, "methods": ["GET"], "origins": ["http://127.0.0.1:3000"], "requestBodies": 0, "privateTokensObserved": 0 },
+      "cleanup": { "partialFailureOutputs": 0, "convertedOutputsRetained": 0, "profileRetained": false },
+      "diagnosticErrors": 0,
+      "limitation": "showSaveFilePicker passed and direct file output worked; showDirectoryPicker was unavailable, so folder/batch destination selection remains visibly unsupported in this installed Brave build"
+    },
+    {
+      "id": "opera-gx",
+      "name": "Opera GX",
+      "productVersion": "134.0.5954.67",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/150.0.0.0 Safari/537.36 OPR/134.0.0.0",
+      "mode": "headless-isolated",
+      "directoryAccess": true,
+      "durationMs": 14174,
+      "routes": {
+        "csv-to-tsv": { "elapsedMs": 16.33, "outputBytes": 90, "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264" },
+        "txt-to-docx": { "elapsedMs": 56.035, "outputBytes": 1096, "sha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471" },
+        "tar-to-zip": { "elapsedMs": 99.665, "outputBytes": 490, "sha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3" },
+        "png-to-webp": { "elapsedMs": 68.875, "outputBytes": 28410, "sha256": "08f98bed74f281f307ddde3552511320a9f4f8afc5871cb6cb234009dca2a5e5", "ssim": 0.988655 },
+        "mkv-to-mp4": { "elapsedMs": 393.05, "outputBytes": 937317, "sha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9" }
+      },
+      "network": { "requestCount": 74, "methods": ["GET"], "origins": ["http://127.0.0.1:3000"], "requestBodies": 0, "privateTokensObserved": 0 },
+      "cleanup": { "partialFailureOutputs": 0, "convertedOutputsRetained": 0, "profileRetained": false },
+      "diagnosticErrors": 0,
+      "limitation": "the installed GX build routes headed automation into the user's existing singleton GX Corner tab; two headed harness attempts were rejected without stopping the user's session, so the valid conversion matrix used an isolated headless GX process"
+    }
+  ],
+  "sharedAssertions": {
+    "directDestinationOutputBytes": 90,
+    "directDestinationSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+    "unsafeTarError": "Unsafe TAR entry: ../escape.txt.",
+    "maximumReadChunkBytes": 262144,
+    "maximumWriteChunkBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "byteIdenticalProfilesAcrossBrowsers": ["csv-to-tsv", "txt-to-docx", "tar-to-zip", "mkv-to-mp4"],
+    "imageDifference": "Brave emitted different valid WebP bytes; all four outputs fully decoded and exceeded the 0.90 SSIM requirement, with observed SSIM 0.988655-0.988719"
+  },
+  "releaseVerification": {
+    "chrome": {
+      "officialUrl": "https://chromereleases.googleblog.com/2026/09/stable-channel-update-for-desktop_01882797386.html",
+      "finding": "Chrome 152 stable was in a staged Windows rollout at 152.0.7977.82/.83; the installed tested build was 152.0.7977.77 in the same stable major"
+    },
+    "edge": {
+      "officialUrl": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-stable-channel",
+      "finding": "152.0.4191.66 is listed as Stable on 2026-09-04 and exactly matches the tested executable"
+    },
+    "brave": {
+      "officialUrl": "https://github.com/brave/brave-browser/blob/master/CHANGELOG_DESKTOP.md",
+      "finding": "Brave 1.94.121 is the published desktop release and exactly matches the tested vendor version"
+    },
+    "opera": {
+      "officialUrl": "https://blogs.opera.com/desktop/",
+      "finding": "standard Opera 135.0.5973.92 was the published stable line; standard Opera was not installed, so no standard-Opera result is claimed from the installed Opera GX 134 build"
+    }
+  },
+  "headedReview": {
+    "reviewed": ["chrome", "edge", "brave"],
+    "result": "the real completed MKV-to-MP4 state, progress/output metrics, privacy indicator, controls, and generated registry rendered without overlap or clipping; no console or page errors occurred",
+    "screenshotsRetained": 0
+  },
+  "cleanup": {
+    "generatedConversionOutputsRetained": 0,
+    "browserProfilesRetained": 0,
+    "rawRunJsonRetained": 0,
+    "screenshotsRetained": 0,
+    "playwrightFailureArtifactsRetained": 0,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvTouched": false,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "limitations": [
+    "This is representative cross-browser functional coverage, not a claim that every one of the 388 public profiles ran in every browser.",
+    "Complete process-tree private-memory and multi-gigabyte stress evidence remains explicitly Chrome-only.",
+    "The standard Opera distribution was unavailable; Opera GX is named exactly and is not generalized to standard Opera.",
+    "Opera GX headed automation was not claimed because its singleton startup behavior could not be isolated without disrupting the user's existing browser session."
+  ],
+  "scope": "U-05 is verified for every installed and practically testable target: broad representative production conversions and failure/privacy/cleanup behavior pass in Chrome, Edge, Brave, and Opera GX, with exact browser limitations disclosed. This evidence does not replace route-wide Chrome correctness or complete-process memory certification."
+}
