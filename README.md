@@ -1494,6 +1494,19 @@ converted-file size. That production-browser remux genuinely read
 10,737,988,703 bytes and wrote 10,746,764,442 bytes in 92.853 seconds; the full
 output was hashed, packet-traversed, independently validated, and then deleted.
 
+That fast result is a stream-copy remux, not a codec re-encode. Separate
+production-browser evidence proves genuine HEVC-to-VP8 scaling: a valid
+37,460,711-byte Matroska source produced a 7,106,592-byte VP8 WebM at 155.6 MiB
+worst complete-Chromium incremental private memory, while the untouched
+2,958,573,265-byte `test.mkv` produced a 921,524,214-byte VP8 WebM at 208.8 MiB.
+The 78.98x input and 129.67x output growth caused only 1.34x memory growth. The
+full source completed three byte-repeatable runs in 2,682.0-2,687.1 seconds;
+each held reads, writes, and queued bytes to 256 KiB and pending operations to
+one. The independent source/output codec probes make an extension-only change
+impossible. `evidence/size-independent-memory-audit-2026-09-07.json` retains the
+exact raw-report hashes, calculations, limitations, and cleanup record without
+retaining any converted copy.
+
 The current direct-writer core was also compared with the ordinary 256 KiB core
 on the exact protected 2,958,573,265-byte source in Chrome 152. Both three-run
 sets produced the same 2,962,151,538-byte SHA-256 output. The retained 1 MiB

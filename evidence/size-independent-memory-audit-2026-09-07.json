@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-07T18:30:00+05:30",
+  "requirement": "P-07",
+  "status": "verified",
+  "scope": "Production-Chromium file-size scaling with stream-copy and genuine decode/re-encode kept as separate topologies",
+  "dockerUsed": false,
+  "measurementFormula": "peak complete Chromium process-tree private memory during conversion - stable private memory of the same clean Chromium instance on a blank page before the converter is loaded",
+  "acceptanceLimitMiB": 250,
+  "protectedFixture": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "preservedAfterAudit": true
+  },
+  "series": {
+    "genuineReencode": {
+      "classification": "decode-reencode",
+      "classificationProof": "The input video codec is HEVC and the independently probed output video codec is VP8; changing that elementary bitstream requires decode and encode, not an extension change or container-only remux.",
+      "profileId": "mkv-to-webm",
+      "destinationMode": "sync-opfs",
+      "browser": "Chrome 150.0.7871.188",
+      "sourceLineage": "Both inputs are valid Matroska media from the protected source; the small point is a native stream-copy fixture used only as browser-converter input and the large point is the untouched protected file.",
+      "commonTopology": {
+        "inputVideoCodec": "hevc",
+        "outputVideoCodec": "vp8",
+        "outputWidth": 640,
+        "outputHeight": 268,
+        "maximumReadChunkBytes": 262144,
+        "maximumWriteChunkBytes": 262144,
+        "maximumQueuedBytes": 262144,
+        "maximumPendingOperations": 1
+      },
+      "points": [
+        {
+          "label": "120-second fixture",
+          "rawReport": "outputs/reports/2026-07-31T18-15-45-608Z-mkv-to-webm-stress.json",
+          "rawReportSha256": "40b780fc8bb04982accb186c9ff404a4110a98d2df46f029ee35fb38a9b89f2f",
+          "sourceBytes": 37460711,
+          "sourceDurationSeconds": 120.207,
+          "runCount": 1,
+          "elapsedMs": [26167.285],
+          "outputBytes": 7106592,
+          "outputSha256": "0641d3608ba041b7aed10716b039b84021a04843f762ec339a45fa3a5f8b6dc3",
+          "worstIncrementalPrivateMiB": 155.55859375,
+          "wasmMemoryBytes": 75497472,
+          "passed": true
+        },
+        {
+          "label": "protected full source",
+          "rawReport": "outputs/reports/2026-07-31T15-54-00-176Z-mkv-to-webm-stress.json",
+          "rawReportSha256": "56e464a3d6ab3795487d5ae95a7273227d400e773a861dfa77068277a1c99a90",
+          "sourceBytes": 2958573265,
+          "sourceDurationSeconds": 12340.096,
+          "runCount": 3,
+          "elapsedMs": [2682013.45, 2684406.935, 2687086.1],
+          "outputBytes": 921524214,
+          "outputSha256": "b192fb8b0cb3e4356b54ed242d0de5fbeb6a56f421381c426ca19321e0807e1f",
+          "worstIncrementalPrivateMiB": 208.80078125,
+          "wasmMemoryBytes": 83886080,
+          "passed": true,
+          "repeatableOutput": true
+        }
+      ],
+      "scaling": {
+        "inputSizeMultiplier": 78.978033,
+        "outputSizeMultiplier": 129.671749,
+        "memoryMultiplier": 1.342265,
+        "memoryIncreaseMiB": 53.242188,
+        "memoryIncreasePercent": 34.226452,
+        "smallSourceThroughputMBps": 1.431586,
+        "largeSourceMedianElapsedMs": 2684406.935,
+        "largeSourceThroughputMBps": 1.102133,
+        "finding": "Input grew 78.98x and output grew 129.67x while worst complete-Chromium incremental private memory grew only 1.34x and remained 41.20 MiB below the hard limit. This is strongly sublinear and consistent with bounded I/O rather than whole-file retention."
+      }
+    },
+    "streamCopyRemux": {
+      "classification": "stream-copy-remux",
+      "classificationProof": "Independent probes report HEVC video and AAC audio before and after; packets are copied into MP4 without decode/re-encode. The 92-second 10 GB result is therefore plausible I/O-bound remuxing and is not claimed as transcoding.",
+      "profileId": "mkv-to-mp4",
+      "destinationMode": "sync-opfs",
+      "browser": "Chrome 151.0.7922.137",
+      "commonTopology": {
+        "inputVideoCodec": "hevc",
+        "outputVideoCodec": "hevc",
+        "inputAudioCodec": "aac",
+        "outputAudioCodec": "aac",
+        "maximumReadChunkBytes": 262144,
+        "maximumWriteChunkBytes": 262144,
+        "maximumQueuedBytes": 262144,
+        "maximumPendingOperations": 1,
+        "wasmMemoryBytes": 41943040
+      },
+      "points": [
+        {
+          "label": "6 GiB-class fixture",
+          "rawReport": "outputs/reports/2026-08-13T12-35-21-190Z-mkv-to-mp4-stress.json",
+          "rawReportSha256": "0d8d4fafb596ad21a276c43466909e589414ff8b9d97f703c4259f845112440d",
+          "sourceBytes": 6443020778,
+          "runCount": 1,
+          "elapsedMs": [55327.005],
+          "outputBytes": 6448220966,
+          "outputSha256": "e00c0ed6b1e992de807e0deda14ec59ca6ca9a84c8f904d85cb9bb6d86ebeee2",
+          "worstIncrementalPrivateMiB": 194.8359375,
+          "passed": true
+        },
+        {
+          "label": "10 GiB-class fixture",
+          "rawReport": "outputs/reports/2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",
+          "rawReportSha256": "d0ce3249c728a442683a893e0fc589da9c02ff55ec5b4e9c5f76eb91058fb577",
+          "sourceBytes": 10737988703,
+          "runCount": 1,
+          "elapsedMs": [92853.255],
+          "outputBytes": 10746764442,
+          "outputSha256": "85577f06fbda83a0178ee6b95af0154dc757b904b8629123a9cb84b2aea71651",
+          "worstIncrementalPrivateMiB": 210.33984375,
+          "passed": true
+        }
+      ],
+      "scaling": {
+        "inputSizeMultiplier": 1.666608,
+        "outputSizeMultiplier": 1.666625,
+        "memoryMultiplier": 1.079574,
+        "memoryIncreaseMiB": 15.503906,
+        "memoryIncreasePercent": 7.957416,
+        "sixGiBThroughputMBps": 116.453453,
+        "tenGiBThroughputMBps": 115.64472,
+        "finding": "Input and output each grew 1.67x while memory grew 1.08x. Throughput remained within 0.7%, and both complete-process-tree results stayed below 250 MiB."
+      }
+    }
+  },
+  "independentValidation": {
+    "browserConversionOnly": true,
+    "nativeToolsRole": "fixture preparation plus post-conversion FFprobe, packet traversal, full output byte count, and SHA-256 only",
+    "renamedExtensionExcluded": true,
+    "fullOutputBytesValidated": true,
+    "allOutputsDeletedAfterValidation": true
+  },
+  "limitations": [
+    "The genuine re-encode scaling reports were recorded on Chrome 150 and the remux scaling reports on Chrome 151; current Chrome 152 route correctness and per-profile memory remain covered separately.",
+    "The 120-second re-encode point has one passing run, while the full 2.958 GB point has the required three repeatable runs.",
+    "The raw timestamped reports are intentionally repository-local and ignored because they contain bulky process samples; their exact hashes and compact results are retained here.",
+    "This audit proves representative topology scaling, not that every one of the 388 public profiles has been tested at multi-gigabyte scale."
+  ],
+  "cleanup": {
+    "workDirectoryContainsOnlyGitkeep": true,
+    "convertedOutputsRetained": 0,
+    "generatedFixturesRetainedForThisAudit": 0,
+    "browserProfilesRetained": 0
+  }
+}
