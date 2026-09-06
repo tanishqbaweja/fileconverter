@@ -1275,7 +1275,8 @@ function containerMatroskaProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       "The certified codec combinations are H.264/AAC in MP4, MOV, 3GP, MPEG-TS, and FLV; MPEG-4 Part 2/MP3 in AVI; AV1/Opus in WebM; and Theora/Vorbis in OGV.",
-      "Compatible video, audio, subtitle, attachment, chapter, stream, and general metadata are copied without re-encoding; unsupported stream codecs and attached-picture tracks are rejected or explicitly disclosed.",
+      "Compatible video, audio, subtitle, attachment, chapter, stream, and general metadata are copied without re-encoding.",
+      "Up to eight bounded JPEG or PNG attached pictures (4 MiB, 4,096 pixels per side, and 16 megapixels each; 8 MiB total) are copied byte-for-byte into native Matroska attachments. FFmpeg-compatible players expose the primary cover attachment as an attached picture; unsupported, oversized, or excess pictures are explicitly excluded.",
       input === "avi"
         ? "AVI uses five-second/5 MiB Matroska clusters plus a compact cue index because FFmpeg live mode writes invalid VFW duration metadata; the measured indexed route preserves accurate duration and seeking within the certified memory ceiling."
         : "The bounded live-Matroska layout omits a duration field and cue index so muxer memory cannot grow with file duration; sequential playback remains valid, while accurate seeking or displayed duration may require a player scan.",

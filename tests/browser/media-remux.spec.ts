@@ -323,6 +323,10 @@ const matroskaOutputPaths = {
   webm: path.join(outputRoot, "webm-remux-output.mkv"),
   ogv: path.join(outputRoot, "ogv-remux-output.mkv"),
 } as const;
+const videoArtworkOutputPath = path.join(
+  outputRoot,
+  "video-artwork-output.mkv",
+);
 const containerMpegTsOutputPaths = {
   mkv: path.join(outputRoot, "mkv-remux-output.mpegts"),
   mp4: path.join(outputRoot, "mp4-remux-output.mpegts"),
@@ -426,6 +430,17 @@ const mp4InputFixturePath = path.join(
   projectRoot,
   "work",
   "remux-source.mp4",
+);
+const videoArtworkFixturePath = path.join(
+  projectRoot,
+  "work",
+  "video-artwork-source.mp4",
+);
+const artworkAudioFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "audio-source-artwork.m4a",
 );
 const movInputFixturePath = path.join(
   projectRoot,
@@ -1292,6 +1307,7 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(matroskaOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  assertProjectLocal(videoArtworkOutputPath);
   for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1340,6 +1356,7 @@ test.beforeAll(async () => {
   assertProjectLocal(multiVideoFixturePath);
   assertProjectLocal(unsupportedMatroskaFixturePath);
   assertProjectLocal(mp4InputFixturePath);
+  assertProjectLocal(videoArtworkFixturePath);
   assertProjectLocal(av1OpusWebmFixturePath);
   assertProjectLocal(av1VorbisWebmFixturePath);
   await rm(profileRoot, { recursive: true, force: true });
@@ -1357,6 +1374,7 @@ test.beforeAll(async () => {
     await rm(fixture, { force: true });
   }
   await rm(mp4InputFixturePath, { force: true });
+  await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
@@ -1395,6 +1413,19 @@ test.beforeAll(async () => {
       "-f",
       "3gp",
       threeGpAmrFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-fflags", "+bitexact", "-i", fixturePath,
+      "-i", artworkAudioFixturePath,
+      "-map", "0:v:0", "-map", "0:a:0", "-map", "1:v:0",
+      "-c", "copy", "-disposition:v:1", "attached_pic",
+      "-map_metadata", "-1", "-metadata", "title=Within video artwork",
+      "-movflags", "+faststart", "-f", "mp4", videoArtworkFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1937,6 +1968,7 @@ test.afterAll(async () => {
   for (const outputPath of Object.values(matroskaOutputPaths)) {
     await rm(outputPath, { force: true });
   }
+  await rm(videoArtworkOutputPath, { force: true });
   for (const outputPath of Object.values(containerMpegTsOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -1973,6 +2005,7 @@ test.afterAll(async () => {
     await rm(outputPath, { force: true });
   }
   await rm(mp4InputFixturePath, { force: true });
+  await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
@@ -5102,6 +5135,43 @@ for (const input of ["mkv", "mp4", "mov", "3gp", "mpeg-ts", "flv"] as const) {
     );
   });
 }
+
+test("browser FFmpeg preserves bounded attached picture as a Matroska cover attachment", async () => {
+  const sourceCoverHash = await compressedPacketSha256(
+    videoArtworkFixturePath,
+    "v:1",
+  );
+  await runMediaRoute(
+    "mp4-to-mkv",
+    videoArtworkOutputPath,
+    ["h264", "aac", "png"],
+    100_000,
+    videoArtworkFixturePath,
+    {
+      expectedWarningFragments: [
+        "preserved byte-for-byte as a Matroska attachment",
+      ],
+      skipDurationValidation: true,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("matroska");
+        expect(probe.streams).toHaveLength(3);
+        const cover = probe.streams.find(
+          (stream) => stream.disposition?.attached_pic === 1,
+        );
+        expect(cover?.codec_name).toBe("png");
+        expect(cover?.width).toBe(64);
+        expect(cover?.height).toBe(64);
+        expect(mediaTag(cover?.tags, "filename")).toBe("cover.png");
+        expect(mediaTag(cover?.tags, "mimetype")).toBe("image/png");
+        expect(await compressedPacketSha256(outputPath, "v:1")).toBe(
+          sourceCoverHash,
+        );
+        await expectDecodedVideoMatch(videoArtworkFixturePath, outputPath);
+        await expectAacAccessUnitMatch(videoArtworkFixturePath, outputPath);
+      },
+    },
+  );
+});
 
 for (const route of [
   ["mkv-to-ogg", incompatibleFixturePath, "vorbis", 5_000],

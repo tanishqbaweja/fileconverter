@@ -28,6 +28,8 @@
 #define WITHIN_ARTWORK_MAX_BYTES (4 * 1024 * 1024)
 #define WITHIN_ARTWORK_MAX_DIMENSION 4096
 #define WITHIN_ARTWORK_MAX_PIXELS (16 * 1024 * 1024)
+#define WITHIN_MATROSKA_ARTWORK_MAX_IMAGES 8
+#define WITHIN_MATROSKA_ARTWORK_MAX_TOTAL_BYTES (8 * 1024 * 1024)
 #define WITHIN_ROTATE_REQUIRED (-4096)
 #ifndef WITHIN_VIDEO_THREADS
 #define WITHIN_VIDEO_THREADS 1
@@ -348,7 +350,7 @@ static int stream_has_display_matrix(const AVStream *stream) {
 
 static int stream_is_supported(const AVStream *stream, int profile) {
   if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
-    return 0;
+    return profile == 23 && bounded_audio_artwork_stream(stream);
   }
   if (profile == 23) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
@@ -387,6 +389,9 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
                                            int profile,
                                            const AVFormatContext *format) {
   if (profile == 23) {
+    if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
+      return bounded_audio_artwork_stream(stream);
+    }
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
              stream->codecpar->codec_id == AV_CODEC_ID_HEVC ||
@@ -986,6 +991,47 @@ static int bounded_audio_artwork_stream(const AVStream *stream) {
     return 0;
   }
   return (int64_t)width * height <= WITHIN_ARTWORK_MAX_PIXELS;
+}
+
+static int configure_matroska_artwork_attachment(
+    AVStream *output_stream, const AVStream *input_stream,
+    int artwork_ordinal) {
+  if (!output_stream || !bounded_audio_artwork_stream(input_stream) ||
+      artwork_ordinal < 1 ||
+      artwork_ordinal > WITHIN_MATROSKA_ARTWORK_MAX_IMAGES) {
+    return AVERROR(EINVAL);
+  }
+
+  const int artwork_size = input_stream->attached_pic.size;
+  uint8_t *artwork = av_mallocz((size_t)artwork_size +
+                                AV_INPUT_BUFFER_PADDING_SIZE);
+  if (!artwork) return AVERROR(ENOMEM);
+  memcpy(artwork, input_stream->attached_pic.data, (size_t)artwork_size);
+
+  av_freep(&output_stream->codecpar->extradata);
+  output_stream->codecpar->extradata = artwork;
+  output_stream->codecpar->extradata_size = artwork_size;
+  output_stream->codecpar->codec_type = AVMEDIA_TYPE_ATTACHMENT;
+  output_stream->codecpar->codec_tag = 0;
+  output_stream->disposition = 0;
+
+  const char *extension =
+      input_stream->codecpar->codec_id == AV_CODEC_ID_PNG ? "png" : "jpg";
+  const char *mimetype =
+      input_stream->codecpar->codec_id == AV_CODEC_ID_PNG ? "image/png"
+                                                          : "image/jpeg";
+  char filename[48] = {0};
+  if (artwork_ordinal == 1) {
+    snprintf(filename, sizeof(filename), "cover.%s", extension);
+  } else {
+    snprintf(filename, sizeof(filename), "attached-picture-%d.%s",
+             artwork_ordinal, extension);
+  }
+  if (av_dict_set(&output_stream->metadata, "filename", filename, 0) < 0 ||
+      av_dict_set(&output_stream->metadata, "mimetype", mimetype, 0) < 0) {
+    return AVERROR(ENOMEM);
+  }
+  return 0;
 }
 
 static int merge_common_audio_text_metadata(
@@ -2405,6 +2451,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  int video_frame_rate, int video_quality) {
   int result = 0;
   int mp3_artwork_stream_index = -1;
+  int matroska_artwork_count = 0;
+  int64_t matroska_artwork_bytes = 0;
   AVFormatContext *input_format = NULL;
   AVFormatContext *output_format = NULL;
   AVIOContext *input_io = NULL;
@@ -2830,7 +2878,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     AVStream *input_stream = input_format->streams[index];
     const int copy_compatible =
         stream_codec_is_copy_compatible(input_stream, profile, input_format);
-    const int selected_stream =
+    int selected_stream =
         video_only_output
             ? (int)index == video_stream_index
         : av1_webm_output
@@ -2848,6 +2896,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
             ? (int)index == video_stream_index ||
                   (int)index == audio_stream_index
             : stream_is_supported(input_stream, profile);
+    if (matroska_output && selected_stream &&
+        (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC) &&
+        (matroska_artwork_count >= WITHIN_MATROSKA_ARTWORK_MAX_IMAGES ||
+         input_stream->attached_pic.size >
+             WITHIN_MATROSKA_ARTWORK_MAX_TOTAL_BYTES -
+                 matroska_artwork_bytes)) {
+      selected_stream = 0;
+    }
     stream_map[index] = -1;
     last_dts[index] = AV_NOPTS_VALUE;
     if (selected_stream && !copy_compatible) {
@@ -2931,7 +2987,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
             : amr_copy_output
                 ? "The source attached picture is explicitly excluded from this raw AMR-NB extraction profile."
             : matroska_output
-                ? "The source attached picture is explicitly excluded from this Matroska stream-copy profile."
+                ? !supported_audio_artwork_codec(input_stream->codecpar->codec_id)
+                  ? "The source attached picture uses an image codec that Matroska cover preservation does not certify; only bounded JPEG and PNG are accepted."
+                  : !bounded_audio_artwork_stream(input_stream)
+                    ? "The source attached picture exceeds the bounded 4 MiB, 4096-pixel-side, or 16-megapixel Matroska cover limit and is explicitly excluded."
+                    : "Matroska cover preservation is limited to eight images and 8 MiB total; an additional attached picture is explicitly excluded."
             : av1_webm_output
                 ? "The source attached picture is explicitly excluded from this AV1 WebM profile."
                 : "The source attached picture is explicitly excluded from "
@@ -3100,13 +3160,29 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       result = AVERROR(ENOMEM);
       goto cleanup;
     }
-    stream_map[index] = output_stream->index;
     result =
         avcodec_parameters_copy(output_stream->codecpar, input_stream->codecpar);
     if (result < 0) {
       report_av_error("Stream metadata copy failed", result);
       goto cleanup;
     }
+    if (matroska_output &&
+        (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
+      av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
+      result = configure_matroska_artwork_attachment(
+          output_stream, input_stream, matroska_artwork_count + 1);
+      if (result < 0) {
+        report_av_error("Matroska cover attachment copy failed", result);
+        goto cleanup;
+      }
+      matroska_artwork_count += 1;
+      matroska_artwork_bytes += input_stream->attached_pic.size;
+      within_message(
+          1,
+          "Bounded JPEG or PNG cover art was preserved byte-for-byte as a Matroska attachment; players expose the primary cover as an attached picture.");
+      continue;
+    }
+    stream_map[index] = output_stream->index;
     if (mp3_output &&
         (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
       int artwork_width = 0;

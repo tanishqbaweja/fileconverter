@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
@@ -538,6 +539,22 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.maximumWasmMemoryBytes <= 128 * 1024 * 1024);
   assert.equal(manifest.largeFileMemfs, false);
   assert.equal(manifest.outstandingWrites, 1);
+  assert.equal(
+    manifest.currentWrapperSourceSha256,
+    createHash("sha256")
+      .update(readFileSync("media/ffmpeg/within_remux.c"))
+      .digest("hex"),
+  );
+  assert.deepEqual(manifest.matroskaArtworkOptions, {
+    supportedImageCodecs: ["mjpeg", "png"],
+    maximumImages: 8,
+    maximumBytesPerImage: 4 * 1024 * 1024,
+    maximumTotalBytes: 8 * 1024 * 1024,
+    maximumDimension: 4096,
+    maximumPixelsPerImage: 16 * 1024 * 1024,
+    representation: "matroska-attachment",
+    packetCopyWithoutImageDecode: true,
+  });
   assert.deepEqual(manifest.modules, [
     {
       name: "within-remux",
