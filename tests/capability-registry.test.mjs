@@ -545,6 +545,14 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       .update(readFileSync("media/ffmpeg/within_remux.c"))
       .digest("hex"),
   );
+  assert.equal(
+    manifest.matroskaArtworkSourcePatchSha256,
+    createHash("sha256")
+      .update(
+        readFileSync("media/ffmpeg/patches/matroska-artwork-source.patch"),
+      )
+      .digest("hex"),
+  );
   assert.deepEqual(manifest.matroskaArtworkOptions, {
     supportedImageCodecs: ["mjpeg", "png"],
     maximumImages: 8,

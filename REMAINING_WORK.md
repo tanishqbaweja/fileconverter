@@ -172,6 +172,11 @@ not the entire product specification.
   oversized, or excess pictures remain explicit exclusions. Source, manifest,
   registry disclosure, and production-browser regression are staged; the Wasm
   rebuild and browser evidence are still pending, so M-03 remains partial.
+- No-Docker run `34029206301` built the new general remux core, then exposed a
+  stale specialist reconstruction assumption: the historical direct-core patch
+  could not reverse across the newly added source hunks. Its partial artifact
+  was not published. A dedicated reversible artwork patch now removes only this
+  feature before rebuilding the unchanged video/direct specialists.
 
 ### 2026-09-06 — complex MPEG-TS/FLV source-retention checkpoint
 

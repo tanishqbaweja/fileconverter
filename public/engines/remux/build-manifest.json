@@ -17,6 +17,7 @@
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
   "currentWrapperSourceSha256": "969ac694b87f83b0cd011e42499b9d56bab813ba7c168938f42d1da7afe33513",
+  "matroskaArtworkSourcePatchSha256": "eb075405123862b4a4d940db397bb9e94b53422a04a70c289e44503123cd9031",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
   "directSourcePatchSha256": "ab5b790455b5ddf227b16aabd4bda60de0c00e4479834dfd812517f0ba65ec28",

@@ -150,6 +150,7 @@ cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
@@ -191,6 +192,10 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
+  # Matroska attached-picture retention belongs only to the general remux core.
+  # Remove it before rebuilding unchanged specialist cores.
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
   # The audio ABI belongs only to the general remux core. Revert that bounded
   # delta before reconstructing every already-certified video/direct core.
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -205,11 +210,15 @@ if [[ "${requested_core}" == "all" ]]; then
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < audio-options-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" != "within-remux" ]]; then
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < audio-options-source.patch
   WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
