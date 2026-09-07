@@ -47,14 +47,30 @@ strip_general_core_only_profiles() {
       if (skipping) exit 2
       skipping = 1
       depth = 1
+      keeping_else = 0
       next
     }
     skipping {
-      if ($0 ~ /^[[:space:]]*#if(n?def)?([[:space:]]|$)/) depth++
+      if ($0 ~ /^[[:space:]]*#if(n?def)?([[:space:]]|$)/) {
+        depth++
+        if (keeping_else) print
+        next
+      }
+      if ($0 ~ /^[[:space:]]*#else([[:space:]]|$)/ && depth == 1) {
+        keeping_else = 1
+        next
+      }
       if ($0 ~ /^[[:space:]]*#endif([[:space:]]|$)/) {
         depth--
-        if (depth == 0) skipping = 0
+        if (depth == 0) {
+          skipping = 0
+          keeping_else = 0
+        } else if (keeping_else) {
+          print
+        }
+        next
       }
+      if (keeping_else) print
       next
     }
     { print }
