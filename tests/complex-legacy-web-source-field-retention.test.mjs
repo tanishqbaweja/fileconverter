@@ -64,17 +64,23 @@ test("browser coverage uses genuine sources and exact multi-stream validators", 
   }
   for (const assertion of [
     "expectCompressedVideoPacketMatch",
-    "expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 0)",
-    "expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 1)",
     "expectSubtitlePacketMatch",
     "expectDecodedVideoMatch",
     "probe.chapters).toHaveLength(2)",
   ]) {
     assert.ok(source.includes(assertion), assertion);
   }
+  for (const audioStreamIndex of [0, 1]) {
+    assert.match(
+      source,
+      new RegExp(
+        `expectCompressedAudioPacketMatch\\(\\s*route\\.sourcePath,\\s*outputPath,\\s*${audioStreamIndex}\\s*,?\\s*\\)`,
+      ),
+    );
+  }
   assert.equal(source.includes("complexMatroskaAsWebmFixturePath"), false);
   assert.equal(source.includes("copyFile(complexFixturePath"), false);
-  assert.ok((source.match(/"-fflags", "\+bitexact"/g) ?? []).length >= 2);
+  assert.ok((source.match(/"-fflags",\s*"\+bitexact"/g) ?? []).length >= 2);
   assert.ok(source.includes("Object.values(complexLegacyWebSourceFixturePaths)"));
   assert.ok(source.includes("Object.values(complexLegacyWebSourceOutputPaths)"));
 });

@@ -60,7 +60,10 @@ const mkvFlacOutputPath = path.join(outputRoot, "mkv-extract-output.flac");
 const mp4FlacOutputPath = path.join(outputRoot, "mp4-extract-output.flac");
 const movFlacOutputPath = path.join(outputRoot, "mov-extract-output.flac");
 const threeGpFlacOutputPath = path.join(outputRoot, "3gp-extract-output.flac");
-const mpegTsFlacOutputPath = path.join(outputRoot, "mpeg-ts-extract-output.flac");
+const mpegTsFlacOutputPath = path.join(
+  outputRoot,
+  "mpeg-ts-extract-output.flac",
+);
 const flvFlacOutputPath = path.join(outputRoot, "flv-extract-output.flac");
 const aviFlacOutputPath = path.join(outputRoot, "avi-extract-output.flac");
 const ogvFlacOutputPath = path.join(outputRoot, "ogv-extract-output.flac");
@@ -272,16 +275,25 @@ const movVp9WebmOutputPath = path.join(outputRoot, "mov-vp9-output.webm");
 const threeGpWebmOutputPath = path.join(outputRoot, "3gp-vp8-output.webm");
 const threeGpVp9WebmOutputPath = path.join(outputRoot, "3gp-vp9-output.webm");
 const mpegTsWebmOutputPath = path.join(outputRoot, "mpeg-ts-vp8-output.webm");
-const mpegTsVp9WebmOutputPath = path.join(outputRoot, "mpeg-ts-vp9-output.webm");
+const mpegTsVp9WebmOutputPath = path.join(
+  outputRoot,
+  "mpeg-ts-vp9-output.webm",
+);
 const flvWebmOutputPath = path.join(outputRoot, "flv-vp8-output.webm");
 const flvVp9WebmOutputPath = path.join(outputRoot, "flv-vp9-output.webm");
 const aviWebmOutputPath = path.join(outputRoot, "avi-vp8-output.webm");
 const aviVp9WebmOutputPath = path.join(outputRoot, "avi-vp9-output.webm");
-const ogvVp9WebmOutputPath = path.join(outputRoot, "ogv-vp9-reencode-output.webm");
+const ogvVp9WebmOutputPath = path.join(
+  outputRoot,
+  "ogv-vp9-reencode-output.webm",
+);
 const ogvWavOutputPath = path.join(outputRoot, "ogv-convert-output.wav");
 const m2vMpeg4OutputPath = path.join(outputRoot, "m2v-reencode-output.mp4");
 const m2vWebmOutputPath = path.join(outputRoot, "m2v-reencode-output.webm");
-const m2vVp9WebmOutputPath = path.join(outputRoot, "m2v-vp9-reencode-output.webm");
+const m2vVp9WebmOutputPath = path.join(
+  outputRoot,
+  "m2v-vp9-reencode-output.webm",
+);
 const m2vMpegTsOutputPath = path.join(outputRoot, "m2v-wrap-output.mpegts");
 const m2vExtractionOutputPaths = {
   mkv: path.join(outputRoot, "mkv-extract-output.m2v"),
@@ -406,11 +418,7 @@ const complexLegacyWebSourceOutputPaths = {
   "webm-to-mkv": path.join(outputRoot, "complex-webm-source-output.mkv"),
   "ogv-to-mkv": path.join(outputRoot, "complex-ogv-source-output.mkv"),
 } as const;
-const corruptFixturePath = path.join(
-  projectRoot,
-  "work",
-  "corrupt-source.mkv",
-);
+const corruptFixturePath = path.join(projectRoot, "work", "corrupt-source.mkv");
 const incompatibleFixturePath = path.join(
   projectRoot,
   "work",
@@ -426,11 +434,7 @@ const unsupportedMatroskaFixturePath = path.join(
   "work",
   "unsupported-matroska-source.avi",
 );
-const mp4InputFixturePath = path.join(
-  projectRoot,
-  "work",
-  "remux-source.mp4",
-);
+const mp4InputFixturePath = path.join(projectRoot, "work", "remux-source.mp4");
 const videoArtworkFixturePath = path.join(
   projectRoot,
   "work",
@@ -570,6 +574,21 @@ const ogvCopyOutputPath = path.join(
   outputRoot,
   "theora-vorbis-copy-output.ogv",
 );
+const aviCopyFixturePath = path.join(
+  projectRoot,
+  "work",
+  "avi-copy-source.mkv",
+);
+const aviCopyOutputPath = path.join(outputRoot, "mpeg4-mp3-copy-output.avi");
+const complexAviCopyFixturePath = path.join(
+  projectRoot,
+  "work",
+  "complex-avi-copy-source.mkv",
+);
+const complexAviCopyOutputPath = path.join(
+  outputRoot,
+  "complex-avi-copy-output.avi",
+);
 const m2vFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -695,8 +714,10 @@ interface MediaProbe {
 }
 
 function recognizedCodecName(stream: ProbeStream): string | undefined {
-  return stream.codec_name ??
-    (stream.codec_type === "attachment" ? "attachment" : undefined);
+  return (
+    stream.codec_name ??
+    (stream.codec_type === "attachment" ? "attachment" : undefined)
+  );
 }
 
 interface MediaRouteOptions {
@@ -708,7 +729,10 @@ interface MediaRouteOptions {
 }
 
 function expectMediaTitle(probe: MediaProbe, expected: string): void {
-  const tagSets = [probe.format.tags, ...probe.streams.map((stream) => stream.tags)];
+  const tagSets = [
+    probe.format.tags,
+    ...probe.streams.map((stream) => stream.tags),
+  ];
   const titles = tagSets.flatMap((tags) =>
     Object.entries(tags ?? {})
       .filter(([key]) => key.toLowerCase() === "title")
@@ -730,8 +754,15 @@ async function probeMediaFile(inputPath: string): Promise<MediaProbe> {
   const { stdout } = await execFileAsync(
     "ffprobe",
     [
-      "-v", "error", "-show_format", "-show_streams", "-show_chapters",
-      "-count_frames", "-of", "json", inputPath,
+      "-v",
+      "error",
+      "-show_format",
+      "-show_streams",
+      "-show_chapters",
+      "-count_frames",
+      "-of",
+      "json",
+      inputPath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -915,9 +946,20 @@ async function decodedPcmSha256(inputPath: string): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "hash",
-      "-hash", "sha256", "-",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-i",
+      inputPath,
+      "-map",
+      "0:a:0",
+      "-c:a",
+      "pcm_s16le",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -940,9 +982,20 @@ async function compressedPacketSha256(
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", `0:${streamSelector}`, "-c", "copy", "-f", "hash",
-      "-hash", "sha256", "-",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-i",
+      inputPath,
+      "-map",
+      `0:${streamSelector}`,
+      "-c",
+      "copy",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -967,16 +1020,32 @@ async function aacAccessUnitSha256(
   audioStreamIndex = 0,
 ): Promise<string> {
   const extension = path.extname(inputPath).toLowerCase();
-  const usesAdtsPackets = [".aac", ".adts", ".m2ts", ".mts", ".mpegts", ".ts"].includes(
-    extension,
-  );
+  const usesAdtsPackets = [
+    ".aac",
+    ".adts",
+    ".m2ts",
+    ".mts",
+    ".mpegts",
+    ".ts",
+  ].includes(extension);
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", `0:a:${audioStreamIndex}`, "-c", "copy",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-i",
+      inputPath,
+      "-map",
+      `0:a:${audioStreamIndex}`,
+      "-c",
+      "copy",
       ...(usesAdtsPackets ? ["-bsf:a", "aac_adtstoasc"] : []),
-      "-f", "hash", "-hash", "sha256", "-",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1011,9 +1080,7 @@ async function expectCompressedAudioPacketMatch(
 ): Promise<void> {
   expect(
     await compressedPacketSha256(outputPath, `a:${audioStreamIndex}`),
-  ).toBe(
-    await compressedPacketSha256(sourcePath, `a:${audioStreamIndex}`),
-  );
+  ).toBe(await compressedPacketSha256(sourcePath, `a:${audioStreamIndex}`));
 }
 
 async function expectCompressedVideoPacketMatch(
@@ -1042,10 +1109,19 @@ async function expectDecodedAudioPsnr(
   const { stderr } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-nostdin", "-i", sourcePath, "-i", outputPath,
+      "-hide_banner",
+      "-nostdin",
+      "-i",
+      sourcePath,
+      "-i",
+      outputPath,
       "-filter_complex",
       "[0:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[source];[1:a:0]aresample=async=1:first_pts=0,aformat=sample_fmts=fltp[converted];[source][converted]apsnr[quality]",
-      "-map", "[quality]", "-f", "null", "NUL",
+      "-map",
+      "[quality]",
+      "-f",
+      "null",
+      "NUL",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1059,7 +1135,8 @@ async function expectDecodedAudioPsnr(
       : Number.parseFloat(match[1]),
   );
   expect(psnrValues.length).toBeGreaterThan(0);
-  for (const value of psnrValues) expect(value).toBeGreaterThanOrEqual(minimumPsnrDb);
+  for (const value of psnrValues)
+    expect(value).toBeGreaterThanOrEqual(minimumPsnrDb);
 }
 
 async function decodedVideoSha256(
@@ -1069,11 +1146,23 @@ async function decodedVideoSha256(
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error",
+      "-hide_banner",
+      "-loglevel",
+      "error",
       ...(noAutorotate ? ["-noautorotate"] : []),
-      "-i", inputPath,
-      "-map", "0:v:0", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough", "-f", "hash",
-      "-hash", "sha256", "-",
+      "-i",
+      inputPath,
+      "-map",
+      "0:v:0",
+      "-pix_fmt",
+      "yuv420p",
+      "-fps_mode",
+      "passthrough",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1094,10 +1183,22 @@ async function videoPacketSha256(inputPath: string): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-i", inputPath,
-      "-map", "0:v:0", "-c", "copy", "-bsf:v",
-      "h264_mp4toannexb,filter_units=pass_types=1-5", "-f", "hash",
-      "-hash", "sha256", "-",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-i",
+      inputPath,
+      "-map",
+      "0:v:0",
+      "-c",
+      "copy",
+      "-bsf:v",
+      "h264_mp4toannexb,filter_units=pass_types=1-5",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1141,9 +1242,9 @@ async function inspectFlvAacSignals(outputPath: string): Promise<{
       if (soundFormat === 10 && dataSize > 1) {
         if (bytes[payload + 1] === 0) {
           legacySequenceHeaders += 1;
-        }
-        else if (bytes[payload + 1] === 1) legacyMediaPackets += 1;
-        else unexpectedAudioSignals.push(`AAC packet type ${bytes[payload + 1]}`);
+        } else if (bytes[payload + 1] === 1) legacyMediaPackets += 1;
+        else
+          unexpectedAudioSignals.push(`AAC packet type ${bytes[payload + 1]}`);
       } else if (
         soundFormat === 9 &&
         (bytes[payload] & 0x0f) === 4 &&
@@ -1370,6 +1471,10 @@ test.beforeAll(async () => {
   assertProjectLocal(av1VorbisWebmFixturePath);
   assertProjectLocal(ogvCopyFixturePath);
   assertProjectLocal(ogvCopyOutputPath);
+  assertProjectLocal(aviCopyFixturePath);
+  assertProjectLocal(aviCopyOutputPath);
+  assertProjectLocal(complexAviCopyFixturePath);
+  assertProjectLocal(complexAviCopyOutputPath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -1390,6 +1495,10 @@ test.beforeAll(async () => {
   await rm(av1VorbisWebmFixturePath, { force: true });
   await rm(ogvCopyFixturePath, { force: true });
   await rm(ogvCopyOutputPath, { force: true });
+  await rm(aviCopyFixturePath, { force: true });
+  await rm(aviCopyOutputPath, { force: true });
+  await rm(complexAviCopyFixturePath, { force: true });
+  await rm(complexAviCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
@@ -1408,10 +1517,116 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-i", ogvFixturePath, "-map", "0:v:0", "-map", "0:a:0",
-      "-c", "copy", "-map_metadata", "0", "-f", "matroska",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-i",
+      ogvFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0",
+      "-c",
+      "copy",
+      "-map_metadata",
+      "0",
+      "-f",
+      "matroska",
       ogvCopyFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-i",
+      aviInputFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0",
+      "-c",
+      "copy",
+      "-map_metadata",
+      "0",
+      "-fflags",
+      "+bitexact",
+      "-f",
+      "matroska",
+      aviCopyFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-i",
+      aviInputFixturePath,
+      "-i",
+      mp3FixturePath,
+      "-i",
+      complexFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0",
+      "-map",
+      "1:a:0",
+      "-map",
+      "2:s:0",
+      "-c",
+      "copy",
+      "-map_metadata",
+      "-1",
+      "-map_chapters",
+      "2",
+      "-metadata",
+      "title=Within complex AVI destination source",
+      "-metadata",
+      "comment=Explicit AVI field-retention validation",
+      "-metadata:s:v:0",
+      "title=Primary MPEG-4 video",
+      "-metadata:s:a:0",
+      "language=eng",
+      "-metadata:s:a:0",
+      "title=Primary English MP3",
+      "-metadata:s:a:1",
+      "language=spa",
+      "-metadata:s:a:1",
+      "title=Secondary Spanish MP3",
+      "-metadata:s:s:0",
+      "language=fra",
+      "-metadata:s:s:0",
+      "title=French captions",
+      "-disposition:v:0",
+      "default",
+      "-disposition:a:0",
+      "default",
+      "-disposition:a:1",
+      "0",
+      "-disposition:s:0",
+      "default",
+      "-attach",
+      "fixtures/media/legacy-video-source.avi.json",
+      "-metadata:s:t:0",
+      "mimetype=application/json",
+      "-fflags",
+      "+bitexact",
+      "-f",
+      "matroska",
+      complexAviCopyFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -1442,36 +1657,85 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-fflags", "+bitexact", "-i", fixturePath,
-      "-i", artworkAudioFixturePath,
-      "-map", "0:v:0", "-map", "0:a:0", "-map", "1:v:0",
-      "-c", "copy", "-disposition:v:1", "attached_pic",
-      "-map_metadata", "-1", "-metadata", "title=Within video artwork",
-      "-movflags", "+faststart", "-f", "mp4", videoArtworkFixturePath,
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-fflags",
+      "+bitexact",
+      "-i",
+      fixturePath,
+      "-i",
+      artworkAudioFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0",
+      "-map",
+      "1:v:0",
+      "-c",
+      "copy",
+      "-disposition:v:1",
+      "attached_pic",
+      "-map_metadata",
+      "-1",
+      "-metadata",
+      "title=Within video artwork",
+      "-movflags",
+      "+faststart",
+      "-f",
+      "mp4",
+      videoArtworkFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   const complexIsoSourceArgs = [
-    "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-    "-i", complexFixturePath,
-    "-map", "0:v:0", "-map", "0:a:0", "-map", "0:a:1",
-    "-c", "copy", "-map_metadata", "0", "-map_chapters", "-1",
-    "-metadata:s:v:0", "title=Variable timing video",
-    "-metadata:s:a:0", "language=eng",
-    "-metadata:s:a:0", "title=Primary English audio",
-    "-metadata:s:a:1", "language=spa",
-    "-metadata:s:a:1", "title=Secondary Spanish audio",
-    "-disposition:v:0", "default",
-    "-disposition:a:0", "default",
-    "-disposition:a:1", "0",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-nostdin",
+    "-y",
+    "-i",
+    complexFixturePath,
+    "-map",
+    "0:v:0",
+    "-map",
+    "0:a:0",
+    "-map",
+    "0:a:1",
+    "-c",
+    "copy",
+    "-map_metadata",
+    "0",
+    "-map_chapters",
+    "-1",
+    "-metadata:s:v:0",
+    "title=Variable timing video",
+    "-metadata:s:a:0",
+    "language=eng",
+    "-metadata:s:a:0",
+    "title=Primary English audio",
+    "-metadata:s:a:1",
+    "language=spa",
+    "-metadata:s:a:1",
+    "title=Secondary Spanish audio",
+    "-disposition:v:0",
+    "default",
+    "-disposition:a:0",
+    "default",
+    "-disposition:a:1",
+    "0",
   ];
   await Promise.all([
     execFileAsync(
       "ffmpeg",
       [
         ...complexIsoSourceArgs,
-        "-movflags", "use_metadata_tags", "-f", "mov",
+        "-movflags",
+        "use_metadata_tags",
+        "-f",
+        "mov",
         complexIsoSourceFixturePaths.mov,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -1480,7 +1744,10 @@ test.beforeAll(async () => {
       "ffmpeg",
       [
         ...complexIsoSourceArgs,
-        "-brand", "3gp6", "-f", "3gp",
+        "-brand",
+        "3gp6",
+        "-f",
+        "3gp",
         complexIsoSourceFixturePaths["3gp"],
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -1490,86 +1757,195 @@ test.beforeAll(async () => {
     execFileAsync(
       "ffmpeg",
       [
-        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-        "-i", aviInputFixturePath, "-i", mp3FixturePath,
-        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
-        "-c", "copy", "-map_metadata", "-1",
-        "-metadata", "title=Within complex AVI source",
-        "-metadata", "comment=Deterministic AVI field retention",
-        "-metadata:s:v:0", "title=Primary MPEG-4 video",
-        "-metadata:s:a:0", "title=Primary English MP3",
-        "-metadata:s:a:1", "title=Secondary Spanish MP3",
-        "-disposition:v:0", "default",
-        "-disposition:a:0", "default",
-        "-disposition:a:1", "0",
-        "-f", "avi", complexLegacyWebSourceFixturePaths.avi,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        aviInputFixturePath,
+        "-i",
+        mp3FixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-map",
+        "1:a:0",
+        "-c",
+        "copy",
+        "-map_metadata",
+        "-1",
+        "-metadata",
+        "title=Within complex AVI source",
+        "-metadata",
+        "comment=Deterministic AVI field retention",
+        "-metadata:s:v:0",
+        "title=Primary MPEG-4 video",
+        "-metadata:s:a:0",
+        "title=Primary English MP3",
+        "-metadata:s:a:1",
+        "title=Secondary Spanish MP3",
+        "-disposition:v:0",
+        "default",
+        "-disposition:a:0",
+        "default",
+        "-disposition:a:1",
+        "0",
+        "-f",
+        "avi",
+        complexLegacyWebSourceFixturePaths.avi,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
     execFileAsync(
       "ffmpeg",
       [
-        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-        "-i", av1OpusFixturePath, "-i", opusFixturePath,
-        "-i", webVttFixturePath, "-i", complexFixturePath,
-        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
-        "-map", "2:s:0", "-c", "copy", "-map_metadata", "-1",
-        "-map_chapters", "3",
-        "-metadata", "title=Within complex WebM source",
-        "-metadata", "comment=Deterministic WebM field retention",
-        "-metadata:s:v:0", "title=Primary AV1 video",
-        "-metadata:s:a:0", "language=eng",
-        "-metadata:s:a:0", "title=Primary English Opus",
-        "-metadata:s:a:1", "language=spa",
-        "-metadata:s:a:1", "title=Secondary Spanish Opus",
-        "-metadata:s:s:0", "language=fra",
-        "-metadata:s:s:0", "title=French WebVTT captions",
-        "-disposition:v:0", "default",
-        "-disposition:a:0", "default",
-        "-disposition:a:1", "0",
-        "-disposition:s:0", "default",
-        "-fflags", "+bitexact",
-        "-f", "webm", complexLegacyWebSourceFixturePaths.webm,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        av1OpusFixturePath,
+        "-i",
+        opusFixturePath,
+        "-i",
+        webVttFixturePath,
+        "-i",
+        complexFixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-map",
+        "1:a:0",
+        "-map",
+        "2:s:0",
+        "-c",
+        "copy",
+        "-map_metadata",
+        "-1",
+        "-map_chapters",
+        "3",
+        "-metadata",
+        "title=Within complex WebM source",
+        "-metadata",
+        "comment=Deterministic WebM field retention",
+        "-metadata:s:v:0",
+        "title=Primary AV1 video",
+        "-metadata:s:a:0",
+        "language=eng",
+        "-metadata:s:a:0",
+        "title=Primary English Opus",
+        "-metadata:s:a:1",
+        "language=spa",
+        "-metadata:s:a:1",
+        "title=Secondary Spanish Opus",
+        "-metadata:s:s:0",
+        "language=fra",
+        "-metadata:s:s:0",
+        "title=French WebVTT captions",
+        "-disposition:v:0",
+        "default",
+        "-disposition:a:0",
+        "default",
+        "-disposition:a:1",
+        "0",
+        "-disposition:s:0",
+        "default",
+        "-fflags",
+        "+bitexact",
+        "-f",
+        "webm",
+        complexLegacyWebSourceFixturePaths.webm,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
     execFileAsync(
       "ffmpeg",
       [
-        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-        "-i", ogvFixturePath, "-i", oggFixturePath,
-        "-map", "0:v:0", "-map", "0:a:0", "-map", "1:a:0",
-        "-c", "copy", "-map_metadata", "-1",
-        "-metadata", "title=Within complex Ogg source",
-        "-metadata", "comment=Deterministic Ogg field retention",
-        "-metadata:s:v:0", "title=Primary Theora video",
-        "-metadata:s:a:0", "language=eng",
-        "-metadata:s:a:0", "title=Primary English Vorbis",
-        "-metadata:s:a:1", "language=spa",
-        "-metadata:s:a:1", "title=Secondary Spanish Vorbis",
-        "-disposition:v:0", "default",
-        "-disposition:a:0", "default",
-        "-disposition:a:1", "0",
-        "-fflags", "+bitexact",
-        "-f", "ogv", complexLegacyWebSourceFixturePaths.ogv,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        ogvFixturePath,
+        "-i",
+        oggFixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-map",
+        "1:a:0",
+        "-c",
+        "copy",
+        "-map_metadata",
+        "-1",
+        "-metadata",
+        "title=Within complex Ogg source",
+        "-metadata",
+        "comment=Deterministic Ogg field retention",
+        "-metadata:s:v:0",
+        "title=Primary Theora video",
+        "-metadata:s:a:0",
+        "language=eng",
+        "-metadata:s:a:0",
+        "title=Primary English Vorbis",
+        "-metadata:s:a:1",
+        "language=spa",
+        "-metadata:s:a:1",
+        "title=Secondary Spanish Vorbis",
+        "-disposition:v:0",
+        "default",
+        "-disposition:a:0",
+        "default",
+        "-disposition:a:1",
+        "0",
+        "-fflags",
+        "+bitexact",
+        "-f",
+        "ogv",
+        complexLegacyWebSourceFixturePaths.ogv,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
   ]);
   const complexTransportSourceArgs = [
-    "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-    "-i", complexFixturePath,
-    "-c", "copy", "-map_metadata", "0", "-map_chapters", "-1",
+    "-hide_banner",
+    "-loglevel",
+    "error",
+    "-nostdin",
+    "-y",
+    "-i",
+    complexFixturePath,
+    "-c",
+    "copy",
+    "-map_metadata",
+    "0",
+    "-map_chapters",
+    "-1",
   ];
   await Promise.all([
     execFileAsync(
       "ffmpeg",
       [
         ...complexTransportSourceArgs,
-        "-map", "0:v:0", "-map", "0:a:0", "-map", "0:a:1",
-        "-metadata:s:a:0", "language=eng",
-        "-metadata:s:a:1", "language=spa",
-        "-f", "mpegts", complexTransportSourceFixturePaths["mpeg-ts"],
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-map",
+        "0:a:1",
+        "-metadata:s:a:0",
+        "language=eng",
+        "-metadata:s:a:1",
+        "language=spa",
+        "-f",
+        "mpegts",
+        complexTransportSourceFixturePaths["mpeg-ts"],
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
@@ -1577,9 +1953,15 @@ test.beforeAll(async () => {
       "ffmpeg",
       [
         ...complexTransportSourceArgs,
-        "-map", "0:v:0", "-map", "0:a:0",
-        "-metadata", "title=Within complex remux fixture",
-        "-f", "flv", complexTransportSourceFixturePaths.flv,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-metadata",
+        "title=Within complex remux fixture",
+        "-f",
+        "flv",
+        complexTransportSourceFixturePaths.flv,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
@@ -1627,32 +2009,88 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=1",
-      "-map", "0:v:0", "-c:v", "mjpeg", "-q:v", "4", "-an",
-      "-f", "avi", unsupportedMatroskaFixturePath,
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=320x180:rate=24:duration=1",
+      "-map",
+      "0:v:0",
+      "-c:v",
+      "mjpeg",
+      "-q:v",
+      "4",
+      "-an",
+      "-f",
+      "avi",
+      unsupportedMatroskaFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   const hevcFixtureArgs = existsSync(protectedHevcSourcePath)
     ? [
-        "-i", protectedHevcSourcePath, "-t", "4",
-        "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
-        "-map_metadata", "0", "-f", "mov", hevcMovFixturePath,
+        "-i",
+        protectedHevcSourcePath,
+        "-t",
+        "4",
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-map_metadata",
+        "0",
+        "-f",
+        "mov",
+        hevcMovFixturePath,
       ]
     : [
-        "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=4",
-        "-f", "lavfi", "-i", "sine=frequency=880:sample_rate=48000:duration=4",
-        "-map", "0:v:0", "-map", "1:a:0",
-        "-c:v", "libx265", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
-        "-x265-params", "pools=1:frame-threads=1",
-        "-c:a", "aac", "-b:a", "96k", "-shortest",
-        "-metadata", "title=Within synthetic hosted HEVC fixture",
-        "-f", "mov", hevcMovFixturePath,
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=320x180:rate=24:duration=4",
+        "-f",
+        "lavfi",
+        "-i",
+        "sine=frequency=880:sample_rate=48000:duration=4",
+        "-map",
+        "0:v:0",
+        "-map",
+        "1:a:0",
+        "-c:v",
+        "libx265",
+        "-preset",
+        "ultrafast",
+        "-pix_fmt",
+        "yuv420p",
+        "-x265-params",
+        "pools=1:frame-threads=1",
+        "-c:a",
+        "aac",
+        "-b:a",
+        "96k",
+        "-shortest",
+        "-metadata",
+        "title=Within synthetic hosted HEVC fixture",
+        "-f",
+        "mov",
+        hevcMovFixturePath,
       ];
   await execFileAsync(
     "ffmpeg",
-    ["-hide_banner", "-loglevel", "error", "-nostdin", "-y", ...hevcFixtureArgs],
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      ...hevcFixtureArgs,
+    ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   await Promise.all([
@@ -1660,10 +2098,23 @@ test.beforeAll(async () => {
       execFileAsync(
         "ffmpeg",
         [
-          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-          "-i", hevcMovFixturePath, "-map", "0:v:0", "-map", "0:a:0",
-          "-c", "copy", "-map_metadata", "0",
-          "-f", input === "mpeg-ts" ? "mpegts" : input === "mkv" ? "matroska" : input,
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-nostdin",
+          "-y",
+          "-i",
+          hevcMovFixturePath,
+          "-map",
+          "0:v:0",
+          "-map",
+          "0:a:0",
+          "-c",
+          "copy",
+          "-map_metadata",
+          "0",
+          "-f",
+          input === "mpeg-ts" ? "mpegts" : input === "mkv" ? "matroska" : input,
           hevcContainerFixturePaths[input],
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -1674,20 +2125,51 @@ test.beforeAll(async () => {
     execFileAsync(
       "ffmpeg",
       [
-        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-        "-i", av1OpusFixturePath,
-        "-map", "0:v:0", "-map", "0:a:0", "-c", "copy",
-        "-map_metadata", "0", "-f", "webm", av1OpusWebmFixturePath,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        av1OpusFixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-map_metadata",
+        "0",
+        "-f",
+        "webm",
+        av1OpusWebmFixturePath,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
     execFileAsync(
       "ffmpeg",
       [
-        "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-        "-i", av1OpusFixturePath, "-i", oggFixturePath,
-        "-map", "0:v:0", "-map", "1:a:0", "-c", "copy", "-shortest",
-        "-map_metadata", "0", "-f", "webm", av1VorbisWebmFixturePath,
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        av1OpusFixturePath,
+        "-i",
+        oggFixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "1:a:0",
+        "-c",
+        "copy",
+        "-shortest",
+        "-map_metadata",
+        "0",
+        "-f",
+        "webm",
+        av1VorbisWebmFixturePath,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
@@ -1695,48 +2177,100 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-fflags", "+genpts+bitexact", "-r", "24", "-i", m2vFixturePath,
-      "-i", audioFixturePath, "-map", "0:v:0", "-map", "1:a:0",
-      "-map_metadata", "-1", "-c", "copy", "-shortest", "-f", "matroska",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-fflags",
+      "+genpts+bitexact",
+      "-r",
+      "24",
+      "-i",
+      m2vFixturePath,
+      "-i",
+      audioFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-map_metadata",
+      "-1",
+      "-c",
+      "copy",
+      "-shortest",
+      "-f",
+      "matroska",
       mpeg2ContainerFixturePaths.mkv,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   await Promise.all(
-    ([
-      [mpeg2ContainerFixturePaths.mp4, "mp4"],
-      [mpeg2ContainerFixturePaths.mov, "mov"],
-      [mpeg2ContainerFixturePaths.avi, "avi"],
-      [mpeg2ContainerFixturePaths["mpeg-ts"], "mpegts"],
-    ] as const).map(([outputPath, format]) =>
+    (
+      [
+        [mpeg2ContainerFixturePaths.mp4, "mp4"],
+        [mpeg2ContainerFixturePaths.mov, "mov"],
+        [mpeg2ContainerFixturePaths.avi, "avi"],
+        [mpeg2ContainerFixturePaths["mpeg-ts"], "mpegts"],
+      ] as const
+    ).map(([outputPath, format]) =>
       execFileAsync(
         "ffmpeg",
         [
-          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-          "-fflags", "+genpts+bitexact", "-r", "24", "-i", m2vFixturePath,
-          "-map", "0:v:0", "-map_metadata", "-1", "-c:v", "copy",
-          "-f", format, outputPath,
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-nostdin",
+          "-y",
+          "-fflags",
+          "+genpts+bitexact",
+          "-r",
+          "24",
+          "-i",
+          m2vFixturePath,
+          "-map",
+          "0:v:0",
+          "-map_metadata",
+          "-1",
+          "-c:v",
+          "copy",
+          "-f",
+          format,
+          outputPath,
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       ),
     ),
   );
   await Promise.all(
-    (Object.entries(mp3ContainerFixturePaths) as Array<
-      [keyof typeof mp3ContainerFixturePaths, string]
-    >)
+    (
+      Object.entries(mp3ContainerFixturePaths) as Array<
+        [keyof typeof mp3ContainerFixturePaths, string]
+      >
+    )
       .filter(([input]) => input !== "mkv")
       .map(([input, outputPath]) =>
         execFileAsync(
           "ffmpeg",
           [
-            "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-            "-i", mp3ContainerFixturePaths.mkv,
-            "-map", "0:v:0", "-map", "0:a:0", "-map_metadata", "0",
-            "-c", "copy",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-nostdin",
+            "-y",
+            "-i",
+            mp3ContainerFixturePaths.mkv,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-map_metadata",
+            "0",
+            "-c",
+            "copy",
             ...(input === "avi" ? ["-bsf:v", "h264_mp4toannexb"] : []),
-            "-f", input === "mpeg-ts" ? "mpegts" : input,
+            "-f",
+            input === "mpeg-ts" ? "mpegts" : input,
             outputPath,
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
@@ -1746,27 +2280,65 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-fflags", "+genpts+bitexact", "-r", "24", "-i", m4vFixturePath,
-      "-i", audioFixturePath, "-map", "0:v:0", "-map", "1:a:0",
-      "-map_metadata", "-1", "-c", "copy", "-shortest", "-f", "matroska",
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-fflags",
+      "+genpts+bitexact",
+      "-r",
+      "24",
+      "-i",
+      m4vFixturePath,
+      "-i",
+      audioFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      "-map_metadata",
+      "-1",
+      "-c",
+      "copy",
+      "-shortest",
+      "-f",
+      "matroska",
       m4vContainerFixturePaths.mkv,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   await Promise.all(
-    ([
-      [m4vContainerFixturePaths.mp4, "mp4"],
-      [m4vContainerFixturePaths.mov, "mov"],
-      [m4vContainerFixturePaths.avi, "avi"],
-    ] as const).map(([outputPath, format]) =>
+    (
+      [
+        [m4vContainerFixturePaths.mp4, "mp4"],
+        [m4vContainerFixturePaths.mov, "mov"],
+        [m4vContainerFixturePaths.avi, "avi"],
+      ] as const
+    ).map(([outputPath, format]) =>
       execFileAsync(
         "ffmpeg",
         [
-          "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-          "-fflags", "+genpts+bitexact", "-r", "24", "-i", m4vFixturePath,
-          "-map", "0:v:0", "-map_metadata", "-1", "-c:v", "copy",
-          "-f", format, outputPath,
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-nostdin",
+          "-y",
+          "-fflags",
+          "+genpts+bitexact",
+          "-r",
+          "24",
+          "-i",
+          m4vFixturePath,
+          "-map",
+          "0:v:0",
+          "-map_metadata",
+          "-1",
+          "-c:v",
+          "copy",
+          "-f",
+          format,
+          outputPath,
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       ),
@@ -1775,14 +2347,44 @@ test.beforeAll(async () => {
   await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
-      "-f", "lavfi", "-i", "testsrc2=size=320x180:rate=24:duration=2",
-      "-f", "lavfi", "-i", "smptebars=size=320x180:rate=24:duration=2",
-      "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=2",
-      "-map", "0:v:0", "-map", "1:v:0", "-map", "2:a:0",
-      "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
-      "-threads:v:0", "1", "-threads:v:1", "1", "-c:a", "aac",
-      "-f", "matroska", multiVideoFixturePath,
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=320x180:rate=24:duration=2",
+      "-f",
+      "lavfi",
+      "-i",
+      "smptebars=size=320x180:rate=24:duration=2",
+      "-f",
+      "lavfi",
+      "-i",
+      "sine=frequency=440:sample_rate=48000:duration=2",
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:v:0",
+      "-map",
+      "2:a:0",
+      "-c:v",
+      "libx264",
+      "-preset",
+      "ultrafast",
+      "-pix_fmt",
+      "yuv420p",
+      "-threads:v:0",
+      "1",
+      "-threads:v:1",
+      "1",
+      "-c:a",
+      "aac",
+      "-f",
+      "matroska",
+      multiVideoFixturePath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -2033,6 +2635,10 @@ test.afterAll(async () => {
   await rm(av1VorbisWebmFixturePath, { force: true });
   await rm(ogvCopyFixturePath, { force: true });
   await rm(ogvCopyOutputPath, { force: true });
+  await rm(aviCopyFixturePath, { force: true });
+  await rm(aviCopyOutputPath, { force: true });
+  await rm(complexAviCopyFixturePath, { force: true });
+  await rm(complexAviCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
@@ -2110,6 +2716,7 @@ async function copyAndDeleteBrowserStorageEntry(
 async function runMediaRoute(
   profileId:
     | "mkv-to-ogv"
+    | "mkv-to-avi"
     | "mkv-to-mp4"
     | "mov-to-mp4"
     | "3gp-to-mp4"
@@ -2382,9 +2989,7 @@ async function runMediaRoute(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await page.locator('[data-testid="file-input"]').setInputFiles(inputPath);
-    await page
-      .locator('[data-testid="format-select"]')
-      .selectOption(profileId);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
     await startEnabledConversion();
 
     await expect
@@ -2423,9 +3028,9 @@ async function runMediaRoute(
       profileId === "3gp-to-wav" ||
       profileId === "mp4-to-wav"
     ) {
-      expect(state.warnings.some((warning) => warning.includes("video stream"))).toBe(
-        true,
-      );
+      expect(
+        state.warnings.some((warning) => warning.includes("video stream")),
+      ).toBe(true);
     } else if (
       profileId === "m4a-to-wav" ||
       profileId === "aac-to-m4a" ||
@@ -2450,27 +3055,36 @@ async function runMediaRoute(
       profileId === "opus-to-wav" ||
       profileId === "aiff-to-flac" ||
       profileId === "ogg-to-flac" ||
-      profileId === "opus-to-flac"
-      || profileId.endsWith("-to-aiff")
-      || profileId.endsWith("-to-amr")
-      || (profileId.endsWith("-to-mp3") && !profileId.startsWith("mkv-") &&
-        !profileId.startsWith("mp4-") && !profileId.startsWith("mov-") &&
-        !profileId.startsWith("avi-") && !profileId.startsWith("mpeg-ts-") &&
-        !profileId.startsWith("flv-"))
-      || (profileId.endsWith("-to-aac") && !profileId.startsWith("mkv-") &&
-        !profileId.startsWith("mp4-") && !profileId.startsWith("mov-") &&
-        !profileId.startsWith("3gp-") && !profileId.startsWith("mpeg-ts-") &&
-        !profileId.startsWith("flv-"))
-      || (profileId.endsWith("-to-opus") && !profileId.startsWith("mkv-") &&
-        !profileId.startsWith("webm-"))
-      || (profileId.endsWith("-to-ogg") && !profileId.startsWith("mkv-") &&
-        !profileId.startsWith("webm-") && !profileId.startsWith("ogv-"))
+      profileId === "opus-to-flac" ||
+      profileId.endsWith("-to-aiff") ||
+      profileId.endsWith("-to-amr") ||
+      (profileId.endsWith("-to-mp3") &&
+        !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("mp4-") &&
+        !profileId.startsWith("mov-") &&
+        !profileId.startsWith("avi-") &&
+        !profileId.startsWith("mpeg-ts-") &&
+        !profileId.startsWith("flv-")) ||
+      (profileId.endsWith("-to-aac") &&
+        !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("mp4-") &&
+        !profileId.startsWith("mov-") &&
+        !profileId.startsWith("3gp-") &&
+        !profileId.startsWith("mpeg-ts-") &&
+        !profileId.startsWith("flv-")) ||
+      (profileId.endsWith("-to-opus") &&
+        !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("webm-")) ||
+      (profileId.endsWith("-to-ogg") &&
+        !profileId.startsWith("mkv-") &&
+        !profileId.startsWith("webm-") &&
+        !profileId.startsWith("ogv-"))
     ) {
       expect(state.warnings).toEqual([]);
     } else {
-      expect(state.warnings.some((warning) => warning.includes("audio stream"))).toBe(
-        true,
-      );
+      expect(
+        state.warnings.some((warning) => warning.includes("audio stream")),
+      ).toBe(true);
     }
     expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
     expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
@@ -2549,9 +3163,11 @@ async function runMediaRoute(
     const video = probe.streams.find((stream) => stream.codec_type === "video");
     const [rateNumerator, rateDenominator] = String(
       video?.avg_frame_rate ?? "0/0",
-    ).split("/").map(Number);
+    )
+      .split("/")
+      .map(Number);
     const decodedDuration =
-      Number(video?.nb_read_frames) * rateDenominator / rateNumerator;
+      (Number(video?.nb_read_frames) * rateDenominator) / rateNumerator;
     const probedDuration = Number(probe.format.duration);
     const outputDuration = Number.isFinite(probedDuration)
       ? probedDuration
@@ -2588,12 +3204,25 @@ async function validateMpeg2VideoOutput(
   const { stderr } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-nostdin",
-      "-ss", "2", "-i", m2vFixturePath,
-      "-ss", "2", "-i", outputPath,
+      "-hide_banner",
+      "-nostdin",
+      "-ss",
+      "2",
+      "-i",
+      m2vFixturePath,
+      "-ss",
+      "2",
+      "-i",
+      outputPath,
       "-filter_complex",
       "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
-      "-map", "[quality]", "-frames:v", "1", "-f", "null", "NUL",
+      "-map",
+      "[quality]",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "NUL",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -2616,12 +3245,21 @@ async function validateH264WebmOutput(
   const { stderr } = await execFileAsync(
     "ffmpeg",
     [
-      "-hide_banner", "-nostdin",
-      "-i", h264FixturePath,
-      "-i", outputPath,
+      "-hide_banner",
+      "-nostdin",
+      "-i",
+      h264FixturePath,
+      "-i",
+      outputPath,
       "-filter_complex",
       "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
-      "-map", "[quality]", "-frames:v", "1", "-f", "null", "NUL",
+      "-map",
+      "[quality]",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "NUL",
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -2649,11 +3287,7 @@ async function validateContainerWebmOutput(
 
 async function runSmallDirectAudioRoute(
   profileId:
-    | "mkv-to-m4a"
-    | "mp3-to-flac"
-    | "mp3-to-aiff"
-    | "mp3-to-amr"
-    | "wav-to-mp3",
+    "mkv-to-m4a" | "mp3-to-flac" | "mp3-to-aiff" | "mp3-to-amr" | "wav-to-mp3",
   inputPath: string,
   outputName: string,
   outputPath: string,
@@ -2730,12 +3364,7 @@ async function runSmallDirectAudioRoute(
 }
 
 test("browser FFmpeg AVIO remuxes MKV to a valid MP4 with bounded I/O", async () => {
-  await runMediaRoute(
-    "mkv-to-mp4",
-    mp4OutputPath,
-    ["h264", "aac"],
-    250_000,
-  );
+  await runMediaRoute("mkv-to-mp4", mp4OutputPath, ["h264", "aac"], 250_000);
 });
 
 test("browser FFmpeg AVIO remuxes genuine QuickTime MOV to valid MP4", async () => {
@@ -2884,7 +3513,9 @@ test("browser FFmpeg coalesces PCM packets for a bounded direct WAV save", async
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await removeBrowserStorageEntry(outputName);
-    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(mp3FixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-wav");
@@ -3013,7 +3644,9 @@ test("direct MP3 save propagates write failure and releases the partial file", a
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await removeBrowserStorageEntry(outputName);
-    await page.locator('[data-testid="file-input"]').setInputFiles(wavFixturePath);
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(wavFixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("wav-to-mp3");
@@ -3059,7 +3692,9 @@ test("direct AMR save propagates write failure and releases the partial file", a
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await removeBrowserStorageEntry(outputName);
-    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(mp3FixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-amr");
@@ -3106,7 +3741,9 @@ test("direct AIFF coalescing propagates write failure and releases the partial f
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await removeBrowserStorageEntry(outputName);
-    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(mp3FixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-aiff");
@@ -3152,7 +3789,9 @@ test("direct WAV coalescing propagates write failure and releases the partial fi
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await removeBrowserStorageEntry(outputName);
-    await page.locator('[data-testid="file-input"]').setInputFiles(mp3FixturePath);
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(mp3FixturePath);
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("mp3-to-wav");
@@ -3374,42 +4013,59 @@ for (const route of [
   ["ogv-to-flac", ogvFixturePath],
 ] as const) {
   const standaloneAudioMarker =
-      route[0] === "amr-wb-to-mp3"
+    route[0] === "amr-wb-to-mp3"
       ? "[amr-wb-mp3] "
       : route[0] === "amr-wb-to-opus"
-      ? "[standalone-opus] [amr-wb-opus] "
-      : /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
-      ? "[webm-audio] "
-      : /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
-      ? "[3gp-amr] "
-      : /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(route[0])
-      ? "[standalone-aac] "
-      : route[0] === "amr-wb-to-aac"
-      ? "[standalone-aac] [amr-wb-aac] "
-      : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(route[0])
-        ? "[standalone-opus] "
-      : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|opus)-to-ogg$/.test(route[0])
-        ? "[standalone-vorbis] "
-      : route[0] === "amr-wb-to-ogg"
-        ? "[standalone-vorbis] [amr-wb-vorbis] "
-      : /^(?:m4a|aac|mp3|aiff|ogg|opus)-to-wma$/.test(route[0])
-        ? "[standalone-wma] "
-      : route[0] === "amr-wb-to-wma"
-        ? "[standalone-wma] [amr-wb-wma] "
-      : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(route[0])
-        ? "[container-wma] "
-      : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv|webm)-to-aiff$/.test(route[0])
-        ? "[container-aiff] "
-      : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(route[0]) ||
-          /^(?:avi|ogv)-to-aac$/.test(route[0])
-        ? "[container-amr-aac] "
-      : /^(?:mp4|mov|mpeg-ts|flv|avi|ogv)-to-opus$/.test(route[0]) ||
-          /^(?:mp4|mov|mpeg-ts|flv|avi)-to-ogg$/.test(route[0]) ||
-          route[0] === "ogv-to-mp3"
-        ? "[container-lossy-audio] "
-      : /^(?:avi|ogv|webm)-to-m4a$/.test(route[0]) || route[0] === "3gp-to-amr"
-        ? "[container-m4a-amr] "
-      : "";
+        ? "[standalone-opus] [amr-wb-opus] "
+        : /^webm-to-(?:wav|flac|amr|mp3|aac)$/.test(route[0])
+          ? "[webm-audio] "
+          : /^3gp-to-(?:aiff|mp3|opus|ogg)$/.test(route[0])
+            ? "[3gp-amr] "
+            : /^(?:m4a|amr|mp3|flac|wav|wma|aiff|ogg|opus)-to-aac$/.test(
+                  route[0],
+                )
+              ? "[standalone-aac] "
+              : route[0] === "amr-wb-to-aac"
+                ? "[standalone-aac] [amr-wb-aac] "
+                : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|ogg)-to-opus$/.test(
+                      route[0],
+                    )
+                  ? "[standalone-opus] "
+                  : /^(?:m4a|aac|amr|mp3|flac|wav|wma|aiff|opus)-to-ogg$/.test(
+                        route[0],
+                      )
+                    ? "[standalone-vorbis] "
+                    : route[0] === "amr-wb-to-ogg"
+                      ? "[standalone-vorbis] [amr-wb-vorbis] "
+                      : /^(?:m4a|aac|mp3|aiff|ogg|opus)-to-wma$/.test(route[0])
+                        ? "[standalone-wma] "
+                        : route[0] === "amr-wb-to-wma"
+                          ? "[standalone-wma] [amr-wb-wma] "
+                          : /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|webm)-to-wma$/.test(
+                                route[0],
+                              )
+                            ? "[container-wma] "
+                            : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv|webm)-to-aiff$/.test(
+                                  route[0],
+                                )
+                              ? "[container-aiff] "
+                              : /^(?:mkv|mp4|mov|mpeg-ts|flv|avi|ogv)-to-amr$/.test(
+                                    route[0],
+                                  ) || /^(?:avi|ogv)-to-aac$/.test(route[0])
+                                ? "[container-amr-aac] "
+                                : /^(?:mp4|mov|mpeg-ts|flv|avi|ogv)-to-opus$/.test(
+                                      route[0],
+                                    ) ||
+                                    /^(?:mp4|mov|mpeg-ts|flv|avi)-to-ogg$/.test(
+                                      route[0],
+                                    ) ||
+                                    route[0] === "ogv-to-mp3"
+                                  ? "[container-lossy-audio] "
+                                  : /^(?:avi|ogv|webm)-to-m4a$/.test(
+                                        route[0],
+                                      ) || route[0] === "3gp-to-amr"
+                                    ? "[container-m4a-amr] "
+                                    : "";
   test(`${standaloneAudioMarker}${route[0]} propagates a destination failure and removes partial output`, async () => {
     await page.goto("/?test=1&fault=write");
     await page.waitForFunction(
@@ -3462,13 +4118,10 @@ test("browser remux preserves multiple audio tracks and VFR timing while disclos
           "spa",
         ]);
         expect(audio.map((stream) => stream.disposition?.default)).toEqual([
-          1,
-          0,
+          1, 0,
         ]);
         expect(probe.chapters ?? []).toEqual([]);
-        expect(probe.format.tags?.title).toBe(
-          "Within complex remux fixture",
-        );
+        expect(probe.format.tags?.title).toBe("Within complex remux fixture");
 
         const { stdout: packetOutput } = await execFileAsync(
           "ffprobe",
@@ -3511,8 +4164,18 @@ test("browser remux preserves multiple audio tracks and VFR timing while disclos
         await execFileAsync(
           "ffmpeg",
           [
-            "-hide_banner", "-loglevel", "error", "-i", outputPath,
-            "-map", "0:v:0", "-map", "0:a", "-f", "null", "-",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a",
+            "-f",
+            "null",
+            "-",
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
@@ -3642,7 +4305,17 @@ test("browser FFmpeg losslessly remuxes raw AAC into bounded M4A", async () => {
       validate: async (_probe, outputPath) => {
         await execFileAsync(
           "ffmpeg",
-          ["-v", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
+          [
+            "-v",
+            "error",
+            "-i",
+            outputPath,
+            "-map",
+            "0:a:0",
+            "-f",
+            "null",
+            "NUL",
+          ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
       },
@@ -3694,12 +4367,7 @@ test("browser FFmpeg AVIO extracts Flash Video audio to valid M4A", async () => 
 });
 
 test("browser FFmpeg decodes AAC and encodes bounded PCM WAV", async () => {
-  await runMediaRoute(
-    "mkv-to-wav",
-    wavOutputPath,
-    ["pcm_s16le"],
-    300_000,
-  );
+  await runMediaRoute("mkv-to-wav", wavOutputPath, ["pcm_s16le"], 300_000);
 });
 
 test("browser FFmpeg extracts MP4 audio and encodes bounded PCM WAV", async () => {
@@ -3878,7 +4546,10 @@ test("browser FFmpeg decodes ALAC M4A to bounded PCM WAV", async () => {
     ["pcm_s16le"],
     700_000,
     alacFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(alacFixturePath, outputPath) },
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(alacFixturePath, outputPath),
+    },
   );
 });
 
@@ -3889,7 +4560,10 @@ test("browser FFmpeg converts ALAC M4A to lossless FLAC", async () => {
     ["flac"],
     20_000,
     alacFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(alacFixturePath, outputPath) },
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(alacFixturePath, outputPath),
+    },
   );
 });
 
@@ -3916,7 +4590,10 @@ test("browser FFmpeg losslessly transcodes FLAC to ALAC M4A", async () => {
     ["alac"],
     20_000,
     flacFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedPcmMatch(flacFixturePath, outputPath) },
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedPcmMatch(flacFixturePath, outputPath),
+    },
   );
 });
 
@@ -3927,7 +4604,10 @@ test("browser FFmpeg decodes WMA2 to bounded PCM WAV", async () => {
     ["pcm_s16le"],
     700_000,
     wmaFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60) },
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60),
+    },
   );
 });
 
@@ -3938,7 +4618,10 @@ test("browser FFmpeg converts WMA2 to FLAC", async () => {
     ["flac"],
     20_000,
     wmaFixturePath,
-    { validate: async (_probe, outputPath) => expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60) },
+    {
+      validate: async (_probe, outputPath) =>
+        expectDecodedAudioPsnr(wmaFixturePath, outputPath, 60),
+    },
   );
 });
 
@@ -4007,9 +4690,7 @@ async function expectWmaTranscodeQuality(
     "NUL",
   ]);
   const channelSdr = [
-    ...stderr.matchAll(
-      /SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
-    ),
+    ...stderr.matchAll(/SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi),
   ].map((match) => Number(match[1]));
   expect(channelSdr.length).toBeGreaterThan(0);
   expect(Math.min(...channelSdr)).toBeGreaterThanOrEqual(-6.5);
@@ -4028,8 +4709,12 @@ for (const [route, input, inputPath] of standaloneWmaOutputRoutes) {
         expectedWarningFragments: [],
         validate: async (probe, outputPath) => {
           expect(String(probe.format.format_name).split(",")).toContain("asf");
-          expect(probe.streams[0]?.sample_rate).toBe(input === "amr-wb" ? "32000" : "48000");
-          expect(probe.streams[0]?.bit_rate).toBe(input === "amr-wb" ? "64000" : "320000");
+          expect(probe.streams[0]?.sample_rate).toBe(
+            input === "amr-wb" ? "32000" : "48000",
+          );
+          expect(probe.streams[0]?.bit_rate).toBe(
+            input === "amr-wb" ? "64000" : "320000",
+          );
           await expectWmaTranscodeQuality(inputPath, outputPath);
         },
       },
@@ -4453,9 +5138,7 @@ async function expectMp3TranscodeQuality(
     "NUL",
   ]);
   const channelSdr = [
-    ...stderr.matchAll(
-      /SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
-    ),
+    ...stderr.matchAll(/SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi),
   ].map((match) => Number(match[1]));
   expect(channelSdr.length).toBeGreaterThan(0);
   expect(Math.min(...channelSdr)).toBeGreaterThanOrEqual(-4);
@@ -4480,11 +5163,8 @@ for (const [route, input, inputPath] of standaloneMp3OutputRoutes) {
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
           );
           expect(Number(audio?.channels)).toBeLessThanOrEqual(2);
-          const expectedSampleRate = input === "amr"
-            ? 8_000
-            : input === "amr-wb"
-              ? 16_000
-              : null;
+          const expectedSampleRate =
+            input === "amr" ? 8_000 : input === "amr-wb" ? 16_000 : null;
           if (expectedSampleRate === null) {
             expect(Number(audio?.sample_rate)).toBeGreaterThanOrEqual(32_000);
           } else {
@@ -4492,8 +5172,13 @@ for (const [route, input, inputPath] of standaloneMp3OutputRoutes) {
           }
           expect(Number(audio?.sample_rate)).toBeLessThanOrEqual(48_000);
           expect(Number(audio?.bit_rate)).toBe(
-            input === "amr" ? 32_000 : input === "amr-wb" ? 64_000 :
-              Number(audio?.channels) === 1 ? 128_000 : 192_000,
+            input === "amr"
+              ? 32_000
+              : input === "amr-wb"
+                ? 64_000
+                : Number(audio?.channels) === 1
+                  ? 128_000
+                  : 192_000,
           );
           await expectMp3TranscodeQuality(inputPath, outputPath);
         },
@@ -4574,9 +5259,7 @@ async function expectAacTranscodeQuality(
     "NUL",
   ]);
   const channelSdr = [
-    ...stderr.matchAll(
-      /SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
-    ),
+    ...stderr.matchAll(/SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi),
   ].map((match) => Number(match[1]));
   expect(channelSdr.length).toBeGreaterThan(0);
   expect(Math.min(...channelSdr)).toBeGreaterThanOrEqual(-6.5);
@@ -4600,8 +5283,10 @@ for (const [route, input, inputPath] of standaloneAacOutputRoutes) {
           );
           expect(audio?.profile).toBe("LC");
           expect(Number(audio?.channels)).toBeLessThanOrEqual(2);
-          expect([8_000, 11_025, 12_000, 16_000, 22_050, 24_000, 32_000, 44_100, 48_000])
-            .toContain(Number(audio?.sample_rate));
+          expect([
+            8_000, 11_025, 12_000, 16_000, 22_050, 24_000, 32_000, 44_100,
+            48_000,
+          ]).toContain(Number(audio?.sample_rate));
           if (input === "amr") {
             expect(Number(audio?.sample_rate)).toBe(8_000);
           } else if (input === "amr-wb") {
@@ -4717,7 +5402,10 @@ test("[container-m4a-amr] browser FFmpeg losslessly extracts AMR-NB from 3GP", a
         );
         expect(Number(audio?.sample_rate)).toBe(8_000);
         expect(Number(audio?.channels)).toBe(1);
-        await expectCompressedAudioPacketMatch(threeGpAmrFixturePath, outputPath);
+        await expectCompressedAudioPacketMatch(
+          threeGpAmrFixturePath,
+          outputPath,
+        );
       },
     },
   );
@@ -4749,25 +5437,43 @@ for (const [route, output, codec] of webmAudioOutputRoutes) {
           );
           expect(Number(audio?.channels)).toBe(1);
           if (output === "wav") {
-            expect(String(probe.format.format_name).split(",")).toContain("wav");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "wav",
+            );
             expect(Number(audio?.sample_rate)).toBe(48_000);
-            await expectDecodedAudioPsnr(av1OpusWebmFixturePath, outputPath, 60);
+            await expectDecodedAudioPsnr(
+              av1OpusWebmFixturePath,
+              outputPath,
+              60,
+            );
           } else if (output === "flac") {
-            expect(String(probe.format.format_name).split(",")).toContain("flac");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "flac",
+            );
             expect(Number(audio?.sample_rate)).toBe(48_000);
-            await expectDecodedAudioPsnr(av1OpusWebmFixturePath, outputPath, 60);
+            await expectDecodedAudioPsnr(
+              av1OpusWebmFixturePath,
+              outputPath,
+              60,
+            );
           } else if (output === "amr") {
-            expect(String(probe.format.format_name).split(",")).toContain("amr");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "amr",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             expect(Number(audio?.bit_rate)).toBe(12_400);
             await expectAmrTranscodeQuality(av1OpusWebmFixturePath, outputPath);
           } else if (output === "mp3") {
-            expect(String(probe.format.format_name).split(",")).toContain("mp3");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "mp3",
+            );
             expect(Number(audio?.sample_rate)).toBe(48_000);
             expect(Number(audio?.bit_rate)).toBe(128_000);
             await expectMp3TranscodeQuality(av1OpusWebmFixturePath, outputPath);
           } else {
-            expect(String(probe.format.format_name).split(",")).toContain("aac");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "aac",
+            );
             expect(audio?.profile).toBe("LC");
             expect(Number(audio?.sample_rate)).toBe(48_000);
             expect(Number(audio?.bit_rate)).toBeGreaterThan(0);
@@ -4813,9 +5519,7 @@ async function expectOpusTranscodeQuality(
     "NUL",
   ]);
   const channelSdr = [
-    ...stderr.matchAll(
-      /SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi,
-    ),
+    ...stderr.matchAll(/SDR ch\d+:\s+([+-]?(?:\d+(?:\.\d+)?|\.\d+))\s+dB/gi),
   ].map((match) => Number(match[1]));
   expect(channelSdr.length).toBeGreaterThan(0);
   expect(Math.min(...channelSdr)).toBeGreaterThanOrEqual(-6.5);
@@ -4898,7 +5602,9 @@ for (const [route, inputPath] of containerOpusOutputRoutes) {
           );
           expect(Number(audio?.channels)).toBe(1);
           expect(Number(audio?.sample_rate)).toBe(48_000);
-          const bitRate = Number((probe.format as { bit_rate?: string }).bit_rate);
+          const bitRate = Number(
+            (probe.format as { bit_rate?: string }).bit_rate,
+          );
           expect(bitRate).toBeGreaterThan(0);
           expect(bitRate).toBeLessThanOrEqual(160_000);
           await expectOpusTranscodeQuality(inputPath, outputPath);
@@ -5003,7 +5709,9 @@ for (const [route, inputPath] of containerVorbisOutputRoutes) {
           );
           expect(Number(audio?.channels)).toBe(1);
           expect(Number(audio?.sample_rate)).toBe(48_000);
-          const bitRate = Number((probe.format as { bit_rate?: string }).bit_rate);
+          const bitRate = Number(
+            (probe.format as { bit_rate?: string }).bit_rate,
+          );
           expect(bitRate).toBeGreaterThan(0);
           expect(bitRate).toBeLessThanOrEqual(220_000);
           await expectOpusTranscodeQuality(inputPath, outputPath);
@@ -5040,27 +5748,39 @@ for (const [route, output, codec] of threeGpAmrOutputRoutes) {
           );
           expect(Number(audio?.channels)).toBe(1);
           if (output === "wav") {
-            expect(String(probe.format.format_name).split(",")).toContain("wav");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "wav",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "flac") {
-            expect(String(probe.format.format_name).split(",")).toContain("flac");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "flac",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "aiff") {
-            expect(String(probe.format.format_name).split(",")).toContain("aiff");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "aiff",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectDecodedAudioPsnr(threeGpAmrFixturePath, outputPath, 45);
           } else if (output === "mp3") {
-            expect(String(probe.format.format_name).split(",")).toContain("mp3");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "mp3",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectMp3TranscodeQuality(threeGpAmrFixturePath, outputPath);
           } else if (output === "opus") {
-            expect(String(probe.format.format_name).split(",")).toContain("ogg");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "ogg",
+            );
             expect(Number(audio?.sample_rate)).toBe(48_000);
             await expectOpusTranscodeQuality(threeGpAmrFixturePath, outputPath);
           } else {
-            expect(String(probe.format.format_name).split(",")).toContain("ogg");
+            expect(String(probe.format.format_name).split(",")).toContain(
+              "ogg",
+            );
             expect(Number(audio?.sample_rate)).toBe(8_000);
             await expectOpusTranscodeQuality(threeGpAmrFixturePath, outputPath);
           }
@@ -5071,30 +5791,15 @@ for (const [route, output, codec] of threeGpAmrOutputRoutes) {
 }
 
 test("browser FFmpeg performs a genuine bounded video re-encode", async () => {
-  await runMediaRoute(
-    "mkv-to-mp4-mpeg4",
-    mpeg4OutputPath,
-    ["mpeg4"],
-    100_000,
-  );
+  await runMediaRoute("mkv-to-mp4-mpeg4", mpeg4OutputPath, ["mpeg4"], 100_000);
 });
 
 test("browser FFmpeg decodes video and encodes a genuine VP8 WebM", async () => {
-  await runMediaRoute(
-    "mkv-to-webm",
-    webmOutputPath,
-    ["vp8"],
-    50_000,
-  );
+  await runMediaRoute("mkv-to-webm", webmOutputPath, ["vp8"], 50_000);
 });
 
 test("browser FFmpeg decodes video and encodes a genuine VP9 WebM", async () => {
-  await runMediaRoute(
-    "mkv-to-webm-vp9",
-    vp9WebmOutputPath,
-    ["vp9"],
-    50_000,
-  );
+  await runMediaRoute("mkv-to-webm-vp9", vp9WebmOutputPath, ["vp9"], 50_000);
 });
 
 test("browser FFmpeg losslessly copies AV1 and Opus from Matroska to bounded live WebM", async () => {
@@ -5108,8 +5813,12 @@ test("browser FFmpeg losslessly copies AV1 and Opus from Matroska to bounded liv
       expectedWarningFragments: [],
       expectedDurationSeconds: 4,
       validate: async (probe, outputPath) => {
-        const video = probe.streams.find((stream) => stream.codec_type === "video");
-        const audio = probe.streams.find((stream) => stream.codec_type === "audio");
+        const video = probe.streams.find(
+          (stream) => stream.codec_type === "video",
+        );
+        const audio = probe.streams.find(
+          (stream) => stream.codec_type === "audio",
+        );
         expect(video?.nb_read_frames).toBe("96");
         expect(audio?.tags?.language).toBe("eng");
         expect(probe.chapters ?? []).toEqual([]);
@@ -5235,7 +5944,12 @@ for (const route of [
   ["3gp-to-webm", threeGpInputFixturePath, threeGpWebmOutputPath, "vp8"],
   ["3gp-to-webm-vp9", threeGpInputFixturePath, threeGpVp9WebmOutputPath, "vp9"],
   ["mpeg-ts-to-webm", mpegTsInputFixturePath, mpegTsWebmOutputPath, "vp8"],
-  ["mpeg-ts-to-webm-vp9", mpegTsInputFixturePath, mpegTsVp9WebmOutputPath, "vp9"],
+  [
+    "mpeg-ts-to-webm-vp9",
+    mpegTsInputFixturePath,
+    mpegTsVp9WebmOutputPath,
+    "vp9",
+  ],
   ["flv-to-webm", flvInputFixturePath, flvWebmOutputPath, "vp8"],
   ["flv-to-webm-vp9", flvInputFixturePath, flvVp9WebmOutputPath, "vp9"],
   ["avi-to-webm", aviInputFixturePath, aviWebmOutputPath, "vp8"],
@@ -5267,9 +5981,17 @@ test("browser FFmpeg converts Theora/Vorbis OGV to VP8/Vorbis WebM", async () =>
         await execFileAsync(
           "ffmpeg",
           [
-            "-v", "error", "-i", outputPath,
-            "-map", "0:v:0", "-map", "0:a:0",
-            "-f", "null", "NUL",
+            "-v",
+            "error",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-f",
+            "null",
+            "NUL",
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
@@ -5294,7 +6016,19 @@ test("browser FFmpeg converts Theora/Vorbis OGV to VP9/Vorbis WebM", async () =>
         expect(audio?.tags?.language).toBe("eng");
         await execFileAsync(
           "ffmpeg",
-          ["-v", "error", "-i", outputPath, "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "NUL"],
+          [
+            "-v",
+            "error",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-f",
+            "null",
+            "NUL",
+          ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
       },
@@ -5375,11 +6109,36 @@ test("browser FFmpeg losslessly wraps MPEG-2 elementary video in MPEG-TS", async
 });
 
 for (const route of [
-  ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv, m2vExtractionOutputPaths.mkv, true],
-  ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4, m2vExtractionOutputPaths.mp4, false],
-  ["mov-to-m2v", mpeg2ContainerFixturePaths.mov, m2vExtractionOutputPaths.mov, false],
-  ["avi-to-m2v", mpeg2ContainerFixturePaths.avi, m2vExtractionOutputPaths.avi, false],
-  ["mpeg-ts-to-m2v", mpeg2ContainerFixturePaths["mpeg-ts"], m2vExtractionOutputPaths["mpeg-ts"], false],
+  [
+    "mkv-to-m2v",
+    mpeg2ContainerFixturePaths.mkv,
+    m2vExtractionOutputPaths.mkv,
+    true,
+  ],
+  [
+    "mp4-to-m2v",
+    mpeg2ContainerFixturePaths.mp4,
+    m2vExtractionOutputPaths.mp4,
+    false,
+  ],
+  [
+    "mov-to-m2v",
+    mpeg2ContainerFixturePaths.mov,
+    m2vExtractionOutputPaths.mov,
+    false,
+  ],
+  [
+    "avi-to-m2v",
+    mpeg2ContainerFixturePaths.avi,
+    m2vExtractionOutputPaths.avi,
+    false,
+  ],
+  [
+    "mpeg-ts-to-m2v",
+    mpeg2ContainerFixturePaths["mpeg-ts"],
+    m2vExtractionOutputPaths["mpeg-ts"],
+    false,
+  ],
 ] as const) {
   test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
     await runMediaRoute(route[0], route[2], ["mpeg2video"], 500_000, route[1], {
@@ -5414,10 +6173,30 @@ test("browser FFmpeg losslessly wraps MPEG-4 Part 2 elementary video in MP4", as
 });
 
 for (const route of [
-  ["mkv-to-m4v", m4vContainerFixturePaths.mkv, m4vExtractionOutputPaths.mkv, true],
-  ["mp4-to-m4v", m4vContainerFixturePaths.mp4, m4vExtractionOutputPaths.mp4, false],
-  ["mov-to-m4v", m4vContainerFixturePaths.mov, m4vExtractionOutputPaths.mov, false],
-  ["avi-to-m4v", m4vContainerFixturePaths.avi, m4vExtractionOutputPaths.avi, false],
+  [
+    "mkv-to-m4v",
+    m4vContainerFixturePaths.mkv,
+    m4vExtractionOutputPaths.mkv,
+    true,
+  ],
+  [
+    "mp4-to-m4v",
+    m4vContainerFixturePaths.mp4,
+    m4vExtractionOutputPaths.mp4,
+    false,
+  ],
+  [
+    "mov-to-m4v",
+    m4vContainerFixturePaths.mov,
+    m4vExtractionOutputPaths.mov,
+    false,
+  ],
+  [
+    "avi-to-m4v",
+    m4vContainerFixturePaths.avi,
+    m4vExtractionOutputPaths.avi,
+    false,
+  ],
 ] as const) {
   test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
     await runMediaRoute(route[0], route[2], ["mpeg4"], 500_000, route[1], {
@@ -5456,12 +6235,19 @@ for (const route of [
   ["h264-to-webm-vp9", h264Vp9WebmOutputPath, "vp9"],
 ] as const) {
   test(`browser FFmpeg converts ${route[0]} with bounded optimized workers`, async () => {
-    await runMediaRoute(route[0], route[1], [route[2]], 40_000, h264FixturePath, {
-      expectedWarningFragments: [],
-      expectedDurationSeconds: 3.84,
-      durationToleranceSeconds: 0.1,
-      validate: validateH264WebmOutput,
-    });
+    await runMediaRoute(
+      route[0],
+      route[1],
+      [route[2]],
+      40_000,
+      h264FixturePath,
+      {
+        expectedWarningFragments: [],
+        expectedDurationSeconds: 3.84,
+        durationToleranceSeconds: 0.1,
+        validate: validateH264WebmOutput,
+      },
+    );
   });
 }
 
@@ -5470,7 +6256,11 @@ for (const route of [
   ["mp4-to-h264", mp4InputFixturePath, h264ExtractionOutputPaths.mp4],
   ["mov-to-h264", movInputFixturePath, h264ExtractionOutputPaths.mov],
   ["3gp-to-h264", threeGpInputFixturePath, h264ExtractionOutputPaths["3gp"]],
-  ["mpeg-ts-to-h264", mpegTsInputFixturePath, h264ExtractionOutputPaths["mpeg-ts"]],
+  [
+    "mpeg-ts-to-h264",
+    mpegTsInputFixturePath,
+    h264ExtractionOutputPaths["mpeg-ts"],
+  ],
   ["flv-to-h264", flvInputFixturePath, h264ExtractionOutputPaths.flv],
 ] as const) {
   test(`browser FFmpeg losslessly extracts ${route[0]}`, async () => {
@@ -5512,32 +6302,57 @@ for (const route of [
 for (const route of [
   ["mp4-to-mkv", mp4InputFixturePath, matroskaOutputPaths.mp4, "h264", "aac"],
   ["mov-to-mkv", movInputFixturePath, matroskaOutputPaths.mov, "h264", "aac"],
-  ["3gp-to-mkv", threeGpInputFixturePath, matroskaOutputPaths["3gp"], "h264", "aac"],
-  ["mpeg-ts-to-mkv", mpegTsInputFixturePath, matroskaOutputPaths["mpeg-ts"], "h264", "aac"],
+  [
+    "3gp-to-mkv",
+    threeGpInputFixturePath,
+    matroskaOutputPaths["3gp"],
+    "h264",
+    "aac",
+  ],
+  [
+    "mpeg-ts-to-mkv",
+    mpegTsInputFixturePath,
+    matroskaOutputPaths["mpeg-ts"],
+    "h264",
+    "aac",
+  ],
   ["flv-to-mkv", flvInputFixturePath, matroskaOutputPaths.flv, "h264", "aac"],
   ["avi-to-mkv", aviInputFixturePath, matroskaOutputPaths.avi, "mpeg4", "mp3"],
-  ["webm-to-mkv", av1OpusWebmFixturePath, matroskaOutputPaths.webm, "av1", "opus"],
+  [
+    "webm-to-mkv",
+    av1OpusWebmFixturePath,
+    matroskaOutputPaths.webm,
+    "av1",
+    "opus",
+  ],
   ["ogv-to-mkv", ogvFixturePath, matroskaOutputPaths.ogv, "theora", "vorbis"],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded Matroska`, async () => {
-    await runMediaRoute(route[0], route[2], [route[3], route[4]], 100_000, route[1], {
-      expectedWarningFragments: [],
-      skipDurationValidation: route[0] !== "avi-to-mkv",
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("matroska");
-        expect(probe.streams).toHaveLength(2);
-        expectRepresentableMediaFieldsCopied(
-          await probeMediaFile(route[1]),
-          probe,
-        );
-        await expectDecodedVideoMatch(route[1], outputPath);
-        if (route[4] === "aac") {
-          await expectAacAccessUnitMatch(route[1], outputPath);
-        } else {
-          await expectCompressedAudioPacketMatch(route[1], outputPath);
-        }
+    await runMediaRoute(
+      route[0],
+      route[2],
+      [route[3], route[4]],
+      100_000,
+      route[1],
+      {
+        expectedWarningFragments: [],
+        skipDurationValidation: route[0] !== "avi-to-mkv",
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("matroska");
+          expect(probe.streams).toHaveLength(2);
+          expectRepresentableMediaFieldsCopied(
+            await probeMediaFile(route[1]),
+            probe,
+          );
+          await expectDecodedVideoMatch(route[1], outputPath);
+          if (route[4] === "aac") {
+            await expectAacAccessUnitMatch(route[1], outputPath);
+          } else {
+            await expectCompressedAudioPacketMatch(route[1], outputPath);
+          }
+        },
       },
-    });
+    );
   });
 }
 
@@ -5563,9 +6378,19 @@ test("browser FFmpeg losslessly remuxes Matroska Theora and Vorbis to OGV", asyn
         await execFileAsync(
           "ffmpeg",
           [
-            "-hide_banner", "-loglevel", "error", "-nostdin",
-            "-i", outputPath, "-map", "0:v:0", "-map", "0:a:0",
-            "-f", "null", "NUL",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-nostdin",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-f",
+            "null",
+            "NUL",
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
@@ -5579,14 +6404,20 @@ test("OGV stream copy propagates a bounded write failure and removes the partial
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
   );
-  await page.locator('[data-testid="file-input"]').setInputFiles(ogvCopyFixturePath);
-  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-ogv");
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(ogvCopyFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-ogv");
   await startEnabledConversion();
   await expect
     .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
     .toBe("error");
   const state = await currentState();
-  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
   expect(state.opfsName).toBeNull();
   expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
   expect(state.metrics?.pendingOperations).toBe(0);
@@ -5606,6 +6437,150 @@ test("OGV stream copy propagates a bounded write failure and removes the partial
     }
   });
   expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+});
+
+test("browser FFmpeg losslessly remuxes Matroska MPEG-4 Part 2 and MP3 to genuine AVI", async () => {
+  await runMediaRoute(
+    "mkv-to-avi",
+    aviCopyOutputPath,
+    ["mpeg4", "mp3"],
+    100_000,
+    aviCopyFixturePath,
+    {
+      expectedWarningFragments: [
+        "packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
+      ],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("avi");
+        expect(probe.streams).toHaveLength(2);
+        const header = await readFile(outputPath);
+        expect(header.subarray(0, 4).toString("ascii")).toBe("RIFF");
+        expect(header.subarray(8, 12).toString("ascii")).toBe("AVI ");
+        await expectCompressedVideoPacketMatch(aviCopyFixturePath, outputPath);
+        await expectCompressedAudioPacketMatch(aviCopyFixturePath, outputPath);
+        await expectDecodedVideoMatch(aviCopyFixturePath, outputPath);
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-nostdin",
+            "-xerror",
+            "-i",
+            outputPath,
+            "-map",
+            "0:v:0",
+            "-map",
+            "0:a:0",
+            "-f",
+            "null",
+            "NUL",
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
+  );
+});
+
+test("AVI stream copy propagates a bounded write failure and removes the partial output", async () => {
+  await page.goto("/?test=1&directory=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(aviCopyFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-avi");
+  await startEnabledConversion();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain(
+    "destination rejected a bounded write",
+  );
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  const abandonedSize = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle("avi-copy-source.avi");
+      const size = (await handle.getFile()).size;
+      await root.removeEntry("avi-copy-source.avi");
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError")
+        return null;
+      throw error;
+    }
+  });
+  expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+});
+
+test("AVI stream copy retains only representable fields and discloses every excluded class", async () => {
+  await runMediaRoute(
+    "mkv-to-avi",
+    complexAviCopyOutputPath,
+    ["mpeg4", "mp3", "mp3"],
+    100_000,
+    complexAviCopyFixturePath,
+    {
+      expectedWarningFragments: [
+        "packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
+        "chapter",
+        "subtitle",
+        "attachment",
+      ],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("avi");
+        expect(probe.streams.map((stream) => stream.codec_name)).toEqual([
+          "mpeg4",
+          "mp3",
+          "mp3",
+        ]);
+        expect(probe.chapters ?? []).toEqual([]);
+        expect(probe.format.tags?.title).toBe(
+          "Within complex AVI destination source",
+        );
+        expect(probe.format.tags?.comment).toBe(
+          "Explicit AVI field-retention validation",
+        );
+        expect(probe.streams.map((stream) => stream.tags?.title)).toEqual([
+          "Primary MPEG-4 video",
+          "Primary English MP3",
+          "Secondary Spanish MP3",
+        ]);
+        for (const stream of probe.streams) {
+          expect(stream.tags?.language).toBeUndefined();
+          expect(stream.disposition?.default ?? 0).toBe(0);
+        }
+        await expectCompressedVideoPacketMatch(
+          complexAviCopyFixturePath,
+          outputPath,
+        );
+        await expectCompressedAudioPacketMatch(
+          complexAviCopyFixturePath,
+          outputPath,
+          0,
+        );
+        await expectCompressedAudioPacketMatch(
+          complexAviCopyFixturePath,
+          outputPath,
+          1,
+        );
+      },
+    },
+  );
 });
 
 for (const route of [
@@ -5663,7 +6638,8 @@ for (const route of [
           const sourceProbe = await probeMediaFile(route.sourcePath);
           expect(probe.format.format_name?.split(",")).toContain("matroska");
           expectRepresentableMediaFieldsCopied(sourceProbe, probe);
-          if (route.title) expect(mediaTag(probe.format.tags, "title")).toBe(route.title);
+          if (route.title)
+            expect(mediaTag(probe.format.tags, "title")).toBe(route.title);
           expect(
             [
               probe.format.tags,
@@ -5681,16 +6657,24 @@ for (const route of [
           expect(audio.map((stream) => mediaTag(stream.tags, "title"))).toEqual(
             route.audioTitles,
           );
-          expect(audio.map((stream) => mediaTag(stream.tags, "language"))).toEqual(
-            route.audioLanguages,
-          );
+          expect(
+            audio.map((stream) => mediaTag(stream.tags, "language")),
+          ).toEqual(route.audioLanguages);
           expect(audio.map((stream) => stream.disposition?.default)).toEqual(
             route.audioDefaults,
           );
           await expectDecodedVideoMatch(route.sourcePath, outputPath);
           await expectCompressedVideoPacketMatch(route.sourcePath, outputPath);
-          await expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 0);
-          await expectCompressedAudioPacketMatch(route.sourcePath, outputPath, 1);
+          await expectCompressedAudioPacketMatch(
+            route.sourcePath,
+            outputPath,
+            0,
+          );
+          await expectCompressedAudioPacketMatch(
+            route.sourcePath,
+            outputPath,
+            1,
+          );
           if (route.sourceKind === "WebM") {
             const subtitle = probe.streams.find(
               (stream) => stream.codec_type === "subtitle",
@@ -5706,7 +6690,10 @@ for (const route of [
                 Number(chapter.start_time),
                 Number(chapter.end_time),
               ]),
-            ).toEqual([[0, 2], [2, 4]]);
+            ).toEqual([
+              [0, 2],
+              [2, 4],
+            ]);
             await expectSubtitlePacketMatch(route.sourcePath, outputPath);
           }
         },
@@ -5745,8 +6732,7 @@ for (const route of [
             "spa",
           ]);
           expect(audio.map((stream) => stream.disposition?.default)).toEqual([
-            1,
-            0,
+            1, 0,
           ]);
           if (route[2] === "mov") {
             expect(probe.format.tags?.title).toBe(
@@ -5877,82 +6863,97 @@ for (const route of [
   ],
 ] as const) {
   test(`complex ${route[0].toUpperCase()} source retains every representable field through ${route[2]}`, async () => {
-    const [sourceKind, profileId, destination, excludesRotation, keepsBothAudio, warnings] =
-      route;
+    const [
+      sourceKind,
+      profileId,
+      destination,
+      excludesRotation,
+      keepsBothAudio,
+      warnings,
+    ] = route;
     const sourcePath = complexIsoSourceFixturePaths[sourceKind];
     const outputPath = complexIsoSourceOutputPaths[profileId];
-    await runMediaRoute(profileId, outputPath, keepsBothAudio
-      ? ["h264", "aac", "aac"]
-      : ["h264", "aac"], 400_000, sourcePath, {
-      expectedWarningFragments: [...warnings],
-      skipDurationValidation: true,
-      validate: async (probe, convertedPath) => {
-        const sourceProbe = await probeMediaFile(sourcePath);
-        expect(sourceProbe.streams.map((stream) => stream.codec_name)).toEqual([
-          "h264",
-          "aac",
-          "aac",
-        ]);
-        expectComplexVideoFields(
-          sourceProbe.streams.find((stream) => stream.codec_type === "video"),
-        );
-        expect(
-          sourceProbe.streams
-            .filter((stream) => stream.codec_type === "audio")
-            .map((stream) => stream.tags?.language),
-        ).toEqual(["eng", "spa"]);
-
-        if (destination === "mkv") {
-          expect(probe.format.format_name?.split(",")).toContain("matroska");
-        } else if (destination === "mpeg-ts") {
-          expect(probe.format.format_name?.split(",")).toContain("mpegts");
-        } else if (destination === "3gp") {
-          expect(probe.format.tags?.major_brand).toBe("3gp6");
-        } else if (destination === "mov") {
-          expect(probe.format.tags?.major_brand).toBe("qt  ");
-        } else {
-          expect(probe.format.format_name?.split(",")).toContain("flv");
-          await inspectFlvAacSignals(convertedPath);
-        }
-
-        const outputVideo = probe.streams.find(
-          (stream) => stream.codec_type === "video",
-        );
-        if (excludesRotation) expectRotationExcluded(outputVideo);
-        else expectComplexVideoFields(outputVideo);
-
-        const outputAudio = probe.streams.filter(
-          (stream) => stream.codec_type === "audio",
-        );
-        expect(outputAudio).toHaveLength(keepsBothAudio ? 2 : 1);
-        expect(outputAudio.map((stream) => stream.tags?.language)).toEqual(
-          destination === "flv"
-            ? [undefined]
-            : keepsBothAudio
-              ? ["eng", "spa"]
-              : ["eng"],
-        );
-
-        if (!excludesRotation) {
-          expectRepresentableMediaFieldsCopied(sourceProbe, probe, {
-            copyTitles: destination !== "3gp",
-          });
-        }
-        if (sourceKind === "mov" && destination === "mkv") {
-          expect(probe.format.tags?.title).toBe("Within complex remux fixture");
-          expect(probe.format.tags?.COMMENT).toBe(
-            "Deterministic multi-stream metadata",
+    await runMediaRoute(
+      profileId,
+      outputPath,
+      keepsBothAudio ? ["h264", "aac", "aac"] : ["h264", "aac"],
+      400_000,
+      sourcePath,
+      {
+        expectedWarningFragments: [...warnings],
+        skipDurationValidation: true,
+        validate: async (probe, convertedPath) => {
+          const sourceProbe = await probeMediaFile(sourcePath);
+          expect(
+            sourceProbe.streams.map((stream) => stream.codec_name),
+          ).toEqual(["h264", "aac", "aac"]);
+          expectComplexVideoFields(
+            sourceProbe.streams.find((stream) => stream.codec_type === "video"),
           );
-        }
+          expect(
+            sourceProbe.streams
+              .filter((stream) => stream.codec_type === "audio")
+              .map((stream) => stream.tags?.language),
+          ).toEqual(["eng", "spa"]);
 
-        await expectVideoPacketMatch(sourcePath, convertedPath);
-        await expectDecodedVideoMatch(sourcePath, convertedPath, excludesRotation);
-        await expectAacAccessUnitMatch(sourcePath, convertedPath, 0);
-        if (keepsBothAudio) {
-          await expectAacAccessUnitMatch(sourcePath, convertedPath, 1);
-        }
+          if (destination === "mkv") {
+            expect(probe.format.format_name?.split(",")).toContain("matroska");
+          } else if (destination === "mpeg-ts") {
+            expect(probe.format.format_name?.split(",")).toContain("mpegts");
+          } else if (destination === "3gp") {
+            expect(probe.format.tags?.major_brand).toBe("3gp6");
+          } else if (destination === "mov") {
+            expect(probe.format.tags?.major_brand).toBe("qt  ");
+          } else {
+            expect(probe.format.format_name?.split(",")).toContain("flv");
+            await inspectFlvAacSignals(convertedPath);
+          }
+
+          const outputVideo = probe.streams.find(
+            (stream) => stream.codec_type === "video",
+          );
+          if (excludesRotation) expectRotationExcluded(outputVideo);
+          else expectComplexVideoFields(outputVideo);
+
+          const outputAudio = probe.streams.filter(
+            (stream) => stream.codec_type === "audio",
+          );
+          expect(outputAudio).toHaveLength(keepsBothAudio ? 2 : 1);
+          expect(outputAudio.map((stream) => stream.tags?.language)).toEqual(
+            destination === "flv"
+              ? [undefined]
+              : keepsBothAudio
+                ? ["eng", "spa"]
+                : ["eng"],
+          );
+
+          if (!excludesRotation) {
+            expectRepresentableMediaFieldsCopied(sourceProbe, probe, {
+              copyTitles: destination !== "3gp",
+            });
+          }
+          if (sourceKind === "mov" && destination === "mkv") {
+            expect(probe.format.tags?.title).toBe(
+              "Within complex remux fixture",
+            );
+            expect(probe.format.tags?.COMMENT).toBe(
+              "Deterministic multi-stream metadata",
+            );
+          }
+
+          await expectVideoPacketMatch(sourcePath, convertedPath);
+          await expectDecodedVideoMatch(
+            sourcePath,
+            convertedPath,
+            excludesRotation,
+          );
+          await expectAacAccessUnitMatch(sourcePath, convertedPath, 0);
+          if (keepsBothAudio) {
+            await expectAacAccessUnitMatch(sourcePath, convertedPath, 1);
+          }
+        },
       },
-    });
+    );
   });
 }
 
@@ -6060,7 +7061,9 @@ for (const route of [
         skipDurationValidation: true,
         validate: async (probe, convertedPath) => {
           const sourceProbe = await probeMediaFile(sourcePath);
-          expect(sourceProbe.streams.map((stream) => stream.codec_name)).toEqual(
+          expect(
+            sourceProbe.streams.map((stream) => stream.codec_name),
+          ).toEqual(
             route.sourceKind === "mpeg-ts"
               ? ["h264", "aac", "aac"]
               : ["h264", "aac"],
@@ -6073,14 +7076,12 @@ for (const route of [
             (stream) => stream.codec_type === "audio",
           );
           expect(sourceAudio.map((stream) => stream.tags?.language)).toEqual(
-            route.sourceKind === "mpeg-ts"
-              ? ["eng", "spa"]
-              : [undefined],
+            route.sourceKind === "mpeg-ts" ? ["eng", "spa"] : [undefined],
           );
           expect(sourceVideo?.disposition?.default).toBe(0);
-          expect(sourceAudio.map((stream) => stream.disposition?.default)).toEqual(
-            route.sourceKind === "mpeg-ts" ? [0, 0] : [0],
-          );
+          expect(
+            sourceAudio.map((stream) => stream.disposition?.default),
+          ).toEqual(route.sourceKind === "mpeg-ts" ? [0, 0] : [0]);
           if (route.sourceKind === "flv") {
             expect(sourceProbe.format.tags?.title).toBe(
               "Within complex remux fixture",
@@ -6115,9 +7116,9 @@ for (const route of [
               ? ["eng", "spa"]
               : route.sourceKind === "flv" && route.destination === "3gp"
                 ? ["und"]
-              : route.keepsBothAudio
-                ? [undefined, undefined]
-                : [undefined],
+                : route.keepsBothAudio
+                  ? [undefined, undefined]
+                  : [undefined],
           );
           expectRepresentableMediaFieldsCopied(sourceProbe, probe, {
             copyLanguage: route.copyLanguage,
@@ -6126,15 +7127,17 @@ for (const route of [
             copyTitles: route.copyTitles,
           });
           if (route.forcesDefaultTracks) {
-            expect(outputAudio.map((stream) => stream.disposition?.default)).toEqual(
-              route.keepsBothAudio ? [1, 0] : [1],
-            );
+            expect(
+              outputAudio.map((stream) => stream.disposition?.default),
+            ).toEqual(route.keepsBothAudio ? [1, 0] : [1]);
           }
           if (
             route.sourceKind === "flv" &&
             (route.destination === "mkv" || route.destination === "mov")
           ) {
-            expect(probe.format.tags?.title).toBe("Within complex remux fixture");
+            expect(probe.format.tags?.title).toBe(
+              "Within complex remux fixture",
+            );
             expect(mediaTag(probe.format.tags, "comment")).toBe(
               "Deterministic multi-stream metadata",
             );
@@ -6160,7 +7163,9 @@ test("Matroska planner blocks codecs outside its certified set without creating 
   await page
     .locator('[data-testid="file-input"]')
     .setInputFiles(unsupportedMatroskaFixturePath);
-  await page.locator('[data-testid="format-select"]').selectOption("avi-to-mkv");
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("avi-to-mkv");
   await expectSourcePlanBlocked(
     "avi-to-mkv",
     "outside the destination's certified stream-copy set",
@@ -6171,26 +7176,37 @@ for (const route of [
   ["mkv-to-mpeg-ts", fixturePath, containerMpegTsOutputPaths.mkv],
   ["mp4-to-mpeg-ts", mp4InputFixturePath, containerMpegTsOutputPaths.mp4],
   ["mov-to-mpeg-ts", movInputFixturePath, containerMpegTsOutputPaths.mov],
-  ["3gp-to-mpeg-ts", threeGpInputFixturePath, containerMpegTsOutputPaths["3gp"]],
+  [
+    "3gp-to-mpeg-ts",
+    threeGpInputFixturePath,
+    containerMpegTsOutputPaths["3gp"],
+  ],
   ["flv-to-mpeg-ts", flvInputFixturePath, containerMpegTsOutputPaths.flv],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded MPEG-TS`, async () => {
-    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: [],
-      expectedDurationSeconds: 4,
-      durationToleranceSeconds: 0.25,
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("mpegts");
-        expect(probe.streams).toHaveLength(2);
-        expectRepresentableMediaFieldsCopied(
-          await probeMediaFile(route[1]),
-          probe,
-          { copyDefaultDisposition: false, copyTitles: false },
-        );
-        await expectDecodedVideoMatch(route[1], outputPath);
-        await expectAacAccessUnitMatch(route[1], outputPath);
+    await runMediaRoute(
+      route[0],
+      route[2],
+      ["h264", "aac"],
+      100_000,
+      route[1],
+      {
+        expectedWarningFragments: [],
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("mpegts");
+          expect(probe.streams).toHaveLength(2);
+          expectRepresentableMediaFieldsCopied(
+            await probeMediaFile(route[1]),
+            probe,
+            { copyDefaultDisposition: false, copyTitles: false },
+          );
+          await expectDecodedVideoMatch(route[1], outputPath);
+          await expectAacAccessUnitMatch(route[1], outputPath);
+        },
       },
-    });
+    );
   });
 }
 
@@ -6208,8 +7224,14 @@ test("browser FFmpeg losslessly remuxes HEVC MKV to bounded MPEG-TS", async () =
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("mpegts");
         expect(probe.streams).toHaveLength(2);
-        await expectDecodedVideoMatch(hevcContainerFixturePaths.mkv, outputPath);
-        await expectAacAccessUnitMatch(hevcContainerFixturePaths.mkv, outputPath);
+        await expectDecodedVideoMatch(
+          hevcContainerFixturePaths.mkv,
+          outputPath,
+        );
+        await expectAacAccessUnitMatch(
+          hevcContainerFixturePaths.mkv,
+          outputPath,
+        );
       },
     },
   );
@@ -6223,7 +7245,9 @@ test("MPEG-TS planner blocks incompatible audio without creating output", async 
   await page
     .locator('[data-testid="file-input"]')
     .setInputFiles(incompatibleFixturePath);
-  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mpeg-ts");
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-mpeg-ts");
   await expectSourcePlanBlocked(
     "mkv-to-mpeg-ts",
     "outside the destination's certified stream-copy set",
@@ -6232,35 +7256,66 @@ test("MPEG-TS planner blocks incompatible audio without creating output", async 
 
 for (const route of [
   ["mkv-to-3gp", fixturePath, containerThreeGpOutputPaths.mkv, false, true],
-  ["mp4-to-3gp", mp4InputFixturePath, containerThreeGpOutputPaths.mp4, false, false],
-  ["mov-to-3gp", movInputFixturePath, containerThreeGpOutputPaths.mov, false, false],
-  ["mpeg-ts-to-3gp", mpegTsInputFixturePath, containerThreeGpOutputPaths["mpeg-ts"], true, true],
-  ["flv-to-3gp", flvInputFixturePath, containerThreeGpOutputPaths.flv, false, true],
+  [
+    "mp4-to-3gp",
+    mp4InputFixturePath,
+    containerThreeGpOutputPaths.mp4,
+    false,
+    false,
+  ],
+  [
+    "mov-to-3gp",
+    movInputFixturePath,
+    containerThreeGpOutputPaths.mov,
+    false,
+    false,
+  ],
+  [
+    "mpeg-ts-to-3gp",
+    mpegTsInputFixturePath,
+    containerThreeGpOutputPaths["mpeg-ts"],
+    true,
+    true,
+  ],
+  [
+    "flv-to-3gp",
+    flvInputFixturePath,
+    containerThreeGpOutputPaths.flv,
+    false,
+    true,
+  ],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded 3GP`, async () => {
-    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: route[4]
-        ? ["marks the first compatible video or audio track as default"]
-        : [],
-      expectedDurationSeconds: 4,
-      durationToleranceSeconds: 0.25,
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("3gp");
-        expect(probe.format.tags?.major_brand).toBe("3gp6");
-        expect(probe.streams).toHaveLength(2);
-        expectRepresentableMediaFieldsCopied(
-          await probeMediaFile(route[1]),
-          probe,
-          {
-            copyDefaultDisposition: false,
-            destinationForcesDefaultTracks: true,
-            copyTitles: false,
-          },
-        );
-        await expectDecodedVideoMatch(route[1], outputPath);
-        await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+    await runMediaRoute(
+      route[0],
+      route[2],
+      ["h264", "aac"],
+      100_000,
+      route[1],
+      {
+        expectedWarningFragments: route[4]
+          ? ["marks the first compatible video or audio track as default"]
+          : [],
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("3gp");
+          expect(probe.format.tags?.major_brand).toBe("3gp6");
+          expect(probe.streams).toHaveLength(2);
+          expectRepresentableMediaFieldsCopied(
+            await probeMediaFile(route[1]),
+            probe,
+            {
+              copyDefaultDisposition: false,
+              destinationForcesDefaultTracks: true,
+              copyTitles: false,
+            },
+          );
+          await expectDecodedVideoMatch(route[1], outputPath);
+          await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+        },
       },
-    });
+    );
   });
 }
 
@@ -6273,8 +7328,12 @@ for (const rejection of [
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
-    await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
-    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-3gp");
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(rejection[1]);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mkv-to-3gp");
     await expectSourcePlanBlocked(
       "mkv-to-3gp",
       "outside the destination's certified stream-copy set",
@@ -6284,34 +7343,59 @@ for (const rejection of [
 
 for (const route of [
   ["mkv-to-mov", fixturePath, containerMovOutputPaths.mkv, false, true],
-  ["mp4-to-mov", mp4InputFixturePath, containerMovOutputPaths.mp4, false, false],
-  ["3gp-to-mov", threeGpInputFixturePath, containerMovOutputPaths["3gp"], false, false],
-  ["mpeg-ts-to-mov", mpegTsInputFixturePath, containerMovOutputPaths["mpeg-ts"], true, true],
+  [
+    "mp4-to-mov",
+    mp4InputFixturePath,
+    containerMovOutputPaths.mp4,
+    false,
+    false,
+  ],
+  [
+    "3gp-to-mov",
+    threeGpInputFixturePath,
+    containerMovOutputPaths["3gp"],
+    false,
+    false,
+  ],
+  [
+    "mpeg-ts-to-mov",
+    mpegTsInputFixturePath,
+    containerMovOutputPaths["mpeg-ts"],
+    true,
+    true,
+  ],
   ["flv-to-mov", flvInputFixturePath, containerMovOutputPaths.flv, false, true],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded MOV`, async () => {
-    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: route[4]
-        ? ["marks the first compatible video or audio track as default"]
-        : [],
-      expectedDurationSeconds: 4,
-      durationToleranceSeconds: 0.25,
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("mov");
-        expect(probe.format.tags?.major_brand).toBe("qt  ");
-        expect(probe.streams).toHaveLength(2);
-        expectRepresentableMediaFieldsCopied(
-          await probeMediaFile(route[1]),
-          probe,
-          {
-            copyDefaultDisposition: false,
-            destinationForcesDefaultTracks: true,
-          },
-        );
-        await expectDecodedVideoMatch(route[1], outputPath);
-        await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+    await runMediaRoute(
+      route[0],
+      route[2],
+      ["h264", "aac"],
+      100_000,
+      route[1],
+      {
+        expectedWarningFragments: route[4]
+          ? ["marks the first compatible video or audio track as default"]
+          : [],
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("mov");
+          expect(probe.format.tags?.major_brand).toBe("qt  ");
+          expect(probe.streams).toHaveLength(2);
+          expectRepresentableMediaFieldsCopied(
+            await probeMediaFile(route[1]),
+            probe,
+            {
+              copyDefaultDisposition: false,
+              destinationForcesDefaultTracks: true,
+            },
+          );
+          await expectDecodedVideoMatch(route[1], outputPath);
+          await expectIsoBmffAacPacketMatch(route[1], outputPath, route[3]);
+        },
       },
-    });
+    );
   });
 }
 
@@ -6330,7 +7414,10 @@ test("browser FFmpeg losslessly remuxes HEVC MKV to bounded MOV", async () => {
         expect(probe.format.format_name?.split(",")).toContain("mov");
         expect(probe.format.tags?.major_brand).toBe("qt  ");
         expect(probe.streams).toHaveLength(2);
-        await expectDecodedVideoMatch(hevcContainerFixturePaths.mkv, outputPath);
+        await expectDecodedVideoMatch(
+          hevcContainerFixturePaths.mkv,
+          outputPath,
+        );
         await expectIsoBmffAacPacketMatch(
           hevcContainerFixturePaths.mkv,
           outputPath,
@@ -6350,8 +7437,12 @@ for (const rejection of [
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
-    await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
-    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mov");
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(rejection[1]);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mkv-to-mov");
     await expectSourcePlanBlocked(
       "mkv-to-mov",
       "outside the destination's certified stream-copy set",
@@ -6371,23 +7462,32 @@ for (const route of [
   ],
 ] as const) {
   test(`browser FFmpeg losslessly remuxes ${route[0]} with bounded FLV`, async () => {
-    await runMediaRoute(route[0], route[2], ["h264", "aac"], 100_000, route[1], {
-      expectedWarningFragments: ["FLV cannot reliably represent"],
-      expectedDurationSeconds: 4,
-      durationToleranceSeconds: 0.25,
-      validate: async (probe, outputPath) => {
-        expect(probe.format.format_name?.split(",")).toContain("flv");
-        expect(probe.streams.filter((stream) => stream.codec_name)).toHaveLength(2);
-        expectRepresentableMediaFieldsCopied(
-          await probeMediaFile(route[1]),
-          probe,
-          { copyLanguage: false, copyDefaultDisposition: false },
-        );
-        await inspectFlvAacSignals(outputPath);
-        await expectVideoPacketMatch(route[1], outputPath);
-        await expectAacAccessUnitMatch(route[1], outputPath);
+    await runMediaRoute(
+      route[0],
+      route[2],
+      ["h264", "aac"],
+      100_000,
+      route[1],
+      {
+        expectedWarningFragments: ["FLV cannot reliably represent"],
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("flv");
+          expect(
+            probe.streams.filter((stream) => stream.codec_name),
+          ).toHaveLength(2);
+          expectRepresentableMediaFieldsCopied(
+            await probeMediaFile(route[1]),
+            probe,
+            { copyLanguage: false, copyDefaultDisposition: false },
+          );
+          await inspectFlvAacSignals(outputPath);
+          await expectVideoPacketMatch(route[1], outputPath);
+          await expectAacAccessUnitMatch(route[1], outputPath);
+        },
       },
-    });
+    );
   });
 }
 
@@ -6400,8 +7500,12 @@ for (const rejection of [
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
-    await page.locator('[data-testid="file-input"]').setInputFiles(rejection[1]);
-    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-flv");
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(rejection[1]);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption("mkv-to-flv");
     await expectSourcePlanBlocked(
       "mkv-to-flv",
       "outside the destination's certified stream-copy set",

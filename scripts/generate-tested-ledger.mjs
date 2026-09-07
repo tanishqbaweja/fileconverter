@@ -2,22 +2,30 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  conversionProfiles,
-  formatById,
-} from "../lib/capability-registry.ts";
+import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const projectRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
 const reportRoot = path.join(projectRoot, "outputs", "reports");
 const ledgerPath = path.join(projectRoot, "TESTED.md");
-const headedAuditNote = "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.";
-const requirementTestIndexNote = "T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.";
-const subtitleFieldMatrixNote = "N-07 subtitle field matrix (2026-09-05): evidence/subtitle-field-matrix-2026-09-05.json records timing, multiline text, styling, positioning/regions, speakers, cue identifiers and document metadata behavior for all ten public SRT/WebVTT/ASS/SSA/TTML routes. tests/subtitle-field-matrix.test.mjs binds the matrix to exact UI disclosures, direct browser assertions, ASS/SSA extension and MIME aliases, and ten passed three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser subtitle run passed 16/16 in 20.3 seconds and deleted each converted OPFS output after validation.";
-const svgSafetyFidelityNote = "N-05 SVG safety/fidelity matrix (2026-09-05): evidence/svg-safety-fidelity-matrix-2026-09-05.json accounts for geometry/paint, filters, masks, text/fonts, CSS, animation, links/resources, scripts/events, use expansion, active XML constructs and PNG output loss. The supported 6-megapixel effects topology passed three production-Chrome runs at 182.762 MiB worst incremental private memory and 0.990103 SSIM. A focused 10/10 browser run proved successful rasterization, direct output, failure cleanup, every bound/policy exclusion and zero external requests; tests/svg-safety-fidelity-matrix.test.mjs binds those claims to current source and retained evidence.";
-const heifHeicFeasibilityNote = "N-03 HEIF/HEIC feasibility audit (2026-09-05): production Chrome 152.0.7977.77 passed the focused capability gate and the complete 15/15 privacy/offline suite, returning true for the AVIF control but false for HEIC, HEIF, and both sequence MIME types. Direct secure-origin probing found HEVC `hvc1`/`hev1` `VideoDecoder` support, so the audit does not call browser decoding impossible. It pins libheif 1.23.3 and documents its bounded reader API, experimental Asyncify WebCodecs backend, full decoded-frame copy topology, stock `ALLOW_MEMORY_GROWTH`, security-only-latest/no-LTS posture, recent critical/high fixes, LGPL obligations, and separate HEVC patent-pool concern. No route is public pending qualified legal clearance and a narrow fixed-memory HEVC-only build that passes the complete acceptance suite. `tests/heif-heic-feasibility.test.mjs` binds the decision, probes, sources, registry absence, and documentation. No converted output or fixture was created.";
-const cameraRawFeasibilityNote = "N-04 camera-RAW feasibility audit (2026-09-05): production Chrome 152.0.7977.77 returned true for PNG/AVIF controls but false for representative DNG, CR2, NEF, and ARW MIME types; the focused capability case passed 1/1 and the complete privacy/offline suite passed 15/15 in 51.9 seconds. The audit pins LibRaw 0.22.2 and records that its custom seekable datastream is viable, while its default 2,048 MiB raw/512 MiB thumbnail limits, complete processed surface, and explicitly basic non-production renderer prevent a public route without a separate tightly bounded rendering design. LibRaw-Wasm 1.6.0 is rejected as-is because it pins older LibRaw, starts a growing 256 MiB heap, and copies complete input and output buffers. RawSpeed is fuzzed and fast but is a memory-input first-stage decoder without most metadata, color/white-balance correction, demosaicing, or a viewable image. `tests/camera-raw-feasibility.test.mjs` binds the decision, probes, sources, registry absence, and documentation. No converted output or fixture was created.";
-const webCodecsAccelerationNote = "M-09 WebCodecs acceleration audit (2026-09-07): production Chrome 152.0.7977.77 passed a bounded codec-only benchmark. VP8 and hardware-preferred VP9 each encoded 300 generated 640x360 frames in three repeatable runs (0.369-0.798 seconds); Opus encoded ten seconds of 48 kHz stereo audio in 0.050-0.092 seconds. At most three inputs were queued, the largest encoded chunk was 9,879 bytes, and no fixture or converted file was created. The capability matrix accepted hardware-preferred VP9/H.264 but not VP8/AV1, accepted Opus/AAC encoding, and rejected FLAC/MP3 encoding. These are useful primitive results, not complete conversion throughput: WebCodecs provides codec chunks but not the required general-purpose demux/mux, stream/metadata preservation, random-access destination, or deterministic fallback pipeline. No public route silently selects it until an identical-source end-to-end A/B proves a material gain while passing the unchanged correctness and 250 MiB gates. `evidence/webcodecs-acceleration-audit-2026-09-07.json` and `tests/webcodecs-acceleration-audit.test.mjs` bind the decision.";
-const aviOutputFeasibilityNote = "M-04 AVI-output feasibility cycle (2026-09-08): exact FFmpeg 8.1.2 source inspection found that the seekable AVI muxer retains one 16-byte index record per packet in its current RIFF segment and only resets the logical count at OpenDML rollover; stock approximately-1-GiB segments can therefore reserve too much memory for low-payload/high-packet input. The hidden profile-37 candidate adds an audited `riff_size_limit` muxer option, uses 8 MiB OpenDML segments, reserves 16,384 master-index entries per stream, keeps 256 KiB I/O and one pending write, and accepts only MPEG-4 Part 2 video plus MP3 audio from Matroska. Its theoretical retained packet-index payload is capped near 16 MiB per segment, and the reserved master index represents 128 GiB at that segment size. The patch applies cleanly to the pinned source and planner/unit gates pass; no conversion route is public until the no-Docker Wasm build and complete production-browser certification pass. No fixture or converted output was created, and the temporary upstream source copies were deleted. See `evidence/avi-output-feasibility-2026-09-08.json`.";
+const headedAuditNote =
+  "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.";
+const requirementTestIndexNote =
+  "T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.";
+const subtitleFieldMatrixNote =
+  "N-07 subtitle field matrix (2026-09-05): evidence/subtitle-field-matrix-2026-09-05.json records timing, multiline text, styling, positioning/regions, speakers, cue identifiers and document metadata behavior for all ten public SRT/WebVTT/ASS/SSA/TTML routes. tests/subtitle-field-matrix.test.mjs binds the matrix to exact UI disclosures, direct browser assertions, ASS/SSA extension and MIME aliases, and ten passed three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser subtitle run passed 16/16 in 20.3 seconds and deleted each converted OPFS output after validation.";
+const svgSafetyFidelityNote =
+  "N-05 SVG safety/fidelity matrix (2026-09-05): evidence/svg-safety-fidelity-matrix-2026-09-05.json accounts for geometry/paint, filters, masks, text/fonts, CSS, animation, links/resources, scripts/events, use expansion, active XML constructs and PNG output loss. The supported 6-megapixel effects topology passed three production-Chrome runs at 182.762 MiB worst incremental private memory and 0.990103 SSIM. A focused 10/10 browser run proved successful rasterization, direct output, failure cleanup, every bound/policy exclusion and zero external requests; tests/svg-safety-fidelity-matrix.test.mjs binds those claims to current source and retained evidence.";
+const heifHeicFeasibilityNote =
+  "N-03 HEIF/HEIC feasibility audit (2026-09-05): production Chrome 152.0.7977.77 passed the focused capability gate and the complete 15/15 privacy/offline suite, returning true for the AVIF control but false for HEIC, HEIF, and both sequence MIME types. Direct secure-origin probing found HEVC `hvc1`/`hev1` `VideoDecoder` support, so the audit does not call browser decoding impossible. It pins libheif 1.23.3 and documents its bounded reader API, experimental Asyncify WebCodecs backend, full decoded-frame copy topology, stock `ALLOW_MEMORY_GROWTH`, security-only-latest/no-LTS posture, recent critical/high fixes, LGPL obligations, and separate HEVC patent-pool concern. No route is public pending qualified legal clearance and a narrow fixed-memory HEVC-only build that passes the complete acceptance suite. `tests/heif-heic-feasibility.test.mjs` binds the decision, probes, sources, registry absence, and documentation. No converted output or fixture was created.";
+const cameraRawFeasibilityNote =
+  "N-04 camera-RAW feasibility audit (2026-09-05): production Chrome 152.0.7977.77 returned true for PNG/AVIF controls but false for representative DNG, CR2, NEF, and ARW MIME types; the focused capability case passed 1/1 and the complete privacy/offline suite passed 15/15 in 51.9 seconds. The audit pins LibRaw 0.22.2 and records that its custom seekable datastream is viable, while its default 2,048 MiB raw/512 MiB thumbnail limits, complete processed surface, and explicitly basic non-production renderer prevent a public route without a separate tightly bounded rendering design. LibRaw-Wasm 1.6.0 is rejected as-is because it pins older LibRaw, starts a growing 256 MiB heap, and copies complete input and output buffers. RawSpeed is fuzzed and fast but is a memory-input first-stage decoder without most metadata, color/white-balance correction, demosaicing, or a viewable image. `tests/camera-raw-feasibility.test.mjs` binds the decision, probes, sources, registry absence, and documentation. No converted output or fixture was created.";
+const webCodecsAccelerationNote =
+  "M-09 WebCodecs acceleration audit (2026-09-07): production Chrome 152.0.7977.77 passed a bounded codec-only benchmark. VP8 and hardware-preferred VP9 each encoded 300 generated 640x360 frames in three repeatable runs (0.369-0.798 seconds); Opus encoded ten seconds of 48 kHz stereo audio in 0.050-0.092 seconds. At most three inputs were queued, the largest encoded chunk was 9,879 bytes, and no fixture or converted file was created. The capability matrix accepted hardware-preferred VP9/H.264 but not VP8/AV1, accepted Opus/AAC encoding, and rejected FLAC/MP3 encoding. These are useful primitive results, not complete conversion throughput: WebCodecs provides codec chunks but not the required general-purpose demux/mux, stream/metadata preservation, random-access destination, or deterministic fallback pipeline. No public route silently selects it until an identical-source end-to-end A/B proves a material gain while passing the unchanged correctness and 250 MiB gates. `evidence/webcodecs-acceleration-audit-2026-09-07.json` and `tests/webcodecs-acceleration-audit.test.mjs` bind the decision.";
+const aviOutputFeasibilityNote =
+  "M-04/P-08 bounded AVI packet-copy acceptance (2026-09-08): public profile 37 accepts only Matroska MPEG-4 Part 2 video plus optional MP3 audio and copies compressed packets without decoding or re-encoding. An audited FFmpeg 8.1.2 `riff_size_limit` option rolls OpenDML at 8 MiB, bounds retained per-segment packet-index payload near 16 MiB, reserves 16,384 master-index entries per stream (128 GiB represented), and keeps 256 KiB I/O with one pending write. Production Chrome passed three small success/adverse/field cases plus 3/3 159,417,989-byte stress runs in 1.075-1.142 seconds at 204.473 MiB worst incremental complete-Chromium private memory. All runs produced the same 161,046,620-byte AVI, retained exact MPEG-4/MP3 packet hashes, fully decoded, sought at midpoint, and contained 20 valid OpenDML RIFF segments with master and per-stream standard indexes. Cancellation and injected write failure removed partial output. Generated sources, converted copies, raw reports, browser profiles, and the downloaded candidate artifact were deleted after compact evidence was retained. No Docker command was used. See `evidence/avi-output-feasibility-2026-09-08.json` and `evidence/compatible-avi-copy-2026-09-08.json`.";
 const ledgerDate = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Kolkata",
   year: "numeric",
@@ -26,8 +34,7 @@ const ledgerDate = new Intl.DateTimeFormat("en-CA", {
 }).format(new Date());
 
 const publicPassed = conversionProfiles.filter(
-  (profile) =>
-    profile.public && profile.automatedTestStatus === "passed",
+  (profile) => profile.public && profile.automatedTestStatus === "passed",
 );
 const reports = new Map();
 const failedReports = [
@@ -56,7 +63,11 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
       continue;
     }
     if (!name.endsWith("-stress.json")) continue;
-    if (report.passed === false && report.profileId && Array.isArray(report.runs)) {
+    if (
+      report.passed === false &&
+      report.profileId &&
+      Array.isArray(report.runs)
+    ) {
       const failedChecks = Object.entries(report.checks ?? {})
         .filter(([, passed]) => passed === false)
         .map(([check]) => check);
@@ -82,7 +93,9 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
       scaleReports.push(report);
     }
     if (
-      !/^(?:(?:png|gif|webp|avif)-to-(?:zip|jxl)|(?:gif|webp)-to-apng|(?:png|gif)-to-webp)$/.test(report.profileId) &&
+      !/^(?:(?:png|gif|webp|avif)-to-(?:zip|jxl)|(?:gif|webp)-to-apng|(?:png|gif)-to-webp)$/.test(
+        report.profileId,
+      ) &&
       (report.source?.generatedBy ===
         "scripts/generate-animated-webp-fixture.py" ||
         String(report.source?.validationReference ?? "").includes(
@@ -97,10 +110,12 @@ for (const name of await readdir(reportRoot).catch(() => [])) {
       report.runs.length > current.runs.length ||
       (report.runs.length === current.runs.length &&
         report.profileId.endsWith("-to-jxl") &&
-        Number(report.source?.bytes ?? 0) > Number(current.source?.bytes ?? 0)) ||
+        Number(report.source?.bytes ?? 0) >
+          Number(current.source?.bytes ?? 0)) ||
       (report.runs.length === current.runs.length &&
         (!report.profileId.endsWith("-to-jxl") ||
-          Number(report.source?.bytes ?? 0) === Number(current.source?.bytes ?? 0)) &&
+          Number(report.source?.bytes ?? 0) ===
+            Number(current.source?.bytes ?? 0)) &&
         String(report.generatedAt) > String(current.generatedAt))
     ) {
       reports.set(report.profileId, report);
@@ -399,17 +414,18 @@ for (const profile of profiled) {
   const peakWasmEvidence =
     profile.engine === "svg-browser" ? "not exposed" : mib(peakWasm);
   const maxRead = Math.max(...report.runs.map((run) => run.maxReadChunkBytes));
-  const maxWrite = Math.max(...report.runs.map((run) => run.maxWriteChunkBytes));
-  const scratchEvidence =
-    [
-      "tar-to-sevenzip",
-      "tar-gz-to-sevenzip",
-      "tar-bz2-to-sevenzip",
-      "tar-xz-to-sevenzip",
-      "zip-to-sevenzip",
-    ].includes(profile.id)
-      ? ` / scratch ${integer(Math.max(...report.runs.map((run) => run.maxScratchReadChunkBytes ?? 0)))} B read/write`
-      : "";
+  const maxWrite = Math.max(
+    ...report.runs.map((run) => run.maxWriteChunkBytes),
+  );
+  const scratchEvidence = [
+    "tar-to-sevenzip",
+    "tar-gz-to-sevenzip",
+    "tar-bz2-to-sevenzip",
+    "tar-xz-to-sevenzip",
+    "zip-to-sevenzip",
+  ].includes(profile.id)
+    ? ` / scratch ${integer(Math.max(...report.runs.map((run) => run.maxScratchReadChunkBytes ?? 0)))} B read/write`
+    : "";
   lines.push(
     `| ${cell(profile.id)} | ${integer(report.source.bytes)} | ${report.runs.length} | ${range(outputs, integer)} | ${range(elapsed, seconds)} | ${report.incrementalPrivateMiB.toFixed(1)} MiB | ${peakWasmEvidence} | read ${integer(maxRead)} B / write ${integer(maxWrite)} B${scratchEvidence} | ${report.checks?.cleanupRecovery ? "passed" : "not proven"} |`,
   );
@@ -477,7 +493,7 @@ lines.push(
   "",
   "This project is not complete yet. The specification still names major surfaces that are not in the public registry, including:",
   "",
-  "- Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader 3GP, AVI, AV1, MPEG-2, and non-Theora OGV audio/codec combinations beyond the certified Matroska, WebM, OGV, extraction, and transcode routes also remain. Compatible Matroska AV1/VP8/VP9 to WebM and Theora/Vorbis to OGV packet copies are now certified.",
+  "- Video/container: additional elementary-stream codecs and raw outputs beyond H.264, MPEG-2, MPEG-4 Part 2, and the certified container-to-HEVC outputs; raw HEVC input wrapping remains unavailable because B-frame timing cannot be reconstructed losslessly without container timestamps. Broader 3GP, AVI, AV1, MPEG-2, and non-Theora OGV audio/codec combinations beyond the certified Matroska, WebM, OGV, extraction, and transcode routes also remain. Compatible Matroska AV1/VP8/VP9 to WebM, Theora/Vorbis to OGV, and MPEG-4 Part 2/MP3 to AVI packet copies are now certified.",
   "- Audio: AMR-WB output is intentionally withheld pending explicit patent clearance, and AMR-WB container variants beyond the certified mono 16 kHz `.awb` input remain absent; broader AAC/ALAC/WMA variants and source-container-specific metadata field mappings remain. The practical public codec/quality/bitrate/rate/channel controls and bounded common tags plus first JPEG/PNG artwork retention for MP3/FLAC are certified.",
   "- Images: HEIF/HEIC is intentionally withheld after the pinned feasibility audit in `evidence/heif-heic-feasibility-2026-09-05.json`: Chrome 152 has no native HEIF/HEIC `ImageDecoder`; a libheif 1.23.3 plus browser HEVC `VideoDecoder` design is plausible but not eligible without a narrow fixed-memory build, stronger security acceptance, and documented patent clearance. Camera RAW is intentionally withheld after `evidence/camera-raw-feasibility-2026-09-05.json`: Chrome has no native route, LibRaw's viable seekable parser still uses a full processed surface and explicitly basic renderer, the audited Wasm wrapper uses complete buffers and a growing 256 MiB heap, and RawSpeed alone is not a complete rendered-image pipeline. SVG text, CSS, animation, linked resources, and features outside the certified bounded subset are intentionally excluded with separate evidence. PNG/APNG/JPEG/WebP/GIF/BMP to AVIF, PNG/JPEG/WebP/GIF/AVIF/BMP to lossless JPEG XL, GIF/WebP to APNG, APNG/WebP to GIF, APNG/GIF to animated WebP, still JPEG XL to PNG, animated PNG/APNG/GIF/WebP/AVIF/JPEG XL frame archives, and multipage TIFF extraction to ZIP are certified.",
   "- Product validation: the baseline headed success/cancellation/failure/direct-destination flow is now evidenced; broader manual interaction coverage across additional profile families and continued multi-gigabyte scaling for newly added media routes remain.",

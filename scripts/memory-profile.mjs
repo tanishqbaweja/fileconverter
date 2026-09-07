@@ -2,7 +2,15 @@ import { chromium } from "@playwright/test";
 import { createHash } from "node:crypto";
 import { execFile, spawn } from "node:child_process";
 import { createReadStream } from "node:fs";
-import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
+import {
+  mkdir,
+  open,
+  readFile,
+  readdir,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
 import { promisify } from "node:util";
@@ -27,7 +35,10 @@ function parseBoundedStringEnvironment(name, allowed, defaultValue) {
   return value;
 }
 
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const projectRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
 const fixturePath = path.resolve(
   projectRoot,
   process.argv[2] ?? "fixtures/stress/deterministic-256m.bin",
@@ -36,7 +47,18 @@ const profileId = process.argv[3] ?? "gzip-compress";
 const audioOptions = {
   codec: parseBoundedStringEnvironment(
     "WITHIN_AUDIO_CODEC",
-    ["automatic", "mp3", "aac", "opus", "vorbis", "wma", "amr", "flac", "alac", "pcm"],
+    [
+      "automatic",
+      "mp3",
+      "aac",
+      "opus",
+      "vorbis",
+      "wma",
+      "amr",
+      "flac",
+      "alac",
+      "pcm",
+    ],
     "automatic",
   ),
   compression: parseBoundedStringEnvironment(
@@ -263,7 +285,9 @@ const manifestPath = path.resolve(
 );
 const fixtureManifest = JSON.parse(await readFile(manifestPath, "utf8"));
 const isImageProfile =
-  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl|avif)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(profileId);
+  /^(?:(?:png|jpeg|webp|gif|avif|bmp)-to-(?:png|jpeg|webp|bmp|ico|jxl|avif)|(?:png|gif|webp|avif|jxl)-to-zip|(?:gif|webp)-to-apng|(?:png|webp)-to-gif|tiff-to-(?:png|zip)|jxl-to-png|svg-to-png)$/.test(
+    profileId,
+  );
 const isAnimatedFrameArchiveProfile = /^(?:png|gif|webp|avif|jxl)-to-zip$/.test(
   profileId,
 );
@@ -310,8 +334,7 @@ const isStreamingTextProfile =
   profileId === "xlsx-to-csv" ||
   profileId === "xml-to-ndjson";
 const isArchiveCompressionProfile =
-  profileId === "tar-to-tar-gz" ||
-  profileId === "tar-gz-to-tar";
+  profileId === "tar-to-tar-gz" || profileId === "tar-gz-to-tar";
 const isCompressionTranscodeProfile = [
   "gzip-to-bzip2",
   "gzip-to-xz",
@@ -486,6 +509,7 @@ if (
     "mov-to-m4v",
     "avi-to-m4v",
     "mkv-to-ogv",
+    "mkv-to-avi",
     "mkv-to-webm-av1",
     "mkv-to-mp3",
     "mp4-to-mp3",
@@ -649,6 +673,7 @@ const isMediaProfile =
   profileId === "mov-to-m4v" ||
   profileId === "avi-to-m4v" ||
   profileId === "mkv-to-ogv" ||
+  profileId === "mkv-to-avi" ||
   profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
@@ -777,28 +802,28 @@ const maximumWriteChunkBytes =
     ? 1024 * 1024
     : isBzip2Profile || isXzProfile || isSevenZipProfile
       ? 64 * 1024
-    : 256 * 1024;
+      : 256 * 1024;
 const maximumWasmMemoryBytes =
   profileId === "tar-bz2-to-tar-xz" ||
   profileId === "tar-xz-to-tar-bz2" ||
   profileId === "bzip2-to-xz" ||
   profileId === "xz-to-bzip2"
     ? 56 * 1024 * 1024
-  : profileId === "sevenzip-to-tar-bz2"
-    ? 64 * 1024 * 1024
-    : profileId === "tar-bz2-to-sevenzip"
+    : profileId === "sevenzip-to-tar-bz2"
       ? 64 * 1024 * 1024
-    : profileId === "sevenzip-to-tar-xz"
-      ? 104 * 1024 * 1024
-      : profileId === "tar-xz-to-sevenzip"
-        ? 80 * 1024 * 1024
-      : isBzip2Profile
-        ? 8 * 1024 * 1024
-        : isXzProfile
-          ? 48 * 1024 * 1024
-          : isSevenZipProfile
-            ? 64 * 1024 * 1024
-            : 128 * 1024 * 1024;
+      : profileId === "tar-bz2-to-sevenzip"
+        ? 64 * 1024 * 1024
+        : profileId === "sevenzip-to-tar-xz"
+          ? 104 * 1024 * 1024
+          : profileId === "tar-xz-to-sevenzip"
+            ? 80 * 1024 * 1024
+            : isBzip2Profile
+              ? 8 * 1024 * 1024
+              : isXzProfile
+                ? 48 * 1024 * 1024
+                : isSevenZipProfile
+                  ? 64 * 1024 * 1024
+                  : 128 * 1024 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
 }`;
@@ -907,7 +932,9 @@ try {
   }
 
   await page.goto(testUrl);
-  await page.getByRole("heading", { name: "Big files. Small memory." }).waitFor();
+  await page
+    .getByRole("heading", { name: "Big files. Small memory." })
+    .waitFor();
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
   );
@@ -921,7 +948,7 @@ try {
     throw new Error("Loaded-site private-memory baseline is unavailable.");
   }
 
-  if (profileId === "mkv-to-ogv") {
+  if (profileId === "mkv-to-ogv" || profileId === "mkv-to-avi") {
     const namesBefore = await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory();
       const names = [];
@@ -940,20 +967,20 @@ try {
         state?.jobState === "error"
       );
     });
-    const cancellableState = await page.evaluate(
-      () => window.__WITHIN_TEST__?.getState(),
+    const cancellableState = await page.evaluate(() =>
+      window.__WITHIN_TEST__?.getState(),
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `OGV stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${profileId === "mkv-to-avi" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().jobState === "cancelled",
     );
-    const cancelledState = await page.evaluate(
-      () => window.__WITHIN_TEST__?.getState(),
+    const cancelledState = await page.evaluate(() =>
+      window.__WITHIN_TEST__?.getState(),
     );
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -985,7 +1012,9 @@ try {
       projectLocalEntriesAfter: namesAfter,
     };
     if (!cancellationCheck.passed) {
-      throw new Error("OGV cancellation left output state or browser-owned files behind.");
+      throw new Error(
+        `${profileId === "mkv-to-avi" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+      );
     }
   }
 
@@ -1000,17 +1029,15 @@ try {
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
     await setLocalFileInput(cdp, fixturePath);
-    const selectedFileBytes = await page.locator('[data-testid="file-input"]').evaluate(
-      (input) => input.files?.[0]?.size ?? null,
-    );
+    const selectedFileBytes = await page
+      .locator('[data-testid="file-input"]')
+      .evaluate((input) => input.files?.[0]?.size ?? null);
     if (selectedFileBytes !== fixtureManifest.bytes) {
       throw new Error(
         `Chromium selected ${selectedFileBytes ?? "no"} bytes; expected ${fixtureManifest.bytes}.`,
       );
     }
-    await page
-      .locator('[data-testid="format-select"]')
-      .selectOption(profileId);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
     if (isAudioOptionsProfile) {
       await page
         .locator('[data-testid="audio-codec-select"]')
@@ -1057,7 +1084,9 @@ try {
     let peakRssBytes = null;
     let finalState;
     for (;;) {
-      const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+      const state = await page.evaluate(() =>
+        window.__WITHIN_TEST__?.getState(),
+      );
       lastObservedState = state ?? lastObservedState;
       const sample = await takeSample(
         chromeProcess.pid,
@@ -1117,11 +1146,7 @@ try {
         profileRoot,
         finalState.metrics.outputBytes,
       );
-      if (
-        isDocxOutputProfile ||
-        isOdtOutputProfile ||
-        isEpubOutputProfile
-      ) {
+      if (isDocxOutputProfile || isOdtOutputProfile || isEpubOutputProfile) {
         outputSha256 = (await hashFile(physicalOutputPath)).sha256;
         const decoded = isDocxOutputProfile
           ? await validateDocxOutput(physicalOutputPath)
@@ -1207,10 +1232,10 @@ try {
         }
         mediaProbe = isArchiveTransformProfile
           ? await validateArchiveOutput(
-            physicalOutputPath,
-            fixtureManifest,
-            profileId,
-          )
+              physicalOutputPath,
+              fixtureManifest,
+              profileId,
+            )
           : isMediaProfile
             ? await validateMediaOutput(
                 physicalOutputPath,
@@ -1234,42 +1259,42 @@ try {
                     fixtureManifest,
                     finalState,
                   )
-              : isAnimatedGifProfile
-                ? await validateAnimatedGifOutput(
-                    physicalOutputPath,
-                    fixturePath,
-                    fixtureManifest,
-                    finalState,
-                  )
-              : isAnimatedWebpProfile
-                ? await validateAnimatedWebpOutput(
-                    physicalOutputPath,
-                    fixturePath,
-                    fixtureManifest,
-                    finalState,
-                  )
-              : isAnimatedJxlProfile
-                ? await validateAnimatedJxlOutput(
-                    physicalOutputPath,
-                    fixturePath,
-                    fixtureManifest,
-                    finalState,
-                    profileId,
-                  )
-              : isTiffPageArchiveProfile
-                ? await validateTiffPageArchiveOutput(
-                    physicalOutputPath,
-                    fixtureManifest,
-                    finalState,
-                    profileId,
-                  )
-              : await validateImageOutput(
-                  physicalOutputPath,
-                  fixturePath,
-                  fixtureManifest,
-                  finalState,
-                  profileId,
-                );
+                : isAnimatedGifProfile
+                  ? await validateAnimatedGifOutput(
+                      physicalOutputPath,
+                      fixturePath,
+                      fixtureManifest,
+                      finalState,
+                    )
+                  : isAnimatedWebpProfile
+                    ? await validateAnimatedWebpOutput(
+                        physicalOutputPath,
+                        fixturePath,
+                        fixtureManifest,
+                        finalState,
+                      )
+                    : isAnimatedJxlProfile
+                      ? await validateAnimatedJxlOutput(
+                          physicalOutputPath,
+                          fixturePath,
+                          fixtureManifest,
+                          finalState,
+                          profileId,
+                        )
+                      : isTiffPageArchiveProfile
+                        ? await validateTiffPageArchiveOutput(
+                            physicalOutputPath,
+                            fixtureManifest,
+                            finalState,
+                            profileId,
+                          )
+                        : await validateImageOutput(
+                            physicalOutputPath,
+                            fixturePath,
+                            fixtureManifest,
+                            finalState,
+                            profileId,
+                          );
       }
     } else {
       const validationPage = await context.newPage();
@@ -1282,37 +1307,43 @@ try {
         },
       );
       await validationPage.goto(`${serverUrl}/test-validator.html`);
-      await validationPage.evaluate(async ({ opfsName, profileId }) => {
-        const root = await navigator.storage.getDirectory();
-        const handle = await root.getFileHandle(opfsName);
-        const compressed = await handle.getFile();
+      await validationPage.evaluate(
+        async ({ opfsName, profileId }) => {
+          const root = await navigator.storage.getDirectory();
+          const handle = await root.getFileHandle(opfsName);
+          const compressed = await handle.getFile();
           const source =
-          profileId === "gzip-compress" ||
-          profileId === "tar-to-tar-gz"
-            ? compressed.stream().pipeThrough(new DecompressionStream("gzip"))
-            : compressed.stream();
-        const reader = source.getReader();
-        for (;;) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          for (let offset = 0; offset < value.byteLength; offset += 64 * 1024) {
-            const part = value.subarray(
-              offset,
-              Math.min(offset + 64 * 1024, value.byteLength),
-            );
-            let binary = "";
-            for (let inner = 0; inner < part.byteLength; inner += 16 * 1024) {
-              binary += String.fromCharCode(
-                ...part.subarray(
-                  inner,
-                  Math.min(inner + 16 * 1024, part.byteLength),
-                ),
+            profileId === "gzip-compress" || profileId === "tar-to-tar-gz"
+              ? compressed.stream().pipeThrough(new DecompressionStream("gzip"))
+              : compressed.stream();
+          const reader = source.getReader();
+          for (;;) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            for (
+              let offset = 0;
+              offset < value.byteLength;
+              offset += 64 * 1024
+            ) {
+              const part = value.subarray(
+                offset,
+                Math.min(offset + 64 * 1024, value.byteLength),
               );
+              let binary = "";
+              for (let inner = 0; inner < part.byteLength; inner += 16 * 1024) {
+                binary += String.fromCharCode(
+                  ...part.subarray(
+                    inner,
+                    Math.min(inner + 16 * 1024, part.byteLength),
+                  ),
+                );
+              }
+              await window.__withinValidationChunk(btoa(binary));
             }
-            await window.__withinValidationChunk(btoa(binary));
           }
-        }
-      }, { opfsName: outputStorageName, profileId });
+        },
+        { opfsName: outputStorageName, profileId },
+      );
       await validationPage.close();
       if (
         validationBytes !== expectedValidationBytes ||
@@ -1341,8 +1372,7 @@ try {
       page,
       `cleanup-${run}`,
       samples,
-      loadedStable.privateBytes +
-        cleanupRecoveryLimitMiB * 1024 * 1024,
+      loadedStable.privateBytes + cleanupRecoveryLimitMiB * 1024 * 1024,
       60_000,
     );
     if (cleanupStable.privateBytes == null) {
@@ -1386,7 +1416,8 @@ try {
         (peakPrivateBytes - loadedStable.privateBytes) / (1024 * 1024),
       cleanupPrivateBytes: cleanupStable.privateBytes,
       cleanupDeltaFromLoadedMiB:
-        (cleanupStable.privateBytes - loadedStable.privateBytes) / (1024 * 1024),
+        (cleanupStable.privateBytes - loadedStable.privateBytes) /
+        (1024 * 1024),
       sha256: actualHash,
       validationBytes,
       validationSha256,
@@ -1454,11 +1485,11 @@ try {
           run.peakWasmMemoryBytes <= maximumWasmMemoryBytes),
     ),
     cleanupRecovery: runSummaries.every(
-      (run) =>
-        run.cleanupDeltaFromLoadedMiB <= cleanupRecoveryLimitMiB,
+      (run) => run.cleanupDeltaFromLoadedMiB <= cleanupRecoveryLimitMiB,
     ),
     cancellationCleanup:
-      profileId !== "mkv-to-ogv" || cancellationCheck?.passed === true,
+      !["mkv-to-ogv", "mkv-to-avi"].includes(profileId) ||
+      cancellationCheck?.passed === true,
   };
   const report = {
     generatedAt: new Date().toISOString(),
@@ -1529,21 +1560,23 @@ try {
           "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
         blankBaseline: blankStable,
         loadedIdle: loadedStable,
-      activeRun,
-      terminationSignal,
-      completedRuns: runSummaries,
+        activeRun,
+        terminationSignal,
+        completedRuns: runSummaries,
         lastObservedState,
         samples,
         failure: {
           name: error instanceof Error ? error.name : "Error",
           message: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack ?? null : null,
+          stack: error instanceof Error ? (error.stack ?? null) : null,
         },
       });
     } catch (reportError) {
       process.stderr.write(
         `Failure diagnostics could not be written: ${
-          reportError instanceof Error ? reportError.message : String(reportError)
+          reportError instanceof Error
+            ? reportError.message
+            : String(reportError)
         }\n`,
       );
     }
@@ -1694,8 +1727,7 @@ async function validateMediaOutput(
     route === "ogg-to-flac" ||
     route === "opus-to-flac" ||
     route === "webm-to-flac";
-  const alacOutput =
-    route === "wav-to-alac" || route === "flac-to-alac";
+  const alacOutput = route === "wav-to-alac" || route === "flac-to-alac";
   const wmaOutput = WMA_OUTPUT_PROFILES.includes(route);
   const h264Output =
     route === "mkv-to-h264" ||
@@ -1722,6 +1754,7 @@ async function validateMediaOutput(
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
   const compatibleOgvCopy = route === "mkv-to-ogv";
+  const compatibleAviCopy = route === "mkv-to-avi";
   const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
@@ -1793,17 +1826,18 @@ async function validateMediaOutput(
     route === "m2v-to-webm" ||
     route === "h264-to-webm" ||
     vp9Reencode;
-  const webmAudioCopy =
-    route === "ogv-to-webm" || route === "ogv-to-webm-vp9";
+  const webmAudioCopy = route === "ogv-to-webm" || route === "ogv-to-webm-vp9";
   const videoReencode =
     route === "mkv-to-mp4-mpeg4" ||
     route === "m2v-to-mp4-mpeg4" ||
     webmReencode;
   const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
-  const decodedVideoDurationSeconds = Number(source.decodedVideoDurationSeconds);
+  const decodedVideoDurationSeconds = Number(
+    source.decodedVideoDurationSeconds,
+  );
   const sourceDurationSeconds =
     (videoReencode || m4vMp4Output || matroskaCopy) &&
-      Number.isFinite(decodedVideoDurationSeconds)
+    Number.isFinite(decodedVideoDurationSeconds)
       ? decodedVideoDurationSeconds
       : Number.isFinite(probedSourceDurationSeconds)
         ? probedSourceDurationSeconds
@@ -1819,14 +1853,22 @@ async function validateMediaOutput(
   );
   const selectedAudioChannels =
     audioOptions.channels || Math.min(Number(sourceAudioForSize?.channels), 2);
-  const compressedAudioOutputBitRate = audioOptions.bitRateBps ||
+  const compressedAudioOutputBitRate =
+    audioOptions.bitRateBps ||
     (audioOptions.quality === "smaller"
-      ? selectedAudioChannels === 1 ? 64_000 : 96_000
+      ? selectedAudioChannels === 1
+        ? 64_000
+        : 96_000
       : audioOptions.quality === "higher"
-        ? selectedAudioChannels === 1 ? 192_000 : 256_000
-        : selectedAudioChannels === 1 ? 128_000 : 192_000);
+        ? selectedAudioChannels === 1
+          ? 192_000
+          : 256_000
+        : selectedAudioChannels === 1
+          ? 128_000
+          : 192_000);
   const mp3SourceSampleRate = Number(sourceAudioForSize?.sample_rate);
-  const mp3OutputSampleRate = audioOptions.sampleRateHz ||
+  const mp3OutputSampleRate =
+    audioOptions.sampleRateHz ||
     (mp3SourceSampleRate === 8_000 || mp3SourceSampleRate === 16_000
       ? mp3SourceSampleRate
       : mp3SourceSampleRate <= 32_000
@@ -1835,26 +1877,40 @@ async function validateMediaOutput(
           ? 44_100
           : 48_000);
   const mp3OutputChannels = selectedAudioChannels;
-  const mp3OutputBitRate = audioOptions.bitRateBps ||
+  const mp3OutputBitRate =
+    audioOptions.bitRateBps ||
     (audioOptions.quality === "smaller"
-      ? mp3OutputChannels === 1 ? 64_000 : 96_000
+      ? mp3OutputChannels === 1
+        ? 64_000
+        : 96_000
       : audioOptions.quality === "balanced"
-        ? mp3OutputChannels === 1 ? 128_000 : 192_000
+        ? mp3OutputChannels === 1
+          ? 128_000
+          : 192_000
         : audioOptions.quality === "higher"
-          ? mp3OutputChannels === 1 ? 256_000 : 320_000
-      : mp3OutputChannels === 1
-      ? mp3OutputSampleRate === 8_000
-        ? 32_000
-        : mp3OutputSampleRate === 16_000
-          ? 64_000
-          : 128_000
-      : 192_000);
-  const opusOutputBitRate = audioOptions.bitRateBps ||
+          ? mp3OutputChannels === 1
+            ? 256_000
+            : 320_000
+          : mp3OutputChannels === 1
+            ? mp3OutputSampleRate === 8_000
+              ? 32_000
+              : mp3OutputSampleRate === 16_000
+                ? 64_000
+                : 128_000
+            : 192_000);
+  const opusOutputBitRate =
+    audioOptions.bitRateBps ||
     (audioOptions.quality === "smaller"
-      ? selectedAudioChannels === 1 ? 48_000 : 64_000
+      ? selectedAudioChannels === 1
+        ? 48_000
+        : 64_000
       : audioOptions.quality === "higher"
-        ? selectedAudioChannels === 1 ? 128_000 : 192_000
-        : selectedAudioChannels === 1 ? 64_000 : 128_000);
+        ? selectedAudioChannels === 1
+          ? 128_000
+          : 192_000
+        : selectedAudioChannels === 1
+          ? 64_000
+          : 128_000);
   const vorbisOutputBitRate = 220_000;
   const maximumComparableSize =
     webmReencode && Number.isFinite(sourceDurationSeconds)
@@ -1862,30 +1918,33 @@ async function validateMediaOutput(
       : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
         ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.04) / 8) +
           1024 * 1024
-      : aacTranscodeOutput &&
-          Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8) +
-          1024 * 1024
-      : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * opusOutputBitRate * 1.25) / 8) +
-          1024 * 1024
-      : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
-          1024 * 1024
-      : wmaOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * 640_000 * 1.04) / 8) +
-          1024 * 1024
-      : mpeg2TransportOutput || containerMpegTsCopy
-        ? Math.ceil(source.bytes * 1.1)
-      : pcmOutput
-        ? Number.MAX_SAFE_INTEGER
-        : flacOutput || alacOutput
-          ? source.bytes * 10
-          : audioOnly
-            ? source.bytes
-            : videoReencode
-              ? source.bytes * 3
-              : Math.ceil(source.bytes * 1.05);
+        : aacTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+          ? Math.ceil(
+              (sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8,
+            ) +
+            1024 * 1024
+          : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+            ? Math.ceil(
+                (sourceDurationSeconds * opusOutputBitRate * 1.25) / 8,
+              ) +
+              1024 * 1024
+            : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+              ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
+                1024 * 1024
+              : wmaOutput && Number.isFinite(sourceDurationSeconds)
+                ? Math.ceil((sourceDurationSeconds * 640_000 * 1.04) / 8) +
+                  1024 * 1024
+                : mpeg2TransportOutput || containerMpegTsCopy
+                  ? Math.ceil(source.bytes * 1.1)
+                  : pcmOutput
+                    ? Number.MAX_SAFE_INTEGER
+                    : flacOutput || alacOutput
+                      ? source.bytes * 10
+                      : audioOnly
+                        ? source.bytes
+                        : videoReencode
+                          ? source.bytes * 3
+                          : Math.ceil(source.bytes * 1.05);
   if (
     finalState.metrics.outputBytes < minimumComparableSize ||
     finalState.metrics.outputBytes > maximumComparableSize
@@ -1924,9 +1983,7 @@ async function validateMediaOutput(
         maxBuffer: 8 * 1024 * 1024,
       },
     );
-    if (
-      decodedPcmHash.trim().split("=")[1] !== source.decodedPcmSha256
-    ) {
+    if (decodedPcmHash.trim().split("=")[1] !== source.decodedPcmSha256) {
       throw new Error(
         "Browser decoded audio content does not match the independently decoded source audio.",
       );
@@ -2007,7 +2064,8 @@ async function validateMediaOutput(
     if (
       channelQualityDb.length === 0 ||
       channelQualityDb.some(
-        (value) => !Number.isFinite(value) && value !== Number.POSITIVE_INFINITY,
+        (value) =>
+          !Number.isFinite(value) && value !== Number.POSITIVE_INFINITY,
       ) ||
       channelQualityDb.some((value) => value < minimumQualityDb)
     ) {
@@ -2019,14 +2077,17 @@ async function validateMediaOutput(
       method: asdrOutput ? "decoded-audio-asdr" : "decoded-audio-apsnr",
       passed: true,
       minimumRequiredDb: minimumQualityDb,
-      [asdrOutput ? "channelSdrDb" : "channelPsnrDb"]: channelQualityDb.map((value) =>
-        value === Number.POSITIVE_INFINITY ? "Infinity" : value,
+      [asdrOutput ? "channelSdrDb" : "channelPsnrDb"]: channelQualityDb.map(
+        (value) => (value === Number.POSITIVE_INFINITY ? "Infinity" : value),
       ),
     };
   }
   if (route === "aac-to-m4a") {
     const packetHashes = [];
-    for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
+    for (const [candidateIndex, candidate] of [
+      sourcePath,
+      localPath,
+    ].entries()) {
       const sourceAdtsFilter =
         candidateIndex === 0 ? ["-bsf:a", "aac_adtstoasc"] : [];
       const { stdout: packetHash } = await execFileAsync(
@@ -2073,16 +2134,29 @@ async function validateMediaOutput(
       const { stdout: packetHash } = await execFileAsync(
         "ffmpeg",
         [
-          "-hide_banner", "-loglevel", "error", "-i", candidate,
-          "-map", "0:a:0", "-c:a", "copy", "-f", "hash",
-          "-hash", "sha256", "-",
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-i",
+          candidate,
+          "-map",
+          "0:a:0",
+          "-c:a",
+          "copy",
+          "-f",
+          "hash",
+          "-hash",
+          "sha256",
+          "-",
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
       packetHashes.push(packetHash.trim().split("=")[1]);
     }
     if (!packetHashes[0] || packetHashes[0] !== packetHashes[1]) {
-      throw new Error("Browser AMR packets do not match the 3GP source payload.");
+      throw new Error(
+        "Browser AMR packets do not match the 3GP source payload.",
+      );
     }
     independentAudioValidation = {
       method: "amr-packet-sha256",
@@ -2201,7 +2275,7 @@ async function validateMediaOutput(
       sha256,
     };
   }
-  if (compatibleOgvCopy) {
+  if (compatibleOgvCopy || compatibleAviCopy) {
     const packetHashes = {};
     for (const [kind, map, expected] of [
       ["video", "0:v:0", source.videoPacketSha256],
@@ -2210,21 +2284,35 @@ async function validateMediaOutput(
       const { stdout: packetHash } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-xerror", "-i", localPath, "-map", map,
-          "-c", "copy", "-f", "hash", "-hash", "sha256", "-",
+          "-v",
+          "error",
+          "-xerror",
+          "-i",
+          localPath,
+          "-map",
+          map,
+          "-c",
+          "copy",
+          "-f",
+          "hash",
+          "-hash",
+          "sha256",
+          "-",
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
       );
       const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
       if (!sha256 || sha256 !== expected) {
         throw new Error(
-          `Browser compatible OGV ${kind} packets do not exactly match the source payload.`,
+          `Browser compatible ${compatibleAviCopy ? "AVI" : "OGV"} ${kind} packets do not exactly match the source payload.`,
         );
       }
       packetHashes[kind] = sha256;
     }
     independentAudioValidation = {
-      method: "theora-vorbis-packet-sha256",
+      method: compatibleAviCopy
+        ? "mpeg4-mp3-packet-sha256"
+        : "theora-vorbis-packet-sha256",
       passed: true,
       videoSha256: packetHashes.video,
       audioSha256: packetHashes.audio,
@@ -2284,6 +2372,7 @@ async function validateMediaOutput(
     amrOutput ||
     elementaryVideoOutput ||
     compatibleOgvCopy ||
+    compatibleAviCopy ||
     compatibleWebmCopy ||
     route === "avi-to-mkv";
   // Packet-copy routes are validated by a full output hash, packet counts,
@@ -2311,9 +2400,23 @@ async function validateMediaOutput(
   );
   if (
     compatibleOgvCopy &&
-    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("ogg")
   ) {
-    throw new Error("Browser compatible OGV output did not probe as genuine Ogg.");
+    throw new Error(
+      "Browser compatible OGV output did not probe as genuine Ogg.",
+    );
+  }
+  if (
+    compatibleAviCopy &&
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("avi")
+  ) {
+    throw new Error(
+      "Browser compatible AVI output did not probe as genuine AVI.",
+    );
   }
   if (
     matroskaCopy &&
@@ -2333,39 +2436,53 @@ async function validateMediaOutput(
   }
   if (
     containerThreeGpCopy &&
-    (!String(probe.format?.format_name ?? "").split(",").includes("3gp") ||
+    (!String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("3gp") ||
       !String(probe.format?.tags?.major_brand ?? "").startsWith("3gp"))
   ) {
     throw new Error("Browser 3GP output did not probe as genuine 3GP.");
   }
   if (
     containerMovCopy &&
-    (!String(probe.format?.format_name ?? "").split(",").includes("mov") ||
+    (!String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("mov") ||
       String(probe.format?.tags?.major_brand ?? "") !== "qt  ")
   ) {
-    throw new Error("Browser MOV output did not probe as genuine QuickTime MOV.");
+    throw new Error(
+      "Browser MOV output did not probe as genuine QuickTime MOV.",
+    );
   }
   if (
     containerFlvCopy &&
-    !String(probe.format?.format_name ?? "").split(",").includes("flv")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("flv")
   ) {
     throw new Error("Browser FLV output did not probe as genuine FLV.");
   }
   if (
     aiffOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("aiff")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("aiff")
   ) {
     throw new Error("Browser AIFF output did not probe as genuine AIFF.");
   }
   if (
     amrOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("amr")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("amr")
   ) {
     throw new Error("Browser AMR output did not probe as genuine AMR.");
   }
   if (
     mp3TranscodeOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("mp3")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("mp3")
   ) {
     throw new Error("Browser MP3 output did not probe as genuine MP3.");
   }
@@ -2383,19 +2500,25 @@ async function validateMediaOutput(
   }
   if (
     opusTranscodeOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("ogg")
   ) {
     throw new Error("Browser Opus output did not probe as genuine Ogg.");
   }
   if (
     vorbisTranscodeOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("ogg")
   ) {
     throw new Error("Browser Vorbis output did not probe as genuine Ogg.");
   }
   if (
     wmaOutput &&
-    !String(probe.format?.format_name ?? "").split(",").includes("asf")
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("asf")
   ) {
     throw new Error("Browser WMA output did not probe as genuine ASF.");
   }
@@ -2426,8 +2549,17 @@ async function validateMediaOutput(
       await execFileAsync(
         "ffmpeg",
         [
-          "-hide_banner", "-loglevel", "error", "-y", "-i", localPath,
-          "-map", "0:v:0", "-c", "copy", artworkValidationPath,
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-y",
+          "-i",
+          localPath,
+          "-map",
+          "0:v:0",
+          "-c",
+          "copy",
+          artworkValidationPath,
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
@@ -2480,27 +2612,28 @@ async function validateMediaOutput(
             ? "pcm_s16be"
             : amrOutput
               ? "amr_nb"
-            : pcmOutput
-              ? "pcm_s16le"
-            : flacOutput
-              ? "flac"
-              : alacOutput
-                ? "alac"
-                : wmaOutput
-                  ? "wmav2"
-                : mp3Output
-                  ? "mp3"
-                : opusTranscodeOutput
-                  ? "opus"
-                : vorbisTranscodeOutput
-                  ? "vorbis"
-                : oggPacketOutput
-                  ? opusOutput ? "opus" : "vorbis"
-                : "aac"))) ||
+              : pcmOutput
+                ? "pcm_s16le"
+                : flacOutput
+                  ? "flac"
+                  : alacOutput
+                    ? "alac"
+                    : wmaOutput
+                      ? "wmav2"
+                      : mp3Output
+                        ? "mp3"
+                        : opusTranscodeOutput
+                          ? "opus"
+                          : vorbisTranscodeOutput
+                            ? "vorbis"
+                            : oggPacketOutput
+                              ? opusOutput
+                                ? "opus"
+                                : "vorbis"
+                              : "aac"))) ||
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
-        codecs[0] !==
-          (vp9Reencode ? "vp9" : webmReencode ? "vp8" : "mpeg4") ||
+        codecs[0] !== (vp9Reencode ? "vp9" : webmReencode ? "vp8" : "mpeg4") ||
         (webmAudioCopy && codecs[1] !== "vorbis"))) ||
     (videoOnlyCopy &&
       (codecs.length !== 1 ||
@@ -2509,9 +2642,9 @@ async function validateMediaOutput(
             ? "mpeg2video"
             : m4vOutput || m4vMp4Output
               ? "mpeg4"
-            : hevcOutput
-              ? "hevc"
-              : "h264"))) ||
+              : hevcOutput
+                ? "hevc"
+                : "h264"))) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
@@ -2524,10 +2657,13 @@ async function validateMediaOutput(
   const video = primaryStreams.find((stream) => stream.codec_type === "video");
   const audio = primaryStreams.find((stream) => stream.codec_type === "audio");
   const [videoRateNumerator, videoRateDenominator] = String(
-    primaryStreams.find((stream) => stream.codec_type === "video")?.avg_frame_rate ?? "0/0",
-  ).split("/").map(Number);
+    primaryStreams.find((stream) => stream.codec_type === "video")
+      ?.avg_frame_rate ?? "0/0",
+  )
+    .split("/")
+    .map(Number);
   const decodedVideoDuration =
-    Number(video?.nb_read_frames) * videoRateDenominator / videoRateNumerator;
+    (Number(video?.nb_read_frames) * videoRateDenominator) / videoRateNumerator;
   const decodedAacDuration =
     (Number(audio?.nb_read_frames) * 1024) / Number(audio?.sample_rate);
   const probedOutputDuration = Number(probe.format.duration);
@@ -2537,13 +2673,13 @@ async function validateMediaOutput(
   const duration =
     amrOutput && Number.isFinite(countedAmrDuration)
       ? countedAmrDuration
-    : aacOutput && Number.isFinite(decodedAacDuration)
-      ? decodedAacDuration
-      : route === "avi-to-mkv" && Number.isFinite(decodedVideoDuration)
-        ? decodedVideoDuration
-      : Number.isFinite(probedOutputDuration)
-        ? probedOutputDuration
-        : decodedVideoDuration;
+      : aacOutput && Number.isFinite(decodedAacDuration)
+        ? decodedAacDuration
+        : route === "avi-to-mkv" && Number.isFinite(decodedVideoDuration)
+          ? decodedVideoDuration
+          : Number.isFinite(probedOutputDuration)
+            ? probedOutputDuration
+            : decodedVideoDuration;
   const normalizedOutputLanguage =
     audio?.tags?.language && audio.tags.language !== "und"
       ? audio.tags.language
@@ -2553,16 +2689,24 @@ async function validateMediaOutput(
       ? sourceAudio.tags.language
       : null;
   const sourceDuration = sourceDurationSeconds;
-  const expectedDuration =
-    elementaryVideoOutput
-      ? decodedVideoDuration
+  const expectedDuration = elementaryVideoOutput
+    ? decodedVideoDuration
     : aacPacketCopyOutput && Number.isFinite(Number(source.aacAccessUnitCount))
       ? (Number(source.aacAccessUnitCount) * 1024) /
         Number(sourceAudio?.sample_rate)
-    : audioOnly &&
-    (pcmOutput || flacOutput || alacOutput || amrOutput || mp3TranscodeOutput || aacTranscodeOutput || opusTranscodeOutput || vorbisTranscodeOutput || wmaOutput || route === "aac-to-m4a")
-      ? (source.decodedAudioDurationSeconds ?? sourceDuration)
-      : sourceDuration;
+      : audioOnly &&
+          (pcmOutput ||
+            flacOutput ||
+            alacOutput ||
+            amrOutput ||
+            mp3TranscodeOutput ||
+            aacTranscodeOutput ||
+            opusTranscodeOutput ||
+            vorbisTranscodeOutput ||
+            wmaOutput ||
+            route === "aac-to-m4a")
+        ? (source.decodedAudioDurationSeconds ?? sourceDuration)
+        : sourceDuration;
   const expectedVideoWidth = webmReencode
     ? Math.min(640, sourceVideo?.width ?? 0)
     : sourceVideo?.width;
@@ -2592,21 +2736,30 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || compatibleOgvCopy || compatibleWebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
+    ((audioOnly ||
+      webmAudioCopy ||
+      compatibleOgvCopy ||
+      compatibleAviCopy ||
+      compatibleWebmCopy ||
+      matroskaCopy ||
+      containerMpegTsCopy ||
+      containerThreeGpCopy ||
+      containerMovCopy ||
+      containerFlvCopy) &&
       audio?.channels !==
         (amrOutput
           ? 1
-        : mp3TranscodeOutput
-          ? expectedTranscodedAudioChannels
-        : aacTranscodeOutput
-          ? expectedTranscodedAudioChannels
-        : opusTranscodeOutput
-          ? expectedTranscodedAudioChannels
-        : vorbisTranscodeOutput
-          ? expectedTranscodedAudioChannels
-        : wmaOutput
-          ? expectedTranscodedAudioChannels
-          : sourceAudio?.channels)) ||
+          : mp3TranscodeOutput
+            ? expectedTranscodedAudioChannels
+            : aacTranscodeOutput
+              ? expectedTranscodedAudioChannels
+              : opusTranscodeOutput
+                ? expectedTranscodedAudioChannels
+                : vorbisTranscodeOutput
+                  ? expectedTranscodedAudioChannels
+                  : wmaOutput
+                    ? expectedTranscodedAudioChannels
+                    : sourceAudio?.channels)) ||
     (audioOnly &&
       audioOptions.sampleRateHz !== 0 &&
       !opusTranscodeOutput &&
@@ -2619,8 +2772,9 @@ async function validateMediaOutput(
         Number(audio?.bit_rate) !== mp3OutputBitRate)) ||
     (aacTranscodeOutput &&
       ((audioOptions.sampleRateHz === 0 &&
-        ![8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000]
-          .includes(Number(audio?.sample_rate))) ||
+        ![
+          8000, 11025, 12000, 16000, 22050, 24000, 32000, 44100, 48000,
+        ].includes(Number(audio?.sample_rate))) ||
         (hasCustomAudioOptions
           ? !customAacBitRateMatches
           : measuredAudioBitRate <= 0 || measuredAudioBitRate > 220000))) ||
@@ -2633,13 +2787,16 @@ async function validateMediaOutput(
       (Number(audio?.sample_rate) <= 0 ||
         Number(audio?.sample_rate) > 48000 ||
         measuredAudioBitRate <= 0 ||
-        measuredAudioBitRate > (audioOptions.quality === "higher" ? 500000 : 220000))) ||
+        measuredAudioBitRate >
+          (audioOptions.quality === "higher" ? 500000 : 220000))) ||
     (wmaOutput &&
       (Number(audio?.sample_rate) !==
-          (audioOptions.sampleRateHz || (route === "amr-wb-to-wma" ? 32000 : 48000)) ||
+        (audioOptions.sampleRateHz ||
+          (route === "amr-wb-to-wma" ? 32000 : 48000)) ||
         (audioOptions.bitRateBps !== 0
           ? !customWmaBitRateMatches
-          : measuredAudioBitRate !== (route === "amr-wb-to-wma" ? 64000 : 320000)))) ||
+          : measuredAudioBitRate !==
+            (route === "amr-wb-to-wma" ? 64000 : 320000)))) ||
     ((route === "mkv-to-m4a" ||
       route === "mov-to-m4a" ||
       route === "3gp-to-m4a" ||
@@ -2692,11 +2849,14 @@ async function validateMediaOutput(
       Number(audio?.nb_read_packets) !== Number(source.audioPacketCount))
   ) {
     throw new Error(
-      `Browser compatible OGV packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "unavailable"} audio.`,
+      `Browser compatible ${compatibleAviCopy ? "AVI" : "OGV"} packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "unavailable"} audio.`,
     );
   }
   if (
-    (elementaryVideoOutput || compatibleOgvCopy || compatibleWebmCopy) &&
+    (elementaryVideoOutput ||
+      compatibleOgvCopy ||
+      compatibleAviCopy ||
+      compatibleWebmCopy) &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
@@ -2705,18 +2865,18 @@ async function validateMediaOutput(
     );
   }
   if (
-    (compatibleOgvCopy || compatibleWebmCopy) &&
+    (compatibleOgvCopy || compatibleAviCopy || compatibleWebmCopy) &&
     (probe.chapters?.length ?? 0) !== 0
   ) {
-    throw new Error("Browser compatible stream-copy output unexpectedly contains chapters.");
+    throw new Error(
+      "Browser compatible stream-copy output unexpectedly contains chapters.",
+    );
   }
   if (videoReencode && video) {
     const midpoint = route.startsWith("h264-to-")
       ? 0
       : Math.max(0, sourceDuration / 2);
-    const seekArguments = midpoint > 0
-      ? ["-ss", midpoint.toFixed(3)]
-      : [];
+    const seekArguments = midpoint > 0 ? ["-ss", midpoint.toFixed(3)] : [];
     const { stderr: similarityLog } = await execFileAsync(
       "ffmpeg",
       [
@@ -2784,7 +2944,8 @@ async function validateMediaOutput(
       sourceHasAttachment &&
       !finalState.warnings.some(
         (warning) =>
-          warning.includes("attachment") || warning.includes("attached picture"),
+          warning.includes("attachment") ||
+          warning.includes("attached picture"),
       ))
   ) {
     throw new Error(
@@ -2796,14 +2957,18 @@ async function validateMediaOutput(
     (source.probe.chapters?.length ?? 0) > 0 &&
     !finalState.warnings.some((warning) => warning.includes("chapter"))
   ) {
-    throw new Error("The browser did not explicitly disclose the excluded source chapters.");
+    throw new Error(
+      "The browser did not explicitly disclose the excluded source chapters.",
+    );
   }
   if (
     audioOnly &&
     sourceVideo &&
     !finalState.warnings.some((warning) => warning.includes("video stream"))
   ) {
-    throw new Error("The browser did not explicitly disclose the excluded video stream.");
+    throw new Error(
+      "The browser did not explicitly disclose the excluded video stream.",
+    );
   }
   if (
     videoReencode &&
@@ -2811,14 +2976,20 @@ async function validateMediaOutput(
     sourceAudio &&
     !finalState.warnings.some((warning) => warning.includes("audio stream"))
   ) {
-    throw new Error("The browser did not explicitly disclose the excluded audio stream.");
+    throw new Error(
+      "The browser did not explicitly disclose the excluded audio stream.",
+    );
   }
   if (
     elementaryVideoOutput &&
     sourceAudio &&
-    !finalState.warnings.some((warning) => warning.includes("Audio cannot be represented"))
+    !finalState.warnings.some((warning) =>
+      warning.includes("Audio cannot be represented"),
+    )
   ) {
-    throw new Error("The browser did not explicitly disclose audio excluded from elementary-video output.");
+    throw new Error(
+      "The browser did not explicitly disclose audio excluded from elementary-video output.",
+    );
   }
   const requiresFullDecodeTraversal =
     videoReencode ||
@@ -2826,6 +2997,7 @@ async function validateMediaOutput(
     mpeg2TransportOutput ||
     m4vMp4Output ||
     compatibleOgvCopy ||
+    compatibleAviCopy ||
     compatibleWebmCopy ||
     matroskaCopy ||
     containerThreeGpCopy ||
@@ -2847,9 +3019,36 @@ async function validateMediaOutput(
     route === "flac-to-alac" ||
     WMA_OUTPUT_PROFILES.includes(route);
   const outputHasAudio =
-    audioOnly ||
-    webmAudioCopy ||
-    (!videoReencode && !videoOnlyCopy);
+    audioOnly || webmAudioCopy || (!videoReencode && !videoOnlyCopy);
+  if (compatibleAviCopy) {
+    probe.withinAviStructure = await inspectAviOpenDml(
+      localPath,
+      source.maximumPacketBytes,
+    );
+    const midpoint = Math.max(0, sourceDurationSeconds / 2);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-ss",
+        midpoint.toFixed(3),
+        "-i",
+        localPath,
+        "-map",
+        "0:v:0",
+        "-frames:v",
+        "1",
+        "-f",
+        "null",
+        "NUL",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+    );
+    probe.withinAviStructure.midpointSeekSeconds = midpoint;
+    probe.withinAviStructure.midpointSeekPassed = true;
+  }
   if (matroskaCopy) {
     const hashes = [];
     for (const candidate of [sourcePath, localPath]) {
@@ -2857,13 +3056,34 @@ async function validateMediaOutput(
         "ffmpeg",
         route === "avi-to-mkv"
           ? [
-              "-v", "error", "-xerror", "-i", candidate,
-              "-map", "0:v:0", "-f", "hash", "-hash", "sha256", "-",
+              "-v",
+              "error",
+              "-xerror",
+              "-i",
+              candidate,
+              "-map",
+              "0:v:0",
+              "-f",
+              "hash",
+              "-hash",
+              "sha256",
+              "-",
             ]
           : [
-              "-v", "error", "-xerror", "-i", candidate,
-              "-map", "0:v:0", "-map", "0:a:0", "-f", "streamhash",
-              "-hash", "sha256", "-",
+              "-v",
+              "error",
+              "-xerror",
+              "-i",
+              candidate,
+              "-map",
+              "0:v:0",
+              "-map",
+              "0:a:0",
+              "-f",
+              "streamhash",
+              "-hash",
+              "sha256",
+              "-",
             ],
         {
           cwd: projectRoot,
@@ -2888,9 +3108,20 @@ async function validateMediaOutput(
         const { stdout: packetHash } = await execFileAsync(
           "ffmpeg",
           [
-            "-v", "error", "-xerror", "-i", candidate,
-            "-map", "0:a:0", "-c", "copy", "-f", "hash",
-            "-hash", "sha256", "-",
+            "-v",
+            "error",
+            "-xerror",
+            "-i",
+            candidate,
+            "-map",
+            "0:a:0",
+            "-c",
+            "copy",
+            "-f",
+            "hash",
+            "-hash",
+            "sha256",
+            "-",
           ],
           {
             cwd: projectRoot,
@@ -2913,11 +3144,28 @@ async function validateMediaOutput(
       const { stdout: packetStreamHash } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-xerror", "-i", candidate,
-          "-map", "0:v:0", "-map", "0:a:0",
-          "-c:v", "rawvideo", "-pix_fmt", "yuv420p",
-          "-c:a", "copy", "-bsf:a", "aac_adtstoasc",
-          "-f", "streamhash", "-hash", "sha256", "-",
+          "-v",
+          "error",
+          "-xerror",
+          "-i",
+          candidate,
+          "-map",
+          "0:v:0",
+          "-map",
+          "0:a:0",
+          "-c:v",
+          "rawvideo",
+          "-pix_fmt",
+          "yuv420p",
+          "-c:a",
+          "copy",
+          "-bsf:a",
+          "aac_adtstoasc",
+          "-f",
+          "streamhash",
+          "-hash",
+          "sha256",
+          "-",
         ],
         {
           cwd: projectRoot,
@@ -2927,7 +3175,10 @@ async function validateMediaOutput(
       );
       packetStreamHashes.push(packetStreamHash.trim());
     }
-    if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
+    if (
+      !packetStreamHashes[0] ||
+      packetStreamHashes[0] !== packetStreamHashes[1]
+    ) {
       throw new Error(
         "Browser MPEG-TS decoded video frames or AAC access units do not exactly match the source.",
       );
@@ -2938,7 +3189,10 @@ async function validateMediaOutput(
     };
   } else if (containerThreeGpCopy || containerMovCopy || containerFlvCopy) {
     const packetStreamHashes = [];
-    for (const [candidateIndex, candidate] of [sourcePath, localPath].entries()) {
+    for (const [candidateIndex, candidate] of [
+      sourcePath,
+      localPath,
+    ].entries()) {
       const sourceAdtsFilter =
         candidateIndex === 0 &&
         (route === "mpeg-ts-to-3gp" ||
@@ -2949,11 +3203,27 @@ async function validateMediaOutput(
       const { stdout: packetStreamHash } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-xerror", "-i", candidate,
-          "-map", "0:v:0", "-map", "0:a:0",
-          "-c:v", "rawvideo", "-pix_fmt", "yuv420p",
-          "-c:a", "copy", ...sourceAdtsFilter,
-          "-f", "streamhash", "-hash", "sha256", "-",
+          "-v",
+          "error",
+          "-xerror",
+          "-i",
+          candidate,
+          "-map",
+          "0:v:0",
+          "-map",
+          "0:a:0",
+          "-c:v",
+          "rawvideo",
+          "-pix_fmt",
+          "yuv420p",
+          "-c:a",
+          "copy",
+          ...sourceAdtsFilter,
+          "-f",
+          "streamhash",
+          "-hash",
+          "sha256",
+          "-",
         ],
         {
           cwd: projectRoot,
@@ -2963,7 +3233,10 @@ async function validateMediaOutput(
       );
       packetStreamHashes.push(packetStreamHash.trim());
     }
-    if (!packetStreamHashes[0] || packetStreamHashes[0] !== packetStreamHashes[1]) {
+    if (
+      !packetStreamHashes[0] ||
+      packetStreamHashes[0] !== packetStreamHashes[1]
+    ) {
       throw new Error(
         `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames or AAC access units do not exactly match the source.`,
       );
@@ -2992,17 +3265,116 @@ async function validateMediaOutput(
   }
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
-    mediaTraversal: compatibleOgvCopy
-      ? "full-native-decode-and-packet-hash"
-      : compatibleWebmCopy || matroskaCopy
-      ? "full-native-decode-and-streamhash"
-      : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy
-      ? "full-decoded-video-and-aac-streamhash"
-      : requiresFullDecodeTraversal
-      ? "full-native-decode"
-      : "full-packet-traversal",
+    mediaTraversal:
+      compatibleOgvCopy || compatibleAviCopy
+        ? "full-native-decode-and-packet-hash"
+        : compatibleWebmCopy || matroskaCopy
+          ? "full-native-decode-and-streamhash"
+          : containerMpegTsCopy ||
+              containerThreeGpCopy ||
+              containerMovCopy ||
+              containerFlvCopy
+            ? "full-decoded-video-and-aac-streamhash"
+            : requiresFullDecodeTraversal
+              ? "full-native-decode"
+              : "full-packet-traversal",
   };
   return probe;
+}
+
+async function inspectAviOpenDml(filePath, sourceMaximumPacketBytes) {
+  const riffLimitBytes = 8 * 1024 * 1024;
+  const maximumPacketBytes = Number.isFinite(Number(sourceMaximumPacketBytes))
+    ? Number(sourceMaximumPacketBytes)
+    : 1024 * 1024;
+  const maximumSegmentBytes = riffLimitBytes + maximumPacketBytes + 1024 * 1024;
+  const handle = await open(filePath, "r");
+  try {
+    const file = await handle.stat();
+    const segments = [];
+    let offset = 0;
+    let hasMasterIndex = false;
+    let standardVideoIndexes = 0;
+    let standardAudioIndexes = 0;
+    while (offset < file.size) {
+      const header = Buffer.alloc(12);
+      const headerRead = await handle.read(header, 0, header.length, offset);
+      if (
+        headerRead.bytesRead !== header.length ||
+        header.toString("ascii", 0, 4) !== "RIFF"
+      ) {
+        throw new Error(
+          `AVI RIFF segment header is invalid at byte ${offset}.`,
+        );
+      }
+      const bytes = header.readUInt32LE(4) + 8;
+      const formType = header.toString("ascii", 8, 12);
+      if (
+        bytes < 12 ||
+        offset + bytes > file.size ||
+        (segments.length === 0 ? formType !== "AVI " : formType !== "AVIX")
+      ) {
+        throw new Error(
+          `AVI RIFF segment ${segments.length} has an invalid size or form type.`,
+        );
+      }
+      if (bytes > maximumSegmentBytes) {
+        throw new Error(
+          `AVI RIFF segment ${segments.length} is ${bytes} bytes; the bounded design allows at most ${maximumSegmentBytes}.`,
+        );
+      }
+      const data = Buffer.alloc(bytes);
+      const segmentRead = await handle.read(data, 0, data.length, offset);
+      if (segmentRead.bytesRead !== data.length) {
+        throw new Error(
+          `AVI RIFF segment ${segments.length} could not be read completely.`,
+        );
+      }
+      hasMasterIndex ||= data.indexOf("indx", 12, "ascii") >= 0;
+      standardVideoIndexes += countAscii(data, "ix00");
+      standardAudioIndexes += countAscii(data, "ix01");
+      segments.push({ index: segments.length, offset, bytes, formType });
+      offset += bytes + (bytes & 1);
+    }
+    if (
+      offset !== file.size ||
+      !hasMasterIndex ||
+      standardVideoIndexes < 1 ||
+      standardAudioIndexes < 1 ||
+      (file.size > riffLimitBytes && segments.length < 2)
+    ) {
+      throw new Error(
+        "AVI OpenDML indexes or bounded RIFF rollover are incomplete.",
+      );
+    }
+    return {
+      fileBytes: file.size,
+      configuredRiffLimitBytes: riffLimitBytes,
+      maximumPacketBytes,
+      maximumAllowedSegmentBytes: maximumSegmentBytes,
+      maximumObservedSegmentBytes: Math.max(
+        ...segments.map((segment) => segment.bytes),
+      ),
+      segmentCount: segments.length,
+      hasMasterIndex,
+      standardVideoIndexes,
+      standardAudioIndexes,
+      segments,
+    };
+  } finally {
+    await handle.close();
+  }
+}
+
+function countAscii(buffer, value) {
+  let count = 0;
+  let offset = 0;
+  for (;;) {
+    const index = buffer.indexOf(value, offset, "ascii");
+    if (index < 0) return count;
+    count += 1;
+    offset = index + value.length;
+  }
 }
 
 async function hashFile(filePath) {
@@ -3099,11 +3471,11 @@ print(json.dumps({
     "methods": methods,
 }))
 `;
-  const { stdout } = await execFileAsync(
-    "python",
-    ["-c", python, filePath],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
-  );
+  const { stdout } = await execFileAsync("python", ["-c", python, filePath], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 1024 * 1024,
+  });
   const result = JSON.parse(stdout);
   if (
     !Number.isSafeInteger(result.bytes) ||
@@ -3112,7 +3484,9 @@ print(json.dumps({
     !Array.isArray(result.entries) ||
     !Array.isArray(result.methods)
   ) {
-    throw new Error("The independent DOCX validator returned invalid evidence.");
+    throw new Error(
+      "The independent DOCX validator returned invalid evidence.",
+    );
   }
   return result;
 }
@@ -3228,11 +3602,11 @@ print(json.dumps({
     "methods": methods,
 }))
 `;
-  const { stdout } = await execFileAsync(
-    "python",
-    ["-c", python, filePath],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
-  );
+  const { stdout } = await execFileAsync("python", ["-c", python, filePath], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 1024 * 1024,
+  });
   const result = JSON.parse(stdout);
   if (
     !Number.isSafeInteger(result.bytes) ||
@@ -3450,7 +3824,9 @@ print(json.dumps({"bytes": content_bytes, "sha256": content_hash.hexdigest(),
     !Array.isArray(result.entries) ||
     !Array.isArray(result.methods)
   ) {
-    throw new Error("The independent EPUB validator returned invalid evidence.");
+    throw new Error(
+      "The independent EPUB validator returned invalid evidence.",
+    );
   }
   return result;
 }
@@ -3469,18 +3845,20 @@ with bz2.open(sys.argv[1], "rb") as source:
         n += len(chunk)
 print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
 `;
-  const { stdout } = await execFileAsync(
-    "python",
-    ["-c", python, filePath],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
-  );
+  const { stdout } = await execFileAsync("python", ["-c", python, filePath], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 1024 * 1024,
+  });
   const result = JSON.parse(stdout);
   if (
     !Number.isSafeInteger(result.bytes) ||
     result.bytes < 0 ||
     !/^[0-9a-f]{64}$/.test(result.sha256)
   ) {
-    throw new Error("The independent BZIP2 validator returned invalid evidence.");
+    throw new Error(
+      "The independent BZIP2 validator returned invalid evidence.",
+    );
   }
   return result;
 }
@@ -3499,18 +3877,20 @@ with gzip.open(sys.argv[1], "rb") as source:
         n += len(chunk)
 print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
 `;
-  const { stdout } = await execFileAsync(
-    "python",
-    ["-c", python, filePath],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
-  );
+  const { stdout } = await execFileAsync("python", ["-c", python, filePath], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 1024 * 1024,
+  });
   const result = JSON.parse(stdout);
   if (
     !Number.isSafeInteger(result.bytes) ||
     result.bytes < 0 ||
     !/^[0-9a-f]{64}$/.test(result.sha256)
   ) {
-    throw new Error("The independent GZIP validator returned invalid evidence.");
+    throw new Error(
+      "The independent GZIP validator returned invalid evidence.",
+    );
   }
   return result;
 }
@@ -3529,11 +3909,11 @@ with lzma.open(sys.argv[1], "rb") as source:
         n += len(chunk)
 print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
 `;
-  const { stdout } = await execFileAsync(
-    "python",
-    ["-c", python, filePath],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
-  );
+  const { stdout } = await execFileAsync("python", ["-c", python, filePath], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 1024 * 1024,
+  });
   const result = JSON.parse(stdout);
   if (
     !Number.isSafeInteger(result.bytes) ||
@@ -3547,16 +3927,16 @@ print(json.dumps({"bytes": n, "sha256": h.hexdigest()}))
 
 async function validateArchiveOutput(localPath, source, route) {
   if (!Array.isArray(source.entries) || source.entries.length === 0) {
-    throw new Error("Archive fixture manifest has no independently verifiable entries.");
+    throw new Error(
+      "Archive fixture manifest has no independently verifiable entries.",
+    );
   }
   const { stdout } = await execFileAsync("tar", ["-tf", localPath], {
     cwd: projectRoot,
     windowsHide: true,
     maxBuffer: 16 * 1024 * 1024,
   });
-  const listedEntries = stdout
-    .split(/\r?\n/)
-    .filter((name) => name.length > 0);
+  const listedEntries = stdout.split(/\r?\n/).filter((name) => name.length > 0);
   const expectedNames = source.entries.map((entry) => entry.name);
   if (
     listedEntries.length !== expectedNames.length ||
@@ -3592,15 +3972,11 @@ async function validateArchiveOutput(localPath, source, route) {
 
 async function hashArchiveEntry(localPath, entryName) {
   return new Promise((resolve, reject) => {
-    const child = spawn(
-      "tar",
-      ["-xOf", localPath, "--", entryName],
-      {
-        cwd: projectRoot,
-        windowsHide: true,
-        stdio: ["ignore", "pipe", "pipe"],
-      },
-    );
+    const child = spawn("tar", ["-xOf", localPath, "--", entryName], {
+      cwd: projectRoot,
+      windowsHide: true,
+      stdio: ["ignore", "pipe", "pipe"],
+    });
     const hash = createHash("sha256");
     let bytes = 0;
     let stderr = "";
@@ -3637,7 +4013,8 @@ async function validateImageOutput(
     finalState.metrics.outputBytes < 1 ||
     finalState.metrics.outputBytes >
       (route.endsWith("-to-jxl") || route.endsWith("-to-avif") ? 128 : 64) *
-        1024 * 1024
+        1024 *
+        1024
   ) {
     throw new Error(
       `Browser image output is outside the bounded range: ${finalState.metrics.outputBytes} bytes.`,
@@ -3656,15 +4033,7 @@ async function validateImageOutput(
             : outputFormat;
   const { stdout } = await execFileAsync(
     "ffprobe",
-    [
-      "-v",
-      "error",
-      "-show_streams",
-      "-show_format",
-      "-of",
-      "json",
-      localPath,
-    ],
+    ["-v", "error", "-show_streams", "-show_format", "-of", "json", localPath],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
   const probe = JSON.parse(stdout);
@@ -3708,7 +4077,9 @@ async function validateImageOutput(
     comparisonRelative.startsWith("..") ||
     path.isAbsolute(comparisonRelative)
   ) {
-    throw new Error("Image validation references must stay inside the project.");
+    throw new Error(
+      "Image validation references must stay inside the project.",
+    );
   }
   const { stderr: similarityLog } = await execFileAsync(
     "ffmpeg",
@@ -3747,9 +4118,13 @@ async function validateImageOutput(
     outputFormat !== "jxl" &&
     outputFormat !== "avif" &&
     Number(sourceStream?.nb_frames ?? 1) > 1 &&
-    !finalState.warnings.some((warning) => warning.includes("first animation frame"))
+    !finalState.warnings.some((warning) =>
+      warning.includes("first animation frame"),
+    )
   ) {
-    throw new Error("The browser did not disclose that only the first animation frame was converted.");
+    throw new Error(
+      "The browser did not disclose that only the first animation frame was converted.",
+    );
   }
   probe.withinValidation = {
     firstFrameVisualSsim: similarity,
@@ -3794,21 +4169,35 @@ async function validateAnimatedJxlOutput(
     !Array.isArray(sourceAnimation.durationsMs) ||
     sourceAnimation.durationsMs.length !== expectedFrames
   ) {
-    throw new Error("The animation source metadata is incomplete or outside the bounded limits.");
+    throw new Error(
+      "The animation source metadata is incomplete or outside the bounded limits.",
+    );
   }
   let expectedDurationsMs = sourceAnimation.durationsMs.map(Number);
-  if (expectedDurationsMs.some((duration) => !Number.isFinite(duration) || duration <= 0)) {
+  if (
+    expectedDurationsMs.some(
+      (duration) => !Number.isFinite(duration) || duration <= 0,
+    )
+  ) {
     const { stdout: sourceProbeJson } = await execFileAsync(
       "ffprobe",
       [
-        "-v", "error", "-show_entries", "frame=stream_index,duration_time",
-        "-show_entries", "stream=index,nb_frames", "-of", "json", sourcePath,
+        "-v",
+        "error",
+        "-show_entries",
+        "frame=stream_index,duration_time",
+        "-show_entries",
+        "stream=index,nb_frames",
+        "-of",
+        "json",
+        sourcePath,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
     const sourceProbe = JSON.parse(sourceProbeJson);
     const animationStream = [...(sourceProbe.streams ?? [])].sort(
-      (left, right) => Number(right.nb_frames ?? 0) - Number(left.nb_frames ?? 0),
+      (left, right) =>
+        Number(right.nb_frames ?? 0) - Number(left.nb_frames ?? 0),
     )[0];
     expectedDurationsMs = (sourceProbe.frames ?? [])
       .filter((frame) => frame.stream_index === animationStream?.index)
@@ -3816,24 +4205,40 @@ async function validateAnimatedJxlOutput(
   }
   if (
     expectedDurationsMs.length !== expectedFrames ||
-    expectedDurationsMs.some((duration) => !Number.isFinite(duration) || duration <= 0)
+    expectedDurationsMs.some(
+      (duration) => !Number.isFinite(duration) || duration <= 0,
+    )
   ) {
-    throw new Error("Independent source timing inspection did not return every animation frame.");
+    throw new Error(
+      "Independent source timing inspection did not return every animation frame.",
+    );
   }
 
   const [{ stdout: probeJson }, { stdout: decoderJson }] = await Promise.all([
     execFileAsync(
       "ffprobe",
       [
-        "-v", "error", "-count_frames", "-select_streams", "v:0",
-        "-show_entries", "stream=codec_name,width,height,pix_fmt,time_base,nb_read_frames",
-        "-show_entries", "frame=pts_time,duration_time", "-of", "json", localPath,
+        "-v",
+        "error",
+        "-count_frames",
+        "-select_streams",
+        "v:0",
+        "-show_entries",
+        "stream=codec_name,width,height,pix_fmt,time_base,nb_read_frames",
+        "-show_entries",
+        "frame=pts_time,duration_time",
+        "-of",
+        "json",
+        localPath,
       ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
     execFileAsync(
       process.execPath,
-      ["scripts/inspect-jxl-animation.mjs", path.relative(projectRoot, localPath)],
+      [
+        "scripts/inspect-jxl-animation.mjs",
+        path.relative(projectRoot, localPath),
+      ],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     ),
   ]);
@@ -3853,11 +4258,12 @@ async function validateAnimatedJxlOutput(
     decoder.height !== height ||
     decoder.frames?.length !== expectedFrames
   ) {
-    throw new Error("Independent decoders did not identify the complete animated JPEG XL output.");
+    throw new Error(
+      "Independent decoders did not identify the complete animated JPEG XL output.",
+    );
   }
-  const expectedNumLoops = Number(sourceAnimation.loop) === 0
-    ? 0
-    : Number(sourceAnimation.loop) + 1;
+  const expectedNumLoops =
+    Number(sourceAnimation.loop) === 0 ? 0 : Number(sourceAnimation.loop) + 1;
   let expectedTimestampMs = 0;
   for (let index = 0; index < expectedFrames; index += 1) {
     const frame = probe.frames[index];
@@ -3872,7 +4278,9 @@ async function validateAnimatedJxlOutput(
       decodedFrame.numLoops !== expectedNumLoops ||
       decodedFrame.isLast !== (index === expectedFrames - 1)
     ) {
-      throw new Error(`Animated JPEG XL timing or loop validation failed at frame ${index + 1}.`);
+      throw new Error(
+        `Animated JPEG XL timing or loop validation failed at frame ${index + 1}.`,
+      );
     }
     expectedTimestampMs += durationMs;
   }
@@ -3882,9 +4290,21 @@ async function validateAnimatedJxlOutput(
       await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-i", localPath,
-          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
-          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+          "-v",
+          "error",
+          "-i",
+          localPath,
+          "-vf",
+          `select=eq(n\\,${frameIndex})`,
+          "-fps_mode",
+          "vfr",
+          "-frames:v",
+          "1",
+          "-pix_fmt",
+          "rgba",
+          "-f",
+          "rawvideo",
+          "-",
         ],
         {
           cwd: projectRoot,
@@ -3898,7 +4318,11 @@ async function validateAnimatedJxlOutput(
     (
       await execFileAsync(
         "python",
-        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        [
+          "scripts/decode-pillow-animation-frame.py",
+          sourcePath,
+          String(frameIndex),
+        ],
         {
           cwd: projectRoot,
           windowsHide: true,
@@ -3920,14 +4344,17 @@ async function validateAnimatedJxlOutput(
       output.byteLength !== width * height * 4 ||
       reference.byteLength !== output.byteLength
     ) {
-      throw new Error(`Animated JPEG XL frame ${index + 1} has an invalid decoded size.`);
+      throw new Error(
+        `Animated JPEG XL frame ${index + 1} has an invalid decoded size.`,
+      );
     }
     const outputHash = createHash("sha256").update(output).digest("hex");
     const referenceHash = createHash("sha256").update(reference).digest("hex");
     const similarity = rgbaGlobalSsim(reference, output);
     if (
       (exactSource && outputHash !== referenceHash) ||
-      (!exactSource && (!Number.isFinite(similarity) || similarity < minimumSimilarity))
+      (!exactSource &&
+        (!Number.isFinite(similarity) || similarity < minimumSimilarity))
     ) {
       throw new Error(
         `Animated JPEG XL frame ${index + 1} differs from the independently decoded source at SSIM ${similarity}.`,
@@ -3937,7 +4364,10 @@ async function validateAnimatedJxlOutput(
     frameSimilarity.push(similarity);
   }
   return {
-    format: { format_name: "jpegxl_pipe", size: String(finalState.metrics.outputBytes) },
+    format: {
+      format_name: "jpegxl_pipe",
+      size: String(finalState.metrics.outputBytes),
+    },
     streams: probe.streams,
     withinValidation: {
       method: "ffprobe-all-frame-rgba-plus-bounded-libjxl-metadata-inspection",
@@ -3958,7 +4388,8 @@ async function validateAnimatedJxlOutput(
 }
 
 function rgbaGlobalSsim(left, right) {
-  if (left.byteLength !== right.byteLength || left.byteLength % 4 !== 0) return NaN;
+  if (left.byteLength !== right.byteLength || left.byteLength % 4 !== 0)
+    return NaN;
   const count = left.byteLength / 4;
   const sums = Array.from({ length: 3 }, () => ({
     left: 0,
@@ -3981,17 +4412,21 @@ function rgbaGlobalSsim(left, right) {
   }
   const c1 = (0.01 * 255) ** 2;
   const c2 = (0.03 * 255) ** 2;
-  return sums.reduce((total, sum) => {
-    const leftMean = sum.left / count;
-    const rightMean = sum.right / count;
-    const leftVariance = sum.leftSquared / count - leftMean ** 2;
-    const rightVariance = sum.rightSquared / count - rightMean ** 2;
-    const covariance = sum.product / count - leftMean * rightMean;
-    return total +
-      ((2 * leftMean * rightMean + c1) * (2 * covariance + c2)) /
-        ((leftMean ** 2 + rightMean ** 2 + c1) *
-          (leftVariance + rightVariance + c2));
-  }, 0) / 3;
+  return (
+    sums.reduce((total, sum) => {
+      const leftMean = sum.left / count;
+      const rightMean = sum.right / count;
+      const leftVariance = sum.leftSquared / count - leftMean ** 2;
+      const rightVariance = sum.rightSquared / count - rightMean ** 2;
+      const covariance = sum.product / count - leftMean * rightMean;
+      return (
+        total +
+        ((2 * leftMean * rightMean + c1) * (2 * covariance + c2)) /
+          ((leftMean ** 2 + rightMean ** 2 + c1) *
+            (leftVariance + rightVariance + c2))
+      );
+    }, 0) / 3
+  );
 }
 
 async function validateAnimatedFrameArchiveOutput(
@@ -4001,7 +4436,10 @@ async function validateAnimatedFrameArchiveOutput(
   finalState,
   route,
 ) {
-  if (finalState.metrics.outputBytes < 1 || finalState.metrics.outputBytes > 4_294_967_295) {
+  if (
+    finalState.metrics.outputBytes < 1 ||
+    finalState.metrics.outputBytes > 4_294_967_295
+  ) {
     throw new Error(
       `Browser animation ZIP is outside the ZIP32 range: ${finalState.metrics.outputBytes} bytes.`,
     );
@@ -4012,7 +4450,9 @@ async function validateAnimatedFrameArchiveOutput(
       source.probe?.streams?.[0]?.nb_read_frames,
   );
   if (!Number.isSafeInteger(expectedFrames) || expectedFrames < 1) {
-    throw new Error("The animation stress manifest does not declare a frame count.");
+    throw new Error(
+      "The animation stress manifest does not declare a frame count.",
+    );
   }
   const extractionRoot = path.join(
     workRoot,
@@ -4068,9 +4508,12 @@ async function validateAnimatedFrameArchiveOutput(
         frame.height !== height ||
         !Number.isFinite(frame.timestampMicros) ||
         !(frame.durationMicros > 0) ||
-        (index > 0 && frame.timestampMicros <= manifest.frames[index - 1].timestampMicros)
+        (index > 0 &&
+          frame.timestampMicros <= manifest.frames[index - 1].timestampMicros)
       ) {
-        throw new Error(`Animation frame metadata is invalid at index ${index}.`);
+        throw new Error(
+          `Animation frame metadata is invalid at index ${index}.`,
+        );
       }
       const framePath = path.join(extractionRoot, name);
       const { stdout } = await execFileAsync(
@@ -4087,8 +4530,14 @@ async function validateAnimatedFrameArchiveOutput(
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
       const stream = JSON.parse(stdout).streams?.[0];
-      if (stream?.codec_name !== "png" || stream.width !== width || stream.height !== height) {
-        throw new Error(`Animation frame ${index + 1} is not the expected PNG image.`);
+      if (
+        stream?.codec_name !== "png" ||
+        stream.width !== width ||
+        stream.height !== height
+      ) {
+        throw new Error(
+          `Animation frame ${index + 1} is not the expected PNG image.`,
+        );
       }
       frameHashes.push((await hashFile(framePath)).sha256);
     }
@@ -4104,7 +4553,9 @@ async function validateAnimatedFrameArchiveOutput(
       referenceRelative.startsWith("..") ||
       path.isAbsolute(referenceRelative)
     ) {
-      throw new Error("Animation validation references must stay inside the project.");
+      throw new Error(
+        "Animation validation references must stay inside the project.",
+      );
     }
     const rawFrame = async (imagePath, frameIndex = 0) =>
       (
@@ -4138,7 +4589,9 @@ async function validateAnimatedFrameArchiveOutput(
     const firstFramePath = path.join(extractionRoot, expectedNames[0]);
     const firstFrame = await rawFrame(firstFramePath);
     const referenceFrame = await rawFrame(referencePath);
-    const firstFrameSha256 = createHash("sha256").update(firstFrame).digest("hex");
+    const firstFrameSha256 = createHash("sha256")
+      .update(firstFrame)
+      .digest("hex");
     const referenceFrameSha256 = createHash("sha256")
       .update(referenceFrame)
       .digest("hex");
@@ -4146,10 +4599,19 @@ async function validateAnimatedFrameArchiveOutput(
       const { stderr } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "info", "-i", expectedPath, "-i", actualPath,
+          "-v",
+          "info",
+          "-i",
+          expectedPath,
+          "-i",
+          actualPath,
           "-lavfi",
           "[0:v:0]format=rgb24[reference];[1:v:0]format=rgb24[converted];[reference][converted]ssim",
-          "-frames:v", "1", "-f", "null", "NUL",
+          "-frames:v",
+          "1",
+          "-f",
+          "null",
+          "NUL",
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
@@ -4157,13 +4619,16 @@ async function validateAnimatedFrameArchiveOutput(
         stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
       );
     };
-    const firstFrameSsim = route === "avif-to-zip"
-      ? await measureSsim(referencePath, firstFramePath)
-      : firstFrameSha256 === referenceFrameSha256
-        ? 1
-        : 0;
+    const firstFrameSsim =
+      route === "avif-to-zip"
+        ? await measureSsim(referencePath, firstFramePath)
+        : firstFrameSha256 === referenceFrameSha256
+          ? 1
+          : 0;
     if (firstFrameSsim < 0.97) {
-      throw new Error("Animation ZIP first frame differs from the independent reference.");
+      throw new Error(
+        "Animation ZIP first frame differs from the independent reference.",
+      );
     }
     const allFrameSha256 = [];
     const allFrameSsim = [];
@@ -4176,9 +4641,19 @@ async function validateAnimatedFrameArchiveOutput(
         await execFileAsync(
           "ffmpeg",
           [
-            "-v", "error", "-i", sourcePath, "-map", "0:v:1",
-            "-vf", `select=eq(n\\,${index})`, "-fps_mode", "vfr",
-            "-frames:v", "1", nativeFramePath,
+            "-v",
+            "error",
+            "-i",
+            sourcePath,
+            "-map",
+            "0:v:1",
+            "-vf",
+            `select=eq(n\\,${index})`,
+            "-fps_mode",
+            "vfr",
+            "-frames:v",
+            "1",
+            nativeFramePath,
           ],
           { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
         );
@@ -4215,7 +4690,10 @@ async function validateAnimatedFrameArchiveOutput(
       }
     }
     return {
-      format: { format_name: "zip", size: String(finalState.metrics.outputBytes) },
+      format: {
+        format_name: "zip",
+        size: String(finalState.metrics.outputBytes),
+      },
       withinValidation: {
         method: "native-tar-list-extract-plus-ffprobe-and-rgb-hash",
         frameCount: expectedFrames,
@@ -4240,7 +4718,9 @@ async function validateAnimatedApngOutput(
   finalState,
 ) {
   const encoded = await readFile(localPath);
-  const signature = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
+  const signature = Buffer.from([
+    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+  ]);
   if (!encoded.subarray(0, 8).equals(signature)) {
     throw new Error("Browser APNG output has an invalid PNG signature.");
   }
@@ -4254,9 +4734,14 @@ async function validateAnimatedApngOutput(
     const type = encoded.toString("ascii", offset + 4, offset + 8);
     const end = offset + 12 + length;
     if (end > encoded.byteLength) {
-      throw new Error(`Browser APNG ${type} chunk exceeds the output boundary.`);
+      throw new Error(
+        `Browser APNG ${type} chunk exceeds the output boundary.`,
+      );
     }
-    chunks.push({ type, data: encoded.subarray(offset + 8, offset + 8 + length) });
+    chunks.push({
+      type,
+      data: encoded.subarray(offset + 8, offset + 8 + length),
+    });
     offset = end;
   }
   if (
@@ -4278,24 +4763,32 @@ async function validateAnimatedApngOutput(
   if (
     !Number.isSafeInteger(expectedFrames) ||
     expectedFrames < 1 ||
-    expectedFrames !== Number(source.frameCount ?? source.probe?.streams?.[0]?.nb_frames) ||
+    expectedFrames !==
+      Number(source.frameCount ?? source.probe?.streams?.[0]?.nb_frames) ||
     !Array.isArray(sourceAnimation.durationsMs) ||
     sourceAnimation.durationsMs.length !== expectedFrames
   ) {
-    throw new Error("The independent animation metadata does not match the stress manifest.");
+    throw new Error(
+      "The independent animation metadata does not match the stress manifest.",
+    );
   }
   const animationControl = chunks[1].data;
-  const expectedPlays = sourceAnimation.loop === 0 ? 0 : Number(sourceAnimation.loop) + 1;
+  const expectedPlays =
+    sourceAnimation.loop === 0 ? 0 : Number(sourceAnimation.loop) + 1;
   if (
     animationControl.byteLength !== 8 ||
     animationControl.readUInt32BE(0) !== expectedFrames ||
     animationControl.readUInt32BE(4) !== expectedPlays
   ) {
-    throw new Error("Browser APNG frame or loop control differs from the source animation.");
+    throw new Error(
+      "Browser APNG frame or loop control differs from the source animation.",
+    );
   }
   const frameControls = chunks.filter((chunk) => chunk.type === "fcTL");
   if (frameControls.length !== expectedFrames) {
-    throw new Error("Browser APNG does not contain one frame-control chunk per frame.");
+    throw new Error(
+      "Browser APNG does not contain one frame-control chunk per frame.",
+    );
   }
   for (let index = 0; index < frameControls.length; index += 1) {
     const control = frameControls[index].data;
@@ -4313,8 +4806,12 @@ async function validateAnimatedApngOutput(
     const numerator = control.readUInt16BE(20);
     const denominator = control.readUInt16BE(22) || 100;
     const encodedDurationMs = (numerator * 1_000) / denominator;
-    if (Math.abs(encodedDurationMs - sourceAnimation.durationsMs[index]) > 0.001) {
-      throw new Error(`Browser APNG frame ${index + 1} timing differs from the source.`);
+    if (
+      Math.abs(encodedDurationMs - sourceAnimation.durationsMs[index]) > 0.001
+    ) {
+      throw new Error(
+        `Browser APNG frame ${index + 1} timing differs from the source.`,
+      );
     }
   }
   const sequenced = chunks.filter(
@@ -4330,16 +4827,30 @@ async function validateAnimatedApngOutput(
       .filter((chunk) => chunk.type === "IDAT" || chunk.type === "fdAT")
       .map((chunk) => chunk.data.byteLength),
   );
-  if (!Number.isFinite(maximumFrameChunk) || maximumFrameChunk > 64 * 1024 - 12) {
-    throw new Error("Browser APNG frame chunks exceed the bounded 64 KiB write design.");
+  if (
+    !Number.isFinite(maximumFrameChunk) ||
+    maximumFrameChunk > 64 * 1024 - 12
+  ) {
+    throw new Error(
+      "Browser APNG frame chunks exceed the bounded 64 KiB write design.",
+    );
   }
 
   const { stdout: probeJson } = await execFileAsync(
     "ffprobe",
     [
-      "-v", "error", "-count_frames", "-select_streams", "v:0",
-      "-show_entries", "stream=codec_name,width,height,nb_read_frames",
-      "-show_entries", "frame=pts_time,duration_time", "-of", "json", localPath,
+      "-v",
+      "error",
+      "-count_frames",
+      "-select_streams",
+      "v:0",
+      "-show_entries",
+      "stream=codec_name,width,height,nb_read_frames",
+      "-show_entries",
+      "frame=pts_time,duration_time",
+      "-of",
+      "json",
+      localPath,
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
@@ -4362,7 +4873,9 @@ async function validateAnimatedApngOutput(
       Math.abs(Number(frame.pts_time) - expectedTimestampSeconds) > 0.000001 ||
       Math.abs(Number(frame.duration_time) - durationSeconds) > 0.000001
     ) {
-      throw new Error(`Native APNG timing validation failed at frame ${index + 1}.`);
+      throw new Error(
+        `Native APNG timing validation failed at frame ${index + 1}.`,
+      );
     }
     expectedTimestampSeconds += durationSeconds;
   }
@@ -4372,9 +4885,21 @@ async function validateAnimatedApngOutput(
       await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-i", localPath,
-          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
-          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+          "-v",
+          "error",
+          "-i",
+          localPath,
+          "-vf",
+          `select=eq(n\\,${frameIndex})`,
+          "-fps_mode",
+          "vfr",
+          "-frames:v",
+          "1",
+          "-pix_fmt",
+          "rgba",
+          "-f",
+          "rawvideo",
+          "-",
         ],
         {
           cwd: projectRoot,
@@ -4388,7 +4913,11 @@ async function validateAnimatedApngOutput(
     (
       await execFileAsync(
         "python",
-        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        [
+          "scripts/decode-pillow-animation-frame.py",
+          sourcePath,
+          String(frameIndex),
+        ],
         {
           cwd: projectRoot,
           windowsHide: true,
@@ -4404,12 +4933,17 @@ async function validateAnimatedApngOutput(
     const outputHash = createHash("sha256").update(output).digest("hex");
     const referenceHash = createHash("sha256").update(reference).digest("hex");
     if (outputHash !== referenceHash) {
-      throw new Error(`Browser APNG frame ${index + 1} differs from native source decoding.`);
+      throw new Error(
+        `Browser APNG frame ${index + 1} differs from native source decoding.`,
+      );
     }
     allFrameSha256.push(outputHash);
   }
   return {
-    format: { format_name: "apng", size: String(finalState.metrics.outputBytes) },
+    format: {
+      format_name: "apng",
+      size: String(finalState.metrics.outputBytes),
+    },
     streams: probe.streams,
     withinValidation: {
       method: "apng-chunk-audit-plus-ffprobe-and-all-frame-native-rgba-hash",
@@ -4438,7 +4972,9 @@ async function validateAnimatedGifOutput(
   const height = encoded.readUInt16LE(8);
   const packed = encoded[10];
   if ((packed & 0x80) === 0) {
-    throw new Error("Browser GIF output does not contain its required global palette.");
+    throw new Error(
+      "Browser GIF output does not contain its required global palette.",
+    );
   }
   let offset = 13 + 3 * 2 ** ((packed & 0x07) + 1);
   let loopCount = null;
@@ -4450,13 +4986,17 @@ async function validateAnimatedGifOutput(
     const payloads = [];
     for (;;) {
       if (offset >= encoded.byteLength) {
-        throw new Error("Browser GIF output ends inside a data-subblock chain.");
+        throw new Error(
+          "Browser GIF output ends inside a data-subblock chain.",
+        );
       }
       const size = encoded[offset];
       offset += 1;
       if (size === 0) return payloads;
       if (offset + size > encoded.byteLength) {
-        throw new Error("Browser GIF data subblock exceeds the output boundary.");
+        throw new Error(
+          "Browser GIF data subblock exceeds the output boundary.",
+        );
       }
       maximumDataSubblock = Math.max(maximumDataSubblock, size);
       payloads.push(encoded.subarray(offset, offset + size));
@@ -4483,7 +5023,9 @@ async function validateAnimatedGifOutput(
           encoded[offset] !== 4 ||
           encoded[offset + 5] !== 0
         ) {
-          throw new Error("Browser GIF has an invalid graphic-control extension.");
+          throw new Error(
+            "Browser GIF has an invalid graphic-control extension.",
+          );
         }
         pendingControl = {
           packed: encoded[offset + 1],
@@ -4499,9 +5041,13 @@ async function validateAnimatedGifOutput(
       const headerSize = encoded[offset];
       offset += 1;
       if (offset + headerSize > encoded.byteLength) {
-        throw new Error("Browser GIF extension header exceeds the output boundary.");
+        throw new Error(
+          "Browser GIF extension header exceeds the output boundary.",
+        );
       }
-      const identifier = encoded.subarray(offset, offset + headerSize).toString("ascii");
+      const identifier = encoded
+        .subarray(offset, offset + headerSize)
+        .toString("ascii");
       offset += headerSize;
       const payloads = readSubblocks();
       if (
@@ -4516,7 +5062,9 @@ async function validateAnimatedGifOutput(
     }
     if (marker === 0x2c) {
       if (offset + 10 > encoded.byteLength || !pendingControl) {
-        throw new Error("Browser GIF image is missing a complete descriptor or frame control.");
+        throw new Error(
+          "Browser GIF image is missing a complete descriptor or frame control.",
+        );
       }
       const descriptor = {
         left: encoded.readUInt16LE(offset + 1),
@@ -4530,7 +5078,9 @@ async function validateAnimatedGifOutput(
         offset += 3 * 2 ** ((descriptor.packed & 0x07) + 1);
       }
       if (offset >= encoded.byteLength || encoded[offset] !== 8) {
-        throw new Error("Browser GIF image has an invalid LZW minimum code size.");
+        throw new Error(
+          "Browser GIF image has an invalid LZW minimum code size.",
+        );
       }
       offset += 1;
       readSubblocks();
@@ -4539,7 +5089,9 @@ async function validateAnimatedGifOutput(
       pendingControl = null;
       continue;
     }
-    throw new Error(`Browser GIF contains an unexpected block marker 0x${marker.toString(16)}.`);
+    throw new Error(
+      `Browser GIF contains an unexpected block marker 0x${marker.toString(16)}.`,
+    );
   }
   if (!trailerSeen || offset !== encoded.byteLength || pendingControl) {
     throw new Error("Browser GIF does not end cleanly at its trailer.");
@@ -4563,7 +5115,9 @@ async function validateAnimatedGifOutput(
     imageDescriptors.length !== expectedFrames ||
     frameControls.length !== expectedFrames
   ) {
-    throw new Error("Browser GIF frame structure differs from the source animation manifest.");
+    throw new Error(
+      "Browser GIF frame structure differs from the source animation manifest.",
+    );
   }
   const expectedLoop =
     expectedFrames === 1
@@ -4572,7 +5126,9 @@ async function validateAnimatedGifOutput(
         ? 0
         : Math.max(0, Number(sourceAnimation.loop) - 1);
   if (loopCount !== expectedLoop) {
-    throw new Error("Browser GIF loop control differs from the source animation.");
+    throw new Error(
+      "Browser GIF loop control differs from the source animation.",
+    );
   }
   for (let index = 0; index < expectedFrames; index += 1) {
     const descriptor = imageDescriptors[index];
@@ -4587,11 +5143,15 @@ async function validateAnimatedGifOutput(
       (control.packed & 1) !== 1 ||
       control.transparentIndex !== 0
     ) {
-      throw new Error(`Browser GIF frame ${index + 1} has invalid bounded controls.`);
+      throw new Error(
+        `Browser GIF frame ${index + 1} has invalid bounded controls.`,
+      );
     }
     const expectedDelay = Math.round(sourceAnimation.durationsMs[index] / 10);
     if (control.delay !== expectedDelay) {
-      throw new Error(`Browser GIF frame ${index + 1} timing differs from the source.`);
+      throw new Error(
+        `Browser GIF frame ${index + 1} timing differs from the source.`,
+      );
     }
   }
   if (maximumDataSubblock > 255) {
@@ -4610,10 +5170,13 @@ async function validateAnimatedGifOutput(
     outputAnimation.height !== height ||
     outputAnimation.loop !== (expectedLoop ?? 0) ||
     outputAnimation.durationsMs.some(
-      (duration, index) => duration !== Math.round(sourceAnimation.durationsMs[index] / 10) * 10,
+      (duration, index) =>
+        duration !== Math.round(sourceAnimation.durationsMs[index] / 10) * 10,
     )
   ) {
-    throw new Error("Pinned Pillow did not decode the expected GIF timing and loop metadata.");
+    throw new Error(
+      "Pinned Pillow did not decode the expected GIF timing and loop metadata.",
+    );
   }
 
   const outputFrame = async (frameIndex) =>
@@ -4621,9 +5184,21 @@ async function validateAnimatedGifOutput(
       await execFileAsync(
         "ffmpeg",
         [
-          "-v", "error", "-i", localPath,
-          "-vf", `select=eq(n\\,${frameIndex})`, "-fps_mode", "vfr",
-          "-frames:v", "1", "-pix_fmt", "rgba", "-f", "rawvideo", "-",
+          "-v",
+          "error",
+          "-i",
+          localPath,
+          "-vf",
+          `select=eq(n\\,${frameIndex})`,
+          "-fps_mode",
+          "vfr",
+          "-frames:v",
+          "1",
+          "-pix_fmt",
+          "rgba",
+          "-f",
+          "rawvideo",
+          "-",
         ],
         {
           cwd: projectRoot,
@@ -4637,7 +5212,11 @@ async function validateAnimatedGifOutput(
     (
       await execFileAsync(
         "python",
-        ["scripts/decode-pillow-animation-frame.py", sourcePath, String(frameIndex)],
+        [
+          "scripts/decode-pillow-animation-frame.py",
+          sourcePath,
+          String(frameIndex),
+        ],
         {
           cwd: projectRoot,
           windowsHide: true,
@@ -4659,9 +5238,13 @@ async function validateAnimatedGifOutput(
         (pixels[index + 2] >>> 6);
       const paletteIndex = quantized === 0 ? 1 : quantized;
       output[index] =
-        paletteIndex <= 1 ? 0 : Math.round((((paletteIndex >>> 5) & 7) * 255) / 7);
+        paletteIndex <= 1
+          ? 0
+          : Math.round((((paletteIndex >>> 5) & 7) * 255) / 7);
       output[index + 1] =
-        paletteIndex <= 1 ? 0 : Math.round((((paletteIndex >>> 2) & 7) * 255) / 7);
+        paletteIndex <= 1
+          ? 0
+          : Math.round((((paletteIndex >>> 2) & 7) * 255) / 7);
       output[index + 2] =
         paletteIndex <= 1 ? 0 : Math.round(((paletteIndex & 3) * 255) / 3);
       output[index + 3] = 255;
@@ -4676,16 +5259,30 @@ async function validateAnimatedGifOutput(
     const outputHash = createHash("sha256").update(output).digest("hex");
     const expectedHash = createHash("sha256").update(expected).digest("hex");
     if (outputHash !== expectedHash) {
-      if (expectedFrames !== 1 || path.extname(sourcePath).toLowerCase() !== ".webp") {
-        throw new Error(`Browser GIF frame ${index + 1} differs from RGB332 quantization.`);
+      if (
+        expectedFrames !== 1 ||
+        path.extname(sourcePath).toLowerCase() !== ".webp"
+      ) {
+        throw new Error(
+          `Browser GIF frame ${index + 1} differs from RGB332 quantization.`,
+        );
       }
       const { stderr } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "info", "-i", sourcePath, "-i", localPath,
+          "-v",
+          "info",
+          "-i",
+          sourcePath,
+          "-i",
+          localPath,
           "-lavfi",
           "[0:v:0]format=rgb24[source];[1:v:0]format=rgb24[converted];[source][converted]ssim",
-          "-frames:v", "1", "-f", "null", "NUL",
+          "-frames:v",
+          "1",
+          "-f",
+          "null",
+          "NUL",
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
@@ -4701,9 +5298,13 @@ async function validateAnimatedGifOutput(
     allFrameSha256.push(outputHash);
   }
   return {
-    format: { format_name: "gif", size: String(finalState.metrics.outputBytes) },
+    format: {
+      format_name: "gif",
+      size: String(finalState.metrics.outputBytes),
+    },
     withinValidation: {
-      method: "gif-block-audit-plus-pillow-metadata-and-native-frame-validation",
+      method:
+        "gif-block-audit-plus-pillow-metadata-and-native-frame-validation",
       frameCount: expectedFrames,
       loopCount,
       timingRoundedToCentiseconds: true,
@@ -4730,7 +5331,9 @@ async function validateAnimatedWebpOutput(
     encoded.subarray(8, 12).toString("ascii") !== "WEBP" ||
     encoded.readUInt32LE(4) + 8 !== encoded.byteLength
   ) {
-    throw new Error("Browser animated WebP output has an invalid RIFF header or size.");
+    throw new Error(
+      "Browser animated WebP output has an invalid RIFF header or size.",
+    );
   }
   const chunks = [];
   let offset = 12;
@@ -4744,13 +5347,21 @@ async function validateAnimatedWebpOutput(
     const end = payloadOffset + size;
     const paddedEnd = end + (size & 1);
     if (paddedEnd > encoded.byteLength) {
-      throw new Error(`Browser animated WebP ${type} chunk exceeds the RIFF boundary.`);
+      throw new Error(
+        `Browser animated WebP ${type} chunk exceeds the RIFF boundary.`,
+      );
     }
     chunks.push({ type, size, payloadOffset, end });
     offset = paddedEnd;
   }
-  if (offset !== encoded.byteLength || chunks[0]?.type !== "VP8X" || chunks[1]?.type !== "ANIM") {
-    throw new Error("Browser animated WebP has an invalid VP8X/ANIM chunk layout.");
+  if (
+    offset !== encoded.byteLength ||
+    chunks[0]?.type !== "VP8X" ||
+    chunks[1]?.type !== "ANIM"
+  ) {
+    throw new Error(
+      "Browser animated WebP has an invalid VP8X/ANIM chunk layout.",
+    );
   }
   const extended = chunks[0];
   if (
@@ -4799,12 +5410,16 @@ async function validateAnimatedWebpOutput(
     expectedLoop > 65_535 ||
     loopCount !== expectedLoop
   ) {
-    throw new Error("Browser animated WebP canvas, frame, or loop control differs from the source.");
+    throw new Error(
+      "Browser animated WebP canvas, frame, or loop control differs from the source.",
+    );
   }
 
   const frames = chunks.filter((chunk) => chunk.type === "ANMF");
   if (frames.length !== expectedFrames) {
-    throw new Error("Browser animated WebP does not contain one ANMF chunk per source frame.");
+    throw new Error(
+      "Browser animated WebP does not contain one ANMF chunk per source frame.",
+    );
   }
   let maximumNestedChunk = 0;
   for (let index = 0; index < frames.length; index += 1) {
@@ -4823,23 +5438,34 @@ async function validateAnimatedWebpOutput(
       frameY !== 0 ||
       frameWidth !== width ||
       frameHeight !== height ||
-      durationMs !== Math.max(1, Math.round(sourceAnimation.durationsMs[index])) ||
+      durationMs !==
+        Math.max(1, Math.round(sourceAnimation.durationsMs[index])) ||
       flags !== 1
     ) {
-      throw new Error(`Browser animated WebP frame ${index + 1} has invalid bounded controls.`);
+      throw new Error(
+        `Browser animated WebP frame ${index + 1} has invalid bounded controls.`,
+      );
     }
     let nestedOffset = frame.payloadOffset + 16;
     let imageChunks = 0;
     let alphaChunks = 0;
     while (nestedOffset < frame.end) {
       if (nestedOffset + 8 > frame.end) {
-        throw new Error(`Browser animated WebP frame ${index + 1} ends in a nested header.`);
+        throw new Error(
+          `Browser animated WebP frame ${index + 1} ends in a nested header.`,
+        );
       }
-      const nestedType = encoded.toString("ascii", nestedOffset, nestedOffset + 4);
+      const nestedType = encoded.toString(
+        "ascii",
+        nestedOffset,
+        nestedOffset + 4,
+      );
       const nestedSize = encoded.readUInt32LE(nestedOffset + 4);
       const nestedBytes = 8 + nestedSize + (nestedSize & 1);
       if (nestedOffset + nestedBytes > frame.end) {
-        throw new Error(`Browser animated WebP frame ${index + 1} has an oversized nested chunk.`);
+        throw new Error(
+          `Browser animated WebP frame ${index + 1} has an oversized nested chunk.`,
+        );
       }
       if (nestedType === "ALPH") alphaChunks += 1;
       else if (nestedType === "VP8 " || nestedType === "VP8L") imageChunks += 1;
@@ -4852,7 +5478,9 @@ async function validateAnimatedWebpOutput(
       nestedOffset += nestedBytes;
     }
     if (nestedOffset !== frame.end || imageChunks !== 1 || alphaChunks > 1) {
-      throw new Error(`Browser animated WebP frame ${index + 1} has invalid image chunks.`);
+      throw new Error(
+        `Browser animated WebP frame ${index + 1} has invalid image chunks.`,
+      );
     }
   }
 
@@ -4868,17 +5496,25 @@ async function validateAnimatedWebpOutput(
     outputAnimation.height !== height ||
     outputAnimation.loop !== expectedLoop ||
     outputAnimation.durationsMs.some(
-      (duration, index) => duration !== Math.max(1, Math.round(sourceAnimation.durationsMs[index])),
+      (duration, index) =>
+        duration !==
+        Math.max(1, Math.round(sourceAnimation.durationsMs[index])),
     )
   ) {
-    throw new Error("Pinned Pillow/libwebp did not decode the expected WebP animation metadata.");
+    throw new Error(
+      "Pinned Pillow/libwebp did not decode the expected WebP animation metadata.",
+    );
   }
 
   const decodeFrame = async (imagePath, frameIndex) =>
     (
       await execFileAsync(
         "python",
-        ["scripts/decode-pillow-animation-frame.py", imagePath, String(frameIndex)],
+        [
+          "scripts/decode-pillow-animation-frame.py",
+          imagePath,
+          String(frameIndex),
+        ],
         {
           cwd: projectRoot,
           windowsHide: true,
@@ -4907,11 +5543,15 @@ async function validateAnimatedWebpOutput(
         sourceFrame.byteLength !== width * height * 4 ||
         outputFrame.byteLength !== sourceFrame.byteLength
       ) {
-        throw new Error(`Pinned Pillow returned an invalid frame size at index ${index}.`);
+        throw new Error(
+          `Pinned Pillow returned an invalid frame size at index ${index}.`,
+        );
       }
       for (let pixel = 3; pixel < sourceFrame.byteLength; pixel += 4) {
         if (sourceFrame[pixel] !== outputFrame[pixel]) {
-          throw new Error(`Browser animated WebP frame ${index + 1} changed alpha.`);
+          throw new Error(
+            `Browser animated WebP frame ${index + 1} changed alpha.`,
+          );
         }
       }
       await Promise.all([
@@ -4921,14 +5561,31 @@ async function validateAnimatedWebpOutput(
       const { stderr } = await execFileAsync(
         "ffmpeg",
         [
-          "-v", "info",
-          "-f", "rawvideo", "-pixel_format", "rgba", "-video_size", `${width}x${height}`,
-          "-i", sourceRaw,
-          "-f", "rawvideo", "-pixel_format", "rgba", "-video_size", `${width}x${height}`,
-          "-i", outputRaw,
+          "-v",
+          "info",
+          "-f",
+          "rawvideo",
+          "-pixel_format",
+          "rgba",
+          "-video_size",
+          `${width}x${height}`,
+          "-i",
+          sourceRaw,
+          "-f",
+          "rawvideo",
+          "-pixel_format",
+          "rgba",
+          "-video_size",
+          `${width}x${height}`,
+          "-i",
+          outputRaw,
           "-lavfi",
           "[0:v:0]format=rgb24[source];[1:v:0]format=rgb24[output];[source][output]ssim",
-          "-frames:v", "1", "-f", "null", "NUL",
+          "-frames:v",
+          "1",
+          "-f",
+          "null",
+          "NUL",
         ],
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       );
@@ -4936,18 +5593,26 @@ async function validateAnimatedWebpOutput(
         stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
       );
       if (!Number.isFinite(ssim) || ssim < 0.9) {
-        throw new Error(`Browser animated WebP frame ${index + 1} measured SSIM ${ssim}.`);
+        throw new Error(
+          `Browser animated WebP frame ${index + 1} measured SSIM ${ssim}.`,
+        );
       }
       allFrameSsim.push(ssim);
-      allFrameSha256.push(createHash("sha256").update(outputFrame).digest("hex"));
+      allFrameSha256.push(
+        createHash("sha256").update(outputFrame).digest("hex"),
+      );
     }
   } finally {
     await removeWithRetries(validationRoot);
   }
   return {
-    format: { format_name: "webp", size: String(finalState.metrics.outputBytes) },
+    format: {
+      format_name: "webp",
+      size: String(finalState.metrics.outputBytes),
+    },
     withinValidation: {
-      method: "webp-riff-audit-plus-pinned-pillow-libwebp-metadata-and-all-frame-ssim",
+      method:
+        "webp-riff-audit-plus-pinned-pillow-libwebp-metadata-and-all-frame-ssim",
       frameCount: expectedFrames,
       loopCount,
       timingRoundedToMilliseconds: true,
@@ -5058,7 +5723,8 @@ async function validateTiffPageArchiveOutput(
         },
       );
       const hash = stdout.match(/SHA256=([0-9a-f]{64})/i)?.[1]?.toLowerCase();
-      if (!hash) throw new Error("FFmpeg did not return a TIFF page pixel hash.");
+      if (!hash)
+        throw new Error("FFmpeg did not return a TIFF page pixel hash.");
       return hash;
     };
     for (let index = 0; index < expectedPages; index += 1) {
@@ -5116,7 +5782,9 @@ async function validateTiffPageArchiveOutput(
       const pageHash = await decodedHash(pagePath, pixelFormat);
       const referenceHash = await decodedHash(referencePath, pixelFormat);
       if (pageHash !== referenceHash) {
-        throw new Error(`TIFF ZIP page ${index + 1} differs from its reference.`);
+        throw new Error(
+          `TIFF ZIP page ${index + 1} differs from its reference.`,
+        );
       }
       decodedHashes.push(pageHash);
     }
@@ -5124,7 +5792,10 @@ async function validateTiffPageArchiveOutput(
       throw new Error("TIFF ZIP aggregate decoded size is inconsistent.");
     }
     return {
-      format: { format_name: "zip", size: String(finalState.metrics.outputBytes) },
+      format: {
+        format_name: "zip",
+        size: String(finalState.metrics.outputBytes),
+      },
       withinValidation: {
         method: "native-tar-list-extract-plus-ffprobe-and-decoded-sha256",
         pageCount: expectedPages,
@@ -5199,7 +5870,9 @@ function reserveAvailablePort() {
     server.listen({ host: "127.0.0.1", port: 0, exclusive: true }, () => {
       const address = server.address();
       if (!address || typeof address === "string") {
-        server.close(() => reject(new Error("Could not reserve a local test port.")));
+        server.close(() =>
+          reject(new Error("Could not reserve a local test port.")),
+        );
         return;
       }
       server.close((error) => {
@@ -5405,7 +6078,11 @@ async function writeFailureReports(report) {
     reportRoot,
     `${stamp}-${report.profileId}${destinationSuffix}-stress-failure`,
   );
-  await writeFile(`${base}.json`, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+  await writeFile(
+    `${base}.json`,
+    `${JSON.stringify(report, null, 2)}\n`,
+    "utf8",
+  );
   const csvRows = [
     [
       "timestamp",
@@ -5462,7 +6139,11 @@ async function writeReports(report) {
     reportRoot,
     `${stamp}-${report.profileId}${destinationSuffix}-stress`,
   );
-  await writeFile(`${base}.json`, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+  await writeFile(
+    `${base}.json`,
+    `${JSON.stringify(report, null, 2)}\n`,
+    "utf8",
+  );
   const csvRows = [
     [
       "timestamp",
@@ -5533,11 +6214,9 @@ function htmlEscape(value) {
 
 async function killProcessTree(pid) {
   try {
-    await execFileAsync(
-      "taskkill.exe",
-      ["/PID", String(pid), "/T", "/F"],
-      { windowsHide: true },
-    );
+    await execFileAsync("taskkill.exe", ["/PID", String(pid), "/T", "/F"], {
+      windowsHide: true,
+    });
   } catch {
     // The process may already have exited.
   }

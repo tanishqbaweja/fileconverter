@@ -110,14 +110,17 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 260);
+  assert.equal(publicMedia.length, 261);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
       ...profile.metadataLimitations,
       ...profile.fidelityLimitations,
     ].join(" ");
-    assert.ok(profile.metadataLimitations.length > 0, `${profile.id}: metadata`);
+    assert.ok(
+      profile.metadataLimitations.length > 0,
+      `${profile.id}: metadata`,
+    );
     assert.match(
       metadata,
       /metadata|tag|chapter|artwork|attachment|language|title|comment|marker|chunk|container/i,
@@ -170,7 +173,10 @@ test("registry has no unresolved pending profiles and keeps failed evidence hidd
   const failed = conversionProfiles.filter(
     (profile) => profile.automatedTestStatus === "failed",
   );
-  assert.deepEqual(failed.map((profile) => profile.id), ["ogv-to-amr"]);
+  assert.deepEqual(
+    failed.map((profile) => profile.id),
+    ["ogv-to-amr"],
+  );
   assert.equal(failed[0].public, false);
   assert.equal(failed[0].maxTestedBytes, null);
 });
@@ -301,7 +307,9 @@ test("AMR-WB decode routes are public after bounded large-file evidence passes",
     "amr-wb-to-ogg",
     "amr-wb-to-wma",
   ]) {
-    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    const profile = conversionProfiles.find(
+      (candidate) => candidate.id === profileId,
+    );
     assert.ok(profile);
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, 137_420_809);
@@ -332,26 +340,26 @@ test("container MP3 extraction is public after its measured evidence passes", ()
 });
 
 test("container AAC extraction is public only at its measured evidence limit", () => {
-    const measuredBytes = {
-      mkv: 146_855_294,
-      mp4: 146_854_557,
-      mov: 146_854_612,
-      "3gp": 146_854_456,
-      "mpeg-ts": 150_441_548,
-      flv: 146_903_486,
-    };
-    for (const [input, bytes] of Object.entries(measuredBytes)) {
-      const id = `${input}-to-aac`;
-      const profile = conversionProfiles.find((candidate) => candidate.id === id);
-      assert.ok(profile, `missing ${id}`);
-      assert.equal(profile.automatedTestStatus, "passed");
-      assert.equal(profile.maxTestedBytes, bytes);
-      assert.equal(
-        publicProfilesFor(input).some((candidate) => candidate.id === id),
-        true,
-      );
-    }
-  });
+  const measuredBytes = {
+    mkv: 146_855_294,
+    mp4: 146_854_557,
+    mov: 146_854_612,
+    "3gp": 146_854_456,
+    "mpeg-ts": 150_441_548,
+    flv: 146_903_486,
+  };
+  for (const [input, bytes] of Object.entries(measuredBytes)) {
+    const id = `${input}-to-aac`;
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, bytes);
+    assert.equal(
+      publicProfilesFor(input).some((candidate) => candidate.id === id),
+      true,
+    );
+  }
+});
 
 test("every profile references registered formats", () => {
   const ids = new Set(formats.map((format) => format.id));
@@ -436,9 +444,10 @@ test("container MPEG-TS copy routes are public only at their measured evidence l
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
-      profile.metadataLimitations.some((limitation) =>
-        limitation.includes("stream language tags") &&
-        limitation.includes("color fields are preserved")
+      profile.metadataLimitations.some(
+        (limitation) =>
+          limitation.includes("stream language tags") &&
+          limitation.includes("color fields are preserved"),
       ),
       true,
       `${id}: MPEG-TS language/color retention disclosure`,
@@ -465,7 +474,7 @@ test("container 3GP copy routes are public only at their measured evidence limit
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
       profile.metadataLimitations.some((limitation) =>
-        limitation.includes("marks its first compatible track as default")
+        limitation.includes("marks its first compatible track as default"),
       ),
       true,
       `${id}: 3GP forced-default disclosure`,
@@ -492,7 +501,7 @@ test("container MOV copy routes are public only at their measured evidence limit
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
       profile.metadataLimitations.some((limitation) =>
-        limitation.includes("marks its first compatible track as default")
+        limitation.includes("marks its first compatible track as default"),
       ),
       true,
       `${id}: MOV forced-default disclosure`,
@@ -519,7 +528,7 @@ test("container FLV copy routes are public only at their measured evidence limit
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
       profile.metadataLimitations.some((limitation) =>
-        limitation.includes("supported title metadata are preserved")
+        limitation.includes("supported title metadata are preserved"),
       ),
       true,
       `${id}: FLV title retention disclosure`,
@@ -827,7 +836,10 @@ test("every TIFF profile is declared by its fixed-memory Wasm manifest", () => {
   const profiles = conversionProfiles.filter(
     (profile) => profile.engine === "libtiff-wasm",
   );
-  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
   assert.equal(manifest.libtiffVersion, "4.7.2");
   assert.equal(manifest.libpngVersion, "1.6.58");
   assert.equal(manifest.zlibVersion, "1.3.2");
@@ -875,7 +887,10 @@ test("the public JPEG XL profile matches its fixed-memory Wasm manifest", () => 
   const profiles = conversionProfiles.filter(
     (profile) => profile.engine === "libjxl-wasm",
   );
-  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
   assert.equal(manifest.libjxlVersion, "0.12.0");
   assert.equal(
     manifest.libjxlCommit,
@@ -931,7 +946,10 @@ test("the public JPEG XL output profiles match their fixed-memory encoder manife
   const profiles = conversionProfiles.filter(
     (profile) => profile.engine === "libjxl-encoder-wasm",
   );
-  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
   assert.deepEqual(manifest.profiles, [
     "png-to-jxl",
     "jpeg-to-jxl",
@@ -1019,7 +1037,10 @@ test("the public animated AVIF profile matches its fixed-memory Wasm manifest", 
   const profiles = conversionProfiles.filter(
     (profile) => profile.engine === "libavif-wasm",
   );
-  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
   assert.equal(manifest.libavifVersion, "1.4.1");
   assert.equal(manifest.libaomVersion, "3.13.2");
   assert.equal(manifest.ffmpegVersion, "8.1.2");
@@ -1048,7 +1069,10 @@ test("the SVG profile is declared by its pinned bounded Wasm manifest", () => {
   const profiles = conversionProfiles.filter(
     (profile) => profile.engine === "svg-browser",
   );
-  assert.deepEqual(profiles.map((profile) => profile.id), manifest.profiles);
+  assert.deepEqual(
+    profiles.map((profile) => profile.id),
+    manifest.profiles,
+  );
   assert.equal(manifest.resvgWasmVersion, "2.6.2");
   assert.equal(manifest.wasmBytes, 2_478_606);
   assert.equal(
@@ -1098,9 +1122,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     ),
   );
   assert.ok(
-    publicProfilesFor("zip").some(
-      (profile) => profile.id === "zip-to-tar-gz",
-    ),
+    publicProfilesFor("zip").some((profile) => profile.id === "zip-to-tar-gz"),
   );
   assert.ok(
     publicProfilesFor("sevenzip").some(
@@ -1137,7 +1159,9 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "elementary.H265", type: "" }), "hevc");
   assert.deepEqual(
     publicProfilesFor("h264", true)
-      .filter((profile) => profile.input === "h264" || profile.output === "h264")
+      .filter(
+        (profile) => profile.input === "h264" || profile.output === "h264",
+      )
       .map((profile) => profile.id),
     ["h264-to-mp4", "h264-to-webm", "h264-to-webm-vp9"],
   );
@@ -1184,9 +1208,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     ],
   );
   assert.ok(
-    publicProfilesFor("amr").some(
-      (profile) => profile.id === "amr-to-wav",
-    ),
+    publicProfilesFor("amr").some((profile) => profile.id === "amr-to-wav"),
   );
   for (const profile of conversionProfiles.filter(
     (candidate) => candidate.output === "amr",
@@ -1214,8 +1236,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.deepEqual(
     conversionProfiles
       .filter(
-        (profile) =>
-          profile.output === "mp3" && profile.route === "re-encode",
+        (profile) => profile.output === "mp3" && profile.route === "re-encode",
       )
       .map((profile) => profile.id)
       .sort(),
@@ -1243,7 +1264,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.equal(profile.public, true);
     assert.ok(profile.maxTestedBytes >= 128 * 1024 * 1024);
     assert.equal(publicProfilesFor(profile.input).includes(profile), true);
-    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+    assert.equal(
+      publicProfilesFor(profile.input, true).includes(profile),
+      true,
+    );
   }
   const certifiedContainerLossyRoutes = new Map([
     ["mp4-to-opus", 145_729_798],
@@ -1263,9 +1287,15 @@ test("compound archives and mainstream images are detected by filename", () => {
   )) {
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.public, true);
-    assert.equal(profile.maxTestedBytes, certifiedContainerLossyRoutes.get(profile.id));
+    assert.equal(
+      profile.maxTestedBytes,
+      certifiedContainerLossyRoutes.get(profile.id),
+    );
     assert.equal(publicProfilesFor(profile.input).includes(profile), true);
-    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+    assert.equal(
+      publicProfilesFor(profile.input, true).includes(profile),
+      true,
+    );
   }
   assert.equal(
     conversionProfiles.filter((candidate) =>
@@ -1279,7 +1309,9 @@ test("compound archives and mainstream images are detected by filename", () => {
     ["webm-to-m4a", 222_941_314],
   ]);
   for (const [profileId, testedBytes] of certifiedContainerM4aRoutes) {
-    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    const profile = conversionProfiles.find(
+      (candidate) => candidate.id === profileId,
+    );
     assert.equal(profile?.route, "re-encode");
     assert.equal(profile?.automatedTestStatus, "passed");
     assert.equal(profile?.public, true);
@@ -1289,8 +1321,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.deepEqual(
     conversionProfiles
       .filter(
-        (profile) =>
-          profile.output === "aac" && profile.route === "re-encode",
+        (profile) => profile.output === "aac" && profile.route === "re-encode",
       )
       .map((profile) => profile.id)
       .sort(),
@@ -1318,7 +1349,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.equal(profile.public, true);
     assert.ok(profile.maxTestedBytes >= 35 * 1024 * 1024);
     assert.equal(publicProfilesFor(profile.input).includes(profile), true);
-    assert.equal(publicProfilesFor(profile.input, true).includes(profile), true);
+    assert.equal(
+      publicProfilesFor(profile.input, true).includes(profile),
+      true,
+    );
   }
   assert.equal(
     formats.find((format) => format.id === "wma")?.extensions[0],
@@ -1374,7 +1408,9 @@ test("compound archives and mainstream images are detected by filename", () => {
     ["opus-to-wma", 147_964_541],
   ]);
   for (const [profileId, testedBytes] of certifiedStandaloneWmaRoutes) {
-    const profile = conversionProfiles.find((candidate) => candidate.id === profileId);
+    const profile = conversionProfiles.find(
+      (candidate) => candidate.id === profileId,
+    );
     assert.equal(profile?.automatedTestStatus, "passed");
     assert.equal(profile?.maxTestedBytes, testedBytes);
     assert.equal(profile?.public, true);
@@ -1410,7 +1446,9 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.equal(profile?.maxTestedBytes, testedBytes);
     assert.equal(profile?.public, true);
     assert.equal(
-      publicProfilesFor(input).some((candidate) => candidate.id === profile?.id),
+      publicProfilesFor(input).some(
+        (candidate) => candidate.id === profile?.id,
+      ),
       true,
     );
   }
@@ -1450,9 +1488,7 @@ test("compound archives and mainstream images are detected by filename", () => {
     ],
   );
   assert.ok(
-    publicProfilesFor("mp3").some(
-      (profile) => profile.id === "mp3-to-aiff",
-    ),
+    publicProfilesFor("mp3").some((profile) => profile.id === "mp3-to-aiff"),
   );
   const certifiedContainerAiffRoutes = new Map([
     ["mkv", 146_855_294],
@@ -1493,7 +1529,10 @@ test("compound archives and mainstream images are detected by filename", () => {
     assert.equal(profile.public, true);
     assert.equal(publicProfilesFor("webm").includes(profile), true);
   }
-  assert.equal(detectFormat({ name: "lossless.M4A", type: "audio/mp4" }), "m4a");
+  assert.equal(
+    detectFormat({ name: "lossless.M4A", type: "audio/mp4" }),
+    "m4a",
+  );
   assert.equal(
     formats.find((format) => format.id === "alac")?.extensions[0],
     "m4a",
@@ -1517,9 +1556,7 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "document.xml", type: "" }), "xml");
   assert.equal(detectFormat({ name: "report.DOCX", type: "" }), "docx");
   assert.ok(
-    publicProfilesFor("docx").some(
-      (profile) => profile.id === "docx-to-txt",
-    ),
+    publicProfilesFor("docx").some((profile) => profile.id === "docx-to-txt"),
   );
   assert.equal(detectFormat({ name: "ledger.XLSX", type: "" }), "xlsx");
   assert.ok(
@@ -1548,19 +1585,13 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.equal(detectFormat({ name: "mobile.3GPP", type: "" }), "3gp");
   assert.ok(
-    publicProfilesFor("3gp").some(
-      (profile) => profile.id === "3gp-to-mp4",
-    ),
+    publicProfilesFor("3gp").some((profile) => profile.id === "3gp-to-mp4"),
   );
   assert.ok(
-    publicProfilesFor("3gp").some(
-      (profile) => profile.id === "3gp-to-m4a",
-    ),
+    publicProfilesFor("3gp").some((profile) => profile.id === "3gp-to-m4a"),
   );
   assert.ok(
-    publicProfilesFor("3gp").some(
-      (profile) => profile.id === "3gp-to-wav",
-    ),
+    publicProfilesFor("3gp").some((profile) => profile.id === "3gp-to-wav"),
   );
   const certifiedThreeGpAmrRoutes = [
     "3gp-to-amr",
@@ -1592,7 +1623,9 @@ test("compound archives and mainstream images are detected by filename", () => {
   }
   assert.deepEqual(
     publicProfilesFor("3gp", true)
-      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .filter(
+        (profile) => profile.output === "webm" || profile.output === "webm-vp9",
+      )
       .map((profile) => profile.id),
     ["3gp-to-webm", "3gp-to-webm-vp9"],
   );
@@ -1614,46 +1647,42 @@ test("compound archives and mainstream images are detected by filename", () => {
   );
   assert.deepEqual(
     publicProfilesFor("mpeg-ts", true)
-      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .filter(
+        (profile) => profile.output === "webm" || profile.output === "webm-vp9",
+      )
       .map((profile) => profile.id),
     ["mpeg-ts-to-webm", "mpeg-ts-to-webm-vp9"],
   );
   assert.equal(detectFormat({ name: "legacy.F4V", type: "" }), "flv");
   assert.ok(
-    publicProfilesFor("flv").some(
-      (profile) => profile.id === "flv-to-mp4",
-    ),
+    publicProfilesFor("flv").some((profile) => profile.id === "flv-to-mp4"),
   );
   assert.ok(
-    publicProfilesFor("flv").some(
-      (profile) => profile.id === "flv-to-m4a",
-    ),
+    publicProfilesFor("flv").some((profile) => profile.id === "flv-to-m4a"),
   );
   assert.ok(
-    publicProfilesFor("flv").some(
-      (profile) => profile.id === "flv-to-wav",
-    ),
+    publicProfilesFor("flv").some((profile) => profile.id === "flv-to-wav"),
   );
   assert.deepEqual(
     publicProfilesFor("flv", true)
-      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .filter(
+        (profile) => profile.output === "webm" || profile.output === "webm-vp9",
+      )
       .map((profile) => profile.id),
     ["flv-to-webm", "flv-to-webm-vp9"],
   );
   assert.equal(detectFormat({ name: "legacy.DIVX", type: "" }), "avi");
   assert.ok(
-    publicProfilesFor("avi").some(
-      (profile) => profile.id === "avi-to-mp4",
-    ),
+    publicProfilesFor("avi").some((profile) => profile.id === "avi-to-mp4"),
   );
   assert.ok(
-    publicProfilesFor("avi").some(
-      (profile) => profile.id === "avi-to-wav",
-    ),
+    publicProfilesFor("avi").some((profile) => profile.id === "avi-to-wav"),
   );
   assert.deepEqual(
     publicProfilesFor("avi")
-      .filter((profile) => profile.output === "webm" || profile.output === "webm-vp9")
+      .filter(
+        (profile) => profile.output === "webm" || profile.output === "webm-vp9",
+      )
       .map((profile) => profile.id),
     ["avi-to-webm", "avi-to-webm-vp9"],
   );
@@ -1678,23 +1707,33 @@ test("compound archives and mainstream images are detected by filename", () => {
       ),
     );
   }
-  assert.ok(publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"));
-  assert.ok(publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"));
-  assert.ok(publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"));
-  assert.ok(publicProfilesFor("csv").some((profile) => profile.id === "csv-to-json"));
-  assert.ok(publicProfilesFor("tsv").some((profile) => profile.id === "tsv-to-json"));
-  assert.ok(publicProfilesFor("json").some((profile) => profile.id === "json-to-csv"));
-  assert.ok(publicProfilesFor("json").some((profile) => profile.id === "json-to-tsv"));
-  assert.equal(detectFormat({ name: "book.EPUB", type: "" }), "epub");
   assert.ok(
-    publicProfilesFor("epub").some(
-      (profile) => profile.id === "epub-to-txt",
-    ),
+    publicProfilesFor("odt").some((profile) => profile.id === "odt-to-txt"),
   );
   assert.ok(
-    publicProfilesFor("xml").some(
-      (profile) => profile.id === "xml-to-ndjson",
-    ),
+    publicProfilesFor("ods").some((profile) => profile.id === "ods-to-csv"),
+  );
+  assert.ok(
+    publicProfilesFor("odp").some((profile) => profile.id === "odp-to-txt"),
+  );
+  assert.ok(
+    publicProfilesFor("csv").some((profile) => profile.id === "csv-to-json"),
+  );
+  assert.ok(
+    publicProfilesFor("tsv").some((profile) => profile.id === "tsv-to-json"),
+  );
+  assert.ok(
+    publicProfilesFor("json").some((profile) => profile.id === "json-to-csv"),
+  );
+  assert.ok(
+    publicProfilesFor("json").some((profile) => profile.id === "json-to-tsv"),
+  );
+  assert.equal(detectFormat({ name: "book.EPUB", type: "" }), "epub");
+  assert.ok(
+    publicProfilesFor("epub").some((profile) => profile.id === "epub-to-txt"),
+  );
+  assert.ok(
+    publicProfilesFor("xml").some((profile) => profile.id === "xml-to-ndjson"),
   );
   assert.equal(detectFormat({ name: "captions.SSA", type: "" }), "ass");
   assert.equal(detectFormat({ name: "track.MP3", type: "" }), "mp3");
@@ -1703,7 +1742,10 @@ test("compound archives and mainstream images are detected by filename", () => {
   assert.equal(detectFormat({ name: "voice.ogg", type: "" }), "ogg");
   assert.equal(detectFormat({ name: "voice.opus", type: "" }), "opus");
   assert.equal(detectFormat({ name: "movie.MP4", type: "" }), "mp4");
-  assert.equal(detectFormat({ name: "elementary.M4V", type: "video/mp4" }), "m4v");
+  assert.equal(
+    detectFormat({ name: "elementary.M4V", type: "video/mp4" }),
+    "m4v",
+  );
   assert.ok(
     publicProfilesFor("mp4").some((profile) => profile.id === "mp4-to-m4a"),
   );
@@ -1748,8 +1790,12 @@ test("animated frame archives expose only routes with complete browser evidence"
     assert.equal(profile.automatedTestStatus, evidence.status, id);
     assert.equal(profile.maxTestedBytes, evidence.bytes, id);
   }
-  assert.ok(publicProfilesFor("png").some((profile) => profile.id === "png-to-zip"));
-  assert.ok(publicProfilesFor("gif").some((profile) => profile.id === "gif-to-zip"));
+  assert.ok(
+    publicProfilesFor("png").some((profile) => profile.id === "png-to-zip"),
+  );
+  assert.ok(
+    publicProfilesFor("gif").some((profile) => profile.id === "gif-to-zip"),
+  );
   assert.ok(
     publicProfilesFor("webp").some((profile) => profile.id === "webp-to-zip"),
   );
@@ -1774,11 +1820,16 @@ test("animated APNG outputs expose only routes with complete browser evidence", 
     assert.equal(profile.automatedTestStatus, "passed", id);
     assert.equal(profile.maxTestedBytes, bytes, id);
   }
-  assert.ok(publicProfilesFor("gif").some((profile) => profile.id === "gif-to-apng"));
+  assert.ok(
+    publicProfilesFor("gif").some((profile) => profile.id === "gif-to-apng"),
+  );
   assert.ok(
     publicProfilesFor("webp").some((profile) => profile.id === "webp-to-apng"),
   );
-  assert.equal(detectFormat({ name: "converted.apng", type: "image/apng" }), "png");
+  assert.equal(
+    detectFormat({ name: "converted.apng", type: "image/apng" }),
+    "png",
+  );
 });
 
 test("animated GIF outputs expose only routes with complete browser evidence", () => {
@@ -1794,7 +1845,9 @@ test("animated GIF outputs expose only routes with complete browser evidence", (
     assert.equal(profile.automatedTestStatus, "passed", id);
     assert.equal(profile.maxTestedBytes, bytes, id);
   }
-  assert.ok(publicProfilesFor("png").some((profile) => profile.id === "png-to-gif"));
+  assert.ok(
+    publicProfilesFor("png").some((profile) => profile.id === "png-to-gif"),
+  );
   assert.ok(
     publicProfilesFor("webp").some((profile) => profile.id === "webp-to-gif"),
   );
@@ -1847,7 +1900,11 @@ test("safe archive and raw-compression conversion matrices are complete", () => 
       assert.equal(profile.public, true, profile.id);
       assert.equal(profile.automatedTestStatus, "passed", profile.id);
       assert.ok(profile.maxTestedBytes > 0, profile.id);
-      assert.equal(publicProfilesFor(input).includes(profile), true, profile.id);
+      assert.equal(
+        publicProfilesFor(input).includes(profile),
+        true,
+        profile.id,
+      );
     }
   }
 

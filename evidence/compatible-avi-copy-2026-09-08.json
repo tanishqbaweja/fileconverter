@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-08T02:15:00+05:30",
+  "requirements": ["P-08", "M-04"],
+  "status": "accepted-public-pending-final-exact-reproduction",
+  "dockerUsed": false,
+  "scope": "Add the fastest standards-correct Matroska MPEG-4 Part 2/MP3 to AVI path as a bounded packet-copy route instead of decoding and re-encoding compatible streams.",
+  "profile": {
+    "id": "mkv-to-avi",
+    "route": "stream-copy",
+    "videoCodec": "mpeg4",
+    "optionalAudioCodec": "mp3",
+    "excluded": [
+      "incompatible video",
+      "incompatible audio",
+      "subtitles",
+      "attachments",
+      "attached pictures",
+      "data streams",
+      "chapters",
+      "unrepresentable rotation"
+    ],
+    "decoderUsed": false,
+    "encoderUsed": false,
+    "maximumTestedSourceBytes": 159417989
+  },
+  "implementation": {
+    "nativeProfile": 37,
+    "nativeWrapper": "media/ffmpeg/within_remux.c",
+    "muxerPatch": "media/ffmpeg/patches/avi-bounded-index.patch",
+    "registry": "lib/capability-registry.ts",
+    "planner": "lib/media-conversion-plan.ts",
+    "browserGate": "tests/browser/media-remux.spec.ts",
+    "stressGenerator": "scripts/generate-compatible-avi-stress-fixture.mjs",
+    "memoryProfiler": "scripts/memory-profile.mjs"
+  },
+  "smallBrowserValidation": {
+    "browser": "installed Google Chrome 152.0.7977.77",
+    "command": "npx playwright test --grep \"genuine AVI|AVI stream copy\" --workers=1",
+    "result": "3 passed",
+    "elapsedSeconds": 16.4,
+    "assertions": [
+      "output begins with RIFF and AVI form signatures and probes as genuine AVI",
+      "MPEG-4 Part 2 video and both single- and multi-track MP3 packets equal their Matroska sources",
+      "output video fully decodes and matches the decoded source",
+      "general title/comment and stream titles are retained while language, dispositions, subtitles, attachments, and chapters are explicitly excluded",
+      "injected bounded destination-write failure reaches the UI and deletes the partial output",
+      "terminal pending operations and queued bytes are zero"
+    ]
+  },
+  "stressValidation": {
+    "source": {
+      "format": "Matroska",
+      "videoCodec": "mpeg4",
+      "audioCodec": "mp3",
+      "bytes": 159417989,
+      "sha256": "da829187f8078c30e3a9760fed68e9e79701edebb7d1bae4a8957ee10fec6855",
+      "generationSeconds": 3.96,
+      "durationSeconds": 65.004,
+      "width": 1282,
+      "height": 536,
+      "decodedVideoFrames": 1543,
+      "videoPacketCount": 1543,
+      "audioPacketCount": 2703,
+      "maximumPacketBytes": 141324,
+      "videoPacketSha256": "a6ba64061a0266365473bbcff7a190577ef2991cf6fb274165b6e2b9a00db42e",
+      "audioPacketSha256": "985632f05f73f85ad34c09a6977dd4b934deb3cd92f6309cf25907af41720707"
+    },
+    "runs": [
+      {
+        "elapsedMs": 1075.1799999773502,
+        "incrementalPrivateMiB": 204.47265625,
+        "cleanupDeltaFromLoadedMiB": 25.51953125
+      },
+      {
+        "elapsedMs": 1097.5999999940395,
+        "incrementalPrivateMiB": 194.59765625,
+        "cleanupDeltaFromLoadedMiB": 27.28515625
+      },
+      {
+        "elapsedMs": 1141.7100000083447,
+        "incrementalPrivateMiB": 190.77734375,
+        "cleanupDeltaFromLoadedMiB": 19.98046875
+      }
+    ],
+    "outputBytes": 161046620,
+    "repeatableOutputSha256": "b7c2639cae4fc85800edc052810775c24721c35c80c1c166e33b827e1949c674",
+    "worstIncrementalPrivateMiB": 204.47265625,
+    "limitMiB": 250,
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 262144,
+    "maxQueuedBytes": 262144,
+    "maxPendingOperations": 1,
+    "wasmMemoryBytes": 33554432,
+    "completeNativeDecode": true,
+    "exactVideoAndAudioPacketHashes": true,
+    "midpointSeekPassed": true,
+    "openDml": {
+      "configuredRiffLimitBytes": 8388608,
+      "segmentCount": 20,
+      "maximumObservedSegmentBytes": 8560640,
+      "masterIndexPresent": true,
+      "videoStandardIndexCount": 20,
+      "audioStandardIndexCount": 20
+    },
+    "passed": true
+  },
+  "cancellationValidation": {
+    "sourceBytesProcessed": 133169152,
+    "partialOutputBytesBeforeDeletion": 134268254,
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 262144,
+    "maxPendingOperations": 1,
+    "terminalPendingOperations": 0,
+    "terminalQueuedBytes": 0,
+    "browserOwnedEntriesBefore": [],
+    "browserOwnedEntriesAfter": [],
+    "passed": true
+  },
+  "buildValidation": {
+    "isolatedCandidateRun": 34158982139,
+    "isolatedCandidateOutcome": "The exact pinned no-Docker build compiled successfully; only within-remux.wasm differed while its loader and manifest were byte-identical.",
+    "publishedWasmBytes": 9656875,
+    "publishedWasmSha256": "baca6d79610668e71dc93826e96a4ae95f099859e8eb9a1495533193b1f8ed40",
+    "publishedLoaderSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e",
+    "exactReproductionRun": null,
+    "exactReproductionCommit": null,
+    "exactReproductionResult": "pending after the implementation checkpoint is pushed",
+    "retainedRunArtifacts": 0
+  },
+  "harnessCorrection": {
+    "firstStressAttempt": "The browser conversion, cancellation, and independent packet/decode work were valid, but a newly added validator accidentally applied the OGV format assertion to AVI.",
+    "resolution": "The validator now keeps the Ogg and AVI signature assertions independent; no converter code, memory threshold, packet check, or cleanup rule changed.",
+    "firstFieldAttempt": "The validator assumed AVI would drop stream titles, but the browser output proved that FFmpeg stores and recovers all three titles.",
+    "fieldResolution": "The accepted field contract now requires general title/comment and stream-title retention while asserting the observed loss of language and default-disposition fields."
+  },
+  "cleanup": {
+    "generatedStressSourcesDeleted": true,
+    "generatedStressManifestsDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "failedStressReportsDeleted": true,
+    "rawPassingReportsDeleted": true,
+    "downloadedCandidateArtifactDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}

@@ -14,10 +14,16 @@ const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
 const libraries = readFileSync("media/ffmpeg/build-libraries.sh", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 
-test("AVI output candidate keeps stock packet indexes bounded by smaller OpenDML segments", () => {
-  assert.equal(evidence.status, "candidate-hidden-pending-production-browser-certification");
-  assert.equal(evidence.boundedDesign.configuredRiffSizeLimitBytes, 8 * 1024 * 1024);
-  assert.equal(evidence.boundedDesign.maximumRetainedIndexPayloadBytesByByteBound, 16 * 1024 * 1024);
+test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments", () => {
+  assert.equal(evidence.status, "accepted-public-profile");
+  assert.equal(
+    evidence.boundedDesign.configuredRiffSizeLimitBytes,
+    8 * 1024 * 1024,
+  );
+  assert.equal(
+    evidence.boundedDesign.maximumRetainedIndexPayloadBytesByByteBound,
+    16 * 1024 * 1024,
+  );
   assert.equal(evidence.boundedDesign.maximumPendingWrites, 1);
   assert.equal(evidence.boundedDesign.largeFileMemfs, false);
   assert.equal(
@@ -31,15 +37,20 @@ test("AVI output candidate keeps stock packet indexes bounded by smaller OpenDML
   assert.match(libraries, /--enable-muxer=.*avi/);
 });
 
-test("AVI output profile 37 is wired but remains absent from the public registry", () => {
+test("AVI output profile 37 is wired and public only after browser certification", () => {
   assert.match(wrapper, /profile == 37/);
   assert.match(wrapper, /AV_CODEC_ID_MPEG4/);
   assert.match(wrapper, /AV_CODEC_ID_MP3/);
   assert.match(worker, /profileId === "mkv-to-avi"/);
-  assert.equal(
-    conversionProfiles.some((profile) => profile.id === "mkv-to-avi"),
-    false,
+  const profile = conversionProfiles.find(
+    (candidate) => candidate.id === "mkv-to-avi",
   );
-  assert.equal(evidence.convertedFilesCreated, false);
-  assert.equal(evidence.temporarySourceCopiesDeleted, true);
+  assert.ok(profile);
+  assert.equal(profile.public, true);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 159_417_989);
+  assert.equal(
+    evidence.acceptedEvidence,
+    "evidence/compatible-avi-copy-2026-09-08.json",
+  );
 });

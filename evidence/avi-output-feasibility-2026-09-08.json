@@ -2,7 +2,7 @@
   "generatedAt": "2026-09-08T00:00:00.000+05:30",
   "requirementId": "M-04",
   "candidateProfileId": "mkv-to-avi",
-  "status": "candidate-hidden-pending-production-browser-certification",
+  "status": "accepted-public-profile",
   "sourceContainer": "Matroska",
   "destinationContainer": "AVI/OpenDML",
   "certifiedCandidateCodecs": {
@@ -44,16 +44,18 @@
     "Planner unit test accepts MPEG-4 Part 2/MP3, excludes subtitles, rejects H.264, and rejects audio-only input.",
     "No public registry route is present before certification."
   ],
-  "requiredBeforePublication": [
-    "Exact no-Docker Wasm rebuild and artifact publication.",
+  "completedCertification": [
+    "Exact pinned no-Docker Wasm candidate build and artifact publication.",
     "Production-browser success, forced-write failure, cancellation, and cleanup tests.",
-    "Independent AVI structure, full decode, timestamp, duration, and compressed-packet identity validation.",
-    "Three repeatable maximum-size runs with complete Chromium process-tree incremental private memory at or below 250 MiB.",
-    "Bounded read, write, queue, worker, Wasm, and destination-seek metrics.",
-    "Field-retention and explicit-exclusion validation."
+    "Independent AVI/OpenDML structure, full decode, midpoint seek, duration, and compressed-packet identity validation.",
+    "Three repeatable 159,417,989-byte runs at 204.473 MiB worst complete-Chromium incremental private memory.",
+    "Bounded 256 KiB read/write/queue metrics, one pending operation, and fixed 32 MiB Wasm.",
+    "General/stream title retention plus explicit language, disposition, subtitle, attachment, chapter, and incompatible-stream exclusions."
   ],
+  "acceptedEvidence": "evidence/compatible-avi-copy-2026-09-08.json",
   "dockerUsed": false,
   "filesCreatedOutsideRepository": false,
-  "convertedFilesCreated": false,
+  "convertedFilesCreated": true,
+  "convertedFilesRetained": false,
   "temporarySourceCopiesDeleted": true
 }

@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
-import { readFile, stat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -25,19 +24,11 @@ test("compatible OGV evidence matches the current public profile", () => {
   assert.match(profile.metadataLimitations.join(" "), /Theora video with optional Vorbis audio/);
 });
 
-test("the published OGV-capable general core matches accepted build evidence", async () => {
-  const wasmPath = path.join(
-    projectRoot,
-    "public",
-    "engines",
-    "remux",
-    "within-remux.wasm",
-  );
-  const wasm = await readFile(wasmPath);
-  assert.equal((await stat(wasmPath)).size, evidence.buildValidation.publishedWasmBytes);
+test("the superseded OGV-capable core retains its accepted historical build evidence", () => {
+  assert.equal(evidence.buildValidation.publishedWasmBytes, 9635289);
   assert.equal(
-    createHash("sha256").update(wasm).digest("hex"),
     evidence.buildValidation.publishedWasmSha256,
+    "8d17f291c1b2f9d34df4e038be60e7960398261bfd26edc135666a7a2ed4af84",
   );
   assert.equal(evidence.buildValidation.isolatedCandidateRun, 34134662736);
   assert.equal(evidence.buildValidation.exactReproductionRun, 34136791033);

@@ -2,7 +2,10 @@ import { readFile, readdir, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const projectRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "..",
+);
 const workRoot = path.resolve(projectRoot, "work");
 const outputsRoot = path.resolve(projectRoot, "outputs");
 const reportRoot = path.resolve(outputsRoot, "reports");
@@ -26,14 +29,8 @@ const playwrightSmallProfileRoot = path.resolve(
   workRoot,
   "playwright-profile-small",
 );
-const browserImageSmokeRoot = path.resolve(
-  outputsRoot,
-  "browser-image-smoke",
-);
-const browserMediaSmokeRoot = path.resolve(
-  outputsRoot,
-  "browser-media-smoke",
-);
+const browserImageSmokeRoot = path.resolve(outputsRoot, "browser-image-smoke");
+const browserMediaSmokeRoot = path.resolve(outputsRoot, "browser-media-smoke");
 const stressFixturesRoot = path.resolve(projectRoot, "fixtures", "stress");
 const profileRoot = path.resolve(workRoot, "memory-profile-chrome");
 const cancellationFixture = path.resolve(
@@ -291,6 +288,7 @@ const generatedStressNames = new Set([
   "av1-vorbis-128m.webm.json",
   "compatible-vp9-opus-128m.mkv.json",
   "theora-vorbis-copy-128m.mkv.json",
+  "mpeg4-mp3-avi-copy-128m.mkv.json",
   "mpeg2-video-128m.mkv.json",
   "mpeg2-video-128m.mp4.json",
   "mpeg2-video-128m.mov.json",
@@ -371,7 +369,9 @@ if (process.argv.includes("--test-artifacts-only")) {
 if (process.argv.includes("--benchmark-artifacts-only")) {
   await removeWithRetries(profileRoot);
   await rm(webmBenchmarkFixture, { force: true });
-  process.stdout.write("Disposable benchmark fixture and browser profile removed.\n");
+  process.stdout.write(
+    "Disposable benchmark fixture and browser profile removed.\n",
+  );
   process.exit(0);
 }
 
@@ -431,7 +431,9 @@ for (const logPath of detachedProfileLogs) {
 }
 for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
 
-for (const entry of await readdir(remuxEngineRoot, { withFileTypes: true }).catch(() => [])) {
+for (const entry of await readdir(remuxEngineRoot, {
+  withFileTypes: true,
+}).catch(() => [])) {
   if (entry.isFile() && entry.name.startsWith(".tmp.")) {
     const temporaryExport = path.resolve(remuxEngineRoot, entry.name);
     assertInside(remuxEngineRoot, temporaryExport);
@@ -460,7 +462,9 @@ for await (const entry of walkFiles(stressFixturesRoot)) {
 }
 
 await pruneSupersededReports(reportRoot);
-process.stdout.write("Generated profile and disposable output cleanup complete.\n");
+process.stdout.write(
+  "Generated profile and disposable output cleanup complete.\n",
+);
 
 function assertInside(parent, child) {
   const relative = path.relative(parent, child);
@@ -531,7 +535,10 @@ async function pruneSupersededReports(directory) {
   const reports = [];
   try {
     for (const entry of await readdir(directory, { withFileTypes: true })) {
-      if (!entry.isFile() || path.extname(entry.name).toLowerCase() !== ".json") {
+      if (
+        !entry.isFile() ||
+        path.extname(entry.name).toLowerCase() !== ".json"
+      ) {
         continue;
       }
       const fullPath = path.join(directory, entry.name);

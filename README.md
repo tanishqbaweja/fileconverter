@@ -16,24 +16,27 @@ independent output validation, three-run repeatability check, cleanup check, and
 complete-Chromium memory profile have passed. The current registry publishes 389
 routes:
 
-| Category | Verified routes | Largest tested source |
-| --- | --- | ---: |
-| Compression | bytes -> GZIP/BZIP2/XZ; GZIP/BZIP2/XZ -> bytes | 270,593,081 B |
-| Archives | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP | 270,592,763 B |
-| Subtitles | SRT <-> WebVTT; SRT/WebVTT -> ASS/TTML; ASS/TTML -> SRT/WebVTT | 101,393,068 B |
-| Documents | TXT -> DOCX, ODT, or safe preformatted HTML; DOCX/ODT -> visible TXT; Markdown -> HTML; HTML -> visible TXT | 143,850,123 B |
-| Ebooks | TXT/Markdown -> valid reflowable EPUB; EPUB -> spine-ordered visible TXT | 141,110,000 B |
-| Spreadsheets | XLSX/ODS -> first-visible-sheet CSV | 135,267,834 B |
-| Presentations | PPTX/ODP -> slide/page-ordered TXT | 135,296,355 B |
-| Structured data | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON | 293,633,883 B |
-| Images | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO/JPEG XL destinations; PNG/APNG/JPEG/WebP/GIF/BMP to AVIF; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG or GIF to WebP; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP | 50,374,456 B |
-| Video/container | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; Theora/Vorbis MKV -> lossless-copy OGV; AV1/VP8/VP9 plus Opus/Vorbis MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM | 10,737,988,703 B |
-| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2 | 220,800,108 B |
+| Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
+| ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------: |
+| Compression      | bytes -> GZIP/BZIP2/XZ; GZIP/BZIP2/XZ -> bytes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |         270,593,081 B |
+| Archives         | TAR -> TAR.GZ/TAR.BZ2/TAR.XZ; TAR.GZ/TAR.BZ2/TAR.XZ -> TAR; ZIP -> TAR/TAR.GZ; TAR/TAR.GZ -> ZIP                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |         270,592,763 B |
+| Subtitles        | SRT <-> WebVTT; SRT/WebVTT -> ASS/TTML; ASS/TTML -> SRT/WebVTT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |         101,393,068 B |
+| Documents        | TXT -> DOCX, ODT, or safe preformatted HTML; DOCX/ODT -> visible TXT; Markdown -> HTML; HTML -> visible TXT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |         143,850,123 B |
+| Ebooks           | TXT/Markdown -> valid reflowable EPUB; EPUB -> spine-ordered visible TXT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |         141,110,000 B |
+| Spreadsheets     | XLSX/ODS -> first-visible-sheet CSV                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |         135,267,834 B |
+| Presentations    | PPTX/ODP -> slide/page-ordered TXT                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |         135,296,355 B |
+| Structured data  | CSV <-> TSV; CSV/TSV <-> JSON/NDJSON; NDJSON <-> JSON; XML -> NDJSON                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |         293,633,883 B |
+| Images           | PNG/APNG/JPEG/WebP/GIF/AVIF/BMP to implemented PNG/JPEG/WebP/BMP/ICO/JPEG XL destinations; PNG/APNG/JPEG/WebP/GIF/BMP to AVIF; animated GIF or WebP to APNG; animated PNG/APNG or WebP to GIF; animated PNG/APNG or GIF to WebP; animated PNG/APNG, GIF, WebP, AVIF, or JPEG XL to all-frame PNG ZIP; JPEG XL to PNG; TIFF to PNG or multipage PNG ZIP                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |          50,374,456 B |
+| Video/container  | MP4/MOV/3GP/MPEG-TS/FLV/AVI/WebM/OGV -> lossless-copy MKV for certified codec sets; MKV/MP4/MOV/MPEG-TS -> raw HEVC for certified HEVC video; MKV/MP4/MOV/AVI/MPEG-TS -> raw MPEG-2 M2V for certified MPEG-2 video; raw M2V -> MPEG-TS; MKV/MP4/MOV/AVI -> raw MPEG-4 Part 2 M4V; raw M4V -> MP4; Theora/Vorbis MKV -> lossless-copy OGV; AV1/VP8/VP9 plus Opus/Vorbis MKV -> lossless-copy WebM; MKV/MP4/MOV/AVI/MPEG-TS/FLV -> lossless-copy MP3 when the source contains MP3 audio; MKV/MP4/MOV/3GP/MPEG-TS/FLV -> raw AAC when the source contains AAC audio; MKV/WebM/OGV -> Ogg Vorbis when the source contains Vorbis audio; MKV/WebM -> Ogg Opus when the source contains Opus audio; 3GP/AMR-NB -> lossless-copy raw AMR-NB; MKV/MP4/MOV/3GP/MPEG-TS/FLV with AAC, AVI with MP3, OGV with Vorbis, and WebM with Opus -> WMA2 or signed 16-bit AIFF; certified MKV/MP4/MOV/MPEG-TS/FLV with AAC and AVI with MP3 -> AMR-NB; certified AVI/MP3, OGV/Vorbis, and WebM/Opus -> fragmented AAC-LC M4A; certified WebM/Opus also -> signed 16-bit WAV, FLAC, AMR-NB, MP3, or raw AAC-LC; MKV -> MP4/MPEG-4 MP4/M4A/WAV/FLAC/H.264/VP8 or VP9 WebM; MP4/MOV -> M4A/WAV/FLAC/H.264/VP8 or VP9 WebM (MOV also to MP4); 3GP/MPEG-TS/FLV -> MP4/M4A/WAV/FLAC/H.264; AVI -> MP4/WAV/FLAC; OGV -> VP8 or VP9 WebM/WAV/FLAC; raw H.264 -> MP4/VP8 or VP9 WebM; MPEG-2 M2V -> MPEG-4 MP4/VP8 or VP9 WebM |      10,737,988,703 B |
+| Standalone audio | AAC -> M4A/WAV/FLAC/AIFF/AMR-NB/MP3/Opus/Ogg Vorbis/WMA2; raw AMR-NB -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis; AMR-WB in `.awb` -> WAV/FLAC/AIFF/MP3/AAC/Opus/Ogg Vorbis/WMA2; 3GP with AMR-NB -> WAV/FLAC/AIFF/MP3/Opus/Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG, or Opus -> WAV/FLAC/AIFF/AMR-NB/MP3/AAC where applicable; M4A (AAC/ALAC), AAC, AMR-WB, MP3, AIFF, Ogg Vorbis, or Ogg Opus -> WMA2; M4A (AAC/ALAC), AAC, AMR-NB, MP3, FLAC, WAV, WMA, AIFF, or Ogg Opus -> Ogg Vorbis; M4A (AAC/ALAC), MP3, FLAC, WMA, OGG Vorbis -> Opus; WAV -> FLAC/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; FLAC -> WAV/AIFF/AMR-NB/MP3/AAC/Opus/ALAC M4A/WMA2; AIFF -> WAV/FLAC/AMR-NB/MP3/AAC/Opus/WMA2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |         220,800,108 B |
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
 decode/re-encode work, use bounded direct destination writes, and explicitly
 disclose container-specific metadata or stream exclusions.
+
+The matrix now also includes a certified Matroska-to-OpenDML-AVI packet-copy
+route for MPEG-4 Part 2 video with optional MP3 audio.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
@@ -455,16 +458,19 @@ name was removed and is not counted as WebM evidence. All generated inputs and
 outputs were deleted. See
 `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`.
 
-AVI output is under active certification and is not yet shown in the public
-selector. The hidden Matroska-to-AVI candidate packet-copies only MPEG-4 Part 2
-video and MP3 audio. A project-owned FFmpeg 8.1.2 option reduces OpenDML RIFF
-segments from the stock approximately 1 GiB to 8 MiB, bounding the muxer's
-retained packet-index payload near 16 MiB even for minimum-size chunks, while a
-reserved master index covers outputs through 128 GiB. The source patch, planner,
-bounded I/O, and hidden-route gates pass; the no-Docker Wasm rebuild and complete
-production-browser correctness, adverse-path, and three-run memory gates remain
-required before publication. See
-`evidence/avi-output-feasibility-2026-09-08.json`.
+AVI output is public for the exact compatible subset: Matroska containing
+MPEG-4 Part 2 video and optional MP3 audio. It packet-copies compressed streams
+without decoding or re-encoding. A project-owned FFmpeg 8.1.2 option rolls
+OpenDML RIFF segments at 8 MiB, bounding retained packet-index payload near
+16 MiB even for minimum-size chunks, while a reserved master index covers
+outputs through 128 GiB. A 159,417,989-byte production-Chrome fixture passed
+3/3 in 1.075-1.142 seconds, produced the same 161,046,620-byte AVI and SHA-256
+each time, and peaked at 204.473 MiB incremental complete-Chromium private
+memory. Independent validation found 20 genuine OpenDML segments (8,560,640
+bytes maximum), exact MPEG-4/MP3 packet hashes, full native decode, midpoint
+seek, correct field retention/exclusions, cancellation cleanup, and forced-write
+failure cleanup. See `evidence/avi-output-feasibility-2026-09-08.json` and
+`evidence/compatible-avi-copy-2026-09-08.json`.
 
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded
@@ -1364,173 +1370,173 @@ incrementalPrivateMiB =
 
 Current exact-build results:
 
-| Profile | Runs/session | Source | Output | Worst incremental private memory | Peak Wasm | Cleanup delta range |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| MKV to WAV, 256 KiB direct coalescer | 1 | 2,958,573,265 B | 7,107,834,734 B | 186.7 MiB | 32 MiB | 9.0 MiB |
-| MP3 to WAV, 256 KiB direct coalescer | 3 | 50,401,224 B | 201,600,128 B | 191.9 MiB | 32 MiB | 8.5-32.0 MiB |
-| MKV → MP4 | 3 | 2,958,573,265 B | 2,962,151,522 B | 173.8 MiB | 52.6 MiB | −16.8–31.9 MiB |
-| MKV → MP4, 1 MiB shared direct writer (Chrome 152) | 3 | 2,958,573,265 B | 2,962,151,538 B | 249.2 MiB | 44.4 MiB | −22.7–−13.7 MiB |
-| MKV → M4A | 3 | 2,958,573,265 B | 249,427,974 B | 164.7 MiB | 32 MiB | −1.1–0.9 MiB |
-| MP4 → M4A | 3 | 2,964,855,971 B | 249,427,976 B | 203.3 MiB | 73.8 MiB | −4.0–−0.6 MiB |
-| MKV → WAV | 3 | 2,958,573,265 B | 7,107,834,734 B | 178.0 MiB | 32 MiB | −7.2–−4.3 MiB |
-| MP4 → WAV | 3 | 2,964,855,971 B | 7,107,834,950 B | 224.1 MiB | 73.8 MiB | −8.1–−4.8 MiB |
-| MKV → MPEG-4 MP4 | 3 | 2,958,573,265 B | 3,086,358,463 B | 211.3 MiB | 89.6 MiB | −1.0–7.1 MiB |
-| MKV → WebM | 3 | 2,958,573,265 B | 921,524,214 B | 208.8 MiB | 80 MiB | 0.7–6.0 MiB |
-| MKV → VP9 WebM | 3 | 181,825,549 B | 65,122,757 B | 244.9 MiB | 88 MiB | 7.2–17.8 MiB |
-| MP4 → VP8 WebM | 3 | 147,136,619 B | 5,105,363 B | 226.9 MiB | 64 MiB | 11.4–14.3 MiB |
-| MP4 → VP9 WebM | 3 | 147,136,625 B | 4,143,084 B | 237.1 MiB | 64 MiB | 7.4–14.5 MiB |
-| MKV → MP4 scale (6 GiB) | 1 clean session | 6,443,020,778 B | 6,448,220,966 B | 194.8 MiB | 40 MiB | 6.1 MiB |
-| MKV → MP4 scale (10 GiB) | 1 clean session | 10,737,988,703 B | 10,746,764,442 B | 210.3 MiB | 40 MiB | −14.4 MiB |
-| MOV → MP4 | 3 | 149,251,969 B | 149,087,892 B | 168.2 MiB | 40 MiB | 13.1–17.4 MiB |
-| MOV → M4A | 3 | 149,251,969 B | 14,557,639 B | 164.5 MiB | 32 MiB | 7.2–15.3 MiB |
-| MOV → WAV | 3 | 149,251,969 B | 414,733,404 B | 195.3 MiB | 32 MiB | 2.8–36.0 MiB |
-| MOV → VP8 WebM | 3 | 147,136,647 B | 5,100,809 B | 244.4 MiB | 48 MiB | 15.5–44.6 MiB |
-| MOV → VP9 WebM | 3 | 147,136,647 B | 4,126,570 B | 236.8 MiB | 64 MiB | 11.5–13.0 MiB |
-| 3GP → MP4 | 3 | 167,130,850 B | 167,156,758 B | 209.6 MiB | 32 MiB | 9.4–28.4 MiB |
-| 3GP → M4A | 3 | 167,130,850 B | 11,539,835 B | 204.8 MiB | 32 MiB | 26.0–27.1 MiB |
-| 3GP → WAV | 3 | 167,130,850 B | 69,130,350 B | 193.7 MiB | 32 MiB | 11.6–34.6 MiB |
-| MPEG-TS → MP4 | 3 | 175,444,796 B | 167,139,361 B | 215.6 MiB | 56 MiB | 11.5–26.0 MiB |
-| MPEG-TS → M4A | 3 | 175,444,796 B | 11,455,964 B | 220.2 MiB | 56 MiB | 32.9–42.4 MiB |
-| MPEG-TS → WAV | 3 | 175,444,796 B | 68,776,014 B | 243.7 MiB | 56 MiB | 8.9–37.5 MiB |
-| FLV → MP4 | 3 | 167,517,193 B | 167,091,007 B | 193.1 MiB | 32 MiB | 17.2–29.8 MiB |
-| FLV → M4A | 3 | 167,517,193 B | 11,456,012 B | 213.2 MiB | 32 MiB | 20.3–27.2 MiB |
-| FLV → WAV | 3 | 167,517,193 B | 68,776,058 B | 192.4 MiB | 32 MiB | 13.0–29.0 MiB |
-| AVI → MP4 | 3 | 230,929,466 B | 229,960,974 B | 199.4 MiB | 32 MiB | 13.3–29.1 MiB |
-| AVI → WAV | 3 | 230,929,466 B | 68,954,218 B | 225.1 MiB | 32 MiB | 15.1–40.0 MiB |
-| OGV → WebM | 3 | 137,778,644 B | 61,043,196 B | 199.4 MiB | 32 MiB | 1.2–6.8 MiB |
-| OGV → VP9 WebM | 3 | 137,635,308 B | 67,478,525 B | 224.1 MiB | 64 MiB | 1.7–4.9 MiB |
-| OGV → WAV | 3 | 137,635,308 B | 74,880,078 B | 204.9 MiB | 32 MiB | 12.4–31.6 MiB |
-| M2V → MPEG-4 MP4 | 3 | 136,166,136 B | 124,300,753 B | 177.1 MiB | 32 MiB | 1.1–8.3 MiB |
-| M2V → VP8 WebM | 3 | 136,166,136 B | 37,835,173 B | 163.9 MiB | 32 MiB | 2.6–6.8 MiB |
-| M2V → VP9 WebM | 3 | 136,166,136 B | 44,351,703 B | 223.4 MiB | 56 MiB | −4.4–1.3 MiB |
-| M2V → MPEG-TS | 3 | 136,166,136 B | 142,319,760 B | 202.0 MiB | 32 MiB | cleanup passed |
-| MKV → M2V | 3 | 136,294,704 B | 136,166,136 B | 207.8 MiB | 32 MiB | cleanup passed |
-| MP4 → M2V | 3 | 136,284,917 B | 136,166,136 B | 210.8 MiB | 32 MiB | cleanup passed |
-| MOV → M2V | 3 | 136,284,843 B | 136,166,136 B | 210.4 MiB | 32 MiB | cleanup passed |
-| AVI → M2V | 3 | 136,465,056 B | 136,166,136 B | 206.2 MiB | 32 MiB | cleanup passed |
-| MPEG-TS → M2V | 3 | 142,273,136 B | 136,166,136 B | 198.6 MiB | 32 MiB | cleanup passed |
-| M4V → MP4 | 3 | 179,609,473 B | 179,625,924 B | 234.2 MiB | 32 MiB | cleanup passed |
-| MKV → M4V | 3 | 180,576,319 B | 179,609,473 B | 211.5 MiB | 32 MiB | cleanup passed |
-| MP4 → M4V | 3 | 179,625,218 B | 179,609,473 B | 195.4 MiB | 32 MiB | cleanup passed |
-| MOV → M4V | 3 | 179,625,169 B | 179,609,473 B | 198.9 MiB | 32 MiB | cleanup passed |
-| AVI → M4V | 3 | 179,650,578 B | 179,609,473 B | 201.9 MiB | 32 MiB | cleanup passed |
-| H.264 → MP4 | 3 | 145,801,019 B | 145,812,361 B | 233.9 MiB | 54.4 MiB | cleanup passed |
-| H.264 → VP8 WebM | 3 | 145,801,019 B | 4,752,826 B | 239.7 MiB | 40 MiB | cleanup passed |
-| H.264 → VP9 WebM | 3 | 145,801,019 B | 3,265,035 B | 243.7 MiB | 56 MiB | cleanup passed |
-| MKV → H.264 | 3 | 146,855,294 B | 145,801,019 B | 207.2 MiB | 32 MiB | cleanup passed |
-| MP4 → H.264 | 3 | 146,854,557 B | 145,801,019 B | 213.8 MiB | 32 MiB | cleanup passed |
-| MOV → H.264 | 3 | 146,854,612 B | 145,801,019 B | 208.3 MiB | 32 MiB | cleanup passed |
-| 3GP → H.264 | 3 | 146,854,456 B | 145,801,019 B | 212.8 MiB | 32 MiB | cleanup passed |
-| MPEG-TS → H.264 | 3 | 150,441,548 B | 145,810,379 B | 211.5 MiB | 32 MiB | cleanup passed |
-| FLV → H.264 | 3 | 146,903,486 B | 145,801,019 B | 209.1 MiB | 32 MiB | cleanup passed |
-| MKV → AAC | 3 | 146,855,294 B | 1,037,649 B | 179.9 MiB | 32 MiB | cleanup passed |
-| MP4 → AAC | 3 | 146,854,557 B | 1,037,649 B | 175.7 MiB | 32 MiB | cleanup passed |
-| MOV → AAC | 3 | 146,854,612 B | 1,037,637 B | 184.7 MiB | 32 MiB | cleanup passed |
-| 3GP → AAC | 3 | 146,854,456 B | 1,037,649 B | 186.7 MiB | 32 MiB | cleanup passed |
-| MPEG-TS → AAC | 3 | 150,441,548 B | 1,037,546 B | 211.3 MiB | 32 MiB | cleanup passed |
-| FLV → AAC | 3 | 146,903,486 B | 1,037,649 B | 184.7 MiB | 32 MiB | cleanup passed |
-| MKV → Ogg Vorbis | 3 | 222,125,242 B | 106,739 B | 191.1 MiB | 32 MiB | cleanup passed |
-| WebM → Ogg Vorbis | 3 | 222,124,822 B | 106,739 B | 185.0 MiB | 32 MiB | cleanup passed |
-| OGV → Ogg Vorbis | 3 | 137,218,662 B | 1,346,492 B | 202.4 MiB | 32 MiB | cleanup passed |
-| MKV → Ogg Opus | 3 | 222,942,211 B | 922,267 B | 207.8 MiB | 32 MiB | cleanup passed |
-| WebM → Ogg Opus | 3 | 222,941,314 B | 922,267 B | 206.0 MiB | 32 MiB | cleanup passed |
-| AAC → M4A | 3 | 134,367,785 B | 133,906,114 B | 179.8 MiB | 32 MiB | 0.2–16.3 MiB |
-| AAC → WAV | 3 | 134,367,785 B | 770,273,358 B | 186.5 MiB | 32 MiB | −3.1–−0.7 MiB |
-| AAC → FLAC | 3 | 134,367,785 B | 114,800,971 B | 167.1 MiB | 32 MiB | −6.7–−0.8 MiB |
-| MKV → FLAC | 3 | 146,855,294 B | 988,027 B | 212.6 MiB | 32 MiB | cleanup passed |
-| MP4 → FLAC | 3 | 146,854,557 B | 986,210 B | 214.2 MiB | 32 MiB | cleanup passed |
-| MOV → FLAC | 3 | 146,854,612 B | 986,198 B | 213.9 MiB | 32 MiB | cleanup passed |
-| 3GP → FLAC | 3 | 146,854,456 B | 986,210 B | 214.7 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → WAV | 3 | 156,907,373 B | 11,520,078 B | 229.2 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → FLAC | 3 | 156,907,373 B | 6,525,834 B | 194.3 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → AIFF | 3 | 156,907,373 B | 11,520,054 B | 226.5 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → MP3 | 3 | 156,907,373 B | 11,521,300 B | 197.5 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → Opus | 3 | 156,907,373 B | 5,850,664 B | 196.8 MiB | 32 MiB | cleanup passed |
-| 3GP/AMR-NB → Ogg Vorbis | 3 | 156,907,373 B | 1,329,515 B | 214.9 MiB | 32 MiB | cleanup passed |
-| MPEG-TS → FLAC | 3 | 150,441,548 B | 987,948 B | 211.6 MiB | 32 MiB | cleanup passed |
-| FLV → FLAC | 3 | 146,903,486 B | 988,027 B | 210.7 MiB | 32 MiB | cleanup passed |
-| AVI → FLAC | 3 | 159,500,442 B | 1,017,396 B | 223.3 MiB | 32 MiB | cleanup passed |
-| OGV → FLAC | 3 | 137,218,662 B | 10,205,021 B | 213.1 MiB | 32 MiB | cleanup passed |
-| ALAC M4A → WAV | 3 | 140,941,469 B | 153,600,128 B | 227.1 MiB | 32 MiB | 12.0–28.9 MiB |
-| ALAC M4A → FLAC, fresh-session repeat | 3 | 140,941,469 B | 138,185,793 B | 230.4 MiB | 32 MiB | 9.5–38.7 MiB |
-| WAV → ALAC M4A | 3 | 153,600,106 B | 140,941,506 B | 200.2 MiB | 32 MiB | 13.5–40.0 MiB |
-| FLAC → ALAC M4A | 3 | 138,185,686 B | 140,941,506 B | 199.1 MiB | 32 MiB | 11.8–43.8 MiB |
-| WMA2 → WAV | 3 | 142,503,082 B | 364,798,078 B | 190.7 MiB | 32 MiB | 4.5–34.3 MiB |
-| WMA2 → FLAC | 3 | 142,503,082 B | 326,238,814 B | 191.2 MiB | 32 MiB | −0.6–4.7 MiB |
-| WAV → WMA2 | 3 | 153,600,104 B | 60,000,756 B | 150.2 MiB | 32 MiB | 5.8–41.4 MiB |
-| FLAC → WMA2 | 3 | 138,186,536 B | 60,000,756 B | 159.9 MiB | 32 MiB | 0.8–5.1 MiB |
-| AAC M4A → WMA2 | 3 | 134,807,097 B | 303,139,894 B | 167.6 MiB | 32 MiB | cleanup passed |
-| ALAC M4A → WMA2 | 3 | 140,941,469 B | 60,001,031 B | 192.4 MiB | 32 MiB | cleanup passed |
-| Raw AAC → WMA2 | 3 | 134,367,785 B | 300,890,144 B | 164.8 MiB | 32 MiB | cleanup passed |
-| MP3 → WMA2 | 3 | 136,002,312 B | 255,002,360 B | 152.1 MiB | 32 MiB | cleanup passed |
-| AIFF → WMA2 | 3 | 201,600,102 B | 157,501,560 B | 177.2 MiB | 32 MiB | cleanup passed |
-| Ogg Vorbis → WMA2 | 3 | 144,431,506 B | 172,503,065 B | 148.3 MiB | 32 MiB | cleanup passed |
-| Ogg Opus → WMA2 | 3 | 147,964,541 B | 172,503,065 B | 166.1 MiB | 32 MiB | cleanup passed |
-| MKV/AAC → WMA2 | 3 | 146,855,294 B | 4,880,823 B | 211.2 MiB | 32 MiB | 1.42-1.74 s |
-| MP4/AAC → WMA2 | 3 | 146,854,557 B | 4,880,823 B | 205.3 MiB | 32 MiB | 1.30-1.67 s |
-| MOV/AAC → WMA2 | 3 | 146,854,612 B | 4,880,799 B | 197.8 MiB | 32 MiB | 1.44-1.73 s |
-| 3GP/AAC → WMA2 | 3 | 146,854,456 B | 4,880,823 B | 200.9 MiB | 32 MiB | 1.31-1.78 s |
-| MPEG-TS/AAC → WMA2 | 3 | 150,441,548 B | 4,880,665 B | 215.7 MiB | 32 MiB | 1.57-2.06 s |
-| FLV/AAC → WMA2 | 3 | 146,903,486 B | 4,880,702 B | 182.7 MiB | 32 MiB | 1.29-1.91 s |
-| AVI/MP3 → WMA2 | 3 | 159,500,442 B | 4,867,872 B | 215.1 MiB | 32 MiB | 1.32-1.78 s |
-| OGV/Vorbis → WMA2 | 3 | 137,218,662 B | 58,503,065 B | 201.7 MiB | 32 MiB | 4.96-5.61 s |
-| WebM/Opus → WMA2 | 3 | 222,941,314 B | 4,503,065 B | 237.5 MiB | 32 MiB | 1.62-2.19 s |
-| MKV/AAC → AIFF | 3 | 146,855,294 B | 6,244,406 B | 215.9 MiB | 32 MiB | 1.08-1.41 s |
-| MP4/AAC → AIFF | 3 | 146,854,557 B | 6,242,390 B | 210.3 MiB | 32 MiB | 1.11-1.39 s |
-| MOV/AAC → AIFF | 3 | 146,854,612 B | 6,242,390 B | 208.7 MiB | 32 MiB | 1.10-1.49 s |
-| 3GP/AAC → AIFF | 3 | 146,854,456 B | 6,242,390 B | 197.7 MiB | 32 MiB | 1.06-1.34 s |
-| MPEG-TS/AAC → AIFF | 3 | 150,441,548 B | 6,244,406 B | 219.1 MiB | 32 MiB | 1.32-1.97 s |
-| FLV/AAC → AIFF | 3 | 146,903,486 B | 6,244,406 B | 210.1 MiB | 32 MiB | 1.01-1.47 s |
-| AVI/MP3 → AIFF | 3 | 159,500,442 B | 6,227,792 B | 205.3 MiB | 32 MiB | 1.05-1.48 s |
-| OGV/Vorbis → AIFF | 3 | 137,218,662 B | 74,880,054 B | 207.4 MiB | 32 MiB | 2.10-2.61 s |
-| WebM/Opus → AIFF | 3 | 222,941,314 B | 5,760,054 B | 213.2 MiB | 32 MiB | 1.46-1.70 s |
-| WebM/Opus → WAV | 3 | 222,941,314 B | 5,760,078 B | 190.4 MiB | 32 MiB | 1.36-1.78 s |
-| WebM/Opus → FLAC | 3 | 222,941,314 B | 888,268 B | 214.8 MiB | 32 MiB | 1.66-1.91 s |
-| WebM/Opus → AMR-NB | 3 | 222,941,314 B | 96,038 B | 227.5 MiB | 32 MiB | 2.10-2.29 s |
-| WebM/Opus → MP3 | 3 | 222,941,314 B | 960,813 B | 227.0 MiB | 32 MiB | 1.91-2.59 s |
-| WebM/Opus → AAC-LC | 3 | 222,941,314 B | 621,779 B | 183.7 MiB | 32 MiB | 3.91-4.50 s |
-| AMR-NB to WAV | 3 | 134,229,414 B | 1,342,294,158 B | 209.7 MiB | 32 MiB | cleanup passed |
-| AMR-NB to FLAC | 3 | 134,229,414 B | 760,765,211 B | 166.0 MiB | 32 MiB | cleanup passed |
-| AMR-WB `.awb` to WAV | 3 | 137,420,809 B | 1,441,792,078 B | 201.3 MiB | 32 MiB | 72.32-76.10 s |
-| AMR-WB `.awb` to FLAC | 3 | 137,420,809 B | 531,051,566 B | 159.8 MiB | 32 MiB | 122.94-125.22 s |
-| AMR-WB `.awb` to MP3 | 3 | 137,420,809 B | 360,449,037 B | 172.9 MiB | 32 MiB | 196.35-200.97 s |
-| AMR-WB `.awb` to AIFF | 3 | 137,420,809 B | 1,441,792,054 B | 214.9 MiB | 32 MiB | 71.72-73.45 s |
-| AMR-WB `.awb` to Opus | 3 | 137,420,809 B | 346,683,480 B | 180.2 MiB | 32 MiB | 152.87-154.81 s |
-| AMR-WB `.awb` to AAC-LC | 3 | 137,420,809 B | 380,256,896 B | 209.8 MiB | 32 MiB | 459.75-583.09 s |
-| AMR-WB `.awb` to Ogg Vorbis | 3 | 137,420,809 B | 182,985,148 B | 151.0 MiB | 32 MiB | 221.03-232.91 s |
-| AIFF PCM to FLAC | 3 | 220,800,108 B | 32,365,732 B | 207.2 MiB | 32 MiB | read 262,144 B / write 8,344 B |
-| Ogg Vorbis to FLAC | 3 | 144,431,506 B | 397,265,921 B | 198.4 MiB | 32 MiB | read 262,144 B / write 16,617 B |
-| Ogg Opus to FLAC | 3 | 147,964,541 B | 386,531,887 B | 194.4 MiB | 32 MiB | read 262,144 B / write 16,213 B |
-| AAC M4A to AIFF | 3 | 36,929,878 B | 201,601,126 B | 195.4 MiB | 32 MiB | 3.94-4.38 s |
-| ALAC M4A to AIFF | 3 | 140,941,469 B | 153,600,102 B | 226.2 MiB | 32 MiB | 5.22-5.86 s |
-| Raw AAC to AIFF | 3 | 134,367,785 B | 770,273,334 B | 172.8 MiB | 32 MiB | 12.85-13.47 s |
-| AMR-NB to AIFF | 3 | 134,229,414 B | 1,342,294,134 B | 195.1 MiB | 32 MiB | 65.92-66.64 s |
-| MP3 to AIFF | 3 | 50,401,224 B | 201,600,102 B | 165.8 MiB | 32 MiB | 5.00-5.96 s |
-| FLAC to AIFF | 3 | 138,185,686 B | 153,600,102 B | 209.5 MiB | 32 MiB | 3.10-3.59 s |
-| WAV to AIFF | 3 | 153,600,106 B | 153,600,102 B | 172.5 MiB | 32 MiB | 1.60-2.10 s |
-| WMA2 to AIFF | 3 | 142,503,082 B | 364,798,054 B | 179.0 MiB | 32 MiB | 7.03-7.38 s |
-| Ogg Vorbis to AIFF | 3 | 144,431,506 B | 441,600,054 B | 169.0 MiB | 32 MiB | 9.63-10.03 s |
-| Ogg Opus to AIFF | 3 | 147,964,541 B | 441,600,054 B | 180.2 MiB | 32 MiB | 19.00-19.65 s |
-| AAC M4A to Ogg Vorbis | 3 | 36,929,878 B | 3,723,084 B | 160.9 MiB | 32 MiB | 18.54-19.25 s |
-| ALAC M4A to Ogg Vorbis | 3 | 140,941,469 B | 12,155,861 B | 201.0 MiB | 32 MiB | 19.07-19.45 s |
-| Raw AAC to Ogg Vorbis | 3 | 134,367,785 B | 17,146,674 B | 165.1 MiB | 32 MiB | 63.17-64.10 s |
-| AMR-NB to Ogg Vorbis | 3 | 134,229,414 B | 154,581,919 B | 156.0 MiB | 32 MiB | 239.78-243.43 s |
-| MP3 to Ogg Vorbis | 3 | 50,401,224 B | 3,710,193 B | 164.0 MiB | 32 MiB | 20.05-20.48 s |
-| FLAC to Ogg Vorbis | 3 | 138,185,686 B | 12,155,741 B | 158.0 MiB | 32 MiB | 17.07-17.81 s |
-| WAV to Ogg Vorbis | 3 | 153,600,106 B | 12,155,741 B | 160.6 MiB | 32 MiB | 16.12-16.44 s |
-| WMA2 to Ogg Vorbis | 3 | 142,503,082 B | 28,839,568 B | 155.3 MiB | 32 MiB | 38.79-39.21 s |
-| AIFF to Ogg Vorbis | 3 | 201,600,102 B | 3,730,840 B | 164.0 MiB | 32 MiB | 17.92-18.14 s |
-| Ogg Opus to Ogg Vorbis | 3 | 147,964,541 B | 36,194,998 B | 159.8 MiB | 32 MiB | 57.51-58.47 s |
-| GZIP compress | 1 | 256 MiB | streamed | 172.4 MiB | 0 | <= 53.6 MiB |
-| GZIP decompress | 1 | 256.1 MiB | streamed | 145.0 MiB | 0 | <= 33.2 MiB |
-| BZIP2 compress | 3 | 268,435,456 B | 270,593,081 B | 139.2 MiB | 8 MiB | cleanup passed |
-| BZIP2 decompress | 3 | 270,593,081 B | 268,435,456 B | 140.4 MiB | 8 MiB | cleanup passed |
-| TAR -> TAR.BZ2 | 3 | 268,436,992 B | 270,592,763 B | 136.6 MiB | 8 MiB | cleanup passed |
-| TAR.BZ2 -> TAR | 3 | 270,592,763 B | 268,436,992 B | 137.0 MiB | 8 MiB | cleanup passed |
-| XZ compress | 3 | 268,435,456 B | 268,448,840 B | 172.7 MiB | 48 MiB | cleanup passed |
-| XZ decompress | 3 | 268,448,840 B | 268,435,456 B | 203.0 MiB | 48 MiB | cleanup passed |
-| TAR -> TAR.XZ | 3 | 268,436,992 B | 268,449,796 B | 175.0 MiB | 48 MiB | cleanup passed |
-| TAR.XZ -> TAR | 3 | 268,449,796 B | 268,436,992 B | 173.7 MiB | 48 MiB | cleanup passed |
+| Profile                                            |    Runs/session |           Source |           Output | Worst incremental private memory | Peak Wasm |             Cleanup delta range |
+| -------------------------------------------------- | --------------: | ---------------: | ---------------: | -------------------------------: | --------: | ------------------------------: |
+| MKV to WAV, 256 KiB direct coalescer               |               1 |  2,958,573,265 B |  7,107,834,734 B |                        186.7 MiB |    32 MiB |                         9.0 MiB |
+| MP3 to WAV, 256 KiB direct coalescer               |               3 |     50,401,224 B |    201,600,128 B |                        191.9 MiB |    32 MiB |                    8.5-32.0 MiB |
+| MKV → MP4                                          |               3 |  2,958,573,265 B |  2,962,151,522 B |                        173.8 MiB |  52.6 MiB |                  −16.8–31.9 MiB |
+| MKV → MP4, 1 MiB shared direct writer (Chrome 152) |               3 |  2,958,573,265 B |  2,962,151,538 B |                        249.2 MiB |  44.4 MiB |                 −22.7–−13.7 MiB |
+| MKV → M4A                                          |               3 |  2,958,573,265 B |    249,427,974 B |                        164.7 MiB |    32 MiB |                    −1.1–0.9 MiB |
+| MP4 → M4A                                          |               3 |  2,964,855,971 B |    249,427,976 B |                        203.3 MiB |  73.8 MiB |                   −4.0–−0.6 MiB |
+| MKV → WAV                                          |               3 |  2,958,573,265 B |  7,107,834,734 B |                        178.0 MiB |    32 MiB |                   −7.2–−4.3 MiB |
+| MP4 → WAV                                          |               3 |  2,964,855,971 B |  7,107,834,950 B |                        224.1 MiB |  73.8 MiB |                   −8.1–−4.8 MiB |
+| MKV → MPEG-4 MP4                                   |               3 |  2,958,573,265 B |  3,086,358,463 B |                        211.3 MiB |  89.6 MiB |                    −1.0–7.1 MiB |
+| MKV → WebM                                         |               3 |  2,958,573,265 B |    921,524,214 B |                        208.8 MiB |    80 MiB |                     0.7–6.0 MiB |
+| MKV → VP9 WebM                                     |               3 |    181,825,549 B |     65,122,757 B |                        244.9 MiB |    88 MiB |                    7.2–17.8 MiB |
+| MP4 → VP8 WebM                                     |               3 |    147,136,619 B |      5,105,363 B |                        226.9 MiB |    64 MiB |                   11.4–14.3 MiB |
+| MP4 → VP9 WebM                                     |               3 |    147,136,625 B |      4,143,084 B |                        237.1 MiB |    64 MiB |                    7.4–14.5 MiB |
+| MKV → MP4 scale (6 GiB)                            | 1 clean session |  6,443,020,778 B |  6,448,220,966 B |                        194.8 MiB |    40 MiB |                         6.1 MiB |
+| MKV → MP4 scale (10 GiB)                           | 1 clean session | 10,737,988,703 B | 10,746,764,442 B |                        210.3 MiB |    40 MiB |                       −14.4 MiB |
+| MOV → MP4                                          |               3 |    149,251,969 B |    149,087,892 B |                        168.2 MiB |    40 MiB |                   13.1–17.4 MiB |
+| MOV → M4A                                          |               3 |    149,251,969 B |     14,557,639 B |                        164.5 MiB |    32 MiB |                    7.2–15.3 MiB |
+| MOV → WAV                                          |               3 |    149,251,969 B |    414,733,404 B |                        195.3 MiB |    32 MiB |                    2.8–36.0 MiB |
+| MOV → VP8 WebM                                     |               3 |    147,136,647 B |      5,100,809 B |                        244.4 MiB |    48 MiB |                   15.5–44.6 MiB |
+| MOV → VP9 WebM                                     |               3 |    147,136,647 B |      4,126,570 B |                        236.8 MiB |    64 MiB |                   11.5–13.0 MiB |
+| 3GP → MP4                                          |               3 |    167,130,850 B |    167,156,758 B |                        209.6 MiB |    32 MiB |                    9.4–28.4 MiB |
+| 3GP → M4A                                          |               3 |    167,130,850 B |     11,539,835 B |                        204.8 MiB |    32 MiB |                   26.0–27.1 MiB |
+| 3GP → WAV                                          |               3 |    167,130,850 B |     69,130,350 B |                        193.7 MiB |    32 MiB |                   11.6–34.6 MiB |
+| MPEG-TS → MP4                                      |               3 |    175,444,796 B |    167,139,361 B |                        215.6 MiB |    56 MiB |                   11.5–26.0 MiB |
+| MPEG-TS → M4A                                      |               3 |    175,444,796 B |     11,455,964 B |                        220.2 MiB |    56 MiB |                   32.9–42.4 MiB |
+| MPEG-TS → WAV                                      |               3 |    175,444,796 B |     68,776,014 B |                        243.7 MiB |    56 MiB |                    8.9–37.5 MiB |
+| FLV → MP4                                          |               3 |    167,517,193 B |    167,091,007 B |                        193.1 MiB |    32 MiB |                   17.2–29.8 MiB |
+| FLV → M4A                                          |               3 |    167,517,193 B |     11,456,012 B |                        213.2 MiB |    32 MiB |                   20.3–27.2 MiB |
+| FLV → WAV                                          |               3 |    167,517,193 B |     68,776,058 B |                        192.4 MiB |    32 MiB |                   13.0–29.0 MiB |
+| AVI → MP4                                          |               3 |    230,929,466 B |    229,960,974 B |                        199.4 MiB |    32 MiB |                   13.3–29.1 MiB |
+| AVI → WAV                                          |               3 |    230,929,466 B |     68,954,218 B |                        225.1 MiB |    32 MiB |                   15.1–40.0 MiB |
+| OGV → WebM                                         |               3 |    137,778,644 B |     61,043,196 B |                        199.4 MiB |    32 MiB |                     1.2–6.8 MiB |
+| OGV → VP9 WebM                                     |               3 |    137,635,308 B |     67,478,525 B |                        224.1 MiB |    64 MiB |                     1.7–4.9 MiB |
+| OGV → WAV                                          |               3 |    137,635,308 B |     74,880,078 B |                        204.9 MiB |    32 MiB |                   12.4–31.6 MiB |
+| M2V → MPEG-4 MP4                                   |               3 |    136,166,136 B |    124,300,753 B |                        177.1 MiB |    32 MiB |                     1.1–8.3 MiB |
+| M2V → VP8 WebM                                     |               3 |    136,166,136 B |     37,835,173 B |                        163.9 MiB |    32 MiB |                     2.6–6.8 MiB |
+| M2V → VP9 WebM                                     |               3 |    136,166,136 B |     44,351,703 B |                        223.4 MiB |    56 MiB |                    −4.4–1.3 MiB |
+| M2V → MPEG-TS                                      |               3 |    136,166,136 B |    142,319,760 B |                        202.0 MiB |    32 MiB |                  cleanup passed |
+| MKV → M2V                                          |               3 |    136,294,704 B |    136,166,136 B |                        207.8 MiB |    32 MiB |                  cleanup passed |
+| MP4 → M2V                                          |               3 |    136,284,917 B |    136,166,136 B |                        210.8 MiB |    32 MiB |                  cleanup passed |
+| MOV → M2V                                          |               3 |    136,284,843 B |    136,166,136 B |                        210.4 MiB |    32 MiB |                  cleanup passed |
+| AVI → M2V                                          |               3 |    136,465,056 B |    136,166,136 B |                        206.2 MiB |    32 MiB |                  cleanup passed |
+| MPEG-TS → M2V                                      |               3 |    142,273,136 B |    136,166,136 B |                        198.6 MiB |    32 MiB |                  cleanup passed |
+| M4V → MP4                                          |               3 |    179,609,473 B |    179,625,924 B |                        234.2 MiB |    32 MiB |                  cleanup passed |
+| MKV → M4V                                          |               3 |    180,576,319 B |    179,609,473 B |                        211.5 MiB |    32 MiB |                  cleanup passed |
+| MP4 → M4V                                          |               3 |    179,625,218 B |    179,609,473 B |                        195.4 MiB |    32 MiB |                  cleanup passed |
+| MOV → M4V                                          |               3 |    179,625,169 B |    179,609,473 B |                        198.9 MiB |    32 MiB |                  cleanup passed |
+| AVI → M4V                                          |               3 |    179,650,578 B |    179,609,473 B |                        201.9 MiB |    32 MiB |                  cleanup passed |
+| H.264 → MP4                                        |               3 |    145,801,019 B |    145,812,361 B |                        233.9 MiB |  54.4 MiB |                  cleanup passed |
+| H.264 → VP8 WebM                                   |               3 |    145,801,019 B |      4,752,826 B |                        239.7 MiB |    40 MiB |                  cleanup passed |
+| H.264 → VP9 WebM                                   |               3 |    145,801,019 B |      3,265,035 B |                        243.7 MiB |    56 MiB |                  cleanup passed |
+| MKV → H.264                                        |               3 |    146,855,294 B |    145,801,019 B |                        207.2 MiB |    32 MiB |                  cleanup passed |
+| MP4 → H.264                                        |               3 |    146,854,557 B |    145,801,019 B |                        213.8 MiB |    32 MiB |                  cleanup passed |
+| MOV → H.264                                        |               3 |    146,854,612 B |    145,801,019 B |                        208.3 MiB |    32 MiB |                  cleanup passed |
+| 3GP → H.264                                        |               3 |    146,854,456 B |    145,801,019 B |                        212.8 MiB |    32 MiB |                  cleanup passed |
+| MPEG-TS → H.264                                    |               3 |    150,441,548 B |    145,810,379 B |                        211.5 MiB |    32 MiB |                  cleanup passed |
+| FLV → H.264                                        |               3 |    146,903,486 B |    145,801,019 B |                        209.1 MiB |    32 MiB |                  cleanup passed |
+| MKV → AAC                                          |               3 |    146,855,294 B |      1,037,649 B |                        179.9 MiB |    32 MiB |                  cleanup passed |
+| MP4 → AAC                                          |               3 |    146,854,557 B |      1,037,649 B |                        175.7 MiB |    32 MiB |                  cleanup passed |
+| MOV → AAC                                          |               3 |    146,854,612 B |      1,037,637 B |                        184.7 MiB |    32 MiB |                  cleanup passed |
+| 3GP → AAC                                          |               3 |    146,854,456 B |      1,037,649 B |                        186.7 MiB |    32 MiB |                  cleanup passed |
+| MPEG-TS → AAC                                      |               3 |    150,441,548 B |      1,037,546 B |                        211.3 MiB |    32 MiB |                  cleanup passed |
+| FLV → AAC                                          |               3 |    146,903,486 B |      1,037,649 B |                        184.7 MiB |    32 MiB |                  cleanup passed |
+| MKV → Ogg Vorbis                                   |               3 |    222,125,242 B |        106,739 B |                        191.1 MiB |    32 MiB |                  cleanup passed |
+| WebM → Ogg Vorbis                                  |               3 |    222,124,822 B |        106,739 B |                        185.0 MiB |    32 MiB |                  cleanup passed |
+| OGV → Ogg Vorbis                                   |               3 |    137,218,662 B |      1,346,492 B |                        202.4 MiB |    32 MiB |                  cleanup passed |
+| MKV → Ogg Opus                                     |               3 |    222,942,211 B |        922,267 B |                        207.8 MiB |    32 MiB |                  cleanup passed |
+| WebM → Ogg Opus                                    |               3 |    222,941,314 B |        922,267 B |                        206.0 MiB |    32 MiB |                  cleanup passed |
+| AAC → M4A                                          |               3 |    134,367,785 B |    133,906,114 B |                        179.8 MiB |    32 MiB |                    0.2–16.3 MiB |
+| AAC → WAV                                          |               3 |    134,367,785 B |    770,273,358 B |                        186.5 MiB |    32 MiB |                   −3.1–−0.7 MiB |
+| AAC → FLAC                                         |               3 |    134,367,785 B |    114,800,971 B |                        167.1 MiB |    32 MiB |                   −6.7–−0.8 MiB |
+| MKV → FLAC                                         |               3 |    146,855,294 B |        988,027 B |                        212.6 MiB |    32 MiB |                  cleanup passed |
+| MP4 → FLAC                                         |               3 |    146,854,557 B |        986,210 B |                        214.2 MiB |    32 MiB |                  cleanup passed |
+| MOV → FLAC                                         |               3 |    146,854,612 B |        986,198 B |                        213.9 MiB |    32 MiB |                  cleanup passed |
+| 3GP → FLAC                                         |               3 |    146,854,456 B |        986,210 B |                        214.7 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → WAV                                   |               3 |    156,907,373 B |     11,520,078 B |                        229.2 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → FLAC                                  |               3 |    156,907,373 B |      6,525,834 B |                        194.3 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → AIFF                                  |               3 |    156,907,373 B |     11,520,054 B |                        226.5 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → MP3                                   |               3 |    156,907,373 B |     11,521,300 B |                        197.5 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → Opus                                  |               3 |    156,907,373 B |      5,850,664 B |                        196.8 MiB |    32 MiB |                  cleanup passed |
+| 3GP/AMR-NB → Ogg Vorbis                            |               3 |    156,907,373 B |      1,329,515 B |                        214.9 MiB |    32 MiB |                  cleanup passed |
+| MPEG-TS → FLAC                                     |               3 |    150,441,548 B |        987,948 B |                        211.6 MiB |    32 MiB |                  cleanup passed |
+| FLV → FLAC                                         |               3 |    146,903,486 B |        988,027 B |                        210.7 MiB |    32 MiB |                  cleanup passed |
+| AVI → FLAC                                         |               3 |    159,500,442 B |      1,017,396 B |                        223.3 MiB |    32 MiB |                  cleanup passed |
+| OGV → FLAC                                         |               3 |    137,218,662 B |     10,205,021 B |                        213.1 MiB |    32 MiB |                  cleanup passed |
+| ALAC M4A → WAV                                     |               3 |    140,941,469 B |    153,600,128 B |                        227.1 MiB |    32 MiB |                   12.0–28.9 MiB |
+| ALAC M4A → FLAC, fresh-session repeat              |               3 |    140,941,469 B |    138,185,793 B |                        230.4 MiB |    32 MiB |                    9.5–38.7 MiB |
+| WAV → ALAC M4A                                     |               3 |    153,600,106 B |    140,941,506 B |                        200.2 MiB |    32 MiB |                   13.5–40.0 MiB |
+| FLAC → ALAC M4A                                    |               3 |    138,185,686 B |    140,941,506 B |                        199.1 MiB |    32 MiB |                   11.8–43.8 MiB |
+| WMA2 → WAV                                         |               3 |    142,503,082 B |    364,798,078 B |                        190.7 MiB |    32 MiB |                    4.5–34.3 MiB |
+| WMA2 → FLAC                                        |               3 |    142,503,082 B |    326,238,814 B |                        191.2 MiB |    32 MiB |                    −0.6–4.7 MiB |
+| WAV → WMA2                                         |               3 |    153,600,104 B |     60,000,756 B |                        150.2 MiB |    32 MiB |                    5.8–41.4 MiB |
+| FLAC → WMA2                                        |               3 |    138,186,536 B |     60,000,756 B |                        159.9 MiB |    32 MiB |                     0.8–5.1 MiB |
+| AAC M4A → WMA2                                     |               3 |    134,807,097 B |    303,139,894 B |                        167.6 MiB |    32 MiB |                  cleanup passed |
+| ALAC M4A → WMA2                                    |               3 |    140,941,469 B |     60,001,031 B |                        192.4 MiB |    32 MiB |                  cleanup passed |
+| Raw AAC → WMA2                                     |               3 |    134,367,785 B |    300,890,144 B |                        164.8 MiB |    32 MiB |                  cleanup passed |
+| MP3 → WMA2                                         |               3 |    136,002,312 B |    255,002,360 B |                        152.1 MiB |    32 MiB |                  cleanup passed |
+| AIFF → WMA2                                        |               3 |    201,600,102 B |    157,501,560 B |                        177.2 MiB |    32 MiB |                  cleanup passed |
+| Ogg Vorbis → WMA2                                  |               3 |    144,431,506 B |    172,503,065 B |                        148.3 MiB |    32 MiB |                  cleanup passed |
+| Ogg Opus → WMA2                                    |               3 |    147,964,541 B |    172,503,065 B |                        166.1 MiB |    32 MiB |                  cleanup passed |
+| MKV/AAC → WMA2                                     |               3 |    146,855,294 B |      4,880,823 B |                        211.2 MiB |    32 MiB |                     1.42-1.74 s |
+| MP4/AAC → WMA2                                     |               3 |    146,854,557 B |      4,880,823 B |                        205.3 MiB |    32 MiB |                     1.30-1.67 s |
+| MOV/AAC → WMA2                                     |               3 |    146,854,612 B |      4,880,799 B |                        197.8 MiB |    32 MiB |                     1.44-1.73 s |
+| 3GP/AAC → WMA2                                     |               3 |    146,854,456 B |      4,880,823 B |                        200.9 MiB |    32 MiB |                     1.31-1.78 s |
+| MPEG-TS/AAC → WMA2                                 |               3 |    150,441,548 B |      4,880,665 B |                        215.7 MiB |    32 MiB |                     1.57-2.06 s |
+| FLV/AAC → WMA2                                     |               3 |    146,903,486 B |      4,880,702 B |                        182.7 MiB |    32 MiB |                     1.29-1.91 s |
+| AVI/MP3 → WMA2                                     |               3 |    159,500,442 B |      4,867,872 B |                        215.1 MiB |    32 MiB |                     1.32-1.78 s |
+| OGV/Vorbis → WMA2                                  |               3 |    137,218,662 B |     58,503,065 B |                        201.7 MiB |    32 MiB |                     4.96-5.61 s |
+| WebM/Opus → WMA2                                   |               3 |    222,941,314 B |      4,503,065 B |                        237.5 MiB |    32 MiB |                     1.62-2.19 s |
+| MKV/AAC → AIFF                                     |               3 |    146,855,294 B |      6,244,406 B |                        215.9 MiB |    32 MiB |                     1.08-1.41 s |
+| MP4/AAC → AIFF                                     |               3 |    146,854,557 B |      6,242,390 B |                        210.3 MiB |    32 MiB |                     1.11-1.39 s |
+| MOV/AAC → AIFF                                     |               3 |    146,854,612 B |      6,242,390 B |                        208.7 MiB |    32 MiB |                     1.10-1.49 s |
+| 3GP/AAC → AIFF                                     |               3 |    146,854,456 B |      6,242,390 B |                        197.7 MiB |    32 MiB |                     1.06-1.34 s |
+| MPEG-TS/AAC → AIFF                                 |               3 |    150,441,548 B |      6,244,406 B |                        219.1 MiB |    32 MiB |                     1.32-1.97 s |
+| FLV/AAC → AIFF                                     |               3 |    146,903,486 B |      6,244,406 B |                        210.1 MiB |    32 MiB |                     1.01-1.47 s |
+| AVI/MP3 → AIFF                                     |               3 |    159,500,442 B |      6,227,792 B |                        205.3 MiB |    32 MiB |                     1.05-1.48 s |
+| OGV/Vorbis → AIFF                                  |               3 |    137,218,662 B |     74,880,054 B |                        207.4 MiB |    32 MiB |                     2.10-2.61 s |
+| WebM/Opus → AIFF                                   |               3 |    222,941,314 B |      5,760,054 B |                        213.2 MiB |    32 MiB |                     1.46-1.70 s |
+| WebM/Opus → WAV                                    |               3 |    222,941,314 B |      5,760,078 B |                        190.4 MiB |    32 MiB |                     1.36-1.78 s |
+| WebM/Opus → FLAC                                   |               3 |    222,941,314 B |        888,268 B |                        214.8 MiB |    32 MiB |                     1.66-1.91 s |
+| WebM/Opus → AMR-NB                                 |               3 |    222,941,314 B |         96,038 B |                        227.5 MiB |    32 MiB |                     2.10-2.29 s |
+| WebM/Opus → MP3                                    |               3 |    222,941,314 B |        960,813 B |                        227.0 MiB |    32 MiB |                     1.91-2.59 s |
+| WebM/Opus → AAC-LC                                 |               3 |    222,941,314 B |        621,779 B |                        183.7 MiB |    32 MiB |                     3.91-4.50 s |
+| AMR-NB to WAV                                      |               3 |    134,229,414 B |  1,342,294,158 B |                        209.7 MiB |    32 MiB |                  cleanup passed |
+| AMR-NB to FLAC                                     |               3 |    134,229,414 B |    760,765,211 B |                        166.0 MiB |    32 MiB |                  cleanup passed |
+| AMR-WB `.awb` to WAV                               |               3 |    137,420,809 B |  1,441,792,078 B |                        201.3 MiB |    32 MiB |                   72.32-76.10 s |
+| AMR-WB `.awb` to FLAC                              |               3 |    137,420,809 B |    531,051,566 B |                        159.8 MiB |    32 MiB |                 122.94-125.22 s |
+| AMR-WB `.awb` to MP3                               |               3 |    137,420,809 B |    360,449,037 B |                        172.9 MiB |    32 MiB |                 196.35-200.97 s |
+| AMR-WB `.awb` to AIFF                              |               3 |    137,420,809 B |  1,441,792,054 B |                        214.9 MiB |    32 MiB |                   71.72-73.45 s |
+| AMR-WB `.awb` to Opus                              |               3 |    137,420,809 B |    346,683,480 B |                        180.2 MiB |    32 MiB |                 152.87-154.81 s |
+| AMR-WB `.awb` to AAC-LC                            |               3 |    137,420,809 B |    380,256,896 B |                        209.8 MiB |    32 MiB |                 459.75-583.09 s |
+| AMR-WB `.awb` to Ogg Vorbis                        |               3 |    137,420,809 B |    182,985,148 B |                        151.0 MiB |    32 MiB |                 221.03-232.91 s |
+| AIFF PCM to FLAC                                   |               3 |    220,800,108 B |     32,365,732 B |                        207.2 MiB |    32 MiB |  read 262,144 B / write 8,344 B |
+| Ogg Vorbis to FLAC                                 |               3 |    144,431,506 B |    397,265,921 B |                        198.4 MiB |    32 MiB | read 262,144 B / write 16,617 B |
+| Ogg Opus to FLAC                                   |               3 |    147,964,541 B |    386,531,887 B |                        194.4 MiB |    32 MiB | read 262,144 B / write 16,213 B |
+| AAC M4A to AIFF                                    |               3 |     36,929,878 B |    201,601,126 B |                        195.4 MiB |    32 MiB |                     3.94-4.38 s |
+| ALAC M4A to AIFF                                   |               3 |    140,941,469 B |    153,600,102 B |                        226.2 MiB |    32 MiB |                     5.22-5.86 s |
+| Raw AAC to AIFF                                    |               3 |    134,367,785 B |    770,273,334 B |                        172.8 MiB |    32 MiB |                   12.85-13.47 s |
+| AMR-NB to AIFF                                     |               3 |    134,229,414 B |  1,342,294,134 B |                        195.1 MiB |    32 MiB |                   65.92-66.64 s |
+| MP3 to AIFF                                        |               3 |     50,401,224 B |    201,600,102 B |                        165.8 MiB |    32 MiB |                     5.00-5.96 s |
+| FLAC to AIFF                                       |               3 |    138,185,686 B |    153,600,102 B |                        209.5 MiB |    32 MiB |                     3.10-3.59 s |
+| WAV to AIFF                                        |               3 |    153,600,106 B |    153,600,102 B |                        172.5 MiB |    32 MiB |                     1.60-2.10 s |
+| WMA2 to AIFF                                       |               3 |    142,503,082 B |    364,798,054 B |                        179.0 MiB |    32 MiB |                     7.03-7.38 s |
+| Ogg Vorbis to AIFF                                 |               3 |    144,431,506 B |    441,600,054 B |                        169.0 MiB |    32 MiB |                    9.63-10.03 s |
+| Ogg Opus to AIFF                                   |               3 |    147,964,541 B |    441,600,054 B |                        180.2 MiB |    32 MiB |                   19.00-19.65 s |
+| AAC M4A to Ogg Vorbis                              |               3 |     36,929,878 B |      3,723,084 B |                        160.9 MiB |    32 MiB |                   18.54-19.25 s |
+| ALAC M4A to Ogg Vorbis                             |               3 |    140,941,469 B |     12,155,861 B |                        201.0 MiB |    32 MiB |                   19.07-19.45 s |
+| Raw AAC to Ogg Vorbis                              |               3 |    134,367,785 B |     17,146,674 B |                        165.1 MiB |    32 MiB |                   63.17-64.10 s |
+| AMR-NB to Ogg Vorbis                               |               3 |    134,229,414 B |    154,581,919 B |                        156.0 MiB |    32 MiB |                 239.78-243.43 s |
+| MP3 to Ogg Vorbis                                  |               3 |     50,401,224 B |      3,710,193 B |                        164.0 MiB |    32 MiB |                   20.05-20.48 s |
+| FLAC to Ogg Vorbis                                 |               3 |    138,185,686 B |     12,155,741 B |                        158.0 MiB |    32 MiB |                   17.07-17.81 s |
+| WAV to Ogg Vorbis                                  |               3 |    153,600,106 B |     12,155,741 B |                        160.6 MiB |    32 MiB |                   16.12-16.44 s |
+| WMA2 to Ogg Vorbis                                 |               3 |    142,503,082 B |     28,839,568 B |                        155.3 MiB |    32 MiB |                   38.79-39.21 s |
+| AIFF to Ogg Vorbis                                 |               3 |    201,600,102 B |      3,730,840 B |                        164.0 MiB |    32 MiB |                   17.92-18.14 s |
+| Ogg Opus to Ogg Vorbis                             |               3 |    147,964,541 B |     36,194,998 B |                        159.8 MiB |    32 MiB |                   57.51-58.47 s |
+| GZIP compress                                      |               1 |          256 MiB |         streamed |                        172.4 MiB |         0 |                     <= 53.6 MiB |
+| GZIP decompress                                    |               1 |        256.1 MiB |         streamed |                        145.0 MiB |         0 |                     <= 33.2 MiB |
+| BZIP2 compress                                     |               3 |    268,435,456 B |    270,593,081 B |                        139.2 MiB |     8 MiB |                  cleanup passed |
+| BZIP2 decompress                                   |               3 |    270,593,081 B |    268,435,456 B |                        140.4 MiB |     8 MiB |                  cleanup passed |
+| TAR -> TAR.BZ2                                     |               3 |    268,436,992 B |    270,592,763 B |                        136.6 MiB |     8 MiB |                  cleanup passed |
+| TAR.BZ2 -> TAR                                     |               3 |    270,592,763 B |    268,436,992 B |                        137.0 MiB |     8 MiB |                  cleanup passed |
+| XZ compress                                        |               3 |    268,435,456 B |    268,448,840 B |                        172.7 MiB |    48 MiB |                  cleanup passed |
+| XZ decompress                                      |               3 |    268,448,840 B |    268,435,456 B |                        203.0 MiB |    48 MiB |                  cleanup passed |
+| TAR -> TAR.XZ                                      |               3 |    268,436,992 B |    268,449,796 B |                        175.0 MiB |    48 MiB |                  cleanup passed |
+| TAR.XZ -> TAR                                      |               3 |    268,449,796 B |    268,436,992 B |                        173.7 MiB |    48 MiB |                  cleanup passed |
 
 The 10 GiB row's **210.3 MiB is incremental Chrome private memory**, not the
 converted-file size. That production-browser remux genuinely read
@@ -1586,80 +1592,80 @@ parallel; the production conversion itself remains one bounded job.
 Representative three-run category peaks from the same full-process-tree
 profiler:
 
-| Category/profile | Source | Worst incremental private memory | Output validation |
-| --- | ---: | ---: | --- |
-| Images, BMP -> WebP | 24,883,254 B | 239.6 MiB | native decode, dimensions, alpha/fidelity |
-| Images, BMP -> ICO | 24,883,254 B | 86.3 MiB | native ICO/PNG decode, dimensions, SSIM |
-| Images, tiled TIFF -> PNG | 50,338,032 B | 164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference |
-| Images, JPEG XL -> PNG | 630,393 B | 202.4 MiB | exact repeatable PNG hash, native decode, dimensions, SSIM 1.0 |
-| Images, animated JPEG XL -> PNG ZIP | 1,315,111 B | 229.1 MiB | repeatable ZIP hash; all eight frames exactly match independent native decode; timing manifest |
-| Images, PNG -> JPEG XL | 780,611 B | 223.0 MiB | repeatable lossless JXL hash; native decode, dimensions, SSIM 1.0 |
-| Images, AVIF -> JPEG XL | 100,464 B | 244.0 MiB | repeatable lossless JXL hash of Chromium-decoded pixels; independent native decode and dimensions |
-| Images, BMP -> JPEG XL | 24,883,254 B | 224.0 MiB | bounded direct BMP rows; repeatable exact lossless JXL pixels and native decode |
-| Images, animated GIF -> JPEG XL | 281,853 B | 222.0 MiB | eight exact RGBA frames; exact 250 ms timing, microsecond timebase, infinite loop, repeatable output |
-| Images, WebP -> AVIF | 28,496 B | 240.7 MiB | repeatable genuine AV1 image; native decode, dimensions, visual fidelity |
-| Images, animated GIF -> AVIF | 281,853 B | 237.5 MiB | repeatable all-frame AVIF; exact 250 ms timing, microsecond timebase, infinite loop, alpha validation |
-| Audio, MP3 -> WAV | 50,401,224 B | 247.6 MiB | full decode and APSNR |
-| Records, JSON -> NDJSON | 293,633,883 B | 229.3 MiB | independent streamed hash/parse |
-| Records, CSV -> JSON | 134,423,894 B | 204.5 MiB | exact streamed output hash/parse |
-| Records, TSV -> JSON | 134,423,894 B | 194.1 MiB | exact streamed output hash/parse |
-| Records, JSON -> CSV | 293,633,883 B | 185.8 MiB | exact streamed output hash/parse |
-| Records, JSON -> TSV | 293,633,883 B | 212.1 MiB | exact streamed output hash/parse |
-| Records, XML -> NDJSON events | 134,218,700 B | 165.1 MiB | independent streamed hash/parse |
-| Archives, TAR -> TAR.GZ | 268,436,992 B | 219.3 MiB | full TAR validation |
-| Compression, bytes -> BZIP2 | 268,435,456 B | 139.2 MiB | independent Python BZIP2 decode and SHA-256 |
-| Compression, BZIP2 -> bytes | 270,593,081 B | 140.4 MiB | exact streamed output SHA-256 |
-| Archives, TAR -> TAR.BZ2 | 268,436,992 B | 136.6 MiB | streamed USTAR validation plus independent BZIP2 decode/SHA-256 |
-| Archives, TAR.BZ2 -> TAR | 270,592,763 B | 137.0 MiB | streamed USTAR validation and exact SHA-256 |
-| Archives, TAR.BZ2 -> ZIP | 270,592,763 B | 190.5 MiB | 3-run native entry size/SHA-256 validation |
-| Compression, bytes -> XZ | 268,435,456 B | 172.7 MiB | independent Python LZMA decode and SHA-256 |
-| Compression, XZ -> bytes | 268,448,840 B | 203.0 MiB | exact streamed output SHA-256 |
-| Archives, TAR -> TAR.XZ | 268,436,992 B | 175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256 |
-| Archives, TAR.XZ -> TAR | 268,449,796 B | 173.7 MiB | streamed USTAR validation and exact SHA-256 |
-| Archives, TAR.XZ -> ZIP | 268,449,796 B | 228.8 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.GZ -> TAR.BZ2 | 268,517,551 B | 168.7 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.GZ -> TAR.XZ | 268,517,551 B | 191.6 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.BZ2 -> TAR.GZ | 270,592,763 B | 183.9 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.BZ2 -> TAR.XZ | 270,592,763 B | 195.9 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.XZ -> TAR.GZ | 268,449,796 B | 239.9 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.XZ -> TAR.BZ2 | 268,449,796 B | 209.4 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR -> 7Z | 268,436,992 B | 216.9 MiB | 3-run adaptive COPY/LZMA2 gate plus native entry size/SHA-256 |
-| Archives, 7Z -> TAR | 268,435,574 B | 199.8 MiB | native libarchive listing plus entry size/SHA-256 |
-| Archives, 7Z -> TAR.GZ | 268,435,574 B | 222.7 MiB | native libarchive listing plus entry size/SHA-256 |
-| Archives, 7Z -> ZIP | 268,435,574 B | 218.3 MiB | independent ZIP entry size/SHA-256 |
-| Archives, ZIP -> TAR | 268,517,517 B | 194.4 MiB | libarchive entry size/SHA-256 |
-| Archives, ZIP -> TAR.GZ | 268,517,517 B | 194.5 MiB | libarchive entry size/SHA-256 |
-| Archives, ZIP -> TAR.BZ2 | 268,517,517 B | 160.6 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, ZIP -> TAR.XZ | 268,517,517 B | 195.7 MiB | 3-run native entry size/SHA-256 validation |
-| Archives, TAR.GZ -> ZIP | 268,517,551 B | 201.1 MiB | libarchive entry size/SHA-256 |
-| Subtitles, WebVTT -> TTML | 73,788,904 B | 204.5 MiB | exact streamed output hash |
-| Documents, TXT -> DOCX | 67,130,000 B | 148.0 MiB | ZIP CRC/OOXML structure plus streamed SAX text SHA-256 |
-| Documents, TXT -> ODT | 67,130,000 B | 161.1 MiB | ODF ZIP/mimetype/manifest structure plus streamed SAX text SHA-256 |
-| Ebooks, TXT -> EPUB | 67,130,000 B | 135.5 MiB | EPUB OCF/package/navigation structure plus streamed SAX text SHA-256 |
-| Documents, Markdown -> HTML | 141,110,000 B | 194.6 MiB | exact streamed output hash |
-| Ebooks, Markdown -> EPUB | 141,110,000 B | 198.9 MiB | EPUB OCF/package/navigation/XHTML structure plus streamed SHA-256 |
-| Documents, HTML -> TXT | 143,850,123 B | 231.6 MiB | exact streamed output hash |
-| Documents, DOCX -> TXT | 134,218,659 B | 217.9 MiB | exact streamed output hash |
-| Ebooks, EPUB -> TXT | 134,219,595 B | 205.5 MiB | exact streamed output hash |
-| Spreadsheets, XLSX -> CSV | 135,267,834 B | 218.4 MiB | exact streamed output hash |
-| Presentations, PPTX -> TXT | 135,296,355 B | 217.4 MiB | exact streamed output hash |
-| Documents, ODT -> TXT | 135,267,233 B | 191.1 MiB | exact streamed output hash |
-| Spreadsheets, ODS -> CSV | 135,267,401 B | 196.2 MiB | exact streamed output hash |
-| Presentations, ODP -> TXT | 135,272,481 B | 199.1 MiB | exact streamed output hash |
-| Video, MOV -> MP4 | 149,251,969 B | 168.2 MiB | native packet traversal and HEVC/AAC probe |
-| Audio, MOV -> M4A | 149,251,969 B | 164.5 MiB | full AAC decode and metadata probe |
-| Audio, MOV -> WAV | 149,251,969 B | 195.3 MiB | full PCM decode and APSNR |
-| Video, 3GP -> MP4 | 167,130,850 B | 209.6 MiB | native packet traversal and H.264/AAC probe |
-| Audio, 3GP -> M4A | 167,130,850 B | 204.8 MiB | full AAC decode and metadata probe |
-| Audio, 3GP -> WAV | 167,130,850 B | 193.7 MiB | full PCM decode and APSNR |
-| Video, MPEG-TS -> MP4 | 175,444,796 B | 215.6 MiB | native packet traversal and H.264/AAC probe |
-| Audio, MPEG-TS -> M4A | 175,444,796 B | 220.2 MiB | full AAC decode and metadata probe |
-| Audio, MPEG-TS -> WAV | 175,444,796 B | 243.7 MiB | full PCM decode and APSNR |
-| Video, FLV -> MP4 | 167,517,193 B | 193.1 MiB | native packet traversal and H.264/AAC probe |
-| Audio, FLV -> M4A | 167,517,193 B | 213.2 MiB | full AAC decode and metadata probe |
-| Audio, FLV -> WAV | 167,517,193 B | 192.4 MiB | full PCM decode and APSNR |
-| Video, AVI -> MP4 | 230,929,466 B | 199.4 MiB | native packet traversal and MPEG-4 Part 2/MP3 probe |
-| Audio, AVI -> WAV | 230,929,466 B | 225.1 MiB | full PCM decode and APSNR |
+| Category/profile                    |        Source | Worst incremental private memory | Output validation                                                                                     |
+| ----------------------------------- | ------------: | -------------------------------: | ----------------------------------------------------------------------------------------------------- |
+| Images, BMP -> WebP                 |  24,883,254 B |                        239.6 MiB | native decode, dimensions, alpha/fidelity                                                             |
+| Images, BMP -> ICO                  |  24,883,254 B |                         86.3 MiB | native ICO/PNG decode, dimensions, SSIM                                                               |
+| Images, tiled TIFF -> PNG           |  50,338,032 B |                        164.1 MiB | native PNG decode, dimensions, SSIM 1.0 against streamed reference                                    |
+| Images, JPEG XL -> PNG              |     630,393 B |                        202.4 MiB | exact repeatable PNG hash, native decode, dimensions, SSIM 1.0                                        |
+| Images, animated JPEG XL -> PNG ZIP |   1,315,111 B |                        229.1 MiB | repeatable ZIP hash; all eight frames exactly match independent native decode; timing manifest        |
+| Images, PNG -> JPEG XL              |     780,611 B |                        223.0 MiB | repeatable lossless JXL hash; native decode, dimensions, SSIM 1.0                                     |
+| Images, AVIF -> JPEG XL             |     100,464 B |                        244.0 MiB | repeatable lossless JXL hash of Chromium-decoded pixels; independent native decode and dimensions     |
+| Images, BMP -> JPEG XL              |  24,883,254 B |                        224.0 MiB | bounded direct BMP rows; repeatable exact lossless JXL pixels and native decode                       |
+| Images, animated GIF -> JPEG XL     |     281,853 B |                        222.0 MiB | eight exact RGBA frames; exact 250 ms timing, microsecond timebase, infinite loop, repeatable output  |
+| Images, WebP -> AVIF                |      28,496 B |                        240.7 MiB | repeatable genuine AV1 image; native decode, dimensions, visual fidelity                              |
+| Images, animated GIF -> AVIF        |     281,853 B |                        237.5 MiB | repeatable all-frame AVIF; exact 250 ms timing, microsecond timebase, infinite loop, alpha validation |
+| Audio, MP3 -> WAV                   |  50,401,224 B |                        247.6 MiB | full decode and APSNR                                                                                 |
+| Records, JSON -> NDJSON             | 293,633,883 B |                        229.3 MiB | independent streamed hash/parse                                                                       |
+| Records, CSV -> JSON                | 134,423,894 B |                        204.5 MiB | exact streamed output hash/parse                                                                      |
+| Records, TSV -> JSON                | 134,423,894 B |                        194.1 MiB | exact streamed output hash/parse                                                                      |
+| Records, JSON -> CSV                | 293,633,883 B |                        185.8 MiB | exact streamed output hash/parse                                                                      |
+| Records, JSON -> TSV                | 293,633,883 B |                        212.1 MiB | exact streamed output hash/parse                                                                      |
+| Records, XML -> NDJSON events       | 134,218,700 B |                        165.1 MiB | independent streamed hash/parse                                                                       |
+| Archives, TAR -> TAR.GZ             | 268,436,992 B |                        219.3 MiB | full TAR validation                                                                                   |
+| Compression, bytes -> BZIP2         | 268,435,456 B |                        139.2 MiB | independent Python BZIP2 decode and SHA-256                                                           |
+| Compression, BZIP2 -> bytes         | 270,593,081 B |                        140.4 MiB | exact streamed output SHA-256                                                                         |
+| Archives, TAR -> TAR.BZ2            | 268,436,992 B |                        136.6 MiB | streamed USTAR validation plus independent BZIP2 decode/SHA-256                                       |
+| Archives, TAR.BZ2 -> TAR            | 270,592,763 B |                        137.0 MiB | streamed USTAR validation and exact SHA-256                                                           |
+| Archives, TAR.BZ2 -> ZIP            | 270,592,763 B |                        190.5 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Compression, bytes -> XZ            | 268,435,456 B |                        172.7 MiB | independent Python LZMA decode and SHA-256                                                            |
+| Compression, XZ -> bytes            | 268,448,840 B |                        203.0 MiB | exact streamed output SHA-256                                                                         |
+| Archives, TAR -> TAR.XZ             | 268,436,992 B |                        175.0 MiB | streamed USTAR validation plus independent Python LZMA decode/SHA-256                                 |
+| Archives, TAR.XZ -> TAR             | 268,449,796 B |                        173.7 MiB | streamed USTAR validation and exact SHA-256                                                           |
+| Archives, TAR.XZ -> ZIP             | 268,449,796 B |                        228.8 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.GZ -> TAR.BZ2         | 268,517,551 B |                        168.7 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.GZ -> TAR.XZ          | 268,517,551 B |                        191.6 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.BZ2 -> TAR.GZ         | 270,592,763 B |                        183.9 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.BZ2 -> TAR.XZ         | 270,592,763 B |                        195.9 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.XZ -> TAR.GZ          | 268,449,796 B |                        239.9 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.XZ -> TAR.BZ2         | 268,449,796 B |                        209.4 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR -> 7Z                 | 268,436,992 B |                        216.9 MiB | 3-run adaptive COPY/LZMA2 gate plus native entry size/SHA-256                                         |
+| Archives, 7Z -> TAR                 | 268,435,574 B |                        199.8 MiB | native libarchive listing plus entry size/SHA-256                                                     |
+| Archives, 7Z -> TAR.GZ              | 268,435,574 B |                        222.7 MiB | native libarchive listing plus entry size/SHA-256                                                     |
+| Archives, 7Z -> ZIP                 | 268,435,574 B |                        218.3 MiB | independent ZIP entry size/SHA-256                                                                    |
+| Archives, ZIP -> TAR                | 268,517,517 B |                        194.4 MiB | libarchive entry size/SHA-256                                                                         |
+| Archives, ZIP -> TAR.GZ             | 268,517,517 B |                        194.5 MiB | libarchive entry size/SHA-256                                                                         |
+| Archives, ZIP -> TAR.BZ2            | 268,517,517 B |                        160.6 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, ZIP -> TAR.XZ             | 268,517,517 B |                        195.7 MiB | 3-run native entry size/SHA-256 validation                                                            |
+| Archives, TAR.GZ -> ZIP             | 268,517,551 B |                        201.1 MiB | libarchive entry size/SHA-256                                                                         |
+| Subtitles, WebVTT -> TTML           |  73,788,904 B |                        204.5 MiB | exact streamed output hash                                                                            |
+| Documents, TXT -> DOCX              |  67,130,000 B |                        148.0 MiB | ZIP CRC/OOXML structure plus streamed SAX text SHA-256                                                |
+| Documents, TXT -> ODT               |  67,130,000 B |                        161.1 MiB | ODF ZIP/mimetype/manifest structure plus streamed SAX text SHA-256                                    |
+| Ebooks, TXT -> EPUB                 |  67,130,000 B |                        135.5 MiB | EPUB OCF/package/navigation structure plus streamed SAX text SHA-256                                  |
+| Documents, Markdown -> HTML         | 141,110,000 B |                        194.6 MiB | exact streamed output hash                                                                            |
+| Ebooks, Markdown -> EPUB            | 141,110,000 B |                        198.9 MiB | EPUB OCF/package/navigation/XHTML structure plus streamed SHA-256                                     |
+| Documents, HTML -> TXT              | 143,850,123 B |                        231.6 MiB | exact streamed output hash                                                                            |
+| Documents, DOCX -> TXT              | 134,218,659 B |                        217.9 MiB | exact streamed output hash                                                                            |
+| Ebooks, EPUB -> TXT                 | 134,219,595 B |                        205.5 MiB | exact streamed output hash                                                                            |
+| Spreadsheets, XLSX -> CSV           | 135,267,834 B |                        218.4 MiB | exact streamed output hash                                                                            |
+| Presentations, PPTX -> TXT          | 135,296,355 B |                        217.4 MiB | exact streamed output hash                                                                            |
+| Documents, ODT -> TXT               | 135,267,233 B |                        191.1 MiB | exact streamed output hash                                                                            |
+| Spreadsheets, ODS -> CSV            | 135,267,401 B |                        196.2 MiB | exact streamed output hash                                                                            |
+| Presentations, ODP -> TXT           | 135,272,481 B |                        199.1 MiB | exact streamed output hash                                                                            |
+| Video, MOV -> MP4                   | 149,251,969 B |                        168.2 MiB | native packet traversal and HEVC/AAC probe                                                            |
+| Audio, MOV -> M4A                   | 149,251,969 B |                        164.5 MiB | full AAC decode and metadata probe                                                                    |
+| Audio, MOV -> WAV                   | 149,251,969 B |                        195.3 MiB | full PCM decode and APSNR                                                                             |
+| Video, 3GP -> MP4                   | 167,130,850 B |                        209.6 MiB | native packet traversal and H.264/AAC probe                                                           |
+| Audio, 3GP -> M4A                   | 167,130,850 B |                        204.8 MiB | full AAC decode and metadata probe                                                                    |
+| Audio, 3GP -> WAV                   | 167,130,850 B |                        193.7 MiB | full PCM decode and APSNR                                                                             |
+| Video, MPEG-TS -> MP4               | 175,444,796 B |                        215.6 MiB | native packet traversal and H.264/AAC probe                                                           |
+| Audio, MPEG-TS -> M4A               | 175,444,796 B |                        220.2 MiB | full AAC decode and metadata probe                                                                    |
+| Audio, MPEG-TS -> WAV               | 175,444,796 B |                        243.7 MiB | full PCM decode and APSNR                                                                             |
+| Video, FLV -> MP4                   | 167,517,193 B |                        193.1 MiB | native packet traversal and H.264/AAC probe                                                           |
+| Audio, FLV -> M4A                   | 167,517,193 B |                        213.2 MiB | full AAC decode and metadata probe                                                                    |
+| Audio, FLV -> WAV                   | 167,517,193 B |                        192.4 MiB | full PCM decode and APSNR                                                                             |
+| Video, AVI -> MP4                   | 230,929,466 B |                        199.4 MiB | native packet traversal and MPEG-4 Part 2/MP3 probe                                                   |
+| Audio, AVI -> WAV                   | 230,929,466 B |                        225.1 MiB | full PCM decode and APSNR                                                                             |
 
 The MPEG-TS stress source is a genuine 175,444,796-byte H.264/AAC transport
 stream. With the synchronous bounded worker reader, MP4 stream copy completed in
