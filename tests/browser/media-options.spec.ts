@@ -23,6 +23,10 @@ const compatibleWebmSourcePaths = {
   vp8: path.join(validationRoot, "automatic-vp8-source.mkv"),
   vp9: path.join(validationRoot, "automatic-vp9-source.mkv"),
 } as const;
+const compatibleWebmBenchmarkSourcePath = path.join(
+  validationRoot,
+  "compatible-webm-benchmark-source.mkv",
+);
 const lowBitrateVideoPath = path.join(validationRoot, "video-low-bitrate.webm");
 const higherQualityVideoPath = path.join(validationRoot, "video-higher-quality.webm");
 const smallerVideoPath = path.join(validationRoot, "video-smaller.webm");
@@ -230,6 +234,16 @@ async function copiedStreamPayloadSha256(
   const match = /SHA256=([0-9a-f]{64})/i.exec(stdout);
   if (!match) throw new Error(`FFmpeg did not report a stream hash: ${stdout}`);
   return match[1].toLowerCase();
+}
+
+async function smallFixtureSha256(inputPath: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", await readFile(inputPath));
+  return Buffer.from(digest).toString("hex");
+}
+
+function median(values: readonly number[]): number {
+  const sorted = [...values].sort((left, right) => left - right);
+  return sorted[Math.floor(sorted.length / 2)];
 }
 
 async function measureScaledVideoPsnr(outputPath: string): Promise<number> {
@@ -511,6 +525,16 @@ test("generic WebM automatically stream-copies compatible VP8 and VP9 Matroska",
 }) => {
   test.setTimeout(180_000);
   await mkdir(validationRoot, { recursive: true });
+  const results: Array<{
+    codec: "vp8" | "vp9";
+    sourceBytes: number;
+    sourceSha256: string;
+    outputBytes: number;
+    outputSha256: string;
+    videoPacketSha256: string;
+    audioPacketSha256: string;
+    elapsedMs: number;
+  }> = [];
 
   for (const codec of ["vp8", "vp9"] as const) {
     const encoder = codec === "vp8" ? "libvpx" : "libvpx-vp9";
@@ -562,18 +586,123 @@ test("generic WebM automatically stream-copies compatible VP8 and VP9 Matroska",
       height: 180,
       nb_read_frames: "48",
     });
-    expect(await copiedStreamPayloadSha256(outputPath, "v:0")).toBe(
-      await copiedStreamPayloadSha256(sourcePath, "v:0"),
-    );
-    expect(await copiedStreamPayloadSha256(outputPath, "a:0")).toBe(
-      await copiedStreamPayloadSha256(sourcePath, "a:0"),
-    );
+    const sourceVideoPacketSha256 = await copiedStreamPayloadSha256(sourcePath, "v:0");
+    const outputVideoPacketSha256 = await copiedStreamPayloadSha256(outputPath, "v:0");
+    const sourceAudioPacketSha256 = await copiedStreamPayloadSha256(sourcePath, "a:0");
+    const outputAudioPacketSha256 = await copiedStreamPayloadSha256(outputPath, "a:0");
+    expect(outputVideoPacketSha256).toBe(sourceVideoPacketSha256);
+    expect(outputAudioPacketSha256).toBe(sourceAudioPacketSha256);
     await execFileAsync(
       "ffmpeg",
       ["-hide_banner", "-loglevel", "error", "-xerror", "-i", outputPath, "-f", "null", "NUL"],
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
+    results.push({
+      codec,
+      sourceBytes: (await stat(sourcePath)).size,
+      sourceSha256: await smallFixtureSha256(sourcePath),
+      outputBytes: (await stat(outputPath)).size,
+      outputSha256: await smallFixtureSha256(outputPath),
+      videoPacketSha256: outputVideoPacketSha256,
+      audioPacketSha256: outputAudioPacketSha256,
+      elapsedMs: state.metrics!.elapsedMs,
+    });
   }
+  console.log(`WEBM_COMPATIBILITY ${JSON.stringify(results)}`);
+});
+
+test("compatible WebM copy is repeatable while unsupported VP9 re-encoding stays blocked", async ({
+  page,
+}) => {
+  test.setTimeout(360_000);
+  await mkdir(validationRoot, { recursive: true });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-f", "lavfi", "-i", "testsrc2=size=640x360:rate=30",
+      "-f", "lavfi", "-i", "sine=frequency=523:sample_rate=48000",
+      "-t", "12", "-c:v", "libvpx-vp9", "-deadline", "realtime",
+      "-cpu-used", "8", "-b:v", "1200k", "-g", "60",
+      "-c:a", "libopus", "-b:a", "96000", "-f", "matroska",
+      compatibleWebmBenchmarkSourcePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+
+  const copyElapsedMs: number[] = [];
+  for (let run = 0; run < 3; run += 1) {
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(compatibleWebmBenchmarkSourcePath);
+    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-webm");
+    await expect
+      .poll(() =>
+        page.evaluate(() => window.__WITHIN_TEST__?.getState().selectedProfileId),
+      )
+      .toBe("mkv-to-webm-av1");
+    const state = await waitForCompletedConversion(page);
+    expect(state.metrics?.elapsedMs).toBeGreaterThan(0);
+    copyElapsedMs.push(state.metrics!.elapsedMs);
+
+    const outputName = state.batchOutputNames[0];
+    if (run === 0) {
+      const outputPath = path.join(validationRoot, "compatible-webm-copy-output.webm");
+      await copyAndDeleteSmallBrowserOutput(page, outputName, outputPath);
+      const probe = await probeVideo(outputPath);
+      expect(probe.streams[0]).toMatchObject({
+        codec_name: "vp9",
+        width: 640,
+        height: 360,
+        nb_read_frames: "360",
+      });
+      await execFileAsync(
+        "ffmpeg",
+        ["-hide_banner", "-loglevel", "error", "-xerror", "-i", outputPath, "-f", "null", "NUL"],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+      );
+      expect(await copiedStreamPayloadSha256(outputPath, "v:0")).toBe(
+        await copiedStreamPayloadSha256(compatibleWebmBenchmarkSourcePath, "v:0"),
+      );
+      expect(await copiedStreamPayloadSha256(outputPath, "a:0")).toBe(
+        await copiedStreamPayloadSha256(compatibleWebmBenchmarkSourcePath, "a:0"),
+      );
+    } else {
+      await page.evaluate(async (name) => {
+        const root = await navigator.storage.getDirectory();
+        await root.removeEntry(name).catch(() => {});
+      }, outputName);
+    }
+  }
+
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(compatibleWebmBenchmarkSourcePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("mkv-to-webm-vp9");
+  await expect(page.locator('[data-testid="convert-button"]')).toBeDisabled();
+  await expect(page.locator('[data-testid="media-conversion-plan"]')).toContainText(
+    "no certified VP9 decoder",
+  );
+
+  const copyMedian = median(copyElapsedMs);
+  const sourceBytes = (await stat(compatibleWebmBenchmarkSourcePath)).size;
+  console.log(`WEBM_BENCHMARK ${JSON.stringify({
+    sourceBytes,
+    copyElapsedMs,
+    copyMedianMs: copyMedian,
+    medianInputMiBPerSecond: sourceBytes / (1024 * 1024) / (copyMedian / 1000),
+    priorPath: "blocked-no-vp9-decoder",
+  })}`);
 });
 
 test("native video controls produce genuine bounded VP9 and MPEG-4 outputs", async ({
