@@ -76,6 +76,19 @@ File and directory picker API availability is checked before interaction, while
 real handle permissions, writes, failures, cancellation, and cleanup are tested
 after the required user gesture.
 
+WebCodecs media acceleration is capability-probed but is not currently selected
+by a public media route. The measured Chrome 152 audit found functional and fast
+VP8, hardware-preferred VP9, Opus, and AAC codec primitives, but WebCodecs emits
+elementary codec chunks rather than a complete converted file. The primitive
+benchmark excludes demuxing, decoding and frame transfer, timestamp/stream
+coordination, container muxing, metadata, direct disk I/O, validation, and
+complete-process memory measurement, so its sub-second timings are not claimed
+as file-conversion performance. The existing bounded FFmpeg Wasm routes remain
+the controlled-memory fallback and sole certified production media path. The
+decision, exact three-run results, capability matrix, and conditions for a fair
+end-to-end A/B are recorded in
+`evidence/webcodecs-acceleration-audit-2026-09-07.json`.
+
 ## Bounded-memory architecture
 
 ```text

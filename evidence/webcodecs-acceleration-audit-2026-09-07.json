@@ -1,0 +1,120 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-07T18:30:00+05:30",
+  "requirement": "M-09",
+  "scope": "Optional WebCodecs acceleration for the existing bounded media conversion routes",
+  "status": "intentionally-unsupported-current-media-route",
+  "dockerUsed": false,
+  "decision": "Keep the certified fixed-memory FFmpeg Wasm media routes as the production implementation and do not advertise or silently select a WebCodecs media path yet. Production Chrome proves useful codec primitives, including a hardware-preferred VP9 configuration, but no candidate currently proves a faster complete file conversion while retaining the existing demuxing, timestamps, stream selection, chapters, subtitles, attachments, tags, artwork, color/aspect/rotation fields, bounded direct muxing, deterministic fallback, cleanup, and complete-Chromium memory guarantees.",
+  "productionBrowserBenchmark": {
+    "browser": "Google Chrome",
+    "version": "152.0.7977.77",
+    "executable": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "origin": "http://127.0.0.1:3000/?test=1",
+    "secureContext": true,
+    "crossOriginIsolated": true,
+    "command": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/webcodecs-acceleration.spec.ts --workers=1",
+    "result": "1 passed",
+    "elapsedSeconds": 10.3,
+    "capabilities": {
+      "video": {
+        "vp8": { "automatic": true, "preferHardware": false, "preferSoftware": true },
+        "vp9": { "automatic": true, "preferHardware": true, "preferSoftware": true },
+        "h264": { "automatic": true, "preferHardware": true, "preferSoftware": true },
+        "av1": { "automatic": true, "preferHardware": false, "preferSoftware": true }
+      },
+      "audio": {
+        "opus": true,
+        "aac-lc": true,
+        "flac": false,
+        "mp3": false
+      },
+      "qualification": "A true preferHardware support result means that Chrome accepted the requested configuration; it does not expose or independently prove the physical encoder selected by the user agent."
+    },
+    "boundedPrimitiveRuns": {
+      "vp8TenSeconds640x360At30Fps": {
+        "configuration": "VP8, 1,000,000 bit/s, quality latency, no hardware preference",
+        "elapsedMs": [395.625, 368.6, 391.86],
+        "chunksPerRun": 300,
+        "bytesPerRun": 416828,
+        "maximumChunkBytes": 9879,
+        "peakEncodeQueue": 3,
+        "fnv1a32PerRun": ["90570c11", "90570c11", "90570c11"]
+      },
+      "vp9HardwarePreferredTenSeconds640x360At30Fps": {
+        "configuration": "VP9 profile 0, 1,000,000 bit/s, quality latency, prefer hardware",
+        "elapsedMs": [730.875, 779.875, 797.505],
+        "chunksPerRun": 300,
+        "bytesPerRun": 152842,
+        "maximumChunkBytes": 1163,
+        "peakEncodeQueue": 3,
+        "fnv1a32PerRun": ["7e1877bf", "7e1877bf", "7e1877bf"]
+      },
+      "opusTenSeconds48kHzStereo": {
+        "configuration": "Opus, 128,000 bit/s, 48 kHz, stereo",
+        "elapsedMs": [92.03, 80.6, 82.145],
+        "chunksPerRun": 501,
+        "bytesPerRun": 161135,
+        "maximumChunkBytes": 501,
+        "peakEncodeQueue": 3,
+        "fnv1a32PerRun": ["f7476f79", "f7476f79", "f7476f79"]
+      }
+    },
+    "boundedness": {
+      "inputPolicy": "The benchmark submits one generated VideoFrame or AudioData object at a time, closes it immediately after encode(), and waits whenever encodeQueueSize exceeds two.",
+      "outputPolicy": "Each EncodedVideoChunk or EncodedAudioChunk is copied into one transient exactly-sized view, hashed immediately, and discarded; output chunks are never collected.",
+      "maximumObservedEncodeQueue": 3,
+      "maximumObservedEncodedChunkBytes": 9879,
+      "convertedFilesCreated": 0,
+      "fixtureFilesCreated": 0
+    },
+    "interpretation": "The codec-only results establish useful speed potential and functional bounded backpressure. They are deliberately not reported as complete file-conversion throughput or as a 250 MiB route certification because they exclude source demuxing, decode, decoded-frame transfer/copies, audio/video synchronization, metadata mapping, destination muxing, direct random-access writes, full independent validation, and complete-Chromium process-tree profiling."
+  },
+  "endToEndAssessment": {
+    "webCodecsBoundary": [
+      "WebCodecs exposes raw media frames and encoded codec chunks; the API does not supply the project's required general-purpose file demuxer or muxer.",
+      "EncodedVideoChunkMetadata is limited to decoder configuration, temporal-layer data, and alpha side data. EncodedAudioChunkMetadata provides decoder configuration. Neither is a replacement for chapters, subtitles, attachments, tags, artwork, or container metadata.",
+      "Codec support and hardware acceleration are user-agent/configuration dependent, so every accelerated route still needs the existing controlled-memory CPU/Wasm fallback."
+    ],
+    "requiredNewTopology": "A conforming candidate must keep the bounded FFmpeg demux/mux and direct writer while bridging decoded frames and encoded chunks across the synchronous Wasm worker boundary, or replace those stages with equally bounded and independently validated container code. That creates a second media pipeline with new timestamp reordering, codec-configuration, bitstream-format, color, aspect, rotation, audio-delay, cancellation, queue, and metadata failure surfaces.",
+    "whyNotAdopted": [
+      "No complete input-to-destination prototype exists, so there is no honest end-to-end A/B speed or memory win to accept.",
+      "The fast primitive timings cannot be compared with the certified Wasm reports because the primitive omits demux, decode, mux, direct disk I/O, metadata, and validation work.",
+      "Replacing a certified route on codec speed alone would weaken correctness and evidence, contrary to the optimization contract.",
+      "Requiring WebCodecs would remove the deterministic fixed-memory fallback on browsers or machines without the exact codec configuration."
+    ],
+    "currentFallback": "All public media routes continue to use the already certified fixed-heap, bounded-AVIO FFmpeg Wasm workers. Runtime WebCodecs capability probing remains in place, but no public profile lists WebCodecs as a requirement or silently changes engine based on it."
+  },
+  "revisitConditions": [
+    "Build one isolated worker prototype for an existing VP9/Opus WebM re-encode profile while retaining bounded FFmpeg demux/mux and direct destination I/O.",
+    "Prove exact timestamp/order behavior, full decode, declared metadata preservation/exclusions, cancellation, write failure, cleanup, and functional fallback when the exact WebCodecs configurations are unavailable.",
+    "Run an identical-source/settings three-run A/B against the certified Wasm route and accept only a material end-to-end speed or memory improvement without fidelity regression.",
+    "Pass the unchanged 250 MiB complete-Chromium incremental-private-memory gate at the public maximum tested size and demonstrate memory recovery across repeated jobs.",
+    "Keep WebCodecs optional and capability-gated; never fall back to server conversion, full-file buffering, or an unvalidated extension change."
+  ],
+  "sources": [
+    {
+      "purpose": "WebCodecs API scope, codec resource lifecycle, support checks, hardware-acceleration preference, encoder queues, and encoded chunk/metadata interfaces",
+      "url": "https://www.w3.org/TR/webcodecs/"
+    },
+    {
+      "purpose": "Registered codec strings and codec-specific WebCodecs specifications",
+      "url": "https://www.w3.org/TR/webcodecs-codec-registry/"
+    },
+    {
+      "purpose": "VP9 encoded chunk and decoder-configuration representation",
+      "url": "https://www.w3.org/TR/webcodecs-vp9-codec-registration/"
+    },
+    {
+      "purpose": "AAC raw encoded chunk representation",
+      "url": "https://www.w3.org/TR/webcodecs-aac-codec-registration/"
+    }
+  ],
+  "cleanup": {
+    "failedAttemptPlaywrightArtifactsRemoved": true,
+    "successfulAttemptPlaywrightArtifactsRemoved": true,
+    "convertedOutputsRemoved": true,
+    "temporaryFixturesRemoved": true,
+    "protectedFixtureTouched": false
+  }
+}
