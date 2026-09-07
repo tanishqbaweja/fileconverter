@@ -260,6 +260,54 @@ test("compatible WebM copy accepts AV1, VP8, and VP9 and excludes incompatible s
   assert.match(blocked.streams[0].detail, /not AV1, VP8, or VP9/);
 });
 
+test("compatible OGV copy packet-copies Theora and Vorbis and rejects a non-Theora primary video", () => {
+  const ogvProfile = {
+    id: "mkv-to-ogv",
+    input: "mkv",
+    output: "ogv",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [],
+    fidelityLimitations: [],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  };
+  const compatible = planMediaConversion(
+    ogvProfile,
+    inspection([
+      stream("video", "Theora"),
+      stream("audio", "Vorbis"),
+      stream("audio", "AAC"),
+      stream("subtitle", "ASS subtitle"),
+    ]),
+  );
+  assert.ok(compatible);
+  assert.deepEqual(
+    compatible.streams.map(({ action }) => action),
+    ["copy", "copy", "exclude", "exclude"],
+  );
+  assert.deepEqual(compatible.blockingReasons, []);
+
+  const blocked = planMediaConversion(
+    ogvProfile,
+    inspection([stream("video", "H.264/AVC"), stream("audio", "Vorbis")]),
+  );
+  assert.ok(blocked);
+  assert.equal(blocked.streams[0].action, "reject");
+  assert.match(blocked.streams[0].detail, /first video stream is not Theora/);
+
+  const audioOnly = planMediaConversion(
+    ogvProfile,
+    inspection([stream("audio", "Vorbis")]),
+  );
+  assert.ok(audioOnly);
+  assert.match(audioOnly.blockingReasons.join(" "), /requires a video stream/);
+});
+
 test("automatic generic WebM selection prefers compatible copy but respects an explicit VP9 encode", () => {
   const candidates = conversionProfiles.filter((candidate) => candidate.input === "mkv");
   const source = inspection([

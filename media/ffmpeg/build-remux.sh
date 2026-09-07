@@ -20,6 +20,7 @@ build_core() {
   local profile_defines=()
   if [[ "${output_name}" == "within-remux" ]]; then
     profile_defines+=("-DWITHIN_COMPATIBLE_WEBM_COPY=1")
+    profile_defines+=("-DWITHIN_OGV_COPY=1")
   fi
   if [[ "${threaded_mpeg4}" == "1" ]]; then
     profile_defines+=("-DWITHIN_MPEG4_THREADED=1")
@@ -113,7 +114,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "currentWrapperSourceSha256": "4924343a0d4ef1c186a148506d327ae50fcd539cb3f22426da61be3a2a552c49",
+  "currentWrapperSourceSha256": "a794f2a39af8d086eafaa6b2312122acfe90949e21d8ff0b18c4c6086094b37b",
   "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
@@ -122,7 +123,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "amr-wb-input", "mp3-audio", "aac-audio", "opus-audio", "vorbis-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "m4v-extract", "m4v-wrap", "compatible-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract", "m4a-aac-transcode", "amr-extract"]},
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "amr-wb-input", "mp3-audio", "aac-audio", "opus-audio", "vorbis-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "ogv-copy", "m4v-extract", "m4v-wrap", "compatible-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract", "m4a-aac-transcode", "amr-extract"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},

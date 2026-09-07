@@ -587,6 +587,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "threegp-copy",
         "mov-copy",
         "flv-copy",
+        "ogv-copy",
         "m4v-extract",
         "m4v-wrap",
         "compatible-webm-copy",

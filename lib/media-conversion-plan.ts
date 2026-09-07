@@ -365,11 +365,43 @@ function planCompatibleWebmCopy(
   });
 }
 
+function planCompatibleOgvCopy(
+  streams: readonly SourceStreamInspection[],
+): readonly MediaStreamPlan[] {
+  let firstVideoSeen = false;
+  return streams.map((stream, index) => {
+    const codec = normalizedCodec(stream.codec);
+    if (stream.mediaType === "video" && !firstVideoSeen) {
+      firstVideoSeen = true;
+      if (codec !== "Theora") {
+        return planItem(
+          stream,
+          index,
+          "reject",
+          "The first video stream is not Theora; this fixed OGV copy profile rejects the conversion even if a later compatible stream exists.",
+        );
+      }
+    }
+    const compatible =
+      (stream.mediaType === "video" && codec === "Theora") ||
+      (stream.mediaType === "audio" && codec === "Vorbis");
+    return planItem(
+      stream,
+      index,
+      compatible ? "copy" : "exclude",
+      compatible
+        ? "This stream is packet-copied without decoding or re-encoding into OGV."
+        : "Only Theora video and Vorbis audio are included by this fixed OGV copy profile; this source element is explicitly excluded.",
+    );
+  });
+}
+
 function planStreamCopy(
   profile: ConversionProfile,
   streams: readonly SourceStreamInspection[],
 ): readonly MediaStreamPlan[] {
   if (profile.output === "webm-av1") return planCompatibleWebmCopy(streams);
+  if (profile.output === "ogv") return planCompatibleOgvCopy(streams);
   if (VIDEO_ELEMENTARY_OUTPUTS.has(profile.output)) {
     return planVideoOnlyCopy(profile, streams);
   }
@@ -585,7 +617,8 @@ export function planMediaConversion(
     (VIDEO_ELEMENTARY_OUTPUTS.has(profile.output) ||
       profile.id === "m2v-to-mpeg-ts" ||
       profile.id === "m4v-to-mp4" ||
-      profile.output === "webm-av1") &&
+      profile.output === "webm-av1" ||
+      profile.output === "ogv") &&
     !streams.some((stream) => stream.mediaType === "video")
   ) {
     blockingReasons.push("This profile requires a video stream.");
