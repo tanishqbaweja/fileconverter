@@ -39,6 +39,33 @@ require_command() {
   command -v "$1" >/dev/null 2>&1 || fail "Required command is unavailable: $1"
 }
 
+strip_general_core_only_profiles() {
+  local source_path="${BUILD_ROOT}/within_remux.c"
+  local filtered_path="${BUILD_ROOT}/within_remux.specialist.c"
+  awk '
+    /^[[:space:]]*#ifdef[[:space:]]+WITHIN_OGV_COPY[[:space:]]*$/ {
+      if (skipping) exit 2
+      skipping = 1
+      depth = 1
+      next
+    }
+    skipping {
+      if ($0 ~ /^[[:space:]]*#if(n?def)?([[:space:]]|$)/) depth++
+      if ($0 ~ /^[[:space:]]*#endif([[:space:]]|$)/) {
+        depth--
+        if (depth == 0) skipping = 0
+      }
+      next
+    }
+    { print }
+    END {
+      if (skipping || depth != 0) exit 3
+    }
+  ' "${source_path}" > "${filtered_path}" ||
+    fail "Could not remove general-core-only OGV blocks for specialist builds."
+  mv -- "${filtered_path}" "${source_path}"
+}
+
 run_privileged() {
   if [[ "$(id -u)" == "0" ]]; then
     "$@"
@@ -120,7 +147,7 @@ if [[ -n "${EMSDK_NODE:-}" ]]; then
     fail "EMSDK_NODE does not identify an executable: ${EMSDK_NODE}"
   export PATH="$(dirname "${EMSDK_NODE}"):${PATH}"
 fi
-for command_name in emcc emconfigure emmake emar emranlib emnm curl tar \
+for command_name in emcc emconfigure emmake emar emranlib emnm awk curl tar \
   sha256sum patch pkg-config make diff readlink node; do
   require_command "${command_name}"
 done
@@ -192,6 +219,10 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
+  # General-core-only profiles are preprocessor-guarded, so removing those
+  # blocks produces the same specialist translation unit while keeping the
+  # historical reverse patches independent of new guarded source context.
+  strip_general_core_only_profiles
   # Matroska attached-picture retention belongs only to the general remux core.
   # Remove it before rebuilding unchanged specialist cores.
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -209,6 +240,7 @@ if [[ "${requested_core}" == "all" ]]; then
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
+  strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -217,6 +249,7 @@ elif [[ "${requested_core}" == "within-direct" ]]; then
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" != "within-remux" ]]; then
+  strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
