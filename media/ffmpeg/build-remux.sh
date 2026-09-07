@@ -18,6 +18,9 @@ build_core() {
   local threaded_mpeg4="${4:-0}"
   local output_buffer_bytes="${5:-262144}"
   local profile_defines=()
+  if [[ "${output_name}" == "within-remux" ]]; then
+    profile_defines+=("-DWITHIN_COMPATIBLE_WEBM_COPY=1")
+  fi
   if [[ "${threaded_mpeg4}" == "1" ]]; then
     profile_defines+=("-DWITHIN_MPEG4_THREADED=1")
   fi
@@ -110,9 +113,9 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "currentWrapperSourceSha256": "d8de0a4db2b86d3f5e6bb9145230ec74b3b8ba321c4f7a1eb268feaefab75eb2",
-  "matroskaArtworkSourcePatchSha256": "f0f27ff0533721ac85c7a60ce0332fc85c18d723e9cd9d26f696b2ecd04138ba",
-  "audioOptionsSourcePatchSha256": "17a914b0e1e99510f106f4af83d21c22b8030978fc3b2259b5e80f117a99a418",
+  "currentWrapperSourceSha256": "4924343a0d4ef1c186a148506d327ae50fcd539cb3f22426da61be3a2a552c49",
+  "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+  "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
   "directSourcePatchSha256": "ab5b790455b5ddf227b16aabd4bda60de0c00e4479834dfd812517f0ba65ec28",
   "licenses": ["FFmpeg LGPL-3.0-or-later", "LAME LGPL-2.0-or-later", "libopus BSD-3-Clause", "libogg BSD-3-Clause", "libvorbis BSD-3-Clause", "libvpx BSD-3-Clause", "OpenCORE AMR Apache-2.0"],

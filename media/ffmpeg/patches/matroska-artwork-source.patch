@@ -95,7 +95,7 @@ index db6c901..d33bdd2 100644
 +    int selected_stream =
          video_only_output
              ? (int)index == video_stream_index
-         : compatible_webm_output
+         : av1_webm_output
 @@ -2848,6 +2896,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
              ? (int)index == video_stream_index ||
                    (int)index == audio_stream_index
@@ -121,8 +121,8 @@ index db6c901..d33bdd2 100644
 +                  : !bounded_audio_artwork_stream(input_stream)
 +                    ? "The source attached picture exceeds the bounded 4 MiB, 4096-pixel-side, or 16-megapixel Matroska cover limit and is explicitly excluded."
 +                    : "Matroska cover preservation is limited to eight images and 8 MiB total; an additional attached picture is explicitly excluded."
-             : compatible_webm_output
-                 ? "The source attached picture is explicitly excluded from this compatible WebM stream-copy profile."
+             : av1_webm_output
+                 ? "The source attached picture is explicitly excluded from this " WITHIN_WEBM_COPY_PROFILE_LABEL " profile."
                  : "The source attached picture is explicitly excluded from "
 @@ -3100,13 +3160,29 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        result = AVERROR(ENOMEM);

@@ -138,6 +138,12 @@ not the entire product specification.
   that candidate produced the same output but raised median elapsed time from
   36.064 to 43.141 seconds (16.4% slower). It was reverted; compact evidence is
   retained in `evidence/remux-performance-audit-2026-08-28.json`.
+- Do not compile the compatible-WebM branch into every shared-wrapper specialist.
+  No-Docker run `34056960277` compiled successfully, but its exact comparison
+  showed that the unguarded source change altered all six Wasm modules even
+  though only `within-remux` exposes profile 17. That candidate was rejected
+  before browser testing; the replacement enables the new branch only when
+  building `within-remux`, preserving the five unrelated specialist binaries.
 - Do not adopt LibRaw-Wasm 1.6.0 as the camera-RAW engine. Its source-built
   worker is useful prior art, but the current wrapper copies a complete input
   into Wasm, starts at 256 MiB with growth enabled, materializes a complete
