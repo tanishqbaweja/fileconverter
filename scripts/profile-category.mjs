@@ -622,6 +622,12 @@ const categories = {
       ["mkv-to-webm-av1", "fixtures/stress/media/av1-opus-128m.mkv"],
     ],
   },
+  "compatible-webm": {
+    generator: "scripts/generate-compatible-webm-stress-fixture.mjs",
+    profiles: [
+      ["mkv-to-webm-av1", "fixtures/stress/media/compatible-vp9-opus-128m.mkv"],
+    ],
+  },
   "container-mp3": {
     generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
     profiles: ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"].map(

@@ -1647,7 +1647,7 @@ async function validateMediaOutput(
     route === "mov-to-m4v" ||
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
-  const av1WebmCopy = route === "mkv-to-webm-av1";
+  const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
     "mov-to-mkv",
@@ -2126,7 +2126,7 @@ async function validateMediaOutput(
       sha256,
     };
   }
-  if (av1WebmCopy) {
+  if (compatibleWebmCopy) {
     const { stdout: decodedStreamHashes } = await execFileAsync(
       "ffmpeg",
       [
@@ -2165,7 +2165,7 @@ async function validateMediaOutput(
       hashes.get("a") !== source.decodedAudioSha256
     ) {
       throw new Error(
-        "Browser AV1 WebM decoded video or audio does not exactly match the source.",
+        "Browser compatible WebM copy does not exactly match the decoded source video or audio.",
       );
     }
     independentAudioValidation = {
@@ -2179,7 +2179,7 @@ async function validateMediaOutput(
     aacOutput ||
     amrOutput ||
     elementaryVideoOutput ||
-    av1WebmCopy ||
+    compatibleWebmCopy ||
     route === "avi-to-mkv";
   // Packet-copy routes are validated by a full output hash, packet counts,
   // metadata checks, and a complete copy traversal below. Decoding unchanged
@@ -2481,7 +2481,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || av1WebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
+    ((audioOnly || webmAudioCopy || compatibleWebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
       audio?.channels !==
         (amrOutput
           ? 1
@@ -2541,12 +2541,12 @@ async function validateMediaOutput(
       route === "flac-to-alac" ||
       oggPacketOutput ||
       webmAudioCopy ||
-      av1WebmCopy ||
+      compatibleWebmCopy ||
       matroskaCopy ||
       containerThreeGpCopy ||
       containerMovCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
-    ((av1WebmCopy || liveMatroskaCopy) &&
+    ((compatibleWebmCopy || liveMatroskaCopy) &&
       Number.isFinite(probedOutputDuration)) ||
     ((!matroskaCopy || route === "avi-to-mkv") &&
       Math.abs(duration - expectedDuration) >
@@ -2575,7 +2575,7 @@ async function validateMediaOutput(
     );
   }
   if (
-    (elementaryVideoOutput || av1WebmCopy) &&
+    (elementaryVideoOutput || compatibleWebmCopy) &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
@@ -2583,8 +2583,8 @@ async function validateMediaOutput(
       `Browser video output produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
     );
   }
-  if (av1WebmCopy && (probe.chapters?.length ?? 0) !== 0) {
-    throw new Error("Browser AV1 WebM output unexpectedly contains chapters.");
+  if (compatibleWebmCopy && (probe.chapters?.length ?? 0) !== 0) {
+    throw new Error("Browser compatible WebM output unexpectedly contains chapters.");
   }
   if (videoReencode && video) {
     const midpoint = route.startsWith("h264-to-")
@@ -2701,7 +2701,7 @@ async function validateMediaOutput(
     elementaryVideoOutput ||
     mpeg2TransportOutput ||
     m4vMp4Output ||
-    av1WebmCopy ||
+    compatibleWebmCopy ||
     matroskaCopy ||
     containerThreeGpCopy ||
     containerMovCopy ||
@@ -2847,7 +2847,7 @@ async function validateMediaOutput(
       ...(probe.withinValidation ?? {}),
       decodedVideoAndAacStreamHash: packetStreamHashes[0],
     };
-  } else if (!av1WebmCopy) {
+  } else if (!compatibleWebmCopy) {
     await execFileAsync(
       "ffmpeg",
       [
@@ -2867,7 +2867,7 @@ async function validateMediaOutput(
   }
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
-    mediaTraversal: av1WebmCopy || matroskaCopy
+    mediaTraversal: compatibleWebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
       : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy
       ? "full-decoded-video-and-aac-streamhash"

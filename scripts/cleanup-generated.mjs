@@ -289,6 +289,7 @@ const generatedStressNames = new Set([
   "av1-opus-128m.webm.json",
   "av1-vorbis-128m.mkv.json",
   "av1-vorbis-128m.webm.json",
+  "compatible-vp9-opus-128m.mkv.json",
   "mpeg2-video-128m.mkv.json",
   "mpeg2-video-128m.mp4.json",
   "mpeg2-video-128m.mov.json",

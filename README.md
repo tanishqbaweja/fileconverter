@@ -525,16 +525,24 @@ stream directly to M4V. Audio and all container-only fields are explicitly
 excluded. Browser tests compare every decoded frame, and the large-file gate
 fully decoded all 1,440 frames in every output.
 
-Certified AV1 Matroska input takes the fastest lossless route: it skips the
-decoder-oriented stream-analysis pass and packet-copies every AV1 video stream
-plus compatible Opus or Vorbis audio directly into WebM. The live WebM layout
+Certified AV1, VP8, and VP9 Matroska input takes the fastest lossless route: it
+skips the decoder-oriented stream-analysis pass and packet-copies every
+WebM-compatible video stream plus Opus or Vorbis audio directly into WebM. The
+legacy internal profile ID remains `mkv-to-webm-av1` so its evidence history is
+traceable, while the public label and current behavior are codec-generic. The
+live WebM layout
 uses five-second or 5 MiB clusters and omits duration/cue indexes so muxer memory
 cannot grow with duration; sequential playback remains valid, while accurate
-seeking may require a player scan. In three Chrome runs, a 222,942,211-byte
-1,920×1,080 AV1/Opus source completed in 1.98–2.40 seconds with 32 MiB Wasm and
-213.7 MiB worst incremental process-tree private memory. All 1,440 decoded video
-frames and decoded Opus samples matched the source SHA-256 exactly, and cleanup
-deleted the source and all three outputs.
+seeking may require a player scan. The newly published binary copied a genuine
+170,427,228-byte 1,920×1,080 VP9/Opus Matroska source three times in 1.42–1.79
+seconds with 32 MiB Wasm and 206.7 MiB worst complete-Chromium incremental
+private memory. Every run produced the same 170,426,113-byte output; all 1,440
+decoded frames and decoded Opus samples matched the source SHA-256 exactly.
+Small production-browser VP8 and VP9 gates also matched every compressed video
+and audio packet. The prior certified path was blocked because the bounded core
+has no VP9 decoder, so this is recorded as new fast stream-copy coverage—not as
+a fabricated re-encode speedup. Generated sources and outputs were deleted;
+compact evidence is in `evidence/compatible-webm-copy-2026-09-07.json`.
 
 Certified MP4, MOV, 3GP, MPEG-TS, FLV, AVI, WebM, and OGV inputs can also use
 the fastest lossless route into Matroska: compatible video, audio, subtitle,

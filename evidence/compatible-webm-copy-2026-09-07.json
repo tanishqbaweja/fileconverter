@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-07T15:40:00+05:30",
+  "requirements": ["P-08", "M-04"],
+  "status": "accepted-current-public-profile",
+  "dockerUsed": false,
+  "scope": "Broaden the existing Matroska-to-WebM packet-copy profile from AV1-only input to every WebM-compatible AV1, VP8, or VP9 video stream with Opus or Vorbis audio, and prefer it automatically before re-encoding.",
+  "profile": {
+    "id": "mkv-to-webm-av1",
+    "idNote": "The legacy internal ID is retained so the existing public evidence index and route history remain traceable; the public destination label and current behavior are codec-generic.",
+    "publicDestinationLabel": "WebM video (compatible stream copy)",
+    "route": "stream-copy",
+    "videoCodecs": ["av1", "vp8", "vp9"],
+    "audioCodecs": ["opus", "vorbis"],
+    "excluded": ["incompatible video", "incompatible audio", "subtitles", "attachments", "data streams", "chapters"],
+    "decoderUsed": false,
+    "encoderUsed": false
+  },
+  "implementation": {
+    "nativeWrapper": "media/ffmpeg/within_remux.c",
+    "buildIsolation": "media/ffmpeg/build-remux.sh defines WITHIN_COMPATIBLE_WEBM_COPY only for within-remux",
+    "registry": "lib/capability-registry.ts",
+    "automaticPlanner": "lib/media-conversion-plan.ts",
+    "browserGate": "tests/browser/media-options.spec.ts",
+    "stressGenerator": "scripts/generate-compatible-webm-stress-fixture.mjs",
+    "stressCategory": "scripts/profile-category.mjs compatible-webm"
+  },
+  "smallBrowserValidation": {
+    "browser": "installed Google Chrome 152.0.7977.77",
+    "command": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/media-options.spec.ts --grep \"generic WebM automatically|compatible WebM copy is repeatable\" --reporter=line",
+    "result": "2 passed",
+    "elapsedSeconds": 13.3,
+    "cases": [
+      {
+        "codec": "vp8",
+        "sourceBytes": 146136,
+        "sourceSha256": "ceb94d2cdb40f77e7886ee9cdb198c907e1f4a7f3d8e39ba4341b3eb27c459fa",
+        "outputBytes": 145882,
+        "outputSha256": "bf14f3551b2a5a41064044c9f07a9a19fdb586e1d93f1e7343c2054eebf06a1d",
+        "videoPacketSha256": "01d3154272573d0a375a6296b7ded14167416292c0f4911817820112c5374b55",
+        "audioPacketSha256": "83bd7dd8566cf15c729a068a8fce115d197bdb2ebe0117eee43138f55be98896",
+        "elapsedMs": 276.2800000011921
+      },
+      {
+        "codec": "vp9",
+        "sourceBytes": 114648,
+        "sourceSha256": "c16f86704c1c527f7a64443782d3a9a9e9fcb864546f948cf9f82248085fc1e3",
+        "outputBytes": 114395,
+        "outputSha256": "9dda31c2ddd5ea3ab7c6ceb2295157b681d1e8152e7f42c6805253718b713561",
+        "videoPacketSha256": "f0e1cd73ce934bc6648150d5a31eaea8da2a2f3e3b6ef085f19644ab1b4332f3",
+        "audioPacketSha256": "83bd7dd8566cf15c729a068a8fce115d197bdb2ebe0117eee43138f55be98896",
+        "elapsedMs": 67.96500000357628
+      }
+    ],
+    "assertions": [
+      "generic WebM automatically selects the compatible packet-copy profile for VP8 and VP9 Matroska",
+      "every compressed video and audio packet hash equals its source",
+      "both outputs fully decode with native FFmpeg",
+      "VP8 and VP9 outputs retain 320x180 geometry and all 48 frames",
+      "reads, writes, and queued bytes remain at or below 262144 bytes",
+      "at most one destination operation is pending and terminal queue state is empty"
+    ]
+  },
+  "repeatabilityBenchmark": {
+    "sourceBytes": 1663545,
+    "sourceFormat": "Matroska VP9/Opus, 640x360, 360 frames",
+    "copyElapsedMs": [375.4050000011921, 106.70999997854233, 130.59999999403954],
+    "medianMs": 130.59999999403954,
+    "medianInputMiBPerSecond": 12.147627417752226,
+    "priorBehavior": "blocked-no-vp9-decoder",
+    "comparisonBoundary": "This is not reported as a re-encode speedup. Before this change the certified bounded engine could not decode VP9, so there was no valid prior conversion time to compare."
+  },
+  "stressValidation": {
+    "report": "outputs/reports/2026-09-07T10-02-56-758Z-mkv-to-webm-av1-stress.json",
+    "reportSha256": "f486a4fa6ea396c2fd8587f16be8d1ca4d2fe877570ede3021fa6b85f8ca21c5",
+    "browser": "Google Chrome 152.0.7977.77",
+    "source": {
+      "format": "Matroska",
+      "videoCodec": "vp9",
+      "audioCodec": "opus",
+      "bytes": 170427228,
+      "sha256": "0d8a7d7fcd4b78ee9376c8630396653fa2b71a699a155a51f033d7b751c88416",
+      "generationSeconds": 26.86,
+      "durationSeconds": 60,
+      "width": 1920,
+      "height": 1080,
+      "frames": 1440,
+      "decodedVideoSha256": "7390cf471b7f4271323f19009de8c79f0bea1614b64c7ac69f02d28ad4591fd0",
+      "decodedAudioSha256": "a8c53a62f32c336e0779f78a532640e882e860089400e82db92afcfe67681fc9"
+    },
+    "runs": [
+      {
+        "elapsedMs": 1790.4399999976158,
+        "incrementalPrivateMiB": 158.1640625,
+        "cleanupDeltaFromLoadedMiB": -24.7109375
+      },
+      {
+        "elapsedMs": 1421.2249999940395,
+        "incrementalPrivateMiB": 206.7109375,
+        "cleanupDeltaFromLoadedMiB": -31.13671875
+      },
+      {
+        "elapsedMs": 1530.544999986887,
+        "incrementalPrivateMiB": 158.4765625,
+        "cleanupDeltaFromLoadedMiB": -30.27734375
+      }
+    ],
+    "outputBytes": 170426113,
+    "repeatableOutputSha256": "10fa329a27605c5cc663750c16b36e0f0381f3d03da5a635636993b7e666ea5f",
+    "worstIncrementalPrivateMiB": 206.7109375,
+    "limitMiB": 250,
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 262144,
+    "maxQueuedBytes": 262144,
+    "maxPendingOperations": 1,
+    "wasmMemoryBytes": 33554432,
+    "completeNativeDecode": true,
+    "decodedVideoAndAudioHashesMatchSource": true,
+    "passed": true
+  },
+  "buildValidation": {
+    "rejectedBroadRun": 34056960277,
+    "rejectedBroadOutcome": "The unguarded branch changed all six shared-wrapper Wasm cores and was rejected before publication.",
+    "isolatedCandidateRun": 34105896026,
+    "isolatedCandidateOutcome": "Only within-remux.wasm differed; all five specialist Wasm binaries remained byte-exact.",
+    "previousWasmSha256": "44b302dd43f69aaf8045666b24e60d3b90f56a51263a42fe3764e2ac000749d0",
+    "publishedWasmBytes": 9634049,
+    "publishedWasmSha256": "9f7b79c69bdd4291cb8d4b4056f0425bbf285d35f9fdcf887c0a5018d4954fd0",
+    "publishedCommit": "60447f27f9d1585410a8b50d1d9e0dd432992416",
+    "exactReproductionRun": 34107308417,
+    "exactReproductionResult": "success: every FFmpeg artifact reproduced byte-for-byte",
+    "exactReproductionElapsed": "10m34s",
+    "retainedRunArtifacts": 0
+  },
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "generatedStressManifestDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "playwrightArtifactsDeleted": true,
+    "candidateDownloadDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}
