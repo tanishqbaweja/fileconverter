@@ -574,6 +574,12 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       )
       .digest("hex"),
   );
+  assert.equal(
+    manifest.ffmpegAviIndexPatchSha256,
+    createHash("sha256")
+      .update(readFileSync("media/ffmpeg/patches/avi-bounded-index.patch"))
+      .digest("hex"),
+  );
   assert.deepEqual(manifest.matroskaArtworkOptions, {
     supportedImageCodecs: ["mjpeg", "png"],
     maximumImages: 8,
@@ -608,6 +614,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "mov-copy",
         "flv-copy",
         "ogv-copy",
+        "avi-copy",
         "m4v-extract",
         "m4v-wrap",
         "compatible-webm-copy",
@@ -684,6 +691,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledMuxers.includes("mp3"));
   assert.ok(manifest.enabledMuxers.includes("adts"));
   assert.ok(manifest.enabledMuxers.includes("ogg"));
+  assert.ok(manifest.enabledMuxers.includes("avi"));
   assert.ok(manifest.enabledMuxers.includes("aiff"));
   assert.ok(manifest.enabledMuxers.includes("amr"));
   assert.ok(manifest.enabledDecoders.includes("amrwb"));

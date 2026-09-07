@@ -455,6 +455,17 @@ name was removed and is not counted as WebM evidence. All generated inputs and
 outputs were deleted. See
 `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`.
 
+AVI output is under active certification and is not yet shown in the public
+selector. The hidden Matroska-to-AVI candidate packet-copies only MPEG-4 Part 2
+video and MP3 audio. A project-owned FFmpeg 8.1.2 option reduces OpenDML RIFF
+segments from the stock approximately 1 GiB to 8 MiB, bounding the muxer's
+retained packet-index payload near 16 MiB even for minimum-size chunks, while a
+reserved master index covers outputs through 128 GiB. The source patch, planner,
+bounded I/O, and hidden-route gates pass; the no-Docker Wasm rebuild and complete
+production-browser correctness, adverse-path, and three-run memory gates remain
+required before publication. See
+`evidence/avi-output-feasibility-2026-09-08.json`.
+
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded
 JPEG/PNG pictures by copying their compressed bytes into native Matroska

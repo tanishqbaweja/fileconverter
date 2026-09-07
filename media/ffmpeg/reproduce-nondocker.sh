@@ -192,6 +192,7 @@ cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
@@ -229,6 +230,7 @@ run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
 run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
+patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
 ./build-libraries.sh
 requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then

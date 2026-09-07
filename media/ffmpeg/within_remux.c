@@ -386,6 +386,10 @@ static int stream_is_supported(const AVStream *stream, int profile) {
     return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
            stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
   }
+  if (profile == 37) {
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO ||
+           stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO;
+  }
 #endif
   if (profile == 12 || profile == 13 || profile == 14 || profile == 15 ||
       profile == 16 || profile == 22) {
@@ -473,6 +477,13 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_VORBIS;
+  }
+  if (profile == 37) {
+    if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+      return stream->codecpar->codec_id == AV_CODEC_ID_MPEG4;
+    }
+    return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+           stream->codecpar->codec_id == AV_CODEC_ID_MP3;
   }
 #endif
   if (profile == 12) {
@@ -2557,6 +2568,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       profile != 26 && profile != 27 && profile != 35
 #ifdef WITHIN_OGV_COPY
       && profile != 36
+      && profile != 37
 #endif
   ) {
     within_message(2, "Unknown remux profile.");
@@ -2602,6 +2614,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   const int container_flv_output = profile == 27;
 #ifdef WITHIN_OGV_COPY
   const int container_ogv_output = profile == 36;
+  const int container_avi_output = profile == 37;
 #endif
   const int matroska_live_output =
       matroska_output && input_format->iformat &&
@@ -2643,6 +2656,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         !container_mov_output && !container_flv_output
 #ifdef WITHIN_OGV_COPY
         && !container_ogv_output
+        && !container_avi_output
 #endif
         ) ||
        elementary_audio_input_requires_probe ||
@@ -2683,6 +2697,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
           : (mpeg2_output || mpeg2_transport_output) ? AV_CODEC_ID_MPEG2VIDEO
 #ifdef WITHIN_OGV_COPY
           : container_ogv_output                      ? AV_CODEC_ID_THEORA
+          : container_avi_output                      ? AV_CODEC_ID_MPEG4
 #endif
           : av1_webm_output                          ? AV_CODEC_ID_AV1
                                                      : AV_CODEC_ID_MPEG4;
@@ -2693,6 +2708,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
                                 : container_ogv_output
                                     ? "Theora"
+                                : container_avi_output
+                                    ? "MPEG-4 Part 2"
 #endif
                                 : av1_webm_output
                                     ? WITHIN_WEBM_COPY_VIDEO_LABEL
@@ -2708,6 +2725,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                  : container_flv_output ? "FLV"
 #ifdef WITHIN_OGV_COPY
                                  : container_ogv_output ? "OGV"
+                                 : container_avi_output ? "AVI"
 #endif
                                  : hevc_output ? "HEVC"
                                  : mpeg2_output ? "MPEG-2"
@@ -2729,6 +2747,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                : container_flv_output ? "flv"
 #ifdef WITHIN_OGV_COPY
                                : container_ogv_output ? "ogg"
+                               : container_avi_output ? "avi"
 #endif
                                : hevc_output ? "hevc"
                                : mpeg2_output ? "mpeg2video"
@@ -2741,7 +2760,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                 : amr_copy_output        ? "amr"
                                                         : "mp4";
 #ifdef WITHIN_OGV_COPY
-  if (video_only_output || av1_webm_output || container_ogv_output) {
+  if (video_only_output || av1_webm_output || container_ogv_output ||
+      container_avi_output) {
 #else
   if (video_only_output || av1_webm_output) {
 #endif
@@ -2846,6 +2866,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         1,
         "OGV packet-copies every Theora video and Vorbis audio stream; chapters, subtitles, attachments, attached pictures, and incompatible codecs are explicitly excluded.");
   }
+  if (container_avi_output) {
+    within_message(
+        1,
+        "AVI packet-copies every MPEG-4 Part 2 video and MP3 audio stream; chapters, subtitles, attachments, attached pictures, data streams, and incompatible codecs are explicitly excluded.");
+  }
 #endif
   int source_has_display_rotation = 0;
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
@@ -2869,6 +2894,10 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     within_message(
         1,
         "Source display-rotation metadata cannot be represented by OGV and is explicitly excluded; compressed Theora pixels remain unrotated.");
+  } else if (source_has_display_rotation && container_avi_output) {
+    within_message(
+        1,
+        "Source display-rotation metadata cannot be represented reliably by AVI and is explicitly excluded; compressed MPEG-4 Part 2 pixels remain unrotated.");
 #endif
   }
   if (container_threegp_output || container_mov_output) {
@@ -2914,6 +2943,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
         : container_ogv_output
             ? "Source chapters are explicitly excluded from this bounded OGV remux profile."
+        : container_avi_output
+            ? "Source chapters are explicitly excluded from this bounded AVI remux profile."
 #endif
         : av1_webm_output
             ? "Source chapters are explicitly excluded from this " WITHIN_WEBM_COPY_PROFILE_LABEL " remux profile."
@@ -2946,7 +2977,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 #ifdef WITHIN_OGV_COPY
-  if (container_ogv_output) {
+  if (container_ogv_output || container_avi_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
   }
 #endif
@@ -2971,7 +3002,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         video_only_output
             ? (int)index == video_stream_index
 #ifdef WITHIN_OGV_COPY
-        : container_ogv_output
+        : container_ogv_output || container_avi_output
             ? stream_is_supported(input_stream, profile) && copy_compatible
 #endif
         : av1_webm_output
@@ -3067,6 +3098,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
             : container_ogv_output
                 ? "The source attached picture is explicitly excluded from this OGV remux profile."
+            : container_avi_output
+                ? "The source attached picture is explicitly excluded from this AVI remux profile."
 #endif
             : profile == 2
                 ? "The source cover-art stream is explicitly excluded from "
@@ -3116,6 +3149,16 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         within_message(
             1,
             "Only Theora video can be packet-copied into OGV; an incompatible additional video stream was explicitly excluded.");
+      } else if (container_avi_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(
+            1,
+            "Only MP3 audio can be packet-copied into AVI; incompatible source audio was explicitly excluded.");
+      } else if (container_avi_output &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+        within_message(
+            1,
+            "Only MPEG-4 Part 2 video can be packet-copied into AVI; an incompatible additional video stream was explicitly excluded.");
 #endif
       } else if (av1_webm_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
@@ -3199,6 +3242,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
                 : container_ogv_output
                   ? "Subtitles are explicitly excluded from this OGV remux profile."
+                : container_avi_output
+                  ? "Subtitles are explicitly excluded from this AVI remux profile."
 #endif
                 : mp3_output
                   ? "The source subtitle stream is explicitly excluded from this MP3 extraction profile."
@@ -3224,6 +3269,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
                        : container_ogv_output
                            ? "The source attachment is explicitly excluded from this OGV remux profile."
+                       : container_avi_output
+                           ? "The source attachment is explicitly excluded from this AVI remux profile."
 #endif
                        : video_only_output
                            ? "The source attachment is explicitly excluded from this video-only output."
@@ -3258,6 +3305,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
                 : container_ogv_output
                   ? "A source stream type unsupported by this OGV remux profile was explicitly excluded."
+                : container_avi_output
+                  ? "A source stream type unsupported by this AVI remux profile was explicitly excluded."
 #endif
                 : av1_webm_output
                   ? "A source stream type unsupported by this " WITHIN_WEBM_COPY_PROFILE_LABEL " profile was explicitly excluded."
@@ -3580,6 +3629,12 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
   } else if (container_ogv_output) {
     /* OGV streams incrementally as Ogg pages and needs no MOV options. */
+  } else if (container_avi_output) {
+    /* An eight MiB OpenDML segment caps retained packet-index storage near
+       16 MiB even for minimum-size chunks. The reserved master index covers
+       16,384 segments (128 GiB at this limit) without late expansion. */
+    av_dict_set(&muxer_options, "riff_size_limit", "8388608", 0);
+    av_dict_set(&muxer_options, "reserve_index_space", "262176", 0);
 #endif
   } else if (profile == 2) {
     av_dict_set(&muxer_options, "movflags",

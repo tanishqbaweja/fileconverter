@@ -180,6 +180,11 @@ function containerCodecCompatible(
   if (profile.output === "3gp" || profile.output === "flv") {
     return stream.mediaType === "video" ? codec === "H.264" : codec === "AAC";
   }
+  if (profile.output === "avi") {
+    return stream.mediaType === "video"
+      ? codec === "MPEG-4 Part 2"
+      : codec === "MP3";
+  }
   if (profile.output === "mp4") {
     if (profile.input === "avi") {
       return stream.mediaType === "video"
@@ -618,7 +623,8 @@ export function planMediaConversion(
       profile.id === "m2v-to-mpeg-ts" ||
       profile.id === "m4v-to-mp4" ||
       profile.output === "webm-av1" ||
-      profile.output === "ogv") &&
+      profile.output === "ogv" ||
+      profile.output === "avi") &&
     !streams.some((stream) => stream.mediaType === "video")
   ) {
     blockingReasons.push("This profile requires a video stream.");

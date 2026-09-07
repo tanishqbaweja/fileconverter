@@ -96,6 +96,8 @@ RUN chmod +x /src/build-vorbis.sh && /src/build-vorbis.sh
 
 COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
+COPY patches/avi-bounded-index.patch /src/avi-bounded-index.patch
+RUN patch --directory=/src/ffmpeg --strip=1 < /src/avi-bounded-index.patch
 
 COPY build-libraries.sh /src/build-libraries.sh
 COPY wasm-pkg-config.sh /src/wasm-pkg-config.sh

@@ -1,0 +1,34 @@
+diff --git a/libavformat/avienc.c b/libavformat/avienc.c
+--- a/libavformat/avienc.c
++++ b/libavformat/avienc.c
+@@ -74,6 +74,7 @@ typedef struct AVIContext {
+     int riff_id;
+     int reserve_index_space;
+     int master_index_max_size;
++    int64_t riff_size_limit;
+     int write_channel_mask;
+     int flipped_raw_rgb;
+ } AVIContext;
+@@ -317,7 +318,7 @@ static int avi_write_header(AVFormatContext *s)
+         else
+             duration_est = 10 * 60 * 60; /* default to 10 hours */
+         filesize_est = duration_est * (bitrate / 8) * 1.10; /* add 10% safety margin for muxer+bitrate */
+-        avi->master_index_max_size = FFMAX((int)ceil(filesize_est / AVI_MAX_RIFF_SIZE) + 1,
++        avi->master_index_max_size = FFMAX((int)ceil(filesize_est / avi->riff_size_limit) + 1,
+                                            avi->master_index_max_size);
+         av_log(s, AV_LOG_DEBUG, "duration_est:%0.3f, filesize_est:%0.1fGiB, master_index_max_size:%d\n",
+                duration_est, filesize_est / (1024*1024*1024), avi->master_index_max_size);
+@@ -875,6 +876,6 @@ static int avi_write_packet_internal(AVFormatContext *s, AVPacket *pkt)
+     // Make sure to put an OpenDML chunk when the file size exceeds the limits
+     if ((pb->seekable & AVIO_SEEKABLE_NORMAL) &&
+-        (avio_tell(pb) - avi->riff_start > AVI_MAX_RIFF_SIZE)) {
++        (avio_tell(pb) - avi->riff_start > avi->riff_size_limit)) {
+         avi_write_ix(s);
+         ff_end_tag(pb, avi->movi_list);
+ 
+@@ -992,4 +993,5 @@ static const AVOption options[] = {
+     { "reserve_index_space", "reserve space (in bytes) at the beginning of the file for each stream index", OFFSET(reserve_index_space), AV_OPT_TYPE_INT, { .i64 = 0 }, 0, INT_MAX, ENC },
++    { "riff_size_limit", "maximum bytes in each OpenDML RIFF segment", OFFSET(riff_size_limit), AV_OPT_TYPE_INT64, { .i64 = AVI_MAX_RIFF_SIZE }, 1048576, AVI_MAX_RIFF_SIZE, ENC },
+     { "write_channel_mask", "write channel mask into wave format header", OFFSET(write_channel_mask), AV_OPT_TYPE_BOOL, { .i64 = 1 }, 0, 1, ENC },
+     { "flipped_raw_rgb", "Raw RGB bitmaps are stored bottom-up", OFFSET(flipped_raw_rgb), AV_OPT_TYPE_BOOL, { .i64 = 0 }, 0, 1, ENC },
+     { NULL },

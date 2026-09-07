@@ -2,6 +2,20 @@ name: Reproduce FFmpeg without Docker
 
 on:
   workflow_dispatch:
+    inputs:
+      core:
+        description: FFmpeg core to reproduce
+        required: true
+        default: all
+        type: choice
+        options:
+          - all
+          - within-remux
+          - within-direct
+          - within-mpeg4
+          - within-webm
+          - within-vp9
+          - within-webm-quality
 
 permissions:
   contents: read
@@ -39,6 +53,7 @@ jobs:
         shell: bash
         env:
           WITHIN_KEEP_NONDOCKER_OUTPUT: "1"
+          WITHIN_BUILD_CORE_FILTER: ${{ inputs.core }}
         run: |
           source work/emsdk/emsdk_env.sh
           bash media/ffmpeg/reproduce-nondocker.sh

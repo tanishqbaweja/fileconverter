@@ -3912,6 +3912,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "flv-to-mov" ||
         profileId === "mkv-to-flv" ||
         profileId === "mkv-to-ogv" ||
+        profileId === "mkv-to-avi" ||
         profileId === "mp4-to-flv" ||
         profileId === "mov-to-flv" ||
         profileId === "3gp-to-flv" ||
@@ -4643,6 +4644,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "flv-to-mov" ||
       profileId === "mkv-to-flv" ||
       profileId === "mkv-to-ogv" ||
+      profileId === "mkv-to-avi" ||
       profileId === "mp4-to-flv" ||
       profileId === "mov-to-flv" ||
       profileId === "3gp-to-flv" ||
@@ -4845,6 +4847,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             ? 27
           : profileId === "mkv-to-ogv"
             ? 36
+          : profileId === "mkv-to-avi"
+            ? 37
           : profileId === "mkv-to-wav" ||
             profileId === "mov-to-wav" ||
             profileId === "3gp-to-wav" ||
