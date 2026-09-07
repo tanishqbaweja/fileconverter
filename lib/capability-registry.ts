@@ -5496,6 +5496,33 @@ export const conversionProfiles: readonly ConversionProfile[] = ([
     public: true,
   },
   {
+    id: "mkv-to-ogv",
+    input: "mkv",
+    output: "ogv",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The certified input contains Theora video with optional Vorbis audio in Matroska; incompatible codecs are rejected before conversion.",
+      "Compatible Theora and Vorbis streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
+      "Display-rotation metadata cannot be represented by OGV and is rejected rather than silently changing presentation.",
+      "The streaming Ogg output has no seek index; compatible text metadata is copied only where Ogg can represent it.",
+    ],
+    fidelityLimitations: [
+      "Theora and Vorbis compressed packets are copied without decoding or re-encoding.",
+    ],
+    maxTestedBytes: 136_906_650,
+    automatedTestStatus: "passed",
+    public: true,
+  },
+  {
     id: "mkv-to-webm",
     input: "mkv",
     output: "webm",

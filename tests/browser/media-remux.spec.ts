@@ -561,6 +561,15 @@ const ogvFixturePath = path.join(
   "media",
   "theora-video-source.ogv",
 );
+const ogvCopyFixturePath = path.join(
+  projectRoot,
+  "work",
+  "theora-vorbis-copy-source.mkv",
+);
+const ogvCopyOutputPath = path.join(
+  outputRoot,
+  "theora-vorbis-copy-output.ogv",
+);
 const m2vFixturePath = path.join(
   projectRoot,
   "fixtures",
@@ -1359,6 +1368,8 @@ test.beforeAll(async () => {
   assertProjectLocal(videoArtworkFixturePath);
   assertProjectLocal(av1OpusWebmFixturePath);
   assertProjectLocal(av1VorbisWebmFixturePath);
+  assertProjectLocal(ogvCopyFixturePath);
+  assertProjectLocal(ogvCopyOutputPath);
   await rm(profileRoot, { recursive: true, force: true });
   await rm(corruptFixturePath, { force: true });
   await rm(incompatibleFixturePath, { force: true });
@@ -1377,6 +1388,8 @@ test.beforeAll(async () => {
   await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(ogvCopyFixturePath, { force: true });
+  await rm(ogvCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
@@ -1392,6 +1405,16 @@ test.beforeAll(async () => {
   }
   await mkdir(profileRoot, { recursive: true });
   await mkdir(outputRoot, { recursive: true });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-i", ogvFixturePath, "-map", "0:v:0", "-map", "0:a:0",
+      "-c", "copy", "-map_metadata", "0", "-f", "matroska",
+      ogvCopyFixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
   await execFileAsync(
     "ffmpeg",
     [
@@ -2008,6 +2031,8 @@ test.afterAll(async () => {
   await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(ogvCopyFixturePath, { force: true });
+  await rm(ogvCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
   for (const fixture of Object.values(hevcContainerFixturePaths)) {
     await rm(fixture, { force: true });
@@ -2084,6 +2109,7 @@ async function copyAndDeleteBrowserStorageEntry(
 
 async function runMediaRoute(
   profileId:
+    | "mkv-to-ogv"
     | "mkv-to-mp4"
     | "mov-to-mp4"
     | "3gp-to-mp4"
@@ -5514,6 +5540,73 @@ for (const route of [
     });
   });
 }
+
+test("browser FFmpeg losslessly remuxes Matroska Theora and Vorbis to OGV", async () => {
+  await runMediaRoute(
+    "mkv-to-ogv",
+    ogvCopyOutputPath,
+    ["theora", "vorbis"],
+    100_000,
+    ogvCopyFixturePath,
+    {
+      expectedWarningFragments: [
+        "packet-copies every Theora video and Vorbis audio stream",
+      ],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.2,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("ogg");
+        expect(probe.streams).toHaveLength(2);
+        await expectCompressedVideoPacketMatch(ogvCopyFixturePath, outputPath);
+        await expectCompressedAudioPacketMatch(ogvCopyFixturePath, outputPath);
+        await expectDecodedVideoMatch(ogvCopyFixturePath, outputPath);
+        await execFileAsync(
+          "ffmpeg",
+          [
+            "-hide_banner", "-loglevel", "error", "-nostdin",
+            "-i", outputPath, "-map", "0:v:0", "-map", "0:a:0",
+            "-f", "null", "NUL",
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+        );
+      },
+    },
+  );
+});
+
+test("OGV stream copy propagates a bounded write failure and removes the partial output", async () => {
+  await page.goto("/?test=1&directory=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(ogvCopyFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-ogv");
+  await startEnabledConversion();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  const abandonedSize = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    try {
+      const handle = await root.getFileHandle("theora-vorbis-copy-source.ogv");
+      const size = (await handle.getFile()).size;
+      await root.removeEntry("theora-vorbis-copy-source.ogv");
+      return size;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return null;
+      }
+      throw error;
+    }
+  });
+  expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+});
 
 for (const route of [
   {

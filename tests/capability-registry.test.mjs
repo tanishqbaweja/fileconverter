@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 259);
+  assert.equal(publicMedia.length, 260);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -266,6 +266,26 @@ test("compatible WebM stream copy is public after its measured evidence passes",
     publicProfilesFor("mkv").some(
       (candidate) => candidate.id === "mkv-to-webm-av1",
     ),
+    true,
+  );
+});
+
+test("compatible OGV stream copy is public after its measured evidence passes", () => {
+  const profile = conversionProfiles.find(
+    (candidate) => candidate.id === "mkv-to-ogv",
+  );
+  assert.ok(profile);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 136_906_650);
+  assert.equal(profile.route, "stream-copy");
+  assert.equal(
+    profile.metadataLimitations.some((limitation) =>
+      limitation.includes("Theora video with optional Vorbis audio"),
+    ),
+    true,
+  );
+  assert.equal(
+    publicProfilesFor("mkv").some((candidate) => candidate.id === profile.id),
     true,
   );
 });

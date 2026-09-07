@@ -628,6 +628,12 @@ const categories = {
       ["mkv-to-webm-av1", "fixtures/stress/media/compatible-vp9-opus-128m.mkv"],
     ],
   },
+  "compatible-ogv": {
+    generator: "scripts/generate-compatible-ogv-stress-fixture.mjs",
+    profiles: [
+      ["mkv-to-ogv", "fixtures/stress/media/theora-vorbis-copy-128m.mkv"],
+    ],
+  },
   "container-mp3": {
     generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
     profiles: ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"].map(

@@ -485,6 +485,7 @@ if (
     "mp4-to-m4v",
     "mov-to-m4v",
     "avi-to-m4v",
+    "mkv-to-ogv",
     "mkv-to-webm-av1",
     "mkv-to-mp3",
     "mp4-to-mp3",
@@ -647,6 +648,7 @@ const isMediaProfile =
   profileId === "mp4-to-m4v" ||
   profileId === "mov-to-m4v" ||
   profileId === "avi-to-m4v" ||
+  profileId === "mkv-to-ogv" ||
   profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
@@ -814,6 +816,7 @@ let page;
 let blankStable = null;
 let loadedStable = null;
 let lastObservedState = null;
+let cancellationCheck = null;
 let activeRun = 0;
 let reportWritten = false;
 let terminationSignal = null;
@@ -916,6 +919,74 @@ try {
   );
   if (loadedStable.privateBytes == null) {
     throw new Error("Loaded-site private-memory baseline is unavailable.");
+  }
+
+  if (profileId === "mkv-to-ogv") {
+    const namesBefore = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names = [];
+      for await (const [name] of root.entries()) names.push(name);
+      return names.sort();
+    });
+    await setLocalFileInput(cdp, fixturePath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction(() => {
+      const state = window.__WITHIN_TEST__?.getState();
+      return (
+        (state?.jobState === "running" &&
+          (state.metrics?.inputBytes ?? 0) >= 256 * 1024) ||
+        state?.jobState === "complete" ||
+        state?.jobState === "error"
+      );
+    });
+    const cancellableState = await page.evaluate(
+      () => window.__WITHIN_TEST__?.getState(),
+    );
+    if (cancellableState?.jobState !== "running") {
+      throw new Error(
+        `OGV stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+      );
+    }
+    await page.getByRole("button", { name: "Cancel safely" }).click();
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().jobState === "cancelled",
+    );
+    const cancelledState = await page.evaluate(
+      () => window.__WITHIN_TEST__?.getState(),
+    );
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    const namesAfter = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names = [];
+      for await (const [name] of root.entries()) names.push(name);
+      return names.sort();
+    });
+    cancellationCheck = {
+      passed:
+        cancelledState?.opfsName == null &&
+        cancelledState?.metrics?.pendingOperations === 0 &&
+        cancelledState?.metrics?.queuedBytes === 0 &&
+        cancelledState?.metrics?.peakPendingOperations <= 1 &&
+        cancelledState?.metrics?.maxReadChunkBytes <= 256 * 1024 &&
+        cancelledState?.metrics?.maxWriteChunkBytes <= maximumWriteChunkBytes &&
+        JSON.stringify(namesAfter) === JSON.stringify(namesBefore),
+      inputBytes: cancelledState?.metrics?.inputBytes ?? null,
+      outputBytes: cancelledState?.metrics?.outputBytes ?? null,
+      maxReadChunkBytes: cancelledState?.metrics?.maxReadChunkBytes ?? null,
+      maxWriteChunkBytes: cancelledState?.metrics?.maxWriteChunkBytes ?? null,
+      peakPendingOperations:
+        cancelledState?.metrics?.peakPendingOperations ?? null,
+      pendingOperations: cancelledState?.metrics?.pendingOperations ?? null,
+      queuedBytes: cancelledState?.metrics?.queuedBytes ?? null,
+      projectLocalEntriesBefore: namesBefore,
+      projectLocalEntriesAfter: namesAfter,
+    };
+    if (!cancellationCheck.passed) {
+      throw new Error("OGV cancellation left output state or browser-owned files behind.");
+    }
   }
 
   for (let run = 1; run <= runCount; run += 1) {
@@ -1386,6 +1457,8 @@ try {
       (run) =>
         run.cleanupDeltaFromLoadedMiB <= cleanupRecoveryLimitMiB,
     ),
+    cancellationCleanup:
+      profileId !== "mkv-to-ogv" || cancellationCheck?.passed === true,
   };
   const report = {
     generatedAt: new Date().toISOString(),
@@ -1409,6 +1482,7 @@ try {
       (peakPrivateBytes - blankPrivateBytes) / (1024 * 1024),
     limitMiB: 250,
     cleanupRecoveryLimitMiB,
+    cancellationCheck,
     checks,
     passed: Object.values(checks).every(Boolean),
     runs: runSummaries,
@@ -1647,6 +1721,7 @@ async function validateMediaOutput(
     route === "mov-to-m4v" ||
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
+  const compatibleOgvCopy = route === "mkv-to-ogv";
   const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
@@ -2126,6 +2201,35 @@ async function validateMediaOutput(
       sha256,
     };
   }
+  if (compatibleOgvCopy) {
+    const packetHashes = {};
+    for (const [kind, map, expected] of [
+      ["video", "0:v:0", source.videoPacketSha256],
+      ["audio", "0:a:0", source.audioPacketSha256],
+    ]) {
+      const { stdout: packetHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v", "error", "-xerror", "-i", localPath, "-map", map,
+          "-c", "copy", "-f", "hash", "-hash", "sha256", "-",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+      );
+      const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
+      if (!sha256 || sha256 !== expected) {
+        throw new Error(
+          `Browser compatible OGV ${kind} packets do not exactly match the source payload.`,
+        );
+      }
+      packetHashes[kind] = sha256;
+    }
+    independentAudioValidation = {
+      method: "theora-vorbis-packet-sha256",
+      passed: true,
+      videoSha256: packetHashes.video,
+      audioSha256: packetHashes.audio,
+    };
+  }
   if (compatibleWebmCopy) {
     const { stdout: decodedStreamHashes } = await execFileAsync(
       "ffmpeg",
@@ -2179,6 +2283,7 @@ async function validateMediaOutput(
     aacOutput ||
     amrOutput ||
     elementaryVideoOutput ||
+    compatibleOgvCopy ||
     compatibleWebmCopy ||
     route === "avi-to-mkv";
   // Packet-copy routes are validated by a full output hash, packet counts,
@@ -2204,6 +2309,12 @@ async function validateMediaOutput(
   const attachedPictures = probe.streams.filter(
     (stream) => stream.disposition?.attached_pic === 1,
   );
+  if (
+    compatibleOgvCopy &&
+    !String(probe.format?.format_name ?? "").split(",").includes("ogg")
+  ) {
+    throw new Error("Browser compatible OGV output did not probe as genuine Ogg.");
+  }
   if (
     matroskaCopy &&
     !String(probe.format?.format_name ?? "")
@@ -2481,7 +2592,7 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly || webmAudioCopy || compatibleWebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
+    ((audioOnly || webmAudioCopy || compatibleOgvCopy || compatibleWebmCopy || matroskaCopy || containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy) &&
       audio?.channels !==
         (amrOutput
           ? 1
@@ -2541,6 +2652,7 @@ async function validateMediaOutput(
       route === "flac-to-alac" ||
       oggPacketOutput ||
       webmAudioCopy ||
+      compatibleOgvCopy ||
       compatibleWebmCopy ||
       matroskaCopy ||
       containerThreeGpCopy ||
@@ -2575,7 +2687,16 @@ async function validateMediaOutput(
     );
   }
   if (
-    (elementaryVideoOutput || compatibleWebmCopy) &&
+    compatibleOgvCopy &&
+    (Number(video?.nb_read_packets) !== Number(source.videoPacketCount) ||
+      Number(audio?.nb_read_packets) !== Number(source.audioPacketCount))
+  ) {
+    throw new Error(
+      `Browser compatible OGV packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "unavailable"} audio.`,
+    );
+  }
+  if (
+    (elementaryVideoOutput || compatibleOgvCopy || compatibleWebmCopy) &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
@@ -2583,8 +2704,11 @@ async function validateMediaOutput(
       `Browser video output produced ${video?.nb_read_frames ?? "unavailable"} decoded frames; expected ${source.decodedVideoFrames}.`,
     );
   }
-  if (compatibleWebmCopy && (probe.chapters?.length ?? 0) !== 0) {
-    throw new Error("Browser compatible WebM output unexpectedly contains chapters.");
+  if (
+    (compatibleOgvCopy || compatibleWebmCopy) &&
+    (probe.chapters?.length ?? 0) !== 0
+  ) {
+    throw new Error("Browser compatible stream-copy output unexpectedly contains chapters.");
   }
   if (videoReencode && video) {
     const midpoint = route.startsWith("h264-to-")
@@ -2701,6 +2825,7 @@ async function validateMediaOutput(
     elementaryVideoOutput ||
     mpeg2TransportOutput ||
     m4vMp4Output ||
+    compatibleOgvCopy ||
     compatibleWebmCopy ||
     matroskaCopy ||
     containerThreeGpCopy ||
@@ -2867,7 +2992,9 @@ async function validateMediaOutput(
   }
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
-    mediaTraversal: compatibleWebmCopy || matroskaCopy
+    mediaTraversal: compatibleOgvCopy
+      ? "full-native-decode-and-packet-hash"
+      : compatibleWebmCopy || matroskaCopy
       ? "full-native-decode-and-streamhash"
       : containerMpegTsCopy || containerThreeGpCopy || containerMovCopy || containerFlvCopy
       ? "full-decoded-video-and-aac-streamhash"

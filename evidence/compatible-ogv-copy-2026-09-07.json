@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-07T21:00:00+05:30",
+  "requirements": ["P-08", "M-04"],
+  "status": "accepted-current-public-profile",
+  "dockerUsed": false,
+  "scope": "Add the fastest standards-correct Matroska Theora/Vorbis to OGV path as a bounded packet-copy route instead of decoding and re-encoding compatible streams.",
+  "profile": {
+    "id": "mkv-to-ogv",
+    "route": "stream-copy",
+    "videoCodec": "theora",
+    "optionalAudioCodec": "vorbis",
+    "excluded": [
+      "incompatible video",
+      "incompatible audio",
+      "subtitles",
+      "attachments",
+      "attached pictures",
+      "data streams",
+      "chapters",
+      "unrepresentable rotation"
+    ],
+    "decoderUsed": false,
+    "encoderUsed": false,
+    "maximumTestedSourceBytes": 136906650
+  },
+  "implementation": {
+    "nativeProfile": 36,
+    "nativeWrapper": "media/ffmpeg/within_remux.c",
+    "buildIsolation": "media/ffmpeg/build-remux.sh defines WITHIN_OGV_COPY only for within-remux",
+    "registry": "lib/capability-registry.ts",
+    "planner": "lib/media-conversion-plan.ts",
+    "browserGate": "tests/browser/media-remux.spec.ts",
+    "stressGenerator": "scripts/generate-compatible-ogv-stress-fixture.mjs",
+    "stressCategory": "scripts/profile-category.mjs compatible-ogv"
+  },
+  "smallBrowserValidation": {
+    "browser": "installed Google Chrome 152.0.7977.77",
+    "command": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/media-remux.spec.ts --grep \"Matroska Theora and Vorbis to OGV|OGV stream copy propagates\" --reporter=line",
+    "result": "2 passed",
+    "elapsedSeconds": 11.7,
+    "assertions": [
+      "output probes as genuine Ogg with exactly Theora and Vorbis streams",
+      "compressed video and audio packet hashes equal their Matroska source",
+      "decoded video hash equals the source and both output streams fully decode",
+      "injected bounded destination-write failure reaches the UI and deletes the partial output",
+      "terminal pending operations and queued bytes are zero"
+    ]
+  },
+  "stressValidation": {
+    "report": "outputs/reports/2026-09-07T15-24-41-704Z-mkv-to-ogv-stress.json",
+    "reportSha256": "f53bf3ddf223a6cc5ba055623405436618aae8a388a2c64265991529c9c18fe8",
+    "browser": "Google Chrome 152.0.7977.77",
+    "source": {
+      "format": "Matroska",
+      "videoCodec": "theora",
+      "audioCodec": "vorbis",
+      "bytes": 136906650,
+      "sha256": "83f4d5a7f23230849f0b61c433cb046336b7a1635f88be9a68c87c04fab61d72",
+      "generationSeconds": 17.97,
+      "durationSeconds": 780,
+      "width": 640,
+      "height": 360,
+      "decodedVideoFrames": 18720,
+      "videoPacketCount": 18720,
+      "audioPacketCount": 36564,
+      "videoPacketSha256": "3bb824653dc5e5547ba2ed006b9f2b267683bf6c85d7aac1eff6d13b5b08ea0a",
+      "audioPacketSha256": "43f2a7e5eb549704d12c77e1ab3977ec2071e48fb724466edc2ce7ea00f6ae45"
+    },
+    "runs": [
+      {
+        "elapsedMs": 1149.2399999797344,
+        "incrementalPrivateMiB": 211.31640625,
+        "cleanupDeltaFromLoadedMiB": 19.109375
+      },
+      {
+        "elapsedMs": 1127.4399999976158,
+        "incrementalPrivateMiB": 192.06640625,
+        "cleanupDeltaFromLoadedMiB": 24.578125
+      },
+      {
+        "elapsedMs": 1164.1850000023842,
+        "incrementalPrivateMiB": 194.83203125,
+        "cleanupDeltaFromLoadedMiB": 14.50390625
+      }
+    ],
+    "outputBytes": 137218724,
+    "repeatableOutputSha256": "6a9b41e0500f4bcf528026431e8d744ad0283c99fe7eb0cb6b064d924b705747",
+    "worstIncrementalPrivateMiB": 211.31640625,
+    "limitMiB": 250,
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 64258,
+    "maxQueuedBytes": 64258,
+    "maxPendingOperations": 1,
+    "wasmMemoryBytes": 33554432,
+    "completeNativeDecode": true,
+    "exactVideoAndAudioPacketHashes": true,
+    "passed": true
+  },
+  "cancellationValidation": {
+    "sourceBytesProcessed": 134217728,
+    "partialOutputBytesBeforeDeletion": 134224872,
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 64258,
+    "maxPendingOperations": 1,
+    "terminalPendingOperations": 0,
+    "terminalQueuedBytes": 0,
+    "browserOwnedEntriesBefore": [],
+    "browserOwnedEntriesAfter": [],
+    "passed": true
+  },
+  "buildValidation": {
+    "isolatedCandidateRun": 34134662736,
+    "isolatedCandidateOutcome": "Only within-remux.wasm differed; loader, manifest, licenses, and all specialist cores were unchanged.",
+    "specialistReconstructionCorrectionRun": 34135921575,
+    "specialistReconstructionCorrectionOutcome": "Rejected because the first guard stripper removed both preprocessor branches; its bounded mismatch artifact was inspected and deleted.",
+    "publishedWasmBytes": 9635289,
+    "publishedWasmSha256": "8d17f291c1b2f9d34df4e038be60e7960398261bfd26edc135666a7a2ed4af84",
+    "publishedCommit": "8d7c1a9",
+    "exactReproductionRun": 34136791033,
+    "exactReproductionCommit": "c6cc47abe783e09d6b2c380b83e3ed99a1fb0b4a",
+    "exactReproductionResult": "success: every FFmpeg artifact reproduced byte-for-byte without Docker",
+    "exactReproductionElapsed": "10m16s",
+    "retainedRunArtifacts": 0
+  },
+  "harnessCorrection": {
+    "firstStressAttempt": "The conversion and independent probe completed, but the new validator incorrectly expected 780.000 seconds and rejected FFprobe's source-matching 780.521-second Ogg duration.",
+    "resolution": "The validator now compares the Ogg result with the probed Matroska source duration. No converter code, threshold, packet check, memory limit, or cleanup rule changed.",
+    "failedReportsDeletedAfterAcceptedRerun": true
+  },
+  "cleanup": {
+    "generatedStressSourcesDeleted": true,
+    "generatedStressManifestsDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "failedStressReportsDeleted": true,
+    "hostedMismatchArtifactsDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}
