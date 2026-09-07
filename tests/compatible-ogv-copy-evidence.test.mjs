@@ -43,6 +43,16 @@ test("the published OGV-capable general core matches accepted build evidence", a
   assert.equal(evidence.buildValidation.exactReproductionRun, 34136791033);
   assert.match(evidence.buildValidation.exactReproductionResult, /without Docker/);
   assert.equal(evidence.buildValidation.retainedRunArtifacts, 0);
+  assert.equal(evidence.buildValidation.publicPromotionReproductionRun, 34139252534);
+  assert.equal(
+    evidence.buildValidation.publicPromotionReproductionCommit,
+    "65b24884ba636e2e6323ae32318f108aced0dc4b",
+  );
+  assert.match(
+    evidence.buildValidation.publicPromotionReproductionResult,
+    /pushed public registry and manifest state/,
+  );
+  assert.equal(evidence.buildValidation.publicPromotionRetainedArtifacts, 0);
 });
 
 test("OGV browser and stress evidence is exact, bounded, cancellable, and cleaned", async () => {

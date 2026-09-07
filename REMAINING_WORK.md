@@ -179,8 +179,10 @@ not the entire product specification.
   pictures, chapters, and unrepresentable rotation.
 - Hosted no-Docker run `34134662736` proved only `within-remux.wasm` changed.
   After fixing specialist source reconstruction, run `34136791033` reproduced
-  every published FFmpeg artifact byte-for-byte in 10m16s and retained zero
-  artifacts. The published general Wasm is 9,635,289 bytes with SHA-256
+  every published FFmpeg artifact byte-for-byte. Final pushed-state run
+  `34139252534` repeated that proof at public promotion commit `65b2488` in
+  7m32s and retained zero artifacts. The published general Wasm is 9,635,289
+  bytes with SHA-256
   `8d17f291c1b2f9d34df4e038be60e7960398261bfd26edc135666a7a2ed4af84`.
 - Production Chrome passed exact small-file packet/decode and bounded injected
   write-failure cleanup. A 136,906,650-byte Theora/Vorbis Matroska source then

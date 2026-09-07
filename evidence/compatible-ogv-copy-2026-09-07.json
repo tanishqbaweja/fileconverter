@@ -121,7 +121,12 @@
     "exactReproductionCommit": "c6cc47abe783e09d6b2c380b83e3ed99a1fb0b4a",
     "exactReproductionResult": "success: every FFmpeg artifact reproduced byte-for-byte without Docker",
     "exactReproductionElapsed": "10m16s",
-    "retainedRunArtifacts": 0
+    "retainedRunArtifacts": 0,
+    "publicPromotionReproductionRun": 34139252534,
+    "publicPromotionReproductionCommit": "65b24884ba636e2e6323ae32318f108aced0dc4b",
+    "publicPromotionReproductionResult": "success: the pushed public registry and manifest state reproduced every FFmpeg artifact byte-for-byte without Docker",
+    "publicPromotionReproductionElapsed": "7m32s",
+    "publicPromotionRetainedArtifacts": 0
   },
   "harnessCorrection": {
     "firstStressAttempt": "The conversion and independent probe completed, but the new validator incorrectly expected 780.000 seconds and rejected FFprobe's source-matching 780.521-second Ogg duration.",
