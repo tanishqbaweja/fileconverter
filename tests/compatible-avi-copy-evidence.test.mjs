@@ -50,6 +50,21 @@ test("the published AVI-capable core matches its build evidence", async () => {
     evidence.buildValidation.publishedWasmSha256,
   );
   assert.equal(evidence.buildValidation.isolatedCandidateRun, 34158982139);
+  assert.equal(evidence.status, "accepted-current-public-profile");
+  assert.equal(evidence.buildValidation.exactReproductionRun, 34177452654);
+  assert.equal(
+    evidence.buildValidation.exactReproductionCommit,
+    "bc0f3e25da6f7c9a37a1e176ba09d09181ad5aea",
+  );
+  assert.match(
+    evidence.buildValidation.exactReproductionResult,
+    /without Docker/,
+  );
+  assert.equal(evidence.buildValidation.retainedRunArtifacts, 0);
+  assert.equal(evidence.buildValidation.diagnosticArtifactsDeleted, true);
+  assert.equal(evidence.buildValidation.firstAllCoreReproductionRun, 34161840479);
+  assert.equal(evidence.buildValidation.secondAllCoreReproductionRun, 34175834034);
+  assert.equal(evidence.buildValidation.thirdAllCoreReproductionRun, 34176535993);
 });
 
 test("AVI browser and stress evidence is exact, bounded, indexed, cancellable, and cleaned", async () => {
@@ -99,6 +114,8 @@ test("AVI browser and stress evidence is exact, bounded, indexed, cancellable, a
   assert.equal(evidence.cleanup.failedStressReportsDeleted, true);
   assert.equal(evidence.cleanup.rawPassingReportsDeleted, true);
   assert.equal(evidence.cleanup.downloadedCandidateArtifactDeleted, true);
+  assert.equal(evidence.cleanup.temporaryIsolationDiagnosticArtifactRetained, false);
+  assert.equal(evidence.cleanup.hostedMismatchArtifactsDeleted, true);
   assert.deepEqual(evidence.cleanup.workDirectoryContents, [".gitkeep"]);
 
   const browserTest = await readFile(

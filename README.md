@@ -470,7 +470,12 @@ memory. Independent validation found 20 genuine OpenDML segments (8,560,640
 bytes maximum), exact MPEG-4/MP3 packet hashes, full native decode, midpoint
 seek, correct field retention/exclusions, cancellation cleanup, and forced-write
 failure cleanup. See `evidence/avi-output-feasibility-2026-09-08.json` and
-`evidence/compatible-avi-copy-2026-09-08.json`.
+`evidence/compatible-avi-copy-2026-09-08.json`. Hosted no-Docker run
+[34177452654](https://github.com/tanishqbaweja/fileconverter/actions/runs/34177452654)
+then reproduced the AVI-capable core and all five unchanged specialist FFmpeg
+modules byte-for-byte in 12m11s. The recipe isolates the new AVI muxer by
+reconstructing those specialists with their historical AVI-output-disabled
+configure surface; cleanup passed and no run artifact remains.
 
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded

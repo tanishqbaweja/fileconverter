@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordedAt": "2026-09-08T02:15:00+05:30",
   "requirements": ["P-08", "M-04"],
-  "status": "accepted-public-pending-final-exact-reproduction",
+  "status": "accepted-current-public-profile",
   "dockerUsed": false,
   "scope": "Add the fastest standards-correct Matroska MPEG-4 Part 2/MP3 to AVI path as a bounded packet-copy route instead of decoding and re-encoding compatible streams.",
   "profile": {
@@ -138,10 +138,12 @@
     "thirdAllCoreReproductionOutcome": "The bounded AVI core reproduced exactly for a third time, but saving the pre-patch archive retained the newly enabled AVI muxer configure surface and therefore reproduced the same five alternate specialist hashes as the second run.",
     "isolationResolution": "Both build paths now keep the patched, AVI-enabled FFmpeg library only for within-remux, then reverse the patch, clean the FFmpeg build, and reconstruct the already-certified specialists with their exact historical configure surface in which AVI output is disabled.",
     "temporaryIsolationDiagnosticArtifactIds": [10032987017, 10037386491, 10037627203],
-    "exactReproductionRun": null,
-    "exactReproductionCommit": null,
-    "exactReproductionResult": "pending after the implementation checkpoint is pushed",
-    "retainedRunArtifacts": 3
+    "exactReproductionRun": 34177452654,
+    "exactReproductionCommit": "bc0f3e25da6f7c9a37a1e176ba09d09181ad5aea",
+    "exactReproductionResult": "success: the bounded AVI core and all five historical specialist FFmpeg modules reproduced byte-for-byte without Docker; repository-local cleanup passed",
+    "exactReproductionElapsed": "12m11s",
+    "diagnosticArtifactsDeleted": true,
+    "retainedRunArtifacts": 0
   },
   "harnessCorrection": {
     "firstStressAttempt": "The browser conversion, cancellation, and independent packet/decode work were valid, but a newly added validator accidentally applied the OGV format assertion to AVI.",
@@ -157,7 +159,8 @@
     "failedStressReportsDeleted": true,
     "rawPassingReportsDeleted": true,
     "downloadedCandidateArtifactDeleted": true,
-    "temporaryIsolationDiagnosticArtifactRetained": true,
+    "temporaryIsolationDiagnosticArtifactRetained": false,
+    "hostedMismatchArtifactsDeleted": true,
     "workDirectoryContents": [".gitkeep"],
     "protectedTestMkvBytes": 2958573265,
     "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"

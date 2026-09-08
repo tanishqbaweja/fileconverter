@@ -176,6 +176,14 @@ not the entire product specification.
   `evidence/compatible-avi-copy-2026-09-08.json`; generated stress media, raw
   reports, downloaded build artifacts, and browser output are disposable and
   are removed after the tracked public-evidence manifest is refreshed.
+- Hosted no-Docker run
+  [34177452654](https://github.com/tanishqbaweja/fileconverter/actions/runs/34177452654)
+  reproduced the AVI-capable general core and all five unchanged specialist
+  FFmpeg modules byte-for-byte in 12m11s. The final recipe restores both stock
+  AVI source and the historical AVI-output-disabled configure surface before
+  specialist linking. Cleanup passed; all three bounded mismatch artifacts
+  from the diagnosed attempts were deleted, and the successful run retained
+  none.
 
 ### 2026-09-07 — Matroska Theora/Vorbis to OGV packet-copy acceptance
 
