@@ -480,7 +480,8 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   }
   if (profile == 37) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-      return stream->codecpar->codec_id == AV_CODEC_ID_MPEG4;
+      return stream->codecpar->codec_id == AV_CODEC_ID_MPEG4 ||
+             stream->codecpar->codec_id == AV_CODEC_ID_MPEG2VIDEO;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_MP3;
@@ -2719,7 +2720,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                                 : container_ogv_output
                                     ? "Theora"
                                 : container_avi_output
-                                    ? "MPEG-4 Part 2"
+                                    ? "MPEG-4 Part 2 or MPEG-2"
 #endif
                                 : av1_webm_output
                                     ? WITHIN_WEBM_COPY_VIDEO_LABEL
@@ -2795,8 +2796,17 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         source_video_codec == AV_CODEC_ID_AV1 ||
         source_video_codec == AV_CODEC_ID_VP8 ||
         source_video_codec == AV_CODEC_ID_VP9;
+    const int compatible_avi_video =
+#ifdef WITHIN_OGV_COPY
+        container_avi_output &&
+        (source_video_codec == AV_CODEC_ID_MPEG4 ||
+         source_video_codec == AV_CODEC_ID_MPEG2VIDEO);
+#else
+        0;
+#endif
     if ((av1_webm_output && !compatible_webm_video) ||
-        (!av1_webm_output && source_video_codec != expected_video_codec)) {
+        (!av1_webm_output && !compatible_avi_video &&
+         source_video_codec != expected_video_codec)) {
 #else
     if (input_format->streams[video_stream_index]->codecpar->codec_id !=
         expected_video_codec) {
@@ -2879,7 +2889,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   if (container_avi_output) {
     within_message(
         1,
-        "AVI packet-copies every MPEG-4 Part 2 video and MP3 audio stream; chapters, subtitles, attachments, attached pictures, data streams, and incompatible codecs are explicitly excluded.");
+        "AVI packet-copies every compatible MPEG-4 Part 2 or MPEG-2 video and MP3 audio stream; chapters, subtitles, attachments, attached pictures, data streams, and incompatible codecs are explicitly excluded.");
   }
 #endif
   int source_has_display_rotation = 0;
@@ -2907,7 +2917,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   } else if (source_has_display_rotation && container_avi_output) {
     within_message(
         1,
-        "Source display-rotation metadata cannot be represented reliably by AVI and is explicitly excluded; compressed MPEG-4 Part 2 pixels remain unrotated.");
+        "Source display-rotation metadata cannot be represented reliably by AVI and is explicitly excluded; compressed video pixels remain unrotated.");
 #endif
   }
   if (container_threegp_output || container_mov_output) {
