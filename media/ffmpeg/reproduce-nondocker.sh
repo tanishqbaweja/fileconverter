@@ -236,6 +236,18 @@ requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
+if [[ "${requested_core}" != "within-remux" ]]; then
+  # The bounded AVI muxer option belongs only to the general core that exposes
+  # profile 37. Restore and reinstall the stock libavformat before linking any
+  # already-certified specialist so their published bytes remain unchanged.
+  patch --reverse --directory="${BUILD_ROOT}/ffmpeg" --strip=1 \
+    < avi-bounded-index.patch
+  (
+    cd "${BUILD_ROOT}/ffmpeg"
+    emmake make -j"$(nproc)"
+    emmake make install
+  )
+fi
 if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those
   # blocks produces the same specialist translation unit while keeping the

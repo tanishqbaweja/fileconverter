@@ -12,6 +12,11 @@ const patch = readFileSync("media/ffmpeg/patches/avi-bounded-index.patch");
 const patchText = patch.toString("utf8");
 const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
 const libraries = readFileSync("media/ffmpeg/build-libraries.sh", "utf8");
+const noDockerBuild = readFileSync(
+  "media/ffmpeg/reproduce-nondocker.sh",
+  "utf8",
+);
+const dockerfile = readFileSync("media/ffmpeg/Dockerfile", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 
 test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments", () => {
@@ -35,6 +40,14 @@ test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments"
   assert.match(wrapper, /"riff_size_limit", "8388608"/);
   assert.match(wrapper, /"reserve_index_space", "262176"/);
   assert.match(libraries, /--enable-muxer=.*avi/);
+  assert.match(
+    noDockerBuild,
+    /patch --reverse --directory="\$\{BUILD_ROOT\}\/ffmpeg"[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install/,
+  );
+  assert.match(
+    dockerfile,
+    /patch --reverse --directory=\/src\/ffmpeg[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install/,
+  );
 });
 
 test("AVI output profile 37 is wired and public only after browser certification", () => {

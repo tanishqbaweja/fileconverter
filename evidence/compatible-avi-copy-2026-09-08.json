@@ -123,10 +123,21 @@
     "publishedWasmBytes": 9656875,
     "publishedWasmSha256": "baca6d79610668e71dc93826e96a4ae95f099859e8eb9a1495533193b1f8ed40",
     "publishedLoaderSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e",
+    "firstAllCoreReproductionRun": 34161840479,
+    "firstAllCoreReproductionOutcome": "The bounded AVI core reproduced exactly, but the first all-core run proved the AVI muxer patch had also changed five unrelated specialist Wasm modules.",
+    "firstAllCoreMismatchedModules": [
+      "within-direct.wasm",
+      "within-mpeg4.wasm",
+      "within-vp9.wasm",
+      "within-webm-quality.wasm",
+      "within-webm.wasm"
+    ],
+    "isolationResolution": "Both build paths now retain the bounded AVI library for within-remux only, reverse the AVI patch, and reinstall stock libavformat before linking any already-certified specialist core.",
+    "temporaryIsolationDiagnosticArtifactId": 10032987017,
     "exactReproductionRun": null,
     "exactReproductionCommit": null,
     "exactReproductionResult": "pending after the implementation checkpoint is pushed",
-    "retainedRunArtifacts": 0
+    "retainedRunArtifacts": 1
   },
   "harnessCorrection": {
     "firstStressAttempt": "The browser conversion, cancellation, and independent packet/decode work were valid, but a newly added validator accidentally applied the OGV format assertion to AVI.",
@@ -142,6 +153,7 @@
     "failedStressReportsDeleted": true,
     "rawPassingReportsDeleted": true,
     "downloadedCandidateArtifactDeleted": true,
+    "temporaryIsolationDiagnosticArtifactRetained": true,
     "workDirectoryContents": [".gitkeep"],
     "protectedTestMkvBytes": 2958573265,
     "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"

@@ -112,6 +112,13 @@ RUN chmod +x /src/build-remux.sh \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ] || [ "${WITHIN_BUILD_CORE_FILTER}" = within-remux ]; then \
          WITHIN_BUILD_CORE_FILTER=within-remux /src/build-remux.sh; \
        fi \
+    && if [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
+         patch --reverse --directory=/src/ffmpeg --strip=1 < /src/avi-bounded-index.patch; \
+         cd /src/ffmpeg; \
+         emmake make -j"$(nproc)"; \
+         emmake make install; \
+         cd /src; \
+       fi \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ]; then \
          for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do \
            WITHIN_BUILD_CORE_FILTER="${video_core}" /src/build-remux.sh; \
