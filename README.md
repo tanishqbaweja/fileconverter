@@ -505,6 +505,11 @@ operation, fixed 32 MiB Wasm, and cancellation cleanup. H.264 AVI is not
 advertised because its required bitstream treatment depends on the source and
 native trials exposed AVI interoperability warnings. See
 `evidence/compatible-avi-mpeg2-2026-09-08.json`.
+Hosted no-Docker run
+[34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210)
+then rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc`
+in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero
+artifacts.
 
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded

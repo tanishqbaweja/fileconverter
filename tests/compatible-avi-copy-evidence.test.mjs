@@ -200,6 +200,12 @@ test("MPEG-2 AVI evidence is genuine, bounded, exact, and preserves rejected att
   assert.equal(mpeg2Evidence.stressGate.repeatableOutput, true);
   assert.equal(mpeg2Evidence.stressGate.cancellationCleanup, true);
   assert.equal(mpeg2Evidence.stressGate.openDmlSegments, 27);
+  assert.equal(mpeg2Evidence.status, "accepted-public-expansion");
+  assert.equal(mpeg2Evidence.publication.result, "success");
+  assert.equal(mpeg2Evidence.publication.allSixFfmpegModulesByteExact, true);
+  assert.equal(mpeg2Evidence.publication.hostedCleanupPassed, true);
+  assert.equal(mpeg2Evidence.publication.retainedArtifactCount, 0);
+  assert.equal(mpeg2Evidence.cleanup.candidateArtifactDeletedAfterPublication, true);
   assert.ok(
     mpeg2Evidence.rejectedOrDeferred.some(
       ({ codec, result }) => codec === "h264" && result === "not advertised",

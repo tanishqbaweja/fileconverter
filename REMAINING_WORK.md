@@ -174,8 +174,12 @@ not the entire product specification.
   warnings. Those results are recorded rather than promoted from extension-only
   or merely playable output.
 - No Docker command ran. Compact evidence is
-  `evidence/compatible-avi-mpeg2-2026-09-08.json`; final pushed-state binary
-  reproduction and cleanup are required before this checkpoint is complete.
+  `evidence/compatible-avi-mpeg2-2026-09-08.json`. Hosted run
+  [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210)
+  rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in
+  13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero
+  artifacts. All generated local files and the obsolete candidate artifact were
+  deleted and verified absent.
 
 ### 2026-09-08 — bounded Matroska MPEG-4 Part 2/MP3 to AVI packet-copy acceptance
 

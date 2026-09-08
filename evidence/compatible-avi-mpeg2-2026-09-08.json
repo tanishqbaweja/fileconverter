@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-09-08T15:05:40.124Z",
-  "status": "accepted-awaiting-publication-reproduction",
+  "status": "accepted-public-expansion",
   "requirements": ["P-08", "M-04"],
   "dockerUsed": false,
   "acceptedCodecs": {
@@ -95,7 +95,18 @@
     "withinRemuxMjsUnchangedSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e"
   },
   "publication": {
-    "result": "pending final pushed-state all-module reproduction"
+    "sourceCommit": "27633bc28da6a0d12559c18baad394fbcd63a60c",
+    "workflowRunId": 34243934210,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210",
+    "result": "success",
+    "createdAt": "2026-09-08T15:18:48Z",
+    "completedAt": "2026-09-08T15:32:19Z",
+    "elapsedSeconds": 811,
+    "allSixFfmpegModulesByteExact": true,
+    "hostedCleanupPassed": true,
+    "mismatchUploadSkipped": true,
+    "retainedArtifactCount": 0,
+    "dockerUsed": false
   },
   "cleanup": {
     "allGeneratedFilesRepositoryLocal": true,
@@ -107,7 +118,8 @@
     "candidateDownloadDeleted": true,
     "nativeFeasibilityDirectoryDeleted": true,
     "workDirectoryContents": [".gitkeep"],
-    "candidateArtifactPendingDeletionAfterPublication": true,
+    "candidateArtifactDeletedAfterPublication": true,
+    "candidateArtifactDeletionVerifiedHttpStatus": 404,
     "protectedRootFixtureExpectedBytes": 2958573265,
     "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   }

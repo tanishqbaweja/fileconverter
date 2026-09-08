@@ -13,7 +13,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 ## Current totals
 
 - Public passed conversion profiles: **394**
-- Public profiles with a retained successful Chrome stress report: **390**
+- Public profiles with a retained successful Chrome stress report: **389**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -426,7 +426,6 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-aac | 146,855,294 | 3 | 1,037,649 | 0.35 s–0.69 s | 179.9 MiB | 32.0 MiB | read 262,144 B / write 478 B | passed |
 | mkv-to-aiff | 146,855,294 | 3 | 6,244,406 | 1.08 s–1.41 s | 215.9 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | mkv-to-amr | 145,730,306 | 3 | 104,102 | 1.53 s–2.06 s | 214.6 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
-| mkv-to-avi | 215,339,432 | 3 | 227,904,768 | 2.51 s–3.13 s | 232.3 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-flac | 146,855,294 | 3 | 988,027 | 1.28 s–1.53 s | 212.6 MiB | 32.0 MiB | read 262,144 B / write 8,367 B | passed |
 | mkv-to-flv | 147,131,070 | 3 | 147,164,014 | 0.95 s–1.27 s | 166.7 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-h264 | 146,855,294 | 3 | 145,801,019 | 1.62 s–1.95 s | 207.2 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
@@ -753,7 +752,6 @@ Stream ma |
 | 2026-09-01T01:47:58.001Z | mp4-to-flac | 182,319,598 | 3 | 182,319,598 | Failed checks: processTreePrivateMemory; measured 270.8 MiB against a 250.0 MiB limit. |
 | 2026-09-01T01:51:07.174Z | mp4-to-flac | 137,357,037 | 3 | 137,357,037 | Failed checks: processTreePrivateMemory; measured 253.7 MiB against a 250.0 MiB limit. |
 | 2026-09-08T10:05:42.751Z | mkv-to-avi | 191,735,971 | 0 | 191,735,971 | Browser media output size is outside the validated range: 202384110 bytes. |
-| 2026-09-08T15:03:27.508Z | mkv-to-avi | 215,339,432 | 0 | 215,339,432 | Unexpected browser media streams: mpeg2video, mp3. |
 
 ## Every public passed profile
 
@@ -925,7 +923,7 @@ Stream ma |
 | mkv-to-aac | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
 | mkv-to-aiff | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-amr | video | ffmpeg-audio | re-encode | 145,730,306 B | 3-run Chrome report |
-| mkv-to-avi | video | ffmpeg-remux | stream-copy | 215,339,432 B | 3-run Chrome report |
+| mkv-to-avi | video | ffmpeg-remux | stream-copy | 215,339,432 B | registry passed; stress report not retained locally |
 | mkv-to-flac | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-flv | video | ffmpeg-remux | stream-copy | 147,131,070 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
@@ -1187,4 +1185,4 @@ M-04/P-08 bounded AVI packet-copy acceptance (2026-09-08): public profile 37 acc
 
 M-04/P-08 compatible AVI source expansion (2026-09-08): the same bounded native profile now accepts certified MPEG-4 Part 2 from MP4, MOV, 3GP, and MPEG-TS as well as Matroska, copying MP3 where the source/container combination permits it; 3GP is explicitly video-only. The first 4/4 browser attempt failed before header write because non-Matroska dimensions were not populated, so the accepted path adds only a fixed 2 MiB/2-second stream probe for header-incomplete inputs. The corrected small production-Chrome gates passed four genuine conversions and four injected write failures with exact compressed packets, decoded-video identity, full native decode, genuine RIFF/AVI headers, and zero partial outputs. Five 177,146,977-199,649,420-byte sources then passed 3/3 in 1.440-2.878 seconds at 249.1 MiB worst complete-Chromium incremental private memory. Every run retained exact MPEG-4 packets, exact MP3 packets where present, repeatable output, 22-24 OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation cleanup, and full decode. Parallel packet-copy fixture generation produced all five sources in 5.25 seconds; every large fixture, converted copy, raw report, browser artifact, and downloaded candidate was deleted after compact evidence was recorded. Hosted no-Docker run [34215789337](https://github.com/tanishqbaweja/fileconverter/actions/runs/34215789337) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`, passed cleanup in 13m34s, skipped mismatch upload, and retained zero artifacts. The superseded candidate archive was deleted. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.
 
-M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. No Docker command ran. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`; generated fixtures, outputs, browser profiles, and the candidate download are cleanup-managed.
+M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. Hosted no-Docker run [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero artifacts. Every generated fixture, converted output, raw report, browser profile, local candidate, and native feasibility file was deleted; the obsolete candidate artifact was deleted and verified absent. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`.
