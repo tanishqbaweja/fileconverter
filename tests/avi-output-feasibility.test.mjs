@@ -42,11 +42,11 @@ test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments"
   assert.match(libraries, /--enable-muxer=.*avi/);
   assert.match(
     noDockerBuild,
-    /patch --reverse --directory="\$\{BUILD_ROOT\}\/ffmpeg"[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install/,
+    /libavformat\.stock\.a[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*cp "\$\{BUILD_ROOT\}\/libavformat\.stock\.a"/,
   );
   assert.match(
     dockerfile,
-    /patch --reverse --directory=\/src\/ffmpeg[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install/,
+    /libavformat\.stock\.a[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*cp \/src\/libavformat\.stock\.a/,
   );
 });
 

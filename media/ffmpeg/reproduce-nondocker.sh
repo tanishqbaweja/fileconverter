@@ -230,23 +230,25 @@ run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
 run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
-patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
 ./build-libraries.sh
+cp "${BUILD_ROOT}/install/lib/libavformat.a" \
+  "${BUILD_ROOT}/libavformat.stock.a"
+patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
+(
+  cd "${BUILD_ROOT}/ffmpeg"
+  emmake make -j"$(nproc)"
+  emmake make install
+)
 requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" != "within-remux" ]]; then
   # The bounded AVI muxer option belongs only to the general core that exposes
-  # profile 37. Restore and reinstall the stock libavformat before linking any
-  # already-certified specialist so their published bytes remain unchanged.
-  patch --reverse --directory="${BUILD_ROOT}/ffmpeg" --strip=1 \
-    < avi-bounded-index.patch
-  (
-    cd "${BUILD_ROOT}/ffmpeg"
-    emmake make -j"$(nproc)"
-    emmake make install
-  )
+  # profile 37. Restore the exact pre-patch archive before linking any already-
+  # certified specialist so their published bytes remain unchanged.
+  cp "${BUILD_ROOT}/libavformat.stock.a" \
+    "${BUILD_ROOT}/install/lib/libavformat.a"
 fi
 if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those

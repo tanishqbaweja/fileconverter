@@ -132,12 +132,14 @@
       "within-webm-quality.wasm",
       "within-webm.wasm"
     ],
-    "isolationResolution": "Both build paths now retain the bounded AVI library for within-remux only, reverse the AVI patch, and reinstall stock libavformat before linking any already-certified specialist core.",
-    "temporaryIsolationDiagnosticArtifactId": 10032987017,
+    "secondAllCoreReproductionRun": 34175834034,
+    "secondAllCoreReproductionOutcome": "The bounded AVI core again reproduced exactly, but reverse-patching and rebuilding libavformat changed archive/link bytes for the same five specialist modules despite restoring stock source semantics.",
+    "isolationResolution": "Both build paths now save the exact pre-patch libavformat archive, rebuild the patched archive only for within-remux, and restore the byte-identical saved stock archive before linking any already-certified specialist core.",
+    "temporaryIsolationDiagnosticArtifactIds": [10032987017, 10037386491],
     "exactReproductionRun": null,
     "exactReproductionCommit": null,
     "exactReproductionResult": "pending after the implementation checkpoint is pushed",
-    "retainedRunArtifacts": 1
+    "retainedRunArtifacts": 2
   },
   "harnessCorrection": {
     "firstStressAttempt": "The browser conversion, cancellation, and independent packet/decode work were valid, but a newly added validator accidentally applied the OGV format assertion to AVI.",
