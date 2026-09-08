@@ -1,0 +1,88 @@
+{
+  "date": "2026-09-08",
+  "status": "native-feasibility-passed-browser-certification-pending",
+  "scope": "Native FFmpeg generated deterministic inputs and independently tested the IVF muxer. These results do not claim a browser conversion or public profile.",
+  "dockerUsed": false,
+  "repositoryLocalScratch": "work/ivf-feasibility",
+  "diskPreflight": {
+    "drive": "H:",
+    "freeBytes": 2072901988352
+  },
+  "candidatePolicy": {
+    "inputContainers": ["matroska", "webm"],
+    "videoCodecs": ["av1", "vp8", "vp9"],
+    "outputContainer": "ivf",
+    "streamPolicy": "Copy the first non-attached compatible video stream; explicitly exclude audio, additional video, subtitles, attachments, data, chapters, rotation, and container metadata.",
+    "timingPolicy": "Require a valid source average frame rate and write its inverse as the fixed IVF time base. Variable frame timing is not preserved."
+  },
+  "rejectedTrial": {
+    "commandDifference": "No explicit output frame rate",
+    "reason": "FFmpeg inherited the Matroska/WebM 1/1000 stream time base into the IVF header, causing FFprobe to report 96 frames as 0.096 seconds and 48 frames as 0.048 seconds.",
+    "reportedDurationsSeconds": {
+      "av1": 0.096,
+      "vp8": 0.048,
+      "vp9": 0.048
+    }
+  },
+  "acceptedTrials": [
+    {
+      "codec": "av1",
+      "source": "fixtures/media/av1-opus-source.mkv",
+      "sourceBytes": 1669345,
+      "sourceSha256": "28ac24000887e37f5321c3af52f250cb9b190b906c4f86b9accf7535020b3ab9",
+      "outputBytes": 1605817,
+      "outputSha256": "6c34a55c1fc8d685a997f8ad5d8178b8cda079fc50422d223d66f97a434d1beb",
+      "signature": "DKIF",
+      "fourCc": "AV01",
+      "timeBase": "1/24",
+      "durationSeconds": 4,
+      "sourcePackets": 96,
+      "outputPackets": 96,
+      "compressedPacketsByteExact": false,
+      "requiredBitstreamAdaptation": "FFmpeg's IVF path prepends a two-byte AV1 temporal-delimiter OBU to each packet through its automatic av1_frame_merge filter; no frame is decoded or re-encoded.",
+      "decodedVideoSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e",
+      "decodedVideoExact": true,
+      "fullDecodePassed": true,
+      "midpointSeekPassed": true
+    },
+    {
+      "codec": "vp8",
+      "source": "fixtures/media/vp8-opus-source.webm",
+      "sourceBytes": 146134,
+      "sourceSha256": "f540d03cb460d90525df4f17674a6eb2eb16b30b76c5ce7846dc3378f1e8d3c1",
+      "outputBytes": 126259,
+      "outputSha256": "1035bb52f222e8d2b7eb352110d2565980a5e5740f376753fc71b230c7d50f29",
+      "signature": "DKIF",
+      "fourCc": "VP80",
+      "timeBase": "1/24",
+      "durationSeconds": 2,
+      "sourcePackets": 48,
+      "outputPackets": 48,
+      "compressedPacketsByteExact": true,
+      "decodedVideoSha256": "580a8b15af13b17a51c544b485de833c69824cfe68aa778ea3bb0843ac8e614e",
+      "decodedVideoExact": true,
+      "fullDecodePassed": true,
+      "midpointSeekPassed": true
+    },
+    {
+      "codec": "vp9",
+      "source": "fixtures/media/webm-source.webm",
+      "sourceBytes": 95150,
+      "sourceSha256": "c9fec8b3f22a15753d96bd4e5ede97131f3f85df2fbc9a97bc6d5af8e00edb35",
+      "outputBytes": 74534,
+      "outputSha256": "afdc69527775eef3d0c513a2d415fd6d7f5371047828f49326287ec544878462",
+      "signature": "DKIF",
+      "fourCc": "VP90",
+      "timeBase": "1/24",
+      "durationSeconds": 2,
+      "sourcePackets": 48,
+      "outputPackets": 48,
+      "compressedPacketsByteExact": true,
+      "decodedVideoSha256": "18ed47fb61ecb6d0b2cfe6bd60455ed2a66aca1cd640f1b76f7aca103f9b23a2",
+      "decodedVideoExact": true,
+      "fullDecodePassed": true,
+      "midpointSeekPassed": true
+    }
+  ],
+  "nextGate": "Build native profile 38 without Docker, then require genuine production-browser success, incompatibility, cancellation, write-failure, three-run stress, complete-Chromium memory, bounded-I/O, cleanup, registry, and reproducibility evidence before publication."
+}

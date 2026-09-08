@@ -157,6 +157,25 @@ not the entire product specification.
 
 ## Implementation and verification log
 
+### 2026-09-08 — IVF elementary-video feasibility and bounded profile candidate
+
+- Native FFmpeg proved that Matroska/WebM AV1, VP8, and VP9 can be extracted to
+  structurally valid `DKIF`/`AV01`, `DKIF`/`VP80`, and `DKIF`/`VP90` IVF files
+  without decoding or re-encoding. VP8 and VP9 packets are byte-exact; AV1
+  requires FFmpeg's two-byte temporal-delimiter OBU adaptation per packet but
+  retains the exact decoded frames.
+- A naive copy that inherited the 1/1000 Matroska time base was rejected because
+  it reported 96 frames as 0.096 seconds. The candidate native profile instead
+  requires a valid average frame rate and writes its inverse into IVF, producing
+  the correct 4.0-second AV1 and 2.0-second VP8/VP9 durations. All three trials
+  fully decoded and passed midpoint seeks.
+- Implementation of guarded native profile 38, bounded browser routing, the IVF
+  muxer build surface, and a deterministic VP8/Opus fixture is in progress. It
+  remains absent from the public registry until its no-Docker Wasm build and all
+  browser correctness, failure, stress-memory, cleanup, and reproducibility
+  gates pass. Compact native-only evidence is
+  `evidence/ivf-native-feasibility-2026-09-08.json`.
+
 ### 2026-09-08 — compatible MPEG-2 video to AVI packet copy
 
 - Native profile 37 and the browser planner accept MPEG-2 video alongside the

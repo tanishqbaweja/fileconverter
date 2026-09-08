@@ -76,7 +76,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   jobId: string;
@@ -182,6 +182,8 @@ export async function runMediaRemux({
         ? "Remuxing to OGV"
       : remuxProfile === 37
         ? "Remuxing to AVI"
+      : remuxProfile === 38
+        ? "Extracting AV1/VP8/VP9 video to IVF"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -221,7 +223,8 @@ export async function runMediaRemux({
     remuxProfile === 26 ||
     remuxProfile === 27 ||
     remuxProfile === 36 ||
-    remuxProfile === 37
+    remuxProfile === 37 ||
+    remuxProfile === 38
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =

@@ -43,6 +43,7 @@
     "fixtures:m4v-elementary-stress": "node scripts/generate-m4v-elementary-stress-fixtures.mjs",
     "fixtures:av1-opus": "node scripts/generate-av1-opus-fixture.mjs",
     "fixtures:webm-source": "node scripts/generate-webm-source-fixture.mjs",
+    "fixtures:vp8-opus": "node scripts/generate-vp8-opus-fixture.mjs",
     "fixtures:av1-opus-stress": "node scripts/generate-av1-opus-stress-fixture.mjs",
     "fixtures:compatible-webm-stress": "node scripts/generate-compatible-webm-stress-fixture.mjs",
     "fixtures:compatible-ogv-stress": "node scripts/generate-compatible-ogv-stress-fixture.mjs",

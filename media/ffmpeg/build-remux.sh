@@ -115,7 +115,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "currentWrapperSourceSha256": "9d243b8419282452282bd9ce93527f4060009efefd5509a2d9abbef668932718",
+  "currentWrapperSourceSha256": "8f9b89590673bf61a6e30c757d5659fb7b0ec99fe8b1f4331c3cd952c28de0f7",
   "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
@@ -124,7 +124,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
   "modules": [
-    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "amr-wb-input", "mp3-audio", "aac-audio", "opus-audio", "vorbis-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "ogv-copy", "avi-copy", "m4v-extract", "m4v-wrap", "compatible-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract", "m4a-aac-transcode", "amr-extract"]},
+    {"name": "within-remux", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["stream-copy", "audio", "aiff-audio", "amr-audio", "amr-wb-input", "mp3-audio", "aac-audio", "opus-audio", "vorbis-audio", "h264-extract", "hevc-extract", "mpeg2-extract", "mpeg2-wrap", "mpegts-copy", "threegp-copy", "mov-copy", "flv-copy", "ogv-copy", "avi-copy", "ivf-extract", "m4v-extract", "m4v-wrap", "compatible-webm-copy", "matroska-copy", "mp3-extract", "aac-extract", "ogg-audio-extract", "m4a-aac-transcode", "amr-extract"]},
     {"name": "within-direct", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 1048576, "profiles": ["mkv-to-mp4-direct-save"]},
     {"name": "within-mpeg4", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["mkv-to-mp4-mpeg4", "m2v-to-mp4-mpeg4"]},
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
@@ -150,11 +150,29 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "enabledDecoders": ["aac", "alac", "amrnb", "amrwb", "flac", "h264", "hevc", "mp3", "mpeg2video", "mpeg4", "opus", "pcm_s16be", "pcm_s16le", "theora", "vorbis", "wmav1", "wmav2"],
   "enabledEncoders": ["aac", "alac", "flac", "h263", "libmp3lame", "libopencore_amrnb", "libopus", "libvorbis", "libvpx_vp8", "libvpx_vp9", "mpeg4", "pcm_s16be", "pcm_s16le", "wmav2"],
   "enabledDemuxers": ["aac", "aiff", "amr", "asf", "avi", "flac", "flv", "h264", "m4v", "matroska", "mov", "mp3", "mpegts", "mpegvideo", "ogg", "wav"],
-  "enabledMuxers": ["3gp", "adts", "aiff", "amr", "asf", "avi", "flac", "flv", "h264", "hevc", "ipod", "latm", "m4v", "matroska", "mov", "mp3", "mp4", "mpeg2video", "mpegts", "ogg", "wav", "webm"],
+  "enabledMuxers": ["3gp", "adts", "aiff", "amr", "asf", "avi", "flac", "flv", "h264", "hevc", "ipod", "ivf", "latm", "m4v", "matroska", "mov", "mp3", "mp4", "mpeg2video", "mpegts", "ogg", "wav", "webm"],
   "enabledParsers": ["aac", "ac3", "flac", "h264", "hevc", "mpeg4video", "mpegaudio", "mpegvideo", "opus", "vorbis"],
-  "enabledBitstreamFilters": ["aac_adtstoasc", "extract_extradata", "h264_mp4toannexb", "hevc_mp4toannexb", "vp9_superframe", "vvc_mp4toannexb"]
+  "enabledBitstreamFilters": ["aac_adtstoasc", "av1_frame_merge", "extract_extradata", "h264_mp4toannexb", "hevc_mp4toannexb", "vp9_superframe", "vvc_mp4toannexb"]
 }
 EOF
+
+node --input-type=module - "${OUTPUT}/build-manifest.json" <<'NODE'
+import { readFileSync, writeFileSync } from "node:fs";
+
+const manifestPath = process.argv[2];
+const manifest = readFileSync(manifestPath, "utf8");
+const marker = '"mkv-to-webm-av1","mkv-to-mp3"';
+if (!manifest.includes(marker)) {
+  throw new Error("Could not locate the IVF profile insertion point.");
+}
+writeFileSync(
+  manifestPath,
+  manifest.replace(
+    marker,
+    '"mkv-to-webm-av1","mkv-to-ivf","webm-to-ivf","mkv-to-mp3"',
+  ),
+);
+NODE
 
 cp /src/opencore-amr/LICENSE "${OUTPUT}/LICENSE.opencore-amr"
 cp /src/lame/COPYING "${OUTPUT}/LICENSE.lame"

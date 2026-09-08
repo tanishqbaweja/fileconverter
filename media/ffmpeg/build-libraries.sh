@@ -6,7 +6,7 @@ PREFIX=/src/install
 export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 
 if [[ "${WITHIN_ENABLE_AVI_MUXER:-1}" == "1" ]]; then
-  ENABLED_MUXERS=tgp,aiff,amr,asf,avi,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
+  ENABLED_MUXERS=tgp,aiff,amr,asf,avi,flac,flv,h264,hevc,ipod,ivf,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
 else
   ENABLED_MUXERS=tgp,aiff,amr,asf,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
 fi
