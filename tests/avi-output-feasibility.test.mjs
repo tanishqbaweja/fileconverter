@@ -56,6 +56,7 @@ test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments"
 test("AVI output profile 37 is wired and public only after browser certification", () => {
   assert.match(wrapper, /profile == 37/);
   assert.match(wrapper, /AV_CODEC_ID_MPEG4/);
+  assert.match(wrapper, /AV_CODEC_ID_MPEG2VIDEO/);
   assert.match(wrapper, /AV_CODEC_ID_MP3/);
   assert.match(worker, /profileId === "mkv-to-avi"/);
   const profile = conversionProfiles.find(
@@ -64,7 +65,7 @@ test("AVI output profile 37 is wired and public only after browser certification
   assert.ok(profile);
   assert.equal(profile.public, true);
   assert.equal(profile.automatedTestStatus, "passed");
-  assert.equal(profile.maxTestedBytes, 191_735_971);
+  assert.equal(profile.maxTestedBytes, 215_339_432);
   assert.equal(
     evidence.acceptedEvidence,
     "evidence/compatible-avi-copy-2026-09-08.json",

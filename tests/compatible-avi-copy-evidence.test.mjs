@@ -11,15 +11,9 @@ const evidenceName = "compatible-avi-copy-2026-09-08.json";
 const evidence = JSON.parse(
   await readFile(path.join(projectRoot, "evidence", evidenceName), "utf8"),
 );
-const expansionEvidence = JSON.parse(
-  await readFile(
-    path.join(
-      projectRoot,
-      "evidence",
-      "compatible-avi-source-expansion-2026-09-08.json",
-    ),
-    "utf8",
-  ),
+const mpeg2EvidenceName = "compatible-avi-mpeg2-2026-09-08.json";
+const mpeg2Evidence = JSON.parse(
+  await readFile(path.join(projectRoot, "evidence", mpeg2EvidenceName), "utf8"),
 );
 
 test("compatible AVI evidence matches the current public profile", () => {
@@ -34,14 +28,14 @@ test("compatible AVI evidence matches the current public profile", () => {
   assert.equal(profile.route, "stream-copy");
   assert.equal(
     profile.maxTestedBytes,
-    expansionEvidence.profiles["mkv-to-avi"].sourceBytes,
+    mpeg2Evidence.stressGate.sourceBytes,
   );
   assert.ok(
     profile.maxTestedBytes >= evidence.profile.maximumTestedSourceBytes,
   );
   assert.match(
     profile.metadataLimitations.join(" "),
-    /MPEG-4 Part 2 video with optional MP3 audio/,
+    /MPEG-4 Part 2 or MPEG-2 video with optional MP3 audio/,
   );
 });
 
@@ -54,10 +48,10 @@ test("the published AVI-capable core matches its build evidence", async () => {
     "within-remux.wasm",
   );
   const wasm = await readFile(wasmPath);
-  assert.equal((await stat(wasmPath)).size, 9_656_932);
+  assert.equal((await stat(wasmPath)).size, mpeg2Evidence.engineCandidate.withinRemuxWasmBytes);
   assert.equal(
     createHash("sha256").update(wasm).digest("hex"),
-    expansionEvidence.engineCandidate.withinRemuxWasmSha256,
+    mpeg2Evidence.engineCandidate.withinRemuxWasmSha256,
   );
   assert.equal(evidence.buildValidation.isolatedCandidateRun, 34158982139);
   assert.equal(evidence.status, "accepted-current-public-profile");
@@ -169,12 +163,12 @@ test("the compact public-evidence manifest retains the deleted raw AVI report ha
   assert.ok(profile);
   assert.equal(
     profile.maxTestedBytes,
-    expansionEvidence.profiles["mkv-to-avi"].sourceBytes,
+    mpeg2Evidence.stressGate.sourceBytes,
   );
   assert.equal(profile.repeatableEvidence.runs, 3);
   assert.equal(
     profile.repeatableEvidence.reportSha256,
-    "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
+    mpeg2Evidence.stressGate.rawReportSha256,
   );
   assert.deepEqual(profile.maximumSizeEvidence, profile.repeatableEvidence);
 });
@@ -183,5 +177,45 @@ test("the accepted AVI checkpoint is linked from every project ledger", async ()
   for (const relativePath of ["README.md", "TESTED.md", "REMAINING_WORK.md"]) {
     const ledger = await readFile(path.join(projectRoot, relativePath), "utf8");
     assert.ok(ledger.includes(evidenceName), relativePath);
+    assert.ok(ledger.includes(mpeg2EvidenceName), relativePath);
+  }
+});
+
+test("MPEG-2 AVI evidence is genuine, bounded, exact, and preserves rejected attempts", async () => {
+  assert.deepEqual(mpeg2Evidence.requirements, ["P-08", "M-04"]);
+  assert.equal(mpeg2Evidence.dockerUsed, false);
+  assert.equal(mpeg2Evidence.smallBrowserGate.focusedMpeg2Cases, 4);
+  assert.equal(mpeg2Evidence.smallBrowserGate.allAviSuccessCases, 9);
+  assert.equal(mpeg2Evidence.stressGate.runs, 3);
+  assert.ok(mpeg2Evidence.stressGate.sourceBytes >= 192 * 1024 * 1024);
+  assert.ok(
+    mpeg2Evidence.stressGate.worstIncrementalPrivateMiB <=
+      mpeg2Evidence.stressGate.limitMiB,
+  );
+  assert.equal(mpeg2Evidence.stressGate.maximumReadBytes, 256 * 1024);
+  assert.equal(mpeg2Evidence.stressGate.maximumWriteBytes, 256 * 1024);
+  assert.equal(mpeg2Evidence.stressGate.maximumPendingOperations, 1);
+  assert.equal(mpeg2Evidence.stressGate.wasmMemoryBytes, 32 * 1024 * 1024);
+  assert.equal(mpeg2Evidence.stressGate.fullNativeDecode, true);
+  assert.equal(mpeg2Evidence.stressGate.repeatableOutput, true);
+  assert.equal(mpeg2Evidence.stressGate.cancellationCleanup, true);
+  assert.equal(mpeg2Evidence.stressGate.openDmlSegments, 27);
+  assert.ok(
+    mpeg2Evidence.rejectedOrDeferred.some(
+      ({ codec, result }) => codec === "h264" && result === "not advertised",
+    ),
+  );
+
+  const browserTest = await readFile(
+    path.join(projectRoot, "tests", "browser", "media-remux.spec.ts"),
+    "utf8",
+  );
+  for (const anchor of [
+    '["mkv", "mkv-to-avi", ["mpeg2video", "mp3"]]',
+    '["mp4", "mp4-to-avi", ["mpeg2video"]]',
+    '["mov", "mov-to-avi", ["mpeg2video"]]',
+    '["mpeg-ts", "mpeg-ts-to-avi", ["mpeg2video"]]',
+  ]) {
+    assert.ok(browserTest.includes(anchor), anchor);
   }
 });

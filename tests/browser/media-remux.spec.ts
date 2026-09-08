@@ -594,6 +594,12 @@ const aviCopyOutputPaths = {
   "3gp": path.join(outputRoot, "3gp-mpeg4-copy-output.avi"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-mpeg4-mp3-copy-output.avi"),
 } as const;
+const aviMpeg2CopyOutputPaths = {
+  mkv: path.join(outputRoot, "mkv-mpeg2-mp3-copy-output.avi"),
+  mp4: path.join(outputRoot, "mp4-mpeg2-copy-output.avi"),
+  mov: path.join(outputRoot, "mov-mpeg2-copy-output.avi"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-mpeg2-copy-output.avi"),
+} as const;
 const complexAviCopyFixturePath = path.join(
   projectRoot,
   "work",
@@ -1493,6 +1499,9 @@ test.beforeAll(async () => {
   for (const outputPath of Object.values(aviCopyOutputPaths)) {
     assertProjectLocal(outputPath);
   }
+  for (const outputPath of Object.values(aviMpeg2CopyOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(complexAviCopyFixturePath);
   assertProjectLocal(complexAviCopyOutputPath);
   await rm(profileRoot, { recursive: true, force: true });
@@ -1522,6 +1531,9 @@ test.beforeAll(async () => {
   }
   for (const [input, outputPath] of Object.entries(aviCopyOutputPaths)) {
     if (input !== "mkv") await rm(outputPath, { force: true });
+  }
+  for (const outputPath of Object.values(aviMpeg2CopyOutputPaths)) {
+    await rm(outputPath, { force: true });
   }
   await rm(complexAviCopyFixturePath, { force: true });
   await rm(complexAviCopyOutputPath, { force: true });
@@ -2245,7 +2257,7 @@ test.beforeAll(async () => {
       "-i",
       m2vFixturePath,
       "-i",
-      audioFixturePath,
+      mp3FixturePath,
       "-map",
       "0:v:0",
       "-map",
@@ -2698,6 +2710,9 @@ test.afterAll(async () => {
   }
   for (const [input, outputPath] of Object.entries(aviCopyOutputPaths)) {
     if (input !== "mkv") await rm(outputPath, { force: true });
+  }
+  for (const outputPath of Object.values(aviMpeg2CopyOutputPaths)) {
+    await rm(outputPath, { force: true });
   }
   await rm(complexAviCopyFixturePath, { force: true });
   await rm(complexAviCopyOutputPath, { force: true });
@@ -6514,7 +6529,7 @@ test("browser FFmpeg losslessly remuxes Matroska MPEG-4 Part 2 and MP3 to genuin
     aviCopyFixturePath,
     {
       expectedWarningFragments: [
-        "packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
+        "packet-copies every compatible MPEG-4 Part 2 or MPEG-2 video and MP3 audio stream",
       ],
       expectedDurationSeconds: 4,
       durationToleranceSeconds: 0.25,
@@ -6574,7 +6589,7 @@ for (const [
       sourcePath,
       {
         expectedWarningFragments: [
-          "AVI packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
+          "AVI packet-copies every compatible MPEG-4 Part 2 or MPEG-2 video and MP3 audio stream",
         ],
         expectedDurationSeconds: sourceFormat === "mpeg-ts" ? 5.441667 : 4,
         durationToleranceSeconds: 0.25,
@@ -6602,6 +6617,72 @@ for (const [
               "-map",
               "0:v:0",
               ...(sourceFormat === "3gp" ? [] : ["-map", "0:a:0"]),
+              "-f",
+              "null",
+              "NUL",
+            ],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 8 * 1024 * 1024,
+            },
+          );
+        },
+      },
+    );
+  });
+}
+
+const compatibleMpeg2AviSourceRoutes = [
+  ["mkv", "mkv-to-avi", ["mpeg2video", "mp3"]],
+  ["mp4", "mp4-to-avi", ["mpeg2video"]],
+  ["mov", "mov-to-avi", ["mpeg2video"]],
+  ["mpeg-ts", "mpeg-ts-to-avi", ["mpeg2video"]],
+] as const;
+
+for (const [
+  sourceFormat,
+  profileId,
+  expectedCodecs,
+] of compatibleMpeg2AviSourceRoutes) {
+  test(`browser FFmpeg losslessly remuxes compatible ${sourceFormat.toUpperCase()} MPEG-2 to genuine AVI`, async () => {
+    const sourcePath = mpeg2ContainerFixturePaths[sourceFormat];
+    await runMediaRoute(
+      profileId,
+      aviMpeg2CopyOutputPaths[sourceFormat],
+      [...expectedCodecs],
+      100_000,
+      sourcePath,
+      {
+        expectedWarningFragments: [
+          "AVI packet-copies every compatible MPEG-4 Part 2 or MPEG-2 video and MP3 audio stream",
+        ],
+        expectedDurationSeconds: sourceFormat === "mpeg-ts" ? 5.4 : 3.84,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("avi");
+          expect(probe.streams).toHaveLength(expectedCodecs.length);
+          const header = await readFile(outputPath);
+          expect(header.subarray(0, 4).toString("ascii")).toBe("RIFF");
+          expect(header.subarray(8, 12).toString("ascii")).toBe("AVI ");
+          await expectCompressedVideoPacketMatch(sourcePath, outputPath);
+          if (sourceFormat === "mkv") {
+            await expectCompressedAudioPacketMatch(sourcePath, outputPath);
+          }
+          await expectDecodedVideoMatch(sourcePath, outputPath);
+          await execFileAsync(
+            "ffmpeg",
+            [
+              "-hide_banner",
+              "-loglevel",
+              "error",
+              "-nostdin",
+              "-xerror",
+              "-i",
+              outputPath,
+              "-map",
+              "0:v:0",
+              ...(sourceFormat === "mkv" ? ["-map", "0:a:0"] : []),
               "-f",
               "null",
               "NUL",
@@ -6706,7 +6787,7 @@ test("AVI stream copy retains only representable fields and discloses every excl
     complexAviCopyFixturePath,
     {
       expectedWarningFragments: [
-        "packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
+        "packet-copies every compatible MPEG-4 Part 2 or MPEG-2 video and MP3 audio stream",
         "chapter",
         "subtitle",
         "attachment",

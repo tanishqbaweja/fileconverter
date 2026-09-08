@@ -15,6 +15,8 @@ const aviSourceExpansionReports = [
   "2026-09-08T10-02-40-598Z-mp4-to-avi-stress",
   "2026-09-08T10-04-54-361Z-mov-to-avi-stress",
   "2026-09-08T10-08-06-333Z-mkv-to-avi-stress",
+  "2026-09-08T15-03-27-508Z-mkv-to-avi-stress-failure",
+  "2026-09-08T15-05-40-124Z-mkv-to-avi-stress",
 ].flatMap((stem) =>
   ["json", "csv", "html"].map((extension) =>
     path.resolve(reportRoot, `${stem}.${extension}`),
@@ -89,6 +91,8 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "avi-mpeg2-feasibility"),
+  path.resolve(workRoot, "avi-mpeg2-candidate"),
   path.resolve(workRoot, "avi-source-feasibility"),
   path.resolve(workRoot, "avi-loop-debug.mkv"),
   path.resolve(workRoot, "avi-loop-debug.mpegts"),
@@ -307,6 +311,7 @@ const generatedStressNames = new Set([
   "mpeg4-mp3-avi-copy-128m.mp4.json",
   "mpeg4-mp3-avi-copy-128m.mov.json",
   "mpeg4-avi-copy-128m.3gp.json",
+  "mpeg2-mp3-avi-copy-192m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mpegts.json",
   "mpeg2-video-128m.mkv.json",
   "mpeg2-video-128m.mp4.json",

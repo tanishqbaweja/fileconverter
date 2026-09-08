@@ -493,6 +493,19 @@ then rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`,
 passed hosted cleanup in 13m34s, skipped mismatch upload, and retained zero
 artifacts.
 
+The same AVI packet-copy core now accepts compatible MPEG-2 video from
+Matroska, MP4, MOV, and MPEG-TS, with MP3 retained when present. Four focused
+production-Chrome conversions and the full nine-case AVI success regression
+passed. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed
+three runs in 2.512-3.133 seconds at 232.348 MiB worst incremental
+complete-Chromium private memory. Every run produced the same genuine
+227,904,768-byte AVI with exact compressed video/audio packets, full native
+decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB I/O, one pending
+operation, fixed 32 MiB Wasm, and cancellation cleanup. H.264 AVI is not
+advertised because its required bitstream treatment depends on the source and
+native trials exposed AVI interoperability warnings. See
+`evidence/compatible-avi-mpeg2-2026-09-08.json`.
+
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded
 JPEG/PNG pictures by copying their compressed bytes into native Matroska

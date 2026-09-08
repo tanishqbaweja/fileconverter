@@ -41,7 +41,7 @@ test("compatible AVI source expansion has exact public stress evidence", () => {
     assert.equal(profile.public, true, id);
     assert.equal(profile.automatedTestStatus, "passed", id);
     assert.equal(profile.route, "stream-copy", id);
-    assert.equal(profile.maxTestedBytes, bytes, id);
+    assert.ok(profile.maxTestedBytes >= bytes, id);
     assert.equal(evidence.profiles[id].sourceBytes, bytes, id);
     assert.equal(evidence.profiles[id].conversionSeconds.length, 3, id);
     assert.ok(evidence.profiles[id].worstIncrementalPrivateMiB <= 250, id);
@@ -70,7 +70,7 @@ test("stress generation, validation, and cleanup remain fully wired", () => {
   assert.match(generator, /minimumFreeBytes = 2 \* 1024 \* 1024 \* 1024/);
   assert.match(profiler, /COMPATIBLE_AVI_PROFILES/);
   assert.match(profiler, /inspectAviOpenDml/);
-  assert.match(profiler, /mpeg4-packet-sha256/);
+  assert.match(profiler, /codec_name[\s\S]*-packet-sha256/);
   assert.match(cleanup, /avi-candidate-build/);
   assert.equal(evidence.stressGate.runsPerProfile, 3);
   assert.equal(evidence.stressGate.allPassed, true);

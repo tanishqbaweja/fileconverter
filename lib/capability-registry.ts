@@ -5550,16 +5550,16 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       cpuClass: "low",
       memoryClass: "bounded-medium",
       metadataLimitations: [
-        "The certified input contains MPEG-4 Part 2 video with optional MP3 audio in Matroska; incompatible codecs are rejected before conversion.",
-        "Compatible MPEG-4 Part 2 and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
+        "The certified input contains MPEG-4 Part 2 or MPEG-2 video with optional MP3 audio in Matroska; incompatible codecs are rejected before conversion.",
+        "Compatible MPEG-4 Part 2 or MPEG-2 video and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
         "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
         "AVI cannot retain all Matroska metadata, language, disposition, or timestamp fields; the conversion reports each excluded field class.",
         "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
       ],
       fidelityLimitations: [
-        "MPEG-4 Part 2 and MP3 compressed packets are copied without decoding or re-encoding.",
+        "MPEG-4 Part 2 or MPEG-2 video and MP3 compressed packets are copied without decoding or re-encoding.",
       ],
-      maxTestedBytes: 191_735_971,
+      maxTestedBytes: 215_339_432,
       automatedTestStatus: "passed",
       public: true,
     },
@@ -5581,14 +5581,18 @@ export const conversionProfiles: readonly ConversionProfile[] = (
         metadataLimitations: [
           input === "3gp"
             ? "The certified 3GP input contains MPEG-4 Part 2 video only; 3GP AAC or AMR audio cannot be represented by this AVI profile and is explicitly excluded."
-            : `The certified ${input.toUpperCase()} input contains MPEG-4 Part 2 video with MP3 audio; other codec combinations require separate evidence.`,
-          "Compatible MPEG-4 Part 2 and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
+            : `The certified ${input.toUpperCase()} input contains MPEG-4 Part 2 or MPEG-2 video with optional MP3 audio; other codec combinations require separate evidence.`,
+          input === "3gp"
+            ? "Compatible MPEG-4 Part 2 video is copied; audio, subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded."
+            : "Compatible MPEG-4 Part 2 or MPEG-2 video and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
           "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
           "AVI cannot retain every source-container metadata, language, disposition, or timestamp field; the conversion reports each excluded field class.",
           "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
         ],
         fidelityLimitations: [
-          "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied without decoding or re-encoding.",
+          input === "3gp"
+            ? "MPEG-4 Part 2 compressed video packets are copied without decoding or re-encoding."
+            : "MPEG-4 Part 2 or MPEG-2 video and any compatible MP3 compressed packets are copied without decoding or re-encoding.",
         ],
         maxTestedBytes: {
           mp4: 191_718_445,

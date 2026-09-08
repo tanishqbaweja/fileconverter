@@ -1,0 +1,114 @@
+{
+  "generatedAt": "2026-09-08T15:05:40.124Z",
+  "status": "accepted-awaiting-publication-reproduction",
+  "requirements": ["P-08", "M-04"],
+  "dockerUsed": false,
+  "acceptedCodecs": {
+    "video": ["mpeg4", "mpeg2video"],
+    "audio": ["mp3"],
+    "sourceContainers": ["matroska", "mp4", "mov", "mpegts"],
+    "conversionMode": "compressed-packet-copy"
+  },
+  "nativeFeasibility": {
+    "mpeg2Mp3Sources": {
+      "mkv": {"sourceBytes": 1197730, "outputBytes": 1305518},
+      "mp4": {"sourceBytes": 1198564, "outputBytes": 1266926},
+      "mov": {"sourceBytes": 1198514, "outputBytes": 1266926},
+      "mpegts": {"sourceBytes": 1248508, "outputBytes": 1266902}
+    },
+    "allGenuineRiffAvi": true,
+    "allExactCompressedVideo": true,
+    "allExactCompressedAudio": true,
+    "allFullNativeDecode": true,
+    "allMidpointSeek": true
+  },
+  "smallBrowserGate": {
+    "focusedMpeg2Cases": 4,
+    "focusedResult": "4 passed in 17.3 seconds",
+    "allAviSuccessCases": 9,
+    "regressionResult": "9 passed in 26.2 seconds",
+    "genuineRiffAvi": true,
+    "exactPackets": true,
+    "decodedVideoExact": true,
+    "fullNativeDecode": true
+  },
+  "stressGate": {
+    "sourceBytes": 215339432,
+    "sourceSha256": "b896ed11200acba2f80f0062594db2eda3fff7145ccf0d86b3cd5ce88d91bbc6",
+    "sourceCodecs": ["mpeg2video", "mp3"],
+    "decodedVideoFrames": 17280,
+    "videoPackets": 17280,
+    "audioPackets": 30001,
+    "maximumPacketBytes": 28829,
+    "runs": 3,
+    "elapsedSeconds": [3.133, 2.952, 2.512],
+    "outputBytes": 227904768,
+    "outputSha256": "64aaa63cc0643089ece973e94c9d3316d54853c7c10ec0e3c39ec69f36e33d29",
+    "worstIncrementalPrivateMiB": 232.34765625,
+    "limitMiB": 250,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "videoPacketSha256": "c1fec6a21027c38b96836b6374e0656dffc12aa0d7bd1f70d857fa45a16e4fa1",
+    "audioPacketSha256": "21554b4f48e00a2814ffc8c924f712826565e009f9e8007cb8d0abfe9853281d",
+    "fullNativeDecode": true,
+    "midpointSeek": true,
+    "openDmlSegments": 27,
+    "maximumObservedRiffSegmentBytes": 9040032,
+    "masterAndPerStreamIndexes": true,
+    "repeatableOutput": true,
+    "cancellationCleanup": true,
+    "passed": true,
+    "rawReportSha256": "7e099298a15eb48b2827f1d758173721b9e0533416f9ddd2062b73c00f215549"
+  },
+  "rejectedOrDeferred": [
+    {
+      "codec": "h264",
+      "result": "not advertised",
+      "reason": "Matroska H.264 requires source-dependent Annex-B filtering for AVI, while native MP4 and MOV trials emitted bits_per_coded_sample interoperability warnings. A mere playable native output is insufficient for a public browser route."
+    },
+    {
+      "stage": "first focused browser run",
+      "result": "2 passed, 2 failed",
+      "cause": "The new test reused an AAC fixture while expecting retained MP3, and assumed the MPEG-TS duration matched raw MPEG-2 timing.",
+      "resolution": "Generate the Matroska case with the protected MP3 fixture and assert the independently observed transport duration; no production threshold was weakened."
+    },
+    {
+      "stage": "first stress run",
+      "result": "validator rejected genuine mpeg2video,mp3 output",
+      "cause": "The profiler hard-coded MPEG-4 as the only compatible AVI video codec.",
+      "resolution": "Compare the output codec to the source manifest and retain exact packet, decode, duration, OpenDML, memory, and cleanup gates."
+    }
+  ],
+  "engineCandidate": {
+    "sourceCommit": "51255c9accd3262405650f6bcbdb584734a89578",
+    "workflowRunId": 34240700932,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34240700932",
+    "artifactId": 10062174581,
+    "artifactDigest": "sha256:09e228b014775a1b9ae4b45656f6820ae9df0ad0b1758d2b70dbc22fd8b4e627",
+    "buildMethod": "Pinned Emscripten 6.0.4 SDK path without Docker",
+    "changedRuntimeFiles": ["within-remux.wasm"],
+    "withinRemuxWasmBytes": 9657011,
+    "withinRemuxWasmSha256": "acfef81790da601fc837fcbed5b9a1b7f7fa4732129e693470d4f582e82d2adf",
+    "withinRemuxMjsUnchangedSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e"
+  },
+  "publication": {
+    "result": "pending final pushed-state all-module reproduction"
+  },
+  "cleanup": {
+    "allGeneratedFilesRepositoryLocal": true,
+    "largeFixtureDeleted": true,
+    "stressManifestDeleted": true,
+    "rawPassingAndFailureReportsDeletedAfterCompaction": true,
+    "convertedOutputsRemovedByProfiler": true,
+    "browserProfileRemovedByProfiler": true,
+    "candidateDownloadDeleted": true,
+    "nativeFeasibilityDirectoryDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "candidateArtifactPendingDeletionAfterPublication": true,
+    "protectedRootFixtureExpectedBytes": 2958573265,
+    "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}

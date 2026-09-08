@@ -308,7 +308,7 @@ test("compatible OGV copy packet-copies Theora and Vorbis and rejects a non-Theo
   assert.match(audioOnly.blockingReasons.join(" "), /requires a video stream/);
 });
 
-test("bounded AVI copy accepts MPEG-4 Part 2 and MP3 and rejects incompatible video", () => {
+test("bounded AVI copy accepts MPEG-4 Part 2 or MPEG-2 plus MP3 and rejects incompatible video", () => {
   const aviProfile = {
     id: "mkv-to-avi",
     input: "mkv",
@@ -338,6 +338,17 @@ test("bounded AVI copy accepts MPEG-4 Part 2 and MP3 and rejects incompatible vi
     ["copy", "copy", "exclude"],
   );
   assert.deepEqual(compatible.blockingReasons, []);
+
+  const compatibleMpeg2 = planMediaConversion(
+    aviProfile,
+    inspection([stream("video", "MPEG-2 Video"), stream("audio", "MP3")]),
+  );
+  assert.ok(compatibleMpeg2);
+  assert.deepEqual(
+    compatibleMpeg2.streams.map(({ action }) => action),
+    ["copy", "copy"],
+  );
+  assert.deepEqual(compatibleMpeg2.blockingReasons, []);
 
   const blocked = planMediaConversion(
     aviProfile,

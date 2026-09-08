@@ -2993,20 +2993,20 @@
     },
     {
       "profileId": "mkv-to-avi",
-      "maxTestedBytes": 191735971,
+      "maxTestedBytes": 215339432,
       "repeatableEvidence": {
-        "report": "2026-09-08T10-08-06-333Z-mkv-to-avi-stress.json",
-        "reportSha256": "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
+        "report": "2026-09-08T15-05-40-124Z-mkv-to-avi-stress.json",
+        "reportSha256": "7e099298a15eb48b2827f1d758173721b9e0533416f9ddd2062b73c00f215549",
         "runs": 3,
-        "sourceBytes": 191735971,
-        "incrementalPrivateMiB": 227.58203125
+        "sourceBytes": 215339432,
+        "incrementalPrivateMiB": 232.34765625
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T10-08-06-333Z-mkv-to-avi-stress.json",
-        "reportSha256": "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
+        "report": "2026-09-08T15-05-40-124Z-mkv-to-avi-stress.json",
+        "reportSha256": "7e099298a15eb48b2827f1d758173721b9e0533416f9ddd2062b73c00f215549",
         "runs": 3,
-        "sourceBytes": 191735971,
-        "incrementalPrivateMiB": 227.58203125
+        "sourceBytes": 215339432,
+        "incrementalPrivateMiB": 232.34765625
       }
     },
     {

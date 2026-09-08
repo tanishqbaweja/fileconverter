@@ -182,7 +182,7 @@ function containerCodecCompatible(
   }
   if (profile.output === "avi") {
     return stream.mediaType === "video"
-      ? codec === "MPEG-4 Part 2"
+      ? codec === "MPEG-4 Part 2" || codec === "MPEG-2 Video"
       : codec === "MP3";
   }
   if (profile.output === "mp4") {
@@ -409,17 +409,18 @@ function planCompatibleAviCopy(
     const codec = normalizedCodec(stream.codec);
     if (stream.mediaType === "video" && !firstVideoSeen) {
       firstVideoSeen = true;
-      if (codec !== "MPEG-4 Part 2") {
+      if (codec !== "MPEG-4 Part 2" && codec !== "MPEG-2 Video") {
         return planItem(
           stream,
           index,
           "reject",
-          "The first video stream is not MPEG-4 Part 2; this fixed AVI copy profile rejects the conversion even if a later compatible stream exists.",
+          "The first video stream is neither MPEG-4 Part 2 nor MPEG-2; this fixed AVI copy profile rejects the conversion even if a later compatible stream exists.",
         );
       }
     }
     const compatible =
-      (stream.mediaType === "video" && codec === "MPEG-4 Part 2") ||
+      (stream.mediaType === "video" &&
+        (codec === "MPEG-4 Part 2" || codec === "MPEG-2 Video")) ||
       (stream.mediaType === "audio" && codec === "MP3");
     return planItem(
       stream,
@@ -427,7 +428,7 @@ function planCompatibleAviCopy(
       compatible ? "copy" : "exclude",
       compatible
         ? "This stream is packet-copied without decoding or re-encoding into AVI."
-        : "Only MPEG-4 Part 2 video and MP3 audio are included by this fixed AVI copy profile; this source element is explicitly excluded.",
+        : "Only MPEG-4 Part 2 or MPEG-2 video and MP3 audio are included by this fixed AVI copy profile; this source element is explicitly excluded.",
     );
   });
 }

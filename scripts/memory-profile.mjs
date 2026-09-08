@@ -2328,8 +2328,8 @@ async function validateMediaOutput(
     independentAudioValidation = {
       method: compatibleAviCopy
         ? source.audioPacketSha256
-          ? "mpeg4-mp3-packet-sha256"
-          : "mpeg4-packet-sha256"
+          ? `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-mp3-packet-sha256`
+          : `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-packet-sha256`
         : "theora-vorbis-packet-sha256",
       passed: true,
       videoSha256: packetHashes.video,
@@ -2665,7 +2665,7 @@ async function validateMediaOutput(
                 : "h264"))) ||
     (compatibleAviCopy &&
       (codecs.length !== (sourceAudio ? 2 : 1) ||
-        codecs[0] !== "mpeg4" ||
+        codecs[0] !== sourceVideo?.codec_name ||
         (sourceAudio && codecs[1] !== "mp3"))) ||
     (!audioOnly &&
       !videoReencode &&
