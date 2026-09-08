@@ -134,12 +134,14 @@
     ],
     "secondAllCoreReproductionRun": 34175834034,
     "secondAllCoreReproductionOutcome": "The bounded AVI core again reproduced exactly, but reverse-patching and rebuilding libavformat changed archive/link bytes for the same five specialist modules despite restoring stock source semantics.",
-    "isolationResolution": "Both build paths now save the exact pre-patch libavformat archive, rebuild the patched archive only for within-remux, and restore the byte-identical saved stock archive before linking any already-certified specialist core.",
-    "temporaryIsolationDiagnosticArtifactIds": [10032987017, 10037386491],
+    "thirdAllCoreReproductionRun": 34176535993,
+    "thirdAllCoreReproductionOutcome": "The bounded AVI core reproduced exactly for a third time, but saving the pre-patch archive retained the newly enabled AVI muxer configure surface and therefore reproduced the same five alternate specialist hashes as the second run.",
+    "isolationResolution": "Both build paths now keep the patched, AVI-enabled FFmpeg library only for within-remux, then reverse the patch, clean the FFmpeg build, and reconstruct the already-certified specialists with their exact historical configure surface in which AVI output is disabled.",
+    "temporaryIsolationDiagnosticArtifactIds": [10032987017, 10037386491, 10037627203],
     "exactReproductionRun": null,
     "exactReproductionCommit": null,
     "exactReproductionResult": "pending after the implementation checkpoint is pushed",
-    "retainedRunArtifacts": 2
+    "retainedRunArtifacts": 3
   },
   "harnessCorrection": {
     "firstStressAttempt": "The browser conversion, cancellation, and independent packet/decode work were valid, but a newly added validator accidentally applied the OGV format assertion to AVI.",

@@ -5,6 +5,12 @@ FFMPEG_DIR=/src/ffmpeg
 PREFIX=/src/install
 export PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 
+if [[ "${WITHIN_ENABLE_AVI_MUXER:-1}" == "1" ]]; then
+  ENABLED_MUXERS=tgp,aiff,amr,asf,avi,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
+else
+  ENABLED_MUXERS=tgp,aiff,amr,asf,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
+fi
+
 print_configure_failure() {
   local status=$?
   if [[ -f "${FFMPEG_DIR}/ffbuild/config.log" ]]; then
@@ -55,7 +61,7 @@ emconfigure ./configure \
   --enable-swresample \
   --enable-swscale \
   --enable-demuxer=aac,aiff,amr,asf,avi,flac,flv,h264,m4v,matroska,mov,mp3,mpegts,mpegvideo,ogg,wav \
-  --enable-muxer=tgp,aiff,amr,asf,avi,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm \
+  --enable-muxer="${ENABLED_MUXERS}" \
   --enable-decoder=aac,alac,amrnb,amrwb,flac,h264,hevc,mp3,mpeg2video,mpeg4,opus,pcm_s16be,pcm_s16le,theora,vorbis,wmav1,wmav2 \
   --enable-encoder=aac,alac,flac,libmp3lame,libopencore_amrnb,libopus,libvorbis,pcm_s16be,pcm_s16le,mpeg4,libvpx_vp8,libvpx_vp9,wmav2 \
   --enable-parser=aac,flac,h264,hevc,mpeg4video,mpegaudio,mpegvideo,opus,vorbis \

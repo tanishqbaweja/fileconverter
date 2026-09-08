@@ -100,8 +100,7 @@ RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
 COPY build-libraries.sh /src/build-libraries.sh
 COPY wasm-pkg-config.sh /src/wasm-pkg-config.sh
 RUN chmod +x /src/build-libraries.sh /src/wasm-pkg-config.sh \
-    && /src/build-libraries.sh \
-    && cp /src/install/lib/libavformat.a /src/libavformat.stock.a
+    && /src/build-libraries.sh
 
 COPY patches/avi-bounded-index.patch /src/avi-bounded-index.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/avi-bounded-index.patch \
@@ -118,7 +117,11 @@ RUN chmod +x /src/build-remux.sh \
          WITHIN_BUILD_CORE_FILTER=within-remux /src/build-remux.sh; \
        fi \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
-         cp /src/libavformat.stock.a /src/install/lib/libavformat.a; \
+         patch --reverse --directory=/src/ffmpeg --strip=1 < /src/avi-bounded-index.patch; \
+         cd /src/ffmpeg; \
+         emmake make distclean; \
+         cd /src; \
+         WITHIN_ENABLE_AVI_MUXER=0 /src/build-libraries.sh; \
        fi \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ]; then \
          for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do \

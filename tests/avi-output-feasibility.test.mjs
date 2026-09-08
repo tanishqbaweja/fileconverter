@@ -39,15 +39,18 @@ test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments"
   assert.match(patchText, /AV_OPT_TYPE_INT64/);
   assert.match(wrapper, /"riff_size_limit", "8388608"/);
   assert.match(wrapper, /"reserve_index_space", "262176"/);
-  assert.match(libraries, /--enable-muxer=.*avi/);
+  assert.match(libraries, /ENABLED_MUXERS=.*avi/);
   assert.match(
     noDockerBuild,
-    /libavformat\.stock\.a[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*cp "\$\{BUILD_ROOT\}\/libavformat\.stock\.a"/,
+    /avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*patch --reverse[\s\S]*emmake make distclean[\s\S]*WITHIN_ENABLE_AVI_MUXER=0 \.\/build-libraries\.sh/,
   );
   assert.match(
     dockerfile,
-    /libavformat\.stock\.a[\s\S]*avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*cp \/src\/libavformat\.stock\.a/,
+    /avi-bounded-index\.patch[\s\S]*emmake make install[\s\S]*patch --reverse[\s\S]*emmake make distclean[\s\S]*WITHIN_ENABLE_AVI_MUXER=0 \/src\/build-libraries\.sh/,
   );
+  assert.match(libraries, /WITHIN_ENABLE_AVI_MUXER[\s\S]*ENABLED_MUXERS/);
+  assert.match(libraries, /ENABLED_MUXERS=tgp,aiff,amr,asf,avi,/);
+  assert.match(libraries, /ENABLED_MUXERS=tgp,aiff,amr,asf,flac,/);
 });
 
 test("AVI output profile 37 is wired and public only after browser certification", () => {

@@ -231,8 +231,6 @@ run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
-cp "${BUILD_ROOT}/install/lib/libavformat.a" \
-  "${BUILD_ROOT}/libavformat.stock.a"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
 (
   cd "${BUILD_ROOT}/ffmpeg"
@@ -244,11 +242,16 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
 if [[ "${requested_core}" != "within-remux" ]]; then
-  # The bounded AVI muxer option belongs only to the general core that exposes
-  # profile 37. Restore the exact pre-patch archive before linking any already-
-  # certified specialist so their published bytes remain unchanged.
-  cp "${BUILD_ROOT}/libavformat.stock.a" \
-    "${BUILD_ROOT}/install/lib/libavformat.a"
+  # The bounded AVI muxer and AVI output support belong only to the general
+  # core. The already-certified specialists predate both changes, so restore
+  # their exact historical FFmpeg configure surface as well as the source.
+  patch --reverse --directory="${BUILD_ROOT}/ffmpeg" --strip=1 \
+    < avi-bounded-index.patch
+  (
+    cd "${BUILD_ROOT}/ffmpeg"
+    emmake make distclean
+  )
+  WITHIN_ENABLE_AVI_MUXER=0 ./build-libraries.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those
