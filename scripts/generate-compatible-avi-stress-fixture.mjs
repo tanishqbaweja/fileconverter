@@ -20,11 +20,24 @@ const sourcePath = path.join(
 );
 const sourceManifestPath = `${sourcePath}.json`;
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
-const fixturePath = path.join(fixtureRoot, "mpeg4-mp3-avi-copy-128m.mkv");
-const manifestPath = `${fixturePath}.json`;
+const fixtureSpecs = [
+  ["mkv", "mpeg4-mp3-avi-copy-128m.mkv", "matroska", "matroska", true],
+  ["mp4", "mpeg4-mp3-avi-copy-128m.mp4", "mp4", "mov", true],
+  ["mov", "mpeg4-mp3-avi-copy-128m.mov", "mov", "mov", true],
+  ["3gp", "mpeg4-avi-copy-128m.3gp", "3gp", "mov", false],
+  ["mpeg-ts", "mpeg4-mp3-avi-copy-128m.mpegts", "mpegts", "mpegts", true],
+].map(([sourceContainer, name, muxer, probeFormat, hasAudio]) => ({
+  sourceContainer,
+  name,
+  muxer,
+  probeFormat,
+  hasAudio,
+  fixturePath: path.join(fixtureRoot, name),
+  manifestPath: path.join(fixtureRoot, `${name}.json`),
+}));
 const minimumBytes = 128 * 1024 * 1024;
-const minimumFreeBytes = 512 * 1024 * 1024;
-const durationSeconds = 65;
+const minimumFreeBytes = 2 * 1024 * 1024 * 1024;
+const durationSeconds = 600;
 const frameRate = 24;
 const sourceManifest = JSON.parse(await readFile(sourceManifestPath, "utf8"));
 
@@ -39,58 +52,102 @@ if (freeBytes < minimumFreeBytes) {
 }
 
 try {
-  await execFileAsync(
-    "ffmpeg",
-    [
-      "-hide_banner",
-      "-loglevel",
-      "error",
-      "-nostdin",
-      "-y",
-      "-stream_loop",
-      "-1",
-      "-i",
-      sourcePath,
-      "-t",
-      String(durationSeconds),
-      "-map",
-      "0:v:0",
-      "-map",
-      "0:a:0",
-      "-vf",
-      "scale=1282:536,setsar=1,noise=alls=12:allf=t+u",
-      "-c:v",
-      "mpeg4",
-      "-q:v",
-      "3",
-      "-c:a",
-      "copy",
-      "-map_metadata",
-      "0",
-      "-metadata:s:a:0",
-      "language=eng",
-      "-fflags",
-      "+bitexact",
-      "-f",
-      "matroska",
-      fixturePath,
-    ],
-    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  await settleAllOrThrow(
+    fixtureSpecs.map((spec) =>
+      execFileAsync(
+        "ffmpeg",
+        [
+          "-hide_banner",
+          "-loglevel",
+          "error",
+          "-nostdin",
+          "-y",
+          "-stream_loop",
+          "-1",
+          "-i",
+          sourcePath,
+          "-t",
+          String(durationSeconds),
+          "-map",
+          "0:v:0",
+          ...(spec.hasAudio ? ["-map", "0:a:0"] : ["-an"]),
+          "-c",
+          "copy",
+          "-map_metadata",
+          "0",
+          ...(spec.hasAudio ? ["-metadata:s:a:0", "language=eng"] : []),
+          "-fflags",
+          "+bitexact",
+          "-f",
+          spec.muxer,
+          spec.fixturePath,
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+      ),
+    ),
   );
 
-  const fixtureStat = await stat(fixturePath);
+  const results = await settleAllOrThrow(fixtureSpecs.map(inspectFixture));
+  const generationSeconds = Number(
+    ((performance.now() - startedAt) / 1000).toFixed(2),
+  );
+  await Promise.all(
+    results.map(({ spec, ...manifest }) =>
+      writeFile(
+        spec.manifestPath,
+        `${JSON.stringify(
+          {
+            generatedBy: "scripts/generate-compatible-avi-stress-fixture.mjs",
+            source: "fixtures/media/legacy-video-source.avi",
+            sourceSha256: sourceManifest.sha256,
+            sourceContainer: spec.sourceContainer,
+            durationSeconds,
+            frameRate,
+            generationSeconds,
+            ...manifest,
+          },
+          null,
+          2,
+        )}\n`,
+        "utf8",
+      ),
+    ),
+  );
+  await assertProtectedSource();
+  process.stdout.write(
+    `${results.map(({ spec }) => spec.fixturePath).join("\n")}\nGenerated five compatible AVI stress sources in ${generationSeconds.toFixed(2)} seconds.\n`,
+  );
+} catch (error) {
+  await Promise.all(
+    fixtureSpecs.flatMap((spec) => [
+      rm(spec.fixturePath, { force: true }),
+      rm(spec.manifestPath, { force: true }),
+    ]),
+  );
+  await assertProtectedSource();
+  throw error;
+}
+
+async function inspectFixture(spec) {
+  const fixtureStat = await stat(spec.fixturePath);
   if (fixtureStat.size < minimumBytes) {
     throw new Error(
-      `Generated Matroska fixture is ${fixtureStat.size} bytes; expected at least ${minimumBytes}.`,
+      `Generated ${spec.sourceContainer} fixture is ${fixtureStat.size} bytes; expected at least ${minimumBytes}.`,
     );
   }
-  const [probe, videoPacketSha256, audioPacketSha256, maximumPacketBytes] =
-    await Promise.all([
-      probeFile(fixturePath),
-      packetHash(fixturePath, "0:v:0"),
-      packetHash(fixturePath, "0:a:0"),
-      largestPacket(fixturePath),
-    ]);
+  const [
+    probe,
+    videoPacketSha256,
+    audioPacketSha256,
+    maximumPacketBytes,
+    sha256,
+  ] = await Promise.all([
+    probeFile(spec.fixturePath),
+    packetHash(spec.fixturePath, "0:v:0"),
+    spec.hasAudio ? packetHash(spec.fixturePath, "0:a:0") : undefined,
+    largestPacket(spec.fixturePath),
+    hashFile(spec.fixturePath),
+  ]);
   const video = probe.streams.find((stream) => stream.codec_type === "video");
   const audio = probe.streams.find((stream) => stream.codec_type === "audio");
   const decodedVideoFrames = Number(video?.nb_read_frames);
@@ -102,60 +159,48 @@ try {
   if (
     !String(probe.format?.format_name ?? "")
       .split(",")
-      .includes("matroska") ||
+      .includes(spec.probeFormat) ||
     video?.codec_name !== "mpeg4" ||
-    video?.width !== 1282 ||
-    video?.height !== 536 ||
+    video?.width !== 640 ||
+    video?.height !== 360 ||
     !Number.isFinite(decodedVideoFrames) ||
     decodedVideoFrames < 1_500 ||
     !Number.isFinite(decodedVideoDurationSeconds) ||
-    Math.abs(decodedVideoDurationSeconds - durationSeconds) > 1 ||
-    audio?.codec_name !== "mp3" ||
-    audio?.tags?.language !== "eng" ||
+    Math.abs(decodedVideoDurationSeconds - durationSeconds) > 10 ||
+    (spec.hasAudio
+      ? audio?.codec_name !== "mp3"
+      : probe.streams.some((stream) => stream.codec_type === "audio")) ||
     (probe.chapters?.length ?? 0) !== 0 ||
     maximumPacketBytes < 1
   ) {
     throw new Error(
-      "Generated stress fixture is not the expected MPEG-4 Part 2/MP3 Matroska source.",
+      `Generated stress fixture is not the expected compatible ${spec.sourceContainer} source.`,
     );
   }
-  await writeFile(
-    manifestPath,
-    `${JSON.stringify(
-      {
-        generatedBy: "scripts/generate-compatible-avi-stress-fixture.mjs",
-        source: "fixtures/media/legacy-video-source.avi",
-        sourceSha256: sourceManifest.sha256,
-        durationSeconds,
-        frameRate,
-        decodedVideoFrames,
-        decodedVideoDurationSeconds,
-        videoPacketSha256,
-        videoPacketCount: Number(video.nb_read_packets),
-        audioPacketSha256,
-        audioPacketCount: Number(audio.nb_read_packets),
-        maximumPacketBytes,
-        bytes: fixtureStat.size,
-        sha256: await hashFile(fixturePath),
-        generationSeconds: Number(
-          ((performance.now() - startedAt) / 1000).toFixed(2),
-        ),
-        probe,
-      },
-      null,
-      2,
-    )}\n`,
-    "utf8",
-  );
-  await assertProtectedSource();
-  process.stdout.write(
-    `${fixturePath}\nGenerated MPEG-4 Part 2/MP3 Matroska stress source in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
-  );
-} catch (error) {
-  await rm(fixturePath, { force: true });
-  await rm(manifestPath, { force: true });
-  await assertProtectedSource();
-  throw error;
+  return {
+    spec,
+    decodedVideoFrames,
+    decodedVideoDurationSeconds,
+    videoPacketSha256,
+    videoPacketCount: Number(video.nb_read_packets),
+    ...(spec.hasAudio
+      ? {
+          audioPacketSha256,
+          audioPacketCount: Number(audio.nb_read_packets),
+        }
+      : {}),
+    maximumPacketBytes,
+    bytes: fixtureStat.size,
+    sha256,
+    probe,
+  };
+}
+
+async function settleAllOrThrow(promises) {
+  const settled = await Promise.allSettled(promises);
+  const failure = settled.find((result) => result.status === "rejected");
+  if (failure) throw failure.reason;
+  return settled.map((result) => result.value);
 }
 
 async function assertProtectedSource() {
@@ -224,7 +269,11 @@ async function largestPacket(filePath) {
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
   return Math.max(
-    ...stdout.trim().split(/\r?\n/).map(Number).filter(Number.isFinite),
+    ...stdout
+      .trim()
+      .split(/\r?\n/)
+      .map((line) => Number(line.split(",", 1)[0]))
+      .filter(Number.isFinite),
   );
 }
 

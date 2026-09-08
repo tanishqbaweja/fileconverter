@@ -6559,7 +6559,11 @@ const compatibleAviSourceRoutes = [
   ["mpeg-ts", "mpeg-ts-to-avi", ["mpeg4", "mp3"]],
 ] as const;
 
-for (const [sourceFormat, profileId, expectedCodecs] of compatibleAviSourceRoutes) {
+for (const [
+  sourceFormat,
+  profileId,
+  expectedCodecs,
+] of compatibleAviSourceRoutes) {
   test(`browser FFmpeg losslessly remuxes compatible ${sourceFormat.toUpperCase()} to genuine AVI`, async () => {
     const sourcePath = aviCopySourceFixturePaths[sourceFormat];
     await runMediaRoute(
@@ -6570,12 +6574,9 @@ for (const [sourceFormat, profileId, expectedCodecs] of compatibleAviSourceRoute
       sourcePath,
       {
         expectedWarningFragments: [
-          "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied",
-          ...(sourceFormat === "3gp"
-            ? ["3GP AAC or AMR audio cannot be represented"]
-            : []),
+          "AVI packet-copies every MPEG-4 Part 2 video and MP3 audio stream",
         ],
-        expectedDurationSeconds: 4,
+        expectedDurationSeconds: sourceFormat === "mpeg-ts" ? 5.441667 : 4,
         durationToleranceSeconds: 0.25,
         validate: async (probe, outputPath) => {
           expect(probe.format.format_name?.split(",")).toContain("avi");
@@ -6655,6 +6656,46 @@ test("AVI stream copy propagates a bounded write failure and removes the partial
   });
   expect(abandonedSize === null || abandonedSize === 0).toBe(true);
 });
+
+for (const [sourceFormat, profileId] of compatibleAviSourceRoutes) {
+  test(`${sourceFormat.toUpperCase()} to AVI propagates a bounded write failure and removes the partial output`, async () => {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(aviCopySourceFixturePaths[sourceFormat]);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await startEnabledConversion();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    const abandonedSize = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle("avi-copy-source.avi");
+        const size = (await handle.getFile()).size;
+        await root.removeEntry("avi-copy-source.avi");
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    });
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  });
+}
 
 test("AVI stream copy retains only representable fields and discloses every excluded class", async () => {
   await runMediaRoute(

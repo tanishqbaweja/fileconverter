@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-09-08T10:12:00.000Z",
+  "status": "accepted-public-expansion",
+  "dockerUsed": false,
+  "profiles": {
+    "mkv-to-avi": {
+      "sourceBytes": 191735971,
+      "sourceSha256": "c9f88177779215ba2beb94c3cdf48d5559ccd47d608e1a39af43d432eaf1e9f5",
+      "outputBytes": 202384110,
+      "outputSha256": "99b970bb9a62fdb2b521252177b8b5421633922ca6378c24ba3896be87c8c3df",
+      "conversionSeconds": [2.337, 2.487, 2.557],
+      "worstIncrementalPrivateMiB": 227.6,
+      "audioPackets": 24940
+    },
+    "mp4-to-avi": {
+      "sourceBytes": 191718445,
+      "sourceSha256": "52239cb06fe61d0086495f5afaa59acb9aeb305d2a43d51f0bc1e477240f03bb",
+      "outputBytes": 198392670,
+      "outputSha256": "a57141773cd28170c270bec6e68fd26a6be842c26d3a93c2a72ce8be9ddbdb54",
+      "conversionSeconds": [2.544, 2.293, 2.538],
+      "worstIncrementalPrivateMiB": 249.1,
+      "audioPackets": 24940
+    },
+    "mov-to-avi": {
+      "sourceBytes": 191718419,
+      "sourceSha256": "e3400af4c174cdced9290e6a31d0d86f4c6fd22946b06c590cefc42b46515037",
+      "outputBytes": 198392670,
+      "outputSha256": "a57141773cd28170c270bec6e68fd26a6be842c26d3a93c2a72ce8be9ddbdb54",
+      "conversionSeconds": [2.473, 2.261, 2.578],
+      "worstIncrementalPrivateMiB": 229.6,
+      "audioPackets": 24940
+    },
+    "3gp-to-avi": {
+      "sourceBytes": 177146977,
+      "sourceSha256": "07f385070ccc847c69e719cbd235e89c3b1e9028c9f4c89bdb326e7fe6f3a130",
+      "outputBytes": 183376276,
+      "outputSha256": "5be378161214d1e6c043f8fc435c4e4638180dac4aea6f7ff76a57e8d532e7d0",
+      "conversionSeconds": [1.615, 1.463, 1.44],
+      "worstIncrementalPrivateMiB": 206.9,
+      "audioPackets": 0
+    },
+    "mpeg-ts-to-avi": {
+      "sourceBytes": 199649420,
+      "sourceSha256": "b956a903f016b1ed9ad64e356f333d790010409c9f56ab5411e12d7bc1cc04d7",
+      "outputBytes": 198421306,
+      "outputSha256": "bb5b139c8524285762a34eae0683acd415963c4c831cabf28bdf75e03d643524",
+      "conversionSeconds": [2.688, 2.82, 2.878],
+      "worstIncrementalPrivateMiB": 231.4,
+      "audioPackets": 24940
+    }
+  },
+  "sharedExactPayloads": {
+    "videoPackets": 14251,
+    "videoPacketSha256": "83b9ea7a8d075f22c2d35d91711127f2e748d8eaa37fcba6c393d4690dd925c8",
+    "audioPacketSha256": "a7d18cc6cb7bebff85a1766386cc9068590f3716887b8442f0d406d6f327e187"
+  },
+  "stressGate": {
+    "runsPerProfile": 3,
+    "allPassed": true,
+    "maximumIncrementalPrivateMiB": 249.1,
+    "limitMiB": 250,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "allOutputsRepeatable": true,
+    "allFullNativeDecode": true,
+    "allPacketHashesExact": true,
+    "allCancellationCleanupPassed": true,
+    "allPartialOutputsDeleted": true,
+    "openDmlRiffLimitBytes": 8388608,
+    "maximumObservedRiffSegmentBytes": 8993338,
+    "minimumRiffSegments": 22,
+    "maximumRiffSegments": 24,
+    "videoOnly3gpAudioIndexes": 0
+  },
+  "smallBrowserGate": {
+    "successCases": 4,
+    "writeFailureCases": 4,
+    "allPassed": true,
+    "genuineRiffAvi": true,
+    "exactPackets": true,
+    "decodedVideoExact": true,
+    "fullNativeDecode": true,
+    "mpegTsStartTimestampPreserved": true
+  },
+  "fixtureGeneration": {
+    "seconds": 5.25,
+    "sourceCount": 5,
+    "parallelStreamCopy": true,
+    "allFilesRepositoryLocal": true,
+    "failedParallelWorkSettledBeforeCleanup": true
+  },
+  "rejectedAttempts": [
+    {
+      "stage": "first-production-browser-run",
+      "result": "4/4 failed before header write",
+      "cause": "The AVI fast path skipped bounded stream inspection for non-Matroska inputs, leaving MPEG-4 dimensions unset.",
+      "resolution": "Use the existing 2 MiB and 2-second bounded stream-info limits for AVI output from header-incomplete source containers."
+    },
+    {
+      "stage": "parallel-fixture-cleanup",
+      "result": "Windows EBUSY while sibling validation still held the shared source",
+      "cause": "Promise.all rejected before the other FFmpeg and hashing jobs had settled.",
+      "resolution": "Wait for every parallel result with Promise.allSettled before surfacing the first error and starting cleanup."
+    },
+    {
+      "stage": "matroska-size-validator",
+      "result": "Valid 202384110-byte AVI exceeded a generic 5% remux-size allowance by 0.55 percentage points.",
+      "cause": "OpenDML indexes for 39191 small packets add container-specific overhead.",
+      "resolution": "Use a bounded 15% AVI-container allowance while retaining exact packet, frame, decode, structure, and memory checks."
+    }
+  ],
+  "engineCandidate": {
+    "sourceCommit": "cdefd656d69bc99ff01ce99d06b3a93b6a671719",
+    "workflowRunId": 34179827469,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34179827469",
+    "artifactId": 10038634086,
+    "buildMethod": "Pinned Emscripten 6.0.4 SDK path without Docker",
+    "changedRuntimeFiles": ["within-remux.wasm"],
+    "withinRemuxWasmSha256": "9b21a43e657ab98ac2b9a90e0336eb9f12b6a13330a0d254063891b37f14d4bc",
+    "withinRemuxMjsUnchangedSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e"
+  },
+  "cleanup": {
+    "rawReportsDeletedAfterCompaction": true,
+    "largeFixturesDeletedAfterValidation": true,
+    "downloadedCandidateDeletedAfterValidation": true,
+    "candidateArtifactDeletedAfterPublication": false,
+    "protectedRootFixtureExpectedBytes": 2958573265,
+    "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}

@@ -173,6 +173,7 @@
     "profile:av1-webm": "node scripts/profile-category.mjs av1-webm",
     "profile:compatible-webm": "node scripts/profile-category.mjs compatible-webm",
     "profile:compatible-ogv": "node scripts/profile-category.mjs compatible-ogv",
+    "profile:compatible-avi": "node scripts/profile-category.mjs compatible-avi",
     "profile:container-mp3": "node scripts/profile-category.mjs container-mp3",
     "profile:container-aac": "node scripts/profile-category.mjs container-aac",
     "profile:container-ogg": "node scripts/profile-category.mjs container-ogg",

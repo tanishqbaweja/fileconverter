@@ -11,6 +11,16 @@ const evidenceName = "compatible-avi-copy-2026-09-08.json";
 const evidence = JSON.parse(
   await readFile(path.join(projectRoot, "evidence", evidenceName), "utf8"),
 );
+const expansionEvidence = JSON.parse(
+  await readFile(
+    path.join(
+      projectRoot,
+      "evidence",
+      "compatible-avi-source-expansion-2026-09-08.json",
+    ),
+    "utf8",
+  ),
+);
 
 test("compatible AVI evidence matches the current public profile", () => {
   assert.deepEqual(evidence.requirements, ["P-08", "M-04"]);
@@ -24,7 +34,10 @@ test("compatible AVI evidence matches the current public profile", () => {
   assert.equal(profile.route, "stream-copy");
   assert.equal(
     profile.maxTestedBytes,
-    evidence.profile.maximumTestedSourceBytes,
+    expansionEvidence.profiles["mkv-to-avi"].sourceBytes,
+  );
+  assert.ok(
+    profile.maxTestedBytes >= evidence.profile.maximumTestedSourceBytes,
   );
   assert.match(
     profile.metadataLimitations.join(" "),
@@ -41,13 +54,10 @@ test("the published AVI-capable core matches its build evidence", async () => {
     "within-remux.wasm",
   );
   const wasm = await readFile(wasmPath);
-  assert.equal(
-    (await stat(wasmPath)).size,
-    evidence.buildValidation.publishedWasmBytes,
-  );
+  assert.equal((await stat(wasmPath)).size, 9_656_932);
   assert.equal(
     createHash("sha256").update(wasm).digest("hex"),
-    evidence.buildValidation.publishedWasmSha256,
+    expansionEvidence.engineCandidate.withinRemuxWasmSha256,
   );
   assert.equal(evidence.buildValidation.isolatedCandidateRun, 34158982139);
   assert.equal(evidence.status, "accepted-current-public-profile");
@@ -62,9 +72,18 @@ test("the published AVI-capable core matches its build evidence", async () => {
   );
   assert.equal(evidence.buildValidation.retainedRunArtifacts, 0);
   assert.equal(evidence.buildValidation.diagnosticArtifactsDeleted, true);
-  assert.equal(evidence.buildValidation.firstAllCoreReproductionRun, 34161840479);
-  assert.equal(evidence.buildValidation.secondAllCoreReproductionRun, 34175834034);
-  assert.equal(evidence.buildValidation.thirdAllCoreReproductionRun, 34176535993);
+  assert.equal(
+    evidence.buildValidation.firstAllCoreReproductionRun,
+    34161840479,
+  );
+  assert.equal(
+    evidence.buildValidation.secondAllCoreReproductionRun,
+    34175834034,
+  );
+  assert.equal(
+    evidence.buildValidation.thirdAllCoreReproductionRun,
+    34176535993,
+  );
 });
 
 test("AVI browser and stress evidence is exact, bounded, indexed, cancellable, and cleaned", async () => {
@@ -114,7 +133,10 @@ test("AVI browser and stress evidence is exact, bounded, indexed, cancellable, a
   assert.equal(evidence.cleanup.failedStressReportsDeleted, true);
   assert.equal(evidence.cleanup.rawPassingReportsDeleted, true);
   assert.equal(evidence.cleanup.downloadedCandidateArtifactDeleted, true);
-  assert.equal(evidence.cleanup.temporaryIsolationDiagnosticArtifactRetained, false);
+  assert.equal(
+    evidence.cleanup.temporaryIsolationDiagnosticArtifactRetained,
+    false,
+  );
   assert.equal(evidence.cleanup.hostedMismatchArtifactsDeleted, true);
   assert.deepEqual(evidence.cleanup.workDirectoryContents, [".gitkeep"]);
 
@@ -145,11 +167,14 @@ test("the compact public-evidence manifest retains the deleted raw AVI report ha
     ({ profileId }) => profileId === evidence.profile.id,
   );
   assert.ok(profile);
-  assert.equal(profile.maxTestedBytes, evidence.stressValidation.source.bytes);
+  assert.equal(
+    profile.maxTestedBytes,
+    expansionEvidence.profiles["mkv-to-avi"].sourceBytes,
+  );
   assert.equal(profile.repeatableEvidence.runs, 3);
   assert.equal(
     profile.repeatableEvidence.reportSha256,
-    "94df62b74b205ae0e5e3e44cf73cce7f747335574baa17a3ad5913d73058ceef",
+    "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
   );
   assert.deepEqual(profile.maximumSizeEvidence, profile.repeatableEvidence);
 });

@@ -58,6 +58,24 @@
       }
     },
     {
+      "profileId": "3gp-to-avi",
+      "maxTestedBytes": 177146977,
+      "repeatableEvidence": {
+        "report": "2026-09-08T09-57-45-216Z-3gp-to-avi-stress.json",
+        "reportSha256": "bfb4704082d76488b34ab46902e5c71c58e8236077a4278ea76ccfc1b49aefb3",
+        "runs": 3,
+        "sourceBytes": 177146977,
+        "incrementalPrivateMiB": 206.8671875
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-08T09-57-45-216Z-3gp-to-avi-stress.json",
+        "reportSha256": "bfb4704082d76488b34ab46902e5c71c58e8236077a4278ea76ccfc1b49aefb3",
+        "runs": 3,
+        "sourceBytes": 177146977,
+        "incrementalPrivateMiB": 206.8671875
+      }
+    },
+    {
       "profileId": "3gp-to-flac",
       "maxTestedBytes": 156907373,
       "repeatableEvidence": {
@@ -2975,20 +2993,20 @@
     },
     {
       "profileId": "mkv-to-avi",
-      "maxTestedBytes": 159417989,
+      "maxTestedBytes": 191735971,
       "repeatableEvidence": {
-        "report": "2026-09-07T20-40-59-641Z-mkv-to-avi-stress.json",
-        "reportSha256": "94df62b74b205ae0e5e3e44cf73cce7f747335574baa17a3ad5913d73058ceef",
+        "report": "2026-09-08T10-08-06-333Z-mkv-to-avi-stress.json",
+        "reportSha256": "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
         "runs": 3,
-        "sourceBytes": 159417989,
-        "incrementalPrivateMiB": 204.47265625
+        "sourceBytes": 191735971,
+        "incrementalPrivateMiB": 227.58203125
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-07T20-40-59-641Z-mkv-to-avi-stress.json",
-        "reportSha256": "94df62b74b205ae0e5e3e44cf73cce7f747335574baa17a3ad5913d73058ceef",
+        "report": "2026-09-08T10-08-06-333Z-mkv-to-avi-stress.json",
+        "reportSha256": "d904f0903fc2e34bb03eaa8529e1f3fcc32b67e6a285893002487e48956c601b",
         "runs": 3,
-        "sourceBytes": 159417989,
-        "incrementalPrivateMiB": 204.47265625
+        "sourceBytes": 191735971,
+        "incrementalPrivateMiB": 227.58203125
       }
     },
     {
@@ -3421,6 +3439,24 @@
         "runs": 3,
         "sourceBytes": 145729853,
         "incrementalPrivateMiB": 213.4765625
+      }
+    },
+    {
+      "profileId": "mov-to-avi",
+      "maxTestedBytes": 191718419,
+      "repeatableEvidence": {
+        "report": "2026-09-08T10-04-54-361Z-mov-to-avi-stress.json",
+        "reportSha256": "346c0d3447a4d8d02a123040072c519375992b99644ee0f4498d7e5950f2c75f",
+        "runs": 3,
+        "sourceBytes": 191718419,
+        "incrementalPrivateMiB": 229.58203125
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-08T10-04-54-361Z-mov-to-avi-stress.json",
+        "reportSha256": "346c0d3447a4d8d02a123040072c519375992b99644ee0f4498d7e5950f2c75f",
+        "runs": 3,
+        "sourceBytes": 191718419,
+        "incrementalPrivateMiB": 229.58203125
       }
     },
     {
@@ -3946,6 +3982,24 @@
       }
     },
     {
+      "profileId": "mp4-to-avi",
+      "maxTestedBytes": 191718445,
+      "repeatableEvidence": {
+        "report": "2026-09-08T10-02-40-598Z-mp4-to-avi-stress.json",
+        "reportSha256": "bd694298ab80e5006ea73bf59ad582c3a2c2f562d0aacac92b94e3a8a238a7de",
+        "runs": 3,
+        "sourceBytes": 191718445,
+        "incrementalPrivateMiB": 249.1015625
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-08T10-02-40-598Z-mp4-to-avi-stress.json",
+        "reportSha256": "bd694298ab80e5006ea73bf59ad582c3a2c2f562d0aacac92b94e3a8a238a7de",
+        "runs": 3,
+        "sourceBytes": 191718445,
+        "incrementalPrivateMiB": 249.1015625
+      }
+    },
+    {
       "profileId": "mp4-to-flac",
       "maxTestedBytes": 146854557,
       "repeatableEvidence": {
@@ -4321,6 +4375,24 @@
         "runs": 3,
         "sourceBytes": 149289672,
         "incrementalPrivateMiB": 205.4609375
+      }
+    },
+    {
+      "profileId": "mpeg-ts-to-avi",
+      "maxTestedBytes": 199649420,
+      "repeatableEvidence": {
+        "report": "2026-09-08T10-00-44-455Z-mpeg-ts-to-avi-stress.json",
+        "reportSha256": "0ad43cbc565374a7699beb8b28d3989eb2b0f05eda531ca4511a5c083327b0c7",
+        "runs": 3,
+        "sourceBytes": 199649420,
+        "incrementalPrivateMiB": 231.37890625
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-08T10-00-44-455Z-mpeg-ts-to-avi-stress.json",
+        "reportSha256": "0ad43cbc565374a7699beb8b28d3989eb2b0f05eda531ca4511a5c083327b0c7",
+        "runs": 3,
+        "sourceBytes": 199649420,
+        "incrementalPrivateMiB": 231.37890625
       }
     },
     {

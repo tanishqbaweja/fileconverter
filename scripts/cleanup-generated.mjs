@@ -9,6 +9,17 @@ const projectRoot = path.resolve(
 const workRoot = path.resolve(projectRoot, "work");
 const outputsRoot = path.resolve(projectRoot, "outputs");
 const reportRoot = path.resolve(outputsRoot, "reports");
+const aviSourceExpansionReports = [
+  "2026-09-08T09-57-45-216Z-3gp-to-avi-stress",
+  "2026-09-08T10-00-44-455Z-mpeg-ts-to-avi-stress",
+  "2026-09-08T10-02-40-598Z-mp4-to-avi-stress",
+  "2026-09-08T10-04-54-361Z-mov-to-avi-stress",
+  "2026-09-08T10-08-06-333Z-mkv-to-avi-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const disposableOutputRoot = path.resolve(projectRoot, "output");
 const remuxEngineRoot = path.resolve(projectRoot, "public", "engines", "remux");
 const playwrightOutputRoot = path.resolve(disposableOutputRoot, "playwright");
@@ -79,6 +90,9 @@ const avifDiagnosticFiles = [
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
   path.resolve(workRoot, "avi-source-feasibility"),
+  path.resolve(workRoot, "avi-loop-debug.mkv"),
+  path.resolve(workRoot, "avi-loop-debug.mpegts"),
+  path.resolve(workRoot, "avi-candidate-build"),
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
   path.resolve(workRoot, "3gp-amr-npm-cache"),
@@ -290,6 +304,10 @@ const generatedStressNames = new Set([
   "compatible-vp9-opus-128m.mkv.json",
   "theora-vorbis-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mkv.json",
+  "mpeg4-mp3-avi-copy-128m.mp4.json",
+  "mpeg4-mp3-avi-copy-128m.mov.json",
+  "mpeg4-avi-copy-128m.3gp.json",
+  "mpeg4-mp3-avi-copy-128m.mpegts.json",
   "mpeg2-video-128m.mkv.json",
   "mpeg2-video-128m.mp4.json",
   "mpeg2-video-128m.mov.json",
@@ -345,6 +363,9 @@ assertInside(workRoot, playwrightSmallProfileRoot);
 assertInside(outputsRoot, browserImageSmokeRoot);
 assertInside(outputsRoot, browserMediaSmokeRoot);
 assertInside(outputsRoot, reportRoot);
+for (const reportPath of aviSourceExpansionReports) {
+  assertInside(reportRoot, reportPath);
+}
 assertInside(projectRoot, remuxEngineRoot);
 
 if (process.argv.includes("--test-artifacts-only")) {
@@ -431,6 +452,9 @@ for (const logPath of detachedProfileLogs) {
   }
 }
 for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
+for (const reportPath of aviSourceExpansionReports) {
+  await rm(reportPath, { force: true });
+}
 
 for (const entry of await readdir(remuxEngineRoot, {
   withFileTypes: true,

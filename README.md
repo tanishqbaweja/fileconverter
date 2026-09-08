@@ -458,9 +458,10 @@ name was removed and is not counted as WebM evidence. All generated inputs and
 outputs were deleted. See
 `evidence/complex-legacy-web-source-field-retention-browser-2026-09-06.json`.
 
-AVI output is public for the exact compatible subset: Matroska containing
-MPEG-4 Part 2 video and optional MP3 audio. It packet-copies compressed streams
-without decoding or re-encoding. A project-owned FFmpeg 8.1.2 option rolls
+AVI output is public for the exact compatible subset: Matroska, MP4, MOV, 3GP,
+or MPEG-TS containing MPEG-4 Part 2 video, with MP3 audio copied where valid;
+3GP is video-only. It packet-copies compressed streams without decoding or
+re-encoding. A project-owned FFmpeg 8.1.2 option rolls
 OpenDML RIFF segments at 8 MiB, bounding retained packet-index payload near
 16 MiB even for minimum-size chunks, while a reserved master index covers
 outputs through 128 GiB. A 159,417,989-byte production-Chrome fixture passed
@@ -476,6 +477,16 @@ then reproduced the AVI-capable core and all five unchanged specialist FFmpeg
 modules byte-for-byte in 12m11s. The recipe isolates the new AVI muxer by
 reconstructing those specialists with their historical AVI-output-disabled
 configure surface; cleanup passed and no run artifact remains.
+
+The source-expansion gate used five 177,146,977-199,649,420-byte inputs. Each
+route passed three production-Chrome runs in 1.440-2.878 seconds and stayed at
+or below 249.1 MiB incremental complete-Chromium private memory. Exact MPEG-4
+packets, exact MP3 packets where present, full decode, repeatable output,
+22-24 genuine OpenDML segments, fixed 32 MiB Wasm, 256 KiB I/O, cancellation,
+and injected-write cleanup all passed. Parallel packet-copy generation created
+the five stress sources in 5.25 seconds; all generated fixtures, converted
+copies, raw reports, browser artifacts, and the downloaded candidate were then
+deleted. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.
 
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded

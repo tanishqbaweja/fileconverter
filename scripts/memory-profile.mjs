@@ -161,6 +161,13 @@ const MP3_OUTPUT_PROFILES = [
   "ogg-to-mp3",
   "opus-to-mp3",
 ];
+const COMPATIBLE_AVI_PROFILES = [
+  "mkv-to-avi",
+  "mp4-to-avi",
+  "mov-to-avi",
+  "3gp-to-avi",
+  "mpeg-ts-to-avi",
+];
 const isVideoOptionsProfile =
   /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
     profileId,
@@ -509,7 +516,7 @@ if (
     "mov-to-m4v",
     "avi-to-m4v",
     "mkv-to-ogv",
-    "mkv-to-avi",
+    ...COMPATIBLE_AVI_PROFILES,
     "mkv-to-webm-av1",
     "mkv-to-mp3",
     "mp4-to-mp3",
@@ -673,7 +680,7 @@ const isMediaProfile =
   profileId === "mov-to-m4v" ||
   profileId === "avi-to-m4v" ||
   profileId === "mkv-to-ogv" ||
-  profileId === "mkv-to-avi" ||
+  COMPATIBLE_AVI_PROFILES.includes(profileId) ||
   profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
@@ -948,7 +955,10 @@ try {
     throw new Error("Loaded-site private-memory baseline is unavailable.");
   }
 
-  if (profileId === "mkv-to-ogv" || profileId === "mkv-to-avi") {
+  if (
+    profileId === "mkv-to-ogv" ||
+    COMPATIBLE_AVI_PROFILES.includes(profileId)
+  ) {
     const namesBefore = await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory();
       const names = [];
@@ -972,7 +982,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${profileId === "mkv-to-avi" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1013,7 +1023,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${profileId === "mkv-to-avi" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1488,7 +1498,8 @@ try {
       (run) => run.cleanupDeltaFromLoadedMiB <= cleanupRecoveryLimitMiB,
     ),
     cancellationCleanup:
-      !["mkv-to-ogv", "mkv-to-avi"].includes(profileId) ||
+      (profileId !== "mkv-to-ogv" &&
+        !COMPATIBLE_AVI_PROFILES.includes(profileId)) ||
       cancellationCheck?.passed === true,
   };
   const report = {
@@ -1754,7 +1765,7 @@ async function validateMediaOutput(
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
   const compatibleOgvCopy = route === "mkv-to-ogv";
-  const compatibleAviCopy = route === "mkv-to-avi";
+  const compatibleAviCopy = COMPATIBLE_AVI_PROFILES.includes(route);
   const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
@@ -1936,15 +1947,17 @@ async function validateMediaOutput(
                   1024 * 1024
                 : mpeg2TransportOutput || containerMpegTsCopy
                   ? Math.ceil(source.bytes * 1.1)
-                  : pcmOutput
-                    ? Number.MAX_SAFE_INTEGER
-                    : flacOutput || alacOutput
-                      ? source.bytes * 10
-                      : audioOnly
-                        ? source.bytes
-                        : videoReencode
-                          ? source.bytes * 3
-                          : Math.ceil(source.bytes * 1.05);
+                  : compatibleAviCopy
+                    ? Math.ceil(source.bytes * 1.15)
+                    : pcmOutput
+                      ? Number.MAX_SAFE_INTEGER
+                      : flacOutput || alacOutput
+                        ? source.bytes * 10
+                        : audioOnly
+                          ? source.bytes
+                          : videoReencode
+                            ? source.bytes * 3
+                            : Math.ceil(source.bytes * 1.05);
   if (
     finalState.metrics.outputBytes < minimumComparableSize ||
     finalState.metrics.outputBytes > maximumComparableSize
@@ -2277,10 +2290,13 @@ async function validateMediaOutput(
   }
   if (compatibleOgvCopy || compatibleAviCopy) {
     const packetHashes = {};
-    for (const [kind, map, expected] of [
+    const packetStreams = [
       ["video", "0:v:0", source.videoPacketSha256],
-      ["audio", "0:a:0", source.audioPacketSha256],
-    ]) {
+      ...(source.audioPacketSha256
+        ? [["audio", "0:a:0", source.audioPacketSha256]]
+        : []),
+    ];
+    for (const [kind, map, expected] of packetStreams) {
       const { stdout: packetHash } = await execFileAsync(
         "ffmpeg",
         [
@@ -2311,11 +2327,13 @@ async function validateMediaOutput(
     }
     independentAudioValidation = {
       method: compatibleAviCopy
-        ? "mpeg4-mp3-packet-sha256"
+        ? source.audioPacketSha256
+          ? "mpeg4-mp3-packet-sha256"
+          : "mpeg4-packet-sha256"
         : "theora-vorbis-packet-sha256",
       passed: true,
       videoSha256: packetHashes.video,
-      audioSha256: packetHashes.audio,
+      ...(source.audioPacketSha256 ? { audioSha256: packetHashes.audio } : {}),
     };
   }
   if (compatibleWebmCopy) {
@@ -2645,9 +2663,14 @@ async function validateMediaOutput(
               : hevcOutput
                 ? "hevc"
                 : "h264"))) ||
+    (compatibleAviCopy &&
+      (codecs.length !== (sourceAudio ? 2 : 1) ||
+        codecs[0] !== "mpeg4" ||
+        (sourceAudio && codecs[1] !== "mp3"))) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
+      !compatibleAviCopy &&
       (codecs.length !== 2 ||
         codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== sourceAudio?.codec_name))
@@ -2689,24 +2712,28 @@ async function validateMediaOutput(
       ? sourceAudio.tags.language
       : null;
   const sourceDuration = sourceDurationSeconds;
-  const expectedDuration = elementaryVideoOutput
-    ? decodedVideoDuration
-    : aacPacketCopyOutput && Number.isFinite(Number(source.aacAccessUnitCount))
-      ? (Number(source.aacAccessUnitCount) * 1024) /
-        Number(sourceAudio?.sample_rate)
-      : audioOnly &&
-          (pcmOutput ||
-            flacOutput ||
-            alacOutput ||
-            amrOutput ||
-            mp3TranscodeOutput ||
-            aacTranscodeOutput ||
-            opusTranscodeOutput ||
-            vorbisTranscodeOutput ||
-            wmaOutput ||
-            route === "aac-to-m4a")
-        ? (source.decodedAudioDurationSeconds ?? sourceDuration)
-        : sourceDuration;
+  const expectedDuration = compatibleAviCopy
+    ? sourceDuration +
+      Math.max(0, Number(source.probe?.format?.start_time) || 0)
+    : elementaryVideoOutput
+      ? decodedVideoDuration
+      : aacPacketCopyOutput &&
+          Number.isFinite(Number(source.aacAccessUnitCount))
+        ? (Number(source.aacAccessUnitCount) * 1024) /
+          Number(sourceAudio?.sample_rate)
+        : audioOnly &&
+            (pcmOutput ||
+              flacOutput ||
+              alacOutput ||
+              amrOutput ||
+              mp3TranscodeOutput ||
+              aacTranscodeOutput ||
+              opusTranscodeOutput ||
+              vorbisTranscodeOutput ||
+              wmaOutput ||
+              route === "aac-to-m4a")
+          ? (source.decodedAudioDurationSeconds ?? sourceDuration)
+          : sourceDuration;
   const expectedVideoWidth = webmReencode
     ? Math.min(640, sourceVideo?.width ?? 0)
     : sourceVideo?.width;
@@ -2844,9 +2871,10 @@ async function validateMediaOutput(
     );
   }
   if (
-    compatibleOgvCopy &&
+    (compatibleOgvCopy || compatibleAviCopy) &&
     (Number(video?.nb_read_packets) !== Number(source.videoPacketCount) ||
-      Number(audio?.nb_read_packets) !== Number(source.audioPacketCount))
+      (source.audioPacketSha256 &&
+        Number(audio?.nb_read_packets) !== Number(source.audioPacketCount)))
   ) {
     throw new Error(
       `Browser compatible ${compatibleAviCopy ? "AVI" : "OGV"} packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "unavailable"} audio.`,
@@ -3019,11 +3047,16 @@ async function validateMediaOutput(
     route === "flac-to-alac" ||
     WMA_OUTPUT_PROFILES.includes(route);
   const outputHasAudio =
-    audioOnly || webmAudioCopy || (!videoReencode && !videoOnlyCopy);
+    audioOnly ||
+    webmAudioCopy ||
+    (compatibleAviCopy
+      ? Boolean(source.audioPacketSha256)
+      : !videoReencode && !videoOnlyCopy);
   if (compatibleAviCopy) {
     probe.withinAviStructure = await inspectAviOpenDml(
       localPath,
       source.maximumPacketBytes,
+      Boolean(source.audioPacketSha256),
     );
     const midpoint = Math.max(0, sourceDurationSeconds / 2);
     await execFileAsync(
@@ -3282,7 +3315,11 @@ async function validateMediaOutput(
   return probe;
 }
 
-async function inspectAviOpenDml(filePath, sourceMaximumPacketBytes) {
+async function inspectAviOpenDml(
+  filePath,
+  sourceMaximumPacketBytes,
+  expectAudio = true,
+) {
   const riffLimitBytes = 8 * 1024 * 1024;
   const maximumPacketBytes = Number.isFinite(Number(sourceMaximumPacketBytes))
     ? Number(sourceMaximumPacketBytes)
@@ -3340,7 +3377,7 @@ async function inspectAviOpenDml(filePath, sourceMaximumPacketBytes) {
       offset !== file.size ||
       !hasMasterIndex ||
       standardVideoIndexes < 1 ||
-      standardAudioIndexes < 1 ||
+      (expectAudio ? standardAudioIndexes < 1 : standardAudioIndexes !== 0) ||
       (file.size > riffLimitBytes && segments.length < 2)
     ) {
       throw new Error(

@@ -12,13 +12,12 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **390**
+- Public passed conversion profiles: **394**
 - Public profiles with a retained successful Chrome stress report: **389**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
-- **2026-09-08 AVI source-expansion diagnostic (not yet public):** Native FFmpeg feasibility proved that compatible MPEG-4 Part 2 packets can be copied from MP4, MOV, video-only 3GP, and MPEG-TS into genuine AVI, with MP3 copied from every container except 3GP (which cannot validly contain MP3). The first production-browser run deliberately kept all four registry profiles private and failed 4/4 new routes with `dimensions not set` before writing an AVI header; the existing Matroska-to-AVI control still passed. This isolated a Wasm-only fast-path gap: profile 37 skipped bounded stream inspection for non-Matroska containers, so their MPEG-4 dimensions were not populated. The candidate fix adds the same 2 MiB/2-second bounded inspection used by other header-incomplete source families. It remains unaccepted until a rebuilt no-Docker Wasm core passes exact packet, decoded-video, genuine-container, cancellation, write-failure, three-run memory, reproducibility, and cleanup gates.
 - **2026-09-07 compatible OGV packet-copy acceptance:** Public `mkv-to-ogv` now maps guarded native profile 36 and packet-copies Theora plus optional Vorbis without decode or re-encode. Production Chrome passed exact small-file video/audio packet hashes, decoded-video equality, full decode, and injected bounded write-failure cleanup. A genuine 136,906,650-byte Matroska source then passed 3/3 in 1.127-1.164 seconds at 211.3 MiB worst complete-Chromium incremental private memory, producing the same 137,218,724-byte genuine OGV SHA-256 `6a9b41e0500f4bcf528026431e8d744ad0283c99fe7eb0cb6b064d924b705747`. Exact 18,720 Theora and 36,564 Vorbis packets, 18,720 decoded frames, full native decode, 256 KiB reads, 64,258-byte writes/queueing, one pending operation, fixed 32 MiB Wasm, three cleanup recoveries, and cancellation after 128 MiB all passed. Hosted run [34134662736](https://github.com/tanishqbaweja/fileconverter/actions/runs/34134662736) proved only `within-remux.wasm` changed; pushed public-state run [34139252534](https://github.com/tanishqbaweja/fileconverter/actions/runs/34139252534) rebuilt every FFmpeg artifact byte-exact without Docker at commit `65b2488` in 7m32s and retained zero artifacts. All large sources, converted copies, failed-run reports, browser profiles, and mismatch archives were deleted; `test.mkv` remains byte-exact. Compact evidence is retained in `evidence/compatible-ogv-copy-2026-09-07.json`.
 - **2026-09-07 automatic media route selection:** Bounded source inspection now chooses between every current same-destination certified copy and encode family. H.264/AAC Matroska stays on lossless `mkv-to-mp4`; a genuine 1,099,657-byte MPEG-2 Matroska source automatically selected `mkv-to-mp4-mpeg4` and produced all 96 genuine MPEG-4 Part 2 frames under 256 KiB I/O/queue bounds and one pending operation. HEVC-to-WebM fallback and refusal of uncertified VP9 decoding are unit-locked. The focused Chrome gate passed 1/1, media options passed 12/12, and all generated data was deleted without Docker. Compact evidence is `evidence/automatic-media-routing-2026-09-07.json`.
 - **2026-09-07 size-independent memory audit:** Hash-locked production-Chromium reports keep genuine HEVC-to-VP8 re-encoding separate from stream-copy remuxing. Re-encode input grew 78.98x to the untouched 2,958,573,265-byte source and output grew 129.67x to 921,524,214 bytes while worst complete-Chromium incremental private memory grew only 1.34x to 208.8 MiB; the full point passed three 44.7-minute browser runs. The separate 6.443/10.738 GB copy series grew memory only 1.08x to 210.3 MiB and completed the 10 GB input in 92.853 seconds; that result is explicitly remuxing, not re-encoding. All outputs and generated fixtures were deleted and `test.mkv` remained byte-exact. Compact evidence is `evidence/size-independent-memory-audit-2026-09-07.json`.
@@ -752,6 +751,7 @@ Stream ma |
 | 2026-08-31T19:25:07.800Z | wav-to-aac | 153,600,106 | 0 | 153,600,106 | Browser media metadata validation failed: audio-onlyxaudio-only, 2 channels, not-applicable, 800.0213333333334s. |
 | 2026-09-01T01:47:58.001Z | mp4-to-flac | 182,319,598 | 3 | 182,319,598 | Failed checks: processTreePrivateMemory; measured 270.8 MiB against a 250.0 MiB limit. |
 | 2026-09-01T01:51:07.174Z | mp4-to-flac | 137,357,037 | 3 | 137,357,037 | Failed checks: processTreePrivateMemory; measured 253.7 MiB against a 250.0 MiB limit. |
+| 2026-09-08T10:05:42.751Z | mkv-to-avi | 191,735,971 | 0 | 191,735,971 | Browser media output size is outside the validated range: 202384110 bytes. |
 
 ## Every public passed profile
 
@@ -760,6 +760,7 @@ Stream ma |
 | 3gp-to-aac | video | ffmpeg-remux | stream-copy | 146,854,456 B | 3-run Chrome report |
 | 3gp-to-aiff | video | ffmpeg-audio | re-encode | 156,907,373 B | 3-run Chrome report |
 | 3gp-to-amr | video | ffmpeg-remux | stream-copy | 156,907,373 B | 3-run Chrome report |
+| 3gp-to-avi | video | ffmpeg-remux | stream-copy | 177,146,977 B | registry passed; stress report not retained locally |
 | 3gp-to-flac | video | ffmpeg-audio | re-encode | 156,907,373 B | 3-run Chrome report |
 | 3gp-to-flv | video | ffmpeg-remux | stream-copy | 146,854,522 B | 3-run Chrome report |
 | 3gp-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,456 B | 3-run Chrome report |
@@ -922,7 +923,7 @@ Stream ma |
 | mkv-to-aac | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
 | mkv-to-aiff | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-amr | video | ffmpeg-audio | re-encode | 145,730,306 B | 3-run Chrome report |
-| mkv-to-avi | video | ffmpeg-remux | stream-copy | 159,417,989 B | registry passed; stress report not retained locally |
+| mkv-to-avi | video | ffmpeg-remux | stream-copy | 191,735,971 B | registry passed; stress report not retained locally |
 | mkv-to-flac | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-flv | video | ffmpeg-remux | stream-copy | 147,131,070 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
@@ -947,6 +948,7 @@ Stream ma |
 | mov-to-aac | video | ffmpeg-remux | stream-copy | 146,854,612 B | 3-run Chrome report |
 | mov-to-aiff | video | ffmpeg-audio | re-encode | 146,854,612 B | 3-run Chrome report |
 | mov-to-amr | video | ffmpeg-audio | re-encode | 145,729,853 B | 3-run Chrome report |
+| mov-to-avi | video | ffmpeg-remux | stream-copy | 191,718,419 B | registry passed; stress report not retained locally |
 | mov-to-flac | video | ffmpeg-audio | re-encode | 146,854,612 B | 3-run Chrome report |
 | mov-to-flv | video | ffmpeg-remux | stream-copy | 147,136,646 B | 3-run Chrome report |
 | mov-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,612 B | 3-run Chrome report |
@@ -976,6 +978,7 @@ Stream ma |
 | mp4-to-aac | video | ffmpeg-remux | stream-copy | 146,854,557 B | 3-run Chrome report |
 | mp4-to-aiff | video | ffmpeg-audio | re-encode | 146,854,557 B | 3-run Chrome report |
 | mp4-to-amr | video | ffmpeg-audio | re-encode | 145,729,798 B | 3-run Chrome report |
+| mp4-to-avi | video | ffmpeg-remux | stream-copy | 191,718,445 B | registry passed; stress report not retained locally |
 | mp4-to-flac | video | ffmpeg-audio | re-encode | 146,854,557 B | 3-run Chrome report |
 | mp4-to-flv | video | ffmpeg-remux | stream-copy | 147,136,622 B | 3-run Chrome report |
 | mp4-to-h264 | video | ffmpeg-remux | stream-copy | 146,854,557 B | 3-run Chrome report |
@@ -997,6 +1000,7 @@ Stream ma |
 | mpeg-ts-to-aac | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-aiff | video | ffmpeg-audio | re-encode | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-amr | video | ffmpeg-audio | re-encode | 149,289,672 B | 3-run Chrome report |
+| mpeg-ts-to-avi | video | ffmpeg-remux | stream-copy | 199,649,420 B | registry passed; stress report not retained locally |
 | mpeg-ts-to-flac | video | ffmpeg-audio | re-encode | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-flv | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
 | mpeg-ts-to-h264 | video | ffmpeg-remux | stream-copy | 150,441,548 B | 3-run Chrome report |
@@ -1178,3 +1182,5 @@ N-04 camera-RAW feasibility audit (2026-09-05): production Chrome 152.0.7977.77 
 M-09 WebCodecs acceleration audit (2026-09-07): production Chrome 152.0.7977.77 passed a bounded codec-only benchmark. VP8 and hardware-preferred VP9 each encoded 300 generated 640x360 frames in three repeatable runs (0.369-0.798 seconds); Opus encoded ten seconds of 48 kHz stereo audio in 0.050-0.092 seconds. At most three inputs were queued, the largest encoded chunk was 9,879 bytes, and no fixture or converted file was created. The capability matrix accepted hardware-preferred VP9/H.264 but not VP8/AV1, accepted Opus/AAC encoding, and rejected FLAC/MP3 encoding. These are useful primitive results, not complete conversion throughput: WebCodecs provides codec chunks but not the required general-purpose demux/mux, stream/metadata preservation, random-access destination, or deterministic fallback pipeline. No public route silently selects it until an identical-source end-to-end A/B proves a material gain while passing the unchanged correctness and 250 MiB gates. `evidence/webcodecs-acceleration-audit-2026-09-07.json` and `tests/webcodecs-acceleration-audit.test.mjs` bind the decision.
 
 M-04/P-08 bounded AVI packet-copy acceptance (2026-09-08): public profile 37 accepts only Matroska MPEG-4 Part 2 video plus optional MP3 audio and copies compressed packets without decoding or re-encoding. An audited FFmpeg 8.1.2 `riff_size_limit` option rolls OpenDML at 8 MiB, bounds retained per-segment packet-index payload near 16 MiB, reserves 16,384 master-index entries per stream (128 GiB represented), and keeps 256 KiB I/O with one pending write. Production Chrome passed three small success/adverse/field cases plus 3/3 159,417,989-byte stress runs in 1.075-1.142 seconds at 204.473 MiB worst incremental complete-Chromium private memory. All runs produced the same 161,046,620-byte AVI, retained exact MPEG-4/MP3 packet hashes, fully decoded, sought at midpoint, and contained 20 valid OpenDML RIFF segments with master and per-stream standard indexes. Cancellation and injected write failure removed partial output. Hosted no-Docker run [34177452654](https://github.com/tanishqbaweja/fileconverter/actions/runs/34177452654) reproduced the AVI-capable core and all five unchanged specialist FFmpeg modules byte-for-byte in 12m11s by rebuilding the specialists with their historical AVI-output-disabled configure surface. Cleanup passed, the three diagnosed mismatch artifacts were deleted, and the successful run retained none. Generated sources, converted copies, raw reports, and browser profiles were deleted after compact evidence was retained. No Docker command was used. See `evidence/avi-output-feasibility-2026-09-08.json` and `evidence/compatible-avi-copy-2026-09-08.json`.
+
+M-04/P-08 compatible AVI source expansion (2026-09-08): the same bounded native profile now accepts certified MPEG-4 Part 2 from MP4, MOV, 3GP, and MPEG-TS as well as Matroska, copying MP3 where the source/container combination permits it; 3GP is explicitly video-only. The first 4/4 browser attempt failed before header write because non-Matroska dimensions were not populated, so the accepted path adds only a fixed 2 MiB/2-second stream probe for header-incomplete inputs. The corrected small production-Chrome gates passed four genuine conversions and four injected write failures with exact compressed packets, decoded-video identity, full native decode, genuine RIFF/AVI headers, and zero partial outputs. Five 177,146,977-199,649,420-byte sources then passed 3/3 in 1.440-2.878 seconds at 249.1 MiB worst complete-Chromium incremental private memory. Every run retained exact MPEG-4 packets, exact MP3 packets where present, repeatable output, 22-24 OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation cleanup, and full decode. Parallel packet-copy fixture generation produced all five sources in 5.25 seconds; every large fixture, converted copy, raw report, browser artifact, and downloaded candidate was deleted after compact evidence was recorded. No Docker command was used. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.

@@ -634,6 +634,19 @@ const categories = {
       ["mkv-to-ogv", "fixtures/stress/media/theora-vorbis-copy-128m.mkv"],
     ],
   },
+  "compatible-avi": {
+    generator: "scripts/generate-compatible-avi-stress-fixture.mjs",
+    profiles: [
+      ["mkv-to-avi", "mpeg4-mp3-avi-copy-128m.mkv"],
+      ["mp4-to-avi", "mpeg4-mp3-avi-copy-128m.mp4"],
+      ["mov-to-avi", "mpeg4-mp3-avi-copy-128m.mov"],
+      ["3gp-to-avi", "mpeg4-avi-copy-128m.3gp"],
+      ["mpeg-ts-to-avi", "mpeg4-mp3-avi-copy-128m.mpegts"],
+    ].map(([profileId, name]) => [
+      profileId,
+      `fixtures/stress/media/${name}`,
+    ]),
+  },
   "container-mp3": {
     generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
     profiles: ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"].map(

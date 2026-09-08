@@ -5559,38 +5559,45 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       fidelityLimitations: [
         "MPEG-4 Part 2 and MP3 compressed packets are copied without decoding or re-encoding.",
       ],
-      maxTestedBytes: 159_417_989,
+      maxTestedBytes: 191_735_971,
       automatedTestStatus: "passed",
       public: true,
     },
     ...(["mp4", "mov", "3gp", "mpeg-ts"] as const).map(
       (input): ConversionProfile => ({
-      id: `${input}-to-avi`,
-      input,
-      output: "avi",
-      engine: "ffmpeg-remux",
-      route: "stream-copy" as const,
-      browserRequirements: [
-        "WebAssembly",
-        "SharedArrayBuffer",
-        "cross-origin isolation",
-        "File System Access",
-      ],
-      cpuClass: "low" as const,
-      memoryClass: "bounded-medium" as const,
-      metadataLimitations: [
-        `The candidate input contains MPEG-4 Part 2 video${input === "3gp" ? "; 3GP AAC or AMR audio cannot be represented by this AVI profile and is explicitly excluded" : " with optional MP3 audio"}.`,
-        "Compatible MPEG-4 Part 2 and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
-        "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
-        "AVI cannot retain every source-container metadata, language, disposition, or timestamp field; the conversion reports each excluded field class.",
-        "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
-      ],
-      fidelityLimitations: [
-        "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied without decoding or re-encoding.",
-      ],
-      maxTestedBytes: null,
-      automatedTestStatus: "pending" as const,
-      public: false,
+        id: `${input}-to-avi`,
+        input,
+        output: "avi",
+        engine: "ffmpeg-remux",
+        route: "stream-copy" as const,
+        browserRequirements: [
+          "WebAssembly",
+          "SharedArrayBuffer",
+          "cross-origin isolation",
+          "File System Access",
+        ],
+        cpuClass: "low" as const,
+        memoryClass: "bounded-medium" as const,
+        metadataLimitations: [
+          input === "3gp"
+            ? "The certified 3GP input contains MPEG-4 Part 2 video only; 3GP AAC or AMR audio cannot be represented by this AVI profile and is explicitly excluded."
+            : `The certified ${input.toUpperCase()} input contains MPEG-4 Part 2 video with MP3 audio; other codec combinations require separate evidence.`,
+          "Compatible MPEG-4 Part 2 and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
+          "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
+          "AVI cannot retain every source-container metadata, language, disposition, or timestamp field; the conversion reports each excluded field class.",
+          "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
+        ],
+        fidelityLimitations: [
+          "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied without decoding or re-encoding.",
+        ],
+        maxTestedBytes: {
+          mp4: 191_718_445,
+          mov: 191_718_419,
+          "3gp": 177_146_977,
+          "mpeg-ts": 199_649_420,
+        }[input],
+        automatedTestStatus: "passed" as const,
+        public: true,
       }),
     ),
     {
@@ -6083,7 +6090,15 @@ export function preferredProfileFor(
           (profile) => !videoElementaryOutputs.has(profile.output),
         )
       : sameCategory;
+  const preferredMatroskaCopy =
+    inputCategory === "video"
+      ? preferredSameCategory.find(
+          (profile) =>
+            profile.output === "mkv" && profile.route === "stream-copy",
+        )
+      : undefined;
   return (
+    preferredMatroskaCopy ??
     preferredSameCategory.find((profile) => profile.route === "stream-copy") ??
     preferredSameCategory[0] ??
     sameCategory.find((profile) => profile.route === "stream-copy") ??

@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 261);
+  assert.equal(publicMedia.length, 265);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [

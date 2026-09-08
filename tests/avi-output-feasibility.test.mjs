@@ -64,7 +64,7 @@ test("AVI output profile 37 is wired and public only after browser certification
   assert.ok(profile);
   assert.equal(profile.public, true);
   assert.equal(profile.automatedTestStatus, "passed");
-  assert.equal(profile.maxTestedBytes, 159_417_989);
+  assert.equal(profile.maxTestedBytes, 191_735_971);
   assert.equal(
     evidence.acceptedEvidence,
     "evidence/compatible-avi-copy-2026-09-08.json",
