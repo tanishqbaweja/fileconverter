@@ -487,6 +487,11 @@ and injected-write cleanup all passed. Parallel packet-copy generation created
 the five stress sources in 5.25 seconds; all generated fixtures, converted
 copies, raw reports, browser artifacts, and the downloaded candidate were then
 deleted. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.
+Hosted no-Docker run
+[34215789337](https://github.com/tanishqbaweja/fileconverter/actions/runs/34215789337)
+then rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`,
+passed hosted cleanup in 13m34s, skipped mismatch upload, and retained zero
+artifacts.
 
 Attached-picture retention now closes the last M-03 gap for the current public
 profiles. All eight container-to-Matroska routes preserve up to eight bounded

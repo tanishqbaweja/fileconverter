@@ -78,4 +78,14 @@ test("stress generation, validation, and cleanup remain fully wired", () => {
   assert.equal(evidence.stressGate.allCancellationCleanupPassed, true);
   assert.equal(evidence.fixtureGeneration.seconds, 5.25);
   assert.equal(evidence.fixtureGeneration.allFilesRepositoryLocal, true);
+  assert.equal(evidence.cleanup.rawReportsDeletedAfterCompaction, true);
+  assert.equal(evidence.cleanup.largeFixturesDeletedAfterValidation, true);
+  assert.equal(evidence.cleanup.downloadedCandidateDeletedAfterValidation, true);
+  assert.equal(evidence.cleanup.candidateArtifactDeletedAfterPublication, true);
+  assert.equal(evidence.publication.workflowRunId, 34_215_789_337);
+  assert.equal(evidence.publication.result, "success");
+  assert.equal(evidence.publication.allSixFfmpegModulesByteExact, true);
+  assert.equal(evidence.publication.hostedCleanupPassed, true);
+  assert.equal(evidence.publication.retainedArtifactCount, 0);
+  assert.equal(evidence.publication.dockerUsed, false);
 });

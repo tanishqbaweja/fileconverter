@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-08T10:12:00.000Z",
+  "generatedAt": "2026-09-08T10:45:00.000Z",
   "status": "accepted-public-expansion",
   "dockerUsed": false,
   "profiles": {
@@ -122,11 +122,24 @@
     "withinRemuxWasmSha256": "9b21a43e657ab98ac2b9a90e0336eb9f12b6a13330a0d254063891b37f14d4bc",
     "withinRemuxMjsUnchangedSha256": "137961edf50557d30d41eb9270fbd73c339a9903f68458916035588216e4837e"
   },
+  "publication": {
+    "sourceCommit": "12e42ac249ae6eaf3f279e52851bd6f6f46d633c",
+    "workflowRunId": 34215789337,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34215789337",
+    "result": "success",
+    "createdAt": "2026-09-08T10:30:13Z",
+    "completedAt": "2026-09-08T10:43:47Z",
+    "elapsedSeconds": 814,
+    "allSixFfmpegModulesByteExact": true,
+    "hostedCleanupPassed": true,
+    "retainedArtifactCount": 0,
+    "dockerUsed": false
+  },
   "cleanup": {
     "rawReportsDeletedAfterCompaction": true,
     "largeFixturesDeletedAfterValidation": true,
     "downloadedCandidateDeletedAfterValidation": true,
-    "candidateArtifactDeletedAfterPublication": false,
+    "candidateArtifactDeletedAfterPublication": true,
     "protectedRootFixtureExpectedBytes": 2958573265,
     "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   }
