@@ -5563,6 +5563,36 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       automatedTestStatus: "passed",
       public: true,
     },
+    ...(["mp4", "mov", "3gp", "mpeg-ts"] as const).map(
+      (input): ConversionProfile => ({
+      id: `${input}-to-avi`,
+      input,
+      output: "avi",
+      engine: "ffmpeg-remux",
+      route: "stream-copy" as const,
+      browserRequirements: [
+        "WebAssembly",
+        "SharedArrayBuffer",
+        "cross-origin isolation",
+        "File System Access",
+      ],
+      cpuClass: "low" as const,
+      memoryClass: "bounded-medium" as const,
+      metadataLimitations: [
+        `The candidate input contains MPEG-4 Part 2 video${input === "3gp" ? "; 3GP AAC or AMR audio cannot be represented by this AVI profile and is explicitly excluded" : " with optional MP3 audio"}.`,
+        "Compatible MPEG-4 Part 2 and MP3 streams are copied; subtitles, attachments, attached pictures, data streams, chapters, and incompatible streams are explicitly excluded.",
+        "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
+        "AVI cannot retain every source-container metadata, language, disposition, or timestamp field; the conversion reports each excluded field class.",
+        "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
+      ],
+      fidelityLimitations: [
+        "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied without decoding or re-encoding.",
+      ],
+      maxTestedBytes: null,
+      automatedTestStatus: "pending" as const,
+      public: false,
+      }),
+    ),
     {
       id: "mkv-to-webm",
       input: "mkv",

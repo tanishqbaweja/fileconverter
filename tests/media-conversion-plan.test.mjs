@@ -346,6 +346,20 @@ test("bounded AVI copy accepts MPEG-4 Part 2 and MP3 and rejects incompatible vi
   assert.ok(blocked);
   assert.equal(blocked.streams[0].action, "reject");
 
+  const incompatibleAudio = planMediaConversion(
+    aviProfile,
+    inspection([
+      stream("video", "MPEG-4 Part 2"),
+      stream("audio", "AAC"),
+    ]),
+  );
+  assert.ok(incompatibleAudio);
+  assert.deepEqual(
+    incompatibleAudio.streams.map(({ action }) => action),
+    ["copy", "exclude"],
+  );
+  assert.deepEqual(incompatibleAudio.blockingReasons, []);
+
   const audioOnly = planMediaConversion(
     aviProfile,
     inspection([stream("audio", "MP3")]),

@@ -78,6 +78,7 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "avi-source-feasibility"),
   path.resolve(workRoot, "vorbis-npm-cache"),
   path.resolve(workRoot, "vorbis-process-temp"),
   path.resolve(workRoot, "3gp-amr-npm-cache"),

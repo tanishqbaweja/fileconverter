@@ -401,12 +401,44 @@ function planCompatibleOgvCopy(
   });
 }
 
+function planCompatibleAviCopy(
+  streams: readonly SourceStreamInspection[],
+): readonly MediaStreamPlan[] {
+  let firstVideoSeen = false;
+  return streams.map((stream, index) => {
+    const codec = normalizedCodec(stream.codec);
+    if (stream.mediaType === "video" && !firstVideoSeen) {
+      firstVideoSeen = true;
+      if (codec !== "MPEG-4 Part 2") {
+        return planItem(
+          stream,
+          index,
+          "reject",
+          "The first video stream is not MPEG-4 Part 2; this fixed AVI copy profile rejects the conversion even if a later compatible stream exists.",
+        );
+      }
+    }
+    const compatible =
+      (stream.mediaType === "video" && codec === "MPEG-4 Part 2") ||
+      (stream.mediaType === "audio" && codec === "MP3");
+    return planItem(
+      stream,
+      index,
+      compatible ? "copy" : "exclude",
+      compatible
+        ? "This stream is packet-copied without decoding or re-encoding into AVI."
+        : "Only MPEG-4 Part 2 video and MP3 audio are included by this fixed AVI copy profile; this source element is explicitly excluded.",
+    );
+  });
+}
+
 function planStreamCopy(
   profile: ConversionProfile,
   streams: readonly SourceStreamInspection[],
 ): readonly MediaStreamPlan[] {
   if (profile.output === "webm-av1") return planCompatibleWebmCopy(streams);
   if (profile.output === "ogv") return planCompatibleOgvCopy(streams);
+  if (profile.output === "avi") return planCompatibleAviCopy(streams);
   if (VIDEO_ELEMENTARY_OUTPUTS.has(profile.output)) {
     return planVideoOnlyCopy(profile, streams);
   }

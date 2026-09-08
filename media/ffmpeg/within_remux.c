@@ -2650,6 +2650,15 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       container_flv_output && input_format->iformat &&
       input_format->iformat->name &&
       strstr(input_format->iformat->name, "mpegts") != NULL;
+  const int container_avi_input_requires_probe =
+#ifdef WITHIN_OGV_COPY
+      container_avi_output && input_format->iformat &&
+      input_format->iformat->name &&
+      strstr(input_format->iformat->name, "matroska") == NULL &&
+      strstr(input_format->iformat->name, "avi") == NULL;
+#else
+      0;
+#endif
   if (profile != 17 &&
       ((!audio_extraction_output && !matroska_output &&
         !container_mpegts_output && !container_threegp_output &&
@@ -2664,7 +2673,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        container_mpegts_input_requires_probe ||
        container_threegp_input_requires_probe ||
        container_mov_input_requires_probe ||
-       container_flv_input_requires_probe)) {
+       container_flv_input_requires_probe ||
+       container_avi_input_requires_probe)) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);

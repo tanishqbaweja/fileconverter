@@ -580,6 +580,20 @@ const aviCopyFixturePath = path.join(
   "avi-copy-source.mkv",
 );
 const aviCopyOutputPath = path.join(outputRoot, "mpeg4-mp3-copy-output.avi");
+const aviCopySourceFixturePaths = {
+  mkv: aviCopyFixturePath,
+  mp4: path.join(projectRoot, "work", "avi-copy-source.mp4"),
+  mov: path.join(projectRoot, "work", "avi-copy-source.mov"),
+  "3gp": path.join(projectRoot, "work", "avi-copy-source.3gp"),
+  "mpeg-ts": path.join(projectRoot, "work", "avi-copy-source.mpegts"),
+} as const;
+const aviCopyOutputPaths = {
+  mkv: aviCopyOutputPath,
+  mp4: path.join(outputRoot, "mp4-mpeg4-mp3-copy-output.avi"),
+  mov: path.join(outputRoot, "mov-mpeg4-mp3-copy-output.avi"),
+  "3gp": path.join(outputRoot, "3gp-mpeg4-copy-output.avi"),
+  "mpeg-ts": path.join(outputRoot, "mpeg-ts-mpeg4-mp3-copy-output.avi"),
+} as const;
 const complexAviCopyFixturePath = path.join(
   projectRoot,
   "work",
@@ -1473,6 +1487,12 @@ test.beforeAll(async () => {
   assertProjectLocal(ogvCopyOutputPath);
   assertProjectLocal(aviCopyFixturePath);
   assertProjectLocal(aviCopyOutputPath);
+  for (const fixture of Object.values(aviCopySourceFixturePaths)) {
+    assertProjectLocal(fixture);
+  }
+  for (const outputPath of Object.values(aviCopyOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
   assertProjectLocal(complexAviCopyFixturePath);
   assertProjectLocal(complexAviCopyOutputPath);
   await rm(profileRoot, { recursive: true, force: true });
@@ -1497,6 +1517,12 @@ test.beforeAll(async () => {
   await rm(ogvCopyOutputPath, { force: true });
   await rm(aviCopyFixturePath, { force: true });
   await rm(aviCopyOutputPath, { force: true });
+  for (const [input, fixture] of Object.entries(aviCopySourceFixturePaths)) {
+    if (input !== "mkv") await rm(fixture, { force: true });
+  }
+  for (const [input, outputPath] of Object.entries(aviCopyOutputPaths)) {
+    if (input !== "mkv") await rm(outputPath, { force: true });
+  }
   await rm(complexAviCopyFixturePath, { force: true });
   await rm(complexAviCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
@@ -1538,6 +1564,36 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  for (const [input, fixturePath] of Object.entries(
+    aviCopySourceFixturePaths,
+  )) {
+    if (input === "mkv") continue;
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        aviInputFixturePath,
+        "-map",
+        "0:v:0",
+        ...(input === "3gp" ? ["-an"] : ["-map", "0:a:0"]),
+        "-c",
+        "copy",
+        "-map_metadata",
+        "0",
+        "-fflags",
+        "+bitexact",
+        "-f",
+        input === "mpeg-ts" ? "mpegts" : input,
+        fixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
   await execFileAsync(
     "ffmpeg",
     [
@@ -2637,6 +2693,12 @@ test.afterAll(async () => {
   await rm(ogvCopyOutputPath, { force: true });
   await rm(aviCopyFixturePath, { force: true });
   await rm(aviCopyOutputPath, { force: true });
+  for (const [input, fixture] of Object.entries(aviCopySourceFixturePaths)) {
+    if (input !== "mkv") await rm(fixture, { force: true });
+  }
+  for (const [input, outputPath] of Object.entries(aviCopyOutputPaths)) {
+    if (input !== "mkv") await rm(outputPath, { force: true });
+  }
   await rm(complexAviCopyFixturePath, { force: true });
   await rm(complexAviCopyOutputPath, { force: true });
   await rm(threeGpAmrFixturePath, { force: true });
@@ -2717,6 +2779,10 @@ async function runMediaRoute(
   profileId:
     | "mkv-to-ogv"
     | "mkv-to-avi"
+    | "mp4-to-avi"
+    | "mov-to-avi"
+    | "3gp-to-avi"
+    | "mpeg-ts-to-avi"
     | "mkv-to-mp4"
     | "mov-to-mp4"
     | "3gp-to-mp4"
@@ -6485,6 +6551,71 @@ test("browser FFmpeg losslessly remuxes Matroska MPEG-4 Part 2 and MP3 to genuin
     },
   );
 });
+
+const compatibleAviSourceRoutes = [
+  ["mp4", "mp4-to-avi", ["mpeg4", "mp3"]],
+  ["mov", "mov-to-avi", ["mpeg4", "mp3"]],
+  ["3gp", "3gp-to-avi", ["mpeg4"]],
+  ["mpeg-ts", "mpeg-ts-to-avi", ["mpeg4", "mp3"]],
+] as const;
+
+for (const [sourceFormat, profileId, expectedCodecs] of compatibleAviSourceRoutes) {
+  test(`browser FFmpeg losslessly remuxes compatible ${sourceFormat.toUpperCase()} to genuine AVI`, async () => {
+    const sourcePath = aviCopySourceFixturePaths[sourceFormat];
+    await runMediaRoute(
+      profileId,
+      aviCopyOutputPaths[sourceFormat],
+      [...expectedCodecs],
+      100_000,
+      sourcePath,
+      {
+        expectedWarningFragments: [
+          "MPEG-4 Part 2 and any compatible MP3 compressed packets are copied",
+          ...(sourceFormat === "3gp"
+            ? ["3GP AAC or AMR audio cannot be represented"]
+            : []),
+        ],
+        expectedDurationSeconds: 4,
+        durationToleranceSeconds: 0.25,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("avi");
+          expect(probe.streams).toHaveLength(expectedCodecs.length);
+          const header = await readFile(outputPath);
+          expect(header.subarray(0, 4).toString("ascii")).toBe("RIFF");
+          expect(header.subarray(8, 12).toString("ascii")).toBe("AVI ");
+          await expectCompressedVideoPacketMatch(sourcePath, outputPath);
+          if (sourceFormat !== "3gp") {
+            await expectCompressedAudioPacketMatch(sourcePath, outputPath);
+          }
+          await expectDecodedVideoMatch(sourcePath, outputPath);
+          await execFileAsync(
+            "ffmpeg",
+            [
+              "-hide_banner",
+              "-loglevel",
+              "error",
+              "-nostdin",
+              "-xerror",
+              "-i",
+              outputPath,
+              "-map",
+              "0:v:0",
+              ...(sourceFormat === "3gp" ? [] : ["-map", "0:a:0"]),
+              "-f",
+              "null",
+              "NUL",
+            ],
+            {
+              cwd: projectRoot,
+              windowsHide: true,
+              maxBuffer: 8 * 1024 * 1024,
+            },
+          );
+        },
+      },
+    );
+  });
+}
 
 test("AVI stream copy propagates a bounded write failure and removes the partial output", async () => {
   await page.goto("/?test=1&directory=1&fault=write");
