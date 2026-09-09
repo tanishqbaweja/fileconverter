@@ -174,9 +174,11 @@ not the entire product specification.
   bounded stream-copy topology.
 - The prior adverse fixture merely removed eight bytes from the tail, which the
   IVF demuxer correctly treated as end-of-file after the preceding complete
-  packets. It is replaced by a deterministic oversized second-packet header;
-  native FFmpeg rejects that source as corrupt, while the bounded 44-byte
-  preflight still permits the worker to exercise conversion-error cleanup.
+  packets. A deterministic oversized second-packet header made native FFmpeg
+  flag the packet as corrupt, but the first browser rerun then exposed that the
+  custom wrapper copied `AV_PKT_FLAG_CORRUPT` packets and completed. The source
+  now rejects any corrupt selected packet before it reaches a bitstream filter
+  or mux write; the corrected candidate still needs its browser rerun.
 - The corrected source still requires a no-Docker hosted rebuild, focused
   AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
   cancellation, independent validation, publication consistency, exact

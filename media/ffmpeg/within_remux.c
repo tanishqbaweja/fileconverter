@@ -3827,6 +3827,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       av_packet_unref(packet);
       continue;
     }
+    if (packet->flags & AV_PKT_FLAG_CORRUPT) {
+      within_message(
+          2,
+          "A selected input packet is marked corrupt; conversion stopped before copying damaged data.");
+      av_packet_unref(packet);
+      result = AVERROR_INVALIDDATA;
+      goto cleanup;
+    }
 
     AVStream *input_stream = input_format->streams[input_index];
     AVStream *output_stream =
