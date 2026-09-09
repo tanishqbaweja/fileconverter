@@ -38,7 +38,7 @@ const ivfInputs = {
   vp8: path.join(fixtureRoot, "vp8.ivf"),
   vp9: path.join(fixtureRoot, "vp9.ivf"),
 } as const;
-const corruptIvfPath = path.join(fixtureRoot, "truncated.ivf");
+const corruptIvfPath = path.join(fixtureRoot, "corrupt-second-frame.ivf");
 
 type IvfCodec = keyof typeof ivfInputs;
 type IvfProfile = "ivf-to-webm" | "ivf-to-mkv";
