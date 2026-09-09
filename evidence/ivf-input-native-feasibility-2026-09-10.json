@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-10",
+  "purpose": "Bounded native feasibility check before adding browser-local IVF input routes.",
+  "environment": {
+    "operatingSystem": "Windows",
+    "ffmpeg": "C:\\ffmpeg\\bin\\ffmpeg.exe",
+    "ffprobe": "C:\\ffmpeg\\bin\\ffprobe.exe",
+    "dockerUsed": false,
+    "temporaryDirectory": "work/ivf-input-feasibility",
+    "temporaryMediaDeletedAfterRecording": true
+  },
+  "method": {
+    "inputs": "Small AV1 and VP8 repository fixtures were packet-copied to IVF. A small VP9 IVF sample was encoded from the VP8 fixture only to complete the codec matrix.",
+    "conversion": "Each IVF input was packet-copied independently to WebM and Matroska with metadata removed and bitexact flags enabled.",
+    "validation": "ffprobe counted frames and packets; FFmpeg decoded each input and output to a SHA-256 hash. Compressed packet hashes were also compared. Each native remux timing was sampled three times. These timings establish feasibility only and are not browser performance evidence."
+  },
+  "results": [
+    {
+      "codec": "av1",
+      "input": { "bytes": 1605817, "frames": 96, "packets": 96, "timeBase": "1/1000", "decodedSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e", "packetSha256": "ac229ed09da793b718dcd6fc73d8ddbf6da12ee42ad7e4e39970a6625355d192" },
+      "webm": { "bytes": 1605636, "frames": 96, "packets": 96, "decodedSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e", "packetSha256": "de85c63d6a67e42912d57212e4b93e4e264eb1d521c4de9650819b1b2f24cc0c", "milliseconds": [47.092, 38.707, 37.799] },
+      "matroska": { "bytes": 1605691, "frames": 96, "packets": 96, "decodedSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e", "packetSha256": "de85c63d6a67e42912d57212e4b93e4e264eb1d521c4de9650819b1b2f24cc0c", "milliseconds": [48.619, 37.410, 38.822] },
+      "note": "AV1 decoded frames are exact. Container adaptation changes the normalized compressed packet hash by inserting or removing temporal delimiter OBUs, as already observed for Matroska/WebM to IVF extraction."
+    },
+    {
+      "codec": "vp8",
+      "input": { "bytes": 126259, "frames": 48, "packets": 48, "timeBase": "1/1000", "decodedSha256": "580a8b15af13b17a51c544b485de833c69824cfe68aa778ea3bb0843ac8e614e", "packetSha256": "acb9352ee10381593aaa14e57f09bdaa890ca454170e1644087d327ccc14fefa" },
+      "webm": { "bytes": 126394, "frames": 48, "packets": 48, "decodedSha256": "580a8b15af13b17a51c544b485de833c69824cfe68aa778ea3bb0843ac8e614e", "packetSha256": "acb9352ee10381593aaa14e57f09bdaa890ca454170e1644087d327ccc14fefa", "milliseconds": [35.337, 31.869, 34.189] },
+      "matroska": { "bytes": 126447, "frames": 48, "packets": 48, "decodedSha256": "580a8b15af13b17a51c544b485de833c69824cfe68aa778ea3bb0843ac8e614e", "packetSha256": "acb9352ee10381593aaa14e57f09bdaa890ca454170e1644087d327ccc14fefa", "milliseconds": [35.907, 34.468, 33.429] }
+    },
+    {
+      "codec": "vp9",
+      "input": { "bytes": 85266, "frames": 48, "packets": 48, "timeBase": "1/24", "decodedSha256": "93b786cbeedab580467ef3fe94c0bf386f6620cb463222b79b797e2598fa48e0", "packetSha256": "9b376dd16733f2ccd889efa03c0a6edbf19d4863f26ac73c9542ac42b1d28482" },
+      "webm": { "bytes": 85409, "frames": 48, "packets": 48, "decodedSha256": "93b786cbeedab580467ef3fe94c0bf386f6620cb463222b79b797e2598fa48e0", "packetSha256": "9b376dd16733f2ccd889efa03c0a6edbf19d4863f26ac73c9542ac42b1d28482", "milliseconds": [38.979, 32.910, 32.828] },
+      "matroska": { "bytes": 85462, "frames": 48, "packets": 48, "decodedSha256": "93b786cbeedab580467ef3fe94c0bf386f6620cb463222b79b797e2598fa48e0", "packetSha256": "9b376dd16733f2ccd889efa03c0a6edbf19d4863f26ac73c9542ac42b1d28482", "milliseconds": [34.848, 32.701, 32.990] }
+    }
+  ],
+  "decision": "Proceed with bounded IVF-to-WebM and IVF-to-Matroska packet-copy routes for AV1, VP8, and VP9. Use one worker and the smallest proven Wasm memory class; browser performance and full-process memory still require measured promotion evidence before publication."
+}
