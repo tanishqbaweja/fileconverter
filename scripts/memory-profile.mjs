@@ -169,6 +169,7 @@ const COMPATIBLE_AVI_PROFILES = [
   "mpeg-ts-to-avi",
 ];
 const IVF_PROFILES = ["mkv-to-ivf", "webm-to-ivf"];
+const IVF_INPUT_PROFILES = ["ivf-to-webm", "ivf-to-mkv"];
 const isVideoOptionsProfile =
   /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
     profileId,
@@ -1778,6 +1779,7 @@ async function validateMediaOutput(
   const compatibleOgvCopy = route === "mkv-to-ogv";
   const compatibleAviCopy = COMPATIBLE_AVI_PROFILES.includes(route);
   const ivfOutput = IVF_PROFILES.includes(route);
+  const ivfInputCopy = IVF_INPUT_PROFILES.includes(route);
   const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
@@ -1788,6 +1790,7 @@ async function validateMediaOutput(
     "avi-to-mkv",
     "webm-to-mkv",
     "ogv-to-mkv",
+    "ivf-to-mkv",
   ].includes(route);
   const liveMatroskaCopy = matroskaCopy && route !== "avi-to-mkv";
   const containerMpegTsCopy = [
@@ -1825,7 +1828,8 @@ async function validateMediaOutput(
     route === "h264-to-mp4" ||
     m4vMp4Output ||
     elementaryVideoOutput ||
-    mpeg2TransportOutput;
+    mpeg2TransportOutput ||
+    ivfInputCopy;
   const vp9Reencode =
     route === "mkv-to-webm-vp9" ||
     route === "mp4-to-webm-vp9" ||
@@ -2419,6 +2423,79 @@ async function validateMediaOutput(
       audioSha256: hashes.get("a"),
     };
   }
+  if (ivfInputCopy) {
+    const { stdout: decodedHash } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-i",
+        localPath,
+        "-map",
+        "0:v:0",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+    );
+    const decodedVideoSha256 = decodedHash
+      .trim()
+      .match(/^SHA256=([0-9a-f]{64})$/i)?.[1]
+      ?.toLowerCase();
+    if (decodedVideoSha256 !== source.decodedVideoSha256) {
+      throw new Error(
+        "Browser IVF-input copy does not exactly match the decoded source video.",
+      );
+    }
+    const sourceVideoCodec = source.probe?.streams?.find(
+      (stream) => stream.codec_type === "video",
+    )?.codec_name;
+    let packetSha256 = null;
+    if (sourceVideoCodec !== "av1") {
+      const { stdout: packetHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v",
+          "error",
+          "-xerror",
+          "-i",
+          localPath,
+          "-map",
+          "0:v:0",
+          "-c",
+          "copy",
+          "-f",
+          "hash",
+          "-hash",
+          "sha256",
+          "-",
+        ],
+        { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+      );
+      packetSha256 = packetHash
+        .trim()
+        .match(/^SHA256=([0-9a-f]{64})$/i)?.[1]
+        ?.toLowerCase();
+      if (packetSha256 !== source.videoPacketSha256) {
+        throw new Error(
+          "Browser IVF-input copy changed the compressed VP8/VP9 packets.",
+        );
+      }
+    }
+    independentAudioValidation = {
+      method:
+        sourceVideoCodec === "av1"
+          ? "decoded-video-sha256-with-av1-delimiter-normalization"
+          : "decoded-video-and-packet-sha256",
+      passed: true,
+      decodedVideoSha256,
+      ...(packetSha256 ? { videoPacketSha256: packetSha256 } : {}),
+    };
+  }
   const needsDecodedFrameCounts =
     aacOutput ||
     amrOutput ||
@@ -2426,6 +2503,7 @@ async function validateMediaOutput(
     compatibleOgvCopy ||
     compatibleAviCopy ||
     compatibleWebmCopy ||
+    ivfInputCopy ||
     route === "avi-to-mkv";
   // Packet-copy routes are validated by a full output hash, packet counts,
   // metadata checks, and a complete copy traversal below. Decoding unchanged
@@ -2477,6 +2555,14 @@ async function validateMediaOutput(
       .includes("ivf")
   ) {
     throw new Error("Browser IVF output did not probe as genuine IVF.");
+  }
+  if (
+    ivfInputCopy &&
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("matroska")
+  ) {
+    throw new Error("Browser IVF-input output did not probe as Matroska/WebM.");
   }
   if (
     matroskaCopy &&
@@ -2698,7 +2784,7 @@ async function validateMediaOutput(
     (videoOnlyCopy &&
       (codecs.length !== 1 ||
         codecs[0] !==
-          (ivfOutput
+          (ivfOutput || ivfInputCopy
             ? sourceVideo?.codec_name
             : mpeg2Output || mpeg2TransportOutput
               ? "mpeg2video"
@@ -2812,6 +2898,7 @@ async function validateMediaOutput(
       compatibleOgvCopy ||
       compatibleAviCopy ||
       compatibleWebmCopy ||
+      ivfInputCopy ||
       matroskaCopy ||
       containerMpegTsCopy ||
       containerThreeGpCopy ||
@@ -2886,7 +2973,7 @@ async function validateMediaOutput(
       containerThreeGpCopy ||
       containerMovCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
-    ((compatibleWebmCopy || liveMatroskaCopy) &&
+    ((compatibleWebmCopy || liveMatroskaCopy || ivfInputCopy) &&
       Number.isFinite(probedOutputDuration)) ||
     ((!matroskaCopy || route === "avi-to-mkv") &&
       Math.abs(duration - expectedDuration) >
@@ -2896,6 +2983,14 @@ async function validateMediaOutput(
   ) {
     throw new Error(
       `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
+    );
+  }
+  if (
+    ivfInputCopy &&
+    Number(video?.nb_read_packets) !== Number(source.videoPacketCount)
+  ) {
+    throw new Error(
+      `Browser IVF-input packet count changed: ${video?.nb_read_packets ?? "unavailable"} video packets.`,
     );
   }
   if (
@@ -2929,7 +3024,8 @@ async function validateMediaOutput(
     (elementaryVideoOutput ||
       compatibleOgvCopy ||
       compatibleAviCopy ||
-      compatibleWebmCopy) &&
+      compatibleWebmCopy ||
+      ivfInputCopy) &&
     Number.isFinite(Number(source.decodedVideoFrames)) &&
     Number(video?.nb_read_frames) !== Number(source.decodedVideoFrames)
   ) {
@@ -2941,7 +3037,8 @@ async function validateMediaOutput(
     (compatibleOgvCopy ||
       compatibleAviCopy ||
       ivfOutput ||
-      compatibleWebmCopy) &&
+      compatibleWebmCopy ||
+      ivfInputCopy) &&
     (probe.chapters?.length ?? 0) !== 0
   ) {
     throw new Error(
@@ -3076,6 +3173,7 @@ async function validateMediaOutput(
     compatibleOgvCopy ||
     compatibleAviCopy ||
     compatibleWebmCopy ||
+    ivfInputCopy ||
     matroskaCopy ||
     containerThreeGpCopy ||
     containerMovCopy ||
@@ -3242,7 +3340,7 @@ async function validateMediaOutput(
     for (const candidate of [sourcePath, localPath]) {
       const { stdout: decodedStreamHashes } = await execFileAsync(
         "ffmpeg",
-        route === "avi-to-mkv"
+        route === "avi-to-mkv" || route === "ivf-to-mkv"
           ? [
               "-v",
               "error",
@@ -3454,7 +3552,7 @@ async function validateMediaOutput(
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
     mediaTraversal:
-      compatibleOgvCopy || compatibleAviCopy || ivfOutput
+      compatibleOgvCopy || compatibleAviCopy || ivfOutput || ivfInputCopy
         ? "full-native-decode-and-packet-hash"
         : compatibleWebmCopy || matroskaCopy
           ? "full-native-decode-and-streamhash"

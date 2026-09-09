@@ -633,6 +633,8 @@ const categories = {
     profiles: [
       ["mkv-to-ivf", "fixtures/stress/media/compatible-vp9-opus-128m.mkv"],
       ["webm-to-ivf", "fixtures/stress/media/compatible-vp9-opus-128m.webm"],
+      ["ivf-to-webm", "fixtures/stress/media/compatible-vp9-128m.ivf"],
+      ["ivf-to-mkv", "fixtures/stress/media/compatible-vp9-128m.ivf"],
     ],
   },
   "compatible-ogv": {

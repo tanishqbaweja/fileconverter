@@ -14,9 +14,14 @@ const projectRoot = path.resolve(
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const mkvPath = path.join(fixtureRoot, "compatible-vp9-opus-128m.mkv");
 const webmPath = path.join(fixtureRoot, "compatible-vp9-opus-128m.webm");
+const ivfPath = path.join(fixtureRoot, "compatible-vp9-128m.ivf");
 const verificationPath = path.join(
   fixtureRoot,
   "compatible-vp9-opus-128m.verify.webm",
+);
+const ivfVerificationPath = path.join(
+  fixtureRoot,
+  "compatible-vp9-128m.verify.ivf",
 );
 const minimumBytes = 128 * 1024 * 1024;
 const minimumFreeBytes = 1024 * 1024 * 1024;
@@ -67,8 +72,23 @@ try {
     `${JSON.stringify(webmManifest, null, 2)}\n`,
     "utf8",
   );
+  await remuxIvf(webmPath, ivfPath);
+  await remuxIvf(webmPath, ivfVerificationPath);
+  const [ivfHash, ivfVerificationHash] = await Promise.all([
+    hashFile(ivfPath),
+    hashFile(ivfVerificationPath),
+  ]);
+  if (ivfHash !== ivfVerificationHash) {
+    throw new Error("Bitexact VP9 IVF fixture generation was not repeatable.");
+  }
+  const ivfManifest = await inspectIvfFixture(ivfPath, webmManifest);
+  await writeFile(
+    `${ivfPath}.json`,
+    `${JSON.stringify(ivfManifest, null, 2)}\n`,
+    "utf8",
+  );
   process.stdout.write(
-    `${mkvPath}\n${webmPath}\nGenerated deterministic IVF stress sources; ${availableBytes} bytes were free at preflight.\n`,
+    `${mkvPath}\n${webmPath}\n${ivfPath}\nGenerated deterministic IVF extraction and input stress sources; ${availableBytes} bytes were free at preflight.\n`,
   );
 } catch (error) {
   await Promise.allSettled([
@@ -76,11 +96,15 @@ try {
     rm(`${mkvPath}.json`, { force: true }),
     rm(webmPath, { force: true }),
     rm(`${webmPath}.json`, { force: true }),
+    rm(ivfPath, { force: true }),
+    rm(`${ivfPath}.json`, { force: true }),
     rm(verificationPath, { force: true }),
+    rm(ivfVerificationPath, { force: true }),
   ]);
   throw error;
 } finally {
   await rm(verificationPath, { force: true });
+  await rm(ivfVerificationPath, { force: true });
 }
 
 async function remuxWebm(inputPath, outputPath) {
@@ -112,6 +136,88 @@ async function remuxWebm(inputPath, outputPath) {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
+}
+
+async function remuxIvf(inputPath, outputPath) {
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-y",
+      "-i",
+      inputPath,
+      "-map",
+      "0:v:0",
+      "-c:v",
+      "copy",
+      "-an",
+      "-map_metadata",
+      "-1",
+      "-fflags",
+      "+bitexact",
+      "-f",
+      "ivf",
+      outputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+}
+
+async function inspectIvfFixture(filePath, reference) {
+  const [file, sha256, probe, videoPackets, videoPacketSha256, decodedVideoSha256] =
+    await Promise.all([
+      stat(filePath),
+      hashFile(filePath),
+      probeFile(filePath),
+      packetStats(filePath),
+      packetHash(filePath, "0:v:0"),
+      decodedVideoHash(filePath),
+    ]);
+  const video = probe.streams.find((stream) => stream.codec_type === "video");
+  if (
+    file.size < minimumBytes ||
+    !probe.format?.format_name?.split(",").includes("ivf") ||
+    probe.streams.length !== 1 ||
+    video?.codec_name !== "vp9" ||
+    video?.width !== 1920 ||
+    video?.height !== 1080 ||
+    Number(video?.nb_read_frames) !== Number(reference.decodedVideoFrames) ||
+    videoPacketSha256 !== reference.videoPacketSha256 ||
+    decodedVideoSha256 !== reference.decodedVideoSha256
+  ) {
+    throw new Error(
+      `Generated IVF input stress fixture is invalid: ${JSON.stringify({
+        bytes: file.size,
+        format: probe.format?.format_name,
+        streams: probe.streams.length,
+        videoCodec: video?.codec_name,
+        width: video?.width,
+        height: video?.height,
+        decodedVideoFrames: Number(video?.nb_read_frames),
+        expectedDecodedVideoFrames: Number(reference.decodedVideoFrames),
+        packetHashPassed: videoPacketSha256 === reference.videoPacketSha256,
+        decodedHashPassed: decodedVideoSha256 === reference.decodedVideoSha256,
+      })}.`,
+    );
+  }
+  return {
+    generatedBy: "scripts/generate-ivf-stress-fixtures.mjs",
+    sourceFixture: path.basename(webmPath),
+    bytes: file.size,
+    sha256,
+    durationSeconds: reference.decodedVideoDurationSeconds,
+    decodedVideoDurationSeconds: reference.decodedVideoDurationSeconds,
+    decodedVideoFrames: reference.decodedVideoFrames,
+    decodedVideoSha256,
+    videoPacketBytes: videoPackets.bytes,
+    videoPacketCount: videoPackets.count,
+    maximumPacketBytes: videoPackets.maximumBytes,
+    videoPacketSha256,
+    probe,
+  };
 }
 
 async function inspectFixture(filePath, reference) {
@@ -236,6 +342,30 @@ async function packetHash(filePath, map) {
   );
   const value = stdout.trim().match(/^SHA256=([0-9a-f]{64})$/i)?.[1];
   if (!value) throw new Error(`Packet hash is unavailable for ${map}.`);
+  return value.toLowerCase();
+}
+
+async function decodedVideoHash(filePath) {
+  const { stdout } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-xerror",
+      "-i",
+      filePath,
+      "-map",
+      "0:v:0",
+      "-f",
+      "hash",
+      "-hash",
+      "sha256",
+      "-",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+  const value = stdout.trim().match(/^SHA256=([0-9a-f]{64})$/i)?.[1];
+  if (!value) throw new Error("Decoded video hash is unavailable.");
   return value.toLowerCase();
 }
 

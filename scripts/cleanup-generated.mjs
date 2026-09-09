@@ -62,6 +62,7 @@ const playwrightSmallProfileRoot = path.resolve(
 );
 const browserImageSmokeRoot = path.resolve(outputsRoot, "browser-image-smoke");
 const browserMediaSmokeRoot = path.resolve(outputsRoot, "browser-media-smoke");
+const browserIvfInputRoot = path.resolve(outputsRoot, "browser-ivf-input");
 const stressFixturesRoot = path.resolve(projectRoot, "fixtures", "stress");
 const profileRoot = path.resolve(workRoot, "memory-profile-chrome");
 const cancellationFixture = path.resolve(
@@ -109,6 +110,9 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "ivf-input-browser"),
+  path.resolve(workRoot, "playwright-profile-ivf-input"),
+  path.resolve(workRoot, "ivf-input-candidate"),
   path.resolve(workRoot, "hevc-candidate-artifact"),
   path.resolve(workRoot, "avi-mpeg2-feasibility"),
   path.resolve(workRoot, "avi-mpeg2-candidate"),
@@ -275,6 +279,7 @@ const generatedStressExtensions = new Set([
   ".flv",
   ".avi",
   ".webm",
+  ".ivf",
   ".awb",
   ".wav",
   ".csv",
@@ -327,6 +332,7 @@ const generatedStressNames = new Set([
   "av1-vorbis-128m.webm.json",
   "compatible-vp9-opus-128m.mkv.json",
   "compatible-vp9-opus-128m.webm.json",
+  "compatible-vp9-128m.ivf.json",
   "theora-vorbis-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mp4.json",
@@ -388,6 +394,7 @@ assertInside(workRoot, playwrightPrivacyProfileRoot);
 assertInside(workRoot, playwrightSmallProfileRoot);
 assertInside(outputsRoot, browserImageSmokeRoot);
 assertInside(outputsRoot, browserMediaSmokeRoot);
+assertInside(outputsRoot, browserIvfInputRoot);
 assertInside(outputsRoot, reportRoot);
 for (const reportPath of aviSourceExpansionReports) {
   assertInside(reportRoot, reportPath);
@@ -409,6 +416,7 @@ if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(playwrightSmallProfileRoot);
   await removeWithRetries(browserImageSmokeRoot);
   await removeWithRetries(browserMediaSmokeRoot);
+  await removeWithRetries(browserIvfInputRoot);
   await removeCompatibilityTestRoots();
   await rm(cancellationFixture, { force: true });
   await rm(documentCancellationFixture, { force: true });
@@ -444,6 +452,7 @@ await removeWithRetries(playwrightPrivacyProfileRoot);
 await removeWithRetries(playwrightSmallProfileRoot);
 await removeWithRetries(browserImageSmokeRoot);
 await removeWithRetries(browserMediaSmokeRoot);
+await removeWithRetries(browserIvfInputRoot);
 await removeCompatibilityTestRoots();
 await rm(cancellationFixture, { force: true });
 await rm(documentCancellationFixture, { force: true });
