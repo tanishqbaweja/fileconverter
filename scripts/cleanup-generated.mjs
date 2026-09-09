@@ -30,6 +30,16 @@ const ivfStressReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const hevcWebmStressReports = [
+  "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
+  "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
+  "2026-09-09T17-52-11-741Z-hevc-to-webm-vp9-stress",
+  "2026-09-09T18-07-02-520Z-hevc-to-webm-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const disposableOutputRoot = path.resolve(projectRoot, "output");
 const remuxEngineRoot = path.resolve(projectRoot, "public", "engines", "remux");
 const playwrightOutputRoot = path.resolve(disposableOutputRoot, "playwright");
@@ -99,6 +109,7 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "hevc-candidate-artifact"),
   path.resolve(workRoot, "avi-mpeg2-feasibility"),
   path.resolve(workRoot, "avi-mpeg2-candidate"),
   path.resolve(workRoot, "avi-source-feasibility"),
@@ -307,6 +318,7 @@ const generatedStressNames = new Set([
   "h264-aac-flac-128m.mpegts.json",
   "h264-aac-flac-128m.flv.json",
   "h264-elementary-128m.h264.json",
+  "hevc-elementary-128m.hevc.json",
   "hevc-video-128m.mkv.json",
   "hevc-video-128m.mp4.json",
   "hevc-video-128m.mpegts.json",
@@ -381,6 +393,9 @@ for (const reportPath of aviSourceExpansionReports) {
   assertInside(reportRoot, reportPath);
 }
 for (const reportPath of ivfStressReports) {
+  assertInside(reportRoot, reportPath);
+}
+for (const reportPath of hevcWebmStressReports) {
   assertInside(reportRoot, reportPath);
 }
 assertInside(projectRoot, remuxEngineRoot);
@@ -473,6 +488,9 @@ for (const reportPath of aviSourceExpansionReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of ivfStressReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of hevcWebmStressReports) {
   await rm(reportPath, { force: true });
 }
 

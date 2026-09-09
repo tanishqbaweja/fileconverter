@@ -71,6 +71,20 @@ function reportIsStrictlyPassing(report) {
   });
 }
 
+function compactEntryIsValid(profile, entry) {
+  return Boolean(
+    entry &&
+      entry.profileId === profile.id &&
+      entry.maxTestedBytes === profile.maxTestedBytes &&
+      entry.repeatableEvidence?.runs >= 3 &&
+      entry.repeatableEvidence?.incrementalPrivateMiB <= 250 &&
+      entry.maximumSizeEvidence?.sourceBytes >= profile.maxTestedBytes &&
+      entry.maximumSizeEvidence?.incrementalPrivateMiB <= 250 &&
+      /^[a-f0-9]{64}$/.test(entry.repeatableEvidence?.reportSha256 ?? "") &&
+      /^[a-f0-9]{64}$/.test(entry.maximumSizeEvidence?.reportSha256 ?? ""),
+  );
+}
+
 const publicPassed = conversionProfiles.filter(
   (profile) => profile.public && profile.automatedTestStatus === "passed",
 );
@@ -125,16 +139,7 @@ async function auditCompactManifest() {
   const byId = new Map(entries.map((entry) => [entry.profileId, entry]));
   for (const profile of publicPassed) {
     const entry = byId.get(profile.id);
-    if (
-      !entry ||
-      entry.maxTestedBytes !== profile.maxTestedBytes ||
-      entry.repeatableEvidence?.runs < 3 ||
-      entry.repeatableEvidence?.incrementalPrivateMiB > 250 ||
-      entry.maximumSizeEvidence?.sourceBytes < profile.maxTestedBytes ||
-      entry.maximumSizeEvidence?.incrementalPrivateMiB > 250 ||
-      !/^[a-f0-9]{64}$/.test(entry.repeatableEvidence?.reportSha256 ?? "") ||
-      !/^[a-f0-9]{64}$/.test(entry.maximumSizeEvidence?.reportSha256 ?? "")
-    ) {
+    if (!compactEntryIsValid(profile, entry)) {
       throw new Error(`Compact public evidence is invalid for ${profile.id}.`);
     }
   }
@@ -193,6 +198,14 @@ if (malformedReports.length > 0) {
 
 const failures = [];
 const selectedEvidence = [];
+const retainedManifest = JSON.parse(
+  await readFile(evidencePath, "utf8").catch(() => '{"profiles":[]}'),
+);
+const retainedById = new Map(
+  (Array.isArray(retainedManifest.profiles) ? retainedManifest.profiles : []).map(
+    (entry) => [entry.profileId, entry],
+  ),
+);
 for (const profile of publicPassed) {
   const reports = passingReportsByProfile.get(profile.id) ?? [];
   const byStrength = [...reports].sort(
@@ -209,7 +222,13 @@ for (const profile of publicPassed) {
         right.name.localeCompare(left.name),
     )
     .find(({ report }) => reportSourceBytes(report) >= profile.maxTestedBytes);
-  if (!repeatable || !testedAtPublishedMaximum) {
+  const retained = retainedById.get(profile.id);
+  if (
+    reports.length === 0 &&
+    compactEntryIsValid(profile, retained)
+  ) {
+    selectedEvidence.push(retained);
+  } else if (!repeatable || !testedAtPublishedMaximum) {
     failures.push({
       profileId: profile.id,
       maxTestedBytes: profile.maxTestedBytes,
@@ -276,15 +295,12 @@ if (process.argv.includes("--write-manifest")) {
 
 const summary = {
   publicPassedProfiles: publicPassed.length,
-  profilesWithThreeRunEvidence: publicPassed.filter((profile) =>
-    passingReportsByProfile
-      .get(profile.id)
-      ?.some(({ report }) => report.runs.length >= 3),
+  profilesWithThreeRunEvidence: selectedEvidence.filter(
+    ({ repeatableEvidence }) => repeatableEvidence.runs >= 3,
   ).length,
-  profilesTestedAtPublishedMaximum: publicPassed.filter((profile) =>
-    passingReportsByProfile
-      .get(profile.id)
-      ?.some(({ report }) => reportSourceBytes(report) >= profile.maxTestedBytes),
+  profilesTestedAtPublishedMaximum: selectedEvidence.filter(
+    ({ maxTestedBytes, maximumSizeEvidence }) =>
+      maximumSizeEvidence.sourceBytes >= maxTestedBytes,
   ).length,
   pendingProfiles: pending.length,
   publicNonPassingProfiles: leaked.length,

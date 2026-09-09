@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { readFile, stat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -72,47 +73,34 @@ test("IVF stress evidence is repeatable, genuine, exact, bounded, cancellable, a
   assert.equal(evidence.cleanup.convertedOutputsRetained, 0);
 });
 
-test("the installed IVF-capable core matches its candidate build evidence", async () => {
-  const wasmPath = path.join(
-    projectRoot,
-    "public",
-    "engines",
-    "remux",
-    "within-remux.wasm",
-  );
-  const gluePath = path.join(
-    projectRoot,
-    "public",
-    "engines",
-    "remux",
-    "within-remux.mjs",
-  );
-  const manifestPath = path.join(
-    projectRoot,
-    "public",
-    "engines",
-    "remux",
-    "build-manifest.json",
-  );
-  for (const [filePath, expectedBytes, expectedSha256] of [
+test("the published IVF checkpoint matches its candidate build evidence", () => {
+  const publicationCommit = evidence.build.publicationReproduction.commit;
+  for (const [relativePath, expectedBytes, expectedSha256] of [
     [
-      wasmPath,
+      "public/engines/remux/within-remux.wasm",
       evidence.build.candidateWasmBytes,
       evidence.build.candidateWasmSha256,
     ],
     [
-      gluePath,
+      "public/engines/remux/within-remux.mjs",
       evidence.build.candidateGlueBytes,
       evidence.build.candidateGlueSha256,
     ],
     [
-      manifestPath,
+      "public/engines/remux/build-manifest.json",
       evidence.build.candidateManifestBytes,
       evidence.build.candidateManifestSha256,
     ],
   ]) {
-    const bytes = await readFile(filePath);
-    assert.equal((await stat(filePath)).size, expectedBytes);
+    const bytes = execFileSync("git", [
+      "show",
+      `${publicationCommit}:${relativePath}`,
+    ], {
+      cwd: projectRoot,
+      windowsHide: true,
+      maxBuffer: 16 * 1024 * 1024,
+    });
+    assert.equal(bytes.byteLength, expectedBytes);
     assert.equal(
       createHash("sha256").update(bytes).digest("hex"),
       expectedSha256,

@@ -2416,6 +2416,24 @@
       }
     },
     {
+      "profileId": "hevc-to-webm",
+      "maxTestedBytes": 134752786,
+      "repeatableEvidence": {
+        "report": "2026-09-09T18-07-02-520Z-hevc-to-webm-stress.json",
+        "reportSha256": "31c94d9cfffd7498871eb91e91083c8f91abbf4bcf968780c45ee0c6b455fc63",
+        "runs": 3,
+        "sourceBytes": 134752786,
+        "incrementalPrivateMiB": 240.9453125
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-09T18-07-02-520Z-hevc-to-webm-stress.json",
+        "reportSha256": "31c94d9cfffd7498871eb91e91083c8f91abbf4bcf968780c45ee0c6b455fc63",
+        "runs": 3,
+        "sourceBytes": 134752786,
+        "incrementalPrivateMiB": 240.9453125
+      }
+    },
+    {
       "profileId": "html-to-txt",
       "maxTestedBytes": 143850123,
       "repeatableEvidence": {

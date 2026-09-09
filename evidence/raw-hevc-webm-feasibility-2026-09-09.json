@@ -1,68 +1,141 @@
 {
-  "date": "2026-09-09",
-  "status": "native-feasibility-passed-browser-certification-pending",
-  "scope": "Raw Annex B HEVC input decoded and re-encoded to VP8 and VP9 WebM without Docker.",
+  "generatedAt": "2026-09-09T18:07:02.520Z",
+  "status": "vp8-accepted-public-vp9-withheld",
+  "requirements": ["P-04", "P-08", "M-04"],
+  "dockerUsed": false,
+  "scope": "Raw Annex B HEVC input decoded and re-encoded to VP8 WebM in the production browser pipeline.",
   "protectedSource": {
     "path": "test.mkv",
     "bytes": 2958573265,
     "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
-    "video": {
-      "codec": "hevc",
-      "width": 1920,
-      "height": 804,
-      "frameRate": "24/1"
-    }
+    "modified": false
   },
-  "temporarySource": {
-    "path": "work/hevc-webm-feasibility/source.hevc",
-    "bytes": 203704,
-    "sha256": "0ccb97b653c34a637cd9f5b92951808ab70525949dfd5356a361ba4f306a92c8",
+  "stressSource": {
+    "path": "fixtures/stress/media/hevc-elementary-128m.hevc",
+    "bytes": 134752786,
+    "sha256": "cc2d480c438e340289ff5a22035c6a5a09af045b320c77c6356fc9cf37330c3d",
+    "sourceContainerSha256": "a62dbcbcba2aa584c21710ce6f4942996c3922fc4a904369b74b4a4136b87872",
+    "codec": "hevc",
+    "width": 1920,
+    "height": 804,
+    "packets": 17282,
+    "decodedFrames": 17282,
+    "rawDemuxFrameRate": 25,
+    "expectedDurationSeconds": 691.24,
+    "generationSeconds": 86.76,
     "retained": false
   },
-  "results": [
+  "acceptedProfile": {
+    "profileId": "hevc-to-webm",
+    "codec": "vp8",
+    "conversionMode": "genuine-decode-scale-reencode",
+    "outputWidth": 640,
+    "outputHeight": 268,
+    "videoBitrate": 600000,
+    "workerPoolSize": 4,
+    "codecThreads": 2,
+    "activeWorkersIncludingConversionWorker": 5,
+    "wasmMemoryBytes": 58720256,
+    "runs": 3,
+    "elapsedSeconds": [230.9519, 233.14635, 234.73764],
+    "incrementalPrivateMiB": [239.0078125, 240.9453125, 240.3203125],
+    "worstIncrementalPrivateMiB": 240.9453125,
+    "limitMiB": 250,
+    "outputBytes": 52300521,
+    "outputSha256": "7baa63b3f3571a773d35c4b097c16f2bba8878050d9a7b48ba0678726e378cff",
+    "outputPackets": 17282,
+    "outputFrames": 17282,
+    "outputDurationSeconds": 691.24,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "cleanupDeltaFromLoadedMiB": [38.484375, 32.89453125, 42.16796875],
+    "repeatableOutput": true,
+    "fullNativeDecode": true,
+    "productionBrowser": "Google Chrome 152.0.7977.83",
+    "rawReport": "outputs/reports/2026-09-09T18-07-02-520Z-hevc-to-webm-stress.json",
+    "rawReportSha256": "31c94d9cfffd7498871eb91e91083c8f91abbf4bcf968780c45ee0c6b455fc63",
+    "passed": true
+  },
+  "smallBrowserGate": {
+    "genuineVp8AndVp9Smoke": "2 passed in 13.6 seconds with the final four-worker VP8 routing",
+    "vp8WriteFailure": "passed",
+    "vp8Cancellation": "passed",
+    "partialOutputsAfterFailureOrCancellation": 0,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumPendingOperations": 1
+  },
+  "optimizationTrials": [
     {
-      "target": "VP8 WebM",
-      "elapsedSeconds": 0.167,
-      "bytes": 69004,
-      "sha256": "019749570f124bd98bf31bfaf9549f76a47788e761a1dffffc02a8bd5617b024",
-      "codec": "vp8",
-      "width": 640,
-      "height": 268,
-      "frameRate": "24/1",
-      "decodedFrames": 98,
-      "durationSeconds": 4.084,
-      "fullDecodePassed": true,
-      "retained": false
+      "profileId": "hevc-to-webm",
+      "topology": "eight-worker pool and four codec threads",
+      "result": "rejected-memory",
+      "runs": 3,
+      "elapsedSeconds": [156.9211, 156.537265, 155.788625],
+      "incrementalPrivateMiB": [274.0390625, 254.51953125, 253.87109375],
+      "worstIncrementalPrivateMiB": 274.0390625,
+      "limitMiB": 250,
+      "rawReportSha256": "f7b27873db1ba132ce3d267d90fccf8e03c6bd482cb0292e314fdc7dd88da5bc"
     },
     {
-      "target": "VP9 WebM",
-      "elapsedSeconds": 0.174,
-      "bytes": 70229,
-      "sha256": "e6db6273086479fd455ceb9df4eff7af4b03d0c0d66cc1c221b39be6fc5edd51",
-      "codec": "vp9",
-      "width": 640,
-      "height": 268,
-      "frameRate": "24/1",
-      "decodedFrames": 98,
-      "durationSeconds": 4.084,
-      "fullDecodePassed": true,
-      "retained": false
+      "profileId": "hevc-to-webm-vp9",
+      "topology": "four-worker pool and two codec threads",
+      "result": "rejected-memory",
+      "runs": 1,
+      "elapsedSeconds": [286.58425],
+      "incrementalPrivateMiB": [264.08203125],
+      "worstIncrementalPrivateMiB": 264.08203125,
+      "limitMiB": 250,
+      "rawReportSha256": "b6b950ed6c53fb29ca1d3e18bfd4f77d35360470b8066f20a84e2570a78b8176"
+    },
+    {
+      "profileId": "hevc-to-webm-vp9",
+      "topology": "single-threaded core",
+      "result": "withheld-insufficient-headroom-and-speed",
+      "runs": 1,
+      "elapsedSeconds": [561.43966],
+      "incrementalPrivateMiB": [249.75390625],
+      "memoryHeadroomMiB": 0.24609375,
+      "outputBytes": 49032492,
+      "outputSha256": "267ec68ee7f9d08999076c73960a48dabf1c97cbbca591857037cd51fe5e7e48",
+      "rawReportSha256": "e808af01a3fe2faa57941c8338f1d4a49b2b473e9416dc3f0d4de1f60c6ff400"
     }
   ],
-  "commands": [
-    "ffmpeg -ss 0 -t 4 -i test.mkv -map 0:v:0 -an -c:v copy -bsf:v hevc_mp4toannexb -f hevc work/hevc-webm-feasibility/source.hevc",
-    "ffmpeg -framerate 24 -i source.hevc -an -vf scale='min(640,iw)':-2 -c:v libvpx -deadline realtime -cpu-used 8 -lag-in-frames 0 -auto-alt-ref 0 -b:v 600k -threads 4 -slices 4 -f webm vp8.webm",
-    "ffmpeg -framerate 24 -i source.hevc -an -vf scale='min(640,iw)':-2 -c:v libvpx-vp9 -deadline realtime -cpu-used 8 -lag-in-frames 0 -auto-alt-ref 0 -row-mt 1 -tile-columns 1 -b:v 600k -threads 4 -f webm vp9.webm",
-    "ffprobe -v error -count_frames -show_entries stream=codec_name,width,height,avg_frame_rate,nb_read_frames -show_entries format=format_name,duration,size -of json OUTPUT",
-    "ffmpeg -hide_banner -loglevel error -i OUTPUT -f null NUL"
-  ],
-  "interpretation": [
-    "Both outputs are genuine lossy codec conversions; FFprobe identified VP8 and VP9 and FFmpeg decoded every output frame.",
-    "Raw HEVC cannot be losslessly wrapped when B-frame presentation timestamps are absent, but genuine re-encoding can synthesize timing under the already-disclosed elementary-stream policy.",
-    "The browser routes remain non-public until rebuilt Wasm, three-run complete-Chromium memory, repeatability, validation, cancellation, write-failure, privacy, and cleanup gates pass."
-  ],
+  "optimizationDecision": {
+    "accepted": "The four-worker/two-codec-thread VP8 core is the fastest measured topology that passed the unchanged 250 MiB gate in all three runs.",
+    "rejected": "The faster eight-worker VP8 topology exceeded the limit in every run. VP9 either exceeded the limit or left only 0.246 MiB headroom in a single run while taking 561.44 seconds, so VP9 is not public.",
+    "thresholdsWeakened": false
+  },
+  "engineCandidate": {
+    "sourceCommit": "4bb8206038dc76505a8f7f9eaf3ac26a5e5617dd",
+    "workflowRunId": 34345165654,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34345165654",
+    "artifactId": 10101850077,
+    "buildMethod": "Pinned hosted Emscripten SDK path without Docker",
+    "expectedMismatch": "The candidate enabled the raw HEVC demuxer before publication.",
+    "wasmSha256": {
+      "within-direct": "5dd02dd54626e6fc38caf4e34e5f81b6825694308bfce0cb8a943a76029e94ca",
+      "within-mpeg4": "53d01bab8bb3ee3d7a57d3e52b3dde14d093eaf448ebab882770d49ed8b85f2c",
+      "within-remux": "e2e80f96568926706653e1dc205fa5ed7f6e0a6cb059c29b181220dbd965794a",
+      "within-vp9": "388cf297c9a63efe661826e0312650cd28a49100cc581754d58c09c316134410",
+      "within-webm-quality": "61bd0dbf7c9f73ae04e885d9dfb187e45637bb462a0edfe3c4a303ec26a520e5",
+      "within-webm": "388cf297c9a63efe661826e0312650cd28a49100cc581754d58c09c316134410"
+    }
+  },
+  "publication": {
+    "status": "pending-post-push-byte-exact-hosted-reproduction",
+    "dockerUsed": false
+  },
   "cleanup": {
-    "temporaryRoot": "work/hevc-webm-feasibility",
-    "policy": "Deleted after compact evidence was recorded; no converted media is retained."
+    "allGeneratedFilesRepositoryLocal": true,
+    "largeFixtureDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfileDeleted": true,
+    "compactEvidenceRetained": true,
+    "candidateDownloadDeletionPendingPublication": true,
+    "protectedRootFixtureExpectedBytes": 2958573265,
+    "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   }
 }

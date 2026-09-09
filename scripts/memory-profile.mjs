@@ -607,6 +607,8 @@ if (
     "m2v-to-webm-vp9",
     "h264-to-webm",
     "h264-to-webm-vp9",
+    "hevc-to-webm",
+    "hevc-to-webm-vp9",
   ].includes(profileId) &&
   !isImageProfile &&
   !isStreamingTextProfile &&
@@ -771,7 +773,9 @@ const isMediaProfile =
   profileId === "m2v-to-webm" ||
   profileId === "m2v-to-webm-vp9" ||
   profileId === "h264-to-webm" ||
-  profileId === "h264-to-webm-vp9";
+  profileId === "h264-to-webm-vp9" ||
+  profileId === "hevc-to-webm" ||
+  profileId === "hevc-to-webm-vp9";
 const expectedProfileValidation =
   fixtureManifest.expectedByProfile?.[profileId];
 const expectedValidationBytes =
@@ -1832,7 +1836,8 @@ async function validateMediaOutput(
     route === "avi-to-webm-vp9" ||
     route === "ogv-to-webm-vp9" ||
     route === "m2v-to-webm-vp9" ||
-    route === "h264-to-webm-vp9";
+    route === "h264-to-webm-vp9" ||
+    route === "hevc-to-webm-vp9";
   const webmReencode =
     route === "mkv-to-webm" ||
     route === "mp4-to-webm" ||
@@ -1844,6 +1849,7 @@ async function validateMediaOutput(
     route === "ogv-to-webm" ||
     route === "m2v-to-webm" ||
     route === "h264-to-webm" ||
+    route === "hevc-to-webm" ||
     vp9Reencode;
   const webmAudioCopy = route === "ogv-to-webm" || route === "ogv-to-webm-vp9";
   const videoReencode =
@@ -1854,13 +1860,18 @@ async function validateMediaOutput(
   const decodedVideoDurationSeconds = Number(
     source.decodedVideoDurationSeconds,
   );
+  const expectedProfileDurationSeconds = Number(
+    expectedProfileValidation?.durationSeconds,
+  );
   const sourceDurationSeconds =
-    (videoReencode || m4vMp4Output || matroskaCopy) &&
+    Number.isFinite(expectedProfileDurationSeconds)
+      ? expectedProfileDurationSeconds
+      : (videoReencode || m4vMp4Output || matroskaCopy) &&
     Number.isFinite(decodedVideoDurationSeconds)
-      ? decodedVideoDurationSeconds
-      : Number.isFinite(probedSourceDurationSeconds)
-        ? probedSourceDurationSeconds
-        : Number(source.durationSeconds);
+        ? decodedVideoDurationSeconds
+        : Number.isFinite(probedSourceDurationSeconds)
+          ? probedSourceDurationSeconds
+          : Number(source.durationSeconds);
   const minimumComparableSize =
     ivfOutput && Number.isFinite(Number(source.videoPacketBytes))
       ? Math.floor(Number(source.videoPacketBytes))
@@ -2938,7 +2949,8 @@ async function validateMediaOutput(
     );
   }
   if (videoReencode && video) {
-    const midpoint = route.startsWith("h264-to-")
+    const midpoint =
+      route.startsWith("h264-to-") || route.startsWith("hevc-to-")
       ? 0
       : Math.max(0, sourceDuration / 2);
     const seekArguments = midpoint > 0 ? ["-ss", midpoint.toFixed(3)] : [];

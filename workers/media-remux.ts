@@ -79,6 +79,8 @@ export interface MediaRemuxOptions {
   remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
+  lowMemoryVideoCore?: boolean;
+  singleThreadVideoCore?: boolean;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -111,6 +113,8 @@ export async function runMediaRemux({
   remuxProfile,
   audioOptions,
   videoOptions,
+  lowMemoryVideoCore = false,
+  singleThreadVideoCore = false,
   jobId,
   metrics,
   startedAt,
@@ -126,7 +130,13 @@ export async function runMediaRemux({
     if (remuxProfile === 7) remuxProfile = 11;
   }
   const useWebmQualityCore =
-    videoOptions?.quality === "higher" &&
+    (videoOptions?.quality === "higher" || lowMemoryVideoCore) &&
+    (remuxProfile === 5 ||
+      remuxProfile === 7 ||
+      remuxProfile === 10 ||
+      remuxProfile === 11);
+  const useSingleThreadVideoCore =
+    singleThreadVideoCore &&
     (remuxProfile === 5 ||
       remuxProfile === 7 ||
       remuxProfile === 10 ||
@@ -228,7 +238,9 @@ export async function runMediaRemux({
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =
-    useWebmQualityCore
+    useSingleThreadVideoCore
+      ? 0
+      : useWebmQualityCore
       ? WEBM_QUALITY_WORKER_POOL_SIZE
       : remuxProfile === 4
       ? MPEG4_WORKER_POOL_SIZE
@@ -547,6 +559,8 @@ export async function runMediaRemux({
   const moduleUrl =
     useDirectRemuxCore
       ? DIRECT_REMUX_MODULE_URL
+      : useSingleThreadVideoCore
+        ? REMUX_MODULE_URL
       : useWebmQualityCore
         ? WEBM_QUALITY_MODULE_URL
       : remuxProfile === 4
@@ -559,6 +573,8 @@ export async function runMediaRemux({
   const wasmUrl =
     useDirectRemuxCore
       ? DIRECT_REMUX_WASM_URL
+      : useSingleThreadVideoCore
+        ? REMUX_WASM_URL
       : useWebmQualityCore
         ? WEBM_QUALITY_WASM_URL
       : remuxProfile === 4
@@ -584,6 +600,7 @@ export async function runMediaRemux({
 
   const usesCertifiedSpecialistAbi =
     useDirectRemuxCore ||
+    useSingleThreadVideoCore ||
     useWebmQualityCore ||
     remuxProfile === 4 ||
     remuxProfile === 5 ||

@@ -4015,6 +4015,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "ogv-to-webm" ||
         profileId === "m2v-to-webm" ||
         profileId === "h264-to-webm" ||
+        profileId === "hevc-to-webm" ||
         profileId === "mkv-to-webm-vp9" ||
         profileId === "3gp-to-webm-vp9" ||
         profileId === "mpeg-ts-to-webm-vp9" ||
@@ -4023,6 +4024,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "ogv-to-webm-vp9" ||
         profileId === "m2v-to-webm-vp9" ||
         profileId === "h264-to-webm-vp9" ||
+        profileId === "hevc-to-webm-vp9" ||
         profileId === "mkv-to-mp4-mpeg4" ||
         profileId === "m2v-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
@@ -4755,6 +4757,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
       profileId === "h264-to-webm" ||
+      profileId === "hevc-to-webm" ||
       profileId === "mp4-to-webm-vp9" ||
       profileId === "mov-to-webm-vp9" ||
       profileId === "mkv-to-webm-vp9" ||
@@ -4765,6 +4768,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
       profileId === "h264-to-webm-vp9" ||
+      profileId === "hevc-to-webm-vp9" ||
       profileId === "mkv-to-mp4-mpeg4" ||
       profileId === "m2v-to-mp4-mpeg4"
     ) {
@@ -4773,6 +4777,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         writable: destination.writable,
         audioOptions,
         videoOptions,
+        lowMemoryVideoCore:
+          profileId === "hevc-to-webm",
+        singleThreadVideoCore: profileId === "hevc-to-webm-vp9",
         remuxProfile:
           profileId === "mkv-to-mp3" ||
           profileId === "mp4-to-mp3" ||
@@ -4936,7 +4943,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "flv-to-webm" ||
                 profileId === "avi-to-webm" ||
                 profileId === "m2v-to-webm" ||
-                profileId === "h264-to-webm"
+                profileId === "h264-to-webm" ||
+                profileId === "hevc-to-webm"
               ? 5
             : profileId === "ogv-to-webm"
               ? 7
@@ -4948,7 +4956,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
                 profileId === "flv-to-webm-vp9" ||
                 profileId === "avi-to-webm-vp9" ||
                 profileId === "m2v-to-webm-vp9" ||
-                profileId === "h264-to-webm-vp9"
+                profileId === "h264-to-webm-vp9" ||
+                profileId === "hevc-to-webm-vp9"
               ? 10
             : profileId === "ogv-to-webm-vp9"
               ? 11

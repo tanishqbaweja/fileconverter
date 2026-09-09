@@ -316,6 +316,8 @@ const m4vExtractionOutputPaths = {
 } as const;
 const h264WebmOutputPath = path.join(outputRoot, "h264-vp8-output.webm");
 const h264Vp9WebmOutputPath = path.join(outputRoot, "h264-vp9-output.webm");
+const hevcWebmOutputPath = path.join(outputRoot, "hevc-vp8-output.webm");
+const hevcVp9WebmOutputPath = path.join(outputRoot, "hevc-vp9-output.webm");
 const h264ExtractionOutputPaths = {
   mkv: path.join(outputRoot, "mkv-extract-output.h264"),
   mp4: path.join(outputRoot, "mp4-extract-output.h264"),
@@ -678,6 +680,16 @@ const h264FixturePath = path.join(
 );
 const protectedHevcSourcePath = path.join(projectRoot, "test.mkv");
 const hevcMovFixturePath = path.join(projectRoot, "work", "hevc-source.mov");
+const hevcElementaryFixturePath = path.join(
+  projectRoot,
+  "work",
+  "hevc-source.hevc",
+);
+const hevcCancellationFixturePath = path.join(
+  projectRoot,
+  "work",
+  "hevc-cancellation-source.hevc",
+);
 const hevcContainerFixturePaths = {
   mkv: path.join(projectRoot, "work", "hevc-source.mkv"),
   mp4: path.join(projectRoot, "work", "hevc-source.mp4"),
@@ -1497,6 +1509,10 @@ test.beforeAll(async () => {
   }
   assertProjectLocal(h264WebmOutputPath);
   assertProjectLocal(h264Vp9WebmOutputPath);
+  assertProjectLocal(hevcWebmOutputPath);
+  assertProjectLocal(hevcVp9WebmOutputPath);
+  assertProjectLocal(hevcElementaryFixturePath);
+  assertProjectLocal(hevcCancellationFixturePath);
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -2257,6 +2273,54 @@ test.beforeAll(async () => {
         { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
       ),
     ),
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        hevcMovFixturePath,
+        "-map",
+        "0:v:0",
+        "-c:v",
+        "copy",
+        "-bsf:v",
+        "hevc_mp4toannexb",
+        "-an",
+        "-f",
+        "hevc",
+        hevcElementaryFixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-stream_loop",
+        "39",
+        "-i",
+        hevcMovFixturePath,
+        "-map",
+        "0:v:0",
+        "-c:v",
+        "copy",
+        "-bsf:v",
+        "hevc_mp4toannexb",
+        "-an",
+        "-f",
+        "hevc",
+        hevcCancellationFixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
   ]);
   await Promise.all([
     execFileAsync(
@@ -2724,6 +2788,10 @@ test.afterAll(async () => {
   }
   await rm(h264WebmOutputPath, { force: true });
   await rm(h264Vp9WebmOutputPath, { force: true });
+  await rm(hevcWebmOutputPath, { force: true });
+  await rm(hevcVp9WebmOutputPath, { force: true });
+  await rm(hevcElementaryFixturePath, { force: true });
+  await rm(hevcCancellationFixturePath, { force: true });
   for (const outputPath of Object.values(h264ExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -3121,6 +3189,7 @@ async function runMediaRoute(
     | "m2v-to-mp4-mpeg4"
     | "m2v-to-webm"
     | "h264-to-webm"
+    | "hevc-to-webm"
     | "mkv-to-webm-vp9"
     | "mp4-to-webm-vp9"
     | "mov-to-webm-vp9"
@@ -3131,6 +3200,7 @@ async function runMediaRoute(
     | "ogv-to-webm-vp9"
     | "m2v-to-webm-vp9"
     | "h264-to-webm-vp9"
+    | "hevc-to-webm-vp9"
     | "mkv-to-mp4-mpeg4",
   outputPath: string,
   expectedCodecs: string[],
@@ -3257,9 +3327,12 @@ async function runMediaRoute(
       profileId === "avi-to-webm" ||
       profileId === "ogv-to-webm" ||
       profileId === "m2v-to-webm" ||
-      profileId === "h264-to-webm"
+      profileId === "h264-to-webm" ||
+      profileId === "hevc-to-webm"
     ) {
-      expect(state.metrics?.activeWorkerCount).toBe(9);
+      expect(state.metrics?.activeWorkerCount).toBe(
+        profileId === "hevc-to-webm" ? 5 : 9,
+      );
     } else if (
       profileId === "mkv-to-webm-vp9" ||
       profileId === "mp4-to-webm-vp9" ||
@@ -3270,9 +3343,12 @@ async function runMediaRoute(
       profileId === "avi-to-webm-vp9" ||
       profileId === "ogv-to-webm-vp9" ||
       profileId === "m2v-to-webm-vp9" ||
-      profileId === "h264-to-webm-vp9"
+      profileId === "h264-to-webm-vp9" ||
+      profileId === "hevc-to-webm-vp9"
     ) {
-      expect(state.metrics?.activeWorkerCount).toBe(9);
+      expect(state.metrics?.activeWorkerCount).toBe(
+        profileId === "hevc-to-webm-vp9" ? 1 : 9,
+      );
     } else if (
       profileId === "mkv-to-mp4-mpeg4" ||
       profileId === "m2v-to-mp4-mpeg4"
@@ -3408,6 +3484,43 @@ async function validateH264WebmOutput(
       outputPath,
       "-filter_complex",
       "[0:v:0]format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
+      "-map",
+      "[quality]",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+  const similarity = Number.parseFloat(
+    stderr.match(/SSIM[^\r\n]*All:([0-9.]+)/)?.[1] ?? "",
+  );
+  expect(similarity).toBeGreaterThan(0.35);
+}
+
+async function validateHevcWebmOutput(
+  probe: MediaProbe,
+  outputPath: string,
+): Promise<void> {
+  const video = probe.streams.find((stream) => stream.codec_type === "video");
+  expect(video?.width).toBe(640);
+  expect(video?.height).toBe(268);
+  expect(probe.streams).toHaveLength(1);
+  expect(probe.chapters ?? []).toEqual([]);
+
+  const { stderr } = await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-nostdin",
+      "-i",
+      hevcElementaryFixturePath,
+      "-i",
+      outputPath,
+      "-filter_complex",
+      "[0:v:0]scale=640:268,format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
       "-map",
       "[quality]",
       "-frames:v",
@@ -3989,6 +4102,7 @@ for (const route of [
   ["h264-to-mp4", h264FixturePath],
   ["h264-to-webm", h264FixturePath],
   ["h264-to-webm-vp9", h264FixturePath],
+  ["hevc-to-webm", hevcElementaryFixturePath],
   ["mkv-to-h264", fixturePath],
   ["mp4-to-h264", mp4InputFixturePath],
   ["mov-to-h264", movInputFixturePath],
@@ -6576,6 +6690,63 @@ for (const route of [
     );
   });
 }
+
+for (const route of [
+  ["hevc-to-webm", hevcWebmOutputPath, "vp8"],
+  ["hevc-to-webm-vp9", hevcVp9WebmOutputPath, "vp9"],
+] as const) {
+  test(`browser FFmpeg converts ${route[0]} with bounded optimized workers`, async () => {
+    await runMediaRoute(
+      route[0],
+      route[1],
+      [route[2]],
+      40_000,
+      hevcElementaryFixturePath,
+      {
+        expectedWarningFragments: ["normalizes variable frame timing"],
+        expectedDurationSeconds: 3.88,
+        durationToleranceSeconds: 0.05,
+        validate: validateHevcWebmOutput,
+      },
+    );
+  });
+}
+
+test("browser FFmpeg cancels raw HEVC to WebM and removes partial output", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(hevcCancellationFixturePath);
+  await page
+    .locator('[data-testid="format-select"]')
+    .selectOption("hevc-to-webm");
+  await startEnabledConversion();
+  const cancelButton = page.getByRole("button", { name: "Cancel safely" });
+  await expect(cancelButton).toBeVisible({ timeout: 15_000 });
+  await cancelButton.click();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("cancelled");
+  const state = await currentState();
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  const leftovers = await page.evaluate(async () => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name.startsWith("within-test-hevc-to-webm")) names.push(name);
+    }
+    return names;
+  });
+  expect(leftovers).toEqual([]);
+});
 
 for (const route of [
   ["mkv-to-h264", fixturePath, h264ExtractionOutputPaths.mkv],

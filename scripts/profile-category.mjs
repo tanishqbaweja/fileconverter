@@ -682,7 +682,9 @@ const categories = {
   },
   "hevc-elementary": {
     generator: "scripts/generate-hevc-elementary-stress-fixtures.mjs",
+    passSelectedFixturesToGenerator: true,
     profiles: [
+      ["hevc-to-webm", "hevc-elementary-128m.hevc"],
       ["mkv-to-hevc", "hevc-video-128m.mkv"],
       ["mp4-to-hevc", "hevc-video-128m.mp4"],
       ["mov-to-hevc", "quicktime-128m.mov"],

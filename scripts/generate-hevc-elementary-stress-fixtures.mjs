@@ -11,7 +11,16 @@ const startedAt = performance.now();
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const sourcePath = path.join(fixtureRoot, "quicktime-128m.mov");
-const outputs = [
+const allOutputs = [
+  {
+    path: path.join(fixtureRoot, "hevc-elementary-128m.hevc"),
+    format: "hevc",
+    rawDemuxFrameRate: 25,
+    arguments: [
+      "-map", "0:v:0", "-c:v", "copy", "-bsf:v", "hevc_mp4toannexb",
+      "-an", "-map_metadata", "-1", "-f", "hevc",
+    ],
+  },
   {
     path: path.join(fixtureRoot, "hevc-video-128m.mkv"),
     format: "matroska,webm",
@@ -28,6 +37,20 @@ const outputs = [
     arguments: ["-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-map_metadata", "0", "-f", "mpegts"],
   },
 ];
+const requestedNames = new Set(process.argv.slice(2));
+const availableNames = new Set(
+  allOutputs.map((output) => path.basename(output.path)),
+);
+for (const name of requestedNames) {
+  if (!availableNames.has(name)) {
+    throw new Error(
+      `Unknown HEVC fixture ${name}. Choose one of: ${[...availableNames].join(", ")}.`,
+    );
+  }
+}
+const outputs = requestedNames.size
+  ? allOutputs.filter((output) => requestedNames.has(path.basename(output.path)))
+  : allOutputs;
 const retainedManifests = new Map();
 
 await mkdir(fixtureRoot, { recursive: true });
@@ -93,6 +116,20 @@ try {
           sourceSha256: sourceManifest.sha256,
           durationSeconds: Number(probe.format?.duration ?? sourceManifest.durationSeconds),
           decodedVideoFrames,
+          ...(output.rawDemuxFrameRate
+            ? {
+                rawDemuxFrameRate: output.rawDemuxFrameRate,
+                expectedByProfile: Object.fromEntries(
+                  ["hevc-to-webm", "hevc-to-webm-vp9"].map((profileId) => [
+                    profileId,
+                    {
+                      durationSeconds:
+                        (decodedVideoFrames - 1) / output.rawDemuxFrameRate,
+                    },
+                  ]),
+                ),
+              }
+            : {}),
           bytes: fileStat.size,
           sha256,
           generationSeconds: Number(((performance.now() - startedAt) / 1000).toFixed(2)),
@@ -108,7 +145,7 @@ try {
   );
   for (const { output } of manifests) process.stdout.write(`${output.path}\n`);
   process.stdout.write(
-    `Generated four HEVC extraction sources in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
+    `Generated ${outputs.length} HEVC elementary/extraction source${outputs.length === 1 ? "" : "s"} in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
   );
 } catch (error) {
   for (const output of outputs) {

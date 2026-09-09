@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 267);
+  assert.equal(publicMedia.length, 268);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -156,6 +156,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
     if (
       profile.engine === "ffmpeg-video" &&
       profile.input !== "h264" &&
+      profile.input !== "hevc" &&
       profile.input !== "m2v"
     ) {
       assert.match(metadata, /additional|only the first/i);
@@ -175,10 +176,12 @@ test("registry has no unresolved pending profiles and keeps failed evidence hidd
   );
   assert.deepEqual(
     failed.map((profile) => profile.id),
-    ["ogv-to-amr"],
+    ["ogv-to-amr", "hevc-to-webm-vp9"],
   );
-  assert.equal(failed[0].public, false);
-  assert.equal(failed[0].maxTestedBytes, null);
+  for (const profile of failed) {
+    assert.equal(profile.public, false);
+    assert.equal(profile.maxTestedBytes, null);
+  }
 });
 
 test("TXT to DOCX is public only at its measured evidence limit", () => {
@@ -663,6 +666,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "ogg-audio-extract",
         "m4a-aac-transcode",
         "amr-extract",
+        "hevc-to-webm-vp9",
       ],
     },
     {
@@ -716,11 +720,16 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-webm-quality",
       wasmPthreadPoolSize: 4,
       videoCodecThreads: 2,
-      profiles: ["higher-quality-vp8", "higher-quality-vp9"],
+      profiles: [
+        "higher-quality-vp8",
+        "higher-quality-vp9",
+        "hevc-to-webm",
+      ],
     },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));
+  assert.ok(manifest.enabledDemuxers.includes("hevc"));
   assert.ok(manifest.enabledDemuxers.includes("m4v"));
   assert.ok(manifest.enabledMuxers.includes("h264"));
   assert.ok(manifest.enabledMuxers.includes("hevc"));
@@ -1201,6 +1210,19 @@ test("compound archives and mainstream images are detected by filename", () => {
       .map((profile) => profile.id),
     ["h264-to-mp4", "h264-to-webm", "h264-to-webm-vp9"],
   );
+  assert.deepEqual(
+    publicProfilesFor("hevc")
+      .filter((profile) => profile.input === "hevc")
+      .map((profile) => profile.id),
+    ["hevc-to-webm"],
+  );
+  const hevcVp9 = conversionProfiles.find(
+    (profile) => profile.id === "hevc-to-webm-vp9",
+  );
+  assert.ok(hevcVp9);
+  assert.equal(hevcVp9.public, false);
+  assert.equal(hevcVp9.automatedTestStatus, "failed");
+  assert.equal(hevcVp9.maxTestedBytes, null);
   assert.equal(detectFormat({ name: "audio.ADTS", type: "" }), "aac");
   assert.equal(detectFormat({ name: "legacy-audio.WMA", type: "" }), "wma");
   assert.equal(detectFormat({ name: "voice-note.AMR", type: "" }), "amr");

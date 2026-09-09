@@ -123,6 +123,7 @@ export const VIDEO_PROFILE_DEFAULT_CODEC_BY_ID = {
   "ogv-to-webm": "vp8",
   "m2v-to-webm": "vp8",
   "h264-to-webm": "vp8",
+  "hevc-to-webm": "vp8",
   "mkv-to-webm-vp9": "vp9",
   "mp4-to-webm-vp9": "vp9",
   "mov-to-webm-vp9": "vp9",
@@ -133,6 +134,7 @@ export const VIDEO_PROFILE_DEFAULT_CODEC_BY_ID = {
   "ogv-to-webm-vp9": "vp9",
   "m2v-to-webm-vp9": "vp9",
   "h264-to-webm-vp9": "vp9",
+  "hevc-to-webm-vp9": "vp9",
   "mkv-to-mp4-mpeg4": "mpeg4",
   "m2v-to-mp4-mpeg4": "mpeg4",
 } as const satisfies Readonly<Record<string, Exclude<VideoCodec, "automatic">>>;

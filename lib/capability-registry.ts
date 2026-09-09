@@ -1159,6 +1159,37 @@ function h264InputProfile(
   };
 }
 
+function hevcInputProfile(output: "webm" | "webm-vp9"): ConversionProfile {
+  const codec = output === "webm-vp9" ? "VP9" : "VP8";
+  const passed = output === "webm";
+  return {
+    id: `hevc-to-${output}`,
+    input: "hevc",
+    output,
+    engine: "ffmpeg-video",
+    route: "re-encode",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "high",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The input is a single Annex B HEVC/H.265 elementary video stream with no audio, subtitles, chapters, attachments, or general container metadata.",
+      "Raw Annex B has no container presentation timestamps, so frame timing is reconstructed at FFmpeg's explicit 25 fps raw-HEVC demuxer default.",
+      "Compatible aspect-ratio and color descriptors are copied where WebM can represent them.",
+    ],
+    fidelityLimitations: [
+      `HEVC video is decoded, downscaled to at most 640 pixels wide, and encoded as lossy ${codec} at 600 kbit/s${output === "webm-vp9" ? " in realtime mode" : ""} with no lookahead; timing is normalized to 25 fps.`,
+    ],
+    maxTestedBytes: passed ? 134_752_786 : null,
+    automatedTestStatus: passed ? "passed" : "failed",
+    public: passed,
+  };
+}
+
 function containerH264Profile(
   input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "flv",
 ): ConversionProfile {
@@ -6011,6 +6042,8 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     h264InputProfile("mp4"),
     h264InputProfile("webm"),
     h264InputProfile("webm-vp9"),
+    hevcInputProfile("webm"),
+    hevcInputProfile("webm-vp9"),
     containerH264Profile("mkv"),
     containerH264Profile("mp4"),
     containerH264Profile("mov"),
