@@ -152,6 +152,19 @@
     "candidateGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
     "candidateManifestBytes": 11153,
     "candidateManifestSha256": "baac0ebf7e580df236db03308a4a73974a52a44204223910174bd8e50cf6581a",
-    "publicationReproduction": "pending"
+    "publicationReproduction": {
+      "workflowRun": 34342108068,
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34342108068",
+      "commit": "8f38ffee357c77d072597896ebcaf5369eaa062a",
+      "result": "passed",
+      "duration": "13m34s",
+      "allSixFfmpegModulesByteExact": true,
+      "mismatchArtifactUploadSkipped": true,
+      "hostedRepositoryLocalCleanupPassed": true,
+      "retainedArtifacts": 0,
+      "candidateArtifactId": 10076855766,
+      "candidateArtifactDeletedAndVerifiedAbsent": true,
+      "dockerUsed": false
+    }
   }
 }

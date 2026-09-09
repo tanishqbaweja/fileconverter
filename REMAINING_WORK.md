@@ -189,8 +189,12 @@ not the entire product specification.
 - Native FFmpeg only generated deterministic sources and independently
   validated browser outputs. No Docker command ran. Category cleanup deleted
   both 128 MiB-class sources, converted copies, and browser profile; `work/`
-  contains only `.gitkeep`, and `test.mkv` remains byte-exact. Compact
-  evidence is `evidence/ivf-native-feasibility-2026-09-08.json`,
+  contains only `.gitkeep`, and `test.mkv` remains byte-exact. Hosted no-Docker
+  run [34342108068](https://github.com/tanishqbaweja/fileconverter/actions/runs/34342108068)
+  rebuilt all six FFmpeg modules byte-for-byte from pushed commit `8f38ffe` in
+  13m34s, skipped mismatch upload, passed hosted cleanup, and retained zero
+  artifacts. The superseded candidate artifact was deleted and verified absent.
+  Compact evidence is `evidence/ivf-native-feasibility-2026-09-08.json`,
   `evidence/ivf-browser-smoke-2026-09-09.json`, and
   `evidence/ivf-extraction-browser-2026-09-09.json`.
 

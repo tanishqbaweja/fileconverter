@@ -120,6 +120,26 @@ test("the installed IVF-capable core matches its candidate build evidence", asyn
   }
 });
 
+test("the pushed IVF core has exact no-Docker publication evidence", () => {
+  const publication = evidence.build.publicationReproduction;
+  assert.equal(publication.workflowRun, 34342108068);
+  assert.equal(
+    publication.url,
+    "https://github.com/tanishqbaweja/fileconverter/actions/runs/34342108068",
+  );
+  assert.equal(
+    publication.commit,
+    "8f38ffee357c77d072597896ebcaf5369eaa062a",
+  );
+  assert.equal(publication.result, "passed");
+  assert.equal(publication.allSixFfmpegModulesByteExact, true);
+  assert.equal(publication.mismatchArtifactUploadSkipped, true);
+  assert.equal(publication.hostedRepositoryLocalCleanupPassed, true);
+  assert.equal(publication.retainedArtifacts, 0);
+  assert.equal(publication.candidateArtifactDeletedAndVerifiedAbsent, true);
+  assert.equal(publication.dockerUsed, false);
+});
+
 test("IVF compact evidence and project ledgers agree", async () => {
   const manifest = JSON.parse(
     await readFile(
