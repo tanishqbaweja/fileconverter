@@ -333,6 +333,7 @@ const generatedStressNames = new Set([
   "compatible-vp9-opus-128m.mkv.json",
   "compatible-vp9-opus-128m.webm.json",
   "compatible-vp9-128m.ivf.json",
+  "compatible-av1-128m.ivf.json",
   "theora-vorbis-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mp4.json",

@@ -15,6 +15,13 @@ const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const mkvPath = path.join(fixtureRoot, "compatible-vp9-opus-128m.mkv");
 const webmPath = path.join(fixtureRoot, "compatible-vp9-opus-128m.webm");
 const ivfPath = path.join(fixtureRoot, "compatible-vp9-128m.ivf");
+const av1SourcePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "av1-opus-source.mkv",
+);
+const av1IvfPath = path.join(fixtureRoot, "compatible-av1-128m.ivf");
 const verificationPath = path.join(
   fixtureRoot,
   "compatible-vp9-opus-128m.verify.webm",
@@ -23,6 +30,11 @@ const ivfVerificationPath = path.join(
   fixtureRoot,
   "compatible-vp9-128m.verify.ivf",
 );
+const av1IvfVerificationPath = path.join(
+  fixtureRoot,
+  "compatible-av1-128m.verify.ivf",
+);
+const av1RepeatCount = 90;
 const minimumBytes = 128 * 1024 * 1024;
 const minimumFreeBytes = 1024 * 1024 * 1024;
 
@@ -87,8 +99,31 @@ try {
     `${JSON.stringify(ivfManifest, null, 2)}\n`,
     "utf8",
   );
+  await remuxLoopedAv1Ivf(av1SourcePath, av1IvfPath, av1RepeatCount);
+  await remuxLoopedAv1Ivf(
+    av1SourcePath,
+    av1IvfVerificationPath,
+    av1RepeatCount,
+  );
+  const [av1IvfHash, av1IvfVerificationHash] = await Promise.all([
+    hashFile(av1IvfPath),
+    hashFile(av1IvfVerificationPath),
+  ]);
+  if (av1IvfHash !== av1IvfVerificationHash) {
+    throw new Error("Bitexact AV1 IVF fixture generation was not repeatable.");
+  }
+  const av1IvfManifest = await inspectLoopedAv1IvfFixture(
+    av1IvfPath,
+    av1SourcePath,
+    av1RepeatCount,
+  );
+  await writeFile(
+    `${av1IvfPath}.json`,
+    `${JSON.stringify(av1IvfManifest, null, 2)}\n`,
+    "utf8",
+  );
   process.stdout.write(
-    `${mkvPath}\n${webmPath}\n${ivfPath}\nGenerated deterministic IVF extraction and input stress sources; ${availableBytes} bytes were free at preflight.\n`,
+    `${mkvPath}\n${webmPath}\n${ivfPath}\n${av1IvfPath}\nGenerated deterministic IVF extraction and VP9/AV1 input stress sources; ${availableBytes} bytes were free at preflight.\n`,
   );
 } catch (error) {
   await Promise.allSettled([
@@ -98,13 +133,17 @@ try {
     rm(`${webmPath}.json`, { force: true }),
     rm(ivfPath, { force: true }),
     rm(`${ivfPath}.json`, { force: true }),
+    rm(av1IvfPath, { force: true }),
+    rm(`${av1IvfPath}.json`, { force: true }),
     rm(verificationPath, { force: true }),
     rm(ivfVerificationPath, { force: true }),
+    rm(av1IvfVerificationPath, { force: true }),
   ]);
   throw error;
 } finally {
   await rm(verificationPath, { force: true });
   await rm(ivfVerificationPath, { force: true });
+  await rm(av1IvfVerificationPath, { force: true });
 }
 
 async function remuxWebm(inputPath, outputPath) {
@@ -164,6 +203,117 @@ async function remuxIvf(inputPath, outputPath) {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
+}
+
+async function remuxLoopedAv1Ivf(
+  inputPath,
+  outputPath,
+  repeatCount,
+) {
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-xerror",
+      "-nostdin",
+      "-y",
+      "-stream_loop",
+      String(repeatCount - 1),
+      "-i",
+      inputPath,
+      "-map",
+      "0:v:0",
+      "-c:v",
+      "copy",
+      "-an",
+      "-map_metadata",
+      "-1",
+      "-fflags",
+      "+bitexact",
+      "-f",
+      "ivf",
+      outputPath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
+}
+
+async function inspectLoopedAv1IvfFixture(
+  filePath,
+  sourcePath,
+  repeatCount,
+) {
+  const [file, sha256, probe, sourceProbe, videoPackets, decodedVideoSha256] =
+    await Promise.all([
+      stat(filePath),
+      hashFile(filePath),
+      probeFile(filePath),
+      probeFile(sourcePath),
+      packetStats(filePath),
+      decodedVideoHash(filePath),
+    ]);
+  const video = probe.streams.find((stream) => stream.codec_type === "video");
+  const sourceVideo = sourceProbe.streams.find(
+    (stream) => stream.codec_type === "video",
+  );
+  const sourceFrames = Number(sourceVideo?.nb_read_frames);
+  const expectedFrames = sourceFrames * repeatCount;
+  const [rateNumerator, rateDenominator] = String(video?.avg_frame_rate ?? "0/1")
+    .split("/")
+    .map(Number);
+  const decodedVideoDurationSeconds =
+    (expectedFrames * rateDenominator) / rateNumerator;
+  if (
+    file.size < minimumBytes ||
+    !probe.format?.format_name?.split(",").includes("ivf") ||
+    probe.streams.length !== 1 ||
+    sourceVideo?.codec_name !== "av1" ||
+    video?.codec_name !== "av1" ||
+    video?.width !== sourceVideo.width ||
+    video?.height !== sourceVideo.height ||
+    !Number.isSafeInteger(sourceFrames) ||
+    sourceFrames <= 0 ||
+    Number(video?.nb_read_frames) !== expectedFrames ||
+    Number(video?.nb_read_packets) !== expectedFrames ||
+    videoPackets.count !== expectedFrames ||
+    !Number.isFinite(decodedVideoDurationSeconds) ||
+    decodedVideoDurationSeconds <= 0
+  ) {
+    throw new Error(
+      `Generated AV1 IVF input stress fixture is invalid: ${JSON.stringify({
+        bytes: file.size,
+        format: probe.format?.format_name,
+        streams: probe.streams.length,
+        sourceCodec: sourceVideo?.codec_name,
+        videoCodec: video?.codec_name,
+        width: video?.width,
+        height: video?.height,
+        sourceFrames,
+        repeatCount,
+        decodedVideoFrames: Number(video?.nb_read_frames),
+        packetCount: videoPackets.count,
+        expectedFrames,
+      })}.`,
+    );
+  }
+  return {
+    generatedBy: "scripts/generate-ivf-stress-fixtures.mjs",
+    sourceFixture: path.relative(projectRoot, sourcePath).replaceAll("\\", "/"),
+    repeatCount,
+    bytes: file.size,
+    sha256,
+    durationSeconds: decodedVideoDurationSeconds,
+    decodedVideoDurationSeconds,
+    decodedVideoFrames: expectedFrames,
+    decodedVideoSha256,
+    videoPacketBytes: videoPackets.bytes,
+    videoPacketCount: videoPackets.count,
+    maximumPacketBytes: videoPackets.maximumBytes,
+    videoPacketSha256: await packetHash(filePath, "0:v:0"),
+    probe,
+  };
 }
 
 async function inspectIvfFixture(filePath, reference) {

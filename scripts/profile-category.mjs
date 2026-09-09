@@ -637,6 +637,13 @@ const categories = {
       ["ivf-to-mkv", "fixtures/stress/media/compatible-vp9-128m.ivf"],
     ],
   },
+  "ivf-input-av1": {
+    generator: "scripts/generate-ivf-stress-fixtures.mjs",
+    profiles: [
+      ["ivf-to-webm", "fixtures/stress/media/compatible-av1-128m.ivf"],
+      ["ivf-to-mkv", "fixtures/stress/media/compatible-av1-128m.ivf"],
+    ],
+  },
   "compatible-ogv": {
     generator: "scripts/generate-compatible-ogv-stress-fixture.mjs",
     profiles: [
