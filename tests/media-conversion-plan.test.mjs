@@ -302,6 +302,45 @@ test("IVF extraction copies only the first AV1, VP8, or VP9 video and blocks inc
   assert.match(audioOnly.blockingReasons.join(" "), /requires a video stream/i);
 });
 
+test("IVF input routes plan direct compatible packet copies", () => {
+  const ivfProfile = (id, output) => ({
+    id,
+    input: "ivf",
+    output,
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [],
+    fidelityLimitations: [],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  });
+  for (const [id, codec] of [
+    ["ivf-to-webm", "AV1"],
+    ["ivf-to-webm", "VP8"],
+    ["ivf-to-mkv", "VP9"],
+  ]) {
+    const plan = planMediaConversion(
+      ivfProfile(id, id === "ivf-to-webm" ? "webm-av1" : "mkv"),
+      inspection([stream("video", codec)]),
+    );
+    assert.ok(plan);
+    assert.deepEqual(plan.streams.map(({ action }) => action), ["copy"], `${id} ${codec}`);
+    assert.deepEqual(plan.blockingReasons, [], `${id} ${codec}`);
+  }
+
+  const blocked = planMediaConversion(
+    ivfProfile("ivf-to-webm", "webm-av1"),
+    inspection([stream("video", "H.264/AVC")]),
+  );
+  assert.ok(blocked);
+  assert.equal(blocked.streams[0].action, "reject");
+  assert.match(blocked.blockingReasons.join(" "), /incompatible/i);
+});
+
 test("compatible OGV copy packet-copies Theora and Vorbis and rejects a non-Theora primary video", () => {
   const ogvProfile = {
     id: "mkv-to-ogv",

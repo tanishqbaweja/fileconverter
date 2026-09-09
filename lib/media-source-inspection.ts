@@ -16,6 +16,7 @@ export const MAX_MPEG_TS_INSPECTION_BYTES = MPEG_TS_WINDOW_BYTES * 2;
 export const MAX_AVI_INSPECTION_BYTES = 256 * 1024;
 export const MAX_OGV_INSPECTION_BYTES = 64 * 1024 + MAX_OGG_TAIL_BYTES;
 export const MAX_ASF_INSPECTION_BYTES = 64 * 1024;
+export const MAX_IVF_INSPECTION_BYTES = 44;
 
 export interface SourceStreamInspection {
   mediaType: "audio" | "video" | "subtitle";
@@ -2791,6 +2792,80 @@ async function inspectOggVideo(file: Blob): Promise<MediaSourceInspection> {
   };
 }
 
+async function inspectIvf(file: Blob): Promise<MediaSourceInspection> {
+  if (file.size < 44) {
+    throw new Error("The selected file is too small to contain an IVF frame.");
+  }
+  const bytes = new Uint8Array(
+    await file.slice(0, MAX_IVF_INSPECTION_BYTES).arrayBuffer(),
+  );
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (
+    ascii(view, 0, 4) !== "DKIF" ||
+    view.getUint16(4, true) !== 0 ||
+    view.getUint16(6, true) !== 32
+  ) {
+    throw new Error("The selected file does not contain a supported IVF header.");
+  }
+  const fourcc = ascii(view, 8, 4);
+  const codec =
+    fourcc === "AV01"
+      ? "AV1"
+      : fourcc === "VP80"
+        ? "VP8"
+        : fourcc === "VP90"
+          ? "VP9"
+          : null;
+  if (!codec) {
+    throw new Error(`The IVF video codec ${fourcc || "is missing"} is not AV1, VP8, or VP9.`);
+  }
+  const width = view.getUint16(12, true);
+  const height = view.getUint16(14, true);
+  const rate = view.getUint32(16, true);
+  const scale = view.getUint32(20, true);
+  const frameCount = view.getUint32(24, true);
+  const firstFrameBytes = view.getUint32(32, true);
+  if (
+    width === 0 ||
+    height === 0 ||
+    rate === 0 ||
+    scale === 0 ||
+    frameCount === 0 ||
+    firstFrameBytes === 0 ||
+    firstFrameBytes + 44 > file.size
+  ) {
+    throw new Error("The IVF dimensions, time base, frame count, or first frame is invalid.");
+  }
+  const frameRate = finitePositive(rate / scale);
+  const durationSeconds = finitePositive((frameCount * scale) / rate);
+  const stream = {
+    mediaType: "video",
+    codec,
+    durationSeconds,
+    bitrateBps: durationSeconds
+      ? finitePositive(Math.round((file.size * 8) / durationSeconds))
+      : null,
+    sampleRateHz: null,
+    channels: null,
+    channelLayout: null,
+    bitsPerSample: null,
+    width,
+    height,
+    frameRate,
+  } satisfies SourceStreamInspection;
+  return {
+    ...stream,
+    container: "IVF",
+    streams: [stream],
+    metadataSignals: ["DKIF header"],
+    notes: [
+      `The fixed IVF header declares ${frameCount.toLocaleString("en-US")} frames; only the first frame header and bounded container fields were inspected.`,
+    ],
+    inspectedBytes: bytes.byteLength,
+    maximumInspectionBytes: MAX_IVF_INSPECTION_BYTES,
+  };
+}
+
 function guidHex(view: DataView, offset = 0): string {
   if (offset + 16 > view.byteLength) return "";
   let value = "";
@@ -2927,5 +3002,6 @@ export async function inspectMediaSource(
   if (formatId === "avi") return inspectAvi(file);
   if (formatId === "ogv") return inspectOggVideo(file);
   if (formatId === "wma") return inspectAsf(file);
+  if (formatId === "ivf") return inspectIvf(file);
   return null;
 }

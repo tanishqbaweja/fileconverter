@@ -7,6 +7,7 @@ import {
   inspectMediaSource,
   MAX_AVI_INSPECTION_BYTES,
   MAX_FLV_INSPECTION_BYTES,
+  MAX_IVF_INSPECTION_BYTES,
   MAX_ISO_BMFF_INSPECTION_BYTES,
   MAX_MATROSKA_INSPECTION_BYTES,
   MAX_MPEG_TS_INSPECTION_BYTES,
@@ -551,6 +552,42 @@ test("bounded ASF inspection reports WMA stream rather than container bitrate", 
   await assert.rejects(
     inspectMediaSource(new Blob([new Uint8Array(1_024)]), "wma"),
     /valid ASF header object/,
+  );
+});
+
+test("bounded IVF inspection validates codec, dimensions, rate, and first frame", async () => {
+  for (const [fourcc, codec] of [
+    ["AV01", "AV1"],
+    ["VP80", "VP8"],
+    ["VP90", "VP9"],
+  ]) {
+    const bytes = Buffer.alloc(144);
+    bytes.write("DKIF", 0, "ascii");
+    bytes.writeUInt16LE(0, 4);
+    bytes.writeUInt16LE(32, 6);
+    bytes.write(fourcc, 8, "ascii");
+    bytes.writeUInt16LE(640, 12);
+    bytes.writeUInt16LE(360, 14);
+    bytes.writeUInt32LE(24, 16);
+    bytes.writeUInt32LE(1, 20);
+    bytes.writeUInt32LE(48, 24);
+    bytes.writeUInt32LE(100, 32);
+    const source = trackingBlob(new Blob([bytes]));
+    const result = await inspectMediaSource(source, "ivf");
+    assert.ok(result);
+    assert.equal(result.container, "IVF");
+    assert.equal(result.codec, codec);
+    assert.equal(result.width, 640);
+    assert.equal(result.height, 360);
+    assert.equal(result.frameRate, 24);
+    assert.equal(result.durationSeconds, 2);
+    assert.equal(result.streams.length, 1);
+    assert.equal(result.inspectedBytes, MAX_IVF_INSPECTION_BYTES);
+    assert.deepEqual(source.reads, [[0, MAX_IVF_INSPECTION_BYTES]]);
+  }
+  await assert.rejects(
+    inspectMediaSource(new Blob([new Uint8Array(144)]), "ivf"),
+    /supported IVF header/,
   );
 });
 
