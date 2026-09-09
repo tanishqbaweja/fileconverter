@@ -149,10 +149,16 @@ async function runRoute(
     await page.locator('[data-testid="file-input"]').setInputFiles(ivfInputs[codec]);
     await page.locator('[data-testid="format-select"]').selectOption(profileId);
     await startConversion();
-    await expect
-      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-      .toBe("complete");
+    await page.waitForFunction(
+      () => {
+        const state = window.__WITHIN_TEST__?.getState();
+        return state && ["complete", "cancelled", "error"].includes(state.jobState);
+      },
+      null,
+      { timeout: 30_000 },
+    );
     const state = await currentState();
+    expect(state.jobState, state.error ?? state.phase).toBe("complete");
     expect(state.error).toBeNull();
     expect(state.warnings).toEqual([]);
     expect(state.opfsName).toBeTruthy();
@@ -246,8 +252,14 @@ test.beforeAll(async () => {
       { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
     );
   }
-  const vp8 = await readFile(ivfInputs.vp8);
-  await writeFile(corruptIvfPath, vp8.subarray(0, vp8.length - 8));
+  const corruptIvf = Buffer.from(await readFile(ivfInputs.vp8));
+  const firstFrameBytes = corruptIvf.readUInt32LE(32);
+  const secondFrameHeaderOffset = 44 + firstFrameBytes;
+  if (secondFrameHeaderOffset + 12 > corruptIvf.length) {
+    throw new Error("The VP8 IVF fixture does not contain a second frame.");
+  }
+  corruptIvf.writeUInt32LE(0x7fffffff, secondFrameHeaderOffset);
+  await writeFile(corruptIvfPath, corruptIvf);
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
     headless: true,
@@ -272,7 +284,7 @@ for (const profileId of ["ivf-to-webm", "ivf-to-mkv"] as const) {
   }
 }
 
-test("truncated IVF input fails without retaining partial output", async () => {
+test("corrupt IVF packet fails without retaining partial output", async () => {
   await page.goto("/?test=1");
   await page.waitForFunction(
     () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
@@ -284,6 +296,7 @@ test("truncated IVF input fails without retaining partial output", async () => {
     .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
     .toBe("error");
   const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("invalid data");
   expect(state.opfsName).toBeNull();
   expect(state.metrics?.pendingOperations).toBe(0);
   expect(state.metrics?.queuedBytes).toBe(0);

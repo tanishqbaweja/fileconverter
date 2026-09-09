@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-09. This is the living requirement audit for the original
+Updated 2026-09-10. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -156,6 +156,32 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
+
+- Native feasibility proved genuine AV1, VP8, and VP9 IVF packet-copy into
+  WebM and Matroska. The first production-Chrome candidate then passed all four
+  VP8/VP9 routes and injected direct-write cleanup, but both AV1 routes failed
+  on the first muxed packet with `Invalid data found when processing input`.
+  The routes therefore remain unpublished pending a corrected Wasm build and
+  the complete promotion gate.
+- FFmpeg 8.1.2 source and a native debug remux identified the allocation: IVF
+  does not carry AV1 container extradata, while the Matroska/WebM muxer requires
+  either codec extradata or `AV_PKT_DATA_NEW_EXTRADATA` on the first packet.
+  The accepted source fix applies FFmpeg's already-enabled
+  `extract_extradata` bitstream filter only to IVF AV1 input. It is packet-local
+  and avoids a decoder, whole-file probe, or prepass, preserving the fastest
+  bounded stream-copy topology.
+- The prior adverse fixture merely removed eight bytes from the tail, which the
+  IVF demuxer correctly treated as end-of-file after the preceding complete
+  packets. It is replaced by a deterministic oversized second-packet header;
+  native FFmpeg rejects that source as corrupt, while the bounded 44-byte
+  preflight still permits the worker to exercise conversion-error cleanup.
+- The corrected source still requires a no-Docker hosted rebuild, focused
+  AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
+  cancellation, independent validation, publication consistency, exact
+  reproduction, and cleanup before `ivf-to-webm` or `ivf-to-mkv` can become
+  public.
 
 ### 2026-09-09 — bounded raw HEVC to VP8 WebM acceptance
 

@@ -2619,6 +2619,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     goto cleanup;
   }
   const int matroska_output = profile == 23;
+  const int ivf_input = input_format->iformat && input_format->iformat->name &&
+                        strcmp(input_format->iformat->name, "ivf") == 0;
   const int container_mpegts_output = profile == 24;
   const int container_threegp_output = profile == 25;
   const int container_mov_output = profile == 26;
@@ -3446,38 +3448,69 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       output_stream->codecpar->width = artwork_width;
       output_stream->codecpar->height = artwork_height;
     }
+    const char *filter_name = NULL;
+    const char *filter_label = NULL;
     if (input_format->iformat && input_format->iformat->name &&
         (strstr(input_format->iformat->name, "mpegts") ||
          strcmp(input_format->iformat->name, "aac") == 0) &&
         input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
-      const AVBitStreamFilter *filter =
-          av_bsf_get_by_name("aac_adtstoasc");
+      filter_name = "aac_adtstoasc";
+      filter_label = "AAC compatibility";
+    } else if (ivf_input && (av1_webm_output || matroska_output) &&
+               input_stream->codecpar->codec_id == AV_CODEC_ID_AV1) {
+      /*
+       * IVF has no container-level AV1 CodecPrivate. Extract the sequence
+       * header from the first compressed packet and attach it as bounded
+       * NEW_EXTRADATA side data. The Matroska/WebM muxer reserves space for
+       * this at header time, so no decoder, whole-file probe, or prepass is
+       * needed.
+       */
+      filter_name = "extract_extradata";
+      filter_label = "AV1 extradata extraction";
+    }
+    if (filter_name) {
+      const AVBitStreamFilter *filter = av_bsf_get_by_name(filter_name);
       if (!filter) {
-        within_message(2, "The AAC-to-ISO-BMFF compatibility filter is unavailable.");
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s filter is unavailable.",
+                 filter_label);
+        within_message(2, message);
         result = AVERROR_BSF_NOT_FOUND;
         goto cleanup;
       }
       result = av_bsf_alloc(filter, &stream_bsfs[index]);
       if (result < 0) {
-        report_av_error("AAC compatibility filter allocation failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s filter allocation failed",
+                 filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       result = avcodec_parameters_copy(stream_bsfs[index]->par_in,
                                        input_stream->codecpar);
       if (result < 0) {
-        report_av_error("AAC compatibility filter setup failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s filter setup failed",
+                 filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       stream_bsfs[index]->time_base_in = input_stream->time_base;
       result = av_bsf_init(stream_bsfs[index]);
       if (result < 0) {
-        report_av_error("AAC compatibility filter initialization failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message),
+                 "%s filter initialization failed", filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       result = avcodec_parameters_copy(output_stream->codecpar,
                                        stream_bsfs[index]->par_out);
       if (result < 0) {
-        report_av_error("Filtered AAC metadata copy failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s metadata copy failed",
+                 filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
     }
@@ -3872,10 +3905,17 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     int64_t media_time = packet_time_us(packet, input_stream);
     if (stream_bsfs[input_index]) {
       AVBSFContext *filter = stream_bsfs[input_index];
+      const char *filter_label =
+          input_stream->codecpar->codec_id == AV_CODEC_ID_AV1
+              ? "AV1 extradata extraction"
+              : "AAC compatibility";
       result = av_bsf_send_packet(filter, packet);
       if (result < 0) {
         av_packet_unref(packet);
-        report_av_error("AAC compatibility filtering failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s filtering failed",
+                 filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       while ((result = av_bsf_receive_packet(filter, packet)) >= 0) {
@@ -3895,7 +3935,10 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         output_packet_count += 1;
       }
       if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
-        report_av_error("AAC compatibility filter read failed", result);
+        char message[128] = {0};
+        snprintf(message, sizeof(message), "%s filter read failed",
+                 filter_label);
+        report_av_error(message, result);
         goto cleanup;
       }
       within_progress((double)input.position, (double)output.size,
@@ -3932,9 +3975,16 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
     AVBSFContext *filter = stream_bsfs[index];
     if (!filter || stream_map[index] < 0) continue;
+    const char *filter_label =
+        input_format->streams[index]->codecpar->codec_id == AV_CODEC_ID_AV1
+            ? "AV1 extradata extraction"
+            : "AAC compatibility";
     result = av_bsf_send_packet(filter, NULL);
     if (result < 0 && result != AVERROR_EOF) {
-      report_av_error("AAC compatibility filter flush failed", result);
+      char message[128] = {0};
+      snprintf(message, sizeof(message), "%s filter flush failed",
+               filter_label);
+      report_av_error(message, result);
       goto cleanup;
     }
     AVStream *output_stream = output_format->streams[stream_map[index]];
@@ -3955,7 +4005,10 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       output_packet_count += 1;
     }
     if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
-      report_av_error("AAC compatibility filter drain failed", result);
+      char message[128] = {0};
+      snprintf(message, sizeof(message), "%s filter drain failed",
+               filter_label);
+      report_av_error(message, result);
       goto cleanup;
     }
   }
