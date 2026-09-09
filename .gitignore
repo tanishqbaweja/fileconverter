@@ -27,6 +27,7 @@
 /fixtures/stress/media/*.mpegts
 /fixtures/stress/media/*.flv
 /fixtures/stress/media/*.avi
+/fixtures/stress/media/*.webm
 /fixtures/stress/media/*.m4a
 /fixtures/stress/media/*.mp3
 /fixtures/stress/media/*.flac

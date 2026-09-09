@@ -62,11 +62,10 @@ test("MP4 stream-copy plan distinguishes copied, excluded, and rejecting streams
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "copy",
-    "copy",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["copy", "copy", "exclude"],
+  );
 
   const rejected = planMediaConversion(
     profile("mkv-to-mp4"),
@@ -88,11 +87,10 @@ test("Matroska plan copies certified subtitle codecs and rejects unsupported aud
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "copy",
-    "copy",
-    "reject",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["copy", "copy", "reject"],
+  );
 });
 
 test("lossless audio extraction selects only the first matching codec", () => {
@@ -106,12 +104,10 @@ test("lossless audio extraction selects only the first matching codec", () => {
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "exclude",
-    "exclude",
-    "copy",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["exclude", "exclude", "copy", "exclude"],
+  );
 });
 
 test("M4A stream copy includes every AAC stream and rejects incompatible audio", () => {
@@ -125,12 +121,10 @@ test("M4A stream copy includes every AAC stream and rejects incompatible audio",
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "exclude",
-    "copy",
-    "copy",
-    "reject",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["exclude", "copy", "copy", "reject"],
+  );
   assert.equal(plan.blockingReasons.length, 1);
 });
 
@@ -154,11 +148,10 @@ test("OGV video conversion re-encodes video and copies first Vorbis audio", () =
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "re-encode",
-    "copy",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["re-encode", "copy", "exclude"],
+  );
   assert.match(plan.streams[0].detail, /VP9/);
 });
 
@@ -186,18 +179,20 @@ test("video plan discloses codec, width, bitrate, frame-rate, and quality contro
 test("audio re-encode plan converts only the first audio stream", () => {
   const plan = planMediaConversion(
     profile("mkv-to-flac"),
-    inspection([
-      stream("video", "H.264/AVC"),
-      stream("audio", "AAC"),
-      stream("audio", "Opus"),
-    ], ["container title", "stream language"]),
+    inspection(
+      [
+        stream("video", "H.264/AVC"),
+        stream("audio", "AAC"),
+        stream("audio", "Opus"),
+      ],
+      ["container title", "stream language"],
+    ),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "exclude",
-    "re-encode",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["exclude", "re-encode", "exclude"],
+  );
   assert.match(plan.streams[1].detail, /losslessly encodes/);
   assert.match(plan.metadataSummary, /container title/);
 });
@@ -231,11 +226,10 @@ test("compatible WebM copy accepts AV1, VP8, and VP9 and excludes incompatible s
     ]),
   );
   assert.ok(plan);
-  assert.deepEqual(plan.streams.map(({ action }) => action), [
-    "copy",
-    "copy",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["copy", "copy", "exclude"],
+  );
 
   for (const codec of ["VP8", "VP9"]) {
     const compatiblePlan = planMediaConversion(
@@ -258,6 +252,54 @@ test("compatible WebM copy accepts AV1, VP8, and VP9 and excludes incompatible s
   assert.ok(blocked);
   assert.equal(blocked.streams[0].action, "reject");
   assert.match(blocked.streams[0].detail, /not AV1, VP8, or VP9/);
+});
+
+test("IVF extraction copies only the first AV1, VP8, or VP9 video and blocks incompatible sources", () => {
+  for (const [input, codec] of [
+    ["mkv", "AV1"],
+    ["webm", "VP8"],
+    ["webm", "VP9"],
+  ]) {
+    const accepted = planMediaConversion(
+      profile(`${input}-to-ivf`),
+      inspection([
+        stream("video", codec),
+        stream("audio", "Opus"),
+        stream("video", "VP9"),
+        stream("subtitle", "WebVTT"),
+      ]),
+    );
+    assert.ok(accepted);
+    assert.deepEqual(
+      accepted.streams.map(({ action }) => action),
+      ["copy", "exclude", "exclude", "exclude"],
+      `${input} ${codec}`,
+    );
+    assert.deepEqual(accepted.blockingReasons, [], `${input} ${codec}`);
+    assert.match(accepted.streams[0].detail, /compressed|byte-for-byte/i);
+    assert.match(accepted.streams[1].detail, /explicitly excluded/i);
+  }
+
+  const blocked = planMediaConversion(
+    profile("mkv-to-ivf"),
+    inspection([stream("video", "H.264/AVC"), stream("video", "VP9")]),
+  );
+  assert.ok(blocked);
+  assert.deepEqual(
+    blocked.streams.map(({ action }) => action),
+    ["reject", "exclude"],
+  );
+  assert.match(
+    blocked.blockingReasons.join(" "),
+    /first video stream is not AV1, VP8, or VP9/i,
+  );
+
+  const audioOnly = planMediaConversion(
+    profile("webm-to-ivf"),
+    inspection([stream("audio", "Opus")]),
+  );
+  assert.ok(audioOnly);
+  assert.match(audioOnly.blockingReasons.join(" "), /requires a video stream/i);
 });
 
 test("compatible OGV copy packet-copies Theora and Vorbis and rejects a non-Theora primary video", () => {
@@ -359,10 +401,7 @@ test("bounded AVI copy accepts MPEG-4 Part 2 or MPEG-2 plus MP3 and rejects inco
 
   const incompatibleAudio = planMediaConversion(
     aviProfile,
-    inspection([
-      stream("video", "MPEG-4 Part 2"),
-      stream("audio", "AAC"),
-    ]),
+    inspection([stream("video", "MPEG-4 Part 2"), stream("audio", "AAC")]),
   );
   assert.ok(incompatibleAudio);
   assert.deepEqual(
@@ -380,11 +419,10 @@ test("bounded AVI copy accepts MPEG-4 Part 2 or MPEG-2 plus MP3 and rejects inco
 });
 
 test("automatic generic WebM selection prefers compatible copy but respects an explicit VP9 encode", () => {
-  const candidates = conversionProfiles.filter((candidate) => candidate.input === "mkv");
-  const source = inspection([
-    stream("video", "VP8"),
-    stream("audio", "Opus"),
-  ]);
+  const candidates = conversionProfiles.filter(
+    (candidate) => candidate.input === "mkv",
+  );
+  const source = inspection([stream("video", "VP8"), stream("audio", "Opus")]);
   const automatic = selectAutomaticMediaProfile(
     profile("mkv-to-webm"),
     candidates,
@@ -409,31 +447,28 @@ test("automatic media selection keeps a standards-compliant stream copy", () => 
   const choice = selectAutomaticMediaProfile(
     selected,
     conversionProfiles.filter((candidate) => candidate.input === "mkv"),
-    inspection([
-      stream("video", "H.264/AVC"),
-      stream("audio", "AAC"),
-    ]),
+    inspection([stream("video", "H.264/AVC"), stream("audio", "AAC")]),
   );
   assert.equal(choice.changed, false);
   assert.equal(choice.profile.id, "mkv-to-mp4");
-  assert.deepEqual(choice.plan.streams.map(({ action }) => action), ["copy", "copy"]);
+  assert.deepEqual(
+    choice.plan.streams.map(({ action }) => action),
+    ["copy", "copy"],
+  );
 });
 
 test("automatic media selection falls back from incompatible MP4 copy to certified encode", () => {
   const choice = selectAutomaticMediaProfile(
     profile("mkv-to-mp4"),
     conversionProfiles.filter((candidate) => candidate.input === "mkv"),
-    inspection([
-      stream("video", "MPEG-2 Video"),
-      stream("audio", "AAC"),
-    ]),
+    inspection([stream("video", "MPEG-2 Video"), stream("audio", "AAC")]),
   );
   assert.equal(choice.changed, true);
   assert.equal(choice.profile.id, "mkv-to-mp4-mpeg4");
-  assert.deepEqual(choice.plan.streams.map(({ action }) => action), [
-    "re-encode",
-    "exclude",
-  ]);
+  assert.deepEqual(
+    choice.plan.streams.map(({ action }) => action),
+    ["re-encode", "exclude"],
+  );
   assert.match(choice.reason, /automatically selected/);
 });
 
@@ -441,10 +476,7 @@ test("automatic media selection falls back from incompatible AV1 copy to VP8", (
   const choice = selectAutomaticMediaProfile(
     profile("mkv-to-webm-av1"),
     conversionProfiles.filter((candidate) => candidate.input === "mkv"),
-    inspection([
-      stream("video", "HEVC"),
-      stream("audio", "AAC"),
-    ]),
+    inspection([stream("video", "HEVC"), stream("audio", "AAC")]),
   );
   assert.equal(choice.changed, true);
   assert.equal(choice.profile.id, "mkv-to-webm");
@@ -475,8 +507,7 @@ test("automatic selection inventories every current copy-plus-encode destination
   assert.deepEqual(
     [...families]
       .filter(
-        ([, routes]) =>
-          routes.has("stream-copy") && routes.has("re-encode"),
+        ([, routes]) => routes.has("stream-copy") && routes.has("re-encode"),
       )
       .map(([key]) => key)
       .sort(),

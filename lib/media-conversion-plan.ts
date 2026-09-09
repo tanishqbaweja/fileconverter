@@ -248,7 +248,9 @@ function planAudioExtraction(
     );
   });
   if (!selected) {
-    const firstAudio = planned.findIndex((stream) => stream.mediaType === "audio");
+    const firstAudio = planned.findIndex(
+      (stream) => stream.mediaType === "audio",
+    );
     if (firstAudio >= 0) {
       const stream = streams[firstAudio];
       planned[firstAudio] = planItem(
@@ -307,12 +309,22 @@ function planContainerCopy(
     if (profile.output === "flv") {
       if (stream.mediaType === "video") {
         if (firstVideoSeen) {
-          return planItem(stream, index, "exclude", "FLV includes only the first video stream.");
+          return planItem(
+            stream,
+            index,
+            "exclude",
+            "FLV includes only the first video stream.",
+          );
         }
         firstVideoSeen = true;
       } else if (stream.mediaType === "audio") {
         if (firstAudioSeen) {
-          return planItem(stream, index, "exclude", "FLV includes only the first audio stream.");
+          return planItem(
+            stream,
+            index,
+            "exclude",
+            "FLV includes only the first audio stream.",
+          );
         }
         firstAudioSeen = true;
       }
@@ -358,7 +370,8 @@ function planCompatibleWebmCopy(
     }
     const compatible =
       (stream.mediaType === "video" && WEBM_COPY_VIDEO_CODECS.has(codec)) ||
-      (stream.mediaType === "audio" && (codec === "Opus" || codec === "Vorbis"));
+      (stream.mediaType === "audio" &&
+        (codec === "Opus" || codec === "Vorbis"));
     return planItem(
       stream,
       index,
@@ -366,6 +379,35 @@ function planCompatibleWebmCopy(
       compatible
         ? "This stream is copied without decoding or re-encoding into WebM."
         : "Only AV1, VP8, or VP9 video and compatible Opus or Vorbis audio are included by this fixed WebM copy profile.",
+    );
+  });
+}
+
+function planIvfCopy(
+  streams: readonly SourceStreamInspection[],
+): readonly MediaStreamPlan[] {
+  let firstVideoSeen = false;
+  return streams.map((stream, index) => {
+    const codec = normalizedCodec(stream.codec);
+    if (stream.mediaType === "video" && !firstVideoSeen) {
+      firstVideoSeen = true;
+      const compatible = WEBM_COPY_VIDEO_CODECS.has(codec);
+      return planItem(
+        stream,
+        index,
+        compatible ? "copy" : "reject",
+        compatible
+          ? codec === "AV1"
+            ? "The first AV1 video stream remains compressed; FFmpeg adds only the IVF temporal-delimiter framing required for AV1."
+            : `The first ${codec} video stream is packet-copied byte-for-byte into IVF.`
+          : "The first video stream is not AV1, VP8, or VP9; this fixed IVF copy profile rejects the conversion even if a later compatible stream exists.",
+      );
+    }
+    return planItem(
+      stream,
+      index,
+      "exclude",
+      "IVF includes only the first non-attached AV1, VP8, or VP9 video stream; this source element is explicitly excluded.",
     );
   });
 }
@@ -438,6 +480,7 @@ function planStreamCopy(
   streams: readonly SourceStreamInspection[],
 ): readonly MediaStreamPlan[] {
   if (profile.output === "webm-av1") return planCompatibleWebmCopy(streams);
+  if (profile.output === "ivf") return planIvfCopy(streams);
   if (profile.output === "ogv") return planCompatibleOgvCopy(streams);
   if (profile.output === "avi") return planCompatibleAviCopy(streams);
   if (VIDEO_ELEMENTARY_OUTPUTS.has(profile.output)) {
@@ -632,9 +675,10 @@ export function planMediaConversion(
         : planVideoReencode(profile, streams, videoOptions);
   const blockingReasons = plannedStreams
     .filter((stream) => stream.action === "reject")
-    .map(
-      (stream) =>
-        `Stream ${stream.streamIndex + 1} (${stream.codec}) is incompatible with this fixed profile.`,
+    .map((stream) =>
+      profile.output === "ivf"
+        ? stream.detail
+        : `Stream ${stream.streamIndex + 1} (${stream.codec}) is incompatible with this fixed profile.`,
     );
   if (
     profile.route === "stream-copy" &&
@@ -656,6 +700,7 @@ export function planMediaConversion(
       profile.id === "m2v-to-mpeg-ts" ||
       profile.id === "m4v-to-mp4" ||
       profile.output === "webm-av1" ||
+      profile.output === "ivf" ||
       profile.output === "ogv" ||
       profile.output === "avi") &&
     !streams.some((stream) => stream.mediaType === "video")
@@ -687,8 +732,7 @@ export function planMediaConversion(
     profile.engine === "ffmpeg-video" &&
     profile.input === "ogv" &&
     !plannedStreams.some(
-      (stream) =>
-        stream.mediaType === "audio" && stream.action === "copy",
+      (stream) => stream.mediaType === "audio" && stream.action === "copy",
     )
   ) {
     blockingReasons.push(

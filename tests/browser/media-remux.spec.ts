@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -245,6 +245,11 @@ const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
 const vp9WebmOutputPath = path.join(outputRoot, "vp9-reencode-output.webm");
 const av1WebmCopyOutputPath = path.join(outputRoot, "av1-copy-output.webm");
+const ivfExtractionOutputPaths = {
+  av1: path.join(outputRoot, "av1-extract-output.ivf"),
+  vp8: path.join(outputRoot, "vp8-extract-output.ivf"),
+  vp9: path.join(outputRoot, "vp9-extract-output.ivf"),
+} as const;
 const mp3ExtractionOutputPaths = {
   mkv: path.join(outputRoot, "mkv-extract-output.mp3"),
   mp4: path.join(outputRoot, "mp4-extract-output.mp3"),
@@ -626,6 +631,18 @@ const av1OpusFixturePath = path.join(
   "fixtures",
   "media",
   "av1-opus-source.mkv",
+);
+const vp8OpusFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "vp8-opus-source.webm",
+);
+const vp9OpusFixturePath = path.join(
+  projectRoot,
+  "fixtures",
+  "media",
+  "webm-source.webm",
 );
 const av1OpusWebmFixturePath = path.join(
   projectRoot,
@@ -1199,6 +1216,53 @@ async function expectDecodedVideoMatch(
   );
 }
 
+async function expectIvfStructure(
+  inputPath: string,
+  fourCc: "AV01" | "VP80" | "VP90",
+  width: number,
+  height: number,
+  frameCount: number,
+  midpointSeconds: number,
+): Promise<void> {
+  const handle = await open(inputPath, "r");
+  const header = Buffer.alloc(32);
+  try {
+    const { bytesRead } = await handle.read(header, 0, header.length, 0);
+    expect(bytesRead).toBe(header.length);
+  } finally {
+    await handle.close();
+  }
+  expect(header.subarray(0, 4).toString("ascii")).toBe("DKIF");
+  expect(header.readUInt16LE(4)).toBe(0);
+  expect(header.readUInt16LE(6)).toBe(32);
+  expect(header.subarray(8, 12).toString("ascii")).toBe(fourCc);
+  expect(header.readUInt16LE(12)).toBe(width);
+  expect(header.readUInt16LE(14)).toBe(height);
+  expect(header.readUInt32LE(16)).toBe(24);
+  expect(header.readUInt32LE(20)).toBe(1);
+  expect(header.readUInt32LE(24)).toBe(frameCount);
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-xerror",
+      "-ss",
+      midpointSeconds.toFixed(3),
+      "-i",
+      inputPath,
+      "-map",
+      "0:v:0",
+      "-frames:v",
+      "1",
+      "-f",
+      "null",
+      "NUL",
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+  );
+}
+
 async function videoPacketSha256(inputPath: string): Promise<string> {
   const { stdout } = await execFileAsync(
     "ffmpeg",
@@ -1351,6 +1415,11 @@ test.beforeAll(async () => {
   assertProjectLocal(ogvWebmOutputPath);
   assertProjectLocal(vp9WebmOutputPath);
   assertProjectLocal(av1WebmCopyOutputPath);
+  for (const outputPath of Object.values(ivfExtractionOutputPaths)) {
+    assertProjectLocal(outputPath);
+  }
+  assertProjectLocal(vp8OpusFixturePath);
+  assertProjectLocal(vp9OpusFixturePath);
   for (const outputPath of Object.values(mp3ExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -2616,6 +2685,9 @@ test.afterAll(async () => {
   await rm(ogvWebmOutputPath, { force: true });
   await rm(vp9WebmOutputPath, { force: true });
   await rm(av1WebmCopyOutputPath, { force: true });
+  for (const outputPath of Object.values(ivfExtractionOutputPaths)) {
+    await rm(outputPath, { force: true });
+  }
   for (const outputPath of Object.values(mp3ExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -2855,6 +2927,8 @@ async function runMediaRoute(
     | "mov-to-m4v"
     | "avi-to-m4v"
     | "mkv-to-webm-av1"
+    | "mkv-to-ivf"
+    | "webm-to-ivf"
     | "mkv-to-mp3"
     | "mp4-to-mp3"
     | "mov-to-mp3"
@@ -4301,8 +4375,37 @@ for (const route of [
   {
     profileId: "mkv-to-mp4",
     title: "MP4",
-    expectedPlanDetail: "outside the destination's certified stream-copy set",
+    fallbackProfileId: "mkv-to-mp4-mpeg4",
   },
+  {
+    profileId: "mkv-to-webm-av1",
+    title: "AV1 WebM",
+    fallbackProfileId: "mkv-to-webm",
+  },
+] as const) {
+  test(`browser planner automatically replaces incompatible ${route.title} copy with its certified encode fallback`, async () => {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(incompatibleFixturePath);
+    const format = page.locator('[data-testid="format-select"]');
+    await format.selectOption(route.profileId);
+    await expect(format).toHaveValue(route.fallbackProfileId);
+    const plan = page.locator('[data-testid="media-conversion-plan"]');
+    await expect(plan).toBeVisible({ timeout: 15_000 });
+    await expect(plan.locator(".conversion-plan-blocker")).toHaveCount(0);
+    await expect(plan).toContainText("Re-encode");
+    await expect(page.locator('[data-testid="convert-button"]')).toBeEnabled();
+    await expect(page.getByRole("status")).toContainText(
+      `automatically selected the certified ${route.fallbackProfileId}`,
+    );
+  });
+}
+
+for (const route of [
   {
     profileId: "mkv-to-m4a",
     title: "M4A",
@@ -4313,11 +4416,6 @@ for (const route of [
     title: "HEVC extraction",
     expectedPlanDetail: "The first video stream is not HEVC",
     inputPath: fixturePath,
-  },
-  {
-    profileId: "mkv-to-webm-av1",
-    title: "AV1 WebM",
-    expectedPlanDetail: "The first video stream is not AV1",
   },
   {
     profileId: "mkv-to-mp3",
@@ -5822,7 +5920,7 @@ for (const [route, output, codec] of threeGpAmrOutputRoutes) {
       {
         expectedDurationSeconds: 4.02,
         durationToleranceSeconds: 0.3,
-        expectedWarningFragments: [],
+        expectedWarningFragments: ["video stream"],
         validate: async (probe, outputPath) => {
           const audio = probe.streams.find(
             (stream: { codec_type?: string }) => stream.codec_type === "audio",
@@ -5909,6 +6007,153 @@ test("browser FFmpeg losslessly copies AV1 and Opus from Matroska to bounded liv
     },
   );
 });
+
+for (const route of [
+  {
+    label: "Matroska AV1",
+    profileId: "mkv-to-ivf" as const,
+    sourcePath: av1OpusFixturePath,
+    outputPath: ivfExtractionOutputPaths.av1,
+    codec: "av1",
+    fourCc: "AV01" as const,
+    width: 640,
+    height: 360,
+    frameCount: 96,
+    durationSeconds: 4,
+    minimumBytes: 100_000,
+    packetExact: false,
+  },
+  {
+    label: "WebM VP8",
+    profileId: "webm-to-ivf" as const,
+    sourcePath: vp8OpusFixturePath,
+    outputPath: ivfExtractionOutputPaths.vp8,
+    codec: "vp8",
+    fourCc: "VP80" as const,
+    width: 320,
+    height: 180,
+    frameCount: 48,
+    durationSeconds: 2,
+    minimumBytes: 20_000,
+    packetExact: true,
+  },
+  {
+    label: "WebM VP9",
+    profileId: "webm-to-ivf" as const,
+    sourcePath: vp9OpusFixturePath,
+    outputPath: ivfExtractionOutputPaths.vp9,
+    codec: "vp9",
+    fourCc: "VP90" as const,
+    width: 320,
+    height: 180,
+    frameCount: 48,
+    durationSeconds: 2,
+    minimumBytes: 20_000,
+    packetExact: true,
+  },
+]) {
+  test(`browser FFmpeg genuinely extracts ${route.label} video to bounded IVF`, async () => {
+    await runMediaRoute(
+      route.profileId,
+      route.outputPath,
+      [route.codec],
+      route.minimumBytes,
+      route.sourcePath,
+      {
+        expectedWarningFragments: ["Audio cannot be represented by IVF"],
+        expectedDurationSeconds: route.durationSeconds,
+        validate: async (probe, outputPath) => {
+          expect(probe.format.format_name?.split(",")).toContain("ivf");
+          expect(probe.streams).toHaveLength(1);
+          expect(probe.streams[0]?.nb_read_frames).toBe(
+            String(route.frameCount),
+          );
+          expect(probe.chapters ?? []).toEqual([]);
+          await expectIvfStructure(
+            outputPath,
+            route.fourCc,
+            route.width,
+            route.height,
+            route.frameCount,
+            route.durationSeconds / 2,
+          );
+          if (route.packetExact) {
+            await expectCompressedVideoPacketMatch(route.sourcePath, outputPath);
+          }
+          await expectDecodedVideoMatch(route.sourcePath, outputPath);
+        },
+      },
+    );
+  });
+}
+
+test("IVF preflight blocks an incompatible first Matroska video stream", async () => {
+  await page.goto("/?test=1");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("mkv-to-ivf");
+  await expectSourcePlanBlocked(
+    "mkv-to-ivf",
+    "first video stream is not AV1, VP8, or VP9",
+  );
+});
+
+for (const failureRoute of [
+  {
+    label: "Matroska AV1",
+    profileId: "mkv-to-ivf" as const,
+    sourcePath: av1OpusFixturePath,
+    outputName: "av1-opus-source.ivf",
+  },
+  {
+    label: "WebM VP8",
+    profileId: "webm-to-ivf" as const,
+    sourcePath: vp8OpusFixturePath,
+    outputName: "vp8-opus-source.ivf",
+  },
+]) {
+  test(`${failureRoute.label} IVF extraction propagates bounded write failure and removes its partial output`, async () => {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(failureRoute.sourcePath);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(failureRoute.profileId);
+    await startEnabledConversion();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain(
+      "destination rejected a bounded write",
+    );
+    expect(state.opfsName).toBeNull();
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    const abandonedSize = await page.evaluate(async (outputName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(outputName);
+        const size = (await handle.getFile()).size;
+        await root.removeEntry(outputName);
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    }, failureRoute.outputName);
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  });
+}
 
 for (const input of ["mkv", "mp4", "mov", "avi", "mpeg-ts", "flv"] as const) {
   test(`browser FFmpeg losslessly extracts MP3 packets from ${input.toUpperCase()}`, async () => {
@@ -6052,7 +6297,7 @@ test("browser FFmpeg converts Theora/Vorbis OGV to VP8/Vorbis WebM", async () =>
     50_000,
     ogvFixturePath,
     {
-      expectedWarningFragments: [],
+      expectedWarningFragments: ["normalizes variable frame timing"],
       validate: async (probe, outputPath) => {
         const audio = probe.streams.find(
           (stream) => stream.codec_type === "audio",
@@ -6089,7 +6334,7 @@ test("browser FFmpeg converts Theora/Vorbis OGV to VP9/Vorbis WebM", async () =>
     50_000,
     ogvFixturePath,
     {
-      expectedWarningFragments: [],
+      expectedWarningFragments: ["normalizes variable frame timing"],
       validate: async (probe, outputPath) => {
         const audio = probe.streams.find(
           (stream) => stream.codec_type === "audio",
@@ -6136,7 +6381,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to MPEG-4 MP4", async () =
     100_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: [],
+      expectedWarningFragments: ["normalizes variable frame timing"],
       validate: validateMpeg2VideoOutput,
     },
   );
@@ -6150,7 +6395,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP8 WebM", async () => 
     50_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: [],
+      expectedWarningFragments: ["normalizes variable frame timing"],
       validate: validateMpeg2VideoOutput,
     },
   );
@@ -6164,7 +6409,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP9 WebM", async () => 
     50_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: [],
+      expectedWarningFragments: ["normalizes variable frame timing"],
       validate: validateMpeg2VideoOutput,
     },
   );
@@ -6323,7 +6568,7 @@ for (const route of [
       40_000,
       h264FixturePath,
       {
-        expectedWarningFragments: [],
+        expectedWarningFragments: ["normalizes variable frame timing"],
         expectedDurationSeconds: 3.84,
         durationToleranceSeconds: 0.1,
         validate: validateH264WebmOutput,

@@ -1599,6 +1599,42 @@ function av1WebmProfile(): ConversionProfile {
   };
 }
 
+const ivfExtractionEvidence = {
+  mkv: 170_427_228,
+  webm: 170_426_767,
+} as const satisfies Record<"mkv" | "webm", number>;
+
+function ivfExtractionProfile(
+  input: keyof typeof ivfExtractionEvidence,
+): ConversionProfile {
+  return {
+    id: `${input}-to-ivf`,
+    input,
+    output: "ivf",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The first non-attached video stream must be AV1, VP8, or VP9; an incompatible first video stream is rejected even if a later stream is compatible.",
+      "Audio, subtitles, attachments, data, additional video streams, chapters, language, rotation, aspect-ratio, color, and general container metadata are explicitly excluded because IVF cannot represent them.",
+      "IVF has one fixed frame-rate time base. A valid average source frame rate is required, and variable frame timing is normalized to that rate.",
+    ],
+    fidelityLimitations: [
+      "VP8 and VP9 compressed packets are copied byte-for-byte. AV1 remains compressed and is not decoded or re-encoded, but FFmpeg adds the temporal-delimiter OBU framing required by its IVF path; independently decoded frames remain exact.",
+    ],
+    maxTestedBytes: ivfExtractionEvidence[input],
+    automatedTestStatus: "passed",
+    public: true,
+  };
+}
+
 const mp3ExtractionEvidence = {
   mkv: 181_340_062,
   mp4: 181_344_111,
@@ -2157,6 +2193,13 @@ export const formats = [
     label: "WebM video (compatible stream copy)",
     extensions: ["webm"],
     mimeTypes: ["video/webm"],
+    category: "video",
+  },
+  {
+    id: "ivf",
+    label: "IVF elementary video (AV1/VP8/VP9)",
+    extensions: ["ivf"],
+    mimeTypes: ["video/x-ivf"],
     category: "video",
   },
   {
@@ -6018,6 +6061,8 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerM4vProfile("mov"),
     containerM4vProfile("avi"),
     av1WebmProfile(),
+    ivfExtractionProfile("mkv"),
+    ivfExtractionProfile("webm"),
     containerMp3Profile("mkv"),
     containerMp3Profile("mp4"),
     containerMp3Profile("mov"),

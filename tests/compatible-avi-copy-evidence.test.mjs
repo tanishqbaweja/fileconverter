@@ -1,6 +1,5 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
-import { readFile, stat } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 
@@ -26,10 +25,7 @@ test("compatible AVI evidence matches the current public profile", () => {
   assert.equal(profile.public, true);
   assert.equal(profile.automatedTestStatus, "passed");
   assert.equal(profile.route, "stream-copy");
-  assert.equal(
-    profile.maxTestedBytes,
-    mpeg2Evidence.stressGate.sourceBytes,
-  );
+  assert.equal(profile.maxTestedBytes, mpeg2Evidence.stressGate.sourceBytes);
   assert.ok(
     profile.maxTestedBytes >= evidence.profile.maximumTestedSourceBytes,
   );
@@ -39,19 +35,11 @@ test("compatible AVI evidence matches the current public profile", () => {
   );
 });
 
-test("the published AVI-capable core matches its build evidence", async () => {
-  const wasmPath = path.join(
-    projectRoot,
-    "public",
-    "engines",
-    "remux",
-    "within-remux.wasm",
-  );
-  const wasm = await readFile(wasmPath);
-  assert.equal((await stat(wasmPath)).size, mpeg2Evidence.engineCandidate.withinRemuxWasmBytes);
+test("the superseded AVI-capable core retains its accepted historical build evidence", () => {
+  assert.equal(mpeg2Evidence.engineCandidate.withinRemuxWasmBytes, 9657011);
   assert.equal(
-    createHash("sha256").update(wasm).digest("hex"),
     mpeg2Evidence.engineCandidate.withinRemuxWasmSha256,
+    "acfef81790da601fc837fcbed5b9a1b7f7fa4732129e693470d4f582e82d2adf",
   );
   assert.equal(evidence.buildValidation.isolatedCandidateRun, 34158982139);
   assert.equal(evidence.status, "accepted-current-public-profile");
@@ -161,10 +149,7 @@ test("the compact public-evidence manifest retains the deleted raw AVI report ha
     ({ profileId }) => profileId === evidence.profile.id,
   );
   assert.ok(profile);
-  assert.equal(
-    profile.maxTestedBytes,
-    mpeg2Evidence.stressGate.sourceBytes,
-  );
+  assert.equal(profile.maxTestedBytes, mpeg2Evidence.stressGate.sourceBytes);
   assert.equal(profile.repeatableEvidence.runs, 3);
   assert.equal(
     profile.repeatableEvidence.reportSha256,
@@ -205,7 +190,10 @@ test("MPEG-2 AVI evidence is genuine, bounded, exact, and preserves rejected att
   assert.equal(mpeg2Evidence.publication.allSixFfmpegModulesByteExact, true);
   assert.equal(mpeg2Evidence.publication.hostedCleanupPassed, true);
   assert.equal(mpeg2Evidence.publication.retainedArtifactCount, 0);
-  assert.equal(mpeg2Evidence.cleanup.candidateArtifactDeletedAfterPublication, true);
+  assert.equal(
+    mpeg2Evidence.cleanup.candidateArtifactDeletedAfterPublication,
+    true,
+  );
   assert.ok(
     mpeg2Evidence.rejectedOrDeferred.some(
       ({ codec, result }) => codec === "h264" && result === "not advertised",

@@ -1,0 +1,157 @@
+{
+  "date": "2026-09-09",
+  "status": "passed",
+  "scope": "Production-browser AV1/VP8/VP9 IVF extraction with focused correctness and failure tests plus repeatable 128 MiB-class VP9 stress profiles.",
+  "dockerUsed": false,
+  "conversionClass": "compressed-video packet copy, not decode/re-encode and not extension renaming",
+  "selectedOptimization": {
+    "design": "Use the guarded shared FFmpeg remux core, copy the first compatible compressed video stream, exclude every unrepresentable stream and metadata class, write IVF packets directly with backpressure, and fix the IVF time base from the validated average frame rate.",
+    "reason": "Packet copy avoids video decode and encode entirely while retaining exact VP8/VP9 compressed packets and exact decoded frames. It is the fastest standards-correct conversion topology available under the fixed memory, fidelity, privacy, and cleanup constraints.",
+    "measuredThroughputMiBPerSecond": {
+      "minimum": 175.910503890719,
+      "maximum": 188.861211686012
+    },
+    "measuredConversionSeconds": {
+      "minimum": 0.860589999973774,
+      "maximum": 0.923944999992847
+    }
+  },
+  "browser": {
+    "name": "Google Chrome",
+    "version": "152.0.7977.77",
+    "headless": true
+  },
+  "releaseGates": {
+    "focusedFormerFailures": "21/21 passed in 41.1 seconds",
+    "standaloneWmaAndAv1Regression": "18/18 passed in 30.5 seconds",
+    "completeMediaBrowserRegression": "530/530 passed in 11.0 minutes",
+    "privacyOfflineBrowserRegression": "15/15 passed in 57.3 seconds",
+    "unit": "185/185 passed",
+    "productionBuild": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "publicEvidenceManifest": "396/396 public profiles covered",
+    "engineReproducibilityManifest": "11/11 published engine directories covered"
+  },
+  "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "memoryLimitMiB": 250,
+  "boundedRuntime": {
+    "maximumReadBytes": 262144,
+    "maximumWriteAndQueuedBytes": 157034,
+    "maximumPendingOperations": 1,
+    "fixedObservedWasmBytes": 33554432,
+    "configuredMaximumWasmBytes": 100663296
+  },
+  "routes": [
+    {
+      "profileId": "mkv-to-ivf",
+      "rawReport": "2026-09-08T21-41-54-318Z-mkv-to-ivf-stress.json",
+      "rawReportSha256": "57134c4a0b25eb01f92d6b5ef76422db58176b4336bf0ab9a5cf1bcb5a21795f",
+      "sourceBytes": 170427228,
+      "sourceSha256": "0d8a7d7fcd4b78ee9376c8630396653fa2b71a699a155a51f033d7b751c88416",
+      "peakIncrementalPrivateMiB": 218.0390625,
+      "runs": [
+        {
+          "elapsedMs": 900.789999961853,
+          "throughputMiBPerSecond": 180.432809163951,
+          "incrementalPrivateMiB": 218.0390625,
+          "cleanupDeltaMiB": -24.1171875
+        },
+        {
+          "elapsedMs": 906.625,
+          "throughputMiBPerSecond": 179.271551258693,
+          "incrementalPrivateMiB": 178.0390625,
+          "cleanupDeltaMiB": -31.015625
+        },
+        {
+          "elapsedMs": 860.589999973774,
+          "throughputMiBPerSecond": 188.861211686012,
+          "incrementalPrivateMiB": 184.80859375,
+          "cleanupDeltaMiB": 0.3984375
+        }
+      ]
+    },
+    {
+      "profileId": "webm-to-ivf",
+      "rawReport": "2026-09-08T21-44-55-098Z-webm-to-ivf-stress.json",
+      "rawReportSha256": "fb928a69a8e47d1a7779e848236c4f72bf4957b79fa943690718ec12554a719a",
+      "sourceBytes": 170426767,
+      "sourceSha256": "b685d588ee9995c2ca2d55a36cd7862b6967e3cebf4018aa1eae9acda3bf45b5",
+      "peakIncrementalPrivateMiB": 218.53515625,
+      "runs": [
+        {
+          "elapsedMs": 890.724999964237,
+          "throughputMiBPerSecond": 182.471167332878,
+          "incrementalPrivateMiB": 218.53515625,
+          "cleanupDeltaMiB": -5.83203125
+        },
+        {
+          "elapsedMs": 923.944999992847,
+          "throughputMiBPerSecond": 175.910503890719,
+          "incrementalPrivateMiB": 184.390625,
+          "cleanupDeltaMiB": -10.77734375
+        },
+        {
+          "elapsedMs": 884.655000030994,
+          "throughputMiBPerSecond": 183.723180799699,
+          "incrementalPrivateMiB": 190.50390625,
+          "cleanupDeltaMiB": -3.3828125
+        }
+      ]
+    }
+  ],
+  "repeatableOutput": {
+    "bytes": 169519329,
+    "sha256": "90725e96b406393658be05ec396b5f67b50be905c6d692b9e95b4ec082260158",
+    "identicalAcrossAllSixRuns": true
+  },
+  "independentValidation": {
+    "signature": "DKIF",
+    "fourCc": "VP90",
+    "dimensions": "1920x1080",
+    "rate": 24,
+    "scale": 1,
+    "frames": 1440,
+    "videoPacketBytes": 169502017,
+    "videoPacketCount": 1440,
+    "maximumPacketBytes": 157022,
+    "videoPacketSha256": "eb391b7f38d9364ce885024676a56656203c883de8fb4464dfcdc8bc7467cec2",
+    "compressedPacketsExact": true,
+    "decodedVideoSha256": "7390cf471b7f4271323f19009de8c79f0bea1614b64c7ac69f02d28ad4591fd0",
+    "decodedFramesExact": true,
+    "fullDecodePassed": true,
+    "midpointSeekSeconds": 30.004,
+    "midpointSeekPassed": true,
+    "audioAndChaptersAbsent": true
+  },
+  "cancellation": {
+    "passedForBothRoutes": true,
+    "inputBytesBeforeCancellation": 135266304,
+    "partialOutputRemoved": true,
+    "pendingOperationsAfterCancellation": 0,
+    "queuedBytesAfterCancellation": 0,
+    "browserOwnedEntriesBefore": [],
+    "browserOwnedEntriesAfter": []
+  },
+  "focusedBrowserEvidence": "evidence/ivf-browser-smoke-2026-09-09.json",
+  "nativeFeasibilityEvidence": "evidence/ivf-native-feasibility-2026-09-08.json",
+  "cleanup": {
+    "largeGeneratedSourcesRetained": 0,
+    "convertedOutputsRetained": 0,
+    "browserProfilesRetained": 0,
+    "workDirectoryEntries": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "build": {
+    "candidateWorkflowRun": 34278355004,
+    "candidateArtifactId": 10076855766,
+    "candidateWasmBytes": 9866320,
+    "candidateWasmSha256": "95cebf5d66fce75af81e9f89f2756bbc2d49ecd50fe6f883ab73922ac26b11c4",
+    "candidateGlueBytes": 45700,
+    "candidateGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "candidateManifestBytes": 11153,
+    "candidateManifestSha256": "baac0ebf7e580df236db03308a4a73974a52a44204223910174bd8e50cf6581a",
+    "publicationReproduction": "pending"
+  }
+}

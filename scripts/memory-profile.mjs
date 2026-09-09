@@ -168,6 +168,7 @@ const COMPATIBLE_AVI_PROFILES = [
   "3gp-to-avi",
   "mpeg-ts-to-avi",
 ];
+const IVF_PROFILES = ["mkv-to-ivf", "webm-to-ivf"];
 const isVideoOptionsProfile =
   /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
     profileId,
@@ -517,6 +518,7 @@ if (
     "avi-to-m4v",
     "mkv-to-ogv",
     ...COMPATIBLE_AVI_PROFILES,
+    ...IVF_PROFILES,
     "mkv-to-webm-av1",
     "mkv-to-mp3",
     "mp4-to-mp3",
@@ -681,6 +683,7 @@ const isMediaProfile =
   profileId === "avi-to-m4v" ||
   profileId === "mkv-to-ogv" ||
   COMPATIBLE_AVI_PROFILES.includes(profileId) ||
+  IVF_PROFILES.includes(profileId) ||
   profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
@@ -830,7 +833,9 @@ const maximumWasmMemoryBytes =
                 ? 48 * 1024 * 1024
                 : isSevenZipProfile
                   ? 64 * 1024 * 1024
-                  : 128 * 1024 * 1024;
+                  : IVF_PROFILES.includes(profileId)
+                    ? 96 * 1024 * 1024
+                    : 128 * 1024 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
 }`;
@@ -957,7 +962,8 @@ try {
 
   if (
     profileId === "mkv-to-ogv" ||
-    COMPATIBLE_AVI_PROFILES.includes(profileId)
+    COMPATIBLE_AVI_PROFILES.includes(profileId) ||
+    IVF_PROFILES.includes(profileId)
   ) {
     const namesBefore = await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory();
@@ -982,7 +988,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${IVF_PROFILES.includes(profileId) ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1023,7 +1029,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${IVF_PROFILES.includes(profileId) ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1499,7 +1505,8 @@ try {
     ),
     cancellationCleanup:
       (profileId !== "mkv-to-ogv" &&
-        !COMPATIBLE_AVI_PROFILES.includes(profileId)) ||
+        !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
+        !IVF_PROFILES.includes(profileId)) ||
       cancellationCheck?.passed === true,
   };
   const report = {
@@ -1766,6 +1773,7 @@ async function validateMediaOutput(
   const m4vMp4Output = route === "m4v-to-mp4";
   const compatibleOgvCopy = route === "mkv-to-ogv";
   const compatibleAviCopy = COMPATIBLE_AVI_PROFILES.includes(route);
+  const ivfOutput = IVF_PROFILES.includes(route);
   const compatibleWebmCopy = route === "mkv-to-webm-av1";
   const matroskaCopy = [
     "mp4-to-mkv",
@@ -1807,7 +1815,7 @@ async function validateMediaOutput(
     "mpeg-ts-to-flv",
   ].includes(route);
   const elementaryVideoOutput =
-    h264Output || hevcOutput || mpeg2Output || m4vOutput;
+    h264Output || hevcOutput || mpeg2Output || m4vOutput || ivfOutput;
   const mpeg2TransportOutput = route === "m2v-to-mpeg-ts";
   const videoOnlyCopy =
     route === "h264-to-mp4" ||
@@ -1854,11 +1862,13 @@ async function validateMediaOutput(
         ? probedSourceDurationSeconds
         : Number(source.durationSeconds);
   const minimumComparableSize =
-    webmReencode && Number.isFinite(sourceDurationSeconds)
-      ? Math.floor((sourceDurationSeconds * 300_000) / 8)
-      : audioOnly || videoReencode
-        ? 1
-        : Math.floor(source.bytes * 0.85);
+    ivfOutput && Number.isFinite(Number(source.videoPacketBytes))
+      ? Math.floor(Number(source.videoPacketBytes))
+      : webmReencode && Number.isFinite(sourceDurationSeconds)
+        ? Math.floor((sourceDurationSeconds * 300_000) / 8)
+        : audioOnly || videoReencode
+          ? 1
+          : Math.floor(source.bytes * 0.85);
   const sourceAudioForSize = source.probe.streams.find(
     (stream) => stream.codec_type === "audio",
   );
@@ -1924,40 +1934,49 @@ async function validateMediaOutput(
           : 128_000);
   const vorbisOutputBitRate = 220_000;
   const maximumComparableSize =
-    webmReencode && Number.isFinite(sourceDurationSeconds)
-      ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
-      : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
-        ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.04) / 8) +
-          1024 * 1024
-        : aacTranscodeOutput && Number.isFinite(sourceDurationSeconds)
-          ? Math.ceil(
-              (sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) / 8,
-            ) +
+    ivfOutput &&
+    Number.isFinite(Number(source.videoPacketBytes)) &&
+    Number.isFinite(Number(source.decodedVideoFrames))
+      ? Math.ceil(
+          Number(source.videoPacketBytes) +
+            Number(source.decodedVideoFrames) * 16 +
+            1024 * 1024,
+        )
+      : webmReencode && Number.isFinite(sourceDurationSeconds)
+        ? Math.ceil((sourceDurationSeconds * 1_200_000) / 8) + 1024 * 1024
+        : mp3TranscodeOutput && Number.isFinite(sourceDurationSeconds)
+          ? Math.ceil((sourceDurationSeconds * mp3OutputBitRate * 1.04) / 8) +
             1024 * 1024
-          : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+          : aacTranscodeOutput && Number.isFinite(sourceDurationSeconds)
             ? Math.ceil(
-                (sourceDurationSeconds * opusOutputBitRate * 1.25) / 8,
+                (sourceDurationSeconds * compressedAudioOutputBitRate * 1.04) /
+                  8,
               ) +
               1024 * 1024
-            : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
-              ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
+            : opusTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+              ? Math.ceil(
+                  (sourceDurationSeconds * opusOutputBitRate * 1.25) / 8,
+                ) +
                 1024 * 1024
-              : wmaOutput && Number.isFinite(sourceDurationSeconds)
-                ? Math.ceil((sourceDurationSeconds * 640_000 * 1.04) / 8) +
+              : vorbisTranscodeOutput && Number.isFinite(sourceDurationSeconds)
+                ? Math.ceil((sourceDurationSeconds * vorbisOutputBitRate) / 8) +
                   1024 * 1024
-                : mpeg2TransportOutput || containerMpegTsCopy
-                  ? Math.ceil(source.bytes * 1.1)
-                  : compatibleAviCopy
-                    ? Math.ceil(source.bytes * 1.15)
-                    : pcmOutput
-                      ? Number.MAX_SAFE_INTEGER
-                      : flacOutput || alacOutput
-                        ? source.bytes * 10
-                        : audioOnly
-                          ? source.bytes
-                          : videoReencode
-                            ? source.bytes * 3
-                            : Math.ceil(source.bytes * 1.05);
+                : wmaOutput && Number.isFinite(sourceDurationSeconds)
+                  ? Math.ceil((sourceDurationSeconds * 640_000 * 1.04) / 8) +
+                    1024 * 1024
+                  : mpeg2TransportOutput || containerMpegTsCopy
+                    ? Math.ceil(source.bytes * 1.1)
+                    : compatibleAviCopy
+                      ? Math.ceil(source.bytes * 1.15)
+                      : pcmOutput
+                        ? Number.MAX_SAFE_INTEGER
+                        : flacOutput || alacOutput
+                          ? source.bytes * 10
+                          : audioOnly
+                            ? source.bytes
+                            : videoReencode
+                              ? source.bytes * 3
+                              : Math.ceil(source.bytes * 1.05);
   if (
     finalState.metrics.outputBytes < minimumComparableSize ||
     finalState.metrics.outputBytes > maximumComparableSize
@@ -2288,11 +2307,11 @@ async function validateMediaOutput(
       sha256,
     };
   }
-  if (compatibleOgvCopy || compatibleAviCopy) {
+  if (compatibleOgvCopy || compatibleAviCopy || ivfOutput) {
     const packetHashes = {};
     const packetStreams = [
       ["video", "0:v:0", source.videoPacketSha256],
-      ...(source.audioPacketSha256
+      ...(!ivfOutput && source.audioPacketSha256
         ? [["audio", "0:a:0", source.audioPacketSha256]]
         : []),
     ];
@@ -2320,20 +2339,24 @@ async function validateMediaOutput(
       const sha256 = packetHash.trim().split("=")[1]?.toLowerCase();
       if (!sha256 || sha256 !== expected) {
         throw new Error(
-          `Browser compatible ${compatibleAviCopy ? "AVI" : "OGV"} ${kind} packets do not exactly match the source payload.`,
+          `Browser compatible ${ivfOutput ? "IVF" : compatibleAviCopy ? "AVI" : "OGV"} ${kind} packets do not exactly match the source payload.`,
         );
       }
       packetHashes[kind] = sha256;
     }
     independentAudioValidation = {
-      method: compatibleAviCopy
-        ? source.audioPacketSha256
-          ? `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-mp3-packet-sha256`
-          : `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-packet-sha256`
-        : "theora-vorbis-packet-sha256",
+      method: ivfOutput
+        ? `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-packet-sha256`
+        : compatibleAviCopy
+          ? source.audioPacketSha256
+            ? `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-mp3-packet-sha256`
+            : `${source.probe?.streams?.find((stream) => stream.codec_type === "video")?.codec_name ?? "video"}-packet-sha256`
+          : "theora-vorbis-packet-sha256",
       passed: true,
       videoSha256: packetHashes.video,
-      ...(source.audioPacketSha256 ? { audioSha256: packetHashes.audio } : {}),
+      ...(!ivfOutput && source.audioPacketSha256
+        ? { audioSha256: packetHashes.audio }
+        : {}),
     };
   }
   if (compatibleWebmCopy) {
@@ -2435,6 +2458,14 @@ async function validateMediaOutput(
     throw new Error(
       "Browser compatible AVI output did not probe as genuine AVI.",
     );
+  }
+  if (
+    ivfOutput &&
+    !String(probe.format?.format_name ?? "")
+      .split(",")
+      .includes("ivf")
+  ) {
+    throw new Error("Browser IVF output did not probe as genuine IVF.");
   }
   if (
     matroskaCopy &&
@@ -2656,13 +2687,15 @@ async function validateMediaOutput(
     (videoOnlyCopy &&
       (codecs.length !== 1 ||
         codecs[0] !==
-          (mpeg2Output || mpeg2TransportOutput
-            ? "mpeg2video"
-            : m4vOutput || m4vMp4Output
-              ? "mpeg4"
-              : hevcOutput
-                ? "hevc"
-                : "h264"))) ||
+          (ivfOutput
+            ? sourceVideo?.codec_name
+            : mpeg2Output || mpeg2TransportOutput
+              ? "mpeg2video"
+              : m4vOutput || m4vMp4Output
+                ? "mpeg4"
+                : hevcOutput
+                  ? "hevc"
+                  : "h264"))) ||
     (compatibleAviCopy &&
       (codecs.length !== (sourceAudio ? 2 : 1) ||
         codecs[0] !== sourceVideo?.codec_name ||
@@ -2871,13 +2904,14 @@ async function validateMediaOutput(
     );
   }
   if (
-    (compatibleOgvCopy || compatibleAviCopy) &&
+    (compatibleOgvCopy || compatibleAviCopy || ivfOutput) &&
     (Number(video?.nb_read_packets) !== Number(source.videoPacketCount) ||
-      (source.audioPacketSha256 &&
+      (!ivfOutput &&
+        source.audioPacketSha256 &&
         Number(audio?.nb_read_packets) !== Number(source.audioPacketCount)))
   ) {
     throw new Error(
-      `Browser compatible ${compatibleAviCopy ? "AVI" : "OGV"} packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "unavailable"} audio.`,
+      `Browser compatible ${ivfOutput ? "IVF" : compatibleAviCopy ? "AVI" : "OGV"} packet counts changed: ${video?.nb_read_packets ?? "unavailable"} video/${audio?.nb_read_packets ?? "not applicable"} audio.`,
     );
   }
   if (
@@ -2893,7 +2927,10 @@ async function validateMediaOutput(
     );
   }
   if (
-    (compatibleOgvCopy || compatibleAviCopy || compatibleWebmCopy) &&
+    (compatibleOgvCopy ||
+      compatibleAviCopy ||
+      ivfOutput ||
+      compatibleWebmCopy) &&
     (probe.chapters?.length ?? 0) !== 0
   ) {
     throw new Error(
@@ -3081,6 +3118,112 @@ async function validateMediaOutput(
     );
     probe.withinAviStructure.midpointSeekSeconds = midpoint;
     probe.withinAviStructure.midpointSeekPassed = true;
+  }
+  if (ivfOutput) {
+    const sourceRate = String(
+      sourceVideo?.avg_frame_rate || sourceVideo?.r_frame_rate || "0/0",
+    )
+      .split("/")
+      .map(Number);
+    const header = Buffer.alloc(32);
+    const file = await open(localPath, "r");
+    try {
+      const { bytesRead } = await file.read(header, 0, header.length, 0);
+      if (bytesRead !== header.length) {
+        throw new Error(
+          `Browser IVF header is truncated at ${bytesRead} bytes.`,
+        );
+      }
+    } finally {
+      await file.close();
+    }
+    const expectedFourCc = new Map([
+      ["av1", "AV01"],
+      ["vp8", "VP80"],
+      ["vp9", "VP90"],
+    ]).get(sourceVideo?.codec_name);
+    const structure = {
+      signature: header.toString("ascii", 0, 4),
+      version: header.readUInt16LE(4),
+      headerBytes: header.readUInt16LE(6),
+      fourCc: header.toString("ascii", 8, 12),
+      width: header.readUInt16LE(12),
+      height: header.readUInt16LE(14),
+      rate: header.readUInt32LE(16),
+      scale: header.readUInt32LE(20),
+      frameCount: header.readUInt32LE(24),
+    };
+    if (
+      structure.signature !== "DKIF" ||
+      structure.version !== 0 ||
+      structure.headerBytes !== 32 ||
+      !expectedFourCc ||
+      structure.fourCc !== expectedFourCc ||
+      structure.width !== sourceVideo?.width ||
+      structure.height !== sourceVideo?.height ||
+      structure.rate !== sourceRate[0] ||
+      structure.scale !== sourceRate[1] ||
+      structure.frameCount !== Number(source.decodedVideoFrames)
+    ) {
+      throw new Error(
+        `Browser IVF header is invalid: ${JSON.stringify(structure)}.`,
+      );
+    }
+    const midpoint = Math.max(0, sourceDurationSeconds / 2);
+    await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-ss",
+        midpoint.toFixed(3),
+        "-i",
+        localPath,
+        "-map",
+        "0:v:0",
+        "-frames:v",
+        "1",
+        "-f",
+        "null",
+        "NUL",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+    );
+    const { stdout: decodedHash } = await execFileAsync(
+      "ffmpeg",
+      [
+        "-v",
+        "error",
+        "-xerror",
+        "-i",
+        localPath,
+        "-map",
+        "0:v:0",
+        "-f",
+        "hash",
+        "-hash",
+        "sha256",
+        "-",
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+    );
+    const decodedVideoSha256 = decodedHash
+      .trim()
+      .match(/^SHA256=([0-9a-f]{64})$/i)?.[1]
+      ?.toLowerCase();
+    if (decodedVideoSha256 !== source.decodedVideoSha256) {
+      throw new Error(
+        "Browser IVF decoded video does not exactly match the source frames.",
+      );
+    }
+    probe.withinIvfStructure = {
+      ...structure,
+      midpointSeekSeconds: midpoint,
+      midpointSeekPassed: true,
+      decodedVideoSha256,
+      decodedVideoHashPassed: true,
+    };
   }
   if (matroskaCopy) {
     const hashes = [];
@@ -3299,7 +3442,7 @@ async function validateMediaOutput(
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
     mediaTraversal:
-      compatibleOgvCopy || compatibleAviCopy
+      compatibleOgvCopy || compatibleAviCopy || ivfOutput
         ? "full-native-decode-and-packet-hash"
         : compatibleWebmCopy || matroskaCopy
           ? "full-native-decode-and-streamhash"

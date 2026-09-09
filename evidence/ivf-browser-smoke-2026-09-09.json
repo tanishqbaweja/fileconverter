@@ -1,0 +1,83 @@
+{
+  "date": "2026-09-09",
+  "status": "passed-stress-certification-pending",
+  "scope": "Focused genuine production-browser IVF conversion, rejection, direct-destination failure, validation, and cleanup checks.",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Google Chrome",
+    "version": "152.0.7977.77",
+    "headless": true
+  },
+  "command": "$env:WITHIN_TEST_VIDEO='off'; npx playwright test tests/browser/media-remux.spec.ts --grep 'IVF'",
+  "result": {
+    "passed": 6,
+    "failed": 0,
+    "durationSeconds": 19.1
+  },
+  "successfulRoutes": [
+    {
+      "profileId": "mkv-to-ivf",
+      "sourceCodec": "av1",
+      "signature": "DKIF",
+      "fourCc": "AV01",
+      "dimensions": "640x360",
+      "frameCount": 96,
+      "durationSeconds": 4,
+      "validation": [
+        "exactly one video stream and no audio or chapters",
+        "full native decode",
+        "decoded-frame SHA-256 equality",
+        "independent midpoint seek",
+        "explicit excluded-audio disclosure"
+      ]
+    },
+    {
+      "profileId": "webm-to-ivf",
+      "sourceCodec": "vp8",
+      "signature": "DKIF",
+      "fourCc": "VP80",
+      "dimensions": "320x180",
+      "frameCount": 48,
+      "durationSeconds": 2,
+      "validation": [
+        "compressed video packet SHA-256 equality",
+        "decoded-frame SHA-256 equality",
+        "full native decode",
+        "independent midpoint seek",
+        "explicit excluded-audio disclosure"
+      ]
+    },
+    {
+      "profileId": "webm-to-ivf",
+      "sourceCodec": "vp9",
+      "signature": "DKIF",
+      "fourCc": "VP90",
+      "dimensions": "320x180",
+      "frameCount": 48,
+      "durationSeconds": 2,
+      "validation": [
+        "compressed video packet SHA-256 equality",
+        "decoded-frame SHA-256 equality",
+        "full native decode",
+        "independent midpoint seek",
+        "explicit excluded-audio disclosure"
+      ]
+    }
+  ],
+  "negativeAndRecoveryChecks": [
+    "MKV with incompatible H.264 first video is blocked before conversion",
+    "MKV-to-IVF direct-destination bounded write failure removes partial output",
+    "WebM-to-IVF direct-destination bounded write failure removes partial output"
+  ],
+  "cleanup": {
+    "convertedOutputsRetained": 0,
+    "browserProfileRetained": false,
+    "workDirectoryEntries": [".gitkeep"]
+  },
+  "protectedSource": {
+    "path": "test.mkv",
+    "bytesBeforeAndAfter": 2958573265,
+    "sha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nextGate": "Three repeatable 128 MiB production-browser runs per IVF route with complete Chromium process-tree memory, bounded I/O, output repeatability, cancellation, cleanup, and independent packet/frame validation."
+}

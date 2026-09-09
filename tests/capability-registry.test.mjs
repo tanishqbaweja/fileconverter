@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 265);
+  assert.equal(publicMedia.length, 267);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -274,6 +274,35 @@ test("compatible WebM stream copy is public after its measured evidence passes",
     ),
     true,
   );
+});
+
+test("IVF extraction exposes only bounded AV1, VP8, and VP9 video copy routes", () => {
+  const ivf = formats.find((candidate) => candidate.id === "ivf");
+  assert.ok(ivf);
+  assert.deepEqual(ivf.extensions, ["ivf"]);
+  assert.deepEqual(ivf.mimeTypes, ["video/x-ivf"]);
+
+  for (const input of ["mkv", "webm"]) {
+    const profile = conversionProfiles.find(
+      (candidate) => candidate.id === `${input}-to-ivf`,
+    );
+    assert.ok(profile, `missing ${input}-to-ivf`);
+    assert.equal(profile.output, "ivf");
+    assert.equal(profile.route, "stream-copy");
+    assert.equal(profile.engine, "ffmpeg-remux");
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.ok(profile.maxTestedBytes > 0);
+    assert.match(
+      profile.metadataLimitations.join(" "),
+      /first non-attached video stream must be AV1, VP8, or VP9/i,
+    );
+    assert.match(
+      profile.metadataLimitations.join(" "),
+      /Audio, subtitles, attachments, data, additional video streams, chapters/i,
+    );
+    assert.match(profile.fidelityLimitations.join(" "), /byte-for-byte/i);
+    assert.match(profile.fidelityLimitations.join(" "), /temporal-delimiter/i);
+  }
 });
 
 test("compatible OGV stream copy is public after its measured evidence passes", () => {
@@ -624,6 +653,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "flv-copy",
         "ogv-copy",
         "avi-copy",
+        "ivf-extract",
         "m4v-extract",
         "m4v-wrap",
         "compatible-webm-copy",

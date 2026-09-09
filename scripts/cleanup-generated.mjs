@@ -22,6 +22,14 @@ const aviSourceExpansionReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const ivfStressReports = [
+  "2026-09-08T21-41-54-318Z-mkv-to-ivf-stress",
+  "2026-09-08T21-44-55-098Z-webm-to-ivf-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const disposableOutputRoot = path.resolve(projectRoot, "output");
 const remuxEngineRoot = path.resolve(projectRoot, "public", "engines", "remux");
 const playwrightOutputRoot = path.resolve(disposableOutputRoot, "playwright");
@@ -306,6 +314,7 @@ const generatedStressNames = new Set([
   "av1-vorbis-128m.mkv.json",
   "av1-vorbis-128m.webm.json",
   "compatible-vp9-opus-128m.mkv.json",
+  "compatible-vp9-opus-128m.webm.json",
   "theora-vorbis-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mkv.json",
   "mpeg4-mp3-avi-copy-128m.mp4.json",
@@ -369,6 +378,9 @@ assertInside(outputsRoot, browserImageSmokeRoot);
 assertInside(outputsRoot, browserMediaSmokeRoot);
 assertInside(outputsRoot, reportRoot);
 for (const reportPath of aviSourceExpansionReports) {
+  assertInside(reportRoot, reportPath);
+}
+for (const reportPath of ivfStressReports) {
   assertInside(reportRoot, reportPath);
 }
 assertInside(projectRoot, remuxEngineRoot);
@@ -458,6 +470,9 @@ for (const logPath of detachedProfileLogs) {
 }
 for (const logPath of headedBrowserLogs) await rm(logPath, { force: true });
 for (const reportPath of aviSourceExpansionReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of ivfStressReports) {
   await rm(reportPath, { force: true });
 }
 

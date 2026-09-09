@@ -173,6 +173,7 @@
     "profile:m4v-elementary": "node scripts/profile-category.mjs m4v-elementary",
     "profile:av1-webm": "node scripts/profile-category.mjs av1-webm",
     "profile:compatible-webm": "node scripts/profile-category.mjs compatible-webm",
+    "profile:ivf": "node scripts/profile-category.mjs ivf",
     "profile:compatible-ogv": "node scripts/profile-category.mjs compatible-ogv",
     "profile:compatible-avi": "node scripts/profile-category.mjs compatible-avi",
     "profile:container-mp3": "node scripts/profile-category.mjs container-mp3",
