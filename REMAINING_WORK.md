@@ -173,10 +173,14 @@ not the entire product specification.
   and was rejected. Four-worker VP9 reached 264.082 MiB. Single-thread VP9 took
   561.44 seconds and left only 0.246 MiB headroom in one run, so VP9 remains
   failed and non-public rather than being promoted on fragile evidence.
-- No Docker command was used. Generated stress media, converted outputs, and
-  browser profiles stayed inside the repository and were deleted after compact
-  evidence was recorded. Hosted post-push byte-exact reproduction is recorded
-  in `evidence/raw-hevc-webm-feasibility-2026-09-09.json`.
+- No Docker command was used. Generated stress media, converted outputs, raw
+  reports, the browser profile, and the local candidate stayed inside the
+  repository and were deleted after compact evidence was recorded. Hosted run
+  [34390070004](https://github.com/tanishqbaweja/fileconverter/actions/runs/34390070004)
+  rebuilt all six FFmpeg modules byte-for-byte from pushed commit `082b050` in
+  13m15s, skipped mismatch upload, passed cleanup, and retained no artifact. The
+  obsolete mismatch artifact was deleted and verified absent. See
+  `evidence/raw-hevc-webm-feasibility-2026-09-09.json`.
 
 ### 2026-09-09 — bounded MKV/WebM AV1, VP8, and VP9 extraction to IVF
 

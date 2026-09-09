@@ -126,6 +126,25 @@ test("published engine files match the hosted no-Docker candidate", async () => 
   assert.ok(vp8Module.profiles.includes("hevc-to-webm"));
 });
 
+test("the pushed HEVC engine is exactly reproduced and temporary data is deleted", () => {
+  assert.equal(evidence.publication.status, "success");
+  assert.equal(
+    evidence.publication.sourceCommit,
+    "082b05061d02379cd8ed04a3f249df70f5ffda2b",
+  );
+  assert.equal(evidence.publication.workflowRunId, 34390070004);
+  assert.equal(evidence.publication.allSixFfmpegModulesByteExact, true);
+  assert.equal(evidence.publication.hostedCleanupPassed, true);
+  assert.equal(evidence.publication.mismatchUploadSkipped, true);
+  assert.equal(evidence.publication.retainedArtifactCount, 0);
+  assert.equal(evidence.publication.dockerUsed, false);
+  assert.equal(evidence.cleanup.rawReportsDeletedAfterCompaction, true);
+  assert.equal(evidence.cleanup.candidateDownloadDeleted, true);
+  assert.deepEqual(evidence.cleanup.workDirectoryContents, [".gitkeep"]);
+  assert.equal(evidence.cleanup.candidateArtifactDeletedAfterPublication, true);
+  assert.equal(evidence.cleanup.candidateArtifactDeletionVerifiedHttpStatus, 404);
+});
+
 test("HEVC acceptance is linked from every project ledger", async () => {
   for (const relativePath of ["README.md", "TESTED.md", "REMAINING_WORK.md"]) {
     const ledger = await readFile(path.join(projectRoot, relativePath), "utf8");

@@ -700,7 +700,10 @@ retained converted media. The faster eight-worker candidate completed in
 155.79–156.92 seconds but reached 253.871–274.039 MiB and was rejected. VP9 is
 not public: its four-worker run reached 264.082 MiB, while the single-thread
 trial took 561.44 seconds and left only 0.246 MiB of unverified headroom. See
-`evidence/raw-hevc-webm-feasibility-2026-09-09.json`.
+`evidence/raw-hevc-webm-feasibility-2026-09-09.json`. Hosted no-Docker run
+[34390070004](https://github.com/tanishqbaweja/fileconverter/actions/runs/34390070004)
+rebuilt all six FFmpeg modules byte-for-byte from pushed commit `082b050` in
+13m15s, passed cleanup, skipped mismatch upload, and retained no artifact.
 
 Raw AAC/ADTS input uses FFmpeg's bounded AAC demuxer. The M4A route copies AAC
 frames without re-encoding, removes the ADTS transport headers with

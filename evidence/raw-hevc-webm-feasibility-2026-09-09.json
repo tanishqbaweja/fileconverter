@@ -113,6 +113,7 @@
     "workflowRunId": 34345165654,
     "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34345165654",
     "artifactId": 10101850077,
+    "artifactDigest": "sha256:fbea809681c43a261b5f938e4eb2cf0c0e23d1e11e87f433d34ceaa802e174a6",
     "buildMethod": "Pinned hosted Emscripten SDK path without Docker",
     "expectedMismatch": "The candidate enabled the raw HEVC demuxer before publication.",
     "wasmSha256": {
@@ -125,7 +126,17 @@
     }
   },
   "publication": {
-    "status": "pending-post-push-byte-exact-hosted-reproduction",
+    "status": "success",
+    "sourceCommit": "082b05061d02379cd8ed04a3f249df70f5ffda2b",
+    "workflowRunId": 34390070004,
+    "workflowUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34390070004",
+    "createdAt": "2026-09-09T18:36:44Z",
+    "completedAt": "2026-09-09T18:50:03Z",
+    "elapsedSeconds": 795,
+    "allSixFfmpegModulesByteExact": true,
+    "hostedCleanupPassed": true,
+    "mismatchUploadSkipped": true,
+    "retainedArtifactCount": 0,
     "dockerUsed": false
   },
   "cleanup": {
@@ -134,7 +145,11 @@
     "convertedOutputsDeleted": true,
     "browserProfileDeleted": true,
     "compactEvidenceRetained": true,
-    "candidateDownloadDeletionPendingPublication": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "candidateDownloadDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "candidateArtifactDeletedAfterPublication": true,
+    "candidateArtifactDeletionVerifiedHttpStatus": 404,
     "protectedRootFixtureExpectedBytes": 2958573265,
     "protectedRootFixtureExpectedSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   }
