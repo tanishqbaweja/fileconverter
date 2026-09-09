@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-08. This is the living requirement audit for the original
+Updated 2026-09-09. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -156,6 +156,24 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-09 — raw HEVC to WebM feasibility and rebuild checkpoint
+
+- A repo-local four-second Annex B HEVC sample extracted from the protected
+  source genuinely decoded and re-encoded to 640×268 VP8 and VP9 WebM in 0.167
+  and 0.174 seconds respectively. FFprobe found 98 frames in each output and a
+  full independent FFmpeg decode passed; compact hashes and commands are
+  retained in `evidence/raw-hevc-webm-feasibility-2026-09-09.json`.
+- This is not an extension rename and does not claim lossless raw-HEVC wrapping.
+  The existing intentionally unsupported B-frame wrapper remains unsupported;
+  the proposed routes use the already-disclosed lossy WebM re-encode policy.
+- FFmpeg's raw HEVC demuxer is being added to the existing fixed-memory
+  VP8/VP9 specialists without changing their four codec threads, eight-worker
+  pools, 96 MiB Wasm ceiling, 256 KiB I/O, or one-write backpressure. The routes
+  remain absent from the public registry pending no-Docker binary reproduction
+  and the complete browser acceptance gates.
+- All feasibility media stayed under `work/hevc-webm-feasibility` and was
+  deleted after the compact evidence was recorded. `test.mkv` remained exact.
 
 ### 2026-09-09 — bounded MKV/WebM AV1, VP8, and VP9 extraction to IVF
 

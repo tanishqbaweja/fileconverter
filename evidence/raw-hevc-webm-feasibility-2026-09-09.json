@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-09",
+  "status": "native-feasibility-passed-browser-certification-pending",
+  "scope": "Raw Annex B HEVC input decoded and re-encoded to VP8 and VP9 WebM without Docker.",
+  "protectedSource": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "video": {
+      "codec": "hevc",
+      "width": 1920,
+      "height": 804,
+      "frameRate": "24/1"
+    }
+  },
+  "temporarySource": {
+    "path": "work/hevc-webm-feasibility/source.hevc",
+    "bytes": 203704,
+    "sha256": "0ccb97b653c34a637cd9f5b92951808ab70525949dfd5356a361ba4f306a92c8",
+    "retained": false
+  },
+  "results": [
+    {
+      "target": "VP8 WebM",
+      "elapsedSeconds": 0.167,
+      "bytes": 69004,
+      "sha256": "019749570f124bd98bf31bfaf9549f76a47788e761a1dffffc02a8bd5617b024",
+      "codec": "vp8",
+      "width": 640,
+      "height": 268,
+      "frameRate": "24/1",
+      "decodedFrames": 98,
+      "durationSeconds": 4.084,
+      "fullDecodePassed": true,
+      "retained": false
+    },
+    {
+      "target": "VP9 WebM",
+      "elapsedSeconds": 0.174,
+      "bytes": 70229,
+      "sha256": "e6db6273086479fd455ceb9df4eff7af4b03d0c0d66cc1c221b39be6fc5edd51",
+      "codec": "vp9",
+      "width": 640,
+      "height": 268,
+      "frameRate": "24/1",
+      "decodedFrames": 98,
+      "durationSeconds": 4.084,
+      "fullDecodePassed": true,
+      "retained": false
+    }
+  ],
+  "commands": [
+    "ffmpeg -ss 0 -t 4 -i test.mkv -map 0:v:0 -an -c:v copy -bsf:v hevc_mp4toannexb -f hevc work/hevc-webm-feasibility/source.hevc",
+    "ffmpeg -framerate 24 -i source.hevc -an -vf scale='min(640,iw)':-2 -c:v libvpx -deadline realtime -cpu-used 8 -lag-in-frames 0 -auto-alt-ref 0 -b:v 600k -threads 4 -slices 4 -f webm vp8.webm",
+    "ffmpeg -framerate 24 -i source.hevc -an -vf scale='min(640,iw)':-2 -c:v libvpx-vp9 -deadline realtime -cpu-used 8 -lag-in-frames 0 -auto-alt-ref 0 -row-mt 1 -tile-columns 1 -b:v 600k -threads 4 -f webm vp9.webm",
+    "ffprobe -v error -count_frames -show_entries stream=codec_name,width,height,avg_frame_rate,nb_read_frames -show_entries format=format_name,duration,size -of json OUTPUT",
+    "ffmpeg -hide_banner -loglevel error -i OUTPUT -f null NUL"
+  ],
+  "interpretation": [
+    "Both outputs are genuine lossy codec conversions; FFprobe identified VP8 and VP9 and FFmpeg decoded every output frame.",
+    "Raw HEVC cannot be losslessly wrapped when B-frame presentation timestamps are absent, but genuine re-encoding can synthesize timing under the already-disclosed elementary-stream policy.",
+    "The browser routes remain non-public until rebuilt Wasm, three-run complete-Chromium memory, repeatability, validation, cancellation, write-failure, privacy, and cleanup gates pass."
+  ],
+  "cleanup": {
+    "temporaryRoot": "work/hevc-webm-feasibility",
+    "policy": "Deleted after compact evidence was recorded; no converted media is retained."
+  }
+}
