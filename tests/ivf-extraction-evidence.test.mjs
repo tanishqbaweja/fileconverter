@@ -193,4 +193,8 @@ test("IVF input stress routes stay wired into the shared profiler", async () => 
     profilerSource,
     /cancellationCleanup:[\s\S]*!isIvfProfile/,
   );
+  assert.match(
+    profilerSource,
+    /!videoOnlyCopy &&[\s\S]*audio\?\.channels !==/,
+  );
 });

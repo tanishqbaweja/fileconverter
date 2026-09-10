@@ -2896,17 +2896,17 @@ async function validateMediaOutput(
     (!audioOnly &&
       (video?.width !== expectedVideoWidth ||
         video?.height !== expectedVideoHeight)) ||
-    ((audioOnly ||
-      webmAudioCopy ||
-      compatibleOgvCopy ||
-      compatibleAviCopy ||
-      compatibleWebmCopy ||
-      ivfInputCopy ||
-      matroskaCopy ||
-      containerMpegTsCopy ||
-      containerThreeGpCopy ||
-      containerMovCopy ||
-      containerFlvCopy) &&
+    (!videoOnlyCopy &&
+      (audioOnly ||
+        webmAudioCopy ||
+        compatibleOgvCopy ||
+        compatibleAviCopy ||
+        compatibleWebmCopy ||
+        matroskaCopy ||
+        containerMpegTsCopy ||
+        containerThreeGpCopy ||
+        containerMovCopy ||
+        containerFlvCopy) &&
       audio?.channels !==
         (amrOutput
           ? 1

@@ -228,7 +228,9 @@ not the entire product specification.
   full-decode, and midpoint-seek browser cases then passed in 16.9 seconds.
   The large-file profiler now recognizes both IVF input routes, enforces their
   96 MiB Wasm ceiling, and exercises their cancellation cleanup instead of
-  aborting at route dispatch.
+  aborting at route dispatch. Its independent media validator also skips audio
+  channel assertions for declared video-only copies, including both IVF input
+  containers.
 - The corrected source still requires the remaining three-run input stress and
   process-tree memory evidence, independent large-output validation,
   publication consistency, exact reproduction, and cleanup before
