@@ -40,8 +40,8 @@ require_command() {
 }
 
 strip_general_core_only_profiles() {
-  local source_path="${BUILD_ROOT}/within_remux.c"
-  local filtered_path="${BUILD_ROOT}/within_remux.specialist.c"
+  local source_path="${1:-${BUILD_ROOT}/within_remux.c}"
+  local filtered_path="${source_path}.specialist"
   awk '
     /^[[:space:]]*#ifdef[[:space:]]+WITHIN_OGV_COPY[[:space:]]*$/ {
       if (skipping) exit 2
@@ -122,8 +122,6 @@ cleanup() {
   fi
   exit "${status}"
 }
-trap cleanup EXIT INT TERM
-
 download_and_extract() {
   local url="$1"
   local archive="$2"
@@ -156,6 +154,36 @@ run_build_step() {
   fi
 }
 
+verify_specialist_source_rewrites() {
+  local verification_root
+  local status=0
+  mkdir -p "${WORK_ROOT}"
+  verification_root="$(mktemp -d "${WORK_ROOT}/ffmpeg-source-rewrite-check.XXXXXX")"
+  assert_work_path "${verification_root}"
+  cp "${SCRIPT_DIR}/within_remux.c" "${verification_root}/"
+  if strip_general_core_only_profiles "${verification_root}/within_remux.c" &&
+      patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
+      patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
+      patch --reverse --directory="${verification_root}" --strip=1 \
+        < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch"; then
+    printf 'Specialist source-rewrite preflight passed.\n'
+  else
+    status=$?
+  fi
+  rm -rf -- "${verification_root}"
+  return "${status}"
+}
+
+if [[ "${WITHIN_VERIFY_SOURCE_REWRITES_ONLY:-0}" == "1" ]]; then
+  for command_name in awk mktemp patch; do
+    require_command "${command_name}"
+  done
+  verify_specialist_source_rewrites
+  exit 0
+fi
+
 [[ "$(uname -s)" == "Linux" ]] ||
   fail "The non-Docker FFmpeg reproduction path currently requires Linux."
 if [[ -n "${EMSDK_NODE:-}" ]]; then
@@ -175,7 +203,9 @@ assert_work_path "${OUTPUT_ROOT}"
 [[ ! -e /src && ! -L /src ]] || fail "Refusing to replace existing /src"
 [[ ! -e /out && ! -L /out ]] || fail "Refusing to replace existing /out"
 
+verify_specialist_source_rewrites
 mkdir -p "${WORK_ROOT}" "${BUILD_ROOT}" "${OUTPUT_ROOT}"
+trap cleanup EXIT INT TERM
 # Emscripten's Autoconf probes are extensionless CommonJS programs. Keep the
 # repository's top-level `type: module` package scope from changing their Node
 # interpretation; the original isolated /src build has the same boundary.

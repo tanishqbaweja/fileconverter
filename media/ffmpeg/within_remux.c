@@ -732,6 +732,12 @@ static int prefetch_ivf_av1_extradata(
     result = AVERROR_INVALIDDATA;
     goto cleanup;
   }
+  /*
+   * The packet above was a bounded inspection clone. Reset the stateful BSF so
+   * the retained source packet is processed exactly once when normal muxing
+   * begins, just as it would be without the header prefetch.
+   */
+  av_bsf_flush(filter);
   result = append_prefetched_packet(
       prefetched_packets, prefetched_packet_count,
       prefetched_packet_capacity, source_packet);
@@ -3524,6 +3530,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       output_stream->codecpar->width = artwork_width;
       output_stream->codecpar->height = artwork_height;
     }
+#ifdef WITHIN_OGV_COPY
     const char *filter_name = NULL;
     const char *filter_label = NULL;
     if (input_format->iformat && input_format->iformat->name &&
@@ -3532,7 +3539,6 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
       filter_name = "aac_adtstoasc";
       filter_label = "AAC compatibility";
-#ifdef WITHIN_OGV_COPY
     } else if (ivf_input && (av1_webm_output || matroska_output) &&
                input_stream->codecpar->codec_id == AV_CODEC_ID_AV1) {
       /*
@@ -3544,7 +3550,6 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        */
       filter_name = "extract_extradata";
       filter_label = "AV1 extradata extraction";
-#endif
     }
     if (filter_name) {
       const AVBitStreamFilter *filter = av_bsf_get_by_name(filter_name);
@@ -3592,6 +3597,43 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         goto cleanup;
       }
     }
+#else
+    if (input_format->iformat && input_format->iformat->name &&
+        (strstr(input_format->iformat->name, "mpegts") ||
+         strcmp(input_format->iformat->name, "aac") == 0) &&
+        input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
+      const AVBitStreamFilter *filter =
+          av_bsf_get_by_name("aac_adtstoasc");
+      if (!filter) {
+        within_message(2, "The AAC-to-ISO-BMFF compatibility filter is unavailable.");
+        result = AVERROR_BSF_NOT_FOUND;
+        goto cleanup;
+      }
+      result = av_bsf_alloc(filter, &stream_bsfs[index]);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter allocation failed", result);
+        goto cleanup;
+      }
+      result = avcodec_parameters_copy(stream_bsfs[index]->par_in,
+                                       input_stream->codecpar);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter setup failed", result);
+        goto cleanup;
+      }
+      stream_bsfs[index]->time_base_in = input_stream->time_base;
+      result = av_bsf_init(stream_bsfs[index]);
+      if (result < 0) {
+        report_av_error("AAC compatibility filter initialization failed", result);
+        goto cleanup;
+      }
+      result = avcodec_parameters_copy(output_stream->codecpar,
+                                       stream_bsfs[index]->par_out);
+      if (result < 0) {
+        report_av_error("Filtered AAC metadata copy failed", result);
+        goto cleanup;
+      }
+    }
+#endif
     if (matroska_output &&
         input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
       result = ensure_matroska_aac_extradata(output_stream->codecpar);
@@ -3621,8 +3663,33 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #ifdef WITHIN_OGV_COPY
     }
 #endif
-    output_stream->avg_frame_rate = input_stream->avg_frame_rate;
-    output_stream->r_frame_rate = input_stream->r_frame_rate;
+#ifdef WITHIN_OGV_COPY
+    if (ivf_input) {
+      /*
+       * The IVF demuxer exposes its fixed rate through av_guess_frame_rate(),
+       * while avg_frame_rate can remain unset without a deeper stream-info
+       * probe. Matroska/WebM needs the declared rate at header time to emit
+       * DefaultDuration; omitting it makes live output needlessly hard to
+       * inspect and seek even though packet timestamps are valid.
+       */
+      AVRational frame_rate =
+          av_guess_frame_rate(input_format, input_stream, NULL);
+      if (frame_rate.num <= 0 || frame_rate.den <= 0) {
+        within_message(
+            2,
+            "IVF stream copy requires a valid declared frame rate for Matroska/WebM timing metadata.");
+        result = AVERROR_INVALIDDATA;
+        goto cleanup;
+      }
+      output_stream->avg_frame_rate = frame_rate;
+      output_stream->r_frame_rate = frame_rate;
+    } else {
+#endif
+      output_stream->avg_frame_rate = input_stream->avg_frame_rate;
+      output_stream->r_frame_rate = input_stream->r_frame_rate;
+#ifdef WITHIN_OGV_COPY
+    }
+#endif
     output_stream->sample_aspect_ratio = input_stream->sample_aspect_ratio;
 #ifdef WITHIN_OGV_COPY
     if (!ivf_output) {
@@ -3817,13 +3884,21 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   }
 
 #ifdef WITHIN_OGV_COPY
-  if (ivf_input && (av1_webm_output || matroska_output) &&
-      video_stream_index >= 0 && stream_bsfs[video_stream_index] &&
-      input_format->streams[video_stream_index]->codecpar->codec_id ==
-          AV_CODEC_ID_AV1) {
+  int ivf_av1_stream_index = -1;
+  if (ivf_input && (av1_webm_output || matroska_output)) {
+    for (unsigned int index = 0; index < input_format->nb_streams; index++) {
+      if (stream_map[index] >= 0 && stream_bsfs[index] &&
+          input_format->streams[index]->codecpar->codec_id ==
+              AV_CODEC_ID_AV1) {
+        ivf_av1_stream_index = (int)index;
+        break;
+      }
+    }
+  }
+  if (ivf_av1_stream_index >= 0) {
     result = prefetch_ivf_av1_extradata(
-        input_format, stream_bsfs[video_stream_index],
-        output_format->streams[stream_map[video_stream_index]]->codecpar,
+        input_format, stream_bsfs[ivf_av1_stream_index],
+        output_format->streams[stream_map[ivf_av1_stream_index]]->codecpar,
         &prefetched_packets, &prefetched_packet_count,
         &prefetched_packet_capacity);
     if (result < 0) {
@@ -4010,17 +4085,23 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     int64_t media_time = packet_time_us(packet, input_stream);
     if (stream_bsfs[input_index]) {
       AVBSFContext *filter = stream_bsfs[input_index];
+#ifdef WITHIN_OGV_COPY
       const char *filter_label =
           input_stream->codecpar->codec_id == AV_CODEC_ID_AV1
               ? "AV1 extradata extraction"
               : "AAC compatibility";
+#endif
       result = av_bsf_send_packet(filter, packet);
       if (result < 0) {
         av_packet_unref(packet);
+#ifdef WITHIN_OGV_COPY
         char message[128] = {0};
         snprintf(message, sizeof(message), "%s filtering failed",
                  filter_label);
         report_av_error(message, result);
+#else
+        report_av_error("AAC compatibility filtering failed", result);
+#endif
         goto cleanup;
       }
       while ((result = av_bsf_receive_packet(filter, packet)) >= 0) {
@@ -4040,10 +4121,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         output_packet_count += 1;
       }
       if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
+#ifdef WITHIN_OGV_COPY
         char message[128] = {0};
         snprintf(message, sizeof(message), "%s filter read failed",
                  filter_label);
         report_av_error(message, result);
+#else
+        report_av_error("AAC compatibility filter read failed", result);
+#endif
         goto cleanup;
       }
       within_progress((double)input.position, (double)output.size,
@@ -4080,16 +4165,22 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   for (unsigned int index = 0; index < input_format->nb_streams; index++) {
     AVBSFContext *filter = stream_bsfs[index];
     if (!filter || stream_map[index] < 0) continue;
+#ifdef WITHIN_OGV_COPY
     const char *filter_label =
         input_format->streams[index]->codecpar->codec_id == AV_CODEC_ID_AV1
             ? "AV1 extradata extraction"
             : "AAC compatibility";
+#endif
     result = av_bsf_send_packet(filter, NULL);
     if (result < 0 && result != AVERROR_EOF) {
+#ifdef WITHIN_OGV_COPY
       char message[128] = {0};
       snprintf(message, sizeof(message), "%s filter flush failed",
                filter_label);
       report_av_error(message, result);
+#else
+      report_av_error("AAC compatibility filter flush failed", result);
+#endif
       goto cleanup;
     }
     AVStream *output_stream = output_format->streams[stream_map[index]];
@@ -4110,10 +4201,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       output_packet_count += 1;
     }
     if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
+#ifdef WITHIN_OGV_COPY
       char message[128] = {0};
       snprintf(message, sizeof(message), "%s filter drain failed",
                filter_label);
       report_av_error(message, result);
+#else
+      report_av_error("AAC compatibility filter drain failed", result);
+#endif
       goto cleanup;
     }
   }

@@ -191,7 +191,23 @@ not the entire product specification.
   reverse patch conflicted with unguarded new general-core code. The new IVF
   prefetch/filter/corruption blocks are general-core guarded, and the rebuild
   now captures the current wrapper hash before its historical source rewrites.
-- The twice-corrected source still requires a no-Docker hosted rebuild, focused
+- Follow-up no-Docker run `34472199117` rebuilt the general core but then found
+  a second historical reverse-patch conflict. Its retained general core proved
+  that corrupt IVF is rejected. AV1-to-WebM completed and matched the source's
+  full decoded-frame hash, but midpoint validation failed; AV1-to-Matroska
+  still rejected its first packet. Independent inspection then isolated two
+  distinct wrapper omissions rather than a codec or live-mode limitation:
+  generic Matroska profile 23 had no `video_stream_index`, so it skipped the
+  bounded AV1 pre-header extradata read, and the no-probe IVF path left
+  `avg_frame_rate` unset, so WebM omitted its `DefaultDuration` track element.
+  Remuxing the browser WebM without re-encoding made both full decode and seek
+  pass, and the corresponding native live WebM and Matroska controls passed.
+  The source now locates the mapped AV1 stream independently for both profiles,
+  derives IVF's declared frame rate with `av_guess_frame_rate()` before header
+  write, and resets the inspection BSF before the retained first packet enters
+  normal muxing. A repository-local rewrite preflight now applies all three
+  historical reverse patches before any expensive build; it passes locally.
+- The corrected source still requires a no-Docker hosted rebuild, focused
   AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
   cancellation, independent validation, publication consistency, exact
   reproduction, and cleanup before `ivf-to-webm` or `ivf-to-mkv` can become
