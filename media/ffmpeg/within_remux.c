@@ -800,6 +800,7 @@ static int prefetch_ivf_timing(
         prefetched_packet_capacity, packet);
     if (result < 0) break;
     if (selected_packet_count >= 2 && first_pts != AV_NOPTS_VALUE &&
+        first_pts >= 0 &&
         last_pts > first_pts &&
         av_compare_ts(last_pts - first_pts, input_stream->time_base, 1,
                       (AVRational){1, 1}) >= 0) {
@@ -810,6 +811,7 @@ static int prefetch_ivf_timing(
   if (result < 0) return result;
 
   if (selected_packet_count >= 2 && first_pts != AV_NOPTS_VALUE &&
+      first_pts >= 0 &&
       last_pts > first_pts && input_stream->time_base.num > 0 &&
       input_stream->time_base.den > 0) {
     const int64_t interval_count = selected_packet_count - 1;
