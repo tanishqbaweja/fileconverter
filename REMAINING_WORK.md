@@ -230,7 +230,9 @@ not the entire product specification.
   96 MiB Wasm ceiling, and exercises their cancellation cleanup instead of
   aborting at route dispatch. Its independent media validator also skips audio
   channel assertions for declared video-only copies, including both IVF input
-  containers.
+  containers, and accepts a duration that `ffprobe` infers after its full packet
+  traversal even though the live WebM/Matroska header itself omits a growing
+  duration/index structure.
 - The corrected source still requires the remaining three-run input stress and
   process-tree memory evidence, independent large-output validation,
   publication consistency, exact reproduction, and cleanup before

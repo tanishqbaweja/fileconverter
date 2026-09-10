@@ -197,4 +197,9 @@ test("IVF input stress routes stay wired into the shared profiler", async () => 
     profilerSource,
     /!videoOnlyCopy &&[\s\S]*audio\?\.channels !==/,
   );
+  assert.ok(
+    profilerSource.includes(
+      "(compatibleWebmCopy || liveMatroskaCopy) &&",
+    ),
+  );
 });

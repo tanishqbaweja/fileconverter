@@ -2976,7 +2976,7 @@ async function validateMediaOutput(
       containerThreeGpCopy ||
       containerMovCopy) &&
       normalizedOutputLanguage !== normalizedSourceLanguage) ||
-    ((compatibleWebmCopy || liveMatroskaCopy || ivfInputCopy) &&
+    ((compatibleWebmCopy || liveMatroskaCopy) &&
       Number.isFinite(probedOutputDuration)) ||
     ((!matroskaCopy || route === "avi-to-mkv") &&
       Math.abs(duration - expectedDuration) >
