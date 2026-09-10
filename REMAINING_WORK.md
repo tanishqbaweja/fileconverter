@@ -170,10 +170,11 @@ not the entire product specification.
   requires either codec extradata or `AV_PKT_DATA_NEW_EXTRADATA` on the first
   packet. Hosted no-Docker run `34418209028` rebuilt the corrected general core
   at commit `160ffdc`; its browser rerun proved corrupt-packet rejection, but
-  both AV1 routes still failed at the first muxed packet. The reason is now
-  isolated: bounded `live=1` Matroska/WebM output does not retain the seekable
-  track-header buffer that FFmpeg needs to install first-packet extradata.
-  The next source revision therefore runs the already-enabled
+  both AV1 routes still failed at the first muxed packet. A native
+  `extract_extradata` plus `live=1` control succeeded, so live mode itself is
+  not the cause; the candidate wrapper's packet-filter handoff did not provide
+  usable AV1 configuration at mux time. The next source revision therefore
+  runs the already-enabled
   `extract_extradata` filter on one cloned first packet before header write,
   copies only its bounded sequence-header side data into the output codec
   parameters, and then processes the original prefetched packet normally. It
