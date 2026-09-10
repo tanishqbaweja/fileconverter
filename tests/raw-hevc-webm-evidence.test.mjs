@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -21,9 +22,14 @@ const buildManifest = JSON.parse(
   ),
 );
 
-async function sha256(relativePath) {
+function historicalSha256(commit, relativePath) {
+  const bytes = execFileSync("git", ["show", `${commit}:${relativePath}`], {
+    cwd: projectRoot,
+    windowsHide: true,
+    maxBuffer: 16 * 1024 * 1024,
+  });
   return createHash("sha256")
-    .update(await readFile(path.join(projectRoot, relativePath)))
+    .update(bytes)
     .digest("hex");
 }
 
@@ -106,13 +112,16 @@ test("VP9 trials retain the exact reason the route is withheld", () => {
   assert.ok(singleThread.elapsedSeconds[0] > 560);
 });
 
-test("published engine files match the hosted no-Docker candidate", async () => {
+test("the accepted HEVC publication commit matches its hosted no-Docker candidate", () => {
   assert.equal(evidence.engineCandidate.buildMethod.includes("without Docker"), true);
   for (const [moduleName, expectedHash] of Object.entries(
     evidence.engineCandidate.wasmSha256,
   )) {
     assert.equal(
-      await sha256(`public/engines/remux/${moduleName}.wasm`),
+      historicalSha256(
+        evidence.publication.sourceCommit,
+        `public/engines/remux/${moduleName}.wasm`,
+      ),
       expectedHash,
       moduleName,
     );
