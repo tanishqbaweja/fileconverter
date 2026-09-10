@@ -220,14 +220,21 @@ not the entire product specification.
   later decoder/parser inferred keyframes for full sequential decode, while
   midpoint seek correctly failed. The bounded stream-info parser replaces that
   incomplete timing-only candidate. The historical specialist configuration
-  remains parser-free so certified specialist binaries stay reproducible. A repository-local
-  rewrite preflight now applies all three
+  remains parser-free so certified specialist binaries stay reproducible. A
+  repository-local rewrite preflight now applies all three
   historical reverse patches before any expensive build; it passes locally.
-- The corrected source still requires a no-Docker hosted rebuild, focused
-  AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
-  cancellation, independent validation, publication consistency, exact
-  reproduction, and cleanup before `ivf-to-webm` or `ivf-to-mkv` can become
-  public.
+  No-Docker run `34485464982` compiled that replacement core and cleaned its
+  hosted build tree; all eight focused AV1/VP8/VP9, corruption, direct-write,
+  full-decode, and midpoint-seek browser cases then passed in 16.9 seconds.
+  The large-file profiler now recognizes both IVF input routes, enforces their
+  96 MiB Wasm ceiling, and exercises their cancellation cleanup instead of
+  aborting at route dispatch.
+- The corrected source still requires the remaining three-run input stress and
+  process-tree memory evidence, independent large-output validation,
+  publication consistency, exact reproduction, and cleanup before
+  `ivf-to-webm` or `ivf-to-mkv` can become public. The already-certified
+  extraction routes re-passed at 139.6 MiB and 136.1 MiB before the profiler
+  exposed and cleaned up the missing input-route dispatch mapping.
 
 ### 2026-09-09 — bounded raw HEVC to VP8 WebM acceptance
 

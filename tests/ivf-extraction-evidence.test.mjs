@@ -171,3 +171,26 @@ test("IVF browser tests retain success, rejection, and write-failure anchors", a
     assert.ok(browserTest.includes(anchor), anchor);
   }
 });
+
+test("IVF input stress routes stay wired into the shared profiler", async () => {
+  const [categorySource, profilerSource] = await Promise.all([
+    readFile(
+      path.join(projectRoot, "scripts", "profile-category.mjs"),
+      "utf8",
+    ),
+    readFile(path.join(projectRoot, "scripts", "memory-profile.mjs"), "utf8"),
+  ]);
+  for (const route of ["ivf-to-webm", "ivf-to-mkv"]) {
+    assert.ok(categorySource.includes(`["${route}",`), route);
+    assert.ok(profilerSource.includes(`"${route}"`), route);
+  }
+  assert.ok(profilerSource.includes("...IVF_INPUT_PROFILES"));
+  assert.match(
+    profilerSource,
+    /const isIvfProfile =[\s\S]*IVF_INPUT_PROFILES\.includes\(profileId\)/,
+  );
+  assert.match(
+    profilerSource,
+    /cancellationCleanup:[\s\S]*!isIvfProfile/,
+  );
+});

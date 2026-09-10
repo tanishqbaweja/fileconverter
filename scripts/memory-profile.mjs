@@ -170,6 +170,8 @@ const COMPATIBLE_AVI_PROFILES = [
 ];
 const IVF_PROFILES = ["mkv-to-ivf", "webm-to-ivf"];
 const IVF_INPUT_PROFILES = ["ivf-to-webm", "ivf-to-mkv"];
+const isIvfProfile =
+  IVF_PROFILES.includes(profileId) || IVF_INPUT_PROFILES.includes(profileId);
 const isVideoOptionsProfile =
   /^(?:mkv|mp4|mov|3gp|mpeg-ts|flv|avi|ogv|m2v|h264)-to-webm(?:-vp9)?$/.test(
     profileId,
@@ -520,6 +522,7 @@ if (
     "mkv-to-ogv",
     ...COMPATIBLE_AVI_PROFILES,
     ...IVF_PROFILES,
+    ...IVF_INPUT_PROFILES,
     "mkv-to-webm-av1",
     "mkv-to-mp3",
     "mp4-to-mp3",
@@ -686,7 +689,7 @@ const isMediaProfile =
   profileId === "avi-to-m4v" ||
   profileId === "mkv-to-ogv" ||
   COMPATIBLE_AVI_PROFILES.includes(profileId) ||
-  IVF_PROFILES.includes(profileId) ||
+  isIvfProfile ||
   profileId === "mkv-to-webm-av1" ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
@@ -838,7 +841,7 @@ const maximumWasmMemoryBytes =
                 ? 48 * 1024 * 1024
                 : isSevenZipProfile
                   ? 64 * 1024 * 1024
-                  : IVF_PROFILES.includes(profileId)
+                  : isIvfProfile
                     ? 96 * 1024 * 1024
                     : 128 * 1024 * 1024;
 const testUrl = `${serverUrl}/?test=1${
@@ -968,7 +971,7 @@ try {
   if (
     profileId === "mkv-to-ogv" ||
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
-    IVF_PROFILES.includes(profileId)
+    isIvfProfile
   ) {
     const namesBefore = await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory();
@@ -993,7 +996,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${IVF_PROFILES.includes(profileId) ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1034,7 +1037,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${IVF_PROFILES.includes(profileId) ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1511,7 +1514,7 @@ try {
     cancellationCleanup:
       (profileId !== "mkv-to-ogv" &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
-        !IVF_PROFILES.includes(profileId)) ||
+        !isIvfProfile) ||
       cancellationCheck?.passed === true,
   };
   const report = {
