@@ -749,88 +749,6 @@ cleanup:
   return result;
 }
 
-static int prefetch_ivf_timing(
-    AVFormatContext *input_format, int input_stream_index,
-    AVStream *output_stream, AVPacket ***prefetched_packets,
-    int *prefetched_packet_count, int *prefetched_packet_capacity) {
-  const int maximum_timing_packets = 128;
-  const int64_t maximum_timing_bytes = 2 * 1024 * 1024;
-  AVPacket *packet = av_packet_alloc();
-  AVStream *input_stream = input_format->streams[input_stream_index];
-  int selected_packet_count = 0;
-  int64_t first_pts = AV_NOPTS_VALUE;
-  int64_t last_pts = AV_NOPTS_VALUE;
-  int64_t prefetched_bytes = 0;
-  int result = 0;
-  if (!packet) return AVERROR(ENOMEM);
-
-  for (int index = 0; index < *prefetched_packet_count; index++) {
-    AVPacket *stored = (*prefetched_packets)[index];
-    prefetched_bytes += stored->size;
-    if (stored->stream_index != input_stream_index) continue;
-    if (stored->pts != AV_NOPTS_VALUE) {
-      if (first_pts == AV_NOPTS_VALUE) first_pts = stored->pts;
-      last_pts = stored->pts;
-    }
-    selected_packet_count += 1;
-  }
-
-  while (selected_packet_count < maximum_timing_packets &&
-         prefetched_bytes < maximum_timing_bytes) {
-    result = av_read_frame(input_format, packet);
-    if (result == AVERROR_EOF) {
-      result = 0;
-      break;
-    }
-    if (result < 0) break;
-    prefetched_bytes += packet->size;
-    if (packet->stream_index == input_stream_index) {
-      if (packet->flags & AV_PKT_FLAG_CORRUPT) {
-        result = AVERROR_INVALIDDATA;
-        break;
-      }
-      if (packet->pts != AV_NOPTS_VALUE) {
-        if (first_pts == AV_NOPTS_VALUE) first_pts = packet->pts;
-        last_pts = packet->pts;
-      }
-      selected_packet_count += 1;
-    }
-    result = append_prefetched_packet(
-        prefetched_packets, prefetched_packet_count,
-        prefetched_packet_capacity, packet);
-    if (result < 0) break;
-    if (selected_packet_count >= 2 && first_pts != AV_NOPTS_VALUE &&
-        first_pts >= 0 &&
-        last_pts > first_pts &&
-        av_compare_ts(last_pts - first_pts, input_stream->time_base, 1,
-                      (AVRational){1, 1}) >= 0) {
-      break;
-    }
-  }
-  av_packet_free(&packet);
-  if (result < 0) return result;
-
-  if (selected_packet_count >= 2 && first_pts != AV_NOPTS_VALUE &&
-      first_pts >= 0 &&
-      last_pts > first_pts && input_stream->time_base.num > 0 &&
-      input_stream->time_base.den > 0) {
-    const int64_t interval_count = selected_packet_count - 1;
-    const int64_t timestamp_span = last_pts - first_pts;
-    if (interval_count > INT64_MAX / input_stream->time_base.den ||
-        timestamp_span > INT64_MAX / input_stream->time_base.num) {
-      return AVERROR(ERANGE);
-    }
-    AVRational frame_rate = {0, 1};
-    av_reduce(&frame_rate.num, &frame_rate.den,
-              interval_count * input_stream->time_base.den,
-              timestamp_span * input_stream->time_base.num, INT_MAX);
-    if (frame_rate.num > 0 && frame_rate.den > 0) {
-      output_stream->avg_frame_rate = frame_rate;
-      output_stream->r_frame_rate = frame_rate;
-    }
-  }
-  return 0;
-}
 #endif
 
 static uint32_t read_little_endian_uint32(const uint8_t *data) {
@@ -2838,23 +2756,28 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #else
       0;
 #endif
-  if (profile != 17 &&
-      ((!audio_extraction_output && !matroska_output &&
-        !container_mpegts_output && !container_threegp_output &&
-        !container_mov_output && !container_flv_output
+  const int inspect_stream_info =
 #ifdef WITHIN_OGV_COPY
-        && !container_ogv_output
-        && !container_avi_output
-        && !ivf_output
+      ivf_input ||
 #endif
-        ) ||
+      (profile != 17 &&
+       ((!audio_extraction_output && !matroska_output &&
+         !container_mpegts_output && !container_threegp_output &&
+         !container_mov_output && !container_flv_output
+#ifdef WITHIN_OGV_COPY
+         && !container_ogv_output
+         && !container_avi_output
+         && !ivf_output
+#endif
+         ) ||
        elementary_audio_input_requires_probe ||
        matroska_input_requires_probe ||
        container_mpegts_input_requires_probe ||
        container_threegp_input_requires_probe ||
        container_mov_input_requires_probe ||
        container_flv_input_requires_probe ||
-       container_avi_input_requires_probe)) {
+       container_avi_input_requires_probe));
+  if (inspect_stream_info) {
     result = avformat_find_stream_info(input_format, NULL);
     if (result < 0) {
       report_av_error("Input stream inspection failed", result);
@@ -3955,7 +3878,9 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   }
   if (ivf_video_stream_index >= 0 && stream_bsfs[ivf_video_stream_index] &&
       input_format->streams[ivf_video_stream_index]->codecpar->codec_id ==
-          AV_CODEC_ID_AV1) {
+          AV_CODEC_ID_AV1 &&
+      output_format->streams[stream_map[ivf_video_stream_index]]
+              ->codecpar->extradata_size == 0) {
     result = prefetch_ivf_av1_extradata(
         input_format, stream_bsfs[ivf_video_stream_index],
         output_format->streams[stream_map[ivf_video_stream_index]]->codecpar,
@@ -3963,17 +3888,6 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         &prefetched_packet_capacity);
     if (result < 0) {
       report_av_error("IVF AV1 sequence-header inspection failed", result);
-      goto cleanup;
-    }
-  }
-  if (ivf_video_stream_index >= 0) {
-    result = prefetch_ivf_timing(
-        input_format, ivf_video_stream_index,
-        output_format->streams[stream_map[ivf_video_stream_index]],
-        &prefetched_packets, &prefetched_packet_count,
-        &prefetched_packet_capacity);
-    if (result < 0) {
-      report_av_error("IVF bounded timing inspection failed", result);
       goto cleanup;
     }
   }

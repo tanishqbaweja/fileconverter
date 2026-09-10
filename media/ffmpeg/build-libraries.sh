@@ -11,6 +11,11 @@ else
   ENABLED_MUXERS=tgp,aiff,amr,asf,flac,flv,h264,hevc,ipod,m4v,matroska,mp3,mp4,mov,mpeg2video,mpegts,adts,ogg,wav,webm
 fi
 
+ENABLED_PARSERS=aac,flac,h264,hevc,mpeg4video,mpegaudio,mpegvideo,opus,vorbis
+if [[ "${WITHIN_ENABLE_AV1_PARSER:-1}" == "1" ]]; then
+  ENABLED_PARSERS="${ENABLED_PARSERS},av1"
+fi
+
 print_configure_failure() {
   local status=$?
   if [[ -f "${FFMPEG_DIR}/ffbuild/config.log" ]]; then
@@ -64,7 +69,7 @@ emconfigure ./configure \
   --enable-muxer="${ENABLED_MUXERS}" \
   --enable-decoder=aac,alac,amrnb,amrwb,flac,h264,hevc,mp3,mpeg2video,mpeg4,opus,pcm_s16be,pcm_s16le,theora,vorbis,wmav1,wmav2 \
   --enable-encoder=aac,alac,flac,libmp3lame,libopencore_amrnb,libopus,libvorbis,pcm_s16be,pcm_s16le,mpeg4,libvpx_vp8,libvpx_vp9,wmav2 \
-  --enable-parser=aac,flac,h264,hevc,mpeg4video,mpegaudio,mpegvideo,opus,vorbis \
+  --enable-parser="${ENABLED_PARSERS}" \
   --enable-bsf=aac_adtstoasc,extract_extradata,h264_mp4toannexb,hevc_mp4toannexb \
   --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread -I${PREFIX}/include" \
   --extra-ldflags="-O3 -pthread -L${PREFIX}/lib"

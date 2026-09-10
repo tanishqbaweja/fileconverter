@@ -283,7 +283,7 @@ if [[ "${requested_core}" != "within-remux" ]]; then
     cd "${BUILD_ROOT}/ffmpeg"
     emmake make distclean
   )
-  WITHIN_ENABLE_AVI_MUXER=0 ./build-libraries.sh
+  WITHIN_ENABLE_AV1_PARSER=0 WITHIN_ENABLE_AVI_MUXER=0 ./build-libraries.sh
 fi
 if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those

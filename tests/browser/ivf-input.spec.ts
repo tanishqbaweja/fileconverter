@@ -8,7 +8,7 @@ import {
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
 import { createReadStream, existsSync } from "node:fs";
-import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -135,6 +135,20 @@ async function sha256(inputPath: string): Promise<string> {
   return hash.digest("hex");
 }
 
+async function prefixContains(
+  inputPath: string,
+  pattern: readonly number[],
+): Promise<boolean> {
+  const handle = await open(inputPath, "r");
+  try {
+    const prefix = Buffer.alloc(4 * 1024);
+    const { bytesRead } = await handle.read(prefix, 0, prefix.length, 0);
+    return prefix.subarray(0, bytesRead).indexOf(Buffer.from(pattern)) >= 0;
+  } finally {
+    await handle.close();
+  }
+}
+
 async function runRoute(
   profileId: IvfProfile,
   codec: IvfCodec,
@@ -199,6 +213,10 @@ async function runRoute(
     expect(probe.streams[0]?.nb_read_frames).toBe(
       probe.streams[0]?.nb_read_packets,
     );
+    // Matroska DefaultDuration (0x23E383) must be present in the bounded track
+    // header. Without it, a live file can decode sequentially yet force FFmpeg
+    // to consume an entire first cluster merely to infer packet timing.
+    expect(await prefixContains(outputPath, [0x23, 0xe3, 0x83])).toBe(true);
     expect(await ffmpegHash(outputPath, false)).toBe(
       await ffmpegHash(ivfInputs[codec], false),
     );

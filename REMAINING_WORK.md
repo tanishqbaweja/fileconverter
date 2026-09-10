@@ -203,14 +203,24 @@ not the entire product specification.
   Remuxing the browser WebM without re-encoding made both full decode and seek
   pass, and the corresponding native live WebM and Matroska controls passed.
   The source now locates the mapped AV1 stream independently for both profiles,
-  derives a representative frame rate from roughly one second of early
-  timestamps, capped at 128 packets and a 2 MiB target plus the current
-  compressed packet before header write, and resets the inspection BSF before
-  the retained first packet enters normal muxing. A rejected interim
+  enables FFmpeg's AV1 parser only for the general remux core and uses its
+  stream-info path under the already-fixed 2 MiB probe and two-second analysis
+  ceilings so the genuine codec parser supplies AV1
+  configuration, average cadence, and packet keyframe flags. The fallback
+  sequence-header inspection runs only if parser extradata remains absent and
+  resets its BSF before the retained first packet enters normal muxing. A
+  rejected interim
   attempt used `av_guess_frame_rate()`, but exact header inspection showed that
   IVF stores a 1 kHz time base for this 24 fps fixture and the demuxer does not
   populate average frame rate until deeper analysis; hosted run `34482182242`
-  was cancelled before completing that known-wrong build. A repository-local
+  was cancelled before completing that known-wrong build. Candidate run
+  `34483304496` proved both AV1 containers now mux and expose correct 24 fps,
+  41 ms packet durations, extradata, and `DefaultDuration`, but byte inspection
+  found every SimpleBlock still marked non-key and only one Cluster; FFmpeg's
+  later decoder/parser inferred keyframes for full sequential decode, while
+  midpoint seek correctly failed. The bounded stream-info parser replaces that
+  incomplete timing-only candidate. The historical specialist configuration
+  remains parser-free so certified specialist binaries stay reproducible. A repository-local
   rewrite preflight now applies all three
   historical reverse patches before any expensive build; it passes locally.
 - The corrected source still requires a no-Docker hosted rebuild, focused
