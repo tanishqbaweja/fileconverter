@@ -2985,7 +2985,21 @@ async function validateMediaOutput(
           : 0.25))
   ) {
     throw new Error(
-      `Browser media metadata validation failed: ${video?.width ?? "audio-only"}x${video?.height ?? "audio-only"}, ${audio?.channels ?? "video-only"} channels, ${audio?.tags?.language ?? "not-applicable"}, ${duration}s.`,
+      `Browser media metadata validation failed: ${JSON.stringify({
+        actualVideo: [video?.width ?? null, video?.height ?? null],
+        expectedVideo: [expectedVideoWidth ?? null, expectedVideoHeight ?? null],
+        actualAudioChannels: audio?.channels ?? null,
+        expectedSourceAudioChannels: sourceAudio?.channels ?? null,
+        videoOnlyCopy,
+        outputLanguage: normalizedOutputLanguage,
+        sourceLanguage: normalizedSourceLanguage,
+        probedOutputDuration: Number.isFinite(probedOutputDuration)
+          ? probedOutputDuration
+          : null,
+        measuredDuration: duration,
+        expectedDuration,
+        durationDelta: Math.abs(duration - expectedDuration),
+      })}.`,
     );
   }
   if (

@@ -232,7 +232,9 @@ not the entire product specification.
   channel assertions for declared video-only copies, including both IVF input
   containers, and accepts a duration that `ffprobe` infers after its full packet
   traversal even though the live WebM/Matroska header itself omits a growing
-  duration/index structure.
+  duration/index structure. Metadata validation failures now retain compact
+  actual-versus-expected diagnostics so a failing predicate is identifiable
+  without preserving converted copies or repeating blind runs.
 - The corrected source still requires the remaining three-run input stress and
   process-tree memory evidence, independent large-output validation,
   publication consistency, exact reproduction, and cleanup before
