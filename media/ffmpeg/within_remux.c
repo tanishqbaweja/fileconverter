@@ -670,6 +670,80 @@ static int append_prefetched_packet(AVPacket ***packets,
   return 0;
 }
 
+#ifdef WITHIN_OGV_COPY
+static int prefetch_ivf_av1_extradata(
+    AVFormatContext *input_format, AVBSFContext *filter,
+    AVCodecParameters *output_parameters, AVPacket ***prefetched_packets,
+    int *prefetched_packet_count, int *prefetched_packet_capacity) {
+  AVPacket *source_packet = av_packet_alloc();
+  AVPacket *filter_input = NULL;
+  AVPacket *filtered_packet = av_packet_alloc();
+  int result = 0;
+  int found_extradata = 0;
+  if (!source_packet || !filtered_packet) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+
+  result = av_read_frame(input_format, source_packet);
+  if (result < 0) {
+    goto cleanup;
+  }
+  if (source_packet->flags & AV_PKT_FLAG_CORRUPT) {
+    result = AVERROR_INVALIDDATA;
+    goto cleanup;
+  }
+
+  filter_input = av_packet_clone(source_packet);
+  if (!filter_input) {
+    result = AVERROR(ENOMEM);
+    goto cleanup;
+  }
+  result = av_bsf_send_packet(filter, filter_input);
+  if (result < 0) {
+    goto cleanup;
+  }
+  av_packet_free(&filter_input);
+
+  while ((result = av_bsf_receive_packet(filter, filtered_packet)) >= 0) {
+    size_t side_data_size = 0;
+    const uint8_t *side_data = av_packet_get_side_data(
+        filtered_packet, AV_PKT_DATA_NEW_EXTRADATA, &side_data_size);
+    if (!found_extradata && side_data && side_data_size > 0 &&
+        side_data_size <= INT_MAX - AV_INPUT_BUFFER_PADDING_SIZE) {
+      uint8_t *extradata =
+          av_mallocz(side_data_size + AV_INPUT_BUFFER_PADDING_SIZE);
+      if (!extradata) {
+        result = AVERROR(ENOMEM);
+        goto cleanup;
+      }
+      memcpy(extradata, side_data, side_data_size);
+      av_freep(&output_parameters->extradata);
+      output_parameters->extradata = extradata;
+      output_parameters->extradata_size = (int)side_data_size;
+      found_extradata = 1;
+    }
+    av_packet_unref(filtered_packet);
+  }
+  if (result != AVERROR(EAGAIN) && result != AVERROR_EOF) {
+    goto cleanup;
+  }
+  if (!found_extradata) {
+    result = AVERROR_INVALIDDATA;
+    goto cleanup;
+  }
+  result = append_prefetched_packet(
+      prefetched_packets, prefetched_packet_count,
+      prefetched_packet_capacity, source_packet);
+
+cleanup:
+  av_packet_free(&source_packet);
+  av_packet_free(&filter_input);
+  av_packet_free(&filtered_packet);
+  return result;
+}
+#endif
+
 static uint32_t read_little_endian_uint32(const uint8_t *data) {
   return (uint32_t)data[0] | ((uint32_t)data[1] << 8) |
          ((uint32_t)data[2] << 16) | ((uint32_t)data[3] << 24);
@@ -2619,8 +2693,10 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     goto cleanup;
   }
   const int matroska_output = profile == 23;
+#ifdef WITHIN_OGV_COPY
   const int ivf_input = input_format->iformat && input_format->iformat->name &&
                         strcmp(input_format->iformat->name, "ivf") == 0;
+#endif
   const int container_mpegts_output = profile == 24;
   const int container_threegp_output = profile == 25;
   const int container_mov_output = profile == 26;
@@ -3456,6 +3532,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
       filter_name = "aac_adtstoasc";
       filter_label = "AAC compatibility";
+#ifdef WITHIN_OGV_COPY
     } else if (ivf_input && (av1_webm_output || matroska_output) &&
                input_stream->codecpar->codec_id == AV_CODEC_ID_AV1) {
       /*
@@ -3467,6 +3544,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
        */
       filter_name = "extract_extradata";
       filter_label = "AV1 extradata extraction";
+#endif
     }
     if (filter_name) {
       const AVBitStreamFilter *filter = av_bsf_get_by_name(filter_name);
@@ -3738,6 +3816,23 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     result = 0;
   }
 
+#ifdef WITHIN_OGV_COPY
+  if (ivf_input && (av1_webm_output || matroska_output) &&
+      video_stream_index >= 0 && stream_bsfs[video_stream_index] &&
+      input_format->streams[video_stream_index]->codecpar->codec_id ==
+          AV_CODEC_ID_AV1) {
+    result = prefetch_ivf_av1_extradata(
+        input_format, stream_bsfs[video_stream_index],
+        output_format->streams[stream_map[video_stream_index]]->codecpar,
+        &prefetched_packets, &prefetched_packet_count,
+        &prefetched_packet_capacity);
+    if (result < 0) {
+      report_av_error("IVF AV1 sequence-header inspection failed", result);
+      goto cleanup;
+    }
+  }
+#endif
+
   output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) {
     result = AVERROR(ENOMEM);
@@ -3827,7 +3922,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       av_packet_unref(packet);
       continue;
     }
-    if (packet->flags & AV_PKT_FLAG_CORRUPT) {
+#ifdef WITHIN_OGV_COPY
+    if (ivf_input && (packet->flags & AV_PKT_FLAG_CORRUPT)) {
       within_message(
           2,
           "A selected input packet is marked corrupt; conversion stopped before copying damaged data.");
@@ -3835,6 +3931,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       result = AVERROR_INVALIDDATA;
       goto cleanup;
     }
+#endif
 
     AVStream *input_stream = input_format->streams[input_index];
     AVStream *output_stream =

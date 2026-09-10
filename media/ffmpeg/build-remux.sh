@@ -8,6 +8,7 @@ export EMCC_CORES="${EMCC_CORES:-4}"
 PREFIX=/src/install
 OUTPUT=/out
 CORE_FILTER="${WITHIN_BUILD_CORE_FILTER:-all}"
+CURRENT_WRAPPER_SOURCE_SHA256="${WITHIN_CURRENT_WRAPPER_SOURCE_SHA256:-$(sha256sum /src/within_remux.c | awk '{print $1}')}"
 
 mkdir -p "${OUTPUT}"
 
@@ -115,7 +116,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "libvpxVersion": "1.16.0",
   "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
-  "currentWrapperSourceSha256": "8f9b89590673bf61a6e30c757d5659fb7b0ec99fe8b1f4331c3cd952c28de0f7",
+  "currentWrapperSourceSha256": "${CURRENT_WRAPPER_SOURCE_SHA256}",
   "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",

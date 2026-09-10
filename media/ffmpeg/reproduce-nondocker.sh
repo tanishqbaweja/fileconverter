@@ -191,6 +191,8 @@ run_privileged ln -s "${OUTPUT_ROOT}" /out
 cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
+export WITHIN_CURRENT_WRAPPER_SOURCE_SHA256
+WITHIN_CURRENT_WRAPPER_SOURCE_SHA256="$(sha256sum "${BUILD_ROOT}/within_remux.c" | awk '{print $1}')"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"

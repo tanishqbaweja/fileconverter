@@ -165,13 +165,19 @@ not the entire product specification.
   on the first muxed packet with `Invalid data found when processing input`.
   The routes therefore remain unpublished pending a corrected Wasm build and
   the complete promotion gate.
-- FFmpeg 8.1.2 source and a native debug remux identified the allocation: IVF
-  does not carry AV1 container extradata, while the Matroska/WebM muxer requires
-  either codec extradata or `AV_PKT_DATA_NEW_EXTRADATA` on the first packet.
-  The accepted source fix applies FFmpeg's already-enabled
-  `extract_extradata` bitstream filter only to IVF AV1 input. It is packet-local
-  and avoids a decoder, whole-file probe, or prepass, preserving the fastest
-  bounded stream-copy topology.
+- FFmpeg 8.1.2 source and a native debug remux identified the first allocation:
+  IVF does not carry AV1 container extradata, while the Matroska/WebM muxer
+  requires either codec extradata or `AV_PKT_DATA_NEW_EXTRADATA` on the first
+  packet. Hosted no-Docker run `34418209028` rebuilt the corrected general core
+  at commit `160ffdc`; its browser rerun proved corrupt-packet rejection, but
+  both AV1 routes still failed at the first muxed packet. The reason is now
+  isolated: bounded `live=1` Matroska/WebM output does not retain the seekable
+  track-header buffer that FFmpeg needs to install first-packet extradata.
+  The next source revision therefore runs the already-enabled
+  `extract_extradata` filter on one cloned first packet before header write,
+  copies only its bounded sequence-header side data into the output codec
+  parameters, and then processes the original prefetched packet normally. It
+  still uses no decoder and no whole-file probe.
 - The prior adverse fixture merely removed eight bytes from the tail, which the
   IVF demuxer correctly treated as end-of-file after the preceding complete
   packets. A deterministic oversized second-packet header made native FFmpeg
@@ -179,7 +185,12 @@ not the entire product specification.
   custom wrapper copied `AV_PKT_FLAG_CORRUPT` packets and completed. The source
   now rejects any corrupt selected packet before it reaches a bitstream filter
   or mux write; the corrected candidate still needs its browser rerun.
-- The corrected source still requires a no-Docker hosted rebuild, focused
+- Run `34418209028` also exposed a no-Docker all-core reconstruction defect:
+  the general core was retained successfully, then a historical specialist
+  reverse patch conflicted with unguarded new general-core code. The new IVF
+  prefetch/filter/corruption blocks are general-core guarded, and the rebuild
+  now captures the current wrapper hash before its historical source rewrites.
+- The twice-corrected source still requires a no-Docker hosted rebuild, focused
   AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
   cancellation, independent validation, publication consistency, exact
   reproduction, and cleanup before `ivf-to-webm` or `ivf-to-mkv` can become
