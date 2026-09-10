@@ -203,9 +203,15 @@ not the entire product specification.
   Remuxing the browser WebM without re-encoding made both full decode and seek
   pass, and the corresponding native live WebM and Matroska controls passed.
   The source now locates the mapped AV1 stream independently for both profiles,
-  derives IVF's declared frame rate with `av_guess_frame_rate()` before header
-  write, and resets the inspection BSF before the retained first packet enters
-  normal muxing. A repository-local rewrite preflight now applies all three
+  derives a representative frame rate from roughly one second of early
+  timestamps, capped at 128 packets and a 2 MiB target plus the current
+  compressed packet before header write, and resets the inspection BSF before
+  the retained first packet enters normal muxing. A rejected interim
+  attempt used `av_guess_frame_rate()`, but exact header inspection showed that
+  IVF stores a 1 kHz time base for this 24 fps fixture and the demuxer does not
+  populate average frame rate until deeper analysis; hosted run `34482182242`
+  was cancelled before completing that known-wrong build. A repository-local
+  rewrite preflight now applies all three
   historical reverse patches before any expensive build; it passes locally.
 - The corrected source still requires a no-Docker hosted rebuild, focused
   AV1/VP8/VP9 browser rerun, three-run stress and process-tree memory evidence,
