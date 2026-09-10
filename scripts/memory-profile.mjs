@@ -1873,8 +1873,8 @@ async function validateMediaOutput(
   const sourceDurationSeconds =
     Number.isFinite(expectedProfileDurationSeconds)
       ? expectedProfileDurationSeconds
-      : (videoReencode || m4vMp4Output || matroskaCopy) &&
-    Number.isFinite(decodedVideoDurationSeconds)
+      : (videoReencode || m4vMp4Output || matroskaCopy || ivfInputCopy) &&
+          Number.isFinite(decodedVideoDurationSeconds)
         ? decodedVideoDurationSeconds
         : Number.isFinite(probedSourceDurationSeconds)
           ? probedSourceDurationSeconds

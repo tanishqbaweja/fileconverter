@@ -234,7 +234,10 @@ not the entire product specification.
   traversal even though the live WebM/Matroska header itself omits a growing
   duration/index structure. Metadata validation failures now retain compact
   actual-versus-expected diagnostics so a failing predicate is identifiable
-  without preserving converted copies or repeating blind runs.
+  without preserving converted copies or repeating blind runs. Those diagnostics
+  exposed IVF's misleading 1.44-second raw-container estimate for the 1,440-frame
+  VP9 fixture; input-route validation now prefers its independently decoded
+  60-second duration.
 - The corrected source still requires the remaining three-run input stress and
   process-tree memory evidence, independent large-output validation,
   publication consistency, exact reproduction, and cleanup before

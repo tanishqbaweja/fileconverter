@@ -204,4 +204,9 @@ test("IVF input stress routes stay wired into the shared profiler", async () => 
   );
   assert.ok(profilerSource.includes("expectedSourceAudioChannels"));
   assert.ok(profilerSource.includes("durationDelta"));
+  assert.ok(
+    profilerSource.includes(
+      "videoReencode || m4vMp4Output || matroskaCopy || ivfInputCopy",
+    ),
+  );
 });
