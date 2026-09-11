@@ -49,7 +49,7 @@ jobs:
           work/emsdk/emsdk install 6.0.4
           work/emsdk/emsdk activate 6.0.4
 
-      - name: Rebuild and compare every FFmpeg module
+      - name: Rebuild and compare requested FFmpeg module(s)
         shell: bash
         env:
           WITHIN_KEEP_NONDOCKER_OUTPUT: "1"

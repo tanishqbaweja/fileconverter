@@ -191,8 +191,8 @@ if [[ -n "${EMSDK_NODE:-}" ]]; then
     fail "EMSDK_NODE does not identify an executable: ${EMSDK_NODE}"
   export PATH="$(dirname "${EMSDK_NODE}"):${PATH}"
 fi
-for command_name in emcc emconfigure emmake emar emranlib emnm awk curl tar \
-  sha256sum patch pkg-config make diff readlink node; do
+for command_name in emcc emconfigure emmake emar emranlib emnm awk cmp curl \
+  find sort tar sha256sum patch pkg-config make diff readlink node; do
   require_command "${command_name}"
 done
 
@@ -324,18 +324,59 @@ elif [[ "${requested_core}" != "within-remux" ]]; then
   WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
 fi
 
-if ! diff --recursive --brief --no-dereference \
-    "${EXPECTED_ROOT}" "${OUTPUT_ROOT}"; then
+comparison_files=()
+if [[ "${requested_core}" == "all" ]]; then
+  mapfile -t comparison_files < <(
+    cd "${EXPECTED_ROOT}"
+    find . -type f -printf '%P\n' | LC_ALL=C sort
+  )
+else
+  comparison_files=(
+    LICENSE.lame
+    LICENSE.lame-linking
+    LICENSE.libogg
+    LICENSE.libvorbis
+    LICENSE.opencore-amr
+    LICENSE.opus
+    build-manifest.json
+    "${requested_core}.mjs"
+    "${requested_core}.wasm"
+  )
+  mapfile -t comparison_files < <(
+    printf '%s\n' "${comparison_files[@]}" | LC_ALL=C sort
+  )
+fi
+mapfile -t rebuilt_files < <(
+  cd "${OUTPUT_ROOT}"
+  find . -type f -printf '%P\n' | LC_ALL=C sort
+)
+
+comparison_failed=0
+if [[ "${rebuilt_files[*]}" != "${comparison_files[*]}" ]]; then
+  printf 'Expected files:\n%s\n' "${comparison_files[*]}" >&2
+  printf 'Rebuilt files:\n%s\n' "${rebuilt_files[*]}" >&2
+  comparison_failed=1
+fi
+for relative_path in "${comparison_files[@]}"; do
+  if [[ ! -f "${OUTPUT_ROOT}/${relative_path}" ]] ||
+      ! cmp --silent -- "${EXPECTED_ROOT}/${relative_path}" \
+        "${OUTPUT_ROOT}/${relative_path}"; then
+    printf 'Artifact differs: %s\n' "${relative_path}" >&2
+    comparison_failed=1
+  fi
+done
+
+if (( comparison_failed != 0 )); then
   printf 'Expected artifact hashes:\n' >&2
   (
     cd "${EXPECTED_ROOT}"
-    find . -type f -print0 | sort -z | xargs -0 sha256sum
-  ) >&2
+    sha256sum -- "${comparison_files[@]}"
+  ) >&2 || true
   printf 'Rebuilt artifact hashes:\n' >&2
   (
     cd "${OUTPUT_ROOT}"
-    find . -type f -print0 | sort -z | xargs -0 sha256sum
-  ) >&2
+    sha256sum -- "${rebuilt_files[@]}"
+  ) >&2 || true
   fail "Non-Docker FFmpeg artifacts differ from the published engine."
 fi
 printf 'Exact non-Docker FFmpeg artifact comparison passed.\n'
