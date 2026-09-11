@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-10. This is the living requirement audit for the original
+Updated 2026-09-11. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -156,6 +156,19 @@ not the entire product specification.
   before-state rather than a description of the current implementation.
 
 ## Implementation and verification log
+
+### 2026-09-11 — AVI to 3GP feasibility (candidate, not public)
+
+- Native feasibility and independent validation proved that the existing
+  1,306,330-byte AVI fixture can be genuinely remuxed to 3GP by packet-copying
+  its 96 MPEG-4 Part 2 video packets. The source and output packet SHA-256 are
+  identical, all 96 output frames decode, and the result probes as 3GP rather
+  than a renamed AVI. The incompatible MP3 audio is deliberately excluded.
+- `evidence/avi-to-3gp-feasibility-2026-09-11.json` records the exact source,
+  output, hashes, validation, constraint boundary, and remaining promotion
+  gates. The route stays absent from the public selector until its browser,
+  direct-destination, three-run stress, process-tree memory, failure recovery,
+  and no-Docker reproduction gates pass.
 
 ### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
 

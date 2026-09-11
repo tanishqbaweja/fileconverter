@@ -408,6 +408,11 @@ static int stream_is_supported(const AVStream *stream, int profile) {
 static int stream_codec_is_copy_compatible(const AVStream *stream,
                                            int profile,
                                            const AVFormatContext *format) {
+#ifdef WITHIN_OGV_COPY
+  const int avi_threegp_input =
+      format->iformat && format->iformat->name &&
+      strstr(format->iformat->name, "avi") != NULL;
+#endif
   if (profile == 23) {
     if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
       return bounded_audio_artwork_stream(stream);
@@ -453,7 +458,12 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   }
   if (profile == 25) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-      return stream->codecpar->codec_id == AV_CODEC_ID_H264;
+      return stream->codecpar->codec_id == AV_CODEC_ID_H264
+#ifdef WITHIN_OGV_COPY
+             || (avi_threegp_input &&
+                 stream->codecpar->codec_id == AV_CODEC_ID_MPEG4)
+#endif
+          ;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_AAC;
@@ -2706,6 +2716,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #endif
   const int container_mpegts_output = profile == 24;
   const int container_threegp_output = profile == 25;
+#ifdef WITHIN_OGV_COPY
+  const int avi_threegp_input =
+      input_format->iformat && input_format->iformat->name &&
+      strstr(input_format->iformat->name, "avi") != NULL;
+#endif
   const int container_mov_output = profile == 26;
   const int container_flv_output = profile == 27;
 #ifdef WITHIN_OGV_COPY
@@ -3169,6 +3184,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
             ? (int)index == audio_stream_index
         : amr_copy_output
             ? (int)index == audio_stream_index
+#ifdef WITHIN_OGV_COPY
+        : container_threegp_output && avi_threegp_input &&
+              input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO
+            ? copy_compatible
+#endif
         : container_flv_output
             ? (int)index == video_stream_index ||
                   (int)index == audio_stream_index
@@ -3294,6 +3314,11 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         within_message(1,
                        "This M4V wrapping profile includes only the MPEG-4 Part 2 video stream; source audio was explicitly excluded.");
 #ifdef WITHIN_OGV_COPY
+      } else if (container_threegp_output && avi_threegp_input &&
+                 input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+        within_message(
+            1,
+            "Only AAC audio can be packet-copied into this 3GP profile; incompatible AVI audio was explicitly excluded while compatible compressed video remains unchanged.");
       } else if (container_ogv_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(

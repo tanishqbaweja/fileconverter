@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-11",
+  "status": "candidate",
+  "scope": "Bounded-route feasibility for AVI MPEG-4 Part 2 video to 3GP packet copy with incompatible AVI MP3 audio explicitly excluded.",
+  "dockerUsed": false,
+  "conversionClass": "compressed-video packet copy, not decode/re-encode and not extension renaming",
+  "converterBoundary": "Native FFmpeg was used only for deterministic feasibility and independent validation. Public acceptance still requires conversion through the production browser worker and published Wasm engine.",
+  "source": {
+    "path": "fixtures/media/legacy-video-source.avi",
+    "bytes": 1306330,
+    "sha256": "94af4c87b56f5a09cf4afb949aae8bdb938131f897eb274240c8abbe27c12341",
+    "container": "AVI",
+    "durationSeconds": 4.041667,
+    "video": {
+      "codec": "MPEG-4 Part 2",
+      "width": 640,
+      "height": 360,
+      "frameRate": 24,
+      "frames": 96
+    },
+    "audio": {
+      "codec": "MP3",
+      "disposition": "must be explicitly excluded because the certified 3GP packet-copy profile accepts AAC audio only"
+    }
+  },
+  "candidateOutput": {
+    "temporaryPath": "work/avi-to-3gp-feasibility/legacy-video-source.3gp",
+    "bytes": 1194754,
+    "sha256": "d39789977b23365bf0746b2e076a1cc4dcc75641cd6fe5a3c01eecad65c56109",
+    "containerProbeFamily": "mov,mp4,m4a,3gp,3g2,mj2",
+    "container": "3GP",
+    "streams": [
+      {
+        "mediaType": "video",
+        "codec": "MPEG-4 Part 2",
+        "width": 640,
+        "height": 360,
+        "frameRate": 24,
+        "packets": 96,
+        "decodedFrames": 96
+      }
+    ],
+    "completeDecodePassed": true
+  },
+  "packetIdentity": {
+    "sourceVideoStreamHash": "0,v,SHA256=59a4d88163df7fee61cdb16100e224c24d24f074f25e8f1cfe40747357507c8b",
+    "outputVideoStreamHash": "0,v,SHA256=59a4d88163df7fee61cdb16100e224c24d24f074f25e8f1cfe40747357507c8b",
+    "exact": true
+  },
+  "requiredProductionGates": [
+    "browser conversion through the production worker and candidate Wasm engine",
+    "independent structure, complete-decode, and exact video-packet validation",
+    "explicit MP3 exclusion disclosure",
+    "three repeatable greater-than-128-MiB stress runs",
+    "complete Chromium process-tree incremental private memory at or below 250 MiB",
+    "bounded reads, writes, queues, and one pending operation",
+    "success, cancellation, forced-write-failure, and cleanup recovery",
+    "direct selected-destination validation",
+    "registry, UI, README, TESTED, evidence manifest, and engine manifest agreement",
+    "exact no-Docker publication reproduction"
+  ],
+  "decision": "Proceed with a production-browser candidate; keep avi-to-3gp unpublished until every production gate passes.",
+  "cleanup": {
+    "canonicalCleanupOwnsTemporaryPath": true,
+    "temporaryOutputRetainedOnlyUntilThisEvidenceWasRecorded": true
+  }
+}

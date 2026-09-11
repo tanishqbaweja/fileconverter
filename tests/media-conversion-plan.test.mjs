@@ -77,6 +77,58 @@ test("MP4 stream-copy plan distinguishes copied, excluded, and rejecting streams
   assert.equal(rejected.blockingReasons.length, 1);
 });
 
+test("AVI to 3GP candidate copies compatible video and explicitly excludes MP3", () => {
+  const candidate = {
+    id: "avi-to-3gp",
+    input: "avi",
+    output: "3gp",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [],
+    fidelityLimitations: [],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  };
+  const accepted = planMediaConversion(
+    candidate,
+    inspection([
+      stream("video", "MPEG-4 Part 2"),
+      stream("audio", "MP3"),
+    ]),
+  );
+  assert.ok(accepted);
+  assert.deepEqual(
+    accepted.streams.map(({ action }) => action),
+    ["copy", "exclude"],
+  );
+  assert.deepEqual(accepted.blockingReasons, []);
+  assert.match(accepted.streams[1].detail, /explicitly excluded/i);
+
+  const h264 = planMediaConversion(
+    candidate,
+    inspection([stream("video", "H.264/AVC"), stream("audio", "AAC")]),
+  );
+  assert.ok(h264);
+  assert.deepEqual(
+    h264.streams.map(({ action }) => action),
+    ["copy", "copy"],
+  );
+
+  const rejected = planMediaConversion(
+    candidate,
+    inspection([stream("video", "MPEG-2 Video"), stream("audio", "MP3")]),
+  );
+  assert.ok(rejected);
+  assert.deepEqual(
+    rejected.streams.map(({ action }) => action),
+    ["reject", "exclude"],
+  );
+});
+
 test("Matroska plan copies certified subtitle codecs and rejects unsupported audio", () => {
   const plan = planMediaConversion(
     profile("mp4-to-mkv"),

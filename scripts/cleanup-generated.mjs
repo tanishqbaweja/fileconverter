@@ -110,6 +110,9 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "avi-to-3gp-feasibility"),
+  path.resolve(workRoot, "avi-to-3gp-candidate"),
+  path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),
   path.resolve(workRoot, "playwright-profile-ivf-input"),
   path.resolve(workRoot, "ivf-input-candidate"),
