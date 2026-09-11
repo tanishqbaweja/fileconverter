@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-09-10 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-09-11 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,12 +12,13 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **397**
-- Public profiles with retained successful Chrome stress evidence: **397**
+- Public passed conversion profiles: **399**
+- Public profiles with retained successful Chrome stress evidence: **399**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
 
+- **2026-09-11 bounded IVF input packet-copy acceptance:** Public `ivf-to-webm` and `ivf-to-mkv` packet-copy AV1, VP8, or VP9 video without decode/re-encode. The accepted reusable 256 KiB BYOB input reader replaced synchronous Blob slices that peaked at 266.348 MiB; a 64 MiB OPFS handle-reopen candidate was also rejected at 276.922 MiB. On a genuine 169,519,329-byte VP9 IVF, the final WebM route peaked at 225.957 MiB in OPFS mode and 233.215 MiB in direct-save mode; Matroska peaked at 124.703 MiB and 230.344 MiB. Warm OPFS runs completed in 0.728-0.910 seconds and bounded 1 MiB direct writes completed in 1.029-1.209 seconds. Exact output hashes, all 1,440 decoded VP9 frames, the separate 8,640-frame AV1 matrix, one pending operation, fixed 32 MiB Wasm, cancellation, forced-write cleanup, and deletion of direct partial files passed. Hosted no-Docker run [34566920335](https://github.com/tanishqbaweja/fileconverter/actions/runs/34566920335) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `9af549d` in 13m46s, skipped mismatch upload, passed cleanup, and retained zero artifacts. Both superseded mismatch artifacts and all local generated files were deleted; `test.mkv` remains byte-exact. Compact evidence is `evidence/ivf-input-browser-2026-09-11.json`.
 - **2026-09-09 bounded raw HEVC to VP8 WebM acceptance:** Public `hevc-to-webm` genuinely decodes, downscales, and re-encodes raw Annex B HEVC; it does not rename the file or claim a lossless wrap. A 134,752,786-byte, 17,282-frame source passed 3/3 production-Chrome runs in 230.95–234.74 seconds at 240.945 MiB worst complete-Chromium incremental private memory, producing the same 52,300,521-byte 640×268 VP8 WebM every time. Full native decode, exact frame count and 691.24-second reconstructed duration, 256 KiB I/O, one pending operation, fixed 56 MiB Wasm, forced-write cleanup, and cancellation passed. The faster eight-worker VP8 candidate was rejected at 253.871–274.039 MiB. VP9 remains non-public because four workers reached 264.082 MiB and the 561.44-second single-thread run left only 0.246 MiB unverified headroom. Hosted no-Docker run [34390070004](https://github.com/tanishqbaweja/fileconverter/actions/runs/34390070004) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `082b050` in 13m15s, skipped mismatch upload, passed cleanup, and retained no artifact. All generated media, raw reports, the local candidate, and the obsolete remote mismatch artifact were deleted after compact evidence was retained. See `evidence/raw-hevc-webm-feasibility-2026-09-09.json`.
 - **2026-09-09 bounded IVF packet-copy acceptance:** Public `mkv-to-ivf` and `webm-to-ivf` extract the first AV1, VP8, or VP9 video stream into a genuine fixed-rate IVF file without video decode/re-encode; every unrepresentable stream and metadata class is explicitly excluded. Focused production Chrome passed 6/6 AV1/VP8/VP9 success, incompatible-first-video rejection, and direct-write failure cleanup cases; the complete shared-media regression passed 530/530 and privacy/offline passed 15/15. Genuine 170,427,228-byte MKV and 170,426,767-byte WebM VP9/Opus sources each passed 3/3 in 0.861-0.924 seconds (175.9-188.9 MiB/s) at 218.535 MiB worst complete-Chromium incremental private memory, producing the identical 169,519,329-byte IVF SHA-256 `90725e96b406393658be05ec396b5f67b50be905c6d692b9e95b4ec082260158`. Exact compressed VP9 packets, exact decoded frames, the `DKIF`/`VP90` header, all 1,440 frames, full decode, midpoint seek, 256 KiB reads, 157,034-byte writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. Hosted no-Docker run [34342108068](https://github.com/tanishqbaweja/fileconverter/actions/runs/34342108068) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `8f38ffe` in 13m34s, skipped mismatch upload, passed hosted cleanup, and retained zero artifacts; the obsolete candidate archive was deleted and verified absent. Category cleanup removed both large sources, every converted copy, both raw report sets, and the browser profile after compact evidence was retained. Compact evidence is `evidence/ivf-extraction-browser-2026-09-09.json`.
 - **2026-09-07 compatible OGV packet-copy acceptance:** Public `mkv-to-ogv` now maps guarded native profile 36 and packet-copies Theora plus optional Vorbis without decode or re-encode. Production Chrome passed exact small-file video/audio packet hashes, decoded-video equality, full decode, and injected bounded write-failure cleanup. A genuine 136,906,650-byte Matroska source then passed 3/3 in 1.127-1.164 seconds at 211.3 MiB worst complete-Chromium incremental private memory, producing the same 137,218,724-byte genuine OGV SHA-256 `6a9b41e0500f4bcf528026431e8d744ad0283c99fe7eb0cb6b064d924b705747`. Exact 18,720 Theora and 36,564 Vorbis packets, 18,720 decoded frames, full native decode, 256 KiB reads, 64,258-byte writes/queueing, one pending operation, fixed 32 MiB Wasm, three cleanup recoveries, and cancellation after 128 MiB all passed. Hosted run [34134662736](https://github.com/tanishqbaweja/fileconverter/actions/runs/34134662736) proved only `within-remux.wasm` changed; pushed public-state run [34139252534](https://github.com/tanishqbaweja/fileconverter/actions/runs/34139252534) rebuilt every FFmpeg artifact byte-exact without Docker at commit `65b2488` in 7m32s and retained zero artifacts. All large sources, converted copies, failed-run reports, browser profiles, and mismatch archives were deleted; `test.mkv` remains byte-exact. Compact evidence is retained in `evidence/compatible-ogv-copy-2026-09-07.json`.
@@ -397,6 +398,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 | h264-to-webm | 145,801,019 | 3 | 4,752,826 | 9.46 s–9.87 s | 239.7 MiB | 40.0 MiB | read 262,144 B / write 262,144 B | passed |
 | h264-to-webm-vp9 | 145,801,019 | 3 | 3,265,035 | 13.77 s–14.18 s | 243.7 MiB | 56.0 MiB | read 262,144 B / write 259,061 B | passed |
 | html-to-txt | 143,850,123 | 3 | 101,380,000 | 15.71 s–15.93 s | 231.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
+| ivf-to-mkv | 144,520,682 | 3 | 144,469,217 | 0.91 s–0.92 s | 137.0 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| ivf-to-webm | 144,520,682 | 3 | 144,468,117 | 0.73 s–0.80 s | 122.1 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | jpeg-to-avif | 51,804 | 3 | 17,467 | 0.31 s–0.52 s | 213.4 MiB | 80.0 MiB | read 51,804 B / write 17,170 B | passed |
 | jpeg-to-bmp | 418,486 | 3 | 24,883,254 | 0.28 s–0.36 s | 169.9 MiB | 0.0 MiB | read 196,608 B / write 195,840 B | passed |
 | jpeg-to-ico | 418,486 | 3 | 12,998 | 0.09 s–0.14 s | 80.5 MiB | 0.0 MiB | read 196,608 B / write 12,976 B | passed |
@@ -432,6 +435,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-flv | 147,131,070 | 3 | 147,164,014 | 0.95 s–1.27 s | 166.7 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-h264 | 146,855,294 | 3 | 145,801,019 | 1.62 s–1.95 s | 207.2 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
 | mkv-to-hevc | 148,952,609 | 3 | 134,752,786 | 2.07 s–2.40 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| mkv-to-ivf | 170,427,228 | 3 | 169,519,329 | 0.85 s–0.91 s | 139.6 MiB | 32.0 MiB | read 262,144 B / write 157,034 B | passed |
 | mkv-to-m2v | 136,294,704 | 3 | 136,166,136 | 1.82 s–2.21 s | 207.8 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mkv-to-m4a | 2,958,573,265 | 3 | 249,427,974 | 2.49 s–4.04 s | 164.7 MiB | 32.0 MiB | read 262,144 B / write 103,136 B | passed |
 | mkv-to-m4v | 180,576,319 | 3 | 179,609,473 | 1.88 s–2.10 s | 211.5 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
@@ -617,6 +621,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webm-to-aiff | 222,941,314 | 3 | 5,760,054 | 1.46 s–1.70 s | 213.2 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | webm-to-amr | 222,941,314 | 3 | 96,038 | 2.10 s–2.29 s | 227.5 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | webm-to-flac | 222,941,314 | 3 | 888,268 | 1.66 s–1.91 s | 214.8 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
+| webm-to-ivf | 170,426,767 | 3 | 169,519,329 | 0.86 s–0.89 s | 136.1 MiB | 32.0 MiB | read 262,144 B / write 157,034 B | passed |
 | webm-to-m4a | 222,941,314 | 3 | 616,534 | 3.82 s–4.39 s | 229.5 MiB | 32.0 MiB | read 262,144 B / write 51,532 B | passed |
 | webm-to-mkv | 222,941,314 | 3 | 222,940,925 | 1.15 s–1.60 s | 178.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | webm-to-mp3 | 222,941,314 | 3 | 960,813 | 1.91 s–2.59 s | 227.0 MiB | 32.0 MiB | read 262,144 B / write 429 B | passed |
@@ -754,6 +759,8 @@ Stream ma |
 | 2026-09-01T01:47:58.001Z | mp4-to-flac | 182,319,598 | 3 | 182,319,598 | Failed checks: processTreePrivateMemory; measured 270.8 MiB against a 250.0 MiB limit. |
 | 2026-09-01T01:51:07.174Z | mp4-to-flac | 137,357,037 | 3 | 137,357,037 | Failed checks: processTreePrivateMemory; measured 253.7 MiB against a 250.0 MiB limit. |
 | 2026-09-08T10:05:42.751Z | mkv-to-avi | 191,735,971 | 0 | 191,735,971 | Browser media output size is outside the validated range: 202384110 bytes. |
+| 2026-09-10T18:55:47.970Z | ivf-to-webm | 169,519,329 | 3 | 169,519,329 | Failed checks: processTreePrivateMemory; measured 276.9 MiB against a 250.0 MiB limit. |
+| 2026-09-10T19:24:03.363Z | ivf-to-webm | 169,519,329 | 0 | 169,519,329 | IVF cancellation left output state or browser-owned files behind. |
 
 ## Every public passed profile
 
@@ -895,6 +902,8 @@ Stream ma |
 | h264-to-webm-vp9 | video | ffmpeg-video | re-encode | 145,801,019 B | 3-run Chrome report |
 | hevc-to-webm | video | ffmpeg-video | re-encode | 134,752,786 B | registry passed; stress report not retained locally |
 | html-to-txt | document | document-stream | stream | 143,850,123 B | 3-run Chrome report |
+| ivf-to-mkv | video | ffmpeg-remux | stream-copy | 169,519,329 B | 3-run Chrome report |
+| ivf-to-webm | video | ffmpeg-remux | stream-copy | 169,519,329 B | 3-run Chrome report |
 | jpeg-to-avif | image | libaom-avif-encoder-wasm | re-encode | 51,804 B | 3-run Chrome report |
 | jpeg-to-bmp | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
 | jpeg-to-ico | image | image-browser | re-encode | 418,486 B | 3-run Chrome report |
@@ -931,7 +940,7 @@ Stream ma |
 | mkv-to-flv | video | ffmpeg-remux | stream-copy | 147,131,070 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
 | mkv-to-hevc | video | ffmpeg-remux | stream-copy | 148,952,609 B | 3-run Chrome report |
-| mkv-to-ivf | video | ffmpeg-remux | stream-copy | 170,427,228 B | registry passed; stress report not retained locally |
+| mkv-to-ivf | video | ffmpeg-remux | stream-copy | 170,427,228 B | 3-run Chrome report |
 | mkv-to-m2v | video | ffmpeg-remux | stream-copy | 136,294,704 B | 3-run Chrome report |
 | mkv-to-m4a | video | ffmpeg-remux | stream-copy | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-m4v | video | ffmpeg-remux | stream-copy | 180,576,319 B | 3-run Chrome report |
@@ -1120,7 +1129,7 @@ Stream ma |
 | webm-to-aiff | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-amr | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-flac | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
-| webm-to-ivf | video | ffmpeg-remux | stream-copy | 170,426,767 B | registry passed; stress report not retained locally |
+| webm-to-ivf | video | ffmpeg-remux | stream-copy | 170,426,767 B | 3-run Chrome report |
 | webm-to-m4a | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-mkv | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
 | webm-to-mp3 | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |

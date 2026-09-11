@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-11",
+  "status": "passed",
+  "scope": "Production-browser IVF input packet-copy conversion to WebM and Matroska, including large VP9 and AV1 stress profiles, direct-save behavior, cancellation, cleanup, and exact no-Docker publication reproduction.",
+  "dockerUsed": false,
+  "conversionClass": "compressed-video packet copy, not decode/re-encode and not extension renaming",
+  "selectedOptimization": {
+    "input": "one reusable asynchronous 256 KiB BYOB reader",
+    "opfsOutput": "native bounded writes with one pending operation",
+    "directOutput": "bounded 1 MiB coalesced writes with one pending operation",
+    "reason": "The reusable BYOB reader avoids Chromium retention from repeated synchronous Blob slices and supplies event-loop yield points for prompt cancellation. One-mebibyte direct writes reduce cross-worker write overhead without increasing the certified queue or operation count."
+  },
+  "rejectedCandidates": [
+    {
+      "design": "128 MiB OPFS sync-handle cache with synchronous Blob slices",
+      "report": "2026-09-10T14-38-37-560Z-ivf-to-webm-stress.json",
+      "reportSha256": "680ae220d60ae9e2ff5af0f10f249a965624cd05fd192a6b57af6e98e8e2bbe6",
+      "worstIncrementalPrivateMiB": 266.34765625,
+      "reason": "Exceeded the unchanged 250 MiB complete-Chromium incremental private-memory limit despite correct output."
+    },
+    {
+      "design": "reopen the OPFS sync handle every 64 MiB",
+      "report": "2026-09-10T18-55-47-970Z-ivf-to-webm-stress.json",
+      "reportSha256": "d2c2413ee8b9464c4e4463c5950672c8133ec42a7ca3589fedd51484a6cdec72",
+      "worstIncrementalPrivateMiB": 276.921875,
+      "reason": "Memory regressed while byte identity, validation, and speed remained correct."
+    }
+  ],
+  "sources": {
+    "vp9": {
+      "bytes": 169519329,
+      "sha256": "30a4bc6bfdcc35cc5d03c68a1cf0344ff53f0899b2b9fb21b1b051b4f1927198",
+      "frames": 1440,
+      "durationSeconds": 60
+    },
+    "av1": {
+      "bytes": 144520682,
+      "sha256": "55395e840a88b2acf324653400a97a1198bb6da1e2ed89d9299dbf05c715fe4c",
+      "frames": 8640,
+      "durationSeconds": 360
+    }
+  },
+  "acceptedStressReports": [
+    {
+      "sourceCodec": "vp9",
+      "profileId": "ivf-to-webm",
+      "destination": "opfs-test",
+      "report": "2026-09-10T19-01-54-443Z-ivf-to-webm-stress.json",
+      "reportSha256": "731666ea12b66bd2caf362e6a1fc7b07bf5b10640ccdb8e305421caa4354d1fe",
+      "elapsedMs": [3938.13, 756.335, 727.815],
+      "throughputMiBPerSecond": [41.05, 213.75, 222.13],
+      "worstIncrementalPrivateMiB": 225.95703125,
+      "outputBytes": 169514222,
+      "outputSha256": "75aeacc79a83396c49dcee1f0867daf09226a1ae0cf9c45e70a1df5b0a3048e2",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 262144
+    },
+    {
+      "sourceCodec": "vp9",
+      "profileId": "ivf-to-webm",
+      "destination": "direct-handle",
+      "report": "2026-09-10T19-30-28-681Z-ivf-to-webm-direct-handle-stress.json",
+      "reportSha256": "b7ac00f538bf8389ba4b891928449c14bab171e43563a808749427a924b8e945",
+      "elapsedMs": [1080.69, 1028.265, 1039.25],
+      "throughputMiBPerSecond": [149.6, 157.22, 155.56],
+      "worstIncrementalPrivateMiB": 233.21484375,
+      "outputBytes": 169514222,
+      "outputSha256": "75aeacc79a83396c49dcee1f0867daf09226a1ae0cf9c45e70a1df5b0a3048e2",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 1048576
+    },
+    {
+      "sourceCodec": "vp9",
+      "profileId": "ivf-to-mkv",
+      "destination": "opfs-test",
+      "report": "2026-09-10T19-35-40-126Z-ivf-to-mkv-stress.json",
+      "reportSha256": "829413305aca003077539819def2a135dcc81b4dc9237a38347a379ea5989f3e",
+      "elapsedMs": [892.25, 869.065, 869.85],
+      "throughputMiBPerSecond": [181.19, 186.02, 185.86],
+      "worstIncrementalPrivateMiB": 124.703125,
+      "outputBytes": 169514434,
+      "outputSha256": "5c45a3a4c385d037056ab454159dac0d7aac698e817068ca7863fd221aa7c2ec",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 262144
+    },
+    {
+      "sourceCodec": "vp9",
+      "profileId": "ivf-to-mkv",
+      "destination": "direct-handle",
+      "report": "2026-09-10T19-40-48-591Z-ivf-to-mkv-direct-handle-stress.json",
+      "reportSha256": "33fda0f677dd1dff9f459d9b3172aa7401ad20dc75b92335a98656ff5baead6f",
+      "elapsedMs": [1198.095, 1208.535, 1144.545],
+      "throughputMiBPerSecond": [134.94, 133.77, 141.25],
+      "worstIncrementalPrivateMiB": 230.34375,
+      "outputBytes": 169514434,
+      "outputSha256": "5c45a3a4c385d037056ab454159dac0d7aac698e817068ca7863fd221aa7c2ec",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 1048576
+    },
+    {
+      "sourceCodec": "av1",
+      "profileId": "ivf-to-webm",
+      "destination": "opfs-test",
+      "report": "2026-09-10T19-44-52-646Z-ivf-to-webm-stress.json",
+      "reportSha256": "8e3138b33deb53d58faa893092bc0969b9e5e7cb83d33665637fc51f16cefb4e",
+      "elapsedMs": [800.46, 732.415, 740.08],
+      "throughputMiBPerSecond": [172.18, 188.18, 186.23],
+      "worstIncrementalPrivateMiB": 122.12890625,
+      "outputBytes": 144468117,
+      "outputSha256": "2c51eb1f78dcddf315a3866122ebbc63057a7a9ffb78a409d37d81a8b08f4855",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 262144
+    },
+    {
+      "sourceCodec": "av1",
+      "profileId": "ivf-to-mkv",
+      "destination": "opfs-test",
+      "report": "2026-09-10T19-49-26-033Z-ivf-to-mkv-stress.json",
+      "reportSha256": "81178b5038de3f591963f76caa7bd8bbe7239531d8e8beb149c5b29657215542",
+      "elapsedMs": [917.76, 907.16, 909.26],
+      "throughputMiBPerSecond": [150.18, 151.93, 151.58],
+      "worstIncrementalPrivateMiB": 136.98828125,
+      "outputBytes": 144469217,
+      "outputSha256": "460ff700714c2cc5656cba3ecea1b42289da48b663eb53dda3520412e0e4b035",
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 262144
+    }
+  ],
+  "sharedRuntimeGates": {
+    "runsPerReport": 3,
+    "memoryLimitMiB": 250,
+    "maximumPendingOperations": 1,
+    "fixedObservedWasmBytes": 33554432,
+    "completeFrameDecode": true,
+    "repeatableOutputHash": true,
+    "cancellationPassed": true,
+    "forcedWriteCleanupPassed": true,
+    "directCancellationDeletesPartialFile": true,
+    "terminalQueuedBytesAndOperations": 0
+  },
+  "browserAndLocalGates": {
+    "focusedIvfInput": "8/8 passed",
+    "directCancellation": "1/1 passed in 11.0 seconds",
+    "unit": "198/198 passed",
+    "productionBuild": "passed",
+    "eslint": "passed",
+    "typescript": "passed",
+    "publicEvidenceManifest": "399/399 public profiles covered",
+    "engineReproducibilityManifest": "11/11 published engine directories covered"
+  },
+  "publishedEngine": {
+    "manifestSha256": "326f65a9d53c74eeb02aaef815efda2577939c2e0d5a5154b2d1378753085ad7",
+    "wasmSha256": {
+      "within-direct.wasm": "e323423433daf8ed5bb7ed602c6965b8660adf902c2ada35f37bd984072a1268",
+      "within-mpeg4.wasm": "4511ef6c4e866673b0139ce41b3f47c5881862bc2575eda30378b3e863c37dda",
+      "within-remux.wasm": "daf260f886684219e7489cbe3b2b2ee3b7387a32ef6749d738ea3bc34d05bd82",
+      "within-vp9.wasm": "d1bee61a4296f6f80393b7162b9583c2c18838107cad06c2caa77a0ab77e5581",
+      "within-webm-quality.wasm": "5626bcbed0788a64c75821457c8e66e442b31e96e9441d02ae3dae48c565e635",
+      "within-webm.wasm": "d1bee61a4296f6f80393b7162b9583c2c18838107cad06c2caa77a0ab77e5581"
+    }
+  },
+  "publication": {
+    "repository": "https://github.com/tanishqbaweja/fileconverter",
+    "branch": "codex/media-options",
+    "commit": "9af549d2af996b300bbaac559240dae6b19178ec",
+    "workflow": "Reproduce FFmpeg without Docker",
+    "runId": 34566920335,
+    "runUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/34566920335",
+    "duration": "13m46s",
+    "result": "passed",
+    "allSixFfmpegModulesByteExact": true,
+    "mismatchArtifactUploadSkipped": true,
+    "hostedRepositoryLocalCleanupPassed": true,
+    "retainedArtifacts": 0,
+    "supersededArtifactIdsDeletedAndVerifiedAbsent": [10186222610, 10155727948]
+  },
+  "cleanup": {
+    "generatedStressFixturesDeleted": true,
+    "convertedOutputsDeleted": true,
+    "rawReportsDeletedAfterCompactEvidence": true,
+    "localDiagnosticDirectoryDeleted": true,
+    "workDirectoryContainsOnlyGitkeep": true,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}

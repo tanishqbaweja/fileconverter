@@ -45,6 +45,15 @@ in 0.861-0.924 seconds (175.9-188.9 MiB/s), used fixed 32 MiB Wasm, and peaked
 at 218.5 MiB complete-Chromium incremental private memory. Exact results are in
 `evidence/ivf-extraction-browser-2026-09-09.json`.
 
+IVF-to-WebM and IVF-to-Matroska packet-copy the contained AV1, VP8, or VP9
+video without decoding or re-encoding. The accepted reusable 256 KiB BYOB input
+path and bounded 1 MiB direct writes converted the 169,519,329-byte VP9 source
+in 0.728-1.209 seconds after warm-up/direct setup while staying below the 250
+MiB complete-Chromium memory limit. AV1 and VP9 outputs passed complete decode,
+repeatable hash, cancellation, and cleanup checks. Exact results and the
+byte-for-byte no-Docker publication run are recorded in
+`evidence/ivf-input-browser-2026-09-11.json`.
+
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
 lossy routes use the same fastest quality-certified encoders as standalone

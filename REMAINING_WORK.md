@@ -282,8 +282,13 @@ not the entire product specification.
   of 122.129 MiB (WebM) and 136.988 MiB (MKV). Direct cancellation now removes
   the incomplete file instead of leaving a zero-byte placeholder and reports
   zero terminal queued bytes/operations. These two routes are no longer part
-  of the unimplemented backlog; publication reproducibility remains a release
-  gate for the candidate FFmpeg Wasm build.
+  of the unimplemented backlog. Hosted no-Docker run 34566920335 rebuilt all
+  six FFmpeg modules byte-for-byte from pushed commit `9af549d` in 13m46s,
+  skipped mismatch upload, passed hosted cleanup, and retained no artifact.
+  Both superseded mismatch artifacts, all generated fixtures, converted copies,
+  raw reports, and the local diagnostic were deleted after compact evidence was
+  retained in `evidence/ivf-input-browser-2026-09-11.json`; `test.mkv` remains
+  byte-exact.
 
 ### 2026-09-09 — bounded raw HEVC to VP8 WebM acceptance
 
