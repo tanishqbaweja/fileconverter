@@ -81,6 +81,7 @@ export interface MediaRemuxOptions {
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
   singleThreadVideoCore?: boolean;
+  forceAsynchronousInput?: boolean;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -115,6 +116,7 @@ export async function runMediaRemux({
   videoOptions,
   lowMemoryVideoCore = false,
   singleThreadVideoCore = false,
+  forceAsynchronousInput = false,
   jobId,
   metrics,
   startedAt,
@@ -225,6 +227,7 @@ export async function runMediaRemux({
   // Large MKV remuxes use one persistent BYOB stream. Repeated synchronous
   // Blob slices make Chromium retain transient renderer buffers at scale.
   const synchronousInputReader =
+    forceAsynchronousInput ||
     remuxProfile === 1 ||
     (remuxProfile >= 19 && remuxProfile <= 21) ||
     remuxProfile === 23 ||
@@ -268,7 +271,9 @@ export async function runMediaRemux({
       remuxProfile === 30 ||
       remuxProfile === 31 ||
       remuxProfile === 32 ||
-      remuxProfile === 33) &&
+      remuxProfile === 33 ||
+      remuxProfile === 17 ||
+      remuxProfile === 23) &&
     writable.writeSync &&
     writable.additionalWorkerCount === 1
       ? new Uint8Array(maximumOutputWriteBytes)

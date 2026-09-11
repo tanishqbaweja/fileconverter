@@ -2452,6 +2452,42 @@
       }
     },
     {
+      "profileId": "ivf-to-mkv",
+      "maxTestedBytes": 169519329,
+      "repeatableEvidence": {
+        "report": "2026-09-10T19-40-48-591Z-ivf-to-mkv-direct-handle-stress.json",
+        "reportSha256": "33fda0f677dd1dff9f459d9b3172aa7401ad20dc75b92335a98656ff5baead6f",
+        "runs": 3,
+        "sourceBytes": 169519329,
+        "incrementalPrivateMiB": 230.34375
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-10T19-40-48-591Z-ivf-to-mkv-direct-handle-stress.json",
+        "reportSha256": "33fda0f677dd1dff9f459d9b3172aa7401ad20dc75b92335a98656ff5baead6f",
+        "runs": 3,
+        "sourceBytes": 169519329,
+        "incrementalPrivateMiB": 230.34375
+      }
+    },
+    {
+      "profileId": "ivf-to-webm",
+      "maxTestedBytes": 169519329,
+      "repeatableEvidence": {
+        "report": "2026-09-10T19-30-28-681Z-ivf-to-webm-direct-handle-stress.json",
+        "reportSha256": "b7ac00f538bf8389ba4b891928449c14bab171e43563a808749427a924b8e945",
+        "runs": 3,
+        "sourceBytes": 169519329,
+        "incrementalPrivateMiB": 233.21484375
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-10T19-30-28-681Z-ivf-to-webm-direct-handle-stress.json",
+        "reportSha256": "b7ac00f538bf8389ba4b891928449c14bab171e43563a808749427a924b8e945",
+        "runs": 3,
+        "sourceBytes": 169519329,
+        "incrementalPrivateMiB": 233.21484375
+      }
+    },
+    {
       "profileId": "jpeg-to-avif",
       "maxTestedBytes": 51804,
       "repeatableEvidence": {
@@ -3103,18 +3139,18 @@
       "profileId": "mkv-to-ivf",
       "maxTestedBytes": 170427228,
       "repeatableEvidence": {
-        "report": "2026-09-08T21-41-54-318Z-mkv-to-ivf-stress.json",
-        "reportSha256": "57134c4a0b25eb01f92d6b5ef76422db58176b4336bf0ab9a5cf1bcb5a21795f",
+        "report": "2026-09-10T14-08-23-480Z-mkv-to-ivf-stress.json",
+        "reportSha256": "b6f0f4959e11b073b7bfd6eecd4e6883f199ca7618f8bdd8909267cbf608e7de",
         "runs": 3,
         "sourceBytes": 170427228,
-        "incrementalPrivateMiB": 218.0390625
+        "incrementalPrivateMiB": 139.59765625
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T21-41-54-318Z-mkv-to-ivf-stress.json",
-        "reportSha256": "57134c4a0b25eb01f92d6b5ef76422db58176b4336bf0ab9a5cf1bcb5a21795f",
+        "report": "2026-09-10T14-08-23-480Z-mkv-to-ivf-stress.json",
+        "reportSha256": "b6f0f4959e11b073b7bfd6eecd4e6883f199ca7618f8bdd8909267cbf608e7de",
         "runs": 3,
         "sourceBytes": 170427228,
-        "incrementalPrivateMiB": 218.0390625
+        "incrementalPrivateMiB": 139.59765625
       }
     },
     {
@@ -6505,18 +6541,18 @@
       "profileId": "webm-to-ivf",
       "maxTestedBytes": 170426767,
       "repeatableEvidence": {
-        "report": "2026-09-08T21-44-55-098Z-webm-to-ivf-stress.json",
-        "reportSha256": "fb928a69a8e47d1a7779e848236c4f72bf4957b79fa943690718ec12554a719a",
+        "report": "2026-09-10T14-11-48-856Z-webm-to-ivf-stress.json",
+        "reportSha256": "9d1362f60dcaed3664372a04783e3a7f38ef6c15630c26f949f2c1087f486c93",
         "runs": 3,
         "sourceBytes": 170426767,
-        "incrementalPrivateMiB": 218.53515625
+        "incrementalPrivateMiB": 136.14453125
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T21-44-55-098Z-webm-to-ivf-stress.json",
-        "reportSha256": "fb928a69a8e47d1a7779e848236c4f72bf4957b79fa943690718ec12554a719a",
+        "report": "2026-09-10T14-11-48-856Z-webm-to-ivf-stress.json",
+        "reportSha256": "9d1362f60dcaed3664372a04783e3a7f38ef6c15630c26f949f2c1087f486c93",
         "runs": 3,
         "sourceBytes": 170426767,
-        "incrementalPrivateMiB": 218.53515625
+        "incrementalPrivateMiB": 136.14453125
       }
     },
     {

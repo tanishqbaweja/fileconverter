@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 268);
+  assert.equal(publicMedia.length, 270);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -306,6 +306,31 @@ test("IVF extraction exposes only bounded AV1, VP8, and VP9 video copy routes", 
     assert.match(profile.fidelityLimitations.join(" "), /byte-for-byte/i);
     assert.match(profile.fidelityLimitations.join(" "), /temporal-delimiter/i);
   }
+});
+
+test("IVF input exposes only browser-validated packet-copy routes", () => {
+  for (const [id, output] of [
+    ["ivf-to-webm", "webm-av1"],
+    ["ivf-to-mkv", "mkv"],
+  ]) {
+    const profile = conversionProfiles.find((candidate) => candidate.id === id);
+    assert.ok(profile, `missing ${id}`);
+    assert.equal(profile.input, "ivf");
+    assert.equal(profile.output, output);
+    assert.equal(profile.route, "stream-copy");
+    assert.equal(profile.engine, "ffmpeg-remux");
+    assert.equal(profile.public, true);
+    assert.equal(profile.automatedTestStatus, "passed");
+    assert.equal(profile.maxTestedBytes, 169_519_329);
+    assert.match(profile.metadataLimitations.join(" "), /one video stream/i);
+    assert.match(profile.fidelityLimitations.join(" "), /temporal-delimiter/i);
+  }
+  assert.deepEqual(
+    publicProfilesFor("ivf")
+      .filter((profile) => profile.input === "ivf")
+      .map((profile) => profile.id),
+    ["ivf-to-webm", "ivf-to-mkv"],
+  );
 });
 
 test("compatible OGV stream copy is public after its measured evidence passes", () => {
@@ -657,6 +682,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "ogv-copy",
         "avi-copy",
         "ivf-extract",
+        "ivf-input-copy",
         "m4v-extract",
         "m4v-wrap",
         "compatible-webm-copy",
@@ -731,6 +757,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledDemuxers.includes("h264"));
   assert.ok(manifest.enabledDemuxers.includes("hevc"));
   assert.ok(manifest.enabledDemuxers.includes("m4v"));
+  assert.ok(manifest.enabledDemuxers.includes("ivf"));
   assert.ok(manifest.enabledMuxers.includes("h264"));
   assert.ok(manifest.enabledMuxers.includes("hevc"));
   assert.ok(manifest.enabledMuxers.includes("mpeg2video"));

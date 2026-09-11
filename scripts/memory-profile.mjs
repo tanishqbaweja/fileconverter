@@ -816,7 +816,8 @@ if (!new Set(["sync-opfs", "direct-handle"]).has(destinationMode)) {
   );
 }
 const maximumWriteChunkBytes =
-  destinationMode === "direct-handle" && profileId === "mkv-to-mp4"
+  destinationMode === "direct-handle" &&
+  (profileId === "mkv-to-mp4" || IVF_INPUT_PROFILES.includes(profileId))
     ? 1024 * 1024
     : isBzip2Profile || isXzProfile || isSevenZipProfile
       ? 64 * 1024
@@ -1006,6 +1007,7 @@ try {
     const cancelledState = await page.evaluate(() =>
       window.__WITHIN_TEST__?.getState(),
     );
+    lastObservedState = cancelledState ?? lastObservedState;
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
     );
@@ -1589,6 +1591,7 @@ try {
         activeRun,
         terminationSignal,
         completedRuns: runSummaries,
+        cancellationCheck,
         lastObservedState,
         samples,
         failure: {

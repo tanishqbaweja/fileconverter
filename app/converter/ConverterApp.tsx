@@ -146,6 +146,24 @@ async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
   await root.removeEntry(name).catch(() => {});
 }
 
+async function removeIncompleteDirectoryOutput(
+  batch: ActiveBatch | null,
+): Promise<string | null> {
+  const directory = batch?.destinationDirectoryHandle;
+  const name = batch?.outputNames[batch.index];
+  if (!directory || !name) return null;
+  try {
+    await directory.removeEntry(name);
+    return null;
+  } catch (error) {
+    const detail = error instanceof Error ? error.message : String(error);
+    return `The incomplete output ${name} could not be deleted: ${detail}`.slice(
+      0,
+      MAX_WORKER_RESPONSE_TEXT_CHARS,
+    );
+  }
+}
+
 function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes)) return "Unavailable";
   const units = ["B", "KiB", "MiB", "GiB", "TiB"];
@@ -574,7 +592,7 @@ export function ConverterApp() {
         { name: "within-conversion" },
       );
       workerRef.current = worker;
-      worker.onmessage = (event: MessageEvent<WorkerResponse>) => {
+      worker.onmessage = async (event: MessageEvent<WorkerResponse>) => {
         const message = event.data;
         if (message.type === "ready") {
           setWorkerReady(true);
@@ -644,7 +662,14 @@ export function ConverterApp() {
           activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
+          const cleanupWarning = await removeIncompleteDirectoryOutput(batch);
           setMetrics(message.metrics);
+          if (cleanupWarning) {
+            setWarnings((current) => [
+              ...current.slice(1 - MAX_RETAINED_WARNINGS),
+              cleanupWarning,
+            ]);
+          }
           setPhase(
             batch && batch.files.length > 1
               ? `Cancelled after ${batch.index} of ${batch.files.length} files`
@@ -653,11 +678,19 @@ export function ConverterApp() {
           setJobState("cancelled");
           replaceWorker(worker);
         } else {
+          const batch = activeBatchRef.current;
           activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
+          const cleanupWarning = await removeIncompleteDirectoryOutput(batch);
           setMetrics(message.metrics);
           setError(message.message);
+          if (cleanupWarning) {
+            setWarnings((current) => [
+              ...current.slice(1 - MAX_RETAINED_WARNINGS),
+              cleanupWarning,
+            ]);
+          }
           setPhase("Stopped safely");
           setJobState("error");
           replaceWorker(worker);

@@ -2398,7 +2398,7 @@ for (const fault of [
       expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
       expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
       const abandonedSize = await removeOpfsEntryAndReportSize(outputName);
-      expect(abandonedSize).toBe(0);
+      expect(abandonedSize).toBeNull();
     } finally {
       await removeOpfsEntryAndReportSize(outputName);
     }
@@ -2558,7 +2558,7 @@ test("cancels a direct-save conversion, releases its lock, and deletes the parti
     expect(state.metrics?.queuedBytes).toBe(0);
     expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
     expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
-    expect(await removeOpfsEntryAndReportSize(outputName)).toBe(0);
+    expect(await removeOpfsEntryAndReportSize(outputName)).toBeNull();
 
     const lockReleased = await page.evaluate(async (entryName) => {
       const root = await navigator.storage.getDirectory();

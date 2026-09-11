@@ -4031,7 +4031,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "m2v-to-mp4-mpeg4") &&
         message.destination.mode === "opfs-test",
       message.testFault,
-      profileId === "mkv-to-mp4"
+      profileId === "mkv-to-mp4" ||
+        profileId === "ivf-to-webm" ||
+        profileId === "ivf-to-mkv"
         ? DIRECT_REMUX_WRITE_CHUNK
         : compressionTranscode ||
             profileId === "tar-to-sevenzip" ||
@@ -4784,6 +4786,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         lowMemoryVideoCore:
           profileId === "hevc-to-webm",
         singleThreadVideoCore: profileId === "hevc-to-webm-vp9",
+        forceAsynchronousInput:
+          profileId === "ivf-to-webm" || profileId === "ivf-to-mkv",
         remuxProfile:
           profileId === "mkv-to-mp3" ||
           profileId === "mp4-to-mp3" ||
@@ -5019,6 +5023,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     } catch {
       // The destination may already be closed or unavailable.
     }
+    metrics.queuedBytes = 0;
+    metrics.pendingOperations = 0;
     if (error instanceof DOMException && error.name === "AbortError") {
       post({ type: "cancelled", jobId, metrics: { ...metrics } });
     } else {

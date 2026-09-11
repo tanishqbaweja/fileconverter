@@ -244,6 +244,46 @@ not the entire product specification.
   `ivf-to-webm` or `ivf-to-mkv` can become public. The already-certified
   extraction routes re-passed at 139.6 MiB and 136.1 MiB before the profiler
   exposed and cleaned up the missing input-route dispatch mapping.
+- The first complete 169,519,329-byte VP9 IVF-to-WebM stress cycle passed three
+  repeatable output hashes, full decoded-frame validation, bounded 256 KiB I/O,
+  one pending write, fixed 32 MiB Wasm, cancellation, write cleanup, and output
+  cleanup. Conversion itself took only 1.458–2.110 seconds, but run 1 reached
+  266.348 MiB incremental complete-Chromium private memory (runs 2/3 were
+  177.785/249.254 MiB), so the profile remains unpublished. Peak OPFS usage was
+  essentially the complete 169.5 MB output and the variable renderer process
+  accounted for the excess; this rejects the existing 128 MiB live sync-handle
+  cache window as insufficiently bounded for this route. The next controlled
+  candidate reopens the same OPFS sync handle every 64 MiB—one additional
+  reopen for this output—and must beat the unchanged three-run memory gate
+  without losing byte identity, validation, cleanup, or stream-copy speed.
+- That 64 MiB reopen candidate was rejected after its controlled three-run
+  rerun increased the worst peak to 276.922 MiB (runs 2/3 were 244.434 and
+  252.219 MiB) while producing the same 169,514,222-byte output in
+  1.482–1.792 seconds and passing every non-memory check. The peak renderer
+  still held 263.49 MiB with exact output-sized OPFS usage, so access-handle
+  rotation did not release the retained allocation. Code inspection then found
+  that `ivf-to-webm` reuses native profile 17 and therefore accidentally took
+  the synchronous `FileReaderSync`/Blob-slice path; established large remux
+  profiles use one reusable asynchronous BYOB reader specifically because the
+  synchronous slices cause renderer retention. The next candidate forces both
+  IVF input route IDs onto that existing 256 KiB BYOB path. This also restores
+  event-loop yield points needed for prompt direct-destination cancellation;
+  the unchanged three-run correctness, speed, memory, and cleanup gates remain.
+- The reusable 256 KiB BYOB input path is the accepted IVF-input design. On the
+  169,519,329-byte VP9 fixture, three-run IVF-to-WebM conversion peaked at
+  225.957 MiB in OPFS mode and 233.215 MiB in direct-save mode; IVF-to-MKV
+  peaked at 124.703 MiB and 230.344 MiB respectively. The optimized direct path
+  coalesces bounded 1 MiB writes and completed each run in 1.209 seconds or
+  less. OPFS warm runs completed in 0.756 seconds or less for WebM and 0.910
+  seconds or less for MKV. Exact packet/output hashes, complete 1,440-frame
+  decoding, one pending write, fixed 32 MiB Wasm memory, cancellation, and
+  cleanup all passed. The 144,520,682-byte AV1 fixture also passed both OPFS
+  routes across three runs with complete 8,640-frame decoding and worst peaks
+  of 122.129 MiB (WebM) and 136.988 MiB (MKV). Direct cancellation now removes
+  the incomplete file instead of leaving a zero-byte placeholder and reports
+  zero terminal queued bytes/operations. These two routes are no longer part
+  of the unimplemented backlog; publication reproducibility remains a release
+  gate for the candidate FFmpeg Wasm build.
 
 ### 2026-09-09 — bounded raw HEVC to VP8 WebM acceptance
 

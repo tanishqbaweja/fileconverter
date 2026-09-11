@@ -153,6 +153,10 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(conversionWorker, /message:\s*message\.message\.slice\(0, MAX_WORKER_RESPONSE_TEXT_CHARS\)/);
   assert.match(conversionWorker, /now - lastProgressAt < MIN_PROGRESS_INTERVAL_MS/);
   assert.match(conversionWorker, /finally\s*{\s*activeJobId = null;\s*cancelled = false;/s);
+  assert.match(
+    conversionWorker,
+    /await destination\?\.writable\.abort\(error\);.*?metrics\.queuedBytes = 0;\s*metrics\.pendingOperations = 0;/s,
+  );
   assert.doesNotMatch(conversionWorker, /setInterval\s*\(/);
 
   const directWorker = source("workers/direct-file-writer.worker.ts");
@@ -166,8 +170,50 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
 
   const app = source("app/converter/ConverterApp.tsx");
   assert.match(app, /const replaceWorker = .*?retired\.terminate\(\)/s);
+  assert.match(
+    app,
+    /const cleanupWarning = await removeIncompleteDirectoryOutput\(batch\);/,
+  );
   assert.match(app, /return \(\) => {.*?window\.clearTimeout\(replacementTimer\);.*?workerRef\.current\?\.terminate\(\)/s);
   assert.match(app, /return \(\) => window\.clearInterval\(timer\)/);
+});
+
+test("IVF inputs use the reusable asynchronous BYOB reader", () => {
+  const worker = source("workers/conversion.worker.ts");
+  assert.match(
+    worker,
+    /forceAsynchronousInput:\s*profileId === "ivf-to-webm" \|\| profileId === "ivf-to-mkv"/,
+  );
+
+  const remux = source("workers/media-remux.ts");
+  assert.match(
+    remux,
+    /const synchronousInputReader =\s*forceAsynchronousInput \|\|/,
+  );
+  assert.match(
+    remux,
+    /\.stream\(\)\s*\.getReader\({ mode: "byob" }\)/,
+  );
+});
+
+test("IVF direct output coalesces bounded writes to the certified 1 MiB size", () => {
+  const worker = source("workers/conversion.worker.ts");
+  assert.match(
+    worker,
+    /profileId === "mkv-to-mp4" \|\|\s*profileId === "ivf-to-webm" \|\|\s*profileId === "ivf-to-mkv"\s*\? DIRECT_REMUX_WRITE_CHUNK/s,
+  );
+
+  const remux = source("workers/media-remux.ts");
+  assert.match(
+    remux,
+    /remuxProfile === 17 \|\|\s*remuxProfile === 23\) &&\s*writable\.writeSync &&\s*writable\.additionalWorkerCount === 1/s,
+  );
+
+  const profiler = source("scripts/memory-profile.mjs");
+  assert.match(
+    profiler,
+    /profileId === "mkv-to-mp4" \|\| IVF_INPUT_PROFILES\.includes\(profileId\)/,
+  );
 });
 
 test("worker messages, warnings, and batch-retained state have hard limits", () => {

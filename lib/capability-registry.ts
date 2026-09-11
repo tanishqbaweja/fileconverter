@@ -1666,6 +1666,44 @@ function ivfExtractionProfile(
   };
 }
 
+const ivfInputEvidence = {
+  "ivf-to-webm": 169_519_329,
+  "ivf-to-mkv": 169_519_329,
+} as const;
+
+function ivfInputProfile(output: "webm-av1" | "mkv"): ConversionProfile {
+  const webm = output === "webm-av1";
+  const id = webm ? "ivf-to-webm" : "ivf-to-mkv";
+  return {
+    id,
+    input: "ivf",
+    output,
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [
+      "WebAssembly",
+      "SharedArrayBuffer",
+      "cross-origin isolation",
+      "File System Access",
+    ],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [
+      "The IVF stream must contain AV1, VP8, or VP9 video. It is packet-copied without video decoding or re-encoding.",
+      `IVF contains one video stream and no audio, subtitles, attachments, chapters, language tags, rotation, or general metadata, so the ${webm ? "WebM" : "Matroska"} output cannot restore those absent elements.`,
+      webm
+        ? "The bounded live-WebM layout omits a duration field and cue index so muxer memory cannot grow with file duration; players can still decode sequentially but may need to scan before seeking accurately."
+        : "The bounded live-Matroska layout omits a duration field and cue index so muxer memory cannot grow with file duration; sequential playback remains valid, while accurate seeking or displayed duration may require a player scan.",
+    ],
+    fidelityLimitations: [
+      "VP8 and VP9 compressed packets are copied byte-for-byte. AV1 remains compressed and is not decoded or re-encoded, but FFmpeg normalizes temporal-delimiter OBU framing when moving between IVF and Matroska-family containers; independently decoded frames remain exact.",
+    ],
+    maxTestedBytes: ivfInputEvidence[id],
+    automatedTestStatus: "passed",
+    public: true,
+  };
+}
+
 const mp3ExtractionEvidence = {
   mkv: 181_340_062,
   mp4: 181_344_111,
@@ -6096,6 +6134,8 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     av1WebmProfile(),
     ivfExtractionProfile("mkv"),
     ivfExtractionProfile("webm"),
+    ivfInputProfile("webm-av1"),
+    ivfInputProfile("mkv"),
     containerMp3Profile("mkv"),
     containerMp3Profile("mp4"),
     containerMp3Profile("mov"),
