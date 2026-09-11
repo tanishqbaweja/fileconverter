@@ -157,6 +157,21 @@ not the entire product specification.
 
 ## Implementation and verification log
 
+### 2026-09-11 — AVI to MOV feasibility and unpublished candidate
+
+- A repository-local native feasibility check packet-copied the 96 MPEG-4 Part
+  2 video packets from the 1,306,330-byte AVI fixture into a genuine fragmented
+  QuickTime MOV. Source and output compressed-video SHA-256 matched exactly;
+  FFprobe reported 640×360, 4.041667 seconds, and a 1,194,852-byte MOV.
+- The disposable output and `work/avi-to-mov-feasibility` directory were
+  deleted immediately. Compact facts are retained in
+  `evidence/avi-to-mov-feasibility-2026-09-11.json`.
+- An unpublished test-mode candidate now reuses the bounded MOV writer, accepts
+  H.264 or MPEG-4 Part 2 AVI video, retains AAC where present, and explicitly
+  excludes incompatible AVI audio such as MP3. Browser conversion, candidate
+  Wasm reproduction, stress memory, cancellation, write-failure, and cleanup
+  gates remain required before promotion.
+
 ### 2026-09-11 — AVI to 3GP production-browser publication
 
 - Native feasibility and independent validation proved that the existing

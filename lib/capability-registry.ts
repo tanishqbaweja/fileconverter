@@ -1394,10 +1394,11 @@ const containerMovEvidence = {
   "3gp-to-mov": 146_854_522,
   "mpeg-ts-to-mov": 150_441_548,
   "flv-to-mov": 146_903_539,
+  "avi-to-mov": null,
 } as const satisfies Record<string, number | null>;
 
 function containerMovProfile(
-  input: "mkv" | "mp4" | "3gp" | "mpeg-ts" | "flv",
+  input: "mkv" | "mp4" | "3gp" | "mpeg-ts" | "flv" | "avi",
 ): ConversionProfile {
   const id = `${input}-to-mov` as keyof typeof containerMovEvidence;
   const evidence = containerMovEvidence[id];
@@ -1416,15 +1417,19 @@ function containerMovProfile(
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding; compatible stream language/general tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded.",
+      input === "avi"
+        ? "The candidate AVI input accepts H.264 or MPEG-4 Part 2 video and packet-copies it without re-encoding. AAC audio is retained when present; incompatible AVI audio, including MP3, is explicitly excluded. Other video codecs require a separately verified route."
+        : "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
+      input === "avi"
+        ? "Compatible compressed video and AAC streams are copied without re-encoding; incompatible AVI audio is explicitly excluded. Compatible stream language/general tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded."
+        : "All compatible video and audio streams are copied without re-encoding; compatible stream language/general tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded.",
       "When a media type has no source-default track, the bounded MOV muxer marks its first compatible track as default; compressed payloads are unchanged.",
       "The bounded fragmented-QuickTime layout avoids duration-sized muxer indexes. Some players may need to scan fragments before displaying an accurate duration or seeking.",
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
     automatedTestStatus: evidence === null ? "pending" : "passed",
-    public: true,
+    public: evidence !== null,
   };
 }
 
@@ -6121,6 +6126,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerMovProfile("3gp"),
     containerMovProfile("mpeg-ts"),
     containerMovProfile("flv"),
+    containerMovProfile("avi"),
     containerFlvProfile("mkv"),
     containerFlvProfile("mp4"),
     containerFlvProfile("mov"),

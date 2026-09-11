@@ -178,6 +178,14 @@ manifest = manifest.replace(
   aviThreeGpMarker,
   '"flv-to-3gp","avi-to-3gp","mkv-to-mov"',
 );
+const aviMovMarker = '"flv-to-mov","mkv-to-flv"';
+if (!manifest.includes(aviMovMarker)) {
+  throw new Error("Could not locate the AVI-to-MOV profile insertion point.");
+}
+manifest = manifest.replace(
+  aviMovMarker,
+  '"flv-to-mov","avi-to-mov","mkv-to-flv"',
+);
 writeFileSync(
   manifestPath,
   manifest,

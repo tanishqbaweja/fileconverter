@@ -367,6 +367,7 @@ const containerMovOutputPaths = {
   "3gp": path.join(outputRoot, "3gp-remux-output.mov"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.mov"),
   flv: path.join(outputRoot, "flv-remux-output.mov"),
+  avi: path.join(outputRoot, "avi-remux-output.mov"),
 } as const;
 const containerFlvOutputPaths = {
   mkv: path.join(outputRoot, "mkv-remux-output.flv"),
@@ -2980,6 +2981,7 @@ async function runMediaRoute(
     | "3gp-to-mov"
     | "mpeg-ts-to-mov"
     | "flv-to-mov"
+    | "avi-to-mov"
     | "mkv-to-flv"
     | "mp4-to-flv"
     | "mov-to-flv"
@@ -8029,6 +8031,36 @@ test("browser FFmpeg packet-copies AVI MPEG-4 video into genuine bounded 3GP and
       validate: async (probe, outputPath) => {
         expect(probe.format.format_name?.split(",")).toContain("3gp");
         expect(probe.format.tags?.major_brand).toBe("3gp4");
+        expect(probe.streams).toHaveLength(1);
+        const video = probe.streams[0];
+        expect(video?.codec_type).toBe("video");
+        expect(video?.codec_name).toBe("mpeg4");
+        expect(video?.width).toBe(640);
+        expect(video?.height).toBe(360);
+        expect(Number(video?.nb_read_frames)).toBe(96);
+        await expectCompressedVideoPacketMatch(aviInputFixturePath, outputPath);
+        await expectDecodedVideoMatch(aviInputFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+test("browser FFmpeg packet-copies AVI MPEG-4 video into genuine bounded MOV and discloses excluded MP3", async () => {
+  await runMediaRoute(
+    "avi-to-mov",
+    containerMovOutputPaths.avi,
+    ["mpeg4"],
+    1_000_000,
+    aviInputFixturePath,
+    {
+      expectedWarningFragments: [
+        "incompatible AVI audio was explicitly excluded",
+      ],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mov");
+        expect(probe.format.tags?.major_brand).toBe("qt  ");
         expect(probe.streams).toHaveLength(1);
         const video = probe.streams[0];
         expect(video?.codec_type).toBe("video");

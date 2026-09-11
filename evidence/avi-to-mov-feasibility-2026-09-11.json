@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-11",
+  "status": "native-feasibility-passed-browser-candidate-pending",
+  "scope": "Bounded-route feasibility for AVI MPEG-4 Part 2 video to fragmented QuickTime MOV packet copy with incompatible AVI MP3 audio explicitly excluded.",
+  "source": {
+    "path": "fixtures/media/legacy-video-source.avi",
+    "bytes": 1306330,
+    "sha256": "94af4c87b56f5a09cf4afb949aae8bdb938131f897eb274240c8abbe27c12341",
+    "video": { "codec": "mpeg4", "width": 640, "height": 360, "frames": 96 },
+    "audio": { "codec": "mp3", "disposition": "explicitly excluded because the candidate MOV profile accepts AAC audio only" }
+  },
+  "nativeValidationOnly": {
+    "outputBytes": 1194852,
+    "outputSha256": "9c8906708776b00a0ca11f5d81370211f3f6da3365f835c6b2acf599310193ff",
+    "formatName": "mov,mp4,m4a,3gp,3g2,mj2",
+    "formatLongName": "QuickTime / MOV",
+    "durationSeconds": 4.041667,
+    "sourceVideoPacketSha256": "59a4d88163df7fee61cdb16100e224c24d24f074f25e8f1cfe40747357507c8b",
+    "outputVideoPacketSha256": "59a4d88163df7fee61cdb16100e224c24d24f074f25e8f1cfe40747357507c8b",
+    "purpose": "FFmpeg was used only to establish standards/container feasibility and independently inspect the disposable candidate; it was not used as the browser converter."
+  },
+  "resourceAndCleanup": {
+    "preflightFreeBytes": 2054137098240,
+    "temporaryDirectory": "work/avi-to-mov-feasibility",
+    "temporaryDirectoryDeleted": true,
+    "outputRetained": false,
+    "dockerUsed": false
+  },
+  "decision": "Proceed with an unpublished production-browser candidate. Do not expose avi-to-mov until genuine browser conversion, independent packet/full-decode validation, repeatable large-file memory profiling, cancellation, write-failure, cleanup, and exact no-Docker reproduction all pass."
+}

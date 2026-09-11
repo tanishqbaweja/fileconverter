@@ -172,14 +172,17 @@ function containerCodecCompatible(
   const codec = normalizedCodec(stream.codec);
   if (profile.output === "mkv") return mkvCompatible(stream);
   if (stream.mediaType === "subtitle") return false;
+  if (
+    (profile.output === "3gp" || profile.output === "mov") &&
+    profile.input === "avi"
+  ) {
+    return stream.mediaType === "video"
+      ? codec === "H.264" || codec === "MPEG-4 Part 2"
+      : codec === "AAC";
+  }
   if (profile.output === "mpeg-ts" || profile.output === "mov") {
     return stream.mediaType === "video"
       ? codec === "H.264" || codec === "HEVC"
-      : codec === "AAC";
-  }
-  if (profile.output === "3gp" && profile.input === "avi") {
-    return stream.mediaType === "video"
-      ? codec === "H.264" || codec === "MPEG-4 Part 2"
       : codec === "AAC";
   }
   if (profile.output === "3gp" || profile.output === "flv") {
@@ -312,7 +315,7 @@ function planContainerCopy(
   let firstAudioSeen = false;
   return streams.map((stream, index) => {
     if (
-      profile.output === "3gp" &&
+      (profile.output === "3gp" || profile.output === "mov") &&
       profile.input === "avi" &&
       stream.mediaType === "audio" &&
       !containerCodecCompatible(profile, stream)
@@ -321,7 +324,7 @@ function planContainerCopy(
         stream,
         index,
         "exclude",
-        "Only AAC audio can be packet-copied into this 3GP profile; incompatible AVI audio is explicitly excluded while compatible compressed video remains unchanged.",
+        `Only AAC audio can be packet-copied into this ${profile.output.toUpperCase()} profile; incompatible AVI audio is explicitly excluded while compatible compressed video remains unchanged.`,
       );
     }
     if (profile.output === "flv") {

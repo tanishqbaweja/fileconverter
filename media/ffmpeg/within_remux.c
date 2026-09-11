@@ -409,7 +409,7 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
                                            int profile,
                                            const AVFormatContext *format) {
 #ifdef WITHIN_OGV_COPY
-  const int avi_threegp_input =
+  const int avi_fragmented_iso_input =
       format->iformat && format->iformat->name &&
       strstr(format->iformat->name, "avi") != NULL;
 #endif
@@ -460,7 +460,7 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264
 #ifdef WITHIN_OGV_COPY
-             || (avi_threegp_input &&
+             || (avi_fragmented_iso_input &&
                  stream->codecpar->codec_id == AV_CODEC_ID_MPEG4)
 #endif
           ;
@@ -471,7 +471,12 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 26) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
-             stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
+             stream->codecpar->codec_id == AV_CODEC_ID_HEVC
+#ifdef WITHIN_OGV_COPY
+             || (avi_fragmented_iso_input &&
+                 stream->codecpar->codec_id == AV_CODEC_ID_MPEG4)
+#endif
+          ;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
            stream->codecpar->codec_id == AV_CODEC_ID_AAC;
@@ -2717,7 +2722,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   const int container_mpegts_output = profile == 24;
   const int container_threegp_output = profile == 25;
 #ifdef WITHIN_OGV_COPY
-  const int avi_threegp_input =
+  const int avi_fragmented_iso_input =
       input_format->iformat && input_format->iformat->name &&
       strstr(input_format->iformat->name, "avi") != NULL;
 #endif
@@ -3185,7 +3190,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         : amr_copy_output
             ? (int)index == audio_stream_index
 #ifdef WITHIN_OGV_COPY
-        : container_threegp_output && avi_threegp_input &&
+        : (container_threegp_output || container_mov_output) &&
+              avi_fragmented_iso_input &&
               input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO
             ? copy_compatible
 #endif
@@ -3219,7 +3225,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       } else if (container_mov_output) {
         within_message(
             2,
-            "MOV stream copy accepts H.264 or HEVC video with AAC audio; this source needs a separately verified conversion route.");
+            "MOV stream copy accepts H.264 or HEVC video with AAC audio, or MPEG-4 Part 2 video from AVI; this source needs a separately verified conversion route.");
       } else if (container_flv_output) {
         within_message(
             2,
@@ -3314,11 +3320,14 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
         within_message(1,
                        "This M4V wrapping profile includes only the MPEG-4 Part 2 video stream; source audio was explicitly excluded.");
 #ifdef WITHIN_OGV_COPY
-      } else if (container_threegp_output && avi_threegp_input &&
+      } else if ((container_threegp_output || container_mov_output) &&
+                 avi_fragmented_iso_input &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(
             1,
-            "Only AAC audio can be packet-copied into this 3GP profile; incompatible AVI audio was explicitly excluded while compatible compressed video remains unchanged.");
+            container_threegp_output
+                ? "Only AAC audio can be packet-copied into this 3GP profile; incompatible AVI audio was explicitly excluded while compatible compressed video remains unchanged."
+                : "Only AAC audio can be packet-copied into this MOV profile; incompatible AVI audio was explicitly excluded while compatible compressed video remains unchanged.");
       } else if (container_ogv_output &&
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(
