@@ -160,9 +160,9 @@
       "within-webm.wasm": "d1bee61a4296f6f80393b7162b9583c2c18838107cad06c2caa77a0ab77e5581"
     },
     "currentWithinRemuxSupersession": {
-      "sha256": "244ed58c4f62cec877db8ea16ba7b9caedf02317c1dea7973d23cdc22ea93e02",
-      "evidence": "evidence/avi-to-3gp-browser-2026-09-11.json",
-      "reason": "The general remux core was subsequently extended with the independently reproduced AVI-to-3GP profile; the IVF input behavior and specialist modules are unchanged."
+      "sha256": "de1a713496f4570d6ecd61f582217a94dd32b29bc0a8e2dea7406e08857f1e24",
+      "evidence": "evidence/avi-to-mov-browser-2026-09-11.json",
+      "reason": "The general remux core was subsequently extended with the independently reproduced AVI-to-MOV profile; the IVF input behavior and specialist modules are unchanged."
     }
   },
   "publication": {

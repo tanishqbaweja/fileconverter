@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **400**
-- Public profiles with retained successful Chrome stress evidence: **400**
+- Public passed conversion profiles: **401**
+- Public profiles with retained successful Chrome stress evidence: **401**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -324,6 +324,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avi-to-m4a | 159,500,442 | 3 | 974,001 | 1.83 s–2.22 s | 228.4 MiB | 32.0 MiB | read 262,144 B / write 75,641 B | passed |
 | avi-to-m4v | 179,650,578 | 3 | 179,609,473 | 1.74 s–1.98 s | 201.9 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
 | avi-to-mkv | 159,500,442 | 3 | 159,424,026 | 0.95 s–1.25 s | 166.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-mov | 159,500,442 | 3 | 157,854,929 | 1.80 s–2.13 s | 211.8 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mp3 | 182,803,272 | 3 | 1,441,205 | 1.25 s–1.51 s | 214.9 MiB | 32.0 MiB | read 262,144 B / write 629 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-ogg | 159,500,442 | 3 | 135,279 | 1.79 s–2.12 s | 199.1 MiB | 32.0 MiB | read 262,144 B / write 3,552 B | passed |
@@ -826,6 +827,7 @@ Stream ma |
 | avi-to-m4a | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-m4v | video | ffmpeg-remux | stream-copy | 179,650,578 B | 3-run Chrome report |
 | avi-to-mkv | video | ffmpeg-remux | stream-copy | 159,500,442 B | 3-run Chrome report |
+| avi-to-mov | video | ffmpeg-remux | stream-copy | 159,500,442 B | 3-run Chrome report |
 | avi-to-mp3 | video | ffmpeg-remux | stream-copy | 182,803,272 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
 | avi-to-ogg | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -1201,3 +1203,5 @@ M-04/P-08 compatible AVI source expansion (2026-09-08): the same bounded native 
 M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. Hosted no-Docker run [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero artifacts. Every generated fixture, converted output, raw report, browser profile, local candidate, and native feasibility file was deleted; the obsolete candidate artifact was deleted and verified absent. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`.
 
 M-04/P-08 AVI-to-3GP publication (2026-09-11): the bounded remux core packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,896-byte `3gp4` output in six measured browser runs. OPFS completed in 0.769-1.106 seconds at 204.605 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.644-1.827 seconds at 249.918 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, partial-output cancellation, earliest-state direct cancellation, injected-write cleanup, and cleanup recovery passed. Hosted no-Docker runs [34569115338](https://github.com/tanishqbaweja/fileconverter/actions/runs/34569115338) and [34571134087](https://github.com/tanishqbaweja/fileconverter/actions/runs/34571134087) produced Wasm SHA-256 `244ed58c4f62cec877db8ea16ba7b9caedf02317c1dea7973d23cdc22ea93e02`; the latter also produced the route-bearing manifest. Generated stress sources, converted copies, browser profiles, local build candidates, and remote mismatch artifacts were deleted after compact evidence was recorded. See `evidence/avi-to-3gp-browser-2026-09-11.json`.
+
+M-04/P-08 AVI-to-MOV publication (2026-09-11): the bounded fragmented-QuickTime path packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,929-byte `qt  ` MOV in six measured browser runs. OPFS completed in 0.854-1.105 seconds at 192.156 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.797-2.134 seconds at 211.836 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, earliest-state cancellation, injected-write cleanup, and cleanup recovery passed. Candidate no-Docker run [34630790399](https://github.com/tanishqbaweja/fileconverter/actions/runs/34630790399) changed only the generated manifest and `within-remux.wasm`; final exact publication reproduction is recorded in `evidence/avi-to-mov-browser-2026-09-11.json`. Generated stress sources, converted copies, browser profiles, raw reports, and local candidate files were deleted after compact evidence was recorded.

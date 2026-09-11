@@ -504,6 +504,7 @@ if (
     "3gp-to-mov",
     "mpeg-ts-to-mov",
     "flv-to-mov",
+    "avi-to-mov",
     "mkv-to-flv",
     "mp4-to-flv",
     "mov-to-flv",
@@ -673,6 +674,7 @@ const isMediaProfile =
   profileId === "3gp-to-mov" ||
   profileId === "mpeg-ts-to-mov" ||
   profileId === "flv-to-mov" ||
+  profileId === "avi-to-mov" ||
   profileId === "mkv-to-flv" ||
   profileId === "mp4-to-flv" ||
   profileId === "mov-to-flv" ||
@@ -1381,6 +1383,7 @@ try {
   if (
     profileId === "mkv-to-ogv" ||
     profileId === "avi-to-3gp" ||
+    profileId === "avi-to-mov" ||
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
     isIvfProfile
   ) {
@@ -1398,6 +1401,7 @@ try {
       return (
         (state?.jobState === "running" &&
           (activeProfileId === "avi-to-3gp" ||
+            activeProfileId === "avi-to-mov" ||
             (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
         state?.jobState === "complete" ||
         state?.jobState === "error"
@@ -1408,7 +1412,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1450,7 +1454,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1520,6 +1524,7 @@ try {
     cancellationCleanup:
       (profileId !== "mkv-to-ogv" &&
         profileId !== "avi-to-3gp" &&
+        profileId !== "avi-to-mov" &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
         !isIvfProfile) ||
       cancellationCheck?.passed === true,
@@ -1819,13 +1824,15 @@ async function validateMediaOutput(
     "flv-to-3gp",
     "avi-to-3gp",
   ].includes(route);
-  const aviThreeGpCopy = route === "avi-to-3gp";
+  const aviVideoOnlyIsoCopy =
+    route === "avi-to-3gp" || route === "avi-to-mov";
   const containerMovCopy = [
     "mkv-to-mov",
     "mp4-to-mov",
     "3gp-to-mov",
     "mpeg-ts-to-mov",
     "flv-to-mov",
+    "avi-to-mov",
   ].includes(route);
   const containerFlvCopy = [
     "mkv-to-flv",
@@ -2810,13 +2817,13 @@ async function validateMediaOutput(
       (codecs.length !== (sourceAudio ? 2 : 1) ||
         codecs[0] !== sourceVideo?.codec_name ||
         (sourceAudio && codecs[1] !== "mp3"))) ||
-    (aviThreeGpCopy &&
+    (aviVideoOnlyIsoCopy &&
       (codecs.length !== 1 || codecs[0] !== sourceVideo?.codec_name)) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
       !compatibleAviCopy &&
-      !aviThreeGpCopy &&
+      !aviVideoOnlyIsoCopy &&
       (codecs.length !== 2 ||
         codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== sourceAudio?.codec_name))
@@ -2917,8 +2924,8 @@ async function validateMediaOutput(
         compatibleWebmCopy ||
         matroskaCopy ||
         containerMpegTsCopy ||
-        (containerThreeGpCopy && !aviThreeGpCopy) ||
-        containerMovCopy ||
+        (containerThreeGpCopy && !aviVideoOnlyIsoCopy) ||
+        (containerMovCopy && !aviVideoOnlyIsoCopy) ||
         containerFlvCopy) &&
       audio?.channels !==
         (amrOutput
@@ -3196,14 +3203,14 @@ async function validateMediaOutput(
     );
   }
   if (
-    aviThreeGpCopy &&
+    aviVideoOnlyIsoCopy &&
     sourceAudio &&
     !finalState.warnings.some((warning) =>
       warning.includes("incompatible AVI audio was explicitly excluded"),
     )
   ) {
     throw new Error(
-      "The browser did not explicitly disclose incompatible AVI audio excluded from 3GP.",
+      `The browser did not explicitly disclose incompatible AVI audio excluded from ${route === "avi-to-3gp" ? "3GP" : "MOV"}.`,
     );
   }
   const requiresFullDecodeTraversal =
@@ -3237,7 +3244,7 @@ async function validateMediaOutput(
   const outputHasAudio =
     audioOnly ||
     webmAudioCopy ||
-    (!aviThreeGpCopy &&
+    (!aviVideoOnlyIsoCopy &&
       (compatibleAviCopy
         ? Boolean(source.audioPacketSha256)
         : !videoReencode && !videoOnlyCopy));
@@ -3538,12 +3545,12 @@ async function validateMediaOutput(
           candidate,
           "-map",
           "0:v:0",
-          ...(aviThreeGpCopy ? [] : ["-map", "0:a:0"]),
+          ...(aviVideoOnlyIsoCopy ? [] : ["-map", "0:a:0"]),
           "-c:v",
           "rawvideo",
           "-pix_fmt",
           "yuv420p",
-          ...(aviThreeGpCopy ? [] : ["-c:a", "copy"]),
+          ...(aviVideoOnlyIsoCopy ? [] : ["-c:a", "copy"]),
           ...sourceAdtsFilter,
           "-f",
           "streamhash",
@@ -3564,7 +3571,7 @@ async function validateMediaOutput(
       packetStreamHashes[0] !== packetStreamHashes[1]
     ) {
       throw new Error(
-        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames${aviThreeGpCopy ? "" : " or AAC access units"} do not exactly match the source.`,
+        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames${aviVideoOnlyIsoCopy ? "" : " or AAC access units"} do not exactly match the source.`,
       );
     }
     probe.withinValidation = {

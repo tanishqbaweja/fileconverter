@@ -1120,6 +1120,24 @@
       }
     },
     {
+      "profileId": "avi-to-mov",
+      "maxTestedBytes": 159500442,
+      "repeatableEvidence": {
+        "report": "2026-09-11T18-18-18-106Z-avi-to-mov-direct-handle-stress.json",
+        "reportSha256": "b3165d41e2654b583f96edc1b432d6ee40895ca9fb3bf71a6476975f12a436bb",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 211.8359375
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-11T18-18-18-106Z-avi-to-mov-direct-handle-stress.json",
+        "reportSha256": "b3165d41e2654b583f96edc1b432d6ee40895ca9fb3bf71a6476975f12a436bb",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 211.8359375
+      }
+    },
+    {
       "profileId": "avi-to-mp3",
       "maxTestedBytes": 182803272,
       "repeatableEvidence": {

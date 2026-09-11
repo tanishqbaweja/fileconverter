@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 400
+complete-Chromium memory profile have passed. The current registry publishes 401
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -62,6 +62,16 @@ AVI audio such as MP3. The 159,500,442-byte MPEG-4/MP3 source produced the same
 completed in 1.644-1.827 seconds at 249.9 MiB. Full decode/hash, cancellation,
 forced-write cleanup, one-operation backpressure, and the no-Docker source build
 passed. Exact results are in `evidence/avi-to-3gp-browser-2026-09-11.json`.
+
+AVI-to-MOV uses the same fastest lossless packet-copy path for certified H.264
+or MPEG-4 Part 2 video, retains compatible AAC, and explicitly excludes
+incompatible AVI audio such as MP3. A 159,500,442-byte MPEG-4/MP3 source
+produced the same genuine 157,854,929-byte QuickTime MOV in all six measured
+browser runs. OPFS completed in 0.854-1.105 seconds at 192.2 MiB worst
+incremental memory; direct-save completed in 1.797-2.134 seconds at 211.8 MiB.
+Full decode/hash, repeatability, bounded I/O, cancellation, write-failure, and
+cleanup gates passed. Exact results are in
+`evidence/avi-to-mov-browser-2026-09-11.json`.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These

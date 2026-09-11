@@ -4141,6 +4141,7 @@ for (const route of [
   ["3gp-to-mov", threeGpInputFixturePath],
   ["mpeg-ts-to-mov", mpegTsInputFixturePath],
   ["flv-to-mov", flvInputFixturePath],
+  ["avi-to-mov", aviInputFixturePath],
   ["mkv-to-flv", fixturePath],
   ["mp4-to-flv", mp4InputFixturePath],
   ["mov-to-flv", movInputFixturePath],

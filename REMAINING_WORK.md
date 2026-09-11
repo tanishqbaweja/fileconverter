@@ -171,6 +171,24 @@ not the entire product specification.
   excludes incompatible AVI audio such as MP3. Browser conversion, candidate
   Wasm reproduction, stress memory, cancellation, write-failure, and cleanup
   gates remain required before promotion.
+- The first stress orchestration attempt stopped before Chrome because the
+  existing MOV category generated only its five H.264/AAC fixtures, not the AVI
+  manifest. Its `finally` cleanup passed. The AVI route now has a dedicated
+  category using the existing deterministic AVI generator so this harness
+  mistake is not retried.
+- The corrected production-browser gate passed three OPFS runs at 0.854-1.105
+  seconds and 192.156 MiB worst incremental private memory, then three
+  direct-save runs at 1.797-2.134 seconds and 211.836 MiB. Every run produced
+  the same 157,854,929-byte genuine QuickTime MOV with exact fully decoded
+  video, 256 KiB I/O/queue ceilings, one pending operation, fixed 32 MiB Wasm,
+  cancellation cleanup, cleanup recovery, and explicit incompatible-MP3
+  exclusion. The route is now promoted; final no-Docker byte reproduction is
+  the remaining publication check for this checkpoint.
+- Cleanup invocation note: the package script is `npm run clean:generated`;
+  `cleanup:generated` does not exist and performs no cleanup.
+- Verification invocation note: this package has no `typecheck` npm alias; use
+  `npx tsc --noEmit`. The missing alias exits before running TypeScript and
+  changes no files.
 
 ### 2026-09-11 — AVI to 3GP production-browser publication
 

@@ -1394,7 +1394,7 @@ const containerMovEvidence = {
   "3gp-to-mov": 146_854_522,
   "mpeg-ts-to-mov": 150_441_548,
   "flv-to-mov": 146_903_539,
-  "avi-to-mov": null,
+  "avi-to-mov": 159_500_442,
 } as const satisfies Record<string, number | null>;
 
 function containerMovProfile(
@@ -1418,7 +1418,7 @@ function containerMovProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       input === "avi"
-        ? "The candidate AVI input accepts H.264 or MPEG-4 Part 2 video and packet-copies it without re-encoding. AAC audio is retained when present; incompatible AVI audio, including MP3, is explicitly excluded. Other video codecs require a separately verified route."
+        ? "Certified AVI input accepts H.264 or MPEG-4 Part 2 video and packet-copies it without re-encoding. AAC audio is retained when present; incompatible AVI audio, including MP3, is explicitly excluded. Other video codecs require a separately verified route."
         : "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
       input === "avi"
         ? "Compatible compressed video and AAC streams are copied without re-encoding; incompatible AVI audio is explicitly excluded. Compatible stream language/general tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported metadata are explicitly excluded."
