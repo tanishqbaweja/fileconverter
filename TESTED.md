@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **399**
-- Public profiles with retained successful Chrome stress evidence: **399**
+- Public passed conversion profiles: **400**
+- Public profiles with retained successful Chrome stress evidence: **400**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -435,7 +435,6 @@ This is the living progress record. It is regenerated after each test/profile cy
 | mkv-to-flv | 147,131,070 | 3 | 147,164,014 | 0.95 s–1.27 s | 166.7 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-h264 | 146,855,294 | 3 | 145,801,019 | 1.62 s–1.95 s | 207.2 MiB | 32.0 MiB | read 262,144 B / write 115,516 B | passed |
 | mkv-to-hevc | 148,952,609 | 3 | 134,752,786 | 2.07 s–2.40 s | 195.3 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
-| mkv-to-ivf | 170,427,228 | 3 | 169,519,329 | 0.85 s–0.91 s | 139.6 MiB | 32.0 MiB | read 262,144 B / write 157,034 B | passed |
 | mkv-to-m2v | 136,294,704 | 3 | 136,166,136 | 1.82 s–2.21 s | 207.8 MiB | 32.0 MiB | read 262,144 B / write 28,829 B | passed |
 | mkv-to-m4a | 2,958,573,265 | 3 | 249,427,974 | 2.49 s–4.04 s | 164.7 MiB | 32.0 MiB | read 262,144 B / write 103,136 B | passed |
 | mkv-to-m4v | 180,576,319 | 3 | 179,609,473 | 1.88 s–2.10 s | 211.5 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
@@ -621,7 +620,6 @@ This is the living progress record. It is regenerated after each test/profile cy
 | webm-to-aiff | 222,941,314 | 3 | 5,760,054 | 1.46 s–1.70 s | 213.2 MiB | 32.0 MiB | read 262,144 B / write 16,384 B | passed |
 | webm-to-amr | 222,941,314 | 3 | 96,038 | 2.10 s–2.29 s | 227.5 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | webm-to-flac | 222,941,314 | 3 | 888,268 | 1.66 s–1.91 s | 214.8 MiB | 32.0 MiB | read 262,144 B / write 8,288 B | passed |
-| webm-to-ivf | 170,426,767 | 3 | 169,519,329 | 0.86 s–0.89 s | 136.1 MiB | 32.0 MiB | read 262,144 B / write 157,034 B | passed |
 | webm-to-m4a | 222,941,314 | 3 | 616,534 | 3.82 s–4.39 s | 229.5 MiB | 32.0 MiB | read 262,144 B / write 51,532 B | passed |
 | webm-to-mkv | 222,941,314 | 3 | 222,940,925 | 1.15 s–1.60 s | 178.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | webm-to-mp3 | 222,941,314 | 3 | 960,813 | 1.91 s–2.59 s | 227.0 MiB | 32.0 MiB | read 262,144 B / write 429 B | passed |
@@ -819,6 +817,7 @@ Stream ma |
 | amr-wb-to-wma | audio | ffmpeg-audio | re-encode | 137,420,809 B | 3-run Chrome report |
 | ass-to-srt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
 | ass-to-vtt | subtitle | subtitle-stream | stream | 101,393,068 B | 3-run Chrome report |
+| avi-to-3gp | video | ffmpeg-remux | stream-copy | 159,500,442 B | registry passed; stress report not retained locally |
 | avi-to-aac | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-aiff | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-amr | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -940,7 +939,7 @@ Stream ma |
 | mkv-to-flv | video | ffmpeg-remux | stream-copy | 147,131,070 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
 | mkv-to-hevc | video | ffmpeg-remux | stream-copy | 148,952,609 B | 3-run Chrome report |
-| mkv-to-ivf | video | ffmpeg-remux | stream-copy | 170,427,228 B | 3-run Chrome report |
+| mkv-to-ivf | video | ffmpeg-remux | stream-copy | 170,427,228 B | registry passed; stress report not retained locally |
 | mkv-to-m2v | video | ffmpeg-remux | stream-copy | 136,294,704 B | 3-run Chrome report |
 | mkv-to-m4a | video | ffmpeg-remux | stream-copy | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-m4v | video | ffmpeg-remux | stream-copy | 180,576,319 B | 3-run Chrome report |
@@ -1129,7 +1128,7 @@ Stream ma |
 | webm-to-aiff | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-amr | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-flac | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
-| webm-to-ivf | video | ffmpeg-remux | stream-copy | 170,426,767 B | 3-run Chrome report |
+| webm-to-ivf | video | ffmpeg-remux | stream-copy | 170,426,767 B | registry passed; stress report not retained locally |
 | webm-to-m4a | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
 | webm-to-mkv | video | ffmpeg-remux | stream-copy | 222,941,314 B | 3-run Chrome report |
 | webm-to-mp3 | video | ffmpeg-audio | re-encode | 222,941,314 B | 3-run Chrome report |
@@ -1200,3 +1199,5 @@ M-04/P-08 bounded AVI packet-copy acceptance (2026-09-08): public profile 37 acc
 M-04/P-08 compatible AVI source expansion (2026-09-08): the same bounded native profile now accepts certified MPEG-4 Part 2 from MP4, MOV, 3GP, and MPEG-TS as well as Matroska, copying MP3 where the source/container combination permits it; 3GP is explicitly video-only. The first 4/4 browser attempt failed before header write because non-Matroska dimensions were not populated, so the accepted path adds only a fixed 2 MiB/2-second stream probe for header-incomplete inputs. The corrected small production-Chrome gates passed four genuine conversions and four injected write failures with exact compressed packets, decoded-video identity, full native decode, genuine RIFF/AVI headers, and zero partial outputs. Five 177,146,977-199,649,420-byte sources then passed 3/3 in 1.440-2.878 seconds at 249.1 MiB worst complete-Chromium incremental private memory. Every run retained exact MPEG-4 packets, exact MP3 packets where present, repeatable output, 22-24 OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation cleanup, and full decode. Parallel packet-copy fixture generation produced all five sources in 5.25 seconds; every large fixture, converted copy, raw report, browser artifact, and downloaded candidate was deleted after compact evidence was recorded. Hosted no-Docker run [34215789337](https://github.com/tanishqbaweja/fileconverter/actions/runs/34215789337) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`, passed cleanup in 13m34s, skipped mismatch upload, and retained zero artifacts. The superseded candidate archive was deleted. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.
 
 M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. Hosted no-Docker run [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero artifacts. Every generated fixture, converted output, raw report, browser profile, local candidate, and native feasibility file was deleted; the obsolete candidate artifact was deleted and verified absent. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`.
+
+M-04/P-08 AVI-to-3GP publication (2026-09-11): the bounded remux core packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,896-byte `3gp4` output in six measured browser runs. OPFS completed in 0.769-1.106 seconds at 204.605 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.644-1.827 seconds at 249.918 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, partial-output cancellation, earliest-state direct cancellation, injected-write cleanup, and cleanup recovery passed. Hosted no-Docker runs [34569115338](https://github.com/tanishqbaweja/fileconverter/actions/runs/34569115338) and [34571134087](https://github.com/tanishqbaweja/fileconverter/actions/runs/34571134087) produced Wasm SHA-256 `244ed58c4f62cec877db8ea16ba7b9caedf02317c1dea7973d23cdc22ea93e02`; the latter also produced the route-bearing manifest. Generated stress sources, converted copies, browser profiles, local build candidates, and remote mismatch artifacts were deleted after compact evidence was recorded. See `evidence/avi-to-3gp-browser-2026-09-11.json`.

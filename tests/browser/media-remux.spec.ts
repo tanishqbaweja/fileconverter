@@ -359,6 +359,7 @@ const containerThreeGpOutputPaths = {
   mov: path.join(outputRoot, "mov-remux-output.3gp"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.3gp"),
   flv: path.join(outputRoot, "flv-remux-output.3gp"),
+  avi: path.join(outputRoot, "avi-remux-output.3gp"),
 } as const;
 const containerMovOutputPaths = {
   mkv: path.join(outputRoot, "mkv-remux-output.mov"),
@@ -2973,6 +2974,7 @@ async function runMediaRoute(
     | "mov-to-3gp"
     | "mpeg-ts-to-3gp"
     | "flv-to-3gp"
+    | "avi-to-3gp"
     | "mkv-to-mov"
     | "mp4-to-mov"
     | "3gp-to-mov"
@@ -4131,6 +4133,7 @@ for (const route of [
   ["mov-to-3gp", movInputFixturePath],
   ["mpeg-ts-to-3gp", mpegTsInputFixturePath],
   ["flv-to-3gp", flvInputFixturePath],
+  ["avi-to-3gp", aviInputFixturePath],
   ["mkv-to-mov", fixturePath],
   ["mp4-to-mov", mp4InputFixturePath],
   ["3gp-to-mov", threeGpInputFixturePath],
@@ -8009,6 +8012,36 @@ for (const rejection of [
     );
   });
 }
+
+test("browser FFmpeg packet-copies AVI MPEG-4 video into genuine bounded 3GP and discloses excluded MP3", async () => {
+  await runMediaRoute(
+    "avi-to-3gp",
+    containerThreeGpOutputPaths.avi,
+    ["mpeg4"],
+    1_000_000,
+    aviInputFixturePath,
+    {
+      expectedWarningFragments: [
+        "incompatible AVI audio was explicitly excluded",
+      ],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("3gp");
+        expect(probe.format.tags?.major_brand).toBe("3gp4");
+        expect(probe.streams).toHaveLength(1);
+        const video = probe.streams[0];
+        expect(video?.codec_type).toBe("video");
+        expect(video?.codec_name).toBe("mpeg4");
+        expect(video?.width).toBe(640);
+        expect(video?.height).toBe(360);
+        expect(Number(video?.nb_read_frames)).toBe(96);
+        await expectCompressedVideoPacketMatch(aviInputFixturePath, outputPath);
+        await expectDecodedVideoMatch(aviInputFixturePath, outputPath);
+      },
+    },
+  );
+});
 
 for (const route of [
   ["mkv-to-mov", fixturePath, containerMovOutputPaths.mkv, false, true],

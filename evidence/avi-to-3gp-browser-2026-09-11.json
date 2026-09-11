@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-11",
+  "status": "passed",
+  "scope": "Production-browser AVI MPEG-4 Part 2 video to 3GP packet copy with incompatible AVI MP3 audio explicitly excluded.",
+  "dockerUsed": false,
+  "conversionClass": "compressed-video packet copy, not decode/re-encode and not extension renaming",
+  "selectedOptimization": {
+    "video": "packet copy through the bounded FFmpeg remux core",
+    "input": "256 KiB bounded reads",
+    "output": "256 KiB bounded writes with one pending operation and one 256 KiB queued chunk",
+    "wasmMemoryBytes": 33554432,
+    "containerLayout": "fragmented 3GP to avoid duration-sized in-memory muxer indexes",
+    "reason": "Packet copy is the minimum-work standards-compliant conversion for compatible MPEG-4 Part 2 video and preserves the compressed video payload. Re-encoding would be slower and lossy."
+  },
+  "source": {
+    "path": "fixtures/stress/media/mpeg4-mp3-webm-128m.avi",
+    "retained": false,
+    "bytes": 159500442,
+    "sha256": "8c1f6d00d1f8626386d80bbaa73c9a2618d58ea5be6d5b19a5e517f10e4a85cc",
+    "durationSeconds": 64.29166666666667,
+    "video": { "codec": "mpeg4", "width": 1282, "height": 536, "frames": 1543 },
+    "audio": { "codec": "mp3", "disposition": "explicitly excluded because the certified 3GP packet-copy profile accepts AAC audio only" }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 157854896,
+    "sha256": "9f3af92a8fdbfab5730ea9aa19fbe940f01f41d5b24b73a6d7e2e24a00780644",
+    "formatFamily": "mov,mp4,m4a,3gp,3g2,mj2",
+    "majorBrand": "3gp4",
+    "compatibleBrands": "3gp4iso6iso5",
+    "streams": [{ "mediaType": "video", "codec": "mpeg4", "width": 1282, "height": 536, "packets": 1543 }],
+    "decodedVideoStreamHash": "0,v,SHA256=e6e11a5295e87ba1eb366c26a8be369ba89d8adc9db51f4d3420bb201f4605d7",
+    "sourceAndOutputDecodedVideoMatch": true,
+    "repeatableAcrossAllMeasuredRuns": true
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "152.0.7977.83",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "opfs": {
+      "report": "2026-09-11T06-53-47-731Z-avi-to-3gp-stress.json",
+      "reportSha256": "4dfe433faccaa018b44db6bca00c690b381fbcf4612376a1b541fa4a1ec8c991",
+      "runs": 3,
+      "elapsedMs": [1106.45, 792.77, 769.18],
+      "incrementalPrivateMiB": [189.07, 193.8, 204.60546875],
+      "worstIncrementalPrivateMiB": 204.60546875,
+      "cancellation": { "passed": true, "inputBytes": 136973008, "partialOutputBytesBeforeCleanup": 134267457 },
+      "cleanupRecoveryPassed": true
+    },
+    "directDestination": {
+      "report": "2026-09-11T07-01-31-744Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "40c51383c42a709f78d874b47b1d851a37e5736b2416312b156f5fe74c79b583",
+      "runs": 3,
+      "elapsedMs": [1759.43, 1644.41, 1827.33],
+      "incrementalPrivateMiB": [229.66, 239.81, 249.91796875],
+      "worstIncrementalPrivateMiB": 249.91796875,
+      "cancellation": { "passed": true, "checkpoint": "earliest observable running state", "inputBytes": 0, "outputBytes": 0 },
+      "cleanupRecoveryPassed": true
+    },
+    "focusedSmallGate": {
+      "successCasesPassed": 1,
+      "forcedWriteFailureCasesPassed": 1,
+      "validated": [
+        "genuine 3GP family and exact 3gp4 major brand",
+        "one MPEG-4 Part 2 video stream",
+        "96 exact compressed video packets",
+        "96 fully decoded matching frames",
+        "explicit MP3 exclusion warning",
+        "zero partial output after injected failure"
+      ]
+    }
+  },
+  "diagnosedHarnessIterations": [
+    {
+      "report": "2026-09-11T06-49-56-033Z-avi-to-3gp-stress.json",
+      "reportSha256": "095dd7b20fc64512c206abe9d500a24526741b0bfd218285624aa4011596b529",
+      "accepted": false,
+      "reason": "Running the cancellation workload before memory measurement retained transient browser state and produced a false 266.832 MiB peak. The accepted harness measures three conversions first and runs cancellation afterward."
+    },
+    {
+      "report": "2026-09-11T06-57-52-899Z-avi-to-3gp-direct-handle-stress-failure.json",
+      "reportSha256": "c4becce1ba6adfd7deb6d8071b80e4ecdaaa6ca9ffe3dd740cc17d56fc0f3f07",
+      "accepted": false,
+      "reason": "The warm direct conversion completed before the legacy 256 KiB cancellation checkpoint. The accepted test requests cancellation at the earliest observable running state without slowing the converter."
+    }
+  ],
+  "publication": {
+    "candidateCommit": "4b09da1e72716717ca4ed57e7cdf646efca75f48",
+    "manifestCommit": "74668d129c904509d12a14c795bd786bc6ba78f7",
+    "candidateRun": { "id": 34569115338, "artifactId": 10187274085 },
+    "manifestRun": {
+      "id": 34571134087,
+      "artifactId": 10187957234,
+      "artifactDigest": "sha256:d0da24d24d8e8cbd66e1e4ca23eca82cf1bb22d122a978d80bc4a14e1fa5aea2"
+    },
+    "publicFiles": {
+      "buildManifestSha256": "47d0f71823b6d3ffe8e4788029b36412e3f6a475e86adb0f01820996c3edf5a7",
+      "javascriptGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "wasmSha256": "244ed58c4f62cec877db8ea16ba7b9caedf02317c1dea7973d23cdc22ea93e02"
+    },
+    "sourceRewritePreflightPassed": true,
+    "publicProfileCountAfterPromotion": 400,
+    "compactPublicEvidencePassed": "400/400"
+  },
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "localCandidateDeletedAfterPublicationVerification": true,
+    "remoteMismatchArtifactsDeletedAfterEvidenceCapture": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

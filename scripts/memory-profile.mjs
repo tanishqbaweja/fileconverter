@@ -498,6 +498,7 @@ if (
     "mov-to-3gp",
     "mpeg-ts-to-3gp",
     "flv-to-3gp",
+    "avi-to-3gp",
     "mkv-to-mov",
     "mp4-to-mov",
     "3gp-to-mov",
@@ -666,6 +667,7 @@ const isMediaProfile =
   profileId === "mov-to-3gp" ||
   profileId === "mpeg-ts-to-3gp" ||
   profileId === "flv-to-3gp" ||
+  profileId === "avi-to-3gp" ||
   profileId === "mkv-to-mov" ||
   profileId === "mp4-to-mov" ||
   profileId === "3gp-to-mov" ||
@@ -967,81 +969,6 @@ try {
   );
   if (loadedStable.privateBytes == null) {
     throw new Error("Loaded-site private-memory baseline is unavailable.");
-  }
-
-  if (
-    profileId === "mkv-to-ogv" ||
-    COMPATIBLE_AVI_PROFILES.includes(profileId) ||
-    isIvfProfile
-  ) {
-    const namesBefore = await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory();
-      const names = [];
-      for await (const [name] of root.entries()) names.push(name);
-      return names.sort();
-    });
-    await setLocalFileInput(cdp, fixturePath);
-    await page.locator('[data-testid="format-select"]').selectOption(profileId);
-    await page.locator('[data-testid="convert-button"]').click();
-    await page.waitForFunction(() => {
-      const state = window.__WITHIN_TEST__?.getState();
-      return (
-        (state?.jobState === "running" &&
-          (state.metrics?.inputBytes ?? 0) >= 256 * 1024) ||
-        state?.jobState === "complete" ||
-        state?.jobState === "error"
-      );
-    });
-    const cancellableState = await page.evaluate(() =>
-      window.__WITHIN_TEST__?.getState(),
-    );
-    if (cancellableState?.jobState !== "running") {
-      throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
-      );
-    }
-    await page.getByRole("button", { name: "Cancel safely" }).click();
-    await page.waitForFunction(
-      () => window.__WITHIN_TEST__?.getState().jobState === "cancelled",
-    );
-    const cancelledState = await page.evaluate(() =>
-      window.__WITHIN_TEST__?.getState(),
-    );
-    lastObservedState = cancelledState ?? lastObservedState;
-    await page.waitForFunction(
-      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
-    );
-    const namesAfter = await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory();
-      const names = [];
-      for await (const [name] of root.entries()) names.push(name);
-      return names.sort();
-    });
-    cancellationCheck = {
-      passed:
-        cancelledState?.opfsName == null &&
-        cancelledState?.metrics?.pendingOperations === 0 &&
-        cancelledState?.metrics?.queuedBytes === 0 &&
-        cancelledState?.metrics?.peakPendingOperations <= 1 &&
-        cancelledState?.metrics?.maxReadChunkBytes <= 256 * 1024 &&
-        cancelledState?.metrics?.maxWriteChunkBytes <= maximumWriteChunkBytes &&
-        JSON.stringify(namesAfter) === JSON.stringify(namesBefore),
-      inputBytes: cancelledState?.metrics?.inputBytes ?? null,
-      outputBytes: cancelledState?.metrics?.outputBytes ?? null,
-      maxReadChunkBytes: cancelledState?.metrics?.maxReadChunkBytes ?? null,
-      maxWriteChunkBytes: cancelledState?.metrics?.maxWriteChunkBytes ?? null,
-      peakPendingOperations:
-        cancelledState?.metrics?.peakPendingOperations ?? null,
-      pendingOperations: cancelledState?.metrics?.pendingOperations ?? null,
-      queuedBytes: cancelledState?.metrics?.queuedBytes ?? null,
-      projectLocalEntriesBefore: namesBefore,
-      projectLocalEntriesAfter: namesAfter,
-    };
-    if (!cancellationCheck.passed) {
-      throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
-      );
-    }
   }
 
   for (let run = 1; run <= runCount; run += 1) {
@@ -1451,6 +1378,83 @@ try {
     });
   }
 
+  if (
+    profileId === "mkv-to-ogv" ||
+    profileId === "avi-to-3gp" ||
+    COMPATIBLE_AVI_PROFILES.includes(profileId) ||
+    isIvfProfile
+  ) {
+    const namesBefore = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names = [];
+      for await (const [name] of root.entries()) names.push(name);
+      return names.sort();
+    });
+    await setLocalFileInput(cdp, fixturePath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction((activeProfileId) => {
+      const state = window.__WITHIN_TEST__?.getState();
+      return (
+        (state?.jobState === "running" &&
+          (activeProfileId === "avi-to-3gp" ||
+            (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
+        state?.jobState === "complete" ||
+        state?.jobState === "error"
+      );
+    }, profileId);
+    const cancellableState = await page.evaluate(() =>
+      window.__WITHIN_TEST__?.getState(),
+    );
+    if (cancellableState?.jobState !== "running") {
+      throw new Error(
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+      );
+    }
+    await page.getByRole("button", { name: "Cancel safely" }).click();
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().jobState === "cancelled",
+    );
+    const cancelledState = await page.evaluate(() =>
+      window.__WITHIN_TEST__?.getState(),
+    );
+    lastObservedState = cancelledState ?? lastObservedState;
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    const namesAfter = await page.evaluate(async () => {
+      const root = await navigator.storage.getDirectory();
+      const names = [];
+      for await (const [name] of root.entries()) names.push(name);
+      return names.sort();
+    });
+    cancellationCheck = {
+      passed:
+        cancelledState?.opfsName == null &&
+        cancelledState?.metrics?.pendingOperations === 0 &&
+        cancelledState?.metrics?.queuedBytes === 0 &&
+        cancelledState?.metrics?.peakPendingOperations <= 1 &&
+        cancelledState?.metrics?.maxReadChunkBytes <= 256 * 1024 &&
+        cancelledState?.metrics?.maxWriteChunkBytes <= maximumWriteChunkBytes &&
+        JSON.stringify(namesAfter) === JSON.stringify(namesBefore),
+      inputBytes: cancelledState?.metrics?.inputBytes ?? null,
+      outputBytes: cancelledState?.metrics?.outputBytes ?? null,
+      maxReadChunkBytes: cancelledState?.metrics?.maxReadChunkBytes ?? null,
+      maxWriteChunkBytes: cancelledState?.metrics?.maxWriteChunkBytes ?? null,
+      peakPendingOperations:
+        cancelledState?.metrics?.peakPendingOperations ?? null,
+      pendingOperations: cancelledState?.metrics?.pendingOperations ?? null,
+      queuedBytes: cancelledState?.metrics?.queuedBytes ?? null,
+      projectLocalEntriesBefore: namesBefore,
+      projectLocalEntriesAfter: namesAfter,
+    };
+    if (!cancellationCheck.passed) {
+      throw new Error(
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+      );
+    }
+  }
+
   const peakPrivateBytes = Math.max(
     ...runSummaries.map((run) => run.peakPrivateBytes),
   );
@@ -1515,6 +1519,7 @@ try {
     ),
     cancellationCleanup:
       (profileId !== "mkv-to-ogv" &&
+        profileId !== "avi-to-3gp" &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
         !isIvfProfile) ||
       cancellationCheck?.passed === true,
@@ -1812,7 +1817,9 @@ async function validateMediaOutput(
     "mov-to-3gp",
     "mpeg-ts-to-3gp",
     "flv-to-3gp",
+    "avi-to-3gp",
   ].includes(route);
+  const aviThreeGpCopy = route === "avi-to-3gp";
   const containerMovCopy = [
     "mkv-to-mov",
     "mp4-to-mov",
@@ -2803,10 +2810,13 @@ async function validateMediaOutput(
       (codecs.length !== (sourceAudio ? 2 : 1) ||
         codecs[0] !== sourceVideo?.codec_name ||
         (sourceAudio && codecs[1] !== "mp3"))) ||
+    (aviThreeGpCopy &&
+      (codecs.length !== 1 || codecs[0] !== sourceVideo?.codec_name)) ||
     (!audioOnly &&
       !videoReencode &&
       !videoOnlyCopy &&
       !compatibleAviCopy &&
+      !aviThreeGpCopy &&
       (codecs.length !== 2 ||
         codecs[0] !== sourceVideo?.codec_name ||
         codecs[1] !== sourceAudio?.codec_name))
@@ -2907,7 +2917,7 @@ async function validateMediaOutput(
         compatibleWebmCopy ||
         matroskaCopy ||
         containerMpegTsCopy ||
-        containerThreeGpCopy ||
+        (containerThreeGpCopy && !aviThreeGpCopy) ||
         containerMovCopy ||
         containerFlvCopy) &&
       audio?.channels !==
@@ -3185,6 +3195,17 @@ async function validateMediaOutput(
       "The browser did not explicitly disclose audio excluded from elementary-video output.",
     );
   }
+  if (
+    aviThreeGpCopy &&
+    sourceAudio &&
+    !finalState.warnings.some((warning) =>
+      warning.includes("incompatible AVI audio was explicitly excluded"),
+    )
+  ) {
+    throw new Error(
+      "The browser did not explicitly disclose incompatible AVI audio excluded from 3GP.",
+    );
+  }
   const requiresFullDecodeTraversal =
     videoReencode ||
     elementaryVideoOutput ||
@@ -3216,9 +3237,10 @@ async function validateMediaOutput(
   const outputHasAudio =
     audioOnly ||
     webmAudioCopy ||
-    (compatibleAviCopy
-      ? Boolean(source.audioPacketSha256)
-      : !videoReencode && !videoOnlyCopy);
+    (!aviThreeGpCopy &&
+      (compatibleAviCopy
+        ? Boolean(source.audioPacketSha256)
+        : !videoReencode && !videoOnlyCopy));
   if (compatibleAviCopy) {
     probe.withinAviStructure = await inspectAviOpenDml(
       localPath,
@@ -3516,14 +3538,12 @@ async function validateMediaOutput(
           candidate,
           "-map",
           "0:v:0",
-          "-map",
-          "0:a:0",
+          ...(aviThreeGpCopy ? [] : ["-map", "0:a:0"]),
           "-c:v",
           "rawvideo",
           "-pix_fmt",
           "yuv420p",
-          "-c:a",
-          "copy",
+          ...(aviThreeGpCopy ? [] : ["-c:a", "copy"]),
           ...sourceAdtsFilter,
           "-f",
           "streamhash",
@@ -3544,7 +3564,7 @@ async function validateMediaOutput(
       packetStreamHashes[0] !== packetStreamHashes[1]
     ) {
       throw new Error(
-        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames or AAC access units do not exactly match the source.`,
+        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames${aviThreeGpCopy ? "" : " or AAC access units"} do not exactly match the source.`,
       );
     }
     probe.withinValidation = {
@@ -6281,16 +6301,16 @@ async function takeSample(rootPid, page, phase) {
   let workerHeaps = null;
   let storageEstimate = null;
   try {
-    pageHeap = await page.evaluate(
-      () => performance.memory?.usedJSHeapSize ?? null,
+    pageHeap = await diagnosticRealmSample(
+      page.evaluate(() => performance.memory?.usedJSHeapSize ?? null),
     );
     workerHeaps = await Promise.all(
       page.workers().map(async (worker) => {
         try {
           return {
             url: worker.url(),
-            usedJSHeapSize: await worker.evaluate(
-              () => performance.memory?.usedJSHeapSize ?? null,
+            usedJSHeapSize: await diagnosticRealmSample(
+              worker.evaluate(() => performance.memory?.usedJSHeapSize ?? null),
             ),
           };
         } catch {
@@ -6298,14 +6318,16 @@ async function takeSample(rootPid, page, phase) {
         }
       }),
     );
-    storageEstimate = await page.evaluate(async () => {
-      if (!navigator.storage?.estimate) return null;
-      const estimate = await navigator.storage.estimate();
-      return {
-        usage: estimate.usage ?? null,
-        quota: estimate.quota ?? null,
-      };
-    });
+    storageEstimate = await diagnosticRealmSample(
+      page.evaluate(async () => {
+        if (!navigator.storage?.estimate) return null;
+        const estimate = await navigator.storage.estimate();
+        return {
+          usage: estimate.usage ?? null,
+          quota: estimate.quota ?? null,
+        };
+      }),
+    );
   } catch {
     // Realm-level samples are diagnostic and may be unavailable.
   }
@@ -6325,6 +6347,21 @@ async function takeSample(rootPid, page, phase) {
     realms: { pageUsedJSHeapBytes: pageHeap, workers: workerHeaps },
     storageEstimate,
   };
+}
+
+async function diagnosticRealmSample(promise, timeoutMs = 2_000) {
+  let timeout;
+  try {
+    return await Promise.race([
+      promise,
+      new Promise((resolve) => {
+        timeout = setTimeout(() => resolve(null), timeoutMs);
+        timeout.unref?.();
+      }),
+    ]);
+  } finally {
+    clearTimeout(timeout);
+  }
 }
 
 async function sampleWindowsProcessTree(rootPid) {

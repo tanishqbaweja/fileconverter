@@ -1349,10 +1349,11 @@ const containerThreeGpEvidence = {
   "mov-to-3gp": 147_136_645,
   "mpeg-ts-to-3gp": 150_441_548,
   "flv-to-3gp": 146_903_539,
+  "avi-to-3gp": 159_500_442,
 } as const satisfies Record<string, number | null>;
 
 function containerThreeGpProfile(
-  input: "mkv" | "mp4" | "mov" | "mpeg-ts" | "flv",
+  input: "mkv" | "mp4" | "mov" | "mpeg-ts" | "flv" | "avi",
 ): ConversionProfile {
   const id = `${input}-to-3gp` as keyof typeof containerThreeGpEvidence;
   const evidence = containerThreeGpEvidence[id];
@@ -1371,8 +1372,12 @@ function containerThreeGpProfile(
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding; compatible stream language tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded.",
+      input === "avi"
+        ? "Certified AVI input accepts H.264 or MPEG-4 Part 2 video and packet-copies it without re-encoding. AAC audio is retained when present; incompatible AVI audio, including MP3, is explicitly excluded. Other video codecs require a separately verified route."
+        : "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
+      input === "avi"
+        ? "Compatible compressed video and AAC streams are copied without re-encoding; incompatible AVI audio is explicitly excluded. Compatible stream language tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded."
+        : "All compatible video and audio streams are copied without re-encoding; compatible stream language tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded.",
       "When a media type has no source-default track, the bounded 3GP muxer marks its first compatible track as default; compressed payloads are unchanged.",
       "The bounded fragmented-3GP layout avoids duration-sized muxer indexes. Some older players may need to scan fragments before displaying an accurate duration or seeking.",
     ],
@@ -6110,6 +6115,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerThreeGpProfile("mov"),
     containerThreeGpProfile("mpeg-ts"),
     containerThreeGpProfile("flv"),
+    containerThreeGpProfile("avi"),
     containerMovProfile("mkv"),
     containerMovProfile("mp4"),
     containerMovProfile("3gp"),

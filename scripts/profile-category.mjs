@@ -494,6 +494,7 @@ const categories = {
       ["mov-to-3gp", "fixtures/stress/media/h264-aac-128m.mov"],
       ["mpeg-ts-to-3gp", "fixtures/stress/media/h264-aac-128m.mpegts"],
       ["flv-to-3gp", "fixtures/stress/media/h264-aac-128m.flv"],
+      ["avi-to-3gp", "fixtures/stress/media/mpeg4-mp3-webm-128m.avi"],
     ],
   },
   "container-mov": {

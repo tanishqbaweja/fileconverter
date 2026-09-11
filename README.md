@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 397
+complete-Chromium memory profile have passed. The current registry publishes 400
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -53,6 +53,15 @@ MiB complete-Chromium memory limit. AV1 and VP9 outputs passed complete decode,
 repeatable hash, cancellation, and cleanup checks. Exact results and the
 byte-for-byte no-Docker publication run are recorded in
 `evidence/ivf-input-browser-2026-09-11.json`.
+
+AVI-to-3GP packet-copies certified H.264 or MPEG-4 Part 2 video without decoding
+or re-encoding, retains AAC when present, and explicitly excludes incompatible
+AVI audio such as MP3. The 159,500,442-byte MPEG-4/MP3 source produced the same
+157,854,896-byte genuine `3gp4` output in every run. Three OPFS runs completed in
+0.769-1.106 seconds at 204.6 MiB worst incremental memory; three direct-save runs
+completed in 1.644-1.827 seconds at 249.9 MiB. Full decode/hash, cancellation,
+forced-write cleanup, one-operation backpressure, and the no-Docker source build
+passed. Exact results are in `evidence/avi-to-3gp-browser-2026-09-11.json`.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
