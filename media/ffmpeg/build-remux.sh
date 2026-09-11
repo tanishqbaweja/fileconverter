@@ -161,17 +161,26 @@ node --input-type=module - "${OUTPUT}/build-manifest.json" <<'NODE'
 import { readFileSync, writeFileSync } from "node:fs";
 
 const manifestPath = process.argv[2];
-const manifest = readFileSync(manifestPath, "utf8");
-const marker = '"mkv-to-webm-av1","mkv-to-mp3"';
-if (!manifest.includes(marker)) {
+let manifest = readFileSync(manifestPath, "utf8");
+const ivfMarker = '"mkv-to-webm-av1","mkv-to-mp3"';
+if (!manifest.includes(ivfMarker)) {
   throw new Error("Could not locate the IVF profile insertion point.");
 }
+manifest = manifest.replace(
+  ivfMarker,
+  '"mkv-to-webm-av1","mkv-to-ivf","webm-to-ivf","ivf-to-webm","ivf-to-mkv","mkv-to-mp3"',
+);
+const aviThreeGpMarker = '"flv-to-3gp","mkv-to-mov"';
+if (!manifest.includes(aviThreeGpMarker)) {
+  throw new Error("Could not locate the AVI-to-3GP profile insertion point.");
+}
+manifest = manifest.replace(
+  aviThreeGpMarker,
+  '"flv-to-3gp","avi-to-3gp","mkv-to-mov"',
+);
 writeFileSync(
   manifestPath,
-  manifest.replace(
-    marker,
-    '"mkv-to-webm-av1","mkv-to-ivf","webm-to-ivf","ivf-to-webm","ivf-to-mkv","mkv-to-mp3"',
-  ),
+  manifest,
 );
 NODE
 
