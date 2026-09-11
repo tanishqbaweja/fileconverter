@@ -71,7 +71,10 @@ browser runs. OPFS completed in 0.854-1.105 seconds at 192.2 MiB worst
 incremental memory; direct-save completed in 1.797-2.134 seconds at 211.8 MiB.
 Full decode/hash, repeatability, bounded I/O, cancellation, write-failure, and
 cleanup gates passed. Exact results are in
-`evidence/avi-to-mov-browser-2026-09-11.json`.
+`evidence/avi-to-mov-browser-2026-09-11.json`. Hosted no-Docker run
+[34633039664](https://github.com/tanishqbaweja/fileconverter/actions/runs/34633039664)
+then rebuilt the pushed remux module byte-for-byte in 7m44s, passed hosted
+cleanup, skipped mismatch upload, and retained zero artifacts.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These

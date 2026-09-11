@@ -182,8 +182,10 @@ not the entire product specification.
   the same 157,854,929-byte genuine QuickTime MOV with exact fully decoded
   video, 256 KiB I/O/queue ceilings, one pending operation, fixed 32 MiB Wasm,
   cancellation cleanup, cleanup recovery, and explicit incompatible-MP3
-  exclusion. The route is now promoted; final no-Docker byte reproduction is
-  the remaining publication check for this checkpoint.
+  exclusion. The route is now promoted. Hosted no-Docker run `34633039664`
+  rebuilt pushed commit `2a3cae6` byte-for-byte in 7m44s, skipped mismatch
+  upload, passed hosted cleanup, and retained zero artifacts. This checkpoint
+  is complete; the broader items elsewhere in this file remain open.
 - Cleanup invocation note: the package script is `npm run clean:generated`;
   `cleanup:generated` does not exist and performs no cleanup.
 - Verification invocation note: this package has no `typecheck` npm alias; use

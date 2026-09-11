@@ -88,15 +88,25 @@
     },
     "publicProfileCountAfterPromotion": 401,
     "compactPublicEvidencePassed": "401/401",
-    "finalNoDockerReproduction": "pending exact pushed publication commit"
+    "finalNoDockerReproduction": {
+      "status": "passed",
+      "runId": 34633039664,
+      "commit": "2a3cae6b4139457dfd759d284a50e6d223ccf697",
+      "core": "within-remux",
+      "durationSeconds": 464,
+      "byteExact": true,
+      "mismatchArtifactUploadSkipped": true,
+      "repositoryLocalBuildCleanupPassed": true,
+      "retainedArtifacts": 0
+    }
   },
   "cleanup": {
     "generatedStressSourceDeleted": true,
     "convertedOutputsDeleted": true,
     "browserProfilesDeleted": true,
     "localCandidateDeletedAfterPublicationVerification": true,
-    "rawReportsScheduledForDeletionAfterCompactManifestGeneration": true,
-    "remoteMismatchArtifactScheduledForDeletionAfterPublication": true,
+    "rawReportsDeletedAfterCompactManifestGeneration": true,
+    "remoteMismatchArtifactDeletedAfterPublication": true,
     "protectedTestMkvUnmodified": true
   }
 }
