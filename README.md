@@ -102,6 +102,12 @@ operation, cancellation, exact compressed packets, and full decoded-video
 equality. The selective stress generator creates only the required source in
 about 2.1 seconds, and cleanup removes the source and every converted copy.
 Exact results are in `evidence/avi-to-flv-browser-2026-09-12.json`.
+Hosted no-Docker run
+[34684202707](https://github.com/tanishqbaweja/fileconverter/actions/runs/34684202707)
+rebuilt all six FFmpeg Wasm variants byte-for-byte from pushed commit `3230248`
+in 12m24s, skipped mismatch upload, and passed repository-local cleanup. Both
+obsolete candidate artifacts were deleted, leaving zero artifacts on all three
+AVI-to-FLV build runs.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These

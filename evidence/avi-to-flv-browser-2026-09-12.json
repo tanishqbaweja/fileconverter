@@ -114,14 +114,24 @@
         "within-webm.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
       }
     },
-    "finalNoDockerReproduction": { "status": "pending" }
+    "finalNoDockerReproduction": {
+      "status": "passed",
+      "runId": 34684202707,
+      "commit": "3230248c14d1699a52302f1bbdd00dbc9c90ae4b",
+      "durationSeconds": 744,
+      "allSixFfmpegModulesByteExact": true,
+      "mismatchArtifactUploadSkipped": true,
+      "repositoryLocalBuildCleanupPassed": true,
+      "retainedArtifacts": 0
+    }
   },
   "cleanup": {
     "generatedSourceDeleted": true,
     "convertedOutputDeleted": true,
     "browserProfilesDeleted": true,
     "rawReportsDeletedAfterCompactManifestGeneration": true,
-    "remoteMismatchArtifactsDeletedAfterPublication": false,
+    "remoteMismatchArtifactsDeletedAfterPublication": true,
+    "deletedRemoteArtifactIds": [10293423594, 10295085164],
     "workContainsOnlyTrackedPlaceholder": true,
     "protectedTestMkvUnmodified": true
   }

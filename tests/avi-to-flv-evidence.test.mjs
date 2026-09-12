@@ -66,5 +66,14 @@ test("AVI FLV conversion, validation, stress, and cleanup stay wired", () => {
   assert.equal(evidence.cleanup.convertedOutputDeleted, true);
   assert.equal(evidence.browser.opfs.cancellation.passed, true);
   assert.equal(evidence.browser.directDestination.cancellation.passed, true);
+  assert.equal(evidence.publication.finalNoDockerReproduction.status, "passed");
+  assert.equal(evidence.publication.finalNoDockerReproduction.runId, 34_684_202_707);
+  assert.equal(
+    evidence.publication.finalNoDockerReproduction.allSixFfmpegModulesByteExact,
+    true,
+  );
+  assert.equal(evidence.publication.finalNoDockerReproduction.retainedArtifacts, 0);
+  assert.equal(evidence.cleanup.rawReportsDeletedAfterCompactManifestGeneration, true);
+  assert.equal(evidence.cleanup.remoteMismatchArtifactsDeletedAfterPublication, true);
   assert.equal(evidence.cleanup.protectedTestMkvUnmodified, true);
 });

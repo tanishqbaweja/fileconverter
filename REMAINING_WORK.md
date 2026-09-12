@@ -190,6 +190,11 @@ not the entire product specification.
   `evidence/avi-to-flv-browser-2026-09-12.json`; raw reports, generated stress
   media, converted copies, and browser profiles are removed by the explicit
   cleanup allowlist after evidence generation.
+- Hosted no-Docker run `34684202707` rebuilt all six FFmpeg modules byte-for-byte
+  from pushed commit `3230248` in 12m24s, skipped mismatch upload, and passed
+  repository-local cleanup. Obsolete mismatch artifacts `10293423594` and
+  `10295085164` were deleted and all three AVI-to-FLV build runs now retain zero
+  artifacts.
 - Both disposable conversion files were deleted through the repository cleanup
   command immediately after validation; `work` again contains only `.gitkeep`.
 
