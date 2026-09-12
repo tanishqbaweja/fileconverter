@@ -64,9 +64,8 @@ test("IVF input publication evidence matches every current FFmpeg Wasm file", as
     evidence.publishedEngine.wasmSha256,
   )) {
     const currentExpectedHash =
-      name === "within-remux.wasm"
-        ? evidence.publishedEngine.currentWithinRemuxSupersession.sha256
-        : expectedHash;
+      evidence.publishedEngine.currentEngineSupersession.wasmSha256[name] ??
+      expectedHash;
     assert.equal(
       await sha256(path.join("public", "engines", "remux", name)),
       currentExpectedHash,

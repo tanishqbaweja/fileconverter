@@ -159,10 +159,17 @@
       "within-webm-quality.wasm": "5626bcbed0788a64c75821457c8e66e442b31e96e9441d02ae3dae48c565e635",
       "within-webm.wasm": "d1bee61a4296f6f80393b7162b9583c2c18838107cad06c2caa77a0ab77e5581"
     },
-    "currentWithinRemuxSupersession": {
-      "sha256": "af8189addfa57743445f756b1af3aaf0a10b6341394025b98725229e193581a0",
-      "evidence": "evidence/avi-to-mpegts-browser-2026-09-12.json",
-      "reason": "The general remux core was subsequently extended with the independently reproduced AVI-to-MPEG-TS profile; the IVF input behavior and specialist modules are unchanged."
+    "currentEngineSupersession": {
+      "wasmSha256": {
+        "within-direct.wasm": "1ce7e9ed7e37c90e8122883ad56712a501c71b423bf37f3c0af2547c5294edc7",
+        "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+        "within-remux.wasm": "99fe298dbe5510b12446a80ddd07959d4c6451c5cda20ab4f01d9cc9bb1b62b5",
+        "within-vp9.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
+        "within-webm-quality.wasm": "d86fe8608d2060350d9c4b443aafd91d0037a25655698daf8bf0538ca1ac6b02",
+        "within-webm.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
+      },
+      "evidence": "evidence/avi-to-flv-browser-2026-09-12.json",
+      "reason": "The shared wrapper was subsequently extended with independently reproduced bounded AVI-to-FLV stream discovery. IVF input behavior and each specialist module's configured feature surface remain unchanged."
     }
   },
   "publication": {

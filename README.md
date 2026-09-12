@@ -91,6 +91,18 @@ in `evidence/avi-to-mpegts-browser-2026-09-12.json`. Hosted no-Docker run
 rebuilt pushed commit `8c74fa5` byte-for-byte in 7m24s, passed cleanup, skipped
 mismatch upload, and retained zero artifacts.
 
+AVI-to-FLV packet-copies certified H.264 video and MP3 audio without decoding or
+re-encoding. A 145,328,774-byte, 60-second AVI produced genuine 143,904,205-byte
+FLV outputs in six accepted Chrome runs. OPFS completed in 1.302-1.989 seconds
+at 189.5 MiB worst incremental memory; direct-save completed in 5.694-6.318
+seconds at 222.4 MiB. The generic two-worker direct writer was rejected at
+256.96 MiB; this route instead uses the browser's asynchronous random-access
+file stream, removing one worker while retaining FLV trailer seeks, one pending
+operation, cancellation, exact compressed packets, and full decoded-video
+equality. The selective stress generator creates only the required source in
+about 2.1 seconds, and cleanup removes the source and every converted copy.
+Exact results are in `evidence/avi-to-flv-browser-2026-09-12.json`.
+
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
 lossy routes use the same fastest quality-certified encoders as standalone

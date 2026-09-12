@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 273);
+  assert.equal(publicMedia.length, 274);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -580,6 +580,7 @@ test("container FLV copy routes are public only at their measured evidence limit
     ["mov-to-flv", 147_136_646],
     ["3gp-to-flv", 146_854_522],
     ["mpeg-ts-to-flv", 150_441_548],
+    ["avi-to-flv", 145_328_774],
   ]);
   for (const [id, maxTestedBytes] of measuredBytes) {
     const profile = conversionProfiles.find((candidate) => candidate.id === id);
@@ -588,7 +589,10 @@ test("container FLV copy routes are public only at their measured evidence limit
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
       profile.metadataLimitations.some((limitation) =>
-        limitation.includes("supported title metadata are preserved"),
+        id === "avi-to-flv"
+          ? limitation.includes("AVI language tags") &&
+            limitation.includes("explicitly excluded")
+          : limitation.includes("supported title metadata are preserved"),
       ),
       true,
       `${id}: FLV title retention disclosure`,

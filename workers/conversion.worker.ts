@@ -423,9 +423,11 @@ async function openDestination(
   preferSynchronousOpfs = false,
   testFault?: TestFault,
   directWriteBytes = MAX_WRITE_CHUNK,
+  preferAsynchronousDirect = false,
 ): Promise<Destination> {
   if (destination.mode === "handle") {
     if (
+      !preferAsynchronousDirect &&
       workerScope.crossOriginIsolated &&
       typeof SharedArrayBuffer === "function" &&
       typeof Atomics.wait === "function"
@@ -4056,6 +4058,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
+      profileId === "avi-to-flv",
     );
     if (
       message.testFault &&

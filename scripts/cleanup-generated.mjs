@@ -59,6 +59,20 @@ const aviMpegTsReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const aviFlvReports = [
+  "2026-09-12T08-09-06-221Z-avi-to-flv-stress-failure",
+  "2026-09-12T08-16-29-894Z-avi-to-flv-direct-handle-stress",
+  "2026-09-12T08-19-57-445Z-avi-to-flv-stress",
+  "2026-09-12T08-22-28-180Z-avi-to-flv-direct-handle-stress",
+  "2026-09-12T08-26-54-097Z-avi-to-flv-stress",
+  "2026-09-12T08-29-20-139Z-avi-to-flv-direct-handle-stress",
+  "2026-09-12T08-35-10-024Z-avi-to-flv-direct-handle-stress",
+  "2026-09-12T08-37-10-096Z-avi-to-flv-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const hevcWebmStressReports = [
   "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
   "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
@@ -354,6 +368,7 @@ const generatedStressNames = new Set([
   "h264-aac-128m.3gp.json",
   "h264-aac-128m.mpegts.json",
   "h264-aac-128m.flv.json",
+  "h264-mp3-flv-128m.avi.json",
   "mpeg4-mp3-webm-128m.avi.json",
   "h264-aac-flac-128m.3gp.json",
   "h264-aac-flac-128m.mp4.json",
@@ -449,6 +464,9 @@ for (const reportPath of aviMovReports) {
   assertInside(reportRoot, reportPath);
 }
 for (const reportPath of aviMpegTsReports) {
+  assertInside(reportRoot, reportPath);
+}
+for (const reportPath of aviFlvReports) {
   assertInside(reportRoot, reportPath);
 }
 for (const reportPath of hevcWebmStressReports) {
@@ -555,6 +573,9 @@ for (const reportPath of aviMovReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of aviMpegTsReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of aviFlvReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of hevcWebmStressReports) {

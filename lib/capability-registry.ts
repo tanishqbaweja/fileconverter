@@ -1444,7 +1444,7 @@ const containerFlvEvidence = {
   "mov-to-flv": 147_136_646,
   "3gp-to-flv": 146_854_522,
   "mpeg-ts-to-flv": 150_441_548,
-  "avi-to-flv": null,
+  "avi-to-flv": 145_328_774,
 } as const satisfies Record<string, number | null>;
 
 function containerFlvProfile(
@@ -1468,7 +1468,7 @@ function containerFlvProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       input === "avi"
-        ? "The candidate AVI input accepts H.264 video with AAC or MP3 audio and packet-copies both streams without re-encoding; other codecs require a separately verified route."
+        ? "Certified AVI input accepts H.264 video with AAC or MP3 audio and packet-copies both streams without re-encoding; other codecs require a separately verified route."
         : "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
       input === "avi"
         ? "FLV carries only the first H.264 video stream and first compatible AAC or MP3 audio stream without re-encoding. AVI language tags, additional streams, subtitles, attachments, attached pictures, chapters, display rotation, and unsupported general metadata are explicitly excluded."

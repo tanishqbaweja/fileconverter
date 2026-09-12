@@ -1048,6 +1048,24 @@
       }
     },
     {
+      "profileId": "avi-to-flv",
+      "maxTestedBytes": 145328774,
+      "repeatableEvidence": {
+        "report": "2026-09-12T08-19-57-445Z-avi-to-flv-stress.json",
+        "reportSha256": "4223d54293f6039793f42a7b75a31073933ed6a1e250539c271ae9c8741b44aa",
+        "runs": 3,
+        "sourceBytes": 182803272,
+        "incrementalPrivateMiB": 220.359375
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-12T08-19-57-445Z-avi-to-flv-stress.json",
+        "reportSha256": "4223d54293f6039793f42a7b75a31073933ed6a1e250539c271ae9c8741b44aa",
+        "runs": 3,
+        "sourceBytes": 182803272,
+        "incrementalPrivateMiB": 220.359375
+      }
+    },
+    {
       "profileId": "avi-to-m2v",
       "maxTestedBytes": 136465056,
       "repeatableEvidence": {

@@ -683,6 +683,7 @@ const isMediaProfile =
   profileId === "mov-to-flv" ||
   profileId === "3gp-to-flv" ||
   profileId === "mpeg-ts-to-flv" ||
+  profileId === "avi-to-flv" ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -1388,6 +1389,7 @@ try {
     profileId === "avi-to-3gp" ||
     profileId === "avi-to-mov" ||
     profileId === "avi-to-mpeg-ts" ||
+    profileId === "avi-to-flv" ||
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
     isIvfProfile
   ) {
@@ -1417,7 +1419,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" || profileId === "avi-to-flv" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1459,7 +1461,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" || profileId === "avi-to-flv" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1531,6 +1533,7 @@ try {
         profileId !== "avi-to-3gp" &&
         profileId !== "avi-to-mov" &&
         profileId !== "avi-to-mpeg-ts" &&
+        profileId !== "avi-to-flv" &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
         !isIvfProfile) ||
       cancellationCheck?.passed === true,

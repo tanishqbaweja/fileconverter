@@ -1,0 +1,128 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12",
+  "status": "passed",
+  "scope": "Production-browser AVI H.264 video and MP3 audio to genuine FLV packet copy.",
+  "dockerUsed": false,
+  "conversionClass": "compressed video/audio packet copy, not decode/re-encode and not extension renaming",
+  "selectedOptimization": {
+    "video": "H.264 packet copy through bounded FFmpeg profile 27",
+    "audio": "MP3 packet copy through bounded FFmpeg profile 27",
+    "input": "256 KiB bounded reads",
+    "opfsOutput": "synchronous bounded random-access writes",
+    "directOutput": "single-worker asynchronous random-access FileSystemWritableFileStream writes",
+    "wasmMemoryBytes": 33554432,
+    "reason": "Packet copy is the minimum-work standards-compliant conversion. The route-specific native asynchronous direct destination removes a relay worker that exceeded the memory limit while preserving random-access FLV trailer writes, one-operation backpressure, cancellation, and output fidelity."
+  },
+  "stressSource": {
+    "path": "fixtures/stress/media/h264-mp3-flv-128m.avi",
+    "retained": false,
+    "bytes": 145328774,
+    "durationSeconds": 60.024,
+    "video": { "codec": "h264", "width": 1280, "height": 720, "frames": 1440 },
+    "audio": { "codec": "mp3", "sampleRateHz": 48000, "channels": 1, "packets": 2501, "packetSha256": "2783be01bab87c406660e1b58d3b6550aa03437a5086d442608409f5aea79558" }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 143904205,
+    "formatFamily": "flv",
+    "videoCodec": "h264",
+    "audioCodec": "mp3",
+    "sourceAndOutputCompressedPacketsMatch": true,
+    "sourceAndOutputDecodedVideoMatch": true,
+    "repeatableWithinEachMeasuredThreeRunSession": true
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "152.0.7977.83",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "opfs": {
+      "report": "2026-09-12T08-37-10-096Z-avi-to-flv-stress.json",
+      "reportSha256": "deef21ae61361df208917d4b0acfe10b5fd38602c21334c9386e922be4db77d6",
+      "sourceSha256": "dcfc239c77e82f5f5fbbe2c02a396e31774714a06794fe3f46ef70aedd72450e",
+      "outputSha256": "d00cac7b5070a85c7b5ceabd4fc1d0f0a2ec52811686d7fd11c1ea2518b6f98d",
+      "runs": 3,
+      "elapsedMs": [1700.04, 1988.635, 1301.56],
+      "incrementalPrivateMiB": [149.46484375, 185.8046875, 189.51953125],
+      "worstIncrementalPrivateMiB": 189.51953125,
+      "activeWorkerCount": 1,
+      "cancellation": { "passed": true, "inputBytes": 8537024, "outputBytes": 6977299 },
+      "cleanupRecoveryPassed": true
+    },
+    "directDestination": {
+      "report": "2026-09-12T08-35-10-024Z-avi-to-flv-direct-handle-stress.json",
+      "reportSha256": "c08dc9f9042c4dce3fc4638bb5953e4669adb304247180bc067d2d5c2b9d131e",
+      "sourceSha256": "72c826e7c5ac5903728f433a57d9b863280171d7f1779cd4dcd9eb74e950117f",
+      "outputSha256": "440d3a361bd15337b5738dfcfd421e0fc3070b25d73a05500d8c462975bbb23d",
+      "runs": 3,
+      "elapsedMs": [6318.395, 5805.99, 5693.925],
+      "incrementalPrivateMiB": [222.39453125, 201.1796875, 195.12890625],
+      "worstIncrementalPrivateMiB": 222.39453125,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 33554432,
+      "maxReadChunkBytes": 262144,
+      "maxWriteChunkBytes": 117572,
+      "maximumPendingOperations": 1,
+      "cancellation": { "passed": true, "inputBytes": 3556288, "outputBytes": 156694 },
+      "cleanupRecoveryPassed": true
+    },
+    "focusedSmallGate": {
+      "successCasesPassed": 1,
+      "forcedWriteFailureCasesPassed": 1,
+      "validated": [
+        "genuine FLV structure with exactly H.264 video and MP3 audio",
+        "96 exact normalized compressed video packets",
+        "exact compressed MP3 packets",
+        "96 fully decoded matching video frames",
+        "zero partial OPFS output after injected failure"
+      ]
+    }
+  },
+  "rejectedCandidates": [
+    {
+      "design": "two-worker shared synchronous direct writer on the final 145,328,774-byte fixture",
+      "report": "2026-09-12T08-29-20-139Z-avi-to-flv-direct-handle-stress.json",
+      "reportSha256": "b45a1ef2807a948f367fffebe95c6411d57fe84b6072829fbaa218b1483aee1c",
+      "worstIncrementalPrivateMiB": 256.95703125,
+      "elapsedMs": [6158.135, 5783.255, 5791.085],
+      "accepted": false,
+      "reason": "Correct repeatable conversion and cancellation exceeded the unchanged 250 MiB complete-Chromium incremental private-memory limit."
+    },
+    {
+      "design": "initial profiler classification",
+      "report": "2026-09-12T08-09-06-221Z-avi-to-flv-stress-failure.json",
+      "reportSha256": "c1b19f8e02c9b4933598f69964a92d5165038c7c12dd9762dd729b0458332d4e",
+      "accepted": false,
+      "reason": "The browser produced a genuine 181,379,205-byte FLV, but the harness had not yet classified AVI-to-FLV as media and incorrectly compared FLV bytes with AVI bytes. The media validator was corrected without weakening any output requirement."
+    }
+  ],
+  "publication": {
+    "repository": "https://github.com/tanishqbaweja/fileconverter",
+    "branch": "codex/media-options",
+    "candidateCommit": "ce021ada925ea095623bf3fd8ab4b64d453c236c",
+    "candidateNoDockerRun": { "id": 34681936026, "artifactId": 10295085164, "expectedMismatch": true },
+    "publicFiles": {
+      "buildManifestSha256": "953196f549b61534cd1d18ea9f648926f47544513c084694ea53d0d8e717241a",
+      "javascriptGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "wasmSha256": {
+        "within-direct.wasm": "1ce7e9ed7e37c90e8122883ad56712a501c71b423bf37f3c0af2547c5294edc7",
+        "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+        "within-remux.wasm": "99fe298dbe5510b12446a80ddd07959d4c6451c5cda20ab4f01d9cc9bb1b62b5",
+        "within-vp9.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
+        "within-webm-quality.wasm": "d86fe8608d2060350d9c4b443aafd91d0037a25655698daf8bf0538ca1ac6b02",
+        "within-webm.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
+      }
+    },
+    "finalNoDockerReproduction": { "status": "pending" }
+  },
+  "cleanup": {
+    "generatedSourceDeleted": true,
+    "convertedOutputDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompactManifestGeneration": true,
+    "remoteMismatchArtifactsDeletedAfterPublication": false,
+    "workContainsOnlyTrackedPlaceholder": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

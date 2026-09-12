@@ -531,8 +531,9 @@ const categories = {
   },
   "avi-flv": {
     generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
+    passSelectedFixturesToGenerator: true,
     profiles: [
-      ["avi-to-flv", "fixtures/stress/media/h264-mp3-128m.avi"],
+      ["avi-to-flv", "fixtures/stress/media/h264-mp3-flv-128m.avi"],
     ],
   },
   "3gp": {
