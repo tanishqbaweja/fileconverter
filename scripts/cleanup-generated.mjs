@@ -153,6 +153,9 @@ const avifDiagnosticFiles = [
 ];
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
+  path.resolve(workRoot, "theora-source-audit"),
+  path.resolve(workRoot, "avi-to-ogv-candidate"),
+  path.resolve(workRoot, "playwright-profile-avi-to-ogv"),
   path.resolve(workRoot, "avi-to-3gp-feasibility"),
   path.resolve(workRoot, "avi-to-3gp-candidate"),
   path.resolve(workRoot, "avi-to-mov-feasibility"),
@@ -230,6 +233,10 @@ const sevenZipExperimentRoots = [
   path.resolve(workRoot, "sevenzip-name-check-2"),
 ];
 const detachedProfileLogs = [
+  path.resolve(workRoot, "libtheora-1.2.0.tar.gz"),
+  path.resolve(workRoot, "theora-feasibility-speed-0.ogv"),
+  path.resolve(workRoot, "theora-feasibility-speed-1.ogv"),
+  path.resolve(workRoot, "theora-feasibility-speed-2.ogv"),
   path.resolve(workRoot, "wma-output-audit-m4a-aac.wma"),
   path.resolve(workRoot, "wma-output-audit-m4a-alac.wma"),
   path.resolve(workRoot, "wma-output-audit-aac.wma"),

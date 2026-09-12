@@ -114,12 +114,18 @@ not the entire product specification.
 
 ## Ordered implementation backlog
 
-1. Perform bounded feasibility work for the missing media combinations. Revisit
+1. Complete the private `avi-to-ogv` candidate now tracked in
+   `evidence/avi-to-ogv-feasibility-2026-09-12.json`. The source pins official
+   libtheora 1.2.0 in an isolated single-thread Wasm core and retains the
+   measured fastest native speed level, but it must remain hidden until the
+   no-Docker build, production-browser correctness, quality, three-run memory,
+   direct destination, cancellation, write-failure, and cleanup gates pass.
+2. Perform bounded feasibility work for the other missing media combinations. Revisit
    the evidenced HEIF/HEIC and camera-RAW exclusions only when their documented
    legal, security, quality, and fixed-memory conditions change. Promote only
    fully evidenced routes.
-2. Expand headed interaction audits and representative multi-gigabyte scaling.
-3. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
+3. Expand headed interaction audits and representative multi-gigabyte scaling.
+4. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
    reproducibility, registry/report-consistency, cleanup, and protected-fixture
    gates before removing all partial/missing statuses.
 

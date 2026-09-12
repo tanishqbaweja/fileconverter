@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-09-12T15:20:00+05:30",
+  "status": "private-candidate-not-public",
+  "scope": "AVI video to Theora OGV feasibility and speed preset selection",
+  "source": {
+    "path": "fixtures/media/legacy-video-source.avi",
+    "bytes": 1306330,
+    "sha256": "94af4c87b56f5a09cf4afb949aae8bdb938131f897eb274240c8abbe27c12341",
+    "durationSeconds": 4.041667,
+    "video": "MPEG-4 Part 2, 640x360, 24 fps",
+    "audio": "MP3 mono 48 kHz",
+    "benchmarkInput": "The source was looped and bounded to 60 seconds; only video was encoded."
+  },
+  "nativeFeasibility": {
+    "tool": "FFmpeg N-122712-g7e3781e3ca-20260211",
+    "codec": "libtheora",
+    "quality": 7,
+    "threads": 1,
+    "runs": [
+      { "speedLevel": 0, "elapsedSeconds": 20.167, "outputBytes": 9950651 },
+      { "speedLevel": 1, "elapsedSeconds": 18.257, "outputBytes": 9893056 },
+      { "speedLevel": 2, "elapsedSeconds": 14.278, "outputBytes": 10637706 }
+    ],
+    "selectedSpeedLevel": 2,
+    "selectionReason": "It was 29.20% faster than level 0 and 21.80% faster than level 1 while producing genuine 640x360, 24 fps, 60-second Theora OGV output."
+  },
+  "dependency": {
+    "name": "libtheora",
+    "version": "1.2.0",
+    "archive": "https://downloads.xiph.org/releases/theora/libtheora-1.2.0.tar.gz",
+    "sha256": "279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e",
+    "license": "BSD-3-Clause",
+    "officialReleaseIndex": "https://xiph.org/downloads/"
+  },
+  "candidateArchitecture": {
+    "nativeProfile": 39,
+    "module": "within-theora",
+    "public": false,
+    "videoThreads": 1,
+    "pthreadPoolSize": 0,
+    "inputBufferBytes": 262144,
+    "outputBufferBytes": 262144,
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 100663296,
+    "audioPolicy": "The initial candidate explicitly excludes AVI audio; audio preservation or Vorbis re-encoding needs separate evidence."
+  },
+  "acceptanceStillRequired": [
+    "No-Docker hosted Wasm compilation and independent artifact inspection",
+    "Production Chromium genuine conversion and full decode validation",
+    "Three repeated OPFS and direct-destination runs",
+    "Complete Chromium process-tree incremental private memory at or below 250 MiB",
+    "Bounded reads, writes, queueing, pending operations, Wasm memory, cancellation, write-failure, and cleanup",
+    "Quality comparison and user-visible exclusion review"
+  ],
+  "cleanup": {
+    "temporaryOutputsRetained": 0,
+    "workDirectoryEntriesAfterCleanup": [".gitkeep"],
+    "protectedTestMkvTouched": false
+  }
+}

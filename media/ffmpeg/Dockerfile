@@ -88,11 +88,24 @@ RUN curl --fail --location --retry 3 \
     && mv "libvorbis-${LIBVORBIS_VERSION}" libvorbis \
     && rm libvorbis.tar.xz
 
+ARG LIBTHEORA_VERSION=1.2.0
+ARG LIBTHEORA_SHA256=279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e
+RUN curl --fail --location --retry 3 \
+      "https://downloads.xiph.org/releases/theora/libtheora-${LIBTHEORA_VERSION}.tar.gz" \
+      --output libtheora.tar.gz \
+    && echo "${LIBTHEORA_SHA256}  libtheora.tar.gz" | sha256sum --check --strict \
+    && tar --extract --file libtheora.tar.gz \
+    && mv "libtheora-${LIBTHEORA_VERSION}" libtheora \
+    && rm libtheora.tar.gz
+
 COPY build-ogg.sh /src/build-ogg.sh
 RUN chmod +x /src/build-ogg.sh && /src/build-ogg.sh
 
 COPY build-vorbis.sh /src/build-vorbis.sh
 RUN chmod +x /src/build-vorbis.sh && /src/build-vorbis.sh
+
+COPY build-theora.sh /src/build-theora.sh
+RUN chmod +x /src/build-theora.sh && /src/build-theora.sh
 
 COPY patches/amr-bounded-packets.patch /src/amr-bounded-packets.patch
 RUN patch --directory=/src/ffmpeg --strip=1 < /src/amr-bounded-packets.patch
@@ -116,7 +129,14 @@ RUN chmod +x /src/build-remux.sh \
     && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ] || [ "${WITHIN_BUILD_CORE_FILTER}" = within-remux ]; then \
          WITHIN_BUILD_CORE_FILTER=within-remux /src/build-remux.sh; \
        fi \
-    && if [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
+    && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ] || [ "${WITHIN_BUILD_CORE_FILTER}" = within-theora ]; then \
+         cd /src/ffmpeg; \
+         emmake make distclean; \
+         cd /src; \
+         WITHIN_ENABLE_THEORA_ENCODER=1 /src/build-libraries.sh; \
+         WITHIN_BUILD_CORE_FILTER=within-theora /src/build-remux.sh; \
+       fi \
+    && if [ "${WITHIN_BUILD_CORE_FILTER}" = all ] || { [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ] && [ "${WITHIN_BUILD_CORE_FILTER}" != within-theora ]; }; then \
          patch --reverse --directory=/src/ffmpeg --strip=1 < /src/avi-bounded-index.patch; \
          cd /src/ffmpeg; \
          emmake make distclean; \
@@ -132,7 +152,7 @@ RUN chmod +x /src/build-remux.sh \
        elif [ "${WITHIN_BUILD_CORE_FILTER}" = within-direct ]; then \
          patch --reverse --directory=/src --strip=1 < /src/direct-source-79e4db.patch; \
          WITHIN_BUILD_CORE_FILTER=within-direct /src/build-remux.sh; \
-       elif [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ]; then \
+       elif [ "${WITHIN_BUILD_CORE_FILTER}" != within-remux ] && [ "${WITHIN_BUILD_CORE_FILTER}" != within-theora ]; then \
          WITHIN_BUILD_CORE_FILTER="${WITHIN_BUILD_CORE_FILTER}" /src/build-remux.sh; \
        fi
 

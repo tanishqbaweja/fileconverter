@@ -16,6 +16,13 @@ if [[ "${WITHIN_ENABLE_AV1_PARSER:-1}" == "1" ]]; then
   ENABLED_PARSERS="${ENABLED_PARSERS},av1"
 fi
 
+THEORA_CONFIGURE_FLAGS=()
+ENABLED_ENCODERS=aac,alac,flac,libmp3lame,libopencore_amrnb,libopus,libvorbis,pcm_s16be,pcm_s16le,mpeg4,libvpx_vp8,libvpx_vp9,wmav2
+if [[ "${WITHIN_ENABLE_THEORA_ENCODER:-0}" == "1" ]]; then
+  THEORA_CONFIGURE_FLAGS+=(--enable-libtheora)
+  ENABLED_ENCODERS="${ENABLED_ENCODERS},libtheora"
+fi
+
 print_configure_failure() {
   local status=$?
   if [[ -f "${FFMPEG_DIR}/ffbuild/config.log" ]]; then
@@ -59,6 +66,7 @@ emconfigure ./configure \
   --enable-libmp3lame \
   --enable-libopus \
   --enable-libvorbis \
+  "${THEORA_CONFIGURE_FLAGS[@]}" \
   --enable-version3 \
   --enable-avformat \
   --enable-avcodec \
@@ -68,7 +76,7 @@ emconfigure ./configure \
   --enable-demuxer=aac,aiff,amr,asf,avi,flac,flv,h264,hevc,ivf,m4v,matroska,mov,mp3,mpegts,mpegvideo,ogg,wav \
   --enable-muxer="${ENABLED_MUXERS}" \
   --enable-decoder=aac,alac,amrnb,amrwb,flac,h264,hevc,mp3,mpeg2video,mpeg4,opus,pcm_s16be,pcm_s16le,theora,vorbis,wmav1,wmav2 \
-  --enable-encoder=aac,alac,flac,libmp3lame,libopencore_amrnb,libopus,libvorbis,pcm_s16be,pcm_s16le,mpeg4,libvpx_vp8,libvpx_vp9,wmav2 \
+  --enable-encoder="${ENABLED_ENCODERS}" \
   --enable-parser="${ENABLED_PARSERS}" \
   --enable-bsf=aac_adtstoasc,extract_extradata,h264_mp4toannexb,hevc_mp4toannexb \
   --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread -I${PREFIX}/include" \

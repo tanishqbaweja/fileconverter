@@ -2045,9 +2045,18 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
                                  int requested_bit_rate,
                                  int requested_frame_rate,
                                  int requested_quality) {
+#ifdef WITHIN_THEORA_ENCODE
+  const int ogv = webm_codec == 3;
+  const int webm = webm_codec != 0 && !ogv;
+#else
   const int webm = webm_codec != 0;
+#endif
   const int vp9 = webm_codec == 2;
+#ifdef WITHIN_THEORA_ENCODE
+  const int effective_codec = ogv ? 0 : vp9 ? 2 : webm ? 1 : 3;
+#else
   const int effective_codec = vp9 ? 2 : webm ? 1 : 3;
+#endif
   int result = 0;
   int video_stream_index = -1;
   int audio_stream_index = -1;
@@ -2071,6 +2080,9 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   WithinVideoPipeline pipeline = {0};
 
   if ((requested_codec != 0 && requested_codec != effective_codec) ||
+#ifdef WITHIN_THEORA_ENCODE
+      (ogv && requested_bit_rate != 0) ||
+#endif
       !valid_video_max_width(requested_max_width) ||
       !valid_video_bit_rate(requested_bit_rate) ||
       !valid_video_frame_rate(requested_frame_rate) ||
@@ -2121,6 +2133,10 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
         1,
         webm
             ? "Source chapters are explicitly excluded from the re-encoded WebM."
+#ifdef WITHIN_THEORA_ENCODE
+            : ogv
+              ? "Source chapters are explicitly excluded from the re-encoded OGV."
+#endif
             : "Source chapters are explicitly excluded from the re-encoded MP4.");
   }
 
@@ -2145,6 +2161,11 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
           webm
               ? "The source attachment is explicitly excluded from the "
                 "re-encoded WebM."
+#ifdef WITHIN_THEORA_ENCODE
+              : ogv
+                ? "The source attachment is explicitly excluded from the "
+                  "re-encoded OGV."
+#endif
               : "The source attachment is explicitly excluded from the "
                 "re-encoded MP4.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
@@ -2161,6 +2182,11 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
           webm
               ? "The source subtitle stream is explicitly excluded from the "
                 "re-encoded WebM."
+#ifdef WITHIN_THEORA_ENCODE
+              : ogv
+                ? "The source subtitle stream is explicitly excluded from the "
+                  "re-encoded OGV."
+#endif
               : "The source subtitle stream is explicitly excluded from the "
                 "re-encoded MP4.");
     } else if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -2248,8 +2274,13 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
           "the source average frame rate is retained without upconversion.");
     }
   }
-  const AVCodec *encoder_codec = avcodec_find_encoder(
-      vp9 ? AV_CODEC_ID_VP9 : webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
+  const AVCodec *encoder_codec =
+#ifdef WITHIN_THEORA_ENCODE
+      ogv ? avcodec_find_encoder_by_name("libtheora") :
+#endif
+            avcodec_find_encoder(
+                vp9 ? AV_CODEC_ID_VP9
+                    : webm ? AV_CODEC_ID_VP8 : AV_CODEC_ID_MPEG4);
   if (!encoder_codec) {
     result = AVERROR_ENCODER_NOT_FOUND;
     goto cleanup;
@@ -2262,7 +2293,14 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   encoder->width = decoder->width;
   encoder->height = decoder->height;
   const int maximum_width =
-      requested_max_width > 0 ? requested_max_width : webm ? 640 : 0;
+      requested_max_width > 0
+          ? requested_max_width
+#ifdef WITHIN_THEORA_ENCODE
+          : (webm || ogv) ? 640
+#else
+          : webm ? 640
+#endif
+                  : 0;
   if (maximum_width > 0 && encoder->width > maximum_width) {
     encoder->width = maximum_width;
     encoder->height =
@@ -2276,14 +2314,27 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
         requested_max_width > 0
             ? "The selected width cap proportionally downscales the video "
               "without upscaling smaller sources."
-            : "The WebM profile downscales video to at most 640 pixels wide "
-              "to enforce its CPU and memory budget.");
+            : webm
+              ? "The WebM profile downscales video to at most 640 pixels wide "
+                "to enforce its CPU and memory budget."
+#ifdef WITHIN_THEORA_ENCODE
+              : "The OGV profile downscales video to at most 640 pixels wide "
+                "to enforce its CPU and memory budget."
+#else
+              : "The video profile applies its fixed width policy."
+#endif
+            );
   }
   within_message(
       1,
       webm
           ? "The WebM profile normalizes variable frame timing to the "
             "source average frame rate."
+#ifdef WITHIN_THEORA_ENCODE
+          : ogv
+            ? "The OGV profile normalizes variable frame timing to the "
+              "source average frame rate."
+#endif
           : "The MPEG-4 profile normalizes variable frame timing to the "
             "source average frame rate.");
   encoder->pix_fmt = AV_PIX_FMT_YUV420P;
@@ -2292,7 +2343,16 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   encoder->bit_rate = requested_bit_rate > 0
                           ? requested_bit_rate
                           : webm ? 600 * 1000 : 2 * 1000 * 1000;
+#ifdef WITHIN_THEORA_ENCODE
+  if (ogv) {
+    encoder->bit_rate = 0;
+    encoder->global_quality = 7 * FF_QP2LAMBDA;
+    encoder->flags |= AV_CODEC_FLAG_QSCALE;
+  }
+  encoder->gop_size = ogv ? 64 : webm ? 120 : 48;
+#else
   encoder->gop_size = webm ? 120 : 48;
+#endif
   encoder->max_b_frames = 0;
 #if defined(WITHIN_MPEG4_THREADED)
   encoder->thread_count = WITHIN_VIDEO_THREADS;
@@ -2340,18 +2400,30 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
       av_dict_set_int(&encoder_options, "slices", WITHIN_VIDEO_THREADS, 0);
     }
   }
+#ifdef WITHIN_THEORA_ENCODE
+  if (ogv) {
+    av_dict_set(&encoder_options, "speed_level", "2", 0);
+  }
+#endif
   result = avcodec_open2(encoder, encoder_codec, &encoder_options);
   if (result < 0) {
     report_av_error(
         vp9 ? "VP9 encoder initialization failed"
             : webm ? "VP8 encoder initialization failed"
+#ifdef WITHIN_THEORA_ENCODE
+            : ogv ? "Theora encoder initialization failed"
+#endif
              : "MPEG-4 encoder initialization failed",
         result);
     goto cleanup;
   }
 
   result = avformat_alloc_output_context2(
-      &output_format, NULL, webm ? "webm" : "mp4", NULL);
+      &output_format, NULL,
+#ifdef WITHIN_THEORA_ENCODE
+      ogv ? "ogg" :
+#endif
+      webm ? "webm" : "mp4", NULL);
   if (result < 0 || !output_format) {
     result = result < 0 ? result : AVERROR(EINVAL);
     goto cleanup;
@@ -2427,14 +2499,21 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
   output_buffer = NULL;
   output_format->pb = output_io;
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
-  if (!webm) {
+  if (!webm
+#ifdef WITHIN_THEORA_ENCODE
+      && !ogv
+#endif
+  ) {
     av_dict_set(&muxer_options, "movflags",
                 "frag_keyframe+empty_moov+default_base_moof", 0);
   }
   result = avformat_write_header(output_format, &muxer_options);
   if (result < 0) {
     report_av_error(webm ? "WebM header write failed"
-                         : "MP4 header write failed",
+#ifdef WITHIN_THEORA_ENCODE
+                         : ogv ? "OGV header write failed"
+#endif
+                               : "MP4 header write failed",
                     result);
     goto cleanup;
   }
@@ -2478,6 +2557,9 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
         report_av_error(
             vp9 ? "Video decode or VP9 encode failed"
                 : webm ? "Video decode or VP8 encode failed"
+#ifdef WITHIN_THEORA_ENCODE
+                : ogv ? "Video decode or Theora encode failed"
+#endif
                  : "Video decode or MPEG-4 encode failed",
             result);
         goto cleanup;
@@ -2603,6 +2685,17 @@ static int within_ogv_to_vp9(int requested_codec, int requested_max_width,
                                requested_quality);
 }
 
+#ifdef WITHIN_THEORA_ENCODE
+static int within_avi_to_ogv(int requested_codec, int requested_max_width,
+                             int requested_bit_rate,
+                             int requested_frame_rate,
+                             int requested_quality) {
+  return within_video_reencode(3, 0, requested_codec, requested_max_width,
+                               requested_bit_rate, requested_frame_rate,
+                               requested_quality);
+}
+#endif
+
 EMSCRIPTEN_KEEPALIVE
 int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  int audio_channels, int audio_codec,
@@ -2677,6 +2770,12 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     return within_ogv_to_vp9(video_codec, video_max_width, video_bit_rate,
                              video_frame_rate, video_quality);
   }
+#ifdef WITHIN_THEORA_ENCODE
+  if (profile == 39) {
+    return within_avi_to_ogv(video_codec, video_max_width, video_bit_rate,
+                             video_frame_rate, video_quality);
+  }
+#endif
   if (video_codec != 0 || video_max_width != 0 || video_bit_rate != 0 ||
       video_frame_rate != 0 || video_quality != 0) {
     within_message(2, "Video options are not supported by this profile.");
@@ -2691,6 +2790,9 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       && profile != 36
       && profile != 37
       && profile != 38
+#endif
+#ifdef WITHIN_THEORA_ENCODE
+      && profile != 39
 #endif
   ) {
     within_message(2, "Unknown remux profile.");

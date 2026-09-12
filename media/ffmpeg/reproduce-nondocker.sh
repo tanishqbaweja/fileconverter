@@ -29,6 +29,8 @@ LIBOGG_VERSION=1.3.6
 LIBOGG_SHA256=5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061
 LIBVORBIS_VERSION=1.3.7
 LIBVORBIS_SHA256=b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b
+LIBTHEORA_VERSION=1.2.0
+LIBTHEORA_SHA256=279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e
 
 fail() {
   printf '%s\n' "$*" >&2
@@ -254,6 +256,10 @@ download_and_extract \
   "https://downloads.xiph.org/releases/vorbis/libvorbis-${LIBVORBIS_VERSION}.tar.xz" \
   libvorbis.tar.xz "${LIBVORBIS_SHA256}" \
   "libvorbis-${LIBVORBIS_VERSION}" libvorbis
+download_and_extract \
+  "https://downloads.xiph.org/releases/theora/libtheora-${LIBTHEORA_VERSION}.tar.gz" \
+  libtheora.tar.gz "${LIBTHEORA_SHA256}" \
+  "libtheora-${LIBTHEORA_VERSION}" libtheora
 
 ./build-vpx.sh
 run_build_step ./build-opencore-amr.sh "${BUILD_ROOT}/opencore-amr"
@@ -261,6 +267,7 @@ run_build_step ./build-lame.sh "${BUILD_ROOT}/lame"
 run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
 run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
+run_build_step ./build-theora.sh "${BUILD_ROOT}/libtheora"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
@@ -273,7 +280,15 @@ requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
 fi
-if [[ "${requested_core}" != "within-remux" ]]; then
+if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]]; then
+  (
+    cd "${BUILD_ROOT}/ffmpeg"
+    emmake make distclean
+  )
+  WITHIN_ENABLE_THEORA_ENCODER=1 ./build-libraries.sh
+  WITHIN_BUILD_CORE_FILTER=within-theora ./build-remux.sh
+fi
+if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ) ]]; then
   # The bounded AVI muxer and AVI output support belong only to the general
   # core. The already-certified specialists predate both changes, so restore
   # their exact historical FFmpeg configure surface as well as the source.
@@ -315,7 +330,7 @@ elif [[ "${requested_core}" == "within-direct" ]]; then
   patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
-elif [[ "${requested_core}" != "within-remux" ]]; then
+elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ]]; then
   strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
@@ -335,6 +350,7 @@ else
     LICENSE.lame
     LICENSE.lame-linking
     LICENSE.libogg
+    LICENSE.libtheora
     LICENSE.libvorbis
     LICENSE.opencore-amr
     LICENSE.opus

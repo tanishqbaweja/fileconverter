@@ -22,6 +22,8 @@ const WEBM_QUALITY_MODULE_URL = "/engines/remux/within-webm-quality.mjs";
 const WEBM_QUALITY_WASM_URL = "/engines/remux/within-webm-quality.wasm";
 const DIRECT_REMUX_MODULE_URL = "/engines/remux/within-direct.mjs";
 const DIRECT_REMUX_WASM_URL = "/engines/remux/within-direct.wasm";
+const THEORA_MODULE_URL = "/engines/remux/within-theora.mjs";
+const THEORA_WASM_URL = "/engines/remux/within-theora.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
 const DIRECT_CANCELLATION_YIELD_BYTES = 8 * 1024 * 1024;
 const MPEG4_WORKER_POOL_SIZE = 4;
@@ -77,7 +79,7 @@ type RemuxModuleFactory = (options: {
 export interface MediaRemuxOptions {
   file: File;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
@@ -197,6 +199,8 @@ export async function runMediaRemux({
         ? "Remuxing to AVI"
       : remuxProfile === 38
         ? "Extracting AV1/VP8/VP9 video to IVF"
+      : remuxProfile === 39
+        ? "Encoding Theora OGV"
       : remuxProfile === 2
         ? "Extracting audio"
         : remuxProfile === 3
@@ -573,7 +577,9 @@ export async function runMediaRemux({
   };
 
   const moduleUrl =
-    useDirectRemuxCore
+    remuxProfile === 39
+      ? THEORA_MODULE_URL
+    : useDirectRemuxCore
       ? DIRECT_REMUX_MODULE_URL
       : useSingleThreadVideoCore
         ? REMUX_MODULE_URL
@@ -587,7 +593,9 @@ export async function runMediaRemux({
         ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    useDirectRemuxCore
+    remuxProfile === 39
+      ? THEORA_WASM_URL
+    : useDirectRemuxCore
       ? DIRECT_REMUX_WASM_URL
       : useSingleThreadVideoCore
         ? REMUX_WASM_URL

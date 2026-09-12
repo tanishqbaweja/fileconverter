@@ -16,6 +16,7 @@ on:
           - within-webm
           - within-vp9
           - within-webm-quality
+          - within-theora
 
 permissions:
   contents: read
