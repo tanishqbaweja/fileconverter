@@ -53,6 +53,15 @@
       "correction": "The same bounded source rewriter now strips both general-core-only macro families before reconstructing historical specialists.",
       "artifactRetained": false,
       "repositoryLocalCleanupPassed": true
+    },
+    {
+      "runId": 34696782880,
+      "commit": "d179b18df0c8149077ae56c61c437630f251da9d",
+      "result": "failed-before-compilation",
+      "reason": "The corrected macro stripping passed further into the preflight, but the focused Theora build still attempted an unrelated historical direct-core reverse patch.",
+      "correction": "The source-rewrite preflight now skips only the unrelated legacy reverse patches when the selected core is within-theora; all existing specialist and full builds retain the complete check.",
+      "artifactRetained": false,
+      "repositoryLocalCleanupPassed": true
     }
   ],
   "acceptanceStillRequired": [

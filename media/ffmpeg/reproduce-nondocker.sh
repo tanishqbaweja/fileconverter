@@ -164,12 +164,13 @@ verify_specialist_source_rewrites() {
   assert_work_path "${verification_root}"
   cp "${SCRIPT_DIR}/within_remux.c" "${verification_root}/"
   if strip_general_core_only_profiles "${verification_root}/within_remux.c" &&
-      patch --reverse --directory="${verification_root}" --strip=3 \
-        < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
-      patch --reverse --directory="${verification_root}" --strip=3 \
-        < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
-      patch --reverse --directory="${verification_root}" --strip=1 \
-        < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch"; then
+      { [[ "${WITHIN_BUILD_CORE_FILTER:-all}" == "within-theora" ]] ||
+        { patch --reverse --directory="${verification_root}" --strip=3 \
+            < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
+          patch --reverse --directory="${verification_root}" --strip=3 \
+            < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
+          patch --reverse --directory="${verification_root}" --strip=1 \
+            < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch"; }; }; then
     printf 'Specialist source-rewrite preflight passed.\n'
   else
     status=$?
