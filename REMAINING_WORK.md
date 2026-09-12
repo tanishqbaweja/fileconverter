@@ -157,6 +157,31 @@ not the entire product specification.
 
 ## Implementation and verification log
 
+### 2026-09-12 — AVI to FLV feasibility and private native candidate
+
+- Native fixture generation created a genuine 992,694-byte H.264/MP3 AVI under
+  `work/avi-to-flv-feasibility`; packet-copy remuxing produced a genuine
+  981,702-byte FLV. The source/output SHA-256 values were respectively
+  `dc6fcd7ae7a3567dce0d062a73e2a1301976a1db02063a317e2d4a9ae51cba43`
+  and `8c6b116adb881632d88edfe46e43810760afa92cd58c87216a2f5eee222f338a`.
+- FFprobe identified AVI and FLV container families, H.264 640x360 video, mono
+  48 kHz MP3, and 4.041667/4.042-second durations. Normalized compressed H.264
+  packets matched at SHA-256
+  `743fbd932db866d7716c162a8d4b1c800c6badeac54520ad87f90ddf5aa86774`;
+  MP3 packets matched at
+  `cacd113dcb0398bf5cb8e9f54da51ca8a176abd85b25550edef35a82e90be857`;
+  fully decoded video matched at
+  `cd6d728d69789b3aa3892125c8582495013de0e7e2e31404498379f30bdb2dbc`.
+  This proves a real minimum-work container conversion rather than extension
+  renaming or re-encoding.
+- The candidate remains private. It still requires a no-Docker reproducible
+  Wasm build, production-browser correctness and forced-write gates, three-run
+  OPFS/direct stress evidence, complete-process-tree memory measurement,
+  cancellation/cleanup validation, and registry/UI/report agreement before
+  publication.
+- Both disposable conversion files were deleted through the repository cleanup
+  command immediately after validation; `work` again contains only `.gitkeep`.
+
 ### 2026-09-12 — AVI to MPEG-TS publication
 
 - Native FFmpeg was used only for compatibility feasibility and independent

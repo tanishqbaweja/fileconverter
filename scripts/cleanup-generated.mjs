@@ -145,6 +145,8 @@ const taskTempRoots = [
   path.resolve(workRoot, "avi-to-mov-candidate"),
   path.resolve(workRoot, "avi-to-mpegts-feasibility"),
   path.resolve(workRoot, "avi-to-mpegts-candidate"),
+  path.resolve(workRoot, "avi-to-flv-feasibility"),
+  path.resolve(workRoot, "avi-to-flv-candidate"),
   path.resolve(workRoot, "ffmpeg-candidate-34571134087"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),

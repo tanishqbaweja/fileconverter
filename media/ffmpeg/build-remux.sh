@@ -194,6 +194,14 @@ manifest = manifest.replace(
   aviMpegTsMarker,
   '"flv-to-mpeg-ts","avi-to-mpeg-ts","mkv-to-3gp"',
 );
+const aviFlvMarker = '"mpeg-ts-to-flv","h264-to-mp4"';
+if (!manifest.includes(aviFlvMarker)) {
+  throw new Error("Could not locate the AVI-to-FLV profile insertion point.");
+}
+manifest = manifest.replace(
+  aviFlvMarker,
+  '"mpeg-ts-to-flv","avi-to-flv","h264-to-mp4"',
+);
 writeFileSync(
   manifestPath,
   manifest,

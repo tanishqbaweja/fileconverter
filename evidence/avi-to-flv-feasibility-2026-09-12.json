@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12",
+  "status": "private-candidate",
+  "dockerUsed": false,
+  "conversionClass": "H.264 and MP3 packet copy from AVI to genuine FLV",
+  "source": {
+    "retained": false,
+    "bytes": 992694,
+    "sha256": "dc6fcd7ae7a3567dce0d062a73e2a1301976a1db02063a317e2d4a9ae51cba43",
+    "format": "avi",
+    "durationSeconds": 4.041667,
+    "video": { "codec": "h264", "width": 640, "height": 360 },
+    "audio": { "codec": "mp3", "sampleRateHz": 48000, "channels": 1 }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 981702,
+    "sha256": "8c6b116adb881632d88edfe46e43810760afa92cd58c87216a2f5eee222f338a",
+    "format": "flv",
+    "durationSeconds": 4.042,
+    "videoPacketSha256": "743fbd932db866d7716c162a8d4b1c800c6badeac54520ad87f90ddf5aa86774",
+    "audioPacketSha256": "cacd113dcb0398bf5cb8e9f54da51ca8a176abd85b25550edef35a82e90be857",
+    "decodedVideoSha256": "cd6d728d69789b3aa3892125c8582495013de0e7e2e31404498379f30bdb2dbc",
+    "sourceAndOutputCompressedPacketsMatch": true,
+    "sourceAndOutputDecodedVideoMatch": true
+  },
+  "selectedOptimization": "packet copy; no decode or re-encode",
+  "publication": {
+    "public": false,
+    "remainingGates": [
+      "no-Docker reproducible Wasm candidate",
+      "production-browser correctness and write failure",
+      "three-run OPFS and direct-destination stress",
+      "complete Chromium process-tree memory at or below 250 MiB",
+      "cancellation and cleanup recovery",
+      "registry, UI, report, and documentation agreement"
+    ]
+  },
+  "cleanup": {
+    "generatedSourceDeleted": true,
+    "convertedOutputDeleted": true,
+    "workContainsOnlyTrackedPlaceholder": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

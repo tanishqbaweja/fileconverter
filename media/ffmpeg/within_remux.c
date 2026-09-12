@@ -496,7 +496,12 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
       return stream->codecpar->codec_id == AV_CODEC_ID_H264;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
-           stream->codecpar->codec_id == AV_CODEC_ID_AAC;
+           (stream->codecpar->codec_id == AV_CODEC_ID_AAC
+#ifdef WITHIN_OGV_COPY
+            || (avi_fragmented_iso_input &&
+                stream->codecpar->codec_id == AV_CODEC_ID_MP3)
+#endif
+           );
   }
 #ifdef WITHIN_OGV_COPY
   if (profile == 36) {
@@ -3239,7 +3244,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       } else if (container_flv_output) {
         within_message(
             2,
-            "FLV stream copy accepts H.264 video with AAC audio; this source needs a separately verified conversion route.");
+            "FLV stream copy accepts H.264 video with AAC audio, or H.264 video with AAC or MP3 audio from AVI; this source needs a separately verified conversion route.");
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
         within_message(
             2,
@@ -3434,7 +3439,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
                  input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
         within_message(
             1,
-            "Only the first AAC audio stream is copied into FLV; an additional audio stream was explicitly excluded.");
+            "Only the first compatible AAC or MP3 audio stream is copied into FLV; an additional audio stream was explicitly excluded.");
       } else if (input_stream->codecpar->codec_type == AVMEDIA_TYPE_SUBTITLE) {
         within_message(
             1,
