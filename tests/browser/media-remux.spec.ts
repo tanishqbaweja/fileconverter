@@ -376,6 +376,7 @@ const containerFlvOutputPaths = {
   mov: path.join(outputRoot, "mov-remux-output.flv"),
   "3gp": path.join(outputRoot, "3gp-remux-output.flv"),
   "mpeg-ts": path.join(outputRoot, "mpeg-ts-remux-output.flv"),
+  avi: path.join(outputRoot, "avi-remux-output.flv"),
 } as const;
 const complexMp4OutputPath = path.join(outputRoot, "complex-remux-output.mp4");
 const fixturePath = path.join(
@@ -2989,6 +2990,7 @@ async function runMediaRoute(
     | "mov-to-flv"
     | "3gp-to-flv"
     | "mpeg-ts-to-flv"
+    | "avi-to-flv"
     | "m2v-to-mpeg-ts"
     | "mkv-to-m2v"
     | "mp4-to-m2v"
@@ -4150,6 +4152,7 @@ for (const route of [
   ["mov-to-flv", movInputFixturePath],
   ["3gp-to-flv", threeGpInputFixturePath],
   ["mpeg-ts-to-flv", mpegTsInputFixturePath],
+  ["avi-to-flv", mp3ContainerFixturePaths.avi],
   ["m2v-to-mpeg-ts", m2vFixturePath],
   ["mkv-to-m2v", mpeg2ContainerFixturePaths.mkv],
   ["mp4-to-m2v", mpeg2ContainerFixturePaths.mp4],
@@ -8105,6 +8108,40 @@ test("browser FFmpeg packet-copies AVI MPEG-4 video into genuine bounded MOV and
         expect(Number(video?.nb_read_frames)).toBe(96);
         await expectCompressedVideoPacketMatch(aviInputFixturePath, outputPath);
         await expectDecodedVideoMatch(aviInputFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+test("browser FFmpeg packet-copies AVI H.264 video and MP3 audio into genuine bounded FLV", async () => {
+  await runMediaRoute(
+    "avi-to-flv",
+    containerFlvOutputPaths.avi,
+    ["h264", "mp3"],
+    100_000,
+    mp3ContainerFixturePaths.avi,
+    {
+      expectedWarningFragments: ["FLV cannot reliably represent"],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("flv");
+        expect(probe.streams).toHaveLength(2);
+        const video = probe.streams[0];
+        const audio = probe.streams[1];
+        expect(video?.codec_type).toBe("video");
+        expect(video?.codec_name).toBe("h264");
+        expect(video?.width).toBe(640);
+        expect(video?.height).toBe(360);
+        expect(audio?.codec_type).toBe("audio");
+        expect(audio?.codec_name).toBe("mp3");
+        expect(Number(video?.nb_read_frames)).toBe(96);
+        await expectVideoPacketMatch(mp3ContainerFixturePaths.avi, outputPath);
+        await expectCompressedAudioPacketMatch(
+          mp3ContainerFixturePaths.avi,
+          outputPath,
+        );
+        await expectDecodedVideoMatch(mp3ContainerFixturePaths.avi, outputPath);
       },
     },
   );

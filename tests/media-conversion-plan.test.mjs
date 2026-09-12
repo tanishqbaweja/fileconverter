@@ -232,6 +232,57 @@ test("AVI to MPEG-TS candidate packet-copies compatible video and audio", () => 
   );
 });
 
+test("AVI to FLV candidate packet-copies H.264 video and MP3 audio", () => {
+  const candidate = {
+    id: "avi-to-flv",
+    input: "avi",
+    output: "flv",
+    engine: "ffmpeg-remux",
+    route: "stream-copy",
+    browserRequirements: [],
+    cpuClass: "low",
+    memoryClass: "bounded-medium",
+    metadataLimitations: [],
+    fidelityLimitations: [],
+    maxTestedBytes: null,
+    automatedTestStatus: "pending",
+    public: false,
+  };
+  const accepted = planMediaConversion(
+    candidate,
+    inspection([stream("video", "H.264/AVC"), stream("audio", "MP3")]),
+  );
+  assert.ok(accepted);
+  assert.deepEqual(
+    accepted.streams.map(({ action }) => action),
+    ["copy", "copy"],
+  );
+  assert.deepEqual(accepted.blockingReasons, []);
+
+  const aac = planMediaConversion(
+    candidate,
+    inspection([stream("video", "H.264/AVC"), stream("audio", "AAC")]),
+  );
+  assert.ok(aac);
+  assert.deepEqual(
+    aac.streams.map(({ action }) => action),
+    ["copy", "copy"],
+  );
+
+  const rejected = planMediaConversion(
+    candidate,
+    inspection([
+      stream("video", "MPEG-4 Part 2"),
+      stream("audio", "MP3"),
+    ]),
+  );
+  assert.ok(rejected);
+  assert.deepEqual(
+    rejected.streams.map(({ action }) => action),
+    ["reject", "copy"],
+  );
+});
+
 test("Matroska plan copies certified subtitle codecs and rejects unsupported audio", () => {
   const plan = planMediaConversion(
     profile("mp4-to-mkv"),

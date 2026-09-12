@@ -511,6 +511,7 @@ if (
     "mov-to-flv",
     "3gp-to-flv",
     "mpeg-ts-to-flv",
+    "avi-to-flv",
     "m2v-to-mpeg-ts",
     "mkv-to-m2v",
     "mp4-to-m2v",
@@ -1847,6 +1848,7 @@ async function validateMediaOutput(
     "mov-to-flv",
     "3gp-to-flv",
     "mpeg-ts-to-flv",
+    "avi-to-flv",
   ].includes(route);
   const elementaryVideoOutput =
     h264Output || hevcOutput || mpeg2Output || m4vOutput || ivfOutput;
@@ -3622,7 +3624,7 @@ async function validateMediaOutput(
       packetStreamHashes[0] !== packetStreamHashes[1]
     ) {
       throw new Error(
-        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames${aviVideoOnlyIsoCopy ? "" : " or AAC access units"} do not exactly match the source.`,
+        `Browser ${containerThreeGpCopy ? "3GP" : containerMovCopy ? "MOV" : "FLV"} decoded video frames${aviVideoOnlyIsoCopy ? "" : route === "avi-to-flv" ? " or MP3 packets" : " or AAC access units"} do not exactly match the source.`,
       );
     }
     probe.withinValidation = {
@@ -3658,7 +3660,9 @@ async function validateMediaOutput(
               containerThreeGpCopy ||
               containerMovCopy ||
               containerFlvCopy
-            ? "full-decoded-video-and-aac-streamhash"
+            ? route === "avi-to-flv"
+              ? "full-decoded-video-and-mp3-streamhash"
+              : "full-decoded-video-and-aac-streamhash"
             : requiresFullDecodeTraversal
               ? "full-native-decode"
               : "full-packet-traversal",

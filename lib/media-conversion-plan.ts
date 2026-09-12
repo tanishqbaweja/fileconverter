@@ -190,6 +190,11 @@ function containerCodecCompatible(
       ? codec === "H.264" || codec === "HEVC"
       : codec === "AAC";
   }
+  if (profile.output === "flv" && profile.input === "avi") {
+    return stream.mediaType === "video"
+      ? codec === "H.264"
+      : codec === "AAC" || codec === "MP3";
+  }
   if (profile.output === "3gp" || profile.output === "flv") {
     return stream.mediaType === "video" ? codec === "H.264" : codec === "AAC";
   }

@@ -529,6 +529,12 @@ const categories = {
       ["mpeg-ts-to-flv", "fixtures/stress/media/h264-aac-128m.mpegts"],
     ],
   },
+  "avi-flv": {
+    generator: "scripts/generate-container-mp3-stress-fixtures.mjs",
+    profiles: [
+      ["avi-to-flv", "fixtures/stress/media/h264-mp3-128m.avi"],
+    ],
+  },
   "3gp": {
     generator: "scripts/generate-3gp-stress-fixture.mjs",
     profiles: [

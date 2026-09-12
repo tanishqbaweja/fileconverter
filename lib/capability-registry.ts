@@ -1444,10 +1444,11 @@ const containerFlvEvidence = {
   "mov-to-flv": 147_136_646,
   "3gp-to-flv": 146_854_522,
   "mpeg-ts-to-flv": 150_441_548,
+  "avi-to-flv": null,
 } as const satisfies Record<string, number | null>;
 
 function containerFlvProfile(
-  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts",
+  input: "mkv" | "mp4" | "mov" | "3gp" | "mpeg-ts" | "avi",
 ): ConversionProfile {
   const id = `${input}-to-flv` as keyof typeof containerFlvEvidence;
   const evidence = containerFlvEvidence[id];
@@ -1466,14 +1467,18 @@ function containerFlvProfile(
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
-      "FLV carries only the first H.264 video stream and first AAC audio stream without re-encoding; compatible H.264 color fields and supported title metadata are preserved. Additional streams, subtitles, attachments, attached pictures, chapters, language tags, display rotation, and unsupported general metadata are explicitly excluded.",
+      input === "avi"
+        ? "The candidate AVI input accepts H.264 video with AAC or MP3 audio and packet-copies both streams without re-encoding; other codecs require a separately verified route."
+        : "The certified inputs contain H.264 video with AAC audio; other codecs require a separately verified route.",
+      input === "avi"
+        ? "FLV carries only the first H.264 video stream and first compatible AAC or MP3 audio stream without re-encoding. AVI language tags, additional streams, subtitles, attachments, attached pictures, chapters, display rotation, and unsupported general metadata are explicitly excluded."
+        : "FLV carries only the first H.264 video stream and first AAC audio stream without re-encoding; compatible H.264 color fields and supported title metadata are preserved. Additional streams, subtitles, attachments, attached pictures, chapters, language tags, display rotation, and unsupported general metadata are explicitly excluded.",
       "The FLV trailer seeks back only to update fixed-size duration and file-size metadata; output memory remains bounded independently of total duration and file size.",
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
     automatedTestStatus: evidence === null ? "pending" : "passed",
-    public: true,
+    public: evidence !== null,
   };
 }
 
@@ -6138,6 +6143,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerFlvProfile("mov"),
     containerFlvProfile("3gp"),
     containerFlvProfile("mpeg-ts"),
+    containerFlvProfile("avi"),
     mpeg2TransportProfile(),
     containerMpeg2Profile("mkv"),
     containerMpeg2Profile("mp4"),

@@ -2743,6 +2743,10 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
 #endif
   const int container_mov_output = profile == 26;
   const int container_flv_output = profile == 27;
+  const int container_flv_avi_input =
+      container_flv_output && input_format->iformat &&
+      input_format->iformat->name &&
+      strstr(input_format->iformat->name, "avi") != NULL;
 #ifdef WITHIN_OGV_COPY
   const int container_ogv_output = profile == 36;
   const int container_avi_output = profile == 37;
@@ -2781,7 +2785,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
   const int container_flv_input_requires_probe =
       container_flv_output && input_format->iformat &&
       input_format->iformat->name &&
-      strstr(input_format->iformat->name, "mpegts") != NULL;
+      (strstr(input_format->iformat->name, "mpegts") != NULL ||
+       container_flv_avi_input);
   const int container_avi_input_requires_probe =
 #ifdef WITHIN_OGV_COPY
       container_avi_output && input_format->iformat &&
@@ -3026,7 +3031,9 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
     if (video_stream_index < 0 || audio_stream_index < 0) {
       within_message(
           2,
-          "FLV stream copy requires one H.264 video stream and one AAC audio stream.");
+          container_flv_avi_input
+              ? "FLV stream copy from AVI requires one H.264 video stream and one AAC or MP3 audio stream."
+              : "FLV stream copy requires one H.264 video stream and one AAC audio stream.");
       result = AVERROR_STREAM_NOT_FOUND;
       goto cleanup;
     }
