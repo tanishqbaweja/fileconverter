@@ -86,7 +86,10 @@ decoded-video equality, cancellation, forced-write cleanup, bounded I/O, and
 repeatability passed. The direct path yields one event-loop task per 8 MiB so a
 cancel request cannot be starved by synchronous writes, with no measured
 slowdown outside the prior 5.997-6.829 second baseline range. Exact results are
-in `evidence/avi-to-mpegts-browser-2026-09-12.json`.
+in `evidence/avi-to-mpegts-browser-2026-09-12.json`. Hosted no-Docker run
+[34669858579](https://github.com/tanishqbaweja/fileconverter/actions/runs/34669858579)
+rebuilt pushed commit `8c74fa5` byte-for-byte in 7m24s, passed cleanup, skipped
+mismatch upload, and retained zero artifacts.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These

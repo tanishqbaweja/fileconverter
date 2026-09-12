@@ -57,6 +57,9 @@
       "elapsedMs": [6583.01, 6265.59, 6361.6],
       "incrementalPrivateMiB": [245.296875, 210.40234375, 210.60546875],
       "worstIncrementalPrivateMiB": 245.296875,
+      "peakWasmMemoryBytes": 33554432,
+      "maxReadChunkBytes": 262144,
+      "maxWriteChunkBytes": 144948,
       "cancellation": { "passed": true, "inputBytes": 8522448, "outputBytes": 8040760 },
       "cleanupRecoveryPassed": true
     },
@@ -92,7 +95,17 @@
     },
     "publicProfileCountAfterPromotion": 402,
     "compactPublicEvidencePassed": "402/402",
-    "finalNoDockerReproduction": null
+    "finalNoDockerReproduction": {
+      "status": "passed",
+      "runId": 34669858579,
+      "commit": "8c74fa5998ca455e7c1d9c1ed38238befe747b21",
+      "core": "within-remux",
+      "durationSeconds": 444,
+      "byteExact": true,
+      "mismatchArtifactUploadSkipped": true,
+      "repositoryLocalBuildCleanupPassed": true,
+      "retainedArtifacts": 0
+    }
   },
   "cleanup": {
     "generatedStressSourceDeleted": true,
@@ -100,7 +113,7 @@
     "browserProfilesDeleted": true,
     "localCandidateDeletedAfterInstallation": true,
     "rawReportsDeletedAfterCompactManifestGeneration": true,
-    "remoteMismatchArtifactDeletedAfterPublication": false,
+    "remoteMismatchArtifactDeletedAfterPublication": true,
     "protectedTestMkvUnmodified": true
   }
 }

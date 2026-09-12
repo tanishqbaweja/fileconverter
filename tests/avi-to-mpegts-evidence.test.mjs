@@ -13,6 +13,7 @@ const mediaBridge = readFileSync("workers/media-remux.ts", "utf8");
 const browser = readFileSync("tests/browser/media-remux.spec.ts", "utf8");
 const profiler = readFileSync("scripts/memory-profile.mjs", "utf8");
 const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
+const ledger = readFileSync("TESTED.md", "utf8");
 
 test("AVI to MPEG-TS is public only with exact bounded browser evidence", () => {
   const profile = conversionProfiles.find(
@@ -50,4 +51,13 @@ test("AVI MPEG-TS conversion, validation, cancellation, and cleanup stay wired",
   assert.equal(evidence.cleanup.generatedStressSourceDeleted, true);
   assert.equal(evidence.cleanup.convertedOutputsDeleted, true);
   assert.equal(evidence.cleanup.rawReportsDeletedAfterCompactManifestGeneration, true);
+  assert.equal(evidence.cleanup.remoteMismatchArtifactDeletedAfterPublication, true);
+  assert.equal(evidence.publication.finalNoDockerReproduction.status, "passed");
+  assert.equal(evidence.publication.finalNoDockerReproduction.runId, 34_669_858_579);
+  assert.equal(evidence.publication.finalNoDockerReproduction.byteExact, true);
+  assert.equal(evidence.publication.finalNoDockerReproduction.retainedArtifacts, 0);
+  assert.match(
+    ledger,
+    /\| avi-to-mpeg-ts \| 159,500,442 \| 3 \| 163,700,248 \| 6\.27 s–6\.58 s \| 245\.3 MiB \|/,
+  );
 });

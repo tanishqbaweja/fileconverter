@@ -186,6 +186,10 @@ not the entire product specification.
   5.997–6.829-second direct conversion range. The public evidence audit passes
   402/402; compact results are retained in
   `evidence/avi-to-mpegts-browser-2026-09-12.json`.
+- Hosted no-Docker run `34669858579` rebuilt exact pushed commit `8c74fa5`
+  byte-for-byte in 7m24s, passed repository-local cleanup, skipped mismatch
+  upload, and retained zero artifacts. Candidate artifact `10290275785` was
+  deleted after publication and the run now reports zero artifacts.
 
 ### 2026-09-11 — AVI to MOV feasibility and unpublished candidate
 
