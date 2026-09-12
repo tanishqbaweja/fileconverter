@@ -31,4 +31,8 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
   assert.match(build, /libtheoraVersion\": \"1\.2\.0/);
   assert.match(libraries, /WITHIN_ENABLE_THEORA_ENCODER/);
   assert.match(reproduction, /LIBTHEORA_SHA256=279327339903b544/);
+  assert.match(
+    reproduction,
+    /WITHIN_OGV_COPY\|WITHIN_THEORA_ENCODE/,
+  );
 });

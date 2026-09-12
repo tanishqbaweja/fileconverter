@@ -44,6 +44,17 @@
     "maximumWasmMemoryBytes": 100663296,
     "audioPolicy": "The initial candidate explicitly excludes AVI audio; audio preservation or Vorbis re-encoding needs separate evidence."
   },
+  "buildAttempts": [
+    {
+      "runId": 34696699803,
+      "commit": "5baa22da6b4d82f86c1a3897a2f8d8ecccbe860f",
+      "result": "failed-before-compilation",
+      "reason": "The specialist source-rewrite preflight stripped only WITHIN_OGV_COPY blocks, so the historical direct-core reverse patch could not match interleaved WITHIN_THEORA_ENCODE blocks.",
+      "correction": "The same bounded source rewriter now strips both general-core-only macro families before reconstructing historical specialists.",
+      "artifactRetained": false,
+      "repositoryLocalCleanupPassed": true
+    }
+  ],
   "acceptanceStillRequired": [
     "No-Docker hosted Wasm compilation and independent artifact inspection",
     "Production Chromium genuine conversion and full decode validation",

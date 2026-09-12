@@ -45,7 +45,7 @@ strip_general_core_only_profiles() {
   local source_path="${1:-${BUILD_ROOT}/within_remux.c}"
   local filtered_path="${source_path}.specialist"
   awk '
-    /^[[:space:]]*#ifdef[[:space:]]+WITHIN_OGV_COPY[[:space:]]*$/ {
+    /^[[:space:]]*#ifdef[[:space:]]+(WITHIN_OGV_COPY|WITHIN_THEORA_ENCODE)[[:space:]]*$/ {
       if (skipping) exit 2
       skipping = 1
       depth = 1
@@ -80,7 +80,7 @@ strip_general_core_only_profiles() {
       if (skipping || depth != 0) exit 3
     }
   ' "${source_path}" > "${filtered_path}" ||
-    fail "Could not remove general-core-only OGV blocks for specialist builds."
+    fail "Could not remove general-core-only OGV/Theora blocks for specialist builds."
   mv -- "${filtered_path}" "${source_path}"
 }
 
