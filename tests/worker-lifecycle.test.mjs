@@ -216,6 +216,22 @@ test("IVF direct output coalesces bounded writes to the certified 1 MiB size", (
   );
 });
 
+test("direct media input yields to cancellation messages without unbounded buffering", () => {
+  const remux = source("workers/media-remux.ts");
+  assert.match(
+    remux,
+    /DIRECT_CANCELLATION_YIELD_BYTES = 8 \* 1024 \* 1024/,
+  );
+  assert.match(
+    remux,
+    /writable\.writeSync &&\s*totalReadBytes - lastDirectCancellationYieldBytes >=\s*DIRECT_CANCELLATION_YIELD_BYTES/s,
+  );
+  assert.match(
+    remux,
+    /await new Promise<void>\(\(resolve\) => globalThis\.setTimeout\(resolve, 0\)\);\s*assertActive\(\)/s,
+  );
+});
+
 test("worker messages, warnings, and batch-retained state have hard limits", () => {
   const limits = source("lib/resource-limits.ts");
   assert.match(limits, /MAX_BATCH_FILES = 256/);

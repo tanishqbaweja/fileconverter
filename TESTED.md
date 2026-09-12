@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **401**
-- Public profiles with retained successful Chrome stress evidence: **401**
+- Public passed conversion profiles: **402**
+- Public profiles with retained successful Chrome stress evidence: **402**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -326,6 +326,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avi-to-mkv | 159,500,442 | 3 | 159,424,026 | 0.95 s–1.25 s | 166.2 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mp3 | 182,803,272 | 3 | 1,441,205 | 1.25 s–1.51 s | 214.9 MiB | 32.0 MiB | read 262,144 B / write 629 B | passed |
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
+| avi-to-mpeg-ts | 159,500,442 | 3 | 163,700,248 | 6.27 s–6.58 s | 245.3 MiB | 32.0 MiB | read 262,144 B / write 144,948 B | passed |
 | avi-to-ogg | 159,500,442 | 3 | 135,279 | 1.79 s–2.12 s | 199.1 MiB | 32.0 MiB | read 262,144 B / write 3,552 B | passed |
 | avi-to-opus | 159,500,442 | 3 | 584,026 | 1.41 s–1.69 s | 231.6 MiB | 32.0 MiB | read 262,144 B / write 9,077 B | passed |
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
@@ -759,6 +760,7 @@ Stream ma |
 | 2026-09-08T10:05:42.751Z | mkv-to-avi | 191,735,971 | 0 | 191,735,971 | Browser media output size is outside the validated range: 202384110 bytes. |
 | 2026-09-10T18:55:47.970Z | ivf-to-webm | 169,519,329 | 3 | 169,519,329 | Failed checks: processTreePrivateMemory; measured 276.9 MiB against a 250.0 MiB limit. |
 | 2026-09-10T19:24:03.363Z | ivf-to-webm | 169,519,329 | 0 | 169,519,329 | IVF cancellation left output state or browser-owned files behind. |
+| 2026-09-12T03:00:59.522Z | avi-to-mpeg-ts | 159,500,442 | 3 | 159,500,442 | page.waitForFunction: Timeout 30000ms exceeded. |
 
 ## Every public passed profile
 
@@ -829,6 +831,7 @@ Stream ma |
 | avi-to-mov | video | ffmpeg-remux | stream-copy | 159,500,442 B | registry passed; stress report not retained locally |
 | avi-to-mp3 | video | ffmpeg-remux | stream-copy | 182,803,272 B | 3-run Chrome report |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
+| avi-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 159,500,442 B | 3-run Chrome report |
 | avi-to-ogg | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-opus | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
@@ -1204,3 +1207,5 @@ M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 3
 M-04/P-08 AVI-to-3GP publication (2026-09-11): the bounded remux core packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,896-byte `3gp4` output in six measured browser runs. OPFS completed in 0.769-1.106 seconds at 204.605 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.644-1.827 seconds at 249.918 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, partial-output cancellation, earliest-state direct cancellation, injected-write cleanup, and cleanup recovery passed. Hosted no-Docker runs [34569115338](https://github.com/tanishqbaweja/fileconverter/actions/runs/34569115338) and [34571134087](https://github.com/tanishqbaweja/fileconverter/actions/runs/34571134087) produced Wasm SHA-256 `244ed58c4f62cec877db8ea16ba7b9caedf02317c1dea7973d23cdc22ea93e02`; the latter also produced the route-bearing manifest. Generated stress sources, converted copies, browser profiles, local build candidates, and remote mismatch artifacts were deleted after compact evidence was recorded. See `evidence/avi-to-3gp-browser-2026-09-11.json`.
 
 M-04/P-08 AVI-to-MOV publication (2026-09-11): the bounded fragmented-QuickTime path packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,929-byte `qt  ` MOV in six measured browser runs. OPFS completed in 0.854-1.105 seconds at 192.156 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.797-2.134 seconds at 211.836 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, earliest-state cancellation, injected-write cleanup, and cleanup recovery passed. Candidate no-Docker run [34630790399](https://github.com/tanishqbaweja/fileconverter/actions/runs/34630790399) changed only the generated manifest and `within-remux.wasm`; publication run [34633039664](https://github.com/tanishqbaweja/fileconverter/actions/runs/34633039664) rebuilt pushed commit `2a3cae6` byte-for-byte in 7m44s, passed cleanup, skipped mismatch upload, and retained zero artifacts. Generated stress sources, converted copies, browser profiles, raw reports, and local candidate files were deleted after compact evidence was recorded. See `evidence/avi-to-mov-browser-2026-09-11.json`.
+
+M-04/P-08 AVI-to-MPEG-TS publication (2026-09-12): bounded profile 24 packet-copies certified H.264 or MPEG-4 Part 2 AVI video plus AAC or MP3 audio without decode/re-encode. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 163,700,248-byte MPEG-TS in six accepted browser runs with exact video/audio packets and exact decoded video. OPFS completed in 1.097-1.336 seconds at 189.480 MiB worst complete-Chromium incremental private memory; direct-save completed in 6.266-6.583 seconds at 245.297 MiB. The first two direct cancellation attempts exposed worker message starvation during synchronous direct writes; a bounded macrotask yield per 8 MiB fixed cancellation with measured speed still inside the failed 5.997-6.829 second baseline range. Repeatability, 256 KiB reads/writes, one pending operation, fixed 32 MiB Wasm, injected-write cleanup, cancellation cleanup, and cleanup recovery passed. Candidate no-Docker run [34668281924](https://github.com/tanishqbaweja/fileconverter/actions/runs/34668281924) changed only `within-remux.wasm`; generated fixtures, converted copies, browser profiles, and the local candidate were deleted after validation. See `evidence/avi-to-mpegts-browser-2026-09-12.json`.

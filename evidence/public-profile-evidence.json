@@ -1174,6 +1174,24 @@
       }
     },
     {
+      "profileId": "avi-to-mpeg-ts",
+      "maxTestedBytes": 159500442,
+      "repeatableEvidence": {
+        "report": "2026-09-12T03-06-32-800Z-avi-to-mpeg-ts-direct-handle-stress.json",
+        "reportSha256": "132db0b5c6643ad116101dff4b8653d25b16b9252dad2e9ea66b3caf4b397478",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 245.296875
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-12T03-06-32-800Z-avi-to-mpeg-ts-direct-handle-stress.json",
+        "reportSha256": "132db0b5c6643ad116101dff4b8653d25b16b9252dad2e9ea66b3caf4b397478",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 245.296875
+      }
+    },
+    {
       "profileId": "avi-to-ogg",
       "maxTestedBytes": 159500442,
       "repeatableEvidence": {

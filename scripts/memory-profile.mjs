@@ -493,6 +493,7 @@ if (
     "mov-to-mpeg-ts",
     "3gp-to-mpeg-ts",
     "flv-to-mpeg-ts",
+    "avi-to-mpeg-ts",
     "mkv-to-3gp",
     "mp4-to-3gp",
     "mov-to-3gp",
@@ -663,6 +664,7 @@ const isMediaProfile =
   profileId === "mov-to-mpeg-ts" ||
   profileId === "3gp-to-mpeg-ts" ||
   profileId === "flv-to-mpeg-ts" ||
+  profileId === "avi-to-mpeg-ts" ||
   profileId === "mkv-to-3gp" ||
   profileId === "mp4-to-3gp" ||
   profileId === "mov-to-3gp" ||
@@ -1384,6 +1386,7 @@ try {
     profileId === "mkv-to-ogv" ||
     profileId === "avi-to-3gp" ||
     profileId === "avi-to-mov" ||
+    profileId === "avi-to-mpeg-ts" ||
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
     isIvfProfile
   ) {
@@ -1402,6 +1405,7 @@ try {
         (state?.jobState === "running" &&
           (activeProfileId === "avi-to-3gp" ||
             activeProfileId === "avi-to-mov" ||
+            activeProfileId === "avi-to-mpeg-ts" ||
             (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
         state?.jobState === "complete" ||
         state?.jobState === "error"
@@ -1412,7 +1416,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1454,7 +1458,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1525,6 +1529,7 @@ try {
       (profileId !== "mkv-to-ogv" &&
         profileId !== "avi-to-3gp" &&
         profileId !== "avi-to-mov" &&
+        profileId !== "avi-to-mpeg-ts" &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
         !isIvfProfile) ||
       cancellationCheck?.passed === true,
@@ -1815,7 +1820,9 @@ async function validateMediaOutput(
     "mov-to-mpeg-ts",
     "3gp-to-mpeg-ts",
     "flv-to-mpeg-ts",
+    "avi-to-mpeg-ts",
   ].includes(route);
+  const aviMpegTsCopy = route === "avi-to-mpeg-ts";
   const containerThreeGpCopy = [
     "mkv-to-3gp",
     "mp4-to-3gp",
@@ -2524,6 +2531,7 @@ async function validateMediaOutput(
     compatibleAviCopy ||
     compatibleWebmCopy ||
     ivfInputCopy ||
+    aviMpegTsCopy ||
     route === "avi-to-mkv";
   // Packet-copy routes are validated by a full output hash, packet counts,
   // metadata checks, and a complete copy traversal below. Decoding unchanged
@@ -3473,6 +3481,49 @@ async function validateMediaOutput(
       }
       probe.withinValidation.audioPacketHash = packetHashes[0];
     }
+  } else if (aviMpegTsCopy) {
+    const hashesByKind = { decodedVideo: [], videoPacket: [], audioPacket: [] };
+    for (const candidate of [sourcePath, localPath]) {
+      for (const [kind, arguments_] of [
+        ["decodedVideo", ["-map", "0:v:0"]],
+        ["videoPacket", ["-map", "0:v:0", "-c", "copy"]],
+        ["audioPacket", ["-map", "0:a:0", "-c", "copy"]],
+      ]) {
+        const { stdout: hashOutput } = await execFileAsync(
+          "ffmpeg",
+          [
+            "-v",
+            "error",
+            "-xerror",
+            "-i",
+            candidate,
+            ...arguments_,
+            "-f",
+            "hash",
+            "-hash",
+            "sha256",
+            "-",
+          ],
+          {
+            cwd: projectRoot,
+            windowsHide: true,
+            maxBuffer: 16 * 1024 * 1024,
+          },
+        );
+        hashesByKind[kind].push(hashOutput.trim());
+      }
+    }
+    for (const [kind, hashes] of Object.entries(hashesByKind)) {
+      if (!hashes[0] || hashes[0] !== hashes[1]) {
+        throw new Error(`Browser AVI-to-MPEG-TS ${kind} hash changed.`);
+      }
+    }
+    probe.withinValidation = {
+      ...(probe.withinValidation ?? {}),
+      decodedVideoHash: hashesByKind.decodedVideo[0],
+      videoPacketHash: hashesByKind.videoPacket[0],
+      audioPacketHash: hashesByKind.audioPacket[0],
+    };
   } else if (containerMpegTsCopy) {
     const packetStreamHashes = [];
     for (const candidate of [sourcePath, localPath]) {
@@ -3599,7 +3650,7 @@ async function validateMediaOutput(
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
     mediaTraversal:
-      compatibleOgvCopy || compatibleAviCopy || ivfOutput || ivfInputCopy
+      compatibleOgvCopy || compatibleAviCopy || ivfOutput || ivfInputCopy || aviMpegTsCopy
         ? "full-native-decode-and-packet-hash"
         : compatibleWebmCopy || matroskaCopy
           ? "full-native-decode-and-streamhash"

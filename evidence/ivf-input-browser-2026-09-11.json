@@ -160,9 +160,9 @@
       "within-webm.wasm": "d1bee61a4296f6f80393b7162b9583c2c18838107cad06c2caa77a0ab77e5581"
     },
     "currentWithinRemuxSupersession": {
-      "sha256": "de1a713496f4570d6ecd61f582217a94dd32b29bc0a8e2dea7406e08857f1e24",
-      "evidence": "evidence/avi-to-mov-browser-2026-09-11.json",
-      "reason": "The general remux core was subsequently extended with the independently reproduced AVI-to-MOV profile; the IVF input behavior and specialist modules are unchanged."
+      "sha256": "af8189addfa57743445f756b1af3aaf0a10b6341394025b98725229e193581a0",
+      "evidence": "evidence/avi-to-mpegts-browser-2026-09-12.json",
+      "reason": "The general remux core was subsequently extended with the independently reproduced AVI-to-MPEG-TS profile; the IVF input behavior and specialist modules are unchanged."
     }
   },
   "publication": {

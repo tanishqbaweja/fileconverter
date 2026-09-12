@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 272);
+  assert.equal(publicMedia.length, 273);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -494,6 +494,7 @@ test("container MPEG-TS copy routes are public only at their measured evidence l
     ["mov-to-mpeg-ts", 147_136_646],
     ["3gp-to-mpeg-ts", 146_854_522],
     ["flv-to-mpeg-ts", 146_903_539],
+    ["avi-to-mpeg-ts", 159_500_442],
   ]);
   for (const [id, maxTestedBytes] of measuredBytes) {
     const profile = conversionProfiles.find((candidate) => candidate.id === id);
@@ -501,13 +502,15 @@ test("container MPEG-TS copy routes are public only at their measured evidence l
     assert.equal(profile.automatedTestStatus, "passed");
     assert.equal(profile.maxTestedBytes, maxTestedBytes);
     assert.equal(
-      profile.metadataLimitations.some(
-        (limitation) =>
-          limitation.includes("stream language tags") &&
-          limitation.includes("color fields are preserved"),
+      profile.metadataLimitations.some((limitation) =>
+        id === "avi-to-mpeg-ts"
+          ? limitation.includes("AVI stream language tags") &&
+            limitation.includes("without re-encoding")
+          : limitation.includes("stream language tags") &&
+            limitation.includes("color fields are preserved"),
       ),
       true,
-      `${id}: MPEG-TS language/color retention disclosure`,
+      `${id}: MPEG-TS retention disclosure`,
     );
     assert.equal(
       publicProfilesFor(profile.input).some((candidate) => candidate.id === id),

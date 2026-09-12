@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12",
+  "status": "passed",
+  "scope": "Production-browser AVI MPEG-4 Part 2 video and MP3 audio to genuine MPEG-TS packet copy.",
+  "dockerUsed": false,
+  "conversionClass": "compressed video/audio packet copy, not decode/re-encode and not extension renaming",
+  "selectedOptimization": {
+    "video": "MPEG-4 Part 2 packet copy through bounded FFmpeg profile 24",
+    "audio": "MP3 packet copy through bounded FFmpeg profile 24",
+    "input": "256 KiB bounded reads",
+    "output": "256 KiB bounded writes with one pending operation",
+    "wasmMemoryBytes": 33554432,
+    "directCancellation": "one event-loop yield per 8 MiB of direct-media input",
+    "reason": "Packet copy is the minimum-work standards-compliant conversion and preserves both compressed streams exactly. Re-encoding would be slower and lossy."
+  },
+  "source": {
+    "path": "fixtures/stress/media/mpeg4-mp3-webm-128m.avi",
+    "retained": false,
+    "bytes": 159500442,
+    "sha256": "8c1f6d00d1f8626386d80bbaa73c9a2618d58ea5be6d5b19a5e517f10e4a85cc",
+    "durationSeconds": 65,
+    "video": { "codec": "mpeg4", "width": 1282, "height": 536, "frames": 1543, "packets": 1543 },
+    "audio": { "codec": "mp3", "sampleRateHz": 48000, "channels": 1, "packets": 2703 }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 163700248,
+    "sha256": "0668d0b3c1e9b04120e04448f5d15209e8d52dcf2666cdffc2b98cd57e1f0b89",
+    "formatFamily": "mpegts",
+    "videoPacketSha256": "96db2d2efd0f0de17ed59ed479d3708a2212b75143289e5d561009bee2cfb50b",
+    "audioPacketSha256": "985632f05f73f85ad34c09a6977dd4b934deb3cd92f6309cf25907af41720707",
+    "decodedVideoSha256": "e6e11a5295e87ba1eb366c26a8be369ba89d8adc9db51f4d3420bb201f4605d7",
+    "sourceAndOutputCompressedPacketsMatch": true,
+    "sourceAndOutputDecodedVideoMatch": true,
+    "repeatableAcrossAllMeasuredRuns": true
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "152.0.7977.83",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "opfs": {
+      "report": "2026-09-12T02-53-01-139Z-avi-to-mpeg-ts-stress.json",
+      "reportSha256": "04a9dfbd1000237c44469a858adb59a91ded1e3ac882c9de03a1e58e202ac055",
+      "runs": 3,
+      "elapsedMs": [1335.81, 1096.95, 1246.005],
+      "incrementalPrivateMiB": [168.28515625, 177.1875, 189.48046875],
+      "worstIncrementalPrivateMiB": 189.48046875,
+      "cancellation": { "passed": true, "inputBytes": 131730128, "outputBytes": 134299868 },
+      "cleanupRecoveryPassed": true
+    },
+    "directDestination": {
+      "report": "2026-09-12T03-06-32-800Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "132db0b5c6643ad116101dff4b8653d25b16b9252dad2e9ea66b3caf4b397478",
+      "runs": 3,
+      "elapsedMs": [6583.01, 6265.59, 6361.6],
+      "incrementalPrivateMiB": [245.296875, 210.40234375, 210.60546875],
+      "worstIncrementalPrivateMiB": 245.296875,
+      "cancellation": { "passed": true, "inputBytes": 8522448, "outputBytes": 8040760 },
+      "cleanupRecoveryPassed": true
+    },
+    "focusedSmallGate": {
+      "successCasesPassed": 1,
+      "forcedWriteFailureCasesPassed": 1,
+      "validated": [
+        "genuine MPEG-TS structure",
+        "MPEG-4 Part 2 video and MP3 audio",
+        "96 exact compressed video packets",
+        "168 exact compressed audio packets",
+        "96 fully decoded matching video frames",
+        "zero partial output after injected failure"
+      ]
+    }
+  },
+  "diagnosedHarnessIterations": [
+    {
+      "report": "2026-09-12T03-00-59-522Z-avi-to-mpeg-ts-direct-handle-stress-failure.json",
+      "reportSha256": "aca0d720470d50e46e96dee54230e41470f920e379b615e3503f8d1ed8638f7f",
+      "attempts": 2,
+      "accepted": false,
+      "reason": "All measured conversions passed, but direct synchronous writes plus immediately resolving file reads starved the queued cancellation message and raced to complete. The accepted fix yields one macrotask per 8 MiB only for direct-media input; its measured conversion times remain inside the failed 5.997-6.829 second baseline range."
+    }
+  ],
+  "publication": {
+    "candidateCommit": "94923df7e88c7e1a25bb3af54675144a6a3992ca",
+    "candidateRun": { "id": 34668281924, "artifactId": 10290275785 },
+    "publicFiles": {
+      "buildManifestSha256": "5c6416d6023e1db2edf4491247fd761bf5b2dc1197d774d98624ec1281b48ba6",
+      "javascriptGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "wasmSha256": "af8189addfa57743445f756b1af3aaf0a10b6341394025b98725229e193581a0"
+    },
+    "publicProfileCountAfterPromotion": 402,
+    "compactPublicEvidencePassed": "402/402",
+    "finalNoDockerReproduction": null
+  },
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "localCandidateDeletedAfterInstallation": true,
+    "rawReportsDeletedAfterCompactManifestGeneration": true,
+    "remoteMismatchArtifactDeletedAfterPublication": false,
+    "protectedTestMkvUnmodified": true
+  }
+}

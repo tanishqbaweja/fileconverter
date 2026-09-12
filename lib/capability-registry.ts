@@ -1310,7 +1310,7 @@ const containerMpegTsEvidence = {
   "mov-to-mpeg-ts": 147_136_646,
   "3gp-to-mpeg-ts": 146_854_522,
   "flv-to-mpeg-ts": 146_903_539,
-  "avi-to-mpeg-ts": null,
+  "avi-to-mpeg-ts": 159_500_442,
 } as const satisfies Record<string, number | null>;
 
 function containerMpegTsProfile(
@@ -1334,7 +1334,7 @@ function containerMpegTsProfile(
     memoryClass: "bounded-medium",
     metadataLimitations: [
       input === "avi"
-        ? "The candidate AVI input accepts H.264 or MPEG-4 Part 2 video with AAC or MP3 audio and packet-copies compatible streams without re-encoding; other codecs require a separately verified route."
+        ? "The certified AVI input accepts H.264 or MPEG-4 Part 2 video with AAC or MP3 audio and packet-copies compatible streams without re-encoding; other codecs require a separately verified route."
         : "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
       input === "avi"
         ? "Compatible video and audio streams are copied without re-encoding. AVI stream language tags, subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably."

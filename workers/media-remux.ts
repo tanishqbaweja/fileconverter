@@ -23,6 +23,7 @@ const WEBM_QUALITY_WASM_URL = "/engines/remux/within-webm-quality.wasm";
 const DIRECT_REMUX_MODULE_URL = "/engines/remux/within-direct.mjs";
 const DIRECT_REMUX_WASM_URL = "/engines/remux/within-direct.wasm";
 const MAX_AVIO_CHUNK = 256 * 1024;
+const DIRECT_CANCELLATION_YIELD_BYTES = 8 * 1024 * 1024;
 const MPEG4_WORKER_POOL_SIZE = 4;
 const WEBM_WORKER_POOL_SIZE = 8;
 const VP9_WORKER_POOL_SIZE = 8;
@@ -219,6 +220,7 @@ export async function runMediaRemux({
     engineErrors.push(bounded);
   };
   let totalReadBytes = 0;
+  let lastDirectCancellationYieldBytes = 0;
   let inputReader: ReadableStreamBYOBReader | null = null;
   let inputReaderPosition = -1;
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
@@ -407,6 +409,15 @@ export async function runMediaRemux({
           ? new Uint8Array(value.buffer)
           : new Uint8Array(MAX_AVIO_CHUNK);
       recordRead(value.byteLength);
+      if (
+        writable.writeSync &&
+        totalReadBytes - lastDirectCancellationYieldBytes >=
+          DIRECT_CANCELLATION_YIELD_BYTES
+      ) {
+        lastDirectCancellationYieldBytes = totalReadBytes;
+        await new Promise<void>((resolve) => globalThis.setTimeout(resolve, 0));
+        assertActive();
+      }
       return value.byteLength;
     },
     writeSync: writable.writeSync

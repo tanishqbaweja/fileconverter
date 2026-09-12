@@ -50,6 +50,15 @@ const aviMovReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const aviMpegTsReports = [
+  "2026-09-12T02-53-01-139Z-avi-to-mpeg-ts-stress",
+  "2026-09-12T03-00-59-522Z-avi-to-mpeg-ts-direct-handle-stress-failure",
+  "2026-09-12T03-06-32-800Z-avi-to-mpeg-ts-direct-handle-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const hevcWebmStressReports = [
   "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
   "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
@@ -134,6 +143,8 @@ const taskTempRoots = [
   path.resolve(workRoot, "avi-to-3gp-candidate"),
   path.resolve(workRoot, "avi-to-mov-feasibility"),
   path.resolve(workRoot, "avi-to-mov-candidate"),
+  path.resolve(workRoot, "avi-to-mpegts-feasibility"),
+  path.resolve(workRoot, "avi-to-mpegts-candidate"),
   path.resolve(workRoot, "ffmpeg-candidate-34571134087"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),
@@ -435,6 +446,9 @@ for (const reportPath of aviThreeGpReports) {
 for (const reportPath of aviMovReports) {
   assertInside(reportRoot, reportPath);
 }
+for (const reportPath of aviMpegTsReports) {
+  assertInside(reportRoot, reportPath);
+}
 for (const reportPath of hevcWebmStressReports) {
   assertInside(reportRoot, reportPath);
 }
@@ -536,6 +550,9 @@ for (const reportPath of aviThreeGpReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of aviMovReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of aviMpegTsReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of hevcWebmStressReports) {

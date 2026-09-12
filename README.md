@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 401
+complete-Chromium memory profile have passed. The current registry publishes 402
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -75,6 +75,18 @@ cleanup gates passed. Exact results are in
 [34633039664](https://github.com/tanishqbaweja/fileconverter/actions/runs/34633039664)
 then rebuilt the pushed remux module byte-for-byte in 7m44s, passed hosted
 cleanup, skipped mismatch upload, and retained zero artifacts.
+
+AVI-to-MPEG-TS packet-copies certified H.264 or MPEG-4 Part 2 video plus AAC or
+MP3 audio, preserving both compressed streams without re-encoding. A
+159,500,442-byte MPEG-4/MP3 source produced the same genuine 163,700,248-byte
+transport stream in all six accepted browser runs. OPFS completed in
+1.097-1.336 seconds at 189.5 MiB worst incremental memory; direct-save completed
+in 6.266-6.583 seconds at 245.3 MiB. Exact video/audio packet hashes, full
+decoded-video equality, cancellation, forced-write cleanup, bounded I/O, and
+repeatability passed. The direct path yields one event-loop task per 8 MiB so a
+cancel request cannot be starved by synchronous writes, with no measured
+slowdown outside the prior 5.997-6.829 second baseline range. Exact results are
+in `evidence/avi-to-mpegts-browser-2026-09-12.json`.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
@@ -366,7 +378,7 @@ AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
 streams.
 
-An executable registry audit requires every one of the 259 public FFmpeg
+An executable registry audit requires every one of the 273 public FFmpeg
 profiles to disclose its route semantics and its metadata/container behavior.
 Stream-copy routes must identify copying or remuxing; re-encode routes must
 identify decoding/encoding or an equivalent lossless/lossy conversion; audio
