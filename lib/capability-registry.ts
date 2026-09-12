@@ -1310,10 +1310,11 @@ const containerMpegTsEvidence = {
   "mov-to-mpeg-ts": 147_136_646,
   "3gp-to-mpeg-ts": 146_854_522,
   "flv-to-mpeg-ts": 146_903_539,
+  "avi-to-mpeg-ts": null,
 } as const satisfies Record<string, number | null>;
 
 function containerMpegTsProfile(
-  input: "mkv" | "mp4" | "mov" | "3gp" | "flv",
+  input: "mkv" | "mp4" | "mov" | "3gp" | "flv" | "avi",
 ): ConversionProfile {
   const id = `${input}-to-mpeg-ts` as keyof typeof containerMpegTsEvidence;
   const evidence = containerMpegTsEvidence[id];
@@ -1332,14 +1333,18 @@ function containerMpegTsProfile(
     cpuClass: "low",
     memoryClass: "bounded-medium",
     metadataLimitations: [
-      "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
-      "All compatible video and audio streams are copied without re-encoding; compatible stream language tags and explicit H.264 color fields are preserved. Subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
+      input === "avi"
+        ? "The candidate AVI input accepts H.264 or MPEG-4 Part 2 video with AAC or MP3 audio and packet-copies compatible streams without re-encoding; other codecs require a separately verified route."
+        : "The certified inputs contain H.264 or HEVC video with AAC audio; other codecs require a separately verified route.",
+      input === "avi"
+        ? "Compatible video and audio streams are copied without re-encoding. AVI stream language tags, subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably."
+        : "All compatible video and audio streams are copied without re-encoding; compatible stream language tags and explicit H.264 color fields are preserved. Subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
       "MPEG-TS begins on a standards-compliant transport timestamp offset and cannot preserve MP4/MOV AAC priming metadata, so decoded audio trim may differ even though compressed AAC access units are unchanged.",
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
     automatedTestStatus: evidence === null ? "pending" : "passed",
-    public: true,
+    public: evidence !== null,
   };
 }
 
@@ -6115,6 +6120,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerMpegTsProfile("mov"),
     containerMpegTsProfile("3gp"),
     containerMpegTsProfile("flv"),
+    containerMpegTsProfile("avi"),
     containerThreeGpProfile("mkv"),
     containerThreeGpProfile("mp4"),
     containerThreeGpProfile("mov"),

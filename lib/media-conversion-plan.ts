@@ -173,9 +173,14 @@ function containerCodecCompatible(
   if (profile.output === "mkv") return mkvCompatible(stream);
   if (stream.mediaType === "subtitle") return false;
   if (
-    (profile.output === "3gp" || profile.output === "mov") &&
-    profile.input === "avi"
+    profile.input === "avi" &&
+    ["3gp", "mov", "mpeg-ts"].includes(profile.output)
   ) {
+    if (profile.output === "mpeg-ts") {
+      return stream.mediaType === "video"
+        ? codec === "H.264" || codec === "MPEG-4 Part 2"
+        : codec === "AAC" || codec === "MP3";
+    }
     return stream.mediaType === "video"
       ? codec === "H.264" || codec === "MPEG-4 Part 2"
       : codec === "AAC";

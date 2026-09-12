@@ -352,6 +352,7 @@ const containerMpegTsOutputPaths = {
   mov: path.join(outputRoot, "mov-remux-output.mpegts"),
   "3gp": path.join(outputRoot, "3gp-remux-output.mpegts"),
   flv: path.join(outputRoot, "flv-remux-output.mpegts"),
+  avi: path.join(outputRoot, "avi-remux-output.mpegts"),
 } as const;
 const containerThreeGpOutputPaths = {
   mkv: path.join(outputRoot, "mkv-remux-output.3gp"),
@@ -2970,6 +2971,7 @@ async function runMediaRoute(
     | "mov-to-mpeg-ts"
     | "3gp-to-mpeg-ts"
     | "flv-to-mpeg-ts"
+    | "avi-to-mpeg-ts"
     | "mkv-to-3gp"
     | "mp4-to-3gp"
     | "mov-to-3gp"
@@ -4130,6 +4132,7 @@ for (const route of [
   ["mov-to-mpeg-ts", movInputFixturePath],
   ["3gp-to-mpeg-ts", threeGpInputFixturePath],
   ["flv-to-mpeg-ts", flvInputFixturePath],
+  ["avi-to-mpeg-ts", aviInputFixturePath],
   ["mkv-to-3gp", fixturePath],
   ["mp4-to-3gp", mp4InputFixturePath],
   ["mov-to-3gp", movInputFixturePath],
@@ -8040,6 +8043,37 @@ test("browser FFmpeg packet-copies AVI MPEG-4 video into genuine bounded 3GP and
         expect(video?.height).toBe(360);
         expect(Number(video?.nb_read_frames)).toBe(96);
         await expectCompressedVideoPacketMatch(aviInputFixturePath, outputPath);
+        await expectDecodedVideoMatch(aviInputFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+test("browser FFmpeg packet-copies AVI MPEG-4 video and MP3 audio into genuine MPEG-TS", async () => {
+  await runMediaRoute(
+    "avi-to-mpeg-ts",
+    containerMpegTsOutputPaths.avi,
+    ["mpeg4", "mp3"],
+    1_000_000,
+    aviInputFixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      durationToleranceSeconds: 0.25,
+      validate: async (probe, outputPath) => {
+        expect(probe.format.format_name?.split(",")).toContain("mpegts");
+        expect(probe.streams).toHaveLength(2);
+        const video = probe.streams[0];
+        const audio = probe.streams[1];
+        expect(video?.codec_type).toBe("video");
+        expect(video?.codec_name).toBe("mpeg4");
+        expect(video?.width).toBe(640);
+        expect(video?.height).toBe(360);
+        expect(audio?.codec_type).toBe("audio");
+        expect(audio?.codec_name).toBe("mp3");
+        expect(Number(video?.nb_read_frames)).toBe(96);
+        await expectCompressedVideoPacketMatch(aviInputFixturePath, outputPath);
+        await expectCompressedAudioPacketMatch(aviInputFixturePath, outputPath);
         await expectDecodedVideoMatch(aviInputFixturePath, outputPath);
       },
     },

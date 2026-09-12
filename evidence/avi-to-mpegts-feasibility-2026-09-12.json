@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-12",
+  "status": "native-feasibility-passed-browser-candidate-pending",
+  "dockerUsed": false,
+  "conversionUnderTest": "AVI MPEG-4 Part 2/MP3 to MPEG-TS packet copy",
+  "nativeToolRole": "compatibility feasibility and independent validation only; native FFmpeg is not the product converter",
+  "source": {
+    "path": "fixtures/media/legacy-video-source.avi",
+    "bytes": 1306330,
+    "sha256": "94af4c87b56f5a09cf4afb949aae8bdb938131f897eb274240c8abbe27c12341",
+    "video": { "codec": "mpeg4", "packets": 96, "width": 640, "height": 360 },
+    "audio": { "codec": "mp3", "packets": 168, "sampleRateHz": 48000, "channels": 1 }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 1345516,
+    "sha256": "19e529e9054ac62bb24fe38340c3f3e3bbbb2853e69dbb6f6b662191c7ae71fb",
+    "format": "mpegts",
+    "durationSeconds": 4.041667,
+    "videoPacketSha256": "59a4d88163df7fee61cdb16100e224c24d24f074f25e8f1cfe40747357507c8b",
+    "audioPacketSha256": "6f83a2fa8d557bd810fda950dd80132474ff50aa85791ed6f8c430450fd5f976",
+    "sourceAndOutputVideoPacketsMatch": true,
+    "sourceAndOutputAudioPacketsMatch": true
+  },
+  "selectedOptimization": "Standards-valid packet copy retains both compressed streams and avoids slower lossy decode/re-encode.",
+  "cleanup": {
+    "temporaryDirectory": "work/avi-to-mpegts-feasibility",
+    "temporaryDirectoryDeleted": true,
+    "convertedOutputDeleted": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

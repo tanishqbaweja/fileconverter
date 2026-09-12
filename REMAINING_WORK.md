@@ -157,6 +157,26 @@ not the entire product specification.
 
 ## Implementation and verification log
 
+### 2026-09-12 — AVI to MPEG-TS feasibility and unpublished candidate
+
+- Native FFmpeg was used only for compatibility feasibility and independent
+  validation. It packet-copied the tracked 1,306,330-byte MPEG-4 Part 2/MP3 AVI
+  into a genuine 1,345,516-byte MPEG-TS. All 96 video packets and 168 audio
+  packets matched their source SHA-256 values exactly; this is a genuine
+  container conversion, not an extension rename or re-encode.
+- The disposable output and `work/avi-to-mpegts-feasibility` directory were
+  deleted immediately. Compact results are retained in
+  `evidence/avi-to-mpegts-feasibility-2026-09-12.json`.
+- A hidden `avi-to-mpeg-ts` candidate now extends native profile 24 and the
+  browser planner to accept H.264 or MPEG-4 Part 2 AVI video plus AAC or MP3
+  audio. Browser conversion, independent packet/decode validation, candidate
+  Wasm reproduction, three-run OPFS/direct memory, cancellation, write-failure,
+  and cleanup gates remain required before promotion.
+- The first source patch applied no changes because it incorrectly expected the
+  postprocessed AVI routes inside the manifest generator's base heredoc. The
+  actual Node postprocess insertion point was inspected and patched instead;
+  subsequent focused planner, type, and lint checks passed.
+
 ### 2026-09-11 — AVI to MOV feasibility and unpublished candidate
 
 - A repository-local native feasibility check packet-copied the 96 MPEG-4 Part

@@ -451,10 +451,20 @@ static int stream_codec_is_copy_compatible(const AVStream *stream,
   if (profile == 24) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
       return stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
-             stream->codecpar->codec_id == AV_CODEC_ID_HEVC;
+             stream->codecpar->codec_id == AV_CODEC_ID_HEVC
+#ifdef WITHIN_OGV_COPY
+             || (avi_fragmented_iso_input &&
+                 stream->codecpar->codec_id == AV_CODEC_ID_MPEG4)
+#endif
+          ;
     }
     return stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
-           stream->codecpar->codec_id == AV_CODEC_ID_AAC;
+           (stream->codecpar->codec_id == AV_CODEC_ID_AAC
+#ifdef WITHIN_OGV_COPY
+            || (avi_fragmented_iso_input &&
+                stream->codecpar->codec_id == AV_CODEC_ID_MP3)
+#endif
+           );
   }
   if (profile == 25) {
     if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -3217,7 +3227,7 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
       } else if (container_mpegts_output) {
         within_message(
             2,
-            "MPEG-TS stream copy accepts H.264 or HEVC video with AAC audio; this source needs a separately verified conversion route.");
+            "MPEG-TS stream copy accepts H.264 or HEVC video with AAC audio, or MPEG-4 Part 2 video with MP3 audio from AVI; this source needs a separately verified conversion route.");
       } else if (container_threegp_output) {
         within_message(
             2,
