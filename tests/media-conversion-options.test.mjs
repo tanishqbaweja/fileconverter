@@ -341,7 +341,7 @@ test("video options reject cross-container codecs and out-of-contract values", (
   }
 });
 
-test("the worker video-option profile map matches the registry plus the private Theora candidate", () => {
+test("the worker video-option profile map matches every public video-option profile", () => {
   const registryIds = conversionProfiles
     .filter((profile) => profile.engine === "ffmpeg-video")
     .map((profile) => profile.id)

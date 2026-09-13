@@ -5668,6 +5668,33 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       public: true,
     },
     {
+      id: "avi-to-ogv",
+      input: "avi",
+      output: "ogv",
+      engine: "ffmpeg-video",
+      route: "re-encode",
+      browserRequirements: [
+        "WebAssembly",
+        "SharedArrayBuffer",
+        "cross-origin isolation",
+        "File System Access",
+      ],
+      cpuClass: "high",
+      memoryClass: "bounded-medium",
+      metadataLimitations: [
+        "Only the first MPEG-4 Part 2 video stream is converted; AVI audio, additional video streams, subtitles, attached pictures, data, and chapters are explicitly excluded.",
+        "Variable frame timing is normalized to the source average frame rate, or to the selected lower frame-rate cap without frame duplication or upconversion.",
+        "AVI general, stream, language, disposition, and display-rotation metadata cannot be represented reliably by this bounded OGV profile and is explicitly excluded.",
+      ],
+      fidelityLimitations: [
+        "Video is decoded, downscaled without upscaling to at most 640 pixels wide, and encoded as lossy Theora using quality-based VBR and the fastest certified speed level 2.",
+        "Automatic quality uses Theora quality 7; the bounded controls can select smaller-file quality 4, balanced quality 7, or higher quality 9, plus a lower width or frame-rate cap.",
+      ],
+      maxTestedBytes: 143_180_538,
+      automatedTestStatus: "passed",
+      public: true,
+    },
+    {
       id: "mkv-to-avi",
       input: "mkv",
       output: "avi",

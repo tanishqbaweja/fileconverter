@@ -110,7 +110,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 274);
+  assert.equal(publicMedia.length, 275);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -759,6 +759,12 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
         "hevc-to-webm",
       ],
     },
+    {
+      name: "within-theora",
+      wasmPthreadPoolSize: 0,
+      videoCodecThreads: 1,
+      profiles: ["avi-to-ogv"],
+    },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));
@@ -780,6 +786,14 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
   assert.ok(manifest.enabledEncoders.includes("pcm_s16be"));
   assert.ok(manifest.enabledEncoders.includes("libopencore_amrnb"));
   assert.ok(manifest.enabledEncoders.includes("libmp3lame"));
+  assert.ok(manifest.enabledEncoders.includes("libtheora"));
+  assert.equal(manifest.libtheoraVersion, "1.2.0");
+  assert.equal(
+    manifest.directSourcePatchSha256,
+    createHash("sha256")
+      .update(readFileSync("media/ffmpeg/patches/direct-source-79e4db.patch"))
+      .digest("hex"),
+  );
   assert.deepEqual(manifest.mp3EncoderOptions, {
     compressionLevel: 9,
     preservedSpeechSampleRates: [8000, 16000],

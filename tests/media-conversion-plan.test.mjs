@@ -361,6 +361,25 @@ test("OGV video conversion re-encodes video and copies first Vorbis audio", () =
   assert.match(plan.streams[0].detail, /VP9/);
 });
 
+test("AVI to OGV plans genuine Theora encoding and explicit audio exclusion", () => {
+  const plan = planMediaConversion(
+    profile("avi-to-ogv"),
+    inspection([
+      stream("video", "MPEG-4 Part 2"),
+      stream("audio", "MP3"),
+    ]),
+  );
+  assert.ok(plan);
+  assert.deepEqual(
+    plan.streams.map(({ action }) => action),
+    ["re-encode", "exclude"],
+  );
+  assert.match(plan.streams[0].detail, /Theora/);
+  assert.match(plan.streams[0].detail, /640px no-upscale/);
+  assert.match(plan.streams[0].detail, /quality-based VBR/);
+  assert.match(plan.streams[1].detail, /excludes audio/);
+});
+
 test("video plan discloses codec, width, bitrate, frame-rate, and quality controls", () => {
   const plan = planMediaConversion(
     profile("mkv-to-webm"),

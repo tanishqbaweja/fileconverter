@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-13",
+  "status": "passed",
+  "scope": "Production-browser AVI MPEG-4 Part 2 video to genuine Ogg Theora decode and re-encode.",
+  "dockerUsed": false,
+  "conversionClass": "full video decode and lossy Theora re-encode, not packet copy and not extension renaming",
+  "selectedOptimization": {
+    "encoder": "official libtheora 1.2.0",
+    "theoraSpeedLevel": 2,
+    "automaticQuality": 7,
+    "videoThreads": 1,
+    "wasmPthreadPoolSize": 0,
+    "input": "asynchronous 256 KiB bounded BYOB reads",
+    "output": "256 KiB bounded random-access writes with one-operation backpressure",
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 100663296,
+    "reason": "Native A/B/C selected libtheora speed level 2 as 29.2% faster than level 0 and 21.8% faster than level 1. Asynchronous bounded input reduced complete-Chromium memory from a rejected 287.438 MiB to below the unchanged 250 MiB limit with no material speed regression."
+  },
+  "controls": {
+    "codec": ["automatic-theora", "theora"],
+    "maximumWidths": [320, 480, 640],
+    "frameRateCaps": [15, 24, 25, 30],
+    "qualityPolicies": {
+      "smaller": 4,
+      "balanced": 7,
+      "higher": 9
+    },
+    "bitratePolicy": "Theora uses bounded quality-based VBR; nonzero bitrate requests are rejected.",
+    "neverUpscales": true,
+    "neverFrameRateUpconverts": true
+  },
+  "stressSource": {
+    "path": "fixtures/stress/media/avi-theora-128m.avi",
+    "retained": false,
+    "generatedTwiceByteIdentically": true,
+    "bytes": 143180538,
+    "sha256": "d1a7d8b9af78b7b141514c43db437b691827d66a349b349a4e30a5bbe902f658",
+    "durationSeconds": 20,
+    "video": {
+      "codec": "mpeg4",
+      "width": 1920,
+      "height": 1080,
+      "frameRate": "24/1",
+      "decodedFrames": 480
+    },
+    "audio": {
+      "codec": "mp3",
+      "sampleRateHz": 48000,
+      "channels": 1,
+      "policy": "explicitly excluded"
+    }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 17389453,
+    "sha256": "43327b232308fae3fac6bccce8b437db26fb04e7e181f675ff8e74bf6376c8fd",
+    "formatFamily": "ogg",
+    "videoCodec": "theora",
+    "width": 640,
+    "height": 360,
+    "frameRate": "24/1",
+    "decodedFrames": 480,
+    "durationSeconds": 20,
+    "minimumMidpointVisualSsim": 0.813648,
+    "fullNativeDecodePassed": true,
+    "byteRepeatableAcrossBothThreeRunSessions": true
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "152.0.7977.83",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "opfs": {
+      "report": "2026-09-13T04-54-44-603Z-avi-to-ogv-stress.json",
+      "reportSha256": "f9e9b3ba4f2e1771fc2c58b3f9ee6af8b7e08460a4a7501b5c17d0b12e99f65d",
+      "runs": 3,
+      "elapsedMs": [17821.09, 17245.72, 17576.115],
+      "incrementalPrivateMiB": [220.921875, 191.8984375, 200.75390625],
+      "worstIncrementalPrivateMiB": 220.921875,
+      "activeWorkerCount": 1,
+      "cancellation": {
+        "passed": true,
+        "inputBytes": 8561800,
+        "outputBytes": 906861
+      },
+      "cleanupRecoveryPassed": true
+    },
+    "directDestination": {
+      "report": "2026-09-13T04-57-27-921Z-avi-to-ogv-direct-handle-stress.json",
+      "reportSha256": "d30a78f79d9ed0eee2679281d9426f449274d8f8bd76c5907a76be7d7e69e74b",
+      "runs": 3,
+      "elapsedMs": [18093.855, 17860.185, 17889.09],
+      "incrementalPrivateMiB": [231.68359375, 208.5546875, 223.49609375],
+      "worstIncrementalPrivateMiB": 231.68359375,
+      "activeWorkerCount": 2,
+      "cancellation": {
+        "passed": true,
+        "inputBytes": 8561800,
+        "outputBytes": 906861
+      },
+      "cleanupRecoveryPassed": true
+    },
+    "sharedBounds": {
+      "maxReadChunkBytes": 262144,
+      "maxWriteChunkBytes": 65307,
+      "maxQueuedBytes": 65307,
+      "maximumPendingOperations": 1,
+      "peakWasmMemoryBytes": 33554432
+    },
+    "focusedSmallGate": {
+      "casesPassed": 5,
+      "elapsedSeconds": 11.9,
+      "validated": [
+        "genuine single-stream Ogg Theora output and full native decode",
+        "audio-exclusion warning and bounded worker metrics",
+        "injected destination-write failure removed the partial OGV",
+        "explicit Theora, 320-pixel width, 15 fps, and smaller-quality controls",
+        "nonzero bitrate rejection returned a bounded worker error"
+      ]
+    }
+  },
+  "hostedNoDockerBuilds": [
+    {
+      "runId": 34696875445,
+      "commit": "2cbb259b50efe3ad2bb05bbd90e685fe809cc730",
+      "purpose": "initial private candidate"
+    },
+    {
+      "runId": 34738087683,
+      "artifactId": 10312026237,
+      "commit": "2c9c6493e275580347d393adf6ae205fa5a65696",
+      "purpose": "control-capable binary used by the final browser gate"
+    },
+    {
+      "runId": 34738378951,
+      "artifactId": 10311862447,
+      "commit": "b4ce4c3d89ace65808052d2ad379738d321f034c",
+      "purpose": "control-capable binary plus exact historical-direct source manifest"
+    }
+  ],
+  "publicFiles": {
+    "buildManifestSha256": "402a0792a0931176802785e58c7467df0980f041cc866dbc41edc8a8a3f79f1e",
+    "javascriptGlueSha256": "a436fc61948aaaf7b309abcb8c0f6e3de486612862bf0cb66b16f51491af882a",
+    "wasmSha256": "e1028291ed4a85961600c251f8a2ac9955bde568eaaab650c23192542aaa86e0",
+    "libtheoraLicenseSha256": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc"
+  },
+  "rejectedOrCorrectedCandidates": [
+    {
+      "design": "synchronous Blob-slice reader",
+      "incrementalPrivateMiB": 287.4375,
+      "accepted": false,
+      "reason": "It exceeded the unchanged 250 MiB complete-Chromium memory limit; the asynchronous bounded BYOB reader retained equivalent speed and passed."
+    },
+    {
+      "design": "unseeded cellular-automaton stress generator",
+      "accepted": false,
+      "reason": "Each run was valid and repeatable internally, but source bytes varied between sessions. A fixed seed now reproduces the same 143,180,538-byte source across OPFS and direct-save."
+    },
+    {
+      "design": "option validation before the worker error boundary",
+      "accepted": false,
+      "reason": "A rejected bitrate request timed out because validation errors escaped before the worker could post them. Validation now runs inside the bounded job error path and the focused five-case gate passes."
+    }
+  ],
+  "publication": {
+    "repository": "https://github.com/tanishqbaweja/fileconverter",
+    "branch": "codex/media-options",
+    "finalNoDockerAllModuleReproduction": "pending publication commit"
+  },
+  "cleanup": {
+    "stressSourceRetained": false,
+    "convertedOutputsRetained": 0,
+    "browserProfilesRetained": 0,
+    "downloadedCandidateArtifactsRetained": true,
+    "rawReportsRetainedUntilCompactEvidenceReview": true,
+    "protectedTestMkvTouched": false
+  }
+}

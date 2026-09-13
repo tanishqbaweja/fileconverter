@@ -29,7 +29,7 @@ const fixturePath = path.resolve(
   process.env.WITHIN_AVI_TO_OGV_FIXTURE ??
     "fixtures/media/legacy-video-source.avi",
 );
-const candidateWasmPath = path.join(
+const theoraWasmPath = path.join(
   projectRoot,
   "public",
   "engines",
@@ -56,7 +56,7 @@ interface Metrics {
   activeWorkerCount?: number;
 }
 
-interface CandidateResult {
+interface ConversionResult {
   type: "complete" | "error" | "cancelled";
   message?: string;
   opfsName?: string;
@@ -69,7 +69,7 @@ let page: Page;
 let appWorker: PlaywrightWorker;
 let validationSink: WriteStream | null = null;
 
-async function runCandidate(
+async function runConversion(
   outputName: string,
   testFault?: "write",
   videoOptions?: {
@@ -79,7 +79,7 @@ async function runCandidate(
     frameRateFps: 0 | 15 | 24 | 25 | 30;
     quality: "automatic" | "smaller" | "balanced" | "higher";
   },
-): Promise<CandidateResult> {
+): Promise<ConversionResult> {
   const workerUrl = appWorker.url();
   return page.evaluate(
     async ({ workerUrl, outputName, testFault, videoOptions }) => {
@@ -89,24 +89,24 @@ async function runCandidate(
       const file = input?.files?.[0];
       if (!file) throw new Error("The AVI fixture was not attached.");
       const worker = new Worker(workerUrl, {
-        name: "within-avi-to-ogv-candidate",
+        name: "within-avi-to-ogv",
         type: "module",
       });
       const warnings: string[] = [];
       try {
-        return await new Promise<CandidateResult>((resolve, reject) => {
+        return await new Promise<ConversionResult>((resolve, reject) => {
           const timeout = window.setTimeout(
-            () => reject(new Error("AVI to OGV candidate timed out.")),
+            () => reject(new Error("AVI to OGV conversion timed out.")),
             90_000,
           );
-          const finish = (result: CandidateResult) => {
+          const finish = (result: ConversionResult) => {
             window.clearTimeout(timeout);
             resolve({ ...result, warnings });
           };
           const jobId = crypto.randomUUID();
           worker.onerror = (event) => {
             window.clearTimeout(timeout);
-            reject(new Error(event.message || "Candidate worker crashed."));
+            reject(new Error(event.message || "AVI to OGV worker crashed."));
           };
           worker.onmessage = (event) => {
             const message = event.data;
@@ -188,8 +188,8 @@ async function copyAndDeleteOutput(name: string): Promise<void> {
 
 test.beforeAll(async () => {
   test.skip(
-    !existsSync(candidateWasmPath),
-    "The private no-Docker Theora candidate has not been staged.",
+    !existsSync(theoraWasmPath),
+    "The public no-Docker Theora engine has not been staged.",
   );
   await rm(profileRoot, { recursive: true, force: true });
   await rm(outputPath, { force: true });
@@ -228,10 +228,47 @@ test.afterAll(async () => {
   await rm(profileRoot, { recursive: true, force: true });
 });
 
+test("publishes AVI to OGV and exposes only bounded Theora controls", async () => {
+  const format = page.locator('[data-testid="format-select"]');
+  await expect(format.locator('option[value="avi-to-ogv"]')).toHaveCount(1);
+  await format.selectOption("avi-to-ogv");
+
+  const codec = page.locator('[data-testid="video-codec-select"]');
+  const width = page.locator('[data-testid="video-width-select"]');
+  const bitrate = page.locator('[data-testid="video-bitrate-select"]');
+  const frameRate = page.locator('[data-testid="video-frame-rate-select"]');
+  const quality = page.locator('[data-testid="video-quality-select"]');
+  await expect(codec.locator("option")).toHaveText([
+    "Automatic (Theora)",
+    "Theora",
+  ]);
+  await expect(width.locator("option")).toHaveText([
+    "Automatic",
+    "320px cap",
+    "480px cap",
+    "640px cap",
+  ]);
+  await expect(frameRate.locator("option")).toHaveText([
+    "Automatic",
+    "15 fps cap",
+    "24 fps cap",
+    "25 fps cap",
+    "30 fps cap",
+  ]);
+  await expect(quality.locator("option")).toHaveText([
+    "Automatic (fastest certified)",
+    "Smaller file",
+    "Balanced",
+    "Higher visual quality",
+  ]);
+  await expect(bitrate).toBeDisabled();
+  await expect(bitrate.locator("option")).toHaveText(["Quality-based VBR"]);
+});
+
 test("genuinely re-encodes AVI video to bounded Ogg Theora", async () => {
   test.setTimeout(120_000);
   const outputName = `within-test-avi-to-ogv-${crypto.randomUUID()}.ogv`;
-  const result = await runCandidate(outputName);
+  const result = await runConversion(outputName);
   expect(result.type, result.message).toBe("complete");
   expect(result.opfsName).toBe(outputName);
   expect(result.warnings.join(" ")).toContain(
@@ -287,7 +324,7 @@ test("genuinely re-encodes AVI video to bounded Ogg Theora", async () => {
 test("write failure removes the partial OGV", async () => {
   test.setTimeout(120_000);
   const outputName = `within-test-avi-to-ogv-write-${crypto.randomUUID()}.ogv`;
-  const result = await runCandidate(outputName, "write");
+  const result = await runConversion(outputName, "write");
   expect(result.type).toBe("error");
   expect(result.message).toContain("destination rejected a bounded write");
   expect(result.message).toContain("OGV header write failed: I/O error");
@@ -311,7 +348,7 @@ test("write failure removes the partial OGV", async () => {
 test("applies bounded Theora codec, width, frame-rate, and quality controls", async () => {
   test.setTimeout(120_000);
   const outputName = `within-test-avi-to-ogv-options-${crypto.randomUUID()}.ogv`;
-  const result = await runCandidate(outputName, undefined, {
+  const result = await runConversion(outputName, undefined, {
     codec: "theora",
     maxWidth: 320,
     bitRateBps: 0,
@@ -351,7 +388,7 @@ test("applies bounded Theora codec, width, frame-rate, and quality controls", as
 
 test("rejects bitrate control for quality-based Theora VBR", async () => {
   const outputName = `within-test-avi-to-ogv-bitrate-${crypto.randomUUID()}.ogv`;
-  const result = await runCandidate(outputName, undefined, {
+  const result = await runConversion(outputName, undefined, {
     codec: "theora",
     maxWidth: 0,
     bitRateBps: 300_000,

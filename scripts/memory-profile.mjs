@@ -84,7 +84,7 @@ const audioOptions = {
 const videoOptions = {
   codec: parseBoundedStringEnvironment(
     "WITHIN_VIDEO_CODEC",
-    ["automatic", "vp8", "vp9", "mpeg4"],
+    ["automatic", "vp8", "vp9", "mpeg4", "theora"],
     "automatic",
   ),
   maxWidth: parseBoundedIntegerEnvironment(
@@ -1028,9 +1028,19 @@ try {
       await page
         .locator('[data-testid="video-width-select"]')
         .selectOption(String(videoOptions.maxWidth));
-      await page
-        .locator('[data-testid="video-bitrate-select"]')
-        .selectOption(String(videoOptions.bitRateBps));
+      const videoBitRateSelect = page.locator(
+        '[data-testid="video-bitrate-select"]',
+      );
+      if (await videoBitRateSelect.isEnabled()) {
+        await videoBitRateSelect.selectOption(String(videoOptions.bitRateBps));
+      } else if (
+        videoOptions.bitRateBps !== 0 ||
+        (await videoBitRateSelect.inputValue()) !== "0"
+      ) {
+        throw new Error(
+          "This video profile uses quality-based VBR and cannot apply a nonzero bitrate.",
+        );
+      }
       await page
         .locator('[data-testid="video-frame-rate-select"]')
         .selectOption(String(videoOptions.frameRateFps));

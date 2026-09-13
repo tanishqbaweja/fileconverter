@@ -5,15 +5,23 @@ import test from "node:test";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
 const evidence = JSON.parse(
-  readFileSync("evidence/avi-to-ogv-feasibility-2026-09-12.json", "utf8"),
+  readFileSync("evidence/avi-to-ogv-browser-2026-09-13.json", "utf8"),
 );
 
-test("AVI to OGV remains outside the registry until the browser gate passes", () => {
+test("AVI to OGV is public only with complete browser evidence", () => {
   const profile = conversionProfiles.find(({ id }) => id === "avi-to-ogv");
-  assert.equal(profile, undefined);
-  assert.equal(evidence.status, "private-candidate-not-public");
-  assert.equal(evidence.nativeFeasibility.selectedSpeedLevel, 2);
-  assert.equal(evidence.cleanup.temporaryOutputsRetained, 0);
+  assert.ok(profile);
+  assert.equal(profile.engine, "ffmpeg-video");
+  assert.equal(profile.route, "re-encode");
+  assert.equal(profile.output, "ogv");
+  assert.equal(profile.public, true);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 143_180_538);
+  assert.equal(evidence.status, "passed");
+  assert.equal(evidence.selectedOptimization.theoraSpeedLevel, 2);
+  assert.equal(evidence.browser.opfs.runs, 3);
+  assert.equal(evidence.browser.directDestination.runs, 3);
+  assert.equal(evidence.cleanup.convertedOutputsRetained, 0);
 });
 
 test("AVI to OGV uses an isolated pinned Theora core", () => {

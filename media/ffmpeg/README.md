@@ -16,6 +16,8 @@ the `ffmpeg` command-line program.
   `5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061`
 - libvorbis 1.3.7 source archive:
   `b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b`
+- libtheora 1.2.0 source archive:
+  `279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e`
 - libvpx 1.16.0 source archive:
   `7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c`
 - Emscripten SDK 6.0.4 amd64 image:
@@ -29,8 +31,9 @@ From the repository root:
 docker build --file media/ffmpeg/Dockerfile --output type=local,dest=public/engines/remux media/ffmpeg
 ```
 
-The Docker build downloads the pinned source archives, verifies every SHA-256
-value, builds static OpenCORE AMR, libopus, libogg, libvorbis, and a VP8/VP9-encoder-only libvpx with both decoders disabled,
+The build downloads the pinned source archives, verifies every SHA-256 value,
+builds static OpenCORE AMR, libopus, libogg, libvorbis, libtheora, and a
+VP8/VP9-encoder-only libvpx with both decoders disabled,
 configures only the documented demuxers, muxers, codecs, parsers, and bitstream filters, and exports the
 JavaScript module, Wasm binary, and build manifest.
 
@@ -43,11 +46,14 @@ specialists use the current wrapper identified by its manifest SHA-256. The
 unchanged direct 10 GiB remux specialist alone retains wrapper source commit
 `79e4db4`; `patches/direct-source-79e4db.patch` reconstructs that exact source
 only after current video specialists link. Its SHA-256 is
-`ab5b790455b5ddf227b16aabd4bda60de0c00e4479834dfd812517f0ba65ec28`.
+`e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd`.
+The source-only preflight also verifies that the reconstructed wrapper has the
+certified historical SHA-256
+`b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b`.
 This preserves the direct core's existing byte identity, speed, and three-run
 memory evidence while allowing independently certified video-option ABI work.
 
-The build emits six lazy-loaded WebAssembly SIMD modules from the same pinned
+The build emits seven lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
 stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a
 1 MiB output AVIO buffer to reduce synchronous browser-file write crossings.
@@ -65,10 +71,18 @@ Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The
 scalar file I/O bridge stays single-flight, and each module's shared Wasm memory
 retains its 32 MiB initial and 96 MiB maximum sizes.
 
+`within-theora` is an isolated single-thread, zero-pool module for AVI-to-OGV.
+It decodes the first MPEG-4 Part 2 stream, excludes audio and unsupported
+auxiliary streams, downscales without upscaling to at most 640 pixels wide, and
+encodes genuine Theora with quality-based VBR. Its native speed comparison
+selected libtheora speed level 2; automatic quality is 7, with bounded quality
+4/7/9, width, and no-upconvert frame-rate controls.
+
 The video ABI accepts only fixed allowlists for codec, no-upscale maximum width,
 bitrate, no-upconvert frame-rate cap, and quality policy. Automatic mode retains
 the previously certified 640 px/600 kbit/s WebM or source-size/2 Mbit/s MPEG-4
-policy byte-for-byte. Lower frame-rate caps uniformly discard decoded frames
+policy byte-for-byte. Theora uses quality-based VBR and rejects bitrate
+requests. Lower frame-rate caps uniformly discard decoded frames
 before scaling; they never duplicate frames. VP8/VP9 selection loads only the
 chosen specialist, while higher WebM quality lowers `cpu-used` from 8 to 6 and
 all presets retain zero lookahead and fixed worker/memory ceilings.

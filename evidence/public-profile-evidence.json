@@ -1228,6 +1228,24 @@
       }
     },
     {
+      "profileId": "avi-to-ogv",
+      "maxTestedBytes": 143180538,
+      "repeatableEvidence": {
+        "report": "2026-09-13T04-57-27-921Z-avi-to-ogv-direct-handle-stress.json",
+        "reportSha256": "d30a78f79d9ed0eee2679281d9426f449274d8f8bd76c5907a76be7d7e69e74b",
+        "runs": 3,
+        "sourceBytes": 143180538,
+        "incrementalPrivateMiB": 231.68359375
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-13T04-57-27-921Z-avi-to-ogv-direct-handle-stress.json",
+        "reportSha256": "d30a78f79d9ed0eee2679281d9426f449274d8f8bd76c5907a76be7d7e69e74b",
+        "runs": 3,
+        "sourceBytes": 143180538,
+        "incrementalPrivateMiB": 231.68359375
+      }
+    },
+    {
       "profileId": "avi-to-opus",
       "maxTestedBytes": 159500442,
       "repeatableEvidence": {

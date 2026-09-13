@@ -617,27 +617,35 @@ function planVideoReencode(
           `The selected bounded video engine has no certified ${sourceCodec} decoder; it will not pretend to re-encode this stream.`,
         );
       }
-      const defaultCodec = profile.output.includes("vp9")
-        ? "VP9"
-        : profile.output.includes("webm")
-          ? "VP8"
-          : "MPEG-4 Part 2";
+      const defaultCodec =
+        profile.output === "ogv"
+          ? "Theora"
+          : profile.output.includes("vp9")
+            ? "VP9"
+            : profile.output.includes("webm")
+              ? "VP8"
+              : "MPEG-4 Part 2";
       const codec =
         !videoOptions || videoOptions.codec === "automatic"
           ? defaultCodec
+          : videoOptions.codec === "theora"
+            ? "Theora"
           : videoOptions.codec === "vp8"
             ? "VP8"
             : videoOptions.codec === "vp9"
               ? "VP9"
               : "MPEG-4 Part 2";
       const webm = profile.output.includes("webm");
+      const ogv = profile.output === "ogv";
       const widthPolicy = videoOptions?.maxWidth
         ? `at most ${videoOptions.maxWidth}px wide without upscaling`
-        : webm
+        : webm || ogv
           ? "the certified 640px no-upscale width cap"
           : "the source dimensions";
       const bitrate = videoOptions?.bitRateBps
         ? `${videoOptions.bitRateBps / 1_000} kb/s`
+        : ogv
+          ? "quality-based VBR (no bitrate target)"
         : webm
           ? "the certified 600 kb/s target"
           : "the certified 2,000 kb/s target";

@@ -1,6 +1,6 @@
 # Tested conversion ledger
 
-Updated 2026-09-12 from the capability registry and retained successful Chrome stress reports.
+Updated 2026-09-13 from the capability registry and retained successful Chrome stress reports.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **403**
-- Public profiles with retained successful Chrome stress evidence: **403**
+- Public passed conversion profiles: **404**
+- Public profiles with retained successful Chrome stress evidence: **404**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -329,6 +329,7 @@ This is the living progress record. It is regenerated after each test/profile cy
 | avi-to-mp4 | 230,929,466 | 3 | 229,960,974 | 2.11 s–2.44 s | 199.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | avi-to-mpeg-ts | 159,500,442 | 3 | 163,700,248 | 6.27 s–6.58 s | 245.3 MiB | 32.0 MiB | read 262,144 B / write 144,948 B | passed |
 | avi-to-ogg | 159,500,442 | 3 | 135,279 | 1.79 s–2.12 s | 199.1 MiB | 32.0 MiB | read 262,144 B / write 3,552 B | passed |
+| avi-to-ogv | 143,180,538 | 3 | 17,389,453 | 17.86 s–18.09 s | 231.7 MiB | 32.0 MiB | read 262,144 B / write 65,307 B | passed |
 | avi-to-opus | 159,500,442 | 3 | 584,026 | 1.41 s–1.69 s | 231.6 MiB | 32.0 MiB | read 262,144 B / write 9,077 B | passed |
 | avi-to-wav | 230,929,466 | 3 | 68,954,218 | 3.97 s–4.30 s | 225.1 MiB | 32.0 MiB | read 262,144 B / write 2,304 B | passed |
 | avi-to-webm | 159,500,442 | 3 | 4,890,311 | 9.19 s–9.62 s | 214.5 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
@@ -834,6 +835,7 @@ Stream ma |
 | avi-to-mp4 | video | ffmpeg-remux | stream-copy | 230,929,466 B | 3-run Chrome report |
 | avi-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 159,500,442 B | 3-run Chrome report |
 | avi-to-ogg | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
+| avi-to-ogv | video | ffmpeg-video | re-encode | 143,180,538 B | 3-run Chrome report |
 | avi-to-opus | video | ffmpeg-audio | re-encode | 159,500,442 B | 3-run Chrome report |
 | avi-to-wav | video | ffmpeg-audio | re-encode | 230,929,466 B | 3-run Chrome report |
 | avi-to-webm | video | ffmpeg-video | re-encode | 159,500,442 B | 3-run Chrome report |
@@ -1213,4 +1215,4 @@ M-04/P-08 AVI-to-MPEG-TS publication (2026-09-12): bounded profile 24 packet-cop
 
 M-04/P-08 AVI-to-FLV publication (2026-09-12): bounded profile 27 packet-copies certified H.264 video and MP3 audio into genuine FLV without decode/re-encode. A 145,328,774-byte 60-second AVI produced 143,904,205-byte FLV outputs in six accepted Chrome runs. OPFS completed in 1.302-1.989 seconds at 189.520 MiB worst complete-Chromium incremental private memory; direct-save completed in 5.694-6.318 seconds at 222.395 MiB. The generic two-worker direct writer was rejected at 256.957 MiB. A route-scoped asynchronous random-access destination removed that relay worker while preserving FLV trailer seeks, 256 KiB reads, at most 117,572-byte writes/queueing, one pending operation, 32 MiB Wasm, repeatability, exact packets, full decoded-video equality, cancellation, injected-write cleanup, and cleanup recovery. Selective fixture generation creates only this source in about 2.1 seconds, and category cleanup removes it plus every converted copy. Hosted no-Docker run [34684202707](https://github.com/tanishqbaweja/fileconverter/actions/runs/34684202707) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `3230248` in 12m24s, skipped mismatch upload, and passed cleanup. Both obsolete candidate artifacts were deleted and all three AVI-to-FLV runs retain zero artifacts. See `evidence/avi-to-flv-browser-2026-09-12.json`.
 
-M-04/P-08 AVI-to-OGV private candidate (2026-09-12): official libtheora 1.2.0 is pinned by its published SHA-256 and isolated in a new single-thread, zero-pool `within-theora` module behind native profile 39. A native 60-second 640x360 feasibility A/B/C selected speed level 2: 14.278 seconds versus 18.257 and 20.167 seconds, respectively, with genuine Theora outputs. All benchmark copies were deleted. The registry entry remains non-public and pending; native feasibility does not prove browser correctness or memory. Publication still requires a no-Docker Wasm build, full decode and quality validation, three OPFS/direct runs, the unchanged complete-Chromium 250 MiB gate, cancellation/write-failure cleanup, and disclosure review. See `evidence/avi-to-ogv-feasibility-2026-09-12.json`.
+M-04/P-08 AVI-to-OGV publication (2026-09-13): official libtheora 1.2.0 is pinned and isolated in the single-thread, zero-pool `within-theora` module behind native profile 39. Native A/B/C selected speed level 2 at 14.278 seconds, 29.2% faster than level 0. A rejected synchronous Blob reader peaked at 287.438 MiB; bounded asynchronous BYOB input passed without material slowdown. The final deterministic 143,180,538-byte MPEG-4/MP3 AVI passed three OPFS and three direct-save Chrome runs, producing the identical genuine 17,389,453-byte Ogg/Theora output in 17.25-18.09 seconds. Worst complete-Chromium incremental private memory was 220.922 MiB OPFS and 231.684 MiB direct. Full 480-frame native decode, midpoint SSIM >=0.813648, repeatability, 256 KiB reads, 65,307-byte writes/queueing, one pending operation, 32 MiB actual Wasm, cancellation, injected-write cleanup, and recovery passed. The public controls expose Theora, width, frame-rate, and quality-based VBR while rejecting a bitrate. Generated stress inputs, converted copies, and browser profiles were deleted after compact evidence was retained. See `evidence/avi-to-ogv-browser-2026-09-13.json`.

@@ -29,7 +29,7 @@ await execFileAsync(
     "-f",
     "lavfi",
     "-i",
-    "cellauto=size=1920x1080:rate=24:rule=110",
+    "cellauto=size=1920x1080:rate=24:rule=110:seed=1",
     "-f",
     "lavfi",
     "-i",
@@ -124,7 +124,7 @@ await writeFile(
     {
       generatedBy: "scripts/generate-avi-ogv-stress-fixture.mjs",
       purpose:
-        "High-entropy short-duration AVI for the private AVI-to-OGV large-input gate.",
+        "Deterministic high-entropy short-duration AVI for the AVI-to-OGV large-input gate.",
       durationSeconds,
       decodedVideoDurationSeconds,
       decodedVideoFrames,

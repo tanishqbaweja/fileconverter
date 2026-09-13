@@ -140,31 +140,6 @@ const TEST_FAULTS = new Set<TestFault>([
   "worker-crash",
 ]);
 
-const AVI_TO_OGV_TEST_PROFILE: ConversionProfile = {
-  id: "avi-to-ogv",
-  input: "avi",
-  output: "ogv",
-  engine: "ffmpeg-video",
-  route: "re-encode",
-  browserRequirements: [
-    "WebAssembly",
-    "SharedArrayBuffer",
-    "cross-origin isolation",
-    "File System Access",
-  ],
-  cpuClass: "high",
-  memoryClass: "bounded-medium",
-  metadataLimitations: [
-    "Private localhost-only candidate: only the first MPEG-4 Part 2 video stream is converted; audio and all other streams are explicitly excluded.",
-  ],
-  fidelityLimitations: [
-    "Private localhost-only candidate: video is downscaled to at most 640 pixels wide and encoded as lossy Theora at fixed quality 7 and speed level 2.",
-  ],
-  maxTestedBytes: null,
-  automatedTestStatus: "pending",
-  public: false,
-};
-
 async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
   if (!name?.startsWith("within-test-")) return;
   const root = await navigator.storage.getDirectory();
@@ -435,19 +410,9 @@ export function ConverterApp() {
   const testCleanupMode =
     testMode &&
     new URLSearchParams(window.location.search).get("cleanup") === "1";
-  const aviToOgvCandidateMode =
-    testMode &&
-    new URLSearchParams(window.location.search).get("candidate") ===
-      "avi-to-ogv";
-
   const profiles = useMemo(
-    () => {
-      const published = publicProfilesFor(inputFormat, testMode);
-      return aviToOgvCandidateMode && inputFormat === "avi"
-        ? [...published, AVI_TO_OGV_TEST_PROFILE]
-        : published;
-    },
-    [aviToOgvCandidateMode, inputFormat, testMode],
+    () => publicProfilesFor(inputFormat, testMode),
+    [inputFormat, testMode],
   );
   const selectedProfile = useMemo(
     () => profiles.find((profile) => profile.id === profileId) ?? null,
