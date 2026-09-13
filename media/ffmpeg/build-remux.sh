@@ -132,7 +132,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
-  "directSourcePatchSha256": "ab5b790455b5ddf227b16aabd4bda60de0c00e4479834dfd812517f0ba65ec28",
+  "directSourcePatchSha256": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
   "licenses": ["FFmpeg LGPL-3.0-or-later", "LAME LGPL-2.0-or-later", "libopus BSD-3-Clause", "libogg BSD-3-Clause", "libvorbis BSD-3-Clause", "libtheora BSD-3-Clause", "libvpx BSD-3-Clause", "OpenCORE AMR Apache-2.0"],
   "initialWasmMemoryBytes": 33554432,
   "maximumWasmMemoryBytes": 100663296,
