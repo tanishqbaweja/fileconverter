@@ -140,6 +140,31 @@ const TEST_FAULTS = new Set<TestFault>([
   "worker-crash",
 ]);
 
+const AVI_TO_OGV_TEST_PROFILE: ConversionProfile = {
+  id: "avi-to-ogv",
+  input: "avi",
+  output: "ogv",
+  engine: "ffmpeg-video",
+  route: "re-encode",
+  browserRequirements: [
+    "WebAssembly",
+    "SharedArrayBuffer",
+    "cross-origin isolation",
+    "File System Access",
+  ],
+  cpuClass: "high",
+  memoryClass: "bounded-medium",
+  metadataLimitations: [
+    "Private localhost-only candidate: only the first MPEG-4 Part 2 video stream is converted; audio and all other streams are explicitly excluded.",
+  ],
+  fidelityLimitations: [
+    "Private localhost-only candidate: video is downscaled to at most 640 pixels wide and encoded as lossy Theora at fixed quality 7 and speed level 2.",
+  ],
+  maxTestedBytes: null,
+  automatedTestStatus: "pending",
+  public: false,
+};
+
 async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
   if (!name?.startsWith("within-test-")) return;
   const root = await navigator.storage.getDirectory();
@@ -410,14 +435,23 @@ export function ConverterApp() {
   const testCleanupMode =
     testMode &&
     new URLSearchParams(window.location.search).get("cleanup") === "1";
+  const aviToOgvCandidateMode =
+    testMode &&
+    new URLSearchParams(window.location.search).get("candidate") ===
+      "avi-to-ogv";
 
   const profiles = useMemo(
-    () => publicProfilesFor(inputFormat, testMode),
-    [inputFormat, testMode],
+    () => {
+      const published = publicProfilesFor(inputFormat, testMode);
+      return aviToOgvCandidateMode && inputFormat === "avi"
+        ? [...published, AVI_TO_OGV_TEST_PROFILE]
+        : published;
+    },
+    [aviToOgvCandidateMode, inputFormat, testMode],
   );
   const selectedProfile = useMemo(
-    () => conversionProfiles.find((profile) => profile.id === profileId) ?? null,
-    [profileId],
+    () => profiles.find((profile) => profile.id === profileId) ?? null,
+    [profileId, profiles],
   );
   const audioEncodingOptionsEnabled = supportsAudioEncodingOptions(selectedProfile);
   const selectedAudioCodec = audioCodecForProfile(selectedProfile);
@@ -462,7 +496,7 @@ export function ConverterApp() {
         setSourceMediaInspection(inspection);
         setSourceInspectionStatus(inspection ? "complete" : "unsupported");
         if (inspection && batchFiles.length === 1) {
-          const candidates = publicProfilesFor(inputFormat, testMode);
+          const candidates = profiles;
           const initialProfile = preferredProfileFor(inputFormat, candidates);
           if (initialProfile) {
             const automatic = selectAutomaticMediaProfile(
@@ -489,7 +523,7 @@ export function ConverterApp() {
     return () => {
       cancelled = true;
     };
-  }, [batchFiles.length, file, inputFormat, testMode]);
+  }, [batchFiles.length, file, inputFormat, profiles]);
 
   useEffect(() => {
     let disposed = false;
@@ -1830,10 +1864,14 @@ export function ConverterApp() {
                             ? "VP9"
                             : selectedProfile?.output === "webm"
                               ? "VP8"
+                              : selectedProfile?.output === "ogv"
+                                ? "Theora"
                               : "MPEG-4 Part 2"})
                         </option>
-                        {selectedProfile?.output === "webm" ||
-                        selectedProfile?.output === "webm-vp9" ? (
+                        {selectedProfile?.output === "ogv" ? (
+                          <option value="theora">Theora</option>
+                        ) : selectedProfile?.output === "webm" ||
+                          selectedProfile?.output === "webm-vp9" ? (
                           <>
                             <option value="vp8">VP8</option>
                             <option value="vp9">VP9</option>
@@ -1868,6 +1906,7 @@ export function ConverterApp() {
                       <select
                         data-testid="video-bitrate-select"
                         value={videoOptions.bitRateBps}
+                        disabled={selectedProfile?.output === "ogv"}
                         onChange={(event) =>
                           setVideoOptions((current) => ({
                             ...current,
@@ -1875,12 +1914,18 @@ export function ConverterApp() {
                           }))
                         }
                       >
-                        <option value={0}>Automatic</option>
-                        {VIDEO_BIT_RATES_BPS.map((value) => (
-                          <option key={value} value={value}>
-                            {value / 1_000} kb/s
-                          </option>
-                        ))}
+                        <option value={0}>
+                          {selectedProfile?.output === "ogv"
+                            ? "Quality-based VBR"
+                            : "Automatic"}
+                        </option>
+                        {selectedProfile?.output !== "ogv"
+                          ? VIDEO_BIT_RATES_BPS.map((value) => (
+                              <option key={value} value={value}>
+                                {value / 1_000} kb/s
+                              </option>
+                            ))
+                          : null}
                       </select>
                     </label>
                     <label>

@@ -27,7 +27,14 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
   assert.match(wrapper, /WITHIN_THEORA_ENCODE/);
   assert.match(wrapper, /profile == 39/);
   assert.match(wrapper, /speed_level", "2"/);
+  assert.match(wrapper, /effective_codec = ogv \? 4/);
+  assert.match(wrapper, /requested_quality == 1 \? 4/);
   assert.match(build, /within-theora/);
+  assert.match(build, /"theoraUsesQualityBasedVbr": true/);
+  assert.match(
+    readFileSync("workers/media-remux.ts", "utf8"),
+    /remuxProfile === 38 \|\|\s*remuxProfile === 39\s*\? null/s,
+  );
   assert.match(build, /libtheoraVersion\": \"1\.2\.0/);
   assert.match(libraries, /WITHIN_ENABLE_THEORA_ENCODER/);
   assert.match(reproduction, /LIBTHEORA_SHA256=279327339903b544/);

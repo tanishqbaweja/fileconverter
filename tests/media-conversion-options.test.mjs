@@ -230,6 +230,7 @@ test("audio options reject unsupported profiles and cross-policy values", () => 
 const vp8Profile = { engine: "ffmpeg-video", output: "webm" };
 const vp9Profile = { engine: "ffmpeg-video", output: "webm-vp9" };
 const mpeg4Profile = { engine: "ffmpeg-video", output: "mp4-mpeg4" };
+const theoraProfile = { engine: "ffmpeg-video", output: "ogv" };
 
 test("video options default to the exact certified automatic policy", () => {
   assert.deepEqual(
@@ -239,6 +240,7 @@ test("video options default to the exact certified automatic policy", () => {
   assert.equal(supportsVideoEncodingOptions(vp8Profile), true);
   assert.equal(supportsVideoEncodingOptions(vp9Profile), true);
   assert.equal(supportsVideoEncodingOptions(mpeg4Profile), true);
+  assert.equal(supportsVideoEncodingOptions(theoraProfile), true);
   assert.equal(
     supportsVideoEncodingOptions({ engine: "ffmpeg-remux", output: "webm" }),
     false,
@@ -265,6 +267,7 @@ test("video options accept the maximum bounded topology and codec overrides", ()
   assert.equal(videoCodecCode("vp8"), 1);
   assert.equal(videoCodecCode("vp9"), 2);
   assert.equal(videoCodecCode("mpeg4"), 3);
+  assert.equal(videoCodecCode("theora"), 4);
   assert.equal(videoQualityCode("automatic"), 0);
   assert.equal(videoQualityCode("smaller"), 1);
   assert.equal(videoQualityCode("balanced"), 2);
@@ -299,6 +302,28 @@ test("video options reject cross-container codecs and out-of-contract values", (
       }),
     /WebM codec/,
   );
+  const theora = {
+    ...valid,
+    codec: "theora",
+    bitRateBps: 0,
+  };
+  assert.deepEqual(validateVideoConversionOptions(theoraProfile, theora), theora);
+  assert.throws(
+    () =>
+      validateVideoConversionOptions(theoraProfile, {
+        ...theora,
+        codec: "vp8",
+      }),
+    /OGV codec/,
+  );
+  assert.throws(
+    () =>
+      validateVideoConversionOptions(theoraProfile, {
+        ...theora,
+        bitRateBps: 300_000,
+      }),
+    /quality-based VBR/,
+  );
   for (const [field, value, pattern] of [
     ["maxWidth", 800, /width/],
     ["bitRateBps", 3_000_000, /bitrate/],
@@ -316,13 +341,16 @@ test("video options reject cross-container codecs and out-of-contract values", (
   }
 });
 
-test("the worker video-option profile map exactly matches the public registry", () => {
+test("the worker video-option profile map matches the registry plus the private Theora candidate", () => {
   const registryIds = conversionProfiles
     .filter((profile) => profile.engine === "ffmpeg-video")
     .map((profile) => profile.id)
     .sort();
   const mappedIds = Object.keys(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID).sort();
-  assert.deepEqual(mappedIds, registryIds);
+  assert.deepEqual(
+    mappedIds,
+    [...new Set([...registryIds, "avi-to-ogv"])].sort(),
+  );
   for (const profileId of mappedIds) {
     assert.ok(videoOptionProfileForId(profileId));
   }

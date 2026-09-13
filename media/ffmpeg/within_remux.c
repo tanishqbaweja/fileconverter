@@ -2053,7 +2053,7 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
 #endif
   const int vp9 = webm_codec == 2;
 #ifdef WITHIN_THEORA_ENCODE
-  const int effective_codec = ogv ? 0 : vp9 ? 2 : webm ? 1 : 3;
+  const int effective_codec = ogv ? 4 : vp9 ? 2 : webm ? 1 : 3;
 #else
   const int effective_codec = vp9 ? 2 : webm ? 1 : 3;
 #endif
@@ -2346,7 +2346,9 @@ static int within_video_reencode(int webm_codec, int preserve_vorbis_audio,
 #ifdef WITHIN_THEORA_ENCODE
   if (ogv) {
     encoder->bit_rate = 0;
-    encoder->global_quality = 7 * FF_QP2LAMBDA;
+    encoder->global_quality =
+        (requested_quality == 1 ? 4 : requested_quality == 3 ? 9 : 7) *
+        FF_QP2LAMBDA;
     encoder->flags |= AV_CODEC_FLAG_QSCALE;
   }
   encoder->gop_size = ogv ? 64 : webm ? 120 : 48;

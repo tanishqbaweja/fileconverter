@@ -243,7 +243,8 @@ export async function runMediaRemux({
     remuxProfile === 27 ||
     remuxProfile === 36 ||
     remuxProfile === 37 ||
-    remuxProfile === 38
+    remuxProfile === 38 ||
+    remuxProfile === 39
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =

@@ -579,6 +579,12 @@ const categories = {
       `fixtures/stress/media/${name}`,
     ]),
   },
+  "avi-ogv": {
+    generator: "scripts/generate-avi-ogv-stress-fixture.mjs",
+    profiles: [
+      ["avi-to-ogv", "fixtures/stress/media/avi-theora-128m.avi"],
+    ],
+  },
   "avi-webm": {
     generator: "scripts/generate-avi-webm-stress-fixture.mjs",
     profiles: [

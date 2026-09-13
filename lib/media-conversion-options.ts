@@ -68,7 +68,13 @@ export const VIDEO_BIT_RATES_BPS = [
   4_000_000,
 ] as const;
 export const VIDEO_FRAME_RATES_FPS = [15, 24, 25, 30] as const;
-export const VIDEO_CODECS = ["automatic", "vp8", "vp9", "mpeg4"] as const;
+export const VIDEO_CODECS = [
+  "automatic",
+  "vp8",
+  "vp9",
+  "mpeg4",
+  "theora",
+] as const;
 export const VIDEO_QUALITIES = [
   "automatic",
   "smaller",
@@ -131,6 +137,7 @@ export const VIDEO_PROFILE_DEFAULT_CODEC_BY_ID = {
   "mpeg-ts-to-webm-vp9": "vp9",
   "flv-to-webm-vp9": "vp9",
   "avi-to-webm-vp9": "vp9",
+  "avi-to-ogv": "theora",
   "ogv-to-webm-vp9": "vp9",
   "m2v-to-webm-vp9": "vp9",
   "h264-to-webm-vp9": "vp9",
@@ -265,7 +272,8 @@ export function supportsVideoEncodingOptions(
     profile?.engine === "ffmpeg-video" &&
     (profile.output === "webm" ||
       profile.output === "webm-vp9" ||
-      profile.output === "mp4-mpeg4")
+      profile.output === "mp4-mpeg4" ||
+      profile.output === "ogv")
   );
 }
 
@@ -280,7 +288,13 @@ export function videoOptionProfileForId(
   return {
     engine: "ffmpeg-video",
     output:
-      codec === "mpeg4" ? "mp4-mpeg4" : codec === "vp9" ? "webm-vp9" : "webm",
+      codec === "mpeg4"
+        ? "mp4-mpeg4"
+        : codec === "vp9"
+          ? "webm-vp9"
+          : codec === "theora"
+            ? "ogv"
+            : "webm",
   };
 }
 
@@ -293,15 +307,19 @@ export function validateVideoConversionOptions(
     throw new Error("Video encoding options are not supported by this profile.");
   }
   const webm = profile.output === "webm" || profile.output === "webm-vp9";
+  const ogv = profile.output === "ogv";
   if (
     options.codec !== "automatic" &&
     ((webm && options.codec !== "vp8" && options.codec !== "vp9") ||
-      (!webm && options.codec !== "mpeg4"))
+      (ogv && options.codec !== "theora") ||
+      (!webm && !ogv && options.codec !== "mpeg4"))
   ) {
     throw new Error(
       webm
         ? "WebM codec must be automatic, VP8, or VP9."
-        : "MP4 MPEG-4 codec must be automatic or MPEG-4 Part 2.",
+        : ogv
+          ? "OGV codec must be automatic or Theora."
+          : "MP4 MPEG-4 codec must be automatic or MPEG-4 Part 2.",
     );
   }
   if (options.maxWidth !== 0 && !VIDEO_MAX_WIDTH_SET.has(options.maxWidth)) {
@@ -309,9 +327,13 @@ export function validateVideoConversionOptions(
   }
   if (
     options.bitRateBps !== 0 &&
-    !VIDEO_BIT_RATE_SET.has(options.bitRateBps)
+    (ogv || !VIDEO_BIT_RATE_SET.has(options.bitRateBps))
   ) {
-    throw new Error("Video bitrate must be automatic or 300-4,000 kb/s.");
+    throw new Error(
+      ogv
+        ? "Theora OGV uses bounded quality-based VBR; select a quality policy instead of a bitrate."
+        : "Video bitrate must be automatic or 300-4,000 kb/s.",
+    );
   }
   if (
     options.frameRateFps !== 0 &&
@@ -332,7 +354,15 @@ export function validateVideoConversionOptions(
 }
 
 export function videoCodecCode(codec: VideoCodec): number {
-  return codec === "vp8" ? 1 : codec === "vp9" ? 2 : codec === "mpeg4" ? 3 : 0;
+  return codec === "vp8"
+    ? 1
+    : codec === "vp9"
+      ? 2
+      : codec === "mpeg4"
+        ? 3
+        : codec === "theora"
+          ? 4
+          : 0;
 }
 
 export function videoQualityCode(quality: VideoQuality): number {

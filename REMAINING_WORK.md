@@ -117,9 +117,17 @@ not the entire product specification.
 1. Complete the private `avi-to-ogv` candidate now tracked in
    `evidence/avi-to-ogv-feasibility-2026-09-12.json`. The source pins official
    libtheora 1.2.0 in an isolated single-thread Wasm core and retains the
-   measured fastest native speed level, but it must remain hidden until the
-   no-Docker build, production-browser correctness, quality, three-run memory,
-   direct destination, cancellation, write-failure, and cleanup gates pass.
+   measured fastest native speed level. The first hosted no-Docker Wasm artifact
+   passed genuine browser conversion, full decode, SSIM 0.808504, write-failure
+   cleanup, and three OPFS plus three direct-destination 141,918,132-byte stress
+   runs. Switching profile 39 from synchronous Blob slices to the bounded BYOB
+   reader reduced worst incremental private memory from 287.438 MiB to
+   233.352 MiB with only a 0.2% diagnostic timing change; the accepted three-run
+   peaks were 229.906 MiB OPFS and 238.871 MiB direct. It remains hidden because
+   the newly required Theora codec/width/frame-rate/quality controls change the
+   native wrapper and therefore still need a fresh no-Docker artifact, focused
+   option validation, repeated stress gates, final reproducibility, registry,
+   README, and compact evidence publication.
 2. Perform bounded feasibility work for the other missing media combinations. Revisit
    the evidenced HEIF/HEIC and camera-RAW exclusions only when their documented
    legal, security, quality, and fixed-memory conditions change. Promote only
