@@ -78,7 +78,7 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
   assert.match(reproduction, /historical_general_source_sha256="304c04c13e2e2a33/);
   assert.match(
     reproduction,
-    /restore_pre_theora_source[\s\S]*within-remux[\s\S]*for video_core[\s\S]*within-direct[\s\S]*build-theora\.sh/,
+    /restore_pre_theora_source[\s\S]*within-remux[\s\S]*within-direct[\s\S]*for video_core[\s\S]*build-theora\.sh/,
   );
   assert.match(cleanup, /2026-09-13T04-54-44-603Z-avi-to-ogv-stress/);
   assert.match(
