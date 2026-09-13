@@ -3844,18 +3844,6 @@ async function runRecords(
 
 async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   const { jobId, profileId, file } = message;
-  const audioOptions = validateAudioConversionOptions(
-    audioOptionProfileForId(profileId),
-    message.audioOptions,
-  );
-  const videoOptionsProfile = videoOptionProfileForId(profileId) ?? {
-    engine: "unsupported",
-    output: "unsupported",
-  };
-  const videoOptions = validateVideoConversionOptions(
-    videoOptionsProfile,
-    message.videoOptions,
-  );
   const compressionTranscode =
     COMPRESSION_TRANSCODES[
       profileId as keyof typeof COMPRESSION_TRANSCODES
@@ -3869,6 +3857,18 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   let destination: Destination | null = null;
 
   try {
+    const audioOptions = validateAudioConversionOptions(
+      audioOptionProfileForId(profileId),
+      message.audioOptions,
+    );
+    const videoOptionsProfile = videoOptionProfileForId(profileId) ?? {
+      engine: "unsupported",
+      output: "unsupported",
+    };
+    const videoOptions = validateVideoConversionOptions(
+      videoOptionsProfile,
+      message.videoOptions,
+    );
     emitProgress(jobId, "Worker started", metrics, startedAt, true);
     destination = await openDestination(
       message.destination,
