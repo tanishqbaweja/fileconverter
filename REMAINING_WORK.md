@@ -179,9 +179,15 @@ not the entire product specification.
 - The historical direct specialist's regenerated reverse patch now reconstructs
   source commit `79e4db4` exactly and the source-only no-Docker preflight verifies
   SHA-256 `b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b`.
+  Hosted run `34740500424` reproduced the pushed `within-theora` JavaScript,
+  Wasm, license, and manifest byte-for-byte in 8m52s, passed cleanup, skipped
+  mismatch upload, and retained zero artifacts. Diagnostic all-core run
+  `34739711341` also matched Theora exactly; it showed that six unchanged legacy
+  Wasm modules need their historical wrapper surfaces when rebuilt together.
   Compact route evidence is retained in
   `evidence/avi-to-ogv-browser-2026-09-13.json`; generated stress media and every
-  converted copy were deleted after validation.
+  converted copy, raw report, local candidate, and remote mismatch archive were
+  deleted after validation.
 
 ### 2026-09-12 — AVI to FLV feasibility, optimization, and publication
 

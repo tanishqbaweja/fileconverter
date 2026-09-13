@@ -137,6 +137,20 @@
       "artifactId": 10311862447,
       "commit": "b4ce4c3d89ace65808052d2ad379738d321f034c",
       "purpose": "control-capable binary plus exact historical-direct source manifest"
+    },
+    {
+      "runId": 34739711341,
+      "artifactId": 10311669037,
+      "commit": "2a354635876ccb37adfee672ea4d6a6d1d75f7b9",
+      "purpose": "post-publication all-core diagnostic; the new Theora module and shared files matched exactly, while six unchanged historical specialist Wasm files differed when rebuilt from the expanded current wrapper"
+    },
+    {
+      "runId": 34740500424,
+      "commit": "2a354635876ccb37adfee672ea4d6a6d1d75f7b9",
+      "purpose": "successful exact scoped publication reproduction of within-theora",
+      "durationSeconds": 532,
+      "artifactCount": 0,
+      "cleanupPassed": true
     }
   ],
   "publicFiles": {
@@ -166,14 +180,34 @@
   "publication": {
     "repository": "https://github.com/tanishqbaweja/fileconverter",
     "branch": "codex/media-options",
-    "finalNoDockerAllModuleReproduction": "pending publication commit"
+    "pushedCommit": "2a354635876ccb37adfee672ea4d6a6d1d75f7b9",
+    "theoraNoDockerReproduction": {
+      "runId": 34740500424,
+      "result": "success: published within-theora JavaScript, Wasm, license, and manifest reproduced byte-for-byte",
+      "durationSeconds": 532,
+      "artifactCount": 0,
+      "cleanupPassed": true
+    },
+    "allCoreDiagnostic": {
+      "runId": 34739711341,
+      "result": "Theora and shared artifacts matched exactly; six unchanged historical specialist Wasm files differed because all-core mode rebuilt them from the expanded current wrapper surface.",
+      "mismatchedHistoricalModules": [
+        "within-direct.wasm",
+        "within-mpeg4.wasm",
+        "within-remux.wasm",
+        "within-vp9.wasm",
+        "within-webm-quality.wasm",
+        "within-webm.wasm"
+      ]
+    }
   },
   "cleanup": {
     "stressSourceRetained": false,
     "convertedOutputsRetained": 0,
     "browserProfilesRetained": 0,
-    "downloadedCandidateArtifactsRetained": true,
-    "rawReportsRetainedUntilCompactEvidenceReview": true,
+    "downloadedCandidateArtifactsRetained": false,
+    "rawReportsRetainedUntilCompactEvidenceReview": false,
+    "remoteMismatchArtifactsRetained": 0,
     "protectedTestMkvTouched": false
   }
 }

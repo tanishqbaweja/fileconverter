@@ -21,7 +21,23 @@ test("AVI to OGV is public only with complete browser evidence", () => {
   assert.equal(evidence.selectedOptimization.theoraSpeedLevel, 2);
   assert.equal(evidence.browser.opfs.runs, 3);
   assert.equal(evidence.browser.directDestination.runs, 3);
+  assert.equal(
+    evidence.publication.pushedCommit,
+    "2a354635876ccb37adfee672ea4d6a6d1d75f7b9",
+  );
+  assert.equal(evidence.publication.theoraNoDockerReproduction.runId, 34740500424);
+  assert.match(
+    evidence.publication.theoraNoDockerReproduction.result,
+    /byte-for-byte/,
+  );
+  assert.equal(
+    evidence.publication.theoraNoDockerReproduction.artifactCount,
+    0,
+  );
   assert.equal(evidence.cleanup.convertedOutputsRetained, 0);
+  assert.equal(evidence.cleanup.downloadedCandidateArtifactsRetained, false);
+  assert.equal(evidence.cleanup.rawReportsRetainedUntilCompactEvidenceReview, false);
+  assert.equal(evidence.cleanup.remoteMismatchArtifactsRetained, 0);
 });
 
 test("AVI to OGV uses an isolated pinned Theora core", () => {
@@ -32,6 +48,7 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
     "media/ffmpeg/reproduce-nondocker.sh",
     "utf8",
   );
+  const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
   assert.match(wrapper, /WITHIN_THEORA_ENCODE/);
   assert.match(wrapper, /profile == 39/);
   assert.match(wrapper, /speed_level", "2"/);
@@ -49,5 +66,10 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
   assert.match(
     reproduction,
     /WITHIN_OGV_COPY\|WITHIN_THEORA_ENCODE/,
+  );
+  assert.match(cleanup, /2026-09-13T04-54-44-603Z-avi-to-ogv-stress/);
+  assert.match(
+    cleanup,
+    /2026-09-13T04-57-27-921Z-avi-to-ogv-direct-handle-stress/,
   );
 });

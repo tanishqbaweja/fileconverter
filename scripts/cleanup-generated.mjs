@@ -73,6 +73,14 @@ const aviFlvReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const aviOgvReports = [
+  "2026-09-13T04-54-44-603Z-avi-to-ogv-stress",
+  "2026-09-13T04-57-27-921Z-avi-to-ogv-direct-handle-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const hevcWebmStressReports = [
   "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
   "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
@@ -476,6 +484,9 @@ for (const reportPath of aviMpegTsReports) {
 for (const reportPath of aviFlvReports) {
   assertInside(reportRoot, reportPath);
 }
+for (const reportPath of aviOgvReports) {
+  assertInside(reportRoot, reportPath);
+}
 for (const reportPath of hevcWebmStressReports) {
   assertInside(reportRoot, reportPath);
 }
@@ -583,6 +594,9 @@ for (const reportPath of aviMpegTsReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of aviFlvReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of aviOgvReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of hevcWebmStressReports) {
