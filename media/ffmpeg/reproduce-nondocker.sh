@@ -45,6 +45,49 @@ strip_general_core_only_profiles() {
   local source_path="${1:-${BUILD_ROOT}/within_remux.c}"
   local filtered_path="${source_path}.specialist"
   awk '
+    /^[[:space:]]*#ifdef[[:space:]]+WITHIN_OGV_COPY[[:space:]]*$/ {
+      if (skipping) exit 2
+      skipping = 1
+      depth = 1
+      keeping_else = 0
+      next
+    }
+    skipping {
+      if ($0 ~ /^[[:space:]]*#if(n?def)?([[:space:]]|$)/) {
+        depth++
+        if (keeping_else) print
+        next
+      }
+      if ($0 ~ /^[[:space:]]*#else([[:space:]]|$)/ && depth == 1) {
+        keeping_else = 1
+        next
+      }
+      if ($0 ~ /^[[:space:]]*#endif([[:space:]]|$)/) {
+        depth--
+        if (depth == 0) {
+          skipping = 0
+          keeping_else = 0
+        } else if (keeping_else) {
+          print
+        }
+        next
+      }
+      if (keeping_else) print
+      next
+    }
+    { print }
+    END {
+      if (skipping || depth != 0) exit 3
+    }
+  ' "${source_path}" > "${filtered_path}" ||
+    fail "Could not remove general-core-only OGV blocks for specialist builds."
+  mv -- "${filtered_path}" "${source_path}"
+}
+
+strip_current_general_core_only_profiles() {
+  local source_path="${1:-${BUILD_ROOT}/within_remux.c}"
+  local filtered_path="${source_path}.specialist"
+  awk '
     /^[[:space:]]*#ifdef[[:space:]]+(WITHIN_OGV_COPY|WITHIN_THEORA_ENCODE)[[:space:]]*$/ {
       if (skipping) exit 2
       skipping = 1
@@ -80,8 +123,14 @@ strip_general_core_only_profiles() {
       if (skipping || depth != 0) exit 3
     }
   ' "${source_path}" > "${filtered_path}" ||
-    fail "Could not remove general-core-only OGV/Theora blocks for specialist builds."
+    fail "Could not remove current general-core-only OGV/Theora blocks."
   mv -- "${filtered_path}" "${source_path}"
+}
+
+restore_pre_theora_source() {
+  local source_directory="${1:-${BUILD_ROOT}}"
+  patch --reverse --directory="${source_directory}" --strip=3 \
+    < "${SCRIPT_DIR}/patches/theora-source.patch"
 }
 
 run_privileged() {
@@ -159,14 +208,29 @@ run_build_step() {
 verify_specialist_source_rewrites() {
   local verification_root
   local status=0
+  local historical_general_source_sha256="304c04c13e2e2a3320b9b29f2e0a6ba5c4c2070ed226d9b090071474b5e9b218"
   local historical_direct_source_sha256="b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b"
   mkdir -p "${WORK_ROOT}"
   verification_root="$(mktemp -d "${WORK_ROOT}/ffmpeg-source-rewrite-check.XXXXXX")"
   assert_work_path "${verification_root}"
   cp "${SCRIPT_DIR}/within_remux.c" "${verification_root}/"
-  if strip_general_core_only_profiles "${verification_root}/within_remux.c" &&
+  cp "${verification_root}/within_remux.c" \
+    "${verification_root}/within_remux.current.c"
+  if restore_pre_theora_source "${verification_root}" &&
+      printf '%s  %s\n' "${historical_general_source_sha256}" \
+        "${verification_root}/within_remux.c" |
+        sha256sum --check --strict &&
+      strip_general_core_only_profiles "${verification_root}/within_remux.c" &&
+      patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
+      patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
       { [[ "${WITHIN_BUILD_CORE_FILTER:-all}" == "within-theora" ]] ||
-        { patch --reverse --directory="${verification_root}" --strip=3 \
+        { cp "${verification_root}/within_remux.current.c" \
+            "${verification_root}/within_remux.c" &&
+          strip_current_general_core_only_profiles \
+            "${verification_root}/within_remux.c" &&
+          patch --reverse --directory="${verification_root}" --strip=3 \
             < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
           patch --reverse --directory="${verification_root}" --strip=3 \
             < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
@@ -228,6 +292,7 @@ run_privileged ln -s "${OUTPUT_ROOT}" /out
 cp "${SCRIPT_DIR}"/build-*.sh "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/wasm-pkg-config.sh" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/within_remux.c" "${BUILD_ROOT}/within_remux.current.c"
 export WITHIN_CURRENT_WRAPPER_SOURCE_SHA256
 WITHIN_CURRENT_WRAPPER_SOURCE_SHA256="$(sha256sum "${BUILD_ROOT}/within_remux.c" | awk '{print $1}')"
 cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
@@ -235,6 +300,7 @@ cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/theora-source.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
 cd "${BUILD_ROOT}"
@@ -272,7 +338,6 @@ run_build_step ./build-lame.sh "${BUILD_ROOT}/lame"
 run_build_step ./build-opus.sh "${BUILD_ROOT}/opus"
 run_build_step ./build-ogg.sh "${BUILD_ROOT}/libogg"
 run_build_step ./build-vorbis.sh "${BUILD_ROOT}/libvorbis"
-run_build_step ./build-theora.sh "${BUILD_ROOT}/libtheora"
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch
 ./build-libraries.sh
 patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
@@ -283,15 +348,11 @@ patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
 )
 requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
+  # The published general core predates Theora. Remove only the new guarded
+  # Theora blocks so its translation unit remains byte-for-byte historical.
+  restore_pre_theora_source
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
-fi
-if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]]; then
-  (
-    cd "${BUILD_ROOT}/ffmpeg"
-    emmake make distclean
-  )
-  WITHIN_ENABLE_THEORA_ENCODER=1 ./build-libraries.sh
-  WITHIN_BUILD_CORE_FILTER=within-theora ./build-remux.sh
+  cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
 fi
 if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ) ]]; then
   # The bounded AVI muxer and AVI output support belong only to the general
@@ -309,6 +370,7 @@ if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those
   # blocks produces the same specialist translation unit while keeping the
   # historical reverse patches independent of new guarded source context.
+  restore_pre_theora_source
   strip_general_core_only_profiles
   # Matroska attached-picture retention belongs only to the general remux core.
   # Remove it before rebuilding unchanged specialist cores.
@@ -322,12 +384,19 @@ if [[ "${requested_core}" == "all" ]]; then
     WITHIN_BUILD_CORE_FILTER="${video_core}" ./build-remux.sh
   done
   # The direct 10 GiB remux core is intentionally unchanged. Reconstruct its
-  # exact certified wrapper only after the current video specialists build.
+  # exact certified wrapper from the current source because its audited patch
+  # also captures pre-Theora formatting outside the guarded blocks.
+  cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
+  strip_current_general_core_only_profiles
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
-  strip_general_core_only_profiles
+  strip_current_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -336,12 +405,30 @@ elif [[ "${requested_core}" == "within-direct" ]]; then
     < direct-source-79e4db.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ]]; then
+  restore_pre_theora_source
   strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < audio-options-source.patch
   WITHIN_BUILD_CORE_FILTER="${requested_core}" ./build-remux.sh
+fi
+if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]]; then
+  # Build Theora only after every legacy core. This keeps the historical
+  # dependency/configuration surface isolated and avoids compiling libtheora
+  # at all for scoped legacy reproductions.
+  cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
+  if [[ "${requested_core}" == "all" ]]; then
+    patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 \
+      < avi-bounded-index.patch
+  fi
+  (
+    cd "${BUILD_ROOT}/ffmpeg"
+    emmake make distclean
+  )
+  run_build_step ./build-theora.sh "${BUILD_ROOT}/libtheora"
+  WITHIN_ENABLE_THEORA_ENCODER=1 ./build-libraries.sh
+  WITHIN_BUILD_CORE_FILTER=within-theora ./build-remux.sh
 fi
 
 comparison_files=()
