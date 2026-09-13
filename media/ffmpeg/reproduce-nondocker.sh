@@ -159,6 +159,7 @@ run_build_step() {
 verify_specialist_source_rewrites() {
   local verification_root
   local status=0
+  local historical_direct_source_sha256="b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b"
   mkdir -p "${WORK_ROOT}"
   verification_root="$(mktemp -d "${WORK_ROOT}/ffmpeg-source-rewrite-check.XXXXXX")"
   assert_work_path "${verification_root}"
@@ -170,7 +171,10 @@ verify_specialist_source_rewrites() {
           patch --reverse --directory="${verification_root}" --strip=3 \
             < "${SCRIPT_DIR}/patches/audio-options-source.patch" &&
           patch --reverse --directory="${verification_root}" --strip=1 \
-            < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch"; }; }; then
+            < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" &&
+          printf '%s  %s\n' "${historical_direct_source_sha256}" \
+            "${verification_root}/within_remux.c" |
+            sha256sum --check --strict; }; }; then
     printf 'Specialist source-rewrite preflight passed.\n'
   else
     status=$?
@@ -180,7 +184,7 @@ verify_specialist_source_rewrites() {
 }
 
 if [[ "${WITHIN_VERIFY_SOURCE_REWRITES_ONLY:-0}" == "1" ]]; then
-  for command_name in awk mktemp patch; do
+  for command_name in awk mktemp patch sha256sum; do
     require_command "${command_name}"
   done
   verify_specialist_source_rewrites
