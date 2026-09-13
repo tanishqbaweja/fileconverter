@@ -210,6 +210,7 @@ verify_specialist_source_rewrites() {
   local status=0
   local historical_general_source_sha256="304c04c13e2e2a3320b9b29f2e0a6ba5c4c2070ed226d9b090071474b5e9b218"
   local historical_direct_source_sha256="b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b"
+  local published_direct_source_sha256="b0b20712a1ad47a923de3cab7ced24c25cdeef46f70743ded439e88c892f2eaa"
   mkdir -p "${WORK_ROOT}"
   verification_root="$(mktemp -d "${WORK_ROOT}/ffmpeg-source-rewrite-check.XXXXXX")"
   assert_work_path "${verification_root}"
@@ -237,6 +238,11 @@ verify_specialist_source_rewrites() {
           patch --reverse --directory="${verification_root}" --strip=1 \
             < "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" &&
           printf '%s  %s\n' "${historical_direct_source_sha256}" \
+            "${verification_root}/within_remux.c" |
+            sha256sum --check --strict &&
+          patch --directory="${verification_root}" --strip=1 \
+            < "${SCRIPT_DIR}/patches/direct-published-source.patch" &&
+          printf '%s  %s\n' "${published_direct_source_sha256}" \
             "${verification_root}/within_remux.c" |
             sha256sum --check --strict; }; }; then
     printf 'Specialist source-rewrite preflight passed.\n'
@@ -300,6 +306,7 @@ cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/direct-published-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/theora-source.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
@@ -354,21 +361,7 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
   cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
 fi
-if [[ "${requested_core}" == "all" || "${requested_core}" == "within-direct" ]]; then
-  # The published direct core was linked from the bounded-AVI general archive.
-  # Reconstruct its older wrapper now, before the FFmpeg archive is restored to
-  # the historical video-specialist configuration.
-  strip_current_general_core_only_profiles
-  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
-    < matroska-artwork-source.patch
-  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
-    < audio-options-source.patch
-  patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
-    < direct-source-79e4db.patch
-  WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
-  cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
-fi
-if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-direct" && "${requested_core}" != "within-theora" ) ]]; then
+if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ) ]]; then
   # The bounded AVI muxer and AVI output support belong only to the general
   # core. The already-certified specialists predate both changes, so restore
   # their exact historical FFmpeg configure surface as well as the source.
@@ -397,7 +390,32 @@ if [[ "${requested_core}" == "all" ]]; then
   for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do
     WITHIN_BUILD_CORE_FILTER="${video_core}" ./build-remux.sh
   done
-elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-direct" && "${requested_core}" != "within-theora" ]]; then
+  # Reconstruct the exact wrapper retained by the published direct core. It
+  # uses the historical direct ABI plus the compatibility scaffolding present
+  # when the bounded-AVI archive changed the final linked Wasm.
+  cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
+  strip_current_general_core_only_profiles
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-source-79e4db.patch
+  patch --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-published-source.patch
+  WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
+elif [[ "${requested_core}" == "within-direct" ]]; then
+  strip_current_general_core_only_profiles
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < matroska-artwork-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < audio-options-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-source-79e4db.patch
+  patch --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-published-source.patch
+  WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
+elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ]]; then
   restore_pre_theora_source
   strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \

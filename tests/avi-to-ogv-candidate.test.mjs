@@ -52,6 +52,9 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
   const theoraSourcePatch = readFileSync(
     "media/ffmpeg/patches/theora-source.patch",
   );
+  const directPublishedSourcePatch = readFileSync(
+    "media/ffmpeg/patches/direct-published-source.patch",
+  );
   const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
   assert.match(wrapper, /WITHIN_THEORA_ENCODE/);
   assert.match(wrapper, /profile == 39/);
@@ -76,9 +79,14 @@ test("AVI to OGV uses an isolated pinned Theora core", () => {
     "903f48bdc2b06db90b378c60f006fe110880e47684102340f99ddb5f02a15dde",
   );
   assert.match(reproduction, /historical_general_source_sha256="304c04c13e2e2a33/);
+  assert.equal(
+    createHash("sha256").update(directPublishedSourcePatch).digest("hex"),
+    "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212",
+  );
+  assert.match(reproduction, /published_direct_source_sha256="b0b20712a1ad47a9/);
   assert.match(
     reproduction,
-    /restore_pre_theora_source[\s\S]*within-remux[\s\S]*within-direct[\s\S]*for video_core[\s\S]*build-theora\.sh/,
+    /restore_pre_theora_source[\s\S]*within-remux[\s\S]*for video_core[\s\S]*direct-published-source\.patch[\s\S]*within-direct[\s\S]*build-theora\.sh/,
   );
   assert.match(cleanup, /2026-09-13T04-54-44-603Z-avi-to-ogv-stress/);
   assert.match(
