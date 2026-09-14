@@ -11,8 +11,11 @@ import {
 const evidenceName =
   "evidence/av1-mp4-webm-native-feasibility-2026-09-14.json";
 const evidence = JSON.parse(readFileSync(evidenceName, "utf8"));
+const browserEvidenceName =
+  "evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json";
+const browserEvidence = JSON.parse(readFileSync(browserEvidenceName, "utf8"));
 
-test("AV1 MP4 to WebM stays hidden until browser acceptance is complete", () => {
+test("AV1 MP4 to WebM stays hidden until exact published reproduction is complete", () => {
   const profile = conversionProfiles.find(
     ({ id }) => id === "mp4-to-webm-av1",
   );
@@ -33,9 +36,44 @@ test("AV1 MP4 to WebM stays hidden until browser acceptance is complete", () => 
   );
 });
 
+test("production-browser acceptance covers both destination modes and rejected optimizations", () => {
+  assert.equal(browserEvidence.profile.id, "mp4-to-webm-av1");
+  assert.equal(
+    browserEvidence.status,
+    "browser-accepted-awaiting-exact-nondocker-reproduction",
+  );
+  assert.equal(browserEvidence.dockerUsed, false);
+  assert.equal(browserEvidence.smallProductionBrowserValidation.result, "3 passed");
+  assert.equal(browserEvidence.stressValidation.passed, true);
+  assert.equal(browserEvidence.stressValidation.destinationModes.length, 2);
+  assert.deepEqual(
+    browserEvidence.stressValidation.destinationModes.map(({ mode }) => mode),
+    ["sync-opfs", "direct-handle"],
+  );
+  for (const destination of browserEvidence.stressValidation.destinationModes) {
+    assert.equal(destination.passed, true);
+    assert.equal(destination.elapsedMs.length, 3);
+    assert.ok(destination.worstIncrementalPrivateMiB <= 250);
+    assert.equal(destination.reportSha256.length, 64);
+  }
+  assert.equal(browserEvidence.stressValidation.maxReadChunkBytes, 256 * 1024);
+  assert.equal(browserEvidence.stressValidation.maxWriteChunkBytes, 256 * 1024);
+  assert.equal(browserEvidence.stressValidation.maxQueuedBytes, 256 * 1024);
+  assert.equal(browserEvidence.stressValidation.maxPendingOperations, 1);
+  assert.equal(browserEvidence.stressValidation.wasmMemoryBytes, 32 * 1024 * 1024);
+  assert.equal(browserEvidence.optimizationAudit.rejected.length, 2);
+  assert.equal(
+    browserEvidence.optimizationAudit.accepted.name,
+    "direct-route reusable asynchronous BYOB input",
+  );
+});
+
 test("native feasibility records the exact accepted and rejected timing cases", () => {
   assert.equal(evidence.candidateProfile, "mp4-to-webm-av1");
-  assert.equal(evidence.candidateStatus, "pending-browser-build-and-acceptance-gates");
+  assert.equal(
+    evidence.candidateStatus,
+    "browser-accepted-awaiting-exact-nondocker-reproduction",
+  );
   const encoderOrigin = evidence.trials.find(
     ({ name }) => name === "encoder-origin-av1-opus-mp4-to-live-webm",
   );
@@ -90,6 +128,7 @@ test("candidate source keeps Opus priming and stress I/O bounded", () => {
   assert.match(browser, /expectDecodedPcmMatch\(av1OpusMp4FixturePath/);
   assert.match(stress, /compatible-vp9-opus-128m\.mp4/);
   assert.match(cleanup, /av1-isobmff-webm-feasibility/);
+  assert.match(cleanup, /compatible-vp9-opus-128m\.mp4\.json/);
   assert.match(reproduction, /mp4-webm-opus-priming-source\.patch/);
   assert.equal(
     createHash("sha256").update(sourcePatch).digest("hex"),

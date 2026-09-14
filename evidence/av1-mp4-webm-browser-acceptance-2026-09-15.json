@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-15T00:00:00+05:30",
+  "requirements": ["P-08", "M-04"],
+  "status": "browser-accepted-awaiting-exact-nondocker-reproduction",
+  "dockerUsed": false,
+  "scope": "Add a bounded packet-copy route from AV1, VP8, or VP9 plus Opus or Vorbis in MP4 to live WebM, including exact preservation of source-specific Opus priming.",
+  "profile": {
+    "id": "mp4-to-webm-av1",
+    "publicDestinationLabel": "WebM video (compatible stream copy)",
+    "route": "stream-copy",
+    "videoCodecs": ["av1", "vp8", "vp9"],
+    "audioCodecs": ["opus", "vorbis"],
+    "decoderUsed": false,
+    "encoderUsed": false,
+    "maximumTestedSourceBytes": 170433726
+  },
+  "engineBuild": {
+    "workflow": ".github/workflows/ffmpeg-nondocker-repro.yml",
+    "correctedCandidateRun": 34823637056,
+    "candidateCommit": "c0b6ef0dfc7a46ad1a64b798d1a111d6a9f39f48",
+    "elapsed": "6m10s",
+    "sourceRewritePreflightPassed": true,
+    "hostedCleanupPassed": true,
+    "expectedChangedFiles": [
+      "public/engines/remux/build-manifest.json",
+      "public/engines/remux/within-remux.wasm"
+    ],
+    "unchangedJavaScriptGlueSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "candidateManifestSha256": "5599338490ed572d8c42b660049b7ec92f0eb573e83f38c07998efc351413157",
+    "candidateWasmBytes": 9873301,
+    "candidateWasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "candidateArtifactId": 10338954719,
+    "candidateArtifactDigest": "2c0ad647e3c25372a8e9ad06f9b8e365e9625a574b21b0d83ed49182bd418e06",
+    "exactPublishedReproductionRun": null,
+    "exactPublishedReproductionResult": "pending"
+  },
+  "smallProductionBrowserValidation": {
+    "browser": "Google Chrome 152.0.7977.83",
+    "command": "npx playwright test tests/browser/media-remux.spec.ts --grep \"losslessly copies AV1|mp4-to-webm-av1 propagates\"",
+    "result": "3 passed",
+    "elapsedSeconds": 15.0,
+    "assertions": [
+      "the 336-sample MP4 Opus priming case produces exact decoded PCM instead of the stock 24-sample overrun",
+      "compressed AV1 packets match the MP4 source exactly",
+      "compressed Opus packets match the MP4 source exactly",
+      "decoded video matches the MP4 source exactly",
+      "the output is a genuine FFprobe-readable WebM with AV1 and Opus",
+      "language metadata is retained and unsupported chapters are absent",
+      "an injected destination-write failure leaves no partial output and returns queue state to zero",
+      "the existing Matroska compatible-WebM route remains exact"
+    ]
+  },
+  "stressSource": {
+    "format": "MP4",
+    "videoCodec": "vp9",
+    "audioCodec": "opus",
+    "bytes": 170433726,
+    "sha256": "d594e771ee747edf2af81e16b049348a3938d41964fe6b74dff791a74e610380",
+    "durationSeconds": 60,
+    "width": 1920,
+    "height": 1080,
+    "frames": 1440,
+    "outputBytes": 170426241,
+    "repeatableOutputSha256": "f2cf18975b8c131f8460f1f4eb920a8f5ffc67da1e063522ded31170ad4a9a17",
+    "decodedVideoSha256": "7390cf471b7f4271323f19009de8c79f0bea1614b64c7ac69f02d28ad4591fd0",
+    "decodedAudioSha256": "e7cea3573c396208c6152fedaa23c08df195569836509f1151f7586a7ea164b7"
+  },
+  "stressValidation": {
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "browser": "Google Chrome 152.0.7977.83",
+    "destinationModes": [
+      {
+        "mode": "sync-opfs",
+        "report": "outputs/reports/2026-09-14T08-52-07-693Z-mp4-to-webm-av1-stress.json",
+        "reportSha256": "16886537d5c613dfb3e6729db7270782e25e1520fa1433f23fe00b5d8e0d42a7",
+        "elapsedMs": [1858.0850000083447, 1531.1800000071526, 1734.5850000083447],
+        "incrementalPrivateMiB": [184.8515625, 201.1328125, 206.19140625],
+        "cleanupDeltaFromLoadedMiB": [-6.640625, -10.6171875, -4.25],
+        "worstIncrementalPrivateMiB": 206.19140625,
+        "passed": true
+      },
+      {
+        "mode": "direct-handle",
+        "report": "outputs/reports/2026-09-14T09-13-35-015Z-mp4-to-webm-av1-direct-handle-stress.json",
+        "reportSha256": "ec86775e3ea7719b16dbd5a1db0ec168a06ccaeabfa274cd0e08dabde24634ee",
+        "elapsedMs": [2300.3049999773502, 2641.7549999952316, 2629.5099999904633],
+        "incrementalPrivateMiB": [219.0625, 216.625, 205.28125],
+        "cleanupDeltaFromLoadedMiB": [10.82421875, 12.53515625, 12.05859375],
+        "worstIncrementalPrivateMiB": 219.0625,
+        "passed": true
+      }
+    ],
+    "maxReadChunkBytes": 262144,
+    "maxWriteChunkBytes": 262144,
+    "maxQueuedBytes": 262144,
+    "maxPendingOperations": 1,
+    "wasmMemoryBytes": 33554432,
+    "completeNativeDecode": true,
+    "decodedVideoAndAudioHashesMatchSource": true,
+    "repeatableOutput": true,
+    "passed": true
+  },
+  "optimizationAudit": {
+    "accepted": {
+      "name": "direct-route reusable asynchronous BYOB input",
+      "reason": "The route now uses one bounded stream reader for direct saves, avoiding renderer retention from repeated synchronous Blob slices while leaving the faster synchronous OPFS route unchanged.",
+      "worstIncrementalPrivateMiB": 219.0625,
+      "maximumReadBytes": 262144,
+      "maximumWriteBytes": 262144
+    },
+    "rejected": [
+      {
+        "name": "synchronous Blob-slice input with 256 KiB direct writes",
+        "result": "316.6 MiB worst incremental private memory; cleanup deltas 74.8, 82.4, and 138.1 MiB",
+        "reason": "Renderer private memory accumulated across repeated direct saves."
+      },
+      {
+        "name": "1 MiB coalesced direct writes with synchronous Blob-slice input",
+        "report": "outputs/reports/2026-09-14T09-08-10-554Z-mp4-to-webm-av1-direct-handle-stress.json",
+        "reportSha256": "cd8f0768902b425e90c003d4e0752000796ece03dcbcc1a531ff8af32a87b0ff",
+        "result": "358.33203125 MiB worst incremental private memory; cleanup failed",
+        "reason": "Larger write coalescing did not address the input allocation source and materially worsened memory, so it was reverted."
+      }
+    ]
+  },
+  "cleanup": {
+    "generatedStressMp4Deleted": true,
+    "generatedStressMkvDeleted": true,
+    "generatedStressManifestsDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "localCandidateDownloadDeleted": true,
+    "workDirectoryContents": [".gitkeep"],
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  }
+}

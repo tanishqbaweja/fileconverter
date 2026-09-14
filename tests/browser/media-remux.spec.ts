@@ -4208,6 +4208,7 @@ for (const route of [
   ["mov-to-m4v", m4vContainerFixturePaths.mov],
   ["avi-to-m4v", m4vContainerFixturePaths.avi],
   ["mkv-to-webm-av1", av1OpusFixturePath],
+  ["mp4-to-webm-av1", av1OpusMp4FixturePath],
   ["mkv-to-mp3", mp3ContainerFixturePaths.mkv],
   ["mp4-to-mp3", mp3ContainerFixturePaths.mp4],
   ["mov-to-mp3", mp3ContainerFixturePaths.mov],

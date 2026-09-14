@@ -1350,3 +1350,27 @@ not the entire product specification.
 - Compact measurements are retained in
   `evidence/av1-mp4-webm-native-feasibility-2026-09-14.json`; every disposable
   MP4, WebM, and failed zero-byte MOV trial was deleted afterward.
+
+### 2026-09-15 — AV1/Opus MP4-to-WebM browser acceptance
+
+- Corrected no-Docker run 34823637056 compiled the source-patched candidate in
+  6m10s. Only `build-manifest.json` and `within-remux.wasm` differed from the
+  prior published engine; JavaScript glue and all licenses remained byte-exact.
+- The focused production-Chrome gate passed 3/3: exact compressed AV1 and Opus
+  packets, exact decoded video and PCM for the 336-sample priming case, genuine
+  WebM structure, metadata checks, Matroska-route regression, and injected-write
+  cleanup.
+- The 170,433,726-byte MP4 stress source passed three OPFS conversions at
+  206.191 MiB worst incremental complete-Chromium private memory. The first
+  direct path exposed renderer retention at 316.6 MiB. A 1 MiB write-coalescing
+  experiment worsened the peak to 358.332 MiB and was reverted. Route-scoped
+  reusable asynchronous BYOB input then passed all three direct saves at
+  219.063 MiB with cleanup within 12.536 MiB of loaded idle.
+- Both accepted modes produced the same 170,426,241-byte output, exact decoded
+  video/audio hashes, 256 KiB reads/writes/queueing, one pending operation, and
+  fixed 32 MiB Wasm. Category cleanup deleted both large source containers,
+  their manifests, all converted outputs, and browser profiles; `work/` contains
+  only `.gitkeep`, and `test.mkv` remains byte-identical.
+- The route remains hidden only until the promoted source and binary reproduce
+  byte-for-byte in the hosted no-Docker workflow. Compact evidence is in
+  `evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json`.

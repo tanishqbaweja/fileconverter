@@ -163,12 +163,12 @@
       "wasmSha256": {
         "within-direct.wasm": "1ce7e9ed7e37c90e8122883ad56712a501c71b423bf37f3c0af2547c5294edc7",
         "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
-        "within-remux.wasm": "99fe298dbe5510b12446a80ddd07959d4c6451c5cda20ab4f01d9cc9bb1b62b5",
+        "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
         "within-vp9.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
         "within-webm-quality.wasm": "d86fe8608d2060350d9c4b443aafd91d0037a25655698daf8bf0538ca1ac6b02",
         "within-webm.wasm": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
       },
-      "evidence": "evidence/avi-to-flv-browser-2026-09-12.json",
+      "evidence": "evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json",
       "reason": "The shared wrapper was subsequently extended with independently reproduced bounded AVI-to-FLV stream discovery. IVF input behavior and each specialist module's configured feature surface remain unchanged."
     }
   },

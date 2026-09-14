@@ -4802,7 +4802,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
           profileId === "hevc-to-webm",
         singleThreadVideoCore: profileId === "hevc-to-webm-vp9",
         forceAsynchronousInput:
-          profileId === "ivf-to-webm" || profileId === "ivf-to-mkv",
+          profileId === "ivf-to-webm" ||
+          profileId === "ivf-to-mkv" ||
+          (message.destination.mode === "handle" &&
+            (profileId === "mkv-to-webm-av1" ||
+              profileId === "mp4-to-webm-av1")),
         remuxProfile:
           profileId === "mkv-to-mp3" ||
           profileId === "mp4-to-mp3" ||
