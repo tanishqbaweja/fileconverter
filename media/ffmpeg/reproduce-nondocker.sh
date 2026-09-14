@@ -217,7 +217,9 @@ verify_specialist_source_rewrites() {
   cp "${SCRIPT_DIR}/within_remux.c" "${verification_root}/"
   cp "${verification_root}/within_remux.c" \
     "${verification_root}/within_remux.current.c"
-  if restore_pre_theora_source "${verification_root}" &&
+  if patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" &&
+      restore_pre_theora_source "${verification_root}" &&
       printf '%s  %s\n' "${historical_general_source_sha256}" \
         "${verification_root}/within_remux.c" |
         sha256sum --check --strict &&
@@ -231,6 +233,8 @@ verify_specialist_source_rewrites() {
             "${verification_root}/within_remux.c" &&
           strip_current_general_core_only_profiles \
             "${verification_root}/within_remux.c" &&
+          patch --reverse --directory="${verification_root}" --strip=3 \
+            < "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" &&
           patch --reverse --directory="${verification_root}" --strip=3 \
             < "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" &&
           patch --reverse --directory="${verification_root}" --strip=3 \
@@ -305,6 +309,7 @@ cp "${SCRIPT_DIR}/patches/amr-bounded-packets.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-published-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/theora-source.patch" "${BUILD_ROOT}/"
@@ -379,6 +384,8 @@ if [[ "${requested_core}" == "all" ]]; then
   # historical reverse patches independent of new guarded source context.
   restore_pre_theora_source
   strip_general_core_only_profiles
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < mp4-webm-opus-priming-source.patch
   # Matroska attached-picture retention belongs only to the general remux core.
   # Remove it before rebuilding unchanged specialist cores.
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -396,6 +403,8 @@ if [[ "${requested_core}" == "all" ]]; then
   cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
   strip_current_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < mp4-webm-opus-priming-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < audio-options-source.patch
@@ -406,6 +415,8 @@ if [[ "${requested_core}" == "all" ]]; then
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
   strip_current_general_core_only_profiles
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < mp4-webm-opus-priming-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -419,6 +430,8 @@ elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-
   restore_pre_theora_source
   strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < mp4-webm-opus-priming-source.patch
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < matroska-artwork-source.patch
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
     < audio-options-source.patch
@@ -429,6 +442,8 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]];
   # dependency/configuration surface isolated and avoids compiling libtheora
   # at all for scoped legacy reproductions.
   cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < mp4-webm-opus-priming-source.patch
   if [[ "${requested_core}" == "all" ]]; then
     patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 \
       < avi-bounded-index.patch

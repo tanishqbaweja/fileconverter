@@ -80,6 +80,18 @@
     "decodesOrReencodesPayload": false,
     "publishedBinaryUpdated": false
   },
+  "candidateBuildAttempts": [
+    {
+      "runId": 34823154123,
+      "commit": "54a6c561b4db92ba4af9e06158cd7d43a7b91c43",
+      "scope": "within-remux-no-docker",
+      "result": "rejected-before-compilation",
+      "reason": "The specialist source-rewrite preflight correctly detected that the new general-core delta did not yet have a reversible source patch.",
+      "remediation": "Added mp4-webm-opus-priming-source.patch and reversed it for every historical specialist/direct reconstruction branch.",
+      "artifactCount": 0,
+      "hostedCleanupPassed": true
+    }
+  ],
   "requiredBeforePublication": [
     "exact no-Docker Wasm rebuild from the changed wrapper source",
     "production-browser exact compressed packet and decoded AV1/Opus validation",

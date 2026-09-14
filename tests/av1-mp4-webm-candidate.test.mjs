@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
@@ -73,6 +74,13 @@ test("candidate source keeps Opus priming and stress I/O bounded", () => {
     "utf8",
   );
   const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
+  const reproduction = readFileSync(
+    "media/ffmpeg/reproduce-nondocker.sh",
+    "utf8",
+  );
+  const sourcePatch = readFileSync(
+    "media/ffmpeg/patches/mp4-webm-opus-priming-source.patch",
+  );
   assert.match(wrapper, /av1_webm_output && codec_id == AV_CODEC_ID_OPUS/);
   assert.match(wrapper, /prefetched_packet_count < 4096/);
   assert.match(wrapper, /2 \* 1024 \* 1024 - prefetched_bytes/);
@@ -82,4 +90,9 @@ test("candidate source keeps Opus priming and stress I/O bounded", () => {
   assert.match(browser, /expectDecodedPcmMatch\(av1OpusMp4FixturePath/);
   assert.match(stress, /compatible-vp9-opus-128m\.mp4/);
   assert.match(cleanup, /av1-isobmff-webm-feasibility/);
+  assert.match(reproduction, /mp4-webm-opus-priming-source\.patch/);
+  assert.equal(
+    createHash("sha256").update(sourcePatch).digest("hex"),
+    "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+  );
 });

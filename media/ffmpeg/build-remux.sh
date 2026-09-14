@@ -130,6 +130,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
   "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
   "currentWrapperSourceSha256": "${CURRENT_WRAPPER_SOURCE_SHA256}",
   "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+  "mp4WebmOpusPrimingSourcePatchSha256": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
   "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
   "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
   "directSourcePatchSha256": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",

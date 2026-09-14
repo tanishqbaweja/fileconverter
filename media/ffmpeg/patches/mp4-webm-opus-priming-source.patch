@@ -1,0 +1,110 @@
+diff --git a/media/ffmpeg/within_remux.c b/media/ffmpeg/within_remux.c
+index ce6d26b..c155460 100644
+--- a/media/ffmpeg/within_remux.c
++++ b/media/ffmpeg/within_remux.c
+@@ -3856,44 +3856,56 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+     }
+   }
+ 
+-  const int mov_family_input =
+-      matroska_output && input_format->iformat && input_format->iformat->name &&
++  const int mov_family_audio_priming_output =
++      (matroska_output || av1_webm_output) && input_format->iformat &&
++      input_format->iformat->name &&
+       strstr(input_format->iformat->name, "mov") != NULL;
+-  if (mov_family_input) {
+-    int aac_streams_remaining = 0;
+-    int *aac_stream_seen =
+-        av_calloc(input_format->nb_streams, sizeof(*aac_stream_seen));
++  if (mov_family_audio_priming_output) {
++    int priming_streams_remaining = 0;
++    int *priming_stream_seen =
++        av_calloc(input_format->nb_streams, sizeof(*priming_stream_seen));
+     AVPacket *prefetch_packet = av_packet_alloc();
+-    if (!aac_stream_seen || !prefetch_packet) {
+-      av_free(aac_stream_seen);
++    if (!priming_stream_seen || !prefetch_packet) {
++      av_free(priming_stream_seen);
+       av_packet_free(&prefetch_packet);
+       result = AVERROR(ENOMEM);
+       goto cleanup;
+     }
+     for (unsigned int index = 0; index < input_format->nb_streams; index++) {
++      const enum AVCodecID codec_id =
++          input_format->streams[index]->codecpar->codec_id;
+       if (stream_map[index] >= 0 &&
+           input_format->streams[index]->codecpar->codec_type ==
+               AVMEDIA_TYPE_AUDIO &&
+-          input_format->streams[index]->codecpar->codec_id == AV_CODEC_ID_AAC) {
+-        aac_streams_remaining += 1;
++          ((matroska_output && codec_id == AV_CODEC_ID_AAC) ||
++           (av1_webm_output && codec_id == AV_CODEC_ID_OPUS))) {
++        priming_streams_remaining += 1;
+       }
+     }
+     int64_t prefetched_bytes = 0;
+-    while (aac_streams_remaining > 0 && prefetched_packet_count < 4096 &&
++    while (priming_streams_remaining > 0 && prefetched_packet_count < 4096 &&
+            prefetched_bytes <= 2 * 1024 * 1024) {
+       result = av_read_frame(input_format, prefetch_packet);
+       if (result < 0) {
+         break;
+       }
++      if (prefetch_packet->size < 0 ||
++          prefetch_packet->size > 2 * 1024 * 1024 - prefetched_bytes) {
++        av_packet_unref(prefetch_packet);
++        result = AVERROR(ENOBUFS);
++        break;
++      }
+       const int input_index = prefetch_packet->stream_index;
+       prefetched_bytes += prefetch_packet->size;
+       if (input_index >= 0 &&
+           input_index < (int)input_format->nb_streams &&
+           stream_map[input_index] >= 0) {
+         AVStream *input_stream = input_format->streams[input_index];
+-        if (!aac_stream_seen[input_index] &&
++        const enum AVCodecID codec_id = input_stream->codecpar->codec_id;
++        if (!priming_stream_seen[input_index] &&
+             input_stream->codecpar->codec_type == AVMEDIA_TYPE_AUDIO &&
+-            input_stream->codecpar->codec_id == AV_CODEC_ID_AAC) {
++            ((matroska_output && codec_id == AV_CODEC_ID_AAC) ||
++             (av1_webm_output && codec_id == AV_CODEC_ID_OPUS))) {
+           size_t side_data_size = 0;
+           const uint8_t *side_data = av_packet_get_side_data(
+               prefetch_packet, AV_PKT_DATA_SKIP_SAMPLES, &side_data_size);
+@@ -3905,8 +3917,8 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+                   ->codecpar->initial_padding = (int)skip_samples;
+             }
+           }
+-          aac_stream_seen[input_index] = 1;
+-          aac_streams_remaining -= 1;
++          priming_stream_seen[input_index] = 1;
++          priming_streams_remaining -= 1;
+         }
+         result = append_prefetched_packet(
+             &prefetched_packets, &prefetched_packet_count,
+@@ -3918,15 +3930,20 @@ int within_remux(int profile, int audio_bit_rate, int audio_sample_rate,
+       av_packet_unref(prefetch_packet);
+     }
+     av_packet_free(&prefetch_packet);
+-    av_free(aac_stream_seen);
++    av_free(priming_stream_seen);
+     if (result < 0 && result != AVERROR_EOF) {
+-      report_av_error("Matroska AAC priming inspection failed", result);
++      report_av_error(
++          av1_webm_output ? "WebM Opus priming inspection failed"
++                           : "Matroska AAC priming inspection failed",
++          result);
+       goto cleanup;
+     }
+-    if (aac_streams_remaining > 0) {
++    if (priming_streams_remaining > 0) {
+       within_message(
+           2,
+-          "Matroska AAC priming metadata was not found within the bounded input inspection window.");
++          av1_webm_output
++              ? "WebM Opus priming metadata was not found within the bounded input inspection window."
++              : "Matroska AAC priming metadata was not found within the bounded input inspection window.");
+       result = AVERROR_INVALIDDATA;
+       goto cleanup;
+     }

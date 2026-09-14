@@ -1341,6 +1341,12 @@ not the entire product specification.
   adverse-cleanup tests, three stress runs per required destination mode, and
   the unchanged complete-Chromium 250 MiB memory gate. Classic MOV AV1 remains
   excluded because the pinned FFmpeg muxer rejects AV1 outside MP4/AVIF.
+- Hosted no-Docker attempt 34823154123 stopped before compilation when the
+  source-rewrite preflight detected that the new general-core delta was not yet
+  reversible for historical specialist cores. It retained zero artifacts and
+  cleanup passed. The exact delta is now isolated in
+  `mp4-webm-opus-priming-source.patch` and reversed in every legacy rebuild
+  branch before a retry; this failure must not be mistaken for a codec result.
 - Compact measurements are retained in
   `evidence/av1-mp4-webm-native-feasibility-2026-09-14.json`; every disposable
   MP4, WebM, and failed zero-byte MOV trial was deleted afterward.
