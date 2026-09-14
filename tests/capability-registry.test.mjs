@@ -164,12 +164,28 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   }
 });
 
-test("registry has no unresolved pending profiles and keeps failed evidence hidden", () => {
+test("registry exposes only the exact in-flight candidate as pending and keeps failed evidence hidden", () => {
   assert.deepEqual(
     conversionProfiles
       .filter((profile) => profile.automatedTestStatus === "pending")
       .map((profile) => profile.id),
-    [],
+    ["mp4-to-webm-av1"],
+  );
+  const pending = conversionProfiles.find(
+    (profile) => profile.id === "mp4-to-webm-av1",
+  );
+  assert.ok(pending);
+  assert.equal(pending.public, false);
+  assert.equal(pending.maxTestedBytes, null);
+  assert.equal(
+    publicProfilesFor("mp4").some((profile) => profile.id === pending.id),
+    false,
+  );
+  assert.equal(
+    publicProfilesFor("mp4", true).some(
+      (profile) => profile.id === pending.id,
+    ),
+    true,
   );
   const failed = conversionProfiles.filter(
     (profile) => profile.automatedTestStatus === "failed",

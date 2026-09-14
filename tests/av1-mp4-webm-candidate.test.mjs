@@ -1,0 +1,85 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+import {
+  conversionProfiles,
+  publicProfilesFor,
+} from "../lib/capability-registry.ts";
+
+const evidenceName =
+  "evidence/av1-mp4-webm-native-feasibility-2026-09-14.json";
+const evidence = JSON.parse(readFileSync(evidenceName, "utf8"));
+
+test("AV1 MP4 to WebM stays hidden until browser acceptance is complete", () => {
+  const profile = conversionProfiles.find(
+    ({ id }) => id === "mp4-to-webm-av1",
+  );
+  assert.ok(profile);
+  assert.equal(profile.input, "mp4");
+  assert.equal(profile.output, "webm-av1");
+  assert.equal(profile.route, "stream-copy");
+  assert.equal(profile.public, false);
+  assert.equal(profile.automatedTestStatus, "pending");
+  assert.equal(profile.maxTestedBytes, null);
+  assert.equal(
+    publicProfilesFor("mp4").some(({ id }) => id === profile.id),
+    false,
+  );
+  assert.equal(
+    publicProfilesFor("mp4", true).some(({ id }) => id === profile.id),
+    true,
+  );
+});
+
+test("native feasibility records the exact accepted and rejected timing cases", () => {
+  assert.equal(evidence.candidateProfile, "mp4-to-webm-av1");
+  assert.equal(evidence.candidateStatus, "pending-browser-build-and-acceptance-gates");
+  const encoderOrigin = evidence.trials.find(
+    ({ name }) => name === "encoder-origin-av1-opus-mp4-to-live-webm",
+  );
+  const inherited = evidence.trials.find(
+    ({ name }) => name === "millisecond-quantized-cross-container-origin-mp4",
+  );
+  const mov = evidence.trials.find(
+    ({ name }) => name === "av1-opus-mov-output",
+  );
+  assert.ok(encoderOrigin);
+  assert.ok(inherited);
+  assert.ok(mov);
+  assert.equal(encoderOrigin.input.decodedVideoSha256, encoderOrigin.output.decodedVideoSha256);
+  assert.equal(encoderOrigin.input.decodedAudioSha256, encoderOrigin.output.decodedAudioSha256);
+  assert.equal(encoderOrigin.input.videoPacketSha256, encoderOrigin.output.videoPacketSha256);
+  assert.equal(encoderOrigin.input.audioPacketSha256, encoderOrigin.output.audioPacketSha256);
+  assert.equal(inherited.input.videoPacketSha256, inherited.stockOutput.videoPacketSha256);
+  assert.equal(inherited.input.audioPacketSha256, inherited.stockOutput.audioPacketSha256);
+  assert.equal(inherited.input.firstOpusPacketSkipSamples, 336);
+  assert.equal(inherited.stockOutput.firstOpusPacketSkipSamples, 312);
+  assert.equal(
+    inherited.stockOutput.decodedAudioSamples - inherited.input.decodedAudioSamples,
+    24,
+  );
+  assert.equal(mov.result, "intentionally-rejected-by-ffmpeg");
+  assert.equal(mov.retainedOutputBytes, 0);
+  assert.equal(evidence.cleanup.disposableConvertedCopiesRetained, 0);
+});
+
+test("candidate source keeps Opus priming and stress I/O bounded", () => {
+  const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
+  const worker = readFileSync("workers/conversion.worker.ts", "utf8");
+  const browser = readFileSync("tests/browser/media-remux.spec.ts", "utf8");
+  const stress = readFileSync(
+    "scripts/generate-compatible-webm-stress-fixture.mjs",
+    "utf8",
+  );
+  const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
+  assert.match(wrapper, /av1_webm_output && codec_id == AV_CODEC_ID_OPUS/);
+  assert.match(wrapper, /prefetched_packet_count < 4096/);
+  assert.match(wrapper, /2 \* 1024 \* 1024 - prefetched_bytes/);
+  assert.match(worker, /mp4-to-webm-av1/);
+  assert.match(browser, /expectCompressedVideoPacketMatch\(av1OpusMp4FixturePath/);
+  assert.match(browser, /expectCompressedAudioPacketMatch\(av1OpusMp4FixturePath/);
+  assert.match(browser, /expectDecodedPcmMatch\(av1OpusMp4FixturePath/);
+  assert.match(stress, /compatible-vp9-opus-128m\.mp4/);
+  assert.match(cleanup, /av1-isobmff-webm-feasibility/);
+});

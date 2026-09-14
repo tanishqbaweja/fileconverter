@@ -1619,13 +1619,17 @@ function containerM4vProfile(
 
 const av1WebmEvidence = {
   "mkv-to-webm-av1": 222_942_211,
+  "mp4-to-webm-av1": null,
 } as const satisfies Record<string, number | null>;
 
-function av1WebmProfile(): ConversionProfile {
-  const evidence = av1WebmEvidence["mkv-to-webm-av1"];
+function av1WebmProfile(
+  input: "mkv" | "mp4",
+): ConversionProfile {
+  const id = `${input}-to-webm-av1` as keyof typeof av1WebmEvidence;
+  const evidence = av1WebmEvidence[id];
   return {
-    id: "mkv-to-webm-av1",
-    input: "mkv",
+    id,
+    input,
     output: "webm-av1",
     engine: "ffmpeg-remux",
     route: "stream-copy",
@@ -1641,12 +1645,17 @@ function av1WebmProfile(): ConversionProfile {
       "The first non-attached video stream must be AV1, VP8, or VP9. All compatible WebM video streams and Opus or Vorbis audio streams are copied without re-encoding.",
       "Incompatible video or audio, subtitles, attachments, data streams, and chapters are explicitly excluded with warnings.",
       "Compatible stream dispositions, language tags, codec descriptors, and general metadata are copied where WebM can represent them.",
+      ...(input === "mp4"
+        ? [
+            "MP4 Opus priming is read from the first compressed audio packet within a fixed 2 MiB or 4,096-packet prefetch ceiling and represented as WebM CodecDelay; audio payloads are not decoded or re-encoded.",
+          ]
+        : []),
       "The bounded live-WebM layout omits a duration field and cue index so muxer memory cannot grow with file duration; players can still decode sequentially but may need to scan before seeking accurately.",
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
     automatedTestStatus: evidence === null ? "pending" : "passed",
-    public: true,
+    public: evidence !== null,
   };
 }
 
@@ -6182,7 +6191,8 @@ export const conversionProfiles: readonly ConversionProfile[] = (
     containerM4vProfile("mp4"),
     containerM4vProfile("mov"),
     containerM4vProfile("avi"),
-    av1WebmProfile(),
+    av1WebmProfile("mkv"),
+    av1WebmProfile("mp4"),
     ivfExtractionProfile("mkv"),
     ivfExtractionProfile("webm"),
     ivfInputProfile("webm-av1"),

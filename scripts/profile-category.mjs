@@ -652,6 +652,7 @@ const categories = {
     generator: "scripts/generate-compatible-webm-stress-fixture.mjs",
     profiles: [
       ["mkv-to-webm-av1", "fixtures/stress/media/compatible-vp9-opus-128m.mkv"],
+      ["mp4-to-webm-av1", "fixtures/stress/media/compatible-vp9-opus-128m.mp4"],
     ],
   },
   ivf: {

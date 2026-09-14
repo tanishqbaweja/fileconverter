@@ -1324,3 +1324,23 @@ not the entire product specification.
   for the new panel; ESLint, TypeScript, unit 42/42, both evidence audits, and
   artifact cleanup passed. Detailed pre-conversion media stream presentation and
   user-selectable conversion controls remain open.
+
+### 2026-09-14 — AV1/Opus MP4-to-WebM candidate
+
+- Native feasibility proved genuine AV1/Opus MP4-to-WebM packet copy in
+  0.048661-0.064152 seconds with exact compressed video/audio packets and exact
+  decoded output for an encoder-origin MP4. This is fixture/validator evidence,
+  not production-browser conversion evidence.
+- A harder MP4 inherited a 336-sample Opus skip from millisecond-quantized
+  Matroska timing. Stock FFmpeg/WebM reduced it to 312 samples and decoded 24
+  extra samples, so that uncorrected path was rejected rather than published.
+  `media/ffmpeg/within_remux.c` now reuses the fixed 2 MiB/4,096-packet bounded
+  priming prefetch for Opus and records the packet skip before writing WebM.
+- `mp4-to-webm-av1` is wired as a non-public pending route. It still requires an
+  exact no-Docker Wasm rebuild, focused production-browser packet/decode and
+  adverse-cleanup tests, three stress runs per required destination mode, and
+  the unchanged complete-Chromium 250 MiB memory gate. Classic MOV AV1 remains
+  excluded because the pinned FFmpeg muxer rejects AV1 outside MP4/AVIF.
+- Compact measurements are retained in
+  `evidence/av1-mp4-webm-native-feasibility-2026-09-14.json`; every disposable
+  MP4, WebM, and failed zero-byte MOV trial was deleted afterward.

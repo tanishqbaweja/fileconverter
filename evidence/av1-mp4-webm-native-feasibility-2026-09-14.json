@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-09-14",
+  "scope": "Native fixture-generation and independent feasibility validation only; this is not production-browser conversion evidence.",
+  "ffmpeg": "N-122712-g7e3781e3ca-20260211",
+  "candidateProfile": "mp4-to-webm-av1",
+  "candidateStatus": "pending-browser-build-and-acceptance-gates",
+  "trials": [
+    {
+      "name": "encoder-origin-av1-opus-mp4-to-live-webm",
+      "input": {
+        "bytes": 89080,
+        "sha256": "50a39a30b386769a76f0087ece0b2369b8f14c374044b51f67121e215c0b3420",
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "firstOpusPacketPts": -312,
+        "firstOpusPacketSkipSamples": 312,
+        "decodedAudioSamples": 96648,
+        "decodedVideoSha256": "aa7d167077553074015eb589d02d5007928de53f6411dd93e1a3edccf41f29ab",
+        "decodedAudioSha256": "57590b4f1d915d84e7407f776621f6b2643b5a0479067022399b9287c84a257c",
+        "videoPacketSha256": "0218c10e6a16756e95872c4b8addae6f8d7d7c549f3ae834ae97f5e54e21d7fc",
+        "audioPacketSha256": "0a14852c06bfb27ff11445f8468aac052530dffa7e95353ee301e8a9e7f1e6f1"
+      },
+      "output": {
+        "bytes": 88389,
+        "sha256": "f8db7cbe524457040febaf6d2b551616f0758e9c53ab38db4d1296a103e454f0",
+        "format": "matroska,webm",
+        "firstOpusPacketPts": -7,
+        "firstOpusPacketSkipSamples": 312,
+        "decodedAudioSamples": 96648,
+        "decodedVideoSha256": "aa7d167077553074015eb589d02d5007928de53f6411dd93e1a3edccf41f29ab",
+        "decodedAudioSha256": "57590b4f1d915d84e7407f776621f6b2643b5a0479067022399b9287c84a257c",
+        "videoPacketSha256": "0218c10e6a16756e95872c4b8addae6f8d7d7c549f3ae834ae97f5e54e21d7fc",
+        "audioPacketSha256": "0a14852c06bfb27ff11445f8468aac052530dffa7e95353ee301e8a9e7f1e6f1"
+      },
+      "elapsedSeconds": 0.064152,
+      "result": "passed-native-feasibility"
+    },
+    {
+      "name": "millisecond-quantized-cross-container-origin-mp4",
+      "input": {
+        "bytes": 1669943,
+        "sha256": "4e31479c6ea29fed4e1d8b56c88e624fe01d8d5b7edcea37f0ce0a03c9162c5f",
+        "format": "mov,mp4,m4a,3gp,3g2,mj2",
+        "firstOpusPacketPts": -336,
+        "firstOpusPacketSkipSamples": 336,
+        "decodedAudioSamples": 192624,
+        "decodedVideoSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e",
+        "decodedAudioSha256": "fb1b22acfac9cdf05cc0205f9e44612eea80344071941da929e2c059652c7bd7",
+        "videoPacketSha256": "de85c63d6a67e42912d57212e4b93e4e264eb1d521c4de9650819b1b2f24cc0c",
+        "audioPacketSha256": "a08ea47aa3902858ac9841ee754828aa69241a9b9f7f0f4e04238453423f50e6"
+      },
+      "stockOutput": {
+        "bytes": 1669208,
+        "sha256": "07cff77e43a36885edde81f37a55a61c6ca0e96f20cf7273073be6212f40f1ac",
+        "format": "matroska,webm",
+        "firstOpusPacketPts": -7,
+        "firstOpusPacketSkipSamples": 312,
+        "decodedAudioSamples": 192648,
+        "decodedVideoSha256": "8c7400be9d700b6a5fe5291236a313b991c6177d473e4bfd2e9ad6e5f722248e",
+        "decodedAudioSha256": "bf02b51815c0053239fbed52f2f8524dd353c7189deec9d8e3ff7b06ff27b5a4",
+        "videoPacketSha256": "de85c63d6a67e42912d57212e4b93e4e264eb1d521c4de9650819b1b2f24cc0c",
+        "audioPacketSha256": "a08ea47aa3902858ac9841ee754828aa69241a9b9f7f0f4e04238453423f50e6"
+      },
+      "elapsedSeconds": 0.048661,
+      "result": "rejected-stock-remux-lost-24-opus-priming-samples"
+    },
+    {
+      "name": "av1-opus-mov-output",
+      "result": "intentionally-rejected-by-ffmpeg",
+      "exitCode": 1,
+      "diagnostic": "AV1 is supported by FFmpeg's ISO-BMFF muxer in MP4 and AVIF, not classic MOV.",
+      "retainedOutputBytes": 0
+    }
+  ],
+  "candidateFix": {
+    "source": "media/ffmpeg/within_remux.c",
+    "method": "For MOV-family input to profile 17, prefetch until the first mapped Opus packet, copy AV_PKT_DATA_SKIP_SAMPLES into output codecpar initial_padding before the WebM header, then replay every prefetched packet.",
+    "maximumPrefetchBytes": 2097152,
+    "maximumPrefetchPackets": 4096,
+    "decodesOrReencodesPayload": false,
+    "publishedBinaryUpdated": false
+  },
+  "requiredBeforePublication": [
+    "exact no-Docker Wasm rebuild from the changed wrapper source",
+    "production-browser exact compressed packet and decoded AV1/Opus validation",
+    "success, cancellation, injected write failure, and cleanup recovery",
+    "three repeatable stress runs for each required destination mode",
+    "complete Chromium process-tree incremental private memory no greater than 250 MiB",
+    "bounded read, write, queue, pending-operation, and fixed-Wasm metrics"
+  ],
+  "cleanup": {
+    "directory": "work/av1-isobmff-webm-feasibility",
+    "disposableConvertedCopiesRetained": 0,
+    "protectedFixtureTouched": false
+  }
+}

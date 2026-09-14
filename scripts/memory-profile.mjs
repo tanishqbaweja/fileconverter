@@ -170,6 +170,10 @@ const COMPATIBLE_AVI_PROFILES = [
 ];
 const IVF_PROFILES = ["mkv-to-ivf", "webm-to-ivf"];
 const IVF_INPUT_PROFILES = ["ivf-to-webm", "ivf-to-mkv"];
+const COMPATIBLE_WEBM_PROFILES = [
+  "mkv-to-webm-av1",
+  "mp4-to-webm-av1",
+];
 const isIvfProfile =
   IVF_PROFILES.includes(profileId) || IVF_INPUT_PROFILES.includes(profileId);
 const isVideoOptionsProfile =
@@ -529,7 +533,7 @@ if (
     ...COMPATIBLE_AVI_PROFILES,
     ...IVF_PROFILES,
     ...IVF_INPUT_PROFILES,
-    "mkv-to-webm-av1",
+    ...COMPATIBLE_WEBM_PROFILES,
     "mkv-to-mp3",
     "mp4-to-mp3",
     "mov-to-mp3",
@@ -702,7 +706,7 @@ const isMediaProfile =
   profileId === "mkv-to-ogv" ||
   COMPATIBLE_AVI_PROFILES.includes(profileId) ||
   isIvfProfile ||
-  profileId === "mkv-to-webm-av1" ||
+  COMPATIBLE_WEBM_PROFILES.includes(profileId) ||
   profileId === "mkv-to-mp3" ||
   profileId === "mp4-to-mp3" ||
   profileId === "mov-to-mp3" ||
@@ -1822,7 +1826,7 @@ async function validateMediaOutput(
   const compatibleAviCopy = COMPATIBLE_AVI_PROFILES.includes(route);
   const ivfOutput = IVF_PROFILES.includes(route);
   const ivfInputCopy = IVF_INPUT_PROFILES.includes(route);
-  const compatibleWebmCopy = route === "mkv-to-webm-av1";
+  const compatibleWebmCopy = COMPATIBLE_WEBM_PROFILES.includes(route);
   const matroskaCopy = [
     "mp4-to-mkv",
     "mov-to-mkv",

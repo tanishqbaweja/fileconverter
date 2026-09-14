@@ -12,10 +12,21 @@ const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
 const fixturePath = path.join(fixtureRoot, "compatible-vp9-opus-128m.mkv");
 const manifestPath = `${fixturePath}.json`;
+const mp4FixturePath = path.join(
+  fixtureRoot,
+  "compatible-vp9-opus-128m.mp4",
+);
+const mp4ManifestPath = `${mp4FixturePath}.json`;
 const retainedManifest = await readFile(manifestPath, "utf8").catch((error) => {
   if (error?.code === "ENOENT") return null;
   throw error;
 });
+const retainedMp4Manifest = await readFile(mp4ManifestPath, "utf8").catch(
+  (error) => {
+    if (error?.code === "ENOENT") return null;
+    throw error;
+  },
+);
 const minimumBytes = 128 * 1024 * 1024;
 const durationSeconds = 60;
 const frameRate = 24;
@@ -38,10 +49,26 @@ try {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-hide_banner", "-loglevel", "error", "-nostdin", "-y",
+      "-i", fixturePath, "-map", "0:v:0", "-map", "0:a:0",
+      "-c", "copy", "-strict", "experimental", "-movflags", "+faststart",
+      "-map_metadata", "0", "-f", "mp4", mp4FixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
+  );
   const fixtureStat = await stat(fixturePath);
+  const mp4FixtureStat = await stat(mp4FixturePath);
   if (fixtureStat.size < minimumBytes) {
     throw new Error(
       `Generated VP9 fixture is ${fixtureStat.size} bytes; expected at least ${minimumBytes}.`,
+    );
+  }
+  if (mp4FixtureStat.size < minimumBytes) {
+    throw new Error(
+      `Generated MP4 VP9 fixture is ${mp4FixtureStat.size} bytes; expected at least ${minimumBytes}.`,
     );
   }
   const [probe, decodedVideoSha256, decodedAudioSha256, audioPacketSha256] =
@@ -64,6 +91,31 @@ try {
   ) {
     throw new Error("Generated stress fixture is not the expected VP9/Opus Matroska source.");
   }
+  const [mp4Probe, mp4DecodedVideoSha256, mp4DecodedAudioSha256, mp4AudioPacketSha256] =
+    await Promise.all([
+      probeFile(mp4FixturePath),
+      decodedHash(mp4FixturePath, "0:v:0"),
+      decodedHash(mp4FixturePath, "0:a:0"),
+      packetHash(mp4FixturePath, "0:a:0"),
+    ]);
+  const mp4Video = mp4Probe.streams.find(
+    (stream) => stream.codec_type === "video",
+  );
+  const mp4Audio = mp4Probe.streams.find(
+    (stream) => stream.codec_type === "audio",
+  );
+  const mp4DecodedVideoFrames = Number(mp4Video?.nb_read_frames);
+  if (
+    !String(mp4Probe.format?.format_name).split(",").includes("mp4") ||
+    mp4Video?.codec_name !== "vp9" ||
+    mp4Video?.width !== 1920 ||
+    mp4Video?.height !== 1080 ||
+    mp4DecodedVideoFrames !== durationSeconds * frameRate ||
+    mp4Audio?.codec_name !== "opus" ||
+    mp4Audio?.tags?.language !== "eng"
+  ) {
+    throw new Error("Generated MP4 stress fixture is not the expected VP9/Opus source.");
+  }
   await writeFile(
     manifestPath,
     `${JSON.stringify({
@@ -83,15 +135,41 @@ try {
     }, null, 2)}\n`,
     "utf8",
   );
+  await writeFile(
+    mp4ManifestPath,
+    `${JSON.stringify({
+      generatedBy: "scripts/generate-compatible-webm-stress-fixture.mjs",
+      sourceContainer: "mp4",
+      durationSeconds,
+      frameRate,
+      decodedVideoFrames: mp4DecodedVideoFrames,
+      decodedVideoDurationSeconds: mp4DecodedVideoFrames / frameRate,
+      decodedVideoSha256: mp4DecodedVideoSha256,
+      decodedAudioSha256: mp4DecodedAudioSha256,
+      audioPacketSha256: mp4AudioPacketSha256,
+      audioPacketCount: Number(mp4Audio?.nb_read_packets),
+      bytes: mp4FixtureStat.size,
+      sha256: await hashFile(mp4FixturePath),
+      generationSeconds: Number(((performance.now() - startedAt) / 1000).toFixed(2)),
+      probe: mp4Probe,
+    }, null, 2)}\n`,
+    "utf8",
+  );
   process.stdout.write(
-    `${fixturePath}\nGenerated VP9/Opus stress source in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
+    `${fixturePath}\n${mp4FixturePath}\nGenerated Matroska and MP4 VP9/Opus stress sources in ${((performance.now() - startedAt) / 1000).toFixed(2)} seconds.\n`,
   );
 } catch (error) {
   await rm(fixturePath, { force: true });
+  await rm(mp4FixturePath, { force: true });
   if (retainedManifest === null) {
     await rm(manifestPath, { force: true });
   } else {
     await writeFile(manifestPath, retainedManifest, "utf8");
+  }
+  if (retainedMp4Manifest === null) {
+    await rm(mp4ManifestPath, { force: true });
+  } else {
+    await writeFile(mp4ManifestPath, retainedMp4Manifest, "utf8");
   }
   throw error;
 }

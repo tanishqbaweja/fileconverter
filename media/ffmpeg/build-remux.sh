@@ -181,7 +181,7 @@ if (!manifest.includes(ivfMarker)) {
 }
 manifest = manifest.replace(
   ivfMarker,
-  '"mkv-to-webm-av1","mkv-to-ivf","webm-to-ivf","ivf-to-webm","ivf-to-mkv","mkv-to-mp3"',
+  '"mkv-to-webm-av1","mp4-to-webm-av1","mkv-to-ivf","webm-to-ivf","ivf-to-webm","ivf-to-mkv","mkv-to-mp3"',
 );
 const aviThreeGpMarker = '"flv-to-3gp","mkv-to-mov"';
 if (!manifest.includes(aviThreeGpMarker)) {

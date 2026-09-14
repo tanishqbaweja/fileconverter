@@ -245,6 +245,10 @@ const webmOutputPath = path.join(outputRoot, "reencode-output.webm");
 const ogvWebmOutputPath = path.join(outputRoot, "ogv-reencode-output.webm");
 const vp9WebmOutputPath = path.join(outputRoot, "vp9-reencode-output.webm");
 const av1WebmCopyOutputPath = path.join(outputRoot, "av1-copy-output.webm");
+const av1Mp4WebmCopyOutputPath = path.join(
+  outputRoot,
+  "av1-mp4-copy-output.webm",
+);
 const ivfExtractionOutputPaths = {
   av1: path.join(outputRoot, "av1-extract-output.ivf"),
   vp8: path.join(outputRoot, "vp8-extract-output.ivf"),
@@ -637,6 +641,11 @@ const av1OpusFixturePath = path.join(
   "fixtures",
   "media",
   "av1-opus-source.mkv",
+);
+const av1OpusMp4FixturePath = path.join(
+  projectRoot,
+  "work",
+  "av1-opus-source.mp4",
 );
 const vp8OpusFixturePath = path.join(
   projectRoot,
@@ -1431,6 +1440,7 @@ test.beforeAll(async () => {
   assertProjectLocal(ogvWebmOutputPath);
   assertProjectLocal(vp9WebmOutputPath);
   assertProjectLocal(av1WebmCopyOutputPath);
+  assertProjectLocal(av1Mp4WebmCopyOutputPath);
   for (const outputPath of Object.values(ivfExtractionOutputPaths)) {
     assertProjectLocal(outputPath);
   }
@@ -1578,6 +1588,7 @@ test.beforeAll(async () => {
   assertProjectLocal(videoArtworkFixturePath);
   assertProjectLocal(av1OpusWebmFixturePath);
   assertProjectLocal(av1VorbisWebmFixturePath);
+  assertProjectLocal(av1OpusMp4FixturePath);
   assertProjectLocal(ogvCopyFixturePath);
   assertProjectLocal(ogvCopyOutputPath);
   assertProjectLocal(aviCopyFixturePath);
@@ -1611,6 +1622,7 @@ test.beforeAll(async () => {
   await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(av1OpusMp4FixturePath, { force: true });
   await rm(ogvCopyFixturePath, { force: true });
   await rm(ogvCopyOutputPath, { force: true });
   await rm(aviCopyFixturePath, { force: true });
@@ -1885,6 +1897,34 @@ test.beforeAll(async () => {
     "0",
   ];
   await Promise.all([
+    execFileAsync(
+      "ffmpeg",
+      [
+        "-hide_banner",
+        "-loglevel",
+        "error",
+        "-nostdin",
+        "-y",
+        "-i",
+        av1OpusFixturePath,
+        "-map",
+        "0:v:0",
+        "-map",
+        "0:a:0",
+        "-c",
+        "copy",
+        "-strict",
+        "experimental",
+        "-movflags",
+        "+faststart",
+        "-map_metadata",
+        "0",
+        "-f",
+        "mp4",
+        av1OpusMp4FixturePath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    ),
     execFileAsync(
       "ffmpeg",
       [
@@ -2753,6 +2793,7 @@ test.afterAll(async () => {
   await rm(ogvWebmOutputPath, { force: true });
   await rm(vp9WebmOutputPath, { force: true });
   await rm(av1WebmCopyOutputPath, { force: true });
+  await rm(av1Mp4WebmCopyOutputPath, { force: true });
   for (const outputPath of Object.values(ivfExtractionOutputPaths)) {
     await rm(outputPath, { force: true });
   }
@@ -2845,6 +2886,7 @@ test.afterAll(async () => {
   await rm(videoArtworkFixturePath, { force: true });
   await rm(av1OpusWebmFixturePath, { force: true });
   await rm(av1VorbisWebmFixturePath, { force: true });
+  await rm(av1OpusMp4FixturePath, { force: true });
   await rm(ogvCopyFixturePath, { force: true });
   await rm(ogvCopyOutputPath, { force: true });
   await rm(aviCopyFixturePath, { force: true });
@@ -3003,6 +3045,7 @@ async function runMediaRoute(
     | "mov-to-m4v"
     | "avi-to-m4v"
     | "mkv-to-webm-av1"
+    | "mp4-to-webm-av1"
     | "mkv-to-ivf"
     | "webm-to-ivf"
     | "mkv-to-mp3"
@@ -6129,6 +6172,35 @@ test("browser FFmpeg losslessly copies AV1 and Opus from Matroska to bounded liv
         expect(probe.chapters ?? []).toEqual([]);
         await expectDecodedVideoMatch(av1OpusFixturePath, outputPath);
         await expectDecodedPcmMatch(av1OpusFixturePath, outputPath);
+      },
+    },
+  );
+});
+
+test("browser FFmpeg losslessly copies AV1 and primed Opus from MP4 to bounded live WebM", async () => {
+  await runMediaRoute(
+    "mp4-to-webm-av1",
+    av1Mp4WebmCopyOutputPath,
+    ["av1", "opus"],
+    100_000,
+    av1OpusMp4FixturePath,
+    {
+      expectedWarningFragments: [],
+      expectedDurationSeconds: 4,
+      validate: async (probe, outputPath) => {
+        const video = probe.streams.find(
+          (stream) => stream.codec_type === "video",
+        );
+        const audio = probe.streams.find(
+          (stream) => stream.codec_type === "audio",
+        );
+        expect(video?.nb_read_frames).toBe("96");
+        expect(audio?.tags?.language).toBe("eng");
+        expect(probe.chapters ?? []).toEqual([]);
+        await expectCompressedVideoPacketMatch(av1OpusMp4FixturePath, outputPath);
+        await expectCompressedAudioPacketMatch(av1OpusMp4FixturePath, outputPath);
+        await expectDecodedVideoMatch(av1OpusMp4FixturePath, outputPath);
+        await expectDecodedPcmMatch(av1OpusMp4FixturePath, outputPath);
       },
     },
   );
