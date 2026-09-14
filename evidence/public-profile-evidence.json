@@ -4432,6 +4432,24 @@
       }
     },
     {
+      "profileId": "mp4-to-webm-av1",
+      "maxTestedBytes": 170433726,
+      "repeatableEvidence": {
+        "report": "2026-09-14T09-13-35-015Z-mp4-to-webm-av1-direct-handle-stress.json",
+        "reportSha256": "ec86775e3ea7719b16dbd5a1db0ec168a06ccaeabfa274cd0e08dabde24634ee",
+        "runs": 3,
+        "sourceBytes": 170433726,
+        "incrementalPrivateMiB": 219.0625
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-14T09-13-35-015Z-mp4-to-webm-av1-direct-handle-stress.json",
+        "reportSha256": "ec86775e3ea7719b16dbd5a1db0ec168a06ccaeabfa274cd0e08dabde24634ee",
+        "runs": 3,
+        "sourceBytes": 170433726,
+        "incrementalPrivateMiB": 219.0625
+      }
+    },
+    {
       "profileId": "mp4-to-webm-vp9",
       "maxTestedBytes": 147136625,
       "repeatableEvidence": {

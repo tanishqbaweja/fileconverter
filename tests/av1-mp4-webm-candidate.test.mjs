@@ -15,7 +15,7 @@ const browserEvidenceName =
   "evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json";
 const browserEvidence = JSON.parse(readFileSync(browserEvidenceName, "utf8"));
 
-test("AV1 MP4 to WebM stays hidden until exact published reproduction is complete", () => {
+test("AV1 MP4 to WebM is public after exact published reproduction", () => {
   const profile = conversionProfiles.find(
     ({ id }) => id === "mp4-to-webm-av1",
   );
@@ -23,12 +23,12 @@ test("AV1 MP4 to WebM stays hidden until exact published reproduction is complet
   assert.equal(profile.input, "mp4");
   assert.equal(profile.output, "webm-av1");
   assert.equal(profile.route, "stream-copy");
-  assert.equal(profile.public, false);
-  assert.equal(profile.automatedTestStatus, "pending");
-  assert.equal(profile.maxTestedBytes, null);
+  assert.equal(profile.public, true);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 170_433_726);
   assert.equal(
     publicProfilesFor("mp4").some(({ id }) => id === profile.id),
-    false,
+    true,
   );
   assert.equal(
     publicProfilesFor("mp4", true).some(({ id }) => id === profile.id),
@@ -40,9 +40,18 @@ test("production-browser acceptance covers both destination modes and rejected o
   assert.equal(browserEvidence.profile.id, "mp4-to-webm-av1");
   assert.equal(
     browserEvidence.status,
-    "browser-accepted-awaiting-exact-nondocker-reproduction",
+    "accepted-current-public-profile",
   );
   assert.equal(browserEvidence.dockerUsed, false);
+  assert.equal(browserEvidence.engineBuild.exactPublishedReproductionRun, 34899740113);
+  assert.equal(
+    browserEvidence.engineBuild.exactPublishedReproductionCommit,
+    "0c8bc78f6242b87ae3ba73ddfd97d4621e4d97fe",
+  );
+  assert.equal(browserEvidence.engineBuild.exactPublishedReproductionResult, "success");
+  assert.equal(browserEvidence.engineBuild.mismatchArtifactUploadSkipped, true);
+  assert.equal(browserEvidence.engineBuild.retainedArtifacts, 0);
+  assert.equal(browserEvidence.engineBuild.candidateArtifactDeleted, true);
   assert.equal(browserEvidence.smallProductionBrowserValidation.result, "3 passed");
   assert.equal(browserEvidence.stressValidation.passed, true);
   assert.equal(browserEvidence.stressValidation.destinationModes.length, 2);
@@ -62,6 +71,8 @@ test("production-browser acceptance covers both destination modes and rejected o
   assert.equal(browserEvidence.stressValidation.maxPendingOperations, 1);
   assert.equal(browserEvidence.stressValidation.wasmMemoryBytes, 32 * 1024 * 1024);
   assert.equal(browserEvidence.optimizationAudit.rejected.length, 2);
+  assert.equal(browserEvidence.cleanup.rawStressReportFilesRetained, 0);
+  assert.equal(browserEvidence.cleanup.remoteCandidateArtifactsRetained, 0);
   assert.equal(
     browserEvidence.optimizationAudit.accepted.name,
     "direct-route reusable asynchronous BYOB input",
@@ -72,7 +83,7 @@ test("native feasibility records the exact accepted and rejected timing cases", 
   assert.equal(evidence.candidateProfile, "mp4-to-webm-av1");
   assert.equal(
     evidence.candidateStatus,
-    "browser-accepted-awaiting-exact-nondocker-reproduction",
+    "accepted-current-public-profile",
   );
   const encoderOrigin = evidence.trials.find(
     ({ name }) => name === "encoder-origin-av1-opus-mp4-to-live-webm",

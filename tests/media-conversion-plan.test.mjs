@@ -775,6 +775,6 @@ test("automatic selection inventories every current copy-plus-encode destination
       )
       .map(([key]) => key)
       .sort(),
-    ["mkv:mp4", "mkv:webm"],
+    ["mkv:mp4", "mkv:webm", "mp4:webm"],
   );
 });

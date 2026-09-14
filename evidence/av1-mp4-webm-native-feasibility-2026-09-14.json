@@ -4,7 +4,7 @@
   "scope": "Native fixture-generation and independent feasibility validation only; this is not production-browser conversion evidence.",
   "ffmpeg": "N-122712-g7e3781e3ca-20260211",
   "candidateProfile": "mp4-to-webm-av1",
-  "candidateStatus": "browser-accepted-awaiting-exact-nondocker-reproduction",
+  "candidateStatus": "accepted-current-public-profile",
   "trials": [
     {
       "name": "encoder-origin-av1-opus-mp4-to-live-webm",
@@ -99,6 +99,16 @@
       "reason": "The reversible source preflight passed and the rebuilt candidate differed only in the manifest and within-remux.wasm; JavaScript glue and licenses stayed byte-exact.",
       "wasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
       "artifactId": 10338954719,
+      "hostedCleanupPassed": true
+    },
+    {
+      "runId": 34899740113,
+      "commit": "0c8bc78f6242b87ae3ba73ddfd97d4621e4d97fe",
+      "scope": "within-remux-no-docker",
+      "result": "exact-published-reproduction-passed",
+      "reason": "The pushed published manifest, JavaScript glue, Wasm, and licenses matched the clean hosted rebuild byte-for-byte.",
+      "artifactCount": 0,
+      "mismatchArtifactUploadSkipped": true,
       "hostedCleanupPassed": true
     }
   ],

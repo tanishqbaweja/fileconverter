@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "recordedAt": "2026-09-15T00:00:00+05:30",
   "requirements": ["P-08", "M-04"],
-  "status": "browser-accepted-awaiting-exact-nondocker-reproduction",
+  "status": "accepted-current-public-profile",
   "dockerUsed": false,
   "scope": "Add a bounded packet-copy route from AV1, VP8, or VP9 plus Opus or Vorbis in MP4 to live WebM, including exact preservation of source-specific Opus priming.",
   "profile": {
@@ -16,7 +16,7 @@
     "maximumTestedSourceBytes": 170433726
   },
   "engineBuild": {
-    "workflow": ".github/workflows/ffmpeg-nondocker-repro.yml",
+    "workflow": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
     "correctedCandidateRun": 34823637056,
     "candidateCommit": "c0b6ef0dfc7a46ad1a64b798d1a111d6a9f39f48",
     "elapsed": "6m10s",
@@ -32,8 +32,14 @@
     "candidateWasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
     "candidateArtifactId": 10338954719,
     "candidateArtifactDigest": "2c0ad647e3c25372a8e9ad06f9b8e365e9625a574b21b0d83ed49182bd418e06",
-    "exactPublishedReproductionRun": null,
-    "exactPublishedReproductionResult": "pending"
+    "candidateArtifactDeleted": true,
+    "exactPublishedReproductionRun": 34899740113,
+    "exactPublishedReproductionCommit": "0c8bc78f6242b87ae3ba73ddfd97d4621e4d97fe",
+    "exactPublishedReproductionElapsed": "5m10s",
+    "exactPublishedReproductionResult": "success",
+    "exactPublishedComparison": "Exact non-Docker FFmpeg artifact comparison passed.",
+    "mismatchArtifactUploadSkipped": true,
+    "retainedArtifacts": 0
   },
   "smallProductionBrowserValidation": {
     "browser": "Google Chrome 152.0.7977.83",
@@ -132,6 +138,9 @@
     "convertedOutputsDeleted": true,
     "browserProfilesDeleted": true,
     "localCandidateDownloadDeleted": true,
+    "rawStressReportsCompactedInto": "evidence/public-profile-evidence.json",
+    "rawStressReportFilesRetained": 0,
+    "remoteCandidateArtifactsRetained": 0,
     "workDirectoryContents": [".gitkeep"],
     "protectedTestMkvBytes": 2958573265,
     "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"

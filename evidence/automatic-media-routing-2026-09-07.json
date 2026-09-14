@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "recordedAt": "2026-09-07T19:30:00+05:30",
+  "lastRegistryAuditAt": "2026-09-15T00:00:00+05:30",
   "requirement": "M-02",
   "status": "verified-current-registry",
   "scope": "Source-inspection-driven selection between every same-destination stream-copy and re-encode pairing currently certified in the public registry",
@@ -27,6 +28,13 @@
         "copyProfile": "mkv-to-webm-av1",
         "reencodeProfiles": ["mkv-to-webm", "mkv-to-webm-vp9"],
         "fastestAutomaticFallback": "mkv-to-webm"
+      },
+      {
+        "input": "mp4",
+        "destinationFamily": "webm",
+        "copyProfile": "mp4-to-webm-av1",
+        "reencodeProfiles": ["mp4-to-webm", "mp4-to-webm-vp9"],
+        "fastestAutomaticFallback": "mp4-to-webm"
       }
     ],
     "certifiedVideoDecoderSet": [
@@ -45,7 +53,7 @@
       "MPEG-2 Matroska falls back from blocked MP4 copy to certified MPEG-4 Part 2 re-encode",
       "HEVC Matroska falls back from blocked AV1 WebM copy to certified VP8 re-encode",
       "VP9 is not routed into a video specialist that has no certified VP9 decoder",
-      "the exhaustive current registry inventory contains exactly the MKV-to-MP4 and MKV-to-WebM copy-plus-encode families"
+      "the exhaustive current registry inventory contains exactly MKV-to-MP4, MKV-to-WebM, and MP4-to-WebM copy-plus-encode families"
     ]
   },
   "browserGate": {
@@ -101,7 +109,7 @@
   "limitations": [
     "Automatic fallback can select only a route already public, passing, and certified for the inspected codec; absent combinations remain explicitly blocked and are tracked under M-04.",
     "A heterogeneous-codec batch is not auto-routed from the first file; every item retains native preflight validation and an incompatible item fails before its output is committed.",
-    "The current registry has two physical destination families with both copy and encode choices. The unit inventory must change when another family is added."
+    "The current registry has three input/destination pairings with both copy and encode choices. The unit inventory must change when another pairing is added."
   ],
   "cleanup": {
     "generatedSourceDeleted": true,
