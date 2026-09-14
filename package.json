@@ -168,6 +168,7 @@
     "profile:flv": "node scripts/profile-category.mjs flv",
     "profile:avi": "node scripts/profile-category.mjs avi",
     "profile:avi-ogv": "node scripts/profile-category.mjs avi-ogv",
+    "profile:mp4-ogv": "node scripts/profile-category.mjs mp4-ogv",
     "profile:avi-webm": "node scripts/profile-category.mjs avi-webm",
     "profile:ogv": "node scripts/profile-category.mjs ogv",
     "profile:mpeg2-video": "node scripts/profile-category.mjs mpeg2-video",

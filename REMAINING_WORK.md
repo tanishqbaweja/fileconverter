@@ -1377,3 +1377,32 @@ not the entire product specification.
   The obsolete candidate mismatch artifact was then deleted. The route is now
   public; compact evidence is in
   `evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json`.
+
+### 2026-09-15 — MP4-to-OGV candidate and direct-save memory optimization
+
+- Added a hidden `mp4-to-ogv` profile that reuses the pinned single-thread
+  `within-theora` module. The production browser worker genuinely decodes H.264
+  and encodes Theora; it does not packet-copy or rename the input. A focused
+  two-case Chrome gate passed genuine output/full decode, exact 1,560-frame
+  traversal, bounded metrics, and injected-write cleanup.
+- A 147,136,621-byte, 65-second MP4 passed three OPFS runs in
+  32.662-33.117 seconds, producing repeatable 8,805,137-byte Ogg/Theora at
+  midpoint SSIM 0.936942. Worst complete-Chromium incremental private memory was
+  235.375 MiB; 256 KiB reads, at most 64,940-byte writes/queueing, one pending
+  operation, 32 MiB Wasm, cancellation, and cleanup recovery passed.
+- The synchronous direct-writer session was rejected because its cold first run
+  peaked at 250.441 MiB even though later runs were 206.691 and 202.715 MiB and
+  every non-memory gate passed. A route-scoped asynchronous writer experiment
+  was also rejected: it slowed the conversion to 34.459 seconds and worsened the
+  cold peak to 257.754 MiB. Neither failure was hidden by rounding or a smaller
+  source, and all generated inputs/outputs/browser profiles were deleted.
+- The next candidate lowers only `within-theora` initial Wasm memory from 32 MiB
+  to 24 MiB while retaining the 96 MiB maximum, speed level 2, quality settings,
+  one video thread, and all I/O bounds. It still requires a hosted no-Docker
+  rebuild, focused regression, and both three-run browser modes before it can be
+  published.
+- The multithreaded MP4 stress generator produced valid sources that differed by
+  one to three bytes across sessions. This does not invalidate the within-session
+  repeatability results, but deterministic generation must be restored before
+  publication. Compact measurements and rejected approaches are recorded in
+  `evidence/mp4-to-ogv-candidate-2026-09-15.json`.

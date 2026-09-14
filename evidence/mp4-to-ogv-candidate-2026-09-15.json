@@ -1,0 +1,102 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-15",
+  "status": "candidate-memory-optimization-pending",
+  "scope": "Production-browser H.264 MP4 to genuine Ogg Theora decode and re-encode.",
+  "dockerUsed": false,
+  "conversionClass": "full H.264 video decode and lossy Theora re-encode; audio is explicitly excluded",
+  "protectedSource": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "verifiedBeforeAndAfterStress": true,
+    "modified": false
+  },
+  "focusedBrowserGate": {
+    "status": "passed",
+    "cases": 2,
+    "elapsedSeconds": 16.3,
+    "validated": [
+      "genuine browser-worker MP4 H.264 decode to Ogg Theora",
+      "exact source/output decoded frame count",
+      "full native decode",
+      "bounded read/write/queue metrics",
+      "injected destination-write failure removes the partial output"
+    ]
+  },
+  "stress": {
+    "sourceDurationSeconds": 65,
+    "sourceWidth": 1282,
+    "sourceHeight": 536,
+    "sourceFrameCount": 1560,
+    "outputWidth": 640,
+    "outputHeight": 266,
+    "outputCodec": "theora",
+    "opfs": {
+      "status": "passed",
+      "report": "2026-09-14T22-07-56-532Z-mp4-to-ogv-stress.json",
+      "reportSha256": "82ccad734690415adc24b45e165e1f87bebd41b114304f0c1babe6ab2b9f28f4",
+      "sourceBytes": 147136621,
+      "outputBytes": 8805137,
+      "elapsedMs": [33116.905, 32726.965, 32661.71],
+      "incrementalPrivateMiB": [235.375, 191.4765625, 188.7734375],
+      "worstIncrementalPrivateMiB": 235.375,
+      "midpointVisualSsim": 0.936942,
+      "cancellationPassed": true,
+      "cleanupRecoveryPassed": true
+    },
+    "synchronousDirectWriter": {
+      "status": "rejected",
+      "report": "2026-09-14T22-12-16-415Z-mp4-to-ogv-direct-handle-stress.json",
+      "reportSha256": "58ef34f03cf3012349228587c75527d2c39d4a8ba3cc9e8d5f923894f5a343dc",
+      "sourceBytes": 147136622,
+      "outputBytes": 8805590,
+      "elapsedMs": [31165.06, 33957.89, 32950.805],
+      "incrementalPrivateMiB": [250.44140625, 206.69140625, 202.71484375],
+      "reason": "The cold first run exceeded the unchanged 250 MiB complete-Chromium limit by 0.44140625 MiB.",
+      "allNonMemoryChecksPassed": true,
+      "cancellationPassed": true,
+      "cleanupRecoveryPassed": true
+    },
+    "asynchronousDirectWriter": {
+      "status": "rejected",
+      "report": "2026-09-14T22-16-36-208Z-mp4-to-ogv-direct-handle-stress.json",
+      "reportSha256": "42cbcb0cfa2e78718597e17d3a22adb036fa55d2a3d8b8a310915d54711fdf29",
+      "sourceBytes": 147136624,
+      "outputBytes": 8802902,
+      "elapsedMs": [34458.925],
+      "incrementalPrivateMiB": [257.75390625],
+      "reason": "Removing the relay worker regressed both cold-session memory and elapsed time, so the change was reverted.",
+      "cleanupRecoveryPassed": true
+    },
+    "sharedBounds": {
+      "maximumReadBytes": 262144,
+      "maximumObservedWriteBytes": 64946,
+      "maximumObservedQueuedBytes": 64946,
+      "maximumPendingOperations": 1,
+      "currentWasmMemoryBytes": 33554432
+    }
+  },
+  "fixtureGeneratorObservation": {
+    "status": "open-before-publication",
+    "observedCrossSessionByteCounts": [147136621, 147136622, 147136624],
+    "reason": "The current multithreaded fixture generator varies by a few bytes across sessions even though every source is valid and output is repeatable within a session. Deterministic generation must be restored before publication."
+  },
+  "activeOptimizationCandidate": {
+    "module": "within-theora",
+    "priorInitialWasmMemoryBytes": 33554432,
+    "candidateInitialWasmMemoryBytes": 25165824,
+    "maximumWasmMemoryBytes": 100663296,
+    "codecSettingsChanged": false,
+    "qualityThresholdChanged": false,
+    "memoryLimitChanged": false,
+    "status": "awaiting hosted no-Docker build and browser measurement"
+  },
+  "cleanup": {
+    "generatedLargeSourcesRetained": 0,
+    "convertedOutputsRetained": 0,
+    "browserProfilesRetained": 0,
+    "temporaryProcessDirectoryPendingRemoval": "work/temp-mp4-ogv",
+    "rawReportsRetainedUntilCompaction": 3
+  }
+}

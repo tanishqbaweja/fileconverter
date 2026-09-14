@@ -585,6 +585,12 @@ const categories = {
       ["avi-to-ogv", "fixtures/stress/media/avi-theora-128m.avi"],
     ],
   },
+  "mp4-ogv": {
+    generator: "scripts/generate-container-webm-stress-fixtures.mjs",
+    profiles: [
+      ["mp4-to-ogv", "fixtures/stress/media/h264-aac-128m.mp4"],
+    ],
+  },
   "avi-webm": {
     generator: "scripts/generate-avi-webm-stress-fixture.mjs",
     profiles: [

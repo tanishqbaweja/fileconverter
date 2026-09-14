@@ -174,6 +174,7 @@ const COMPATIBLE_WEBM_PROFILES = [
   "mkv-to-webm-av1",
   "mp4-to-webm-av1",
 ];
+const THEORA_OGV_PROFILES = ["avi-to-ogv", "mp4-to-ogv"];
 const isIvfProfile =
   IVF_PROFILES.includes(profileId) || IVF_INPUT_PROFILES.includes(profileId);
 const isVideoOptionsProfile =
@@ -181,7 +182,7 @@ const isVideoOptionsProfile =
     profileId,
   ) ||
   /^(?:mkv|m2v)-to-mp4-mpeg4$/.test(profileId) ||
-  profileId === "avi-to-ogv";
+  THEORA_OGV_PROFILES.includes(profileId);
 if (
   (videoOptions.codec !== "automatic" ||
     videoOptions.maxWidth !== 0 ||
@@ -614,6 +615,7 @@ if (
     "avi-to-webm",
     "avi-to-webm-vp9",
     "avi-to-ogv",
+    "mp4-to-ogv",
     "ogv-to-webm",
     "ogv-to-webm-vp9",
     "ogv-to-wav",
@@ -691,7 +693,7 @@ const isMediaProfile =
   profileId === "3gp-to-flv" ||
   profileId === "mpeg-ts-to-flv" ||
   profileId === "avi-to-flv" ||
-  profileId === "avi-to-ogv" ||
+  THEORA_OGV_PROFILES.includes(profileId) ||
   profileId === "m2v-to-mpeg-ts" ||
   profileId === "mkv-to-m2v" ||
   profileId === "mp4-to-m2v" ||
@@ -858,12 +860,12 @@ const maximumWasmMemoryBytes =
                 ? 48 * 1024 * 1024
                 : isSevenZipProfile
                   ? 64 * 1024 * 1024
-                  : isIvfProfile || profileId === "avi-to-ogv"
+                  : isIvfProfile || THEORA_OGV_PROFILES.includes(profileId)
                     ? 96 * 1024 * 1024
                     : 128 * 1024 * 1024;
 const testUrl = `${serverUrl}/?test=1${
   destinationMode === "direct-handle" ? "&directory=1" : ""
-}${profileId === "avi-to-ogv" ? "&candidate=avi-to-ogv" : ""}`;
+}`;
 
 assertInside(workRoot, profileRoot);
 assertInside(path.resolve(projectRoot, "outputs"), reportRoot);
@@ -1402,13 +1404,24 @@ try {
     });
   }
 
+  const cancellationProfileFamily = isIvfProfile
+    ? "IVF"
+    : THEORA_OGV_PROFILES.includes(profileId)
+      ? "Theora OGV"
+      : COMPATIBLE_AVI_PROFILES.includes(profileId) ||
+          profileId === "avi-to-3gp" ||
+          profileId === "avi-to-mov" ||
+          profileId === "avi-to-mpeg-ts" ||
+          profileId === "avi-to-flv"
+        ? "AVI"
+        : "OGV";
   if (
     profileId === "mkv-to-ogv" ||
     profileId === "avi-to-3gp" ||
     profileId === "avi-to-mov" ||
     profileId === "avi-to-mpeg-ts" ||
     profileId === "avi-to-flv" ||
-    profileId === "avi-to-ogv" ||
+    THEORA_OGV_PROFILES.includes(profileId) ||
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
     isIvfProfile
   ) {
@@ -1438,7 +1451,7 @@ try {
     );
     if (cancellableState?.jobState !== "running") {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" || profileId === "avi-to-flv" || profileId === "avi-to-ogv" ? "AVI" : "OGV"} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
+        `${cancellationProfileFamily} stress conversion reached ${cancellableState?.jobState ?? "an unknown state"} before its cancellation checkpoint.`,
       );
     }
     await page.getByRole("button", { name: "Cancel safely" }).click();
@@ -1480,7 +1493,7 @@ try {
     };
     if (!cancellationCheck.passed) {
       throw new Error(
-        `${isIvfProfile ? "IVF" : COMPATIBLE_AVI_PROFILES.includes(profileId) || profileId === "avi-to-3gp" || profileId === "avi-to-mov" || profileId === "avi-to-mpeg-ts" || profileId === "avi-to-flv" || profileId === "avi-to-ogv" ? "AVI" : "OGV"} cancellation left output state or browser-owned files behind.`,
+        `${cancellationProfileFamily} cancellation left output state or browser-owned files behind.`,
       );
     }
   }
@@ -1553,7 +1566,7 @@ try {
         profileId !== "avi-to-mov" &&
         profileId !== "avi-to-mpeg-ts" &&
         profileId !== "avi-to-flv" &&
-        profileId !== "avi-to-ogv" &&
+        !THEORA_OGV_PROFILES.includes(profileId) &&
         !COMPATIBLE_AVI_PROFILES.includes(profileId) &&
         !isIvfProfile) ||
       cancellationCheck?.passed === true,
@@ -1822,7 +1835,7 @@ async function validateMediaOutput(
     route === "avi-to-m4v";
   const m4vMp4Output = route === "m4v-to-mp4";
   const compatibleOgvCopy = route === "mkv-to-ogv";
-  const aviOgvReencode = route === "avi-to-ogv";
+  const theoraOgvReencode = THEORA_OGV_PROFILES.includes(route);
   const compatibleAviCopy = COMPATIBLE_AVI_PROFILES.includes(route);
   const ivfOutput = IVF_PROFILES.includes(route);
   const ivfInputCopy = IVF_INPUT_PROFILES.includes(route);
@@ -1912,7 +1925,7 @@ async function validateMediaOutput(
   const videoReencode =
     route === "mkv-to-mp4-mpeg4" ||
     route === "m2v-to-mp4-mpeg4" ||
-    aviOgvReencode ||
+    theoraOgvReencode ||
     webmReencode;
   const probedSourceDurationSeconds = Number(source.probe?.format?.duration);
   const decodedVideoDurationSeconds = Number(
@@ -2584,7 +2597,7 @@ async function validateMediaOutput(
     (stream) => stream.disposition?.attached_pic === 1,
   );
   if (
-    (compatibleOgvCopy || aviOgvReencode) &&
+    (compatibleOgvCopy || theoraOgvReencode) &&
     !String(probe.format?.format_name ?? "")
       .split(",")
       .includes("ogg")
@@ -2835,7 +2848,7 @@ async function validateMediaOutput(
     (videoReencode &&
       (codecs.length !== (webmAudioCopy ? 2 : 1) ||
         codecs[0] !==
-          (aviOgvReencode
+          (theoraOgvReencode
             ? "theora"
             : vp9Reencode
               ? "vp9"
@@ -2929,7 +2942,7 @@ async function validateMediaOutput(
               route === "aac-to-m4a")
           ? (source.decodedAudioDurationSeconds ?? sourceDuration)
           : sourceDuration;
-  const boundedWidthVideoReencode = webmReencode || aviOgvReencode;
+  const boundedWidthVideoReencode = webmReencode || theoraOgvReencode;
   const expectedVideoWidth = boundedWidthVideoReencode
     ? Math.min(640, sourceVideo?.width ?? 0)
     : sourceVideo?.width;

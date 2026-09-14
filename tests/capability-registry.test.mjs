@@ -780,6 +780,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-theora",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
+      initialWasmMemoryBytes: 25_165_824,
       profiles: ["avi-to-ogv", "mp4-to-ogv"],
     },
   ]);
