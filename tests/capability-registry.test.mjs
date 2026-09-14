@@ -164,12 +164,12 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   }
 });
 
-test("registry has no in-flight pending profiles and keeps failed evidence hidden", () => {
+test("registry exposes only the exact in-flight candidate as pending and keeps failed evidence hidden", () => {
   assert.deepEqual(
     conversionProfiles
       .filter((profile) => profile.automatedTestStatus === "pending")
       .map((profile) => profile.id),
-    [],
+    ["mp4-to-ogv"],
   );
   const promoted = conversionProfiles.find(
     (profile) => profile.id === "mp4-to-webm-av1",
@@ -780,7 +780,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-theora",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
-      profiles: ["avi-to-ogv"],
+      profiles: ["avi-to-ogv", "mp4-to-ogv"],
     },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));

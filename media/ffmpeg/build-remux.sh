@@ -144,7 +144,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
     {"name": "within-vp9", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm-vp9", "mp4-to-webm-vp9", "mov-to-webm-vp9", "3gp-to-webm-vp9", "mpeg-ts-to-webm-vp9", "flv-to-webm-vp9", "avi-to-webm-vp9", "ogv-to-webm-vp9", "m2v-to-webm-vp9", "h264-to-webm-vp9"]},
     {"name": "within-webm-quality", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["higher-quality-vp8", "higher-quality-vp9", "hevc-to-webm"]},
-    {"name": "within-theora", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["avi-to-ogv"]}
+    {"name": "within-theora", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["avi-to-ogv", "mp4-to-ogv"]}
   ],
   "wasmSimd": true,
   "avioInputBufferBytes": 262144,
@@ -222,7 +222,7 @@ if (!manifest.includes(aviOgvMarker)) {
 }
 manifest = manifest.replace(
   aviOgvMarker,
-  '"avi-to-flv","avi-to-ogv","h264-to-mp4"',
+  '"avi-to-flv","avi-to-ogv","mp4-to-ogv","h264-to-mp4"',
 );
 writeFileSync(
   manifestPath,

@@ -1,0 +1,56 @@
+import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import test from "node:test";
+
+import {
+  conversionProfiles,
+  publicProfilesFor,
+} from "../lib/capability-registry.ts";
+import {
+  VIDEO_PROFILE_DEFAULT_CODEC_BY_ID,
+  videoOptionProfileForId,
+} from "../lib/media-conversion-options.ts";
+
+test("MP4 to OGV stays hidden until its complete acceptance gate passes", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "mp4-to-ogv");
+  assert.ok(profile);
+  assert.equal(profile.input, "mp4");
+  assert.equal(profile.output, "ogv");
+  assert.equal(profile.engine, "ffmpeg-video");
+  assert.equal(profile.route, "re-encode");
+  assert.equal(profile.automatedTestStatus, "pending");
+  assert.equal(profile.maxTestedBytes, null);
+  assert.equal(profile.public, false);
+  assert.equal(
+    publicProfilesFor("mp4").some(({ id }) => id === profile.id),
+    false,
+  );
+  assert.equal(
+    publicProfilesFor("mp4", true).some(({ id }) => id === profile.id),
+    true,
+  );
+});
+
+test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () => {
+  const worker = readFileSync("workers/conversion.worker.ts", "utf8");
+  const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
+  const sourceManifest = readFileSync("media/ffmpeg/build-remux.sh", "utf8");
+  const publishedManifest = JSON.parse(
+    readFileSync("public/engines/remux/build-manifest.json", "utf8"),
+  );
+  assert.match(
+    worker,
+    /profileId === "avi-to-ogv" \|\| profileId === "mp4-to-ogv"[\s\S]*?\? 39/,
+  );
+  assert.match(wrapper, /within_video_reencode\(3, 0/);
+  assert.match(sourceManifest, /"within-theora"[\s\S]*?"mp4-to-ogv"/);
+  const theoraModule = publishedManifest.modules.find(
+    ({ name }) => name === "within-theora",
+  );
+  assert.deepEqual(theoraModule?.profiles, ["avi-to-ogv", "mp4-to-ogv"]);
+  assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["mp4-to-ogv"], "theora");
+  assert.deepEqual(videoOptionProfileForId("mp4-to-ogv"), {
+    engine: "ffmpeg-video",
+    output: "ogv",
+  });
+});

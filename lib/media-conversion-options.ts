@@ -138,6 +138,7 @@ export const VIDEO_PROFILE_DEFAULT_CODEC_BY_ID = {
   "flv-to-webm-vp9": "vp9",
   "avi-to-webm-vp9": "vp9",
   "avi-to-ogv": "theora",
+  "mp4-to-ogv": "theora",
   "ogv-to-webm-vp9": "vp9",
   "m2v-to-webm-vp9": "vp9",
   "h264-to-webm-vp9": "vp9",

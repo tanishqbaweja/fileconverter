@@ -29,6 +29,11 @@ const fixturePath = path.resolve(
   process.env.WITHIN_AVI_TO_OGV_FIXTURE ??
     "fixtures/media/legacy-video-source.avi",
 );
+const mp4SourceFixturePath = path.resolve(
+  projectRoot,
+  "fixtures/media/remux-source.mkv",
+);
+const mp4FixturePath = path.join(projectRoot, "work", "mp4-to-ogv-source.mp4");
 const theoraWasmPath = path.join(
   projectRoot,
   "public",
@@ -79,17 +84,18 @@ async function runConversion(
     frameRateFps: 0 | 15 | 24 | 25 | 30;
     quality: "automatic" | "smaller" | "balanced" | "higher";
   },
+  profileId: "avi-to-ogv" | "mp4-to-ogv" = "avi-to-ogv",
 ): Promise<ConversionResult> {
   const workerUrl = appWorker.url();
   return page.evaluate(
-    async ({ workerUrl, outputName, testFault, videoOptions }) => {
+    async ({ workerUrl, outputName, testFault, videoOptions, profileId }) => {
       const input = document.querySelector<HTMLInputElement>(
         '[data-testid="file-input"]',
       );
       const file = input?.files?.[0];
-      if (!file) throw new Error("The AVI fixture was not attached.");
+      if (!file) throw new Error("The source fixture was not attached.");
       const worker = new Worker(workerUrl, {
-        name: "within-avi-to-ogv",
+        name: `within-${profileId}`,
         type: "module",
       });
       const warnings: string[] = [];
@@ -114,7 +120,7 @@ async function runConversion(
               worker.postMessage({
                 type: "start",
                 jobId,
-                profileId: "avi-to-ogv",
+                profileId,
                 file,
                 destination: { mode: "opfs-test", name: outputName },
                 ...(testFault ? { testFault } : {}),
@@ -137,7 +143,7 @@ async function runConversion(
         worker.terminate();
       }
     },
-    { workerUrl, outputName, testFault, videoOptions },
+    { workerUrl, outputName, testFault, videoOptions, profileId },
   );
 }
 
@@ -193,7 +199,27 @@ test.beforeAll(async () => {
   );
   await rm(profileRoot, { recursive: true, force: true });
   await rm(outputPath, { force: true });
+  await rm(mp4FixturePath, { force: true });
   await mkdir(profileRoot, { recursive: true });
+  await execFileAsync(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-nostdin",
+      "-i",
+      mp4SourceFixturePath,
+      "-map",
+      "0:v:0",
+      "-map",
+      "0:a:0?",
+      "-c",
+      "copy",
+      "-y",
+      mp4FixturePath,
+    ],
+    { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+  );
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
     headless: true,
@@ -225,6 +251,7 @@ test.afterAll(async () => {
   validationSink = null;
   await context?.close();
   await rm(outputPath, { force: true });
+  await rm(mp4FixturePath, { force: true });
   await rm(profileRoot, { recursive: true, force: true });
 });
 
@@ -319,6 +346,115 @@ test("genuinely re-encodes AVI video to bounded Ogg Theora", async () => {
     ["-v", "error", "-nostdin", "-i", outputPath, "-f", "null", "-"],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
   );
+});
+
+test("genuinely re-encodes MP4 video through the hidden bounded Ogg Theora candidate", async () => {
+  test.setTimeout(120_000);
+  await page.locator('[data-testid="file-input"]').setInputFiles(mp4FixturePath);
+  const outputName = `within-test-mp4-to-ogv-${crypto.randomUUID()}.ogv`;
+  try {
+    const result = await runConversion(
+      outputName,
+      undefined,
+      undefined,
+      "mp4-to-ogv",
+    );
+    expect(result.type, result.message).toBe("complete");
+    expect(result.warnings.join(" ")).toContain(
+      "audio stream is explicitly excluded",
+    );
+    expect(result.metrics.peakPendingOperations).toBeLessThanOrEqual(1);
+    expect(result.metrics.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(result.metrics.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+    expect(result.metrics.peakWasmMemoryBytes).toBeLessThanOrEqual(96 * 1024 * 1024);
+    expect(result.metrics.activeWorkerCount).toBe(1);
+
+    await copyAndDeleteOutput(outputName);
+    const [{ stdout: outputStdout }, { stdout: sourceStdout }] =
+      await Promise.all([
+        execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-count_frames",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=codec_name,width,height,nb_read_frames",
+            "-show_entries",
+            "format=format_name,duration",
+            "-of",
+            "json",
+            outputPath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+        ),
+        execFileAsync(
+          "ffprobe",
+          [
+            "-v",
+            "error",
+            "-count_frames",
+            "-select_streams",
+            "v:0",
+            "-show_entries",
+            "stream=nb_read_frames",
+            "-of",
+            "json",
+            mp4FixturePath,
+          ],
+          { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+        ),
+      ]);
+    const output = JSON.parse(outputStdout);
+    const source = JSON.parse(sourceStdout);
+    expect(output.format.format_name).toContain("ogg");
+    expect(output.streams).toHaveLength(1);
+    expect(output.streams[0].codec_name).toBe("theora");
+    expect(Number(output.streams[0].nb_read_frames)).toBe(
+      Number(source.streams[0].nb_read_frames),
+    );
+    await execFileAsync(
+      "ffmpeg",
+      ["-v", "error", "-nostdin", "-i", outputPath, "-f", "null", "-"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+  } finally {
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+  }
+});
+
+test("MP4 candidate write failure removes the partial OGV", async () => {
+  await page.locator('[data-testid="file-input"]').setInputFiles(mp4FixturePath);
+  const outputName = `within-test-mp4-to-ogv-write-${crypto.randomUUID()}.ogv`;
+  try {
+    const result = await runConversion(
+      outputName,
+      "write",
+      undefined,
+      "mp4-to-ogv",
+    );
+    expect(result.type).toBe("error");
+    expect(result.message).toContain("destination rejected a bounded write");
+    const exists = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        await root.getFileHandle(entryName);
+        return true;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return false;
+        }
+        throw error;
+      }
+    }, outputName);
+    expect(exists).toBe(false);
+    expect(result.metrics.queuedBytes).toBe(0);
+    expect(result.metrics.pendingOperations).toBe(0);
+  } finally {
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+  }
 });
 
 test("write failure removes the partial OGV", async () => {
