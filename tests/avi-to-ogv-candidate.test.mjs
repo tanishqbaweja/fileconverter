@@ -35,6 +35,26 @@ test("AVI to OGV is public only with complete browser evidence", () => {
     evidence.publication.theoraNoDockerReproduction.artifactCount,
     0,
   );
+  assert.equal(
+    evidence.publication.reproducibilityFixCommit,
+    "8492369309abe8cd92f3b96e318cf67d696947a1",
+  );
+  assert.equal(evidence.publication.directNoDockerReproduction.runId, 34765522872);
+  assert.match(
+    evidence.publication.directNoDockerReproduction.result,
+    /byte-for-byte/,
+  );
+  assert.equal(evidence.publication.allCoreNoDockerReproduction.runId, 34765971788);
+  assert.match(
+    evidence.publication.allCoreNoDockerReproduction.result,
+    /all seven[\s\S]*byte-for-byte/,
+  );
+  assert.equal(evidence.publication.allCoreNoDockerReproduction.artifactCount, 0);
+  assert.equal(evidence.publication.allCoreNoDockerReproduction.cleanupPassed, true);
+  assert.equal(
+    evidence.publication.historicalSourceReconstruction.publishedDirectSourceSha256,
+    "b0b20712a1ad47a923de3cab7ced24c25cdeef46f70743ded439e88c892f2eaa",
+  );
   assert.equal(evidence.cleanup.convertedOutputsRetained, 0);
   assert.equal(evidence.cleanup.downloadedCandidateArtifactsRetained, false);
   assert.equal(evidence.cleanup.rawReportsRetainedUntilCompactEvidenceReview, false);

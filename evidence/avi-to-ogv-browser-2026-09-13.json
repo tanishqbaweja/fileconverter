@@ -151,6 +151,36 @@
       "durationSeconds": 532,
       "artifactCount": 0,
       "cleanupPassed": true
+    },
+    {
+      "runId": 34763807800,
+      "artifactId": 10319164784,
+      "commit": "4ac827387985c0b3deea6ddfc128fb8349ff2d2f",
+      "purpose": "aggregate diagnostic after exact historical general and Theora source reconstruction; six legacy cores matched and only within-direct Wasm differed",
+      "artifactDeleted": true
+    },
+    {
+      "runId": 34764718715,
+      "artifactId": 10319909605,
+      "commit": "0586c0e7da2a8694afc12ab511209da1b2a46482",
+      "purpose": "scoped rejected direct-core trial using the general FFmpeg archive; both direct files differed and proved the published core used the specialist archive",
+      "artifactDeleted": true
+    },
+    {
+      "runId": 34765522872,
+      "commit": "8492369309abe8cd92f3b96e318cf67d696947a1",
+      "purpose": "successful exact scoped reproduction of within-direct after reconstructing the wrapper source actually used for publication",
+      "durationSeconds": 493,
+      "artifactCount": 0,
+      "cleanupPassed": true
+    },
+    {
+      "runId": 34765971788,
+      "commit": "8492369309abe8cd92f3b96e318cf67d696947a1",
+      "purpose": "successful exact aggregate reproduction of all seven published FFmpeg engines",
+      "durationSeconds": 1001,
+      "artifactCount": 0,
+      "cleanupPassed": true
     }
   ],
   "publicFiles": {
@@ -181,6 +211,7 @@
     "repository": "https://github.com/tanishqbaweja/fileconverter",
     "branch": "codex/media-options",
     "pushedCommit": "2a354635876ccb37adfee672ea4d6a6d1d75f7b9",
+    "reproducibilityFixCommit": "8492369309abe8cd92f3b96e318cf67d696947a1",
     "theoraNoDockerReproduction": {
       "runId": 34740500424,
       "result": "success: published within-theora JavaScript, Wasm, license, and manifest reproduced byte-for-byte",
@@ -199,6 +230,27 @@
         "within-webm-quality.wasm",
         "within-webm.wasm"
       ]
+    },
+    "historicalSourceReconstruction": {
+      "preTheoraGeneralSourceSha256": "304c04c13e2e2a3320b9b29f2e0a6ba5c4c2070ed226d9b090071474b5e9b218",
+      "directBaseSourceSha256": "b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b",
+      "publishedDirectSourceSha256": "b0b20712a1ad47a923de3cab7ced24c25cdeef46f70743ded439e88c892f2eaa",
+      "theoraSourcePatchSha256": "903f48bdc2b06db90b378c60f006fe110880e47684102340f99ddb5f02a15dde",
+      "directPublishedSourcePatchSha256": "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212"
+    },
+    "directNoDockerReproduction": {
+      "runId": 34765522872,
+      "result": "success: published within-direct JavaScript and Wasm reproduced byte-for-byte",
+      "durationSeconds": 493,
+      "artifactCount": 0,
+      "cleanupPassed": true
+    },
+    "allCoreNoDockerReproduction": {
+      "runId": 34765971788,
+      "result": "success: all seven published FFmpeg JavaScript and Wasm engines plus shared manifests and licenses reproduced byte-for-byte",
+      "durationSeconds": 1001,
+      "artifactCount": 0,
+      "cleanupPassed": true
     }
   },
   "cleanup": {

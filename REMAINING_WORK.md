@@ -176,15 +176,21 @@ not the entire product specification.
   only one operation was pending; actual Wasm stayed at 32 MiB. Cancellation,
   injected write failure, partial-output removal, cleanup recovery, explicit
   Theora/width/frame-rate/quality controls, and bitrate rejection passed.
-- The historical direct specialist's regenerated reverse patch now reconstructs
-  source commit `79e4db4` exactly and the source-only no-Docker preflight verifies
-  SHA-256 `b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b`.
-  Hosted run `34740500424` reproduced the pushed `within-theora` JavaScript,
-  Wasm, license, and manifest byte-for-byte in 8m52s, passed cleanup, skipped
-  mismatch upload, and retained zero artifacts. Diagnostic all-core run
-  `34739711341` also matched Theora exactly; it showed that six unchanged legacy
-  Wasm modules need their historical wrapper surfaces when rebuilt together.
-  Compact route evidence is retained in
+- The source-only no-Docker preflight now reconstructs and verifies the exact
+  historical pre-Theora general wrapper (`304c04c...`), historical direct base
+  (`b8125f1...`), and wrapper actually used for the published direct core
+  (`b0b2071...`). Aggregate diagnostic `34739711341` exposed six historical
+  wrapper mismatches; `34763807800` proved the corrected general/Theora ordering
+  by matching six cores and leaving only direct; scoped `34764718715` rejected
+  the general-archive hypothesis. Both retained mismatch archives were deleted.
+- Hosted run `34740500424` reproduced the pushed `within-theora` JavaScript,
+  Wasm, license, and manifest byte-for-byte in 8m52s. After the exact direct
+  wrapper reconstruction was pushed in commit `8492369`, scoped run
+  `34765522872` reproduced both direct files byte-for-byte in 8m13s and final
+  aggregate run `34765971788` reproduced all seven FFmpeg engines plus shared
+  manifests and licenses byte-for-byte in 16m41s. Both final runs passed cleanup,
+  skipped mismatch upload, and retained zero artifacts.
+- Compact route and reproduction evidence is retained in
   `evidence/avi-to-ogv-browser-2026-09-13.json`; generated stress media and every
   converted copy, raw report, local candidate, and remote mismatch archive were
   deleted after validation.
