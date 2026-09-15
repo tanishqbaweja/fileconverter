@@ -1396,13 +1396,21 @@ not the entire product specification.
   was also rejected: it slowed the conversion to 34.459 seconds and worsened the
   cold peak to 257.754 MiB. Neither failure was hidden by rounding or a smaller
   source, and all generated inputs/outputs/browser profiles were deleted.
-- The next candidate lowers only `within-theora` initial Wasm memory from 32 MiB
-  to 24 MiB while retaining the 96 MiB maximum, speed level 2, quality settings,
-  one video thread, and all I/O bounds. It still requires a hosted no-Docker
-  rebuild, focused regression, and both three-run browser modes before it can be
-  published.
-- The multithreaded MP4 stress generator produced valid sources that differed by
-  one to three bytes across sessions. This does not invalidate the within-session
-  repeatability results, but deterministic generation must be restored before
-  publication. Compact measurements and rejected approaches are recorded in
+- Hosted no-Docker run `34903564007` produced the 24 MiB-initial candidate and
+  its seven-case small-browser regression passed, but the runtime immediately
+  grew in one 8 MiB step back to 32 MiB. A favorable clean-session discriminator
+  measured 240.535 MiB, while the required three-run direct-save session measured
+  231.230, 258.320, and 235.246 MiB. The candidate was rejected without weakening
+  the 250 MiB ceiling; all non-memory, cancellation, and cleanup checks passed.
+- The next candidate starts at 20 MiB, grows in 1 MiB rather than 8 MiB steps,
+  uses a 512 KiB stack, and reduces the native output buffer to 64 KiB. Codec,
+  640-pixel output policy, speed level 2, quality settings, one video thread, and
+  the 96 MiB safety ceiling remain unchanged. It requires a hosted no-Docker
+  rebuild, focused regression, and both three-run browser modes before publication.
+- The multithreaded MP4 stress generator initially produced valid sources that
+  differed by one to three bytes across sessions. Pinning fixture-only x264 to
+  one thread fixed it: two independent generations were byte-identical at
+  147,242,147-byte MP4 (`e1142ff...`) and 147,242,171-byte MOV (`9e80f6c...`).
+  Both large files were deleted after the proof; only their compact manifests
+  remain. Measurements and rejected approaches are recorded in
   `evidence/mp4-to-ogv-candidate-2026-09-15.json`.

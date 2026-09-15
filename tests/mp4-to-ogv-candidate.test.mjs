@@ -37,6 +37,11 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
   const sourceManifest = readFileSync("media/ffmpeg/build-remux.sh", "utf8");
   const memoryProfile = readFileSync("scripts/memory-profile.mjs", "utf8");
   const profileCategory = readFileSync("scripts/profile-category.mjs", "utf8");
+  const stressGenerator = readFileSync(
+    "scripts/generate-container-webm-stress-fixtures.mjs",
+    "utf8",
+  );
+  const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
   const publishedManifest = JSON.parse(
     readFileSync("public/engines/remux/build-manifest.json", "utf8"),
   );
@@ -53,9 +58,16 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
     name: "within-theora",
     wasmPthreadPoolSize: 0,
     videoCodecThreads: 1,
-    initialWasmMemoryBytes: 25_165_824,
+    avioOutputBufferBytes: 65_536,
+    initialWasmMemoryBytes: 20_971_520,
+    memoryGrowthLinearStepBytes: 1_048_576,
+    stackBytes: 524_288,
     profiles: ["avi-to-ogv", "mp4-to-ogv"],
   });
+  assert.match(
+    sourceManifest,
+    /build_core within-theora 1 0 0 65536 20971520 1048576 524288/,
+  );
   assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["mp4-to-ogv"], "theora");
   assert.deepEqual(videoOptionProfileForId("mp4-to-ogv"), {
     engine: "ffmpeg-video",
@@ -69,4 +81,7 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
     profileCategory,
     /"mp4-ogv"[\s\S]*?"mp4-to-ogv"[\s\S]*?h264-aac-128m\.mp4/,
   );
+  assert.match(stressGenerator, /"-threads:v", "1"/);
+  assert.match(cleanup, /temp-mp4-ogv/);
+  assert.match(cleanup, /ffmpeg-candidate-34903564007/);
 });

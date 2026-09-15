@@ -69,6 +69,23 @@
       "reason": "Removing the relay worker regressed both cold-session memory and elapsed time, so the change was reverted.",
       "cleanupRecoveryPassed": true
     },
+    "twentyFourMiBInitialHeap": {
+      "status": "rejected",
+      "hostedBuildRun": 34903564007,
+      "artifactId": 10372650819,
+      "artifactSha256": "a7529225e7f3d5fe2b83484ff8e1dec022833daf6e6a3a99250d72381b3db670",
+      "smallBrowserCasesPassed": 7,
+      "singleCleanSessionIncrementalPrivateMiB": 240.53515625,
+      "threeRunReport": "2026-09-15T05-20-46-349Z-mp4-to-ogv-direct-handle-stress.json",
+      "threeRunReportSha256": "808dce7b324ccf5ec53c942ac01f4a7b5f27495ab7f98f89ae2da19e09066e28",
+      "elapsedMs": [33410.19, 33710.69, 33414.25],
+      "incrementalPrivateMiB": [231.23046875, 258.3203125, 235.24609375],
+      "actualWasmMemoryBytes": 33554432,
+      "reason": "The 24 MiB initial heap immediately grew by the configured 8 MiB step to 32 MiB. The favorable clean-session discriminator did not repeat: the same-session run peaked at 258.3203125 MiB and failed the unchanged 250 MiB limit.",
+      "allNonMemoryChecksPassed": true,
+      "cancellationPassed": true,
+      "cleanupRecoveryPassed": true
+    },
     "sharedBounds": {
       "maximumReadBytes": 262144,
       "maximumObservedWriteBytes": 64946,
@@ -78,25 +95,39 @@
     }
   },
   "fixtureGeneratorObservation": {
-    "status": "open-before-publication",
+    "status": "resolved",
     "observedCrossSessionByteCounts": [147136621, 147136622, 147136624],
-    "reason": "The current multithreaded fixture generator varies by a few bytes across sessions even though every source is valid and output is repeatable within a session. Deterministic generation must be restored before publication."
+    "reason": "The prior multithreaded fixture generator varied by a few bytes across sessions even though every source was valid and output was repeatable within a session.",
+    "correction": "Pinned fixture-only x264 encoding to one thread.",
+    "independentGenerations": 2,
+    "mp4": {
+      "bytes": 147242147,
+      "sha256": "e1142ff2b46eb7bce7ee4da86fc864c0d61cc571161ce448228f0b9f98179bef"
+    },
+    "mov": {
+      "bytes": 147242171,
+      "sha256": "9e80f6c9e07d3e1838aa52b851e094251b4b41624ffee8e9d6007d9c11020104"
+    },
+    "byteIdenticalAcrossIndependentGenerations": true
   },
   "activeOptimizationCandidate": {
     "module": "within-theora",
-    "priorInitialWasmMemoryBytes": 33554432,
-    "candidateInitialWasmMemoryBytes": 25165824,
+    "priorInitialWasmMemoryBytes": 25165824,
+    "candidateInitialWasmMemoryBytes": 20971520,
+    "candidateMemoryGrowthLinearStepBytes": 1048576,
+    "candidateStackBytes": 524288,
+    "candidateAvioOutputBufferBytes": 65536,
     "maximumWasmMemoryBytes": 100663296,
     "codecSettingsChanged": false,
     "qualityThresholdChanged": false,
     "memoryLimitChanged": false,
-    "status": "awaiting hosted no-Docker build and browser measurement"
+    "status": "awaiting hosted no-Docker build and browser measurement after the 24 MiB candidate failed"
   },
   "cleanup": {
     "generatedLargeSourcesRetained": 0,
     "convertedOutputsRetained": 0,
     "browserProfilesRetained": 0,
-    "temporaryProcessDirectoryPendingRemoval": "work/temp-mp4-ogv",
+    "temporaryProcessDirectoriesRetained": 0,
     "rawReportsRetainedUntilCompaction": 3
   }
 }

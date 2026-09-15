@@ -3,8 +3,8 @@
   "source": "test.mkv",
   "sourceSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
   "durationSeconds": 65,
-  "bytes": 147136622,
-  "sha256": "0411543fefb4f6085f4f6ec9bc0a86981308c6896a57e6c6ff4a0027a3bb8dc9",
+  "bytes": 147242147,
+  "sha256": "e1142ff2b46eb7bce7ee4da86fc864c0d61cc571161ce448228f0b9f98179bef",
   "probe": {
     "streams": [
       {
@@ -42,7 +42,7 @@
         "start_time": "0.000000",
         "duration_ts": 798720,
         "duration": "65.000000",
-        "bit_rate": "17944936",
+        "bit_rate": "17957924",
         "bits_per_raw_sample": "8",
         "nb_frames": "1560",
         "extradata_size": 61,
@@ -140,8 +140,8 @@
       "format_long_name": "QuickTime / MOV",
       "start_time": "0.000000",
       "duration": "65.004000",
-      "size": "147136622",
-      "bit_rate": "18108008",
+      "size": "147242147",
+      "bit_rate": "18120995",
       "probe_score": 100,
       "tags": {
         "major_brand": "isom",

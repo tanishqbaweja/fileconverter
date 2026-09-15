@@ -162,6 +162,7 @@ const avifDiagnosticFiles = [
 const taskTempRoots = [
   path.resolve(workRoot, "automatic-route-audit"),
   path.resolve(workRoot, "theora-source-audit"),
+  path.resolve(workRoot, "temp-mp4-ogv"),
   path.resolve(workRoot, "avi-to-ogv-candidate"),
   path.resolve(workRoot, "playwright-profile-avi-to-ogv"),
   path.resolve(workRoot, "avi-to-3gp-feasibility"),
@@ -176,6 +177,7 @@ const taskTempRoots = [
   path.resolve(workRoot, "av1-mp4-webm-candidate"),
   path.resolve(workRoot, "source-hash-check"),
   path.resolve(workRoot, "ffmpeg-candidate-34571134087"),
+  path.resolve(workRoot, "ffmpeg-candidate-34903564007"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),
   path.resolve(workRoot, "playwright-profile-ivf-input"),

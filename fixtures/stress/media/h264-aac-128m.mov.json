@@ -3,8 +3,8 @@
   "source": "test.mkv",
   "sourceSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
   "durationSeconds": 65,
-  "bytes": 147136646,
-  "sha256": "e4e67e2eee1a58f19e24c694b798aad6a0c4c0c9a51914204a1630607e0c314d",
+  "bytes": 147242171,
+  "sha256": "9e80f6c9e07d3e1838aa52b851e094251b4b41624ffee8e9d6007d9c11020104",
   "probe": {
     "streams": [
       {
@@ -42,7 +42,7 @@
         "start_time": "0.000000",
         "duration_ts": 798720,
         "duration": "65.000000",
-        "bit_rate": "17944936",
+        "bit_rate": "17957924",
         "bits_per_raw_sample": "8",
         "nb_frames": "1560",
         "extradata_size": 61,
@@ -141,8 +141,8 @@
       "format_long_name": "QuickTime / MOV",
       "start_time": "0.000000",
       "duration": "65.004000",
-      "size": "147136646",
-      "bit_rate": "18108011",
+      "size": "147242171",
+      "bit_rate": "18120998",
       "probe_score": 100,
       "tags": {
         "major_brand": "qt  ",

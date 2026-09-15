@@ -31,6 +31,7 @@ for (const fixture of [
       "-i", sourcePath, "-t", String(durationSeconds),
       "-map", "0:v:0", "-map", "0:a:0",
       "-c:v", "libx264", "-preset", "ultrafast", "-pix_fmt", "yuv420p",
+      "-threads:v", "1",
       "-vf", "scale=1282:-2",
       "-b:v", "18M", "-minrate", "18M", "-maxrate", "18M", "-bufsize", "36M",
       "-x264-params", "nal-hrd=cbr:force-cfr=1",
