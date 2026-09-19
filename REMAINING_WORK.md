@@ -1421,3 +1421,10 @@ not the entire product specification.
   Both large files were deleted after the proof; only their compact manifests
   remain. Measurements and rejected approaches are recorded in
   `evidence/mp4-to-ogv-candidate-2026-09-15.json`.
+- After restoring the published Theora core, hosted no-Docker
+  [run 35436591401](https://github.com/tanishqbaweja/fileconverter/actions/runs/35436591401)
+  rebuilt and compared all seven published FFmpeg modules and shared files
+  byte-for-byte from pushed code commit `27c48e2` in 17m34s. Hosted cleanup
+  passed, the mismatch upload was skipped, and no artifact was retained. This
+  proves restoration reproducibility, not MP4-to-OGV acceptance; that route
+  remains hidden because its repeat cold run exceeded 250 MiB.
