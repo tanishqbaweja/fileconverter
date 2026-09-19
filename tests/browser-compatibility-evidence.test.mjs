@@ -8,6 +8,10 @@ const evidenceName = "browser-compatibility-matrix-2026-09-07.json";
 const evidence = JSON.parse(
   await readFile(path.join(projectRoot, "evidence", evidenceName), "utf8"),
 );
+const refreshName = "browser-compatibility-matrix-2026-09-19.json";
+const refresh = JSON.parse(
+  await readFile(path.join(projectRoot, "evidence", refreshName), "utf8"),
+);
 const expectedBrowsers = ["brave", "chrome", "edge", "opera-gx"];
 const expectedProfiles = [
   "csv-to-tsv",
@@ -102,5 +106,47 @@ test("the executable matrix keeps production conversion, validators, and cleanup
   for (const relativePath of ["README.md", "TESTED.md", "REMAINING_WORK.md"]) {
     const ledger = await readFile(path.join(projectRoot, relativePath), "utf8");
     assert.ok(ledger.includes(evidenceName), relativePath);
+  }
+});
+
+test("the current installed-browser refresh covers the same production families without broadening its claims", async () => {
+  assert.equal(refresh.requirement, "U-05");
+  assert.equal(refresh.auditDate, "2026-09-19");
+  assert.equal(refresh.dockerUsed, false);
+  assert.equal(refresh.test.result, "4 passed");
+  assert.deepEqual(
+    refresh.browsers.map(({ id }) => id).sort(),
+    expectedBrowsers,
+  );
+  assert.deepEqual(
+    [...refresh.sharedRoutes.map(({ profileId }) => profileId), refresh.imageRoute.profileId].sort(),
+    expectedProfiles,
+  );
+  for (const browser of refresh.browsers) {
+    assert.ok(browser.durationMs > 0, browser.id);
+    assert.ok(browser.requestCount > 0, browser.id);
+    assert.match(browser.rawReportSha256, /^[a-f0-9]{64}$/, browser.id);
+  }
+  assert.equal(refresh.sharedAssertions.maximumReadChunkBytes, 256 * 1024);
+  assert.equal(refresh.sharedAssertions.maximumWriteChunkBytes, 256 * 1024);
+  assert.equal(refresh.sharedAssertions.maximumQueuedBytes, 256 * 1024);
+  assert.equal(refresh.sharedAssertions.maximumPendingOperations, 1);
+  assert.ok(refresh.imageRoute.brave.ssim >= 0.9);
+  assert.ok(refresh.imageRoute.chromeEdgeOperaGx.ssim >= 0.9);
+  assert.equal(refresh.browsers.find(({ id }) => id === "brave").directoryAccess, false);
+  assert.equal(refresh.browsers.find(({ id }) => id === "opera-gx").mode, "headless-isolated");
+  assert.ok(refresh.limitations.some((item) => item.includes("Standard Opera 136")));
+  assert.ok(refresh.limitations.some((item) => item.includes("process-tree private-memory")));
+  assert.ok(refresh.test.pickerAutomation.includes("OS-native dialog itself is not tested"));
+  assert.equal(refresh.privacyAndCleanup.convertedOutputsRetained, 0);
+  assert.equal(refresh.privacyAndCleanup.browserProfilesRetained, 0);
+  for (const relativePath of [
+    "README.md",
+    "TESTED.md",
+    "REMAINING_WORK.md",
+    "scripts/generate-tested-ledger.mjs",
+  ]) {
+    const ledger = await readFile(path.join(projectRoot, relativePath), "utf8");
+    assert.ok(ledger.includes(refreshName), relativePath);
   }
 });

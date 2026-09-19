@@ -14,6 +14,7 @@
     "test:ogv-copy-feasibility": "node scripts/test-ogv-copy-feasibility.mjs",
     "test:browser": "playwright test",
     "tested:ledger": "node scripts/generate-tested-ledger.mjs",
+    "cleanup:browser-compatibility": "node scripts/cleanup-browser-compatibility.mjs",
     "audit:engine-reproducibility": "node scripts/engine-reproducibility-manifest.mjs --check",
     "audit:public-evidence": "node scripts/audit-public-evidence.mjs",
     "audit:public-evidence:manifest": "node scripts/audit-public-evidence.mjs --manifest-only",
