@@ -18,9 +18,6 @@ build_core() {
   local pthread_pool_size="$3"
   local threaded_mpeg4="${4:-0}"
   local output_buffer_bytes="${5:-262144}"
-  local initial_memory_bytes="${6:-33554432}"
-  local memory_growth_step_bytes="${7:-8388608}"
-  local wasm_stack_bytes="${8:-1048576}"
   local profile_defines=()
   local theora_libraries=()
   if [[ "${output_name}" == "within-remux" ]]; then
@@ -61,12 +58,12 @@ build_core() {
     -sPTHREAD_POOL_SIZE="${pthread_pool_size}" \
     -sPTHREAD_POOL_SIZE_STRICT=2 \
     -sASYNCIFY=1 \
-    -sASYNCIFY_STACK_SIZE="${wasm_stack_bytes}" \
+    -sASYNCIFY_STACK_SIZE=1048576 \
     -sALLOW_MEMORY_GROWTH=1 \
-    -sINITIAL_MEMORY="${initial_memory_bytes}" \
+    -sINITIAL_MEMORY=33554432 \
     -sMAXIMUM_MEMORY=100663296 \
-    -sMEMORY_GROWTH_LINEAR_STEP="${memory_growth_step_bytes}" \
-    -sSTACK_SIZE="${wasm_stack_bytes}" \
+    -sMEMORY_GROWTH_LINEAR_STEP=8388608 \
+    -sSTACK_SIZE=1048576 \
     -sMALLOC=emmalloc \
     -sMODULARIZE=1 \
     -sEXPORT_ES6=1 \
@@ -106,7 +103,7 @@ build_selected_core within-webm 4 8 0
 build_selected_core within-vp9 4 8 0
 build_selected_core within-webm-quality 2 4 0
 if [[ "${CORE_FILTER}" == "within-theora" ]]; then
-  build_core within-theora 1 0 0 65536 20971520 1048576 524288
+  build_core within-theora 1 0 0
 fi
 
 cat > "${OUTPUT}/build-manifest.json" <<EOF
@@ -147,7 +144,7 @@ cat > "${OUTPUT}/build-manifest.json" <<EOF
     {"name": "within-webm", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm", "mp4-to-webm", "mov-to-webm", "3gp-to-webm", "mpeg-ts-to-webm", "flv-to-webm", "avi-to-webm", "ogv-to-webm", "m2v-to-webm", "h264-to-webm"]},
     {"name": "within-vp9", "wasmPthreadPoolSize": 8, "videoCodecThreads": 4, "profiles": ["mkv-to-webm-vp9", "mp4-to-webm-vp9", "mov-to-webm-vp9", "3gp-to-webm-vp9", "mpeg-ts-to-webm-vp9", "flv-to-webm-vp9", "avi-to-webm-vp9", "ogv-to-webm-vp9", "m2v-to-webm-vp9", "h264-to-webm-vp9"]},
     {"name": "within-webm-quality", "wasmPthreadPoolSize": 4, "videoCodecThreads": 2, "profiles": ["higher-quality-vp8", "higher-quality-vp9", "hevc-to-webm"]},
-    {"name": "within-theora", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "avioOutputBufferBytes": 65536, "initialWasmMemoryBytes": 20971520, "memoryGrowthLinearStepBytes": 1048576, "stackBytes": 524288, "profiles": ["avi-to-ogv", "mp4-to-ogv"]}
+    {"name": "within-theora", "wasmPthreadPoolSize": 0, "videoCodecThreads": 1, "profiles": ["avi-to-ogv", "mp4-to-ogv"]}
   ],
   "wasmSimd": true,
   "avioInputBufferBytes": 262144,

@@ -1402,11 +1402,18 @@ not the entire product specification.
   measured 240.535 MiB, while the required three-run direct-save session measured
   231.230, 258.320, and 235.246 MiB. The candidate was rejected without weakening
   the 250 MiB ceiling; all non-memory, cancellation, and cleanup checks passed.
-- The next candidate starts at 20 MiB, grows in 1 MiB rather than 8 MiB steps,
-  uses a 512 KiB stack, and reduces the native output buffer to 64 KiB. Codec,
-  640-pixel output policy, speed level 2, quality settings, one video thread, and
-  the 96 MiB safety ceiling remain unchanged. It requires a hosted no-Docker
-  rebuild, focused regression, and both three-run browser modes before publication.
+- Hosted no-Docker run `34932654495` built the 20 MiB-initial, 1 MiB-growth,
+  512 KiB-stack, 64 KiB-output-buffer candidate exactly; only the intended
+  Theora glue and Wasm differed. Seven focused browser cases passed. Actual Wasm
+  stayed at 25 MiB, and a single clean direct-save stress session passed at
+  236.668 MiB. The required three-run direct-save session then measured 255.141,
+  201.617, and 199.391 MiB, with byte-identical genuine 1,560-frame Ogg/Theora
+  outputs and complete cleanup. The cold first run exceeded the unchanged
+  250 MiB process-tree limit by 5.141 MiB, so this candidate was rejected and
+  the published AVI-to-OGV engine restored to its last reproducible bytes.
+  `mp4-to-ogv` remains hidden. A future approach must reduce the complete
+  browser/worker peak under repeated cold and warm runs without reducing video
+  width, quality, validation, or Chromium process coverage.
 - The multithreaded MP4 stress generator initially produced valid sources that
   differed by one to three bytes across sessions. Pinning fixture-only x264 to
   one thread fixed it: two independent generations were byte-identical at

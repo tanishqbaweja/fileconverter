@@ -178,6 +178,7 @@ const taskTempRoots = [
   path.resolve(workRoot, "source-hash-check"),
   path.resolve(workRoot, "ffmpeg-candidate-34571134087"),
   path.resolve(workRoot, "ffmpeg-candidate-34903564007"),
+  path.resolve(workRoot, "ffmpeg-candidate-34932654495"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),
   path.resolve(workRoot, "playwright-profile-ivf-input"),

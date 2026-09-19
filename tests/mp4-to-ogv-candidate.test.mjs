@@ -58,16 +58,8 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
     name: "within-theora",
     wasmPthreadPoolSize: 0,
     videoCodecThreads: 1,
-    avioOutputBufferBytes: 65_536,
-    initialWasmMemoryBytes: 20_971_520,
-    memoryGrowthLinearStepBytes: 1_048_576,
-    stackBytes: 524_288,
     profiles: ["avi-to-ogv", "mp4-to-ogv"],
   });
-  assert.match(
-    sourceManifest,
-    /build_core within-theora 1 0 0 65536 20971520 1048576 524288/,
-  );
   assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["mp4-to-ogv"], "theora");
   assert.deepEqual(videoOptionProfileForId("mp4-to-ogv"), {
     engine: "ffmpeg-video",
@@ -83,5 +75,22 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
   );
   assert.match(stressGenerator, /"-threads:v", "1"/);
   assert.match(cleanup, /temp-mp4-ogv/);
-  assert.match(cleanup, /ffmpeg-candidate-34903564007/);
+  assert.match(cleanup, /ffmpeg-candidate-34932654495/);
+});
+
+test("MP4 to OGV remains hidden after the complete-browser memory rejection", () => {
+  const evidence = JSON.parse(
+    readFileSync("evidence/mp4-to-ogv-candidate-2026-09-15.json", "utf8"),
+  );
+  const rejected = evidence.stress.twentyMiBInitialHeapOneMiBGrowth;
+  assert.equal(rejected.status, "rejected");
+  assert.ok(Math.max(...rejected.incrementalPrivateMiB) > 250);
+  assert.equal(rejected.actualWasmMemoryBytes, 25 * 1024 * 1024);
+  assert.equal(rejected.decodedFramesPerRun, 1560);
+  assert.equal(rejected.mediaTraversal, "full-native-decode");
+  assert.equal(rejected.allNonMemoryChecksPassed, true);
+  assert.equal(rejected.cancellationPassed, true);
+  assert.equal(rejected.cleanupRecoveryPassed, true);
+  const profile = conversionProfiles.find(({ id }) => id === "mp4-to-ogv");
+  assert.equal(profile?.public, false);
 });

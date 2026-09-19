@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "recordedAt": "2026-09-15",
-  "status": "candidate-memory-optimization-pending",
+  "status": "candidate-hidden-after-memory-rejection",
   "scope": "Production-browser H.264 MP4 to genuine Ogg Theora decode and re-encode.",
   "dockerUsed": false,
   "conversionClass": "full H.264 video decode and lossy Theora re-encode; audio is explicitly excluded",
@@ -14,14 +14,16 @@
   },
   "focusedBrowserGate": {
     "status": "passed",
-    "cases": 2,
-    "elapsedSeconds": 16.3,
+    "cases": 7,
+    "elapsedSeconds": 12.7,
     "validated": [
       "genuine browser-worker MP4 H.264 decode to Ogg Theora",
       "exact source/output decoded frame count",
       "full native decode",
       "bounded read/write/queue metrics",
-      "injected destination-write failure removes the partial output"
+      "injected destination-write failure removes the partial output",
+      "the existing public AVI to OGV route still works with the candidate engine",
+      "bounded codec, width, frame-rate, and quality controls remain functional"
     ]
   },
   "stress": {
@@ -86,6 +88,50 @@
       "cancellationPassed": true,
       "cleanupRecoveryPassed": true
     },
+    "twentyMiBInitialHeapOneMiBGrowth": {
+      "status": "rejected",
+      "hostedBuildRun": 34932654495,
+      "hostedBuildCommit": "89ac3d94112d2653b9351a29300f94efe5ee12f9",
+      "artifactId": 10382821318,
+      "artifactSha256": "72d1229e10c091558540281533ab53b40d85eec25732c05dd37f696e0568f50a",
+      "moduleMjsSha256": "94573e83eca8994973b58a154647b599c5f00290dffac8d4123160fde3dd0272",
+      "moduleWasmSha256": "89b99ab8bcf9937c136a4849d782a2214f1008b9b00df4675e8aa5e80637973e",
+      "otherBuiltModulesManifestAndLicensesMatched": true,
+      "smallBrowserCasesPassed": 7,
+      "singleCleanSessionReport": "2026-09-15T05-46-47-679Z-mp4-to-ogv-direct-handle-stress.json",
+      "singleCleanSessionReportSha256": "b0caa9bd80a1b84ed030f3fd7822dc7ad56c00f7521704e1aaeccd10881cd8b8",
+      "singleCleanSessionIncrementalPrivateMiB": 236.66796875,
+      "threeRunReport": "2026-09-19T10-02-44-412Z-mp4-to-ogv-direct-handle-stress.json",
+      "threeRunReportSha256": "387dc3c87e9d85b37578fe083cacd80abebd300f4fa432b9e700653dade89a58",
+      "sourceBytes": 147242147,
+      "outputBytes": 8840421,
+      "outputSha256": "c09cff588b3bb506e76bb7b4d84d6b163cbf7fd5c99d8fa54f3bfaf8a1da80f0",
+      "decodedFramesPerRun": 1560,
+      "midpointVisualSsim": 0.938791,
+      "mediaTraversal": "full-native-decode",
+      "elapsedMs": [22030.825, 21743.825, 21792.8],
+      "incrementalPrivateMiB": [255.140625, 201.6171875, 199.390625],
+      "blankBaselinePrivateBytes": 285945856,
+      "loadedIdlePrivateBytes": 358969344,
+      "peakCompleteProcessTreePrivateBytes": 553480192,
+      "peakProcessTypePrivateBytes": {
+        "browser": 65331200,
+        "crashpadHandler": 2719744,
+        "gpuProcess": 136359936,
+        "renderer": 325410816,
+        "utility": 23658496
+      },
+      "actualWasmMemoryBytes": 26214400,
+      "sharedArrayBufferBytes": 26480672,
+      "maximumReadBytes": 262144,
+      "maximumWriteAndQueuedBytes": 64962,
+      "maximumPendingOperations": 1,
+      "activeWorkerCount": 2,
+      "reason": "The cold first run exceeded the unchanged 250 MiB complete-Chromium limit by 5.140625 MiB. The single clean-session pass did not establish repeatability; the engine was restored to the last public reproducible binary.",
+      "allNonMemoryChecksPassed": true,
+      "cancellationPassed": true,
+      "cleanupRecoveryPassed": true
+    },
     "sharedBounds": {
       "maximumReadBytes": 262144,
       "maximumObservedWriteBytes": 64946,
@@ -110,7 +156,7 @@
     },
     "byteIdenticalAcrossIndependentGenerations": true
   },
-  "activeOptimizationCandidate": {
+  "lastOptimizationCandidate": {
     "module": "within-theora",
     "priorInitialWasmMemoryBytes": 25165824,
     "candidateInitialWasmMemoryBytes": 20971520,
@@ -121,13 +167,23 @@
     "codecSettingsChanged": false,
     "qualityThresholdChanged": false,
     "memoryLimitChanged": false,
-    "status": "awaiting hosted no-Docker build and browser measurement after the 24 MiB candidate failed"
+    "status": "rejected after the required three-run direct-save session exceeded 250 MiB"
+  },
+  "restoredPublishedEngine": {
+    "module": "within-theora",
+    "mjsSha256": "a436fc61948aaaf7b309abcb8c0f6e3de486612862bf0cb66b16f51491af882a",
+    "wasmSha256": "e1028291ed4a85961600c251f8a2ac9955bde568eaaab650c23192542aaa86e0",
+    "initialWasmMemoryBytes": 33554432,
+    "focusedBrowserCasesPassedAfterRestore": 7,
+    "hiddenMp4RouteStillFailsRequiredDirectMemoryGate": true
   },
   "cleanup": {
     "generatedLargeSourcesRetained": 0,
     "convertedOutputsRetained": 0,
     "browserProfilesRetained": 0,
     "temporaryProcessDirectoriesRetained": 0,
-    "rawReportsRetainedUntilCompaction": 3
+    "redundantPassReportsRetained": 0,
+    "rawFailureReportsRetainedForDiagnosis": 1,
+    "supersededHostedArtifactsRetained": 0
   }
 }
