@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-13. This is the living requirement audit for the original
+Updated 2026-09-19. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.

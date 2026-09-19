@@ -12,6 +12,23 @@ import {
   publicProfilesFor,
 } from "../lib/capability-registry.ts";
 
+test("published route totals in README and TESTED match the registry", () => {
+  const count = conversionProfiles.filter((profile) => profile.public).length;
+  const readme = readFileSync("README.md", "utf8");
+  const tested = readFileSync("TESTED.md", "utf8");
+  const readmeCount = readme.match(/current registry publishes (\d+)\s+routes/);
+  const testedCount = tested.match(/Public passed conversion profiles: \*\*(\d+)\*\*/);
+  const stressCount = tested.match(
+    /Public profiles with retained successful Chrome stress evidence: \*\*(\d+)\*\*/,
+  );
+  assert.ok(readmeCount, "README has a published route total");
+  assert.ok(testedCount, "TESTED has a public route total");
+  assert.ok(stressCount, "TESTED has a retained stress-evidence total");
+  assert.equal(Number(readmeCount[1]), count);
+  assert.equal(Number(testedCount[1]), count);
+  assert.equal(Number(stressCount[1]), count);
+});
+
 test("every public MP3 and FLAC output discloses bounded artwork retention", () => {
   const artworkOutputs = conversionProfiles.filter(
     (profile) =>
