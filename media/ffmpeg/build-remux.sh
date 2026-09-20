@@ -18,8 +18,20 @@ build_core() {
   local pthread_pool_size="$3"
   local threaded_mpeg4="${4:-0}"
   local output_buffer_bytes="${5:-262144}"
+  local source_file=/src/within_remux.c
+  local exported_functions='["_within_remux"]'
+  local initial_memory=33554432
+  local maximum_memory=100663296
+  local growth_step=8388608
   local profile_defines=()
   local theora_libraries=()
+  if [[ "${output_name}" == "within-aiff" ]]; then
+    source_file=/src/within_aiff.c
+    exported_functions='["_within_aiff"]'
+    initial_memory=16777216
+    maximum_memory=33554432
+    growth_step=4194304
+  fi
   if [[ "${output_name}" == "within-remux" ]]; then
     profile_defines+=("-DWITHIN_COMPATIBLE_WEBM_COPY=1")
     profile_defines+=("-DWITHIN_OGV_COPY=1")
@@ -33,7 +45,7 @@ build_core() {
     theora_libraries+=("${PREFIX}/lib/libtheoradec.a")
   fi
 
-  emcc /src/within_remux.c \
+  emcc "${source_file}" \
     -DWITHIN_VIDEO_THREADS="${video_threads}" \
     -DWITHIN_AVIO_OUTPUT_BUFFER_SIZE="${output_buffer_bytes}" \
     "${profile_defines[@]}" \
@@ -60,9 +72,9 @@ build_core() {
     -sASYNCIFY=1 \
     -sASYNCIFY_STACK_SIZE=1048576 \
     -sALLOW_MEMORY_GROWTH=1 \
-    -sINITIAL_MEMORY=33554432 \
-    -sMAXIMUM_MEMORY=100663296 \
-    -sMEMORY_GROWTH_LINEAR_STEP=8388608 \
+    -sINITIAL_MEMORY="${initial_memory}" \
+    -sMAXIMUM_MEMORY="${maximum_memory}" \
+    -sMEMORY_GROWTH_LINEAR_STEP="${growth_step}" \
     -sSTACK_SIZE=1048576 \
     -sMALLOC=emmalloc \
     -sMODULARIZE=1 \
@@ -72,7 +84,7 @@ build_core() {
     -sFILESYSTEM=0 \
     -sASSERTIONS=0 \
     -sWASM_BIGINT=1 \
-    -sEXPORTED_FUNCTIONS='["_within_remux"]' \
+    -sEXPORTED_FUNCTIONS="${exported_functions}" \
     -sEXPORTED_RUNTIME_METHODS='["ccall"]' \
     -sASYNCIFY_IMPORTS='["within_input_read","within_output_write","within_output_truncate","within_output_flush"]' \
     -Wl,--no-entry \
@@ -89,7 +101,7 @@ build_selected_core() {
 }
 
 case "${CORE_FILTER}" in
-  all|within-remux|within-direct|within-mpeg4|within-webm|within-vp9|within-webm-quality|within-theora) ;;
+  all|within-remux|within-direct|within-mpeg4|within-webm|within-vp9|within-webm-quality|within-theora|within-aiff) ;;
   *)
     echo "Unknown WITHIN_BUILD_CORE_FILTER: ${CORE_FILTER}" >&2
     exit 2
@@ -104,6 +116,9 @@ build_selected_core within-vp9 4 8 0
 build_selected_core within-webm-quality 2 4 0
 if [[ "${CORE_FILTER}" == "within-theora" ]]; then
   build_core within-theora 1 0 0
+fi
+if [[ "${CORE_FILTER}" == "within-aiff" ]]; then
+  build_core within-aiff 1 0 0
 fi
 
 cat > "${OUTPUT}/build-manifest.json" <<EOF

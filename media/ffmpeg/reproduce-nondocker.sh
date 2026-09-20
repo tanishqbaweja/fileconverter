@@ -359,6 +359,13 @@ patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
   emmake make install
 )
 requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
+if [[ "${requested_core}" == "within-aiff" ]]; then
+  # Candidate only: retain the exact published wrapper and derive a single
+  # reachable AIFF entrypoint in repository-local build scratch.
+  node "${SCRIPT_DIR}/make-aiff-specialist.mjs" \
+    "${BUILD_ROOT}/within_remux.c" "${BUILD_ROOT}/within_aiff.c"
+  WITHIN_BUILD_CORE_FILTER=within-aiff ./build-remux.sh
+fi
 if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; then
   # The published general core predates Theora. Remove only the new guarded
   # Theora blocks so its translation unit remains byte-for-byte historical.
@@ -366,7 +373,7 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
   cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
 fi
-if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ) ]]; then
+if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" && "${requested_core}" != "within-aiff" ) ]]; then
   # The bounded AVI muxer and AVI output support belong only to the general
   # core. The already-certified specialists predate both changes, so restore
   # their exact historical FFmpeg configure surface as well as the source.
@@ -426,7 +433,7 @@ elif [[ "${requested_core}" == "within-direct" ]]; then
   patch --directory="${BUILD_ROOT}" --strip=1 \
     < direct-published-source.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
-elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ]]; then
+elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" && "${requested_core}" != "within-aiff" ]]; then
   restore_pre_theora_source
   strip_general_core_only_profiles
   patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
@@ -455,6 +462,41 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]];
   run_build_step ./build-theora.sh "${BUILD_ROOT}/libtheora"
   WITHIN_ENABLE_THEORA_ENCODER=1 ./build-libraries.sh
   WITHIN_BUILD_CORE_FILTER=within-theora ./build-remux.sh
+fi
+
+if [[ "${requested_core}" == "within-aiff" ]]; then
+  # This temporary module has no published comparison target. The workflow
+  # uploads it for a production-browser A/B and removes all build scratch.
+  node --input-type=module - \
+      "${OUTPUT_ROOT}/build-manifest.json" \
+      "${BUILD_ROOT}/within_aiff.c" <<'NODE'
+import { createHash } from "node:crypto";
+import { readFileSync, writeFileSync } from "node:fs";
+
+const [manifestPath, sourcePath] = process.argv.slice(2);
+const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+manifest.candidateOnly = true;
+manifest.initialWasmMemoryBytes = 16777216;
+manifest.maximumWasmMemoryBytes = 33554432;
+manifest.wasmGrowthStepBytes = 4194304;
+manifest.entrypoint = "within_aiff";
+manifest.specialistSourceSha256 = createHash("sha256")
+  .update(readFileSync(sourcePath))
+  .digest("hex");
+manifest.modules = [{
+  name: "within-aiff",
+  wasmPthreadPoolSize: 0,
+  videoCodecThreads: 1,
+  profiles: ["m4a-to-aiff candidate"],
+}];
+manifest.profiles = ["m4a-to-aiff candidate"];
+writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
+NODE
+  sha256sum "${OUTPUT_ROOT}/within-aiff.mjs" \
+    "${OUTPUT_ROOT}/within-aiff.wasm" \
+    "${OUTPUT_ROOT}/build-manifest.json"
+  printf 'Unpublished AIFF specialist candidate built without Docker.\n'
+  exit 0
 fi
 
 comparison_files=()

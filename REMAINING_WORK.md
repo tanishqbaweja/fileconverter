@@ -1513,3 +1513,19 @@ not the entire product specification.
   limit, input, fidelity, or process-tree formula. P-06 is now marked partial
   because the historical passing ledger does not prove current-Chrome
   compliance for this public route.
+
+### 2026-09-20 — unpublished AIFF specialist source preflight
+
+- Prepared a separate, opt-in no-Docker `within-aiff` candidate. The generator
+  requires the exact published general-wrapper SHA-256, removes the general
+  entrypoint from the reachable exported call graph, and exposes only the
+  existing profile-28 audio-transcode function. The candidate build starts
+  Wasm at 16 MiB with a fixed 32 MiB maximum; published modules and their
+  flags remain unchanged. This tests whether smaller compiled code/heap can
+  lower renderer private memory without changing PCM output or I/O topology.
+- A source-generation test passed and removed its project-local scratch in
+  `finally`; shell syntax and lint passed. This is **not** browser evidence or a
+  reason to reclassify M4A-to-AIFF as memory compliant. The next gate is the
+  pinned no-Docker compile, followed by a small real-browser correctness test
+  and matched 140,941,469-byte direct/OPFS three-run memory sessions. Publish
+  only if every gate passes; otherwise delete the candidate and record why.
