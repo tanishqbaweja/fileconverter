@@ -9,17 +9,24 @@ import { fileURLToPath } from "node:url";
 const execFileAsync = promisify(execFile);
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
-const durationSeconds = 800;
-const minimumBytes = 128 * 1024 * 1024;
+const alacOutputArguments = [
+  "-c:a", "alac", "-sample_fmt", "s16p",
+  "-min_prediction_order", "4", "-max_prediction_order", "4",
+  "-movflags", "empty_moov+default_base_moof", "-frag_duration", "5000000",
+];
 const fixtures = [
   {
     name: "audio-alac-128m.m4a",
     codec: "alac",
-    outputArguments: [
-      "-c:a", "alac", "-sample_fmt", "s16p",
-      "-min_prediction_order", "4", "-max_prediction_order", "4",
-      "-movflags", "empty_moov+default_base_moof", "-frag_duration", "5000000",
-    ],
+    outputArguments: alacOutputArguments,
+  },
+  {
+    name: "audio-alac-64m-diagnostic.m4a",
+    codec: "alac",
+    durationSeconds: 400,
+    minimumBytes: 64 * 1024 * 1024,
+    diagnosticOnly: true,
+    outputArguments: alacOutputArguments,
   },
   {
     name: "audio-flac-alac-128m.flac",
@@ -41,17 +48,20 @@ await execFileAsync("node", ["scripts/generate-alac-fixture.mjs"], {
 await mkdir(fixtureRoot, { recursive: true });
 
 const requestedNames = new Set(process.argv.slice(2));
+const defaultFixtures = fixtures.filter((fixture) => !fixture.diagnosticOnly);
 const selectedFixtures = requestedNames.size
   ? fixtures.filter((fixture) => requestedNames.has(fixture.name))
-  : fixtures;
-if (selectedFixtures.length !== (requestedNames.size || fixtures.length)) {
+  : defaultFixtures;
+if (selectedFixtures.length !== (requestedNames.size || defaultFixtures.length)) {
   throw new Error(
     `Unknown fixture name. Choose from: ${fixtures.map((fixture) => fixture.name).join(", ")}.`,
   );
 }
 
-let referencePcmHash = null;
+const referencePcmHashes = new Map();
 for (const fixture of selectedFixtures) {
+  const durationSeconds = fixture.durationSeconds ?? 800;
+  const minimumBytes = fixture.minimumBytes ?? 128 * 1024 * 1024;
   const fixturePath = path.join(fixtureRoot, fixture.name);
   await execFileAsync(
     "ffmpeg",
@@ -108,10 +118,11 @@ for (const fixture of selectedFixtures) {
     { cwd: projectRoot, windowsHide: true, maxBuffer: 16 * 1024 * 1024 },
   );
   const decodedPcmSha256 = decodedHash.trim().split("=")[1];
+  const referencePcmHash = referencePcmHashes.get(durationSeconds);
   if (referencePcmHash && decodedPcmSha256 !== referencePcmHash) {
     throw new Error(`${fixture.name} does not decode to the shared PCM reference.`);
   }
-  referencePcmHash = decodedPcmSha256;
+  referencePcmHashes.set(durationSeconds, decodedPcmSha256);
   await writeFile(
     `${fixturePath}.json`,
     `${JSON.stringify({
