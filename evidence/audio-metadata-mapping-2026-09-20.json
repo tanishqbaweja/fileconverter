@@ -1,6 +1,6 @@
 {
   "date": "2026-09-20",
-  "status": "published-engine diagnostic; AIFF ID3v2 source candidate not yet built or accepted",
+  "status": "published-engine diagnostic; separate AIFF ID3v2 candidate was later built and rejected on the unchanged 250 MiB gate",
   "source": {
     "path": "fixtures/media/audio-source-artwork.m4a",
     "bytes": 64973,
@@ -23,6 +23,6 @@
   "limitations": [
     "This is one 64,973-byte M4A source, not broad field-mapping or stress certification.",
     "Ogg, Opus, and WMA additionally copied irrelevant M4A brand keys; destination-specific filtering remains open.",
-    "The proposed AIFF ID3v2/artwork source change requires a new reproducible Wasm build, production-browser validation, adverse-path tests, and three-run complete-Chromium memory measurements before publication."
+    "The later AIFF ID3v2/artwork candidate passed the small browser check but failed the 250 MiB complete-Chromium cold-run gate; see evidence/aiff-id3-memory-candidate-2026-09-20.json. It was not published."
   ]
 }

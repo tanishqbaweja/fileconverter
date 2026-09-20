@@ -1462,10 +1462,24 @@ not the entire product specification.
   by the current public AIFF route. The focused Chrome test passed 1/1 in 13.8
   seconds; exact source/output hashes and limitations are in
   `evidence/audio-metadata-mapping-2026-09-20.json`.
-- An unpublished AIFF candidate enables FFmpeg's AIFF ID3v2 writer, maps artist
-  to native AUTH, and allows the existing 4 MiB/4,096-side/16-megapixel
-  first-picture limit. Its reversible source delta passed the historical
-  specialist-rewrite preflight without Docker. This is not yet a conversion or
-  memory success claim: rebuild, full browser tag/artwork validation, adverse
-  cleanup, three-run stress/direct-save memory, and exact reproducibility are
-  still required. M-08 remains **partially implemented**.
+- The no-Docker AIFF ID3v2/artwork candidate did compile. A small production-
+  browser conversion passed seven tags, artist-to-AUTH, exact PNG artwork, and
+  full native decode. On the 140,941,469-byte ALAC/M4A stress source, however,
+  its three-run BYOB-input OPFS session measured 250.570, 203.484, and 203.152
+  MiB: the cold run exceeded the unchanged 250 MiB limit. The candidate was
+  **rejected and not published**; its native source delta was removed from the
+  current build. The published core also exceeded the limit on current Chrome
+  153 with its older synchronous input (280.672 MiB cold). A persistent bounded
+  BYOB reader improved the published core's matched OPFS session to 241.957,
+  201.543, and 219.383 MiB and reduced conversion time from 4.915–5.467 to
+  4.671–4.979 seconds, but direct-save cold memory still reached 257.605 MiB.
+  An asynchronous direct writer was rejected at 263.449 MiB and 11.397 seconds.
+  Exact hashes, the invalid stale-bundle comparison, and cleanup gates are in
+  `evidence/aiff-id3-memory-candidate-2026-09-20.json`. M-08 and current-Chrome
+  direct-save memory recovery remain **partially implemented**.
+- The public-evidence manifest gate now rejects pending **public** profiles
+  while reporting the one hidden pending `mp4-to-ogv` profile explicitly. Its
+  2026-09-20 result is 405 public passed/405 compact entries, one hidden
+  pending, zero public non-passing, and zero PDF routes. This restores the CI
+  gate's public-scope meaning; it does not certify the hidden OGV candidate or
+  close the remaining product audit.

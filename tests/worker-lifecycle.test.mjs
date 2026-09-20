@@ -178,11 +178,11 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(app, /return \(\) => window\.clearInterval\(timer\)/);
 });
 
-test("IVF and direct compatible-WebM inputs use the reusable asynchronous BYOB reader", () => {
+test("IVF, AIFF, and direct compatible-WebM inputs use the reusable asynchronous BYOB reader", () => {
   const worker = source("workers/conversion.worker.ts");
   assert.match(
     worker,
-    /forceAsynchronousInput:\s*profileId === "ivf-to-webm" \|\|\s*profileId === "ivf-to-mkv" \|\|\s*\(message\.destination\.mode === "handle" &&\s*\(profileId === "mkv-to-webm-av1" \|\|\s*profileId === "mp4-to-webm-av1"\)\)/s,
+    /forceAsynchronousInput:\s*profileId === "ivf-to-webm" \|\|\s*profileId === "ivf-to-mkv" \|\|\s*profileId === "m4a-to-aiff" \|\|\s*\(message\.destination\.mode === "handle" &&\s*\(profileId === "mkv-to-webm-av1" \|\|\s*profileId === "mp4-to-webm-av1"\)\)/s,
   );
 
   const remux = source("workers/media-remux.ts");

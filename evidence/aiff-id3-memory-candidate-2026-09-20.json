@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-20",
+  "status": "rejected; candidate not published",
+  "source": {
+    "path": "fixtures/stress/media/audio-alac-128m.m4a",
+    "bytes": 140941469,
+    "sha256": "8dd8aecc0ea99610314da8acd6a658a5544450d76fb739ff8c8baeeca9bb6e6e"
+  },
+  "browser": "Google Chrome 153.0.8010.48, production localhost build, complete process-tree private memory",
+  "formula": "peak complete Chromium process-tree private memory during conversion minus stable clean blank-browser process-tree private memory",
+  "limitMiB": 250,
+  "build": {
+    "sourceCommit": "298347fcfca335804ea26b8edfd87294bc8fed96",
+    "nondockerRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35483510743",
+    "result": "Source-rewrite preflight and FFmpeg compilation passed. Only the intended build-manifest.json and within-remux.wasm differed from published artifacts, so the candidate-mismatch workflow failed and uploaded a temporary artifact for browser testing.",
+    "candidateWasmSha256": "d99cd1814a53d54f27f4e19dd622a8efbd64347b5c453dc8d768b1075b28bb0d",
+    "publishedWasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+  },
+  "smallBrowserGate": "1/1 passed with seven common M4A tags, native AIFF author mapping, exact first 178-byte PNG cover packet, FFprobe structure, and full native audio decode. This is not large-file memory certification.",
+  "comparison": [
+    {
+      "engine": "published",
+      "input": "FileReaderSync bounded slices",
+      "destination": "sync-opfs",
+      "runs": 3,
+      "outputBytes": 153600102,
+      "outputSha256": "27c10e765949e4fdfec43ae3685613f15b2a1d0a4f696cb46c4bb8abc67ae499",
+      "elapsedSeconds": [5.467, 5.138, 4.915],
+      "incrementalPrivateMiB": [280.672, 244.391, 236.219],
+      "passed": false,
+      "reportSha256": "4690d92293d482e3d635c9e881f4e75b35b137dab5b7029e9e29a9cbc10dc889"
+    },
+    {
+      "engine": "published",
+      "input": "persistent 256 KiB BYOB",
+      "destination": "sync-opfs",
+      "runs": 3,
+      "outputBytes": 153600102,
+      "outputSha256": "27c10e765949e4fdfec43ae3685613f15b2a1d0a4f696cb46c4bb8abc67ae499",
+      "elapsedSeconds": [4.979, 4.697, 4.671],
+      "incrementalPrivateMiB": [241.957, 201.543, 219.383],
+      "passed": true,
+      "reportSha256": "5e68f1eb945344838f010a9b95b1cf96d08e986c672fdafd5374725e2ad23dce"
+    },
+    {
+      "engine": "candidate-id3v2",
+      "input": "persistent 256 KiB BYOB",
+      "destination": "sync-opfs",
+      "runs": 3,
+      "outputBytes": 153600306,
+      "outputSha256": "f750983b5a2e0854294b1401d0a7415d7d5398ea35bc726fe11470f5d7e6c944",
+      "elapsedSeconds": [5.256, 4.762, 4.822],
+      "incrementalPrivateMiB": [250.570, 203.484, 203.152],
+      "passed": false,
+      "reportSha256": "a17fe47e3636e8dd1043271e27cee699f69fb9f6554c95a3449550e437a573c0"
+    },
+    {
+      "engine": "published",
+      "input": "persistent 256 KiB BYOB",
+      "destination": "direct selected handle via synchronous bridge",
+      "runs": 3,
+      "outputBytes": 153600102,
+      "outputSha256": "27c10e765949e4fdfec43ae3685613f15b2a1d0a4f696cb46c4bb8abc67ae499",
+      "elapsedSeconds": [5.440, 5.119, 5.416],
+      "incrementalPrivateMiB": [257.605, 223.605, 220.711],
+      "passed": false,
+      "reportSha256": "6cef964cf37a3dd825cc88420e7ee4615e6a14c9547c0380f7ce458219aa5e05"
+    },
+    {
+      "engine": "published",
+      "input": "persistent 256 KiB BYOB",
+      "destination": "direct selected handle via asynchronous writer",
+      "runs": 1,
+      "outputBytes": 153600102,
+      "elapsedSeconds": [11.397],
+      "incrementalPrivateMiB": [263.449],
+      "passed": false,
+      "reportSha256": "90f65155a8ad8f3e793034c3722b8640e0e0819056158d24a6c34a265eb06ad4"
+    }
+  ],
+  "candidateBeforeByob": {
+    "destination": "sync-opfs",
+    "runs": 3,
+    "incrementalPrivateMiB": [260.156, 232.199, 240.590],
+    "outputBytes": 153600306,
+    "reportSha256": "95cd9ca5e3f13c00d149d03d3f5d6bc8736dbbe42d51c669678851e15d392105"
+  },
+  "discardedMeasurement": "An attempted old-core comparison at 282.203 MiB was invalid because dist/client still contained the candidate Wasm; the byte-identical 153600306-byte output exposed the stale production bundle. It was rebuilt and verified against the published Wasm SHA before the valid old-core comparison above.",
+  "invariants": "All valid runs used the same source/settings, produced independently decoded genuine AIFF with repeatable output hashes, at most 262144-byte reads/writes/queues, one pending operation, fixed 32 MiB Wasm, and cleanup recovery. No native FFmpeg conversion or Docker was used.",
+  "decision": "Do not publish ID3v2/artwork. Do not claim direct-destination acceptance on Chrome 153. Retain the faster BYOB input optimization as a bounded candidate, investigate cold renderer/direct-writer memory, then rerun three-run sessions in both modes before changing the public claim."
+}

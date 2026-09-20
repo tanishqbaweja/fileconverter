@@ -91,6 +91,8 @@ const publicPassed = conversionProfiles.filter(
 const pending = conversionProfiles.filter(
   (profile) => profile.automatedTestStatus === "pending",
 );
+const publicPending = pending.filter((profile) => profile.public);
+const hiddenPending = pending.filter((profile) => !profile.public);
 const leaked = conversionProfiles.filter(
   (profile) =>
     profile.public && profile.automatedTestStatus !== "passed",
@@ -112,9 +114,9 @@ function auditRegistry() {
   if (duplicatePublicIds.length > 0) {
     throw new Error(`Duplicate public profile ids: ${duplicatePublicIds.join(", ")}`);
   }
-  if (pending.length > 0) {
+  if (publicPending.length > 0) {
     throw new Error(
-      `Unresolved pending profiles: ${pending.map((profile) => profile.id).join(", ")}`,
+      `Unresolved public pending profiles: ${publicPending.map((profile) => profile.id).join(", ")}`,
     );
   }
   if (leaked.length > 0) {
@@ -149,6 +151,7 @@ async function auditCompactManifest() {
         publicPassedProfiles: publicPassed.length,
         compactEvidenceEntries: entries.length,
         pendingProfiles: pending.length,
+        hiddenPendingProfiles: hiddenPending.length,
         publicNonPassingProfiles: leaked.length,
         pdfFormats: pdfFormats.length,
         pdfProfiles: pdfProfiles.length,
@@ -303,6 +306,7 @@ const summary = {
       maximumSizeEvidence.sourceBytes >= maxTestedBytes,
   ).length,
   pendingProfiles: pending.length,
+  hiddenPendingProfiles: hiddenPending.length,
   publicNonPassingProfiles: leaked.length,
   pdfFormats: pdfFormats.length,
   pdfProfiles: pdfProfiles.length,

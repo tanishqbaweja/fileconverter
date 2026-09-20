@@ -1397,6 +1397,16 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
 test("M-08 maps M4A tags across other advertised audio containers", async ({
   page,
 }) => {
+  const manifest = JSON.parse(
+    await readFile(
+      path.join(projectRoot, "public", "engines", "remux", "build-manifest.json"),
+      "utf8",
+    ),
+  ) as { audioArtworkOptions: { supportedOutputs: string[] } };
+  const aiffId3Published = manifest.audioArtworkOptions.supportedOutputs.includes("aiff");
+  const sourceArtworkSha256 = aiffId3Published
+    ? await extractedArtworkSha256(artworkFixturePath)
+    : null;
   const expectedTags = {
     title: "Within artwork title",
     artist: "Within artist",
@@ -1427,18 +1437,35 @@ test("M-08 maps M4A tags across other advertised audio containers", async ({
     const audio = probe.streams.filter((stream) => stream.codec_type === "audio");
     expect(audio).toHaveLength(1);
     expect(audio[0]?.codec_name).toBe(codec);
-    expect(probe.streams.some((stream) => stream.disposition?.attached_pic === 1)).toBe(false);
-    expect(state.warnings.some((warning) => warning.includes("cover art is explicitly excluded"))).toBe(true);
+    const artwork = probe.streams.filter(
+      (stream) => stream.disposition?.attached_pic === 1,
+    );
     const tags = profileId === "m4a-to-ogg" || profileId === "m4a-to-opus"
       ? audio[0]?.tags ?? {}
       : probe.format.tags ?? {};
     if (profileId === "m4a-to-aiff") {
-      expect(tags.title).toBe(expectedTags.title);
-      expect(tags.comment).toBe(expectedTags.comment);
-      // The published AIFF core does not yet map artist to AIFF's AUTH field.
-      expect(tags.author).toBeUndefined();
-      expect(tags.artist).toBeUndefined();
+      if (aiffId3Published) {
+        expect(artwork).toHaveLength(1);
+        expect(artwork[0]?.codec_name).toBe("png");
+        expect(artwork[0]?.width).toBe(64);
+        expect(artwork[0]?.height).toBe(64);
+        expect(await extractedArtworkSha256(outputPath)).toBe(sourceArtworkSha256);
+        expect(state.warnings.some((warning) => warning.includes("cover art is explicitly excluded"))).toBe(false);
+        for (const [key, value] of Object.entries(expectedTags)) {
+          expect(key === "artist" ? tags.artist ?? tags.author : tags[key],
+            `${profileId}/${key}`).toBe(value);
+        }
+      } else {
+        expect(artwork).toHaveLength(0);
+        expect(tags.title).toBe(expectedTags.title);
+        expect(tags.comment).toBe(expectedTags.comment);
+        expect(tags.author).toBeUndefined();
+        expect(tags.artist).toBeUndefined();
+        expect(state.warnings.some((warning) => warning.includes("cover art is explicitly excluded"))).toBe(true);
+      }
     } else {
+      expect(artwork).toHaveLength(0);
+      expect(state.warnings.some((warning) => warning.includes("cover art is explicitly excluded"))).toBe(true);
       for (const [key, value] of Object.entries(expectedTags)) {
         expect(tags[key], `${profileId}/${key}`).toBe(value);
       }

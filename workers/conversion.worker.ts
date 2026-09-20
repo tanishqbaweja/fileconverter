@@ -4806,6 +4806,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         forceAsynchronousInput:
           profileId === "ivf-to-webm" ||
           profileId === "ivf-to-mkv" ||
+          profileId === "m4a-to-aiff" ||
           (message.destination.mode === "handle" &&
             (profileId === "mkv-to-webm-av1" ||
               profileId === "mp4-to-webm-av1")),
