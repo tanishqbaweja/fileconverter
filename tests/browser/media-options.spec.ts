@@ -1394,6 +1394,63 @@ test("bounded audio metadata preserves compatible tags and cover art", async ({
   ).toBe(false);
 });
 
+test("M-08 maps M4A tags across other advertised audio containers", async ({
+  page,
+}) => {
+  const expectedTags = {
+    title: "Within artwork title",
+    artist: "Within artist",
+    album: "Within album",
+    genre: "Test genre",
+    date: "2026",
+    track: "3/9",
+    comment: "Within comment",
+  } as const;
+  for (const { profileId, extension, codec } of [
+    { profileId: "m4a-to-wav", extension: "wav", codec: "pcm_s16le" },
+    { profileId: "m4a-to-aiff", extension: "aiff", codec: "pcm_s16be" },
+    { profileId: "m4a-to-ogg", extension: "ogg", codec: "vorbis" },
+    { profileId: "m4a-to-opus", extension: "opus", codec: "opus" },
+    { profileId: "m4a-to-wma", extension: "wma", codec: "wmav2" },
+  ]) {
+    await page.goto("/?test=1");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page.locator('[data-testid="file-input"]').setInputFiles(artworkFixturePath);
+    await page.locator('[data-testid="format-select"]').selectOption(profileId);
+    const state = await waitForCompletedConversion(page);
+    expect(state.opfsName).toBeTruthy();
+    const outputPath = path.join(validationRoot, `metadata-map-${profileId}.${extension}`);
+    await copyAndDeleteSmallBrowserOutput(page, state.opfsName!, outputPath);
+    const probe = await probeAudioWithArtwork(outputPath);
+    const audio = probe.streams.filter((stream) => stream.codec_type === "audio");
+    expect(audio).toHaveLength(1);
+    expect(audio[0]?.codec_name).toBe(codec);
+    expect(probe.streams.some((stream) => stream.disposition?.attached_pic === 1)).toBe(false);
+    expect(state.warnings.some((warning) => warning.includes("cover art is explicitly excluded"))).toBe(true);
+    const tags = profileId === "m4a-to-ogg" || profileId === "m4a-to-opus"
+      ? audio[0]?.tags ?? {}
+      : probe.format.tags ?? {};
+    if (profileId === "m4a-to-aiff") {
+      expect(tags.title).toBe(expectedTags.title);
+      expect(tags.comment).toBe(expectedTags.comment);
+      // The published AIFF core does not yet map artist to AIFF's AUTH field.
+      expect(tags.author).toBeUndefined();
+      expect(tags.artist).toBeUndefined();
+    } else {
+      for (const [key, value] of Object.entries(expectedTags)) {
+        expect(tags[key], `${profileId}/${key}`).toBe(value);
+      }
+    }
+    await execFileAsync(
+      "ffmpeg",
+      ["-hide_banner", "-loglevel", "error", "-i", outputPath, "-map", "0:a:0", "-f", "null", "NUL"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
+    );
+  }
+});
+
 test("native audio quality policies materially change AAC bitrate and size", async ({
   page,
 }) => {

@@ -1342,7 +1342,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       continue;
     }
     if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
-      if (!mp3_output && !flac_output) {
+      if (!mp3_output && !flac_output && !aiff_output) {
         within_message(
             1,
             "The source cover art is explicitly excluded because this bounded audio destination cannot represent it reliably.");
@@ -1353,7 +1353,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       } else if (!supported_audio_artwork_codec(stream->codecpar->codec_id)) {
         within_message(
             1,
-            "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3/FLAC artwork accepts JPEG or PNG.");
+            "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3/FLAC/AIFF artwork accepts JPEG or PNG.");
       } else if (!bounded_audio_artwork_stream(stream)) {
         within_message(
             1,
@@ -1668,13 +1668,24 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   }
   av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
-  if (mp3_output || flac_output) {
+  if (mp3_output || flac_output || aiff_output) {
     result = merge_common_audio_text_metadata(
         &output_format->metadata, input_format->metadata,
         input_stream->metadata);
     if (result < 0) {
       report_av_error("Common audio metadata copy failed", result);
       goto cleanup;
+    }
+  }
+  if (aiff_output && !av_dict_get(output_format->metadata, "author", NULL, 0)) {
+    AVDictionaryEntry *artist =
+        av_dict_get(output_format->metadata, "artist", NULL, 0);
+    if (artist) {
+      result = av_dict_set(&output_format->metadata, "author", artist->value, 0);
+      if (result < 0) {
+        report_av_error("AIFF author metadata mapping failed", result);
+        goto cleanup;
+      }
     }
   }
 
@@ -1729,6 +1740,9 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   output_format->flags |= AVFMT_FLAG_CUSTOM_IO;
   if (opus_output || vorbis_output) {
     output_format->flags |= AVFMT_FLAG_BITEXACT;
+  }
+  if (aiff_output) {
+    av_dict_set(&muxer_options, "write_id3v2", "1", 0);
   }
   if (alac_output || m4a_aac_output) {
     av_dict_set(&muxer_options, "movflags",

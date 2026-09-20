@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-19. This is the living requirement audit for the original
+Updated 2026-09-20. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -1452,3 +1452,20 @@ not the entire product specification.
   `npm run cleanup:browser-compatibility` command removed disposable raw
   reports and screenshots after compaction, as well as every
   converted validation copy and browser profile. `test.mkv` remained exact.
+
+### 2026-09-20 — M-08 destination metadata mapping diagnostic
+
+- The published production-browser engine retained all seven tested common M4A
+  tags in WAV, Ogg Vorbis, Ogg Opus, and WMA2, but AIFF retained only title and
+  comment. FFprobe independently identified every genuine output codec and
+  native FFmpeg fully decoded all five results. Artwork was explicitly excluded
+  by the current public AIFF route. The focused Chrome test passed 1/1 in 13.8
+  seconds; exact source/output hashes and limitations are in
+  `evidence/audio-metadata-mapping-2026-09-20.json`.
+- An unpublished AIFF candidate enables FFmpeg's AIFF ID3v2 writer, maps artist
+  to native AUTH, and allows the existing 4 MiB/4,096-side/16-megapixel
+  first-picture limit. Its reversible source delta passed the historical
+  specialist-rewrite preflight without Docker. This is not yet a conversion or
+  memory success claim: rebuild, full browser tag/artwork validation, adverse
+  cleanup, three-run stress/direct-save memory, and exact reproducibility are
+  still required. M-08 remains **partially implemented**.

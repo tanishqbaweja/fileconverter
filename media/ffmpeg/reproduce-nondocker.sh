@@ -215,9 +215,11 @@ verify_specialist_source_rewrites() {
   verification_root="$(mktemp -d "${WORK_ROOT}/ffmpeg-source-rewrite-check.XXXXXX")"
   assert_work_path "${verification_root}"
   cp "${SCRIPT_DIR}/within_remux.c" "${verification_root}/"
-  cp "${verification_root}/within_remux.c" \
-    "${verification_root}/within_remux.current.c"
   if patch --reverse --directory="${verification_root}" --strip=3 \
+        < "${SCRIPT_DIR}/patches/aiff-id3-source.patch" &&
+      cp "${verification_root}/within_remux.c" \
+        "${verification_root}/within_remux.current.c" &&
+      patch --reverse --directory="${verification_root}" --strip=3 \
         < "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" &&
       restore_pre_theora_source "${verification_root}" &&
       printf '%s  %s\n' "${historical_general_source_sha256}" \
@@ -310,6 +312,7 @@ cp "${SCRIPT_DIR}/patches/avi-bounded-index.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/audio-options-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/aiff-id3-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-published-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/theora-source.patch" "${BUILD_ROOT}/"
@@ -365,6 +368,14 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-remux" ]]; 
   restore_pre_theora_source
   WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh
   cp "${BUILD_ROOT}/within_remux.current.c" "${BUILD_ROOT}/within_remux.c"
+fi
+if [[ "${requested_core}" != "within-remux" ]]; then
+  # AIFF ID3v2 metadata/artwork belongs only to the changed general core.
+  # Restore the exact historical source before rebuilding any published
+  # specialist, including Theora and the direct-write core.
+  patch --reverse --directory="${BUILD_ROOT}" --strip=3 \
+    < aiff-id3-source.patch
+  cp "${BUILD_ROOT}/within_remux.c" "${BUILD_ROOT}/within_remux.current.c"
 fi
 if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" ) ]]; then
   # The bounded AVI muxer and AVI output support belong only to the general

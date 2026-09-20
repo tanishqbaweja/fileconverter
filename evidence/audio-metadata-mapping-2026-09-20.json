@@ -1,0 +1,28 @@
+{
+  "date": "2026-09-20",
+  "status": "published-engine diagnostic; AIFF ID3v2 source candidate not yet built or accepted",
+  "source": {
+    "path": "fixtures/media/audio-source-artwork.m4a",
+    "bytes": 64973,
+    "sha256": "d635822fd1cf6d88596e7b86e0a06db2529d112a81097a246bac863b9d19682a"
+  },
+  "publishedWasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+  "method": "Production-build Chrome browser conversion through the public worker and Wasm engine, followed by independent FFprobe and complete native FFmpeg decode. Native tools did not perform conversion. Disposable output copies were deleted by browser-test teardown.",
+  "focusedTest": {
+    "command": "WITHIN_TEST_VIDEO=off npx playwright test tests/browser/media-options.spec.ts --grep 'M-08 maps M4A tags across other advertised audio containers'",
+    "result": "1/1 passed in 13.8 seconds"
+  },
+  "expectedCommonTags": ["title", "artist", "album", "genre", "date", "track", "comment"],
+  "outputs": [
+    {"profile": "m4a-to-wav", "codec": "pcm_s16le", "bytes": 385246, "sha256": "20acaa76bf181633850a9681f7ebc6f9fd670d4aa183aac8bb914b4cecc9823b", "retainedCommonTags": 7, "artwork": "explicitly excluded"},
+    {"profile": "m4a-to-aiff", "codec": "pcm_s16be", "bytes": 385128, "sha256": "45908ee74a18e17214b7937bc29a7dc2b4a598c70729fdb94cb8562c04001d13", "retainedCommonTags": 2, "retainedKeys": ["title", "comment"], "missingKeys": ["artist", "album", "genre", "date", "track"], "artwork": "explicitly excluded"},
+    {"profile": "m4a-to-ogg", "codec": "vorbis", "bytes": 11366, "sha256": "ecc77b13e78e7049f30eacefd2ec1f4c431514ffeeedd5c1f5745d3b8f9b6173", "retainedCommonTags": 7, "artwork": "explicitly excluded"},
+    {"profile": "m4a-to-opus", "codec": "opus", "bytes": 34130, "sha256": "17f3dea7e14083abf70cb486537ab8a363a1c32ad309970596d8131ef33d4dd6", "retainedCommonTags": 7, "artwork": "explicitly excluded"},
+    {"profile": "m4a-to-wma", "codec": "wmav2", "bytes": 302063, "sha256": "818da8fd4e5034c541bc6f6744353fe276e392585a955882d4351b5c5570c0ca", "retainedCommonTags": 7, "artwork": "explicitly excluded"}
+  ],
+  "limitations": [
+    "This is one 64,973-byte M4A source, not broad field-mapping or stress certification.",
+    "Ogg, Opus, and WMA additionally copied irrelevant M4A brand keys; destination-specific filtering remains open.",
+    "The proposed AIFF ID3v2/artwork source change requires a new reproducible Wasm build, production-browser validation, adverse-path tests, and three-run complete-Chromium memory measurements before publication."
+  ]
+}

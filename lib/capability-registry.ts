@@ -249,7 +249,7 @@ function standaloneAiffProfile(input: StandaloneAiffInput): ConversionProfile {
     metadataLimitations: [
       `The certified input codec is ${sourceCodec}.`,
       "Only the first audio stream is converted; chapters, artwork, attachments, additional streams, and container-specific metadata are explicitly excluded.",
-      "Compatible text metadata is copied when AIFF can represent it; language tags are not guaranteed by AIFF players.",
+      "AIFF native chunks can represent title, author, copyright, and comment, but source mappings are incomplete. In the audited M4A case title and comment survived, artist was omitted despite AIFF's AUTH field, and album, genre, date, and track were not represented. Stream-scoped source tags and language remain unverified or unsupported.",
     ],
     fidelityLimitations: losslessInput
       ? [
@@ -307,7 +307,7 @@ function containerAiffProfile(input: ContainerAiffInput): ConversionProfile {
     metadataLimitations: [
       `The certified input combination uses ${sourceCodec}; other audio codecs require separately verified routes.`,
       "Only the first audio stream is converted; video, subtitles, attachments, data, chapters, artwork, additional audio streams, and container-specific metadata are explicitly excluded.",
-      "Compatible text metadata is copied when AIFF can represent it; language tags are not guaranteed by AIFF players.",
+      "AIFF native chunks can represent title, author, copyright, and comment, but source mappings are incomplete. In the audited M4A case title and comment survived, artist was omitted despite AIFF's AUTH field, and album, genre, date, and track were not represented. Stream-scoped source tags and language remain unverified or unsupported.",
     ],
     fidelityLimitations: [
       `${sourceCodec} is decoded to signed 16-bit big-endian PCM; AIFF cannot restore information already discarded by the lossy source codec.`,
