@@ -53,7 +53,7 @@ certified historical SHA-256
 This preserves the direct core's existing byte identity, speed, and three-run
 memory evidence while allowing independently certified video-option ABI work.
 
-The build emits seven lazy-loaded WebAssembly SIMD modules from the same pinned
+The build emits eight lazy-loaded WebAssembly SIMD modules from the same pinned
 libraries and wrapper. `within-remux` has no pthread pool and handles audio and
 stream copy. `within-direct` is the direct-save MKV-to-MP4 specialist and uses a
 1 MiB output AVIO buffer to reduce synchronous browser-file write crossings.
@@ -69,7 +69,14 @@ VP8 uses four token partitions. VP8 and VP9 use realtime deadline,
 tile columns. Current stable
 Chromium therefore requires cross-origin isolation and `SharedArrayBuffer`. The
 scalar file I/O bridge stays single-flight, and each module's shared Wasm memory
-retains its 32 MiB initial and 96 MiB maximum sizes.
+retains its 32 MiB initial and 96 MiB maximum sizes, except the route-scoped
+`within-aiff` module, which starts at 16 MiB and has a fixed 32 MiB maximum.
+
+`within-aiff` is derived deterministically from the exact current general
+wrapper by `make-aiff-specialist.mjs`. Only `m4a-to-aiff` selects this
+single-thread, zero-pool module; other AIFF routes retain `within-remux`.
+The pinned no-Docker reproduction script compares its JavaScript, Wasm, and
+shared manifest byte-for-byte with the published files.
 
 `within-theora` is an isolated single-thread, zero-pool module for AVI-to-OGV.
 It decodes the first MPEG-4 Part 2 stream, excludes audio and unsupported

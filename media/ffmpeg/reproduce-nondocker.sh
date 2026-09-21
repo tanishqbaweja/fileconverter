@@ -359,9 +359,9 @@ patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < avi-bounded-index.patch
   emmake make install
 )
 requested_core="${WITHIN_BUILD_CORE_FILTER:-all}"
-if [[ "${requested_core}" == "within-aiff" ]]; then
-  # Candidate only: retain the exact published wrapper and derive a single
-  # reachable AIFF entrypoint in repository-local build scratch.
+if [[ "${requested_core}" == "all" || "${requested_core}" == "within-aiff" ]]; then
+  # Derive the published AIFF specialist from the exact current wrapper before
+  # reconstructing the separately certified historical specialist surfaces.
   node "${SCRIPT_DIR}/make-aiff-specialist.mjs" \
     "${BUILD_ROOT}/within_remux.c" "${BUILD_ROOT}/within_aiff.c"
   WITHIN_BUILD_CORE_FILTER=within-aiff ./build-remux.sh
@@ -462,41 +462,6 @@ if [[ "${requested_core}" == "all" || "${requested_core}" == "within-theora" ]];
   run_build_step ./build-theora.sh "${BUILD_ROOT}/libtheora"
   WITHIN_ENABLE_THEORA_ENCODER=1 ./build-libraries.sh
   WITHIN_BUILD_CORE_FILTER=within-theora ./build-remux.sh
-fi
-
-if [[ "${requested_core}" == "within-aiff" ]]; then
-  # This temporary module has no published comparison target. The workflow
-  # uploads it for a production-browser A/B and removes all build scratch.
-  node --input-type=module - \
-      "${OUTPUT_ROOT}/build-manifest.json" \
-      "${BUILD_ROOT}/within_aiff.c" <<'NODE'
-import { createHash } from "node:crypto";
-import { readFileSync, writeFileSync } from "node:fs";
-
-const [manifestPath, sourcePath] = process.argv.slice(2);
-const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
-manifest.candidateOnly = true;
-manifest.initialWasmMemoryBytes = 16777216;
-manifest.maximumWasmMemoryBytes = 33554432;
-manifest.wasmGrowthStepBytes = 4194304;
-manifest.entrypoint = "within_aiff";
-manifest.specialistSourceSha256 = createHash("sha256")
-  .update(readFileSync(sourcePath))
-  .digest("hex");
-manifest.modules = [{
-  name: "within-aiff",
-  wasmPthreadPoolSize: 0,
-  videoCodecThreads: 1,
-  profiles: ["m4a-to-aiff candidate"],
-}];
-manifest.profiles = ["m4a-to-aiff candidate"];
-writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`);
-NODE
-  sha256sum "${OUTPUT_ROOT}/within-aiff.mjs" \
-    "${OUTPUT_ROOT}/within-aiff.wasm" \
-    "${OUTPUT_ROOT}/build-manifest.json"
-  printf 'Unpublished AIFF specialist candidate built without Docker.\n'
-  exit 0
 fi
 
 comparison_files=()

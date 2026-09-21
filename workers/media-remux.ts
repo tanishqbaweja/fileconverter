@@ -12,6 +12,8 @@ import type { RandomAccessDestination } from "./random-access-destination";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
+const AIFF_MODULE_URL = "/engines/remux/within-aiff.mjs";
+const AIFF_WASM_URL = "/engines/remux/within-aiff.wasm";
 const MPEG4_MODULE_URL = "/engines/remux/within-mpeg4.mjs";
 const MPEG4_WASM_URL = "/engines/remux/within-mpeg4.wasm";
 const THREADED_VIDEO_MODULE_URL = "/engines/remux/within-webm.mjs";
@@ -85,6 +87,7 @@ export interface MediaRemuxOptions {
   lowMemoryVideoCore?: boolean;
   singleThreadVideoCore?: boolean;
   forceAsynchronousInput?: boolean;
+  aiffSpecialistCore?: boolean;
   jobId: string;
   metrics: ConversionMetrics;
   startedAt: number;
@@ -120,6 +123,7 @@ export async function runMediaRemux({
   lowMemoryVideoCore = false,
   singleThreadVideoCore = false,
   forceAsynchronousInput = false,
+  aiffSpecialistCore = false,
   jobId,
   metrics,
   startedAt,
@@ -127,6 +131,9 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  if (aiffSpecialistCore && remuxProfile !== 28) {
+    throw new Error("The AIFF specialist can only run native profile 28.");
+  }
   if (videoOptions?.codec === "vp8") {
     if (remuxProfile === 10) remuxProfile = 5;
     if (remuxProfile === 11) remuxProfile = 7;
@@ -578,7 +585,9 @@ export async function runMediaRemux({
   };
 
   const moduleUrl =
-    remuxProfile === 39
+    aiffSpecialistCore
+      ? AIFF_MODULE_URL
+    : remuxProfile === 39
       ? THEORA_MODULE_URL
     : useDirectRemuxCore
       ? DIRECT_REMUX_MODULE_URL
@@ -594,7 +603,9 @@ export async function runMediaRemux({
         ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    remuxProfile === 39
+    aiffSpecialistCore
+      ? AIFF_WASM_URL
+    : remuxProfile === 39
       ? THEORA_WASM_URL
     : useDirectRemuxCore
       ? DIRECT_REMUX_WASM_URL
@@ -658,7 +669,7 @@ export async function runMediaRemux({
         ...videoArguments,
       ];
   const result = await engineModule.ccall(
-    "within_remux",
+    aiffSpecialistCore ? "within_aiff" : "within_remux",
     "number",
     arguments_.map(() => "number" as const),
     arguments_,

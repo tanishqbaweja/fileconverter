@@ -1,0 +1,85 @@
+{
+  "recordedAt": "2026-09-20",
+  "status": "passed-for-m4a-to-aiff-on-tested-chrome",
+  "scope": "Profile 28 M4A-to-AIFF only; other AIFF routes still load the general core",
+  "browser": "Chrome 153.0.8010.48, production build",
+  "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "memoryLimitMiB": 250,
+  "source": {
+    "path": "fixtures/stress/media/audio-alac-128m.m4a (generated, then deleted)",
+    "bytes": 140941469,
+    "sha256": "8dd8aecc0ea99610314da8acd6a658a5544450d76fb739ff8c8baeeca9bb6e6e",
+    "codec": "ALAC, 48 kHz stereo, 800 seconds",
+    "decodedPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff"
+  },
+  "publishedCore": {
+    "module": "within-aiff",
+    "sourceSha256": "a542881bee3e4cd407f61be87d284fabe6a9ab7b70d2c1db63e542f745395814",
+    "javascriptSha256": "01caddd34039e3c4b593589a29d32b9518e9af592528179e4ef6db65476c8d07",
+    "wasmSha256": "56806d4dd2fa3e4d6f354fd2c8f41f7f0025b0d8adb754cac5a5e7aae52f354c",
+    "wasmBytes": 8793240,
+    "initialWasmMemoryBytes": 16777216,
+    "maximumWasmMemoryBytes": 33554432,
+    "hostedNoDockerCandidateBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35497157670"
+  },
+  "output": {
+    "format": "AIFF, genuine signed 16-bit big-endian PCM, 48 kHz stereo, 800 seconds",
+    "bytes": 153600102,
+    "sha256": "27c10e765949e4fdfec43ae3685613f15b2a1d0a4f696cb46c4bb8abc67ae499",
+    "independentValidation": "FFprobe, complete packet traversal, and decoded PCM SHA-256 equal to the source; output hash also equals the prior general core"
+  },
+  "repeatableSessions": {
+    "directSelectedDestination": {
+      "report": "2026-09-20T07-45-58-881Z-m4a-to-aiff-direct-handle-stress.json",
+      "reportSha256": "78ba28675b1c3d712e11619b2111e4dd8974733c40653945b9112c7b30c760af",
+      "elapsedMs": [5876.34, 5094.465, 5162.4],
+      "incrementalPrivateMiB": [223.98828125, 178.7265625, 187.328125],
+      "maxReadWriteAndQueuedBytes": 262144,
+      "peakPendingOperations": 1,
+      "peakWasmMemoryBytes": 16777216,
+      "passed": true
+    },
+    "opfs": {
+      "report": "2026-09-20T07-47-50-443Z-m4a-to-aiff-stress.json",
+      "reportSha256": "5d2cc0200decbb982865d9957a08aa1af35190eefa34f21076069b8aff5516e6",
+      "elapsedMs": [4708.685, 4483.52, 4383.815],
+      "incrementalPrivateMiB": [219.390625, 190, 190.25],
+      "maxReadBytes": 262144,
+      "maxWriteAndQueuedBytes": 32768,
+      "peakPendingOperations": 1,
+      "peakWasmMemoryBytes": 16777216,
+      "passed": true
+    }
+  },
+  "additionalColdRuns": {
+    "directSelectedDestinationMiB": [221.02734375, 246.6484375, 244.1328125],
+    "opfsMiB": [218.796875, 223.0234375],
+    "tightestDirectHeadroomMiB": 3.3515625,
+    "note": "The 246.648 MiB peak included a transient updater.exe descendant; it was not excluded from the complete-process-tree formula. This is passing evidence, not a claim of broad cross-machine margin."
+  },
+  "partialOutputCancellation": {
+    "directSelectedDestination": {
+      "reportSha256": "4959e75229c6ac6e02c0fd974d0a5e379c33da7f49a75ce79a64128a50844ad9",
+      "outputBytesAtCancel": 6553702,
+      "pendingOperationsAfter": 0,
+      "queuedBytesAfter": 0,
+      "residualProjectLocalEntries": 0,
+      "passed": true
+    },
+    "opfs": {
+      "reportSha256": "0e6a25dcab0978157423debc87b1ca9498536d4e3fd601f8a1c8a83544834097",
+      "outputBytesAtCancel": 15695974,
+      "pendingOperationsAfter": 0,
+      "queuedBytesAfter": 0,
+      "residualProjectLocalEntries": 0,
+      "passed": true
+    }
+  },
+  "comparison": {
+    "priorGeneralCoreColdDirectMiB": 260.172,
+    "priorGeneralCoreColdOpfsMiB": 251.094,
+    "source": "evidence/aiff-current-chrome-process-breakdown-2026-09-20.json",
+    "speedClaim": "No isolated direct-save speedup claimed; retained candidate is a memory fix with the same output."
+  },
+  "cleanup": "All seven raw JSON/CSV/HTML reports, the generated source, the local candidate download, browser profile, and converted copies are deleted after compaction; published Wasm and this compact evidence remain."
+}

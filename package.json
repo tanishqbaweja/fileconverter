@@ -17,6 +17,7 @@
     "cleanup:browser-compatibility": "node scripts/cleanup-browser-compatibility.mjs",
     "cleanup:audio-metadata-diagnostic": "node scripts/cleanup-audio-metadata-diagnostic.mjs",
     "cleanup:aiff-id3-candidate": "node scripts/cleanup-aiff-id3-candidate.mjs",
+    "cleanup:aiff-specialist-validation": "node scripts/cleanup-aiff-specialist-validation.mjs",
     "audit:engine-reproducibility": "node scripts/engine-reproducibility-manifest.mjs --check",
     "audit:public-evidence": "node scripts/audit-public-evidence.mjs",
     "audit:public-evidence:manifest": "node scripts/audit-public-evidence.mjs --manifest-only",

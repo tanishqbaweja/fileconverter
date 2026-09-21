@@ -226,8 +226,21 @@ for (const profile of publicPassed) {
     )
     .find(({ report }) => reportSourceBytes(report) >= profile.maxTestedBytes);
   const retained = retainedById.get(profile.id);
+  const retainedRawEvidenceIsPresent = Boolean(
+    retained &&
+      reports.some(
+        ({ name, reportSha256 }) =>
+          name === retained.repeatableEvidence?.report &&
+          reportSha256 === retained.repeatableEvidence?.reportSha256,
+      ) &&
+      reports.some(
+        ({ name, reportSha256 }) =>
+          name === retained.maximumSizeEvidence?.report &&
+          reportSha256 === retained.maximumSizeEvidence?.reportSha256,
+      ),
+  );
   if (
-    reports.length === 0 &&
+    !retainedRawEvidenceIsPresent &&
     compactEntryIsValid(profile, retained)
   ) {
     selectedEvidence.push(retained);

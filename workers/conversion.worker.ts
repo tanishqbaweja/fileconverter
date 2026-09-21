@@ -4803,6 +4803,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         lowMemoryVideoCore:
           profileId === "hevc-to-webm",
         singleThreadVideoCore: profileId === "hevc-to-webm-vp9",
+        aiffSpecialistCore: profileId === "m4a-to-aiff",
         forceAsynchronousInput:
           profileId === "ivf-to-webm" ||
           profileId === "ivf-to-mkv" ||

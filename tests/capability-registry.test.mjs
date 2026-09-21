@@ -799,6 +799,17 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       videoCodecThreads: 1,
       profiles: ["avi-to-ogv", "mp4-to-ogv"],
     },
+    {
+      name: "within-aiff",
+      wasmPthreadPoolSize: 0,
+      videoCodecThreads: 1,
+      initialWasmMemoryBytes: 16 * 1024 * 1024,
+      maximumWasmMemoryBytes: 32 * 1024 * 1024,
+      wasmGrowthStepBytes: 4 * 1024 * 1024,
+      entrypoint: "within_aiff",
+      sourceSha256: "a542881bee3e4cd407f61be87d284fabe6a9ab7b70d2c1db63e542f745395814",
+      profiles: ["m4a-to-aiff"],
+    },
   ]);
   assert.ok(manifest.enabledEncoders.includes("libvpx_vp9"));
   assert.ok(manifest.enabledDemuxers.includes("h264"));

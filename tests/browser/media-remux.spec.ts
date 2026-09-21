@@ -4100,6 +4100,48 @@ test("direct AIFF coalescing propagates write failure and releases the partial f
   }
 });
 
+test("direct M4A-to-AIFF specialist propagates write failure and removes partial output", async () => {
+  const outputName = "audio-source-alac.aiff";
+  try {
+    await page.goto("/?test=1&directory=1&fault=write");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await removeBrowserStorageEntry(outputName);
+    await page.locator('[data-testid="file-input"]').setInputFiles(alacFixturePath);
+    await page.locator('[data-testid="format-select"]').selectOption("m4a-to-aiff");
+    await startEnabledConversion();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+
+    const state = await currentState();
+    expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+    expect(state.opfsName).toBeNull();
+    expect(state.batchOutputNames).toEqual([outputName]);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+    const abandonedSize = await page.evaluate(async (entryName) => {
+      const root = await navigator.storage.getDirectory();
+      try {
+        const handle = await root.getFileHandle(entryName);
+        const size = (await handle.getFile()).size;
+        await root.removeEntry(entryName);
+        return size;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === "NotFoundError") {
+          return null;
+        }
+        throw error;
+      }
+    }, outputName);
+    expect(abandonedSize === null || abandonedSize === 0).toBe(true);
+  } finally {
+    await removeBrowserStorageEntry(outputName).catch(() => {});
+  }
+});
+
 test("direct WAV coalescing propagates write failure and releases the partial file", async () => {
   const outputName = "audio-source.wav";
   try {

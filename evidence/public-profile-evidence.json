@@ -2869,18 +2869,18 @@
       "profileId": "m4a-to-aiff",
       "maxTestedBytes": 140941469,
       "repeatableEvidence": {
-        "report": "2026-08-12T14-20-54-770Z-m4a-to-aiff-stress.json",
-        "reportSha256": "786223cfcf1a0620bcd71be3b36bf1fa8369aa573b76664b08281a0b7f63ca1a",
+        "report": "2026-09-20T07-47-50-443Z-m4a-to-aiff-stress.json",
+        "reportSha256": "5d2cc0200decbb982865d9957a08aa1af35190eefa34f21076069b8aff5516e6",
         "runs": 3,
         "sourceBytes": 140941469,
-        "incrementalPrivateMiB": 226.1875
+        "incrementalPrivateMiB": 219.390625
       },
       "maximumSizeEvidence": {
-        "report": "2026-08-12T14-20-54-770Z-m4a-to-aiff-stress.json",
-        "reportSha256": "786223cfcf1a0620bcd71be3b36bf1fa8369aa573b76664b08281a0b7f63ca1a",
-        "runs": 3,
+        "report": "2026-09-20T07-55-27-412Z-m4a-to-aiff-stress.json",
+        "reportSha256": "0e6a25dcab0978157423debc87b1ca9498536d4e3fd601f8a1c8a83544834097",
+        "runs": 1,
         "sourceBytes": 140941469,
-        "incrementalPrivateMiB": 226.1875
+        "incrementalPrivateMiB": 223.0234375
       }
     },
     {

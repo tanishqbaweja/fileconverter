@@ -69,18 +69,6 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
-      - name: Retain unpublished AIFF specialist for browser benchmarking
-        if: inputs.core == 'within-aiff' && success()
-        uses: actions/upload-artifact@v4
-        with:
-          name: aiff-specialist-candidate-${{ github.run_id }}
-          path: |
-            work/ffmpeg-nondocker-output/within-aiff.mjs
-            work/ffmpeg-nondocker-output/within-aiff.wasm
-            work/ffmpeg-nondocker-output/build-manifest.json
-          if-no-files-found: error
-          retention-days: 1
-
       - name: Remove repository-local build data
         if: always()
         shell: bash

@@ -1406,6 +1406,8 @@ try {
 
   const cancellationProfileFamily = isIvfProfile
     ? "IVF"
+    : profileId === "m4a-to-aiff"
+      ? "AIFF"
     : THEORA_OGV_PROFILES.includes(profileId)
       ? "Theora OGV"
       : COMPATIBLE_AVI_PROFILES.includes(profileId) ||
@@ -1417,6 +1419,7 @@ try {
         : "OGV";
   if (
     profileId === "mkv-to-ogv" ||
+    profileId === "m4a-to-aiff" ||
     profileId === "avi-to-3gp" ||
     profileId === "avi-to-mov" ||
     profileId === "avi-to-mpeg-ts" ||
@@ -1438,10 +1441,12 @@ try {
       const state = window.__WITHIN_TEST__?.getState();
       return (
         (state?.jobState === "running" &&
-          (activeProfileId === "avi-to-3gp" ||
-            activeProfileId === "avi-to-mov" ||
-            activeProfileId === "avi-to-mpeg-ts" ||
-            (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
+          (activeProfileId === "m4a-to-aiff"
+            ? (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
+            : activeProfileId === "avi-to-3gp" ||
+              activeProfileId === "avi-to-mov" ||
+              activeProfileId === "avi-to-mpeg-ts" ||
+              (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
         state?.jobState === "complete" ||
         state?.jobState === "error"
       );
