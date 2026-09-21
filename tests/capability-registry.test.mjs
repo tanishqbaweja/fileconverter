@@ -127,7 +127,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 276);
+  assert.equal(publicMedia.length, 275);
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -181,12 +181,12 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   }
 });
 
-test("registry exposes only the exact in-flight candidate as pending and keeps failed evidence hidden", () => {
+test("registry has no stale pending candidates and keeps failed evidence hidden", () => {
   assert.deepEqual(
     conversionProfiles
       .filter((profile) => profile.automatedTestStatus === "pending")
       .map((profile) => profile.id),
-    ["mp4-to-ogv"],
+    [],
   );
   const promoted = conversionProfiles.find(
     (profile) => profile.id === "mp4-to-webm-av1",
@@ -210,7 +210,7 @@ test("registry exposes only the exact in-flight candidate as pending and keeps f
   );
   assert.deepEqual(
     failed.map((profile) => profile.id),
-    ["ogv-to-amr", "hevc-to-webm-vp9"],
+    ["ogv-to-amr", "mp4-to-ogv", "hevc-to-webm-vp9", "avi-to-3gp"],
   );
   for (const profile of failed) {
     assert.equal(profile.public, false);

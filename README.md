@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 405
+complete-Chromium memory profile have passed. The current registry publishes 404
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -54,14 +54,15 @@ repeatable hash, cancellation, and cleanup checks. Exact results and the
 byte-for-byte no-Docker publication run are recorded in
 `evidence/ivf-input-browser-2026-09-11.json`.
 
-AVI-to-3GP packet-copies certified H.264 or MPEG-4 Part 2 video without decoding
-or re-encoding, retains AAC when present, and explicitly excludes incompatible
-AVI audio such as MP3. The 159,500,442-byte MPEG-4/MP3 source produced the same
-157,854,896-byte genuine `3gp4` output in every run. Three OPFS runs completed in
-0.769-1.106 seconds at 204.6 MiB worst incremental memory; three direct-save runs
-completed in 1.644-1.827 seconds at 249.9 MiB. Full decode/hash, cancellation,
-forced-write cleanup, one-operation backpressure, and the no-Docker source build
-passed. Exact results are in `evidence/avi-to-3gp-browser-2026-09-11.json`.
+AVI-to-3GP remains implemented as a genuine packet-copy path, but it is hidden
+from the normal selector after a Chrome 153 re-audit exceeded the unchanged 250
+MiB complete-browser limit. The unchanged two-worker path peaked at 253.871 MiB;
+a one-worker direct writer peaked at 258.027 MiB, and bounded synchronous input
+peaked at 280.125 MiB, so both attempted optimizations were rejected. Every run
+still produced and fully decoded the same genuine 157,854,896-byte `3gp4` output
+in 1.618-2.663 seconds. Historical passing evidence remains in
+`evidence/avi-to-3gp-browser-2026-09-11.json`; the current-browser withdrawal is
+recorded in `evidence/avi-to-3gp-current-chrome-2026-09-21.json`.
 
 AVI-to-MOV uses the same fastest lossless packet-copy path for certified H.264
 or MPEG-4 Part 2 video, retains compatible AAC, and explicitly excludes
@@ -408,7 +409,7 @@ AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
 streams.
 
-An executable registry audit requires every one of the 273 public FFmpeg
+An executable registry audit requires every one of the 275 public FFmpeg
 profiles to disclose its route semantics and its metadata/container behavior.
 Stream-copy routes must identify copying or remuxing; re-encode routes must
 identify decoding/encoding or an equivalent lossless/lossy conversion; audio

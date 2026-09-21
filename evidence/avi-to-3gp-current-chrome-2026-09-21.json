@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-21",
+  "status": "failed",
+  "supersedesPublicStatusFrom": "evidence/avi-to-3gp-browser-2026-09-11.json",
+  "scope": "Chrome 153 direct-save re-audit of AVI MPEG-4 Part 2 video to genuine 3GP packet copy",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.48",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250
+  },
+  "source": {
+    "bytes": 159500442,
+    "sha256": "8c1f6d00d1f8626386d80bbaa73c9a2618d58ea5be6d5b19a5e517f10e4a85cc",
+    "retained": false
+  },
+  "output": {
+    "bytes": 157854896,
+    "sha256": "9f3af92a8fdbfab5730ea9aa19fbe940f01f41d5b24b73a6d7e2e24a00780644",
+    "majorBrand": "3gp4",
+    "genuineConversion": true,
+    "fullDecodedVideoValidationPassed": true,
+    "repeatableAcrossEveryMeasuredRun": true,
+    "retained": false
+  },
+  "measurements": [
+    {
+      "candidate": "unchanged two-worker direct writer",
+      "report": "2026-09-21T05-52-31-960Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "b56e6bceac75cb31e9b40825f536cd980d0db8e933ee063103fccf2f5b507045",
+      "runs": 3,
+      "elapsedMs": [2270.25, 2013.96, 1803.87],
+      "worstIncrementalPrivateMiB": 253.87109375,
+      "activeWorkerCount": 2,
+      "accepted": false
+    },
+    {
+      "candidate": "route-scoped one-worker asynchronous direct writer",
+      "report": "2026-09-21T05-57-20-069Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "ab89bb40ad941be0517feb3e76aa0384415e596bd559584ffebf3afc9ddbe055",
+      "runs": 3,
+      "elapsedMs": [1879.37, 1617.59, 1639.71],
+      "worstIncrementalPrivateMiB": 258.02734375,
+      "activeWorkerCount": 1,
+      "accepted": false,
+      "reason": "Faster, but Chrome retained more direct-file stream memory and exceeded the limit by 8.027 MiB."
+    },
+    {
+      "candidate": "bounded synchronous 256 KiB input slices with the proven direct writer",
+      "report": "2026-09-21T06-00-39-176Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "561a5f42c7b89e73ee662563c4d1855c61efba1f3630c9668f3ab6f8ed1b94b4",
+      "runs": 1,
+      "elapsedMs": [2663.425],
+      "worstIncrementalPrivateMiB": 280.125,
+      "activeWorkerCount": 2,
+      "accepted": false,
+      "reason": "Synchronous Blob slices increased retained renderer memory and cleanup drift."
+    }
+  ],
+  "boundedness": {
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "wasmMemoryBytes": 33554432
+  },
+  "decision": "Mark avi-to-3gp failed, clear its advertised tested maximum, and hide it from the normal selector. Do not weaken the 250 MiB limit or publish either rejected optimization.",
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "browserProfilesDeleted": true,
+    "taskLocalTemporaryFilesDeleted": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

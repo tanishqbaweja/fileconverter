@@ -11,14 +11,14 @@ import {
   videoOptionProfileForId,
 } from "../lib/media-conversion-options.ts";
 
-test("MP4 to OGV stays hidden until its complete acceptance gate passes", () => {
+test("MP4 to OGV is explicitly failed and hidden after its memory rejection", () => {
   const profile = conversionProfiles.find(({ id }) => id === "mp4-to-ogv");
   assert.ok(profile);
   assert.equal(profile.input, "mp4");
   assert.equal(profile.output, "ogv");
   assert.equal(profile.engine, "ffmpeg-video");
   assert.equal(profile.route, "re-encode");
-  assert.equal(profile.automatedTestStatus, "pending");
+  assert.equal(profile.automatedTestStatus, "failed");
   assert.equal(profile.maxTestedBytes, null);
   assert.equal(profile.public, false);
   assert.equal(
@@ -93,4 +93,6 @@ test("MP4 to OGV remains hidden after the complete-browser memory rejection", ()
   assert.equal(rejected.cleanupRecoveryPassed, true);
   const profile = conversionProfiles.find(({ id }) => id === "mp4-to-ogv");
   assert.equal(profile?.public, false);
+  assert.equal(profile?.automatedTestStatus, "failed");
+  assert.equal(profile?.maxTestedBytes, null);
 });

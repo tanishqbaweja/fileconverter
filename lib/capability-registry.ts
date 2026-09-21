@@ -1354,7 +1354,7 @@ const containerThreeGpEvidence = {
   "mov-to-3gp": 147_136_645,
   "mpeg-ts-to-3gp": 150_441_548,
   "flv-to-3gp": 146_903_539,
-  "avi-to-3gp": 159_500_442,
+  "avi-to-3gp": null,
 } as const satisfies Record<string, number | null>;
 
 function containerThreeGpProfile(
@@ -1362,6 +1362,7 @@ function containerThreeGpProfile(
 ): ConversionProfile {
   const id = `${input}-to-3gp` as keyof typeof containerThreeGpEvidence;
   const evidence = containerThreeGpEvidence[id];
+  const failedCurrentBrowserEvidence = id === "avi-to-3gp";
   return {
     id,
     input,
@@ -1388,8 +1389,12 @@ function containerThreeGpProfile(
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
-    automatedTestStatus: evidence === null ? "pending" : "passed",
-    public: true,
+    automatedTestStatus: failedCurrentBrowserEvidence
+      ? "failed"
+      : evidence === null
+        ? "pending"
+        : "passed",
+    public: evidence !== null,
   };
 }
 
@@ -5727,7 +5732,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
         "Automatic quality uses Theora quality 7; the bounded controls can select smaller-file quality 4, balanced quality 7, or higher quality 9, plus a lower width or frame-rate cap.",
       ],
       maxTestedBytes: null,
-      automatedTestStatus: "pending",
+      automatedTestStatus: "failed",
       public: false,
     },
     {
