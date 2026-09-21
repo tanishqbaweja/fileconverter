@@ -1,0 +1,171 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-21",
+  "status": "passed",
+  "scope": "Current-Chrome production-browser MP4-to-AVI direct-save optimization and memory re-audit.",
+  "dockerUsed": false,
+  "conversionClass": "MPEG-4 Part 2 and MP3 compressed-packet remux into genuine OpenDML AVI, not extension renaming and not decode/re-encode",
+  "selectedOptimization": {
+    "design": "Mux random-access OpenDML output into app-owned synchronous browser-private storage, then copy it to the selected destination with synchronous 256 KiB staging reads and one backpressured asynchronous destination write.",
+    "temporaryQuotaPreflight": "ceil(source bytes * 1.25), using StorageManager estimate before conversion",
+    "persistenceRequested": true,
+    "copyBufferBytes": 262144,
+    "maximumPendingOperations": 1,
+    "wasmMemoryBytes": 33554432,
+    "activeWorkerCount": 1,
+    "reason": "The AVI muxer needs random access for OpenDML indexes. Chrome 153 made the generic final-file random-access writer both slow and over-budget; synchronous private staging preserves the fast mux path, while a single bounded final copy preserves explicit user-selected output and terminal cleanup."
+  },
+  "stressSource": {
+    "path": "fixtures/stress/media/mpeg4-mp3-avi-copy-128m.mp4",
+    "retained": false,
+    "bytes": 191718445,
+    "sha256": "52239cb06fe61d0086495f5afaa59acb9aeb305d2a43d51f0bc1e477240f03bb",
+    "manifestSha256": "d0965f5f085674967c17b548eb2a6ae18f191a63c7f3870f15d1f2cf8c965e21",
+    "durationSeconds": 600,
+    "generationSeconds": 3.49,
+    "selectiveGeneration": "mp4 only; the default remains all five compatible AVI source containers",
+    "video": {
+      "codec": "mpeg4",
+      "width": 640,
+      "height": 360,
+      "packets": 14251,
+      "packetSha256": "83b9ea7a8d075f22c2d35d91711127f2e748d8eaa37fcba6c393d4690dd925c8"
+    },
+    "audio": {
+      "codec": "mp3",
+      "sampleRateHz": 48000,
+      "channels": 1,
+      "packets": 24940,
+      "packetSha256": "a7d18cc6cb7bebff85a1766386cc9068590f3716887b8442f0d406d6f327e187"
+    }
+  },
+  "output": {
+    "retained": false,
+    "bytes": 198392670,
+    "sha256": "a57141773cd28170c270bec6e68fd26a6be842c26d3a93c2a72ce8be9ddbdb54",
+    "formatFamily": "avi",
+    "segmentCount": 24,
+    "configuredRiffLimitBytes": 8388608,
+    "maximumObservedSegmentBytes": 8762522,
+    "hasMasterIndex": true,
+    "standardVideoIndexes": 24,
+    "standardAudioIndexes": 24,
+    "midpointSeekPassed": true,
+    "sourceAndOutputCompressedPacketsMatch": true,
+    "fullNativeDecodePassed": true,
+    "repeatableOutputHash": true
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.48",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250,
+    "unchangedDirectBaseline": {
+      "report": "2026-09-21T06-13-01-144Z-mp4-to-avi-direct-handle-stress.json",
+      "reportSha256": "c10f5fd185e81b5b4716d3a1b4bcb67d701200879739d7d6c9e1ce55ff4ecf2b",
+      "passed": false,
+      "runs": 3,
+      "elapsedMs": [46205.41, 46404.765, 46367.705],
+      "incrementalPrivateMiB": [300.18359375, 291.3515625, 289.16015625],
+      "activeWorkerCount": 2,
+      "reason": "The generic shared direct writer exceeded the memory limit and spent roughly 46 seconds performing random-access destination writes."
+    },
+    "syncPrivateStoragePrerequisite": {
+      "report": "2026-09-21T06-18-55-217Z-mp4-to-avi-stress.json",
+      "reportSha256": "3ee668c26d8c09a915a86f6f9678e24784495cb4c5cd9da9aa28e039642ce2da",
+      "passed": true,
+      "runs": 3,
+      "elapsedMs": [2677.39, 2473.02, 2680.785],
+      "incrementalPrivateMiB": [232.53515625, 221.25, 220.62890625],
+      "worstIncrementalPrivateMiB": 232.53515625
+    },
+    "acceptedDirectDestination": {
+      "report": "2026-09-21T11-21-08-984Z-mp4-to-avi-direct-handle-stress.json",
+      "reportSha256": "d70c4e91759f6fc77ae5e6dab262db5138a286e7546cd07ec8cea12cf36b2ce0",
+      "passed": true,
+      "runs": 3,
+      "elapsedMs": [4177.39, 3975.695, 4268.025],
+      "incrementalPrivateMiB": [246.56640625, 213.359375, 220.07421875],
+      "worstIncrementalPrivateMiB": 246.56640625,
+      "cleanupDeltaFromLoadedMiB": [0.859375, 9.06640625, 0.17578125],
+      "activeWorkerCount": 1,
+      "maxReadChunkBytes": 262144,
+      "maxWriteChunkBytes": 262144,
+      "peakQueuedBytes": 262144,
+      "maximumPendingOperations": 1,
+      "peakWasmMemoryBytes": 33554432,
+      "peakScratchBytes": 198392670,
+      "maxScratchReadChunkBytes": 262144,
+      "maxScratchWriteChunkBytes": 262144,
+      "scratchBytesAfterEachRun": 0,
+      "cancellation": {
+        "passed": true,
+        "phaseAtTrigger": "Copying staged AVI to selected destination",
+        "inputBytes": 191718445,
+        "outputBytes": 22544384,
+        "pendingOperationsAfter": 0,
+        "queuedBytesAfter": 0,
+        "privateEntriesBefore": [],
+        "privateEntriesAfter": []
+      },
+      "cleanupRecoveryPassed": true
+    },
+    "focusedSmallGate": {
+      "command": "npx playwright test tests/browser/media-remux.spec.ts -g \"MP4.*AVI\" --workers=1",
+      "passed": 4,
+      "validated": [
+        "MPEG-4 Part 2 plus MP3 packet copy into genuine AVI",
+        "MPEG-2 packet copy into genuine AVI",
+        "injected failure during staged final copy removes the partial destination and private temporary file",
+        "injected worker crash removes the staging entry and partial destination before the replacement worker becomes ready"
+      ]
+    }
+  },
+  "performanceComparison": {
+    "baselineMedianMs": 46367.705,
+    "acceptedMedianMs": 4177.39,
+    "timesFaster": 11.0997,
+    "elapsedReductionPercent": 90.9907,
+    "worstMemoryReductionMiB": 53.6171875,
+    "worstMemoryReductionPercent": 17.8615,
+    "outputBytesAndSha256Identical": true
+  },
+  "rejectedCandidates": [
+    {
+      "design": "One-worker asynchronous random-access writes directly into the selected destination",
+      "report": "2026-09-21T06-16-01-577Z-mp4-to-avi-direct-handle-stress.json",
+      "reportSha256": "07d5e0d7ee90faad6eb4f3c0ff6fc715aad7affdb3b826eb3485ea6a5596189a",
+      "elapsedMs": 46740.63,
+      "incrementalPrivateMiB": 293.18359375,
+      "accepted": false,
+      "reason": "Removing the relay worker did not solve Chrome 153 random-access direct-write latency or memory."
+    },
+    {
+      "design": "Private staging plus browser File.stream BYOB reads for the final destination copy",
+      "passingThreeRunReport": "2026-09-21T11-10-10-700Z-mp4-to-avi-direct-handle-stress.json",
+      "passingThreeRunReportSha256": "07452ff280fe8ec66924caa7a31c8009cfd347456a93e43983715b0635de457b",
+      "laterFailureReport": "2026-09-21T11-16-37-851Z-mp4-to-avi-direct-handle-stress.json",
+      "laterFailureReportSha256": "ceb4efbe16e777443b9645c381372d15933b2043dcb18a52a7b30616bcf06f6d",
+      "laterFailureIncrementalPrivateMiB": 250.2109375,
+      "accepted": false,
+      "reason": "A later strict rerun exceeded the limit by 0.211 MiB, so File/ReadableStream copy overhead was removed rather than dismissed as noise."
+    }
+  ],
+  "regressionTests": {
+    "staticStagingTests": "3 passed",
+    "typescript": "passed",
+    "eslint": "passed"
+  },
+  "cleanup": {
+    "generatedSourceDeleted": true,
+    "generatedManifestDeleted": true,
+    "convertedOutputsDeleted": true,
+    "rawReportsDeletedAfterCompactManifestGeneration": true,
+    "browserProfilesDeleted": true,
+    "taskTemporaryDirectoryDeleted": true,
+    "workContainsOnlyTrackedPlaceholder": true,
+    "protectedTestMkvBytes": 2958573265,
+    "protectedTestMkvSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "protectedTestMkvUnmodified": true
+  }
+}

@@ -50,6 +50,11 @@ export interface StartConversionMessage {
   file: File;
   destination:
     | { mode: "handle"; handle: FileSystemFileHandle }
+    | {
+        mode: "staged-handle";
+        handle: FileSystemFileHandle;
+        stagingName: string;
+      }
     | { mode: "opfs-test"; name: string };
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;

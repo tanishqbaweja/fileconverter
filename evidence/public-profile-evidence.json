@@ -4129,18 +4129,18 @@
       "profileId": "mp4-to-avi",
       "maxTestedBytes": 191718445,
       "repeatableEvidence": {
-        "report": "2026-09-08T10-02-40-598Z-mp4-to-avi-stress.json",
-        "reportSha256": "bd694298ab80e5006ea73bf59ad582c3a2c2f562d0aacac92b94e3a8a238a7de",
+        "report": "2026-09-21T11-21-08-984Z-mp4-to-avi-direct-handle-stress.json",
+        "reportSha256": "d70c4e91759f6fc77ae5e6dab262db5138a286e7546cd07ec8cea12cf36b2ce0",
         "runs": 3,
         "sourceBytes": 191718445,
-        "incrementalPrivateMiB": 249.1015625
+        "incrementalPrivateMiB": 246.56640625
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T10-02-40-598Z-mp4-to-avi-stress.json",
-        "reportSha256": "bd694298ab80e5006ea73bf59ad582c3a2c2f562d0aacac92b94e3a8a238a7de",
+        "report": "2026-09-21T11-21-08-984Z-mp4-to-avi-direct-handle-stress.json",
+        "reportSha256": "d70c4e91759f6fc77ae5e6dab262db5138a286e7546cd07ec8cea12cf36b2ce0",
         "runs": 3,
         "sourceBytes": 191718445,
-        "incrementalPrivateMiB": 249.1015625
+        "incrementalPrivateMiB": 246.56640625
       }
     },
     {

@@ -141,7 +141,12 @@ const TEST_FAULTS = new Set<TestFault>([
 ]);
 
 async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
-  if (!name?.startsWith("within-test-")) return;
+  if (
+    !name?.startsWith("within-test-") &&
+    !name?.startsWith("within-stage-")
+  ) {
+    return;
+  }
   const root = await navigator.storage.getDirectory();
   await root.removeEntry(name).catch(() => {});
 }
@@ -525,9 +530,27 @@ export function ConverterApp() {
       setPeakJsHeap(null);
       setOpfsName(null);
 
+      const jobId = crypto.randomUUID();
+      jobIdRef.current = jobId;
       let destination:
         | { mode: "handle"; handle: FileSystemFileHandle }
+        | {
+            mode: "staged-handle";
+            handle: FileSystemFileHandle;
+            stagingName: string;
+          }
         | { mode: "opfs-test"; name: string };
+      const destinationForHandle = (
+        handle: FileSystemFileHandle,
+      ): typeof destination => {
+        if (batch.profile.id !== "mp4-to-avi") {
+          activeOpfsNameRef.current = null;
+          return { mode: "handle", handle };
+        }
+        const stagingName = `within-stage-${batch.profile.id}-${jobId}`;
+        activeOpfsNameRef.current = stagingName;
+        return { mode: "staged-handle", handle, stagingName };
+      };
       if (batch.testMode && !batch.testDirectoryMode) {
         destination = {
           mode: "opfs-test",
@@ -535,22 +558,18 @@ export function ConverterApp() {
         };
         activeOpfsNameRef.current = destination.name;
       } else if (batch.files.length === 1 && batch.destinationHandle) {
-        destination = { mode: "handle", handle: batch.destinationHandle };
-        activeOpfsNameRef.current = null;
+        destination = destinationForHandle(batch.destinationHandle);
       } else if (batch.destinationDirectoryHandle) {
         const available = await unusedFileHandle(
           batch.destinationDirectoryHandle,
           batch.outputNames[index],
         );
         batch.outputNames[index] = available.name;
-        destination = { mode: "handle", handle: available.handle };
-        activeOpfsNameRef.current = null;
+        destination = destinationForHandle(available.handle);
       } else {
         throw new Error("Choose a destination folder for this batch first.");
       }
 
-      const jobId = crypto.randomUUID();
-      jobIdRef.current = jobId;
       const request: WorkerRequest = {
         type: "start",
         jobId,
@@ -658,6 +677,7 @@ export function ConverterApp() {
           }
         } else if (message.type === "cancelled") {
           const batch = activeBatchRef.current;
+          const staleOpfsName = activeOpfsNameRef.current;
           activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
@@ -675,9 +695,10 @@ export function ConverterApp() {
               : "Cancelled",
           );
           setJobState("cancelled");
-          replaceWorker(worker);
+          replaceWorker(worker, staleOpfsName);
         } else {
           const batch = activeBatchRef.current;
+          const staleOpfsName = activeOpfsNameRef.current;
           activeBatchRef.current = null;
           activeOpfsNameRef.current = null;
           jobIdRef.current = null;
@@ -692,16 +713,18 @@ export function ConverterApp() {
           }
           setPhase("Stopped safely");
           setJobState("error");
-          replaceWorker(worker);
+          replaceWorker(worker, staleOpfsName);
         }
       };
-      worker.onerror = (event) => {
+      worker.onerror = async (event) => {
         event.preventDefault();
         const failedDuringConversion = jobIdRef.current !== null;
+        const batch = activeBatchRef.current;
         const staleOpfsName = activeOpfsNameRef.current;
         activeBatchRef.current = null;
         activeOpfsNameRef.current = null;
         jobIdRef.current = null;
+        const cleanupWarning = await removeIncompleteDirectoryOutput(batch);
         setWorkerFailed(true);
         const detail =
           event instanceof ErrorEvent && event.message
@@ -712,17 +735,31 @@ export function ConverterApp() {
             ? `Conversion worker failed: ${detail}.`
             : `Conversion worker failed to start: ${detail}.`,
         );
+        if (cleanupWarning) {
+          setWarnings((current) => [
+            ...current.slice(1 - MAX_RETAINED_WARNINGS),
+            cleanupWarning,
+          ]);
+        }
         setPhase("Worker unavailable");
         setJobState("error");
         replaceWorker(worker, staleOpfsName);
       };
-      worker.onmessageerror = () => {
+      worker.onmessageerror = async () => {
+        const batch = activeBatchRef.current;
         const staleOpfsName = activeOpfsNameRef.current;
         activeBatchRef.current = null;
         activeOpfsNameRef.current = null;
         jobIdRef.current = null;
+        const cleanupWarning = await removeIncompleteDirectoryOutput(batch);
         setWorkerFailed(true);
         setError("The conversion worker returned an unreadable message.");
+        if (cleanupWarning) {
+          setWarnings((current) => [
+            ...current.slice(1 - MAX_RETAINED_WARNINGS),
+            cleanupWarning,
+          ]);
+        }
         setPhase("Worker unavailable");
         setJobState("error");
         replaceWorker(worker, staleOpfsName);

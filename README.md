@@ -110,6 +110,22 @@ in 12m24s, skipped mismatch upload, and passed repository-local cleanup. Both
 obsolete candidate artifacts were deleted, leaving zero artifacts on all three
 AVI-to-FLV build runs.
 
+MP4-to-AVI direct saving was re-audited on Chrome 153 after the unchanged
+generic random-access writer regressed to 46.2-46.4 seconds and 300.2 MiB. The
+route now performs its seek-heavy OpenDML mux in quota-preflighted app-owned
+private storage, then copies to the selected destination with one reusable 256
+KiB buffer and one pending write before deleting the temporary file. The final
+191,718,445-byte fixture passed three direct runs in 3.976-4.268 seconds at
+246.566 MiB worst complete-Chromium incremental private memory, producing the
+same genuine 198,392,670-byte AVI and SHA-256 as the baseline. Exact compressed
+packets, full native decode, 24 indexed OpenDML segments, repeatability,
+final-copy cancellation/failure cleanup, and zero retained scratch bytes all
+passed. A forced worker crash also removed both the private staging entry and
+the partial directory destination before the replacement worker became ready.
+This is an 11.10x median speedup without changing fidelity, privacy, or
+the 250 MiB limit. Exact accepted and rejected trials are in
+`evidence/mp4-to-avi-current-chrome-optimization-2026-09-21.json`.
+
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
 lossy routes use the same fastest quality-certified encoders as standalone

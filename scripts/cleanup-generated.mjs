@@ -81,6 +81,21 @@ const aviOgvReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const mp4AviCurrentReports = [
+  "2026-09-21T06-13-01-144Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T06-16-01-577Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T06-18-55-217Z-mp4-to-avi-stress",
+  "2026-09-21T11-07-51-829Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T11-10-10-700Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T11-13-43-898Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T11-16-37-851Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T11-19-04-428Z-mp4-to-avi-direct-handle-stress",
+  "2026-09-21T11-21-08-984Z-mp4-to-avi-direct-handle-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const hevcWebmStressReports = [
   "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
   "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
@@ -173,6 +188,7 @@ const taskTempRoots = [
   path.resolve(workRoot, "avi-to-mpegts-candidate"),
   path.resolve(workRoot, "avi-to-flv-feasibility"),
   path.resolve(workRoot, "avi-to-flv-candidate"),
+  path.resolve(workRoot, "temp-current-chrome"),
   path.resolve(workRoot, "av1-isobmff-webm-feasibility"),
   path.resolve(workRoot, "av1-mp4-webm-candidate"),
   path.resolve(workRoot, "source-hash-check"),
@@ -494,6 +510,9 @@ for (const reportPath of aviFlvReports) {
 for (const reportPath of aviOgvReports) {
   assertInside(reportRoot, reportPath);
 }
+for (const reportPath of mp4AviCurrentReports) {
+  assertInside(reportRoot, reportPath);
+}
 for (const reportPath of hevcWebmStressReports) {
   assertInside(reportRoot, reportPath);
 }
@@ -604,6 +623,9 @@ for (const reportPath of aviFlvReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of aviOgvReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of mp4AviCurrentReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of hevcWebmStressReports) {

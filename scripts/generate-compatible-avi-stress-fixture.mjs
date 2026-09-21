@@ -20,7 +20,8 @@ const sourcePath = path.join(
 );
 const sourceManifestPath = `${sourcePath}.json`;
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "media");
-const fixtureSpecs = [
+const requestedSourceContainer = process.argv[2];
+const allFixtureSpecs = [
   ["mkv", "mpeg4-mp3-avi-copy-128m.mkv", "matroska", "matroska", true],
   ["mp4", "mpeg4-mp3-avi-copy-128m.mp4", "mp4", "mov", true],
   ["mov", "mpeg4-mp3-avi-copy-128m.mov", "mov", "mov", true],
@@ -35,6 +36,24 @@ const fixtureSpecs = [
   fixturePath: path.join(fixtureRoot, name),
   manifestPath: path.join(fixtureRoot, `${name}.json`),
 }));
+const supportedSourceContainers = allFixtureSpecs.map(
+  ({ sourceContainer }) => sourceContainer,
+);
+if (
+  requestedSourceContainer &&
+  !supportedSourceContainers.includes(requestedSourceContainer)
+) {
+  throw new Error(
+    `Unknown AVI-output source container ${requestedSourceContainer}. Expected one of: ${supportedSourceContainers.join(
+      ", ",
+    )}.`,
+  );
+}
+const fixtureSpecs = requestedSourceContainer
+  ? allFixtureSpecs.filter(
+      ({ sourceContainer }) => sourceContainer === requestedSourceContainer,
+    )
+  : allFixtureSpecs;
 const minimumBytes = 128 * 1024 * 1024;
 const minimumFreeBytes = 2 * 1024 * 1024 * 1024;
 const durationSeconds = 600;
@@ -114,8 +133,9 @@ try {
     ),
   );
   await assertProtectedSource();
+  const noun = results.length === 1 ? "source" : "sources";
   process.stdout.write(
-    `${results.map(({ spec }) => spec.fixturePath).join("\n")}\nGenerated five compatible AVI stress sources in ${generationSeconds.toFixed(2)} seconds.\n`,
+    `${results.map(({ spec }) => spec.fixturePath).join("\n")}\nGenerated ${results.length} compatible AVI stress ${noun} in ${generationSeconds.toFixed(2)} seconds.\n`,
   );
 } catch (error) {
   await Promise.all(

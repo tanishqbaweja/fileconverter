@@ -1441,8 +1441,11 @@ try {
       const state = window.__WITHIN_TEST__?.getState();
       return (
         (state?.jobState === "running" &&
-          (activeProfileId === "m4a-to-aiff"
-            ? (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
+          (activeProfileId === "mp4-to-avi"
+            ? state.phase === "Copying staged AVI to selected destination" &&
+              (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
+            : activeProfileId === "m4a-to-aiff"
+              ? (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
             : activeProfileId === "avi-to-3gp" ||
               activeProfileId === "avi-to-mov" ||
               activeProfileId === "avi-to-mpeg-ts" ||
@@ -1487,6 +1490,8 @@ try {
         JSON.stringify(namesAfter) === JSON.stringify(namesBefore),
       inputBytes: cancelledState?.metrics?.inputBytes ?? null,
       outputBytes: cancelledState?.metrics?.outputBytes ?? null,
+      phaseAtTrigger: cancellableState?.phase ?? null,
+      phaseAfterCancellation: cancelledState?.phase ?? null,
       maxReadChunkBytes: cancelledState?.metrics?.maxReadChunkBytes ?? null,
       maxWriteChunkBytes: cancelledState?.metrics?.maxWriteChunkBytes ?? null,
       peakPendingOperations:

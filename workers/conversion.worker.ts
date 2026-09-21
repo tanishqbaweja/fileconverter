@@ -477,6 +477,206 @@ async function openDestination(
   };
 }
 
+async function openStagedDirectDestination(
+  finalHandle: FileSystemFileHandle,
+  stagingName: string,
+  sourceBytes: number,
+  testFault: Exclude<TestFault, "worker-crash"> | undefined,
+  jobId: string,
+  metrics: ConversionMetrics,
+  startedAt: number,
+): Promise<Destination> {
+  if (
+    !stagingName.startsWith("within-stage-mp4-to-avi-") ||
+    stagingName.length > 160 ||
+    /[\\/]/.test(stagingName)
+  ) {
+    throw new Error("The AVI staging name is invalid.");
+  }
+  if (
+    typeof navigator.storage?.getDirectory !== "function" ||
+    typeof navigator.storage?.estimate !== "function"
+  ) {
+    throw new Error(
+      "MP4-to-AVI requires bounded private-storage staging in this browser.",
+    );
+  }
+
+  const estimate = await navigator.storage.estimate();
+  const requiredBytes = Math.ceil(sourceBytes * 1.25);
+  const availableBytes =
+    typeof estimate.quota === "number" && typeof estimate.usage === "number"
+      ? estimate.quota - estimate.usage
+      : null;
+  if (availableBytes !== null && availableBytes < requiredBytes) {
+    throw new DOMException(
+      `MP4-to-AVI needs approximately ${requiredBytes} bytes of temporary private-storage quota before copying the completed AVI to the selected destination; ${Math.max(0, availableBytes)} bytes are available.`,
+      "QuotaExceededError",
+    );
+  }
+  await navigator.storage.persist?.().catch(() => false);
+
+  const root = await navigator.storage.getDirectory();
+  await root.removeEntry(stagingName).catch(() => {});
+  const stagingHandle = await root.getFileHandle(stagingName, { create: true });
+  if (!stagingHandle.createSyncAccessHandle) {
+    await root.removeEntry(stagingName).catch(() => {});
+    throw new Error(
+      "MP4-to-AVI requires a synchronous private-storage handle for bounded random-access muxing.",
+    );
+  }
+  const access = await stagingHandle.createSyncAccessHandle();
+  access.truncate(0);
+  const staged = syncOpfsDestination(
+    access,
+    stagingHandle,
+    root,
+    stagingName,
+  );
+  let stagedClosed = false;
+  let finalWritable: FileSystemWritableFileStream | null = null;
+
+  const removeStage = async (): Promise<void> => {
+    await root.removeEntry(stagingName).catch(() => {});
+    metrics.scratchBytes = 0;
+  };
+
+  const writable: RandomAccessDestination = {
+    requiresOwnedWriteBuffer: staged.requiresOwnedWriteBuffer,
+    maximumWriteBytes: staged.maximumWriteBytes,
+    sharedBufferBytes: staged.sharedBufferBytes,
+    additionalWorkerCount: staged.additionalWorkerCount,
+    write: (operation) => staged.write(operation),
+    writeSync: (operation) => staged.writeSync!(operation),
+    rotate: () => staged.rotate!(),
+    truncate: (size) => staged.truncate(size),
+    truncateSync: (size) => staged.truncateSync!(size),
+    flush: () => staged.flush!(),
+    flushSync: () => staged.flushSync!(),
+    async close() {
+      let readAccess: FileSystemSyncAccessHandle | null = null;
+      try {
+        await staged.close();
+        stagedClosed = true;
+        assertActive();
+        const stagedFile = await stagingHandle.getFile();
+        metrics.scratchBytes = stagedFile.size;
+        metrics.peakScratchBytes = Math.max(
+          metrics.peakScratchBytes ?? 0,
+          stagedFile.size,
+        );
+        metrics.outputBytes = 0;
+        lastCancellationYieldBytes = 0;
+        emitProgress(
+          jobId,
+          "Copying staged AVI to selected destination",
+          metrics,
+          startedAt,
+          true,
+        );
+
+        finalWritable = await finalHandle.createWritable({
+          keepExistingData: false,
+        });
+        await finalWritable.truncate(0);
+        readAccess = await stagingHandle.createSyncAccessHandle!();
+        const buffer = new Uint8Array(MAX_WRITE_CHUNK);
+        let copiedBytes = 0;
+        let injectedFault = false;
+        while (copiedBytes < stagedFile.size) {
+          assertActive();
+          const bytesRead = readAccess.read(buffer, { at: copiedBytes });
+          if (bytesRead <= 0) {
+            throw new Error(
+              `The staged AVI stopped after ${copiedBytes} of ${stagedFile.size} bytes.`,
+            );
+          }
+          const value = buffer.subarray(0, bytesRead);
+          assertActive();
+          metrics.maxScratchReadChunkBytes = Math.max(
+            metrics.maxScratchReadChunkBytes ?? 0,
+            value.byteLength,
+          );
+          metrics.maxScratchWriteChunkBytes = Math.max(
+            metrics.maxScratchWriteChunkBytes ?? 0,
+            value.byteLength,
+          );
+          metrics.maxWriteChunkBytes = Math.max(
+            metrics.maxWriteChunkBytes,
+            value.byteLength,
+          );
+          metrics.queuedBytes = value.byteLength;
+          metrics.peakQueuedBytes = Math.max(
+            metrics.peakQueuedBytes,
+            value.byteLength,
+          );
+          metrics.pendingOperations = 1;
+          metrics.peakPendingOperations = Math.max(
+            metrics.peakPendingOperations,
+            1,
+          );
+          try {
+            await finalWritable.write(value);
+          } finally {
+            metrics.queuedBytes = 0;
+            metrics.pendingOperations = 0;
+          }
+          copiedBytes += value.byteLength;
+          metrics.outputBytes = copiedBytes;
+          if (testFault && !injectedFault) {
+            injectedFault = true;
+            throw faultMessage(testFault);
+          }
+          emitProgress(
+            jobId,
+            "Copying staged AVI to selected destination",
+            metrics,
+            startedAt,
+          );
+          await yieldForCancellation(copiedBytes);
+        }
+        readAccess.close();
+        readAccess = null;
+        if (copiedBytes !== stagedFile.size) {
+          throw new Error(
+            `The staged AVI copy was incomplete: ${copiedBytes} of ${stagedFile.size} bytes.`,
+          );
+        }
+        await finalWritable.close();
+        finalWritable = null;
+        await removeStage();
+      } catch (error) {
+        readAccess?.close();
+        readAccess = null;
+        await finalWritable?.abort(error).catch(() => {});
+        finalWritable = null;
+        await removeStage();
+        throw error;
+      } finally {
+        metrics.queuedBytes = 0;
+        metrics.pendingOperations = 0;
+      }
+    },
+    async abort(reason) {
+      await finalWritable?.abort(reason).catch(() => {});
+      finalWritable = null;
+      if (!stagedClosed) {
+        await staged.abort(reason).catch(() => {});
+        stagedClosed = true;
+      }
+      await removeStage();
+    },
+  };
+
+  post({
+    type: "warning",
+    jobId,
+    message:
+      "MP4-to-AVI uses bounded private-storage staging for fast random-access muxing, then copies through one 256 KiB buffer to the selected destination and deletes the temporary file.",
+  });
+  return { writable, handlesTestFault: testFault !== undefined };
+}
+
 async function withTimeout<T>(
   promise: Promise<T>,
   milliseconds: number,
@@ -3870,8 +4070,19 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       message.videoOptions,
     );
     emitProgress(jobId, "Worker started", metrics, startedAt, true);
-    destination = await openDestination(
-      message.destination,
+    if (message.destination.mode === "staged-handle") {
+      destination = await openStagedDirectDestination(
+        message.destination.handle,
+        message.destination.stagingName,
+        file.size,
+        message.testFault === "worker-crash" ? undefined : message.testFault,
+        jobId,
+        metrics,
+        startedAt,
+      );
+    } else {
+      destination = await openDestination(
+        message.destination,
       (profileId === "mkv-to-mp4" ||
         profileId === "mov-to-mp4" ||
         profileId === "3gp-to-mp4" ||
@@ -4061,8 +4272,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
-      profileId === "avi-to-flv",
-    );
+        profileId === "avi-to-flv",
+      );
+    }
     if (
       message.testFault &&
       message.testFault !== "worker-crash" &&
@@ -4076,7 +4288,8 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     emitProgress(jobId, "Destination opened", metrics, startedAt, true);
     if (
       message.testFault === "worker-crash" &&
-      message.destination.mode === "opfs-test"
+      (message.destination.mode === "opfs-test" ||
+        message.destination.mode === "staged-handle")
     ) {
       const partial = new TextEncoder().encode("partial worker output\n");
       await destination.writable.write(partial);
