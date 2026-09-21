@@ -43,7 +43,7 @@ const aviOgvNote =
 const av1Mp4FeasibilityNote =
   "M-04/P-08 AV1 MP4-to-WebM publication (2026-09-15): the rebuilt browser Wasm packet-copies AV1/VP8/VP9 plus Opus/Vorbis from MP4 to genuine live WebM. The focused 3/3 Chrome gate preserved exact compressed AV1/Opus packets, exact decoded video and PCM for the difficult 336-sample priming case, and removed an injected write-failure output. A 170,433,726-byte 1,920x1,080 VP9/Opus MP4 passed three OPFS runs in 1.531-1.858 seconds at 206.191 MiB worst incremental complete-Chromium private memory. Initial direct-save input via synchronous Blob slices failed at 316.6 MiB; increasing writes to 1 MiB worsened it to 358.332 MiB and was reverted. Reusing the proven bounded asynchronous BYOB input reader only for direct saves passed three runs in 2.300-2.642 seconds at 219.063 MiB, with cleanup within 12.536 MiB of loaded idle. Both modes produced the same 170,426,241-byte SHA-256, exact decoded hashes, 256 KiB reads/writes/queueing, one pending operation, and fixed 32 MiB Wasm. Corrected no-Docker build run 34823637056 compiled the candidate in 6m10s and changed only the expected manifest/Wasm while keeping JavaScript and licenses byte-exact; exact run 34899740113 then reproduced the pushed engine byte-for-byte at commit 0c8bc78 in 5m10s, skipped mismatch upload, passed cleanup, and retained zero artifacts. Generated stress inputs, outputs, manifests, browser profiles, raw reports after compaction, the local candidate download, and the obsolete remote mismatch artifact were deleted. See `evidence/av1-mp4-webm-native-feasibility-2026-09-14.json` and `evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json`.";
 const aiffSpecialistNote =
-  "- **2026-09-20 M4A-to-AIFF current-Chrome memory acceptance:** A source-hash-pinned, no-Docker `within-aiff` specialist keeps the existing profile-28 audio transcode and selects only the public M4A-to-AIFF route. It starts at 16 MiB Wasm with a 32 MiB maximum. Chrome 153 production-browser runs on the same 140,941,469-byte ALAC source passed three direct-save and three OPFS conversions plus additional cold runs, producing the identical genuine 153,600,102-byte AIFF hash as the general core. Native FFprobe, complete packet traversal, and full decoded PCM equality passed; one pending operation, 256 KiB reads, bounded writes/queueing, fixed 16 MiB actual Wasm, cleanup recovery, injected write failure, and cancellation after 6.55/15.70 MB of actual output passed. The worst observed direct run reached 246.648 MiB against the unchanged 250 MiB complete-Chromium incremental private-memory limit, including a transient updater descendant; its 3.352 MiB headroom is narrow and no cross-machine guarantee or isolated direct-save speedup is claimed. The prior general core reached 260.172 MiB direct and 251.094 MiB OPFS. Exact report, source, output, and module hashes are retained in `evidence/aiff-specialist-browser-acceptance-2026-09-20.json`; generated input, converted copies, raw reports, and browser profiles are cleaned after compaction.";
+  "- **2026-09-20 M4A-to-AIFF current-Chrome memory acceptance:** A source-hash-pinned, no-Docker `within-aiff` specialist keeps the existing profile-28 audio transcode and selects only the public M4A-to-AIFF route. It starts at 16 MiB Wasm with a 32 MiB maximum. Chrome 153 production-browser runs on the same 140,941,469-byte ALAC source passed three direct-save and three OPFS conversions plus additional cold runs, producing the identical genuine 153,600,102-byte AIFF hash as the general core. Native FFprobe, complete packet traversal, and full decoded PCM equality passed; one pending operation, 256 KiB reads, bounded writes/queueing, fixed 16 MiB actual Wasm, cleanup recovery, injected write failure, and cancellation after 6.55/15.70 MB of actual output passed. The worst observed direct run reached 246.648 MiB against the unchanged 250 MiB complete-Chromium incremental private-memory limit, including a transient updater descendant; its 3.352 MiB headroom is narrow and no cross-machine guarantee or isolated direct-save speedup is claimed. The prior general core reached 260.172 MiB direct and 251.094 MiB OPFS. Pushed commit `51e6074` passed scoped no-Docker exact reproduction in run [35563828254](https://github.com/tanishqbaweja/fileconverter/actions/runs/35563828254) in 7m50s and aggregate exact reproduction of all eight FFmpeg modules in run [35564331436](https://github.com/tanishqbaweja/fileconverter/actions/runs/35564331436) in 18m44s. Both skipped mismatch upload, passed cleanup, and retain zero artifacts. Exact report, source, output, and module hashes are retained in `evidence/aiff-specialist-browser-acceptance-2026-09-20.json`; generated input, converted copies, raw reports, downloaded candidate, Playwright helper, and browser profiles were deleted after compaction.";
 const ledgerDate = new Intl.DateTimeFormat("en-CA", {
   timeZone: "Asia/Kolkata",
   year: "numeric",
@@ -127,6 +127,41 @@ if (aviFlvCompactEvidence?.status === "passed") {
       })),
       incrementalPrivateMiB: direct.worstIncrementalPrivateMiB,
       checks: { cleanupRecovery: direct.cleanupRecoveryPassed },
+    });
+  }
+}
+const aiffCompactEvidence = JSON.parse(
+  await readFile(
+    path.join(
+      projectRoot,
+      "evidence",
+      "aiff-specialist-browser-acceptance-2026-09-20.json",
+    ),
+    "utf8",
+  ).catch(() => "null"),
+);
+if (aiffCompactEvidence?.status === "passed-for-m4a-to-aiff-on-tested-chrome") {
+  const opfs = aiffCompactEvidence.repeatableSessions?.opfs;
+  const elapsedMs = Array.isArray(opfs?.elapsedMs) ? opfs.elapsedMs : [];
+  const incrementalPrivateMiB = Array.isArray(opfs?.incrementalPrivateMiB)
+    ? opfs.incrementalPrivateMiB
+    : [];
+  if (elapsedMs.length >= 3 && elapsedMs.length === incrementalPrivateMiB.length) {
+    reports.set("m4a-to-aiff", {
+      generatedAt: `${aiffCompactEvidence.recordedAt}T23:59:59Z`,
+      passed: true,
+      profileId: "m4a-to-aiff",
+      source: { bytes: aiffCompactEvidence.source.bytes },
+      runs: elapsedMs.map((elapsed, index) => ({
+        elapsedMs: elapsed,
+        outputBytes: aiffCompactEvidence.output.bytes,
+        peakWasmMemoryBytes: opfs.peakWasmMemoryBytes,
+        maxReadChunkBytes: opfs.maxReadBytes,
+        maxWriteChunkBytes: opfs.maxWriteAndQueuedBytes,
+        incrementalPrivateMiB: incrementalPrivateMiB[index],
+      })),
+      incrementalPrivateMiB: Math.max(...incrementalPrivateMiB),
+      checks: { cleanupRecovery: true },
     });
   }
 }

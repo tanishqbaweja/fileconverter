@@ -1533,5 +1533,11 @@ not the entire product specification.
   direct/OPFS left no partial file or queued/pending operation. No isolated
   direct-save speed improvement is claimed. The compact evidence is
   `evidence/aiff-specialist-browser-acceptance-2026-09-20.json`.
-- The new published artifact must still pass the pushed-commit exact no-Docker
-  reproduction before the build-provenance gate is considered closed.
+- Pushed commit `51e6074` passed scoped no-Docker exact reproduction in run
+  `35563828254` (7m50s) and aggregate exact reproduction of all eight FFmpeg
+  modules in run `35564331436` (18m44s). Both skipped mismatch upload, passed
+  repository-local cleanup, and retain zero Actions artifacts. The generated
+  input, converted copies, raw reports, downloaded candidate, Playwright helper,
+  browser profiles, and obsolete candidate artifact were deleted; `work/`
+  contains only `.gitkeep`. The build-provenance gate for this publication is
+  closed.

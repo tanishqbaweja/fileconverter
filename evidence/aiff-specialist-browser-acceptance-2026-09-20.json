@@ -22,6 +22,23 @@
     "maximumWasmMemoryBytes": 33554432,
     "hostedNoDockerCandidateBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35497157670"
   },
+  "publishedReproduction": {
+    "commit": "51e6074e92f73bb321ca5ee4a8ead8acc1058cab",
+    "scopedRun": {
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35563828254",
+      "durationSeconds": 470,
+      "result": "within-aiff JavaScript, Wasm, shared licenses, and manifest matched byte-for-byte"
+    },
+    "allModulesRun": {
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35564331436",
+      "durationSeconds": 1124,
+      "result": "all eight published FFmpeg modules, shared licenses, and manifest matched byte-for-byte"
+    },
+    "dockerUsed": false,
+    "mismatchUploads": 0,
+    "retainedActionsArtifacts": 0,
+    "hostedCleanupPassed": true
+  },
   "output": {
     "format": "AIFF, genuine signed 16-bit big-endian PCM, 48 kHz stereo, 800 seconds",
     "bytes": 153600102,
