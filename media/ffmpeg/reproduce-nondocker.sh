@@ -312,6 +312,7 @@ cp "${SCRIPT_DIR}/patches/matroska-artwork-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/mp4-webm-opus-priming-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-source-79e4db.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/direct-published-source.patch" "${BUILD_ROOT}/"
+cp "${SCRIPT_DIR}/patches/direct-mp4-only-source.patch" "${BUILD_ROOT}/"
 cp "${SCRIPT_DIR}/patches/theora-source.patch" "${BUILD_ROOT}/"
 chmod +x "${BUILD_ROOT}"/*.sh
 
@@ -383,7 +384,11 @@ if [[ "${requested_core}" == "all" || ( "${requested_core}" != "within-remux" &&
     cd "${BUILD_ROOT}/ffmpeg"
     emmake make distclean
   )
-  WITHIN_ENABLE_AV1_PARSER=0 WITHIN_ENABLE_AVI_MUXER=0 ./build-libraries.sh
+  if [[ "${requested_core}" == "within-direct" ]]; then
+    WITHIN_MP4_COPY_ONLY=1 ./build-libraries.sh
+  else
+    WITHIN_ENABLE_AV1_PARSER=0 WITHIN_ENABLE_AVI_MUXER=0 ./build-libraries.sh
+  fi
 fi
 if [[ "${requested_core}" == "all" ]]; then
   # General-core-only profiles are preprocessor-guarded, so removing those
@@ -404,6 +409,14 @@ if [[ "${requested_core}" == "all" ]]; then
   for video_core in within-mpeg4 within-webm within-vp9 within-webm-quality; do
     WITHIN_BUILD_CORE_FILTER="${video_core}" ./build-remux.sh
   done
+  # The direct-save core needs only Matroska demux, MP4 mux, and the bounded
+  # AAC compatibility filter. Reconfigure once more so unrelated codecs and
+  # containers cannot inflate its compiled code or runtime process memory.
+  (
+    cd "${BUILD_ROOT}/ffmpeg"
+    emmake make distclean
+  )
+  WITHIN_MP4_COPY_ONLY=1 ./build-libraries.sh
   # Reconstruct the exact wrapper retained by the published direct core. It
   # uses the historical direct ABI plus the compatibility scaffolding present
   # when the bounded-AVI archive changed the final linked Wasm.
@@ -419,6 +432,8 @@ if [[ "${requested_core}" == "all" ]]; then
     < direct-source-79e4db.patch
   patch --directory="${BUILD_ROOT}" --strip=1 \
     < direct-published-source.patch
+  patch --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-mp4-only-source.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" == "within-direct" ]]; then
   strip_current_general_core_only_profiles
@@ -432,6 +447,8 @@ elif [[ "${requested_core}" == "within-direct" ]]; then
     < direct-source-79e4db.patch
   patch --directory="${BUILD_ROOT}" --strip=1 \
     < direct-published-source.patch
+  patch --directory="${BUILD_ROOT}" --strip=1 \
+    < direct-mp4-only-source.patch
   WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh
 elif [[ "${requested_core}" != "within-remux" && "${requested_core}" != "within-theora" && "${requested_core}" != "within-aiff" ]]; then
   restore_pre_theora_source

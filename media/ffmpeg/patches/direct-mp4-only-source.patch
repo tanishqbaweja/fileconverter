@@ -1,0 +1,14 @@
+--- a/within_remux.c
++++ b/within_remux.c
+@@ -1943,6 +1943,11 @@
+ 
+ EMSCRIPTEN_KEEPALIVE
+ int within_remux(int profile) {
++  /* This artifact is loaded only for lossless MKV-to-MP4 stream copy. Keeping
++     the route constant lets the optimizer discard every unrelated remux and
++     transcode branch before the minimal FFmpeg libraries are linked. */
++  (void)profile;
++  profile = 1;
+   int result = 0;
+   AVFormatContext *input_format = NULL;
+   AVFormatContext *output_format = NULL;

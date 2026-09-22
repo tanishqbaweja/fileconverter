@@ -8,7 +8,11 @@ const source = (path) => readFileSync(path, "utf8");
 const app = source("app/converter/ConverterApp.tsx");
 const protocol = source("lib/conversion-protocol.ts");
 const worker = source("workers/conversion.worker.ts");
+const destination = source("workers/random-access-destination.ts");
 const profiler = source("scripts/memory-profile.mjs");
+const ffmpegLibraries = source("media/ffmpeg/build-libraries.sh");
+const ffmpegBuild = source("media/ffmpeg/build-remux.sh");
+const ffmpegReproduction = source("media/ffmpeg/reproduce-nondocker.sh");
 
 test("only direct MP4-to-AVI uses app-owned bounded staging", () => {
   assert.match(protocol, /mode: "staged-handle"/);
@@ -48,4 +52,37 @@ test("MP4-to-AVI disclosure and profiler cover the staging tradeoff and final-co
     /state\.phase === "Copying staged AVI to selected destination"[\s\S]*outputBytes[\s\S]*1024 \* 1024/,
   );
   assert.match(profiler, /phaseAtTrigger: cancellableState\?\.phase/);
+});
+
+test("direct MKV-to-MP4 keeps the 1 MiB specialist without a writer worker", () => {
+  assert.match(
+    worker,
+    /profileId === "avi-to-flv" \|\| profileId === "mkv-to-mp4"/,
+  );
+  assert.match(
+    worker,
+    /profileId === "mkv-to-mp4" \|\|[\s\S]*\? DIRECT_REMUX_WRITE_CHUNK/,
+  );
+  assert.match(
+    destination,
+    /asynchronousFileStreamDestination\([\s\S]*maximumWriteBytes = 256 \* 1024/,
+  );
+  assert.match(destination, /maximumWriteBytes,[\s\S]*File stream write exceeds/);
+});
+
+test("the direct core is reproducibly built from an MKV-to-MP4-only FFmpeg surface", () => {
+  assert.match(ffmpegLibraries, /WITHIN_MP4_COPY_ONLY/);
+  assert.match(ffmpegLibraries, /ENABLED_DEMUXERS=matroska/);
+  assert.match(ffmpegLibraries, /ENABLED_MUXERS=mp4/);
+  assert.match(ffmpegLibraries, /ENABLED_PARSERS=aac,h264,hevc/);
+  assert.match(ffmpegLibraries, /ENABLED_BSFS=aac_adtstoasc/);
+  assert.match(ffmpegBuild, /"routeSpecialized": true/);
+  assert.match(
+    ffmpegReproduction,
+    /WITHIN_MP4_COPY_ONLY=1 \.\/build-libraries\.sh/,
+  );
+  assert.match(
+    ffmpegReproduction,
+    /direct-mp4-only-source\.patch[\s\S]*WITHIN_BUILD_CORE_FILTER=within-direct/,
+  );
 });

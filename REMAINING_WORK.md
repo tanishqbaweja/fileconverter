@@ -1573,3 +1573,23 @@ not the entire product specification.
   `evidence/mp4-to-avi-current-chrome-optimization-2026-09-21.json`; generated
   fixtures, converted outputs, browser profiles, task temp, and raw reports
   were deleted after compaction. No Docker command was used.
+
+### 2026-09-21 — MKV-to-MP4 current-Chrome optimization in progress
+
+- Chrome 153 invalidated the historical narrow direct-save margin. The unchanged
+  two-worker route produced the exact 2,962,151,538-byte MP4 in 26.148 seconds
+  but reached 281.086 MiB complete-Chromium incremental private memory.
+- Five bounded alternatives were measured on the protected 2,958,573,265-byte
+  `test.mkv`. General-core synchronous OPFS reached 255.715 MiB; 128 MiB-rotation
+  staging reached 255.309 MiB in 63.175 seconds; 32 MiB and 16 MiB staging
+  rotations reached 250.023 and 265.340 MiB and were rejected as non-repeatable.
+  One-worker asynchronous direct save was fastest at 20.776 seconds and retained
+  the exact output SHA-256, but the existing broad specialist still reached
+  271.063 MiB.
+- The retained candidate keeps that faster direct architecture and replaces only
+  its engine with a pinned non-Docker route specialist enabling Matroska demux,
+  MP4 mux, AAC/H.264/HEVC parsers, and `aac_adtstoasc`. It is not accepted until
+  the hosted artifact passes focused correctness and three-run current-Chrome
+  memory/cancellation/cleanup gates with real headroom. Compact measurements and
+  rejected approaches are in
+  `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.

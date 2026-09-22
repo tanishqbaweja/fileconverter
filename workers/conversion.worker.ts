@@ -445,7 +445,13 @@ async function openDestination(
       keepExistingData: false,
     });
     await writable.truncate(0);
-    return { writable: asynchronousFileStreamDestination(writable) };
+    return {
+      writable: asynchronousFileStreamDestination(
+        writable,
+        undefined,
+        directWriteBytes,
+      ),
+    };
   }
 
   const root = await withTimeout(
@@ -4272,7 +4278,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
-        profileId === "avi-to-flv",
+        profileId === "avi-to-flv" || profileId === "mkv-to-mp4",
       );
     }
     if (

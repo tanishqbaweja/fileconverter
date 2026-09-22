@@ -187,14 +187,19 @@ export async function sharedDirectFileDestination(
 export function asynchronousFileStreamDestination(
   writable: FileSystemWritableFileStream,
   onAbort?: () => Promise<void>,
+  maximumWriteBytes = 256 * 1024,
 ): RandomAccessDestination {
   let position = 0;
   let closed = false;
 
   return {
     requiresOwnedWriteBuffer: true,
+    maximumWriteBytes,
     async write(operation) {
       const source = operation instanceof Uint8Array ? operation : operation.data;
+      if (source.byteLength > maximumWriteBytes) {
+        throw new RangeError(`File stream write exceeds ${maximumWriteBytes} bytes.`);
+      }
       const at =
         operation instanceof Uint8Array
           ? position

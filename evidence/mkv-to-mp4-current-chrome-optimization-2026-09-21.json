@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-21",
+  "status": "candidate-build-pending",
+  "browser": {
+    "name": "Google Chrome",
+    "version": "153.0.8010.48",
+    "headless": true
+  },
+  "source": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "expectedOutput": {
+    "bytes": 2962151538,
+    "sha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+    "validation": "full packet traversal and ffprobe manifest"
+  },
+  "limitMiB": 250,
+  "candidates": [
+    {
+      "name": "existing synchronous direct writer",
+      "result": "rejected",
+      "reason": "complete-Chromium incremental private memory exceeded the limit",
+      "elapsedMs": 26148.030000001192,
+      "peakIncrementalPrivateMiB": 281.0859375,
+      "activeWorkerCount": 2,
+      "peakWasmMemoryBytes": 46596096,
+      "rawReportSha256": "2033a0221dfbdd6153d81974f524c6bb64c8337058ec4d07fef2adf3a2901f2f"
+    },
+    {
+      "name": "existing synchronous OPFS control",
+      "result": "rejected",
+      "reason": "memory exceeded the limit and the general core used more Wasm memory",
+      "elapsedMs": 15977.245000004768,
+      "peakIncrementalPrivateMiB": 255.71484375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 58130432,
+      "rawReportSha256": "23c8b78760a652f12d4c0d5ebef0af7bb0bed7a763e06f9b829f23eaa6fb8350"
+    },
+    {
+      "name": "128 MiB-rotation OPFS staging plus bounded final copy",
+      "result": "rejected",
+      "reason": "memory exceeded the limit and the complete extra copy was too slow",
+      "elapsedMs": 63174.67500001192,
+      "peakIncrementalPrivateMiB": 255.30859375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 46596096,
+      "rawReportSha256": "7617ed2d3a7dfd15b7f9b736bcedb38bf0201bc3ef486db38bb5ebbe2d28ddd0"
+    },
+    {
+      "name": "asynchronous direct save with existing specialist",
+      "result": "retained-architecture-candidate",
+      "reason": "fastest measured route, but the existing broad specialist still exceeded the memory limit",
+      "elapsedMs": 20775.82000000775,
+      "peakIncrementalPrivateMiB": 271.0625,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 46596096,
+      "rawReportSha256": "0467ea9114e1c117deaade564265fbe5377841de604f3b3e46a1c525d3e0c33d"
+    },
+    {
+      "name": "32 MiB-rotation OPFS staging",
+      "result": "rejected",
+      "reason": "the 0.023 MiB miss had no safe headroom and did not repeat at the next interval",
+      "elapsedMs": 44684.090000003576,
+      "peakIncrementalPrivateMiB": 250.0234375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 46596096,
+      "rawReportSha256": "a2408492d88f79389fa3682e48327e30363ee8d36af1bdf231384da366126dda"
+    },
+    {
+      "name": "16 MiB-rotation OPFS staging",
+      "result": "rejected",
+      "reason": "memory regressed, proving interval tuning did not provide repeatable headroom",
+      "elapsedMs": 48389.28000000119,
+      "peakIncrementalPrivateMiB": 265.33984375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 46596096,
+      "rawReportSha256": "7bc3e216fc8f0c4f8d7e407c738750f633dbeb815e89272ee39c3661734a0777"
+    }
+  ],
+  "nextCandidate": {
+    "architecture": "asynchronous direct save",
+    "engine": "route-specialized within-direct",
+    "build": "pinned non-Docker Emscripten workflow",
+    "ffmpegSurface": {
+      "demuxers": ["matroska"],
+      "muxers": ["mp4"],
+      "parsers": ["aac", "h264", "hevc"],
+      "bitstreamFilters": ["aac_adtstoasc"]
+    },
+    "acceptance": "three repeatable runs at or below 250 MiB with valid identical output and faster elapsed time than the original 26.148-second direct baseline"
+  },
+  "storagePolicy": "All raw reports, browser profiles, converted outputs, and build artifacts are repository-local and are deleted after compact evidence is retained.",
+  "dockerUsed": false
+}

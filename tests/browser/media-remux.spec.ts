@@ -3766,15 +3766,14 @@ test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-sav
     expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
     expect(state.metrics?.pendingOperations).toBe(0);
     expect(state.metrics?.queuedBytes).toBe(0);
-    expect(state.metrics?.activeWorkerCount).toBe(2);
-    expect(state.metrics?.sharedArrayBufferBytes).toBeGreaterThan(
+    expect(state.metrics?.activeWorkerCount).toBe(1);
+    expect(state.metrics?.sharedArrayBufferBytes).toBeGreaterThanOrEqual(
       state.metrics?.peakWasmMemoryBytes ?? 0,
     );
     expect(
       (state.metrics?.sharedArrayBufferBytes ?? 0) -
         (state.metrics?.peakWasmMemoryBytes ?? 0),
-    ).toBeLessThanOrEqual(1030 * 1024);
-
+    ).toBeLessThanOrEqual(4 * 1024);
     await copyAndDeleteBrowserStorageEntry(outputName, directMp4OutputPath);
     const { size } = await stat(directMp4OutputPath);
     expect(size).toBeGreaterThan(250_000);
