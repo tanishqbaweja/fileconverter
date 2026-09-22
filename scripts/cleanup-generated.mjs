@@ -96,6 +96,20 @@ const mp4AviCurrentReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const mkvMp4CurrentReports = [
+  "2026-09-21T11-31-54-838Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-21T11-33-30-388Z-mkv-to-mp4-stress",
+  "2026-09-21T11-40-22-569Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-21T11-44-59-731Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-21T11-50-51-538Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-21T11-53-35-030Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T04-22-54-469Z-mkv-to-mp4-direct-handle-stress-failure",
+  "2026-09-22T04-41-16-260Z-mkv-to-mp4-direct-handle-stress",
+].flatMap((stem) =>
+  ["json", "csv", "html"].map((extension) =>
+    path.resolve(reportRoot, `${stem}.${extension}`),
+  ),
+);
 const hevcWebmStressReports = [
   "2026-09-09T17-20-11-878Z-hevc-to-webm-stress",
   "2026-09-09T17-39-03-977Z-hevc-to-webm-vp9-stress",
@@ -195,6 +209,10 @@ const taskTempRoots = [
   path.resolve(workRoot, "ffmpeg-candidate-34571134087"),
   path.resolve(workRoot, "ffmpeg-candidate-34903564007"),
   path.resolve(workRoot, "ffmpeg-candidate-34932654495"),
+  path.resolve(workRoot, "ffmpeg-candidate-35685720812"),
+  path.resolve(workRoot, "ffmpeg-candidate-35686992000"),
+  path.resolve(workRoot, "direct-source-preview"),
+  path.resolve(workRoot, "temp-current-mkv-mp4"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),
   path.resolve(workRoot, "ivf-input-browser"),
   path.resolve(workRoot, "playwright-profile-ivf-input"),
@@ -626,6 +644,9 @@ for (const reportPath of aviOgvReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of mp4AviCurrentReports) {
+  await rm(reportPath, { force: true });
+}
+for (const reportPath of mkvMp4CurrentReports) {
   await rm(reportPath, { force: true });
 }
 for (const reportPath of hevcWebmStressReports) {
