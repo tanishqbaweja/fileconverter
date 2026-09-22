@@ -1406,6 +1406,8 @@ try {
 
   const cancellationProfileFamily = isIvfProfile
     ? "IVF"
+    : profileId === "mkv-to-mp4"
+      ? "MKV-to-MP4"
     : profileId === "m4a-to-aiff"
       ? "AIFF"
     : THEORA_OGV_PROFILES.includes(profileId)
@@ -1418,6 +1420,7 @@ try {
         ? "AVI"
         : "OGV";
   if (
+    profileId === "mkv-to-mp4" ||
     profileId === "mkv-to-ogv" ||
     profileId === "m4a-to-aiff" ||
     profileId === "avi-to-3gp" ||
