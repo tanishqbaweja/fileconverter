@@ -76,7 +76,15 @@ test("the direct core is reproducibly built from an MKV-to-MP4-only FFmpeg surfa
   assert.match(ffmpegLibraries, /ENABLED_MUXERS=mp4/);
   assert.match(ffmpegLibraries, /ENABLED_PARSERS=aac,h264,hevc/);
   assert.match(ffmpegLibraries, /ENABLED_BSFS=aac_adtstoasc/);
+  assert.match(
+    ffmpegLibraries,
+    /DECODER_CONFIGURE_FLAGS=\(--enable-decoder=aac,h264,hevc\)/,
+  );
   assert.match(ffmpegBuild, /"routeSpecialized": true/);
+  assert.match(
+    ffmpegBuild,
+    /"enabledDecoders": \["aac", "h264", "hevc"\]/,
+  );
   assert.match(
     ffmpegReproduction,
     /WITHIN_MP4_COPY_ONLY=1 \.\/build-libraries\.sh/,

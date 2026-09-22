@@ -15,6 +15,11 @@ if [[ "${WITHIN_MP4_COPY_ONLY:-0}" == "1" ]]; then
   ENABLED_MUXERS=mp4
   ENABLED_PARSERS=aac,h264,hevc
   ENABLED_BSFS=aac_adtstoasc
+  # Matroska stream discovery uses these decoders to establish reordered
+  # video timestamps and AAC frame sizes even though packets are copied.
+  # Omitting them made the protected HEVC fixture fail after 354 kB with a
+  # non-monotonic DTS; no encoder is linked into this specialist core.
+  DECODER_CONFIGURE_FLAGS=(--enable-decoder=aac,h264,hevc)
 else
   ENABLED_DEMUXERS=aac,aiff,amr,asf,avi,flac,flv,h264,hevc,ivf,m4v,matroska,mov,mp3,mpegts,mpegvideo,ogg,wav
   if [[ "${WITHIN_ENABLE_AVI_MUXER:-1}" == "1" ]]; then

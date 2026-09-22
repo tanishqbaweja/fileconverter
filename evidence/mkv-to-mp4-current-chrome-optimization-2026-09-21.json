@@ -77,6 +77,19 @@
       "activeWorkerCount": 1,
       "peakWasmMemoryBytes": 46596096,
       "rawReportSha256": "7bc3e216fc8f0c4f8d7e407c738750f633dbeb815e89272ee39c3661734a0777"
+    },
+    {
+      "name": "decoder-free 1.28 MB route-specialized core",
+      "result": "rejected",
+      "reason": "the production browser correctly rejected the protected HEVC/AAC source after 353857 input bytes because decoder-free Matroska inspection did not derive reordered HEVC timestamps or AAC frame size; no output was accepted",
+      "inputBytesBeforeFailure": 353857,
+      "partialOutputBytes": 3916,
+      "peakWasmMemoryBytes": 33554432,
+      "activeWorkerCount": 1,
+      "candidateWasmBytes": 1278724,
+      "candidateWasmSha256": "de84d2d1b819492edfad2ee8c0d0bcbfc629606d29742ecf1f645d19940695b3",
+      "hostedBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35685720812",
+      "rawFailureReportSha256": "92eb958a81a6d35e652e846479043f32bc2998966eef35c7fd2aa92828d8946c"
     }
   ],
   "nextCandidate": {
@@ -86,6 +99,7 @@
     "ffmpegSurface": {
       "demuxers": ["matroska"],
       "muxers": ["mp4"],
+      "decoders": ["aac", "h264", "hevc"],
       "parsers": ["aac", "h264", "hevc"],
       "bitstreamFilters": ["aac_adtstoasc"]
     },

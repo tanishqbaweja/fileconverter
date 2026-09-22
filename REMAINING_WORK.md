@@ -1586,10 +1586,14 @@ not the entire product specification.
   One-worker asynchronous direct save was fastest at 20.776 seconds and retained
   the exact output SHA-256, but the existing broad specialist still reached
   271.063 MiB.
-- The retained candidate keeps that faster direct architecture and replaces only
-  its engine with a pinned non-Docker route specialist enabling Matroska demux,
-  MP4 mux, AAC/H.264/HEVC parsers, and `aac_adtstoasc`. It is not accepted until
-  the hosted artifact passes focused correctness and three-run current-Chrome
-  memory/cancellation/cleanup gates with real headroom. Compact measurements and
-  rejected approaches are in
+- The first non-Docker route specialist was only 1,278,724 bytes and passed the
+  small browser fixtures, but the protected HEVC/AAC source rejected it after
+  353,857 input bytes: removing all decoders prevented Matroska inspection from
+  deriving reordered HEVC timestamps and AAC frame size. The 3,916-byte partial
+  output was not accepted. The next build keeps the faster direct architecture
+  and exact Matroska/MP4/parser/bitstream-filter surface while adding only the
+  AAC, H.264, and HEVC inspection decoders; it still links no encoder. It is not
+  accepted until the hosted artifact passes focused correctness and three-run
+  current-Chrome memory/cancellation/cleanup gates with real headroom. Compact
+  measurements and rejected approaches are in
   `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.
