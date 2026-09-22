@@ -1,7 +1,6 @@
 --- a/within_remux.c
 +++ b/within_remux.c
-@@ -1943,6 +1943,11 @@
- 
+@@ -1944,6 +1944,11 @@
  EMSCRIPTEN_KEEPALIVE
  int within_remux(int profile) {
 +  /* This artifact is loaded only for lossless MKV-to-MP4 stream copy. Keeping
