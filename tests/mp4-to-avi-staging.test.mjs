@@ -13,6 +13,9 @@ const profiler = source("scripts/memory-profile.mjs");
 const ffmpegLibraries = source("media/ffmpeg/build-libraries.sh");
 const ffmpegBuild = source("media/ffmpeg/build-remux.sh");
 const ffmpegReproduction = source("media/ffmpeg/reproduce-nondocker.sh");
+const ffmpegDirectPatch = source(
+  "media/ffmpeg/patches/direct-mp4-only-source.patch",
+);
 
 test("only direct MP4-to-AVI uses app-owned bounded staging", () => {
   assert.match(protocol, /mode: "staged-handle"/);
@@ -76,14 +79,14 @@ test("the direct core is reproducibly built from an MKV-to-MP4-only FFmpeg surfa
   assert.match(ffmpegLibraries, /ENABLED_MUXERS=mp4/);
   assert.match(ffmpegLibraries, /ENABLED_PARSERS=aac,h264,hevc/);
   assert.match(ffmpegLibraries, /ENABLED_BSFS=aac_adtstoasc/);
-  assert.match(
-    ffmpegLibraries,
-    /DECODER_CONFIGURE_FLAGS=\(--enable-decoder=aac,h264,hevc\)/,
-  );
   assert.match(ffmpegBuild, /"routeSpecialized": true/);
   assert.match(
     ffmpegBuild,
-    /"enabledDecoders": \["aac", "h264", "hevc"\]/,
+    /"within-direct"[\s\S]*"initialWasmMemoryBytes": 25165824[\s\S]*"maximumWasmMemoryBytes": 67108864/,
+  );
+  assert.match(
+    ffmpegDirectPatch,
+    /profile != 1 && inspect_stream_info[\s\S]*synthesize_video_dts\[index\] = 1[\s\S]*frame_size = 1024/,
   );
   assert.match(
     ffmpegReproduction,

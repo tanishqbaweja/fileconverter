@@ -1,6 +1,6 @@
 --- a/within_remux.c
 +++ b/within_remux.c
-@@ -1944,6 +1944,11 @@
+@@ -1944,5 +1944,10 @@
  EMSCRIPTEN_KEEPALIVE
  int within_remux(int profile) {
 +  /* This artifact is loaded only for lossless MKV-to-MP4 stream copy. Keeping
@@ -11,3 +11,35 @@
    int result = 0;
    AVFormatContext *input_format = NULL;
    AVFormatContext *output_format = NULL;
+@@ -2060,6 +2065,6 @@
+        container_flv_input_requires_probe ||
+        container_avi_input_requires_probe));
+-  if (inspect_stream_info) {
++  if (profile != 1 && inspect_stream_info) {
+     result = avformat_find_stream_info(input_format, NULL);
+     if (result < 0) {
+       report_av_error("Input stream inspection failed", result);
+@@ -2262,6 +2267,12 @@
+               : stream_is_supported(input_stream, profile);
+     stream_map[index] = -1;
+     last_dts[index] = AV_NOPTS_VALUE;
++    if (profile == 1 && selected_stream &&
++        input_stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO &&
++        (input_stream->codecpar->codec_id == AV_CODEC_ID_H264 ||
++         input_stream->codecpar->codec_id == AV_CODEC_ID_HEVC)) {
++      synthesize_video_dts[index] = 1;
++    }
+     if (selected_stream && !copy_compatible) {
+       if (matroska_output) {
+         within_message(
+@@ -2511,6 +2522,10 @@
+       report_av_error("Stream metadata copy failed", result);
+       goto cleanup;
+     }
++    if (profile == 1 && output_stream->codecpar->codec_id == AV_CODEC_ID_AAC &&
++        output_stream->codecpar->frame_size <= 0) {
++      output_stream->codecpar->frame_size = 1024;
++    }
+     if (matroska_output &&
+         (input_stream->disposition & AV_DISPOSITION_ATTACHED_PIC)) {
+       av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);

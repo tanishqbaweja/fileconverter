@@ -1592,8 +1592,13 @@ not the entire product specification.
   deriving reordered HEVC timestamps and AAC frame size. The 3,916-byte partial
   output was not accepted. The next build keeps the faster direct architecture
   and exact Matroska/MP4/parser/bitstream-filter surface while adding only the
-  AAC, H.264, and HEVC inspection decoders; it still links no encoder. It is not
-  accepted until the hosted artifact passes focused correctness and three-run
+  AAC, H.264, and HEVC inspection decoders. That corrected correctness and
+  cancellation but reached 266.730 MiB because decoder probing grew Wasm to
+  42.25 MiB, so it was also rejected. The next candidate remains decoder-free,
+  skips decoder-oriented stream analysis, reconstructs monotonic H.264/HEVC DTS
+  from Matroska timing metadata, supplies AAC frame size for MP4, and starts its
+  Wasm heap at 24 MiB. It is not accepted until it passes focused correctness
+  and three-run
   current-Chrome memory/cancellation/cleanup gates with real headroom. Compact
   measurements and rejected approaches are in
   `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.

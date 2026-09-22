@@ -90,6 +90,23 @@
       "candidateWasmSha256": "de84d2d1b819492edfad2ee8c0d0bcbfc629606d29742ecf1f645d19940695b3",
       "hostedBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35685720812",
       "rawFailureReportSha256": "92eb958a81a6d35e652e846479043f32bc2998966eef35c7fd2aa92828d8946c"
+    },
+    {
+      "name": "decoder-assisted 3.63 MB route-specialized core",
+      "result": "rejected",
+      "reason": "correctness, exact output, full packet traversal, bounded I/O, cancellation, and cleanup passed, but decoder-assisted probing grew Wasm to 42.25 MiB and complete-Chromium incremental private memory exceeded the limit by 16.730 MiB",
+      "elapsedMs": 22640.22999998927,
+      "peakIncrementalPrivateMiB": 266.73046875,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 44302336,
+      "candidateWasmBytes": 3634274,
+      "candidateWasmSha256": "9c2f1992dd9853640fd00c22474447f571ef4d528b0d4b7c35233996974aa1ef",
+      "outputBytes": 2962151538,
+      "outputSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+      "cancellationInputBytes": 12412481,
+      "cancellationOutputBytes": 7951411,
+      "hostedBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35686992000",
+      "rawReportSha256": "3ebdc886807d7552463956fbf5fa5142e73e8af8368569ea1a62818f82988d44"
     }
   ],
   "nextCandidate": {
@@ -99,10 +116,12 @@
     "ffmpegSurface": {
       "demuxers": ["matroska"],
       "muxers": ["mp4"],
-      "decoders": ["aac", "h264", "hevc"],
       "parsers": ["aac", "h264", "hevc"],
       "bitstreamFilters": ["aac_adtstoasc"]
     },
+    "wrapperSpecialization": "skip decoder-oriented stream analysis, synthesize monotonic H.264/HEVC decode timestamps from bounded Matroska timing metadata, and supply the AAC frame size required by MP4 without decoding packets",
+    "initialWasmMemoryBytes": 25165824,
+    "maximumWasmMemoryBytes": 67108864,
     "acceptance": "three repeatable runs at or below 250 MiB with valid identical output and faster elapsed time than the original 26.148-second direct baseline"
   },
   "storagePolicy": "All raw reports, browser profiles, converted outputs, and build artifacts are repository-local and are deleted after compact evidence is retained.",
