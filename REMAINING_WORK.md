@@ -1616,3 +1616,7 @@ not the entire product specification.
   `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`; raw reports,
   browser profiles, downloaded candidates, and converted outputs are deleted
   after compaction. No Docker command was used.
+- Pushed commit `c3a525a` passed the exact no-Docker `within-direct` rebuild in
+  [run 35809382089](https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089)
+  in 9m40s. It skipped mismatch upload, completed hosted build cleanup, and
+  retained zero artifacts.

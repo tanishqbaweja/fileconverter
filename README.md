@@ -140,6 +140,9 @@ The accepted output is a genuine 2,962,151,522-byte MP4, not a renamed file.
 The faster-looking 1 MiB final-copy candidate was rejected at 257.121 MiB; the
 768 KiB candidate was slower than 512 KiB. Exact accepted and rejected trials
 are in `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.
+Pushed commit `c3a525a` passed the exact no-Docker `within-direct` rebuild in
+[run 35809382089](https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089)
+with no retained build artifact.
 
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These

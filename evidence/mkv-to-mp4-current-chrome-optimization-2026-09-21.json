@@ -205,6 +205,15 @@
     "scratchPolicy": "the complete output exists temporarily only in repository-tested origin-private storage, is copied with one reusable 512 KiB buffer, and is deleted on success, failure, cancellation, or worker replacement",
     "acceptance": "three repeatable runs at 207.094 MiB worst complete-Chromium incremental private memory, plus a strict exact-packet run at 238.023 MiB"
   },
+  "publishedReproduction": {
+    "commit": "c3a525a9e926fdeab20096dc0501ce3ad339d6f5",
+    "run": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089",
+    "scope": "within-direct",
+    "result": "passed exact non-Docker JavaScript, Wasm, and manifest comparison in 9m40s",
+    "mismatchArtifactUploadSkipped": true,
+    "retainedArtifacts": 0,
+    "repositoryLocalBuildCleanupPassed": true
+  },
   "storagePolicy": "All raw reports, browser profiles, converted outputs, and build artifacts are repository-local and are deleted after compact evidence is retained.",
   "dockerUsed": false
 }

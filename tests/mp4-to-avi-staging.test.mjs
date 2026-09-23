@@ -156,4 +156,6 @@ test("compact MKV-to-MP4 evidence retains the accepted and rejected frontier", (
     ),
   );
   assert.equal(mkvOptimizationEvidence.dockerUsed, false);
+  assert.equal(mkvOptimizationEvidence.publishedReproduction.result.startsWith("passed"), true);
+  assert.equal(mkvOptimizationEvidence.publishedReproduction.retainedArtifacts, 0);
 });
