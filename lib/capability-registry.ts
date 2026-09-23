@@ -4364,6 +4364,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
         "Lossless stream copy accepts H.264 or HEVC video with AAC audio; other source codecs are rejected unless a separately verified re-encoding route is selected.",
         "SRT subtitles and container-incompatible attachments are explicitly excluded.",
         "Source chapters are not copied by this initial fragmented-MP4 profile.",
+        "For current Chrome direct saves, the mux is written to quota-preflighted browser-private storage, copied to the selected destination through one reusable 512 KiB buffer, and deleted on every terminal path.",
       ],
       fidelityLimitations: [],
       maxTestedBytes: 10_737_988_703,

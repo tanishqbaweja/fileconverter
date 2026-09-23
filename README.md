@@ -126,6 +126,21 @@ This is an 11.10x median speedup without changing fidelity, privacy, or
 the 250 MiB limit. Exact accepted and rejected trials are in
 `evidence/mp4-to-avi-current-chrome-optimization-2026-09-21.json`.
 
+MKV-to-MP4 direct saving was likewise re-audited on Chrome 153. The accepted
+route-specialized 1,197,888-byte Wasm core performs only Matroska demux and MP4
+mux work, with no decoders or encoders. It writes the seekable mux to
+quota-preflighted app-owned private storage, copies it to the selected
+destination through one reusable 512 KiB buffer with one pending write, and
+deletes the staged file on success, failure, cancellation, or worker
+replacement. The protected 2,958,573,265-byte source passed three repeatable
+runs in 39.302-48.801 seconds at 207.094 MiB worst complete-Chromium incremental
+private memory. A separate 25.579-second strict run passed at 238.023 MiB and
+proved that all 296,160 HEVC and 289,221 AAC packets exactly match the source.
+The accepted output is a genuine 2,962,151,522-byte MP4, not a renamed file.
+The faster-looking 1 MiB final-copy candidate was rejected at 257.121 MiB; the
+768 KiB candidate was slower than 512 KiB. Exact accepted and rejected trials
+are in `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.
+
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
 lossy routes use the same fastest quality-certified encoders as standalone
@@ -196,9 +211,13 @@ Browser File
   -> bounded worker slice/BYOB reader (<= 256 KiB)
   -> dedicated conversion worker
   -> custom FFmpeg AVIOContext / streaming transform
-  -> one positional write in flight (normally <= 256 KiB;
-     direct MKV-to-MP4 specialist <= 1 MiB)
+  -> one positional write in flight (normally <= 256 KiB)
   -> user-selected destination
+
+Direct MKV-to-MP4 exception:
+  -> route-specialized mux writes <= 1 MiB chunks to a seekable private stage
+  -> one reusable 512 KiB buffer copies to the selected destination
+  -> the private stage is deleted on every terminal path
 ```
 
 Media conversion uses FFmpeg libraries directly through
@@ -212,8 +231,10 @@ FFmpeg seek cancels that reader and opens a new bounded stream at the requested
 offset. Bytes are copied once from the browser-owned BYOB view into FFmpeg's
 256 KiB AVIO input buffer. FFmpeg's ordinary output callbacks expose at most
 256 KiB. The direct MKV-to-MP4 route uses a separately bounded 1 MiB specialist
-to reduce browser/Wasm crossings while retaining one-write backpressure. A
-dedicated destination worker owns the user-selected
+to reduce browser/Wasm crossings while muxing to synchronous origin-private
+storage. After muxing, one reusable 512 KiB buffer copies the staged file to the
+selected destination with strict one-write backpressure, then deletes the
+stage. Other direct media routes use a dedicated destination worker that owns the user-selected
 `FileSystemWritableFileStream` and its writer for the full job. The conversion
 worker copies one chunk into a profile-bounded `SharedArrayBuffer`, waits with Atomics,
 and cannot queue another operation until the destination worker acknowledges
@@ -247,27 +268,28 @@ and independently validate an output without creating another multi-gigabyte
 copy. That path rotates the access handle every 128 MiB and flushes every 8 MiB.
 It is test/fallback storage, not the normal production destination.
 
-A separate real-Chrome test remuxes H.264/AAC Matroska through the normal
-asynchronous `FileSystemFileHandle` destination, streams the result to a
-project-local verifier in 64 KiB chunks, probes and fully decodes it with native
-FFmpeg, and deletes both test-owned copies. It asserts one pending write and a
-262,144-byte ceiling for reads, writes, and queued output.
+A separate real-Chrome test remuxes H.264/AAC Matroska through the production
+private stage and selected `FileSystemFileHandle` destination, streams the
+result to a project-local verifier in 64 KiB chunks, probes and fully traverses
+it with native FFmpeg, and deletes both test-owned copies. It asserts one
+pending operation, 262,144-byte input reads, at most 1,048,576-byte mux writes,
+and a 524,288-byte reusable final-copy buffer.
 
 Hard limits:
 
 - AVIO input buffer: 262,144 bytes
 - AVIO output buffer: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
 - maximum browser read chunk: 262,144 bytes
-- maximum browser write and queued output: 262,144 bytes normally; 1,048,576 bytes for direct MKV -> MP4
+- maximum browser write and queued output: 262,144 bytes normally; direct MKV -> MP4 mux stage 1,048,576 bytes and selected-destination copy 524,288 bytes
 - direct audio packet-coalescing buffer: 262,144 bytes
 - BZIP2 input/output buffers: 262,144 / 65,536 bytes; fixed Wasm memory: 8 MiB
 - XZ input/output buffers: 262,144 / 65,536 bytes; fixed Wasm memory: 48 MiB;
   decoder allocation limit: 32 MiB
 - outstanding output operations: 1
-- direct-writer shared command, payload, and error storage: 1,052,704 bytes for direct MKV -> MP4
-- active workers during direct media output: 2
-- initial Wasm memory: 32 MiB
-- maximum Wasm memory: 96 MiB
+- direct-writer shared command, payload, and error storage: up to 1,052,704 bytes on shared-writer routes; staged MKV -> MP4 does not create that writer worker
+- active workers during direct media output: normally 2; staged MKV -> MP4 uses 1
+- initial Wasm memory: 32 MiB normally; route-specialized MKV -> MP4 starts at 24 MiB
+- maximum Wasm memory: 96 MiB normally; route-specialized MKV -> MP4 is capped at 64 MiB
 - shared Wasm memory: 96 MiB hard maximum; 32 MiB observed for lean media
   routes including AV1 WebM copy, 80 MiB for VP8 WebM, and 88 MiB for VP9 WebM
 - completed large input/output in MEMFS: prohibited
@@ -1551,7 +1573,7 @@ Current exact-build results:
 | -------------------------------------------------- | --------------: | ---------------: | ---------------: | -------------------------------: | --------: | ------------------------------: |
 | MKV to WAV, 256 KiB direct coalescer               |               1 |  2,958,573,265 B |  7,107,834,734 B |                        186.7 MiB |    32 MiB |                         9.0 MiB |
 | MP3 to WAV, 256 KiB direct coalescer               |               3 |     50,401,224 B |    201,600,128 B |                        191.9 MiB |    32 MiB |                    8.5-32.0 MiB |
-| MKV → MP4                                          |               3 |  2,958,573,265 B |  2,962,151,522 B |                        173.8 MiB |  52.6 MiB |                  −16.8–31.9 MiB |
+| MKV → MP4, 512 KiB staged final copy (Chrome 153)  |               3 |  2,958,573,265 B |  2,962,151,522 B |                        207.1 MiB |  50.4 MiB |                    −2.4–3.9 MiB |
 | MKV → MP4, 1 MiB shared direct writer (Chrome 152) |               3 |  2,958,573,265 B |  2,962,151,538 B |                        249.2 MiB |  44.4 MiB |                 −22.7–−13.7 MiB |
 | MKV → M4A                                          |               3 |  2,958,573,265 B |    249,427,974 B |                        164.7 MiB |    32 MiB |                    −1.1–0.9 MiB |
 | MP4 → M4A                                          |               3 |  2,964,855,971 B |    249,427,976 B |                        203.3 MiB |  73.8 MiB |                   −4.0–−0.6 MiB |

@@ -3736,7 +3736,7 @@ test("browser FFmpeg AVIO remuxes MPEG-4 Part 2/MP3 AVI to valid MP4", async () 
   );
 });
 
-test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-save adapter", async () => {
+test("browser FFmpeg AVIO writes a valid MP4 through bounded private staging", async () => {
   const outputName = "remux-source.mp4";
   try {
     await page.goto("/?test=1&directory=1");
@@ -3762,10 +3762,13 @@ test("browser FFmpeg AVIO writes a valid MP4 through the asynchronous direct-sav
     expect(state.batchOutputNames).toEqual([outputName]);
     expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
     expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(1024 * 1024);
-    expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(1024 * 1024);
+    expect(state.metrics?.maxScratchReadChunkBytes).toBeLessThanOrEqual(512 * 1024);
+    expect(state.metrics?.maxScratchWriteChunkBytes).toBeLessThanOrEqual(512 * 1024);
+    expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(512 * 1024);
     expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
     expect(state.metrics?.pendingOperations).toBe(0);
     expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.metrics?.scratchBytes).toBe(0);
     expect(state.metrics?.activeWorkerCount).toBe(1);
     expect(state.metrics?.sharedArrayBufferBytes).toBeGreaterThanOrEqual(
       state.metrics?.peakWasmMemoryBytes ?? 0,

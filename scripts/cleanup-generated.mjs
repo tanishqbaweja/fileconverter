@@ -105,6 +105,13 @@ const mkvMp4CurrentReports = [
   "2026-09-21T11-53-35-030Z-mkv-to-mp4-direct-handle-stress",
   "2026-09-22T04-22-54-469Z-mkv-to-mp4-direct-handle-stress-failure",
   "2026-09-22T04-41-16-260Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T05-04-01-963Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T05-12-26-609Z-mkv-to-mp4-direct-handle-stress-failure",
+  "2026-09-22T05-17-16-340Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T05-24-30-481Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T09-11-13-831Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T09-16-40-121Z-mkv-to-mp4-direct-handle-stress",
+  "2026-09-22T09-21-31-586Z-mkv-to-mp4-direct-handle-stress",
 ].flatMap((stem) =>
   ["json", "csv", "html"].map((extension) =>
     path.resolve(reportRoot, `${stem}.${extension}`),
@@ -211,6 +218,7 @@ const taskTempRoots = [
   path.resolve(workRoot, "ffmpeg-candidate-34932654495"),
   path.resolve(workRoot, "ffmpeg-candidate-35685720812"),
   path.resolve(workRoot, "ffmpeg-candidate-35686992000"),
+  path.resolve(workRoot, "ffmpeg-candidate-35688425944"),
   path.resolve(workRoot, "direct-source-preview"),
   path.resolve(workRoot, "temp-current-mkv-mp4"),
   path.resolve(workRoot, "playwright-profile-avi-to-3gp"),

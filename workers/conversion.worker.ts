@@ -76,6 +76,7 @@ const workerScope: DedicatedWorkerGlobalScope = self as never;
 const MAX_WRITE_CHUNK = 256 * 1024;
 const ARCHIVE_WASM_WRITE_CHUNK = 64 * 1024;
 const DIRECT_REMUX_WRITE_CHUNK = 1024 * 1024;
+const STAGED_MKV_COPY_CHUNK = 512 * 1024;
 const MAX_TEXT_RECORD = 1024 * 1024;
 const MAX_TEXT_COLUMNS = 4_096;
 const MAX_GZIP_EXPANSION_RATIO = 100;
@@ -486,6 +487,7 @@ async function openDestination(
 async function openStagedDirectDestination(
   finalHandle: FileSystemFileHandle,
   stagingName: string,
+  profileId: string,
   sourceBytes: number,
   testFault: Exclude<TestFault, "worker-crash"> | undefined,
   jobId: string,
@@ -493,18 +495,19 @@ async function openStagedDirectDestination(
   startedAt: number,
 ): Promise<Destination> {
   if (
-    !stagingName.startsWith("within-stage-mp4-to-avi-") ||
+    !stagingName.startsWith(`within-stage-${profileId}-`) ||
+    (profileId !== "mp4-to-avi" && profileId !== "mkv-to-mp4") ||
     stagingName.length > 160 ||
     /[\\/]/.test(stagingName)
   ) {
-    throw new Error("The AVI staging name is invalid.");
+    throw new Error("The media staging name is invalid.");
   }
   if (
     typeof navigator.storage?.getDirectory !== "function" ||
     typeof navigator.storage?.estimate !== "function"
   ) {
     throw new Error(
-      "MP4-to-AVI requires bounded private-storage staging in this browser.",
+      "This media route requires bounded private-storage staging in this browser.",
     );
   }
 
@@ -516,7 +519,7 @@ async function openStagedDirectDestination(
       : null;
   if (availableBytes !== null && availableBytes < requiredBytes) {
     throw new DOMException(
-      `MP4-to-AVI needs approximately ${requiredBytes} bytes of temporary private-storage quota before copying the completed AVI to the selected destination; ${Math.max(0, availableBytes)} bytes are available.`,
+      `${profileId} needs approximately ${requiredBytes} bytes of temporary private-storage quota before copying the completed output to the selected destination; ${Math.max(0, availableBytes)} bytes are available.`,
       "QuotaExceededError",
     );
   }
@@ -528,7 +531,7 @@ async function openStagedDirectDestination(
   if (!stagingHandle.createSyncAccessHandle) {
     await root.removeEntry(stagingName).catch(() => {});
     throw new Error(
-      "MP4-to-AVI requires a synchronous private-storage handle for bounded random-access muxing.",
+      "This media route requires a synchronous private-storage handle for bounded random-access muxing.",
     );
   }
   const access = await stagingHandle.createSyncAccessHandle();
@@ -539,6 +542,12 @@ async function openStagedDirectDestination(
     root,
     stagingName,
   );
+  const copyPhase =
+    profileId === "mp4-to-avi"
+      ? "Copying staged AVI to selected destination"
+      : "Copying staged MP4 to selected destination";
+  const copyChunkBytes =
+    profileId === "mkv-to-mp4" ? STAGED_MKV_COPY_CHUNK : MAX_WRITE_CHUNK;
   let stagedClosed = false;
   let finalWritable: FileSystemWritableFileStream | null = null;
 
@@ -549,7 +558,10 @@ async function openStagedDirectDestination(
 
   const writable: RandomAccessDestination = {
     requiresOwnedWriteBuffer: staged.requiresOwnedWriteBuffer,
-    maximumWriteBytes: staged.maximumWriteBytes,
+    maximumWriteBytes:
+      profileId === "mkv-to-mp4"
+        ? DIRECT_REMUX_WRITE_CHUNK
+        : staged.maximumWriteBytes,
     sharedBufferBytes: staged.sharedBufferBytes,
     additionalWorkerCount: staged.additionalWorkerCount,
     write: (operation) => staged.write(operation),
@@ -575,7 +587,7 @@ async function openStagedDirectDestination(
         lastCancellationYieldBytes = 0;
         emitProgress(
           jobId,
-          "Copying staged AVI to selected destination",
+          copyPhase,
           metrics,
           startedAt,
           true,
@@ -586,7 +598,7 @@ async function openStagedDirectDestination(
         });
         await finalWritable.truncate(0);
         readAccess = await stagingHandle.createSyncAccessHandle!();
-        const buffer = new Uint8Array(MAX_WRITE_CHUNK);
+        const buffer = new Uint8Array(copyChunkBytes);
         let copiedBytes = 0;
         let injectedFault = false;
         while (copiedBytes < stagedFile.size) {
@@ -594,7 +606,7 @@ async function openStagedDirectDestination(
           const bytesRead = readAccess.read(buffer, { at: copiedBytes });
           if (bytesRead <= 0) {
             throw new Error(
-              `The staged AVI stopped after ${copiedBytes} of ${stagedFile.size} bytes.`,
+              `The staged output stopped after ${copiedBytes} of ${stagedFile.size} bytes.`,
             );
           }
           const value = buffer.subarray(0, bytesRead);
@@ -635,7 +647,7 @@ async function openStagedDirectDestination(
           }
           emitProgress(
             jobId,
-            "Copying staged AVI to selected destination",
+            copyPhase,
             metrics,
             startedAt,
           );
@@ -645,7 +657,7 @@ async function openStagedDirectDestination(
         readAccess = null;
         if (copiedBytes !== stagedFile.size) {
           throw new Error(
-            `The staged AVI copy was incomplete: ${copiedBytes} of ${stagedFile.size} bytes.`,
+            `The staged output copy was incomplete: ${copiedBytes} of ${stagedFile.size} bytes.`,
           );
         }
         await finalWritable.close();
@@ -678,7 +690,7 @@ async function openStagedDirectDestination(
     type: "warning",
     jobId,
     message:
-      "MP4-to-AVI uses bounded private-storage staging for fast random-access muxing, then copies through one 256 KiB buffer to the selected destination and deletes the temporary file.",
+      `${profileId} uses bounded private-storage staging for fast random-access muxing, then copies through one ${copyChunkBytes / 1024} KiB buffer to the selected destination and deletes the temporary file.`,
   });
   return { writable, handlesTestFault: testFault !== undefined };
 }
@@ -4080,6 +4092,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       destination = await openStagedDirectDestination(
         message.destination.handle,
         message.destination.stagingName,
+        profileId,
         file.size,
         message.testFault === "worker-crash" ? undefined : message.testFault,
         jobId,

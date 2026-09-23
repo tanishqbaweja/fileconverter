@@ -1574,7 +1574,7 @@ not the entire product specification.
   fixtures, converted outputs, browser profiles, task temp, and raw reports
   were deleted after compaction. No Docker command was used.
 
-### 2026-09-21 — MKV-to-MP4 current-Chrome optimization in progress
+### 2026-09-22 — MKV-to-MP4 current-Chrome optimization accepted
 
 - Chrome 153 invalidated the historical narrow direct-save margin. The unchanged
   two-worker route produced the exact 2,962,151,538-byte MP4 in 26.148 seconds
@@ -1594,11 +1594,25 @@ not the entire product specification.
   and exact Matroska/MP4/parser/bitstream-filter surface while adding only the
   AAC, H.264, and HEVC inspection decoders. That corrected correctness and
   cancellation but reached 266.730 MiB because decoder probing grew Wasm to
-  42.25 MiB, so it was also rejected. The next candidate remains decoder-free,
-  skips decoder-oriented stream analysis, reconstructs monotonic H.264/HEVC DTS
-  from Matroska timing metadata, supplies AAC frame size for MP4, and starts its
-  Wasm heap at 24 MiB. It is not accepted until it passes focused correctness
-  and three-run
-  current-Chrome memory/cancellation/cleanup gates with real headroom. Compact
-  measurements and rejected approaches are in
-  `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.
+  42.25 MiB, so it was also rejected.
+- The accepted 1,197,888-byte core remains decoder-free, skips decoder-oriented
+  stream analysis, reconstructs monotonic H.264/HEVC DTS from Matroska timing,
+  supplies AAC frame size for MP4, and starts its Wasm heap at 24 MiB. Direct
+  asynchronous output was still rejected at 266.344 MiB, so the route now muxes
+  into quota-preflighted browser-private storage and copies to the selected
+  destination through one reusable 512 KiB buffer with one pending write.
+- The protected source passed three repeatable runs in 39.302–48.801 seconds at
+  207.094 MiB worst complete-Chromium incremental private memory. A separate
+  strict run completed in 25.579 seconds at 238.023 MiB and proved exact source
+  and output compressed packet hashes for all 296,160 HEVC and 289,221 AAC
+  packets. The valid output is 2,962,151,522 bytes with SHA-256
+  `aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a`.
+  Final-copy cancellation, forced-write cleanup, repeatability, one pending
+  operation, and staging deletion passed.
+- A 1 MiB final-copy buffer was faster in one screen but rejected at 257.121 MiB.
+  A 768 KiB buffer passed memory but was slower than 512 KiB. The original 256
+  KiB copy passed memory but took 69.501 seconds. Compact measurements and every
+  rejected approach are in
+  `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`; raw reports,
+  browser profiles, downloaded candidates, and converted outputs are deleted
+  after compaction. No Docker command was used.

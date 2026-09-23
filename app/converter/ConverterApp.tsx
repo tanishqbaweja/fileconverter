@@ -543,7 +543,10 @@ export function ConverterApp() {
       const destinationForHandle = (
         handle: FileSystemFileHandle,
       ): typeof destination => {
-        if (batch.profile.id !== "mp4-to-avi") {
+        if (
+          batch.profile.id !== "mp4-to-avi" &&
+          batch.profile.id !== "mkv-to-mp4"
+        ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };
         }

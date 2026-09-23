@@ -3319,11 +3319,11 @@
       "profileId": "mkv-to-mp4",
       "maxTestedBytes": 10737988703,
       "repeatableEvidence": {
-        "report": "2026-08-28T06-45-23-327Z-mkv-to-mp4-direct-handle-stress.json",
-        "reportSha256": "a81870f7fa21048eb4e465042c0c544aa81274bad15124a2dd5938ee18e5f156",
+        "report": "2026-09-22T09-16-40-121Z-mkv-to-mp4-direct-handle-stress.json",
+        "reportSha256": "ed953da38a2f7a98ff71860c53176d5bb5082b4050ac6561389498757df1e26d",
         "runs": 3,
         "sourceBytes": 2958573265,
-        "incrementalPrivateMiB": 249.24609375
+        "incrementalPrivateMiB": 207.09375
       },
       "maximumSizeEvidence": {
         "report": "2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",

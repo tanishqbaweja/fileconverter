@@ -1,9 +1,9 @@
 {
   "date": "2026-09-21",
-  "status": "candidate-build-pending",
+  "status": "accepted",
   "browser": {
     "name": "Google Chrome",
-    "version": "153.0.8010.48",
+    "version": "153.0.8010.53",
     "headless": true
   },
   "source": {
@@ -11,10 +11,12 @@
     "bytes": 2958573265,
     "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   },
-  "expectedOutput": {
-    "bytes": 2962151538,
-    "sha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
-    "validation": "full packet traversal and ffprobe manifest"
+  "acceptedOutput": {
+    "bytes": 2962151522,
+    "sha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+    "validation": "ffprobe manifest, 585381-packet traversal, and exact compressed HEVC/AAC packet hashes against the source",
+    "videoPacketSha256": "467396b77f52d35cad1174c7a6dbb29ce36cef96ad7f8d5ade0762e0c1eb6244",
+    "audioPacketSha256": "0accf02b4c55f118ffe5218f2431de03ef6edd99bcf8828c92c7555d893bc225"
   },
   "limitMiB": 250,
   "candidates": [
@@ -107,10 +109,88 @@
       "cancellationOutputBytes": 7951411,
       "hostedBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35686992000",
       "rawReportSha256": "3ebdc886807d7552463956fbf5fa5142e73e8af8368569ea1a62818f82988d44"
+    },
+    {
+      "name": "decoder-free 1.20 MB route-specialized core with asynchronous direct save",
+      "result": "rejected",
+      "reason": "the specialized wrapper corrected HEVC DTS and AAC frame-size discovery without decoders and produced a genuine valid output, but the asynchronous direct destination still exceeded the memory limit by 16.344 MiB",
+      "elapsedMs": 20610.91,
+      "peakIncrementalPrivateMiB": 266.34375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 52887552,
+      "candidateWasmBytes": 1197888,
+      "candidateWasmSha256": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0",
+      "outputBytes": 2962151522,
+      "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+      "cancellationInputBytes": 21849665,
+      "cancellationOutputBytes": 13236950,
+      "hostedBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35688425944",
+      "rawReportSha256": "d75e7bffb47a7b28465ac342e92fecb3f2b42d10bbc9ed46c510fa3e7809bc4f"
+    },
+    {
+      "name": "decoder-free specialist with 256 KiB private-stage final copy",
+      "result": "rejected",
+      "reason": "memory passed with ample headroom, but the complete final copy took the end-to-end conversion to 69.501 seconds; the first profiler harness also timed out while waiting for the deliberately late cancellation phase",
+      "elapsedMs": 69500.85,
+      "peakIncrementalPrivateMiB": 216.48828125,
+      "peakWasmMemoryBytes": 52887552,
+      "outputBytes": 2962151522,
+      "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+      "rawFailureReportSha256": "08d3b53d1585a37e7cedffe72156c7ed07c78a66b8fc92ac6106694fd5dd9660"
+    },
+    {
+      "name": "decoder-free specialist with 1 MiB private-stage final copy",
+      "result": "rejected",
+      "reason": "the 25.606-second result was fast and cancellation cleanup passed, but complete-Chromium incremental private memory exceeded the unchanged ceiling by 7.121 MiB",
+      "elapsedMs": 25605.84,
+      "peakIncrementalPrivateMiB": 257.12109375,
+      "peakWasmMemoryBytes": 52887552,
+      "outputBytes": 2962151522,
+      "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+      "cancellationPhase": "Copying staged MP4 to selected destination",
+      "cancellationOutputBytes": 30408704,
+      "rawReportSha256": "2265712a6f8f3f0f0663a1e73c8602c2a5e2757335f776a4e1d6066ab2130904"
+    },
+    {
+      "name": "decoder-free specialist with 768 KiB private-stage final copy",
+      "result": "rejected",
+      "reason": "memory passed, but it was slower than the 512 KiB candidate and retained 21.0 MiB less memory headroom",
+      "elapsedMs": 49306.19,
+      "peakIncrementalPrivateMiB": 227.91015625,
+      "peakWasmMemoryBytes": 52887552,
+      "outputBytes": 2962151522,
+      "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+      "rawReportSha256": "116e1643c6eb3f76254a0b71384fdf0077d827b6f8c17fbcfa562563a6ea2bac"
+    },
+    {
+      "name": "decoder-free specialist with 512 KiB private-stage final copy",
+      "result": "accepted",
+      "reason": "three repeatable production-browser conversions passed the unchanged memory ceiling with 42.906 MiB worst-case headroom; a separate strict run proved exact compressed source/output HEVC and AAC packet hashes, full traversal, final-copy cancellation, and cleanup",
+      "elapsedMsByRun": [48800.86, 39708.44, 39302.34],
+      "incrementalPrivateMiBByRun": [207.09375, 204.76953125, 190.34375],
+      "cleanupDeltaMiBByRun": [-2.390625, 3.84765625, 0.75],
+      "strictPacketHashRunElapsedMs": 25579.11,
+      "peakIncrementalPrivateMiB": 207.09375,
+      "strictPacketHashRunPeakIncrementalPrivateMiB": 238.0234375,
+      "activeWorkerCount": 1,
+      "peakWasmMemoryBytes": 52887552,
+      "maximumInputReadBytes": 262144,
+      "maximumMuxWriteBytes": 1048576,
+      "finalCopyBufferBytes": 524288,
+      "peakPendingOperations": 1,
+      "outputBytes": 2962151522,
+      "outputSha256": "aff831693c020c02a0163e25d0f08a7529d0fb0e4022f0cb984c60d90348334a",
+      "videoPackets": 296160,
+      "audioPackets": 289221,
+      "videoPacketSha256": "467396b77f52d35cad1174c7a6dbb29ce36cef96ad7f8d5ade0762e0c1eb6244",
+      "audioPacketSha256": "0accf02b4c55f118ffe5218f2431de03ef6edd99bcf8828c92c7555d893bc225",
+      "cancellationPhase": "Copying staged MP4 to selected destination",
+      "threeRunRawReportSha256": "ed953da38a2f7a98ff71860c53176d5bb5082b4050ac6561389498757df1e26d",
+      "strictPacketHashRawReportSha256": "588ba65caefd1780932a16c8769687a61e8198aea5a610144cb226232f72b891"
     }
   ],
-  "nextCandidate": {
-    "architecture": "asynchronous direct save",
+  "acceptedDesign": {
+    "architecture": "quota-preflighted synchronous browser-private staging followed by one backpressured 512 KiB final copy to the selected destination",
     "engine": "route-specialized within-direct",
     "build": "pinned non-Docker Emscripten workflow",
     "ffmpegSurface": {
@@ -122,7 +202,8 @@
     "wrapperSpecialization": "skip decoder-oriented stream analysis, synthesize monotonic H.264/HEVC decode timestamps from bounded Matroska timing metadata, and supply the AAC frame size required by MP4 without decoding packets",
     "initialWasmMemoryBytes": 25165824,
     "maximumWasmMemoryBytes": 67108864,
-    "acceptance": "three repeatable runs at or below 250 MiB with valid identical output and faster elapsed time than the original 26.148-second direct baseline"
+    "scratchPolicy": "the complete output exists temporarily only in repository-tested origin-private storage, is copied with one reusable 512 KiB buffer, and is deleted on success, failure, cancellation, or worker replacement",
+    "acceptance": "three repeatable runs at 207.094 MiB worst complete-Chromium incremental private memory, plus a strict exact-packet run at 238.023 MiB"
   },
   "storagePolicy": "All raw reports, browser profiles, converted outputs, and build artifacts are repository-local and are deleted after compact evidence is retained.",
   "dockerUsed": false

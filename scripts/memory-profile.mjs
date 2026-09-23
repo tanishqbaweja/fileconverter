@@ -1444,8 +1444,12 @@ try {
       const state = window.__WITHIN_TEST__?.getState();
       return (
         (state?.jobState === "running" &&
-          (activeProfileId === "mp4-to-avi"
-            ? state.phase === "Copying staged AVI to selected destination" &&
+          (activeProfileId === "mp4-to-avi" ||
+          activeProfileId === "mkv-to-mp4"
+            ? state.phase ===
+                (activeProfileId === "mp4-to-avi"
+                  ? "Copying staged AVI to selected destination"
+                  : "Copying staged MP4 to selected destination") &&
               (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
             : activeProfileId === "m4a-to-aiff"
               ? (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
@@ -1456,7 +1460,7 @@ try {
         state?.jobState === "complete" ||
         state?.jobState === "error"
       );
-    }, profileId);
+    }, profileId, { timeout: 120_000 });
     const cancellableState = await page.evaluate(() =>
       window.__WITHIN_TEST__?.getState(),
     );
@@ -1853,6 +1857,7 @@ async function validateMediaOutput(
   const ivfOutput = IVF_PROFILES.includes(route);
   const ivfInputCopy = IVF_INPUT_PROFILES.includes(route);
   const compatibleWebmCopy = COMPATIBLE_WEBM_PROFILES.includes(route);
+  const mkvMp4Copy = route === "mkv-to-mp4";
   const matroskaCopy = [
     "mp4-to-mkv",
     "mov-to-mkv",
@@ -3542,6 +3547,49 @@ async function validateMediaOutput(
       }
       probe.withinValidation.audioPacketHash = packetHashes[0];
     }
+  } else if (mkvMp4Copy) {
+    const packetStreamHashes = [];
+    for (const candidate of [sourcePath, localPath]) {
+      const { stdout: packetStreamHash } = await execFileAsync(
+        "ffmpeg",
+        [
+          "-v",
+          "error",
+          "-xerror",
+          "-i",
+          candidate,
+          "-map",
+          "0:v:0",
+          "-map",
+          "0:a:0",
+          "-c",
+          "copy",
+          "-f",
+          "streamhash",
+          "-hash",
+          "sha256",
+          "-",
+        ],
+        {
+          cwd: projectRoot,
+          windowsHide: true,
+          maxBuffer: 16 * 1024 * 1024,
+        },
+      );
+      packetStreamHashes.push(packetStreamHash.trim());
+    }
+    if (
+      !packetStreamHashes[0] ||
+      packetStreamHashes[0] !== packetStreamHashes[1]
+    ) {
+      throw new Error(
+        "Browser MKV-to-MP4 compressed HEVC or AAC packets do not exactly match the source.",
+      );
+    }
+    probe.withinValidation = {
+      ...(probe.withinValidation ?? {}),
+      compressedPacketStreamHash: packetStreamHashes[0],
+    };
   } else if (aviMpegTsCopy) {
     const hashesByKind = { decodedVideo: [], videoPacket: [], audioPacket: [] };
     for (const candidate of [sourcePath, localPath]) {
@@ -3711,20 +3759,26 @@ async function validateMediaOutput(
   probe.withinValidation = {
     ...(probe.withinValidation ?? {}),
     mediaTraversal:
-      compatibleOgvCopy || compatibleAviCopy || ivfOutput || ivfInputCopy || aviMpegTsCopy
-        ? "full-native-decode-and-packet-hash"
-        : compatibleWebmCopy || matroskaCopy
-          ? "full-native-decode-and-streamhash"
-          : containerMpegTsCopy ||
+      mkvMp4Copy
+        ? "full-compressed-packet-hash"
+        : compatibleOgvCopy ||
+            compatibleAviCopy ||
+            ivfOutput ||
+            ivfInputCopy ||
+            aviMpegTsCopy
+          ? "full-native-decode-and-packet-hash"
+          : compatibleWebmCopy || matroskaCopy
+            ? "full-native-decode-and-streamhash"
+            : containerMpegTsCopy ||
               containerThreeGpCopy ||
               containerMovCopy ||
               containerFlvCopy
-            ? route === "avi-to-flv"
-              ? "full-decoded-video-and-mp3-streamhash"
-              : "full-decoded-video-and-aac-streamhash"
-            : requiresFullDecodeTraversal
-              ? "full-native-decode"
-              : "full-packet-traversal",
+              ? route === "avi-to-flv"
+                ? "full-decoded-video-and-mp3-streamhash"
+                : "full-decoded-video-and-aac-streamhash"
+              : requiresFullDecodeTraversal
+                ? "full-native-decode"
+                : "full-packet-traversal",
   };
   return probe;
 }
