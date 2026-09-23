@@ -161,18 +161,18 @@
   "observedAllocation": "Failed staged peaks were dominated by the Chromium renderer while browser-private storage held the staged AVI and growing selected-destination copy. Some peaks also included additional newly spawned Chromium descendants; the complete tree was counted without exception. Smaller copy buffers and shorter stage-handle reopen intervals did not eliminate cold-session peaks.",
   "decision": "Withhold mkv-to-avi from the public selector on current Chrome. Do not reduce its published maximum or silently ignore failing runs. Investigate a smaller fixed-memory AVI specialist or a genuinely lower-memory selected-destination random-access writer before republishing.",
   "remainingLocalGeneratedFiles": {
-    "fixtureBinaries": 2,
-    "fixtureBytes": 407075403,
-    "fixtureManifests": 2,
-    "rawReportFiles": 51,
-    "rawReportBytes": 6864860,
-    "reason": "Deletion of the exact hash-validated workspace-local files was rejected by this session's command policy, including a single explicit fixture target. None are tracked or staged for Git."
+    "fixtureBinaries": 0,
+    "fixtureBytes": 0,
+    "fixtureManifests": 0,
+    "rawReportFiles": 0,
+    "rawReportBytes": 0,
+    "reason": "The 51 hash-validated raw report files and two fixture manifests were deleted after compacting the evidence. A narrowly scoped cleanup option then verified both generated binary fixture SHA-256 hashes, deleted exactly those two files, and reverified the protected test.mkv hash."
   },
   "cleanup": {
-    "generatedFixturesDeleted": false,
+    "generatedFixturesDeleted": true,
     "convertedOutputsDeleted": true,
     "browserProfilesDeleted": true,
-    "rawReportsDeletedAfterCompaction": false,
+    "rawReportsDeletedAfterCompaction": true,
     "playwrightArtifactsDeleted": true,
     "protectedTestMkvUnmodified": true
   }

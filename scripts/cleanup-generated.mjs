@@ -1,4 +1,6 @@
-import { readFile, readdir, rm, stat } from "node:fs/promises";
+import { createReadStream } from "node:fs";
+import { createHash } from "node:crypto";
+import { lstat, readFile, readdir, rm, stat, unlink } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -151,6 +153,24 @@ const browserImageSmokeRoot = path.resolve(outputsRoot, "browser-image-smoke");
 const browserMediaSmokeRoot = path.resolve(outputsRoot, "browser-media-smoke");
 const browserIvfInputRoot = path.resolve(outputsRoot, "browser-ivf-input");
 const stressFixturesRoot = path.resolve(projectRoot, "fixtures", "stress");
+const mkvAviFixtureRoot = path.resolve(stressFixturesRoot, "media");
+const mkvAviCurrentFixtures = [
+  {
+    name: "mpeg4-mp3-avi-copy-128m.mkv",
+    bytes: 191_735_971,
+    sha256: "c9f88177779215ba2beb94c3cdf48d5559ccd47d608e1a39af43d432eaf1e9f5",
+  },
+  {
+    name: "mpeg2-mp3-avi-copy-192m.mkv",
+    bytes: 215_339_432,
+    sha256: "b896ed11200acba2f80f0062594db2eda3fff7145ccf0d86b3cd5ce88d91bbc6",
+  },
+];
+const protectedTestMkv = {
+  path: path.resolve(projectRoot, "test.mkv"),
+  bytes: 2_958_573_265,
+  sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+};
 const profileRoot = path.resolve(workRoot, "memory-profile-chrome");
 const cancellationFixture = path.resolve(
   workRoot,
@@ -544,6 +564,53 @@ for (const reportPath of hevcWebmStressReports) {
 }
 assertInside(projectRoot, remuxEngineRoot);
 
+if (process.argv.includes("--mkv-avi-current-fixtures-only")) {
+  const protectedHash = await hashExactRegularFile(
+    protectedTestMkv.path,
+    protectedTestMkv.bytes,
+  );
+  if (protectedHash !== protectedTestMkv.sha256) {
+    throw new Error("Protected test.mkv differs from its recorded SHA-256");
+  }
+  const targets = [];
+  for (const fixture of mkvAviCurrentFixtures) {
+    const target = path.resolve(mkvAviFixtureRoot, fixture.name);
+    assertInside(mkvAviFixtureRoot, target);
+    let actualHash;
+    try {
+      actualHash = await hashExactRegularFile(target, fixture.bytes);
+    } catch (error) {
+      if (error?.code === "ENOENT") continue;
+      throw error;
+    }
+    if (actualHash !== fixture.sha256) {
+      throw new Error(`Generated fixture differs from evidence: ${fixture.name}`);
+    }
+    targets.push(target);
+  }
+  for (const target of targets) await unlink(target);
+  for (const target of targets) {
+    try {
+      await lstat(target);
+      throw new Error(`Generated fixture remains after cleanup: ${target}`);
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+  }
+  if (
+    (await hashExactRegularFile(
+      protectedTestMkv.path,
+      protectedTestMkv.bytes,
+    )) !== protectedTestMkv.sha256
+  ) {
+    throw new Error("Protected test.mkv changed during fixture cleanup");
+  }
+  process.stdout.write(
+    `Deleted ${targets.length} SHA-256-verified generated MKV-to-AVI fixtures; protected test.mkv remains unchanged.\n`,
+  );
+  process.exit(0);
+}
+
 if (process.argv.includes("--test-artifacts-only")) {
   await removeWithRetries(playwrightCliRoot);
   await removeWithRetries(playwrightOutputRoot);
@@ -705,6 +772,18 @@ function assertInside(parent, child) {
   ) {
     throw new Error(`Unsafe cleanup target: ${child}`);
   }
+}
+
+async function hashExactRegularFile(target, expectedBytes) {
+  const info = await lstat(target);
+  if (!info.isFile() || info.size !== expectedBytes) {
+    throw new Error(`Unexpected fixture type or size: ${target}`);
+  }
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(target, { highWaterMark: 64 * 1024 })) {
+    hash.update(chunk);
+  }
+  return hash.digest("hex");
 }
 
 async function* walkFiles(directory) {
