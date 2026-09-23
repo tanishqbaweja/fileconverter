@@ -5757,13 +5757,14 @@ export const conversionProfiles: readonly ConversionProfile[] = (
         "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
         "AVI cannot retain all Matroska metadata, language, disposition, or timestamp fields; the conversion reports each excluded field class.",
         "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
+        "The unpublished MKV-to-AVI candidate writes the random-access OpenDML mux into quota-preflighted browser-private storage, then copies it through one backpressured 64 KiB buffer and deletes the stage. Current Chrome cold-session memory peaks still exceed 250 MiB, so this route is withheld.",
       ],
       fidelityLimitations: [
         "MPEG-4 Part 2 or MPEG-2 video and MP3 compressed packets are copied without decoding or re-encoding.",
       ],
       maxTestedBytes: 215_339_432,
-      automatedTestStatus: "passed",
-      public: true,
+      automatedTestStatus: "failed",
+      public: false,
     },
     ...(["mp4", "mov", "3gp", "mpeg-ts"] as const).map(
       (input): ConversionProfile => ({

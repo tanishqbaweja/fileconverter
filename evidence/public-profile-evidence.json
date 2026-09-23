@@ -3136,24 +3136,6 @@
       }
     },
     {
-      "profileId": "mkv-to-avi",
-      "maxTestedBytes": 215339432,
-      "repeatableEvidence": {
-        "report": "2026-09-08T15-05-40-124Z-mkv-to-avi-stress.json",
-        "reportSha256": "7e099298a15eb48b2827f1d758173721b9e0533416f9ddd2062b73c00f215549",
-        "runs": 3,
-        "sourceBytes": 215339432,
-        "incrementalPrivateMiB": 232.34765625
-      },
-      "maximumSizeEvidence": {
-        "report": "2026-09-08T15-05-40-124Z-mkv-to-avi-stress.json",
-        "reportSha256": "7e099298a15eb48b2827f1d758173721b9e0533416f9ddd2062b73c00f215549",
-        "runs": 3,
-        "sourceBytes": 215339432,
-        "incrementalPrivateMiB": 232.34765625
-      }
-    },
-    {
       "profileId": "mkv-to-flac",
       "maxTestedBytes": 146855294,
       "repeatableEvidence": {

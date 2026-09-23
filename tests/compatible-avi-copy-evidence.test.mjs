@@ -14,16 +14,20 @@ const mpeg2EvidenceName = "compatible-avi-mpeg2-2026-09-08.json";
 const mpeg2Evidence = JSON.parse(
   await readFile(path.join(projectRoot, "evidence", mpeg2EvidenceName), "utf8"),
 );
+const currentRegression = JSON.parse(
+  await readFile(path.join(projectRoot, "evidence", "mkv-to-avi-current-chrome-regression-2026-09-23.json"), "utf8"),
+);
 
-test("compatible AVI evidence matches the current public profile", () => {
+test("historical compatible AVI evidence remains exact but the current profile is withheld", () => {
   assert.deepEqual(evidence.requirements, ["P-08", "M-04"]);
   assert.equal(evidence.dockerUsed, false);
   const profile = conversionProfiles.find(
     ({ id }) => id === evidence.profile.id,
   );
   assert.ok(profile);
-  assert.equal(profile.public, true);
-  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.public, false);
+  assert.equal(profile.automatedTestStatus, "failed");
+  assert.equal(currentRegression.status, "public-route-withheld-after-current-browser-memory-regression");
   assert.equal(profile.route, "stream-copy");
   assert.equal(profile.maxTestedBytes, mpeg2Evidence.stressGate.sourceBytes);
   assert.ok(
@@ -138,7 +142,7 @@ test("AVI browser and stress evidence is exact, bounded, indexed, cancellable, a
   }
 });
 
-test("the compact public-evidence manifest retains the deleted raw AVI report hash", async () => {
+test("the compact public-evidence manifest excludes the current failed route", async () => {
   const manifest = JSON.parse(
     await readFile(
       path.join(projectRoot, "evidence", "public-profile-evidence.json"),
@@ -148,14 +152,10 @@ test("the compact public-evidence manifest retains the deleted raw AVI report ha
   const profile = manifest.profiles.find(
     ({ profileId }) => profileId === evidence.profile.id,
   );
-  assert.ok(profile);
-  assert.equal(profile.maxTestedBytes, mpeg2Evidence.stressGate.sourceBytes);
-  assert.equal(profile.repeatableEvidence.runs, 3);
-  assert.equal(
-    profile.repeatableEvidence.reportSha256,
-    mpeg2Evidence.stressGate.rawReportSha256,
-  );
-  assert.deepEqual(profile.maximumSizeEvidence, profile.repeatableEvidence);
+  assert.equal(profile, undefined);
+  assert.match(mpeg2Evidence.stressGate.rawReportSha256, /^[a-f0-9]{64}$/);
+  assert.equal(currentRegression.profileId, evidence.profile.id);
+  assert.equal(currentRegression.limitMiB, 250);
 });
 
 test("the accepted AVI checkpoint is linked from every project ledger", async () => {

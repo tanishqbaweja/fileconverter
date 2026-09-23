@@ -7112,6 +7112,12 @@ test("OGV stream copy propagates a bounded write failure and removes the partial
   expect(abandonedSize === null || abandonedSize === 0).toBe(true);
 });
 
+test("normal Matroska selector withholds AVI after current-Chrome memory regression", async () => {
+  await page.goto("/");
+  await page.locator('[data-testid="file-input"]').setInputFiles(aviCopyFixturePath);
+  await expect(page.locator('[data-testid="format-select"] option[value="mkv-to-avi"]')).toHaveCount(0);
+});
+
 test("browser FFmpeg losslessly remuxes Matroska MPEG-4 Part 2 and MP3 to genuine AVI", async () => {
   await runMediaRoute(
     "mkv-to-avi",
@@ -7330,7 +7336,10 @@ test("AVI stream copy propagates a bounded write failure and removes the partial
   expect(abandonedSize === null || abandonedSize === 0).toBe(true);
 });
 
-for (const [sourceFormat, profileId] of compatibleAviSourceRoutes) {
+for (const [sourceFormat, profileId] of [
+  ["mkv", "mkv-to-avi"],
+  ...compatibleAviSourceRoutes,
+] as const) {
   test(`${sourceFormat.toUpperCase()} to AVI propagates a bounded write failure and removes the partial output`, async () => {
     await page.goto("/?test=1&directory=1&fault=write");
     await page.waitForFunction(
@@ -7371,6 +7380,7 @@ for (const [sourceFormat, profileId] of compatibleAviSourceRoutes) {
 }
 
 for (const [sourceFormat, profileId] of [
+  ["mkv", "mkv-to-avi"],
   ["mp4", "mp4-to-avi"],
   ["mov", "mov-to-avi"],
   ["3gp", "3gp-to-avi"],

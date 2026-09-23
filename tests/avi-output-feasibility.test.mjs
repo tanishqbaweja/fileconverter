@@ -8,6 +8,9 @@ import { conversionProfiles } from "../lib/capability-registry.ts";
 const evidence = JSON.parse(
   readFileSync("evidence/avi-output-feasibility-2026-09-08.json", "utf8"),
 );
+const currentRegression = JSON.parse(
+  readFileSync("evidence/mkv-to-avi-current-chrome-regression-2026-09-23.json", "utf8"),
+);
 const patch = readFileSync("media/ffmpeg/patches/avi-bounded-index.patch");
 const patchText = patch.toString("utf8");
 const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
@@ -53,7 +56,7 @@ test("AVI output keeps stock packet indexes bounded by smaller OpenDML segments"
   assert.match(libraries, /ENABLED_MUXERS=tgp,aiff,amr,asf,flac,/);
 });
 
-test("AVI output profile 37 is wired and public only after browser certification", () => {
+test("AVI output profile 37 remains wired but MKV-to-AVI is hidden after current-browser memory failure", () => {
   assert.match(wrapper, /profile == 37/);
   assert.match(wrapper, /AV_CODEC_ID_MPEG4/);
   assert.match(wrapper, /AV_CODEC_ID_MPEG2VIDEO/);
@@ -63,9 +66,12 @@ test("AVI output profile 37 is wired and public only after browser certification
     (candidate) => candidate.id === "mkv-to-avi",
   );
   assert.ok(profile);
-  assert.equal(profile.public, true);
-  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.public, false);
+  assert.equal(profile.automatedTestStatus, "failed");
   assert.equal(profile.maxTestedBytes, 215_339_432);
+  assert.equal(currentRegression.status, "public-route-withheld-after-current-browser-memory-regression");
+  assert.ok(currentRegression.candidates.some(({ source, incrementalPrivateMiB }) =>
+    source === "mpeg4Mp3" && incrementalPrivateMiB?.some((value) => value > 250)));
   assert.equal(
     evidence.acceptedEvidence,
     "evidence/compatible-avi-copy-2026-09-08.json",

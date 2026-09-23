@@ -23,17 +23,17 @@ const aviMpegTsEvidence = JSON.parse(
   source("evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json"),
 );
 
-test("the current-browser MP4/MOV/3GP/MPEG-TS-to-AVI, MKV-to-MP4, AVI-to-3GP, and AVI-to-MPEG-TS routes use app-owned bounded staging", () => {
+test("the current-browser MKV/MP4/MOV/3GP/MPEG-TS-to-AVI, MKV-to-MP4, AVI-to-3GP, and AVI-to-MPEG-TS routes use app-owned bounded staging", () => {
   assert.match(protocol, /mode: "staged-handle"/);
   assert.match(
     app,
-    /batch\.profile\.id !== "mp4-to-avi"[\s\S]*batch\.profile\.id !== "mov-to-avi"[\s\S]*batch\.profile\.id !== "3gp-to-avi"[\s\S]*batch\.profile\.id !== "mpeg-ts-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-mp4"[\s\S]*batch\.profile\.id !== "avi-to-3gp"[\s\S]*batch\.profile\.id !== "avi-to-mpeg-ts"/,
+    /batch\.profile\.id !== "mp4-to-avi"[\s\S]*batch\.profile\.id !== "mov-to-avi"[\s\S]*batch\.profile\.id !== "3gp-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-avi"[\s\S]*batch\.profile\.id !== "mpeg-ts-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-mp4"[\s\S]*batch\.profile\.id !== "avi-to-3gp"[\s\S]*batch\.profile\.id !== "avi-to-mpeg-ts"/,
   );
   assert.match(app, /`within-stage-\$\{batch\.profile\.id\}-\$\{jobId\}`/);
   assert.match(app, /name\?\.startsWith\("within-stage-"\)/);
   assert.match(worker, /destination\.mode === "staged-handle"/);
   assert.match(worker, /stagingName\.startsWith\(`within-stage-\$\{profileId\}-`\)/);
-  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mov-to-avi" &&\s*profileId !== "3gp-to-avi" &&\s*profileId !== "mpeg-ts-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== "avi-to-3gp" &&\s*profileId !== "avi-to-mpeg-ts"/);
+  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mov-to-avi" &&\s*profileId !== "3gp-to-avi" &&\s*profileId !== "mkv-to-avi" &&\s*profileId !== "mpeg-ts-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== "avi-to-3gp" &&\s*profileId !== "avi-to-mpeg-ts"/);
 });
 
 test("staged MP4-to-AVI checks quota, bounds copy memory, and cleans every terminal path", () => {
@@ -46,7 +46,7 @@ test("staged MP4-to-AVI checks quota, bounds copy memory, and cleans every termi
   );
   assert.match(
     worker,
-    /profileId === "mkv-to-mp4" \? STAGED_MKV_COPY_CHUNK : MAX_WRITE_CHUNK/,
+    /profileId === "mkv-to-mp4"[\s\S]*STAGED_MKV_COPY_CHUNK[\s\S]*profileId === "mkv-to-avi"[\s\S]*64 \* 1024[\s\S]*MAX_WRITE_CHUNK/,
   );
   assert.match(worker, /readAccess\.read\(buffer, { at: copiedBytes }\)/);
   assert.match(worker, /metrics\.pendingOperations = 1/);

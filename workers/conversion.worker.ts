@@ -499,6 +499,7 @@ async function openStagedDirectDestination(
     (profileId !== "mp4-to-avi" &&
       profileId !== "mov-to-avi" &&
       profileId !== "3gp-to-avi" &&
+      profileId !== "mkv-to-avi" &&
       profileId !== "mpeg-ts-to-avi" &&
       profileId !== "mkv-to-mp4" &&
       profileId !== "avi-to-3gp" &&
@@ -547,11 +548,13 @@ async function openStagedDirectDestination(
     stagingHandle,
     root,
     stagingName,
+    profileId === "mkv-to-avi" ? 16 * 1024 * 1024 : undefined,
   );
   const copyPhase =
     profileId === "mp4-to-avi" ||
     profileId === "mov-to-avi" ||
     profileId === "3gp-to-avi" ||
+    profileId === "mkv-to-avi" ||
     profileId === "mpeg-ts-to-avi"
       ? "Copying staged AVI to selected destination"
       : profileId === "avi-to-3gp"
@@ -560,7 +563,11 @@ async function openStagedDirectDestination(
           ? "Copying staged MPEG-TS to selected destination"
           : "Copying staged MP4 to selected destination";
   const copyChunkBytes =
-    profileId === "mkv-to-mp4" ? STAGED_MKV_COPY_CHUNK : MAX_WRITE_CHUNK;
+    profileId === "mkv-to-mp4"
+      ? STAGED_MKV_COPY_CHUNK
+      : profileId === "mkv-to-avi"
+        ? 64 * 1024
+        : MAX_WRITE_CHUNK;
   let stagedClosed = false;
   let finalWritable: FileSystemWritableFileStream | null = null;
 

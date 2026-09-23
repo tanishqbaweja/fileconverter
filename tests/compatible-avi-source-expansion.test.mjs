@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-import { conversionProfiles } from "../lib/capability-registry.ts";
+import { conversionProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
 
 const evidence = JSON.parse(
   readFileSync(
@@ -28,6 +28,12 @@ const currentThreeGpAvi = JSON.parse(
     "utf8",
   ),
 );
+const currentMkvAviRegression = JSON.parse(
+  readFileSync(
+    "evidence/mkv-to-avi-current-chrome-regression-2026-09-23.json",
+    "utf8",
+  ),
+);
 const app = readFileSync("app/converter/ConverterApp.tsx", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
@@ -47,7 +53,7 @@ const expectedBytes = {
   "mpeg-ts-to-avi": 199_649_420,
 };
 
-test("compatible AVI source expansion has exact public stress evidence", () => {
+test("compatible AVI source expansion retains exact historical stress evidence and current publication status", () => {
   assert.equal(evidence.status, "accepted-public-expansion");
   assert.equal(evidence.dockerUsed, false);
   assert.deepEqual(
@@ -57,14 +63,19 @@ test("compatible AVI source expansion has exact public stress evidence", () => {
   for (const [id, bytes] of Object.entries(expectedBytes)) {
     const profile = conversionProfiles.find((candidate) => candidate.id === id);
     assert.ok(profile, id);
-    assert.equal(profile.public, true, id);
-    assert.equal(profile.automatedTestStatus, "passed", id);
+    assert.equal(profile.public, id !== "mkv-to-avi", id);
+    assert.equal(profile.automatedTestStatus, id === "mkv-to-avi" ? "failed" : "passed", id);
     assert.equal(profile.route, "stream-copy", id);
     assert.ok(profile.maxTestedBytes >= bytes, id);
     assert.equal(evidence.profiles[id].sourceBytes, bytes, id);
     assert.equal(evidence.profiles[id].conversionSeconds.length, 3, id);
     assert.ok(evidence.profiles[id].worstIncrementalPrivateMiB <= 250, id);
   }
+  assert.equal(currentMkvAviRegression.status, "public-route-withheld-after-current-browser-memory-regression");
+  assert.ok(currentMkvAviRegression.candidates.some(({ sessions }) =>
+    sessions?.some(({ incrementalPrivateMiB }) =>
+      incrementalPrivateMiB.some((value) => value > 250))));
+  assert.ok(!publicProfilesFor("mkv").some(({ id }) => id === "mkv-to-avi"));
 });
 
 test("AVI browser and native paths retain every source route and bounded probe", () => {

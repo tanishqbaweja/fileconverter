@@ -235,6 +235,7 @@ export function syncOpfsDestination(
   fileHandle: FileSystemFileHandle,
   root: FileSystemDirectoryHandle,
   name: string,
+  reopenIntervalBytes = SYNC_REOPEN_INTERVAL_BYTES,
 ): RandomAccessDestination {
   let access = initialAccess;
   let position = 0;
@@ -249,7 +250,7 @@ export function syncOpfsDestination(
   };
 
   const writeSync = (operation: DestinationWrite): boolean => {
-    if (bytesSinceReopen >= SYNC_REOPEN_INTERVAL_BYTES) return false;
+    if (bytesSinceReopen >= reopenIntervalBytes) return false;
     const source = operation instanceof Uint8Array ? operation : operation.data;
     const at =
       operation instanceof Uint8Array

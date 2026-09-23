@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "status": "public-route-withheld-after-current-browser-memory-regression",
+  "profileId": "mkv-to-avi",
+  "browser": "Chrome 153.0.8010.53",
+  "limitMiB": 250,
+  "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "dockerUsed": false,
+  "sources": {
+    "mpeg4Mp3": {
+      "bytes": 191735971,
+      "sha256": "c9f88177779215ba2beb94c3cdf48d5559ccd47d608e1a39af43d432eaf1e9f5",
+      "outputBytes": 202384110,
+      "outputSha256": "99b970bb9a62fdb2b521252177b8b5421633922ca6378c24ba3896be87c8c3df"
+    },
+    "mpeg2Mp3PublishedMaximum": {
+      "bytes": 215339432,
+      "sha256": "b896ed11200acba2f80f0062594db2eda3fff7145ccf0d86b3cd5ce88d91bbc6",
+      "outputBytes": 227904768,
+      "outputSha256": "64aaa63cc0643089ece973e94c9d3316d54853c7c10ec0e3c39ec69f36e33d29"
+    }
+  },
+  "candidates": [
+    {
+      "topology": "unchanged two-worker direct random-access writer",
+      "source": "mpeg4Mp3",
+      "report": "2026-09-23T09-58-37-879Z-mkv-to-avi-direct-handle-stress.json",
+      "reportSha256": "98ce8e975d4d0ec75d2dd3d7a71f53572330ee448e245f42d666155ba7d64652",
+      "elapsedMs": [52333.005, 49591.495, 49934.925],
+      "incrementalPrivateMiB": [296.44921875, 286.08984375, 263.04296875],
+      "decision": "rejected: all three runs exceeded 250 MiB"
+    },
+    {
+      "topology": "one synchronous private stage, 128 MiB sync-handle reopen interval, 256 KiB final copy",
+      "source": "mpeg2Mp3PublishedMaximum",
+      "sessions": [
+        {
+          "report": "2026-09-23T10-02-59-779Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "542311d2ecc44e527e2c06968e9fed969bbf9e0ea192c3740866da8975850112",
+          "elapsedMs": [5256.11, 5039.65, 4933.67],
+          "incrementalPrivateMiB": [226.75390625, 211.765625, 215.625]
+        },
+        {
+          "report": "2026-09-23T10-05-38-266Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "bd8e0bb6470599bbedda6abcba59e24b199d966aeb68267716f658e087ddb2a3",
+          "elapsedMs": [5599.935, 5229.015, 5258.445],
+          "incrementalPrivateMiB": [252.796875, 235.10546875, 238.6015625]
+        }
+      ],
+      "decision": "rejected: cold repeat exceeded 250 MiB"
+    },
+    {
+      "topology": "same stage, 128 KiB final copy",
+      "source": "mpeg2Mp3PublishedMaximum",
+      "sessions": [
+        {
+          "report": "2026-09-23T10-09-58-200Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "f23f5f1a20b7416b5cd62d675e26fa6707ad13fc4bc00dd9e3b5578c108fc286",
+          "elapsedMs": [6769.37, 6495.87, 6217.99],
+          "incrementalPrivateMiB": [218.9375, 202.31640625, 204.421875]
+        },
+        {
+          "report": "2026-09-23T10-12-37-543Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "3fd37206ad763372dcc5a40042078c5542def4ff282e6ecd7a99a0cc9fde97f8",
+          "elapsedMs": [6714.27, 7179.085, 6532.665],
+          "incrementalPrivateMiB": [234.0078125, 212.18359375, 211.98828125]
+        },
+        {
+          "report": "2026-09-23T10-15-02-994Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "8869d982ba8b9df1a06de852bcdd8ef4117e38660dae037173333bd0baa765cd",
+          "elapsedMs": [6662.67, 6180.155, 6349.585],
+          "incrementalPrivateMiB": [250.5, 230.890625, 238.140625]
+        }
+      ],
+      "decision": "rejected: third cold session exceeded 250 MiB"
+    },
+    {
+      "topology": "same stage, 64 KiB final copy",
+      "source": "mpeg2Mp3PublishedMaximum",
+      "sessions": [
+        {
+          "report": "2026-09-23T10-18-19-916Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "2062e7159a6f87520803008e78a33afc18b043e9fcc215b755794f846a751ef5",
+          "elapsedMs": [9223.06, 8812.17, 8942.415],
+          "incrementalPrivateMiB": [246.46484375, 222.6328125, 225.86328125]
+        },
+        {
+          "report": "2026-09-23T10-20-58-601Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "602dd9aa4b6bfc06c15489d995716b138dccecd84342f0974e9f2b1f950f33f0",
+          "elapsedMs": [9162.05, 8665.295, 9051.44],
+          "incrementalPrivateMiB": [247.91015625, 221.03125, 233.58984375]
+        },
+        {
+          "report": "2026-09-23T10-23-59-871Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "42a2e8a084717785a09e74d56722982a61f13ed999544bd2c660c3ad03a6863a",
+          "elapsedMs": [8803.995, 8915.875, 9070.88],
+          "incrementalPrivateMiB": [238.0546875, 207.96484375, 208.30859375]
+        }
+      ],
+      "additionalSameInputReport": "2026-09-23T14-08-37-314Z-mkv-to-avi-direct-handle-stress.json",
+      "additionalSameInputReportSha256": "791595a90dbeeb06c717920f88548580ae65b428be2593eaef5a583af18c8983",
+      "additionalSameInputIncrementalPrivateMiB": [257.3125, 224.38671875, 218.1328125],
+      "decision": "rejected: the smaller MPEG-4/MP3 source exceeded 250 MiB despite three passing maximum-size sessions"
+    },
+    {
+      "topology": "one-worker asynchronous direct random-access writer, no stage",
+      "source": "mpeg2Mp3PublishedMaximum",
+      "report": "2026-09-23T14-12-32-273Z-mkv-to-avi-direct-handle-stress.json",
+      "reportSha256": "da0587f9e17ef7e3be3911cb8f6f5fa48d363d4825309fc8ad7bc49134ddc57f",
+      "elapsedMs": [63922.995],
+      "incrementalPrivateMiB": [328.0078125],
+      "decision": "rejected after one diagnostic run: 78.008 MiB above the limit"
+    },
+    {
+      "topology": "one synchronous private stage, 16 MiB sync-handle reopen interval, 64 KiB final copy",
+      "source": "mpeg2Mp3PublishedMaximum",
+      "diagnosticReport": "2026-09-23T14-14-55-145Z-mkv-to-avi-direct-handle-stress.json",
+      "diagnosticReportSha256": "cfed2f58cfeeed411ce2fcd16d1de3a191796f1def3d8a193b7ce72f7312c7c5",
+      "sessions": [
+        {
+          "report": "2026-09-23T14-17-19-487Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "4650c2619437c5f9dbeb4ea7e7a98de84e067240cf6884d35035a4331d78f383",
+          "elapsedMs": [8509.89, 8557.98, 9267.26],
+          "incrementalPrivateMiB": [245.05859375, 225.3828125, 231.71875]
+        },
+        {
+          "report": "2026-09-23T14-21-24-145Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "b7d76392f7a97da73bed94eeba752a784d6b58a6cabef4ba271fd12d07f5c76a",
+          "elapsedMs": [9500.655, 16494.975, 8004.875],
+          "incrementalPrivateMiB": [238.96875, 206.359375, 213.32421875]
+        },
+        {
+          "report": "2026-09-23T14-24-02-109Z-mkv-to-avi-direct-handle-stress.json",
+          "reportSha256": "ae5e5c9441114d2355878d7279fd828b61f1a8799c96a9e9f2d567116f276a77",
+          "elapsedMs": [7796.89, 8197.615, 10517.555],
+          "incrementalPrivateMiB": [267.23046875, 238.08984375, 242.96484375]
+        }
+      ],
+      "additionalMpeg4DiagnosticReport": "2026-09-23T14-18-43-019Z-mkv-to-avi-direct-handle-stress.json",
+      "additionalMpeg4DiagnosticReportSha256": "ae421474576134b5073fadbe07e42013a963dff9c0fc11040fe998ee794097c5",
+      "decision": "rejected: third cold maximum-size session reached 267.230 MiB"
+    }
+  ],
+  "opfsSession": {
+    "report": "2026-09-23T14-03-26-015Z-mkv-to-avi-stress.json",
+    "reportSha256": "e3d21a22e84b84869a10c65de8bc80ff6d7cee73b96ad36d0c53969d765c16b6",
+    "source": "mpeg2Mp3PublishedMaximum",
+    "runs": 3,
+    "worstIncrementalPrivateMiB": 242.375,
+    "note": "OPFS mode passes but does not prove that a selected-destination save passes; the public route requires both."
+  },
+  "browserChecks": {
+    "genuineMpeg4AndMpeg2SmallConversions": true,
+    "stagedFinalCopyWriteFailureCleanup": true,
+    "stagedWorkerCrashCleanupAndRestart": true,
+    "firstFocusedAttemptFixtureSetupFailedBeforeBrowserConversion": true,
+    "subsequentFocusedRerunPassed": true
+  },
+  "correctness": "All completed outputs matched the established source-specific genuine indexed OpenDML AVI SHA-256, exact compressed MPEG-4 or MPEG-2 video and MP3 packet hashes, full native decode, and midpoint seek. Every profiler cancellation and cleanup check passed; process-tree memory alone rejected the direct-save candidates.",
+  "observedAllocation": "Failed staged peaks were dominated by the Chromium renderer while browser-private storage held the staged AVI and growing selected-destination copy. Some peaks also included additional newly spawned Chromium descendants; the complete tree was counted without exception. Smaller copy buffers and shorter stage-handle reopen intervals did not eliminate cold-session peaks.",
+  "decision": "Withhold mkv-to-avi from the public selector on current Chrome. Do not reduce its published maximum or silently ignore failing runs. Investigate a smaller fixed-memory AVI specialist or a genuinely lower-memory selected-destination random-access writer before republishing.",
+  "remainingLocalGeneratedFiles": {
+    "fixtureBinaries": 2,
+    "fixtureBytes": 407075403,
+    "fixtureManifests": 2,
+    "rawReportFiles": 51,
+    "rawReportBytes": 6864860,
+    "reason": "Deletion of the exact hash-validated workspace-local files was rejected by this session's command policy, including a single explicit fixture target. None are tracked or staged for Git."
+  },
+  "cleanup": {
+    "generatedFixturesDeleted": false,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompaction": false,
+    "playwrightArtifactsDeleted": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

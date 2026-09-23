@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 405
+complete-Chromium memory profile have passed. The current registry publishes 404
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -36,8 +36,14 @@ decode/re-encode work, use bounded selected-destination writes (with private
 staging only where current-browser memory or random access requires it), and explicitly
 disclose container-specific metadata or stream exclusions.
 
-The matrix now also includes a certified Matroska-to-OpenDML-AVI packet-copy
-route for MPEG-4 Part 2 video with optional MP3 audio.
+The OpenDML AVI packet-copy engine can produce genuine MPEG-4 Part 2/MP3 and
+MPEG-2/MP3 output from Matroska, but `mkv-to-avi` is currently hidden. Chrome
+153 direct saves exceeded the 250 MiB complete-browser limit on both the
+191.7 MB MPEG-4 source and the 215.3 MB published-maximum MPEG-2 source.
+Bounded staging, 256/128/64 KiB final-copy windows, a 16 MiB stage-handle
+reopen window, and one-worker asynchronous direct writing all had failing cold
+sessions. Their outputs remained genuine and byte-exact; memory is the blocker.
+See `evidence/mkv-to-avi-current-chrome-regression-2026-09-23.json`.
 
 On Chrome 153, the public MPEG-TS-to-AVI direct-save route now writes its
 random-access OpenDML AVI to quota-preflighted browser-private storage, then
@@ -503,7 +509,7 @@ AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
 streams.
 
-An executable registry audit requires every one of the 276 public FFmpeg
+An executable registry audit requires every one of the 275 public FFmpeg
 profiles to disclose its route semantics and its metadata/container behavior.
 Stream-copy routes must identify copying or remuxing; re-encode routes must
 identify decoding/encoding or an equivalent lossless/lossy conversion; audio
@@ -668,8 +674,10 @@ then rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`,
 passed hosted cleanup in 13m34s, skipped mismatch upload, and retained zero
 artifacts.
 
-The same AVI packet-copy core now accepts compatible MPEG-2 video from
-Matroska, MP4, MOV, and MPEG-TS, with MP3 retained when present. Four focused
+At its September 8 certification, the AVI packet-copy core accepted compatible
+MPEG-2 video from Matroska, MP4, MOV, and MPEG-TS, with MP3 retained when
+present. The Matroska route is now withheld for current-browser memory; the
+other certified AVI sources remain public. Four focused
 production-Chrome conversions and the full nine-case AVI success regression
 passed. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed
 three runs in 2.512-3.133 seconds at 232.348 MiB worst incremental

@@ -12,8 +12,8 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## Current totals
 
-- Public passed conversion profiles: **405**
-- Public profiles with retained successful Chrome stress evidence: **405**
+- Public passed conversion profiles: **404**
+- Public profiles with retained successful Chrome stress evidence: **404**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -772,6 +772,12 @@ Stream ma |
 | 2026-09-10T18:55:47.970Z | ivf-to-webm | 169,519,329 | 3 | 169,519,329 | Failed checks: processTreePrivateMemory; measured 276.9 MiB against a 250.0 MiB limit. |
 | 2026-09-10T19:24:03.363Z | ivf-to-webm | 169,519,329 | 0 | 169,519,329 | IVF cancellation left output state or browser-owned files behind. |
 | 2026-09-19T10:02:44.412Z | mp4-to-ogv | 147,242,147 | 3 | 147,242,147 | Failed checks: processTreePrivateMemory; measured 255.1 MiB against a 250.0 MiB limit. |
+| 2026-09-23T09:58:37.879Z | mkv-to-avi | 191,735,971 | 3 | 191,735,971 | Failed checks: processTreePrivateMemory; measured 296.4 MiB against a 250.0 MiB limit. |
+| 2026-09-23T10:05:38.266Z | mkv-to-avi | 215,339,432 | 3 | 215,339,432 | Failed checks: processTreePrivateMemory; measured 252.8 MiB against a 250.0 MiB limit. |
+| 2026-09-23T10:15:02.994Z | mkv-to-avi | 215,339,432 | 3 | 215,339,432 | Failed checks: processTreePrivateMemory; measured 250.5 MiB against a 250.0 MiB limit. |
+| 2026-09-23T14:08:37.314Z | mkv-to-avi | 191,735,971 | 3 | 191,735,971 | Failed checks: processTreePrivateMemory; measured 257.3 MiB against a 250.0 MiB limit. |
+| 2026-09-23T14:12:32.273Z | mkv-to-avi | 215,339,432 | 1 | 215,339,432 | Failed checks: processTreePrivateMemory; measured 328.0 MiB against a 250.0 MiB limit. |
+| 2026-09-23T14:24:02.109Z | mkv-to-avi | 215,339,432 | 3 | 215,339,432 | Failed checks: processTreePrivateMemory; measured 267.2 MiB against a 250.0 MiB limit. |
 
 ## Every public passed profile
 
@@ -951,7 +957,6 @@ Stream ma |
 | mkv-to-aac | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
 | mkv-to-aiff | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-amr | video | ffmpeg-audio | re-encode | 145,730,306 B | 3-run Chrome report |
-| mkv-to-avi | video | ffmpeg-remux | stream-copy | 215,339,432 B | registry passed; stress report not retained locally |
 | mkv-to-flac | video | ffmpeg-audio | re-encode | 146,855,294 B | 3-run Chrome report |
 | mkv-to-flv | video | ffmpeg-remux | stream-copy | 147,131,070 B | 3-run Chrome report |
 | mkv-to-h264 | video | ffmpeg-remux | stream-copy | 146,855,294 B | 3-run Chrome report |
@@ -1221,6 +1226,8 @@ M-04/P-08 MP4-to-AVI current-Chrome optimization (2026-09-21): Chrome 153 made t
 P-06/P-08 MOV-to-AVI Chrome 153 recovery (2026-09-23): the unchanged two-worker direct random-access writer produced the genuine 198,392,670-byte AVI but failed all three complete-Chromium memory runs at 293.609-311.000 MiB and took 46.797-48.737 seconds. Quota-preflighted browser-private staging plus one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct-save runs across three cold sessions in 4.052-4.723 seconds at 244.191 MiB worst. The median was 10.82x faster and the observed worst memory 66.809 MiB lower. Three OPFS runs passed at 233.109 MiB worst, including cancellation after 17.73 MB of real output. Independent validation found exact MPEG-4/MP3 packets, full decode, 24 indexed OpenDML segments, midpoint seek, repeatability, 256 KiB I/O, one pending write, and fixed 32 MiB Wasm. Final-copy cancellation, injected write failure, worker-crash staging cleanup/restart, and genuine small browser conversion passed. Direct headroom is 5.809 MiB on this machine and browser, not a cross-machine guarantee. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.
 
 P-06/P-08 3GP-to-AVI Chrome 153 recovery (2026-09-23): the unchanged direct writer produced a genuine 183,376,276-byte AVI but failed one of three complete-Chromium runs at 276.406 MiB and took 19.841-20.435 seconds. Quota-preflighted private staging and one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct saves across three cold sessions in 2.991-3.644 seconds at 244.980 MiB worst. The nine-run median was 6.26x faster; observed worst memory was 31.426 MiB lower. Three OPFS runs passed at 204.078 MiB worst. Exact MPEG-4 packets, full decode, 22 indexed OpenDML segments with no audio indexes, midpoint seek, repeatability, 256 KiB I/O, one pending write, fixed 32 MiB Wasm, cancellation, injected final-copy write failure, worker-crash cleanup/restart, and genuine small conversion passed. Direct headroom is 5.020 MiB on this machine and browser, not a cross-machine guarantee; the stage temporarily consumes output-sized private disk. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/3gp-to-avi-current-chrome-optimization-2026-09-23.json`.
+
+P-06/P-08 MKV-to-AVI Chrome 153 regression (2026-09-23): the previously certified route is now hidden and marked failed. Its unchanged direct writer produced a genuine 202,384,110-byte indexed AVI from the 191,735,971-byte MPEG-4/MP3 source but all three complete-browser runs exceeded 250 MiB (263.043-296.449 MiB). At the 215,339,432-byte published-maximum MPEG-2/MP3 source, staged 256 KiB copying failed a cold repeat at 252.797 MiB, 128 KiB failed at 250.500 MiB, 64 KiB passed nine maximum-size saves but failed the smaller source at 257.313 MiB, and a 16 MiB stage-handle reopen window failed its third cold session at 267.230 MiB. One-worker asynchronous direct writing failed at 328.008 MiB; OPFS-only conversion passed but is insufficient. All completed outputs matched exact historical genuine AVI hashes, compressed packets, full decode, 27 indexed segments for MPEG-2, and midpoint seek; cancellation, write-failure, crash cleanup, and one-pending-operation checks passed. The same-input 64 KiB stage completed in 7.580-8.264 seconds versus 49.591-52.333 seconds for the rejected direct writer, but was rejected on memory. Converted copies and browser profiles were deleted after compact evidence; generated fixtures and raw reports remain locally because command policy denied deletion. No Docker command was used. See `evidence/mkv-to-avi-current-chrome-regression-2026-09-23.json`.
 
 P-06/P-08 MPEG-TS-to-AVI Chrome 153 recovery (2026-09-23): the unchanged two-worker direct random-access writer produced the genuine 198,421,306-byte AVI but failed at 294.039 MiB worst complete-Chromium incremental private memory and took 48.128-48.876 seconds. Quota-preflighted browser-private staging plus one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct-save runs across three cold sessions in 4.336-4.907 seconds at 248.328 MiB worst. The median was 10.86x faster and the observed worst memory was 45.711 MiB lower. Six OPFS runs also passed, with a stronger cancellation after 8.14 MB of actual output. Independent validation found exact MPEG-4/MP3 packets, full decode, 24 indexed OpenDML segments, midpoint seek, repeatability, 256 KiB I/O, one pending write, and fixed 32 MiB Wasm. A first OPFS cancellation probe waited for a nonexistent staging phase and was corrected; a first injected worker-crash test exposed an OPFS-lock cleanup race, fixed by bounded removal retries. Corrected final-copy failure, crash cleanup/restart, final-copy cancellation, and existing MP4-to-AVI crash regression passed. Direct-save headroom is only 1.672 MiB on this machine and browser, not a cross-machine guarantee. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.
 

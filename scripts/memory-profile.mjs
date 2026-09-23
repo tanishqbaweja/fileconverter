@@ -1444,19 +1444,22 @@ try {
       const state = window.__WITHIN_TEST__?.getState();
       return (
         (state?.jobState === "running" &&
-          ((activeProfileId === "3gp-to-avi" ||
+          ((activeProfileId === "mkv-to-avi" ||
+            activeProfileId === "3gp-to-avi" ||
             activeProfileId === "mov-to-avi" ||
             activeProfileId === "mpeg-ts-to-avi" ||
             activeProfileId === "avi-to-3gp" ||
             activeProfileId === "avi-to-mpeg-ts") &&
           activeDestinationMode === "sync-opfs"
-            ? (activeProfileId !== "3gp-to-avi" &&
+            ? (activeProfileId !== "mkv-to-avi" &&
+                activeProfileId !== "3gp-to-avi" &&
                 activeProfileId !== "mov-to-avi" &&
                 activeProfileId !== "mpeg-ts-to-avi") ||
               (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
           : activeProfileId === "mp4-to-avi" ||
           activeProfileId === "mov-to-avi" ||
           activeProfileId === "3gp-to-avi" ||
+          activeProfileId === "mkv-to-avi" ||
           activeProfileId === "mpeg-ts-to-avi" ||
           activeProfileId === "mkv-to-mp4" ||
           activeProfileId === "avi-to-3gp" ||
@@ -1465,6 +1468,7 @@ try {
                 (activeProfileId === "mp4-to-avi" ||
                 activeProfileId === "mov-to-avi" ||
                 activeProfileId === "3gp-to-avi" ||
+                activeProfileId === "mkv-to-avi" ||
                 activeProfileId === "mpeg-ts-to-avi"
                   ? "Copying staged AVI to selected destination"
                   : activeProfileId === "avi-to-3gp"
