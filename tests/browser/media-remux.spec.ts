@@ -7373,6 +7373,7 @@ for (const [sourceFormat, profileId] of compatibleAviSourceRoutes) {
 for (const [sourceFormat, profileId] of [
   ["mp4", "mp4-to-avi"],
   ["mov", "mov-to-avi"],
+  ["3gp", "3gp-to-avi"],
   ["mpeg-ts", "mpeg-ts-to-avi"],
 ] as const) {
   test(`${sourceFormat.toUpperCase()} to AVI worker crash removes staging and partial destination before restart`, async () => {

@@ -22,6 +22,12 @@ const currentMovAvi = JSON.parse(
     "utf8",
   ),
 );
+const currentThreeGpAvi = JSON.parse(
+  readFileSync(
+    "evidence/3gp-to-avi-current-chrome-optimization-2026-09-23.json",
+    "utf8",
+  ),
+);
 const app = readFileSync("app/converter/ConverterApp.tsx", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
@@ -156,4 +162,33 @@ test("current Chrome MOV-to-AVI remains a genuine bounded packet copy with crash
   assert.match(profiler, /"Copying staged AVI to selected destination"/);
   assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
   assert.equal(currentMovAvi.dockerUsed, false);
+});
+
+test("current Chrome 3GP-to-AVI remains a genuine bounded video-only packet copy", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "3gp-to-avi");
+  assert.ok(profile?.public);
+  assert.equal(profile.maxTestedBytes, currentThreeGpAvi.source.bytes);
+  assert.equal(currentThreeGpAvi.status, "accepted");
+  assert.equal(currentThreeGpAvi.output.sha256, evidence.profiles["3gp-to-avi"].outputSha256);
+  assert.equal(currentThreeGpAvi.source.audioStreams, 0);
+  assert.equal(currentThreeGpAvi.output.audioIndexes, 0);
+  assert.equal(currentThreeGpAvi.output.exactCompressedVideoPackets, true);
+  assert.equal(currentThreeGpAvi.output.fullNativeDecodePassed, true);
+  assert.equal(currentThreeGpAvi.output.riffSegments, 22);
+  assert.ok(currentThreeGpAvi.rejectedBaseline.incrementalPrivateMiB.some((value) => value > 250));
+  assert.equal(currentThreeGpAvi.directSaveSessions.length, 3);
+  assert.ok(currentThreeGpAvi.directSaveSessions.every(
+    ({ elapsedMs, incrementalPrivateMiB }) =>
+      elapsedMs.length === 3 &&
+      incrementalPrivateMiB.length === 3 &&
+      incrementalPrivateMiB.every((value) => value <= 250),
+  ));
+  assert.equal(currentThreeGpAvi.directSaveWorstIncrementalPrivateMiB, 244.98046875);
+  assert.equal(currentThreeGpAvi.acceptedTopology.maximumQueuedBytes, 262144);
+  assert.equal(currentThreeGpAvi.acceptedTopology.maximumPendingOperations, 1);
+  assert.match(app, /batch\.profile\.id !== "3gp-to-avi"/);
+  assert.match(worker, /profileId !== "3gp-to-avi"/);
+  assert.match(profiler, /"Copying staged AVI to selected destination"/);
+  assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
+  assert.equal(currentThreeGpAvi.dockerUsed, false);
 });

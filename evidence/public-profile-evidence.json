@@ -61,18 +61,18 @@
       "profileId": "3gp-to-avi",
       "maxTestedBytes": 177146977,
       "repeatableEvidence": {
-        "report": "2026-09-08T09-57-45-216Z-3gp-to-avi-stress.json",
-        "reportSha256": "bfb4704082d76488b34ab46902e5c71c58e8236077a4278ea76ccfc1b49aefb3",
+        "report": "2026-09-23T09-45-40-460Z-3gp-to-avi-direct-handle-stress.json",
+        "reportSha256": "382be73e46601f7ae272125376cccdf10cf635fb02a95cca936d72c70932aaae",
         "runs": 3,
         "sourceBytes": 177146977,
-        "incrementalPrivateMiB": 206.8671875
+        "incrementalPrivateMiB": 244.98046875
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T09-57-45-216Z-3gp-to-avi-stress.json",
-        "reportSha256": "bfb4704082d76488b34ab46902e5c71c58e8236077a4278ea76ccfc1b49aefb3",
+        "report": "2026-09-23T09-45-40-460Z-3gp-to-avi-direct-handle-stress.json",
+        "reportSha256": "382be73e46601f7ae272125376cccdf10cf635fb02a95cca936d72c70932aaae",
         "runs": 3,
         "sourceBytes": 177146977,
-        "incrementalPrivateMiB": 206.8671875
+        "incrementalPrivateMiB": 244.98046875
       }
     },
     {

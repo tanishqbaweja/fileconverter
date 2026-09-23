@@ -63,6 +63,16 @@ Staging temporarily uses output-sized browser-private disk, then deletes it.
 The 5.809 MiB observed memory margin is not a cross-machine guarantee. See
 `evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.
 
+The public 3GP-to-AVI route also needed current-Chrome recovery: its unchanged
+direct writer reached 276.406 MiB in one of three runs. Nine staged direct
+saves of the same 177,146,977-byte video-only source passed in 2.991–3.644
+seconds, at 244.980 MiB worst, producing the exact same 183,376,276-byte
+genuine indexed AVI. Packet hashes, full decode, midpoint seek, cancellation,
+write-failure, and worker-crash cleanup passed. The nine-run median was 6.26x
+faster; private staging temporarily uses output-sized disk and its measured
+5.020 MiB memory margin is not a cross-machine guarantee. See
+`evidence/3gp-to-avi-current-chrome-optimization-2026-09-23.json`.
+
 MKV/WebM-to-IVF copies the first AV1, VP8, or VP9 compressed video stream into
 a genuine fixed-rate IVF file and explicitly excludes everything IVF cannot
 represent. Its 128 MiB three-run browser gate completed each 162.5 MiB source

@@ -5790,7 +5790,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
           "Display-rotation metadata cannot be represented reliably by AVI and is rejected rather than silently changing presentation.",
           "AVI cannot retain every source-container metadata, language, disposition, or timestamp field; the conversion reports each excluded field class.",
           "The seekable OpenDML output uses 8 MiB RIFF segments and a pre-reserved master index sized for 128 GiB of output.",
-          ...(input === "mp4" || input === "mov" || input === "mpeg-ts"
+          ...(input === "mp4" || input === "mov" || input === "3gp" || input === "mpeg-ts"
             ? [
                 `For a selected destination, ${input.toUpperCase()}-to-AVI first writes the random-access OpenDML mux into browser-private storage, checks estimated quota, then copies it through one backpressured 256 KiB buffer and deletes the temporary file on success, cancellation, or failure. This is faster and uses less complete-browser memory than direct random-access writes.`,
               ]

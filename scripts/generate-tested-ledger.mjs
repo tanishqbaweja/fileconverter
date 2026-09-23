@@ -32,6 +32,8 @@ const mp4AviCurrentChromeNote =
   "M-04/P-08 MP4-to-AVI current-Chrome optimization (2026-09-21): Chrome 153 made the unchanged generic direct random-access writer fail at 300.184 MiB and take 46.205-46.405 seconds. A one-worker asynchronous direct writer still failed at 293.184 MiB. The accepted route writes the genuine random-access OpenDML mux to quota-preflighted app-owned private storage, then synchronously reads it through one reusable 256 KiB buffer into one backpressured selected-destination write and deletes the temporary file. The final 191,718,445-byte MP4 passed three direct runs in 3.976-4.268 seconds at 246.566 MiB worst complete-Chromium incremental private memory, producing the same 198,392,670-byte SHA-256 as the baseline: an 11.10x median speedup and 53.617 MiB lower worst memory. Exact MPEG-4/MP3 packets, full native decode, 24 indexed OpenDML segments, midpoint seek, repeatability, fixed 32 MiB Wasm, one pending operation, 256 KiB I/O, cleanup recovery, final-copy failure cleanup, hard-crash staging/destination cleanup and worker restart, and cancellation after 22,544,384 copied bytes passed. The intermediate browser File.stream copy was rejected after a strict rerun reached 250.211 MiB. Selective fixture generation created only the MP4 in 3.49 seconds; generated input, converted copies, browser profiles, raw reports, and task temp were deleted after compact evidence. No Docker command was used. See `evidence/mp4-to-avi-current-chrome-optimization-2026-09-21.json`.";
 const movAviCurrentChromeNote =
   "P-06/P-08 MOV-to-AVI Chrome 153 recovery (2026-09-23): the unchanged two-worker direct random-access writer produced the genuine 198,392,670-byte AVI but failed all three complete-Chromium memory runs at 293.609-311.000 MiB and took 46.797-48.737 seconds. Quota-preflighted browser-private staging plus one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct-save runs across three cold sessions in 4.052-4.723 seconds at 244.191 MiB worst. The median was 10.82x faster and the observed worst memory 66.809 MiB lower. Three OPFS runs passed at 233.109 MiB worst, including cancellation after 17.73 MB of real output. Independent validation found exact MPEG-4/MP3 packets, full decode, 24 indexed OpenDML segments, midpoint seek, repeatability, 256 KiB I/O, one pending write, and fixed 32 MiB Wasm. Final-copy cancellation, injected write failure, worker-crash staging cleanup/restart, and genuine small browser conversion passed. Direct headroom is 5.809 MiB on this machine and browser, not a cross-machine guarantee. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.";
+const threeGpAviCurrentChromeNote =
+  "P-06/P-08 3GP-to-AVI Chrome 153 recovery (2026-09-23): the unchanged direct writer produced a genuine 183,376,276-byte AVI but failed one of three complete-Chromium runs at 276.406 MiB and took 19.841-20.435 seconds. Quota-preflighted private staging and one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct saves across three cold sessions in 2.991-3.644 seconds at 244.980 MiB worst. The nine-run median was 6.26x faster; observed worst memory was 31.426 MiB lower. Three OPFS runs passed at 204.078 MiB worst. Exact MPEG-4 packets, full decode, 22 indexed OpenDML segments with no audio indexes, midpoint seek, repeatability, 256 KiB I/O, one pending write, fixed 32 MiB Wasm, cancellation, injected final-copy write failure, worker-crash cleanup/restart, and genuine small conversion passed. Direct headroom is 5.020 MiB on this machine and browser, not a cross-machine guarantee; the stage temporarily consumes output-sized private disk. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/3gp-to-avi-current-chrome-optimization-2026-09-23.json`.";
 const mpegTsAviCurrentChromeNote =
   "P-06/P-08 MPEG-TS-to-AVI Chrome 153 recovery (2026-09-23): the unchanged two-worker direct random-access writer produced the genuine 198,421,306-byte AVI but failed at 294.039 MiB worst complete-Chromium incremental private memory and took 48.128-48.876 seconds. Quota-preflighted browser-private staging plus one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct-save runs across three cold sessions in 4.336-4.907 seconds at 248.328 MiB worst. The median was 10.86x faster and the observed worst memory was 45.711 MiB lower. Six OPFS runs also passed, with a stronger cancellation after 8.14 MB of actual output. Independent validation found exact MPEG-4/MP3 packets, full decode, 24 indexed OpenDML segments, midpoint seek, repeatability, 256 KiB I/O, one pending write, and fixed 32 MiB Wasm. A first OPFS cancellation probe waited for a nonexistent staging phase and was corrected; a first injected worker-crash test exposed an OPFS-lock cleanup race, fixed by bounded removal retries. Corrected final-copy failure, crash cleanup/restart, final-copy cancellation, and existing MP4-to-AVI crash regression passed. Direct-save headroom is only 1.672 MiB on this machine and browser, not a cross-machine guarantee. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.";
 const aviMpeg2Note =
@@ -159,6 +161,33 @@ if (movAviCurrentChromeEvidence?.status === "accepted") {
         incrementalPrivateMiB: direct.incrementalPrivateMiB[index],
       })),
       incrementalPrivateMiB: movAviCurrentChromeEvidence.directSaveWorstIncrementalPrivateMiB,
+      checks: { cleanupRecovery: true },
+    });
+  }
+}
+const threeGpAviCurrentChromeEvidence = JSON.parse(
+  await readFile(
+    path.join(projectRoot, "evidence", "3gp-to-avi-current-chrome-optimization-2026-09-23.json"),
+    "utf8",
+  ).catch(() => "null"),
+);
+if (threeGpAviCurrentChromeEvidence?.status === "accepted") {
+  const direct = threeGpAviCurrentChromeEvidence.directSaveSessions?.[2];
+  if (direct?.elapsedMs?.length === 3 && direct.incrementalPrivateMiB?.length === 3) {
+    reports.set("3gp-to-avi", {
+      generatedAt: "2026-09-23T23:59:59Z",
+      passed: true,
+      profileId: "3gp-to-avi",
+      source: { bytes: threeGpAviCurrentChromeEvidence.source.bytes },
+      runs: direct.elapsedMs.map((elapsedMs, index) => ({
+        elapsedMs,
+        outputBytes: threeGpAviCurrentChromeEvidence.output.bytes,
+        peakWasmMemoryBytes: threeGpAviCurrentChromeEvidence.acceptedTopology.wasmMemoryBytes,
+        maxReadChunkBytes: threeGpAviCurrentChromeEvidence.acceptedTopology.maximumReadBytes,
+        maxWriteChunkBytes: threeGpAviCurrentChromeEvidence.acceptedTopology.maximumWriteBytes,
+        incrementalPrivateMiB: direct.incrementalPrivateMiB[index],
+      })),
+      incrementalPrivateMiB: threeGpAviCurrentChromeEvidence.directSaveWorstIncrementalPrivateMiB,
       checks: { cleanupRecovery: true },
     });
   }
@@ -854,7 +883,7 @@ lines.push(
 
 await writeFile(
   ledgerPath,
-  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
+  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${threeGpAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
   "utf8",
 );
 process.stdout.write(`${ledgerPath}\n`);

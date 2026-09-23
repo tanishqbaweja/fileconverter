@@ -413,6 +413,25 @@ not the entire product specification.
   of private disk before cleanup. Compact accepted and rejected measurements
   are in `evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.
 
+### 2026-09-23 — 3GP-to-AVI current-Chrome recovery
+
+- The unchanged 3GP-to-AVI direct writer made a genuine 183,376,276-byte
+  video-only OpenDML AVI from the published 177,146,977-byte source, but its
+  first complete-Chromium run reached 276.406 MiB, failing the unchanged
+  250 MiB limit. Three runs took 19.841–20.435 seconds each.
+- Quota-preflighted private staging and one bounded 256 KiB final copy passed
+  nine direct saves across three cold sessions in 2.991–3.644 seconds, worst
+  244.980 MiB. The nine-run median was 6.26x faster. Three OPFS-mode runs
+  also passed. All outputs were byte-identical to the rejected baseline, with
+  exact MPEG-4 packets, 22 valid indexed segments, zero audio indexes, full
+  native decode, and midpoint seek.
+- Final-copy and OPFS cancellation, injected final-copy write failure, and
+  worker-crash restart removed stage and partial destination. The observed
+  5.020 MiB direct-save margin is narrow and not a cross-machine guarantee;
+  the stage temporarily consumes output-sized browser-private disk. Exact
+  accepted and rejected reports are compacted in
+  `evidence/3gp-to-avi-current-chrome-optimization-2026-09-23.json`.
+
 ### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
 
 - Native feasibility proved genuine AV1, VP8, and VP9 IVF packet-copy into

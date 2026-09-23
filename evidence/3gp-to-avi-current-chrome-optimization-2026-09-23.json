@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "status": "accepted",
+  "scope": "Chrome 153 production-browser recovery of the public 3GP-to-AVI packet-copy route at its 177146977-byte published maximum",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.53",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250
+  },
+  "source": {
+    "bytes": 177146977,
+    "sha256": "07f385070ccc847c69e719cbd235e89c3b1e9028c9f4c89bdb326e7fe6f3a130",
+    "videoCodec": "mpeg4",
+    "audioStreams": 0,
+    "videoPacketCount": 14251,
+    "videoPacketSha256": "83b9ea7a8d075f22c2d35d91711127f2e748d8eaa37fcba6c393d4690dd925c8",
+    "retained": false
+  },
+  "output": {
+    "bytes": 183376276,
+    "sha256": "5be378161214d1e6c043f8fc435c4e4638180dac4aea6f7ff76a57e8d532e7d0",
+    "container": "genuine indexed OpenDML AVI",
+    "riffSegments": 22,
+    "audioIndexes": 0,
+    "midpointSeekPassed": true,
+    "exactCompressedVideoPackets": true,
+    "fullNativeDecodePassed": true,
+    "identicalAcrossAllAcceptedRunsAndRejectedBaseline": true,
+    "retained": false
+  },
+  "rejectedBaseline": {
+    "topology": "unchanged two-worker direct random-access writer",
+    "report": "2026-09-23T09-38-58-012Z-3gp-to-avi-direct-handle-stress.json",
+    "reportSha256": "4db6891c68d7efcd30dfb9eea4a32a9b1881892bf8003ed6a259ada186d57406",
+    "elapsedMs": [19852.195, 19840.725, 20434.81],
+    "incrementalPrivateMiB": [276.40625, 225.515625, 238.98046875],
+    "failure": "The first of three complete-Chromium runs exceeded 250 MiB, despite genuine repeatable output and cancellation cleanup."
+  },
+  "acceptedTopology": {
+    "directSave": "Quota-preflighted synchronous browser-private stage followed by one backpressured 256 KiB copy to the selected destination; staging deleted on success, cancellation, write failure, or worker crash.",
+    "opfsTest": "Existing synchronous OPFS writer without an additional final copy.",
+    "workerCount": 1,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "maximumTemporaryStageBytes": 183376276
+  },
+  "directSaveSessions": [
+    {
+      "report": "2026-09-23T09-41-42-663Z-3gp-to-avi-direct-handle-stress.json",
+      "reportSha256": "dd065bb667b513ee86b1def68619986406cd3f9c228b6ab1c2f224e7917ef9dd",
+      "elapsedMs": [3404.075, 3171.085, 3071.895],
+      "incrementalPrivateMiB": [244.515625, 215.09375, 215.828125],
+      "finalCopyCancellationAfterBytes": 19398656
+    },
+    {
+      "report": "2026-09-23T09-43-53-648Z-3gp-to-avi-direct-handle-stress.json",
+      "reportSha256": "3b6986a6be7aff221ae1806c59c684cc7c72fbbb7240bd573a4145fb060c5123",
+      "elapsedMs": [3594.06, 3334.565, 3122.68],
+      "incrementalPrivateMiB": [224.30078125, 202.1796875, 206.5625],
+      "finalCopyCancellationAfterBytes": 19398656
+    },
+    {
+      "report": "2026-09-23T09-45-40-460Z-3gp-to-avi-direct-handle-stress.json",
+      "reportSha256": "382be73e46601f7ae272125376cccdf10cf635fb02a95cca936d72c70932aaae",
+      "elapsedMs": [3644.11, 3098.365, 2990.55],
+      "incrementalPrivateMiB": [244.98046875, 206.0078125, 206.25],
+      "finalCopyCancellationAfterBytes": 19922944
+    }
+  ],
+  "directSaveWorstIncrementalPrivateMiB": 244.98046875,
+  "directSaveHeadroomMiB": 5.01953125,
+  "opfsSession": {
+    "report": "2026-09-23T09-47-45-428Z-3gp-to-avi-stress.json",
+    "reportSha256": "edf4777a7510b28cf072f4aaca18032a7f52a69aa5b24095c33783549a699ee6",
+    "elapsedMs": [1961.285, 1574.135, 1718.28],
+    "incrementalPrivateMiB": [191.43359375, 204.078125, 198.61328125],
+    "cancellationAfterOutputBytes": 8903890
+  },
+  "focusedProductionBrowserChecks": {
+    "genuineSmallConversion": "3GP to genuine AVI passed independent FFprobe, exact compressed packets, decoded-video equality, and complete native decode.",
+    "injectedFinalCopyWriteFailure": "Error surfaced, at most one pending bounded write, partial destination removed, and no stage remained.",
+    "injectedWorkerCrash": "Error surfaced, the OPFS stage and partial destination were removed, and the conversion worker restarted to ready."
+  },
+  "speedDecision": "For identical source and byte-identical output, the nine staged direct runs had a 3.171085-second median versus 19.852195 seconds for the rejected direct writer, a 6.26x median improvement. The accepted path lowered the observed worst complete-browser incremental private memory by 31.42578125 MiB.",
+  "limitations": "The worst direct-save run left only 5.01953125 MiB of measured headroom on this Chrome version and machine, not a cross-machine guarantee. Browser-private staging temporarily consumes one output-sized amount of disk space before deletion.",
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "playwrightArtifactsDeleted": true,
+    "workContainsOnlyGitkeep": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

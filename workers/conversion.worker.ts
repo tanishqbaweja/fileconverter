@@ -498,6 +498,7 @@ async function openStagedDirectDestination(
     !stagingName.startsWith(`within-stage-${profileId}-`) ||
     (profileId !== "mp4-to-avi" &&
       profileId !== "mov-to-avi" &&
+      profileId !== "3gp-to-avi" &&
       profileId !== "mpeg-ts-to-avi" &&
       profileId !== "mkv-to-mp4" &&
       profileId !== "avi-to-3gp" &&
@@ -550,6 +551,7 @@ async function openStagedDirectDestination(
   const copyPhase =
     profileId === "mp4-to-avi" ||
     profileId === "mov-to-avi" ||
+    profileId === "3gp-to-avi" ||
     profileId === "mpeg-ts-to-avi"
       ? "Copying staged AVI to selected destination"
       : profileId === "avi-to-3gp"

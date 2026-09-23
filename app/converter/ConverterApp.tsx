@@ -558,6 +558,7 @@ export function ConverterApp() {
         if (
           batch.profile.id !== "mp4-to-avi" &&
           batch.profile.id !== "mov-to-avi" &&
+          batch.profile.id !== "3gp-to-avi" &&
           batch.profile.id !== "mpeg-ts-to-avi" &&
           batch.profile.id !== "mkv-to-mp4" &&
           batch.profile.id !== "avi-to-3gp" &&
