@@ -52,6 +52,17 @@ MiB of direct-save headroom remained on this machine; staging temporarily uses
 one output-sized amount of private disk. See
 `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.
 
+The public MOV-to-AVI route now uses the same bounded staging topology for
+direct saves. On Chrome 153, the unchanged writer failed all three 250 MiB
+complete-browser memory runs and took 46.797–48.737 seconds; nine staged runs
+on the identical 191,718,419-byte source took 4.052–4.723 seconds, with a
+244.191 MiB worst observed peak. All accepted outputs were the same genuine
+198,392,670-byte indexed OpenDML AVI, with exact MPEG-4/MP3 packets, full
+decode, midpoint seek, and cancellation, write-failure, and crash cleanup.
+Staging temporarily uses output-sized browser-private disk, then deletes it.
+The 5.809 MiB observed memory margin is not a cross-machine guarantee. See
+`evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.
+
 MKV/WebM-to-IVF copies the first AV1, VP8, or VP9 compressed video stream into
 a genuine fixed-rate IVF file and explicitly excludes everything IVF cannot
 represent. Its 128 MiB three-run browser gate completed each 162.5 MiB source

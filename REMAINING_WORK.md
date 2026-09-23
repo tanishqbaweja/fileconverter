@@ -394,6 +394,25 @@ not the entire product specification.
   storage. The accepted and rejected measurements are in
   `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.
 
+### 2026-09-23 — MOV-to-AVI current-Chrome recovery
+
+- The unchanged direct random-access writer made a genuine 198,392,670-byte
+  OpenDML AVI from the published 191,718,419-byte MPEG-4/MP3 MOV source, but
+  failed all three complete-Chromium 250 MiB memory runs (293.609–311 MiB)
+  and took 46.797–48.737 seconds per run.
+- A quota-preflighted browser-private stage and bounded 256 KiB final copy
+  passed nine direct saves across three cold sessions in 4.052–4.723 seconds,
+  worst 244.191 MiB. The nine-run median was 10.82x faster than the rejected
+  baseline. Three OPFS-mode runs also passed. Each output was byte-identical to
+  the baseline, with exact compressed video and audio packets, 24 indexed
+  segments, full native decode, and midpoint seek.
+- Direct final-copy and early OPFS cancellation, injected final-copy write
+  failure, and worker-crash restart removed both stage and partial destination.
+  The observed 5.809 MiB direct-save memory margin is narrow, not a
+  cross-machine guarantee. The temporary stage uses one output-sized amount
+  of private disk before cleanup. Compact accepted and rejected measurements
+  are in `evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json`.
+
 ### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
 
 - Native feasibility proved genuine AV1, VP8, and VP9 IVF packet-copy into

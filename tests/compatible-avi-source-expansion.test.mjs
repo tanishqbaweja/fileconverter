@@ -16,6 +16,12 @@ const currentMpegTsAvi = JSON.parse(
     "utf8",
   ),
 );
+const currentMovAvi = JSON.parse(
+  readFileSync(
+    "evidence/mov-to-avi-current-chrome-optimization-2026-09-23.json",
+    "utf8",
+  ),
+);
 const app = readFileSync("app/converter/ConverterApp.tsx", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
@@ -123,4 +129,31 @@ test("current Chrome MPEG-TS-to-AVI remains a genuine bounded packet copy with c
   assert.match(profiler, /"Copying staged AVI to selected destination"/);
   assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
   assert.equal(currentMpegTsAvi.dockerUsed, false);
+});
+
+test("current Chrome MOV-to-AVI remains a genuine bounded packet copy with crash-safe staging", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "mov-to-avi");
+  assert.ok(profile?.public);
+  assert.equal(profile.maxTestedBytes, currentMovAvi.source.bytes);
+  assert.equal(currentMovAvi.status, "accepted");
+  assert.equal(currentMovAvi.output.sha256, evidence.profiles["mov-to-avi"].outputSha256);
+  assert.equal(currentMovAvi.output.exactCompressedVideoAndAudioPackets, true);
+  assert.equal(currentMovAvi.output.fullNativeDecodePassed, true);
+  assert.equal(currentMovAvi.output.riffSegments, 24);
+  assert.ok(currentMovAvi.rejectedBaseline.incrementalPrivateMiB.every((value) => value > 250));
+  assert.equal(currentMovAvi.directSaveSessions.length, 3);
+  assert.ok(currentMovAvi.directSaveSessions.every(
+    ({ elapsedMs, incrementalPrivateMiB }) =>
+      elapsedMs.length === 3 &&
+      incrementalPrivateMiB.length === 3 &&
+      incrementalPrivateMiB.every((value) => value <= 250),
+  ));
+  assert.equal(currentMovAvi.directSaveWorstIncrementalPrivateMiB, 244.19140625);
+  assert.equal(currentMovAvi.acceptedTopology.maximumQueuedBytes, 262144);
+  assert.equal(currentMovAvi.acceptedTopology.maximumPendingOperations, 1);
+  assert.match(app, /batch\.profile\.id !== "mov-to-avi"/);
+  assert.match(worker, /profileId !== "mov-to-avi"/);
+  assert.match(profiler, /"Copying staged AVI to selected destination"/);
+  assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
+  assert.equal(currentMovAvi.dockerUsed, false);
 });
