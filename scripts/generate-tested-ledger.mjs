@@ -38,6 +38,8 @@ const aviMovNote =
   "M-04/P-08 AVI-to-MOV publication (2026-09-11): the bounded fragmented-QuickTime path packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,929-byte `qt  ` MOV in six measured browser runs. OPFS completed in 0.854-1.105 seconds at 192.156 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.797-2.134 seconds at 211.836 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, earliest-state cancellation, injected-write cleanup, and cleanup recovery passed. Candidate no-Docker run [34630790399](https://github.com/tanishqbaweja/fileconverter/actions/runs/34630790399) changed only the generated manifest and `within-remux.wasm`; publication run [34633039664](https://github.com/tanishqbaweja/fileconverter/actions/runs/34633039664) rebuilt pushed commit `2a3cae6` byte-for-byte in 7m44s, passed cleanup, skipped mismatch upload, and retained zero artifacts. Generated stress sources, converted copies, browser profiles, raw reports, and local candidate files were deleted after compact evidence was recorded. See `evidence/avi-to-mov-browser-2026-09-11.json`.";
 const aviMpegTsNote =
   "M-04/P-08 AVI-to-MPEG-TS publication (2026-09-12): bounded profile 24 packet-copies certified H.264 or MPEG-4 Part 2 AVI video plus AAC or MP3 audio without decode/re-encode. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 163,700,248-byte MPEG-TS in six accepted browser runs with exact video/audio packets and exact decoded video. OPFS completed in 1.097-1.336 seconds at 189.480 MiB worst complete-Chromium incremental private memory; direct-save completed in 6.266-6.583 seconds at 245.297 MiB. The first two direct cancellation attempts exposed worker message starvation during synchronous direct writes; a bounded macrotask yield per 8 MiB fixed cancellation with measured speed still inside the failed 5.997-6.829 second baseline range. Repeatability, 256 KiB reads/writes, one pending operation, fixed 32 MiB Wasm, injected-write cleanup, cancellation cleanup, and cleanup recovery passed. Candidate no-Docker run [34668281924](https://github.com/tanishqbaweja/fileconverter/actions/runs/34668281924) changed only `within-remux.wasm`; publication run [34669858579](https://github.com/tanishqbaweja/fileconverter/actions/runs/34669858579) rebuilt pushed commit `8c74fa5` byte-for-byte in 7m24s, passed cleanup, skipped mismatch upload, and retained zero artifacts. The candidate artifact was deleted; generated fixtures, converted copies, browser profiles, and the local candidate were deleted after validation. See `evidence/avi-to-mpegts-browser-2026-09-12.json`.";
+const aviMpegTsCurrentChromeNote =
+  "P-06/P-08 AVI-to-MPEG-TS Chrome 153 recovery (2026-09-23): the unchanged direct writer failed the 250 MiB complete-Chromium incremental private-memory gate at 275.352 MiB, and a one-worker direct writer still failed at 250.273 MiB. The accepted route stages only direct saves in quota-preflighted browser-private storage, then performs one backpressured 256 KiB final copy and removes staging on every terminal path. The same 159,500,442-byte source produced the identical genuine 163,700,248-byte MPEG-TS SHA-256 in nine direct runs across three cold sessions: 2.463-3.445 seconds and 247.625 MiB worst memory. Three OPFS runs took 1.244-1.613 seconds at 214.152 MiB worst. Historical exact compressed video/audio packet and full decoded-video validation remains unchanged. Repeatability, 256 KiB I/O, one pending operation, fixed 32 MiB Wasm, final-copy cancellation, early OPFS cancellation, injected final-copy failure, worker-crash cleanup/restart, and cleanup recovery passed. The 2.375 MiB direct headroom is narrow and not a cross-machine guarantee. Generated source, converted copies, browser profiles, and raw reports were deleted after compaction. No Docker command was used. See `evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json`.";
 const aviFlvNote =
   "M-04/P-08 AVI-to-FLV publication (2026-09-12): bounded profile 27 packet-copies certified H.264 video and MP3 audio into genuine FLV without decode/re-encode. A 145,328,774-byte 60-second AVI produced 143,904,205-byte FLV outputs in six accepted Chrome runs. OPFS completed in 1.302-1.989 seconds at 189.520 MiB worst complete-Chromium incremental private memory; direct-save completed in 5.694-6.318 seconds at 222.395 MiB. The generic two-worker direct writer was rejected at 256.957 MiB. A route-scoped asynchronous random-access destination removed that relay worker while preserving FLV trailer seeks, 256 KiB reads, at most 117,572-byte writes/queueing, one pending operation, 32 MiB Wasm, repeatability, exact packets, full decoded-video equality, cancellation, injected-write cleanup, and cleanup recovery. Selective fixture generation creates only this source in about 2.1 seconds, and category cleanup removes it plus every converted copy. Hosted no-Docker run [34684202707](https://github.com/tanishqbaweja/fileconverter/actions/runs/34684202707) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `3230248` in 12m24s, skipped mismatch upload, and passed cleanup. Both obsolete candidate artifacts were deleted and all three AVI-to-FLV runs retain zero artifacts. See `evidence/avi-to-flv-browser-2026-09-12.json`.";
 const aviOgvNote =
@@ -215,6 +217,37 @@ if (aviMpegTsCompactEvidence?.status === "passed") {
       })),
       incrementalPrivateMiB: direct.worstIncrementalPrivateMiB,
       checks: { cleanupRecovery: direct.cleanupRecoveryPassed },
+    });
+  }
+}
+const aviMpegTsCurrentChromeEvidence = JSON.parse(
+  await readFile(
+    path.join(
+      projectRoot,
+      "evidence",
+      "avi-to-mpegts-current-chrome-optimization-2026-09-23.json",
+    ),
+    "utf8",
+  ).catch(() => "null"),
+);
+if (aviMpegTsCurrentChromeEvidence?.status === "accepted") {
+  const direct = aviMpegTsCurrentChromeEvidence.directSaveSessions?.[0];
+  if (direct?.elapsedMs?.length === 3 && direct.incrementalPrivateMiB?.length === 3) {
+    reports.set("avi-to-mpeg-ts", {
+      generatedAt: "2026-09-23T23:59:59Z",
+      passed: true,
+      profileId: "avi-to-mpeg-ts",
+      source: { bytes: aviMpegTsCurrentChromeEvidence.source.bytes },
+      runs: direct.elapsedMs.map((elapsedMs, index) => ({
+        elapsedMs,
+        outputBytes: aviMpegTsCurrentChromeEvidence.output.bytes,
+        peakWasmMemoryBytes: aviMpegTsCurrentChromeEvidence.acceptedTopology.wasmMemoryBytes,
+        maxReadChunkBytes: aviMpegTsCurrentChromeEvidence.acceptedTopology.maximumReadBytes,
+        maxWriteChunkBytes: aviMpegTsCurrentChromeEvidence.acceptedTopology.maximumWriteBytes,
+        incrementalPrivateMiB: direct.incrementalPrivateMiB[index],
+      })),
+      incrementalPrivateMiB: aviMpegTsCurrentChromeEvidence.directSaveWorstIncrementalPrivateMiB,
+      checks: { cleanupRecovery: true },
     });
   }
 }
@@ -763,7 +796,7 @@ lines.push(
 
 await writeFile(
   ledgerPath,
-  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
+  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
   "utf8",
 );
 process.stdout.write(`${ledgerPath}\n`);

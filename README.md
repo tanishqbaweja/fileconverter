@@ -96,6 +96,20 @@ in `evidence/avi-to-mpegts-browser-2026-09-12.json`. Hosted no-Docker run
 rebuilt pushed commit `8c74fa5` byte-for-byte in 7m24s, passed cleanup, skipped
 mismatch upload, and retained zero artifacts.
 
+On Chrome 153, AVI-to-MPEG-TS direct saves now stage output in quota-preflighted
+browser-private storage and copy it to the chosen destination through one
+backpressured 256 KiB buffer; the stage is deleted on success, cancellation, or
+failure. The former two-worker direct writer exceeded the 250 MiB memory cap
+(275.352 MiB worst), and a one-worker direct writer still reached 250.273 MiB.
+The staged path produced the identical genuine 163,700,248-byte MPEG-TS in nine
+direct runs across three cold sessions in 2.463-3.445 seconds at 247.625 MiB
+worst complete-Chromium incremental private memory. Three OPFS runs passed in
+1.244-1.613 seconds at 214.152 MiB worst. Packet identity, full decode,
+bounded I/O, cancellation, injected write failure, worker-crash cleanup, and
+repeatability passed. The direct-save headroom is only 2.375 MiB on this
+machine and Chrome version; staging temporarily requires output-sized private
+disk space. See `evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json`.
+
 AVI-to-FLV packet-copies certified H.264 video and MP3 audio without decoding or
 re-encoding. A 145,328,774-byte, 60-second AVI produced genuine 143,904,205-byte
 FLV outputs in six accepted Chrome runs. OPFS completed in 1.302-1.989 seconds

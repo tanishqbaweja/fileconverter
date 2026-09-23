@@ -546,7 +546,8 @@ export function ConverterApp() {
         if (
           batch.profile.id !== "mp4-to-avi" &&
           batch.profile.id !== "mkv-to-mp4" &&
-          batch.profile.id !== "avi-to-3gp"
+          batch.profile.id !== "avi-to-3gp" &&
+          batch.profile.id !== "avi-to-mpeg-ts"
         ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };

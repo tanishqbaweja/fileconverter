@@ -498,7 +498,8 @@ async function openStagedDirectDestination(
     !stagingName.startsWith(`within-stage-${profileId}-`) ||
     (profileId !== "mp4-to-avi" &&
       profileId !== "mkv-to-mp4" &&
-      profileId !== "avi-to-3gp") ||
+      profileId !== "avi-to-3gp" &&
+      profileId !== "avi-to-mpeg-ts") ||
     stagingName.length > 160 ||
     /[\\/]/.test(stagingName)
   ) {
@@ -549,7 +550,9 @@ async function openStagedDirectDestination(
       ? "Copying staged AVI to selected destination"
       : profileId === "avi-to-3gp"
         ? "Copying staged 3GP to selected destination"
-        : "Copying staged MP4 to selected destination";
+        : profileId === "avi-to-mpeg-ts"
+          ? "Copying staged MPEG-TS to selected destination"
+          : "Copying staged MP4 to selected destination";
   const copyChunkBytes =
     profileId === "mkv-to-mp4" ? STAGED_MKV_COPY_CHUNK : MAX_WRITE_CHUNK;
   let stagedClosed = false;

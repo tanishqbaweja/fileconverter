@@ -19,18 +19,21 @@ const ffmpegDirectPatch = source(
 const mkvOptimizationEvidence = JSON.parse(
   source("evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json"),
 );
+const aviMpegTsEvidence = JSON.parse(
+  source("evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json"),
+);
 
-test("the current-browser MP4-to-AVI, MKV-to-MP4, and AVI-to-3GP routes use app-owned bounded staging", () => {
+test("the current-browser MP4-to-AVI, MKV-to-MP4, AVI-to-3GP, and AVI-to-MPEG-TS routes use app-owned bounded staging", () => {
   assert.match(protocol, /mode: "staged-handle"/);
   assert.match(
     app,
-    /batch\.profile\.id !== "mp4-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-mp4"[\s\S]*batch\.profile\.id !== "avi-to-3gp"/,
+    /batch\.profile\.id !== "mp4-to-avi"[\s\S]*batch\.profile\.id !== "mkv-to-mp4"[\s\S]*batch\.profile\.id !== "avi-to-3gp"[\s\S]*batch\.profile\.id !== "avi-to-mpeg-ts"/,
   );
   assert.match(app, /`within-stage-\$\{batch\.profile\.id\}-\$\{jobId\}`/);
   assert.match(app, /name\?\.startsWith\("within-stage-"\)/);
   assert.match(worker, /destination\.mode === "staged-handle"/);
   assert.match(worker, /stagingName\.startsWith\(`within-stage-\$\{profileId\}-`\)/);
-  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== "avi-to-3gp"/);
+  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== "avi-to-3gp" &&\s*profileId !== "avi-to-mpeg-ts"/);
 });
 
 test("staged MP4-to-AVI checks quota, bounds copy memory, and cleans every terminal path", () => {
@@ -97,6 +100,36 @@ test("AVI-to-3GP discloses private staging and validates final-copy cancellation
     ),
   );
   assert.match(profiler, /"Copying staged 3GP to selected destination"/);
+});
+
+test("AVI-to-MPEG-TS discloses private staging and validates final-copy cancellation", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "avi-to-mpeg-ts");
+  assert.ok(profile?.public);
+  assert.equal(profile.maxTestedBytes, 159_500_442);
+  assert.ok(
+    profile.metadataLimitations.some(
+      (note) =>
+        note.includes("browser-private storage") &&
+        note.includes("256 KiB") &&
+        note.includes("delete the temporary file"),
+    ),
+  );
+  assert.match(profiler, /"Copying staged MPEG-TS to selected destination"/);
+  assert.equal(aviMpegTsEvidence.status, "accepted");
+  assert.equal(aviMpegTsEvidence.directSaveSessions.length, 3);
+  assert.ok(
+    aviMpegTsEvidence.directSaveSessions.every(
+      ({ elapsedMs, incrementalPrivateMiB }) =>
+        elapsedMs.length === 3 &&
+        incrementalPrivateMiB.length === 3 &&
+        incrementalPrivateMiB.every((memoryMiB) => memoryMiB <= 250),
+    ),
+  );
+  assert.equal(aviMpegTsEvidence.directSaveWorstIncrementalPrivateMiB, 247.625);
+  assert.equal(aviMpegTsEvidence.acceptedTopology.maximumWriteBytes, 262144);
+  assert.equal(aviMpegTsEvidence.output.bytes, 163700248);
+  assert.match(aviMpegTsEvidence.output.sha256, /^[a-f0-9]{64}$/);
+  assert.equal(aviMpegTsEvidence.dockerUsed, false);
 });
 
 test("direct MKV-to-MP4 keeps the 1 MiB specialist without a writer worker", () => {

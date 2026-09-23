@@ -1340,6 +1340,9 @@ function containerMpegTsProfile(
         ? "Compatible video and audio streams are copied without re-encoding. AVI stream language tags, subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably."
         : "All compatible video and audio streams are copied without re-encoding; compatible stream language tags and explicit H.264 color fields are preserved. Subtitles, attachments, attached pictures, chapters, dispositions, display rotation, and general container metadata are explicitly excluded because this MPEG-TS profile cannot preserve them reliably.",
       "MPEG-TS begins on a standards-compliant transport timestamp offset and cannot preserve MP4/MOV AAC priming metadata, so decoded audio trim may differ even though compressed AAC access units are unchanged.",
+      ...(input === "avi"
+        ? ["Direct saves temporarily stage the converted MPEG-TS in browser-private storage, then copy it to the selected destination through one backpressured 256 KiB buffer and delete the temporary file on success, cancellation, or failure. Sufficient temporary storage quota is required."]
+        : []),
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,

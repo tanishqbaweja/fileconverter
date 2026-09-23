@@ -7,6 +7,9 @@ import { conversionProfiles } from "../lib/capability-registry.ts";
 const evidence = JSON.parse(
   readFileSync("evidence/avi-to-mpegts-browser-2026-09-12.json", "utf8"),
 );
+const currentChromeEvidence = JSON.parse(
+  readFileSync("evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json", "utf8"),
+);
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const mediaBridge = readFileSync("workers/media-remux.ts", "utf8");
@@ -33,6 +36,10 @@ test("AVI to MPEG-TS is public only with exact bounded browser evidence", () => 
   assert.equal(evidence.browser.directDestination.runs, 3);
   assert.ok(evidence.browser.opfs.worstIncrementalPrivateMiB <= 250);
   assert.ok(evidence.browser.directDestination.worstIncrementalPrivateMiB <= 250);
+  assert.equal(currentChromeEvidence.status, "accepted");
+  assert.equal(currentChromeEvidence.directSaveSessions.length, 3);
+  assert.equal(currentChromeEvidence.directSaveWorstIncrementalPrivateMiB, 247.625);
+  assert.equal(currentChromeEvidence.output.sha256, evidence.output.sha256);
 });
 
 test("AVI MPEG-TS conversion, validation, cancellation, and cleanup stay wired", () => {
@@ -58,6 +65,6 @@ test("AVI MPEG-TS conversion, validation, cancellation, and cleanup stay wired",
   assert.equal(evidence.publication.finalNoDockerReproduction.retainedArtifacts, 0);
   assert.match(
     ledger,
-    /\| avi-to-mpeg-ts \| 159,500,442 \| 3 \| 163,700,248 \| 6\.27 s–6\.58 s \| 245\.3 MiB \|/,
+    /\| avi-to-mpeg-ts \| 159,500,442 \| 3 \| 163,700,248 \| 2\.54 s–3\.00 s \| 247\.6 MiB \|/,
   );
 });

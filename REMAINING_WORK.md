@@ -352,6 +352,25 @@ not the entire product specification.
   `evidence/avi-to-3gp-staged-current-chrome-2026-09-23.json`; the earlier
   failed direct candidates remain in the 2026-09-21 audit.
 
+### 2026-09-23 — AVI-to-MPEG-TS current-Chrome speed and memory recovery
+
+- The unchanged two-worker direct path failed the strict Chrome 153 limit at
+  275.352 MiB; a faster one-worker direct writer still failed at 250.273 MiB.
+  Both candidates produced the same genuine MPEG-TS but are rejected.
+- Quota-preflighted browser-private staging followed by one backpressured
+  256 KiB final copy is the fastest tested valid direct path. The same
+  159,500,442-byte source produced the identical 163,700,248-byte output in
+  nine direct runs across three cold sessions in 2.463-3.445 seconds, worst
+  247.625 MiB complete-Chromium incremental private memory. Three OPFS runs
+  passed in 1.244-1.613 seconds at 214.152 MiB worst. Exact packet and full
+  decoded-video checks remain valid because the output SHA-256 is unchanged.
+- Final-copy cancellation, early OPFS cancellation, injected final-copy write
+  failure, worker-crash restart, bounded I/O, and cleanup passed. The 2.375 MiB
+  direct margin is narrow and not a cross-machine guarantee. The temporary
+  stage consumes output-sized browser-private disk space until deleted.
+  Compact measured candidates are in
+  `evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json`.
+
 ### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
 
 - Native feasibility proved genuine AV1, VP8, and VP9 IVF packet-copy into

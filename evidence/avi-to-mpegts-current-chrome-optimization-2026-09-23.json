@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "status": "accepted",
+  "scope": "Current-Chrome AVI-to-MPEG-TS packet-copy speed and complete-browser memory recovery without changing conversion correctness or the 250 MiB cap",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.53",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250
+  },
+  "source": {
+    "bytes": 159500442,
+    "sha256": "8c1f6d00d1f8626386d80bbaa73c9a2618d58ea5be6d5b19a5e517f10e4a85cc",
+    "videoCodec": "mpeg4",
+    "audioCodec": "mp3",
+    "retained": false
+  },
+  "output": {
+    "bytes": 163700248,
+    "sha256": "0668d0b3c1e9b04120e04448f5d15209e8d52dcf2666cdffc2b98cd57e1f0b89",
+    "container": "genuine MPEG-TS",
+    "videoCodec": "mpeg4",
+    "audioCodec": "mp3",
+    "exactCompressedPacketAndFullDecodedVideoValidation": "evidence/avi-to-mpegts-browser-2026-09-12.json",
+    "repeatableAcrossAllAcceptedRuns": true,
+    "retained": false
+  },
+  "rejectedCandidates": [
+    {
+      "topology": "unchanged two-worker direct writer",
+      "report": "2026-09-23T02-53-56-770Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "990c2c187bb8423d2a694d1abf757db30faa6ae6e3562d953c537fb086f724dc",
+      "elapsedMs": [7349.65, 6728.27, 7183.8],
+      "incrementalPrivateMiB": [275.3515625, 239.60546875, 243.390625],
+      "reason": "One of three runs exceeded 250 MiB."
+    },
+    {
+      "topology": "one-worker asynchronous direct writer",
+      "report": "2026-09-23T02-57-14-308Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "80e600be91b674f7da72faad9f4aef7e878405e5bfe0fee188a481c1dc63c005",
+      "elapsedMs": [6665.37, 6851.75, 6383.81],
+      "incrementalPrivateMiB": [250.2734375, 238.890625, 233.33203125],
+      "reason": "One of three runs exceeded 250 MiB by 0.273 MiB."
+    }
+  ],
+  "acceptedTopology": {
+    "directSave": "Quota-preflighted browser-private stage followed by one backpressured 256 KiB copy to the selected destination; staging deleted on success, cancellation, and failure.",
+    "opfsTest": "Existing synchronous OPFS path without an additional final copy.",
+    "workerCount": 1,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "retainedIntermediateBytesAfterEachRun": 0
+  },
+  "directSaveSessions": [
+    {
+      "report": "2026-09-23T03-00-50-166Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "5ba5a72289fec29a6c0290098a60c6add341f720bfc3ae3af2b4092b62e77525",
+      "elapsedMs": [3001.875, 2544.325, 2551.445],
+      "incrementalPrivateMiB": [247.625, 232.89453125, 232.125],
+      "cancellation": "final-copy cancellation after 20185088 output bytes, no retained output or stage"
+    },
+    {
+      "report": "2026-09-23T03-03-21-176Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "85d81e2ee624f894ad3b7aec2de56ec58007079d8e0e31d4be9e0f4a3149218f",
+      "elapsedMs": [3445.155, 2649.435, 2513.23],
+      "incrementalPrivateMiB": [242.265625, 219.37109375, 219.9296875],
+      "cancellation": "final-copy cancellation after 20709376 output bytes, no retained output or stage"
+    },
+    {
+      "report": "2026-09-23T03-06-00-049Z-avi-to-mpeg-ts-direct-handle-stress.json",
+      "reportSha256": "20725d66149d9f35bfc1233a1b2e6c54666e1b89e3b27192a6150ccdc0494ce7",
+      "elapsedMs": [2878.54, 2577.11, 2462.565],
+      "incrementalPrivateMiB": [214.5078125, 212.47265625, 220.93359375],
+      "cancellation": "final-copy cancellation after 20709376 output bytes, no retained output or stage"
+    }
+  ],
+  "directSaveWorstIncrementalPrivateMiB": 247.625,
+  "directSaveHeadroomMiB": 2.375,
+  "opfsSession": {
+    "report": "2026-09-23T03-08-32-182Z-avi-to-mpeg-ts-stress.json",
+    "reportSha256": "5fcf4ba4ac8123b5d2cca34ac85f88049dc47c7fd5ad50acec2e0eb69a43686b",
+    "elapsedMs": [1613.41, 1259.78, 1244.37],
+    "incrementalPrivateMiB": [198.14453125, 214.15234375, 209.20703125],
+    "cancellation": "earliest observable running state after 16629916 output bytes, no retained output"
+  },
+  "adverseBrowserChecks": {
+    "injectedFinalCopyWriteFailure": "The destination rejected a bounded write; job entered error, pending and queued operations returned to zero, OPFS entries were empty, and partial output was removed.",
+    "workerCrash": "Injected worker crash; job entered error, worker restarted to ready, OPFS entries were empty, and partial output was removed."
+  },
+  "speedDecision": "On the identical source and output, accepted direct saves took 2.462565-3.445155 seconds, versus 6.72827-7.349645 seconds for the rejected unchanged direct writer. The accepted path is the fastest tested one that met the unchanged memory and cleanup gates.",
+  "limitations": "Direct-save headroom was only 2.375 MiB on this machine and Chrome version, not a cross-machine guarantee. App-owned staging temporarily uses approximately one output-sized amount of browser-private disk space before deletion.",
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "playwrightCliArtifactsDeleted": true,
+    "workContainsOnlyGitkeep": true,
+    "protectedTestMkvUnmodified": true
+  }
+}
