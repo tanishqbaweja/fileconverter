@@ -30,6 +30,8 @@ const aviSourceExpansionNote =
   "M-04/P-08 compatible AVI source expansion (2026-09-08): the same bounded native profile now accepts certified MPEG-4 Part 2 from MP4, MOV, 3GP, and MPEG-TS as well as Matroska, copying MP3 where the source/container combination permits it; 3GP is explicitly video-only. The first 4/4 browser attempt failed before header write because non-Matroska dimensions were not populated, so the accepted path adds only a fixed 2 MiB/2-second stream probe for header-incomplete inputs. The corrected small production-Chrome gates passed four genuine conversions and four injected write failures with exact compressed packets, decoded-video identity, full native decode, genuine RIFF/AVI headers, and zero partial outputs. Five 177,146,977-199,649,420-byte sources then passed 3/3 in 1.440-2.878 seconds at 249.1 MiB worst complete-Chromium incremental private memory. Every run retained exact MPEG-4 packets, exact MP3 packets where present, repeatable output, 22-24 OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation cleanup, and full decode. Parallel packet-copy fixture generation produced all five sources in 5.25 seconds; every large fixture, converted copy, raw report, browser artifact, and downloaded candidate was deleted after compact evidence was recorded. Hosted no-Docker run [34215789337](https://github.com/tanishqbaweja/fileconverter/actions/runs/34215789337) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `12e42ac`, passed cleanup in 13m34s, skipped mismatch upload, and retained zero artifacts. The superseded candidate archive was deleted. See `evidence/compatible-avi-source-expansion-2026-09-08.json`.";
 const mp4AviCurrentChromeNote =
   "M-04/P-08 MP4-to-AVI current-Chrome optimization (2026-09-21): Chrome 153 made the unchanged generic direct random-access writer fail at 300.184 MiB and take 46.205-46.405 seconds. A one-worker asynchronous direct writer still failed at 293.184 MiB. The accepted route writes the genuine random-access OpenDML mux to quota-preflighted app-owned private storage, then synchronously reads it through one reusable 256 KiB buffer into one backpressured selected-destination write and deletes the temporary file. The final 191,718,445-byte MP4 passed three direct runs in 3.976-4.268 seconds at 246.566 MiB worst complete-Chromium incremental private memory, producing the same 198,392,670-byte SHA-256 as the baseline: an 11.10x median speedup and 53.617 MiB lower worst memory. Exact MPEG-4/MP3 packets, full native decode, 24 indexed OpenDML segments, midpoint seek, repeatability, fixed 32 MiB Wasm, one pending operation, 256 KiB I/O, cleanup recovery, final-copy failure cleanup, hard-crash staging/destination cleanup and worker restart, and cancellation after 22,544,384 copied bytes passed. The intermediate browser File.stream copy was rejected after a strict rerun reached 250.211 MiB. Selective fixture generation created only the MP4 in 3.49 seconds; generated input, converted copies, browser profiles, raw reports, and task temp were deleted after compact evidence. No Docker command was used. See `evidence/mp4-to-avi-current-chrome-optimization-2026-09-21.json`.";
+const mpegTsAviCurrentChromeNote =
+  "P-06/P-08 MPEG-TS-to-AVI Chrome 153 recovery (2026-09-23): the unchanged two-worker direct random-access writer produced the genuine 198,421,306-byte AVI but failed at 294.039 MiB worst complete-Chromium incremental private memory and took 48.128-48.876 seconds. Quota-preflighted browser-private staging plus one backpressured 256 KiB final copy produced the identical output SHA-256 in nine direct-save runs across three cold sessions in 4.336-4.907 seconds at 248.328 MiB worst. The median was 10.86x faster and the observed worst memory was 45.711 MiB lower. Six OPFS runs also passed, with a stronger cancellation after 8.14 MB of actual output. Independent validation found exact MPEG-4/MP3 packets, full decode, 24 indexed OpenDML segments, midpoint seek, repeatability, 256 KiB I/O, one pending write, and fixed 32 MiB Wasm. A first OPFS cancellation probe waited for a nonexistent staging phase and was corrected; a first injected worker-crash test exposed an OPFS-lock cleanup race, fixed by bounded removal retries. Corrected final-copy failure, crash cleanup/restart, final-copy cancellation, and existing MP4-to-AVI crash regression passed. Direct-save headroom is only 1.672 MiB on this machine and browser, not a cross-machine guarantee. Generated source, converted copies, raw reports, and browser artifacts were deleted after compact evidence. No Docker command was used. See `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.";
 const aviMpeg2Note =
   "M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. Hosted no-Docker run [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero artifacts. Every generated fixture, converted output, raw report, browser profile, local candidate, and native feasibility file was deleted; the obsolete candidate artifact was deleted and verified absent. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`.";
 const aviThreeGpNote =
@@ -102,6 +104,33 @@ if (mp4AviCompactEvidence?.status === "passed") {
       })),
       incrementalPrivateMiB: direct.worstIncrementalPrivateMiB,
       checks: { cleanupRecovery: direct.cleanupRecoveryPassed },
+    });
+  }
+}
+const mpegTsAviCurrentChromeEvidence = JSON.parse(
+  await readFile(
+    path.join(projectRoot, "evidence", "mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json"),
+    "utf8",
+  ).catch(() => "null"),
+);
+if (mpegTsAviCurrentChromeEvidence?.status === "accepted") {
+  const direct = mpegTsAviCurrentChromeEvidence.directSaveSessions?.[1];
+  if (direct?.elapsedMs?.length === 3 && direct.incrementalPrivateMiB?.length === 3) {
+    reports.set("mpeg-ts-to-avi", {
+      generatedAt: "2026-09-23T23:59:59Z",
+      passed: true,
+      profileId: "mpeg-ts-to-avi",
+      source: { bytes: mpegTsAviCurrentChromeEvidence.source.bytes },
+      runs: direct.elapsedMs.map((elapsedMs, index) => ({
+        elapsedMs,
+        outputBytes: mpegTsAviCurrentChromeEvidence.output.bytes,
+        peakWasmMemoryBytes: mpegTsAviCurrentChromeEvidence.acceptedTopology.wasmMemoryBytes,
+        maxReadChunkBytes: mpegTsAviCurrentChromeEvidence.acceptedTopology.maximumReadBytes,
+        maxWriteChunkBytes: mpegTsAviCurrentChromeEvidence.acceptedTopology.maximumWriteBytes,
+        incrementalPrivateMiB: direct.incrementalPrivateMiB[index],
+      })),
+      incrementalPrivateMiB: mpegTsAviCurrentChromeEvidence.directSaveWorstIncrementalPrivateMiB,
+      checks: { cleanupRecovery: true },
     });
   }
 }
@@ -796,7 +825,7 @@ lines.push(
 
 await writeFile(
   ledgerPath,
-  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
+  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
   "utf8",
 );
 process.stdout.write(`${ledgerPath}\n`);

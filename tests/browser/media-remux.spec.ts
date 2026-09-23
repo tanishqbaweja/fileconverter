@@ -7370,46 +7370,51 @@ for (const [sourceFormat, profileId] of compatibleAviSourceRoutes) {
   });
 }
 
-test("MP4-to-AVI worker crash removes staging and partial destination before restart", async () => {
-  await page.goto("/?test=1&directory=1&fault=worker-crash");
-  await page.waitForFunction(
-    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
-  );
-  await page
-    .locator('[data-testid="file-input"]')
-    .setInputFiles(aviCopySourceFixturePaths.mp4);
-  await page
-    .locator('[data-testid="format-select"]')
-    .selectOption("mp4-to-avi");
-  await startEnabledConversion();
-  await expect
-    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
-    .toBe("error");
-  const failed = await currentState();
-  expect(failed.error).toContain("Injected conversion worker crash");
-  await expect
-    .poll(
-      () =>
-        page.evaluate(async () => {
-          const root = await navigator.storage.getDirectory();
-          const names: string[] = [];
-          for await (const [name] of root.entries()) {
-            if (
-              name.startsWith("within-stage-mp4-to-avi-") ||
-              name === "avi-copy-source.avi"
-            ) {
-              names.push(name);
+for (const [sourceFormat, profileId] of [
+  ["mp4", "mp4-to-avi"],
+  ["mpeg-ts", "mpeg-ts-to-avi"],
+] as const) {
+  test(`${sourceFormat.toUpperCase()} to AVI worker crash removes staging and partial destination before restart`, async () => {
+    await page.goto("/?test=1&directory=1&fault=worker-crash");
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+    );
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(aviCopySourceFixturePaths[sourceFormat]);
+    await page
+      .locator('[data-testid="format-select"]')
+      .selectOption(profileId);
+    await startEnabledConversion();
+    await expect
+      .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+      .toBe("error");
+    const failed = await currentState();
+    expect(failed.error).toContain("Injected conversion worker crash");
+    await expect
+      .poll(
+        () =>
+          page.evaluate(async (activeProfileId) => {
+            const root = await navigator.storage.getDirectory();
+            const names: string[] = [];
+            for await (const [name] of root.entries()) {
+              if (
+                name.startsWith(`within-stage-${activeProfileId}-`) ||
+                name === "avi-copy-source.avi"
+              ) {
+                names.push(name);
+              }
             }
-          }
-          return names;
-        }),
-      { timeout: 15_000 },
-    )
-    .toEqual([]);
-  await expect
-    .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
-    .toBe("ready");
-});
+            return names;
+          }, profileId),
+        { timeout: 15_000 },
+      )
+      .toEqual([]);
+    await expect
+      .poll(async () => (await currentState()).workerStatus, { timeout: 15_000 })
+      .toBe("ready");
+  });
+}
 
 test("AVI stream copy retains only representable fields and discloses every excluded class", async () => {
   await runMediaRoute(

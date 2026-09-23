@@ -10,6 +10,13 @@ const evidence = JSON.parse(
     "utf8",
   ),
 );
+const currentMpegTsAvi = JSON.parse(
+  readFileSync(
+    "evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json",
+    "utf8",
+  ),
+);
+const app = readFileSync("app/converter/ConverterApp.tsx", "utf8");
 const worker = readFileSync("workers/conversion.worker.ts", "utf8");
 const nativeWrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
 const browser = readFileSync("tests/browser/media-remux.spec.ts", "utf8");
@@ -88,4 +95,32 @@ test("stress generation, validation, and cleanup remain fully wired", () => {
   assert.equal(evidence.publication.hostedCleanupPassed, true);
   assert.equal(evidence.publication.retainedArtifactCount, 0);
   assert.equal(evidence.publication.dockerUsed, false);
+});
+
+test("current Chrome MPEG-TS-to-AVI remains a genuine bounded packet copy with crash-safe staging", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "mpeg-ts-to-avi");
+  assert.ok(profile?.public);
+  assert.equal(profile.maxTestedBytes, currentMpegTsAvi.source.bytes);
+  assert.equal(currentMpegTsAvi.status, "accepted");
+  assert.equal(currentMpegTsAvi.output.sha256, evidence.profiles["mpeg-ts-to-avi"].outputSha256);
+  assert.equal(currentMpegTsAvi.output.exactCompressedVideoAndAudioPackets, true);
+  assert.equal(currentMpegTsAvi.output.fullNativeDecodePassed, true);
+  assert.equal(currentMpegTsAvi.output.riffSegments, 24);
+  assert.ok(currentMpegTsAvi.rejectedBaseline.incrementalPrivateMiB.some((value) => value > 250));
+  assert.equal(currentMpegTsAvi.directSaveSessions.length, 3);
+  assert.ok(currentMpegTsAvi.directSaveSessions.every(
+    ({ elapsedMs, incrementalPrivateMiB }) =>
+      elapsedMs.length === 3 &&
+      incrementalPrivateMiB.length === 3 &&
+      incrementalPrivateMiB.every((value) => value <= 250),
+  ));
+  assert.equal(currentMpegTsAvi.directSaveWorstIncrementalPrivateMiB, 248.328125);
+  assert.equal(currentMpegTsAvi.acceptedTopology.maximumQueuedBytes, 262144);
+  assert.equal(currentMpegTsAvi.acceptedTopology.maximumPendingOperations, 1);
+  assert.match(app, /batch\.profile\.id !== "mpeg-ts-to-avi"/);
+  assert.match(app, /async function removeAppOwnedOpfsEntry[\s\S]*attempt < 25[\s\S]*root\.removeEntry\(name\)/);
+  assert.match(worker, /profileId !== "mpeg-ts-to-avi"/);
+  assert.match(profiler, /"Copying staged AVI to selected destination"/);
+  assert.match(browser, /to AVI worker crash removes staging and partial destination before restart/);
+  assert.equal(currentMpegTsAvi.dockerUsed, false);
 });

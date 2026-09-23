@@ -140,15 +140,27 @@ const TEST_FAULTS = new Set<TestFault>([
   "worker-crash",
 ]);
 
-async function removeAppOwnedOpfsEntry(name: string | null): Promise<void> {
+async function removeAppOwnedOpfsEntry(name: string | null): Promise<boolean> {
   if (
     !name?.startsWith("within-test-") &&
     !name?.startsWith("within-stage-")
   ) {
-    return;
+    return true;
   }
   const root = await navigator.storage.getDirectory();
-  await root.removeEntry(name).catch(() => {});
+  for (let attempt = 0; attempt < 25; attempt += 1) {
+    try {
+      await root.removeEntry(name);
+      return true;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "NotFoundError") {
+        return true;
+      }
+      if (attempt === 24) return false;
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 200));
+    }
+  }
+  return false;
 }
 
 async function removeIncompleteDirectoryOutput(
@@ -545,6 +557,7 @@ export function ConverterApp() {
       ): typeof destination => {
         if (
           batch.profile.id !== "mp4-to-avi" &&
+          batch.profile.id !== "mpeg-ts-to-avi" &&
           batch.profile.id !== "mkv-to-mp4" &&
           batch.profile.id !== "avi-to-3gp" &&
           batch.profile.id !== "avi-to-mpeg-ts"
@@ -603,7 +616,22 @@ export function ConverterApp() {
         }, 250);
       };
       if (abandonedOpfsName) {
-        void removeAppOwnedOpfsEntry(abandonedOpfsName).finally(restart);
+        void removeAppOwnedOpfsEntry(abandonedOpfsName)
+          .then((removed) => {
+            if (!removed) {
+              setWarnings((current) => [
+                ...current.slice(1 - MAX_RETAINED_WARNINGS),
+                "A temporary conversion file could not be removed automatically. Use Clear temporary files in Storage management.",
+              ]);
+            }
+          })
+          .catch(() => {
+            setWarnings((current) => [
+              ...current.slice(1 - MAX_RETAINED_WARNINGS),
+              "Temporary-file cleanup failed. Use Clear temporary files in Storage management.",
+            ]);
+          })
+          .finally(restart);
       } else {
         restart();
       }

@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "status": "accepted",
+  "scope": "Chrome 153 production-browser recovery of the public MPEG-TS-to-AVI packet-copy route at its 199649420-byte published maximum",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.53",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250
+  },
+  "source": {
+    "bytes": 199649420,
+    "sha256": "b956a903f016b1ed9ad64e356f333d790010409c9f56ab5411e12d7bc1cc04d7",
+    "videoCodec": "mpeg4",
+    "audioCodec": "mp3",
+    "videoPacketCount": 14251,
+    "audioPacketCount": 24940,
+    "videoPacketSha256": "83b9ea7a8d075f22c2d35d91711127f2e748d8eaa37fcba6c393d4690dd925c8",
+    "audioPacketSha256": "a7d18cc6cb7bebff85a1766386cc9068590f3716887b8442f0d406d6f327e187",
+    "retained": false
+  },
+  "output": {
+    "bytes": 198421306,
+    "sha256": "bb5b139c8524285762a34eae0683acd415963c4c831cabf28bdf75e03d643524",
+    "container": "genuine indexed OpenDML AVI",
+    "riffSegments": 24,
+    "midpointSeekPassed": true,
+    "exactCompressedVideoAndAudioPackets": true,
+    "fullNativeDecodePassed": true,
+    "identicalAcrossAllAcceptedRunsAndRejectedBaseline": true,
+    "retained": false
+  },
+  "rejectedBaseline": {
+    "topology": "unchanged two-worker direct random-access writer",
+    "report": "2026-09-23T03-24-06-412Z-mpeg-ts-to-avi-direct-handle-stress.json",
+    "reportSha256": "f431a1adfbbee14f64c80af0b560e87e5ec2415f097dc3be15f762aad5c8cff3",
+    "elapsedMs": [48875.745, 48730.815, 48127.835],
+    "incrementalPrivateMiB": [294.0390625, 288.19921875, 277.5703125],
+    "failure": "All three runs exceeded the unchanged 250 MiB limit, despite genuine repeatable output and cancellation cleanup.",
+    "peakProcessDiagnosis": "The peak sample had a 270.26 MiB renderer, a 109.52 MiB GPU process, and two conversion-related worker realms."
+  },
+  "acceptedTopology": {
+    "directSave": "Quota-preflighted synchronous browser-private stage followed by one backpressured 256 KiB copy to the selected destination; staging deleted on success, cancellation, write failure, or worker crash.",
+    "opfsTest": "Existing synchronous OPFS writer without an additional final copy.",
+    "workerCount": 1,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "maximumTemporaryStageBytes": 198421306
+  },
+  "directSaveSessions": [
+    {
+      "report": "2026-09-23T08-47-16-776Z-mpeg-ts-to-avi-direct-handle-stress.json",
+      "reportSha256": "999c8ab88473befa86ce1af441612cc6593e49bbb116bc03bb79ae4fea0b9de7",
+      "elapsedMs": [4707.03, 4335.76, 4460.015],
+      "incrementalPrivateMiB": [235.6171875, 209.85546875, 214.49609375],
+      "finalCopyCancellationAfterBytes": 20185088
+    },
+    {
+      "report": "2026-09-23T08-56-59-050Z-mpeg-ts-to-avi-direct-handle-stress.json",
+      "reportSha256": "512a7effa68e0a8e3e41e83a72a1f987809c4eef7ea2418b1e9c0a20136afe9a",
+      "elapsedMs": [4761.15, 4388.045, 4401.885],
+      "incrementalPrivateMiB": [248.328125, 229.80859375, 239.52734375],
+      "finalCopyCancellationAfterBytes": 19922944
+    },
+    {
+      "report": "2026-09-23T08-59-48-924Z-mpeg-ts-to-avi-direct-handle-stress.json",
+      "reportSha256": "a1eaef26d71bc5915c4383e7b366ae97cf7c4c330f0f1fb445cc40fb9211201e",
+      "elapsedMs": [4907.04, 4575.065, 4487.17],
+      "incrementalPrivateMiB": [235.484375, 218.3046875, 220.81640625],
+      "finalCopyCancellationAfterBytes": 19136512
+    }
+  ],
+  "directSaveWorstIncrementalPrivateMiB": 248.328125,
+  "directSaveHeadroomMiB": 1.671875,
+  "opfsAcceptedSessions": [
+    {
+      "report": "2026-09-23T08-52-13-920Z-mpeg-ts-to-avi-stress.json",
+      "reportSha256": "7e57ac3e2cf5e0041c545e254f45e74ac01749f60bddeaf306d550c5dca6f223",
+      "elapsedMs": [3242.455, 2977.715, 2925.78],
+      "incrementalPrivateMiB": [240.109375, 230.53125, 234.23046875],
+      "cancellation": "at destination-open with zero output bytes; valid but weaker than the subsequent active-work probe"
+    },
+    {
+      "report": "2026-09-23T08-54-28-299Z-mpeg-ts-to-avi-stress.json",
+      "reportSha256": "7536e65369619fa917f218d4f9bb1539c64d272372a3f4d0f0e818146eb3ab14",
+      "elapsedMs": [3324.37, 2966.74, 3046.28],
+      "incrementalPrivateMiB": [232.55078125, 213.58203125, 217.9375],
+      "cancellationAfterOutputBytes": 8141744
+    }
+  ],
+  "failedTestHarnessProbe": {
+    "report": "2026-09-23T08-49-39-213Z-mpeg-ts-to-avi-stress-failure.json",
+    "reportSha256": "5f00f3d2768b3eaa6b3384079809ae2cf6d7fc159ac5d5bf0da50e607de0e6d7",
+    "reason": "The profiler waited for a staged final-copy phase in OPFS mode, which does not stage; the conversion completed before that impossible checkpoint. The corrected harness passed, then passed again with cancellation after 8141744 actual output bytes."
+  },
+  "focusedProductionBrowserChecks": {
+    "genuineSmallConversion": "MPEG-TS to genuine AVI passed independent FFprobe, exact compressed packets, decoded-video equality, and complete native decode.",
+    "injectedFinalCopyWriteFailure": "Error surfaced, at most one pending bounded write, partial destination removed, and no stage remained.",
+    "injectedWorkerCrash": "A first run found staging left behind when the terminated worker's OPFS lock had not yet released. The cleanup now retries removal before restart; the corrected MPEG-TS-to-AVI and pre-existing MP4-to-AVI crash tests both passed with no stage or partial destination."
+  },
+  "speedDecision": "For the identical source and byte-identical output, the accepted path's nine-run median was 4.48717 seconds versus 48.730815 seconds for the rejected direct writer's three-run median, a 10.86x median improvement. The accepted route also lowered the observed worst complete-browser incremental private memory by 45.7109375 MiB.",
+  "limitations": "The worst direct-save run left only 1.671875 MiB of measured headroom on this Chrome version and machine, not a cross-machine guarantee. Browser-private staging temporarily consumes one output-sized amount of disk space before deletion.",
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "playwrightFailureArtifactsDeleted": true,
+    "workContainsOnlyGitkeep": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

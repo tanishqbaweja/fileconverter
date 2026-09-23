@@ -32,11 +32,25 @@ routes:
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
-decode/re-encode work, use bounded direct destination writes, and explicitly
+decode/re-encode work, use bounded selected-destination writes (with private
+staging only where current-browser memory or random access requires it), and explicitly
 disclose container-specific metadata or stream exclusions.
 
 The matrix now also includes a certified Matroska-to-OpenDML-AVI packet-copy
 route for MPEG-4 Part 2 video with optional MP3 audio.
+
+On Chrome 153, the public MPEG-TS-to-AVI direct-save route now writes its
+random-access OpenDML AVI to quota-preflighted browser-private storage, then
+copies it to the selected destination through one backpressured 256 KiB buffer
+and removes the stage. The prior two-worker direct writer made the same
+198,421,306-byte AVI but took about 48 seconds and peaked at 294.0 MiB. Nine
+staged direct runs on the identical 199,649,420-byte source took 4.336-4.907
+seconds at 248.3 MiB worst complete-browser incremental private memory. Exact
+MPEG-4/MP3 packets, full decode, 24 OpenDML segments, midpoint seek, output
+hash, cancellation, write failure, and worker-crash cleanup passed. Only 1.7
+MiB of direct-save headroom remained on this machine; staging temporarily uses
+one output-sized amount of private disk. See
+`evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.
 
 MKV/WebM-to-IVF copies the first AV1, VP8, or VP9 compressed video stream into
 a genuine fixed-rate IVF file and explicitly excludes everything IVF cannot

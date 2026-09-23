@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-21. This is the living requirement audit for the original
+Updated 2026-09-23. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -370,6 +370,29 @@ not the entire product specification.
   stage consumes output-sized browser-private disk space until deleted.
   Compact measured candidates are in
   `evidence/avi-to-mpegts-current-chrome-optimization-2026-09-23.json`.
+
+### 2026-09-23 — MPEG-TS-to-AVI current-Chrome recovery
+
+- The unchanged two-worker direct random-access writer produced the genuine
+  198,421,306-byte AVI but failed all three complete-Chromium memory runs,
+  peaking at 294.039 MiB and taking 48.128-48.876 seconds per conversion.
+- The same 199,649,420-byte MPEG-4/MP3 MPEG-TS source passed nine staged
+  direct saves across three cold sessions in 4.336-4.907 seconds, worst
+  248.328 MiB. The byte-identical OpenDML AVI retained exact compressed video
+  and audio packets, 24 valid segments, full decode and midpoint seek. The
+  nine-run median is 10.86x faster than the rejected baseline median. Six OPFS
+  runs passed; a strengthened cancellation probe stopped after 8.14 MB of
+  actual output. Direct final-copy cancellation stopped after 19.1-20.2 MB.
+- The first OPFS cancellation probe waited for a staging phase that OPFS mode
+  never enters; its report was rejected and the corrected probe passed. The
+  first injected worker-crash browser test exposed a real OPFS-lock release
+  race that left a stage. Bounded cleanup retries fixed it; the corrected
+  MPEG-TS-to-AVI and existing MP4-to-AVI crash tests passed, as did injected
+  final-copy write failure and the genuine small conversion test.
+- The worst direct margin is only 1.672 MiB on this machine/Chrome build, not
+  a cross-machine guarantee. Staging requires temporary output-sized private
+  storage. The accepted and rejected measurements are in
+  `evidence/mpeg-ts-to-avi-current-chrome-optimization-2026-09-23.json`.
 
 ### 2026-09-10 — IVF input candidate diagnosis (not yet promoted)
 

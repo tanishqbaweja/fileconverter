@@ -4561,18 +4561,18 @@
       "profileId": "mpeg-ts-to-avi",
       "maxTestedBytes": 199649420,
       "repeatableEvidence": {
-        "report": "2026-09-08T10-00-44-455Z-mpeg-ts-to-avi-stress.json",
-        "reportSha256": "0ad43cbc565374a7699beb8b28d3989eb2b0f05eda531ca4511a5c083327b0c7",
+        "report": "2026-09-23T08-56-59-050Z-mpeg-ts-to-avi-direct-handle-stress.json",
+        "reportSha256": "512a7effa68e0a8e3e41e83a72a1f987809c4eef7ea2418b1e9c0a20136afe9a",
         "runs": 3,
         "sourceBytes": 199649420,
-        "incrementalPrivateMiB": 231.37890625
+        "incrementalPrivateMiB": 248.328125
       },
       "maximumSizeEvidence": {
-        "report": "2026-09-08T10-00-44-455Z-mpeg-ts-to-avi-stress.json",
-        "reportSha256": "0ad43cbc565374a7699beb8b28d3989eb2b0f05eda531ca4511a5c083327b0c7",
+        "report": "2026-09-23T08-56-59-050Z-mpeg-ts-to-avi-direct-handle-stress.json",
+        "reportSha256": "512a7effa68e0a8e3e41e83a72a1f987809c4eef7ea2418b1e9c0a20136afe9a",
         "runs": 3,
         "sourceBytes": 199649420,
-        "incrementalPrivateMiB": 231.37890625
+        "incrementalPrivateMiB": 248.328125
       }
     },
     {
