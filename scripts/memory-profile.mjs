@@ -1440,27 +1440,32 @@ try {
     await setLocalFileInput(cdp, fixturePath);
     await page.locator('[data-testid="format-select"]').selectOption(profileId);
     await page.locator('[data-testid="convert-button"]').click();
-    await page.waitForFunction((activeProfileId) => {
+    await page.waitForFunction(({ activeProfileId, activeDestinationMode }) => {
       const state = window.__WITHIN_TEST__?.getState();
       return (
         (state?.jobState === "running" &&
-          (activeProfileId === "mp4-to-avi" ||
-          activeProfileId === "mkv-to-mp4"
+          (activeProfileId === "avi-to-3gp" &&
+          activeDestinationMode === "sync-opfs"
+            ? true
+          : activeProfileId === "mp4-to-avi" ||
+          activeProfileId === "mkv-to-mp4" ||
+          activeProfileId === "avi-to-3gp"
             ? state.phase ===
                 (activeProfileId === "mp4-to-avi"
                   ? "Copying staged AVI to selected destination"
-                  : "Copying staged MP4 to selected destination") &&
+                  : activeProfileId === "avi-to-3gp"
+                    ? "Copying staged 3GP to selected destination"
+                    : "Copying staged MP4 to selected destination") &&
               (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
             : activeProfileId === "m4a-to-aiff"
               ? (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
-            : activeProfileId === "avi-to-3gp" ||
-              activeProfileId === "avi-to-mov" ||
+            : activeProfileId === "avi-to-mov" ||
               activeProfileId === "avi-to-mpeg-ts" ||
               (state.metrics?.inputBytes ?? 0) >= 256 * 1024)) ||
         state?.jobState === "complete" ||
         state?.jobState === "error"
       );
-    }, profileId, { timeout: 120_000 });
+    }, { activeProfileId: profileId, activeDestinationMode: destinationMode }, { timeout: 120_000 });
     const cancellableState = await page.evaluate(() =>
       window.__WITHIN_TEST__?.getState(),
     );

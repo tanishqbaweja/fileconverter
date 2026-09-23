@@ -1354,7 +1354,7 @@ const containerThreeGpEvidence = {
   "mov-to-3gp": 147_136_645,
   "mpeg-ts-to-3gp": 150_441_548,
   "flv-to-3gp": 146_903_539,
-  "avi-to-3gp": null,
+  "avi-to-3gp": 159_500_442,
 } as const satisfies Record<string, number | null>;
 
 function containerThreeGpProfile(
@@ -1362,7 +1362,6 @@ function containerThreeGpProfile(
 ): ConversionProfile {
   const id = `${input}-to-3gp` as keyof typeof containerThreeGpEvidence;
   const evidence = containerThreeGpEvidence[id];
-  const failedCurrentBrowserEvidence = id === "avi-to-3gp";
   return {
     id,
     input,
@@ -1386,14 +1385,13 @@ function containerThreeGpProfile(
         : "All compatible video and audio streams are copied without re-encoding; compatible stream language tags, display rotation, aspect, and color fields are preserved; subtitles, attachments, attached pictures, chapters, and unsupported container metadata are explicitly excluded.",
       "When a media type has no source-default track, the bounded 3GP muxer marks its first compatible track as default; compressed payloads are unchanged.",
       "The bounded fragmented-3GP layout avoids duration-sized muxer indexes. Some older players may need to scan fragments before displaying an accurate duration or seeking.",
+      ...(input === "avi"
+        ? ["Direct saves stage the converted 3GP in browser-private storage, then copy it to the selected destination through one 256 KiB buffer and delete the temporary file on success, cancellation, or failure. Sufficient temporary storage quota is required."]
+        : []),
     ],
     fidelityLimitations: [],
     maxTestedBytes: evidence,
-    automatedTestStatus: failedCurrentBrowserEvidence
-      ? "failed"
-      : evidence === null
-        ? "pending"
-        : "passed",
+    automatedTestStatus: evidence === null ? "pending" : "passed",
     public: evidence !== null,
   };
 }

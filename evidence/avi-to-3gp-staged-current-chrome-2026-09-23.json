@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "status": "accepted",
+  "scope": "Chrome 153 restoration of genuine AVI MPEG-4 Part 2 to fragmented 3GP packet copy under the unchanged 250 MiB complete-browser limit",
+  "dockerUsed": false,
+  "browser": {
+    "name": "Chrome",
+    "version": "153.0.8010.53",
+    "memoryFormula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    "limitMiB": 250
+  },
+  "source": {
+    "bytes": 159500442,
+    "sha256": "8c1f6d00d1f8626386d80bbaa73c9a2618d58ea5be6d5b19a5e517f10e4a85cc",
+    "codec": "mpeg4",
+    "audio": "mp3, explicitly excluded from the certified 3GP output",
+    "retained": false
+  },
+  "output": {
+    "bytes": 157854896,
+    "sha256": "9f3af92a8fdbfab5730ea9aa19fbe940f01f41d5b24b73a6d7e2e24a00780644",
+    "majorBrand": "3gp4",
+    "videoCodec": "mpeg4",
+    "videoPackets": 1543,
+    "fullyDecodedVideoStreamHash": "0,v,SHA256=e6e11a5295e87ba1eb366c26a8be369ba89d8adc9db51f4d3420bb201f4605d7",
+    "identicalToPreviouslyPacketValidatedOutput": true,
+    "repeatableAcrossAllTwelveAcceptedRuns": true,
+    "retained": false
+  },
+  "acceptedTopology": {
+    "directSave": "Quota-preflighted synchronous browser-private stage followed by one backpressured 256 KiB copy to the selected destination; staging deleted on success, cancellation, and failure.",
+    "opfsTest": "Existing synchronous OPFS path without an additional final copy.",
+    "workerCount": 1,
+    "wasmMemoryBytes": 33554432,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "retainedIntermediateBytesAfterEachRun": 0
+  },
+  "directSaveSessions": [
+    {
+      "report": "2026-09-23T02-28-46-066Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "300c8279cdf7b53b45dc746992af6af162ad4130330e47fe7ba16e94d9067fc1",
+      "elapsedMs": [2882.495, 2138.3, 2185.94],
+      "incrementalPrivateMiB": [233.39453125, 217.75, 227.875],
+      "cancellation": "early destination-opening cancellation, no retained output"
+    },
+    {
+      "report": "2026-09-23T02-31-32-646Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "6990418b4dabc5d3de43f4c28915356163a0903e751858e73962826324f10353",
+      "elapsedMs": [2558.275, 2032.39, 2161.8],
+      "incrementalPrivateMiB": [243.9765625, 229.26171875, 244],
+      "cancellation": "final-copy cancellation after 21233664 output bytes, no retained output or stage"
+    },
+    {
+      "report": "2026-09-23T02-34-35-463Z-avi-to-3gp-direct-handle-stress.json",
+      "reportSha256": "f62f6be43f1f0d8638c4b32f64a5d2ec3a735c136a7233c336364e5778396c68",
+      "elapsedMs": [2446.27, 2087.075, 2073.605],
+      "incrementalPrivateMiB": [240.078125, 224.5390625, 238.55859375],
+      "cancellation": "final-copy cancellation after 21495808 output bytes, no retained output or stage"
+    }
+  ],
+  "directSaveWorstIncrementalPrivateMiB": 244,
+  "directSaveHeadroomMiB": 6,
+  "opfsSession": {
+    "report": "2026-09-23T02-41-55-417Z-avi-to-3gp-stress.json",
+    "reportSha256": "dc328c4891ddae54cf88fe7a2f8ecfb381f577daa5589f162b421e9a94d3a6ac",
+    "elapsedMs": [1229.535, 1168.72, 909.82],
+    "incrementalPrivateMiB": [196, 230.88671875, 233.36328125],
+    "cancellation": "earliest observable running state, no retained output"
+  },
+  "adverseBrowserChecks": {
+    "injectedFinalCopyWriteFailure": "The destination rejected a bounded write; 262144 bytes had been attempted, pending and queued operations returned to zero, OPFS entries were empty, and the partial selected destination was removed.",
+    "workerCrash": "Injected conversion worker crash; worker restarted to ready, OPFS entries were empty, and the partial selected destination was removed.",
+    "failedOpfsCancellationProbe": "One earlier probe waited for 256 KiB input and missed the fast completed conversion. The harness was corrected to cancel at the earliest observable OPFS running state; the corrected three-run gate passed. The conversion itself did not fail."
+  },
+  "rejectedCandidates": "The 2026-09-21 audit records unchanged two-worker direct writing at 253.871 MiB, one-worker asynchronous direct writing at 258.027 MiB, and synchronous input at 280.125 MiB. None met the memory cap.",
+  "speedDecision": "The accepted staged direct path is slower than the rejected direct writers but is the fastest tested path here that satisfies the unchanged memory and cleanup requirements; no unsupported speedup is claimed.",
+  "limitations": "The measured 6 MiB direct-save headroom is narrow and does not guarantee other machines or browser versions. App-owned staging temporarily consumes approximately one output-sized amount of browser-private disk space before deletion.",
+  "cleanup": {
+    "generatedStressSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfilesDeleted": true,
+    "rawReportsDeletedAfterCompaction": true,
+    "playwrightCliArtifactsDeleted": true,
+    "workContainsOnlyGitkeep": true,
+    "protectedTestMkvUnmodified": true
+  }
+}

@@ -958,6 +958,24 @@
       }
     },
     {
+      "profileId": "avi-to-3gp",
+      "maxTestedBytes": 159500442,
+      "repeatableEvidence": {
+        "report": "2026-09-23T02-31-32-646Z-avi-to-3gp-direct-handle-stress.json",
+        "reportSha256": "6990418b4dabc5d3de43f4c28915356163a0903e751858e73962826324f10353",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 244
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-23T02-31-32-646Z-avi-to-3gp-direct-handle-stress.json",
+        "reportSha256": "6990418b4dabc5d3de43f4c28915356163a0903e751858e73962826324f10353",
+        "runs": 3,
+        "sourceBytes": 159500442,
+        "incrementalPrivateMiB": 244
+      }
+    },
+    {
       "profileId": "avi-to-aac",
       "maxTestedBytes": 159500442,
       "repeatableEvidence": {

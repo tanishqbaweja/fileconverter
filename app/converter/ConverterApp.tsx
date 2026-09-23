@@ -545,7 +545,8 @@ export function ConverterApp() {
       ): typeof destination => {
         if (
           batch.profile.id !== "mp4-to-avi" &&
-          batch.profile.id !== "mkv-to-mp4"
+          batch.profile.id !== "mkv-to-mp4" &&
+          batch.profile.id !== "avi-to-3gp"
         ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };

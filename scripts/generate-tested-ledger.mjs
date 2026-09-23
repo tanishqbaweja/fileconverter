@@ -33,7 +33,7 @@ const mp4AviCurrentChromeNote =
 const aviMpeg2Note =
   "M-04/P-08 compatible MPEG-2 AVI expansion (2026-09-08): bounded native profile 37 now accepts MPEG-2 video as well as MPEG-4 Part 2 from Matroska, MP4, MOV, and MPEG-TS, retaining MP3 where present and packet-copying every accepted stream without decode or re-encode. The focused production-Chrome gate passed all four new MPEG-2 routes and the complete nine-case AVI success regression. A deterministic 215,339,432-byte MPEG-2/MP3 Matroska source passed 3/3 in 2.512-3.133 seconds at 232.348 MiB worst complete-Chromium incremental private memory, producing the same genuine 227,904,768-byte AVI each time. Exact 17,280 MPEG-2 and 30,001 MP3 packets, full native decode, midpoint seek, 27 indexed OpenDML segments, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, cancellation, and cleanup all passed. H.264-to-AVI remains deliberately unadvertised: the Matroska case requires source-dependent Annex-B filtering, and native MP4/MOV trials emitted AVI interoperability warnings. Hosted no-Docker run [34243934210](https://github.com/tanishqbaweja/fileconverter/actions/runs/34243934210) rebuilt all six FFmpeg modules byte-for-byte from pushed commit `27633bc` in 13m31s, passed hosted cleanup, skipped mismatch upload, and retained zero artifacts. Every generated fixture, converted output, raw report, browser profile, local candidate, and native feasibility file was deleted; the obsolete candidate artifact was deleted and verified absent. Compact evidence is `evidence/compatible-avi-mpeg2-2026-09-08.json`.";
 const aviThreeGpNote =
-  "M-04/P-08 AVI-to-3GP current-browser withdrawal (2026-09-21): the genuine packet-copy implementation remains fast and correct, but Chrome 153 invalidated its narrow historical direct-save memory margin. The unchanged two-worker path produced the same 157,854,896-byte `3gp4` output in 1.804-2.270 seconds but reached 253.871 MiB against the unchanged 250 MiB complete-Chromium incremental private-memory limit. A route-scoped one-worker asynchronous destination improved conversion time to 1.618-1.879 seconds but reached 258.027 MiB; bounded synchronous input reached 280.125 MiB in 2.663 seconds. Both candidates were rejected and reverted. Every run retained the exact output SHA-256, passed full decoded-video validation, used 256 KiB bounded I/O, one pending operation, and 32 MiB Wasm. The profile is marked failed with no advertised tested maximum and is hidden until a current-browser implementation passes with adequate headroom. Historical Chrome 152 evidence remains in `evidence/avi-to-3gp-browser-2026-09-11.json`; the superseding audit is `evidence/avi-to-3gp-current-chrome-2026-09-21.json`. Generated sources, converted copies, raw reports, browser profiles, and task-local temporary files were deleted after compact evidence was retained. No Docker command was used.";
+  "M-04/P-08 AVI-to-3GP current-Chrome recovery (2026-09-23): Chrome 153 exposed the old two-worker direct writer above the 250 MiB limit at 253.871 MiB; a one-worker asynchronous writer (258.027 MiB) and synchronous input (280.125 MiB) were also rejected. The accepted route keeps the identical genuine fragmented `3gp4` packet-copy output but writes direct saves first to quota-preflighted app-owned private storage, copies through one backpressured 256 KiB buffer to the selected destination, and removes staging on every terminal path. A 159,500,442-byte MPEG-4/MP3 AVI produced the identical 157,854,896-byte SHA-256 in nine direct-save runs across three cold sessions (2.032-2.882 seconds; worst 244.000 MiB complete-Chromium incremental private memory) and three OPFS runs (0.910-1.230 seconds; worst 233.363 MiB). The output retained the certified exact MPEG-4 packets and full decoded-video hash, excluded incompatible MP3, and passed repeatability, bounded 256 KiB I/O, one pending operation, fixed 32 MiB Wasm, final-copy cancellation after 21.2/21.5 MB, early OPFS cancellation, injected final-copy write failure, hard worker-crash cleanup/restart, and cleanup recovery. Direct headroom is 6.000 MiB, not a cross-machine guarantee. The failed direct candidates remain recorded in `evidence/avi-to-3gp-current-chrome-2026-09-21.json`; compact accepted evidence is `evidence/avi-to-3gp-staged-current-chrome-2026-09-23.json`. All generated sources, converted copies, browser profiles, and raw reports were deleted after compaction. No Docker command was used.";
 const aviMovNote =
   "M-04/P-08 AVI-to-MOV publication (2026-09-11): the bounded fragmented-QuickTime path packet-copies certified H.264 or MPEG-4 Part 2 AVI video without decode/re-encode, retains AAC when present, and explicitly excludes incompatible AVI audio such as MP3. A deterministic 159,500,442-byte MPEG-4/MP3 source produced the same genuine 157,854,929-byte `qt  ` MOV in six measured browser runs. OPFS completed in 0.854-1.105 seconds at 192.156 MiB worst complete-Chromium incremental private memory; direct-save completed in 1.797-2.134 seconds at 211.836 MiB. Full decode/hash, repeatability, 256 KiB reads/writes/queueing, one pending operation, fixed 32 MiB Wasm, earliest-state cancellation, injected-write cleanup, and cleanup recovery passed. Candidate no-Docker run [34630790399](https://github.com/tanishqbaweja/fileconverter/actions/runs/34630790399) changed only the generated manifest and `within-remux.wasm`; publication run [34633039664](https://github.com/tanishqbaweja/fileconverter/actions/runs/34633039664) rebuilt pushed commit `2a3cae6` byte-for-byte in 7m44s, passed cleanup, skipped mismatch upload, and retained zero artifacts. Generated stress sources, converted copies, browser profiles, raw reports, and local candidate files were deleted after compact evidence was recorded. See `evidence/avi-to-mov-browser-2026-09-11.json`.";
 const aviMpegTsNote =
@@ -140,6 +140,48 @@ if (mkvMp4CompactEvidence?.status === "accepted") {
         incrementalPrivateMiB: incrementalPrivateMiB[index],
       })),
       incrementalPrivateMiB: accepted.peakIncrementalPrivateMiB,
+      checks: { cleanupRecovery: true },
+    });
+  }
+}
+const aviThreeGpCompactEvidence = JSON.parse(
+  await readFile(
+    path.join(
+      projectRoot,
+      "evidence",
+      "avi-to-3gp-staged-current-chrome-2026-09-23.json",
+    ),
+    "utf8",
+  ).catch(() => "null"),
+);
+if (aviThreeGpCompactEvidence?.status === "accepted") {
+  const direct = aviThreeGpCompactEvidence.directSaveSessions?.find(
+    ({ report }) =>
+      report ===
+      "2026-09-23T02-31-32-646Z-avi-to-3gp-direct-handle-stress.json",
+  );
+  if (
+    direct?.elapsedMs?.length === 3 &&
+    direct.incrementalPrivateMiB?.length === 3
+  ) {
+    reports.set("avi-to-3gp", {
+      generatedAt: "2026-09-23T23:59:59Z",
+      passed: true,
+      profileId: "avi-to-3gp",
+      source: { bytes: aviThreeGpCompactEvidence.source.bytes },
+      runs: direct.elapsedMs.map((elapsedMs, index) => ({
+        elapsedMs,
+        outputBytes: aviThreeGpCompactEvidence.output.bytes,
+        peakWasmMemoryBytes:
+          aviThreeGpCompactEvidence.acceptedTopology.wasmMemoryBytes,
+        maxReadChunkBytes:
+          aviThreeGpCompactEvidence.acceptedTopology.maximumReadBytes,
+        maxWriteChunkBytes:
+          aviThreeGpCompactEvidence.acceptedTopology.maximumWriteBytes,
+        incrementalPrivateMiB: direct.incrementalPrivateMiB[index],
+      })),
+      incrementalPrivateMiB:
+        aviThreeGpCompactEvidence.directSaveWorstIncrementalPrivateMiB,
       checks: { cleanupRecovery: true },
     });
   }

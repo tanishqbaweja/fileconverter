@@ -13,7 +13,7 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 404
+complete-Chromium memory profile have passed. The current registry publishes 405
 routes:
 
 | Category         | Verified routes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | Largest tested source |
@@ -54,15 +54,19 @@ repeatable hash, cancellation, and cleanup checks. Exact results and the
 byte-for-byte no-Docker publication run are recorded in
 `evidence/ivf-input-browser-2026-09-11.json`.
 
-AVI-to-3GP remains implemented as a genuine packet-copy path, but it is hidden
-from the normal selector after a Chrome 153 re-audit exceeded the unchanged 250
-MiB complete-browser limit. The unchanged two-worker path peaked at 253.871 MiB;
-a one-worker direct writer peaked at 258.027 MiB, and bounded synchronous input
-peaked at 280.125 MiB, so both attempted optimizations were rejected. Every run
-still produced and fully decoded the same genuine 157,854,896-byte `3gp4` output
-in 1.618-2.663 seconds. Historical passing evidence remains in
-`evidence/avi-to-3gp-browser-2026-09-11.json`; the current-browser withdrawal is
-recorded in `evidence/avi-to-3gp-current-chrome-2026-09-21.json`.
+AVI-to-3GP is public again after a Chrome 153 re-audit. Compatible video is
+packet-copied into a genuine `3gp4` container; incompatible AVI MP3 audio is
+explicitly excluded. The old direct writers exceeded the unchanged 250 MiB
+complete-browser limit. Direct saves now use quota-preflighted browser-private
+staging, then copy the completed output to the selected destination through a
+single bounded 256 KiB buffer and remove the temporary file. Nine direct-save
+runs on a 159,500,442-byte AVI finished in 2.032-2.882 seconds at 244.0 MiB
+worst memory; three OPFS runs finished in 0.910-1.230 seconds at 233.4 MiB.
+All produced the same fully decoded 157,854,896-byte 3GP. Cancellation during
+the final copy, write failure, and worker-crash cleanup passed. The direct-save
+margin is 6.0 MiB on the tested machine, not a cross-machine guarantee. See
+`evidence/avi-to-3gp-staged-current-chrome-2026-09-23.json` and the rejected
+candidate record `evidence/avi-to-3gp-current-chrome-2026-09-21.json`.
 
 AVI-to-MOV uses the same fastest lossless packet-copy path for certified H.264
 or MPEG-4 Part 2 video, retains compatible AAC, and explicitly excludes
@@ -450,7 +454,7 @@ AVI-to-WAV converts the first MP3 stream through the same bounded decode,
 resample, and PCM s16le pipeline while explicitly excluding video and auxiliary
 streams.
 
-An executable registry audit requires every one of the 275 public FFmpeg
+An executable registry audit requires every one of the 276 public FFmpeg
 profiles to disclose its route semantics and its metadata/container behavior.
 Stream-copy routes must identify copying or remuxing; re-encode routes must
 identify decoding/encoding or an equivalent lossless/lossy conversion; audio
