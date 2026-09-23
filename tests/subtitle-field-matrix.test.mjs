@@ -17,6 +17,12 @@ const matrix = JSON.parse(
     "utf8",
   ),
 );
+const compactStress = JSON.parse(
+  await readFile(
+    path.join(projectRoot, "evidence", "ci-compact-stress-proofs-2026-09-23.json"),
+    "utf8",
+  ),
+);
 
 const expectedProfiles = [
   "ass-to-srt",
@@ -118,13 +124,16 @@ test("ASS and SSA aliases resolve to one public bounded worker route family", ()
   );
 });
 
-test("all ten subtitle routes retain passed three-run bounded-memory cleanup evidence", async () => {
+test("all ten subtitle routes retain committed three-run bounded-memory cleanup evidence", () => {
   let worstIncrementalPrivateMiB = 0;
   let largestSourceBytes = 0;
+  const proofs = new Map(compactStress.proofs.subtitles.map((proof) => [proof.profileId, proof]));
+  assert.equal(proofs.size, matrix.routes.length);
   for (const route of matrix.routes) {
-    const report = JSON.parse(
-      await readFile(path.join(projectRoot, route.stressReport), "utf8"),
-    );
+    const report = proofs.get(route.profileId);
+    assert.ok(report, route.profileId);
+    assert.equal(report.reportPath, route.stressReport);
+    assert.match(report.reportSha256, /^[a-f0-9]{64}$/);
     const profile = conversionProfiles.find(
       (candidate) => candidate.id === route.profileId,
     );
@@ -132,9 +141,12 @@ test("all ten subtitle routes retain passed three-run bounded-memory cleanup evi
     assert.equal(report.passed, true, route.profileId);
     assert.equal(report.runs.length, 3, route.profileId);
     assert.equal(report.limitMiB, matrix.stressSummary.limitMiB, route.profileId);
+    assert.equal(report.checks.processTreePrivateMemory, true, route.profileId);
+    assert.equal(report.checks.repeatableOutputHash, true, route.profileId);
     assert.ok(report.incrementalPrivateMiB <= report.limitMiB, route.profileId);
     assert.equal(report.checks.cleanupRecovery, true, route.profileId);
     assert.equal(report.source.bytes, profile.maxTestedBytes, route.profileId);
+    assert.equal(new Set(report.runs.map((run) => run.sha256)).size, 1, route.profileId);
     assert.ok(
       report.runs.every(
         (run) =>

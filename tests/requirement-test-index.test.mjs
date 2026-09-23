@@ -11,6 +11,12 @@ const index = JSON.parse(
     "utf8",
   ),
 );
+const compactStress = JSON.parse(
+  await readFile(
+    path.join(projectRoot, "evidence", "ci-compact-stress-proofs-2026-09-23.json"),
+    "utf8",
+  ),
+);
 
 const requiredScenarioIds = [
   "success",
@@ -62,33 +68,32 @@ test("every indexed source anchor and retained report exists", async () => {
   }
 });
 
-test("retained reports directly prove repeatability, greater-than-4-GiB, and complex fields", async () => {
-  const repeated = JSON.parse(
-    await readFile(
-      path.join(projectRoot, "outputs", "reports", "2026-08-28T06-45-23-327Z-mkv-to-mp4-direct-handle-stress.json"),
-      "utf8",
-    ),
-  );
+test("committed compact reports prove repeatability, greater-than-4-GiB, and complex fields", async () => {
+  const repeated = compactStress.proofs.repeatability;
+  assert.match(repeated.reportSha256, /^[a-f0-9]{64}$/);
+  assert.equal(repeated.profileId, "mkv-to-mp4");
   assert.equal(repeated.passed, true);
   assert.equal(repeated.destinationMode, "direct-handle");
   assert.equal(repeated.source.bytes, index.retainedReportFacts.repeatability.sourceBytes);
   assert.equal(repeated.runs.length, index.retainedReportFacts.repeatability.runs);
   assert.equal(new Set(repeated.runs.map((run) => run.sha256)).size, 1);
   assert.ok(repeated.runs.every((run) => run.outputBytes === repeated.runs[0].outputBytes));
+  assert.ok(repeated.runs.every((run) => run.validationBytes === run.outputBytes && run.validationSha256 === run.sha256));
+  assert.equal(repeated.checks.processTreePrivateMemory, true);
+  assert.ok(repeated.incrementalPrivateMiB <= repeated.limitMiB);
   assert.ok(repeated.checks.cleanupRecovery);
 
-  const large = JSON.parse(
-    await readFile(
-      path.join(projectRoot, "outputs", "reports", "2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json"),
-      "utf8",
-    ),
-  );
+  const large = compactStress.proofs.tenGiBRemux;
+  assert.match(large.reportSha256, /^[a-f0-9]{64}$/);
+  assert.equal(large.profileId, "mkv-to-mp4");
   assert.equal(large.passed, true);
   assert.ok(large.source.bytes >= index.retainedReportFacts.largeFile.minimumBytes);
   assert.equal(large.source.bytes, index.retainedReportFacts.largeFile.sourceBytes);
   assert.equal(large.runs[0].outputBytes, index.retainedReportFacts.largeFile.outputBytes);
   assert.equal(large.runs[0].validationBytes, large.runs[0].outputBytes);
   assert.equal(large.runs[0].validationSha256, large.runs[0].sha256);
+  assert.equal(large.checks.processTreePrivateMemory, true);
+  assert.ok(large.incrementalPrivateMiB <= large.limitMiB);
 
   const complex = JSON.parse(
     await readFile(

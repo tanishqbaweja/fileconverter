@@ -10,6 +10,7 @@ on:
         type: choice
         options:
           - all
+          - verify-only
           - ffmpeg-remux
           - bzip2
           - xz
@@ -30,6 +31,7 @@ permissions:
 
 jobs:
   engine-matrix:
+    if: github.event_name != 'workflow_dispatch' || inputs.engine != 'verify-only'
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -148,11 +150,13 @@ jobs:
             "$GITHUB_WORKSPACE/work/"*-nondocker-output
 
   verify:
-    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all'
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
@@ -183,7 +187,7 @@ jobs:
           if-no-files-found: ignore
 
   browser-conversions:
-    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all'
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:

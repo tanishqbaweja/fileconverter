@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
@@ -15,6 +15,7 @@ const generatorPath = path.join(root, "media", "ffmpeg", "make-aiff-specialist.m
 const engineRoot = path.join(root, "public", "engines", "remux");
 
 test("the published AIFF specialist derives reproducibly from the exact general wrapper", async () => {
+  await mkdir(workRoot, { recursive: true });
   const temporaryDirectory = await mkdtemp(path.join(workRoot, "aiff-source-test-"));
   try {
     const candidatePath = path.join(temporaryDirectory, "within_aiff.c");

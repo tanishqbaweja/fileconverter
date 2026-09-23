@@ -13,6 +13,12 @@ const matrix = JSON.parse(
     "utf8",
   ),
 );
+const compactStress = JSON.parse(
+  await readFile(
+    path.join(projectRoot, "evidence", "ci-compact-stress-proofs-2026-09-23.json"),
+    "utf8",
+  ),
+);
 
 const requiredFeatures = [
   "geometry-paint-gradients-clipping",
@@ -86,10 +92,10 @@ test("the matrix is anchored to current worker, browser, fixture, and manifest s
   }
 });
 
-test("the final effects report proves three repeatable bounded 6-megapixel runs", async () => {
-  const report = JSON.parse(
-    await readFile(path.join(projectRoot, matrix.stress.report), "utf8"),
-  );
+test("the committed effects report proves three repeatable bounded 6-megapixel runs", () => {
+  const report = compactStress.proofs.svg;
+  assert.equal(report.reportPath, matrix.stress.report);
+  assert.match(report.reportSha256, /^[a-f0-9]{64}$/);
   assert.equal(report.profileId, matrix.profileId);
   assert.equal(report.passed, true);
   assert.equal(report.source.bytes, matrix.stress.sourceBytes);
@@ -124,8 +130,8 @@ test("the final effects report proves three repeatable bounded 6-megapixel runs"
         run.maxWriteChunkBytes <= matrix.stress.maximumWriteChunkBytes &&
         run.peakQueuedBytes <= matrix.stress.maximumQueuedBytes &&
         run.peakPendingOperations <= matrix.stress.maximumPendingOperations &&
-        run.mediaProbe.withinValidation.decodedByNativeFfmpeg === true &&
-        run.mediaProbe.withinValidation.firstFrameVisualSsim >=
+        run.decodedByNativeFfmpeg === true &&
+        run.firstFrameVisualSsim >=
           matrix.stress.minimumObservedReferenceSsim,
     ),
   );

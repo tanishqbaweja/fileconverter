@@ -1,0 +1,917 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-09-23",
+  "scope": "Committed compact extracts of locally retained production-Chromium reports needed by clean-checkout unit tests; each extract is tied to the exact original raw report SHA-256.",
+  "proofs": {
+    "repeatability": {
+      "reportPath": "outputs/reports/2026-08-28T06-45-23-327Z-mkv-to-mp4-direct-handle-stress.json",
+      "reportSha256": "a81870f7fa21048eb4e465042c0c544aa81274bad15124a2dd5938ee18e5f156",
+      "profileId": "mkv-to-mp4",
+      "destinationMode": "direct-handle",
+      "passed": true,
+      "source": {
+        "bytes": 2958573265,
+        "width": null,
+        "height": null,
+        "elements": null,
+        "filters": null,
+        "masks": null,
+        "filterPrimitives": null
+      },
+      "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+      "incrementalPrivateMiB": 249.24609375,
+      "limitMiB": 250,
+      "checks": {
+        "processTreePrivateMemory": true,
+        "repeatableOutputHash": true,
+        "cleanupRecovery": true,
+        "pendingOperations": true,
+        "queuedBytes": true,
+        "readChunkBytes": true,
+        "writeChunkBytes": true
+      },
+      "runs": [
+        {
+          "sourceBytes": 2958573265,
+          "outputBytes": 2962151538,
+          "elapsedMs": 36831.71999999881,
+          "sha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "validationBytes": 2962151538,
+          "validationSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 1048576,
+          "peakQueuedBytes": 1048576,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": null,
+          "decodedByNativeFfmpeg": null
+        },
+        {
+          "sourceBytes": 2958573265,
+          "outputBytes": 2962151538,
+          "elapsedMs": 35451.64999999106,
+          "sha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "validationBytes": 2962151538,
+          "validationSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 1048576,
+          "peakQueuedBytes": 1048576,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": null,
+          "decodedByNativeFfmpeg": null
+        },
+        {
+          "sourceBytes": 2958573265,
+          "outputBytes": 2962151538,
+          "elapsedMs": 36064.289999991655,
+          "sha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "validationBytes": 2962151538,
+          "validationSha256": "3acaa180e58c492ed3e157dfa55e6502e5f8a5399d847e45738652c7df629408",
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 1048576,
+          "peakQueuedBytes": 1048576,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": null,
+          "decodedByNativeFfmpeg": null
+        }
+      ]
+    },
+    "tenGiBRemux": {
+      "reportPath": "outputs/reports/2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",
+      "reportSha256": "d0ce3249c728a442683a893e0fc589da9c02ff55ec5b4e9c5f76eb91058fb577",
+      "profileId": "mkv-to-mp4",
+      "destinationMode": "sync-opfs",
+      "passed": true,
+      "source": {
+        "bytes": 10737988703,
+        "width": null,
+        "height": null,
+        "elements": null,
+        "filters": null,
+        "masks": null,
+        "filterPrimitives": null
+      },
+      "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+      "incrementalPrivateMiB": 210.33984375,
+      "limitMiB": 250,
+      "checks": {
+        "processTreePrivateMemory": true,
+        "repeatableOutputHash": true,
+        "cleanupRecovery": true,
+        "pendingOperations": true,
+        "queuedBytes": true,
+        "readChunkBytes": true,
+        "writeChunkBytes": true
+      },
+      "runs": [
+        {
+          "sourceBytes": 10737988703,
+          "outputBytes": 10746764442,
+          "elapsedMs": 92853.25499999523,
+          "sha256": "85577f06fbda83a0178ee6b95af0154dc757b904b8629123a9cb84b2aea71651",
+          "validationBytes": 10746764442,
+          "validationSha256": "85577f06fbda83a0178ee6b95af0154dc757b904b8629123a9cb84b2aea71651",
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": null,
+          "decodedByNativeFfmpeg": null
+        }
+      ]
+    },
+    "subtitles": [
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-06-27-644Z-srt-to-vtt-stress.json",
+        "reportSha256": "2a8696bf32f610d52a309e5643dfad5f9e1c4860b66d8d52c4648608733656fb",
+        "profileId": "srt-to-vtt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 67327792,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 180.5703125,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 63088906,
+            "elapsedMs": 2928.890000000596,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 63088906,
+            "elapsedMs": 2897.4299999922514,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 63088906,
+            "elapsedMs": 2890.4300000071526,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-08-06-320Z-vtt-to-srt-stress.json",
+        "reportSha256": "7dfbac01c57ee8d630226fc19e1e307b9a5e4efae92608400f8eaa47f33dcad1",
+        "profileId": "vtt-to-srt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 73788904,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 200.62890625,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 71607792,
+            "elapsedMs": 2838.0100000053644,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 71607792,
+            "elapsedMs": 2791.9149999916553,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 71607792,
+            "elapsedMs": 2831.3250000029802,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-08-09T22-07-30-343Z-srt-to-ass-stress.json",
+        "reportSha256": "818abbc55c9c758aa664b2a20233d89cf93b62359192344db462d3375154015d",
+        "profileId": "srt-to-ass",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 67327792,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 177.0078125,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 83203467,
+            "elapsedMs": 4086.065000027418,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 83203467,
+            "elapsedMs": 4023.270000010729,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 83203467,
+            "elapsedMs": 4001.9600000083447,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-08-09T22-09-22-676Z-vtt-to-ass-stress.json",
+        "reportSha256": "4c4e8a7b75b4ee18f2fcaebb9afa3fb41acf39525b27b09f2657215e9cf3fd89",
+        "profileId": "vtt-to-ass",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 73788904,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 187.08203125,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 83203467,
+            "elapsedMs": 4335.495000004768,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 83203467,
+            "elapsedMs": 3939.014999985695,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 83203467,
+            "elapsedMs": 3843.020000010729,
+            "sha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "validationBytes": 83203467,
+            "validationSha256": "8caf3ae2ec12d82f867584938e08e0598099f0cb4283ee16d04120ef01ed1ab5",
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-09-44-515Z-ass-to-srt-stress.json",
+        "reportSha256": "fa3e760473b9fc582729a875e51ffab38baac8bc44114d3b4bd1100329c79268",
+        "profileId": "ass-to-srt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 101393068,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 175.125,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 83377792,
+            "elapsedMs": 2757.140000000596,
+            "sha256": "511334c224ef0a8e132de23ffb98af87ce6eec030038dd4fdc014213d22a8d19",
+            "validationBytes": 83377792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 83377792,
+            "elapsedMs": 2741.5750000029802,
+            "sha256": "511334c224ef0a8e132de23ffb98af87ce6eec030038dd4fdc014213d22a8d19",
+            "validationBytes": 83377792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 83377792,
+            "elapsedMs": 2760.3349999934435,
+            "sha256": "511334c224ef0a8e132de23ffb98af87ce6eec030038dd4fdc014213d22a8d19",
+            "validationBytes": 83377792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-11-22-757Z-ass-to-vtt-stress.json",
+        "reportSha256": "daddecb3df86e9d54afafe72e900e27053c0ef0096864d8fe4735c51bbb7286c",
+        "profileId": "ass-to-vtt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 101393068,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 156.77734375,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 75928906,
+            "elapsedMs": 2669.479999989271,
+            "sha256": "23aea4d2bd39a5b901ee99e72f58cd8e4e65ee2d15ce5b312d79768369b9605d",
+            "validationBytes": 75928906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 75928906,
+            "elapsedMs": 2585.7250000089407,
+            "sha256": "23aea4d2bd39a5b901ee99e72f58cd8e4e65ee2d15ce5b312d79768369b9605d",
+            "validationBytes": 75928906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 101393068,
+            "outputBytes": 75928906,
+            "elapsedMs": 2667.1949999928474,
+            "sha256": "23aea4d2bd39a5b901ee99e72f58cd8e4e65ee2d15ce5b312d79768369b9605d",
+            "validationBytes": 75928906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-51-47-623Z-srt-to-ttml-stress.json",
+        "reportSha256": "2cf3824a3d71d2cce41ccae2fdc385ce89c00d3cc2909c103a5222abb734012b",
+        "profileId": "srt-to-ttml",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 67327792,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 201.3046875,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 82349061,
+            "elapsedMs": 3763.4600000083447,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 82349061,
+            "elapsedMs": 3832.3949999958277,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 67327792,
+            "outputBytes": 82349061,
+            "elapsedMs": 3709.9899999946356,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-53-26-995Z-vtt-to-ttml-stress.json",
+        "reportSha256": "017957a7365a8a34d38489b648c3ac2a65b423f6abf8e5031214efd89a39762b",
+        "profileId": "vtt-to-ttml",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 73788904,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 204.47265625,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 82349061,
+            "elapsedMs": 3580.435000002384,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 82349061,
+            "elapsedMs": 3511.594999998808,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 73788904,
+            "outputBytes": 82349061,
+            "elapsedMs": 3479.5750000029802,
+            "sha256": "25e0a7a7adf880f4d8f011bc7b6db5931265838532c250d7e90b1582d5b723da",
+            "validationBytes": 82349061,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-55-04-208Z-ttml-to-srt-stress.json",
+        "reportSha256": "419e4b6c0db00b84a0c76f63d83466bc1a786d67ea9b458fb1ccc42351e9ce67",
+        "profileId": "ttml-to-srt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 82349061,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 194.9375,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 71607792,
+            "elapsedMs": 4904.2249999940395,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 71607792,
+            "elapsedMs": 4821.894999995828,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 71607792,
+            "elapsedMs": 4774.659999996424,
+            "sha256": "17aa5e7b85c6c12ba55852f9f81f352f05be11f1dbce44dd112deb64d8164f66",
+            "validationBytes": 71607792,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      },
+      {
+        "reportPath": "outputs/reports/2026-07-31T09-56-50-352Z-ttml-to-vtt-stress.json",
+        "reportSha256": "2a6c5758940447ee53bd2c25ee348069cdac4e5f17915d007d02742bd666ffb8",
+        "profileId": "ttml-to-vtt",
+        "destinationMode": "sync-opfs",
+        "passed": true,
+        "source": {
+          "bytes": 82349061,
+          "width": null,
+          "height": null,
+          "elements": null,
+          "filters": null,
+          "masks": null,
+          "filterPrimitives": null
+        },
+        "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+        "incrementalPrivateMiB": 198.4140625,
+        "limitMiB": 250,
+        "checks": {
+          "processTreePrivateMemory": true,
+          "repeatableOutputHash": true,
+          "cleanupRecovery": true,
+          "pendingOperations": true,
+          "queuedBytes": true,
+          "readChunkBytes": true,
+          "writeChunkBytes": true
+        },
+        "runs": [
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 63088906,
+            "elapsedMs": 4732.79999999702,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 63088906,
+            "elapsedMs": 4626.570000007749,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          },
+          {
+            "sourceBytes": 82349061,
+            "outputBytes": 63088906,
+            "elapsedMs": 4665.07500000298,
+            "sha256": "1207b828f1c3ea3fdef16cb77fee8e100fe7b6cff882dfe86a95de7c17c47ae3",
+            "validationBytes": 63088906,
+            "validationSha256": null,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 262144,
+            "peakQueuedBytes": 262144,
+            "peakPendingOperations": 1,
+            "firstFrameVisualSsim": null,
+            "decodedByNativeFfmpeg": null
+          }
+        ]
+      }
+    ],
+    "svg": {
+      "reportPath": "outputs/reports/2026-08-13T14-24-32-424Z-svg-to-png-stress.json",
+      "reportSha256": "a763672c12fec00ef6ef6acb23c938ae8b0c1ff9c4093ef51586bb818538c865",
+      "profileId": "svg-to-png",
+      "destinationMode": "sync-opfs",
+      "passed": true,
+      "source": {
+        "bytes": 470390,
+        "width": 3000,
+        "height": 2000,
+        "elements": 6719,
+        "filters": 1,
+        "masks": 1,
+        "filterPrimitives": 7
+      },
+      "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+      "incrementalPrivateMiB": 182.76171875,
+      "limitMiB": 250,
+      "checks": {
+        "processTreePrivateMemory": true,
+        "repeatableOutputHash": true,
+        "cleanupRecovery": true,
+        "pendingOperations": true,
+        "queuedBytes": true,
+        "readChunkBytes": true,
+        "writeChunkBytes": true
+      },
+      "runs": [
+        {
+          "sourceBytes": 470390,
+          "outputBytes": 3543078,
+          "elapsedMs": 6337.164999991655,
+          "sha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "validationBytes": 3543078,
+          "validationSha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": 0.990103,
+          "decodedByNativeFfmpeg": true
+        },
+        {
+          "sourceBytes": 470390,
+          "outputBytes": 3543078,
+          "elapsedMs": 6184.204999983311,
+          "sha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "validationBytes": 3543078,
+          "validationSha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "maxReadChunkBytes": 208246,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": 0.990103,
+          "decodedByNativeFfmpeg": true
+        },
+        {
+          "sourceBytes": 470390,
+          "outputBytes": 3543078,
+          "elapsedMs": 6290.300000011921,
+          "sha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "validationBytes": 3543078,
+          "validationSha256": "d398a72f1a00578ab6246eecbe039dc5cef18fe73823439d784f3879427ba48e",
+          "maxReadChunkBytes": 196608,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "firstFrameVisualSsim": 0.990103,
+          "decodedByNativeFfmpeg": true
+        }
+      ]
+    }
+  }
+}
