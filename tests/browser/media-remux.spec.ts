@@ -2228,7 +2228,9 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
-  const hevcFixtureArgs = existsSync(protectedHevcSourcePath)
+  const hevcFixtureArgs =
+    existsSync(protectedHevcSourcePath) &&
+    process.env.WITHIN_TEST_SYNTHETIC_HEVC !== "1"
     ? [
         "-i",
         protectedHevcSourcePath,
@@ -3556,8 +3558,38 @@ async function validateHevcWebmOutput(
   outputPath: string,
 ): Promise<void> {
   const video = probe.streams.find((stream) => stream.codec_type === "video");
-  expect(video?.width).toBe(640);
-  expect(video?.height).toBe(268);
+  const rawProbe = await probeMediaFile(hevcElementaryFixturePath);
+  const sourceVideo = rawProbe.streams.find(
+    (stream) => stream.codec_type === "video",
+  );
+  const sourceFrames = Number(sourceVideo?.nb_read_frames);
+  const [rateNumerator, rateDenominator] = String(
+    sourceVideo?.avg_frame_rate ?? "0/0",
+  )
+    .split("/")
+    .map(Number);
+  expect(sourceFrames).toBeGreaterThanOrEqual(90);
+  expect(rateNumerator).toBe(25);
+  expect(rateDenominator).toBe(1);
+  const sourceWidth = Number(sourceVideo?.width);
+  const sourceHeight = Number(sourceVideo?.height);
+  expect(sourceWidth).toBeGreaterThan(0);
+  expect(sourceHeight).toBeGreaterThan(0);
+  const expectedWidth = Math.min(sourceWidth, 640);
+  const expectedHeight =
+    sourceWidth > 640
+      ? Math.max(2, Math.floor((sourceHeight * expectedWidth) / sourceWidth) & ~1)
+      : sourceHeight;
+  expect(video?.width).toBe(expectedWidth);
+  expect(video?.height).toBe(expectedHeight);
+  expect(video?.nb_read_frames).toBe(sourceVideo?.nb_read_frames);
+  expect(video?.avg_frame_rate).toBe(sourceVideo?.avg_frame_rate);
+  expect(
+    Math.abs(
+      Number(probe.format.duration) -
+        ((sourceFrames - 1) * rateDenominator) / rateNumerator,
+    ),
+  ).toBeLessThanOrEqual(0.01);
   expect(probe.streams).toHaveLength(1);
   expect(probe.chapters ?? []).toEqual([]);
 
@@ -3571,7 +3603,7 @@ async function validateHevcWebmOutput(
       "-i",
       outputPath,
       "-filter_complex",
-      "[0:v:0]scale=640:268,format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]",
+      `[0:v:0]scale=${expectedWidth}:${expectedHeight},format=yuv420p,setpts=PTS-STARTPTS[source];[1:v:0]format=yuv420p,setpts=PTS-STARTPTS[converted];[source][converted]ssim[quality]`,
       "-map",
       "[quality]",
       "-frames:v",
@@ -6880,8 +6912,9 @@ for (const route of [
       hevcElementaryFixturePath,
       {
         expectedWarningFragments: ["normalizes variable frame timing"],
-        expectedDurationSeconds: 3.88,
-        durationToleranceSeconds: 0.05,
+        // validateHevcWebmOutput compares every frame and the normalized
+        // last-packet timestamp with this fixture's independently probed HEVC.
+        skipDurationValidation: true,
         validate: validateHevcWebmOutput,
       },
     );

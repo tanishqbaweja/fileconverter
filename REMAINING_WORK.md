@@ -33,9 +33,14 @@ equate the earlier 404-route ledger with a currently green hosted browser run.
 On 2026-09-24, the four FLV warning assertions were corrected to match the
 published engine's more accurate AAC-or-MP3 disclosure and passed 4/4 focused
 production-browser tests. A proposed source-MOV-relative HEVC duration check
-was rejected after the protected-source test differed by 0.202 seconds; the
-unchanged 0.05-second acceptance gate remains until raw-HEVC timestamp and
-frame-duration behavior are independently explained. Hosted run
+was rejected after the protected-source test differed by 0.202 seconds:
+container composition timing is not the raw elementary stream's timestamp
+contract. The replacement test probes the exact raw HEVC source, requires
+the same decoded frame count and 25 fps rate, checks the normalized final
+timestamp within 0.01 seconds, and derives the documented 640-pixel width
+cap without assuming the CI fallback is the same size as `test.mkv`.
+Both HEVC-to-WebM routes passed 2/2 with the protected source and 2/2 with
+the synthetic CI fallback. Hosted run
 [35997586416](https://github.com/tanishqbaweja/fileconverter/actions/runs/35997586416)
 passed 153/153 image browser tests, the privacy/build/unit verify job, and
 the streaming browser partition on the pushed BMP fix; its media tests predate
