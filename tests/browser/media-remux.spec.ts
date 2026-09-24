@@ -8,7 +8,7 @@ import {
 import { execFile } from "node:child_process";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, open, readFile, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, rm, stat, statfs, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -2228,9 +2228,10 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
-  const hevcFixtureArgs =
+  const usesProtectedHevcFixture =
     existsSync(protectedHevcSourcePath) &&
-    process.env.WITHIN_TEST_SYNTHETIC_HEVC !== "1"
+    process.env.WITHIN_TEST_SYNTHETIC_HEVC !== "1";
+  const hevcFixtureArgs = usesProtectedHevcFixture
     ? [
         "-i",
         protectedHevcSourcePath,
@@ -2292,6 +2293,20 @@ test.beforeAll(async () => {
     ],
     { cwd: projectRoot, windowsHide: true, maxBuffer: 8 * 1024 * 1024 },
   );
+  const hevcCancellationLoops = usesProtectedHevcFixture ? 39 : 399;
+  const hevcSourceBytes = (await stat(hevcMovFixturePath)).size;
+  const available = await statfs(path.dirname(hevcCancellationFixturePath));
+  const estimatedCancellationBytes =
+    hevcSourceBytes * (hevcCancellationLoops + 1);
+  if (
+    !Number.isSafeInteger(estimatedCancellationBytes) ||
+    available.bavail * available.bsize <
+      estimatedCancellationBytes + 128 * 1024 * 1024
+  ) {
+    throw new Error(
+      "Insufficient project-local free space for the bounded HEVC cancellation fixture.",
+    );
+  }
   await Promise.all([
     ...(["mkv", "mp4", "mpeg-ts"] as const).map((input) =>
       execFileAsync(
@@ -2351,7 +2366,9 @@ test.beforeAll(async () => {
         "-nostdin",
         "-y",
         "-stream_loop",
-        "39",
+        // The hosted synthetic clip is much cheaper to encode than the
+        // protected 1920-wide source. Keep cancellation genuinely in-flight.
+        String(hevcCancellationLoops),
         "-i",
         hevcMovFixturePath,
         "-map",
@@ -7861,8 +7878,13 @@ for (const route of [
           if (excludesRotation) expectRotationExcluded(outputVideo);
           else expectComplexVideoFields(outputVideo);
 
+          // Some FFprobe builds expose FLV's one enhanced mp4a header as a
+          // codec-unknown audio stream. runMediaRoute verifies that exact
+          // header and rejects any other unrecognized stream; count only
+          // independently identified AAC media streams here.
           const outputAudio = probe.streams.filter(
-            (stream) => stream.codec_type === "audio",
+            (stream) =>
+              stream.codec_type === "audio" && recognizedCodecName(stream),
           );
           expect(outputAudio).toHaveLength(keepsBothAudio ? 2 : 1);
           expect(outputAudio.map((stream) => stream.tags?.language)).toEqual(

@@ -174,6 +174,12 @@ const protectedTestMkv = {
 const currentBmpProofReportStem = [
   "2026-09-23T15-18-14-115Z-bmp-to-png-stress",
   "2026-09-23T15-21-22-450Z-bmp-to-png-direct-handle-stress",
+  "2026-09-24T12-29-05-085Z-bmp-to-jpeg-stress",
+  "2026-09-24T12-31-10-345Z-bmp-to-jpeg-direct-handle-stress",
+  "2026-09-24T12-33-33-137Z-bmp-to-webp-stress",
+  "2026-09-24T12-36-00-636Z-bmp-to-webp-direct-handle-stress",
+  "2026-09-24T12-38-08-727Z-bmp-to-ico-stress",
+  "2026-09-24T12-40-42-165Z-bmp-to-ico-direct-handle-stress",
 ];
 const currentImageCiFailureRoot = path.resolve(workRoot, "ci-image-failure-35877953801");
 const profileRoot = path.resolve(workRoot, "memory-profile-chrome");
@@ -571,6 +577,41 @@ assertInside(projectRoot, remuxEngineRoot);
 assertInside(workRoot, currentImageCiFailureRoot);
 
 if (process.argv.includes("--current-bmp-proof-artifacts-only")) {
+  const proofPath = path.resolve(
+    projectRoot,
+    "evidence",
+    "bmp-row-decoder-current-chrome-2026-09-23.json",
+  );
+  assertInside(projectRoot, proofPath);
+  const proof = JSON.parse(await readFile(proofPath, "utf8"));
+  const reportProofs = [
+    ...proof.bmpToPng,
+    ...proof["remainingMaximumSizeRoutes2026-09-24"].flatMap(
+      (route) => route.modes,
+    ),
+  ];
+  const expected = new Map(
+    reportProofs.map((entry) => [entry.rawReport, entry.rawReportSha256]),
+  );
+  if (
+    expected.size !== currentBmpProofReportStem.length ||
+    currentBmpProofReportStem.some((stem) => !expected.has(`${stem}.json`))
+  ) {
+    throw new Error("Compact BMP proof and scoped cleanup targets differ.");
+  }
+  for (const [name, expectedHash] of expected) {
+    const target = path.resolve(reportRoot, name);
+    assertInside(reportRoot, target);
+    try {
+      const info = await lstat(target);
+      const actualHash = await hashExactRegularFile(target, info.size);
+      if (actualHash !== expectedHash) {
+        throw new Error(`BMP report differs from compact proof: ${name}`);
+      }
+    } catch (error) {
+      if (error?.code !== "ENOENT") throw error;
+    }
+  }
   await removeWithRetries(currentImageCiFailureRoot);
   for (const stem of currentBmpProofReportStem) {
     for (const extension of retainedOutputExtensions) {
@@ -579,7 +620,7 @@ if (process.argv.includes("--current-bmp-proof-artifacts-only")) {
       await rm(target, { force: true });
     }
   }
-  process.stdout.write("Removed only the inspected CI image artifact and two compacted BMP proof report trios.\n");
+  process.stdout.write("Removed only the inspected CI image artifact and eight compacted BMP proof report trios.\n");
   process.exit(0);
 }
 

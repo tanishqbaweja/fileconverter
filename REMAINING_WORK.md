@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-23. This is the living requirement audit for the original
+Updated 2026-09-24. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -25,11 +25,16 @@ The four image failures were BMP routes blocked by Linux Chromium's missing
 focused local browser tests, and BMP-to-PNG at the 24,883,254-byte published
 maximum passed three-run OPFS and direct-save memory gates at 155.309 and
 184.758 MiB worst complete-Chromium incremental private memory. Exact proof
-is in `evidence/bmp-row-decoder-current-chrome-2026-09-23.json`. Hosted
-reverification and the other three BMP maximum-size gates are still pending.
-The seven media failures (two raw-HEVC duration tolerances, one WebM chapter
-offset, and four FLV warning expectations) remain open for diagnosis; do not
-equate the earlier 404-route ledger with a currently green hosted browser run.
+is in `evidence/bmp-row-decoder-current-chrome-2026-09-23.json`. On 2026-09-24
+all three other BMP routes also passed three-run maximum-size OPFS and direct
+memory gates with independent decode, visual fidelity, repeatable hashes,
+bounded I/O, and cleanup: worst JPEG 139.816 MiB, WebP 183.609 MiB, and ICO
+158.352 MiB. The same evidence file records all eight mode/profile report
+hashes. Hosted image verification passed 153/153 on run 35999027801.
+At that checkpoint, seven media failures (two raw-HEVC duration tolerances,
+one WebM chapter offset, and four FLV warning expectations) still needed
+diagnosis; do not equate the earlier 404-route ledger with a currently green
+hosted browser run.
 On 2026-09-24, the four FLV warning assertions were corrected to match the
 published engine's more accurate AAC-or-MP3 disclosure and passed 4/4 focused
 production-browser tests. A proposed source-MOV-relative HEVC duration check
@@ -48,6 +53,18 @@ the FLV assertion correction. The WebM chapter test now checks two exactly
 2-second source chapters and requires exact source-to-output chapter timestamps
 instead of assuming a platform-independent zero start; 1/1 focused browser
 test passed locally. Hosted confirmation of the latter test is pending.
+The next hosted run [35999027801](https://github.com/tanishqbaweja/fileconverter/actions/runs/35999027801)
+passed the verify, image, and streaming jobs, but 551/553 media tests passed.
+Its two failures were (1) the cheap synthetic raw-HEVC cancellation clip could
+finish before the UI button was clicked and (2) Linux FFprobe exposed FLV's
+single enhanced AAC header as an unidentified second audio stream. The
+synthetic-only cancellation source now loops 400 times while the protected
+source keeps the same 40-loop test, and the FLV assertion counts recognized
+AAC media streams while `inspectFlvAacSignals` and `runMediaRoute` still
+validate the exact enhanced header and reject other unknown streams. Both
+focused production-browser tests passed with the CI synthetic fixture, and
+the cancellation test passed three repeat runs. A project-local free-space
+preflight bounds fixture generation. Hosted confirmation is pending.
 
 ## Product and acceptance contract
 

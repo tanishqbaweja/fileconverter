@@ -40,5 +40,38 @@
       "cleanupAndCancellationChecks": true
     }
   ],
-  "scopeCaveat": "The maximum-size three-run memory gate was repeated for BMP-to-PNG only. The same row decoder is shared by BMP-to-JPEG, WebP, and ICO, whose small-fixture browser tests passed; their maximum-size current-Chrome memory gates remain to be rerun. Hosted Linux verification of this change is pending."
+  "remainingMaximumSizeRoutes2026-09-24": [
+    {
+      "profile": "bmp-to-jpeg",
+      "outputBytes": 374384,
+      "outputSha256": "390cc64802d741ad829c9494c013bc8f6064d8855ca9017fa63b0f0009a2b6ef",
+      "visualSsim": 0.983804,
+      "modes": [
+        {"destination": "sync-opfs", "rawReport": "2026-09-24T12-29-05-085Z-bmp-to-jpeg-stress.json", "rawReportSha256": "fa059bcb5511cb514794f81e0602a77adf0d65b0d2520543a0c0f90a53cdc9ae", "threeRunIncrementalPrivateMiB": [137.45703125, 129.76953125, 131.96875], "threeRunConversionSeconds": [0.259, 0.242, 0.235]},
+        {"destination": "direct-handle", "rawReport": "2026-09-24T12-31-10-345Z-bmp-to-jpeg-direct-handle-stress.json", "rawReportSha256": "6391d60aee864cc435a7630815ecd5d412e7c2ebb081121e1c47e5839da4ce66", "threeRunIncrementalPrivateMiB": [139.81640625, 132.4296875, 137.296875], "threeRunConversionSeconds": [0.295, 0.24, 0.242]}
+      ]
+    },
+    {
+      "profile": "bmp-to-webp",
+      "outputBytes": 257798,
+      "outputSha256": "e242cb3baa79fd4492342a2f36a636e6693eb7e747b89ea3232ad13b1e296bb2",
+      "visualSsim": 0.994814,
+      "modes": [
+        {"destination": "sync-opfs", "rawReport": "2026-09-24T12-33-33-137Z-bmp-to-webp-stress.json", "rawReportSha256": "1b5edf4ab89d8a4795a70ee81b8f74105f7e53b6615a51eb0e7f5595ae5317fe", "threeRunIncrementalPrivateMiB": [130.16015625, 124.7734375, 128.34765625], "threeRunConversionSeconds": [0.632, 0.616, 0.617]},
+        {"destination": "direct-handle", "rawReport": "2026-09-24T12-36-00-636Z-bmp-to-webp-direct-handle-stress.json", "rawReportSha256": "66ea0bdde74892fc1e4dadf55386c4796e8fa69bf0886bab3d64864ed13a8347", "threeRunIncrementalPrivateMiB": [183.609375, 130.53125, 138.55859375], "threeRunConversionSeconds": [0.635, 0.579, 0.859]}
+      ]
+    },
+    {
+      "profile": "bmp-to-ico",
+      "outputBytes": 12290,
+      "outputSha256": "9e2f68795863155a3b0aa935f6621cfed7ffc9b72597e3a8fbb64cbeca15c27a",
+      "visualSsim": 0.970878,
+      "modes": [
+        {"destination": "sync-opfs", "rawReport": "2026-09-24T12-38-08-727Z-bmp-to-ico-stress.json", "rawReportSha256": "51021fda4cb6e04da26b22c8089f5ad8cbdbbc5c8d4ad7857e0a5302ec8c84a5", "threeRunIncrementalPrivateMiB": [120.32421875, 110.95703125, 115.4609375], "threeRunConversionSeconds": [0.217, 0.173, 0.207]},
+        {"destination": "direct-handle", "rawReport": "2026-09-24T12-40-42-165Z-bmp-to-ico-direct-handle-stress.json", "rawReportSha256": "de3bf2fd8930b3efeb548444478e7de0dbdd6726d5864ca07b7f9256de5ec48e", "threeRunIncrementalPrivateMiB": [158.3515625, 112.11328125, 154.1640625], "threeRunConversionSeconds": [0.195, 0.183, 0.18]}
+      ]
+    }
+  ],
+  "maximumSizeChecks": "All eight three-run mode/profile reports passed complete-process private memory, independent decode and visual checks, repeatable output hash, bounded I/O, cleanup recovery, and cancellation cleanup. Raw reports were compacted and deleted after SHA-256 capture.",
+  "hostedLinux": "Run 35999027801 passed all 153 image conversion tests."
 }
