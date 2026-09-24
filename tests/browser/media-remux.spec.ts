@@ -6952,6 +6952,11 @@ test("browser FFmpeg cancels raw HEVC to WebM and removes partial output", async
   await startEnabledConversion();
   const cancelButton = page.getByRole("button", { name: "Cancel safely" });
   await expect(cancelButton).toBeVisible({ timeout: 15_000 });
+  await expect
+    .poll(async () => (await currentState()).metrics?.outputBytes ?? 0, {
+      timeout: 15_000,
+    })
+    .toBeGreaterThan(0);
   await cancelButton.click();
   await expect
     .poll(async () => (await currentState()).jobState, { timeout: 30_000 })

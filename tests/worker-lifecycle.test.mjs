@@ -69,6 +69,7 @@ test("every worker module has an explicit cross-job retained-state contract", ()
       "conversion.worker.ts",
       [
         "activeJobId",
+        "cancellationSignal",
         "cancelled",
         "lastCancellationYieldBytes",
         "lastProgressAt",
@@ -152,7 +153,9 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(conversionWorker, /phase:\s*message\.phase\.slice\(0, MAX_PROGRESS_PHASE_CHARS\)/);
   assert.match(conversionWorker, /message:\s*message\.message\.slice\(0, MAX_WORKER_RESPONSE_TEXT_CHARS\)/);
   assert.match(conversionWorker, /now - lastProgressAt < MIN_PROGRESS_INTERVAL_MS/);
-  assert.match(conversionWorker, /finally\s*{\s*activeJobId = null;\s*cancelled = false;/s);
+  assert.match(conversionWorker, /finally\s*{\s*activeJobId = null;\s*cancelled = false;\s*cancellationSignal = null;/s);
+  assert.match(conversionWorker, /Atomics\.load\(cancellationSignal, 0\)/);
+  assert.match(source("app/converter/ConverterApp.tsx"), /Atomics\.store\(signal, 0, 1\)/);
   assert.match(
     conversionWorker,
     /await destination\?\.writable\.abort\(error\);.*?metrics\.queuedBytes = 0;\s*metrics\.pendingOperations = 0;/s,

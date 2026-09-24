@@ -66,12 +66,27 @@ focused production-browser tests passed with the CI synthetic fixture, and
 the cancellation test passed three repeat runs. A project-local free-space
 preflight bounds fixture generation. Hosted confirmation is pending.
 The no-Docker [36001599742](https://github.com/tanishqbaweja/fileconverter/actions/runs/36001599742)
-verify-only run has passed its build, lint, TypeScript, unit, and privacy/offline
-job; the image, media, and streaming browser partitions are still running.
+verify-only run passed build, lint, TypeScript, unit, privacy/offline, all image
+tests, and all streaming tests, but media finished 552/553. Waiting for the
+first real output byte exposed a genuine cancellation flaw: synchronous FFmpeg
+Wasm could keep the conversion worker's message loop occupied, so its cancel
+`postMessage` remained unread while encoding. The production UI now gives each
+FFmpeg job a four-byte shared atomic cancel signal; the existing native
+per-packet cancellation checks read it without switching to a slower I/O path.
+The synthetic hosted-style focused test passed three runs after first writing
+real output and then cancelling, with partial-output cleanup, bounded I/O, and
+zero pending operations. A genuine successful HEVC-to-VP8 WebM conversion also
+passed the focused browser validator. Production build, 243 unit tests, lint,
+and TypeScript passed. The stronger fix still needs hosted confirmation and
+current-Chrome memory remeasurement; do not count the failed CI as green.
 To avoid repeating these expensive browser partitions when checking engine
 reproducibility, CI now offers a separate `reproduce-only` dispatch that rebuilds
 all 11 published Wasm engines without Docker. The local engine-manifest audit
-and parsed workflow check passed; hosted reproduction is still pending.
+and parsed workflow check passed. Hosted run
+[36002113153](https://github.com/tanishqbaweja/fileconverter/actions/runs/36002113153)
+passed exact no-Docker rebuilds of all 11 engine directories, including
+FFmpeg, with every artifact-diff check green, all applicable scoped cleanup
+steps green, and zero retained GitHub Actions artifacts.
 
 ## Product and acceptance contract
 

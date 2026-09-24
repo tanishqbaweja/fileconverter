@@ -393,6 +393,10 @@ cancelled OPFS job truncates and removes its app-owned entry. On a normal app
 start, stale entries whose names begin with `within-` are removed. The storage
 panel also provides manual cleanup. These operations never enumerate, alter, or
 delete user-selected destination files.
+Each FFmpeg job gets a four-byte shared atomic cancellation flag. Cancel sets
+it before posting the worker message, so native packet loops can stop even if
+synchronous Wasm temporarily prevents the worker from reading that message.
+The flag is included in shared-buffer diagnostics and released at job end.
 
 Browser tests exercise write rejection, quota exhaustion, revoked destination
 permission, and an uncaught worker crash after a real bounded write. Fault

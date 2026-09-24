@@ -400,6 +400,7 @@ export function ConverterApp() {
   const [workerFailed, setWorkerFailed] = useState(false);
   const workerRef = useRef<Worker | null>(null);
   const jobIdRef = useRef<string | null>(null);
+  const cancellationSignalRef = useRef<Int32Array<SharedArrayBuffer> | null>(null);
   const activeOpfsNameRef = useRef<string | null>(null);
   const activeBatchRef = useRef<ActiveBatch | null>(null);
   const beginBatchItemRef = useRef<
@@ -544,6 +545,14 @@ export function ConverterApp() {
 
       const jobId = crypto.randomUUID();
       jobIdRef.current = jobId;
+      const cancellationBuffer =
+        batch.profile.engine.startsWith("ffmpeg-") &&
+        typeof SharedArrayBuffer === "function"
+          ? new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT)
+          : undefined;
+      cancellationSignalRef.current = cancellationBuffer
+        ? new Int32Array(cancellationBuffer)
+        : null;
       let destination:
         | { mode: "handle"; handle: FileSystemFileHandle }
         | {
@@ -599,6 +608,7 @@ export function ConverterApp() {
         destination,
         audioOptions: batch.audioOptions,
         videoOptions: batch.videoOptions,
+        cancellationBuffer,
         testFault: batch.testFault,
       };
       worker.postMessage(request);
@@ -609,6 +619,7 @@ export function ConverterApp() {
       retired: Worker,
       abandonedOpfsName: string | null = null,
     ) => {
+      cancellationSignalRef.current = null;
       retired.terminate();
       if (workerRef.current === retired) workerRef.current = null;
       setWorkerReady(false);
@@ -809,6 +820,7 @@ export function ConverterApp() {
       window.clearTimeout(replacementTimer);
       workerRef.current?.terminate();
       workerRef.current = null;
+      cancellationSignalRef.current = null;
     };
   }, []);
 
@@ -1145,6 +1157,7 @@ export function ConverterApp() {
       activeBatchRef.current = null;
       activeOpfsNameRef.current = null;
       jobIdRef.current = null;
+      cancellationSignalRef.current = null;
       setError(startError instanceof Error ? startError.message : String(startError));
       setPhase("Batch stopped safely");
       setJobState("error");
@@ -1154,6 +1167,8 @@ export function ConverterApp() {
   const cancelConversion = () => {
     const jobId = jobIdRef.current;
     if (!jobId || !workerRef.current) return;
+    const signal = cancellationSignalRef.current;
+    if (signal) Atomics.store(signal, 0, 1);
     const request: WorkerRequest = { type: "cancel", jobId };
     workerRef.current.postMessage(request);
     setPhase("Cancelling safely");

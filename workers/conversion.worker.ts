@@ -295,6 +295,7 @@ const COMPRESSION_TRANSCODES = {
 
 let activeJobId: string | null = null;
 let cancelled = false;
+let cancellationSignal: Int32Array<SharedArrayBuffer> | null = null;
 let lastProgressAt = 0;
 let lastCancellationYieldBytes = 0;
 let resvgInitialization: Promise<void> | null = null;
@@ -337,8 +338,15 @@ function newMetrics(): ConversionMetrics {
   };
 }
 
+function isCancelled(): boolean {
+  return (
+    cancelled ||
+    (cancellationSignal !== null && Atomics.load(cancellationSignal, 0) !== 0)
+  );
+}
+
 function assertActive(): void {
-  if (cancelled) {
+  if (isCancelled()) {
     throw new DOMException("Conversion cancelled", "AbortError");
   }
 }
@@ -1846,7 +1854,7 @@ async function runImageConversion(
       metrics,
       startedAt,
       createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
-      isCancelled: () => cancelled,
+      isCancelled,
       emitProgress,
       post,
     });
@@ -1870,7 +1878,7 @@ async function runImageConversion(
       metrics,
       startedAt,
       createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
-      isCancelled: () => cancelled,
+      isCancelled,
       emitProgress,
     });
     return;
@@ -4100,9 +4108,14 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     ];
   activeJobId = jobId;
   cancelled = false;
+  cancellationSignal =
+    message.cancellationBuffer?.byteLength === Int32Array.BYTES_PER_ELEMENT
+      ? new Int32Array(message.cancellationBuffer)
+      : null;
   lastProgressAt = 0;
   lastCancellationYieldBytes = 0;
   const metrics = newMetrics();
+  metrics.sharedArrayBufferBytes = cancellationSignal?.byteLength ?? 0;
   const startedAt = performance.now();
   let destination: Destination | null = null;
 
@@ -4394,7 +4407,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4424,7 +4437,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4812,7 +4825,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4850,7 +4863,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4861,7 +4874,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4872,7 +4885,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -4883,7 +4896,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -5281,7 +5294,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
-        isCancelled: () => cancelled,
+        isCancelled,
         emitProgress,
         post,
       });
@@ -5332,6 +5345,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   } finally {
     activeJobId = null;
     cancelled = false;
+    cancellationSignal = null;
   }
 }
 

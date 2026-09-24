@@ -271,6 +271,7 @@ export async function runMediaRemux({
     threadedWorkerPoolSize +
     (writable.additionalWorkerCount ?? 0);
   const writerSharedBytes = writable.sharedBufferBytes ?? 0;
+  const cancellationSharedBytes = metrics.sharedArrayBufferBytes ?? 0;
   const maximumOutputWriteBytes = writable.maximumWriteBytes ?? MAX_AVIO_CHUNK;
   const useDirectRemuxCore =
     remuxProfile === 1 && maximumOutputWriteBytes > MAX_AVIO_CHUNK;
@@ -294,7 +295,7 @@ export async function runMediaRemux({
       : null;
   let coalescedOutputOffset = 0;
   let coalescedOutputLength = 0;
-  metrics.sharedArrayBufferBytes = writerSharedBytes;
+  metrics.sharedArrayBufferBytes = cancellationSharedBytes + writerSharedBytes;
 
   const assertActive = (): void => {
     if (isCancelled()) {
@@ -575,7 +576,8 @@ export async function runMediaRemux({
       );
       metrics.outputBytes = Math.max(metrics.outputBytes, progress.outputSize);
       metrics.wasmMemoryBytes = progress.wasmMemoryBytes;
-      metrics.sharedArrayBufferBytes = progress.wasmMemoryBytes + writerSharedBytes;
+      metrics.sharedArrayBufferBytes =
+        progress.wasmMemoryBytes + writerSharedBytes + cancellationSharedBytes;
       metrics.peakWasmMemoryBytes = Math.max(
         metrics.peakWasmMemoryBytes ?? 0,
         progress.wasmMemoryBytes,

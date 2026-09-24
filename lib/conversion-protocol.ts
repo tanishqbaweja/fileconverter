@@ -58,6 +58,8 @@ export interface StartConversionMessage {
     | { mode: "opfs-test"; name: string };
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
+  /** Lets synchronous Wasm observe cancellation before its worker can process another message. */
+  cancellationBuffer?: SharedArrayBuffer;
   /** Localhost-only Playwright fault injection; never sent for user destinations. */
   testFault?: TestFault;
 }
