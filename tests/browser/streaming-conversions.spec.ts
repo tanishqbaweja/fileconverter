@@ -1386,6 +1386,12 @@ test("cancels streaming EPUB compression and removes the partial package", async
 
 test("streams DOCX main-document text with disclosed structural loss", async () => {
   await selectFixture("fixtures/documents/sample.docx", "docx-to-txt");
+  await expect(page.getByTestId("media-inspection-status")).toContainText(
+    "validates the file locally during conversion",
+  );
+  await expect(page.getByTestId("media-inspection-status")).not.toContainText(
+    "container streams and codecs",
+  );
   const state = await convert();
   const output = await readAndDeleteOpfsText(state.opfsName!);
   expect(output).toBe(

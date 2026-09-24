@@ -1584,8 +1584,10 @@ export function ConverterApp() {
                 ) : (
                   <p>
                     Detailed pre-conversion parsing is not yet implemented for this
-                    format. The selected engine still checks container streams and
-                    codecs locally before output and reports exclusions as warnings.
+                    format. The destination limitations below, when present,
+                    describe planned exclusions. The selected worker validates
+                    the file locally during conversion and reports unsupported
+                    or unsafe input as an error.
                   </p>
                 )}
               </div>

@@ -1,0 +1,61 @@
+{
+  "recordedAt": "2026-09-25",
+  "scope": "Headed manual production-UI review of one DOCX-to-text flow; this is not a process-tree memory certification or comprehensive document-route audit.",
+  "server": "Production Wrangler build on localhost:3110 with production headers",
+  "browserMethod": "Headed Playwright CLI, real fixture selection, production document worker, test-mode isolated OPFS destination",
+  "source": {
+    "path": "fixtures/documents/sample.docx",
+    "bytes": 1201,
+    "sha256": "423cd048893402bd7df227364d8128c4b41f9a912d0573848f7afe3bb93cc95c"
+  },
+  "observedBeforeConversion": {
+    "detectedFormat": "Word document (DOCX)",
+    "category": "document",
+    "exactInputBytesShown": 1201,
+    "destination": "Plain text",
+    "destinationLimitationDisclosure": "Main document text only; formatting, images, tables, hyperlinks, comments, headers, footers, notes, and document properties are not represented in plain text.",
+    "inspectionGap": "The source panel supplied type/size/MIME but no bounded DOCX structural inspection before conversion. Its generic fallback incorrectly referred to container streams and codecs; the UI copy was corrected to describe local validation and destination limitations without implying media semantics."
+  },
+  "conversion": {
+    "profileId": "docx-to-txt",
+    "state": "complete",
+    "displayedProgress": "Saved 100%",
+    "engine": "document-stream",
+    "outputBytes": 187,
+    "outputSha256": "524daebf1033a21c9a82aa75884e702cf12dd22a1617c05235d7109b8961ae10",
+    "content": "Within DOCX keeps files on this device.\nFormatting stays readable.\nLinked text\tafter tab\nafter break\nUnicode: हिन्दी, 日本語, café, 😀.\nAccepted insertion\nCell A\nCell B\n",
+    "matchedDeterministicFixtureExpectation": true,
+    "trackedDeletionExcluded": true,
+    "elapsedMs": 29.39,
+    "maximumReadBytes": 1201,
+    "maximumWriteBytes": 187,
+    "maximumQueuedBytes": 187,
+    "maximumPendingOperations": 1,
+    "activeWorkers": 1,
+    "wasmMemoryBytes": 0
+  },
+  "visualReview": {
+    "preConversionDisclosureScreenshotSha256": "27709ad53a4b898020343f5de660e39ffa3f0891adc98d4f9dfc3ba3c59fac86",
+    "completedStateScreenshotSha256": "6ff553f1356aca0799d4a91e33dcadaf7d44064bb27e0c39f82fea363c725c07",
+    "note": "The headed UI displayed readable destination limitations, storage mode, saved state, actual byte counters, engine, and bounded-work metrics without an observed layout failure. Screenshots were inspected and then deleted."
+  },
+  "network": {
+    "observedRequests": 10,
+    "allStaticGets": true,
+    "consoleWarnings": 0,
+    "consoleErrors": 0
+  },
+  "followUpFocusedTests": {
+    "privacyAndFallbackDisclosure": "passed",
+    "docxContentAndFallbackDisclosure": "passed",
+    "result": "2/2 browser tests passed after the UI wording correction"
+  },
+  "cleanup": {
+    "browserOutputDeletedAfterValidation": true,
+    "remainingAppOwnedOpfsEntries": 0,
+    "headedBrowserClosed": true,
+    "productionServerStopped": true,
+    "temporaryPlaywrightScreenshotsAndSnapshotsDeleted": true
+  },
+  "remainingWork": "Implement bounded, format-specific DOCX structural inspection before conversion if it can be done within the memory and privacy contract; continue headed review for office, animated image, archive, audio, media, direct-save, and failure flows not covered by this one case."
+}

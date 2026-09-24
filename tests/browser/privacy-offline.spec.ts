@@ -307,6 +307,12 @@ test("conversion transmits no filename or file content", async () => {
     await expect(sourceInspection).toContainText(
       "Detailed pre-conversion parsing is not yet implemented",
     );
+    await expect(sourceInspection).toContainText(
+      "validates the file locally during conversion",
+    );
+    await expect(sourceInspection).not.toContainText(
+      "container streams and codecs",
+    );
     await page
       .locator('[data-testid="format-select"]')
       .selectOption("csv-to-tsv");

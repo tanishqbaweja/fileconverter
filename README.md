@@ -434,7 +434,12 @@ The source-inspection panel reports the locally detected format and category,
 browser-provided MIME type, exact byte count, batch count, and modification time.
 Bounded parsers present available container, codec, duration, bitrate, audio,
 video, subtitle, and metadata signals for the supported media families before a
-conversion starts. Selecting a media destination produces a source-aware plan
+conversion starts. Non-media formats currently show generic type/size inspection
+and destination limitations, not a claimed pre-conversion structural parse; the
+worker validates their content locally during conversion. A headed DOCX review
+and this remaining gap are recorded in
+`evidence/headed-docx-inspection-2026-09-25.json` and `REMAINING_WORK.md`.
+Selecting a media destination produces a source-aware plan
 for every inspected stream: copy, re-encode, exclude, or reject. The plan uses
 the fixed certified FFmpeg profile policy. When the same physical destination
 has both a public copy profile and a public re-encode profile, compatible input
