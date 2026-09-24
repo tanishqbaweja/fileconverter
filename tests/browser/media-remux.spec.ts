@@ -7672,7 +7672,7 @@ for (const route of [
     ["h264", "aac"],
     [
       "display-rotation metadata cannot be represented by FLV",
-      "Only the first AAC audio stream",
+      "Only the first compatible AAC or MP3 audio stream",
       "Subtitles are explicitly excluded",
       "attachment is explicitly excluded",
       "chapters are explicitly excluded",
@@ -7740,7 +7740,7 @@ for (const route of [
     false,
     [
       "display-rotation metadata cannot be represented by FLV",
-      "Only the first AAC audio stream",
+      "Only the first compatible AAC or MP3 audio stream",
     ],
   ],
   ["3gp", "3gp-to-mkv", "mkv", false, true, []],
@@ -7761,7 +7761,7 @@ for (const route of [
     false,
     [
       "display-rotation metadata cannot be represented by FLV",
-      "Only the first AAC audio stream",
+      "Only the first compatible AAC or MP3 audio stream",
     ],
   ],
 ] as const) {
@@ -7903,7 +7903,7 @@ for (const route of [
     copyLanguage: false,
     copyDefaultDisposition: false,
     copyTitles: false,
-    warnings: ["Only the first AAC audio stream"],
+    warnings: ["Only the first compatible AAC or MP3 audio stream"],
   },
   {
     sourceKind: "flv",

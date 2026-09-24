@@ -30,6 +30,15 @@ reverification and the other three BMP maximum-size gates are still pending.
 The seven media failures (two raw-HEVC duration tolerances, one WebM chapter
 offset, and four FLV warning expectations) remain open for diagnosis; do not
 equate the earlier 404-route ledger with a currently green hosted browser run.
+On 2026-09-24, the four FLV warning assertions were corrected to match the
+published engine's more accurate AAC-or-MP3 disclosure and passed 4/4 focused
+production-browser tests. A proposed source-MOV-relative HEVC duration check
+was rejected after the protected-source test differed by 0.202 seconds; the
+unchanged 0.05-second acceptance gate remains until raw-HEVC timestamp and
+frame-duration behavior are independently explained. Hosted run
+[35997586416](https://github.com/tanishqbaweja/fileconverter/actions/runs/35997586416)
+is checking the pushed BMP fix; its media tests predate the FLV assertion
+correction.
 
 ## Product and acceptance contract
 
