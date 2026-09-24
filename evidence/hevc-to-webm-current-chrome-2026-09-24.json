@@ -1,0 +1,54 @@
+{
+  "generatedAt": "2026-09-24T19:49:38.111Z",
+  "scope": "Post-cancellation-fix, three-run production-browser stress remeasurement of the public raw HEVC to VP8 WebM route; synchronous browser-private output, not a direct-save benchmark.",
+  "browser": "Google Chrome 153.0.8010.53",
+  "dockerUsed": false,
+  "source": {
+    "path": "fixtures/stress/media/hevc-elementary-128m.hevc",
+    "bytes": 134752786,
+    "sha256": "cc2d480c438e340289ff5a22035c6a5a09af045b320c77c6356fc9cf37330c3d",
+    "codec": "hevc",
+    "width": 1920,
+    "height": 804,
+    "decodedFrames": 17282,
+    "retained": false
+  },
+  "conversion": {
+    "profileId": "hevc-to-webm",
+    "mode": "genuine-decode-scale-reencode",
+    "outputCodec": "vp8",
+    "outputContainer": "webm",
+    "outputWidth": 640,
+    "outputHeight": 268,
+    "outputPackets": 17282,
+    "outputDurationSeconds": 691.24,
+    "outputBytes": 52300521,
+    "repeatableOutputSha256": "7baa63b3f3571a773d35c4b097c16f2bba8878050d9a7b48ba0678726e378cff",
+    "independentValidation": "All three copies matched the recorded bytes and SHA-256, were probed as one-stream VP8 WebM with 17,282 packets and 691.24-second duration, and passed full native decode.",
+    "elapsedSeconds": [246.096395, 236.94917, 240.518285],
+    "incrementalCompleteChromiumPrivateMiB": [233.40625, 241.7109375, 239.3828125],
+    "worstIncrementalPrivateMiB": 241.7109375,
+    "limitMiB": 250,
+    "maximumReadBytes": 262144,
+    "maximumWriteBytes": 262144,
+    "maximumQueuedBytes": 262144,
+    "maximumPendingOperations": 1,
+    "wasmMemoryBytes": 58720256,
+    "cleanupDeltaFromLoadedMiB": [41.80859375, 41.08203125, 41.4609375],
+    "passed": true
+  },
+  "rawReport": {
+    "path": "outputs/reports/2026-09-24T19-49-38-111Z-hevc-to-webm-stress.json",
+    "sha256": "3970aa040e3683d7e6e571053b02894398dc7df77a4a5030cc9d9ac31d4c8d14",
+    "deletedAfterCompaction": true
+  },
+  "cleanup": {
+    "generatedFilesRepositoryLocal": true,
+    "generatedSourceDeleted": true,
+    "convertedOutputsDeleted": true,
+    "browserProfileDeleted": true,
+    "protectedRootFixtureBytes": 2958573265,
+    "protectedRootFixtureSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "limitsOfClaim": "This is an accepted current-Chrome remeasurement of one existing public route and output mode, not proof that every remaining original-specification feature is implemented or that the memory margin transfers to other machines."
+}

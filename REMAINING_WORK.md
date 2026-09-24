@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-24. This is the living requirement audit for the original
+Updated 2026-09-25. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -78,16 +78,20 @@ The synthetic hosted-style focused test passed three runs after first writing
 real output and then cancelling, with partial-output cleanup, bounded I/O, and
 zero pending operations. A genuine successful HEVC-to-VP8 WebM conversion also
 passed the focused browser validator. Production build, 243 unit tests, lint,
-and TypeScript passed. The stronger fix still needs hosted confirmation and
-current-Chrome memory remeasurement; do not count the failed CI as green.
+and TypeScript passed. The stronger fix still needed hosted confirmation and
+current-Chrome memory remeasurement at that checkpoint; do not count the failed CI as green.
 The corrective no-Docker [36004924350](https://github.com/tanishqbaweja/fileconverter/actions/runs/36004924350)
 run at `fc3a4bb` passed all four verification jobs: build/lint/TypeScript,
 243 unit tests, 15 privacy/offline cases, 153 image browser conversions,
 238 streaming browser conversions, and 553/553 media browser conversions,
 including genuine in-flight HEVC cancellation. It retained zero Actions
-artifacts. This resolves the hosted cancellation regression, but does not
-replace the pending current-Chrome large-file memory remeasurement or the
-broader original-specification gaps below.
+artifacts. This resolves the hosted cancellation regression. The subsequent
+three-run Chrome 153.0.8010.53 HEVC-to-WebM large-file remeasurement passed at
+241.711 MiB worst incremental complete-Chromium private memory against the
+unchanged 250 MiB limit; all three 134,752,786-byte genuine HEVC re-encodes
+produced the identical fully decoded 52,300,521-byte VP8 WebM. Compact
+hash-bound evidence is in `evidence/hevc-to-webm-current-chrome-2026-09-24.json`.
+This does not close the broader original-specification gaps below.
 To avoid repeating these expensive browser partitions when checking engine
 reproducibility, CI now offers a separate `reproduce-only` dispatch that rebuilds
 all 11 published Wasm engines without Docker. The local engine-manifest audit
@@ -706,6 +710,11 @@ steps green, and zero retained GitHub Actions artifacts.
   incremental private memory. Output was byte-repeatable, fully decoded, and
   retained all frames; 256 KiB I/O, one pending operation, cancellation, forced
   write failure, and cleanup passed.
+- After the shared cancellation fix, the same public route passed a fresh 3/3
+  Chrome 153 browser-private-output stress run in 236.95–246.10 seconds at
+  241.711 MiB worst memory. The 17,282-packet VP8 WebM output remained
+  byte-identical and fully decoded. The report was compacted and removed; see
+  `evidence/hevc-to-webm-current-chrome-2026-09-24.json`.
 - Speed was optimized under the unchanged constraints. The faster eight-worker
   candidate completed in 155.79–156.92 seconds but reached 253.871–274.039 MiB
   and was rejected. Four-worker VP9 reached 264.082 MiB. Single-thread VP9 took

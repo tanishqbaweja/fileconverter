@@ -892,7 +892,11 @@ stream timing at 25 fps. Three 134,752,786-byte Chrome runs completed in
 230.95–234.74 seconds at 240.945 MiB worst incremental process-tree private
 memory, with repeatable 52,300,521-byte output, full native decode, bounded
 256 KiB I/O, one pending operation, cancellation, write-failure cleanup, and no
-retained converted media. The faster eight-worker candidate completed in
+retained converted media. A post-cancellation-fix Chrome 153 remeasurement of
+the same browser-private output mode passed 3/3 in 236.95–246.10 seconds at
+241.711 MiB worst memory, with the identical output hash and full native
+decode; see `evidence/hevc-to-webm-current-chrome-2026-09-24.json`. The faster
+eight-worker candidate completed in
 155.79–156.92 seconds but reached 253.871–274.039 MiB and was rejected. VP9 is
 not public: its four-worker run reached 264.082 MiB, while the single-thread
 trial took 561.44 seconds and left only 0.246 MiB of unverified headroom. See
