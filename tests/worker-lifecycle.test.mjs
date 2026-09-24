@@ -63,7 +63,7 @@ function topLevelConstContainers(tree) {
 }
 
 test("every worker module has an explicit cross-job retained-state contract", () => {
-  assert.equal(workerFiles.length, 30, "audit inventory must be updated for worker additions or removals");
+  assert.equal(workerFiles.length, 31, "audit inventory must be updated for worker additions or removals");
   const expectedMutable = new Map([
     [
       "conversion.worker.ts",

@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-23",
+  "change": "BMP input to PNG, JPEG, WebP, and ICO uses a bounded 24/32-bit BI_RGB row decoder instead of Chromium ImageDecoder, which is unavailable for image/bmp on hosted Linux Chromium.",
+  "browserSmoke": {
+    "command": "npx playwright test tests/browser/image-conversions.spec.ts -g 'bmp-to-(png|jpeg|webp|ico) from test-pattern.bmp' --reporter=line",
+    "result": "4 passed; each output independently decoded"
+  },
+  "maximumSource": {
+    "path": "fixtures/images/highres-pattern.bmp",
+    "bytes": 24883254,
+    "sha256": "0898385e9a672ab648419276e9e5ebcd1a3e7f1f04e668503789450fa3f9692c",
+    "width": 3840,
+    "height": 2160
+  },
+  "memoryLimitMiB": 250,
+  "memoryFormula": "peak complete Chromium process-tree private memory during conversion minus stable clean blank-Chromium process-tree private memory",
+  "bmpToPng": [
+    {
+      "destination": "sync-opfs",
+      "rawReport": "2026-09-23T15-18-14-115Z-bmp-to-png-stress.json",
+      "rawReportSha256": "1a203b1a6eab845ff8c9582b29e88bab329c4b6274d3165c587f3a8853684c64",
+      "threeRunIncrementalPrivateMiB": [137.109375, 155.30859375, 127.015625],
+      "threeRunConversionSeconds": [0.414, 0.19, 0.243],
+      "outputBytes": 1019495,
+      "repeatableOutputSha256": "7cd5d024d4b8e4bb41ceda86d1217dce3a9a368caf3a82346d4260f7c65c85c5",
+      "independentDecode": true,
+      "visualSsim": 1,
+      "cleanupAndCancellationChecks": true
+    },
+    {
+      "destination": "direct-handle",
+      "rawReport": "2026-09-23T15-21-22-450Z-bmp-to-png-direct-handle-stress.json",
+      "rawReportSha256": "ec23dc10c95b6b0c91009f54c37bbddbf2d6325071ed2ffae43fbcac558028f2",
+      "threeRunIncrementalPrivateMiB": [132.6640625, 120.86328125, 184.7578125],
+      "threeRunConversionSeconds": [0.226, 0.207, 0.135],
+      "outputBytes": 1019495,
+      "repeatableOutputSha256": "7cd5d024d4b8e4bb41ceda86d1217dce3a9a368caf3a82346d4260f7c65c85c5",
+      "independentDecode": true,
+      "visualSsim": 1,
+      "cleanupAndCancellationChecks": true
+    }
+  ],
+  "scopeCaveat": "The maximum-size three-run memory gate was repeated for BMP-to-PNG only. The same row decoder is shared by BMP-to-JPEG, WebP, and ICO, whose small-fixture browser tests passed; their maximum-size current-Chrome memory gates remain to be rerun. Hosted Linux verification of this change is pending."
+}

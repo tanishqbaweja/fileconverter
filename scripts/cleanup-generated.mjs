@@ -171,6 +171,11 @@ const protectedTestMkv = {
   bytes: 2_958_573_265,
   sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
 };
+const currentBmpProofReportStem = [
+  "2026-09-23T15-18-14-115Z-bmp-to-png-stress",
+  "2026-09-23T15-21-22-450Z-bmp-to-png-direct-handle-stress",
+];
+const currentImageCiFailureRoot = path.resolve(workRoot, "ci-image-failure-35877953801");
 const profileRoot = path.resolve(workRoot, "memory-profile-chrome");
 const cancellationFixture = path.resolve(
   workRoot,
@@ -563,6 +568,20 @@ for (const reportPath of hevcWebmStressReports) {
   assertInside(reportRoot, reportPath);
 }
 assertInside(projectRoot, remuxEngineRoot);
+assertInside(workRoot, currentImageCiFailureRoot);
+
+if (process.argv.includes("--current-bmp-proof-artifacts-only")) {
+  await removeWithRetries(currentImageCiFailureRoot);
+  for (const stem of currentBmpProofReportStem) {
+    for (const extension of retainedOutputExtensions) {
+      const target = path.resolve(reportRoot, `${stem}${extension}`);
+      assertInside(reportRoot, target);
+      await rm(target, { force: true });
+    }
+  }
+  process.stdout.write("Removed only the inspected CI image artifact and two compacted BMP proof report trios.\n");
+  process.exit(0);
+}
 
 if (process.argv.includes("--mkv-avi-current-fixtures-only")) {
   const protectedHash = await hashExactRegularFile(

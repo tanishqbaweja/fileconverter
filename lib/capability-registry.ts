@@ -4015,11 +4015,9 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       output,
       engine: "image-browser" as const,
       route: "re-encode" as const,
-      browserRequirements: [
-        "ImageDecoder",
-        "OffscreenCanvas",
-        "File System Access",
-      ],
+      browserRequirements: input === "bmp"
+        ? ["OffscreenCanvas", "File System Access"]
+        : ["ImageDecoder", "OffscreenCanvas", "File System Access"],
       cpuClass: "medium" as const,
       memoryClass: "bounded-medium" as const,
       metadataLimitations:
@@ -4031,6 +4029,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
             ]
           : [
               "EXIF, ICC profiles, textual metadata, and animation are not preserved by this bounded still-image profile.",
+              ...(input === "bmp" ? ["BMP input is decoded from bounded rows and accepts uncompressed 24-bit or 32-bit Windows BMP pixels only; the BI_RGB fourth byte is treated as opaque."] : []),
             ],
       fidelityLimitations:
         output === "jpeg"
@@ -4131,15 +4130,14 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       output: "ico",
       engine: "image-browser" as const,
       route: "re-encode" as const,
-      browserRequirements: [
-        "ImageDecoder",
-        "OffscreenCanvas",
-        "File System Access",
-      ],
+      browserRequirements: input === "bmp"
+        ? ["OffscreenCanvas", "File System Access"]
+        : ["ImageDecoder", "OffscreenCanvas", "File System Access"],
       cpuClass: "medium" as const,
       memoryClass: "bounded-medium" as const,
       metadataLimitations: [
         "The output contains one PNG-compressed icon image; alternate icon sizes, EXIF, ICC profiles, textual metadata, and animation are not preserved.",
+        ...(input === "bmp" ? ["BMP input is decoded from bounded rows and accepts uncompressed 24-bit or 32-bit Windows BMP pixels only; the BI_RGB fourth byte is treated as opaque."] : []),
       ],
       fidelityLimitations: [
         "Images larger than 256 pixels on either edge are scaled down proportionally to fit the ICO limit.",

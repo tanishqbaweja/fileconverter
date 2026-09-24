@@ -57,6 +57,7 @@ import { runTiffToPng, runTiffToZip } from "./tiff-conversion";
 import { runJxlToPng, runJxlToZip } from "./jxl-conversion";
 import { runImageToJxl } from "./jxl-encoding";
 import { runImageToAvif } from "./avif-encoding";
+import { decodeBmpRgba } from "./bmp-decoding";
 import { runAvifToZip } from "./avif-conversion";
 import { runBrowserAnimationToApng } from "./apng-conversion";
 import { runBrowserAnimationToGif } from "./gif-conversion";
@@ -1781,13 +1782,14 @@ async function runImageConversion(
     globalThis as unknown as { ImageDecoder?: WithinImageDecoderConstructor }
   ).ImageDecoder;
   if (outputFormat !== "jxl" && outputFormat !== "avif") {
-    if (!Decoder || typeof OffscreenCanvas !== "function") {
+    if (typeof OffscreenCanvas !== "function" || (inputFormat !== "bmp" && !Decoder)) {
       throw new Error(
         "This browser does not provide the ImageDecoder and OffscreenCanvas APIs required by this route.",
       );
     }
     if (
-      Decoder.isTypeSupported &&
+      inputFormat !== "bmp" &&
+      Decoder?.isTypeSupported &&
       !(await Decoder.isTypeSupported(inputMime))
     ) {
       throw new Error(
@@ -1874,19 +1876,13 @@ async function runImageConversion(
     return;
   }
 
-  if (!Decoder) {
+  if (inputFormat !== "bmp" && !Decoder) {
     throw new Error("This browser does not provide the ImageDecoder API required by this route.");
   }
 
-  const countedInput = createBoundedImageInput(
-    file,
-    jobId,
-    metrics,
-    startedAt,
-  );
-  const decoder = new Decoder({
+  const decoder = inputFormat === "bmp" ? null : new Decoder!({
     type: inputMime,
-    data: countedInput,
+    data: createBoundedImageInput(file, jobId, metrics, startedAt),
     colorSpaceConversion: "none",
     desiredWidth: dimensions.width,
     desiredHeight: dimensions.height,
@@ -1899,18 +1895,19 @@ async function runImageConversion(
   let frame: VideoFrame | null = null;
   let canvas: OffscreenCanvas | null = null;
   try {
-    await decoder.tracks.ready;
-    const track = decoder.tracks.selectedTrack;
-    if (!track) {
-      throw new Error("The browser could not identify a decodable image track.");
-    }
-    if (track.frameCount > 1) {
-      post({
-        type: "warning",
-        jobId,
-        message:
-          "This still-image route converts only the first animation frame.",
-      });
+    if (decoder) {
+      await decoder.tracks.ready;
+      const track = decoder.tracks.selectedTrack;
+      if (!track) {
+        throw new Error("The browser could not identify a decodable image track.");
+      }
+      if (track.frameCount > 1) {
+        post({
+          type: "warning",
+          jobId,
+          message: "This still-image route converts only the first animation frame.",
+        });
+      }
     }
     if (outputFormat === "jpeg") {
       post({
@@ -1929,40 +1926,54 @@ async function runImageConversion(
       });
     }
 
-    const decoded = await decoder.decode({
-      frameIndex: 0,
-      completeFramesOnly: true,
-    });
-    if (!decoded.complete) {
-      decoded.image.close();
-      throw new Error("The browser returned an incomplete image frame.");
+    let width = dimensions.width;
+    let height = dimensions.height;
+    let rgba: Uint8Array<ArrayBuffer>;
+    if (decoder) {
+      const decoded = await decoder.decode({ frameIndex: 0, completeFramesOnly: true });
+      if (!decoded.complete) {
+        decoded.image.close();
+        throw new Error("The browser returned an incomplete image frame.");
+      }
+      frame = decoded.image;
+      width = frame.displayWidth;
+      height = frame.displayHeight;
+      metrics.imageFrameFormat = frame.format;
+      metrics.imageColorSpace = {
+        primaries: frame.colorSpace.primaries,
+        transfer: frame.colorSpace.transfer,
+        matrix: frame.colorSpace.matrix,
+        fullRange: frame.colorSpace.fullRange,
+      };
+      if (
+        width < 1 ||
+        height < 1 ||
+        width > MAX_IMAGE_DIMENSION ||
+        height > MAX_IMAGE_DIMENSION ||
+        width * height > MAX_IMAGE_PIXELS
+      ) {
+        throw new Error("Decoded image dimensions exceed the bounded image budget.");
+      }
+      rgba = new Uint8Array(width * height * 4);
+      await frame.copyTo(rgba, {
+        format: "RGBA",
+        layout: [{ offset: 0, stride: width * 4 }],
+      });
+      frame.close();
+      frame = null;
+    } else {
+      rgba = await decodeBmpRgba({
+        file,
+        header,
+        width,
+        height,
+        metrics,
+        createInput: () => createBoundedImageInput(file, jobId, metrics, startedAt),
+        assertActive,
+        progress: () => emitProgress(jobId, "Reading bounded BMP rows", metrics, startedAt),
+      });
+      metrics.imageFrameFormat = "RGBA";
     }
-    frame = decoded.image;
-    const width = frame.displayWidth;
-    const height = frame.displayHeight;
-    metrics.imageFrameFormat = frame.format;
-    metrics.imageColorSpace = {
-      primaries: frame.colorSpace.primaries,
-      transfer: frame.colorSpace.transfer,
-      matrix: frame.colorSpace.matrix,
-      fullRange: frame.colorSpace.fullRange,
-    };
-    if (
-      width < 1 ||
-      height < 1 ||
-      width > MAX_IMAGE_DIMENSION ||
-      height > MAX_IMAGE_DIMENSION ||
-      width * height > MAX_IMAGE_PIXELS
-    ) {
-      throw new Error("Decoded image dimensions exceed the bounded image budget.");
-    }
-    const rgba = new Uint8Array(width * height * 4);
-    await frame.copyTo(rgba, {
-      format: "RGBA",
-      layout: [{ offset: 0, stride: width * 4 }],
-    });
-    frame.close();
-    frame = null;
     if (outputFormat === "jpeg" || outputFormat === "bmp") {
       for (let offset = 0; offset < rgba.byteLength; offset += 4) {
         const alpha = rgba[offset + 3];
@@ -2064,7 +2075,8 @@ async function runImageConversion(
     metrics.inputBytes = file.size;
   } finally {
     frame?.close();
-    decoder.close();
+    decoder?.close();
+    metrics.imageWorkingBytes = 0;
     if (canvas) {
       canvas.width = 1;
       canvas.height = 1;
