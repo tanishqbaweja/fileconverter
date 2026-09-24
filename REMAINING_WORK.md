@@ -65,6 +65,13 @@ validate the exact enhanced header and reject other unknown streams. Both
 focused production-browser tests passed with the CI synthetic fixture, and
 the cancellation test passed three repeat runs. A project-local free-space
 preflight bounds fixture generation. Hosted confirmation is pending.
+The no-Docker [36001599742](https://github.com/tanishqbaweja/fileconverter/actions/runs/36001599742)
+verify-only run has passed its build, lint, TypeScript, unit, and privacy/offline
+job; the image, media, and streaming browser partitions are still running.
+To avoid repeating these expensive browser partitions when checking engine
+reproducibility, CI now offers a separate `reproduce-only` dispatch that rebuilds
+all 11 published Wasm engines without Docker. The local engine-manifest audit
+and parsed workflow check passed; hosted reproduction is still pending.
 
 ## Product and acceptance contract
 

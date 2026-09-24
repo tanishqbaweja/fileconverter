@@ -11,6 +11,7 @@ on:
         options:
           - all
           - verify-only
+          - reproduce-only
           - ffmpeg-remux
           - bzip2
           - xz
@@ -52,7 +53,8 @@ jobs:
           SELECTED_ENGINE: ${{ inputs.engine || 'all' }}
         run: |
           args=(--non-docker)
-          if test "$SELECTED_ENGINE" != all; then
+          if test "$SELECTED_ENGINE" != all && \
+              test "$SELECTED_ENGINE" != reproduce-only; then
             args+=(--engine "$SELECTED_ENGINE")
           fi
           echo "engines=$(node scripts/engine-reproducibility-manifest.mjs "${args[@]}")" >> "$GITHUB_OUTPUT"

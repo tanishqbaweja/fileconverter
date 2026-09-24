@@ -2354,10 +2354,16 @@ installed stable Chrome and native FFmpeg.
 local stress reports. `npm run evidence:public:write` refreshes the tracked,
 compact `evidence/public-profile-evidence.json` index only after that raw audit
 passes. Fresh CI checkouts run `npm run audit:public-evidence:manifest` to verify
-the indexed 388 route IDs, tested sizes, report hashes, repeatability, and memory
+the indexed 404 route IDs, tested sizes, report hashes, repeatability, and memory
 peaks against the current registry without committing hundreds of bulky raw
 reports. `npm run audit:engine-reproducibility` similarly ensures that every
 published engine directory has a reproducible build entry.
+
+The manual CI `engine` input accepts `verify-only` for the production, privacy,
+unit, and browser gates; `reproduce-only` rebuilds all 11 published engines
+without repeating those browser suites. Both paths avoid Docker. The default
+`all` selection runs both sets of gates, while a named engine selects one
+reproducibility check.
 
 The corrected partitioned hosted baseline is recorded in
 `evidence/hosted-ci-audit-2026-08-28.json`. GitHub Actions run `33182400184`
