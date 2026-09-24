@@ -37,8 +37,12 @@ was rejected after the protected-source test differed by 0.202 seconds; the
 unchanged 0.05-second acceptance gate remains until raw-HEVC timestamp and
 frame-duration behavior are independently explained. Hosted run
 [35997586416](https://github.com/tanishqbaweja/fileconverter/actions/runs/35997586416)
-is checking the pushed BMP fix; its media tests predate the FLV assertion
-correction.
+passed 153/153 image browser tests, the privacy/build/unit verify job, and
+the streaming browser partition on the pushed BMP fix; its media tests predate
+the FLV assertion correction. The WebM chapter test now checks two exactly
+2-second source chapters and requires exact source-to-output chapter timestamps
+instead of assuming a platform-independent zero start; 1/1 focused browser
+test passed locally. Hosted confirmation of the latter test is pending.
 
 ## Product and acceptance contract
 

@@ -7587,16 +7587,26 @@ for (const route of [
               "French WebVTT captions",
             );
             expect(subtitle?.disposition?.default).toBe(1);
+            expect(sourceProbe.chapters).toHaveLength(2);
             expect(probe.chapters).toHaveLength(2);
+            expect(
+              sourceProbe.chapters?.map((chapter) =>
+                Math.round(
+                  (Number(chapter.end_time) - Number(chapter.start_time)) * 1_000,
+                ),
+              ),
+            ).toEqual([2_000, 2_000]);
             expect(
               probe.chapters?.map((chapter) => [
                 Number(chapter.start_time),
                 Number(chapter.end_time),
               ]),
-            ).toEqual([
-              [0, 2],
-              [2, 4],
-            ]);
+            ).toEqual(
+              sourceProbe.chapters?.map((chapter) => [
+                Number(chapter.start_time),
+                Number(chapter.end_time),
+              ]),
+            );
             await expectSubtitlePacketMatch(route.sourcePath, outputPath);
           }
         },
