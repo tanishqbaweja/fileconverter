@@ -52,7 +52,7 @@ the streaming browser partition on the pushed BMP fix; its media tests predate
 the FLV assertion correction. The WebM chapter test now checks two exactly
 2-second source chapters and requires exact source-to-output chapter timestamps
 instead of assuming a platform-independent zero start; 1/1 focused browser
-test passed locally. Hosted confirmation of the latter test is pending.
+test passed locally and the next hosted media run passed this case.
 The next hosted run [35999027801](https://github.com/tanishqbaweja/fileconverter/actions/runs/35999027801)
 passed the verify, image, and streaming jobs, but 551/553 media tests passed.
 Its two failures were (1) the cheap synthetic raw-HEVC cancellation clip could
@@ -64,7 +64,8 @@ AAC media streams while `inspectFlvAacSignals` and `runMediaRoute` still
 validate the exact enhanced header and reject other unknown streams. Both
 focused production-browser tests passed with the CI synthetic fixture, and
 the cancellation test passed three repeat runs. A project-local free-space
-preflight bounds fixture generation. Hosted confirmation is pending.
+preflight bounds fixture generation. The next hosted run revealed the separate
+worker-message starvation flaw described below.
 The no-Docker [36001599742](https://github.com/tanishqbaweja/fileconverter/actions/runs/36001599742)
 verify-only run passed build, lint, TypeScript, unit, privacy/offline, all image
 tests, and all streaming tests, but media finished 552/553. Waiting for the
@@ -79,6 +80,14 @@ zero pending operations. A genuine successful HEVC-to-VP8 WebM conversion also
 passed the focused browser validator. Production build, 243 unit tests, lint,
 and TypeScript passed. The stronger fix still needs hosted confirmation and
 current-Chrome memory remeasurement; do not count the failed CI as green.
+The corrective no-Docker [36004924350](https://github.com/tanishqbaweja/fileconverter/actions/runs/36004924350)
+run at `fc3a4bb` passed all four verification jobs: build/lint/TypeScript,
+243 unit tests, 15 privacy/offline cases, 153 image browser conversions,
+238 streaming browser conversions, and 553/553 media browser conversions,
+including genuine in-flight HEVC cancellation. It retained zero Actions
+artifacts. This resolves the hosted cancellation regression, but does not
+replace the pending current-Chrome large-file memory remeasurement or the
+broader original-specification gaps below.
 To avoid repeating these expensive browser partitions when checking engine
 reproducibility, CI now offers a separate `reproduce-only` dispatch that rebuilds
 all 11 published Wasm engines without Docker. The local engine-manifest audit

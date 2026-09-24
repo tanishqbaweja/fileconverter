@@ -71,6 +71,19 @@ test("every public MP3 and FLAC output discloses bounded artwork retention", () 
   }
 });
 
+test("every public FFmpeg route requires the shared cancellation bridge", () => {
+  const mediaRoutes = conversionProfiles.filter(
+    (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
+  );
+  assert.ok(mediaRoutes.length > 0);
+  for (const profile of mediaRoutes) {
+    assert.ok(
+      profile.browserRequirements.includes("SharedArrayBuffer"),
+      `${profile.id}: synchronous Wasm cancellation requires SharedArrayBuffer`,
+    );
+  }
+});
+
 test("registry contains no PDF input, output, or route", () => {
   assert.equal(
     formats.some(
