@@ -132,9 +132,9 @@ test("AVI-to-MPEG-TS discloses private staging and validates final-copy cancella
   assert.equal(aviMpegTsEvidence.dockerUsed, false);
 });
 
-test("hidden MPEG-2 to OGV scopes bounded direct staging and final-copy cancellation", () => {
+test("public MPEG-2 to OGV scopes bounded direct staging and final-copy cancellation", () => {
   const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
-  assert.equal(profile?.public, false);
+  assert.equal(profile?.public, true);
   assert.ok(profile?.metadataLimitations.some((note) =>
     note.includes("browser-private staging") &&
     note.includes("256 KiB") &&

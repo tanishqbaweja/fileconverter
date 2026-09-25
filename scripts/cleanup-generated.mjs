@@ -91,6 +91,8 @@ const m2vOgvCandidateReportStems = [
   "2026-09-25T07-28-19-785Z-m2v-to-ogv-direct-handle-stress",
   "2026-09-25T07-42-07-280Z-m2v-to-ogv-stress-failure",
   "2026-09-25T07-47-50-599Z-m2v-to-ogv-stress",
+  "2026-09-25T08-24-18-566Z-m2v-to-ogv-stress",
+  "2026-09-25T08-33-48-285Z-m2v-to-ogv-direct-handle-stress",
 ];
 const mp4AviCurrentReports = [
   "2026-09-21T06-13-01-144Z-mp4-to-avi-direct-handle-stress",

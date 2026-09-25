@@ -31,17 +31,17 @@ test("MP4 to OGV is explicitly failed and hidden after its memory rejection", ()
   );
 });
 
-test("raw MPEG-2 to OGV remains hidden pending complete staged-save acceptance", () => {
+test("raw MPEG-2 to OGV is public only after complete staged-save acceptance", () => {
   const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
   assert.ok(profile);
   assert.equal(profile.input, "m2v");
   assert.equal(profile.output, "ogv");
   assert.equal(profile.engine, "ffmpeg-video");
   assert.equal(profile.route, "re-encode");
-  assert.equal(profile.automatedTestStatus, "failed");
-  assert.equal(profile.maxTestedBytes, null);
-  assert.equal(profile.public, false);
-  assert.equal(publicProfilesFor("m2v").some(({ id }) => id === profile.id), false);
+  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.maxTestedBytes, 136_166_136);
+  assert.equal(profile.public, true);
+  assert.equal(publicProfilesFor("m2v").some(({ id }) => id === profile.id), true);
   assert.equal(publicProfilesFor("m2v", true).some(({ id }) => id === profile.id), true);
   assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["m2v-to-ogv"], "theora");
   assert.deepEqual(videoOptionProfileForId("m2v-to-ogv"), {
@@ -59,10 +59,14 @@ test("raw MPEG-2 to OGV remains hidden pending complete staged-save acceptance",
   const stagedEvidence = JSON.parse(
     readFileSync("evidence/m2v-to-ogv-staged-save-2026-09-25.json", "utf8"),
   );
-  assert.equal(stagedEvidence.status, "tested-staged-save-still-hidden");
+  assert.equal(stagedEvidence.status, "public-accepted-after-staged-save");
   assert.equal(stagedEvidence.directSelectedDestination.threeRunReportPassed, true);
   assert.equal(stagedEvidence.opfs.threeRunHarnessPassed, false);
   assert.equal(stagedEvidence.opfs.correctedIndependentRun.passed, true);
+  assert.equal(stagedEvidence.opfs.acceptedThreeRunGate.passed, true);
+  assert.equal(stagedEvidence.opfs.acceptedThreeRunGate.runs.length, 3);
+  assert.equal(stagedEvidence.highestQualityColdDirectRun.fullNativeDecodeAndVisualValidationPassed, true);
+  assert.ok(stagedEvidence.highestQualityColdDirectRun.incrementalPrivateMiB <= 250);
   assert.equal(stagedEvidence.commonOutput.fullNativeDecode, true);
   assert.equal(stagedEvidence.commonOutput.decodedFrames, stagedEvidence.stressSource.decodedFrames);
   assert.ok(
@@ -70,6 +74,14 @@ test("raw MPEG-2 to OGV remains hidden pending complete staged-save acceptance",
       ({ incrementalPrivateMiB }) => incrementalPrivateMiB <= stagedEvidence.limitMiB,
     ),
   );
+  const publicIndex = JSON.parse(
+    readFileSync("evidence/public-profile-evidence.json", "utf8"),
+  );
+  const indexed = publicIndex.profiles.find(({ profileId }) => profileId === profile.id);
+  assert.equal(indexed.maxTestedBytes, profile.maxTestedBytes);
+  assert.equal(indexed.repeatableEvidence.runs, 3);
+  assert.equal(indexed.repeatableEvidence.reportSha256, stagedEvidence.opfs.acceptedThreeRunGate.rawReportSha256);
+  assert.ok(indexed.repeatableEvidence.incrementalPrivateMiB <= 250);
 });
 
 test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () => {

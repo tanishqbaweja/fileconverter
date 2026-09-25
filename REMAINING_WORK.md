@@ -15,35 +15,38 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
-## 2026-09-25 — hidden MPEG-2 elementary to OGV candidate
+## 2026-09-25 — MPEG-2 elementary to OGV publication
 
-Status: **Partially implemented, not public** under P-04/M-04/P-08. The existing
-single-thread `within-theora` Wasm can genuinely decode raw MPEG-2 and encode
-Ogg/Theora without a rebuild. A focused production-browser test passed exact
-decoded-frame count, full native decode, and bounded I/O. The 136,166,136-byte
-source produced the same independently validated 86,555,131-byte OGV in one
-OPFS run (197.210 s, 242.988 MiB incremental complete-Chrome private memory)
-and one direct-save run (204.207 s, **250.125 MiB**, over the unchanged 250 MiB
-limit). It therefore remains `failed` and hidden; no public count changed.
-The first large validation exposed an error in the raw-fixture manifest:
-FFprobe estimated `avg_frame_rate=25/1` while the encoded sequence header is
-24/1. Both generators and the tracked small manifest now use the encoded rate.
-The large input bytes were unchanged. Details and rejected-result history are
-in `evidence/m2v-to-ogv-candidate-2026-09-25.json`. A subsequent staged direct
-save passed one clean run at 246.25 MiB and three same-session runs at
-245.324/225.078/221.141 MiB, with identical genuine output and approximately
-194–195-second elapsed time. Three OPFS conversions independently validated at
-245.672/217.980/232.793 MiB, but their harness timed out afterward by waiting
-for a direct-only cancellation phase. That harness branch was corrected and a
-separate OPFS run passed at 227.090 MiB, including cancellation. Direct final
-copy cancellation, injected write failure, width/frame-rate/quality controls,
-and headed UI checks passed. The new results are compacted in
-`evidence/m2v-to-ogv-staged-save-2026-09-25.json`. The route remains hidden:
-rerun the complete corrected three-run OPFS gate before public promotion, and
-watch the narrow 3.75 MiB worst direct-save memory headroom. Disposable copies,
-the large fixture, and raw reports are removed after compaction.
+Status: **Verified complete for the 136,166,136-byte public route gate** under
+P-04/M-04/P-08; P-07 multi-gigabyte scaling for this new route remains
+partially evidenced. The
+single-thread `within-theora` Wasm genuinely decodes raw MPEG-2 and encodes
+Ogg/Theora. The 136,166,136-byte source produced the identical independently
+validated 86,555,131-byte OGV in three accepted Chrome runs per destination
+mode, with all 11,904 frames fully decoded and midpoint SSIM 0.826148. The
+accepted staged direct-save runs peaked at 246.250 MiB in an independent cold
+session and 245.324/225.078/221.141 MiB in one repeated session; elapsed
+time was about 194–195 seconds. The corrected three-run OPFS gate passed at
+247.789/227.902/230.453 MiB, with 32 MiB Wasm, 256 KiB input and bounded
+output/queue, one pending write, cancellation, and cleanup recovery. A
+highest-quality cold direct run passed at 239.625 MiB and produced a fully
+decoded 118,761,511-byte OGV in 196.183 seconds, with final-copy cancellation
+and stage cleanup. Focused width/frame-rate/quality controls, injected write
+failure, and headed UI checks passed. The public registry records 136,166,136
+tested bytes and discloses browser-private staging; the narrowest observed
+headroom is only 2.211 MiB, not a cross-device guarantee. The original direct
+writer failed at 250.125 MiB, and an earlier OPFS harness timed out after three
+validated conversions; both rejected outcomes remain in
+`evidence/m2v-to-ogv-candidate-2026-09-25.json` and
+`evidence/m2v-to-ogv-staged-save-2026-09-25.json`. A fixture-only 25-versus-24
+fps validation error was corrected without changing the large source bytes.
+Other OGV/legacy combinations under P-04/M-04 remain partial or unsupported.
+Disposable copies, the large fixture, and raw reports are removed after
+compacting this cycle.
 
 ## Latest hosted verification
+
+Pushed commit `fa25780` passed [no-Docker verify-only run 36105767209](https://github.com/tanishqbaweja/fileconverter/actions/runs/36105767209): production build, public-evidence audit, lint, TypeScript, unit, privacy/offline, and all three browser conversion partitions with independent validators. The scoped [no-Docker FFmpeg reproduction run 36105796022](https://github.com/tanishqbaweja/fileconverter/actions/runs/36105796022) rebuilt and verified the published FFmpeg artifacts byte-for-byte, then removed its build data; its other jobs were intentionally skipped. These runs predate the new route's publication and must be repeated on the publication commit.
 
 The verify-only no-Docker run [35877953801](https://github.com/tanishqbaweja/fileconverter/actions/runs/35877953801)
 passed the build, 243 unit tests, and privacy/offline gate, but the full browser

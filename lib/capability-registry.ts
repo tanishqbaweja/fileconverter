@@ -5756,11 +5756,11 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       ],
       fidelityLimitations: [
         "Video is decoded, downscaled without upscaling to at most 640 pixels wide, and encoded as lossy Theora using quality-based VBR at speed level 2.",
-        "Automatic quality uses Theora quality 7; bounded width, frame-rate, and quality controls are not yet stress-certified for this input.",
+        "Automatic quality uses Theora quality 7; the bounded controls can select smaller-file quality 4, balanced quality 7, or higher quality 9, plus a lower width or frame-rate cap. The maximum-quality setting was separately tested on the maximum-size source.",
       ],
-      maxTestedBytes: null,
-      automatedTestStatus: "failed",
-      public: false,
+      maxTestedBytes: 136_166_136,
+      automatedTestStatus: "passed",
+      public: true,
     },
     {
       id: "mkv-to-avi",

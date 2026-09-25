@@ -2812,6 +2812,24 @@
       }
     },
     {
+      "profileId": "m2v-to-ogv",
+      "maxTestedBytes": 136166136,
+      "repeatableEvidence": {
+        "report": "2026-09-25T08-24-18-566Z-m2v-to-ogv-stress.json",
+        "reportSha256": "c0dbb2498c34c7b499f09c3721886e840e705bc38e9245691e8e4f9c2982b02c",
+        "runs": 3,
+        "sourceBytes": 136166136,
+        "incrementalPrivateMiB": 247.7890625
+      },
+      "maximumSizeEvidence": {
+        "report": "2026-09-25T08-33-48-285Z-m2v-to-ogv-direct-handle-stress.json",
+        "reportSha256": "a8b92c57a1b0799a35a765b3e987da8330d92bdd0fb9c7b0602c73783cdef9b4",
+        "runs": 1,
+        "sourceBytes": 136166136,
+        "incrementalPrivateMiB": 239.625
+      }
+    },
+    {
       "profileId": "m2v-to-webm",
       "maxTestedBytes": 136166136,
       "repeatableEvidence": {

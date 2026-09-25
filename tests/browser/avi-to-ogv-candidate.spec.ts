@@ -544,6 +544,21 @@ test("shows the MPEG-2 OGV route and real progress in the production UI", async 
   }
 });
 
+test("publishes MPEG-2 OGV in the ordinary format selector", async () => {
+  const publicPage = await context.newPage();
+  try {
+    await publicPage.goto("/");
+    await publicPage.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+    await expect(
+      publicPage.locator('[data-testid="format-select"] option[value="m2v-to-ogv"]'),
+    ).toHaveCount(1);
+    await publicPage.locator('[data-testid="format-select"]').selectOption("m2v-to-ogv");
+    await expect(publicPage.getByText("Test-only route:")).toHaveCount(0);
+  } finally {
+    await publicPage.close();
+  }
+});
+
 test("raw MPEG-2 OGV honors bounded Theora width, frame-rate, and quality controls", async () => {
   test.setTimeout(120_000);
   await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);

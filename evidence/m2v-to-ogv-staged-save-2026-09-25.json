@@ -1,7 +1,7 @@
 {
   "date": "2026-09-25",
   "profileId": "m2v-to-ogv",
-  "status": "tested-staged-save-still-hidden",
+  "status": "public-accepted-after-staged-save",
   "implementation": "Production Chrome worker and pinned within-theora Wasm native profile 39; actual MPEG-2 decode and lossy Theora encode, followed in direct-save mode by a quota-preflighted OPFS stage and a single backpressured 256 KiB copy to the selected destination.",
   "browser": "Chrome 153.0.8010.53",
   "stressSource": {
@@ -54,7 +54,37 @@
       "passed": true,
       "cancellationAndCleanupPassed": true,
       "rawReport": "2026-09-25T07-47-50-599Z-m2v-to-ogv-stress.json"
+    },
+    "acceptedThreeRunGate": {
+      "passed": true,
+      "incrementalPrivateMiB": 247.7890625,
+      "limitMiB": 250,
+      "blankBaselinePrivateBytes": 260423680,
+      "loadedIdlePrivateBytes": 327229440,
+      "runs": [
+        { "elapsedSeconds": 197.39369, "incrementalPrivateMiB": 247.7890625, "cleanupDeltaFromLoadedMiB": 9.85546875 },
+        { "elapsedSeconds": 196.95225, "incrementalPrivateMiB": 227.90234375, "cleanupDeltaFromLoadedMiB": 13.28515625 },
+        { "elapsedSeconds": 195.48124, "incrementalPrivateMiB": 230.453125, "cleanupDeltaFromLoadedMiB": 16.078125 }
+      ],
+      "outputBytesEachRun": 86555131,
+      "outputSha256EachRun": "28f559b4afc1843c36df2c43989c6b368285045fca9c57f9175b13e1e8ba9a5e",
+      "fullNativeDecodeAndMidpointSsimEachRun": true,
+      "cancellationAndScratchCleanupPassed": true,
+      "rawReport": "2026-09-25T08-24-18-566Z-m2v-to-ogv-stress.json",
+      "rawReportSha256": "c0dbb2498c34c7b499f09c3721886e840e705bc38e9245691e8e4f9c2982b02c"
     }
+  },
+  "highestQualityColdDirectRun": {
+    "videoQuality": "higher",
+    "theoraQuality": 9,
+    "elapsedSeconds": 196.183195,
+    "incrementalPrivateMiB": 239.625,
+    "outputBytes": 118761511,
+    "outputSha256": "22f65691d267841cd42fb0f1539917be39ece981b93ba721e4d4bef516c5fdc7",
+    "fullNativeDecodeAndVisualValidationPassed": true,
+    "finalCopyCancellationAndScratchCleanupPassed": true,
+    "rawReport": "2026-09-25T08-33-48-285Z-m2v-to-ogv-direct-handle-stress.json",
+    "rawReportSha256": "a8b92c57a1b0799a35a765b3e987da8330d92bdd0fb9c7b0602c73783cdef9b4"
   },
   "boundsInAllCompletedRuns": {
     "maxReadBytes": 262144,
@@ -69,6 +99,6 @@
     "Direct staged-copy write failure and cancellation left neither selected output nor scratch data.",
     "Hosted no-Docker verify-only and scoped FFmpeg reproduction runs 36105767209 and 36105796022 succeeded against pushed commit fa257802640e339a98073ad5a6abefd6c8772ffa."
   ],
-  "publicationDecision": "The route remains hidden/failed in this commit. The OPFS three-run harness did not finish successfully, despite its three validated conversions, and the narrow 3.75 MiB worst direct-memory headroom merits a clean complete acceptance before publication.",
+  "publicationDecision": "The corrected OPFS three-run report passed every gate, joining the earlier accepted three-run direct-save report and an independent cold direct run. The route is public at the unchanged 250 MiB limit. The worst measured default OPFS headroom is narrow at 2.2109375 MiB, so this is not a guarantee across different browser versions or machines; retest after relevant runtime changes. The earlier harness timeout and direct-memory rejection remain preserved as historical failures.",
   "cleanup": "Generated source, converted browser copies, raw JSON/CSV/HTML reports, and browser profiles are deleted after compaction; protected test.mkv was not used or modified."
 }
