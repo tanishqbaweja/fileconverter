@@ -1,0 +1,52 @@
+{
+  "date": "2026-09-25",
+  "profileId": "mp4-to-ogv",
+  "status": "rejected-memory-and-speed-still-hidden",
+  "implementationTested": "Production Chrome H.264 decode and Theora encode using the published within-theora Wasm, followed by quota-preflighted OPFS staging and a single backpressured 256 KiB copy to the selected destination.",
+  "source": {
+    "bytes": 147242147,
+    "sha256": "e1142ff2b46eb7bce7ee4da86fc864c0d61cc571161ce448228f0b9f98179bef",
+    "generator": "scripts/generate-container-webm-stress-fixtures.mjs h264-aac-128m.mp4",
+    "protectedInputSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "output": {
+    "bytes": 8840421,
+    "sha256": "c09cff588b3bb506e76bb7b4d84d6b163cbf7fd5c99d8fa54f3bfaf8a1da80f0",
+    "identity": "Identical to the independently decoded 1,560-frame Ogg/Theora output in the earlier candidate evidence, not an extension rename."
+  },
+  "limitMiB": 250,
+  "formula": "peak complete Chrome process-tree private memory during conversion minus stable clean blank-Chrome process-tree private memory",
+  "coldRuns": [
+    {
+      "elapsedSeconds": 33.868805,
+      "incrementalPrivateMiB": 240.51953125,
+      "blankBaselinePrivateBytes": 278425600,
+      "cleanupDeltaFromLoadedMiB": 10.30078125,
+      "conversionValidated": true,
+      "testStatus": "failed-after-conversion",
+      "testFailure": "The 8.8 MB staged final copy completed before Playwright could click Cancel; this is a cancellation-checkpoint race, not a conversion or output failure.",
+      "rawReport": "2026-09-25T15-20-01-295Z-mp4-to-ogv-direct-handle-stress-failure.json",
+      "rawReportSha256": "7574fa7ca23f2eaac49e18cdeaed4563cffdfa25536807bca441f56e41f93ae6"
+    },
+    {
+      "elapsedSeconds": 34.168035,
+      "incrementalPrivateMiB": 264.4453125,
+      "blankBaselinePrivateBytes": 254545920,
+      "cleanupDeltaFromLoadedMiB": 9.4609375,
+      "conversionValidated": true,
+      "earlyEncodingCancellationAndCleanupPassed": true,
+      "memoryGatePassed": false,
+      "rawReport": "2026-09-25T15-23-20-128Z-mp4-to-ogv-direct-handle-stress.json",
+      "rawReportSha256": "b8115ea3d56bde67ff13a02de880a27905677e6ad776ece4afa2dab7ea3ec09e"
+    }
+  ],
+  "bounds": {
+    "maxReadBytes": 262144,
+    "maxWriteAndQueuedBytes": 262144,
+    "maxPendingOperations": 1,
+    "peakWasmMiB": 32
+  },
+  "diagnosis": "Both sessions had similar absolute peak process-tree private memory (506.047 versus 507.199 MiB), but the second stable clean blank-Chrome baseline was about 22.773 MiB lower, so the required formula exposed 264.445 MiB. The renderer and GPU process accounted for most of the growth. A favorable single cold run cannot override the failing repeat. The staged path also took about 34 seconds rather than the earlier roughly 22-second MP4 candidate, so it was not kept as an optimization.",
+  "decision": "Revert MP4-specific staging code and keep mp4-to-ogv failed/hidden. Keep the selective deterministic fixture-generation option because it avoids generating an unrelated 147 MB MOV. Preserve the older direct-memory rejection separately in evidence/mp4-to-ogv-candidate-2026-09-15.json.",
+  "cleanup": "After compacting this evidence, delete the generated project-local 147 MB MP4, converted copies, and this cycle's raw JSON/CSV/HTML reports; retain the tracked fixture manifest, the older 2026-09-19 diagnostic report, and protected test.mkv unchanged."
+}

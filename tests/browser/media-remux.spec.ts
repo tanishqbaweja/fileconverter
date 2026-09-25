@@ -6720,7 +6720,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to MPEG-4 MP4", async () =
     100_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: ["normalizes variable frame timing"],
+      expectedWarningFragments: ["synthesizes timing from the detected encoded MPEG-2 sequence-header frame rate"],
       validate: validateMpeg2VideoOutput,
     },
   );
@@ -6734,7 +6734,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP8 WebM", async () => 
     50_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: ["normalizes variable frame timing"],
+      expectedWarningFragments: ["synthesizes timing from the detected encoded MPEG-2 sequence-header frame rate"],
       validate: validateMpeg2VideoOutput,
     },
   );
@@ -6748,7 +6748,7 @@ test("browser FFmpeg converts MPEG-2 elementary video to VP9 WebM", async () => 
     50_000,
     m2vFixturePath,
     {
-      expectedWarningFragments: ["normalizes variable frame timing"],
+      expectedWarningFragments: ["synthesizes timing from the detected encoded MPEG-2 sequence-header frame rate"],
       validate: validateMpeg2VideoOutput,
     },
   );

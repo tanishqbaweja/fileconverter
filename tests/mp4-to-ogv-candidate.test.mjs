@@ -31,6 +31,25 @@ test("MP4 to OGV is explicitly failed and hidden after its memory rejection", ()
   );
 });
 
+test("MP4 staged-save follow-up is rejected and selective fixture generation is retained", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "mp4-to-ogv");
+  const evidence = JSON.parse(
+    readFileSync("evidence/mp4-to-ogv-staged-save-rejection-2026-09-25.json", "utf8"),
+  );
+  const generator = readFileSync("scripts/generate-container-webm-stress-fixtures.mjs", "utf8");
+  const cleanup = readFileSync("scripts/cleanup-generated.mjs", "utf8");
+  assert.equal(profile?.public, false);
+  assert.equal(profile?.automatedTestStatus, "failed");
+  assert.equal(evidence.status, "rejected-memory-and-speed-still-hidden");
+  assert.equal(evidence.source.bytes, 147_242_147);
+  assert.equal(evidence.output.bytes, 8_840_421);
+  assert.equal(evidence.coldRuns[0].testStatus, "failed-after-conversion");
+  assert.equal(evidence.coldRuns[1].earlyEncodingCancellationAndCleanupPassed, true);
+  assert.ok(evidence.coldRuns[1].incrementalPrivateMiB > evidence.limitMiB);
+  assert.match(generator, /const requestedNames = process\.argv\.slice\(2\)/);
+  assert.match(cleanup, /--mp4-ogv-staged-rejection-only/);
+});
+
 test("raw MPEG-2 to OGV is public only after complete staged-save acceptance", () => {
   const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
   assert.ok(profile);

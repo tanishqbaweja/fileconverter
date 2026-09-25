@@ -15,14 +15,25 @@ const expectedSourceSha256 =
   "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34";
 const minimumBytes = 128 * 1024 * 1024;
 const durationSeconds = 65;
+const fixtures = [
+  { name: "h264-aac-128m.mp4", format: "mp4", title: "MP4" },
+  { name: "h264-aac-128m.mov", format: "mov", title: "QuickTime MOV" },
+];
+const requestedNames = process.argv.slice(2);
+const selectedFixtures = requestedNames.length === 0
+  ? fixtures
+  : fixtures.filter(({ name }) => requestedNames.includes(name));
+if (requestedNames.length > 0 && (
+  selectedFixtures.length !== requestedNames.length ||
+  new Set(requestedNames).size !== requestedNames.length
+)) {
+  throw new Error(`Unknown or duplicate fixture selection: ${requestedNames.join(", ")}`);
+}
 
 await assertProtectedSource();
 await mkdir(fixtureRoot, { recursive: true });
 
-for (const fixture of [
-  { name: "h264-aac-128m.mp4", format: "mp4", title: "MP4" },
-  { name: "h264-aac-128m.mov", format: "mov", title: "QuickTime MOV" },
-]) {
+for (const fixture of selectedFixtures) {
   const fixturePath = path.join(fixtureRoot, fixture.name);
   await execFileAsync(
     "ffmpeg",

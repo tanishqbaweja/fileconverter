@@ -623,6 +623,50 @@ if (process.argv.includes("--m2v-ogv-candidate-only")) {
   process.exit(0);
 }
 
+if (process.argv.includes("--mp4-ogv-staged-rejection-only")) {
+  const fixture = path.resolve(stressFixturesRoot, "media", "h264-aac-128m.mp4");
+  const manifest = `${fixture}.json`;
+  const expectedFixtureSha256 = "e1142ff2b46eb7bce7ee4da86fc864c0d61cc571161ce448228f0b9f98179bef";
+  const reportProofs = [
+    ["2026-09-25T15-20-01-295Z-mp4-to-ogv-direct-handle-stress-failure", "7574fa7ca23f2eaac49e18cdeaed4563cffdfa25536807bca441f56e41f93ae6"],
+    ["2026-09-25T15-23-20-128Z-mp4-to-ogv-direct-handle-stress", "b8115ea3d56bde67ff13a02de880a27905677e6ad776ece4afa2dab7ea3ec09e"],
+  ];
+  assertInside(stressFixturesRoot, fixture);
+  assertInside(stressFixturesRoot, manifest);
+  if ((await hashExactRegularFile(protectedTestMkv.path, protectedTestMkv.bytes)) !== protectedTestMkv.sha256) {
+    throw new Error("Protected test.mkv differs before MP4-to-OGV cleanup.");
+  }
+  const fixtureSha256 = await hashExactRegularFile(fixture, 147_242_147);
+  if (fixtureSha256 !== expectedFixtureSha256) {
+    throw new Error("Generated MP4 differs from compact rejection evidence.");
+  }
+  const fixtureManifest = JSON.parse(await readFile(manifest, "utf8"));
+  if (fixtureManifest.bytes !== 147_242_147 || fixtureManifest.sha256 !== expectedFixtureSha256) {
+    throw new Error("Generated MP4 manifest differs from compact rejection evidence.");
+  }
+  for (const [stem, expectedSha256] of reportProofs) {
+    const report = path.resolve(reportRoot, `${stem}.json`);
+    assertInside(reportRoot, report);
+    const reportStat = await stat(report);
+    if ((await hashExactRegularFile(report, reportStat.size)) !== expectedSha256) {
+      throw new Error(`MP4-to-OGV report differs from compact evidence: ${stem}`);
+    }
+  }
+  await unlink(fixture);
+  for (const [stem] of reportProofs) {
+    for (const extension of ["json", "csv", "html"]) {
+      const report = path.resolve(reportRoot, `${stem}.${extension}`);
+      assertInside(reportRoot, report);
+      await rm(report, { force: true });
+    }
+  }
+  if ((await hashExactRegularFile(protectedTestMkv.path, protectedTestMkv.bytes)) !== protectedTestMkv.sha256) {
+    throw new Error("Protected test.mkv changed during MP4-to-OGV cleanup.");
+  }
+  process.stdout.write("Removed the hash-verified generated MP4 and six scoped report files; retained its tracked manifest, protected test.mkv, and the older failure report.\n");
+  process.exit(0);
+}
+
 if (process.argv.includes("--current-bmp-proof-artifacts-only")) {
   const proofPath = path.resolve(
     projectRoot,
