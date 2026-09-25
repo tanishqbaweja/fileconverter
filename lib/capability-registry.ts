@@ -5752,6 +5752,7 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       metadataLimitations: [
         "Only the MPEG-2 elementary video stream is converted; elementary streams contain no audio, chapters, attachments, or general container metadata.",
         "Raw MPEG-2 has no container timestamps; OGV timing is synthesized from the encoded sequence-header frame rate. Color descriptors cannot all be represented in OGV.",
+        "Direct selected-destination saves use quota-preflighted browser-private staging, then copy through one 256 KiB buffer and delete the temporary file on every terminal path.",
       ],
       fidelityLimitations: [
         "Video is decoded, downscaled without upscaling to at most 640 pixels wide, and encoded as lossy Theora using quality-based VBR at speed level 2.",

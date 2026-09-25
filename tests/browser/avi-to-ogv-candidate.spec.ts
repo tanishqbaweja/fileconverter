@@ -228,7 +228,7 @@ test.beforeAll(async () => {
   );
   context = await chromium.launchPersistentContext(profileRoot, {
     executablePath: chromePath,
-    headless: true,
+    headless: process.env.WITHIN_HEADED_M2V !== "1",
     acceptDownloads: false,
     baseURL,
   });
@@ -484,6 +484,98 @@ test("genuinely re-encodes raw MPEG-2 video through the hidden Ogg Theora candid
     expect(Number(output.streams[0].nb_read_frames)).toBe(
       Number(source.streams[0].nb_read_frames),
     );
+    await execFileAsync(
+      "ffmpeg",
+      ["-v", "error", "-nostdin", "-i", outputPath, "-f", "null", "-"],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+  } finally {
+    await rm(outputPath, { force: true });
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+  }
+});
+
+test("shows the MPEG-2 OGV route and real progress in the production UI", async () => {
+  test.setTimeout(120_000);
+  await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+  let outputName: string | null = null;
+  try {
+    await expect(page.getByText("mpeg2-video-source.m2v", { exact: true })).toBeVisible();
+    const format = page.locator('[data-testid="format-select"]');
+    await expect(format.locator('option[value="m2v-to-ogv"]')).toHaveCount(1);
+    await format.selectOption("m2v-to-ogv");
+    await page.getByText("What this destination cannot preserve").click();
+    await expect(page.getByText("MPEG-2 elementary video stream", { exact: false })).toBeVisible();
+    if (process.env.WITHIN_HEADED_M2V === "1") {
+      await mkdir(path.join(projectRoot, "output", "playwright"), { recursive: true });
+      await page.getByRole("region", { name: "Convert on this device" }).screenshot({
+        path: path.join(projectRoot, "output", "playwright", "m2v-ogv-selected.png"),
+      });
+    }
+    await expect(page.locator('[data-testid="convert-button"]')).toBeEnabled();
+    await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction(
+      () => window.__WITHIN_TEST__?.getState().jobState === "complete",
+      undefined,
+      { timeout: 60_000 },
+    );
+    const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+    outputName = state?.opfsName ?? null;
+    expect(outputName).toBeTruthy();
+    expect(state?.metrics?.inputBytes).toBeGreaterThan(0);
+    expect(state?.metrics?.outputBytes).toBeGreaterThan(0);
+    expect(state?.metrics?.pendingOperations).toBe(0);
+    expect(state?.warnings?.join(" ")).toContain("encoded MPEG-2 sequence-header frame rate");
+    expect(state?.warnings?.join(" ")).not.toContain("source average frame rate");
+    await expect(page.locator('[data-testid="capability-blocker"]')).toHaveCount(0);
+    if (process.env.WITHIN_HEADED_M2V === "1") {
+      await page.getByRole("region", { name: "Convert on this device" }).screenshot({
+        path: path.join(projectRoot, "output", "playwright", "m2v-ogv-complete.png"),
+      });
+    }
+  } finally {
+    if (outputName) {
+      await page.evaluate(async (entryName) => {
+        const root = await navigator.storage.getDirectory();
+        await root.removeEntry(entryName).catch(() => {});
+      }, outputName);
+    }
+    await page.locator('[data-testid="file-input"]').setInputFiles(fixturePath);
+  }
+});
+
+test("raw MPEG-2 OGV honors bounded Theora width, frame-rate, and quality controls", async () => {
+  test.setTimeout(120_000);
+  await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+  const outputName = `within-test-m2v-to-ogv-options-${crypto.randomUUID()}.ogv`;
+  try {
+    const result = await runConversion(outputName, undefined, {
+      codec: "theora",
+      maxWidth: 320,
+      bitRateBps: 0,
+      frameRateFps: 15,
+      quality: "smaller",
+    }, "m2v-to-ogv");
+    expect(result.type, result.message).toBe("complete");
+    expect(result.metrics.peakPendingOperations).toBeLessThanOrEqual(1);
+    await copyAndDeleteOutput(outputName);
+    const { stdout } = await execFileAsync(
+      "ffprobe",
+      [
+        "-v", "error", "-count_frames", "-select_streams", "v:0",
+        "-show_entries", "stream=codec_name,width,height,r_frame_rate,nb_read_frames",
+        "-of", "json", outputPath,
+      ],
+      { cwd: projectRoot, windowsHide: true, maxBuffer: 1024 * 1024 },
+    );
+    const video = JSON.parse(stdout).streams?.[0];
+    expect(video).toEqual({
+      codec_name: "theora",
+      width: 320,
+      height: 180,
+      r_frame_rate: "15/1",
+      nb_read_frames: "60",
+    });
     await execFileAsync(
       "ffmpeg",
       ["-v", "error", "-nostdin", "-i", outputPath, "-f", "null", "-"],

@@ -651,7 +651,9 @@ function planVideoReencode(
           : "the certified 2,000 kb/s target";
       const frameRate = videoOptions?.frameRateFps
         ? `a ${videoOptions.frameRateFps} fps cap (never frame-rate upconversion)`
-        : "the source average frame rate";
+        : profile.input === "m2v"
+          ? "the detected encoded MPEG-2 sequence-header frame rate"
+          : "the source average frame rate";
       const quality =
         !videoOptions || videoOptions.quality === "automatic"
           ? "the fastest certified automatic quality policy"

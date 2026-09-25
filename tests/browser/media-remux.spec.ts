@@ -7391,6 +7391,38 @@ test("AVI stream copy propagates a bounded write failure and removes the partial
   expect(abandonedSize === null || abandonedSize === 0).toBe(true);
 });
 
+test("hidden MPEG-2 to OGV staged final copy removes a failed destination and private stage", async () => {
+  const outputName = "mpeg2-video-source.ogv";
+  await page.goto("/?test=1&directory=1&fault=write");
+  await page.waitForFunction(
+    () => window.__WITHIN_TEST__?.getState().workerStatus === "ready",
+  );
+  await page.locator('[data-testid="file-input"]').setInputFiles(m2vFixturePath);
+  await page.locator('[data-testid="format-select"]').selectOption("m2v-to-ogv");
+  await startEnabledConversion();
+  await expect
+    .poll(async () => (await currentState()).jobState, { timeout: 30_000 })
+    .toBe("error");
+  const state = await currentState();
+  expect(state.error?.toLowerCase()).toContain("destination rejected a bounded write");
+  expect(state.opfsName).toBeNull();
+  expect(state.metrics?.pendingOperations).toBe(0);
+  expect(state.metrics?.queuedBytes).toBe(0);
+  expect(state.metrics?.peakPendingOperations).toBeLessThanOrEqual(1);
+  expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
+  const leftovers = await page.evaluate(async (entryName) => {
+    const root = await navigator.storage.getDirectory();
+    const names: string[] = [];
+    for await (const [name] of root.entries()) {
+      if (name === entryName || name.startsWith("within-stage-m2v-to-ogv-")) {
+        names.push(name);
+      }
+    }
+    return names;
+  }, outputName);
+  expect(leftovers).toEqual([]);
+});
+
 for (const [sourceFormat, profileId] of [
   ["mkv", "mkv-to-avi"],
   ...compatibleAviSourceRoutes,

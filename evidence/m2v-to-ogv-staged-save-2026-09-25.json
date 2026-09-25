@@ -1,0 +1,74 @@
+{
+  "date": "2026-09-25",
+  "profileId": "m2v-to-ogv",
+  "status": "tested-staged-save-still-hidden",
+  "implementation": "Production Chrome worker and pinned within-theora Wasm native profile 39; actual MPEG-2 decode and lossy Theora encode, followed in direct-save mode by a quota-preflighted OPFS stage and a single backpressured 256 KiB copy to the selected destination.",
+  "browser": "Chrome 153.0.8010.53",
+  "stressSource": {
+    "bytes": 136166136,
+    "sha256": "d76146fc409a04f045d4dbbc29f0943de59a6ad38f9ef29a82b58acf104deebd",
+    "encodedFrameRate": "24/1",
+    "decodedFrames": 11904,
+    "durationSeconds": 496
+  },
+  "commonOutput": {
+    "bytes": 86555131,
+    "sha256": "28f559b4afc1843c36df2c43989c6b368285045fca9c57f9175b13e1e8ba9a5e",
+    "container": "ogg",
+    "codec": "theora",
+    "decodedFrames": 11904,
+    "fullNativeDecode": true,
+    "midpointSsim": 0.826148
+  },
+  "memoryFormula": "peak complete Chrome process-tree private memory during conversion minus stable clean blank-Chrome process-tree private memory",
+  "limitMiB": 250,
+  "directSelectedDestination": {
+    "independentColdRun": {
+      "elapsedSeconds": 195.103085,
+      "incrementalPrivateMiB": 246.25,
+      "passed": true,
+      "rawReport": "2026-09-25T07-13-19-424Z-m2v-to-ogv-direct-handle-stress.json"
+    },
+    "threeRunsSameSession": [
+      { "elapsedSeconds": 194.62779, "incrementalPrivateMiB": 245.32421875 },
+      { "elapsedSeconds": 194.460455, "incrementalPrivateMiB": 225.078125 },
+      { "elapsedSeconds": 193.88449, "incrementalPrivateMiB": 221.140625 }
+    ],
+    "threeRunReportPassed": true,
+    "rawThreeRunReport": "2026-09-25T07-28-19-785Z-m2v-to-ogv-direct-handle-stress.json",
+    "finalCopyCancellationAndScratchCleanupPassed": true,
+    "injectedFinalWriteFailureRemovedPartialDestinationAndStage": true
+  },
+  "opfs": {
+    "threeCompletedRunsSameSession": [
+      { "elapsedSeconds": 194.662745, "incrementalPrivateMiB": 245.671875 },
+      { "elapsedSeconds": 193.878655, "incrementalPrivateMiB": 217.98046875 },
+      { "elapsedSeconds": 194.6421, "incrementalPrivateMiB": 232.79296875 }
+    ],
+    "threeRunHarnessPassed": false,
+    "threeRunHarnessFailure": "After all three full conversions and independent validations completed, the test harness incorrectly waited for the direct-only staged-final-copy cancellation phase in OPFS mode and timed out. This is not reported as an accepted three-run test.",
+    "rawThreeRunFailureReport": "2026-09-25T07-42-07-280Z-m2v-to-ogv-stress-failure.json",
+    "correctedIndependentRun": {
+      "elapsedSeconds": 196.77793,
+      "incrementalPrivateMiB": 227.08984375,
+      "passed": true,
+      "cancellationAndCleanupPassed": true,
+      "rawReport": "2026-09-25T07-47-50-599Z-m2v-to-ogv-stress.json"
+    }
+  },
+  "boundsInAllCompletedRuns": {
+    "maxReadBytes": 262144,
+    "maxDirectWriteAndQueuedBytes": 262144,
+    "maxOpfsWriteAndQueuedBytes": 64653,
+    "maxPendingOperations": 1,
+    "maxWasmMemoryMiB": 32
+  },
+  "additionalChecks": [
+    "Focused real-browser width, frame-rate, and quality controls produced 320x180 15 fps genuine OGV with 60 fully decoded frames.",
+    "Headed Chrome selected and completed the route; screenshots were inspected, and no false worker-missing capability blocker remained after completion.",
+    "Direct staged-copy write failure and cancellation left neither selected output nor scratch data.",
+    "Hosted no-Docker verify-only and scoped FFmpeg reproduction runs 36105767209 and 36105796022 succeeded against pushed commit fa257802640e339a98073ad5a6abefd6c8772ffa."
+  ],
+  "publicationDecision": "The route remains hidden/failed in this commit. The OPFS three-run harness did not finish successfully, despite its three validated conversions, and the narrow 3.75 MiB worst direct-memory headroom merits a clean complete acceptance before publication.",
+  "cleanup": "Generated source, converted browser copies, raw JSON/CSV/HTML reports, and browser profiles are deleted after compaction; protected test.mkv was not used or modified."
+}

@@ -80,6 +80,7 @@ type RemuxModuleFactory = (options: {
 
 export interface MediaRemuxOptions {
   file: File;
+  profileId: string;
   writable: RandomAccessDestination;
   remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39;
   audioOptions?: AudioConversionOptions;
@@ -116,6 +117,7 @@ function assertBoundedChunk(
 
 export async function runMediaRemux({
   file,
+  profileId,
   writable,
   remuxProfile,
   audioOptions,
@@ -560,7 +562,16 @@ export async function runMediaRemux({
     cancelled: isCancelled,
     message(level, text) {
       if (level === 1) {
-        post({ type: "warning", jobId, message: text });
+        const warning = profileId.startsWith("m2v-to-")
+          ? text.replace(
+              "normalizes variable frame timing to the source average frame rate.",
+              "synthesizes timing from the detected encoded MPEG-2 sequence-header frame rate because the raw source has no container timestamps.",
+            ).replace(
+              "The selected frame-rate cap is at or above the source average, so the source average frame rate is retained without upconversion.",
+              "The selected frame-rate cap is at or above the encoded MPEG-2 frame rate, so that frame rate is retained without upconversion.",
+            )
+          : text;
+        post({ type: "warning", jobId, message: warning });
       } else if (level >= 2) {
         recordEngineError(text);
       }

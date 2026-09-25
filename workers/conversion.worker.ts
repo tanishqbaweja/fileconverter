@@ -512,7 +512,8 @@ async function openStagedDirectDestination(
       profileId !== "mpeg-ts-to-avi" &&
       profileId !== "mkv-to-mp4" &&
       profileId !== "avi-to-3gp" &&
-      profileId !== "avi-to-mpeg-ts") ||
+      profileId !== "avi-to-mpeg-ts" &&
+      profileId !== "m2v-to-ogv") ||
     stagingName.length > 160 ||
     /[\\/]/.test(stagingName)
   ) {
@@ -570,6 +571,8 @@ async function openStagedDirectDestination(
         ? "Copying staged 3GP to selected destination"
         : profileId === "avi-to-mpeg-ts"
           ? "Copying staged MPEG-TS to selected destination"
+          : profileId === "m2v-to-ogv"
+            ? "Copying staged OGV to selected destination"
           : "Copying staged MP4 to selected destination";
   const copyChunkBytes =
     profileId === "mkv-to-mp4"
@@ -5076,6 +5079,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     ) {
       await runMediaRemux({
         file,
+        profileId,
         writable: destination.writable,
         audioOptions,
         videoOptions,

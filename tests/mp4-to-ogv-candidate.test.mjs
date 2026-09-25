@@ -31,7 +31,7 @@ test("MP4 to OGV is explicitly failed and hidden after its memory rejection", ()
   );
 });
 
-test("raw MPEG-2 to OGV remains hidden after the direct-save memory failure", () => {
+test("raw MPEG-2 to OGV remains hidden pending complete staged-save acceptance", () => {
   const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
   assert.ok(profile);
   assert.equal(profile.input, "m2v");
@@ -56,6 +56,20 @@ test("raw MPEG-2 to OGV remains hidden after the direct-save memory failure", ()
   assert.ok(evidence.runs.find(({ mode }) => mode === "direct-handle")?.incrementalPrivateMiB > 250);
   assert.equal(evidence.commonOutput.fullNativeDecode, true);
   assert.equal(evidence.commonOutput.packetsAndDecodedFrames, evidence.stressSource.decodedFrames);
+  const stagedEvidence = JSON.parse(
+    readFileSync("evidence/m2v-to-ogv-staged-save-2026-09-25.json", "utf8"),
+  );
+  assert.equal(stagedEvidence.status, "tested-staged-save-still-hidden");
+  assert.equal(stagedEvidence.directSelectedDestination.threeRunReportPassed, true);
+  assert.equal(stagedEvidence.opfs.threeRunHarnessPassed, false);
+  assert.equal(stagedEvidence.opfs.correctedIndependentRun.passed, true);
+  assert.equal(stagedEvidence.commonOutput.fullNativeDecode, true);
+  assert.equal(stagedEvidence.commonOutput.decodedFrames, stagedEvidence.stressSource.decodedFrames);
+  assert.ok(
+    stagedEvidence.directSelectedDestination.threeRunsSameSession.every(
+      ({ incrementalPrivateMiB }) => incrementalPrivateMiB <= stagedEvidence.limitMiB,
+    ),
+  );
 });
 
 test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () => {

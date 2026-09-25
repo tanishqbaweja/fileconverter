@@ -29,11 +29,19 @@ The first large validation exposed an error in the raw-fixture manifest:
 FFprobe estimated `avg_frame_rate=25/1` while the encoded sequence header is
 24/1. Both generators and the tracked small manifest now use the encoded rate.
 The large input bytes were unchanged. Details and rejected-result history are
-in `evidence/m2v-to-ogv-candidate-2026-09-25.json`. Next: reduce direct-save
-process-tree memory at identical source/settings, then run three repeatable
-stress conversions per mode, write-failure and headed UI checks before any
-promotion. Disposable converted files, large fixture, and raw reports are
-removed after compacting this cycle.
+in `evidence/m2v-to-ogv-candidate-2026-09-25.json`. A subsequent staged direct
+save passed one clean run at 246.25 MiB and three same-session runs at
+245.324/225.078/221.141 MiB, with identical genuine output and approximately
+194–195-second elapsed time. Three OPFS conversions independently validated at
+245.672/217.980/232.793 MiB, but their harness timed out afterward by waiting
+for a direct-only cancellation phase. That harness branch was corrected and a
+separate OPFS run passed at 227.090 MiB, including cancellation. Direct final
+copy cancellation, injected write failure, width/frame-rate/quality controls,
+and headed UI checks passed. The new results are compacted in
+`evidence/m2v-to-ogv-staged-save-2026-09-25.json`. The route remains hidden:
+rerun the complete corrected three-run OPFS gate before public promotion, and
+watch the narrow 3.75 MiB worst direct-save memory headroom. Disposable copies,
+the large fixture, and raw reports are removed after compaction.
 
 ## Latest hosted verification
 

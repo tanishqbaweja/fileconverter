@@ -87,6 +87,10 @@ const m2vOgvCandidateReportStems = [
   "2026-09-24T20-33-03-821Z-m2v-to-ogv-stress-failure",
   "2026-09-24T20-38-13-746Z-m2v-to-ogv-stress",
   "2026-09-24T20-42-55-885Z-m2v-to-ogv-direct-handle-stress",
+  "2026-09-25T07-13-19-424Z-m2v-to-ogv-direct-handle-stress",
+  "2026-09-25T07-28-19-785Z-m2v-to-ogv-direct-handle-stress",
+  "2026-09-25T07-42-07-280Z-m2v-to-ogv-stress-failure",
+  "2026-09-25T07-47-50-599Z-m2v-to-ogv-stress",
 ];
 const mp4AviCurrentReports = [
   "2026-09-21T06-13-01-144Z-mp4-to-avi-direct-handle-stress",
@@ -608,7 +612,12 @@ if (process.argv.includes("--m2v-ogv-candidate-only")) {
   const playwrightStatus = path.resolve(playwrightOutputRoot, "artifacts", ".last-run.json");
   assertInside(playwrightOutputRoot, playwrightStatus);
   await rm(playwrightStatus, { force: true });
-  process.stdout.write("Removed the hash-verified MPEG-2 candidate source, its nine raw report files, and the disposable Playwright status file. Retained the small tracked fixture manifest and unrelated reports.\n");
+  for (const name of ["m2v-ogv-complete.png", "m2v-ogv-selected.png"]) {
+    const screenshot = path.resolve(playwrightOutputRoot, name);
+    assertInside(playwrightOutputRoot, screenshot);
+    await rm(screenshot, { force: true });
+  }
+  process.stdout.write(`Removed the hash-verified MPEG-2 candidate source, ${m2vOgvCandidateReportStems.length * 3} raw report files, two disposable screenshots, and the Playwright status file. Retained the small tracked fixture manifest and unrelated reports.\n`);
   process.exit(0);
 }
 

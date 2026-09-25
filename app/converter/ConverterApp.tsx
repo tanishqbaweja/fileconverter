@@ -572,7 +572,8 @@ export function ConverterApp() {
           batch.profile.id !== "mpeg-ts-to-avi" &&
           batch.profile.id !== "mkv-to-mp4" &&
           batch.profile.id !== "avi-to-3gp" &&
-          batch.profile.id !== "avi-to-mpeg-ts"
+          batch.profile.id !== "avi-to-mpeg-ts" &&
+          batch.profile.id !== "m2v-to-ogv"
         ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };
@@ -1237,7 +1238,7 @@ export function ConverterApp() {
     if (!capabilities.secure) missingCapabilities.push("a secure HTTPS or localhost context");
     if (!capabilities.workers) {
       missingCapabilities.push("the Web Worker API");
-    } else if (!workerReady) {
+    } else if (workerFailed) {
       missingCapabilities.push("a conversion worker that starts successfully");
     }
     for (const requirement of selectedProfile?.browserRequirements ?? []) {
@@ -1257,7 +1258,8 @@ export function ConverterApp() {
     }
   }
   const uniqueMissingCapabilities = [...new Set(missingCapabilities)];
-  const featureReady = Boolean(capabilities && uniqueMissingCapabilities.length === 0);
+  const featureReady = Boolean(capabilities && workerReady && uniqueMissingCapabilities.length === 0);
+  const workerStarting = Boolean(capabilities?.workers && !workerReady && !workerFailed);
 
   const capabilityItems: [string, boolean][] = capabilities
     ? [
@@ -1342,7 +1344,7 @@ export function ConverterApp() {
               <h2 id="convert-title">Convert on this device</h2>
             </div>
             <span className={`readiness ${featureReady ? "ready" : "limited"}`}>
-              {featureReady ? "Ready" : "Check browser"}
+              {featureReady ? "Ready" : workerStarting ? "Starting worker" : "Check browser"}
             </span>
           </div>
 
@@ -2125,7 +2127,7 @@ export function ConverterApp() {
                   {selectedProfile.automatedTestStatus === "passed" &&
                   selectedProfile.maxTestedBytes != null
                     ? `Correctness and complete-browser memory tested through ${formatBytes(selectedProfile.maxTestedBytes)}.`
-                    : "Test-only route: correctness and complete-browser memory evidence is still pending."}
+                    : "Test-only route: not certified for public use; consult the route limitations and retained test evidence."}
                 </div>
               ) : null}
 

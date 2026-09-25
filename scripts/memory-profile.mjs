@@ -1464,7 +1464,9 @@ try {
           activeProfileId === "mpeg-ts-to-avi" ||
           activeProfileId === "mkv-to-mp4" ||
           activeProfileId === "avi-to-3gp" ||
-          activeProfileId === "avi-to-mpeg-ts"
+          activeProfileId === "avi-to-mpeg-ts" ||
+          (activeProfileId === "m2v-to-ogv" &&
+            activeDestinationMode === "direct-handle")
             ? state.phase ===
                 (activeProfileId === "mp4-to-avi" ||
                 activeProfileId === "mov-to-avi" ||
@@ -1476,6 +1478,8 @@ try {
                     ? "Copying staged 3GP to selected destination"
                     : activeProfileId === "avi-to-mpeg-ts"
                       ? "Copying staged MPEG-TS to selected destination"
+                    : activeProfileId === "m2v-to-ogv"
+                      ? "Copying staged OGV to selected destination"
                     : "Copying staged MP4 to selected destination") &&
               (state.metrics?.outputBytes ?? 0) >= 1024 * 1024
             : activeProfileId === "m4a-to-aiff"
@@ -1485,7 +1489,11 @@ try {
         state?.jobState === "complete" ||
         state?.jobState === "error"
       );
-    }, { activeProfileId: profileId, activeDestinationMode: destinationMode }, { timeout: 120_000 });
+    }, { activeProfileId: profileId, activeDestinationMode: destinationMode }, {
+      timeout: profileId === "m2v-to-ogv" && destinationMode === "direct-handle"
+        ? 300_000
+        : 120_000,
+    });
     const cancellableState = await page.evaluate(() =>
       window.__WITHIN_TEST__?.getState(),
     );

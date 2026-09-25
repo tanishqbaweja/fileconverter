@@ -132,6 +132,21 @@ test("AVI-to-MPEG-TS discloses private staging and validates final-copy cancella
   assert.equal(aviMpegTsEvidence.dockerUsed, false);
 });
 
+test("hidden MPEG-2 to OGV scopes bounded direct staging and final-copy cancellation", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
+  assert.equal(profile?.public, false);
+  assert.ok(profile?.metadataLimitations.some((note) =>
+    note.includes("browser-private staging") &&
+    note.includes("256 KiB") &&
+    note.includes("delete the temporary file"),
+  ));
+  assert.match(app, /batch\.profile\.id !== "m2v-to-ogv"/);
+  assert.match(worker, /profileId !== "m2v-to-ogv"/);
+  assert.match(worker, /"Copying staged OGV to selected destination"/);
+  assert.match(profiler, /activeProfileId === "m2v-to-ogv" &&\s*activeDestinationMode === "direct-handle"/);
+  assert.match(profiler, /activeProfileId === "m2v-to-ogv"[\s\S]*"Copying staged OGV to selected destination"/);
+});
+
 test("direct MKV-to-MP4 keeps the 1 MiB specialist without a writer worker", () => {
   assert.match(
     worker,
