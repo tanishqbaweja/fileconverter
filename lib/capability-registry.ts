@@ -5736,6 +5736,32 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       public: false,
     },
     {
+      id: "m2v-to-ogv",
+      input: "m2v",
+      output: "ogv",
+      engine: "ffmpeg-video",
+      route: "re-encode",
+      browserRequirements: [
+        "WebAssembly",
+        "SharedArrayBuffer",
+        "cross-origin isolation",
+        "File System Access",
+      ],
+      cpuClass: "high",
+      memoryClass: "bounded-medium",
+      metadataLimitations: [
+        "Only the MPEG-2 elementary video stream is converted; elementary streams contain no audio, chapters, attachments, or general container metadata.",
+        "Raw MPEG-2 has no container timestamps; OGV timing is synthesized from the encoded sequence-header frame rate. Color descriptors cannot all be represented in OGV.",
+      ],
+      fidelityLimitations: [
+        "Video is decoded, downscaled without upscaling to at most 640 pixels wide, and encoded as lossy Theora using quality-based VBR at speed level 2.",
+        "Automatic quality uses Theora quality 7; bounded width, frame-rate, and quality controls are not yet stress-certified for this input.",
+      ],
+      maxTestedBytes: null,
+      automatedTestStatus: "failed",
+      public: false,
+    },
+    {
       id: "mkv-to-avi",
       input: "mkv",
       output: "avi",

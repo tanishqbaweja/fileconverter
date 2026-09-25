@@ -41,7 +41,9 @@ const { stdout } = await execFileAsync(
 );
 const probe = JSON.parse(stdout);
 const video = probe.streams.find((stream) => stream.codec_type === "video");
-const [rateNumerator, rateDenominator] = String(video?.avg_frame_rate)
+// Raw MPEG-2 has no container timestamps. FFprobe's avg_frame_rate can be a
+// demuxer estimate (25/1 here) even when the encoded sequence header is 24/1.
+const [rateNumerator, rateDenominator] = String(video?.r_frame_rate)
   .split("/").map(Number);
 const decodedVideoFrames = Number(video?.nb_read_frames);
 const decodedVideoDurationSeconds =
@@ -51,6 +53,7 @@ if (
   probe.streams.length !== 1 ||
   video?.codec_name !== "mpeg2video" ||
   video?.pix_fmt !== "yuv420p" ||
+  rateNumerator / rateDenominator !== frameRate ||
   decodedVideoFrames !== durationSeconds * frameRate ||
   !Number.isFinite(decodedVideoDurationSeconds)
 ) {

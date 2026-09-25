@@ -349,7 +349,7 @@ test("the worker video-option profile map matches every public video-option prof
   const mappedIds = Object.keys(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID).sort();
   assert.deepEqual(
     mappedIds,
-    [...new Set([...registryIds, "avi-to-ogv", "mp4-to-ogv"])].sort(),
+    [...new Set([...registryIds, "avi-to-ogv", "mp4-to-ogv", "m2v-to-ogv"])].sort(),
   );
   for (const profileId of mappedIds) {
     assert.ok(videoOptionProfileForId(profileId));

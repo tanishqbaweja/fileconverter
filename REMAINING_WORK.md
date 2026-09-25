@@ -15,6 +15,26 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-09-25 — hidden MPEG-2 elementary to OGV candidate
+
+Status: **Partially implemented, not public** under P-04/M-04/P-08. The existing
+single-thread `within-theora` Wasm can genuinely decode raw MPEG-2 and encode
+Ogg/Theora without a rebuild. A focused production-browser test passed exact
+decoded-frame count, full native decode, and bounded I/O. The 136,166,136-byte
+source produced the same independently validated 86,555,131-byte OGV in one
+OPFS run (197.210 s, 242.988 MiB incremental complete-Chrome private memory)
+and one direct-save run (204.207 s, **250.125 MiB**, over the unchanged 250 MiB
+limit). It therefore remains `failed` and hidden; no public count changed.
+The first large validation exposed an error in the raw-fixture manifest:
+FFprobe estimated `avg_frame_rate=25/1` while the encoded sequence header is
+24/1. Both generators and the tracked small manifest now use the encoded rate.
+The large input bytes were unchanged. Details and rejected-result history are
+in `evidence/m2v-to-ogv-candidate-2026-09-25.json`. Next: reduce direct-save
+process-tree memory at identical source/settings, then run three repeatable
+stress conversions per mode, write-failure and headed UI checks before any
+promotion. Disposable converted files, large fixture, and raw reports are
+removed after compacting this cycle.
+
 ## Latest hosted verification
 
 The verify-only no-Docker run [35877953801](https://github.com/tanishqbaweja/fileconverter/actions/runs/35877953801)

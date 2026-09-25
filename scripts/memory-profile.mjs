@@ -174,7 +174,7 @@ const COMPATIBLE_WEBM_PROFILES = [
   "mkv-to-webm-av1",
   "mp4-to-webm-av1",
 ];
-const THEORA_OGV_PROFILES = ["avi-to-ogv", "mp4-to-ogv"];
+const THEORA_OGV_PROFILES = ["avi-to-ogv", "mp4-to-ogv", "m2v-to-ogv"];
 const isIvfProfile =
   IVF_PROFILES.includes(profileId) || IVF_INPUT_PROFILES.includes(profileId);
 const isVideoOptionsProfile =
@@ -616,6 +616,7 @@ if (
     "avi-to-webm-vp9",
     "avi-to-ogv",
     "mp4-to-ogv",
+    "m2v-to-ogv",
     "ogv-to-webm",
     "ogv-to-webm-vp9",
     "ogv-to-wav",

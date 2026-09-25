@@ -31,6 +31,33 @@ test("MP4 to OGV is explicitly failed and hidden after its memory rejection", ()
   );
 });
 
+test("raw MPEG-2 to OGV remains hidden after the direct-save memory failure", () => {
+  const profile = conversionProfiles.find(({ id }) => id === "m2v-to-ogv");
+  assert.ok(profile);
+  assert.equal(profile.input, "m2v");
+  assert.equal(profile.output, "ogv");
+  assert.equal(profile.engine, "ffmpeg-video");
+  assert.equal(profile.route, "re-encode");
+  assert.equal(profile.automatedTestStatus, "failed");
+  assert.equal(profile.maxTestedBytes, null);
+  assert.equal(profile.public, false);
+  assert.equal(publicProfilesFor("m2v").some(({ id }) => id === profile.id), false);
+  assert.equal(publicProfilesFor("m2v", true).some(({ id }) => id === profile.id), true);
+  assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["m2v-to-ogv"], "theora");
+  assert.deepEqual(videoOptionProfileForId("m2v-to-ogv"), {
+    engine: "ffmpeg-video",
+    output: "ogv",
+  });
+  const evidence = JSON.parse(
+    readFileSync("evidence/m2v-to-ogv-candidate-2026-09-25.json", "utf8"),
+  );
+  assert.equal(evidence.status, "hidden-failed-memory");
+  assert.equal(evidence.runs.find(({ mode }) => mode === "direct-handle")?.memoryGatePassed, false);
+  assert.ok(evidence.runs.find(({ mode }) => mode === "direct-handle")?.incrementalPrivateMiB > 250);
+  assert.equal(evidence.commonOutput.fullNativeDecode, true);
+  assert.equal(evidence.commonOutput.packetsAndDecodedFrames, evidence.stressSource.decodedFrames);
+});
+
 test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () => {
   const worker = readFileSync("workers/conversion.worker.ts", "utf8");
   const wrapper = readFileSync("media/ffmpeg/within_remux.c", "utf8");
@@ -47,7 +74,7 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
   );
   assert.match(
     worker,
-    /profileId === "avi-to-ogv" \|\| profileId === "mp4-to-ogv"[\s\S]*?\? 39/,
+    /profileId === "avi-to-ogv" \|\|[\s\S]*?profileId === "mp4-to-ogv" \|\|[\s\S]*?profileId === "m2v-to-ogv"[\s\S]*?\? 39/,
   );
   assert.match(wrapper, /within_video_reencode\(3, 0/);
   assert.match(sourceManifest, /"within-theora"[\s\S]*?"mp4-to-ogv"/);
@@ -58,7 +85,7 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
     name: "within-theora",
     wasmPthreadPoolSize: 0,
     videoCodecThreads: 1,
-    profiles: ["avi-to-ogv", "mp4-to-ogv"],
+    profiles: ["avi-to-ogv", "mp4-to-ogv", "m2v-to-ogv"],
   });
   assert.equal(VIDEO_PROFILE_DEFAULT_CODEC_BY_ID["mp4-to-ogv"], "theora");
   assert.deepEqual(videoOptionProfileForId("mp4-to-ogv"), {
@@ -67,7 +94,7 @@ test("MP4 to OGV reuses the fixed-memory Theora ABI and bounded controls", () =>
   });
   assert.match(
     memoryProfile,
-    /THEORA_OGV_PROFILES = \["avi-to-ogv", "mp4-to-ogv"\]/,
+    /THEORA_OGV_PROFILES = \["avi-to-ogv", "mp4-to-ogv", "m2v-to-ogv"\]/,
   );
   assert.match(
     profileCategory,

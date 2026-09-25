@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-25",
+  "profileId": "m2v-to-ogv",
+  "status": "hidden-failed-memory",
+  "reason": "One genuine direct selected-destination Chrome run exceeded the unchanged 250 MiB complete-process-tree incremental private-memory limit by 0.125 MiB. OPFS passed once, but neither mode has the required three-run acceptance evidence.",
+  "browser": "Chrome 153.0.8010.53",
+  "implementation": "Production browser worker, published within-theora Wasm, native profile 39, bounded AVIO; MPEG-2 decode followed by lossy Theora encode, not stream copy or extension renaming.",
+  "smallBrowserTest": {
+    "command": "npx playwright test tests/browser/avi-to-ogv-candidate.spec.ts -g 'raw MPEG-2 video' --workers=1 --reporter=line",
+    "result": "1 passed",
+    "sourceBytes": 1098114,
+    "sourceSha256": "fca56e50db00647ec61fefb5ba270c1322c201eaea5711b6226d8178a32dfd96",
+    "checks": ["genuine Ogg/Theora structure", "exact decoded-frame count", "full native decode", "bounded read and write metrics", "one pending operation", "browser output removed after validation"]
+  },
+  "fixtureTimingCorrection": {
+    "initialFailure": "The first stress validation expected 476.16 s because the fixture generator used FFprobe's estimated avg_frame_rate=25/1; the encoded MPEG-2 sequence header and generator are 24/1, yielding 11904 frames and 496 s.",
+    "correction": "Both MPEG-2 fixture generators now use r_frame_rate and verify it equals the configured 24 fps. The small tracked manifest's decoded duration was corrected from 3.84 to 4 s. The input bytes were unchanged.",
+    "firstFailureReport": "2026-09-24T20-33-03-821Z-m2v-to-ogv-stress-failure.json",
+    "firstFailureNotAcceptance": true
+  },
+  "stressSource": {
+    "bytes": 136166136,
+    "sha256": "d76146fc409a04f045d4dbbc29f0943de59a6ad38f9ef29a82b58acf104deebd",
+    "videoCodec": "mpeg2video",
+    "width": 640,
+    "height": 360,
+    "frameRate": "24/1",
+    "decodedFrames": 11904,
+    "durationSeconds": 496
+  },
+  "commonOutput": {
+    "bytes": 86555131,
+    "sha256": "28f559b4afc1843c36df2c43989c6b368285045fca9c57f9175b13e1e8ba9a5e",
+    "container": "ogg",
+    "videoCodec": "theora",
+    "width": 640,
+    "height": 360,
+    "frameRate": "24/1",
+    "durationSeconds": 496,
+    "packetsAndDecodedFrames": 11904,
+    "midpointSsim": 0.826148,
+    "fullNativeDecode": true
+  },
+  "runs": [
+    {
+      "mode": "sync-opfs",
+      "elapsedSeconds": 197.21,
+      "incrementalPrivateMiB": 242.98828125,
+      "memoryGatePassed": true,
+      "peakWasmMiB": 32,
+      "maxReadBytes": 262144,
+      "maxWriteAndQueuedBytes": 64653,
+      "peakPendingOperations": 1,
+      "cancellationAndCleanupPassed": true,
+      "rawReport": "2026-09-24T20-38-13-746Z-m2v-to-ogv-stress.json"
+    },
+    {
+      "mode": "direct-handle",
+      "elapsedSeconds": 204.207,
+      "incrementalPrivateMiB": 250.125,
+      "memoryGatePassed": false,
+      "peakWasmMiB": 32,
+      "maxReadBytes": 262144,
+      "maxWriteAndQueuedBytes": 64653,
+      "peakPendingOperations": 1,
+      "cancellationAndCleanupPassed": true,
+      "rawReport": "2026-09-24T20-42-55-885Z-m2v-to-ogv-direct-handle-stress.json"
+    }
+  ],
+  "acceptanceStillMissing": ["lower-memory direct-save design at identical settings", "three stress runs per mode including clean sessions", "focused direct write-failure recovery", "broader headed UI review", "public registry and support-matrix promotion only after every gate"],
+  "cleanup": "Disposable 128 MiB fixture, converted browser copies, browser profiles, and raw reports are removed after compacting this record; the protected test.mkv was not used or changed."
+}

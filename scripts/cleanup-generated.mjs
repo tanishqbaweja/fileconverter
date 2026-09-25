@@ -83,6 +83,11 @@ const aviOgvReports = [
     path.resolve(reportRoot, `${stem}.${extension}`),
   ),
 );
+const m2vOgvCandidateReportStems = [
+  "2026-09-24T20-33-03-821Z-m2v-to-ogv-stress-failure",
+  "2026-09-24T20-38-13-746Z-m2v-to-ogv-stress",
+  "2026-09-24T20-42-55-885Z-m2v-to-ogv-direct-handle-stress",
+];
 const mp4AviCurrentReports = [
   "2026-09-21T06-13-01-144Z-mp4-to-avi-direct-handle-stress",
   "2026-09-21T06-16-01-577Z-mp4-to-avi-direct-handle-stress",
@@ -567,6 +572,11 @@ for (const reportPath of aviFlvReports) {
 for (const reportPath of aviOgvReports) {
   assertInside(reportRoot, reportPath);
 }
+for (const stem of m2vOgvCandidateReportStems) {
+  for (const extension of ["json", "csv", "html"]) {
+    assertInside(reportRoot, path.resolve(reportRoot, `${stem}.${extension}`));
+  }
+}
 for (const reportPath of mp4AviCurrentReports) {
   assertInside(reportRoot, reportPath);
 }
@@ -575,6 +585,32 @@ for (const reportPath of hevcWebmStressReports) {
 }
 assertInside(projectRoot, remuxEngineRoot);
 assertInside(workRoot, currentImageCiFailureRoot);
+
+if (process.argv.includes("--m2v-ogv-candidate-only")) {
+  const fixture = path.resolve(stressFixturesRoot, "media", "mpeg2-video-128m.m2v");
+  assertInside(stressFixturesRoot, fixture);
+  try {
+    const actualHash = await hashExactRegularFile(fixture, 136_166_136);
+    if (actualHash !== "d76146fc409a04f045d4dbbc29f0943de59a6ad38f9ef29a82b58acf104deebd") {
+      throw new Error("MPEG-2 candidate source differs from compact evidence.");
+    }
+    await unlink(fixture);
+  } catch (error) {
+    if (error?.code !== "ENOENT") throw error;
+  }
+  for (const stem of m2vOgvCandidateReportStems) {
+    for (const extension of ["json", "csv", "html"]) {
+      const target = path.resolve(reportRoot, `${stem}.${extension}`);
+      assertInside(reportRoot, target);
+      await rm(target, { force: true });
+    }
+  }
+  const playwrightStatus = path.resolve(playwrightOutputRoot, "artifacts", ".last-run.json");
+  assertInside(playwrightOutputRoot, playwrightStatus);
+  await rm(playwrightStatus, { force: true });
+  process.stdout.write("Removed the hash-verified MPEG-2 candidate source, its nine raw report files, and the disposable Playwright status file. Retained the small tracked fixture manifest and unrelated reports.\n");
+  process.exit(0);
+}
 
 if (process.argv.includes("--current-bmp-proof-artifacts-only")) {
   const proofPath = path.resolve(

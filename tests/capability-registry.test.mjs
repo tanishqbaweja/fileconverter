@@ -223,7 +223,7 @@ test("registry has no stale pending candidates and keeps failed evidence hidden"
   );
   assert.deepEqual(
     failed.map((profile) => profile.id),
-    ["ogv-to-amr", "mp4-to-ogv", "mkv-to-avi", "hevc-to-webm-vp9"],
+    ["ogv-to-amr", "mp4-to-ogv", "m2v-to-ogv", "mkv-to-avi", "hevc-to-webm-vp9"],
   );
   for (const profile of failed) {
     assert.equal(profile.public, false);
@@ -822,7 +822,7 @@ test("every FFmpeg profile is declared by the reproducible Wasm manifest", () =>
       name: "within-theora",
       wasmPthreadPoolSize: 0,
       videoCodecThreads: 1,
-      profiles: ["avi-to-ogv", "mp4-to-ogv"],
+      profiles: ["avi-to-ogv", "mp4-to-ogv", "m2v-to-ogv"],
     },
     {
       name: "within-aiff",

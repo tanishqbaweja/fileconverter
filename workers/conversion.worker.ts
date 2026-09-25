@@ -4204,6 +4204,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "avi-to-flv" ||
         profileId === "avi-to-ogv" ||
         profileId === "mp4-to-ogv" ||
+        profileId === "m2v-to-ogv" ||
         profileId === "m2v-to-mpeg-ts" ||
         profileId === "mkv-to-m2v" ||
         profileId === "mp4-to-m2v" ||
@@ -4958,6 +4959,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       profileId === "avi-to-flv" ||
       profileId === "avi-to-ogv" ||
       profileId === "mp4-to-ogv" ||
+      profileId === "m2v-to-ogv" ||
       profileId === "m2v-to-mpeg-ts" ||
       profileId === "mkv-to-m2v" ||
       profileId === "mp4-to-m2v" ||
@@ -5184,7 +5186,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             ? 27
           : profileId === "mkv-to-ogv"
             ? 36
-          : profileId === "avi-to-ogv" || profileId === "mp4-to-ogv"
+          : profileId === "avi-to-ogv" ||
+              profileId === "mp4-to-ogv" ||
+              profileId === "m2v-to-ogv"
             ? 39
           : profileId === "mkv-to-avi" ||
               profileId === "mp4-to-avi" ||

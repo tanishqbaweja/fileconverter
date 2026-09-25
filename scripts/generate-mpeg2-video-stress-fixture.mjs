@@ -55,7 +55,8 @@ const { stdout } = await execFileAsync(
 );
 const probe = JSON.parse(stdout);
 const video = probe.streams.find((stream) => stream.codec_type === "video");
-const [rateNumerator, rateDenominator] = String(video?.avg_frame_rate)
+// The MPEG sequence header is authoritative for this raw, timestamp-less stream.
+const [rateNumerator, rateDenominator] = String(video?.r_frame_rate)
   .split("/").map(Number);
 const decodedVideoFrames = Number(video?.nb_read_frames);
 const decodedVideoDurationSeconds =
@@ -64,6 +65,7 @@ if (
   probe.format?.format_name !== "mpegvideo" ||
   probe.streams.length !== 1 ||
   video?.codec_name !== "mpeg2video" ||
+  rateNumerator / rateDenominator !== sourceManifest.frameRate ||
   decodedVideoFrames !== expectedFrames ||
   !Number.isFinite(decodedVideoDurationSeconds)
 ) {
