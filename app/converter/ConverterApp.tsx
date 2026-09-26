@@ -1766,7 +1766,7 @@ export function ConverterApp() {
                       <p key={note}>{note}</p>
                     ))}
                     <p>
-                      These package facts came from bounded local ZIP-directory
+                      These package facts came from bounded local archive-metadata
                       reads; embedded filenames and file contents were not
                       displayed, retained, or uploaded.
                     </p>

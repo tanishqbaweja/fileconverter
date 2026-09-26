@@ -13,11 +13,22 @@
       "odt",
       "ods",
       "odp",
-      "epub"
+      "epub",
+      "tar",
+      "tar-gz",
+      "tar-bz2",
+      "tar-xz",
+      "sevenzip",
+      "gzip",
+      "bzip2",
+      "xz"
     ],
     "maximumTailReadBytes": 65557,
     "maximumCentralDirectoryReadBytes": 1048576,
     "maximumCombinedReadBytes": 1114133,
+    "maximumTarHeaderReadBytes": 131072,
+    "maximumCompressionWrapperReadBytes": 65544,
+    "maximumSevenZipHeaderReadBytes": 33,
     "completeLargeFileBuffering": false,
     "payloadDecompressionDuringInspection": false,
     "displayEmbeddedNamesOrContent": false,
@@ -31,12 +42,15 @@
       "PPTX presentation, slide, and speaker-note package markers",
       "OpenDocument MIME, content, manifest, and embedded-object package markers",
       "EPUB container, package-document, and HTML-content markers",
-      "ZIP64 and multi-disk unsupported-layout signals"
+      "ZIP64 and multi-disk unsupported-layout signals",
+      "TAR entry type, size, path-safety, and complete-or-lower-bound counts",
+      "GZIP, BZIP2, and XZ wrapper integrity and compression signals",
+      "7Z version, next-header size/offset, and plain-or-encoded header signal"
     ],
     "largeDirectoryPolicy": "Only the first 1 MiB of central-directory metadata is parsed. Counts and missing package markers are explicitly qualified as prefix findings; complete validation remains in the conversion worker."
   },
   "browserTests": {
-    "focusedCommand": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports ZIP package' --workers=1 --reporter=line",
+    "focusedCommand": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports archive and package' --workers=1 --reporter=line",
     "focusedResult": "1 passed",
     "fullCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
     "fullResult": "18 passed",
@@ -49,14 +63,26 @@
       "fixtures/open-documents/sample.odt",
       "fixtures/open-documents/sample.ods",
       "fixtures/open-documents/sample.odp",
-      "fixtures/ebooks/sample.epub"
+      "fixtures/ebooks/sample.epub",
+      "fixtures/archives/sample.tar",
+      "fixtures/archives/sample.tar.gz",
+      "fixtures/archives/sample.tar.bz2",
+      "fixtures/archives/sample.tar.xz",
+      "fixtures/archives/sample.7z",
+      "fixtures/archives/unsafe-entry.tar",
+      "fixtures/archives/many-entries.tar",
+      "fixtures/compression/sample.txt.gz",
+      "fixtures/compression/sample.txt.bz2",
+      "fixtures/compression/sample.txt.xz"
     ],
     "assertions": [
       "All eight public ZIP-based input families report their expected package structure and category-specific structural facts.",
       "Known embedded filenames and source content are absent from the rendered panel.",
       "The unsafe ZIP fixture reports an unsafe-path count without disclosing the unsafe name.",
       "An in-memory 20,000-entry, 1,140,000-byte central directory reads exactly the 1,114,133-byte combined ceiling and reports inspected-entry counts as lower bounds.",
-      "The panel states that package payloads and embedded XML were not decompressed, displayed, retained, or uploaded."
+      "The panel states that package payloads and embedded XML were not decompressed, displayed, retained, or uploaded.",
+      "TAR, compressed TAR, 7Z, and raw compression wrappers report bounded structural metadata without reading or displaying entry payloads.",
+      "The 1,024-entry TAR stops after exactly 131,072 bytes of isolated header reads and labels 256 inspected entries as a lower bound."
     ]
   },
   "regressionGates": {
@@ -72,6 +98,6 @@
     "finding": "The package inspector correctly replaced the former generic DOCX status, but one streaming-browser assertion still expected the removed generic sentence.",
     "correction": "The DOCX conversion gate now requires the package-validation sentence plus WordprocessingML and main-document structural facts; conversion and output assertions remain unchanged."
   },
-  "remaining": "JPEG XL frame metadata inspection remains generic before conversion. Classic TIFF page-directory preflight is covered separately by evidence/image-source-inspection-2026-09-27.json. Non-ZIP archive families retain generic type, size, and destination-limit inspection until bounded directory metadata readers are added.",
+  "remaining": "JPEG XL frame metadata inspection remains generic before conversion. Classic TIFF page-directory preflight is covered separately by evidence/image-source-inspection-2026-09-27.json.",
   "cleanup": "The oversized central directory exists only in Playwright process memory. No generated fixture, converted output, decompressed payload, trace, screenshot, video, or browser profile is retained."
 }

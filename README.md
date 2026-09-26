@@ -466,7 +466,11 @@ prefix for ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB. It reports bounded
 entry/size/compression/encryption/path-safety facts plus document-, sheet-,
 slide-, OpenDocument-, and publication-package markers without decompressing
 payloads or displaying embedded names. JPEG XL and non-ZIP archive families
-still show generic type/size inspection and destination limitations. A
+use bounded metadata-only preflight too: TAR reads at most 256 isolated
+512-byte headers while skipping payloads, GZIP/BZIP2/XZ wrappers read at most
+64 KiB plus an eight-byte GZIP trailer, and 7Z reads only its 32-byte start
+header plus one next-header marker. JPEG XL still shows generic type/size
+inspection and destination limitations. A
 headed DOCX review and the exact inspected scopes are recorded in
 `evidence/headed-docx-inspection-2026-09-25.json`,
 `evidence/structured-source-inspection-2026-09-26.json`, and

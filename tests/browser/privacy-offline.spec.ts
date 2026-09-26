@@ -393,7 +393,7 @@ test("bounded source inspection reports structured data, document, and subtitle 
   await expect(inspection).toContainText("Only the fixed-size source prefix was inspected");
 });
 
-test("bounded source inspection reports ZIP package structure without reading payloads or displaying entry names", async () => {
+test("bounded source inspection reports archive and package structure without reading payloads or displaying entry names", async () => {
   await page.goto("/?test=1");
   await waitForWorker();
   const inspection = page.getByTestId("source-inspection");
@@ -452,9 +452,26 @@ test("bounded source inspection reports ZIP package structure without reading pa
     await expect(inspection).toContainText(expected.structure);
     await expect(inspection).toContainText(expected.fact);
     await expect(inspection).toContainText("Inspection read");
-    await expect(inspection).toContainText("bounded local ZIP-directory reads");
+    await expect(inspection).toContainText("bounded local archive-metadata reads");
     await expect(inspection).toContainText("were not decompressed");
     await expect(inspection).not.toContainText(expected.privateName);
+  }
+
+  for (const expected of [
+    { fixture: path.join(projectRoot, "fixtures", "archives", "sample.tar"), structure: "TAR archive directory", fact: "Regular files" },
+    { fixture: path.join(projectRoot, "fixtures", "archives", "sample.tar.gz"), structure: "GZIP-compressed TAR wrapper", fact: "Inner TAR directory" },
+    { fixture: path.join(projectRoot, "fixtures", "archives", "sample.tar.bz2"), structure: "BZIP2-compressed TAR wrapper", fact: "Declared block size" },
+    { fixture: path.join(projectRoot, "fixtures", "archives", "sample.tar.xz"), structure: "XZ-compressed TAR wrapper", fact: "Integrity check" },
+    { fixture: path.join(projectRoot, "fixtures", "archives", "sample.7z"), structure: "7Z archive header", fact: "Header encoding" },
+    { fixture: path.join(projectRoot, "fixtures", "compression", "sample.txt.gz"), structure: "GZIP compressed stream", fact: "Trailer CRC-32" },
+    { fixture: path.join(projectRoot, "fixtures", "compression", "sample.txt.bz2"), structure: "BZIP2 compressed stream", fact: "First block marker" },
+    { fixture: path.join(projectRoot, "fixtures", "compression", "sample.txt.xz"), structure: "XZ compressed stream", fact: "Stream-header CRC" },
+  ]) {
+    await page.locator('[data-testid="file-input"]').setInputFiles(expected.fixture);
+    await expect(inspection).toContainText(expected.structure);
+    await expect(inspection).toContainText(expected.fact);
+    await expect(inspection).toContainText("bounded local archive-metadata reads");
+    await expect(inspection).not.toContainText("hello.txt");
   }
 
   await page
@@ -463,6 +480,21 @@ test("bounded source inspection reports ZIP package structure without reading pa
   await expect(inspection).toContainText("Unsafe entry paths");
   await expect(inspection).toContainText("Potentially unsafe");
   await expect(inspection).not.toContainText("../escape.txt");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "archives", "unsafe-entry.tar"));
+  await expect(inspection).toContainText("TAR archive directory");
+  await expect(inspection).toContainText("Unsafe entry paths");
+  await expect(inspection).toContainText("1");
+  await expect(inspection).not.toContainText("../escape.txt");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "archives", "many-entries.tar"));
+  await expect(inspection).toContainText("131,072 bytes");
+  await expect(inspection).toContainText("At least 256");
+  await expect(inspection).toContainText("counts are lower bounds");
 
   const declaredEntries = 20_000;
   const nameLength = 11;
