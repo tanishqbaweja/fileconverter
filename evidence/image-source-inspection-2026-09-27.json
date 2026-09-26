@@ -1,0 +1,60 @@
+{
+  "date": "2026-09-27",
+  "status": "passed-for-public-input-families",
+  "requirement": "U-08 bounded image pre-conversion source inspection",
+  "implementation": {
+    "binarySource": "lib/image-source-inspection.ts",
+    "svgSource": "lib/structured-source-inspection.ts",
+    "ui": "app/converter/ConverterApp.tsx",
+    "maximumBinaryHeaderReadBytes": 1048576,
+    "maximumSvgPrefixReadBytes": 262144,
+    "pixelDecodeDuringInspection": false,
+    "completeLargeFileBuffering": false,
+    "binaryFormats": [
+      "png",
+      "apng",
+      "jpeg",
+      "gif",
+      "webp",
+      "avif",
+      "bmp",
+      "ico"
+    ],
+    "textFormats": [
+      "svg"
+    ],
+    "reportedFacts": [
+      "dimensions",
+      "bit depth where declared",
+      "color model",
+      "animation signal and bounded frame count where available",
+      "bounded EXIF, ICC, density, comment, text, and color-property signals"
+    ]
+  },
+  "browserTest": {
+    "command": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports image' --workers=1 --reporter=line",
+    "result": "1 passed",
+    "fullPrivacyOfflineCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
+    "fullPrivacyOfflineResult": "17 passed",
+    "fixtures": [
+      "fixtures/images/test-pattern.png",
+      "fixtures/images/animated-pattern.apng",
+      "fixtures/images/test-pattern.jpg",
+      "fixtures/images/animated-pattern.gif",
+      "fixtures/images/animated-pattern.webp",
+      "fixtures/images/test-pattern.avif",
+      "fixtures/images/test-pattern.bmp",
+      "fixtures/images/test-pattern.svg"
+    ],
+    "assertions": [
+      "Each genuine raster header reports the independently manifested 1,024 by 768 dimensions.",
+      "APNG, GIF, and WebP each report all eight declared or parsed animation frames.",
+      "The 2,359,350-byte BMP reads exactly the fixed 1,048,576-byte header ceiling and labels the scan as a prefix.",
+      "SVG reports its root structurally through the bounded UTF-8 inspector.",
+      "A renamed text payload with a PNG extension is rejected during bounded inspection before conversion.",
+      "The panel states that pixel data was not decoded, displayed, retained, or uploaded."
+    ]
+  },
+  "remaining": "TIFF and JPEG XL require their specialist bounded Wasm decoders for authoritative page/frame metadata and remain generic before conversion. ICO directory parsing is implemented, but no public ICO input profile currently exists.",
+  "cleanup": "No converted output, generated fixture, pixel surface, trace, screenshot, or browser profile is retained."
+}

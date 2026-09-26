@@ -23,6 +23,10 @@ import {
   type StructuredSourceInspection,
 } from "../../lib/structured-source-inspection";
 import {
+  inspectImageSource,
+  type ImageSourceInspection,
+} from "../../lib/image-source-inspection";
+import {
   planMediaConversion,
   selectAutomaticMediaProfile,
   type MediaPlanAction,
@@ -367,6 +371,8 @@ export function ConverterApp() {
     useState<MediaSourceInspection | null>(null);
   const [sourceStructuredInspection, setSourceStructuredInspection] =
     useState<StructuredSourceInspection | null>(null);
+  const [sourceImageInspection, setSourceImageInspection] =
+    useState<ImageSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
     "idle" | "inspecting" | "complete" | "unsupported" | "error"
   >("idle");
@@ -478,18 +484,23 @@ export function ConverterApp() {
       if (cancelled) return;
       setSourceMediaInspection(null);
       setSourceStructuredInspection(null);
+      setSourceImageInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       try {
-        const [inspection, structuredInspection] = await Promise.all([
+        const [inspection, structuredInspection, imageInspection] = await Promise.all([
           inspectMediaSource(file, inputFormat),
           inspectStructuredSource(file, inputFormat),
+          inspectImageSource(file, inputFormat),
         ]);
         if (cancelled) return;
         setSourceMediaInspection(inspection);
         setSourceStructuredInspection(structuredInspection);
+        setSourceImageInspection(imageInspection);
         setSourceInspectionStatus(
-          inspection || structuredInspection ? "complete" : "unsupported",
+          inspection || structuredInspection || imageInspection
+            ? "complete"
+            : "unsupported",
         );
         if (inspection && batchFiles.length === 1) {
           const candidates = profiles;
@@ -969,6 +980,7 @@ export function ConverterApp() {
         setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
         setSourceMediaInspection(null);
         setSourceStructuredInspection(null);
+        setSourceImageInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -1004,6 +1016,7 @@ export function ConverterApp() {
         setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
         setSourceMediaInspection(null);
         setSourceStructuredInspection(null);
+        setSourceImageInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -1033,6 +1046,7 @@ export function ConverterApp() {
       setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
       setSourceMediaInspection(null);
       setSourceStructuredInspection(null);
+      setSourceImageInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       setDestinationHandle(null);
@@ -1201,6 +1215,7 @@ export function ConverterApp() {
     setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
     setSourceMediaInspection(null);
     setSourceStructuredInspection(null);
+    setSourceImageInspection(null);
     setSourceInspectionStatus("idle");
     setSourceInspectionError(null);
     setDestinationHandle(null);
@@ -1614,6 +1629,57 @@ export function ConverterApp() {
                     </div>
                   </>
                 ) : null}
+                {sourceImageInspection ? (
+                  <>
+                    <div>
+                      <dt>Detected structure</dt>
+                      <dd>{sourceImageInspection.format} image header</dd>
+                    </div>
+                    <div>
+                      <dt>Dimensions</dt>
+                      <dd>
+                        {sourceImageInspection.width.toLocaleString("en-US")}×
+                        {sourceImageInspection.height.toLocaleString("en-US")}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Color model</dt>
+                      <dd>{sourceImageInspection.colorModel}</dd>
+                    </div>
+                    <div>
+                      <dt>Bit depth</dt>
+                      <dd>
+                        {sourceImageInspection.bitDepth
+                          ? `${sourceImageInspection.bitDepth}-bit`
+                          : "Validated during conversion"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Animation</dt>
+                      <dd>{sourceImageInspection.animation}</dd>
+                    </div>
+                    <div>
+                      <dt>Metadata signals</dt>
+                      <dd>
+                        {sourceImageInspection.metadataSignals.length
+                          ? sourceImageInspection.metadataSignals.join(", ")
+                          : "None found in bounded scan"}
+                      </dd>
+                    </div>
+                    <div>
+                      <dt>Inspection read</dt>
+                      <dd>
+                        {sourceImageInspection.inspectedBytes.toLocaleString(
+                          "en-US",
+                        )}{" "}
+                        bytes (max{" "}
+                        {sourceImageInspection.maximumInspectionBytes.toLocaleString(
+                          "en-US",
+                        )})
+                      </dd>
+                    </div>
+                  </>
+                ) : null}
               </dl>
               <div data-testid="media-inspection-status">
                 {sourceInspectionStatus === "inspecting" ? (
@@ -1638,6 +1704,16 @@ export function ConverterApp() {
                     <p>
                       These structural facts came from a bounded local UTF-8
                       read; source text was not displayed, retained, or uploaded.
+                    </p>
+                  </>
+                ) : sourceImageInspection ? (
+                  <>
+                    {sourceImageInspection.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                    <p>
+                      These image facts came from a bounded local header read;
+                      pixel data was not decoded, displayed, retained, or uploaded.
                     </p>
                   </>
                 ) : (

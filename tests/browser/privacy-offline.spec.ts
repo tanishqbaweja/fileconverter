@@ -393,6 +393,48 @@ test("bounded source inspection reports structured data, document, and subtitle 
   await expect(inspection).toContainText("Only the fixed-size source prefix was inspected");
 });
 
+test("bounded source inspection reports image dimensions and animation without decoding pixels", async () => {
+  await page.goto("/?test=1");
+  await waitForWorker();
+  const inspection = page.getByTestId("source-inspection");
+
+  for (const expected of [
+    { fixture: "test-pattern.png", structure: "PNG image header", animation: "Static" },
+    { fixture: "animated-pattern.apng", structure: "PNG image header", animation: "Animated (8 declared frames)" },
+    { fixture: "test-pattern.jpg", structure: "JPEG image header", animation: "Static" },
+    { fixture: "animated-pattern.gif", structure: "GIF image header", animation: "Animated (8 frames found)" },
+    { fixture: "animated-pattern.webp", structure: "WEBP image header", animation: "Animated (8 frame chunks found)" },
+    { fixture: "test-pattern.avif", structure: "AVIF image header", animation: "Static AVIF brand" },
+    { fixture: "test-pattern.bmp", structure: "BMP image header", animation: "Static" },
+  ]) {
+    await page
+      .locator('[data-testid="file-input"]')
+      .setInputFiles(path.join(projectRoot, "fixtures", "images", expected.fixture));
+    await expect(inspection).toContainText(expected.structure);
+    await expect(inspection).toContainText("1,024×768");
+    await expect(inspection).toContainText(expected.animation);
+    await expect(inspection).toContainText("pixel data was not decoded");
+  }
+  await expect(inspection).toContainText("1,048,576 bytes");
+  await expect(inspection).toContainText("Only the fixed-size header prefix was inspected");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "images", "test-pattern.svg"));
+  await expect(inspection).toContainText("SVG document");
+  await expect(inspection).toContainText("Root element");
+  await expect(inspection).toContainText("svg");
+
+  await page.locator('[data-testid="file-input"]').setInputFiles({
+    name: "renamed.png",
+    mimeType: "image/png",
+    buffer: Buffer.from("This is not a PNG image.", "utf8"),
+  });
+  await expect(page.getByTestId("media-inspection-status")).toContainText(
+    "missing a valid signature and IHDR header",
+  );
+});
+
 test("source inspection displays genuine audio and multi-stream video families from bounded local reads", async () => {
   await page.goto("/?test=1");
   await waitForWorker();

@@ -6,7 +6,7 @@ export interface StructuredSourceFact {
 }
 
 export interface StructuredSourceInspection {
-  kind: "data" | "document" | "subtitle";
+  kind: "data" | "document" | "image" | "subtitle";
   structure: string;
   facts: readonly StructuredSourceFact[];
   notes: readonly string[];
@@ -23,6 +23,7 @@ const supportedFormats = new Set([
   "md",
   "ndjson",
   "srt",
+  "svg",
   "tsv",
   "ttml",
   "txt",
@@ -31,6 +32,7 @@ const supportedFormats = new Set([
 ]);
 
 function formatKind(format: string): StructuredSourceInspection["kind"] {
+  if (format === "svg") return "image";
   if (["ass", "srt", "ttml", "vtt"].includes(format)) return "subtitle";
   if (["csv", "json", "ndjson", "tsv", "xml"].includes(format)) return "data";
   return "document";
@@ -170,7 +172,7 @@ function inspectText(
       notes,
     };
   }
-  if (format === "xml" || format === "ttml" || format === "html") {
+  if (format === "xml" || format === "ttml" || format === "html" || format === "svg") {
     const root = rootElement(text);
     const doctype = /<!DOCTYPE\b/i.test(text);
     const facts: StructuredSourceFact[] = [
@@ -182,7 +184,7 @@ function inspectText(
       facts.push(countLabel("Timed paragraph cues", cues, completeFile));
     }
     return {
-      structure: format === "html" ? "HTML document" : format === "ttml" ? "TTML document" : "XML document",
+      structure: format === "html" ? "HTML document" : format === "ttml" ? "TTML document" : format === "svg" ? "SVG document" : "XML document",
       facts,
       notes: completeFile ? notes : ["The conversion worker performs complete streaming XML/HTML safety and well-formedness validation."],
     };
