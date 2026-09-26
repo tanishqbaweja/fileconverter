@@ -1387,7 +1387,13 @@ test("cancels streaming EPUB compression and removes the partial package", async
 test("streams DOCX main-document text with disclosed structural loss", async () => {
   await selectFixture("fixtures/documents/sample.docx", "docx-to-txt");
   await expect(page.getByTestId("media-inspection-status")).toContainText(
-    "validates the file locally during conversion",
+    "Complete path, encryption, compression, and package validation remains in the conversion worker",
+  );
+  await expect(page.getByTestId("source-inspection")).toContainText(
+    "WordprocessingML package",
+  );
+  await expect(page.getByTestId("source-inspection")).toContainText(
+    "Main document part",
   );
   await expect(page.getByTestId("media-inspection-status")).not.toContainText(
     "container streams and codecs",
