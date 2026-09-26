@@ -449,11 +449,18 @@ The source-inspection panel reports the locally detected format and category,
 browser-provided MIME type, exact byte count, batch count, and modification time.
 Bounded parsers present available container, codec, duration, bitrate, audio,
 video, subtitle, and metadata signals for the supported media families before a
-conversion starts. Non-media formats currently show generic type/size inspection
-and destination limitations, not a claimed pre-conversion structural parse; the
-worker validates their content locally during conversion. A headed DOCX review
-and this remaining gap are recorded in
-`evidence/headed-docx-inspection-2026-09-25.json` and `REMAINING_WORK.md`.
+conversion starts. A separate fixed-256-KiB UTF-8 inspector reports structural
+facts for CSV, TSV, NDJSON, JSON, XML, TXT, Markdown, HTML, SRT, WebVTT,
+ASS/SSA, and TTML: record/line/cue counts, delimited header width, top-level
+JSON shape, XML/HTML root and DOCTYPE presence, or subtitle sections. Prefix
+counts are explicitly lower bounds when the source is larger than the ceiling;
+the panel never displays source text, and the worker still performs complete
+streaming validity and safety checks during conversion. Packaged documents,
+archives, ebooks, and images still show generic type/size inspection and
+destination limitations. A headed DOCX review and the remaining gap are
+recorded in `evidence/headed-docx-inspection-2026-09-25.json` and
+`evidence/structured-source-inspection-2026-09-26.json`; the remaining scope is
+tracked in `REMAINING_WORK.md`.
 Selecting a media destination produces a source-aware plan
 for every inspected stream: copy, re-encode, exclude, or reject. The plan uses
 the fixed certified FFmpeg profile policy. When the same physical destination

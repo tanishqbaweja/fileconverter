@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-26",
+  "status": "passed",
+  "requirement": "U-08 bounded non-media pre-conversion source inspection",
+  "implementation": {
+    "source": "lib/structured-source-inspection.ts",
+    "ui": "app/converter/ConverterApp.tsx",
+    "maximumReadBytes": 262144,
+    "completeLargeFileBuffering": false,
+    "displaySourceContent": false,
+    "formats": [
+      "csv",
+      "tsv",
+      "ndjson",
+      "json",
+      "xml",
+      "txt",
+      "md",
+      "html",
+      "srt",
+      "vtt",
+      "ass",
+      "ttml"
+    ],
+    "largeSourcePolicy": "Only the prefix is decoded; counts are explicitly reported as lower bounds and complete validation remains in the streaming conversion worker."
+  },
+  "browserTests": {
+    "focusedCommand": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'conversion transmits no filename|bounded source inspection reports' --workers=1 --reporter=line",
+    "focusedResult": "2 passed",
+    "fullCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
+    "fullResult": "16 passed",
+    "functionalFixtures": [
+      "fixtures/data/sample.csv",
+      "fixtures/data/sample.json",
+      "fixtures/subtitles/sample.srt",
+      "fixtures/documents/sample.html"
+    ],
+    "assertions": [
+      "CSV embedded-newline records are counted structurally and header width is reported.",
+      "JSON top-level shape and item count are reported without rendering values.",
+      "SRT cue timing count is reported without rendering cue text.",
+      "HTML root and DOCTYPE presence are reported without rendering document text.",
+      "A generated 330,000-byte CSV reads exactly 262,144 bytes and labels its record count as a lower bound.",
+      "Conversion requests remain same-origin GET requests with no filename or file-content request data."
+    ]
+  },
+  "regressionGates": {
+    "typescript": "passed",
+    "eslint": "passed",
+    "productionBuildAndUnitTests": "passed: 248/248",
+    "publicEvidenceManifest": "passed: 405/405",
+    "engineReproducibilityManifest": "passed: 11 published engine directories"
+  },
+  "cleanup": "The privacy conversion test deletes its app-owned output. No generated fixture, converted copy, trace, screenshot, or browser profile is retained."
+}

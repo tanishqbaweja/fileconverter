@@ -305,11 +305,13 @@ test("conversion transmits no filename or file content", async () => {
     await expect(sourceInspection).toContainText("data");
     await expect(sourceInspection).toContainText("Exact input bytes");
     await expect(sourceInspection).toContainText(
-      "Detailed pre-conversion parsing is not yet implemented",
+      "Delimited CSV records",
     );
     await expect(sourceInspection).toContainText(
-      "validates the file locally during conversion",
+      "Header columns",
     );
+    await expect(sourceInspection).toContainText("3");
+    await expect(sourceInspection).toContainText("bounded local UTF-8 read");
     await expect(sourceInspection).not.toContainText(
       "container streams and codecs",
     );
@@ -345,6 +347,50 @@ test("conversion transmits no filename or file content", async () => {
     expect(request.url).not.toContain("sample.csv");
     expect(request.url).not.toContain("alpha");
   }
+});
+
+test("bounded source inspection reports structured data, document, and subtitle facts without source text", async () => {
+  await page.goto("/?test=1");
+  await waitForWorker();
+  const inspection = page.getByTestId("source-inspection");
+
+  for (const expected of [
+    {
+      fixture: path.join(projectRoot, "fixtures", "data", "sample.json"),
+      structure: "JSON value",
+      fact: "Array items",
+      privateText: "comma, bracket",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "subtitles", "sample.srt"),
+      structure: "SubRip cues",
+      fact: "Cue timings",
+      privateText: "Hello",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "documents", "sample.html"),
+      structure: "HTML document",
+      fact: "Root element",
+      privateText: "Nothing is uploaded",
+    },
+  ]) {
+    await page.locator('[data-testid="file-input"]').setInputFiles(expected.fixture);
+    await expect(inspection).toContainText(expected.structure);
+    await expect(inspection).toContainText(expected.fact);
+    await expect(inspection).toContainText("Inspection read");
+    await expect(inspection).toContainText("bounded local UTF-8 read");
+    await expect(inspection).not.toContainText(expected.privateText);
+  }
+
+  await page.locator('[data-testid="file-input"]').setInputFiles({
+    name: "bounded-large.csv",
+    mimeType: "text/csv",
+    buffer: Buffer.from("alpha,beta\n".repeat(30_000), "utf8"),
+  });
+  await expect(inspection).toContainText("Delimited CSV records");
+  await expect(inspection).toContainText("262,144 bytes");
+  await expect(inspection).toContainText("At least");
+  await expect(inspection).toContainText("Only the fixed-size source prefix was inspected");
 });
 
 test("source inspection displays genuine audio and multi-stream video families from bounded local reads", async () => {

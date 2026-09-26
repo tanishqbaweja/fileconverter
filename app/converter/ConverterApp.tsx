@@ -19,6 +19,10 @@ import {
   type SourceStreamInspection,
 } from "../../lib/media-source-inspection";
 import {
+  inspectStructuredSource,
+  type StructuredSourceInspection,
+} from "../../lib/structured-source-inspection";
+import {
   planMediaConversion,
   selectAutomaticMediaProfile,
   type MediaPlanAction,
@@ -361,6 +365,8 @@ export function ConverterApp() {
   });
   const [sourceMediaInspection, setSourceMediaInspection] =
     useState<MediaSourceInspection | null>(null);
+  const [sourceStructuredInspection, setSourceStructuredInspection] =
+    useState<StructuredSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
     "idle" | "inspecting" | "complete" | "unsupported" | "error"
   >("idle");
@@ -471,13 +477,20 @@ export function ConverterApp() {
       await Promise.resolve();
       if (cancelled) return;
       setSourceMediaInspection(null);
+      setSourceStructuredInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       try {
-        const inspection = await inspectMediaSource(file, inputFormat);
+        const [inspection, structuredInspection] = await Promise.all([
+          inspectMediaSource(file, inputFormat),
+          inspectStructuredSource(file, inputFormat),
+        ]);
         if (cancelled) return;
         setSourceMediaInspection(inspection);
-        setSourceInspectionStatus(inspection ? "complete" : "unsupported");
+        setSourceStructuredInspection(structuredInspection);
+        setSourceInspectionStatus(
+          inspection || structuredInspection ? "complete" : "unsupported",
+        );
         if (inspection && batchFiles.length === 1) {
           const candidates = profiles;
           const initialProfile = preferredProfileFor(inputFormat, candidates);
@@ -955,6 +968,7 @@ export function ConverterApp() {
         setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
         setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
         setSourceMediaInspection(null);
+        setSourceStructuredInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -989,6 +1003,7 @@ export function ConverterApp() {
         setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
         setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
         setSourceMediaInspection(null);
+        setSourceStructuredInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -1017,6 +1032,7 @@ export function ConverterApp() {
       setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
       setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
       setSourceMediaInspection(null);
+      setSourceStructuredInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       setDestinationHandle(null);
@@ -1184,6 +1200,7 @@ export function ConverterApp() {
     setAudioOptions({ ...DEFAULT_AUDIO_CONVERSION_OPTIONS });
     setVideoOptions({ ...DEFAULT_VIDEO_CONVERSION_OPTIONS });
     setSourceMediaInspection(null);
+    setSourceStructuredInspection(null);
     setSourceInspectionStatus("idle");
     setSourceInspectionError(null);
     setDestinationHandle(null);
@@ -1567,6 +1584,36 @@ export function ConverterApp() {
                     </div>
                   </>
                 ) : null}
+                {sourceStructuredInspection ? (
+                  <>
+                    <div>
+                      <dt>Detected structure</dt>
+                      <dd>{sourceStructuredInspection.structure}</dd>
+                    </div>
+                    <div>
+                      <dt>Text encoding</dt>
+                      <dd>UTF-8</dd>
+                    </div>
+                    {sourceStructuredInspection.facts.map((fact) => (
+                      <div key={fact.label}>
+                        <dt>{fact.label}</dt>
+                        <dd>{fact.value}</dd>
+                      </div>
+                    ))}
+                    <div>
+                      <dt>Inspection read</dt>
+                      <dd>
+                        {sourceStructuredInspection.inspectedBytes.toLocaleString(
+                          "en-US",
+                        )}{" "}
+                        bytes (max{" "}
+                        {sourceStructuredInspection.maximumInspectionBytes.toLocaleString(
+                          "en-US",
+                        )})
+                      </dd>
+                    </div>
+                  </>
+                ) : null}
               </dl>
               <div data-testid="media-inspection-status">
                 {sourceInspectionStatus === "inspecting" ? (
@@ -1581,6 +1628,16 @@ export function ConverterApp() {
                     <p>
                       These stream facts came from bounded local header reads for
                       {` ${file.name}`}; no media payload was uploaded or decoded.
+                    </p>
+                  </>
+                ) : sourceStructuredInspection ? (
+                  <>
+                    {sourceStructuredInspection.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                    <p>
+                      These structural facts came from a bounded local UTF-8
+                      read; source text was not displayed, retained, or uploaded.
                     </p>
                   </>
                 ) : (
