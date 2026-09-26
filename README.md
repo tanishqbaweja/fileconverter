@@ -458,13 +458,19 @@ the panel never displays source text, and the worker still performs complete
 streaming validity and safety checks during conversion. A fixed 1 MiB binary
 header inspector reports dimensions, declared depth/color form, animation, and
 bounded metadata signals for PNG/APNG, JPEG, GIF, WebP, AVIF, BMP, and ICO
-without decoding pixels; SVG uses the bounded UTF-8 path. Packaged documents,
-archives, ebooks, TIFF, and JPEG XL still show generic type/size inspection and
-destination limitations. A headed DOCX review and the exact inspected scopes
-are recorded in `evidence/headed-docx-inspection-2026-09-25.json`,
+without decoding pixels; SVG uses the bounded UTF-8 path. A ZIP package
+inspector reads at most the 65,557-byte tail plus a 1 MiB central-directory
+prefix for ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB. It reports bounded
+entry/size/compression/encryption/path-safety facts plus document-, sheet-,
+slide-, OpenDocument-, and publication-package markers without decompressing
+payloads or displaying embedded names. TIFF, JPEG XL, and non-ZIP archive
+families still show generic type/size inspection and destination limitations. A
+headed DOCX review and the exact inspected scopes are recorded in
+`evidence/headed-docx-inspection-2026-09-25.json`,
 `evidence/structured-source-inspection-2026-09-26.json`, and
-`evidence/image-source-inspection-2026-09-27.json`; remaining scope is tracked
-in `REMAINING_WORK.md`.
+`evidence/image-source-inspection-2026-09-27.json`, and
+`evidence/package-source-inspection-2026-09-27.json`; remaining scope is
+tracked in `REMAINING_WORK.md`.
 Selecting a media destination produces a source-aware plan
 for every inspected stream: copy, re-encode, exclude, or reject. The plan uses
 the fixed certified FFmpeg profile policy. When the same physical destination

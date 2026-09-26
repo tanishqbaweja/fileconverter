@@ -29,7 +29,7 @@
     "focusedCommand": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'conversion transmits no filename|bounded source inspection reports' --workers=1 --reporter=line",
     "focusedResult": "2 passed",
     "fullCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
-    "fullResult": "17 passed after the adjacent image-inspection gate was added",
+    "fullResult": "18 passed after the adjacent image- and package-inspection gates were added",
     "functionalFixtures": [
       "fixtures/data/sample.csv",
       "fixtures/data/sample.json",

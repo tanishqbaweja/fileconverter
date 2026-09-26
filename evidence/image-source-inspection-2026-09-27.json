@@ -35,7 +35,7 @@
     "command": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports image' --workers=1 --reporter=line",
     "result": "1 passed",
     "fullPrivacyOfflineCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
-    "fullPrivacyOfflineResult": "17 passed",
+    "fullPrivacyOfflineResult": "18 passed after the adjacent package-inspection gate was added",
     "fixtures": [
       "fixtures/images/test-pattern.png",
       "fixtures/images/animated-pattern.apng",
@@ -55,6 +55,6 @@
       "The panel states that pixel data was not decoded, displayed, retained, or uploaded."
     ]
   },
-  "remaining": "TIFF and JPEG XL require their specialist bounded Wasm decoders for authoritative page/frame metadata and remain generic before conversion. ICO directory parsing is implemented, but no public ICO input profile currently exists.",
+  "remaining": "TIFF and JPEG XL require their specialist bounded Wasm decoders for authoritative page/frame metadata and remain generic before conversion. ICO directory parsing is implemented, but no public ICO input profile currently exists. ZIP-based document, archive, and ebook packages are covered separately by evidence/package-source-inspection-2026-09-27.json.",
   "cleanup": "No converted output, generated fixture, pixel surface, trace, screenshot, or browser profile is retained."
 }

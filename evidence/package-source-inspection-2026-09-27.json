@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-27",
+  "status": "passed",
+  "requirement": "U-08 bounded packaged-document, archive, and ebook pre-conversion inspection",
+  "implementation": {
+    "source": "lib/package-source-inspection.ts",
+    "ui": "app/converter/ConverterApp.tsx",
+    "formats": [
+      "zip",
+      "docx",
+      "xlsx",
+      "pptx",
+      "odt",
+      "ods",
+      "odp",
+      "epub"
+    ],
+    "maximumTailReadBytes": 65557,
+    "maximumCentralDirectoryReadBytes": 1048576,
+    "maximumCombinedReadBytes": 1114133,
+    "completeLargeFileBuffering": false,
+    "payloadDecompressionDuringInspection": false,
+    "displayEmbeddedNamesOrContent": false,
+    "reportedFacts": [
+      "classic ZIP entry and central-directory sizes",
+      "inspected aggregate declared uncompressed bytes",
+      "stored, deflated, and other compression-method counts",
+      "encryption, unsafe-path, and duplicate-name signals",
+      "DOCX main document and header/footer package markers",
+      "XLSX workbook and worksheet package markers",
+      "PPTX presentation, slide, and speaker-note package markers",
+      "OpenDocument MIME, content, manifest, and embedded-object package markers",
+      "EPUB container, package-document, and HTML-content markers",
+      "ZIP64 and multi-disk unsupported-layout signals"
+    ],
+    "largeDirectoryPolicy": "Only the first 1 MiB of central-directory metadata is parsed. Counts and missing package markers are explicitly qualified as prefix findings; complete validation remains in the conversion worker."
+  },
+  "browserTests": {
+    "focusedCommand": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports ZIP package' --workers=1 --reporter=line",
+    "focusedResult": "1 passed",
+    "fullCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
+    "fullResult": "18 passed",
+    "fixtures": [
+      "fixtures/archives/sample.zip",
+      "fixtures/archives/unsafe-entry.zip",
+      "fixtures/documents/sample.docx",
+      "fixtures/spreadsheets/sample.xlsx",
+      "fixtures/presentations/sample.pptx",
+      "fixtures/open-documents/sample.odt",
+      "fixtures/open-documents/sample.ods",
+      "fixtures/open-documents/sample.odp",
+      "fixtures/ebooks/sample.epub"
+    ],
+    "assertions": [
+      "All eight public ZIP-based input families report their expected package structure and category-specific structural facts.",
+      "Known embedded filenames and source content are absent from the rendered panel.",
+      "The unsafe ZIP fixture reports an unsafe-path count without disclosing the unsafe name.",
+      "An in-memory 20,000-entry, 1,140,000-byte central directory reads exactly the 1,114,133-byte combined ceiling and reports inspected-entry counts as lower bounds.",
+      "The panel states that package payloads and embedded XML were not decompressed, displayed, retained, or uploaded."
+    ]
+  },
+  "regressionGates": {
+    "typescript": "passed",
+    "eslint": "passed",
+    "productionBuildAndUnitTests": "passed: 248/248",
+    "fullPrivacyOffline": "passed: 18/18",
+    "publicEvidenceManifest": "passed: 405/405",
+    "engineReproducibilityManifest": "passed: 11 published engine directories"
+  },
+  "remaining": "Specialist bounded TIFF page and JPEG XL frame metadata inspection remains generic before conversion. Non-ZIP archive families retain generic type, size, and destination-limit inspection until bounded directory metadata readers are added.",
+  "cleanup": "The oversized central directory exists only in Playwright process memory. No generated fixture, converted output, decompressed payload, trace, screenshot, video, or browser profile is retained."
+}

@@ -393,6 +393,110 @@ test("bounded source inspection reports structured data, document, and subtitle 
   await expect(inspection).toContainText("Only the fixed-size source prefix was inspected");
 });
 
+test("bounded source inspection reports ZIP package structure without reading payloads or displaying entry names", async () => {
+  await page.goto("/?test=1");
+  await waitForWorker();
+  const inspection = page.getByTestId("source-inspection");
+
+  for (const expected of [
+    {
+      fixture: path.join(projectRoot, "fixtures", "archives", "sample.zip"),
+      structure: "ZIP archive package",
+      fact: "Declared entries",
+      privateName: "hello.txt",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "documents", "sample.docx"),
+      structure: "WordprocessingML package",
+      fact: "Main document part",
+      privateName: "word/document.xml",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "spreadsheets", "sample.xlsx"),
+      structure: "SpreadsheetML package",
+      fact: "Worksheet parts",
+      privateName: "xl/workbook.xml",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "presentations", "sample.pptx"),
+      structure: "PresentationML package",
+      fact: "Slide parts",
+      privateName: "ppt/presentation.xml",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "open-documents", "sample.odt"),
+      structure: "OpenDocument text package",
+      fact: "Content document",
+      privateName: "content.xml",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "open-documents", "sample.ods"),
+      structure: "OpenDocument spreadsheet package",
+      fact: "Package manifest",
+      privateName: "META-INF/manifest.xml",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "open-documents", "sample.odp"),
+      structure: "OpenDocument presentation package",
+      fact: "Embedded object/media entries",
+      privateName: "mimetype",
+    },
+    {
+      fixture: path.join(projectRoot, "fixtures", "ebooks", "sample.epub"),
+      structure: "EPUB publication package",
+      fact: "Publication package documents",
+      privateName: "OPS/package.opf",
+    },
+  ]) {
+    await page.locator('[data-testid="file-input"]').setInputFiles(expected.fixture);
+    await expect(inspection).toContainText(expected.structure);
+    await expect(inspection).toContainText(expected.fact);
+    await expect(inspection).toContainText("Inspection read");
+    await expect(inspection).toContainText("bounded local ZIP-directory reads");
+    await expect(inspection).toContainText("were not decompressed");
+    await expect(inspection).not.toContainText(expected.privateName);
+  }
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "archives", "unsafe-entry.zip"));
+  await expect(inspection).toContainText("Unsafe entry paths");
+  await expect(inspection).toContainText("Potentially unsafe");
+  await expect(inspection).not.toContainText("../escape.txt");
+
+  const declaredEntries = 20_000;
+  const nameLength = 11;
+  const recordLength = 46 + nameLength;
+  const directoryBytes = declaredEntries * recordLength;
+  const oversizedDirectory = Buffer.alloc(directoryBytes + 22);
+  for (let index = 0; index < declaredEntries; index += 1) {
+    const offset = index * recordLength;
+    const name = Buffer.from(`entry-${index.toString().padStart(5, "0")}`, "ascii");
+    oversizedDirectory.writeUInt32LE(0x02014b50, offset);
+    oversizedDirectory.writeUInt16LE(20, offset + 4);
+    oversizedDirectory.writeUInt16LE(20, offset + 6);
+    oversizedDirectory.writeUInt16LE(0x0800, offset + 8);
+    oversizedDirectory.writeUInt16LE(name.length, offset + 28);
+    name.copy(oversizedDirectory, offset + 46);
+  }
+  oversizedDirectory.writeUInt32LE(0x06054b50, directoryBytes);
+  oversizedDirectory.writeUInt16LE(declaredEntries, directoryBytes + 8);
+  oversizedDirectory.writeUInt16LE(declaredEntries, directoryBytes + 10);
+  oversizedDirectory.writeUInt32LE(directoryBytes, directoryBytes + 12);
+  oversizedDirectory.writeUInt32LE(0, directoryBytes + 16);
+  await page.locator('[data-testid="file-input"]').setInputFiles({
+    name: "bounded-large-directory.zip",
+    mimeType: "application/zip",
+    buffer: oversizedDirectory,
+  });
+  await expect(inspection).toContainText("1,114,133 bytes");
+  await expect(inspection).toContainText("of 20,000 declared entries");
+  await expect(inspection).toContainText(
+    "Only the fixed-size central-directory prefix was inspected",
+  );
+  await expect(inspection).not.toContainText("entry-00000");
+});
+
 test("bounded source inspection reports image dimensions and animation without decoding pixels", async () => {
   await page.goto("/?test=1");
   await waitForWorker();

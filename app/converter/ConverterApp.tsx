@@ -27,6 +27,10 @@ import {
   type ImageSourceInspection,
 } from "../../lib/image-source-inspection";
 import {
+  inspectPackageSource,
+  type PackageSourceInspection,
+} from "../../lib/package-source-inspection";
+import {
   planMediaConversion,
   selectAutomaticMediaProfile,
   type MediaPlanAction,
@@ -373,6 +377,8 @@ export function ConverterApp() {
     useState<StructuredSourceInspection | null>(null);
   const [sourceImageInspection, setSourceImageInspection] =
     useState<ImageSourceInspection | null>(null);
+  const [sourcePackageInspection, setSourcePackageInspection] =
+    useState<PackageSourceInspection | null>(null);
   const [sourceInspectionStatus, setSourceInspectionStatus] = useState<
     "idle" | "inspecting" | "complete" | "unsupported" | "error"
   >("idle");
@@ -485,20 +491,28 @@ export function ConverterApp() {
       setSourceMediaInspection(null);
       setSourceStructuredInspection(null);
       setSourceImageInspection(null);
+      setSourcePackageInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       try {
-        const [inspection, structuredInspection, imageInspection] = await Promise.all([
+        const [
+          inspection,
+          structuredInspection,
+          imageInspection,
+          packageInspection,
+        ] = await Promise.all([
           inspectMediaSource(file, inputFormat),
           inspectStructuredSource(file, inputFormat),
           inspectImageSource(file, inputFormat),
+          inspectPackageSource(file, inputFormat),
         ]);
         if (cancelled) return;
         setSourceMediaInspection(inspection);
         setSourceStructuredInspection(structuredInspection);
         setSourceImageInspection(imageInspection);
+        setSourcePackageInspection(packageInspection);
         setSourceInspectionStatus(
-          inspection || structuredInspection || imageInspection
+          inspection || structuredInspection || imageInspection || packageInspection
             ? "complete"
             : "unsupported",
         );
@@ -981,6 +995,7 @@ export function ConverterApp() {
         setSourceMediaInspection(null);
         setSourceStructuredInspection(null);
         setSourceImageInspection(null);
+        setSourcePackageInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -1017,6 +1032,7 @@ export function ConverterApp() {
         setSourceMediaInspection(null);
         setSourceStructuredInspection(null);
         setSourceImageInspection(null);
+        setSourcePackageInspection(null);
         setSourceInspectionStatus("idle");
         setSourceInspectionError(null);
         setDestinationHandle(null);
@@ -1047,6 +1063,7 @@ export function ConverterApp() {
       setSourceMediaInspection(null);
       setSourceStructuredInspection(null);
       setSourceImageInspection(null);
+      setSourcePackageInspection(null);
       setSourceInspectionStatus("inspecting");
       setSourceInspectionError(null);
       setDestinationHandle(null);
@@ -1216,6 +1233,7 @@ export function ConverterApp() {
     setSourceMediaInspection(null);
     setSourceStructuredInspection(null);
     setSourceImageInspection(null);
+    setSourcePackageInspection(null);
     setSourceInspectionStatus("idle");
     setSourceInspectionError(null);
     setDestinationHandle(null);
@@ -1680,6 +1698,32 @@ export function ConverterApp() {
                     </div>
                   </>
                 ) : null}
+                {sourcePackageInspection ? (
+                  <>
+                    <div>
+                      <dt>Detected structure</dt>
+                      <dd>{sourcePackageInspection.structure}</dd>
+                    </div>
+                    {sourcePackageInspection.facts.map((fact) => (
+                      <div key={fact.label}>
+                        <dt>{fact.label}</dt>
+                        <dd>{fact.value}</dd>
+                      </div>
+                    ))}
+                    <div>
+                      <dt>Inspection read</dt>
+                      <dd>
+                        {sourcePackageInspection.inspectedBytes.toLocaleString(
+                          "en-US",
+                        )}{" "}
+                        bytes (max{" "}
+                        {sourcePackageInspection.maximumInspectionBytes.toLocaleString(
+                          "en-US",
+                        )})
+                      </dd>
+                    </div>
+                  </>
+                ) : null}
               </dl>
               <div data-testid="media-inspection-status">
                 {sourceInspectionStatus === "inspecting" ? (
@@ -1714,6 +1758,17 @@ export function ConverterApp() {
                     <p>
                       These image facts came from a bounded local header read;
                       pixel data was not decoded, displayed, retained, or uploaded.
+                    </p>
+                  </>
+                ) : sourcePackageInspection ? (
+                  <>
+                    {sourcePackageInspection.notes.map((note) => (
+                      <p key={note}>{note}</p>
+                    ))}
+                    <p>
+                      These package facts came from bounded local ZIP-directory
+                      reads; embedded filenames and file contents were not
+                      displayed, retained, or uploaded.
                     </p>
                   </>
                 ) : (
