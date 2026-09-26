@@ -22,6 +22,7 @@ const supportedFormats = new Set([
   "ico",
   "jpeg",
   "png",
+  "tiff",
   "webp",
 ]);
 
@@ -330,6 +331,133 @@ function parseIco(bytes: Uint8Array): Omit<ImageSourceInspection, "format" | "no
   };
 }
 
+function parseTiff(
+  bytes: Uint8Array,
+  completeFile: boolean,
+): Omit<
+  ImageSourceInspection,
+  "format" | "notes" | "inspectedBytes" | "maximumInspectionBytes" | "completeFile"
+> {
+  if (bytes.byteLength < 8) throw new Error("TIFF input is missing its file header.");
+  const byteOrder = ascii(bytes, 0, 2);
+  const littleEndian = byteOrder === "II";
+  if (!littleEndian && byteOrder !== "MM") {
+    throw new Error("TIFF input has an invalid byte-order marker.");
+  }
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const u16 = (offset: number) => view.getUint16(offset, littleEndian);
+  const u32 = (offset: number) => view.getUint32(offset, littleEndian);
+  if (u16(2) !== 42) throw new Error("TIFF input has an invalid classic-TIFF signature.");
+
+  const metadata = new Set<string>();
+  const seenDirectories = new Set<number>();
+  let directoryOffset = u32(4);
+  let pages = 0;
+  let completeDirectoryChain = true;
+  let width = 0;
+  let height = 0;
+  let bitDepth: number | null = null;
+  let samplesPerPixel = 1;
+  let photometric = -1;
+  let compression = -1;
+  let orientation = 1;
+  while (directoryOffset !== 0 && pages < 1_000) {
+    if (
+      seenDirectories.has(directoryOffset) ||
+      directoryOffset + 2 > bytes.byteLength
+    ) {
+      completeDirectoryChain = false;
+      break;
+    }
+    seenDirectories.add(directoryOffset);
+    const entryCount = u16(directoryOffset);
+    const directoryEnd = directoryOffset + 2 + entryCount * 12 + 4;
+    if (directoryEnd > bytes.byteLength) {
+      completeDirectoryChain = false;
+      break;
+    }
+    pages += 1;
+    for (let index = 0; index < entryCount; index += 1) {
+      const entry = directoryOffset + 2 + index * 12;
+      const tag = u16(entry);
+      const type = u16(entry + 2);
+      const count = u32(entry + 4);
+      const scalar = () => {
+        if (count !== 1) return null;
+        if (type === 1) return bytes[entry + 8];
+        if (type === 3) return u16(entry + 8);
+        if (type === 4) return u32(entry + 8);
+        return null;
+      };
+      const value = scalar();
+      if (pages === 1 && tag === 256 && value !== null) width = value;
+      if (pages === 1 && tag === 257 && value !== null) height = value;
+      if (pages === 1 && tag === 258) {
+        if (count === 1 && value !== null) bitDepth = value;
+        else if (type === 3 && count > 0) {
+          const valuesOffset = u32(entry + 8);
+          if (valuesOffset + count * 2 <= bytes.byteLength) {
+            let maximumBits = 0;
+            for (let valueIndex = 0; valueIndex < count; valueIndex += 1) {
+              maximumBits = Math.max(
+                maximumBits,
+                u16(valuesOffset + valueIndex * 2),
+              );
+            }
+            bitDepth = maximumBits;
+          }
+        }
+      }
+      if (pages === 1 && tag === 259 && value !== null) compression = value;
+      if (pages === 1 && tag === 262 && value !== null) photometric = value;
+      if (pages === 1 && tag === 274 && value !== null) orientation = value;
+      if (pages === 1 && tag === 277 && value !== null) samplesPerPixel = value;
+      if (tag === 282 || tag === 283) metadata.add("pixel density");
+      if (tag === 700) metadata.add("XMP");
+      if (tag === 34665) metadata.add("EXIF");
+      if (tag === 34675) metadata.add("ICC profile");
+    }
+    directoryOffset = u32(directoryEnd - 4);
+  }
+  if (pages === 1_000 && directoryOffset !== 0) completeDirectoryChain = false;
+  if (completeFile && !completeDirectoryChain) {
+    throw new Error("TIFF image-directory chain is truncated, cyclic, or malformed.");
+  }
+  if (pages < 1 || width < 1 || height < 1) {
+    throw new Error("TIFF dimensions were not found inside the bounded header window.");
+  }
+  const colorModel =
+    ({
+      0: "Grayscale (white is zero)",
+      1: "Grayscale (black is zero)",
+      2: samplesPerPixel >= 4 ? "RGB with extra channel(s)" : "RGB",
+      3: "Indexed color",
+      5: "CMYK",
+      6: "YCbCr",
+      8: "CIELab",
+    } as Record<number, string>)[photometric] ??
+    `TIFF photometric model ${photometric < 0 ? "not found" : photometric}`;
+  const compressionName =
+    ({ 1: "uncompressed", 5: "LZW", 7: "JPEG", 8: "Deflate", 32773: "PackBits" } as Record<
+      number,
+      string
+    >)[compression] ?? `method ${compression < 0 ? "not found" : compression}`;
+  metadata.add(`compression: ${compressionName}`);
+  if (orientation !== 1) metadata.add(`orientation ${orientation}`);
+  const exactPages = completeDirectoryChain;
+  return {
+    width,
+    height,
+    bitDepth,
+    colorModel,
+    animation:
+      pages === 1 && exactPages
+        ? "Single page"
+        : `${exactPages ? "Multipage" : "Multipage prefix"} (${exactPages ? "" : "at least "}${pages.toLocaleString("en-US")} page${pages === 1 ? "" : "s"})`,
+    metadataSignals: [...metadata],
+  };
+}
+
 export async function inspectImageSource(file: File, format: string): Promise<ImageSourceInspection | null> {
   if (!supportedFormats.has(format)) return null;
   const inspectedBytes = Math.min(file.size, MAX_IMAGE_INSPECTION_BYTES);
@@ -348,7 +476,9 @@ export async function inspectImageSource(file: File, format: string): Promise<Im
               ? parseWebp(bytes, completeFile)
               : format === "avif"
                 ? parseAvif(bytes)
-                : parseIco(bytes);
+                : format === "ico"
+                  ? parseIco(bytes)
+                  : parseTiff(bytes, completeFile);
   if (parsed.width < 1 || parsed.height < 1) throw new Error(`${format.toUpperCase()} dimensions are invalid.`);
   return {
     format: format === "apng" ? "PNG/APNG" : format.toUpperCase(),

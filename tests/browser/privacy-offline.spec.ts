@@ -509,6 +509,7 @@ test("bounded source inspection reports image dimensions and animation without d
     { fixture: "animated-pattern.gif", structure: "GIF image header", animation: "Animated (8 frames found)" },
     { fixture: "animated-pattern.webp", structure: "WEBP image header", animation: "Animated (8 frame chunks found)" },
     { fixture: "test-pattern.avif", structure: "AVIF image header", animation: "Static AVIF brand" },
+    { fixture: "test-pattern-deflate.tiff", structure: "TIFF image header", animation: "Single page" },
     { fixture: "test-pattern.bmp", structure: "BMP image header", animation: "Static" },
   ]) {
     await page
@@ -521,6 +522,16 @@ test("bounded source inspection reports image dimensions and animation without d
   }
   await expect(inspection).toContainText("1,048,576 bytes");
   await expect(inspection).toContainText("Only the fixed-size header prefix was inspected");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern-multipage.tiff"),
+    );
+  await expect(inspection).toContainText("TIFF image header");
+  await expect(inspection).toContainText("127×95");
+  await expect(inspection).toContainText("Multipage (2 pages)");
+  await expect(inspection).toContainText("compression:");
 
   await page
     .locator('[data-testid="file-input"]')
