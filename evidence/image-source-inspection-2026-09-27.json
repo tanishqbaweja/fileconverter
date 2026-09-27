@@ -5,9 +5,17 @@
   "implementation": {
     "binarySource": "lib/image-source-inspection.ts",
     "svgSource": "lib/structured-source-inspection.ts",
+    "jpegXlSource": "lib/jxl-source-inspection.ts",
+    "jpegXlWorker": "workers/jxl-source-inspection-worker.ts",
     "ui": "app/converter/ConverterApp.tsx",
     "maximumBinaryHeaderReadBytes": 1048576,
     "maximumSvgPrefixReadBytes": 262144,
+    "maximumJpegXlInspectionBytes": 4194304,
+    "maximumJpegXlReadBytes": 65536,
+    "jpegXlInputWindowBytes": 131072,
+    "jpegXlWasmMemoryBytes": 16777216,
+    "jpegXlDecoderAllocationLimitBytes": 8388608,
+    "maximumJpegXlFrames": 1000,
     "pixelDecodeDuringInspection": false,
     "completeLargeFileBuffering": false,
     "binaryFormats": [
@@ -19,7 +27,8 @@
       "avif",
       "bmp",
       "ico",
-      "tiff"
+      "tiff",
+      "jxl"
     ],
     "textFormats": [
       "svg"
@@ -31,13 +40,20 @@
       "animation signal and bounded frame count where available",
       "classic-TIFF page count, compression, and orientation where the bounded image-directory chain is available",
       "bounded EXIF, ICC, density, comment, text, and color-property signals"
-    ]
+    ],
+    "jpegXlReportedFacts": [
+      "dimensions and intrinsic dimensions",
+      "bit depth, color channels, alpha depth, and orientation",
+      "animation timebase, loops, timecodes, aggregate duration ticks, and named-frame count",
+      "exact displayed-frame count when the final frame header occurs inside the 4 MiB ceiling, otherwise an explicit lower bound"
+    ],
+    "jpegXlPixelOutputRequested": false
   },
   "browserTest": {
     "command": "npx playwright test tests/browser/privacy-offline.spec.ts -g 'bounded source inspection reports image' --workers=1 --reporter=line",
     "result": "1 passed",
     "fullPrivacyOfflineCommand": "npx playwright test tests/browser/privacy-offline.spec.ts --workers=1 --reporter=line",
-    "fullPrivacyOfflineResult": "18 passed after package inspection and classic-TIFF inspection were added",
+    "fullPrivacyOfflineResult": "18 passed after JPEG XL inspection was added",
     "fixtures": [
       "fixtures/images/test-pattern.png",
       "fixtures/images/animated-pattern.apng",
@@ -48,7 +64,11 @@
       "fixtures/images/test-pattern.bmp",
       "fixtures/images/test-pattern-deflate.tiff",
       "fixtures/images/test-pattern-multipage.tiff",
-      "fixtures/images/test-pattern.svg"
+      "fixtures/images/test-pattern.svg",
+      "fixtures/images/test-pattern.jxl",
+      "fixtures/images/test-pattern-gray16.jxl",
+      "fixtures/images/animated-pattern.jxl",
+      "fixtures/images/corrupt.jxl"
     ],
     "assertions": [
       "Each genuine raster header reports the independently manifested 1,024 by 768 dimensions.",
@@ -57,9 +77,25 @@
       "A genuine single-page TIFF reports 1,024 by 768 plus its compression, and a genuine two-page TIFF reports both pages and 127 by 95 first-page dimensions.",
       "SVG reports its root structurally through the bounded UTF-8 inspector.",
       "A renamed text payload with a PNG extension is rejected during bounded inspection before conversion.",
+      "Static JPEG XL reports 1,024 by 768 RGB at 8-bit depth through a fixed 16 MiB inspector.",
+      "The 16-bit grayscale JPEG XL reports 127 by 95 grayscale at 16-bit depth.",
+      "The animated JPEG XL reports all eight displayed frame headers, a 100/1 timebase, infinite looping, and aggregate duration ticks without requesting pixel output.",
+      "A corrupt JPEG XL payload is rejected before conversion.",
       "The panel states that pixel data was not decoded, displayed, retained, or uploaded."
     ]
   },
-  "remaining": "JPEG XL requires its specialist bounded decoder for authoritative frame metadata and remains generic before conversion. TIFF preflight follows classic image-file directories inside the fixed prefix; complete decode and safety validation remains in the specialist fixed-memory worker. ICO directory parsing is implemented, but no public ICO input profile currently exists. ZIP-based document, archive, and ebook packages are covered separately by evidence/package-source-inspection-2026-09-27.json.",
+  "jpegXlEngine": {
+    "libjxlVersion": "0.12.0",
+    "emscriptenVersion": "6.0.4",
+    "candidateBuildRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/36347903464",
+    "publicationReproductionRun": "https://github.com/tanishqbaweja/fileconverter/actions/runs/36348285061",
+    "publicationReproductionResult": "exact byte-for-byte no-Docker comparison passed; cleanup passed; mismatch upload skipped",
+    "manifestSha256": "87AAF08E3745877348FC695854104D406B0C2DA5144CA7C8EB9B263972F5C68A",
+    "javascriptBytes": 18172,
+    "javascriptSha256": "794C49FE4E69D8FED9B66075E798FC5F36811E0CD9A3C2E01D8329F52701EF7A",
+    "wasmBytes": 751368,
+    "wasmSha256": "46BB51CBFC7EDA9A6B0D8AA01EB7FE4E11D655350AD5D2F87B0D2CC7DC19BAAE"
+  },
+  "remaining": "TIFF preflight follows classic image-file directories inside the fixed prefix; complete decode and safety validation remains in the specialist fixed-memory worker. ICO directory parsing is implemented, but no public ICO input profile currently exists. JPEG XL sources whose final displayed-frame header lies beyond the fixed 4 MiB scan ceiling report a lower-bound frame count; complete enumeration and validity remain in the conversion worker. ZIP-based document, archive, and ebook packages are covered separately by evidence/package-source-inspection-2026-09-27.json.",
   "cleanup": "No converted output, generated fixture, pixel surface, trace, screenshot, or browser profile is retained."
 }
