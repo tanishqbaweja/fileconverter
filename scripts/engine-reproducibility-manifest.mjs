@@ -84,6 +84,17 @@ const engines = [
     emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
   },
   {
+    id: "jxl-inspector",
+    command: "npm run build:jxl-inspector",
+    output: "public/engines/jxl-inspector",
+    installNodeModules: false,
+    buildEnvironment: "nondocker",
+    nonDockerCommand:
+      "source work/emsdk/emsdk_env.sh && bash images/libjxl-inspector/reproduce-nondocker.sh",
+    emscriptenVersion: "6.0.4",
+    emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+  },
+  {
     id: "jxl-encoder",
     command: "npm run build:jxl-encoder",
     output: "public/engines/jxl-encoder",

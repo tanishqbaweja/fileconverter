@@ -19,6 +19,7 @@ on:
           - archive7z
           - tiff
           - jxl
+          - jxl-inspector
           - jxl-encoder
           - avif
           - avif-encoder
