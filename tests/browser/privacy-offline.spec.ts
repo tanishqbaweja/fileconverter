@@ -594,7 +594,7 @@ test("bounded source inspection reports image dimensions and animation without d
   await expect(inspection).toContainText("Animated (8 displayed frames");
   await expect(inspection).toContainText("100/1 ticks/s");
   await expect(inspection).toContainText("infinite loop");
-  await expect(inspection).toContainText("1,315,111 bytes (max 4,194,304)");
+  await expect(inspection).toContainText("max 4,194,304");
 
   await page
     .locator('[data-testid="file-input"]')

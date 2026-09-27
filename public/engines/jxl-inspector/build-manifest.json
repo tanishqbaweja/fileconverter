@@ -1,0 +1,23 @@
+{
+  "engine": "within-jxl-inspector",
+  "libjxlVersion": "0.12.0",
+  "libjxlCommit": "a7a9c787341cf703dede03c2009fa460cae5e5df",
+  "brotliCommit": "028fb5a23661f123017c060daa546b55cf4bde29",
+  "highwayCommit": "457c891775a7397bdb0376bb1031e6e027af1c48",
+  "libpngCommit": "872555f4ba910252783af1507f9e7fe1653be252",
+  "skcmsCommit": "96d9171c94b937a1b5f0293de7309ac16311b722",
+  "emscriptenVersion": "6.0.4",
+  "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+  "initialWasmMemoryBytes": 16777216,
+  "maximumWasmMemoryBytes": 16777216,
+  "decoderAllocationLimitBytes": 8388608,
+  "singleAllocationLimitBytes": 4194304,
+  "inputReadBytes": 65536,
+  "inputWindowBytes": 131072,
+  "maximumInspectionBytes": 4194304,
+  "maximumInputBytes": 67108864,
+  "maximumFrames": 1000,
+  "pixelDecode": false,
+  "threads": 1,
+  "profiles": ["jxl-source-inspection"]
+}
