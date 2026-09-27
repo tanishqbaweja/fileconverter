@@ -11,8 +11,9 @@
 
 #define WITHIN_INPUT_READ (64U * 1024U)
 #define WITHIN_INPUT_WINDOW (128U * 1024U)
-#define WITHIN_MAX_INSPECTION (1024U * 1024U)
+#define WITHIN_MAX_INSPECTION (4U * 1024U * 1024U)
 #define WITHIN_MAX_INPUT (64U * 1024U * 1024U)
+#define WITHIN_MAX_FRAMES 1000U
 #define WITHIN_DECODER_ALLOCATION_LIMIT (8U * 1024U * 1024U)
 #define WITHIN_SINGLE_ALLOCATION_LIMIT (4U * 1024U * 1024U)
 
@@ -43,6 +44,10 @@ static uint32_t within_tps_numerator;
 static uint32_t within_tps_denominator;
 static uint32_t within_num_loops;
 static uint32_t within_have_timecodes;
+static uint32_t within_frame_count;
+static uint32_t within_frame_count_exact;
+static uint32_t within_total_duration_ticks;
+static uint32_t within_named_frame_count;
 static uint32_t within_inspected_bytes;
 static within_memory_state within_memory;
 
@@ -108,6 +113,10 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
   within_tps_denominator = 0;
   within_num_loops = 0;
   within_have_timecodes = 0;
+  within_frame_count = 0;
+  within_frame_count_exact = 0;
+  within_total_duration_ticks = 0;
+  within_named_frame_count = 0;
   within_inspected_bytes = 0;
   memset(&within_memory, 0, sizeof(within_memory));
   if (input_size < 2 || input_size > WITHIN_MAX_INPUT) {
@@ -130,7 +139,8 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
     within_set_error("Could not initialize the bounded JPEG XL header decoder.");
     return 3;
   }
-  if (JxlDecoderSubscribeEvents(decoder, JXL_DEC_BASIC_INFO) != JXL_DEC_SUCCESS) {
+  if (JxlDecoderSubscribeEvents(decoder, JXL_DEC_BASIC_INFO | JXL_DEC_FRAME) !=
+      JXL_DEC_SUCCESS) {
     JxlDecoderDestroy(decoder);
     free(input);
     within_set_error("Could not configure JPEG XL basic-information inspection.");
@@ -141,6 +151,7 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
   size_t available = 0;
   int input_is_set = 0;
   int input_closed = 0;
+  int frame_needs_skip = 0;
   int result = 0;
   for (;;) {
     if (!input_is_set) {
@@ -165,7 +176,8 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
         if ((size_t)completed < wanted) break;
       }
       if (available == 0) {
-        within_set_error("JPEG XL basic information was not found inside the 1 MiB inspection ceiling.");
+        if (within_width > 0) goto cleanup;
+        within_set_error("JPEG XL basic information was not found inside the 4 MiB inspection ceiling.");
         result = 6;
         goto cleanup;
       }
@@ -207,21 +219,59 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
         within_num_loops = info.animation.num_loops;
         within_have_timecodes = info.animation.have_timecodes ? 1U : 0U;
       }
-      goto cleanup;
+      continue;
+    }
+    if (status == JXL_DEC_FRAME) {
+      JxlFrameHeader frame;
+      if (JxlDecoderGetFrameHeader(decoder, &frame) != JXL_DEC_SUCCESS) {
+        within_set_error("JPEG XL frame metadata is invalid.");
+        result = 9;
+        goto cleanup;
+      }
+      if (within_frame_count == WITHIN_MAX_FRAMES) {
+        within_set_error("JPEG XL inspection exceeded the 1,000-frame limit.");
+        result = 10;
+        goto cleanup;
+      }
+      within_frame_count += 1;
+      if (frame.name_length > 0) within_named_frame_count += 1;
+      if (UINT32_MAX - within_total_duration_ticks < frame.duration) {
+        within_set_error("JPEG XL aggregate frame duration exceeds the supported limit.");
+        result = 11;
+        goto cleanup;
+      }
+      within_total_duration_ticks += frame.duration;
+      if (frame.is_last) {
+        within_frame_count_exact = 1;
+        goto cleanup;
+      }
+      frame_needs_skip = 1;
+      continue;
+    }
+    if (status == JXL_DEC_NEED_IMAGE_OUT_BUFFER) {
+      if (!frame_needs_skip ||
+          JxlDecoderSkipCurrentFrame(decoder) != JXL_DEC_SUCCESS) {
+        within_set_error("JPEG XL frame could not be skipped without pixel output.");
+        result = 12;
+        goto cleanup;
+      }
+      frame_needs_skip = 0;
+      continue;
     }
     if (status == JXL_DEC_NEED_MORE_INPUT) {
       size_t remaining = JxlDecoderReleaseInput(decoder);
       input_is_set = 0;
       if (remaining > available) {
         within_set_error("JPEG XL decoder returned invalid input accounting.");
-        result = 9;
+        result = 13;
         goto cleanup;
       }
       memmove(input, input + available - remaining, remaining);
       available = remaining;
       if (source_position >= WITHIN_MAX_INSPECTION && source_position < input_size) {
-        within_set_error("JPEG XL basic information was not found inside the 1 MiB inspection ceiling.");
-        result = 10;
+        if (within_width > 0) goto cleanup;
+        within_set_error("JPEG XL basic information was not found inside the 4 MiB inspection ceiling.");
+        result = 14;
         goto cleanup;
       }
       continue;
@@ -230,12 +280,16 @@ EMSCRIPTEN_KEEPALIVE int within_jxl_inspect(uint32_t input_size) {
       within_set_error(within_memory.rejected
                            ? "JPEG XL header parsing exceeded the 8 MiB decoder allocation limit."
                            : "JPEG XL header is invalid or unsupported.");
-      result = 11;
+      result = 15;
       goto cleanup;
     }
     if (status == JXL_DEC_SUCCESS) {
+      if (within_width > 0) {
+        within_frame_count_exact = 1;
+        goto cleanup;
+      }
       within_set_error("JPEG XL stream ended before basic information was reported.");
-      result = 12;
+      result = 16;
       goto cleanup;
     }
   }
@@ -262,5 +316,9 @@ EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_tps_numerator(void) { return 
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_tps_denominator(void) { return within_tps_denominator; }
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_num_loops(void) { return within_num_loops; }
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_have_timecodes(void) { return within_have_timecodes; }
+EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_frame_count(void) { return within_frame_count; }
+EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_frame_count_exact(void) { return within_frame_count_exact; }
+EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_total_duration_ticks(void) { return within_total_duration_ticks; }
+EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_named_frame_count(void) { return within_named_frame_count; }
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_inspected_bytes(void) { return within_inspected_bytes; }
 EMSCRIPTEN_KEEPALIVE uint32_t within_jxl_inspector_peak_allocation(void) { return (uint32_t)within_memory.peak; }

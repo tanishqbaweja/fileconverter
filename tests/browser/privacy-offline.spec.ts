@@ -567,6 +567,44 @@ test("bounded source inspection reports image dimensions and animation without d
 
   await page
     .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "images", "test-pattern.jxl"));
+  await expect(inspection).toContainText("JPEG XL image header");
+  await expect(inspection).toContainText("1,024×768");
+  await expect(inspection).toContainText("RGB");
+  await expect(inspection).toContainText("8-bit");
+  await expect(inspection).toContainText("Static");
+  await expect(inspection).toContainText("70,609 bytes (max 4,194,304)");
+  await expect(inspection).toContainText("fixed-16,777,216-byte Wasm inspector");
+  await expect(inspection).toContainText("pixel data was not decoded");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "test-pattern-gray16.jxl"),
+    );
+  await expect(inspection).toContainText("127×95");
+  await expect(inspection).toContainText("Grayscale");
+  await expect(inspection).toContainText("16-bit");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(
+      path.join(projectRoot, "fixtures", "images", "animated-pattern.jxl"),
+    );
+  await expect(inspection).toContainText("Animated (8 displayed frames");
+  await expect(inspection).toContainText("100/1 ticks/s");
+  await expect(inspection).toContainText("infinite loop");
+  await expect(inspection).toContainText("1,315,111 bytes (max 4,194,304)");
+
+  await page
+    .locator('[data-testid="file-input"]')
+    .setInputFiles(path.join(projectRoot, "fixtures", "images", "corrupt.jxl"));
+  await expect(page.getByTestId("media-inspection-status")).toContainText(
+    "JPEG XL header is invalid or unsupported",
+  );
+
+  await page
+    .locator('[data-testid="file-input"]')
     .setInputFiles(path.join(projectRoot, "fixtures", "images", "test-pattern.svg"));
   await expect(inspection).toContainText("SVG document");
   await expect(inspection).toContainText("Root element");

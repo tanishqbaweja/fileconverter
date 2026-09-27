@@ -1,3 +1,8 @@
+import {
+  inspectJxlHeader,
+  MAX_JXL_INSPECTION_BYTES,
+} from "./jxl-source-inspection";
+
 export const MAX_IMAGE_INSPECTION_BYTES = 1024 * 1024;
 
 export interface ImageSourceInspection {
@@ -21,6 +26,7 @@ const supportedFormats = new Set([
   "gif",
   "ico",
   "jpeg",
+  "jxl",
   "png",
   "tiff",
   "webp",
@@ -458,8 +464,69 @@ function parseTiff(
   };
 }
 
-export async function inspectImageSource(file: File, format: string): Promise<ImageSourceInspection | null> {
+export async function inspectImageSource(
+  file: File,
+  format: string,
+  signal?: AbortSignal,
+): Promise<ImageSourceInspection | null> {
   if (!supportedFormats.has(format)) return null;
+  if (format === "jxl") {
+    const inspection = await inspectJxlHeader(file, signal);
+    const colorModel =
+      inspection.colorChannels === 1
+        ? "Grayscale"
+        : inspection.colorChannels === 3
+          ? "RGB"
+          : `${inspection.colorChannels.toLocaleString("en-US")} color channels`;
+    const metadataSignals: string[] = ["bounded libjxl basic information"];
+    if (inspection.alphaBits > 0) {
+      metadataSignals.push(`${inspection.alphaBits}-bit alpha channel`);
+    }
+    if (inspection.orientation !== 1) {
+      metadataSignals.push(`orientation ${inspection.orientation}`);
+    }
+    if (inspection.namedFrameCount > 0) {
+      metadataSignals.push(
+        `${inspection.namedFrameCount.toLocaleString("en-US")} named frame${inspection.namedFrameCount === 1 ? "" : "s"}`,
+      );
+    }
+    if (
+      inspection.intrinsicWidth !== inspection.width ||
+      inspection.intrinsicHeight !== inspection.height
+    ) {
+      metadataSignals.push(
+        `intrinsic dimensions ${inspection.intrinsicWidth.toLocaleString("en-US")}×${inspection.intrinsicHeight.toLocaleString("en-US")}`,
+      );
+    }
+    const timebase =
+      inspection.ticksPerSecondNumerator > 0 &&
+      inspection.ticksPerSecondDenominator > 0
+        ? `; ${inspection.ticksPerSecondNumerator.toLocaleString("en-US")}/${inspection.ticksPerSecondDenominator.toLocaleString("en-US")} ticks/s`
+        : "";
+    const loop = inspection.loopCount === 0
+      ? "; infinite loop"
+      : `; ${inspection.loopCount.toLocaleString("en-US")} loop${inspection.loopCount === 1 ? "" : "s"}`;
+    return {
+      format: "JPEG XL",
+      width: inspection.width,
+      height: inspection.height,
+      bitDepth: inspection.bitDepth,
+      colorModel,
+      animation: inspection.hasAnimation
+        ? `Animated (${inspection.frameCountExact ? "" : "at least "}${inspection.frameCount.toLocaleString("en-US")} displayed frames${timebase}${loop}; ${inspection.totalDurationTicks.toLocaleString("en-US")} total ticks${inspection.hasTimecodes ? "; timecodes" : ""})`
+        : "Static",
+      metadataSignals,
+      notes: [
+        `A dedicated fixed-${inspection.wasmMemoryBytes.toLocaleString("en-US")}-byte Wasm inspector parsed only libjxl basic information; peak tracked decoder allocation was ${inspection.peakDecoderAllocationBytes.toLocaleString("en-US")} bytes and the largest source read was ${inspection.maximumReadBytes.toLocaleString("en-US")} bytes.`,
+        inspection.frameCountExact
+          ? "Displayed frame headers were completely enumerated without requesting pixel output; complete stream validity remains in the bounded conversion worker."
+          : "The frame count is a lower bound because the fixed inspection ceiling was reached; complete enumeration and stream validity remain in the bounded conversion worker.",
+      ],
+      inspectedBytes: inspection.inspectedBytes,
+      maximumInspectionBytes: MAX_JXL_INSPECTION_BYTES,
+      completeFile: inspection.inspectedBytes === file.size,
+    };
+  }
   const inspectedBytes = Math.min(file.size, MAX_IMAGE_INSPECTION_BYTES);
   const bytes = new Uint8Array(await file.slice(0, inspectedBytes).arrayBuffer());
   const completeFile = inspectedBytes === file.size;

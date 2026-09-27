@@ -484,6 +484,7 @@ export function ConverterApp() {
 
   useEffect(() => {
     let cancelled = false;
+    const inspectionAbortController = new AbortController();
     if (!file) return;
     void (async () => {
       await Promise.resolve();
@@ -503,7 +504,7 @@ export function ConverterApp() {
         ] = await Promise.all([
           inspectMediaSource(file, inputFormat),
           inspectStructuredSource(file, inputFormat),
-          inspectImageSource(file, inputFormat),
+          inspectImageSource(file, inputFormat, inspectionAbortController.signal),
           inspectPackageSource(file, inputFormat),
         ]);
         if (cancelled) return;
@@ -543,6 +544,7 @@ export function ConverterApp() {
     })();
     return () => {
       cancelled = true;
+      inspectionAbortController.abort();
     };
   }, [batchFiles.length, file, inputFormat, profiles]);
 

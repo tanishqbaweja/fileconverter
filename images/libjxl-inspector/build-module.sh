@@ -33,8 +33,9 @@ cat > /out/build-manifest.json <<'JSON'
   "singleAllocationLimitBytes": 4194304,
   "inputReadBytes": 65536,
   "inputWindowBytes": 131072,
-  "maximumInspectionBytes": 1048576,
+  "maximumInspectionBytes": 4194304,
   "maximumInputBytes": 67108864,
+  "maximumFrames": 1000,
   "pixelDecode": false,
   "threads": 1,
   "profiles": ["jxl-source-inspection"]

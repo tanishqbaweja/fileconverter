@@ -63,7 +63,7 @@ function topLevelConstContainers(tree) {
 }
 
 test("every worker module has an explicit cross-job retained-state contract", () => {
-  assert.equal(workerFiles.length, 31, "audit inventory must be updated for worker additions or removals");
+  assert.equal(workerFiles.length, 32, "audit inventory must be updated for worker additions or removals");
   const expectedMutable = new Map([
     [
       "conversion.worker.ts",
@@ -147,6 +147,7 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.deepEqual(entrypoints, [
     "conversion.worker.ts",
     "direct-file-writer.worker.ts",
+    "jxl-source-inspection-worker.ts",
   ]);
 
   const conversionWorker = source("workers/conversion.worker.ts");
@@ -165,6 +166,11 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   const directWorker = source("workers/direct-file-writer.worker.ts");
   assert.match(directWorker, /error\.message}`\.slice\(\s*0,\s*MAX_WORKER_RESPONSE_TEXT_CHARS/s);
   assert.match(directWorker, /ownedPayload = new Uint8Array\(payload\.byteLength\)/);
+
+  const jxlInspectionWorker = source("workers/jxl-source-inspection-worker.ts");
+  assert.match(jxlInspectionWorker, /\.slice\(0, MAX_WORKER_RESPONSE_TEXT_CHARS\)/);
+  assert.match(jxlInspectionWorker, /finally\s*{\s*workerScope\.close\(\)/s);
+  assert.match(source("lib/jxl-source-inspection.ts"), /worker\.terminate\(\)/);
 
   const destination = source("workers/random-access-destination.ts");
   assert.match(destination, /const fail = \(message: string\) => {\s*worker\.terminate\(\)/s);

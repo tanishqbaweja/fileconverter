@@ -36,7 +36,7 @@ target_link_options(within-jxl-inspector PRIVATE
   -sMALLOC=emmalloc
   -sASSERTIONS=0
   -sNO_EXIT_RUNTIME=1
-  "-sEXPORTED_FUNCTIONS=['_within_jxl_inspect','_within_jxl_inspector_error','_within_jxl_inspector_width','_within_jxl_inspector_height','_within_jxl_inspector_intrinsic_width','_within_jxl_inspector_intrinsic_height','_within_jxl_inspector_bits','_within_jxl_inspector_color_channels','_within_jxl_inspector_alpha_bits','_within_jxl_inspector_orientation','_within_jxl_inspector_has_animation','_within_jxl_inspector_tps_numerator','_within_jxl_inspector_tps_denominator','_within_jxl_inspector_num_loops','_within_jxl_inspector_have_timecodes','_within_jxl_inspector_inspected_bytes','_within_jxl_inspector_peak_allocation']"
+  "-sEXPORTED_FUNCTIONS=['_within_jxl_inspect','_within_jxl_inspector_error','_within_jxl_inspector_width','_within_jxl_inspector_height','_within_jxl_inspector_intrinsic_width','_within_jxl_inspector_intrinsic_height','_within_jxl_inspector_bits','_within_jxl_inspector_color_channels','_within_jxl_inspector_alpha_bits','_within_jxl_inspector_orientation','_within_jxl_inspector_has_animation','_within_jxl_inspector_tps_numerator','_within_jxl_inspector_tps_denominator','_within_jxl_inspector_num_loops','_within_jxl_inspector_have_timecodes','_within_jxl_inspector_frame_count','_within_jxl_inspector_frame_count_exact','_within_jxl_inspector_total_duration_ticks','_within_jxl_inspector_named_frame_count','_within_jxl_inspector_inspected_bytes','_within_jxl_inspector_peak_allocation']"
   "-sEXPORTED_RUNTIME_METHODS=['ccall','UTF8ToString','HEAPU8']"
 )
 set_target_properties(within-jxl-inspector PROPERTIES
