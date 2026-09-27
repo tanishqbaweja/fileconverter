@@ -44,7 +44,7 @@ if [[ -n "${EMSDK_NODE:-}" ]]; then
   [[ -x "${EMSDK_NODE}" ]] || fail "EMSDK_NODE is not executable: ${EMSDK_NODE}"
   export PATH="$(dirname "${EMSDK_NODE}"):${PATH}"
 fi
-for command_name in emcc emcmake cmake git sha256sum diff readlink find sort xargs df nproc; do
+for command_name in emcc emcmake cmake git sha256sum diff readlink find sort xargs df nproc awk; do
   require_command "${command_name}"
 done
 if [[ "$(id -u)" != "0" ]]; then require_command sudo; fi
@@ -70,7 +70,7 @@ git clone --filter=blob:none --no-checkout https://github.com/libjxl/libjxl.git 
 git -C libjxl checkout "${LIBJXL_COMMIT}"
 [[ "$(git -C libjxl rev-parse HEAD)" == "${LIBJXL_COMMIT}" ]] || fail "Pinned libjxl checkout mismatch."
 git -C libjxl submodule update --init --depth 1 --recommend-shallow \
-  third_party/brotli third_party/highway third_party/skcms
+  third_party/brotli third_party/highway third_party/libpng third_party/skcms
 mkdir -p library-build wrapper
 cp "${PROJECT_ROOT}/images/libjxl/CMakeLists.libraries.txt" library-build/CMakeLists.txt
 cp "${SCRIPT_DIR}/CMakeLists.txt" wrapper/CMakeLists.txt

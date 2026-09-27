@@ -10,6 +10,9 @@ alpha channel counts, orientation, and animation timing/loop metadata. Exact
 frame enumeration and complete validity remain in the fixed-memory conversion
 worker. Reproduce it without Docker with the pinned Emscripten SDK:
 
+The build fetches pinned libjxl, Brotli, Highway, libpng, and skcms commits;
+libpng is a configure-time dependency and is not linked into this inspector.
+
 ```bash
 bash images/libjxl-inspector/reproduce-nondocker.sh
 ```

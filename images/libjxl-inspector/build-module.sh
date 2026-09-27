@@ -10,10 +10,11 @@ cp /src/libjxl/LICENSE /out/LICENSE.libjxl
 cp /src/libjxl/PATENTS /out/PATENTS.libjxl
 cp /src/libjxl/third_party/brotli/LICENSE /out/LICENSE.brotli
 cp /src/libjxl/third_party/highway/LICENSE /out/LICENSE.highway
+cp /src/libjxl/third_party/libpng/LICENSE /out/LICENSE.libpng
 cp /src/libjxl/third_party/skcms/LICENSE /out/LICENSE.skcms
 sed -i 's/[[:space:]]*$//' \
   /out/LICENSE.libjxl /out/PATENTS.libjxl /out/LICENSE.brotli \
-  /out/LICENSE.highway /out/LICENSE.skcms
+  /out/LICENSE.highway /out/LICENSE.libpng /out/LICENSE.skcms
 
 cat > /out/build-manifest.json <<'JSON'
 {
@@ -22,6 +23,7 @@ cat > /out/build-manifest.json <<'JSON'
   "libjxlCommit": "a7a9c787341cf703dede03c2009fa460cae5e5df",
   "brotliCommit": "028fb5a23661f123017c060daa546b55cf4bde29",
   "highwayCommit": "457c891775a7397bdb0376bb1031e6e027af1c48",
+  "libpngCommit": "872555f4ba910252783af1507f9e7fe1653be252",
   "skcmsCommit": "96d9171c94b937a1b5f0293de7309ac16311b722",
   "emscriptenVersion": "6.0.4",
   "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
