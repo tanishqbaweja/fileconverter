@@ -17,7 +17,7 @@ not the entire product specification.
 
 ## 2026-10-04 — H.264 dynamic-dimension regression and immutable guard
 
-Status: **Partially implemented under M-04; source fix pending native rebuild**.
+Status: **Partially implemented under M-04; private guard fix browser-validated**.
 A focused production-Chrome test independently decoded a genuine 414,540-byte,
 48-frame H.264 MPEG-TS source that changes from 320×240 to 640×360. The old
 fixed-32-MiB candidate reported success and produced a valid 235,950-byte,
@@ -35,17 +35,39 @@ bounds, memory cap, browser flags or published engines changed. Historical
 as-built reports remain unchanged; only their explicitly current-source hash
 indexes were refreshed. `evidence/h264-dimension-regression-2026-10-04.json`
 retains both attempts, all frame dimensions/timestamps, process samples, native
-validation and cleanup. Six focused source/provenance tests passed. Every
+validation and cleanup. Six focused source/provenance tests passed.
 Final regression passed 280/280 unit tests, lint, TypeScript, the unchanged
 405-profile evidence manifest and diff checks. Every
 generated fixture, converted copy, owned profile/temp tree and staging adapter
 was deleted or restored; only the reusable static candidate remains.
 
-Next: rebuild the fixed private kernel without Docker, prove explicit rejection
-and automatic partial-output cleanup in the same browser test, and rerun the
-ordinary timestamp/quality regression. A source check does not prove a compiled
-fix; memory acceptance, direct success, scaling, controls, speed A/B and the
-other original release gates remain open. No new public route is claimed.
+Non-Docker run `37157670815` at `a1648dd` built the fix in 319 seconds and
+passed hosted cleanup. The actual Wasm has one shared memory of 512 initial/max
+pages (32 MiB) and hash `5c07ced47bd6587f9e9810a25b74719ba6c03710e098e0cd6754072cb6dc347a`.
+The original 48-frame source now fails explicitly before any output writes.
+A second genuine 679,056-byte, 96-frame source postpones the dimension change
+until after **247,808 real output bytes**; the error leaves no OPFS files and
+zero pending/queued operations **before manual test cleanup**. Thus early failure
+is not being substituted for after-written-byte cleanup proof.
+
+The ordinary production-browser regression passed 3/3 in 14.1 seconds: both
+MP4/Matroska have 48 frames, two exact AAC tracks, metadata/chapters, SSIM
+0.997901 and <=1 ms frame timing; direct write-failure cleanup also passes.
+`evidence/h264-dimension-fix-validation-2026-10-04.json` preserves exact reports
+and binary/source provenance. Diagnostic memory has no stabilized blank baseline
+and is **not** a memory acceptance result. All generated media/profiles/temp and
+staging were removed; both remote artifacts were deleted, and the 72 MB source
+bundle was not downloaded. The fixed static tool (8,294,612 bytes) and old exact
+32 MiB static module (8,294,487 bytes) remain explicitly reusable for identical-
+settings speed/allocation A/B. Recursive shell deletion of the old module was
+blocked; it was recoverably moved to `work/h264-dimension-baseline-37155139021`,
+not deleted through another shell. Neither directory contains converted media.
+
+Memory acceptance, direct success, scaling, controls, speed A/B and the other
+original release gates remain open. No new public route is claimed.
+Final follow-up gates passed: 282/282 unit tests, lint, TypeScript, unchanged
+405-profile manifest and exact restored-dist hashes. Disposable Playwright
+JSON duplicates were removed after their full evidence was retained.
 
 ## 2026-10-04 — Chromium startup utility-service isolation
 

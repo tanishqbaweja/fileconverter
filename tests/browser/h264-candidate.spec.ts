@@ -8,6 +8,18 @@ import { promisify } from "node:util";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const candidate = path.join(root, "work/h264-candidate-output");
+const expectedManifest = existsSync(path.join(candidate, "build-manifest.json"))
+  ? JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")) as {
+    maximumWasmMemoryBytes: number; initialWasmMemoryBytes: number; allowMemoryGrowth: boolean;
+  }
+  : null;
+const expectedMemoryBytes = expectedManifest?.maximumWasmMemoryBytes ?? null;
+if (expectedMemoryBytes !== null && ![32 * 1024 * 1024, 64 * 1024 * 1024].includes(expectedMemoryBytes)) {
+  throw new Error("Private H264 tests require the documented fixed 32 or 64 MiB candidate");
+}
+if (expectedManifest && (expectedManifest.initialWasmMemoryBytes !== expectedMemoryBytes || expectedManifest.allowMemoryGrowth !== false)) {
+  throw new Error("Private H264 memory must be fixed with growth disabled");
+}
 const work = path.join(root, "work/h264-browser-validation");
 const report = path.join(root, "output/playwright/h264-candidate.json");
 const exec = promisify(execFile);
@@ -233,8 +245,8 @@ for (const adapter of adapters) {
       const state = await page.evaluate(() => window.__WITHIN_TEST__!.getState());
       expect(state.jobState, state.error ?? state.phase).toBe("complete");
       expect(state.opfsName).toBeTruthy();
-      expect(state.metrics?.wasmMemoryBytes).toBe(64 * 1024 * 1024);
-      expect(state.metrics?.peakWasmMemoryBytes).toBe(64 * 1024 * 1024);
+      expect(state.metrics?.wasmMemoryBytes).toBe(expectedMemoryBytes);
+      expect(state.metrics?.peakWasmMemoryBytes).toBe(expectedMemoryBytes);
       expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
       expect(state.metrics?.maxWriteChunkBytes).toBeLessThanOrEqual(256 * 1024);
       expect(state.metrics?.peakQueuedBytes).toBeLessThanOrEqual(256 * 1024);

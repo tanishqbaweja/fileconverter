@@ -815,6 +815,13 @@ settings or memory limit were changed. See
 [`evidence/h264-private-memory-2026-10-04.json`](evidence/h264-private-memory-2026-10-04.json)
 and [`REMAINING_WORK.md`](REMAINING_WORK.md) for failures and remaining gates.
 
+The private H.264 candidate's dynamic-dimension guard is now browser-validated:
+it rejects a changing-resolution stream explicitly instead of silently resizing
+it. Failure after 247,808 written bytes removes the partial result, and the
+ordinary timing/quality/audio regression still passes. This safety fix does not
+resolve the memory gate or publish H.264 encoding; see
+[`evidence/h264-dimension-fix-validation-2026-10-04.json`](evidence/h264-dimension-fix-validation-2026-10-04.json).
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or

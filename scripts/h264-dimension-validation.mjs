@@ -11,6 +11,8 @@ import { sampleChromiumTree } from "./lib/chromium-private-memory.mjs";
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
+const prefixSeconds = Number(process.env.WITHIN_H264_DIMENSION_PREFIX_SECONDS ?? "1");
+assert.ok([1, 3].includes(prefixSeconds), "Only one- or three-second fixed-size prefixes are supported");
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const reportBase = path.join(root, "outputs/reports", `${new Date().toISOString().replaceAll(/[:.]/g, "-")}-h264-dimension-guard`);
@@ -57,7 +59,7 @@ try {
   await mkdir(temporary); await mkdir(profile);
   const environment = { ...process.env, TEMP: temporary, TMP: temporary, WRANGLER_SEND_METRICS: "false" };
   for (const [index, dimensions] of ["320x240", "640x360"].entries()) {
-    await native(["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=${dimensions}:rate=24:duration=1`,
+    await native(["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=${dimensions}:rate=24:duration=${index === 0 ? prefixSeconds : 1}`,
       "-an", "-c:v", "libx264", "-threads", "1", "-preset", "ultrafast", "-crf", "18", "-bf", "0", "-g", "24",
       "-fflags", "+bitexact", "-flags:v", "+bitexact", path.join(work, `part${index}.ts`)]);
   }
@@ -65,7 +67,7 @@ try {
   await writeFile(list, "file 'part0.ts'\nfile 'part1.ts'\n", { flag: "wx" });
   await native(["-v", "error", "-y", "-f", "concat", "-safe", "1", "-i", list, "-map", "0:v", "-c", "copy", source]);
   const sourceFrames = await frames(source);
-  assert.equal(sourceFrames.length, 48);
+  assert.equal(sourceFrames.length, (prefixSeconds + 1) * 24);
   assert.deepEqual([...new Set(sourceFrames.map((frame) => `${frame.width}x${frame.height}`))], ["320x240", "640x360"]);
   await native(["-v", "error", "-xerror", "-i", source, "-f", "null", "-"]);
   sourceEvidence = { bytes: (await stat(source)).size, sha256: sha(await readFile(source)), frames: sourceFrames, fullDecodePassed: true };
@@ -120,6 +122,7 @@ try {
   assert.ok(opfsSizesAfterJob.every((bytes) => bytes === 0), "Failure must remove all partial outputs before test cleanup");
   assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
   assert.ok(state.metrics.peakQueuedBytes <= 256 * 1024 && state.metrics.peakPendingOperations <= 1);
+  if (prefixSeconds === 3) assert.ok(state.metrics.outputBytes > 0, "Exercise failure after real output bytes are written");
   assert.deepEqual(forbiddenRequests, []);
 } catch (error) { failure = { message: error.message, stack: error.stack }; process.exitCode = 1; }
 finally {
@@ -136,7 +139,7 @@ finally {
   await mkdir(path.dirname(reportBase), { recursive: true });
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
   await writeFile(`${reportBase}.json`, `${JSON.stringify({ scope: "Focused dynamic-dimension safety test, NOT memory/stress or public acceptance",
-    status: failure ? "failed-safety-regression" : "passed-dimension-rejection", browserVersion, asBuiltManifest: manifest, sourceHashesAsExecuted,
+    status: failure ? "failed-safety-regression" : "passed-dimension-rejection", prefixSeconds, browserVersion, asBuiltManifest: manifest, sourceHashesAsExecuted,
     source: sourceEvidence, state, outputEvidence, opfsSizesAfterJob, failure, samples, forbiddenRequests, logs, primaryIncrementalPrivateMiB: null,
     publicProfilesChanged: false, cleanup: { ownedFixtureOutputsProfileAndTempRemoved: true, distRestored: staged } }, null, 2)}\n`, { flag: "wx" });
   process.stdout.write(`${reportBase}.json\n${failure ? failure.message : "Dimension change rejected; no public acceptance claimed."}\n`);

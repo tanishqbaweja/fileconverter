@@ -122,7 +122,7 @@
     "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
     "media/ffmpeg/build-h264-candidate.sh": "94ff4a1df7b80095f02182d10674efab43b0e13bef4d1077f230ecdcefa6e5eb",
     "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
-    "tests/browser/h264-candidate.spec.ts": "e60b34795c86efb0c7650ed8a71356e508e85581630935962a6e9137801753f4"
+    "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
   },
   "browser": {
     "name": "Chrome",
