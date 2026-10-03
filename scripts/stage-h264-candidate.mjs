@@ -8,10 +8,12 @@ const target = path.join(root, "dist/client/engines/remux");
 const published = path.join(root, "public/engines/remux");
 const digest = async (file) => createHash("sha256").update(await readFile(file)).digest("hex");
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+const inputMode = process.argv[3] ?? "legacy";
+if (!["legacy", "byob"].includes(inputMode)) throw new Error("Private input mode must be legacy or byob");
 const adapter = `// PRIVATE_H264_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT
 import factory from "/engines/remux/_candidate_h264_base.mjs";
 export default async function(options) {
-  let core;
+${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.withinBridge, readSync: undefined } };\n" : ""}  let core;
   try { core = await factory(options); }
   catch (error) { throw new Error("Candidate factory: " + String(error.message) + "\\n" + String(error.stack).slice(0, 2048)); }
   const call = core.ccall.bind(core);
@@ -61,4 +63,4 @@ if (process.argv[2] === "stage") {
     if (await digest(path.join(target, file)) !== await digest(path.join(published, file))) throw new Error("Restoration hash mismatch.");
   }
   process.stdout.write("Restored generated production assets to exact published hashes; private adapter deleted.\n");
-} else throw new Error("Usage: node scripts/stage-h264-candidate.mjs stage|restore (server stopped)");
+} else throw new Error("Usage: node scripts/stage-h264-candidate.mjs stage|restore [legacy|byob] (server stopped)");

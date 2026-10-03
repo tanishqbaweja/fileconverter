@@ -15,6 +15,54 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 formal 720p memory rejection and input-reader trial
+
+Status: **Partially implemented under M-04; not accepted**. The private engine
+now has an executable whole-Chromium memory gate with five consecutive valid
+samples within 2% after at least eight seconds of blank-page stabilization.
+No unstable fallback or missing-as-zero samples are allowed. Native FFmpeg
+generated a real 105,000,218-byte, 60-second 1280x720/30fps MPEG-4 fixture;
+conversion still occurred exclusively inside the production browser pipeline.
+
+The first attempt stopped at Playwright's >50 MiB CDP transfer ceiling, before
+conversion. It was corrected to `DOM.setFileInputFiles`, retaining the same
+complete fixture rather than reducing its size. The next genuine conversion
+produced a 19,137,689-byte H.264 MP4 in 27.392 seconds. All 1,800 frames fully
+decoded, frame timestamps matched exactly, two AAC packet hashes/languages and
+Unicode title/chapter survived, and corresponding-frame SSIM was 0.987575.
+Nevertheless, complete-tree private memory increased by **268.4296875 MiB**
+over the stable blank baseline, so the first run failed and further repeats
+were not credited. Cleanup recovered to 13.637 MiB above loaded idle.
+
+Timestamped JSON/CSV/HTML and the compact failure trace are retained under
+`outputs/reports/*-private-h264-720p-memory*`; source, output, browser profile
+and temporary files were deleted, and staged engines restored to published
+hashes. Most growth was in the converter renderer. The existing synchronous
+slice reader is a hypothesis, not yet a proven cause: the next private trial
+selects the already-implemented reusable async BYOB bridge, keeping identical
+input, native engine, encoder settings, quality and primary memory thresholds.
+No public code, engine or registry profile changed.
+
+BYOB follow-up: the identical source SHA-256 and identical output SHA-256,
+frame timing, SSIM, audio and metadata checks passed in both trials. One run
+measured 245.574 MiB but failed the initial over-broad request guard. A fresh
+repeat measured **269.171875 MiB**, so BYOB alone is not accepted and the
+three-run gate remains unpassed. Runtime records prove the flagged exact TTS
+script was a body-free local read initiated by its own Chrome extension service
+worker, not the converter. The private guard now records only that exact local
+resource separately; converter-initiated extension reads, arbitrary extensions,
+external HTTP requests and any request body still fail. All Chrome processes
+remain included in memory measurement. No larger baseline was substituted.
+
+`evidence/h264-private-memory-2026-10-04.json` retains all four attempts' build/
+execution hashes, stabilized baselines, full process/realm/queue samples,
+independent decoded-frame diagnostics, failures and cleanup. Browser-job
+browser-job times were 27.392 s for slices, 28.529 s and 30.796 s for BYOB;
+these single rejected trials are not an accepted speed optimization. Accessible
+worker heap values are null, explicitly unavailable rather than zero. Next:
+instrument worker allocations and test a lower fixed native-memory candidate
+without changing the fixture, quality, timestamps or the whole-tree threshold.
+
 ## 2026-10-04 — H.264 small-fixture timing and fidelity pass
 
 Status: **Partially implemented under M-04; small correctness gate passed**.

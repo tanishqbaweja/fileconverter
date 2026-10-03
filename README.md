@@ -795,7 +795,14 @@ establish a re-encode fallback, and separate image codecs do not supply one.
 The source-bound inventory is
 [`evidence/media-output-encoder-inventory-2026-10-03.json`](evidence/media-output-encoder-inventory-2026-10-03.json).
 These are explicit M-04 implementation/feasibility gaps, not new measured
-unsupported decisions; a specialist H.264 encoder is the next investigation.
+unsupported decisions. An isolated OpenH264 Wasm candidate now performs genuine
+H.264 encoding with validated timing, quality, audio and metadata on small
+fixtures and a 105 MB 720p fixture. It is **not published**: the formal
+whole-Chromium memory trials reached 268.43 and 269.17 MiB above stabilized
+blank baselines, exceeding the unchanged 250 MiB cap. One lower BYOB result
+did not repeat reliably. See
+[`evidence/h264-private-memory-2026-10-04.json`](evidence/h264-private-memory-2026-10-04.json)
+and [`REMAINING_WORK.md`](REMAINING_WORK.md) for failures and remaining gates.
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
