@@ -18,6 +18,7 @@ on:
           - within-webm-quality
           - within-theora
           - within-aiff
+          - within-h264-candidate
 
 permissions:
   contents: read
@@ -58,10 +59,24 @@ jobs:
           WITHIN_BUILD_CORE_FILTER: ${{ inputs.core }}
         run: |
           source work/emsdk/emsdk_env.sh
-          bash media/ffmpeg/reproduce-nondocker.sh
+          if test "${{ inputs.core }}" = within-h264-candidate; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
+          else
+            bash media/ffmpeg/reproduce-nondocker.sh
+          fi
+
+      - name: Retain private H264 candidate and corresponding sources
+        if: success() && inputs.core == 'within-h264-candidate'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-h264-candidate-${{ github.run_id }}
+          path: work/h264-candidate-output/
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure()
+        if: failure() && inputs.core != 'within-h264-candidate'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
@@ -85,3 +100,10 @@ jobs:
             "$GITHUB_WORKSPACE/work/emsdk" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
+          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output"; do
+            case "$task_path" in
+              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output") ;;
+              *) exit 2 ;;
+            esac
+            rm -rf -- "$task_path"
+          done

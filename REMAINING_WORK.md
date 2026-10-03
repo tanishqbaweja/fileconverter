@@ -15,6 +15,32 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-03 — isolated H.264 encoder implementation (acceptance pending)
+
+Status: **Partially implemented under M-04**. A separate OpenH264 2.6.0 /
+FFmpeg 8.1.2 candidate now has a source-pinned non-Docker build recipe and a
+real native decode/encode kernel using the unchanged audited production AVIO
+bridge. It preserves source frame timestamps rather than normalizing them,
+copies compatible secondary streams, chapters, Unicode tags and display
+matrices, bounds tracks/attachments and muxer fragments, propagates write
+errors, and requests one codec thread with a fixed 64 MiB Wasm memory.
+The recipe writes only `work/h264-candidate-*`, keeps compiler caches there,
+preflights 8 GiB free, and cleans build data on exit. Existing published engines
+and the public registry are untouched. Two focused source/recipe tests passed.
+These are source tests, NOT conversion, quality, speed or memory certification.
+The hosted build is the next gate; browser validation will use an explicit
+test-only module substitution with the existing production worker/I/O bridge.
+The ABI's existing route numbers are adapter sentinels, not public H.264 claims.
+
+OpenH264's BSD source license avoids silently introducing x264/GPL linkage.
+A self-compiled Wasm module does **not** inherit Cisco's distributed-binary
+patent coverage; deployment legal review remains required. No jurisdictional
+patent clearance or unsupported classification is asserted. Remaining gates:
+actual Wasm build and reproducibility, genuine browser conversions, metadata/
+track/timestamp/content fidelity, quality and identical-input speed candidates,
+complete-process memory, repeated stress/scaling, failure/cancel/cleanup,
+legal deployment review and consistent production registry/UI integration.
+
 ## 2026-10-03 — Unicode audio source metadata and CI
 
 Status: **Verified complete for this nine-route source-field matrix; M-08 stays
