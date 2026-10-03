@@ -15,6 +15,47 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — Chromium startup utility-service isolation
+
+Status: **Partially implemented under M-04; diagnosis, not acceptance**.
+The next action after the unlabelled 249.855 MiB utility peak was two targeted
+browser-only observations, not another encoder rebuild or unchanged conversion.
+Chrome 154.0.8037.93, the same launch flags and fresh repository-local profiles
+were used. No input was selected, no conversion ran, and no private engine was
+staged. The first run observed 120 seconds blank and 120 seconds production-site
+idle; the second stayed blank for 240 seconds and never started the site server.
+
+Both spawned `on_device_model.mojom.OnDeviceModelService` approximately three
+minutes after browser creation (180.259 and 180.159 seconds), at **236.926 and
+244.773 MiB** private memory respectively. Full-tree observations were available
+for all 238 samples in each run. Complete-tree peaks were 509.516 MiB on the idle
+site and 459.203 MiB on the blank-only run. These are **absolute diagnostic
+values, not acceptance increments or a substitute blank baseline**.
+`evidence/h264-utility-diagnosis-2026-10-04.json` retains full peak trees, service
+subtypes, timestamps, raw report hashes, as-executed source hashes and cleanup.
+
+The blank-only result proves this service can start without the converter.
+Upstream Chromium source schedules a browser-global device-performance query
+with a default three-minute delay, matching the observed timing; this is a
+source-backed explanation, not a trace of the installed private backend call.
+The earlier utility PID lacked a subtype, so its retrospective identity is
+still unproven. The new result does not explain every prior 64 MiB failure.
+
+No utility was excluded from memory, browser feature flag changed, higher
+baseline adopted, codec setting altered, or failed result reclassified. Both
+owned profiles/temp trees and servers were removed; no media was generated.
+The static 32 MiB candidate remains explicitly reusable. Four focused diagnostic
+tests pass; the pre-evidence regression passed 276 unit tests, lint, TypeScript
+and the unchanged 405-profile manifest gate. H.264 stays private and rejected.
+After evidence was recorded, the final 278/278 unit regression, lint,
+TypeScript and unchanged public-manifest gate also passed. Generated dist
+engine hashes still match published assets; no diagnostic browser remains.
+Next work must address actual converter allocation headroom and the cold-browser
+startup overlap separately; disabling this browser service, extending a baseline
+through its transient peak, or testing only jobs before it starts cannot certify
+the original complete-Chromium requirement. Direct saves, controls/complex
+fidelity, scaling, speed A/B, reproduction and legal review remain open.
+
 ## 2026-10-04 — 32 MiB private H.264 candidate preparation
 
 Status: **Partially implemented under M-04; experiment, not acceptance**.

@@ -803,7 +803,14 @@ blank baselines, exceeding the unchanged 250 MiB cap. One lower BYOB result
 did not repeat reliably. A fixed 32 MiB variant retained identical validated
 output across three runs, but the third reached 423.95 MiB, dominated by a new
 249.86 MiB Chromium utility process. That process is included in the total;
-its service is not yet identified and the candidate remains rejected. See
+the earlier PID's subtype was not retained and the candidate remains rejected.
+Targeted diagnostics now observe a 236.93–244.77 MiB
+`on_device_model.mojom.OnDeviceModelService` near three minutes after Chrome
+startup—even on a blank page that never loads the converter. This independently
+identifies a browser-startup allocation, not a retrospective proof of the old
+PID or permission to omit it. No browser flags, acceptance baseline, encoder
+settings or memory limit were changed. See
+[`evidence/h264-utility-diagnosis-2026-10-04.json`](evidence/h264-utility-diagnosis-2026-10-04.json),
 [`evidence/h264-private-memory-32-2026-10-04.json`](evidence/h264-private-memory-32-2026-10-04.json),
 [`evidence/h264-private-memory-2026-10-04.json`](evidence/h264-private-memory-2026-10-04.json)
 and [`REMAINING_WORK.md`](REMAINING_WORK.md) for failures and remaining gates.
