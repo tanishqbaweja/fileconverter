@@ -1076,6 +1076,18 @@ pending. Exact hashes, rejected higher-memory fixtures, cleanup, and the
 no-Docker build record are in
 [`evidence/audio-artwork-retention-2026-09-01.json`](evidence/audio-artwork-retention-2026-09-01.json).
 
+The separate Unicode source-field matrix passed nine production-Chrome routes
+from WAV, WMA, AIFF, ALAC-in-M4A, MP3, and FLAC: all 60 expected text fields
+survived, including AIFF's author/copyright fields. All eight lossless-output
+cases matched independent decoded PCM exactly; native MP3 and WMA references
+use the same fixed-point/scalar decoder modes as Wasm rather than the host's
+default float/SIMD modes. The suite runs in browser CI and checks empty OPFS
+after each result. See
+[`evidence/audio-source-metadata-matrix-2026-10-03.json`](evidence/audio-source-metadata-matrix-2026-10-03.json).
+These small-file tag checks do not add memory/stress or artwork certification.
+Other metadata fields and destination-scope mappings remain under M-08 in
+`REMAINING_WORK.md`.
+
 M4A (AAC or 16-bit ALAC), raw AMR-NB, certified AMR-WB `.awb`, MP3, FLAC, WAV, WMA2, AIFF, Ogg
 Vorbis, and Ogg Opus can also be encoded as genuine raw AAC-LC. The fastest
 certified native AAC search coder disables TNS, PNS, intensity stereo, and M/S

@@ -14,6 +14,8 @@ const headedAuditNote =
   "Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.";
 const requirementTestIndexNote =
   "T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.";
+const audioSourceMetadataNote =
+  "M-08 Unicode source-field matrix (2026-10-03): nine production-Chrome 154 routes from WAV, WMA, AIFF, ALAC-in-M4A, MP3, and FLAC preserved all 60 expected text fields, including AIFF author/copyright. All eight lossless-output cases matched independent decoded PCM SHA-256 exactly using fixed-point MP3/scalar WMA reference decoders matching Wasm. The nine-case suite passed in 20.9 seconds, asserts empty OPFS, deletes generated fixtures/copies, and now runs in hosted browser CI. Exact hashes, bounded I/O, rejected default-decoder comparisons, and limitations are in evidence/audio-source-metadata-matrix-2026-10-03.json. No new engine, route, process-memory/stress, artwork, speedup, or lossy-quality certification is claimed; M-08 remains partial for other fields and destination mappings.";
 const subtitleFieldMatrixNote =
   "N-07 subtitle field matrix (2026-09-05): evidence/subtitle-field-matrix-2026-09-05.json records timing, multiline text, styling, positioning/regions, speakers, cue identifiers and document metadata behavior for all ten public SRT/WebVTT/ASS/SSA/TTML routes. tests/subtitle-field-matrix.test.mjs binds the matrix to exact UI disclosures, direct browser assertions, ASS/SSA extension and MIME aliases, and ten passed three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser subtitle run passed 16/16 in 20.3 seconds and deleted each converted OPFS output after validation.";
 const svgSafetyFidelityNote =
@@ -897,6 +899,8 @@ lines.push(
   "",
   "Regenerate this ledger with `npm run tested:ledger` after new evidence is produced.",
 );
+
+lines.push("", audioSourceMetadataNote);
 
 await writeFile(
   ledgerPath,

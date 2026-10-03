@@ -199,6 +199,7 @@ jobs:
         suite:
           - image-conversions
           - media-remux
+          - audio-source-metadata
           - streaming-conversions
     name: Browser conversions (${{ matrix.suite }})
     steps:
@@ -218,7 +219,12 @@ jobs:
           python -m pip install --disable-pip-version-check -r scripts/requirements-ci-validators.txt
 
       - name: Run browser conversions and independent validators
-        run: npx playwright test tests/browser/${{ matrix.suite }}.spec.ts
+        shell: bash
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/work"
+          task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/ci-browser-${{ matrix.suite }}-XXXXXX")"
+          trap 'rm -rf -- "$task_browser_tmp"' EXIT
+          TMPDIR="$task_browser_tmp" npx playwright test tests/browser/${{ matrix.suite }}.spec.ts
 
       - name: Upload browser failure evidence
         if: failure()

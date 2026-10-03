@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-03T12:42:56.839Z",
+  "requirement": "M-08",
+  "status": "verified-small-source-container-field-matrix",
+  "scope": "Small production-browser source-container Unicode tag mappings; not a memory/stress certification",
+  "browser": "Chrome 154.0.8037.93",
+  "pipeline": "Production browser UI, selected real fixtures, custom FFmpeg Wasm AVIO, bounded OPFS output. Native FFmpeg generates fixtures before conversion and independently validates after conversion only.",
+  "test": {
+    "path": "tests/browser/audio-source-metadata.spec.ts",
+    "sha256": "b8db7f6e309bfe6bd85f4a92a0428088a971789467b24cf9b0ea76d493ba387e",
+    "passed": 9,
+    "failed": 0,
+    "seconds": 20.9
+  },
+  "engine": {
+    "path": "public/engines/remux/within-remux.wasm",
+    "sha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "changed": false
+  },
+  "fixtures": {
+    "generator": "test.beforeAll; 2 seconds of native sine=frequency=997:sample_rate=48000:duration=2 with bitexact codec flags and explicit Unicode metadata",
+    "directory": "work/audio-source-metadata-validation",
+    "retained": false,
+    "commonTags": {
+      "title": "Titre café — 音楽",
+      "artist": "Émile / कलाकार",
+      "album": "Album naïf",
+      "genre": "Essai",
+      "date": "2026",
+      "track": "3/9",
+      "comment": "Commentaire: αβγ & <texte>"
+    },
+    "aiffTags": {
+      "title": "Titre café — 音楽",
+      "author": "Auteur Émile",
+      "copyright": "Copyright © 2026",
+      "comment": "Commentaire: αβγ & <texte>"
+    }
+  },
+  "cases": [
+    {
+      "profileId": "wav-to-flac",
+      "sourceId": "wav",
+      "sourceBytes": 192222,
+      "sourceSha256": "f3813b97479bb9250f7fce17875fd59d513e02112f7674dfbc4ed8ea4d5140df",
+      "outputBytes": 36615,
+      "outputSha256": "747a94fff495a2adfb66c666ac8c0d62c6be193f056d8207db1b6aad7597119f",
+      "outputCodec": "flac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 192222,
+      "maxWriteBytes": 8471,
+      "peakQueuedBytes": 8471,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "wma-to-flac",
+      "sourceId": "wma",
+      "sourceBytes": 39312,
+      "sourceSha256": "fb273f6c29590b40a519998fc89a3fe2acdef39665885e5320def9a8ff4445f4",
+      "outputBytes": 35148,
+      "outputSha256": "4d23c40c760d561e60e3aaabfe886623896a66874246a902bcf4308e2de88835",
+      "outputCodec": "flac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6e86679240183e4ffda3409e846bcb8ec5a215e55f56f6012cbbe3d9221238b1",
+      "outputPcmSha256": "6e86679240183e4ffda3409e846bcb8ec5a215e55f56f6012cbbe3d9221238b1",
+      "nativeReferenceDecoderOptions": [
+        "-cpuflags",
+        "0"
+      ],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 94208,
+        "outputSamples": 94208,
+        "differingSamples": 20,
+        "peakAbsoluteDifference": 1,
+        "rmsDifference": 0.014570387628754903
+      },
+      "matchingNativeDecoderDifference": {
+        "sourceSamples": 94208,
+        "outputSamples": 94208,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "maxReadBytes": 39312,
+      "maxWriteBytes": 8471,
+      "peakQueuedBytes": 8471,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "aiff-to-flac",
+      "sourceId": "aiff",
+      "sourceBytes": 192170,
+      "sourceSha256": "ea7371a85a1f91ec3d1f16af486c8b80b76fa8aa681251f88527cb68e5c77f8b",
+      "outputBytes": 36564,
+      "outputSha256": "0c6d02c94545f1989d09c85f3941b6e550577fe243bb81825bdccd94bebcee03",
+      "outputCodec": "flac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "author",
+        "copyright",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 192170,
+      "maxWriteBytes": 8420,
+      "peakQueuedBytes": 8420,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "m4a-to-flac",
+      "sourceId": "alac",
+      "sourceBytes": 46900,
+      "sourceSha256": "452396ffbb82fc1fcd22fc0ac15710fb68e02d983b63f2e134ad0826f682b91f",
+      "outputBytes": 36690,
+      "outputSha256": "d3d8da742050a4535484cf3a75698897c0cb1ce5b2620abe7f4d9d7f69494979",
+      "outputCodec": "flac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 46900,
+      "maxWriteBytes": 8546,
+      "peakQueuedBytes": 8546,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "mp3-to-flac",
+      "sourceId": "mp3",
+      "sourceBytes": 33237,
+      "sourceSha256": "01aaf6fdab71b771f6b4b26f2c1c61babb1cedcb63552ce912bce8bc385f3bbd",
+      "outputBytes": 39927,
+      "outputSha256": "d78c19669ee20c2f4ad49152b234ed5ff9d7cac5dc67fd0cf8f4853a41dc09f9",
+      "outputCodec": "flac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "debc69dbec75358cd0d5c5869275be12fab5052e86e8f8d2fe3c70e9c640011f",
+      "outputPcmSha256": "debc69dbec75358cd0d5c5869275be12fab5052e86e8f8d2fe3c70e9c640011f",
+      "nativeReferenceDecoderOptions": [
+        "-c:a",
+        "mp3"
+      ],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 24198,
+        "peakAbsoluteDifference": 1,
+        "rmsDifference": 0.502058263551154
+      },
+      "matchingNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "maxReadBytes": 33237,
+      "maxWriteBytes": 8471,
+      "peakQueuedBytes": 8471,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "flac-to-wav",
+      "sourceId": "flac",
+      "sourceBytes": 36583,
+      "sourceSha256": "81f15dc4abf0d82ab5629746cb077072d62158056577e618b1257556cd091efb",
+      "outputBytes": 192244,
+      "outputSha256": "6eb67c25613c8b3b040016f4fea08d109251e9daaff274cd6a12072a67ab1740",
+      "outputCodec": "pcm_s16le",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 36583,
+      "maxWriteBytes": 16384,
+      "peakQueuedBytes": 16384,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "flac-to-alac",
+      "sourceId": "flac",
+      "sourceBytes": 36583,
+      "sourceSha256": "81f15dc4abf0d82ab5629746cb077072d62158056577e618b1257556cd091efb",
+      "outputBytes": 57744,
+      "outputSha256": "51982fc1b199903e1ebed9a5034e840447c43e2f83f2aa90e9887afd602d072c",
+      "outputCodec": "alac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 36583,
+      "maxWriteBytes": 56712,
+      "peakQueuedBytes": 56712,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "flac-to-wma",
+      "sourceId": "flac",
+      "sourceBytes": 36583,
+      "sourceSha256": "81f15dc4abf0d82ab5629746cb077072d62158056577e618b1257556cd091efb",
+      "outputBytes": 151386,
+      "outputSha256": "6f7e1524c1a1f1d5822718280218082ae4e46e96bea0e225fb4de4a65ab18331",
+      "outputCodec": "wmav2",
+      "losslessOutput": false,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "11abd879734807dda91137d0117bde6afc4a627b18face84fef4d7327ce2a2e9",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 94208,
+        "differingSamples": 94202,
+        "peakAbsoluteDifference": 8162,
+        "rmsDifference": 5711.72002058565
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 36583,
+      "maxWriteBytes": 3200,
+      "peakQueuedBytes": 3200,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    },
+    {
+      "profileId": "wav-to-alac",
+      "sourceId": "wav",
+      "sourceBytes": 192222,
+      "sourceSha256": "f3813b97479bb9250f7fce17875fd59d513e02112f7674dfbc4ed8ea4d5140df",
+      "outputBytes": 57744,
+      "outputSha256": "51982fc1b199903e1ebed9a5034e840447c43e2f83f2aa90e9887afd602d072c",
+      "outputCodec": "alac",
+      "losslessOutput": true,
+      "expectedFields": [
+        "title",
+        "artist",
+        "album",
+        "genre",
+        "date",
+        "track",
+        "comment"
+      ],
+      "missingFields": [],
+      "sourcePcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "outputPcmSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+      "nativeReferenceDecoderOptions": [],
+      "defaultNativeDecoderDifference": {
+        "sourceSamples": 96000,
+        "outputSamples": 96000,
+        "differingSamples": 0,
+        "peakAbsoluteDifference": 0,
+        "rmsDifference": 0
+      },
+      "matchingNativeDecoderDifference": null,
+      "maxReadBytes": 192222,
+      "maxWriteBytes": 56712,
+      "peakQueuedBytes": 56712,
+      "peakPendingOperations": 1,
+      "terminalQueuedBytes": 0,
+      "terminalPendingOperations": 0,
+      "wasmBytes": 33554432,
+      "warnings": []
+    }
+  ],
+  "rejectedValidationApproach": {
+    "initialRuns": [
+      {
+        "passed": 7,
+        "failed": 2,
+        "seconds": 29.5
+      },
+      {
+        "passed": 7,
+        "failed": 2,
+        "seconds": 27.7
+      }
+    ],
+    "reason": "Default native FFmpeg uses floating-point mp3float and host SIMD WMA decoding; browser Wasm uses fixed-point MP3 and scalar WMA. Exact output PCM did not match those different reference decoder algorithms.",
+    "observed": "MP3: 24,198 of 96,000 samples differ by one S16 unit. WMA: 20 of 94,208 samples differ by one S16 unit. Matching independent reference decoder modes produces zero differing samples and exact PCM SHA-256 equality. No fidelity tolerance was substituted for identity.",
+    "alsoFixed": "Playwright worker restarts after failed tests must merge report rows rather than overwrite earlier worker evidence."
+  },
+  "ci": {
+    "workflow": ".github/workflows/ci.yml",
+    "suite": "audio-source-metadata",
+    "nativeValidators": "ffmpeg and ffprobe",
+    "browserTemporaryDirectory": "repository-local mktemp under work, removed with EXIT trap",
+    "hostedResult": "not yet run"
+  },
+  "gates": {
+    "productionBuild": "passed",
+    "lint": "passed",
+    "typescript": "passed",
+    "unitTests": "251/251",
+    "engineReproducibilityManifest": "12 published engine directories",
+    "publicEvidenceManifest": "405/405; zero pending, non-passing public, or PDF profiles"
+  },
+  "cleanup": {
+    "perConversionOpfsEmpty": true,
+    "convertedCopiesDeletedInFinally": true,
+    "generatedNativeFixturesDeletedInAfterAll": true,
+    "browserProfilesAndDisposableReportsDeleted": true,
+    "protectedTestMkv": "not used or changed in this small-fixture cycle"
+  },
+  "limitations": [
+    "Small source-tag matrix only; no new complete-process memory, multi-gigabyte scaling, or performance speedup claim.",
+    "Eight lossless-output results match independent decoded PCM exactly; FLAC-to-WMA is intentionally lossy and is only structurally decoded/field-validated here, not independently recertified for quality.",
+    "No new routes, settings, codecs, artwork destinations, or engine binaries were published.",
+    "Other metadata fields, container-to-destination mappings and destination-specific artwork remain under M-08; this does not claim all metadata in every route."
+  ]
+}
