@@ -12,6 +12,8 @@ const sha256 = async (file) => createHash("sha256").update(await readFile(file))
 const components = await readFile(path.join(output, "config_components.h"), "utf8");
 const memoryMiB = Number(process.env.WITHIN_H264_MEMORY_MIB ?? "64");
 if (![32, 64].includes(memoryMiB)) throw new Error("Private H264 fixed memory must be 32 or 64 MiB");
+const libraryLto = process.env.WITHIN_H264_LIBRARY_LTO ?? "0";
+if (!["0", "1"].includes(libraryLto)) throw new Error("Private H264 library LTO must be 0 or 1");
 const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\\w+)_${kind} 1$`, "gm"))]
   .map((match) => match[1].toLowerCase()).sort();
 const manifest = {
@@ -22,6 +24,8 @@ const manifest = {
   openh264Commit: "652bdb7719f30b52b08e506645a7322ff1b2cc6f",
   openh264SourceSha256: await sha256(path.join(build, "openh264.tar.gz")),
   emscriptenVersion: "6.0.4",
+  libraryLinkTimeOptimization: libraryLto === "1",
+  libraryOptimizationScope: libraryLto === "1" ? "FFmpeg and OpenH264 objects plus existing final-link LTO" : "Existing final-link LTO only; libraries use Wasm objects",
   currentAvioWrapperSourceSha256: await sha256(path.join(root, "media/ffmpeg/within_remux.c")),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_h264.c")),
   candidateKernelSha256: await sha256(path.join(root, "media/ffmpeg/h264-candidate.c")),

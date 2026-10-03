@@ -137,8 +137,8 @@
   "currentSources": {
     "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
     "media/ffmpeg/make-h264-candidate.mjs": "594bfdbdeb4286ca65840db8c1b4d79883e0de9b2985ac5ff7f65d716a92ccf0",
-    "media/ffmpeg/build-h264-candidate.sh": "94ff4a1df7b80095f02182d10674efab43b0e13bef4d1077f230ecdcefa6e5eb",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "85d007e13fab268ca1f9964ac9e8e0e2cedf5f76b6e9f1120cfd5b1bda14b08d",
+    "media/ffmpeg/build-h264-candidate.sh": "edf0e10b2ae2533eb3fca55ceb33da590d9c06552533c4d9fce7d29678da830e",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "b195a06805089df7f35f5a637eac97da6831c59f96de9a0c0ee500b708b711a0",
     "scripts/stage-h264-candidate.mjs": "f84636c5b928c93dbcddc6e9204e03c3e803d96ed0b9b85b4314b20722526053",
     "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
   },

@@ -55,10 +55,17 @@ test("candidate recipe pins sources, fixed memory, no Docker, local caches and f
   assert.match(recipe, /export EM_CACHE="\$\{BUILD_ROOT\}\/emscripten-cache"/);
   assert.match(recipe, /export EM_PKG_CONFIG_PATH="\$\{PREFIX\}\/lib\/pkgconfig"/);
   assert.match(recipe, /trap cleanup EXIT/);
+  assert.match(recipe, /1\) H264_LIBRARY_LTO_FLAGS=-flto/);
+  assert.match(recipe, /flags\+=" \$\{H264_LIBRARY_LTO_FLAGS\}"/);
+  assert.match(recipe, /--extra-cflags="[^"]*\$\{H264_LIBRARY_LTO_FLAGS\}/);
+  assert.match(recipe, /--extra-ldflags="[^"]*\$\{H264_LIBRARY_LTO_FLAGS\}/);
+  assert.doesNotMatch(recipe, /-ffast-math|-Ofast/);
   assert.match(recipe, /available_kib >= 8388608/);
   assert.doesNotMatch(recipe, /docker (run|build)|--enable-gpl|--enable-nonfree/);
   const workflow = await readFile(path.join(root, ".github/workflows/reproduce-ffmpeg-nondocker.yml"), "utf8");
   assert.match(workflow, /if: always\(\)/);
   assert.match(workflow, /retention-days: 1/);
   assert.match(workflow, /224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f/);
+  assert.match(workflow, /h264_library_lto:/);
+  assert.match(workflow, /WITHIN_H264_LIBRARY_LTO=/);
 });

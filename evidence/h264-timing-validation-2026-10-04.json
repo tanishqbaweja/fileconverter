@@ -120,7 +120,7 @@
   },
   "currentSources": {
     "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
-    "media/ffmpeg/build-h264-candidate.sh": "94ff4a1df7b80095f02182d10674efab43b0e13bef4d1077f230ecdcefa6e5eb",
+    "media/ffmpeg/build-h264-candidate.sh": "edf0e10b2ae2533eb3fca55ceb33da590d9c06552533c4d9fce7d29678da830e",
     "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
     "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
   },

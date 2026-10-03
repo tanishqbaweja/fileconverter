@@ -1,0 +1,54 @@
+{
+  "recordedDate": "2026-10-04",
+  "status": "source-review-complete-library-lto-experiment-not-yet-benchmarked",
+  "scope": "Private M-04 speed investigation; source evidence, not runtime certification",
+  "rejectedCandidate": {
+    "name": "Explicit low-complexity OpenH264 setting",
+    "reason": "Already the pinned default. FFmpeg invokes GetDefaultParams, which calls FillDefault, which sets LOW_COMPLEXITY. Neither FFmpeg nor our private wrapper changes iComplexityMode. Adding the same setting is not a distinct optimization.",
+    "nativeRebuilds": 0,
+    "browserConversions": 0,
+    "speedGainClaim": null
+  },
+  "upstreamSources": [
+    {
+      "url": "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/encoder/core/inc/param_svc.h",
+      "bytes": 26234,
+      "sha256": "45878bb650234a39940e8149be5299cb6bc0511b02312857525e4a1da62a72ed",
+      "finding": "Raw source line 142 sets the default complexity to LOW_COMPLEXITY; ParamTranscode copies the supplied complexity."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/encoder/plus/src/welsEncoderExt.cpp",
+      "bytes": 57418,
+      "sha256": "88113eb613b5f614da85be9b1d698bf4953e288ab1e660bd11d17babaf50051c",
+      "finding": "Raw source lines 175-177 implement GetDefaultParams by invoking SWelsSvcCodingParam::FillDefault."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/libopenh264enc.c",
+      "bytes": 18298,
+      "sha256": "4c86c9d87fdfb122f2892ca7984a0544877f99f43e4fe49eec9286021cef96eb",
+      "finding": "Raw source line 133 invokes GetDefaultParams; the wrapper contains no complexity AVOption or iComplexityMode assignment. This hash equals the original-source guard in our build recipe."
+    }
+  ],
+  "nextCandidate": {
+    "name": "Whole-library link-time optimization",
+    "implementation": "Opt-in WITHIN_H264_LIBRARY_LTO=1 adds -flto to OpenH264 C/C++ and FFmpeg compile/link flags; the existing final link already uses -flto. Default remains 0.",
+    "primaryReference": "https://emscripten.org/docs/optimizing/Optimizing-Code.html#lto",
+    "unchanged": ["Codec parameters", "Immutable dimensions guard", "Timestamp policy", "Quality thresholds", "Fixed memory", "Threads", "AVIO bounds", "Privacy", "Cancellation", "Public profiles and binaries"],
+    "requiredComparison": "Same genuine 105000218-byte 60s 1280x720/30fps input and codec settings; independently validate frames/timestamps/AAC/metadata/SSIM, complete-process memory and cleanup. Compare default against LTO with repeated runs. No public adoption without all original gates.",
+    "runtimeVerified": false,
+    "speedGainClaim": null
+  },
+  "currentSources": {
+    "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
+    "media/ffmpeg/build-h264-candidate.sh": "edf0e10b2ae2533eb3fca55ceb33da590d9c06552533c4d9fce7d29678da830e",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "b195a06805089df7f35f5a637eac97da6831c59f96de9a0c0ee500b708b711a0"
+  },
+  "publicProfilesChanged": false,
+  "publicEnginesChanged": false,
+  "protectedTestMkvUsed": false,
+  "cleanup": {
+    "generatedMedia": 0,
+    "downloadedSourceFiles": 0,
+    "ownedBrowserProfiles": 0
+  }
+}

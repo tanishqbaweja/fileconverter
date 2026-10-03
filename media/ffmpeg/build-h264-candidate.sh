@@ -6,6 +6,12 @@ case "${WITHIN_H264_MEMORY_MIB:-64}" in
   *) printf 'Private H264 fixed memory must be 32 or 64 MiB.\n' >&2; exit 2 ;;
 esac
 export WITHIN_H264_MEMORY_MIB="${WITHIN_H264_MEMORY_MIB:-64}"
+case "${WITHIN_H264_LIBRARY_LTO:-0}" in
+  0) H264_LIBRARY_LTO_FLAGS= ;;
+  1) H264_LIBRARY_LTO_FLAGS=-flto ;;
+  *) printf 'Private H264 library LTO must be 0 or 1.\n' >&2; exit 2 ;;
+esac
+export WITHIN_H264_LIBRARY_LTO="${WITHIN_H264_LIBRARY_LTO:-0}"
 
 # Experimental artifacts only; never writes public/engines or existing cores.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -70,6 +76,7 @@ printf '%s  %s\n' 510df38d806692997594df40a2f587d55984a147e610c7546cfd749116dc26
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch"
 flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -pthread'
+if [[ -n "${H264_LIBRARY_LTO_FLAGS}" ]]; then flags+=" ${H264_LIBRARY_LTO_FLAGS}"; fi
 (
   cd openh264
   emmake make -j4 libopenh264.a install-static OS=linux ARCH=wasm32 \
@@ -92,8 +99,8 @@ flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -p
     --enable-decoder=h264,hevc,mpeg4,mpeg2video,theora,vp8,vp9,aac,mp3,flac,vorbis,opus \
     --enable-parser=h264,hevc,mpeg4video,mpegvideo,vp8,vp9,aac,mpegaudio,flac,vorbis,opus \
     --enable-bsf=aac_adtstoasc,h264_mp4toannexb,hevc_mp4toannexb,extract_extradata \
-    --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread -I${PREFIX}/include" \
-    --extra-ldflags="-O3 -pthread -L${PREFIX}/lib"
+    --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread ${H264_LIBRARY_LTO_FLAGS} -I${PREFIX}/include" \
+    --extra-ldflags="-O3 -pthread ${H264_LIBRARY_LTO_FLAGS} -L${PREFIX}/lib"
   emmake make -j4
   emmake make install
 )

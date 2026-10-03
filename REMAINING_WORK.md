@@ -15,6 +15,27 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 speed-source review and opt-in library LTO
+
+Status: **Partially implemented under M-04; no speed gain claimed**.
+Pinned source inspection rejected an explicit low-complexity setting as a no-op:
+FFmpeg obtains OpenH264 defaults, and the pinned defaults already select
+`LOW_COMPLEXITY`. No unchanged build or conversion was repeated. Exact source
+URLs, byte counts, hashes and call-chain findings are retained in
+`evidence/h264-speed-source-review-2026-10-04.json`.
+
+A distinct private experiment now adds `WITHIN_H264_LIBRARY_LTO=1` to compile
+both OpenH264 and FFmpeg objects with `-flto`; previously only the final link
+and native wrapper used LTO. The default remains 0. The non-Docker workflow
+accepts the explicit choice, and the manifest records its actual scope. Codec
+settings, timing/dimension guards, fixed memory, threads, I/O, public binaries
+and registry are unchanged. Eight focused source/provenance tests pass.
+Native compilation and identical-input repeated browser speed/fidelity/memory
+comparison are pending. This is not an accepted optimization. No media,
+source download files or browser profiles were generated during source review.
+Historical as-built manifests remain unchanged; only current-source indexes
+were refreshed for the opt-in recipe and manifest changes.
+
 ## 2026-10-04 — H.264 dynamic-dimension regression and immutable guard
 
 Status: **Partially implemented under M-04; private guard fix browser-validated**.

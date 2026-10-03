@@ -27,6 +27,14 @@ on:
         options:
           - '32'
           - '64'
+      h264_library_lto:
+        description: Whole-library LTO for the private H264 speed experiment only
+        required: false
+        default: '0'
+        type: choice
+        options:
+          - '0'
+          - '1'
 
 permissions:
   contents: read
@@ -70,6 +78,7 @@ jobs:
           if test "${{ inputs.core }}" = within-h264-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_H264_MEMORY_MIB="${{ inputs.h264_memory_mib || '64' }}" \
+              WITHIN_H264_LIBRARY_LTO="${{ inputs.h264_library_lto || '0' }}" \
               WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh
