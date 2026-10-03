@@ -12,6 +12,11 @@ const work = path.join(root, "work/h264-browser-validation");
 const report = path.join(root, "output/playwright/h264-candidate.json");
 const exec = promisify(execFile);
 const rows: Array<Record<string, unknown>> = [];
+type ProcessSample = { timestamp: string; privateBytes: number | null; rssBytes: number | null; processes: unknown; phase: string; realms?: unknown };
+const memorySamples: ProcessSample[] = [];
+const forbiddenRequests: string[] = [];
+let sampling = false;
+let memoryTask: Promise<void> | null = null;
 const title = "H.264 café — 音楽";
 const adapters = [
   { container: "mp4", source: "mkv", profile: "mkv-to-mp4" },
@@ -42,6 +47,48 @@ async function audioHashes(file: string) {
   return stdout.trim().split(/\r?\n/).map((line) => line.split(",").at(-1)?.trim());
 }
 
+async function sampleTree(rootPid: number, phase: string): Promise<ProcessSample> {
+  const timestamp = new Date().toISOString();
+  if (process.platform !== "win32") return { timestamp, phase, privateBytes: null, rssBytes: null, processes: null };
+  try {
+    const script = `
+      $all = @(Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,CommandLine,CreationDate,PrivatePageCount,WorkingSetSize)
+      $ids = New-Object 'System.Collections.Generic.HashSet[int]'
+      [void]$ids.Add(${rootPid})
+      $createdAt = @{}
+      foreach ($entry in $all) { $createdAt[[int]$entry.ProcessId] = [datetime]$entry.CreationDate }
+      do {
+        $changed = $false
+        foreach ($entry in $all) {
+          $parentId = [int]$entry.ParentProcessId
+          if ($ids.Contains($parentId) -and -not $ids.Contains([int]$entry.ProcessId) -and
+              $createdAt.ContainsKey($parentId) -and [datetime]$entry.CreationDate -ge [datetime]$createdAt[$parentId]) {
+            [void]$ids.Add([int]$entry.ProcessId); $changed = $true
+          }
+        }
+      } while ($changed)
+      @($all | Where-Object { $ids.Contains([int]$_.ProcessId) } | ForEach-Object {
+        $type = 'browser'; if ($_.CommandLine -match '--type=([^ ]+)') { $type = $Matches[1] }
+        [pscustomobject]@{pid=[int]$_.ProcessId;parentPid=[int]$_.ParentProcessId;type=$type;privateBytes=[double]$_.PrivatePageCount;rssBytes=[double]$_.WorkingSetSize}
+      }) | ConvertTo-Json -Compress
+    `;
+    const { stdout } = await exec("powershell.exe", ["-NoProfile", "-NonInteractive", "-Command", script], {
+      windowsHide: true, maxBuffer: 1024 * 1024, timeout: 5000,
+    });
+    const parsed = JSON.parse(stdout);
+    const processes = (Array.isArray(parsed) ? parsed : [parsed]) as Array<{ pid: number; privateBytes: number; rssBytes: number }>;
+    if (!processes.some((entry) => entry.pid === rootPid) || processes.some((entry) =>
+      !Number.isFinite(entry.privateBytes) || entry.privateBytes <= 0 || !Number.isFinite(entry.rssBytes))) {
+      throw new Error("Incomplete process-tree sample");
+    }
+    return { timestamp, phase, processes,
+      privateBytes: processes.reduce((sum, entry) => sum + entry.privateBytes, 0),
+      rssBytes: processes.reduce((sum, entry) => sum + entry.rssBytes, 0) };
+  } catch {
+    return { timestamp, phase, privateBytes: null, rssBytes: null, processes: null };
+  }
+}
+
 test.beforeAll(async () => {
   await mkdir(work, { recursive: true });
   const metadata = path.join(work, "chapters.ffmetadata");
@@ -62,34 +109,66 @@ test.beforeAll(async () => {
   }
 });
 
-test.beforeEach(async ({ context }) => {
-  // Explicit module-only adapter: the actual production worker, original File,
-  // AVIO bridge, cancellation and OPFS/direct writer remain unchanged. No
-  // registry/UI claims are inferred from the existing route labels.
-  await context.route("**/__h264-candidate/base.mjs", async (route) => {
-    await route.fulfill({ path: path.join(candidate, "within-h264.mjs"), contentType: "text/javascript" });
+test.beforeEach(async ({ context, browser, page }) => {
+  forbiddenRequests.length = 0;
+  const origin = new URL(process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${process.env.WITHIN_TEST_PORT ?? "3000"}`).origin;
+  context.on("request", (request) => {
+    if (new URL(request.url()).origin !== origin || !["GET", "HEAD"].includes(request.method()) || request.postData()) {
+      if (forbiddenRequests.length < 32) forbiddenRequests.push(`${request.method()} ${request.url()}`);
+    }
   });
-  await context.route("**/engines/remux/within-remux.mjs", async (route) => {
-    await route.fulfill({ contentType: "text/javascript", body: `
-      import factory from "/__h264-candidate/base.mjs";
-      export default async function(options) {
-        const core = await factory(options);
-        const call = core.ccall.bind(core);
-        core.ccall = (name, type, types, args, settings) => {
-          const mapped = [...args];
-          if (mapped[0] === 1) mapped[0] = 6;
-          return call(name, type, types, mapped, settings);
-        };
-        return core;
-      }
-    ` });
-  });
-  await context.route("**/engines/remux/within-remux.wasm", async (route) => {
-    await route.fulfill({ path: path.join(candidate, "within-h264.wasm"), contentType: "application/wasm" });
-  });
+  memorySamples.length = 0;
+  const session = await browser.newBrowserCDPSession();
+  const info = await session.send("SystemInfo.getProcessInfo");
+  await session.detach();
+  const rootPid = info.processInfo.find((entry) => entry.type === "browser")?.id;
+  if (!rootPid) throw new Error("The whole Chromium tree root could not be identified.");
+  memorySamples.push(await sampleTree(rootPid, "blank-diagnostic-not-certified-stable-baseline"));
+  sampling = true;
+  memoryTask = (async () => {
+    const pendingHeaps = new WeakSet<object>();
+    const boundedHeap = async (realm: object, operation: () => Promise<number | null>) => {
+      if (pendingHeaps.has(realm)) return null;
+      pendingHeaps.add(realm);
+      const promise = operation().catch(() => null).finally(() => pendingHeaps.delete(realm));
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        return await Promise.race([promise, new Promise<null>((resolve) => {
+          timer = setTimeout(() => resolve(null), 1000);
+        })]);
+      } finally { clearTimeout(timer); }
+    };
+    while (sampling) {
+      const phase = await page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState ?? "loading").catch(() => "unavailable");
+      const sample = await sampleTree(rootPid, phase);
+      const diagnosticHeap = () => {
+        const memory = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory;
+        return memory?.usedJSHeapSize ?? null;
+      };
+      sample.realms = {
+        pageUsedJSHeapBytes: await boundedHeap(page, () => page.evaluate(diagnosticHeap)),
+        workers: await Promise.all(page.workers().map(async (worker) => ({
+          url: worker.url(), usedJSHeapBytes: await boundedHeap(worker, () => worker.evaluate(diagnosticHeap)),
+        }))),
+      };
+      if (memorySamples.length === 256) memorySamples.shift();
+      memorySamples.push(sample);
+      if (sampling) await new Promise((resolve) => setTimeout(resolve, 250));
+    }
+  })();
+  // Explicit staged-module adapter in disposable dist assets. Production
+  // worker, original File, AVIO, cancellation and writers remain unchanged.
+  // Worker imports cannot be reliably substituted with context.route here.
+  const staged = await readFile(path.join(root, "dist/client/engines/remux/within-remux.mjs"), "utf8");
+  expect(staged).toContain("PRIVATE_H264_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT");
 });
 
 test.afterEach(async ({ page }) => {
+  sampling = false;
+  await memoryTask;
+  memoryTask = null;
+  expect(forbiddenRequests, "conversion must not transmit data or contact external origins").toEqual([]);
+  rows.push({ memoryScope: "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract", samples: [...memorySamples] });
   if (page.isClosed()) return;
   const entries = await page.evaluate(async () => {
     const directory = await navigator.storage.getDirectory();
@@ -97,7 +176,7 @@ test.afterEach(async ({ page }) => {
     for await (const [name] of directory.entries()) names.push(name);
     for (const name of names) await directory.removeEntry(name, { recursive: true });
     return names;
-  }).catch(() => []);
+  });
   rows.push({ cleanupRemovedEntries: entries });
 });
 

@@ -35,8 +35,11 @@ overwrites `PKG_CONFIG_LIBDIR/PATH` and reads `EM_PKG_CONFIG_PATH` instead.
 The recipe now sets that exact bridge variable and prints configure diagnostics
 before final cleanup. The failed runner's cleanup step passed; no binary was
 produced or advertised. Do not repeat the original environment configuration.
-The corrected hosted build is the next gate; browser validation will use an explicit
-test-only module substitution with the existing production worker/I/O bridge.
+Corrected run `37127410903` at `807038b` **passed** real Wasm compile/link in
+299 seconds (build time, not conversion speed). The 7,761,671-byte Wasm has SHA-256
+`32b33cb61326fad3f01f300f7db713ef14f4454fde3ab11739ded628656219df`.
+Browser validation uses an explicit test-only module substitution with the
+existing production worker/I/O bridge.
 The ABI's existing route numbers are adapter sentinels, not public H.264 claims.
 
 OpenH264's BSD source license avoids silently introducing x264/GPL linkage.
@@ -47,6 +50,34 @@ actual Wasm build and reproducibility, genuine browser conversions, metadata/
 track/timestamp/content fidelity, quality and identical-input speed candidates,
 complete-process memory, repeated stress/scaling, failure/cancel/cleanup,
 legal deployment review and consistent production registry/UI integration.
+
+Chrome 154.0.8037.93 exposed a real runtime **function signature mismatch**
+after 2,385 partial destination bytes. No H.264 output passed validation.
+The MP4 and Matroska candidate conversions failed; direct-write recovery also
+remains unproved. The first context-routing adapter did not cover the planner's
+MPEG-4 specialist selection: its 32 MiB result was detected and discarded, and
+its existing-engine write-failure pass is not credited to H.264. The corrected
+adapter is staged only in disposable `dist` assets, handles the existing short
+video ABI explicitly, and leaves the public engine directory unchanged.
+`scripts/stage-h264-candidate.mjs restore` verifies and restores exact published
+asset hashes. Whole-Chromium diagnostic process/realm samples were retained,
+but the failed short conversion and non-stabilized blank measurement are not
+250 MiB certification. Bounded diagnostic deadlines prevent a trapped worker
+from hanging heap sampling; unavailable samples remain null.
+
+`evidence/h264-encoder-feasibility-2026-10-03.json` retains exact build/source/
+module hashes, both hosted attempts, rejected adapter details, the typed-call
+stack (first Wasm function 2213), partial-output I/O metrics and whole-process
+diagnostics. The next build adds function names/symbol mapping to locate that
+call site, not global function-pointer emulation or a raised memory limit.
+Local source/unit/manifest gates passed 258/258 and 405/405 respectively; build,
+lint and TypeScript passed. Existing binaries/routes remain unchanged.
+The failed candidate/source bundle, generated fixtures/outputs, browser temp
+data, traces and remote artifact were deleted after compact evidence; `work`
+contains only `.gitkeep` and generated production assets are restored. GitHub
+CLI's transient default-temp artifact ZIP was observed and verified removed;
+future downloads must set repository-local `TEMP/TMP` explicitly. No protected
+`test.mkv` data was used or altered. Do not repeat the unsymbolized candidate.
 
 ## 2026-10-03 — Unicode audio source metadata and CI
 

@@ -87,7 +87,7 @@ emcc "${BUILD_ROOT}/within_h264.c" -I"${PREFIX}/include" \
   "${PREFIX}/lib/libavformat.a" "${PREFIX}/lib/libavcodec.a" \
   "${PREFIX}/lib/libswscale.a" "${PREFIX}/lib/libavutil.a" \
   "${PREFIX}/lib/libopenh264.a" -lstdc++ \
-  -O3 -flto -msimd128 -pthread \
+  -O3 -flto -msimd128 -pthread --profiling-funcs --emit-symbol-map \
   -sPTHREAD_POOL_SIZE=0 -sPTHREAD_POOL_SIZE_STRICT=2 \
   -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=1048576 \
   -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=67108864 -sMAXIMUM_MEMORY=67108864 \

@@ -1,0 +1,682 @@
+{
+  "recordedAt": "2026-10-03T14:21:02.975Z",
+  "requirement": "M-04",
+  "status": "partial-private-candidate-runtime-failed-no-public-profile",
+  "scope": "Real source-pinned Wasm build and production-worker browser feasibility; not conversion acceptance, speedup, quality, memory or unsupported certification",
+  "buildAttempts": [
+    {
+      "runId": 37127085458,
+      "commit": "be295ead8d245f5368c831b609fcaa895c7f4c69",
+      "result": "failed",
+      "phase": "FFmpeg configure after successful OpenH264 static compilation",
+      "reason": "emconfigure replaces PKG_CONFIG_LIBDIR/PATH; EM_PKG_CONFIG_PATH was missing",
+      "cleanup": "hosted cleanup step passed",
+      "retainedArtifacts": 0
+    },
+    {
+      "runId": 37127410903,
+      "commit": "807038b6cf430531e77bd402da8cbf7b34fd57ed",
+      "result": "passed",
+      "phase": "genuine OpenH264/FFmpeg Wasm compile/link",
+      "buildStepStartedAt": "2026-10-03T13:48:44Z",
+      "buildStepCompletedAt": "2026-10-03T13:53:43Z",
+      "cleanup": "hosted cleanup step passed",
+      "artifactId": 11274559088
+    }
+  ],
+  "asBuiltManifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "openh264Version": "2.6.0",
+    "openh264Commit": "652bdb7719f30b52b08e506645a7322ff1b2cc6f",
+    "openh264SourceSha256": "7a060916a9fcb63ba51d83a4f2388660c0b58797be547c4fa5c52e8d65660a85",
+    "emscriptenVersion": "6.0.4",
+    "currentAvioWrapperSourceSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "generatedWrapperSourceSha256": "a00e6f5b0e80072ca07734210dfb9eb4a792e48bc866e63359ed8709b64c48bf",
+    "candidateKernelSha256": "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333",
+    "buildRecipeSha256": "47b4ca74728183a3b7304a47ce5f5183a5cf0bffeb1727c63a84fc36f723a045",
+    "artifacts": {
+      "within-h264.mjs": "01cc89be8f0e7f43826a56b41b01cf2993710061e47f386a9c00fe801cabf38c",
+      "within-h264.wasm": "32b33cb61326fad3f01f300f7db713ef14f4454fde3ab11739ded628656219df"
+    },
+    "enabledDecoders": [
+      "aac",
+      "flac",
+      "h263",
+      "h264",
+      "hevc",
+      "mp3",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vorbis",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "libopenh264"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 67108864,
+    "maximumWasmMemoryBytes": 67108864,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "encoderFrameSkipping": false,
+    "normalizesSourceTiming": false,
+    "primaryVideo": "decoded-and-encoded-to-H.264",
+    "secondaryStreams": "compatible-packet-copy-with-explicit-exclusions",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later",
+      "OpenH264 BSD-2-Clause"
+    ],
+    "patentScope": "Self-compiled Wasm is not a Cisco-distributed binary; no claim of Cisco royalty coverage or legal clearance.",
+    "requiredUnpassedGates": [
+      "production-browser validation",
+      "fidelity",
+      "speed A/B",
+      "complete-process private memory",
+      "stress repeats and scaling",
+      "failure/cancellation/cleanup",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "artifactBytes": {
+    "within-h264.mjs": 80839,
+    "within-h264.wasm": 7761671
+  },
+  "currentSources": {
+    "media/ffmpeg/h264-candidate.c": "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333",
+    "media/ffmpeg/make-h264-candidate.mjs": "594bfdbdeb4286ca65840db8c1b4d79883e0de9b2985ac5ff7f65d716a92ccf0",
+    "media/ffmpeg/build-h264-candidate.sh": "54b07474d94a4c0323a577297f86b4b593b6fba99fd43ce7feaa9a0dab94ece1",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "89b7933e0c1eb79eb295d979eb643e996cbad225c8ea0288a9e870851f1f88c1",
+    "scripts/stage-h264-candidate.mjs": "2be08e05c9ffb4b40880977cca96558a09f2f540152a7b3bad9ce7eb8c5355fe",
+    "tests/browser/h264-candidate.spec.ts": "b95bd88de26b329b9ff7cf49b248a4a12ef757d4179fa27ca4c339f73de7730f"
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "154.0.8037.93",
+    "headed": false,
+    "productionBuild": true,
+    "productionSecurityHeaders": true,
+    "adapter": "Disposable dist module substitution; original production worker, File, AVIO, writer, backpressure and cancellation remain unchanged. No public selector/route claim.",
+    "rejectedAdapter": "Context routing alone did not cover planner-selected MPEG4 specialist; mixed/wrong assets were detected by the 64 MiB memory check and discarded.",
+    "attempts": [
+      {
+        "scope": "initial context-route adapter",
+        "tests": 3,
+        "passed": 1,
+        "failed": 2,
+        "acceptedH264Conversions": 0,
+        "note": "Passed write-failure case used the existing engine, so it is not new H264 evidence."
+      },
+      {
+        "scope": "staged candidate MP4/MKV/recovery",
+        "tests": 3,
+        "passed": 0,
+        "failed": 3,
+        "acceptedH264Conversions": 0,
+        "note": "Both conversions trapped; write-failure/recovery timed out. Nothing certified. Diagnostic heap queries are now deadline-bounded with at most one outstanding query per realm."
+      },
+      {
+        "scope": "initial focused stack diagnostic",
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "acceptedH264Conversions": 0,
+        "note": "The adapter did not capture a synchronous ccall throw; corrected to async try/await/catch before the next diagnostic attempt."
+      },
+      {
+        "scope": "focused stack diagnostic",
+        "tests": 1,
+        "passed": 0,
+        "failed": 1,
+        "acceptedH264Conversions": 0,
+        "note": "Native stack captured after 2385 partial output bytes; fixture output and OPFS removed."
+      }
+    ],
+    "latestFailure": {
+      "kind": "mp4",
+      "state": "error",
+      "selectedAdapterProfile": "mkv-to-mp4-mpeg4",
+      "error": "Candidate ccall: function signature mismatch\nRuntimeError: function signature mismatch\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[2213]:0x33a22d\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[776]:0x1355a2\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[777]:0x135d58\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5430]:0x6c99d8\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5429]:0x6c9338\n    at http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5424]:0x6c7cf2\n    at __asyncify_wrapper_5424 (http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:39272)\n    at http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:11896\n    at Object.ccall (http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:44770)\n    at core.ccall (http://127.0.0.1:3110/engines/remux/within-mpeg4.mjs:12:24)",
+      "metrics": {
+        "inputBytes": 262144,
+        "outputBytes": 2385,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 2357,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 2357,
+        "elapsedMs": 372.4349999949336,
+        "wasmMemoryBytes": 67108864,
+        "peakWasmMemoryBytes": 67108864,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 67108868,
+        "activeWorkerCount": 5,
+        "imageWorkingBytes": 0
+      },
+      "warnings": [],
+      "workerCountCaveat": "Adapter-route worker count reflects the existing specialist policy, not a certified H264 count; candidate pool is zero and process-tree samples are retained independently."
+    }
+  },
+  "diagnosticMemory": {
+    "primaryIncrementalPrivateMiB": null,
+    "acceptance": "not-evaluated: failed short conversion and non-stabilized baseline",
+    "excludesFailedSamplesFromCalculations": true,
+    "samples": [
+      {
+        "timestamp": "2026-10-03T14:10:39.368Z",
+        "phase": "blank-diagnostic-not-certified-stable-baseline",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 39038976,
+            "rssBytes": 120967168
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2617344,
+            "rssBytes": 10293248
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 88588288,
+            "rssBytes": 113451008
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 12595200,
+            "rssBytes": 38547456
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8196096,
+            "rssBytes": 18853888
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44507136,
+            "rssBytes": 86773760
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36585472
+          },
+          {
+            "pid": 39812,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18804736,
+            "rssBytes": 50954240
+          }
+        ],
+        "privateBytes": 233295872,
+        "rssBytes": 476426240
+      },
+      {
+        "timestamp": "2026-10-03T14:10:39.940Z",
+        "phase": "loading",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 41422848,
+            "rssBytes": 126529536
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2666496,
+            "rssBytes": 10321920
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 112168960,
+            "rssBytes": 144437248
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 14254080,
+            "rssBytes": 41230336
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8286208,
+            "rssBytes": 19251200
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44654592,
+            "rssBytes": 87363584
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 92049408,
+            "rssBytes": 147959808
+          },
+          {
+            "pid": 24132,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36433920
+          }
+        ],
+        "privateBytes": 334450688,
+        "rssBytes": 613527552,
+        "realms": {
+          "pageUsedJSHeapBytes": 11183379,
+          "workers": [
+            {
+              "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+              "usedJSHeapBytes": null
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-10-03T14:10:40.791Z",
+        "phase": "idle",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 41771008,
+            "rssBytes": 126955520
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2666496,
+            "rssBytes": 10321920
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 114749440,
+            "rssBytes": 148570112
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 14254080,
+            "rssBytes": 41230336
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8286208,
+            "rssBytes": 19251200
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44654592,
+            "rssBytes": 87363584
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 97226752,
+            "rssBytes": 153522176
+          },
+          {
+            "pid": 24132,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36433920
+          }
+        ],
+        "privateBytes": 342556672,
+        "rssBytes": 623648768,
+        "realms": {
+          "pageUsedJSHeapBytes": 11608967,
+          "workers": [
+            {
+              "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+              "usedJSHeapBytes": null
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-10-03T14:10:41.572Z",
+        "phase": "idle",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 41775104,
+            "rssBytes": 126959616
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2666496,
+            "rssBytes": 10321920
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 113963008,
+            "rssBytes": 147935232
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 14254080,
+            "rssBytes": 41230336
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8286208,
+            "rssBytes": 19251200
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44658688,
+            "rssBytes": 87379968
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 97488896,
+            "rssBytes": 154120192
+          },
+          {
+            "pid": 24132,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36433920
+          }
+        ],
+        "privateBytes": 342040576,
+        "rssBytes": 623632384,
+        "realms": {
+          "pageUsedJSHeapBytes": 10822611,
+          "workers": [
+            {
+              "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+              "usedJSHeapBytes": null
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-10-03T14:10:42.340Z",
+        "phase": "idle",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 43245568,
+            "rssBytes": 132386816
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2666496,
+            "rssBytes": 10321920
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 135876608,
+            "rssBytes": 158969856
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 14258176,
+            "rssBytes": 41328640
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8298496,
+            "rssBytes": 19337216
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44658688,
+            "rssBytes": 87420928
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 99790848,
+            "rssBytes": 156078080
+          },
+          {
+            "pid": 24132,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36524032
+          }
+        ],
+        "privateBytes": 367742976,
+        "rssBytes": 642367488,
+        "realms": {
+          "pageUsedJSHeapBytes": 10675467,
+          "workers": [
+            {
+              "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+              "usedJSHeapBytes": null
+            }
+          ]
+        }
+      },
+      {
+        "timestamp": "2026-10-03T14:10:43.136Z",
+        "phase": "idle",
+        "processes": [
+          {
+            "pid": 35204,
+            "parentPid": 32356,
+            "type": "browser",
+            "privateBytes": 47964160,
+            "rssBytes": 139423744
+          },
+          {
+            "pid": 14776,
+            "parentPid": 35204,
+            "type": "crashpad-handler",
+            "privateBytes": 2666496,
+            "rssBytes": 10321920
+          },
+          {
+            "pid": 25620,
+            "parentPid": 35204,
+            "type": "gpu-process",
+            "privateBytes": 247914496,
+            "rssBytes": 246878208
+          },
+          {
+            "pid": 37424,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 16384000,
+            "rssBytes": 45211648
+          },
+          {
+            "pid": 36244,
+            "parentPid": 35204,
+            "type": "utility",
+            "privateBytes": 8298496,
+            "rssBytes": 19337216
+          },
+          {
+            "pid": 39676,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 44662784,
+            "rssBytes": 87425024
+          },
+          {
+            "pid": 41448,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 200925184,
+            "rssBytes": 190398464
+          },
+          {
+            "pid": 24132,
+            "parentPid": 35204,
+            "type": "renderer",
+            "privateBytes": 18948096,
+            "rssBytes": 36524032
+          }
+        ],
+        "privateBytes": 587763712,
+        "rssBytes": 775520256,
+        "realms": {
+          "pageUsedJSHeapBytes": 10231204,
+          "workers": []
+        }
+      }
+    ],
+    "noPrivateMemoryZeroSubstitution": true
+  },
+  "copyrightAndPatentSources": [
+    "https://www.openh264.org/faq.html",
+    "https://www.ffmpeg.org/legal.html"
+  ],
+  "diagnosisSources": [
+    "https://github.com/emscripten-core/emscripten/blob/6.0.4/tools/building.py",
+    "https://emscripten.org/docs/porting/guidelines/function_pointer_issues.html"
+  ],
+  "nextAction": "Build same candidate with profiling function names and symbol map; identify the typed native call site before considering a targeted fix. Do not use the Emscripten cast emulator as a presumed speed-preserving fix.",
+  "requiredUnpassedGates": [
+    "production-browser validation",
+    "fidelity",
+    "speed A/B",
+    "complete-process private memory",
+    "stress repeats and scaling",
+    "failure/cancellation/cleanup",
+    "reproducibility",
+    "legal deployment review",
+    "registry/UI integration"
+  ],
+  "publicProfilesChanged": false,
+  "publicEnginesChanged": false,
+  "protectedTestMkvUsed": false,
+  "cleanup": {
+    "status": "verified-local-and-remote-disposable-cleanup",
+    "candidateArtifactDeleted": true,
+    "remoteRunRemainingArtifacts": 0,
+    "candidateBinaryAndSourceBundleRemoved": true,
+    "browserTemporaryDirectoryRemoved": true,
+    "playwrightArtifactsRemoved": true,
+    "distAssetsRestoredToPublishedHashes": true,
+    "privateDistAdapterRemoved": true,
+    "workOnlyGitkeep": true,
+    "generatedFixturesRemovedByAfterAll": true,
+    "validationOutputsRemovedByFinally": true,
+    "defaultTempArtifactZip": "GitHub CLI used a transient default-temp ZIP; it was observed and verified removed. Subsequent downloads must set TEMP/TMP to repository-local work.",
+    "sourceInspectionDirectoryRemoved": true
+  }
+}

@@ -71,7 +71,24 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: private-h264-candidate-${{ github.run_id }}
-          path: work/h264-candidate-output/
+          path: |
+            work/h264-candidate-output/*.mjs
+            work/h264-candidate-output/*.wasm
+            work/h264-candidate-output/*.symbols
+            work/h264-candidate-output/build-manifest.json
+            work/h264-candidate-output/config_components.h
+            work/h264-candidate-output/LICENSE.*
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Retain corresponding source and configure diagnostics separately
+        if: success() && inputs.core == 'within-h264-candidate'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-h264-source-${{ github.run_id }}
+          path: |
+            work/h264-candidate-output/corresponding-source.tar.gz
+            work/h264-candidate-output/configure.log
           if-no-files-found: error
           retention-days: 1
 
