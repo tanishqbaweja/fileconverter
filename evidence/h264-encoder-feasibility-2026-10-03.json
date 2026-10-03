@@ -133,11 +133,12 @@
     "within-h264.mjs": 80839,
     "within-h264.wasm": 7761671
   },
+  "currentSourcesScope": "Latest repository sources, including the typed ForceIntraFrame build fix. The historical asBuiltManifest above remains the original failed candidate; see h264-typed-call-diagnosis-2026-10-03.json for the new diagnosis.",
   "currentSources": {
     "media/ffmpeg/h264-candidate.c": "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333",
     "media/ffmpeg/make-h264-candidate.mjs": "594bfdbdeb4286ca65840db8c1b4d79883e0de9b2985ac5ff7f65d716a92ccf0",
-    "media/ffmpeg/build-h264-candidate.sh": "54b07474d94a4c0323a577297f86b4b593b6fba99fd43ce7feaa9a0dab94ece1",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "89b7933e0c1eb79eb295d979eb643e996cbad225c8ea0288a9e870851f1f88c1",
+    "media/ffmpeg/build-h264-candidate.sh": "d17d8bb5c9dbc122b129954f0f55a8d96d5653903d6f89c528d31ffca798a854",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "082d05fd59d0bf6f40f6a4b55e077a3f41883195c1318109556d9d16d01d8011",
     "scripts/stage-h264-candidate.mjs": "2be08e05c9ffb4b40880977cca96558a09f2f540152a7b3bad9ce7eb8c5355fe",
     "tests/browser/h264-candidate.spec.ts": "b95bd88de26b329b9ff7cf49b248a4a12ef757d4179fa27ca4c339f73de7730f"
   },

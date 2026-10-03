@@ -904,7 +904,8 @@ lines.push(
   "Regenerate this ledger with `npm run tested:ledger` after new evidence is produced.",
 );
 
-lines.push("", audioSourceMetadataNote, "", mediaOutputEncoderNote, "", h264CandidateNote);
+lines.push("", audioSourceMetadataNote, "", mediaOutputEncoderNote, "", h264CandidateNote,
+  "", "M-04 H264 typed-call diagnosis (2026-10-03): symbolized non-Docker run 37130206064 passed; one focused production Chrome test reproduced svc_encode_frame at 0x33a22d after 2385 partial bytes. Actual Wasm call_indirect types prove two supplied arguments versus the three required by OpenH264's C++ ForceIntraFrame method; its C vtable omits the layer argument. A narrow typed C++ bridge now supplies layer -1 while retaining forced keyframes, fixed 64 MiB memory, no frame skipping and no global cast emulator. Pinned-source hash and zero-fuzz patch dry-run pass; an initial insufficient-context dry-run was corrected before hosted dispatch. See evidence/h264-typed-call-diagnosis-2026-10-03.json for exact stack/types/hashes and the diagnostic-sample retention limitation. Genuine encode, quality/speed/memory, stress and recovery remain unpassed; no public engines or profiles changed. Candidate/temp/trace/source-inspection data and both remote artifacts were deleted; work contains only .gitkeep. Next: build and production-browser validation of the typed fix.");
 
 await writeFile(
   ledgerPath,

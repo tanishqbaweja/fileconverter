@@ -8,7 +8,7 @@ WORK_ROOT="${PROJECT_ROOT}/work"
 BUILD_ROOT="${WORK_ROOT}/h264-candidate-build"
 OUTPUT_ROOT="${WORK_ROOT}/h264-candidate-output"
 [[ "$(uname -s)" == Linux ]] || { echo 'An activated Linux Emscripten SDK is required (no Docker).' >&2; exit 1; }
-for command_name in emcc em++ emconfigure emmake emar emranlib emnm curl tar sha256sum make pkg-config node; do
+for command_name in emcc em++ emconfigure emmake emar emranlib emnm curl tar sha256sum make pkg-config node patch; do
   command -v "${command_name}" >/dev/null
 done
 [[ "$(emcc --version | head -1)" == *'6.0.4'* ]] || { echo 'Emscripten must be 6.0.4.' >&2; exit 1; }
@@ -54,6 +54,11 @@ tar -xf ffmpeg.tar.xz
 tar -xf openh264.tar.gz
 mv ffmpeg-8.1.2 ffmpeg
 mv openh264-652bdb7719f30b52b08e506645a7322ff1b2cc6f openh264
+# Refuse source drift before the narrowly scoped, typed virtual-call fix.
+printf '%s  %s\n' 4c86c9d87fdfb122f2892ca7984a0544877f99f43e4fe49eec9286021cef96eb \
+  ffmpeg/libavcodec/libopenh264enc.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch"
 flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -pthread'
 (
   cd openh264
@@ -83,10 +88,12 @@ flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -p
   emmake make install
 )
 node "${SCRIPT_DIR}/make-h264-candidate.mjs" "${BUILD_ROOT}/within_h264.c"
+em++ -c "${SCRIPT_DIR}/openh264-force-intra.cpp" -I"${PREFIX}/include" \
+  -O3 -flto -msimd128 -pthread -o "${BUILD_ROOT}/openh264-force-intra.o"
 emcc "${BUILD_ROOT}/within_h264.c" -I"${PREFIX}/include" \
   "${PREFIX}/lib/libavformat.a" "${PREFIX}/lib/libavcodec.a" \
   "${PREFIX}/lib/libswscale.a" "${PREFIX}/lib/libavutil.a" \
-  "${PREFIX}/lib/libopenh264.a" -lstdc++ \
+  "${PREFIX}/lib/libopenh264.a" "${BUILD_ROOT}/openh264-force-intra.o" -lstdc++ \
   -O3 -flto -msimd128 -pthread --profiling-funcs --emit-symbol-map \
   -sPTHREAD_POOL_SIZE=0 -sPTHREAD_POOL_SIZE_STRICT=2 \
   -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=1048576 \
@@ -106,7 +113,8 @@ node "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${BUILD_ROOT}" "${OUTPUT_ROOT}
 mkdir source-bundle
 cp ffmpeg.tar.xz openh264.tar.gz within_h264.c "${SCRIPT_DIR}/h264-candidate.c" \
   "${SCRIPT_DIR}/make-h264-candidate.mjs" "${SCRIPT_DIR}/build-h264-candidate.sh" \
-  "${SCRIPT_DIR}/h264-candidate-manifest.mjs" source-bundle/
+  "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${SCRIPT_DIR}/openh264-force-intra.cpp" \
+  "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

@@ -1,0 +1,21 @@
+--- a/libavcodec/libopenh264enc.c
++++ b/libavcodec/libopenh264enc.c
+@@ -21,7 +21,11 @@
+ 
+ #include <wels/codec_api.h>
+ #include <wels/codec_ver.h>
++
++/* Typed C++ bridge: the upstream C vtable omits ForceIntraFrame's layer
++ * argument and cannot be called with its declared type in WebAssembly. */
++extern int within_openh264_force_intra(ISVCEncoder *encoder, bool idr);
+ 
+ #include "libavutil/attributes.h"
+ #include "libavutil/common.h"
+ #include "libavutil/mem.h"
+@@ -373,5 +377,5 @@
+ 
+     if (frame->pict_type == AV_PICTURE_TYPE_I) {
+-        (*s->encoder)->ForceIntraFrame(s->encoder, true);
++        within_openh264_force_intra(s->encoder, true);
+     }
+ 

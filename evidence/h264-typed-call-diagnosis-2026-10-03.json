@@ -1,0 +1,257 @@
+{
+  "recordedAt": "2026-10-03T14:49:29.310Z",
+  "requirement": "M-04",
+  "status": "typed-native-call-diagnosed-fix-awaiting-browser-validation",
+  "hostedBuild": {
+    "runId": 37130206064,
+    "commit": "b232557441880a0d845627a76937f52edba9b67e",
+    "result": "passed",
+    "cleanup": "passed"
+  },
+  "asBuiltManifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "openh264Version": "2.6.0",
+    "openh264Commit": "652bdb7719f30b52b08e506645a7322ff1b2cc6f",
+    "openh264SourceSha256": "7a060916a9fcb63ba51d83a4f2388660c0b58797be547c4fa5c52e8d65660a85",
+    "emscriptenVersion": "6.0.4",
+    "currentAvioWrapperSourceSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "generatedWrapperSourceSha256": "a00e6f5b0e80072ca07734210dfb9eb4a792e48bc866e63359ed8709b64c48bf",
+    "candidateKernelSha256": "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333",
+    "buildRecipeSha256": "54b07474d94a4c0323a577297f86b4b593b6fba99fd43ce7feaa9a0dab94ece1",
+    "artifacts": {
+      "within-h264.mjs": "01cc89be8f0e7f43826a56b41b01cf2993710061e47f386a9c00fe801cabf38c",
+      "within-h264.wasm": "56ac42214dfafa42de71b46d447b382413d3412bf2cd461b303a480322d90702"
+    },
+    "enabledDecoders": [
+      "aac",
+      "flac",
+      "h263",
+      "h264",
+      "hevc",
+      "mp3",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vorbis",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "libopenh264"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 67108864,
+    "maximumWasmMemoryBytes": 67108864,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "encoderFrameSkipping": false,
+    "normalizesSourceTiming": false,
+    "primaryVideo": "decoded-and-encoded-to-H.264",
+    "secondaryStreams": "compatible-packet-copy-with-explicit-exclusions",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later",
+      "OpenH264 BSD-2-Clause"
+    ],
+    "patentScope": "Self-compiled Wasm is not a Cisco-distributed binary; no claim of Cisco royalty coverage or legal clearance.",
+    "requiredUnpassedGates": [
+      "production-browser validation",
+      "fidelity",
+      "speed A/B",
+      "complete-process private memory",
+      "stress repeats and scaling",
+      "failure/cancellation/cleanup",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "artifactBytes": 7931592,
+  "symbolMapSha256": "3d45da429a8eee72ab50629dfb4e9a7a981381fc6585e2dde2031fea2719f08c",
+  "browser": {
+    "name": "Chrome",
+    "version": "154.0.8037.93",
+    "productionBuild": true,
+    "productionSecurityHeaders": true,
+    "tests": 1,
+    "passed": 0,
+    "failed": 1,
+    "acceptedH264Conversions": 0,
+    "latestFailure": {
+      "jobState": "error",
+      "phase": "Stopped safely",
+      "metrics": {
+        "inputBytes": 262144,
+        "outputBytes": 2385,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 2357,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 2357,
+        "elapsedMs": 411.3500000014901,
+        "wasmMemoryBytes": 67108864,
+        "peakWasmMemoryBytes": 67108864,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 67108868,
+        "activeWorkerCount": 5,
+        "imageWorkingBytes": 0
+      },
+      "error": "Candidate ccall: function signature mismatch\nRuntimeError: function signature mismatch\n    at within-h264.wasm.svc_encode_frame (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[2213]:0x33a22d)\n    at within-h264.wasm.ff_encode_encode_cb (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[776]:0x1355a2)\n    at within-h264.wasm.encode_receive_packet_internal (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[777]:0x135d58)\n    at within-h264.wasm.h264_packets (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5430]:0x6c99d8)\n    at within-h264.wasm.h264_frames (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5429]:0x6c9338)\n    at within-h264.wasm.within_remux (http://127.0.0.1:3110/engines/remux/within-mpeg4.wasm:wasm-function[5424]:0x6c7cf2)\n    at __asyncify_wrapper_5424 (http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:39272)\n    at http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:11896\n    at Object.ccall (http://127.0.0.1:3110/engines/remux/_candidate_h264_base.mjs:1:44770)\n    at core.ccall (http://127.0.0.1:3110/engines/remux/within-mpeg4.mjs:12:24)",
+      "warnings": [],
+      "automaticRouteNotice": "The bounded source inspection found that mkv-to-mp4 cannot copy every required stream into MP4. The converter automatically selected the certified mkv-to-mp4-mpeg4 decode-and-re-encode fallback.",
+      "selectedProfileId": "mkv-to-mp4-mpeg4",
+      "audioOptions": {
+        "codec": "automatic",
+        "compression": "automatic",
+        "bitRateBps": 0,
+        "sampleRateHz": 0,
+        "channels": 0,
+        "quality": "automatic"
+      },
+      "videoOptions": {
+        "codec": "automatic",
+        "maxWidth": 0,
+        "bitRateBps": 0,
+        "frameRateFps": 0,
+        "quality": "automatic"
+      },
+      "opfsName": null,
+      "opfsNames": [],
+      "batchOutputNames": [
+        "source.mp4"
+      ],
+      "batchCompleted": 0,
+      "batchTotal": 1,
+      "startupCleanupComplete": true,
+      "workerStatus": "starting",
+      "capabilities": {
+        "secure": true,
+        "wasm": true,
+        "wasmSimd": true,
+        "workers": true,
+        "fileSystemAccess": true,
+        "directoryAccess": true,
+        "opfs": true,
+        "storageEstimate": true,
+        "compressionGzip": true,
+        "compressionDeflate": true,
+        "compressionDeflateRaw": true,
+        "sharedArrayBuffer": true,
+        "crossOriginIsolated": true,
+        "webCrypto": true,
+        "webCodecsVideo": false,
+        "webCodecsAudio": true,
+        "imageDecoder": true,
+        "imageDecoderTypes": {
+          "image/avif": true,
+          "image/gif": true,
+          "image/heic": false,
+          "image/heic-sequence": false,
+          "image/heif": false,
+          "image/heif-sequence": false,
+          "image/jpeg": true,
+          "image/png": true,
+          "image/webp": true,
+          "image/x-adobe-dng": false,
+          "image/x-canon-cr2": false,
+          "image/x-nikon-nef": false,
+          "image/x-sony-arw": false
+        },
+        "offscreenCanvas": true
+      }
+    }
+  },
+  "diagnosis": {
+    "functionIndex": 2213,
+    "functionName": "svc_encode_frame",
+    "instructionOffset": "0x33a22d",
+    "instruction": "call_indirect",
+    "callerTypeIndex": 10,
+    "callerSignature": "i32 (i32, i32)",
+    "virtualTargetIndex": 5205,
+    "virtualTargetName": "WelsEnc::CWelsH264SVCEncoder::ForceIntraFrame(bool, int)",
+    "virtualTargetTypeIndex": 5,
+    "virtualTargetSignature": "i32 (i32, i32, i32)",
+    "rootCause": "OpenH264 2.6.0 C vtable omits ForceIntraFrame layer parameter. FFmpeg passes self and IDR only, but the C++ virtual target requires self, IDR and layer. Wasm rejects the indirect call on the source I frame.",
+    "fix": "Patch only FFmpeg's ForceIntraFrame call to a typed extern-C C++ bridge; call the actual virtual method with explicit layer -1. Keep source keyframe forcing and no global cast emulation."
+  },
+  "proposedFixSources": {
+    "media/ffmpeg/openh264-force-intra.cpp": "9fe1e05160129d0b46d1d8161ff95353f39c5cba33b93acc1c2535b83498bc85",
+    "media/ffmpeg/patches/openh264-force-intra-wasm.patch": "aa2292dee4498598d4ef7ec28b8fe92b07150360f66a64d9ea1f5d99caeef55f"
+  },
+  "diagnosticMemory": {
+    "primaryIncrementalPrivateMiB": null,
+    "certification": "not-evaluated",
+    "reason": "Failed small diagnostic fixture and non-stabilized blank baseline, not acceptance evidence",
+    "samples": null,
+    "retentionLimitation": "This compact diagnosis retained the named failure and bounded I/O metrics but not the diagnostic process samples before deleting the disposable report. Do not substitute earlier samples or infer certification. The recorder now retains available samples on subsequent runs."
+  },
+  "sources": [
+    "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/libopenh264enc.c",
+    "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/api/wels/codec_api.h",
+    "https://emscripten.org/docs/porting/guidelines/function_pointer_issues.html"
+  ],
+  "publicProfilesChanged": false,
+  "publicEnginesChanged": false,
+  "protectedTestMkvUsed": false,
+  "cleanup": {
+    "status": "verified-local-and-remote-disposable-cleanup",
+    "distAssetsRestored": true,
+    "candidateDirectoryRemoved": true,
+    "generatedFixtureAndOutputDirectoryRemoved": true,
+    "browserTemporaryDirectoryRemoved": true,
+    "patchInspectionDownloadRemoved": true,
+    "playwrightArtifactsRemoved": true,
+    "workOnlyGitkeep": true,
+    "remoteArtifactsDeleted": [11276378881, 11276199281],
+    "remoteRunRemainingArtifacts": 0
+  }
+}

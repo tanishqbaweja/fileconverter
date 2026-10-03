@@ -15,6 +15,40 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-03 — H.264 native call diagnosed; typed fix pending validation
+
+Status: **Partially implemented under M-04**. Symbolized non-Docker run
+`37130206064` at `b232557` passed build and runner cleanup. One focused
+production Chrome 154 test reproduced the same trap, now named
+`svc_encode_frame` at Wasm offset `0x33a22d`, after 2,385 partial output bytes.
+The actual `call_indirect` requests `i32 (i32, i32)` while its OpenH264
+`ForceIntraFrame(bool, int)` target is `i32 (i32, i32, i32)`. The pinned
+OpenH264 C vtable omits the layer parameter present in its C++ virtual method.
+This is an identified typed-call bug, not a measured impossibility of H.264.
+
+`media/ffmpeg/openh264-force-intra.cpp` and a source-hash-guarded FFmpeg patch
+bridge only that call through C++ with the documented all-layers argument -1.
+Source I-frame forcing is retained; no global cast emulator, memory-limit
+increase, frame skipping, or fidelity relaxation was introduced. The exact
+upstream file hash and zero-fuzz patch dry-run passed. An initial dry-run with
+insufficient patch context failed and was corrected before hosted dispatch.
+Corresponding-source bundles now include both bridge and patch, and candidate
+manifests hash them. The encoder kernel and public engines remain unchanged.
+
+`evidence/h264-typed-call-diagnosis-2026-10-03.json` preserves the named failure,
+module/symbol/source hashes, Wasm signatures, exact proposed fix, and cleanup.
+The symbolized candidate, native inspection download, fixtures/outputs, browser
+temp directory, traces and both hosted artifacts were deleted after compact
+diagnosis; generated assets were restored to exact public hashes. `work` again
+contains only `.gitkeep`. The Windows paging-file error on the first inspection
+was transient; commands were retried through a lighter shell without killing
+unrelated applications or changing system settings. No large/stress test ran.
+
+Next gate: build the typed fix and validate genuine MP4/Matroska outputs and
+direct-write cleanup through the production browser. Fidelity, speed A/B,
+full-process memory, repeated stress/scaling, recovery, reproducibility and
+legal review still gate publication. No new H.264 profile is public.
+
 ## 2026-10-03 — isolated H.264 encoder implementation (acceptance pending)
 
 Status: **Partially implemented under M-04**. A separate OpenH264 2.6.0 /

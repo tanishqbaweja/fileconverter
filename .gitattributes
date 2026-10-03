@@ -1,1 +1,2 @@
 compression/libarchive7z/*.patch -whitespace
+media/ffmpeg/patches/openh264-force-intra-wasm.patch -whitespace
