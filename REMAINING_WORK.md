@@ -15,6 +15,48 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 small-fixture timing and fidelity pass
+
+Status: **Partially implemented under M-04; small correctness gate passed**.
+Non-Docker run `37151713630` at `bf36505` built the timing candidate and passed
+runner cleanup. Production Chrome 154 passed all three private browser tests
+in 18.3 seconds: genuine H.264 MP4, genuine H.264 Matroska, and direct selected-
+destination write-failure cleanup. This is not a stress benchmark or public
+profile acceptance. The two two-second inputs were 486,383 and 488,296 bytes;
+outputs were 355,227 and 352,442 bytes. No extension-only conversion was used.
+
+Both outputs independently decoded all 48 frames at 320x240, retained exact
+AAC payloads for two audio tracks/languages, Unicode title and chapters, and
+passed SSIM >=0.98 (0.997901). MP4 frame timestamps now match exactly; Matroska
+rounding is at most 0.337 ms. Native duration checks passed: MP4 2.026 s versus
+source 2.021 s, and Matroska 2.021 s versus source 2.021333 s. The source MP4
+chapter-associated binary-data stream is explicitly excluded from Matroska
+with a warning, while the real chapter remains preserved. Fixed 64 MiB Wasm,
+256 KiB read/write/queue bounds, one pending operation and empty terminal queues
+passed. No frame skipping, cast emulator or relaxed primary memory threshold
+was introduced. Source and output validation copies are deleted in finally.
+
+`evidence/h264-timing-validation-2026-10-04.json` retains source/build/module
+hashes, all frame times, independent probes/full-decode diagnostics, output/
+audio hashes, bounded metrics and complete-process/realm diagnostic samples.
+The process samples use an explicitly non-stabilized diagnostic baseline;
+primary incremental private memory is null, not a 250 MiB pass. Diagnostic
+history now has a 1,024-row hard limit and read failures are not silently reset.
+
+Disposable browser reports, converted outputs and temporary directories are
+gone; private staging was removed and generated engine assets match published
+hashes. The hosted run has zero remaining artifacts. Only the 8,294,487-byte
+static private candidate is retained under `work/h264-candidate-output` for
+the next formal memory/stress gate, avoiding an unchanged rebuild. It contains
+no converted media and will be deleted when superseded or no longer useful.
+
+Remaining before any public H.264 route: formal stable-baseline complete-tree
+memory, repeatability/scaling on real larger inputs, speed A/B, resolution/
+frame-rate/bitrate/quality controls and rate-control disclosure, complex/VFR/
+rotation/color/multiple-video fidelity, successful direct output, cancellation
+and recovery, exact reproduction and legal deployment review. The full goal
+is not complete, and the public engines/registry remain unchanged.
+
 ## 2026-10-04 — genuine H.264 frames; mux timing/duration still fail
 
 Status: **Partially implemented under M-04**. The typed fix built in non-Docker

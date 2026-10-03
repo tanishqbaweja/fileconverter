@@ -197,12 +197,17 @@ test.afterEach(async ({ page }) => {
 test.afterAll(async () => {
   try {
     await mkdir(path.dirname(report), { recursive: true });
-    const previous = JSON.parse(await readFile(report, "utf8").catch(() => '{"rows":[]}')) as { rows: Array<Record<string, unknown>> };
+    const previous = JSON.parse(await readFile(report, "utf8").catch((error) => {
+      if (error.code !== "ENOENT") throw error;
+      return '{"rows":[]}';
+    })) as { rows: Array<Record<string, unknown>> };
+    const combinedRows = [...previous.rows, ...rows];
+    if (combinedRows.length > 1024) throw new Error("Diagnostic history cap reached: retain compact evidence and clean disposable reports before another run.");
     await writeFile(report, `${JSON.stringify({
       recordedAt: new Date().toISOString(),
       scope: "Private H264 kernel substituted through production browser worker/I/O; NOT public-profile, stress or complete-process memory certification",
       manifest: JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")),
-      rows: [...previous.rows, ...rows],
+      rows: combinedRows,
     }, null, 2)}\n`);
   } finally {
     await rm(work, { recursive: true, force: true });
