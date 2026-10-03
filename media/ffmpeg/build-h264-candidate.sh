@@ -59,6 +59,10 @@ printf '%s  %s\n' 4c86c9d87fdfb122f2892ca7984a0544877f99f43e4fe49eec9286021cef96
   ffmpeg/libavcodec/libopenh264enc.c | sha256sum --check --strict
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch"
+printf '%s  %s\n' 510df38d806692997594df40a2f587d55984a147e610c7546cfd749116dc264e \
+  ffmpeg/libavformat/matroskaenc.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch"
 flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -pthread'
 (
   cd openh264
@@ -114,7 +118,8 @@ mkdir source-bundle
 cp ffmpeg.tar.xz openh264.tar.gz within_h264.c "${SCRIPT_DIR}/h264-candidate.c" \
   "${SCRIPT_DIR}/make-h264-candidate.mjs" "${SCRIPT_DIR}/build-h264-candidate.sh" \
   "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${SCRIPT_DIR}/openh264-force-intra.cpp" \
-  "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch" source-bundle/
+  "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch" \
+  "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

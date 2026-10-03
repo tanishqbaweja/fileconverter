@@ -47,6 +47,20 @@ async function audioHashes(file: string) {
   return stdout.trim().split(/\r?\n/).map((line) => line.split(",").at(-1)?.trim());
 }
 
+async function frameTimes(file: string) {
+  const { stdout } = await native(["-v", "error", "-select_streams", "v:0", "-show_frames",
+    "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", file], "ffprobe");
+  const data = JSON.parse(stdout) as { frames: Array<{ best_effort_timestamp_time: string }> };
+  return data.frames.map((frame) => Number(frame.best_effort_timestamp_time));
+}
+
+async function compareFrames(source: string, output: string, ordinal: boolean) {
+  const align = ordinal ? "settb=1/1,setpts=N" : "setpts=PTS-STARTPTS";
+  const { stderr } = await native(["-v", "info", "-i", source, "-i", output, "-filter_complex",
+    `[0:v:0]${align}[ref];[1:v:0]${align}[out];[ref][out]ssim`, "-an", "-f", "null", "-"]);
+  return Number(/All:([0-9.]+)/.exec(stderr)?.[1]);
+}
+
 async function sampleTree(rootPid: number, phase: string): Promise<ProcessSample> {
   const timestamp = new Date().toISOString();
   if (process.platform !== "win32") return { timestamp, phase, privateBytes: null, rssBytes: null, processes: null };
@@ -247,19 +261,33 @@ for (const adapter of adapters) {
       expect(after.chapters[0].tags.title).toBe(before.chapters[0].tags.title);
       expect(Number(after.chapters[0].start_time)).toBeCloseTo(Number(before.chapters[0].start_time), 3);
       expect(Number(after.chapters[0].end_time)).toBeCloseTo(Number(before.chapters[0].end_time), 3);
-      expect(Math.abs(Number(after.format.duration) - Number(before.format.duration))).toBeLessThan(0.06);
       await native(["-v", "error", "-xerror", "-i", output, "-map", "0:v:0", "-map", "0:a", "-f", "null", "-"]);
-      const { stderr } = await native([
-        "-v", "info", "-i", source, "-i", output, "-filter_complex",
-        "[0:v:0]setpts=PTS-STARTPTS[ref];[1:v:0]setpts=PTS-STARTPTS[out];[ref][out]ssim",
-        "-an", "-f", "null", "-",
-      ]);
-      const ssim = Number(/All:([0-9.]+)/.exec(stderr)?.[1]);
-      expect(ssim).toBeGreaterThanOrEqual(0.98);
+      const sourceFrameTimes = await frameTimes(source);
+      const outputFrameTimes = await frameTimes(output);
+      const ssim = await compareFrames(source, output, false);
+      const ordinalSsim = await compareFrames(source, output, true);
+      rows.push({ container: adapter.container, kind: "independent-frame-diagnostic", status: "diagnostic-not-accepted",
+        sourceProbe: before, outputProbe: after, sourceFrameTimes, outputFrameTimes,
+        timestampAlignedSsim: ssim, ordinalSsim, nativeFullDecodePassed: true,
+        audioPacketHashes: await audioHashes(output), sourceBytes: (await stat(source)).size,
+        outputBytes: (await stat(output)).size,
+        outputSha256: createHash("sha256").update(await readFile(output)).digest("hex"), metrics: state.metrics });
+      expect(Math.abs(Number(after.format.duration) - Number(before.format.duration))).toBeLessThan(0.06);
+      expect(outputFrameTimes).toHaveLength(sourceFrameTimes.length);
+      for (let index = 0; index < sourceFrameTimes.length; index++) {
+        expect(Number.isFinite(outputFrameTimes[index])).toBe(true);
+        expect(Math.abs(outputFrameTimes[index] - sourceFrameTimes[index]), `frame ${index} presentation time`)
+          .toBeLessThanOrEqual(0.001);
+      }
+      // Compare corresponding decoded frames, not framesync's prior frame at
+      // a rounded container timestamp. The separate exact timeline gate above
+      // prevents an ordinal quality comparison from hiding timing corruption.
+      expect(ordinalSsim).toBeGreaterThanOrEqual(0.98);
       rows.push({ container: adapter.container, status: "passed", sourceBytes: (await stat(source)).size,
         outputBytes: (await stat(output)).size, sourceCodec: beforeVideo.codec_name,
         outputCodec: afterVideo.codec_name, frames: afterVideo.nb_read_frames, audioTracks: audio.length,
-        audioPacketHashes: await audioHashes(output), ssim, metrics: state.metrics,
+        audioPacketHashes: await audioHashes(output), ssim: ordinalSsim, timestampAlignedSsim: ssim,
+        sourceFrameTimes, outputFrameTimes, metrics: state.metrics,
         outputSha256: createHash("sha256").update(await readFile(output)).digest("hex"), warnings: state.warnings,
       });
     } catch (error) {

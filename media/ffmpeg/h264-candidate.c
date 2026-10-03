@@ -219,6 +219,9 @@ static int h264_run(int matroska, int max_width, int bit_rate, int fps, int qual
   if (result < 0 || !out) { result = AVERROR(EINVAL); goto cleanup; }
   p.output = out;
   out->flags |= AVFMT_FLAG_BITEXACT | AVFMT_FLAG_CUSTOM_IO | AVFMT_FLAG_AUTO_BSF;
+  // Preserve the input timeline. MP4 edit lists below represent AAC preroll;
+  // automatic negative-timestamp shifting otherwise changes video timing.
+  out->avoid_negative_ts = AVFMT_AVOID_NEG_TS_DISABLED;
   out->max_interleave_delta = AV_TIME_BASE;
   unsigned attachment_bytes = 0;
   for (unsigned i = 0; i < in->nb_streams; i++) {
@@ -289,13 +292,16 @@ static int h264_run(int matroska, int max_width, int bit_rate, int fps, int qual
   output_buffer = NULL;
   out->pb = output_io;
   if (!matroska) {
-    av_dict_set(&mux_options, "movflags", "frag_keyframe+empty_moov+default_base_moof+skip_trailer+use_metadata_tags", 0);
+    av_dict_set(&mux_options, "movflags", "frag_keyframe+delay_moov+default_base_moof+skip_trailer+use_metadata_tags", 0);
+    av_dict_set(&mux_options, "use_editlist", "1", 0);
     av_dict_set(&mux_options, "frag_duration", "1000000", 0);
     av_dict_set(&mux_options, "frag_size", "1048576", 0);
   } else {
     av_dict_set(&mux_options, "cluster_time_limit", "1000", 0);
     av_dict_set(&mux_options, "cluster_size_limit", "1048576", 0);
-    av_dict_set(&mux_options, "live", "1", 0);
+    // Normal seekable finalization writes actual packet-derived duration.
+    // Disable only the unbounded per-keyframe cue index, not finalization.
+    av_dict_set(&mux_options, "bounded_no_cues", "1", 0);
   }
   result = avformat_write_header(out, &mux_options);
   if (result < 0) goto cleanup;

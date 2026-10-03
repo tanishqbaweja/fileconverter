@@ -39,6 +39,6 @@ test("the isolated H264 build fixes the typed call without discarding keyframes 
   assert.match(recipe, /patch --fuzz=0 --directory=ffmpeg --strip=1/);
   assert.match(recipe, /em\+\+ -c "\$\{SCRIPT_DIR\}\/openh264-force-intra\.cpp"/);
   assert.match(recipe, /"\$\{BUILD_ROOT\}\/openh264-force-intra\.o" -lstdc\+\+/);
-  assert.match(recipe, /"\$\{SCRIPT_DIR\}\/patches\/openh264-force-intra-wasm\.patch" source-bundle/);
+  assert.match(recipe, /"\$\{SCRIPT_DIR\}\/patches\/openh264-force-intra-wasm\.patch"/);
   assert.doesNotMatch(recipe, /-sEMULATE_FUNCTION_POINTER_CASTS/);
 });

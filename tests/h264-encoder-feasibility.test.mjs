@@ -37,7 +37,10 @@ test("private candidate diagnosis is anchored to current sources without changin
   }
   const published = JSON.parse(await readFile(path.join(root, "public/engines/remux/build-manifest.json"), "utf8"));
   assert.ok(!published.enabledEncoders.includes("libopenh264"));
-  assert.equal(evidence.asBuiltManifest.candidateKernelSha256, evidence.currentSources["media/ffmpeg/h264-candidate.c"]);
+  // The original failed build is historical; later timing fixes change the
+  // current kernel without rewriting the exact as-built failure provenance.
+  assert.equal(evidence.asBuiltManifest.candidateKernelSha256,
+    "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333");
   assert.ok(evidence.asBuiltManifest.enabledDecoders.includes("vp8"));
   assert.ok(evidence.asBuiltManifest.enabledDecoders.includes("vp9"));
   const recipe = await readFile(path.join(root, "media/ffmpeg/build-h264-candidate.sh"), "utf8");

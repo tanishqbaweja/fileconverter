@@ -1,0 +1,3761 @@
+{
+  "recordedAt": "2026-10-03T20:19:20.555Z",
+  "requirement": "M-04",
+  "status": "private-typed-fix-browser-followup-publication-unproved",
+  "hostedBuild": {
+    "runId": 37131418144,
+    "commit": "3dce604b80568f73e24bee5dd26d72cd13879448",
+    "result": "passed",
+    "cleanup": "passed"
+  },
+  "asBuiltManifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "openh264Version": "2.6.0",
+    "openh264Commit": "652bdb7719f30b52b08e506645a7322ff1b2cc6f",
+    "openh264SourceSha256": "7a060916a9fcb63ba51d83a4f2388660c0b58797be547c4fa5c52e8d65660a85",
+    "emscriptenVersion": "6.0.4",
+    "currentAvioWrapperSourceSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "generatedWrapperSourceSha256": "a00e6f5b0e80072ca07734210dfb9eb4a792e48bc866e63359ed8709b64c48bf",
+    "candidateKernelSha256": "eabe2707169c66e98d839450b945287326442ceff2bcb6edae1b72ed259fd333",
+    "buildRecipeSha256": "d17d8bb5c9dbc122b129954f0f55a8d96d5653903d6f89c528d31ffca798a854",
+    "forceIntraBridgeSha256": "9fe1e05160129d0b46d1d8161ff95353f39c5cba33b93acc1c2535b83498bc85",
+    "forceIntraPatchSha256": "aa2292dee4498598d4ef7ec28b8fe92b07150360f66a64d9ea1f5d99caeef55f",
+    "forceIntraCall": "Typed C++ virtual call with explicit all-layers argument -1; no function-cast emulation",
+    "artifacts": {
+      "within-h264.mjs": "01cc89be8f0e7f43826a56b41b01cf2993710061e47f386a9c00fe801cabf38c",
+      "within-h264.wasm": "5bae68ec6c1e1f1c69effb635a0bc174ce21a4584132a4bc9ded19f5dff2de42"
+    },
+    "enabledDecoders": [
+      "aac",
+      "flac",
+      "h263",
+      "h264",
+      "hevc",
+      "mp3",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vorbis",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "libopenh264"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 67108864,
+    "maximumWasmMemoryBytes": 67108864,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "encoderFrameSkipping": false,
+    "normalizesSourceTiming": false,
+    "primaryVideo": "decoded-and-encoded-to-H.264",
+    "secondaryStreams": "compatible-packet-copy-with-explicit-exclusions",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later",
+      "OpenH264 BSD-2-Clause"
+    ],
+    "patentScope": "Self-compiled Wasm is not a Cisco-distributed binary; no claim of Cisco royalty coverage or legal clearance.",
+    "requiredUnpassedGates": [
+      "production-browser validation",
+      "fidelity",
+      "speed A/B",
+      "complete-process private memory",
+      "stress repeats and scaling",
+      "failure/cancellation/cleanup",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "wasmBytes": 7931594,
+  "recordedReportRows": 17,
+  "batches": [
+    {
+      "recordedAt": "2026-10-03T20:14:50.123Z",
+      "testSourceSha256": "b95bd88de26b329b9ff7cf49b248a4a12ef757d4179fa27ca4c339f73de7730f",
+      "rows": [
+        {
+          "container": "mp4",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m0.98\u001b[39m\nReceived:    \u001b[31m0.908997\u001b[39m",
+          "state": {
+            "jobState": "complete",
+            "phase": "Saved",
+            "metrics": {
+              "inputBytes": 486383,
+              "outputBytes": 355083,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 88913,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 262144,
+              "maxWriteChunkBytes": 88913,
+              "elapsedMs": 799.5,
+              "wasmMemoryBytes": 67108864,
+              "peakWasmMemoryBytes": 67108864,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 67108868,
+              "activeWorkerCount": 5,
+              "imageWorkingBytes": 0
+            },
+            "error": null,
+            "warnings": [],
+            "automaticRouteNotice": "The bounded source inspection found that mkv-to-mp4 cannot copy every required stream into MP4. The converter automatically selected the certified mkv-to-mp4-mpeg4 decode-and-re-encode fallback.",
+            "selectedProfileId": "mkv-to-mp4-mpeg4",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": "within-test-mkv-to-mp4-mpeg4-1791058467464-6118163a-2b46-44b3-ac1d-a156fa755f76-1",
+            "opfsNames": [
+              "within-test-mkv-to-mp4-mpeg4-1791058467464-6118163a-2b46-44b3-ac1d-a156fa755f76-1"
+            ],
+            "batchOutputNames": [
+              "source.mp4"
+            ],
+            "batchCompleted": 1,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          }
+        },
+        {
+          "memoryScope": "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract",
+          "samples": [
+            {
+              "timestamp": "2026-10-03T20:14:24.146Z",
+              "phase": "blank-diagnostic-not-certified-stable-baseline",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 35278848,
+                  "rssBytes": 115126272
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2637824,
+                  "rssBytes": 10915840
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 7618560,
+                  "rssBytes": 15855616
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 12713984,
+                  "rssBytes": 39612416
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8212480,
+                  "rssBytes": 19480576
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44617728,
+                  "rssBytes": 87699456
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16080896,
+                  "rssBytes": 34000896
+                },
+                {
+                  "pid": 34004,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 18595840,
+                  "rssBytes": 48586752
+                }
+              ],
+              "privateBytes": 145756160,
+              "rssBytes": 371277824
+            },
+            {
+              "timestamp": "2026-10-03T20:14:25.229Z",
+              "phase": "loading",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 37515264,
+                  "rssBytes": 119590912
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 45740032,
+                  "rssBytes": 58347520
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 14188544,
+                  "rssBytes": 41725952
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19881984
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44642304,
+                  "rssBytes": 88064000
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 63172608,
+                  "rssBytes": 113012736
+                },
+                {
+                  "pid": 13460,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16072704,
+                  "rssBytes": 33890304
+                }
+              ],
+              "privateBytes": 232321024,
+              "rssBytes": 485453824,
+              "realms": {
+                "pageUsedJSHeapBytes": 6414470,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:26.157Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 40402944,
+                  "rssBytes": 126394368
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 214458368,
+                  "rssBytes": 229601280
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 14229504,
+                  "rssBytes": 41820160
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19881984
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44646400,
+                  "rssBytes": 88276992
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 96198656,
+                  "rssBytes": 153919488
+                },
+                {
+                  "pid": 13460,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34250752
+                }
+              ],
+              "privateBytes": 437039104,
+              "rssBytes": 705085440,
+              "realms": {
+                "pageUsedJSHeapBytes": 11505602,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:27.051Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 40398848,
+                  "rssBytes": 127053824
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 247037952,
+                  "rssBytes": 243884032
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 15331328,
+                  "rssBytes": 43421696
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19881984
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44646400,
+                  "rssBytes": 88276992
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 184201216,
+                  "rssBytes": 171196416
+                },
+                {
+                  "pid": 13460,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34250752
+                }
+              ],
+              "privateBytes": 558718976,
+              "rssBytes": 738906112,
+              "realms": {
+                "pageUsedJSHeapBytes": 9933805,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:28.126Z",
+              "phase": "running",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 41152512,
+                  "rssBytes": 127782912
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 194899968,
+                  "rssBytes": 240201728
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 16982016,
+                  "rssBytes": 44605440
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19881984
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44646400,
+                  "rssBytes": 88281088
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 131682304,
+                  "rssBytes": 195424256
+                },
+                {
+                  "pid": 13460,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34250752
+                }
+              ],
+              "privateBytes": 456466432,
+              "rssBytes": 761368576,
+              "realms": {
+                "pageUsedJSHeapBytes": 8087606,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:30.592Z",
+              "phase": "complete",
+              "processes": [
+                {
+                  "pid": 38760,
+                  "parentPid": 9900,
+                  "type": "browser",
+                  "privateBytes": 40505344,
+                  "rssBytes": 127918080
+                },
+                {
+                  "pid": 38120,
+                  "parentPid": 38760,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 33328,
+                  "parentPid": 38760,
+                  "type": "gpu-process",
+                  "privateBytes": 196866048,
+                  "rssBytes": 242388992
+                },
+                {
+                  "pid": 38068,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 16982016,
+                  "rssBytes": 44617728
+                },
+                {
+                  "pid": 31788,
+                  "parentPid": 38760,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19881984
+                },
+                {
+                  "pid": 42632,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 44646400,
+                  "rssBytes": 88293376
+                },
+                {
+                  "pid": 40100,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 132665344,
+                  "rssBytes": 196083712
+                },
+                {
+                  "pid": 13460,
+                  "parentPid": 38760,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34267136
+                }
+              ],
+              "privateBytes": 458768384,
+              "rssBytes": 764391424,
+              "realms": {
+                "pageUsedJSHeapBytes": 7835331,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "cleanupRemovedEntries": []
+        },
+        {
+          "container": "mkv",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m0.06\u001b[39m\nReceived:   \u001b[31mNaN\u001b[39m",
+          "state": {
+            "jobState": "complete",
+            "phase": "Saved",
+            "metrics": {
+              "inputBytes": 488296,
+              "outputBytes": 352300,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 88171,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 262144,
+              "maxWriteChunkBytes": 88171,
+              "elapsedMs": 922.5350000113249,
+              "wasmMemoryBytes": 67108864,
+              "peakWasmMemoryBytes": 67108864,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 67108868,
+              "activeWorkerCount": 1,
+              "imageWorkingBytes": 0
+            },
+            "error": null,
+            "warnings": [
+              "Source stream 3 (bin_data) cannot be represented in Matroska and is explicitly excluded."
+            ],
+            "automaticRouteNotice": null,
+            "selectedProfileId": "mp4-to-mkv",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": "within-test-mp4-to-mkv-1791058478650-308adb61-f66d-45ed-b7d0-e9d68599eca4-1",
+            "opfsNames": [
+              "within-test-mp4-to-mkv-1791058478650-308adb61-f66d-45ed-b7d0-e9d68599eca4-1"
+            ],
+            "batchOutputNames": [
+              "source.mkv"
+            ],
+            "batchCompleted": 1,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          }
+        },
+        {
+          "memoryScope": "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract",
+          "samples": [
+            {
+              "timestamp": "2026-10-03T20:14:34.753Z",
+              "phase": "blank-diagnostic-not-certified-stable-baseline",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 39657472,
+                  "rssBytes": 123432960
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2621440,
+                  "rssBytes": 10895360
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 88023040,
+                  "rssBytes": 113618944
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 12718080,
+                  "rssBytes": 39604224
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8204288,
+                  "rssBytes": 19484672
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48062464,
+                  "rssBytes": 91648000
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16154624,
+                  "rssBytes": 34426880
+                },
+                {
+                  "pid": 34992,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 19873792,
+                  "rssBytes": 51494912
+                }
+              ],
+              "privateBytes": 235315200,
+              "rssBytes": 484605952
+            },
+            {
+              "timestamp": "2026-10-03T20:14:35.575Z",
+              "phase": "loading",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 43077632,
+                  "rssBytes": 129134592
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2666496,
+                  "rssBytes": 10919936
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 150032384,
+                  "rssBytes": 172400640
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 14295040,
+                  "rssBytes": 41775104
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8290304,
+                  "rssBytes": 19877888
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48070656,
+                  "rssBytes": 91688960
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 87785472,
+                  "rssBytes": 144912384
+                },
+                {
+                  "pid": 37216,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16109568,
+                  "rssBytes": 34242560
+                }
+              ],
+              "privateBytes": 370327552,
+              "rssBytes": 644952064,
+              "realms": {
+                "pageUsedJSHeapBytes": 10739206,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:36.750Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 43937792,
+                  "rssBytes": 130031616
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2666496,
+                  "rssBytes": 10919936
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 158519296,
+                  "rssBytes": 179515392
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 14295040,
+                  "rssBytes": 41775104
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8290304,
+                  "rssBytes": 19877888
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48070656,
+                  "rssBytes": 91697152
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 91934720,
+                  "rssBytes": 149553152
+                },
+                {
+                  "pid": 37216,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16109568,
+                  "rssBytes": 34242560
+                }
+              ],
+              "privateBytes": 383823872,
+              "rssBytes": 657612800,
+              "realms": {
+                "pageUsedJSHeapBytes": 11103974,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:37.756Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 43945984,
+                  "rssBytes": 130007040
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2666496,
+                  "rssBytes": 10919936
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 223522816,
+                  "rssBytes": 227135488
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 14295040,
+                  "rssBytes": 41775104
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8290304,
+                  "rssBytes": 19877888
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48070656,
+                  "rssBytes": 91697152
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 94330880,
+                  "rssBytes": 152010752
+                },
+                {
+                  "pid": 37216,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16109568,
+                  "rssBytes": 34242560
+                }
+              ],
+              "privateBytes": 451231744,
+              "rssBytes": 707665920,
+              "realms": {
+                "pageUsedJSHeapBytes": 10925846,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:38.773Z",
+              "phase": "running",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 60178432,
+                  "rssBytes": 150933504
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2666496,
+                  "rssBytes": 10919936
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 234561536,
+                  "rssBytes": 248733696
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 16203776,
+                  "rssBytes": 43917312
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8294400,
+                  "rssBytes": 19935232
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48070656,
+                  "rssBytes": 91734016
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 216846336,
+                  "rssBytes": 216584192
+                },
+                {
+                  "pid": 37216,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16109568,
+                  "rssBytes": 34332672
+                },
+                {
+                  "pid": 22648,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8663040,
+                  "rssBytes": 21639168
+                }
+              ],
+              "privateBytes": 611594240,
+              "rssBytes": 838729728,
+              "realms": {
+                "pageUsedJSHeapBytes": 10258834,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:41.412Z",
+              "phase": "complete",
+              "processes": [
+                {
+                  "pid": 24304,
+                  "parentPid": 26480,
+                  "type": "browser",
+                  "privateBytes": 49897472,
+                  "rssBytes": 143474688
+                },
+                {
+                  "pid": 36960,
+                  "parentPid": 24304,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2666496,
+                  "rssBytes": 10919936
+                },
+                {
+                  "pid": 25652,
+                  "parentPid": 24304,
+                  "type": "gpu-process",
+                  "privateBytes": 227803136,
+                  "rssBytes": 260804608
+                },
+                {
+                  "pid": 38360,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 16629760,
+                  "rssBytes": 44498944
+                },
+                {
+                  "pid": 23888,
+                  "parentPid": 24304,
+                  "type": "utility",
+                  "privateBytes": 8294400,
+                  "rssBytes": 19935232
+                },
+                {
+                  "pid": 33956,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 48078848,
+                  "rssBytes": 91754496
+                },
+                {
+                  "pid": 41364,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 126668800,
+                  "rssBytes": 190488576
+                },
+                {
+                  "pid": 37216,
+                  "parentPid": 24304,
+                  "type": "renderer",
+                  "privateBytes": 16109568,
+                  "rssBytes": 34340864
+                }
+              ],
+              "privateBytes": 496148480,
+              "rssBytes": 796217344,
+              "realms": {
+                "pageUsedJSHeapBytes": 11563311,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "cleanupRemovedEntries": []
+        },
+        {
+          "kind": "direct-write-failure",
+          "status": "passed",
+          "error": "[libopenh264 @ 0x5e2150] [OpenH264] this = 0x0x48b728, Warning:layerId(0) doesn't support profile(578), change to UNSPECIFIC profile | [libopenh264 @ 0x5e2150] [OpenH264] this = 0x0x48b728, Warning:bEnableFrameSkip = 0,bitrate can't be controlled for RC_QUALITY_MODE,RC_BITRATE_MODE and RC_TIMESTAMP_MODE without enabling skip frame. | Error: The destination rejected a bounded write. | H.264 candidate failed: I/O error",
+          "metrics": {
+            "inputBytes": 262144,
+            "outputBytes": 0,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 28,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 0,
+            "elapsedMs": 476.98499999940395,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 0,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 266276,
+            "activeWorkerCount": 6,
+            "imageWorkingBytes": 0
+          },
+          "partialBytes": []
+        },
+        {
+          "memoryScope": "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract",
+          "samples": [
+            {
+              "timestamp": "2026-10-03T20:14:44.858Z",
+              "phase": "blank-diagnostic-not-certified-stable-baseline",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 39469056,
+                  "rssBytes": 123826176
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2625536,
+                  "rssBytes": 10899456
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 86843392,
+                  "rssBytes": 112697344
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 12730368,
+                  "rssBytes": 39616512
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8241152,
+                  "rssBytes": 19505152
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45854720,
+                  "rssBytes": 88305664
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 19001344,
+                  "rssBytes": 37228544
+                },
+                {
+                  "pid": 33436,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 19808256,
+                  "rssBytes": 51458048
+                }
+              ],
+              "privateBytes": 234573824,
+              "rssBytes": 483536896
+            },
+            {
+              "timestamp": "2026-10-03T20:14:45.560Z",
+              "phase": "unavailable",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 41119744,
+                  "rssBytes": 128798720
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2670592,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 116273152,
+                  "rssBytes": 148856832
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 14258176,
+                  "rssBytes": 41783296
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8327168,
+                  "rssBytes": 19898368
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45993984,
+                  "rssBytes": 88719360
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 92848128,
+                  "rssBytes": 151179264
+                },
+                {
+                  "pid": 27020,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 18976768,
+                  "rssBytes": 37122048
+                }
+              ],
+              "privateBytes": 340467712,
+              "rssBytes": 627281920,
+              "realms": {
+                "pageUsedJSHeapBytes": 10913359,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:46.529Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 41222144,
+                  "rssBytes": 128917504
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2670592,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 161603584,
+                  "rssBytes": 183771136
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 14258176,
+                  "rssBytes": 41783296
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8327168,
+                  "rssBytes": 19898368
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45998080,
+                  "rssBytes": 88735744
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 95006720,
+                  "rssBytes": 153407488
+                },
+                {
+                  "pid": 27020,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 18976768,
+                  "rssBytes": 37122048
+                }
+              ],
+              "privateBytes": 388063232,
+              "rssBytes": 664559616,
+              "realms": {
+                "pageUsedJSHeapBytes": 10892203,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:47.479Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 46333952,
+                  "rssBytes": 138264576
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2670592,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 158412800,
+                  "rssBytes": 179355648
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 14266368,
+                  "rssBytes": 41889792
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8331264,
+                  "rssBytes": 19955712
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45998080,
+                  "rssBytes": 88776704
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 95895552,
+                  "rssBytes": 154202112
+                },
+                {
+                  "pid": 27020,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 18976768,
+                  "rssBytes": 37212160
+                },
+                {
+                  "pid": 39312,
+                  "parentPid": 30280,
+                  "type": "browser",
+                  "privateBytes": 9097216,
+                  "rssBytes": 22007808
+                },
+                {
+                  "pid": 42108,
+                  "parentPid": 30280,
+                  "type": "browser",
+                  "privateBytes": 8265728,
+                  "rssBytes": 17870848
+                }
+              ],
+              "privateBytes": 408248320,
+              "rssBytes": 710459392,
+              "realms": {
+                "pageUsedJSHeapBytes": 10401635,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:48.409Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 48726016,
+                  "rssBytes": 141545472
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2670592,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 227921920,
+                  "rssBytes": 231849984
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 14594048,
+                  "rssBytes": 42311680
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8331264,
+                  "rssBytes": 19955712
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45998080,
+                  "rssBytes": 88776704
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 99446784,
+                  "rssBytes": 157990912
+                },
+                {
+                  "pid": 27020,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 18976768,
+                  "rssBytes": 37212160
+                }
+              ],
+              "privateBytes": 466665472,
+              "rssBytes": 730566656,
+              "realms": {
+                "pageUsedJSHeapBytes": 11174660,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:14:49.320Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 30280,
+                  "parentPid": 34752,
+                  "type": "browser",
+                  "privateBytes": 49553408,
+                  "rssBytes": 143433728
+                },
+                {
+                  "pid": 20160,
+                  "parentPid": 30280,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2670592,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 42408,
+                  "parentPid": 30280,
+                  "type": "gpu-process",
+                  "privateBytes": 241557504,
+                  "rssBytes": 246812672
+                },
+                {
+                  "pid": 23040,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 16302080,
+                  "rssBytes": 46194688
+                },
+                {
+                  "pid": 40296,
+                  "parentPid": 30280,
+                  "type": "utility",
+                  "privateBytes": 8331264,
+                  "rssBytes": 19955712
+                },
+                {
+                  "pid": 34592,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 45998080,
+                  "rssBytes": 88776704
+                },
+                {
+                  "pid": 42836,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 205455360,
+                  "rssBytes": 196587520
+                },
+                {
+                  "pid": 27020,
+                  "parentPid": 30280,
+                  "type": "renderer",
+                  "privateBytes": 18976768,
+                  "rssBytes": 37212160
+                }
+              ],
+              "privateBytes": 588845056,
+              "rssBytes": 789897216,
+              "realms": {
+                "pageUsedJSHeapBytes": 11896578,
+                "workers": []
+              }
+            }
+          ]
+        },
+        {
+          "cleanupRemovedEntries": []
+        }
+      ]
+    },
+    {
+      "recordedAt": "2026-10-03T20:19:12.169Z",
+      "testSourceSha256": "c75ae8d270adb0519183b2d77e21ff1166fa0694392971bd1ae4cfd119ac8a55",
+      "rows": [
+        {
+          "container": "mp4",
+          "kind": "independent-frame-diagnostic",
+          "status": "diagnostic-not-accepted",
+          "sourceProbe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "mpeg4",
+                "codec_long_name": "MPEG-4 part 2",
+                "profile": "Simple Profile",
+                "codec_type": "video",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "mp4v.20",
+                "width": 320,
+                "height": 240,
+                "coded_width": 320,
+                "coded_height": 240,
+                "has_b_frames": 0,
+                "sample_aspect_ratio": "1:1",
+                "display_aspect_ratio": "4:3",
+                "pix_fmt": "yuv420p",
+                "level": 1,
+                "color_range": "tv",
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "quarter_sample": "false",
+                "divx_packed": "false",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "nb_read_frames": "48",
+                "extradata_size": 30,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "ENCODER": "Lavc mpeg4",
+                  "DURATION": "00:00:02.000000000"
+                }
+              },
+              {
+                "index": 1,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 1024,
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "nb_read_frames": "94",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "title": "First café",
+                  "ENCODER": "Lavc aac",
+                  "DURATION": "00:00:02.021000000"
+                }
+              },
+              {
+                "index": 2,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 1024,
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "nb_read_frames": "94",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "hin",
+                  "title": "Second 音楽",
+                  "ENCODER": "Lavc aac",
+                  "DURATION": "00:00:02.021000000"
+                }
+              }
+            ],
+            "chapters": [
+              {
+                "id": 1,
+                "time_base": "1/1000000000",
+                "start": 0,
+                "start_time": "0.000000",
+                "end": 2000000000,
+                "end_time": "2.000000",
+                "tags": {
+                  "title": "Chapitre café"
+                }
+              }
+            ],
+            "format": {
+              "filename": "H:\\Github Repositories\\fileconverter\\work\\h264-browser-validation\\source.mkv",
+              "nb_streams": 3,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "matroska,webm",
+              "format_long_name": "Matroska / WebM",
+              "start_time": "0.000000",
+              "duration": "2.021000",
+              "size": "486383",
+              "bit_rate": "1925316",
+              "probe_score": 100,
+              "tags": {
+                "title": "H.264 café — 音楽",
+                "encoder": "Lavf"
+              }
+            }
+          },
+          "outputProbe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "Constrained Baseline",
+                "codec_type": "video",
+                "codec_tag_string": "avc1",
+                "codec_tag": "0x31637661",
+                "mime_codec_string": "avc1.42c014",
+                "width": 320,
+                "height": 240,
+                "coded_width": 320,
+                "coded_height": 240,
+                "has_b_frames": 0,
+                "sample_aspect_ratio": "1:1",
+                "display_aspect_ratio": "4:3",
+                "pix_fmt": "yuv420p",
+                "level": 20,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "256000/10777",
+                "time_base": "1/16000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 32331,
+                "duration": "2.020688",
+                "bit_rate": "1138614",
+                "bits_per_raw_sample": "8",
+                "nb_read_frames": "48",
+                "extradata_size": 29,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "encoder": "Lavc mpeg4"
+                }
+              },
+              {
+                "index": 1,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "mp4a",
+                "codec_tag": "0x6134706d",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "id": "0x2",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/48000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 97248,
+                "duration": "2.026000",
+                "bit_rate": "121962",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "handler_name": "SoundHandler",
+                  "name": "First café"
+                }
+              },
+              {
+                "index": 2,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "mp4a",
+                "codec_tag": "0x6134706d",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "id": "0x3",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/48000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 97248,
+                "duration": "2.026000",
+                "bit_rate": "122997",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "hin",
+                  "handler_name": "SoundHandler",
+                  "name": "Second 音楽"
+                }
+              },
+              {
+                "index": 3,
+                "codec_name": "bin_data",
+                "codec_long_name": "binary data",
+                "codec_type": "data",
+                "codec_tag_string": "text",
+                "codec_tag": "0x74786574",
+                "id": "0x4",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 2026,
+                "duration": "2.026000",
+                "bit_rate": "112",
+                "extradata_size": 43,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "handler_name": "SubtitleHandler"
+                }
+              }
+            ],
+            "chapters": [
+              {
+                "id": 0,
+                "time_base": "1/1000",
+                "start": 0,
+                "start_time": "0.000000",
+                "end": 2000,
+                "end_time": "2.000000",
+                "tags": {
+                  "title": "Chapitre café"
+                }
+              }
+            ],
+            "format": {
+              "filename": "H:\\Github Repositories\\fileconverter\\work\\h264-browser-validation\\result.mp4",
+              "nb_streams": 4,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "2.026000",
+              "size": "355083",
+              "bit_rate": "1402104",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "iso5",
+                "minor_version": "512",
+                "compatible_brands": "iso5iso6mp41",
+                "title": "H.264 café — 音楽"
+              }
+            }
+          },
+          "sourceFrameTimes": [
+            0,
+            0.042,
+            0.083,
+            0.125,
+            0.167,
+            0.208,
+            0.25,
+            0.292,
+            0.333,
+            0.375,
+            0.417,
+            0.458,
+            0.5,
+            0.542,
+            0.583,
+            0.625,
+            0.667,
+            0.708,
+            0.75,
+            0.792,
+            0.833,
+            0.875,
+            0.917,
+            0.958,
+            1,
+            1.042,
+            1.083,
+            1.125,
+            1.167,
+            1.208,
+            1.25,
+            1.292,
+            1.333,
+            1.375,
+            1.417,
+            1.458,
+            1.5,
+            1.542,
+            1.583,
+            1.625,
+            1.667,
+            1.708,
+            1.75,
+            1.792,
+            1.833,
+            1.875,
+            1.917,
+            1.958
+          ],
+          "outputFrameTimes": [
+            0,
+            0.063,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.313,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.563,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.813,
+            0.854,
+            0.896,
+            0.938,
+            0.979,
+            1.021,
+            1.063,
+            1.104,
+            1.146,
+            1.188,
+            1.229,
+            1.271,
+            1.313,
+            1.354,
+            1.396,
+            1.438,
+            1.479,
+            1.521,
+            1.563,
+            1.604,
+            1.646,
+            1.688,
+            1.729,
+            1.771,
+            1.813,
+            1.854,
+            1.896,
+            1.938,
+            1.979
+          ],
+          "timestampAlignedSsim": 0.908997,
+          "ordinalSsim": 0.997901,
+          "nativeFullDecodePassed": true,
+          "audioPacketHashes": [
+            "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+            "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+          ],
+          "sourceBytes": 486383,
+          "outputBytes": 355083,
+          "outputSha256": "73b950aeb55a1b7f8311df0f0df89db3b0c0623892cc51b1e536aeab25e0f366",
+          "metrics": {
+            "inputBytes": 486383,
+            "outputBytes": 355083,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 88913,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 88913,
+            "elapsedMs": 574.7099999934435,
+            "wasmMemoryBytes": 67108864,
+            "peakWasmMemoryBytes": 67108864,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 67108868,
+            "activeWorkerCount": 5,
+            "imageWorkingBytes": 0
+          }
+        },
+        {
+          "container": "mp4",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeGreaterThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: >= \u001b[32m0.98\u001b[39m\nReceived:    \u001b[31m0.908997\u001b[39m",
+          "state": {
+            "jobState": "complete",
+            "phase": "Saved",
+            "metrics": {
+              "inputBytes": 486383,
+              "outputBytes": 355083,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 88913,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 262144,
+              "maxWriteChunkBytes": 88913,
+              "elapsedMs": 574.7099999934435,
+              "wasmMemoryBytes": 67108864,
+              "peakWasmMemoryBytes": 67108864,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 67108868,
+              "activeWorkerCount": 5,
+              "imageWorkingBytes": 0
+            },
+            "error": null,
+            "warnings": [],
+            "automaticRouteNotice": "The bounded source inspection found that mkv-to-mp4 cannot copy every required stream into MP4. The converter automatically selected the certified mkv-to-mp4-mpeg4 decode-and-re-encode fallback.",
+            "selectedProfileId": "mkv-to-mp4-mpeg4",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": "within-test-mkv-to-mp4-mpeg4-1791058740716-7f180f56-1c38-4261-b069-0e9576bc483c-1",
+            "opfsNames": [
+              "within-test-mkv-to-mp4-mpeg4-1791058740716-7f180f56-1c38-4261-b069-0e9576bc483c-1"
+            ],
+            "batchOutputNames": [
+              "source.mp4"
+            ],
+            "batchCompleted": 1,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          }
+        },
+        {
+          "memoryScope": "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract",
+          "samples": [
+            {
+              "timestamp": "2026-10-03T20:18:58.666Z",
+              "phase": "blank-diagnostic-not-certified-stable-baseline",
+              "processes": [
+                {
+                  "pid": 34896,
+                  "parentPid": 29532,
+                  "type": "browser",
+                  "privateBytes": 37494784,
+                  "rssBytes": 120225792
+                },
+                {
+                  "pid": 7504,
+                  "parentPid": 34896,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2637824,
+                  "rssBytes": 10915840
+                },
+                {
+                  "pid": 32980,
+                  "parentPid": 34896,
+                  "type": "gpu-process",
+                  "privateBytes": 87588864,
+                  "rssBytes": 113356800
+                },
+                {
+                  "pid": 23928,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 12599296,
+                  "rssBytes": 39350272
+                },
+                {
+                  "pid": 13272,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8220672,
+                  "rssBytes": 19484672
+                },
+                {
+                  "pid": 37092,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 44548096,
+                  "rssBytes": 87666688
+                },
+                {
+                  "pid": 19868,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 16134144,
+                  "rssBytes": 34381824
+                },
+                {
+                  "pid": 3084,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 18763776,
+                  "rssBytes": 51384320
+                }
+              ],
+              "privateBytes": 227987456,
+              "rssBytes": 476766208
+            },
+            {
+              "timestamp": "2026-10-03T20:18:59.340Z",
+              "phase": "loading",
+              "processes": [
+                {
+                  "pid": 34896,
+                  "parentPid": 29532,
+                  "type": "browser",
+                  "privateBytes": 40730624,
+                  "rssBytes": 126750720
+                },
+                {
+                  "pid": 7504,
+                  "parentPid": 34896,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 32980,
+                  "parentPid": 34896,
+                  "type": "gpu-process",
+                  "privateBytes": 137641984,
+                  "rssBytes": 159145984
+                },
+                {
+                  "pid": 23928,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 14336000,
+                  "rssBytes": 41951232
+                },
+                {
+                  "pid": 13272,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19877888
+                },
+                {
+                  "pid": 37092,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 44605440,
+                  "rssBytes": 87785472
+                },
+                {
+                  "pid": 19868,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 88973312,
+                  "rssBytes": 145776640
+                },
+                {
+                  "pid": 39932,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34263040
+                }
+              ],
+              "privateBytes": 353390592,
+              "rssBytes": 626491392,
+              "realms": {
+                "pageUsedJSHeapBytes": 11118350,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:00.216Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 34896,
+                  "parentPid": 29532,
+                  "type": "browser",
+                  "privateBytes": 39804928,
+                  "rssBytes": 126537728
+                },
+                {
+                  "pid": 7504,
+                  "parentPid": 34896,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 32980,
+                  "parentPid": 34896,
+                  "type": "gpu-process",
+                  "privateBytes": 229732352,
+                  "rssBytes": 235479040
+                },
+                {
+                  "pid": 23928,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 14344192,
+                  "rssBytes": 41951232
+                },
+                {
+                  "pid": 13272,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19877888
+                },
+                {
+                  "pid": 37092,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 44605440,
+                  "rssBytes": 87785472
+                },
+                {
+                  "pid": 19868,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 96600064,
+                  "rssBytes": 156626944
+                },
+                {
+                  "pid": 39932,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34263040
+                }
+              ],
+              "privateBytes": 452190208,
+              "rssBytes": 713461760,
+              "realms": {
+                "pageUsedJSHeapBytes": 9862934,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:01.342Z",
+              "phase": "complete",
+              "processes": [
+                {
+                  "pid": 34896,
+                  "parentPid": 29532,
+                  "type": "browser",
+                  "privateBytes": 44789760,
+                  "rssBytes": 135942144
+                },
+                {
+                  "pid": 7504,
+                  "parentPid": 34896,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 32980,
+                  "parentPid": 34896,
+                  "type": "gpu-process",
+                  "privateBytes": 250720256,
+                  "rssBytes": 258138112
+                },
+                {
+                  "pid": 23928,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 16424960,
+                  "rssBytes": 44236800
+                },
+                {
+                  "pid": 13272,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8310784,
+                  "rssBytes": 19935232
+                },
+                {
+                  "pid": 37092,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 44605440,
+                  "rssBytes": 87830528
+                },
+                {
+                  "pid": 19868,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 123162624,
+                  "rssBytes": 186810368
+                },
+                {
+                  "pid": 39932,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34353152
+                },
+                {
+                  "pid": 28296,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8642560,
+                  "rssBytes": 21622784
+                },
+                {
+                  "pid": 9968,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 7815168,
+                  "rssBytes": 17879040
+                },
+                {
+                  "pid": 23996,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8056832,
+                  "rssBytes": 18358272
+                }
+              ],
+              "privateBytes": 531324928,
+              "rssBytes": 836046848,
+              "realms": {
+                "pageUsedJSHeapBytes": 18308298,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:03.759Z",
+              "phase": "complete",
+              "processes": [
+                {
+                  "pid": 34896,
+                  "parentPid": 29532,
+                  "type": "browser",
+                  "privateBytes": 49524736,
+                  "rssBytes": 145813504
+                },
+                {
+                  "pid": 7504,
+                  "parentPid": 34896,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2682880,
+                  "rssBytes": 10940416
+                },
+                {
+                  "pid": 32980,
+                  "parentPid": 34896,
+                  "type": "gpu-process",
+                  "privateBytes": 227225600,
+                  "rssBytes": 260280320
+                },
+                {
+                  "pid": 23928,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 16687104,
+                  "rssBytes": 44650496
+                },
+                {
+                  "pid": 13272,
+                  "parentPid": 34896,
+                  "type": "utility",
+                  "privateBytes": 8310784,
+                  "rssBytes": 19935232
+                },
+                {
+                  "pid": 37092,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 44609536,
+                  "rssBytes": 87846912
+                },
+                {
+                  "pid": 19868,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 125669376,
+                  "rssBytes": 189173760
+                },
+                {
+                  "pid": 39932,
+                  "parentPid": 34896,
+                  "type": "renderer",
+                  "privateBytes": 16113664,
+                  "rssBytes": 34353152
+                }
+              ],
+              "privateBytes": 490823680,
+              "rssBytes": 792993792,
+              "realms": {
+                "pageUsedJSHeapBytes": 12024899,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "cleanupRemovedEntries": []
+        },
+        {
+          "container": "mkv",
+          "kind": "independent-frame-diagnostic",
+          "status": "diagnostic-not-accepted",
+          "sourceProbe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "mpeg4",
+                "codec_long_name": "MPEG-4 part 2",
+                "profile": "Simple Profile",
+                "codec_type": "video",
+                "codec_tag_string": "mp4v",
+                "codec_tag": "0x7634706d",
+                "mime_codec_string": "mp4v.20",
+                "width": 320,
+                "height": 240,
+                "coded_width": 320,
+                "coded_height": 240,
+                "has_b_frames": 0,
+                "sample_aspect_ratio": "1:1",
+                "display_aspect_ratio": "4:3",
+                "pix_fmt": "yuv420p",
+                "level": 1,
+                "chroma_location": "left",
+                "refs": 1,
+                "quarter_sample": "false",
+                "divx_packed": "false",
+                "id": "0x1",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/12288",
+                "start_pts": 258,
+                "start_time": "0.020996",
+                "duration_ts": 24576,
+                "duration": "2.000000",
+                "bit_rate": "1686376",
+                "nb_frames": "48",
+                "nb_read_frames": "48",
+                "extradata_size": 30,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "und",
+                  "handler_name": "VideoHandler",
+                  "encoder": "Lavc mpeg4"
+                }
+              },
+              {
+                "index": 1,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "mp4a",
+                "codec_tag": "0x6134706d",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "id": "0x2",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/48000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 97024,
+                "duration": "2.021333",
+                "bit_rate": "122244",
+                "nb_frames": "95",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "handler_name": "SoundHandler",
+                  "name": "First café"
+                }
+              },
+              {
+                "index": 2,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "mp4a",
+                "codec_tag": "0x6134706d",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "id": "0x3",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/48000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 97024,
+                "duration": "2.021333",
+                "bit_rate": "123281",
+                "nb_frames": "95",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "hin",
+                  "handler_name": "SoundHandler",
+                  "name": "Second 音楽"
+                }
+              },
+              {
+                "index": 3,
+                "codec_name": "bin_data",
+                "codec_long_name": "binary data",
+                "codec_type": "data",
+                "codec_tag_string": "text",
+                "codec_tag": "0x74786574",
+                "id": "0x4",
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "duration_ts": 2000,
+                "duration": "2.000000",
+                "bit_rate": "112",
+                "nb_frames": "1",
+                "extradata_size": 63,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "handler_name": "SubtitleHandler"
+                }
+              }
+            ],
+            "chapters": [
+              {
+                "id": 0,
+                "time_base": "1/1000",
+                "start": 0,
+                "start_time": "0.000000",
+                "end": 2000,
+                "end_time": "2.000000",
+                "tags": {
+                  "title": "Chapitre café"
+                }
+              }
+            ],
+            "format": {
+              "filename": "H:\\Github Repositories\\fileconverter\\work\\h264-browser-validation\\source.mp4",
+              "nb_streams": 4,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+              "format_long_name": "QuickTime / MOV",
+              "start_time": "0.000000",
+              "duration": "2.021333",
+              "size": "488296",
+              "bit_rate": "1932570",
+              "probe_score": 100,
+              "tags": {
+                "major_brand": "isom",
+                "minor_version": "512",
+                "compatible_brands": "isomiso2mp41",
+                "title": "H.264 café — 音楽"
+              }
+            }
+          },
+          "outputProbe": {
+            "streams": [
+              {
+                "index": 0,
+                "codec_name": "h264",
+                "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+                "profile": "Constrained Baseline",
+                "codec_type": "video",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "avc1.42c014",
+                "width": 320,
+                "height": 240,
+                "coded_width": 320,
+                "coded_height": 240,
+                "has_b_frames": 0,
+                "sample_aspect_ratio": "1:1",
+                "display_aspect_ratio": "4:3",
+                "pix_fmt": "yuv420p",
+                "level": 20,
+                "chroma_location": "left",
+                "field_order": "progressive",
+                "refs": 1,
+                "is_avc": "true",
+                "nal_length_size": "4",
+                "r_frame_rate": "24/1",
+                "avg_frame_rate": "24/1",
+                "time_base": "1/1000",
+                "start_pts": 21,
+                "start_time": "0.021000",
+                "bits_per_raw_sample": "8",
+                "nb_read_frames": "48",
+                "extradata_size": 29,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "HANDLER_NAME": "VideoHandler",
+                  "ENCODER": "Lavc mpeg4"
+                }
+              },
+              {
+                "index": 1,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 1,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "eng",
+                  "HANDLER_NAME": "SoundHandler",
+                  "NAME": "First café"
+                }
+              },
+              {
+                "index": 2,
+                "codec_name": "aac",
+                "codec_long_name": "AAC (Advanced Audio Coding)",
+                "profile": "LC",
+                "codec_type": "audio",
+                "codec_tag_string": "[0][0][0][0]",
+                "codec_tag": "0x0000",
+                "mime_codec_string": "mp4a.40.2",
+                "sample_fmt": "fltp",
+                "sample_rate": "48000",
+                "channels": 1,
+                "channel_layout": "mono",
+                "bits_per_sample": 0,
+                "initial_padding": 0,
+                "r_frame_rate": "0/0",
+                "avg_frame_rate": "0/0",
+                "time_base": "1/1000",
+                "start_pts": 0,
+                "start_time": "0.000000",
+                "nb_read_frames": "95",
+                "extradata_size": 5,
+                "disposition": {
+                  "default": 0,
+                  "dub": 0,
+                  "original": 0,
+                  "comment": 0,
+                  "lyrics": 0,
+                  "karaoke": 0,
+                  "forced": 0,
+                  "hearing_impaired": 0,
+                  "visual_impaired": 0,
+                  "clean_effects": 0,
+                  "attached_pic": 0,
+                  "timed_thumbnails": 0,
+                  "non_diegetic": 0,
+                  "captions": 0,
+                  "descriptions": 0,
+                  "metadata": 0,
+                  "dependent": 0,
+                  "still_image": 0,
+                  "multilayer": 0
+                },
+                "tags": {
+                  "language": "hin",
+                  "HANDLER_NAME": "SoundHandler",
+                  "NAME": "Second 音楽"
+                }
+              }
+            ],
+            "chapters": [
+              {
+                "id": 1,
+                "time_base": "1/1000000000",
+                "start": 0,
+                "start_time": "0.000000",
+                "end": 2000000000,
+                "end_time": "2.000000",
+                "tags": {
+                  "title": "Chapitre café"
+                }
+              }
+            ],
+            "format": {
+              "filename": "H:\\Github Repositories\\fileconverter\\work\\h264-browser-validation\\result.mkv",
+              "nb_streams": 3,
+              "nb_programs": 0,
+              "nb_stream_groups": 0,
+              "format_name": "matroska,webm",
+              "format_long_name": "Matroska / WebM",
+              "start_time": "0.000000",
+              "size": "352300",
+              "probe_score": 100,
+              "tags": {
+                "title": "H.264 café — 音楽",
+                "encoder": "Lavf",
+                "MAJOR_BRAND": "isom",
+                "MINOR_VERSION": "512",
+                "COMPATIBLE_BRANDS": "isomiso2mp41"
+              }
+            }
+          },
+          "sourceFrameTimes": [
+            0.020996,
+            0.062663,
+            0.104329,
+            0.145996,
+            0.187663,
+            0.229329,
+            0.270996,
+            0.312663,
+            0.354329,
+            0.395996,
+            0.437663,
+            0.479329,
+            0.520996,
+            0.562663,
+            0.604329,
+            0.645996,
+            0.687663,
+            0.729329,
+            0.770996,
+            0.812663,
+            0.854329,
+            0.895996,
+            0.937663,
+            0.979329,
+            1.020996,
+            1.062663,
+            1.104329,
+            1.145996,
+            1.187663,
+            1.229329,
+            1.270996,
+            1.312663,
+            1.354329,
+            1.395996,
+            1.437663,
+            1.479329,
+            1.520996,
+            1.562663,
+            1.604329,
+            1.645996,
+            1.687663,
+            1.729329,
+            1.770996,
+            1.812663,
+            1.854329,
+            1.895996,
+            1.937663,
+            1.979329
+          ],
+          "outputFrameTimes": [
+            0.021,
+            0.063,
+            0.104,
+            0.146,
+            0.188,
+            0.229,
+            0.271,
+            0.313,
+            0.354,
+            0.396,
+            0.438,
+            0.479,
+            0.521,
+            0.563,
+            0.604,
+            0.646,
+            0.688,
+            0.729,
+            0.771,
+            0.813,
+            0.854,
+            0.896,
+            0.938,
+            0.979,
+            1.021,
+            1.063,
+            1.104,
+            1.146,
+            1.188,
+            1.229,
+            1.271,
+            1.313,
+            1.354,
+            1.396,
+            1.438,
+            1.479,
+            1.521,
+            1.563,
+            1.604,
+            1.646,
+            1.688,
+            1.729,
+            1.771,
+            1.813,
+            1.854,
+            1.896,
+            1.938,
+            1.979
+          ],
+          "timestampAlignedSsim": 0.966036,
+          "ordinalSsim": 0.997901,
+          "nativeFullDecodePassed": true,
+          "audioPacketHashes": [
+            "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+            "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+          ],
+          "sourceBytes": 488296,
+          "outputBytes": 352300,
+          "outputSha256": "3e8df6ac9d9718fb23fd5f8ac527f7fbd2ffa418c814bf0da46e930c8777a788",
+          "metrics": {
+            "inputBytes": 488296,
+            "outputBytes": 352300,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 88171,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 262144,
+            "maxWriteChunkBytes": 88171,
+            "elapsedMs": 482.9099999964237,
+            "wasmMemoryBytes": 67108864,
+            "peakWasmMemoryBytes": 67108864,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 67108868,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0
+          }
+        },
+        {
+          "container": "mkv",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThan\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: < \u001b[32m0.06\u001b[39m\nReceived:   \u001b[31mNaN\u001b[39m",
+          "state": {
+            "jobState": "complete",
+            "phase": "Saved",
+            "metrics": {
+              "inputBytes": 488296,
+              "outputBytes": 352300,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 88171,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 262144,
+              "maxWriteChunkBytes": 88171,
+              "elapsedMs": 482.9099999964237,
+              "wasmMemoryBytes": 67108864,
+              "peakWasmMemoryBytes": 67108864,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 67108868,
+              "activeWorkerCount": 1,
+              "imageWorkingBytes": 0
+            },
+            "error": null,
+            "warnings": [
+              "Source stream 3 (bin_data) cannot be represented in Matroska and is explicitly excluded."
+            ],
+            "automaticRouteNotice": null,
+            "selectedProfileId": "mp4-to-mkv",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": "within-test-mp4-to-mkv-1791058748519-afc19b71-9aed-433e-beaa-9d002129af84-1",
+            "opfsNames": [
+              "within-test-mp4-to-mkv-1791058748519-afc19b71-9aed-433e-beaa-9d002129af84-1"
+            ],
+            "batchOutputNames": [
+              "source.mkv"
+            ],
+            "batchCompleted": 1,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          }
+        },
+        {
+          "memoryScope": "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract",
+          "samples": [
+            {
+              "timestamp": "2026-10-03T20:19:06.503Z",
+              "phase": "blank-diagnostic-not-certified-stable-baseline",
+              "processes": [
+                {
+                  "pid": 29900,
+                  "parentPid": 43132,
+                  "type": "browser",
+                  "privateBytes": 38682624,
+                  "rssBytes": 121491456
+                },
+                {
+                  "pid": 26036,
+                  "parentPid": 29900,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2617344,
+                  "rssBytes": 10899456
+                },
+                {
+                  "pid": 7620,
+                  "parentPid": 29900,
+                  "type": "gpu-process",
+                  "privateBytes": 86630400,
+                  "rssBytes": 111976448
+                },
+                {
+                  "pid": 25276,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 12648448,
+                  "rssBytes": 39563264
+                },
+                {
+                  "pid": 25904,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 8216576,
+                  "rssBytes": 19480576
+                },
+                {
+                  "pid": 26000,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 44556288,
+                  "rssBytes": 88215552
+                },
+                {
+                  "pid": 42952,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 16248832,
+                  "rssBytes": 34492416
+                },
+                {
+                  "pid": 40352,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 18804736,
+                  "rssBytes": 51462144
+                }
+              ],
+              "privateBytes": 228405248,
+              "rssBytes": 477581312
+            },
+            {
+              "timestamp": "2026-10-03T20:19:07.193Z",
+              "phase": "loading",
+              "processes": [
+                {
+                  "pid": 29900,
+                  "parentPid": 43132,
+                  "type": "browser",
+                  "privateBytes": 41218048,
+                  "rssBytes": 127197184
+                },
+                {
+                  "pid": 26036,
+                  "parentPid": 29900,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2662400,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 7620,
+                  "parentPid": 29900,
+                  "type": "gpu-process",
+                  "privateBytes": 148119552,
+                  "rssBytes": 168124416
+                },
+                {
+                  "pid": 25276,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 13918208,
+                  "rssBytes": 41553920
+                },
+                {
+                  "pid": 25904,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 8302592,
+                  "rssBytes": 19873792
+                },
+                {
+                  "pid": 26000,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 44613632,
+                  "rssBytes": 88268800
+                },
+                {
+                  "pid": 42952,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 90812416,
+                  "rssBytes": 148123648
+                },
+                {
+                  "pid": 43588,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 16142336,
+                  "rssBytes": 34258944
+                }
+              ],
+              "privateBytes": 365789184,
+              "rssBytes": 638324736,
+              "realms": {
+                "pageUsedJSHeapBytes": 10559781,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:08.102Z",
+              "phase": "idle",
+              "processes": [
+                {
+                  "pid": 29900,
+                  "parentPid": 43132,
+                  "type": "browser",
+                  "privateBytes": 41189376,
+                  "rssBytes": 127258624
+                },
+                {
+                  "pid": 26036,
+                  "parentPid": 29900,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2662400,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 7620,
+                  "parentPid": 29900,
+                  "type": "gpu-process",
+                  "privateBytes": 228388864,
+                  "rssBytes": 233205760
+                },
+                {
+                  "pid": 25276,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 13918208,
+                  "rssBytes": 41553920
+                },
+                {
+                  "pid": 25904,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 8302592,
+                  "rssBytes": 19873792
+                },
+                {
+                  "pid": 26000,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 44613632,
+                  "rssBytes": 88268800
+                },
+                {
+                  "pid": 42952,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 95494144,
+                  "rssBytes": 154152960
+                },
+                {
+                  "pid": 43588,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 16142336,
+                  "rssBytes": 34258944
+                }
+              ],
+              "privateBytes": 450711552,
+              "rssBytes": 709496832,
+              "realms": {
+                "pageUsedJSHeapBytes": 11846232,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:08.939Z",
+              "phase": "running",
+              "processes": [
+                {
+                  "pid": 29900,
+                  "parentPid": 43132,
+                  "type": "browser",
+                  "privateBytes": 42905600,
+                  "rssBytes": 129630208
+                },
+                {
+                  "pid": 26036,
+                  "parentPid": 29900,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2662400,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 7620,
+                  "parentPid": 29900,
+                  "type": "gpu-process",
+                  "privateBytes": 244244480,
+                  "rssBytes": 253906944
+                },
+                {
+                  "pid": 25276,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 16195584,
+                  "rssBytes": 43859968
+                },
+                {
+                  "pid": 25904,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 8302592,
+                  "rssBytes": 19873792
+                },
+                {
+                  "pid": 26000,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 44613632,
+                  "rssBytes": 88276992
+                },
+                {
+                  "pid": 42952,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 125403136,
+                  "rssBytes": 190234624
+                },
+                {
+                  "pid": 43588,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 16142336,
+                  "rssBytes": 34258944
+                }
+              ],
+              "privateBytes": 500469760,
+              "rssBytes": 770965504,
+              "realms": {
+                "pageUsedJSHeapBytes": 21461997,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            },
+            {
+              "timestamp": "2026-10-03T20:19:11.008Z",
+              "phase": "complete",
+              "processes": [
+                {
+                  "pid": 29900,
+                  "parentPid": 43132,
+                  "type": "browser",
+                  "privateBytes": 48218112,
+                  "rssBytes": 141287424
+                },
+                {
+                  "pid": 26036,
+                  "parentPid": 29900,
+                  "type": "crashpad-handler",
+                  "privateBytes": 2662400,
+                  "rssBytes": 10924032
+                },
+                {
+                  "pid": 7620,
+                  "parentPid": 29900,
+                  "type": "gpu-process",
+                  "privateBytes": 229629952,
+                  "rssBytes": 256135168
+                },
+                {
+                  "pid": 25276,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 16588800,
+                  "rssBytes": 44462080
+                },
+                {
+                  "pid": 25904,
+                  "parentPid": 29900,
+                  "type": "utility",
+                  "privateBytes": 8306688,
+                  "rssBytes": 19931136
+                },
+                {
+                  "pid": 26000,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 44613632,
+                  "rssBytes": 88313856
+                },
+                {
+                  "pid": 42952,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 126246912,
+                  "rssBytes": 190812160
+                },
+                {
+                  "pid": 43588,
+                  "parentPid": 29900,
+                  "type": "renderer",
+                  "privateBytes": 16142336,
+                  "rssBytes": 34349056
+                }
+              ],
+              "privateBytes": 492408832,
+              "rssBytes": 786214912,
+              "realms": {
+                "pageUsedJSHeapBytes": 7462035,
+                "workers": [
+                  {
+                    "url": "http://127.0.0.1:3110/assets/conversion.worker-DwlcpCZl.js",
+                    "usedJSHeapBytes": null
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "cleanupRemovedEntries": []
+        }
+      ]
+    }
+  ],
+  "interpretation": "Typed ForceIntraFrame fix removes the native call trap. Browser completion is distinct from independent validation; failed quality, duration or timeline gates remain failures. Tiny fixtures are not speed A/B or complete-process memory acceptance.",
+  "primaryIncrementalPrivateMiB": null,
+  "memoryCertification": "not-evaluated: diagnostic samples and non-stabilized blank baseline",
+  "publicProfilesChanged": false,
+  "publicEnginesChanged": false,
+  "protectedTestMkvUsed": false,
+  "cleanup": {
+    "status": "verified-local-and-remote-disposable-cleanup",
+    "generatedFixturesAndOutputsRemovedByFinally": true,
+    "candidateDirectoryRemoved": true,
+    "browserTemporaryDirectoryRemoved": true,
+    "muxSourceInspectionRemoved": true,
+    "playwrightArtifactsRemoved": true,
+    "distAssetsRestoredToPublishedHashes": true,
+    "workOnlyGitkeep": true,
+    "remoteArtifactsDeleted": [11277356201, 11277061714],
+    "remoteRunRemainingArtifacts": 0
+  }
+}

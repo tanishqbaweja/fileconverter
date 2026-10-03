@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-10-03. This is the living requirement audit for the original
+Updated 2026-10-04. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -14,6 +14,52 @@ not the entire product specification.
 - **Missing** — no conforming implementation or adequate evidence was found.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
+
+## 2026-10-04 — genuine H.264 frames; mux timing/duration still fail
+
+Status: **Partially implemented under M-04**. The typed fix built in non-Docker
+run `37131418144` at `3dce604`, with runner cleanup passed. Production Chrome
+converted MPEG-4 into genuine H.264 in both MP4 and Matroska: 48 decoded frames,
+320x240 dimensions, two exact AAC packet streams/languages, Unicode title and
+chapter retention passed their assertions. The direct selected-destination
+write-failure test passed and left no nonzero partial output. Neither output
+is accepted for publication, speed or complete-process memory certification.
+
+First browser cycle: two validation failures and one write-failure pass. A
+focused independent diagnosis reran only the two conversions and retained all
+48 frame times, native probes/full decode, exact audio hashes, output hashes,
+bounded I/O metrics and whole-process/realm diagnostic samples in
+`evidence/h264-browser-followup-2026-10-04.json`. Corresponding frames have SSIM
+0.997901 in both containers. MP4 instead moves frames after the first by
+21 ms (timestamp-aligned SSIM 0.908997); this is real timing corruption, not
+acceptable visual quality. Matroska rounds frame times within 0.337 ms but
+`live=1` suppresses duration, so FFprobe cannot report the required duration.
+The native log also states OpenH264 cannot guarantee rate control without frame
+skipping; bitrate/profile behavior remains a separate unpassed gate.
+
+The next private candidate disables automatic timestamp shifting and delays
+only the bounded MP4 initial fragment header for accurate edit lists. Matroska
+uses normal seekable finalization with a hash-pinned, opt-in `bounded_no_cues`
+patch, disabling only duration-sized cue collection while retaining actual
+packet-derived duration and tag/segment finalization. No input-duration guess
+or false duration tag is substituted. Zero-fuzz patch dry-run passed after an
+initial context mismatch was corrected before hosted dispatch. Defaults in the
+upstream muxer remain unchanged unless the private option is selected.
+
+The browser validator now separately checks every presentation timestamp to
+within 1 ms and SSIM >=0.98 on corresponding decoded frames. This avoids the
+framesync prior-frame comparison caused by differing container time bases
+without allowing ordinal quality to hide timing errors. Original SSIM values
+remain diagnostic evidence. No public engine, selector or route has changed;
+full-process memory, stress/scaling, reproducibility, fidelity/options and legal
+review still gate publication. Do not repeat the first typed candidate: its
+two outputs have already been diagnosed.
+
+Cleanup verified after compact evidence: generated fixtures and converted files
+were deleted by the suite's finally hooks; candidate binary, browser temp data,
+mux-source inspection, traces and both remote artifacts were deleted. Generated
+production assets are restored to exact published hashes and `work` contains
+only `.gitkeep`. No protected `test.mkv` data was used or altered.
 
 ## 2026-10-03 — H.264 native call diagnosed; typed fix pending validation
 
