@@ -46,6 +46,7 @@ test("candidate recipe pins sources, fixed memory, no Docker, local caches and f
   assert.match(recipe, /-sFILESYSTEM=0/);
   assert.match(recipe, /export TMPDIR="\$\{BUILD_ROOT\}\/tmp"/);
   assert.match(recipe, /export EM_CACHE="\$\{BUILD_ROOT\}\/emscripten-cache"/);
+  assert.match(recipe, /export EM_PKG_CONFIG_PATH="\$\{PREFIX\}\/lib\/pkgconfig"/);
   assert.match(recipe, /trap cleanup EXIT/);
   assert.match(recipe, /available_kib >= 8388608/);
   assert.doesNotMatch(recipe, /docker (run|build)|--enable-gpl|--enable-nonfree/);

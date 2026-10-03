@@ -38,6 +38,9 @@ printf '{"type":"commonjs"}\n' > "${BUILD_ROOT}/package.json"
 PREFIX="${BUILD_ROOT}/install"
 export PKG_CONFIG_LIBDIR="${PREFIX}/lib/pkgconfig"
 export PKG_CONFIG_PATH=
+# emconfigure overwrites PKG_CONFIG_LIBDIR/PATH; its documented bridge reads
+# EM_PKG_CONFIG_PATH. Keep our Wasm-only dependency discoverable, never host libs.
+export EM_PKG_CONFIG_PATH="${PREFIX}/lib/pkgconfig"
 download() {
   curl --fail --location --retry 3 "$1" --output "$2"
   printf '%s  %s\n' "$3" "$2" | sha256sum --check --strict
@@ -60,6 +63,7 @@ flags='-O3 -DNDEBUG -DGENERATED_VERSION_HEADER -fno-strict-aliasing -msimd128 -p
 )
 (
   cd ffmpeg
+  trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
   emconfigure ./configure --prefix="${PREFIX}" --cc=emcc --cxx=em++ \
     --ar=emar --ranlib=emranlib --nm=emnm --arch=wasm --target-os=none \
     --disable-everything --disable-autodetect --disable-programs --disable-doc \

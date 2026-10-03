@@ -28,7 +28,14 @@ The recipe writes only `work/h264-candidate-*`, keeps compiler caches there,
 preflights 8 GiB free, and cleans build data on exit. Existing published engines
 and the public registry are untouched. Two focused source/recipe tests passed.
 These are source tests, NOT conversion, quality, speed or memory certification.
-The hosted build is the next gate; browser validation will use an explicit
+The first hosted build `37127085458` at `be295ea` failed after OpenH264 compiled:
+FFmpeg configure could not discover its installed Wasm pkg-config entry.
+Inspection of pinned Emscripten 6.0.4 `tools/building.py` proved `emconfigure`
+overwrites `PKG_CONFIG_LIBDIR/PATH` and reads `EM_PKG_CONFIG_PATH` instead.
+The recipe now sets that exact bridge variable and prints configure diagnostics
+before final cleanup. The failed runner's cleanup step passed; no binary was
+produced or advertised. Do not repeat the original environment configuration.
+The corrected hosted build is the next gate; browser validation will use an explicit
 test-only module substitution with the existing production worker/I/O bridge.
 The ABI's existing route numbers are adapter sentinels, not public H.264 claims.
 
