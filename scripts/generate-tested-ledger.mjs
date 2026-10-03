@@ -16,6 +16,8 @@ const requirementTestIndexNote =
   "T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.";
 const audioSourceMetadataNote =
   "M-08 Unicode source-field matrix (2026-10-03): nine production-Chrome 154 routes from WAV, WMA, AIFF, ALAC-in-M4A, MP3, and FLAC preserved all 60 expected text fields, including AIFF author/copyright. All eight lossless-output cases matched independent decoded PCM SHA-256 exactly using fixed-point MP3/scalar WMA reference decoders matching Wasm. The nine-case suite passed in 20.9 seconds, asserts empty OPFS, deletes generated fixtures/copies, and now runs in hosted browser CI. Exact hashes, bounded I/O, rejected default-decoder comparisons, and limitations are in evidence/audio-source-metadata-matrix-2026-10-03.json. No new engine, route, process-memory/stress, artwork, speedup, or lossy-quality certification is claimed; M-08 remains partial for other fields and destination mappings.";
+const mediaOutputEncoderNote =
+  "M-04 output-encoder inventory (2026-10-03): published native video selection exposes VP8, VP9, MPEG-4 Part 2 and Theora. Fresh H.264/AV1/MPEG-2/HEVC output encoders and AV1/VP8/VP9 software media decoders are absent. Existing packet-copy, wrapping/extraction, audio routes and separate image engines do not prove these missing encode/decode paths. evidence/media-output-encoder-inventory-2026-10-03.json binds the finding to exact source/manifest hashes; a source-pinned bounded H.264 encoder is the next investigation. This is an explicit partial implementation/feasibility gap, not a newly measured unsupported decision or a new advertised route.";
 const subtitleFieldMatrixNote =
   "N-07 subtitle field matrix (2026-09-05): evidence/subtitle-field-matrix-2026-09-05.json records timing, multiline text, styling, positioning/regions, speakers, cue identifiers and document metadata behavior for all ten public SRT/WebVTT/ASS/SSA/TTML routes. tests/subtitle-field-matrix.test.mjs binds the matrix to exact UI disclosures, direct browser assertions, ASS/SSA extension and MIME aliases, and ten passed three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser subtitle run passed 16/16 in 20.3 seconds and deleted each converted OPFS output after validation.";
 const svgSafetyFidelityNote =
@@ -900,7 +902,7 @@ lines.push(
   "Regenerate this ledger with `npm run tested:ledger` after new evidence is produced.",
 );
 
-lines.push("", audioSourceMetadataNote);
+lines.push("", audioSourceMetadataNote, "", mediaOutputEncoderNote);
 
 await writeFile(
   ledgerPath,

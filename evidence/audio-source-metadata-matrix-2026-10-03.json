@@ -433,14 +433,29 @@
       "commit": "8df45cb1bc39701d483c1c74fbbe098c7e177664",
       "suite": "9/9 passed in 27.0 seconds",
       "aggregate": "failed before conversion in the three pre-existing persistent-browser suites: repository-local TMPDIR produced 125–135-byte singleton socket paths, above Linux AF_UNIX limits",
-      "correction": "Use short repository-local work/t.XXXXXX directories; representative complete socket path is 104 bytes. A regression test preserves this bound. Aggregate re-verification pending."
+      "correction": "Use short repository-local work/t.XXXXXX directories; representative complete socket path is 104 bytes. A regression test preserves this bound.",
+      "failedRunArtifactsDeleted": true,
+      "failedRunRemainingArtifacts": 0
+    },
+    "correctedRun": {
+      "runId": 37124433469,
+      "commit": "55813ede6cbf8fe86de8d22619c96c428f415aa4",
+      "conclusion": "success",
+      "unit": { "total": 252, "passed": 251, "failed": 0, "skipped": 1 },
+      "privacyOffline": "18/18 passed in 51.8 seconds",
+      "metadataMatrix": "9/9 passed in 27.3 seconds",
+      "streaming": "238/238 passed in 3.0 minutes",
+      "images": "153/153 passed in 4.9 minutes",
+      "media": "554/554 passed in 12.5 minutes",
+      "artifacts": 0,
+      "engineReproduction": "Not rerun: all published engine bytes are unchanged. This was verify-only CI."
     }
   },
   "gates": {
     "productionBuild": "passed",
     "lint": "passed",
     "typescript": "passed",
-    "unitTests": "251/251",
+    "unitTests": "254/254 local after CI-path and codec-inventory regression gates; initial metadata checkpoint was 251/251",
     "engineReproducibilityManifest": "12 published engine directories",
     "publicEvidenceManifest": "405/405; zero pending, non-passing public, or PDF profiles"
   },

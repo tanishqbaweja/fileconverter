@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-03T13:08:46Z",
+  "requirement": "M-04",
+  "status": "partially-implemented-output-encoder-surface",
+  "scope": "Current published media Wasm encoder availability and native video encoder selection; not a codec feasibility or rejection benchmark",
+  "sources": {
+    "manifest": "public/engines/remux/build-manifest.json",
+    "manifestSha256": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+    "wrapper": "media/ffmpeg/within_remux.c",
+    "wrapperSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "configuration": "media/ffmpeg/build-libraries.sh",
+    "controls": "lib/media-conversion-options.ts"
+  },
+  "publishedSelectableVideoEncoders": ["vp8", "vp9", "mpeg4", "theora"],
+  "nativeSelection": {
+    "function": "within_video_reencode",
+    "encoderLookup": "libtheora when WITHIN_THEORA_ENCODE and OGV; otherwise AV_CODEC_ID_VP9, AV_CODEC_ID_VP8 or AV_CODEC_ID_MPEG4",
+    "manifestOtherVideoEncoder": "h263 is listed in the compiled encoder inventory but is not a selectable video output codec"
+  },
+  "notImplementedFreshMediaOutputs": [
+    { "codec": "h264", "status": "missing-encoder-and-native-output-route", "existingCoverage": "source decode, standards-compatible stream copy/remux, and elementary extraction do not prove fresh H.264 encoding" },
+    { "codec": "av1", "status": "missing-media-encoder-and-native-output-route", "existingCoverage": "compatible WebM copy and IVF extraction/wrapping without video decode; image AVIF encoding is a separate engine and not a media AV1 encoder" },
+    { "codec": "mpeg2video", "status": "missing-encoder-and-native-output-route", "existingCoverage": "source decode, compatible packet copy, elementary extraction/wrapping and conversion to other encoded codecs" },
+    { "codec": "hevc", "status": "not-implemented-and-legally-conditional", "existingCoverage": "source decode, compatible packet copy and elementary extraction; fresh encoding additionally requires the specification's legal/build acceptance" }
+  ],
+  "notInstalledMediaSoftwareDecoders": ["av1", "vp8", "vp9"],
+  "decoderBoundary": "The published FFmpeg manifest installs no AV1/VP8/VP9 video decoder. Their packet-copy, elementary wrapping/extraction and audio-extraction routes do not prove genuine source-video decode/re-encode. Separate image engines do not establish a media decoder fallback.",
+  "nextAction": "Investigate a source-pinned specialist H.264 encoder first: real bounded native/Wasm build feasibility, identical-setting quality/speed/memory measurements, production browser I/O and independent validators. Apply the unchanged full acceptance gate before publishing. Do not relabel absence as intentionally unsupported without measured or legal evidence.",
+  "limitations": [
+    "The original specification requires broad practical codec coverage, not every theoretical input-extension/output-extension pair. This inventory makes the currently uninvestigated encoder surface explicit without pretending decoding equals encoding.",
+    "No codec has been newly rejected on performance, memory or licensing evidence by this inventory.",
+    "No new route, binary, public selector option, memory certification or performance result is added."
+  ],
+  "cleanup": { "generatedMedia": false, "convertedOutputs": false, "testMkvUsedOrChanged": false }
+}

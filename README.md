@@ -780,12 +780,22 @@ It is loaded from a dedicated eight-worker pthread module so audio and remux
 routes do not pay that pool's memory cost.
 
 Every public video re-encode route exposes the same validated controls: automatic
-or VP8/VP9/MPEG-4 where its destination container permits it, automatic or
+or VP8/VP9/MPEG-4/Theora where its destination container permits it, automatic or
 320/480/640-pixel proportional no-upscale width, automatic or 300/600/1,000/
 2,000/4,000 kbit/s, automatic or 15/24/25/30 fps without frame duplication, and
 automatic/smaller/balanced/higher quality. Unsupported combinations and values
 are rejected independently by the browser, worker, and native Wasm wrapper.
 Automatic retains the previously certified fastest profile unchanged.
+
+Fresh H.264, AV1, MPEG-2, and HEVC video encoding is not implemented by the
+published media engines. H.264/MPEG-2/HEVC decode and compatible packet-copy
+coverage is not encoding coverage. The media core also installs no AV1/VP8/VP9
+software video decoder: their certified copy/wrapping/extraction paths do not
+establish a re-encode fallback, and separate image codecs do not supply one.
+The source-bound inventory is
+[`evidence/media-output-encoder-inventory-2026-10-03.json`](evidence/media-output-encoder-inventory-2026-10-03.json).
+These are explicit M-04 implementation/feasibility gaps, not new measured
+unsupported decisions; a specialist H.264 encoder is the next investigation.
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
