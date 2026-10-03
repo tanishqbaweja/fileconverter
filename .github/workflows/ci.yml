@@ -222,7 +222,9 @@ jobs:
         shell: bash
         run: |
           mkdir -p "$GITHUB_WORKSPACE/work"
-          task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/ci-browser-${{ matrix.suite }}-XXXXXX")"
+          # Chromium appends its singleton socket path here; keep the complete
+          # AF_UNIX path below Linux's 108-byte ceiling without leaving the repo.
+          task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX")"
           trap 'rm -rf -- "$task_browser_tmp"' EXIT
           TMPDIR="$task_browser_tmp" npx playwright test tests/browser/${{ matrix.suite }}.spec.ts
 

@@ -39,6 +39,15 @@ Production build, lint, TypeScript, 251/251 unit tests, the 12-engine manifest,
 and the 405/405 public-evidence gate passed. All generated inputs, outputs,
 profiles, compiler caches, and disposable failure artifacts were deleted after
 compact evidence was retained; `work` contains only `.gitkeep`.
+Hosted run `37124116727` also passed the nine metadata cases in 27.0 seconds
+and 18 privacy/offline cases. Its aggregate result was **failed**, not green:
+the new repository-local temporary directory names produced 125–135-byte
+Chromium singleton socket paths and prevented the three existing persistent-
+browser suites from launching on Linux. The CI path is now shortened to
+`work/t.XXXXXX` (104 bytes including the observed socket suffix), with an
+explicit regression test and unchanged conversion/validation thresholds.
+Aggregate re-verification is pending. Keep this failure distinct from a
+conversion-engine failure or a metadata-test failure.
 Remaining M-08 work includes other representable fields, Ogg/Opus destination-
 scope mappings beyond MP3/FLAC, AIFF-output aliases, and additional destination-
 specific artwork representations where practical. Do not repeat this small

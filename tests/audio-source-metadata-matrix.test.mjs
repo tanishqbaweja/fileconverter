@@ -70,3 +70,15 @@ test("small metadata browser evidence remains bounded and anchored to the execut
   assert.equal(evidence.engine.changed, false);
   assert.ok(evidence.limitations.some((item) => item.includes("no new complete-process memory")));
 });
+
+test("CI repository-local browser temporary paths fit Linux singleton sockets", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+  assert.ok(workflow.includes('mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX"'));
+  const workspace = "/home/runner/work/fileconverter/fileconverter";
+  const socketSuffix = "/org.chromium.Chromium.165DAM/SingletonSocket";
+  const rejected = `${workspace}/work/ci-browser-streaming-conversions-AQ7rYA${socketSuffix}`;
+  const retained = `${workspace}/work/t.ABCDEF${socketSuffix}`;
+  assert.ok(Buffer.byteLength(rejected) >= 108);
+  assert.ok(Buffer.byteLength(retained) < 108);
+  assert.ok(workflow.includes("trap 'rm -rf --"));
+});
