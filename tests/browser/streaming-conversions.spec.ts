@@ -1414,6 +1414,18 @@ test("streams DOCX main-document text with disclosed structural loss", async () 
   expect(state.warnings.join(" ")).toContain("headers");
   expect(state.metrics?.maxReadChunkBytes).toBeLessThanOrEqual(256 * 1024);
   expect(await appOwnedOpfsNames("within-test-docx-to-txt")).toEqual([]);
+
+  // A new destination must not inherit warnings from the completed job.
+  await page.getByTestId("format-select").selectOption("gzip-compress");
+  await expect(page.locator(".warning")).toHaveCount(0);
+  await expect(page.locator(".limitations")).toContainText(
+    "GZIP stores a single byte stream",
+  );
+  const reset = await currentState();
+  expect(reset.jobState).toBe("idle");
+  expect(reset.phase).toBe("Ready");
+  expect(reset.metrics).toBeNull();
+  expect(reset.warnings).toEqual([]);
 });
 
 for (const [fixture, expectedError] of [

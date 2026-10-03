@@ -474,8 +474,16 @@ lower-bound frame counts while skipping pixel output. Non-ZIP archive families
 use bounded metadata-only preflight too: TAR reads at most 256 isolated
 512-byte headers while skipping payloads, GZIP/BZIP2/XZ wrappers read at most
 64 KiB plus an eight-byte GZIP trailer, and 7Z reads only its 32-byte start
-header plus one next-header marker. A
-headed DOCX review and the exact inspected scopes are recorded in
+header plus one next-header marker.
+
+The expanded headed review in
+`evidence/headed-category-expansion-2026-10-03.json` covers seven additional
+office, animated-image, 7Z, audio, media and compression successes, normal-page
+destination selection, and Chrome 154 write-failure/cancellation cleanup.
+It also records the fix for previous-job warnings persisting after an output
+format change. These representative UI checks supplement the independent
+output and process-memory gates. The headed DOCX review and the exact inspected
+scopes are recorded in
 `evidence/headed-docx-inspection-2026-09-25.json`,
 `evidence/structured-source-inspection-2026-09-26.json`, and
 `evidence/image-source-inspection-2026-09-27.json`, and

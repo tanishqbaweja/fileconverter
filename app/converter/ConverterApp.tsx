@@ -1841,7 +1841,9 @@ export function ConverterApp() {
                       setDestinationHandle(null);
                       setDestinationDirectoryHandle(null);
                       setJobState("idle");
+                      setPhase("Ready");
                       setMetrics(null);
+                      setWarnings([]);
                       setError(null);
                       setOpfsName(null);
                       setOpfsNames([]);

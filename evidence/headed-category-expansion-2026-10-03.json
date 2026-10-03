@@ -1,0 +1,140 @@
+{
+  "recordedAt": "2026-10-03",
+  "dates": ["2026-09-28", "2026-10-03"],
+  "status": "passed for the recorded headed interaction scope",
+  "auditedBaseCommit": "da47961df0569b31d7f40c3325e0d2a7819bd028",
+  "scope": "Seven additional headed production-UI success flows, direct write rejection, protected-source cancellation, normal-page destination selection, and mobile review. Existing independent route validation and complete-process memory certification remain separate.",
+  "method": "Playwright CLI, real file chooser inputs, production Wrangler build and security headers on localhost:3110, production workers, visual inspection of screenshots followed by artifact deletion.",
+  "browserCohorts": [
+    {"date": "2026-09-28", "mode": "headed", "browserVersion": null, "note": "The exact version of the initial CLI browser was not retained; no current-version claim is made for those five cases."},
+    {"date": "2026-10-03", "mode": "headed", "browserVersion": "154.0.8037.93", "profile": "output/playwright/headed-t12-2026-09-28/chrome-profile", "desktopViewport": [824, 750], "mobileViewport": [390, 844]}
+  ],
+  "destinationMethods": {
+    "firstFiveSuccessesAndAdverseCases": "Local test=1&directory=1 supplies an OPFS FileSystemFileHandle to the production direct destination path.",
+    "docxAndGzip": "Normal page without test=1; a Playwright-only showSaveFilePicker adapter supplies an OPFS handle, then the actual Choose destination file button selects it and the production direct writer saves it. No test bridge exists on these pages.",
+    "nativeOsPickerManuallyExercised": false,
+    "physicalStorage": "All current-session browser storage is inside the repository-local Chromium profile. No OS-visible output copy was created for this audit."
+  },
+  "completedFlows": [
+    {
+      "date": "2026-09-28", "profileId": "xlsx-to-csv", "source": "fixtures/spreadsheets/sample.xlsx", "inputBytes": 2694,
+      "sourceSha256": "b4e132d02f8721fb08800dc4688307165b221bc2f9c9591c8995c8dd8dffce70",
+      "outputBytes": 110, "outputSha256": "569d5c0186bc561436723fac2ec20c0f524501c9a283f68da4d1d2fac98bcfc9", "elapsedMs": 50.255,
+      "maxReadChunkBytes": 2694, "maxWriteChunkBytes": 110, "peakQueuedBytes": 110, "peakPendingOperations": 1,
+      "validation": "Exact deterministic CSV text inspected, including quoted embedded newline, Unicode, Boolean, error, gaps, cached formula, and numeric values.",
+      "disclosures": "First visible sheet only, omitted hidden/additional sheets, raw number formats, cached formula behavior and unsupported content were visible.",
+      "screenshotSha256": "9f95e8dceae8b48ef71d29d0640388a3b63549214938fc2c6879fc020da1994d",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-09-28", "profileId": "png-to-gif", "source": "fixtures/images/animated-pattern.apng", "inputBytes": 482505,
+      "sourceSha256": "8d4a828fd1cb6f2f7b79a0f089df11abebb009c823582134bf86b6ef09956ca4",
+      "outputBytes": 415740, "outputSha256": "391853553fe9660aa671c805a15e9cdb40a735830e6d2b5acea6e82bca493439", "elapsedMs": 270.78,
+      "maxReadChunkBytes": 220361, "maxWriteChunkBytes": 11520, "peakQueuedBytes": 11520, "peakPendingOperations": 1,
+      "validation": "GIF89a signature and SHA-256; full independent animation/fidelity validation is covered by the existing image-conversions browser gate, not newly claimed here.",
+      "sourcePanel": {"dimensions": [1024, 768], "color": "RGBA", "depthBits": 8, "declaredFrames": 8, "inspectedBytes": 482505},
+      "screenshotSha256": "b6e32358a20a83722f9f41f5a57544b689b74ca16b5124d3d66d9bdfa7fef206",
+      "inspectionScreenshotSha256": "0d982f6eec21bc63c7f3305ff15ba388bb259bdf7da3572997ea58d4e8d6d2be",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-09-28", "profileId": "sevenzip-to-tar", "source": "fixtures/archives/sample.7z", "inputBytes": 295,
+      "sourceSha256": "61d3a37046bd1a01fefccb3aad09d44d759fba1530bd6c0effcb5803def7f3e9",
+      "outputBytes": 4096, "outputSha256": "d348be05a42cb45d5812578c52ebb4d3384a2123e21dc61b88a586c7915a9a2f", "elapsedMs": 67.61,
+      "maxReadChunkBytes": 295, "maxWriteChunkBytes": 4096, "peakQueuedBytes": 4096, "peakPendingOperations": 1,
+      "validation": "USTAR signature and SHA-256; existing streaming-conversions tests independently validate entries/content.",
+      "wasmMemoryBytes": 58720256, "activeWorkerCount": 2,
+      "screenshotSha256": "21db8a95181c5aa5c715c20b0feffbe866563b22a8601ca9112b407d086a5121",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-09-28", "profileId": "wma-to-flac", "source": "fixtures/media/audio-source.wma", "inputBytes": 301458,
+      "sourceSha256": "c1a151907c2460b36b3a5ac15db7e4d319c8c043d7d44efd988b136e05b0bb64",
+      "outputBytes": 119963, "outputSha256": "9c06bf9ad571be4d85b38b194b9c56f287b953c89d29a54659529988445451ac", "elapsedMs": 405.91,
+      "maxReadChunkBytes": 262144, "maxWriteChunkBytes": 119963, "peakQueuedBytes": 119963, "peakPendingOperations": 1,
+      "validation": "fLaC signature and SHA-256; existing media-remux tests independently decode this route.",
+      "plan": "The first Windows Media Audio 2 stream is decoded and the decoded signal losslessly encoded; source lossy compression is not restored.",
+      "screenshotSha256": "8a3377cd1ec53280807d6322d1ebb76116db8512b1a53a0638d6f8021906989b",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-09-28", "profileId": "3gp-to-mkv", "source": "fixtures/media/mobile-video-source.3gp", "inputBytes": 937085,
+      "sourceSha256": "539481414789229431ef9054d16c4da74fea6164b9bb86d6e9297a0cfc48eee7",
+      "outputBytes": 935910, "outputSha256": "8403c5d981de175e5fc6ada8691cc04345cb1a7566b3427363190ee9f433e894", "elapsedMs": 101.03,
+      "maxReadChunkBytes": 262144, "maxWriteChunkBytes": 262144, "peakQueuedBytes": 262144, "peakPendingOperations": 1,
+      "validation": "EBML signature 1a45dfa3 and SHA-256; existing media-remux tests independently compare packets and decode.",
+      "plan": "H.264 and AAC both explicitly shown as compressed stream copy.",
+      "screenshotSha256": "22efd5cd4546f3dcd9313e010f383d3ecf2305f9a305258cd9201874e97311e3",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-10-03", "profileId": "txt-to-docx", "source": "fixtures/documents/sample.txt", "inputBytes": 113,
+      "sourceSha256": "0d662d9583cc2bf51fe67677d54f7f82547f3ebe7e51245c8f347f986321bdef",
+      "outputBytes": 1096, "outputSha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471",
+      "validation": ".NET ZipArchive and independent namespace-aware XML parsing: all three package parts parse, three paragraphs exactly match source Unicode text.",
+      "parts": ["[Content_Types].xml", "_rels/.rels", "word/document.xml"],
+      "diagnosticBrowserExportCapBytes": 65536, "normalPageTestBridgeAbsent": true,
+      "destinationControl": "sample.docx", "engine": "document-stream", "displayedQueuedBytes": 0,
+      "screenshotSha256": "4689fd8aa74e1fed7c27159431d7a9f6fbede35f9af352e28544137fb9b00857",
+      "mobileScreenshotSha256": "3d0dd27600099d3cff9b178a7b4f4c63c51c64979aae2a4bade6d5ee729d63cc",
+      "mobileDocumentScrollWidth": 375,
+      "outputDeleted": true, "remainingOpfsEntries": []
+    },
+    {
+      "date": "2026-10-03", "profileId": "gzip-compress", "source": "fixtures/documents/sample.txt", "inputBytes": 113,
+      "outputBytes": 136, "outputSha256": "2e841010c386e39f661f564282e203cbcfa1c606ca8dd8574c4f8c62ce21f06d",
+      "validation": "Independent .NET GZipStream decode exactly matches all 113 source bytes and Unicode text.",
+      "diagnosticBrowserExportCapBytes": 65536, "normalPageTestBridgeAbsent": true,
+      "destinationControl": "sample.txt.gz", "engine": "compression-stream", "displayedQueuedBytes": 0,
+      "viewport": [390, 844], "documentScrollWidth": 375, "warnings": [],
+      "screenshotSha256": "b2230144d8a87ab3a1934c1f6bfbd49711fd59a4e6473edc37979b7d791d2bb9",
+      "outputDeleted": true, "remainingOpfsEntries": []
+    }
+  ],
+  "directWriteFailure": {
+    "profileId": "txt-to-html", "injection": "localhost-only fault=write", "state": "error", "phase": "Stopped safely",
+    "error": "Error: The destination rejected a bounded write.", "inputBytes": 113, "outputBytes": 0,
+    "elapsedMs": 34.21, "maxWriteChunkBytes": 315, "peakPendingOperations": 1, "pendingOperations": 0, "queuedBytes": 0,
+    "workerStatus": "ready", "estimatedRemaining": "Not applicable", "opfsEntries": [],
+    "screenshotSha256": "13afc352ab04c197633e734483e0ee8f9698152828fa04aa2dbe2727df018b6a"
+  },
+  "protectedSourceCancellation": {
+    "profileId": "mkv-to-mp4", "source": "test.mkv", "sourceBytes": 2958573265,
+    "sourceSha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "state": "cancelled", "phase": "Cancelled", "inputBytes": 2958573265, "outputBytesAtCancellation": 1405091840,
+    "elapsedMs": 31476.12, "peakScratchBytes": 2962151522, "scratchBytesAfterCancellation": 0,
+    "maxReadChunkBytes": 262144, "maxWriteChunkBytes": 1048576, "maxScratchReadChunkBytes": 524288, "maxScratchWriteChunkBytes": 524288,
+    "peakPendingOperations": 1, "pendingOperations": 0, "queuedBytes": 0, "workerStatus": "ready", "estimatedRemaining": "Not applicable",
+    "opfsEntries": [], "screenshotSha256": "6704ae2a9ac1f662923d3d162131671045356dd3c9dbdddc60a014cc584b0f69",
+    "visualReview": "Cancellation metrics, staging disclosure, subtitle/artwork exclusions and retry control remained readable."
+  },
+  "defectFixed": {
+    "trigger": "Finish DOCX conversion, then change output to GZIP.",
+    "before": "Warnings from the completed DOCX job remained under the new GZIP route even though its limitations were correctly updated.",
+    "after": "Changing output format clears previous-job warnings and resets phase to Ready along with the existing metrics/output/error reset.",
+    "appSha256": "2dd872f22cc95b3dc5ac66f70ae56ccf4d6da62da165ff4c6e9ce42251c4cf08",
+    "browserRegression": "tests/browser/streaming-conversions.spec.ts: streams DOCX main-document text with disclosed structural loss",
+    "testSha256": "2adc3b38916d32b21c45315219130ac4bd3f7d9261ba96646917eef3912c44f3",
+    "result": "1/1 passed in 8.3 seconds; exact DOCX text, cleanup, previous-warning removal, new GZIP limitations, idle/Ready state and null metrics checked."
+  },
+  "localVerification": {
+    "productionBuild": "passed", "eslint": "passed", "typescript": "passed", "unit": {"passed": 248, "failed": 0},
+    "privacyOffline": {"passed": 18, "failed": 0, "seconds": 55.0},
+    "publicEvidenceManifest": {"publicProfiles": 405, "evidenceEntries": 405, "pending": 0, "pdf": 0},
+    "engineManifest": {"coveredDirectories": 12},
+    "observedOctoberRequests": {"count": 37, "sameOriginGetsOnly": true, "consoleWarnings": 0, "consoleErrors": 0},
+    "diskFreeBytesBeforeProtectedRun": 1708478324736
+  },
+  "earlierHeadedCoverage": ["evidence/headed-usability-audit-2026-09-05.json", "evidence/headed-docx-inspection-2026-09-25.json"],
+  "limitations": [
+    "Representative interaction coverage does not claim every profile or every native OS picker has been manually reviewed.",
+    "The five September output checks are content/signature checks; independent route validators remain in their existing automated browser suites.",
+    "Complete-process private-memory samples were not collected in this UI audit and are unavailable; no new 250 MiB certification or speedup is claimed.",
+    "An attempted CLI run-code global request accumulator did not persist between commands. Network facts use the CLI's actual retained request list and the separate 18-case privacy/offline gate."
+  ],
+  "cleanup": {
+    "browserClosed": true, "productionServerStopped": true, "finalOpfsEntries": [],
+    "screenshotsReviewedThenDeleted": true, "repositoryLocalBrowserProfileDeleted": true,
+    "temporaryValidatorScriptsDeleted": true, "dockerCommandsUsed": false
+  }
+}

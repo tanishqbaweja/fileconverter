@@ -1,6 +1,6 @@
 # Remaining work audit
 
-Updated 2026-09-25. This is the living requirement audit for the original
+Updated 2026-10-03. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
@@ -14,6 +14,30 @@ not the entire product specification.
 - **Missing** — no conforming implementation or adequate evidence was found.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
+
+## 2026-10-03 — headed category audit and warning reset
+
+Status: **Verified complete for representative T-12 categories and required
+interaction flows**. Seven additional production-headed successes cover
+XLSX-to-CSV, eight-frame APNG-to-GIF, 7Z-to-TAR, WMA-to-FLAC, 3GP-to-MKV,
+TXT-to-DOCX and GZIP. The last two use the normal page and destination-selection
+button with a test-only picker adapter; independent .NET ZIP/XML and GZIP
+validators verify exact Unicode content. Chrome 154 also passed direct-write
+rejection and cancellation of the protected 2,958,573,265-byte `test.mkv` after
+1,405,091,840 destination bytes, removing staging and partial output. Combined
+with the September headed audits, this covers the required representative
+media, audio, static/animated image, archive, compression, data, office/document,
+ebook, subtitle, batch, cancellation, failure, quota, permission, reload and
+cleanup flows. It does not assert exhaustive manual review of all 405 routes,
+native OS picker dialogs, or new complete-process memory certification.
+
+The audit found completed DOCX warnings lingering after switching the output
+format to GZIP. Format changes now clear old warnings and reset phase to Ready.
+The focused production-browser regression passed 1/1 in 8.3 seconds; build,
+lint, TypeScript, 248 unit tests and 18/18 privacy/offline cases passed.
+Exact UI scope, output/screenshot hashes, browser-version limitations and cleanup
+are recorded in `evidence/headed-category-expansion-2026-10-03.json`.
+The broader P-04/M-04, M-08, speed, and current-browser memory/scaling work remains.
 
 ## 2026-09-25 — MPEG-2 elementary to OGV publication
 
@@ -242,7 +266,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Verified complete for current published code | Current-branch [verify-only run 36052482467](https://github.com/tanishqbaweja/fileconverter/actions/runs/36052482467) at `8284475` passed build, lint, TypeScript, 244 unit tests, 15 privacy/offline browser cases, 153 image, 238 streaming, and 553 media conversions with independent validators. Separate [reproduce-only run 36002113153](https://github.com/tanishqbaweja/fileconverter/actions/runs/36002113153) passed exact no-Docker rebuild/diff and cleanup for all 11 published engine directories. Both retained zero artifacts. No FFmpeg/other engine source or published-engine bytes changed between the reproducibility run and `8284475`; the later browser cancellation bridge and DOCX disclosure changes passed the current verification run. | Keep both CI partitions mandatory after code/engine changes; verify-only does not prove engine reproducibility, and reproduce-only does not prove browser behavior. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results                                              | Verified complete for current implementation                                                         | `README.md` documents all named areas and links the generated route ledger                                                                                                                                                                                                                                                                                                                                                                                                 | Update it whenever remaining work changes behavior or evidence.                                                                                                      |
 
-| T-12 | Broader headed-browser review across every major category and important failure flow | Partially implemented | `evidence/headed-usability-audit-2026-09-05.json` covers eight representative success flows plus batch, quota, permission, reload, cleanup, and keyboard behavior. The new headed DOCX-to-text run in `evidence/headed-docx-inspection-2026-09-25.json` verified disclosure, exact deterministic Unicode text, actual progress/output metrics, privacy requests, and cleanup. | Extend manual headed coverage to additional office output, animated-image, 7Z, media/audio variants, direct selected destinations, and failed/cancelled jobs; keep automated structural validation and process-tree memory certification separate. |
+| T-12 | Broader headed-browser review across every major category and important failure flow | Verified complete for representative required categories/flows | The September headed audits plus `evidence/headed-category-expansion-2026-10-03.json` cover media, audio, static/animated image, archive, compression, data, office/document, ebook and subtitles; batch, direct destination, cancellation, write failure, quota, permission, reload, cleanup and keyboard review. Seven added success flows include normal-page DOCX/GZIP destination selection and independent Unicode output validation. Chrome 154 passed protected 2.96 GB source cancellation with staging/partial-output deletion. The audit found and fixed stale previous-job warnings; the focused regression and all 18 privacy/offline cases passed. | Maintain representative headed review as UI/engine families change. Native OS picker dialogs and exhaustive per-profile manual review are not claimed; independent validators and process-tree memory gates remain separate. |
 
 ## Intentionally unsupported surfaces with current reasons
 
@@ -268,7 +292,8 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
    the evidenced HEIF/HEIC and camera-RAW exclusions only when their documented
    legal, security, quality, and fixed-memory conditions change. Promote only
    fully evidenced routes.
-2. Expand headed interaction audits and representative multi-gigabyte scaling.
+2. Extend representative multi-gigabyte scaling for newly added media routes;
+   maintain the completed category/flow headed audit as the UI changes.
 3. Run final build, lint, TypeScript, unit, browser, privacy/offline, validator,
    reproducibility, registry/report-consistency, cleanup, and protected-fixture
    gates before removing all partial/missing statuses.
