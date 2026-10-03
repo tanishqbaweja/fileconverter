@@ -22,6 +22,10 @@ test("private H264 kernel derives audited bounded AVIO without mutating existing
     assert.ok(generated.endsWith(kernel));
     assert.match(generated, /avcodec_find_encoder_by_name\("libopenh264"\)/);
     assert.match(generated, /frame->best_effort_timestamp/);
+    assert.match(generated, /p.source_width = p.decoder->width/);
+    assert.match(generated, /p.source_height = p.decoder->height/);
+    assert.match(generated, /frame->width != p->source_width \|\| frame->height != p->source_height/);
+    assert.doesNotMatch(generated, /frame->width != p->decoder->width/);
     assert.match(generated, /avcodec_parameters_copy/);
     assert.match(generated, /h264_chapters\(out, in\)/);
     assert.match(generated, /coded_side_data/);

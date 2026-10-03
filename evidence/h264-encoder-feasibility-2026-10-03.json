@@ -133,9 +133,9 @@
     "within-h264.mjs": 80839,
     "within-h264.wasm": 7761671
   },
-  "currentSourcesScope": "Latest repository sources, including the typed ForceIntraFrame build fix. The historical asBuiltManifest above remains the original failed candidate; see h264-typed-call-diagnosis-2026-10-03.json for the new diagnosis.",
+  "currentSourcesScope": "Latest repository sources, including the typed ForceIntraFrame and immutable-dimension fixes. Historical asBuiltManifest and runtime failures remain unchanged; current source indexes are not retrospective proof of that binary.",
   "currentSources": {
-    "media/ffmpeg/h264-candidate.c": "e9b45d17c9c95475c0d1900c25e5d2af9a32bfe9f460876e0fe7da59aa548061",
+    "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
     "media/ffmpeg/make-h264-candidate.mjs": "594bfdbdeb4286ca65840db8c1b4d79883e0de9b2985ac5ff7f65d716a92ccf0",
     "media/ffmpeg/build-h264-candidate.sh": "94ff4a1df7b80095f02182d10674efab43b0e13bef4d1077f230ecdcefa6e5eb",
     "media/ffmpeg/h264-candidate-manifest.mjs": "85d007e13fab268ca1f9964ac9e8e0e2cedf5f76b6e9f1120cfd5b1bda14b08d",

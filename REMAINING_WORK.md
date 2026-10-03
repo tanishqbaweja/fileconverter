@@ -15,6 +15,38 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 dynamic-dimension regression and immutable guard
+
+Status: **Partially implemented under M-04; source fix pending native rebuild**.
+A focused production-Chrome test independently decoded a genuine 414,540-byte,
+48-frame H.264 MPEG-TS source that changes from 320×240 to 640×360. The old
+fixed-32-MiB candidate reported success and produced a valid 235,950-byte,
+48-frame output entirely at 320×240 with **no warning**. The intended guard
+compared frame dimensions to mutable decoder context dimensions; both changed
+together, permitting undisclosed scaling. This is a confirmed fidelity bug,
+not a memory-related unsupported decision. The initial test selection used an
+incorrect route ID and timed out before conversion; that attempt is recorded
+and the corrected `mpeg-ts-to-mp4` run establishes the actual native failure.
+
+The private kernel now captures immutable source dimensions after decoder open,
+checks every decoded frame before scaling/encoding, and emits an explicit
+dimension-change error. No codec settings, output quality, frame rate, I/O
+bounds, memory cap, browser flags or published engines changed. Historical
+as-built reports remain unchanged; only their explicitly current-source hash
+indexes were refreshed. `evidence/h264-dimension-regression-2026-10-04.json`
+retains both attempts, all frame dimensions/timestamps, process samples, native
+validation and cleanup. Six focused source/provenance tests passed. Every
+Final regression passed 280/280 unit tests, lint, TypeScript, the unchanged
+405-profile evidence manifest and diff checks. Every
+generated fixture, converted copy, owned profile/temp tree and staging adapter
+was deleted or restored; only the reusable static candidate remains.
+
+Next: rebuild the fixed private kernel without Docker, prove explicit rejection
+and automatic partial-output cleanup in the same browser test, and rerun the
+ordinary timestamp/quality regression. A source check does not prove a compiled
+fix; memory acceptance, direct success, scaling, controls, speed A/B and the
+other original release gates remain open. No new public route is claimed.
+
 ## 2026-10-04 — Chromium startup utility-service isolation
 
 Status: **Partially implemented under M-04; diagnosis, not acceptance**.

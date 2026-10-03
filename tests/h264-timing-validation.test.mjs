@@ -43,7 +43,10 @@ test("the accepted small H264 timing fixes are bound to current native, patch an
   for (const [file, expected] of Object.entries(evidence.currentSources)) {
     assert.equal(createHash("sha256").update(await readFile(path.join(root, file))).digest("hex"), expected, file);
   }
-  assert.equal(evidence.asBuiltManifest.candidateKernelSha256, evidence.currentSources["media/ffmpeg/h264-candidate.c"]);
+  // This exact as-built small-fixture success precedes the immutable-dimension
+  // safety fix. Keep its historical kernel hash rather than relabelling it.
+  assert.equal(evidence.asBuiltManifest.candidateKernelSha256,
+    "e9b45d17c9c95475c0d1900c25e5d2af9a32bfe9f460876e0fe7da59aa548061");
   assert.equal(evidence.asBuiltManifest.matroskaNoCuesPatchSha256, evidence.currentSources["media/ffmpeg/patches/matroska-bounded-no-cues.patch"]);
   assert.equal(evidence.asBuiltManifest.allowMemoryGrowth, false);
   assert.equal(evidence.asBuiltManifest.maximumWasmMemoryBytes, 64 * 1024 * 1024);

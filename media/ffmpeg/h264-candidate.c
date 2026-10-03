@@ -13,6 +13,7 @@ typedef struct H264Pipeline {
   AVPacket *encoded;
   struct SwsContext *scaler;
   int fps_cap;
+  int source_width, source_height;
   int64_t last_pts;
 } H264Pipeline;
 
@@ -38,8 +39,12 @@ static int h264_frames(H264Pipeline *p, const AVPacket *packet) {
     if (within_is_cancelled()) return AVERROR_EXIT;
     AVFrame *frame = p->decoded;
     // Fail on dynamic dimensions, not an out-of-bounds scaler or hidden resize.
-    if (frame->width != p->decoder->width || frame->height != p->decoder->height)
+    // Decoder context dimensions can change after new stream headers. Compare
+    // against the immutable initial dimensions before any scaling/encoding.
+    if (frame->width != p->source_width || frame->height != p->source_height) {
+      within_message(2, "H.264 source dimensions changed; refusing undisclosed resizing.");
       return AVERROR_INVALIDDATA;
+    }
     int64_t pts = frame->best_effort_timestamp;
     if (pts == AV_NOPTS_VALUE) {
       within_message(2, "H.264 source frame timestamps are unavailable; refusing invented timing.");
@@ -173,6 +178,8 @@ static int h264_run(int matroska, int max_width, int bit_rate, int fps, int qual
   p.decoder->pkt_timebase = p.source->time_base;
   result = avcodec_open2(p.decoder, decoder, NULL);
   if (result < 0) goto cleanup;
+  p.source_width = p.decoder->width;
+  p.source_height = p.decoder->height;
   p.encoder->width = p.decoder->width;
   p.encoder->height = p.decoder->height;
   if (max_width && max_width < p.encoder->width) {
