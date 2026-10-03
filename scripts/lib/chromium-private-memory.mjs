@@ -35,7 +35,10 @@ do {
 } while ($changed)
 @($all | Where-Object { $ids.Contains([int]$_.ProcessId) } | ForEach-Object {
   $type = 'browser'; if ($_.CommandLine -match '--type=([^ ]+)') { $type = $Matches[1] }
+  $utilitySubtype = $null; if ($_.CommandLine -match '--utility-sub-type=([^ ]+)') { $utilitySubtype = $Matches[1] }
+  $sandboxType = $null; if ($_.CommandLine -match '--service-sandbox-type=([^ ]+)') { $sandboxType = $Matches[1] }
   [pscustomobject]@{pid=[int]$_.ProcessId;parentPid=[int]$_.ParentProcessId;type=$type;
+    utilitySubtype=$utilitySubtype;sandboxType=$sandboxType;
     createdAt=([datetime]$_.CreationDate).ToUniversalTime().ToString('o');
     privateBytes=[double]$_.PrivatePageCount;rssBytes=[double]$_.WorkingSetSize}
 }) | ConvertTo-Json -Compress

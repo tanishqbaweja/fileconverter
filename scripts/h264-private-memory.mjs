@@ -11,6 +11,8 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
+import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
+import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
@@ -26,6 +28,7 @@ const samples = [], runs = [], logs = [], forbiddenRequests = [];
 const browserLocalRequests = [], outOfOriginRequests = [];
 let work, server, chrome, browser, context, page, staged = false;
 let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure = null;
+let cdpRealmSampler = null;
 const pendingRealms = new WeakSet();
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const shaFile = async (file) => {
@@ -52,6 +55,7 @@ async function takeSample(phase) {
   const realms = { pageUsedJSHeapBytes: await boundedRealm(page, () => page.evaluate(heap)),
     workers: await Promise.all(page.workers().map(async (worker) => ({ url: worker.url(),
       usedJSHeapBytes: await boundedRealm(worker, () => worker.evaluate(heap)) }))) };
+  const cdpIsolateHeaps = await cdpRealmSampler?.sample().catch((error) => ({ targetsAvailable: false, targets: null, error: String(error) })) ?? null;
   const storageEstimate = await boundedRealm(page, () => page.evaluate(async () => {
     const value = await navigator.storage?.estimate?.();
     return value ? { usage: value.usage ?? null, quota: value.quota ?? null } : null;
@@ -59,7 +63,7 @@ async function takeSample(phase) {
   const state = await boundedRealm(page, () => page.evaluate(() => window.__WITHIN_TEST__?.getState() ?? null));
   if (state) lastState = state;
   const sample = { timestamp: new Date(begin).toISOString(), elapsedMs: begin - startedAt,
-    phase, ...tree, sampleError, realms, storageEstimate, metrics: state?.metrics ?? null,
+    phase, ...tree, sampleError, realms, cdpIsolateHeaps, storageEstimate, metrics: state?.metrics ?? null,
     jobState: state?.jobState ?? null, samplerElapsedMs: Date.now() - begin };
   if (samples.length >= 4096) throw new Error("Memory sample cap reached; preserve evidence before another run");
   samples.push(sample);
@@ -137,12 +141,23 @@ assert.ok([32 * MiB, 64 * MiB].includes(manifest.maximumWasmMemoryBytes));
 assert.equal(manifest.initialWasmMemoryBytes, manifest.maximumWasmMemoryBytes);
 assert.equal(manifest.allowMemoryGrowth, false);
 const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
+  "scripts/lib/wasm-memory-limits.mjs",
   "scripts/lib/private-browser-request.mjs",
+  "scripts/lib/cdp-realm-memory.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
 assert.equal(sourceHashes["media/ffmpeg/build-h264-candidate.sh"], manifest.buildRecipeSha256);
 for (const file of ["within-h264.mjs", "within-h264.wasm"]) assert.equal(await shaFile(path.join(candidate, file)), manifest.artifacts[file]);
+const actualWasmMemoryLimits = readWasmMemoryLimits(await readFile(path.join(candidate, "within-h264.wasm")));
+const staticCandidateBytes = (await Promise.all((await readdir(candidate)).map(async (name) => {
+  const info = await stat(path.join(candidate, name));
+  assert.ok(info.isFile(), "Private candidate must contain only static tool files");
+  return info.size;
+}))).reduce((sum, bytes) => sum + bytes, 0);
+assert.equal(actualWasmMemoryLimits.length, 1);
+assert.equal(actualWasmMemoryLimits[0].initialPages * 65536, manifest.initialWasmMemoryBytes);
+assert.equal(actualWasmMemoryLimits[0].maximumPages * 65536, manifest.maximumWasmMemoryBytes);
 const disk = await statfs(root);
 assert.ok(disk.bavail * disk.bsize > 4 * 1024 ** 3, "Require 4 GiB of free repository disk space before generation");
 await mkdir(reportRoot, { recursive: true });
@@ -181,6 +196,9 @@ try {
   const debugPort = await waitFor(async () => Number((await readFile(path.join(profile, "DevToolsActivePort"), "utf8")).split(/\r?\n/)[0]), "Chrome");
   browser = await chromium.connectOverCDP(`http://127.0.0.1:${debugPort}`);
   chromeVersion = browser.version(); context = browser.contexts()[0]; page = context.pages()[0];
+  const debugVersion = await (await fetch(`http://127.0.0.1:${debugPort}/json/version`)).json();
+  // Attach diagnostics before blank baseline; their overhead is not hidden.
+  cdpRealmSampler = await connectRealmSampler(debugVersion.webSocketDebuggerUrl, url);
   // Trace collection is enabled before the blank baseline, not hidden from its measurement.
   await context.tracing.start({ screenshots: false, snapshots: false, sources: false });
   context.on("request", (request) => {
@@ -278,6 +296,7 @@ try {
 } finally {
   if (page && !page.isClosed()) await cleanOpfs().catch(() => {});
   await context?.tracing.stop({ path: `${reportBase}-trace.zip` }).catch(() => {});
+  cdpRealmSampler?.close();
   await browser?.close().catch(() => {}); await stopOwned(chrome); await stopOwned(server);
   if (staged) await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "restore", inputMode], { cwd: root, windowsHide: true });
   if (work) {
@@ -287,11 +306,11 @@ try {
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
   const report = { recordedAt: new Date().toISOString(), scope: "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
     status: failure ? "failed" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
-    asBuiltManifest: manifest, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,
     forbiddenRequests, browserLocalRequests, outOfOriginRequests, lastState, failure, publicProfilesChanged: false, protectedTestMkvUsed: false,
     cleanup: { repositoryLocalFixtureOutputsProfileAndTempRemoved: true, generatedDistRestored: staged,
-      retainedStaticToolBytes: 8294487, failureTraceRetained: Boolean(failure) } };
+      retainedStaticToolBytes: staticCandidateBytes, failureTraceRetained: Boolean(failure) } };
   await writeFile(`${reportBase}.json`, `${JSON.stringify(report, null, 2)}\n`, { flag: "wx" });
   await writeFile(`${reportBase}.csv`, "timestamp,phase,privateBytes,rssBytes,outputBytes,queuedBytes\n" + samples.map((sample) =>
     [sample.timestamp, sample.phase, sample.privateBytes ?? "", sample.rssBytes ?? "", sample.metrics?.outputBytes ?? "", sample.metrics?.queuedBytes ?? ""].join(",")).join("\n") + "\n", { flag: "wx" });

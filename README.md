@@ -800,7 +800,11 @@ H.264 encoding with validated timing, quality, audio and metadata on small
 fixtures and a 105 MB 720p fixture. It is **not published**: the formal
 whole-Chromium memory trials reached 268.43 and 269.17 MiB above stabilized
 blank baselines, exceeding the unchanged 250 MiB cap. One lower BYOB result
-did not repeat reliably. See
+did not repeat reliably. A fixed 32 MiB variant retained identical validated
+output across three runs, but the third reached 423.95 MiB, dominated by a new
+249.86 MiB Chromium utility process. That process is included in the total;
+its service is not yet identified and the candidate remains rejected. See
+[`evidence/h264-private-memory-32-2026-10-04.json`](evidence/h264-private-memory-32-2026-10-04.json),
 [`evidence/h264-private-memory-2026-10-04.json`](evidence/h264-private-memory-2026-10-04.json)
 and [`REMAINING_WORK.md`](REMAINING_WORK.md) for failures and remaining gates.
 

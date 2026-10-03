@@ -28,7 +28,41 @@ the actual engine memory against its as-built fixed-memory manifest.
 
 Current-source hash indexes were refreshed for these recipe/manifest edits;
 historical as-built manifests and their recorded 64 MiB failures remain intact.
-32 MiB build, encode correctness and memory/repetition are not yet proven.
+At dispatch, the 32 MiB build, encode and memory/repetition gates were unproven;
+the actual results below supersede that preparation checkpoint.
+Hosted non-Docker run `37155139021` at `08a9d8f` was dispatched explicitly with
+32 MiB and confirmed live. The profiler now has a bounded CDP isolate-heap
+sampler for accessible page and worker targets, attached before blank baseline.
+It reports JS allocated/used heap, embedder heap and backing storage separately
+from primary OS private memory. Timed-out queries stay single-flight until their
+actual reply; no unavailable field is converted to zero. Two unit tests and
+the complete 272-test unit suite passed before the run; browser diagnostic
+availability was subsequently proven by the retained results below.
+
+Run `37155139021` built successfully in 307 seconds; cleanup passed and both
+hosted artifacts were deleted (zero remain). Actual binary memory metadata
+proves one fixed shared memory of 512 initial/max pages (32 MiB), with no
+growth. The superseded 64 MiB local engine was deleted; the new static tool is
+8,294,487 bytes. Browser repeats now have actual available CDP worker heaps.
+
+The same 105 MB fixture converted three times with the **identical validated
+output hash** as the 64 MiB trials: 1,800 frames, exact timestamps/two AAC
+hashes, metadata/chapter, SSIM 0.987575. However, primary increments were
+**239.0, 192.5234375 and 423.9453125 MiB**, so this candidate is rejected too.
+`evidence/h264-private-memory-32-2026-10-04.json` preserves all evidence. The
+third peak was dominated by a newly appearing utility process at 249.855 MiB;
+the converter renderer was 161.363 MiB (less than the first-run 203.859 MiB),
+and its worker JS heap was 1.65 MB. Do not attribute this spike to the encoder
+or remove that process from the primary total. Its utility subtype was not
+retained by the initial sampler, so that precise service is not yet identified.
+OS samples now retain utility/service-sandbox subtype labels for the next
+targeted diagnostic. No rebuild or unchanged blind retry is needed.
+
+All generated media, temporary browser/profile/download copies and staged
+assets were cleaned; only compact failure reports/traces and the static private
+tool remain. Actual browser-job times were 28.204, 33.816 and 32.370 seconds.
+Cleanup returned to 10.5, 24.137 and 21.094 MiB above loaded idle. No public
+H.264 acceptance, memory scaling or fastest-speed claim is made.
 
 ## 2026-10-04 — H.264 formal 720p memory rejection and input-reader trial
 
