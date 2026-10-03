@@ -10,6 +10,8 @@ if (build !== path.join(root, "work/h264-candidate-build") ||
     output !== path.join(root, "work/h264-candidate-output")) throw new Error("Candidate paths escaped owned work directories.");
 const sha256 = async (file) => createHash("sha256").update(await readFile(file)).digest("hex");
 const components = await readFile(path.join(output, "config_components.h"), "utf8");
+const memoryMiB = Number(process.env.WITHIN_H264_MEMORY_MIB ?? "64");
+if (![32, 64].includes(memoryMiB)) throw new Error("Private H264 fixed memory must be 32 or 64 MiB");
 const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\\w+)_${kind} 1$`, "gm"))]
   .map((match) => match[1].toLowerCase()).sort();
 const manifest = {
@@ -34,7 +36,7 @@ const manifest = {
   enabledDecoders: enabled("DECODER"), enabledEncoders: enabled("ENCODER"),
   enabledDemuxers: enabled("DEMUXER"), enabledMuxers: enabled("MUXER"),
   enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
-  initialWasmMemoryBytes: 67108864, maximumWasmMemoryBytes: 67108864,
+  initialWasmMemoryBytes: memoryMiB * 1024 * 1024, maximumWasmMemoryBytes: memoryMiB * 1024 * 1024,
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
   avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,

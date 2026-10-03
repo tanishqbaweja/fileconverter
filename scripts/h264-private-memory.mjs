@@ -133,6 +133,9 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+assert.ok([32 * MiB, 64 * MiB].includes(manifest.maximumWasmMemoryBytes));
+assert.equal(manifest.initialWasmMemoryBytes, manifest.maximumWasmMemoryBytes);
+assert.equal(manifest.allowMemoryGrowth, false);
 const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "scripts/lib/private-browser-request.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
@@ -238,7 +241,7 @@ try {
     assert.equal(state?.jobState, "complete", state?.error ?? state?.phase);
     assert.ok(state.opfsName);
     const metrics = state.metrics;
-    assert.equal(metrics.peakWasmMemoryBytes, 64 * MiB);
+    assert.equal(metrics.peakWasmMemoryBytes, manifest.maximumWasmMemoryBytes);
     assert.ok(metrics.maxReadChunkBytes <= 256 * 1024 && metrics.maxWriteChunkBytes <= 256 * 1024);
     assert.ok(metrics.peakQueuedBytes <= 256 * 1024 && metrics.peakPendingOperations <= 1);
     assert.equal(metrics.queuedBytes, 0); assert.equal(metrics.pendingOperations, 0);

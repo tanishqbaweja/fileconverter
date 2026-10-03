@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
+case "${WITHIN_H264_MEMORY_MIB:-64}" in
+  32) H264_FIXED_MEMORY_BYTES=33554432 ;;
+  64) H264_FIXED_MEMORY_BYTES=67108864 ;;
+  *) printf 'Private H264 fixed memory must be 32 or 64 MiB.\n' >&2; exit 2 ;;
+esac
+export WITHIN_H264_MEMORY_MIB="${WITHIN_H264_MEMORY_MIB:-64}"
 
 # Experimental artifacts only; never writes public/engines or existing cores.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -101,7 +107,7 @@ emcc "${BUILD_ROOT}/within_h264.c" -I"${PREFIX}/include" \
   -O3 -flto -msimd128 -pthread --profiling-funcs --emit-symbol-map \
   -sPTHREAD_POOL_SIZE=0 -sPTHREAD_POOL_SIZE_STRICT=2 \
   -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=1048576 \
-  -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=67108864 -sMAXIMUM_MEMORY=67108864 \
+  -sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=${H264_FIXED_MEMORY_BYTES}" "-sMAXIMUM_MEMORY=${H264_FIXED_MEMORY_BYTES}" \
   -sSTACK_SIZE=1048576 -sMALLOC=emmalloc -sMODULARIZE=1 -sEXPORT_ES6=1 \
   -sENVIRONMENT=worker -sEXPORT_NAME=createWithinRemuxCore -sFILESYSTEM=0 \
   -sASSERTIONS=1 -sWASM_BIGINT=1 -sEXPORTED_FUNCTIONS='["_within_remux"]' \

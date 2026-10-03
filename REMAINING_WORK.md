@@ -15,6 +15,21 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — 32 MiB private H.264 candidate preparation
+
+Status: **Partially implemented under M-04; experiment, not acceptance**.
+The non-Docker recipe now accepts only fixed 32 or 64 MiB, with initial and
+maximum memory identical and growth disabled. The existing 64 MiB default
+remains reproducible; the hosted workflow can explicitly request 32 MiB. No
+encoder setting, codec, dimensions, frame rate, quality, native kernel or I/O
+bound was changed. This directly tests the known fixed Wasm commitment instead
+of raising the 250 MiB complete-Chromium limit. The browser profiler asserts
+the actual engine memory against its as-built fixed-memory manifest.
+
+Current-source hash indexes were refreshed for these recipe/manifest edits;
+historical as-built manifests and their recorded 64 MiB failures remain intact.
+32 MiB build, encode correctness and memory/repetition are not yet proven.
+
 ## 2026-10-04 — H.264 formal 720p memory rejection and input-reader trial
 
 Status: **Partially implemented under M-04; not accepted**. The private engine

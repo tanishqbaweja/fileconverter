@@ -19,6 +19,14 @@ on:
           - within-theora
           - within-aiff
           - within-h264-candidate
+      h264_memory_mib:
+        description: Fixed memory for the private H264 candidate only
+        required: false
+        default: '64'
+        type: choice
+        options:
+          - '32'
+          - '64'
 
 permissions:
   contents: read
@@ -61,7 +69,8 @@ jobs:
           source work/emsdk/emsdk_env.sh
           if test "${{ inputs.core }}" = within-h264-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
-            WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
+            WITHIN_H264_MEMORY_MIB="${{ inputs.h264_memory_mib || '64' }}" \
+              WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh
           fi

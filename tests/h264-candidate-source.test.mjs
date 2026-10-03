@@ -42,7 +42,10 @@ test("candidate recipe pins sources, fixed memory, no Docker, local caches and f
   const recipe = await readFile(path.join(root, "media/ffmpeg/build-h264-candidate.sh"), "utf8");
   assert.match(recipe, /652bdb7719f30b52b08e506645a7322ff1b2cc6f/);
   assert.match(recipe, /7a060916a9fcb63ba51d83a4f2388660c0b58797be547c4fa5c52e8d65660a85/);
-  assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=67108864 -sMAXIMUM_MEMORY=67108864/);
+  assert.match(recipe, /32\) H264_FIXED_MEMORY_BYTES=33554432/);
+  assert.match(recipe, /64\) H264_FIXED_MEMORY_BYTES=67108864/);
+  assert.match(recipe, /Private H264 fixed memory must be 32 or 64 MiB/);
+  assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=\$\{H264_FIXED_MEMORY_BYTES\}" "-sMAXIMUM_MEMORY=\$\{H264_FIXED_MEMORY_BYTES\}"/);
   assert.match(recipe, /-sFILESYSTEM=0/);
   assert.match(recipe, /export TMPDIR="\$\{BUILD_ROOT\}\/tmp"/);
   assert.match(recipe, /export EM_CACHE="\$\{BUILD_ROOT\}\/emscripten-cache"/);
