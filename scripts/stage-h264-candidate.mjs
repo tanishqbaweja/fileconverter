@@ -1,9 +1,10 @@
 import { createHash } from "node:crypto";
 import { copyFile, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { candidateDirectory } from "./lib/h264-candidate-selection.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
-const candidate = path.join(root, "work/h264-candidate-output");
+const candidate = candidateDirectory(root, process.argv[4]);
 const target = path.join(root, "dist/client/engines/remux");
 const published = path.join(root, "public/engines/remux");
 const digest = async (file) => createHash("sha256").update(await readFile(file)).digest("hex");

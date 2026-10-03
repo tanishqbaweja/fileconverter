@@ -30,9 +30,52 @@ and native wrapper used LTO. The default remains 0. The non-Docker workflow
 accepts the explicit choice, and the manifest records its actual scope. Codec
 settings, timing/dimension guards, fixed memory, threads, I/O, public binaries
 and registry are unchanged. Eight focused source/provenance tests pass.
-Native compilation and identical-input repeated browser speed/fidelity/memory
-comparison are pending. This is not an accepted optimization. No media,
-source download files or browser profiles were generated during source review.
+Non-Docker run `37159386013` at pushed `8256056` compiled the LTO variant in
+408 seconds and passed hosted cleanup. Its Wasm hash is
+`ea8bed87c9b59e81d99ce15e22275c261eb0180c069692f304e003d13a75aa59`;
+binary parsing confirms 512 initial/max shared pages (32 MiB). The static tool
+is 9,019,724 bytes. Only its 2.4 MB hosted artifact was downloaded; the 72 MB
+source bundle was not. Both hosted artifacts were deleted and zero remaining
+artifacts verified. The dimension-fixed baseline was recoverably moved to
+`work/h264-speed-baseline-37157670815` for controlled comparison.
+
+The same harness measured that baseline on the genuine 105,000,218-byte fixture:
+three validated outputs have exact historical hashes/AAC/timing/metadata and
+SSIM 0.987575. Job times are 27.011/24.663/27.442 seconds, whole-tree increments
+222.461/184.793/182.789 MiB; all three satisfy this narrow private gate. These
+new successful runs do not erase prior cold-session/model-startup failures or
+prove large-file scaling. Source recipe provenance is checked against exact
+pinned Git bytes when the historical recipe differs from current source.
+Baseline media/profile/temp were deleted and dist assets exactly restored;
+JSON/CSV/HTML retained in `outputs/reports/2026-10-03T22-44-50-485Z-private-h264-720p-memory.*`.
+The LTO comparison completed three genuine jobs in 28.555/26.524/28.403 seconds
+at 228.723/182.086/178.586 MiB incremental whole-tree private memory. All six
+baseline/candidate outputs are byte-identical (19,137,689 bytes), with the same
+1,800 frames, exact AAC/timing/metadata/chapter and SSIM 0.987575. Median job
+time increased from 27.011 to 28.403 seconds (5.15% slower in this paired trial);
+**LTO is not accepted as a speed optimization**, despite both narrow private
+gates passing. It remains opt-in/off by default, with no public engine change.
+`evidence/h264-library-lto-comparison-2026-10-04.json` retains both full raw
+reports and exact source/binary/build-log provenance; comparison tests prevent
+faster-but-failed-memory, missing-evidence or incomplete-repeat adoption.
+
+Both owned browser/profile/media/temp trees were deleted and four dist assets
+restored to published hashes. The baseline tool was restored to its original
+path. Exact-target shell deletion of the rejected 9,019,724-byte static LTO
+tool was blocked; it was recoverably moved to
+`work/h264-rejected-lto-37159386013`, with no alternative deletion mechanism.
+Together with the previously policy-blocked static baseline, the three tool
+directories contain 25,608,823 bytes and **zero converted-media bytes**. This
+cleanup limitation is explicit; deletion is not falsely claimed. Long-session
+startup overlap, direct success, multi-gigabyte scaling, fidelity/controls and
+other full release requirements remain open. Do not repeat unchanged LTO or
+low-complexity trials without a concrete new hypothesis.
+Final cycle regression passed 291/291 unit tests, lint, TypeScript, the unchanged
+405-profile/no-PDF manifest and exact restored-dist hashes. No owned conversion
+Chrome process remains. Next speed investigation should identify actual worker
+CPU hotspots and decoder/encoder/I/O costs before choosing another native build;
+do not infer an optimization from compiler flags or build duration alone.
+No media, source download files or browser profiles were generated during source review.
 Historical as-built manifests remain unchanged; only current-source indexes
 were refreshed for the opt-in recipe and manifest changes.
 

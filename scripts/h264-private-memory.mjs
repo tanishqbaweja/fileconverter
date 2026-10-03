@@ -13,10 +13,12 @@ import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
+import { candidateDirectory, verifyCandidateRecipe } from "./lib/h264-candidate-selection.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
-const candidate = path.join(root, "work/h264-candidate-output");
+const candidateName = process.env.WITHIN_H264_CANDIDATE_DIR ?? "h264-candidate-output";
+const candidate = candidateDirectory(root, candidateName);
 const reportRoot = path.join(root, "outputs/reports");
 const MiB = 1024 * 1024;
 const duration = 60, width = 1280, height = 720, fps = 30;
@@ -144,10 +146,12 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/wasm-memory-limits.mjs",
   "scripts/lib/private-browser-request.mjs",
   "scripts/lib/cdp-realm-memory.mjs",
+  "scripts/lib/h264-candidate-selection.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
-assert.equal(sourceHashes["media/ffmpeg/build-h264-candidate.sh"], manifest.buildRecipeSha256);
+const asBuiltRecipeVerification = await verifyCandidateRecipe(root, manifest.buildRecipeSha256,
+  sourceHashes["media/ffmpeg/build-h264-candidate.sh"]);
 for (const file of ["within-h264.mjs", "within-h264.wasm"]) assert.equal(await shaFile(path.join(candidate, file)), manifest.artifacts[file]);
 const actualWasmMemoryLimits = readWasmMemoryLimits(await readFile(path.join(candidate, "within-h264.wasm")));
 const staticCandidateBytes = (await Promise.all((await readdir(candidate)).map(async (name) => {
@@ -182,7 +186,7 @@ try {
   sourceEvidence = { bytes: (await stat(source)).size, sha256: await shaFile(source),
     probe: await probe(source), audioPacketHashes: await audioHashes(source), frameTimes: await frameTimes(source) };
   assert.equal(sourceEvidence.frameTimes.length, duration * fps);
-  await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "stage", inputMode], { cwd: root, windowsHide: true }); staged = true;
+  await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "stage", inputMode, candidateName], { cwd: root, windowsHide: true }); staged = true;
   const port = await freePort(), url = `http://127.0.0.1:${port}`;
   server = spawn(process.execPath, ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", "dist/server/wrangler.json", "--port", String(port)],
     { cwd: root, env: environment, windowsHide: true, stdio: "ignore" });
@@ -298,7 +302,7 @@ try {
   await context?.tracing.stop({ path: `${reportBase}-trace.zip` }).catch(() => {});
   cdpRealmSampler?.close();
   await browser?.close().catch(() => {}); await stopOwned(chrome); await stopOwned(server);
-  if (staged) await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "restore", inputMode], { cwd: root, windowsHide: true });
+  if (staged) await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "restore", inputMode, candidateName], { cwd: root, windowsHide: true });
   if (work) {
     assert.ok(path.dirname(work) === path.join(root, "work") && path.basename(work).startsWith("h264-memory-"));
     await rm(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
@@ -306,7 +310,7 @@ try {
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
   const report = { recordedAt: new Date().toISOString(), scope: "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
     status: failure ? "failed" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
-    asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+    candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,
     forbiddenRequests, browserLocalRequests, outOfOriginRequests, lastState, failure, publicProfilesChanged: false, protectedTestMkvUsed: false,
     cleanup: { repositoryLocalFixtureOutputsProfileAndTempRemoved: true, generatedDistRestored: staged,

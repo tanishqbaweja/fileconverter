@@ -822,6 +822,17 @@ ordinary timing/quality/audio regression still passes. This safety fix does not
 resolve the memory gate or publish H.264 encoding; see
 [`evidence/h264-dimension-fix-validation-2026-10-04.json`](evidence/h264-dimension-fix-validation-2026-10-04.json).
 
+The first controlled whole-library LTO speed experiment is **rejected**:
+three identical 105 MB/720p browser jobs per binary produced byte-identical
+outputs, but median job time increased from 27.011 to 28.403 seconds (5.15%
+slower in this trial). Both narrow three-run process-tree gates stayed under
+250 MiB; this does not erase earlier startup-overlap failures or certify
+multi-gigabyte H.264 encoding. Explicit low complexity was also rejected as a
+no-op because it is already the pinned encoder default. LTO remains private,
+opt-in and off by default. See
+[`evidence/h264-library-lto-comparison-2026-10-04.json`](evidence/h264-library-lto-comparison-2026-10-04.json)
+for exact settings, hashes, full measurements and cleanup limitations.
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or
