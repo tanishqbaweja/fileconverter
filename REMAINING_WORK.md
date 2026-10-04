@@ -60,6 +60,10 @@ All other original requirements and H.264 release gates remain open.
 Final cycle gates passed: 296/296 unit tests, lint, TypeScript, unchanged
 405-profile/no-PDF manifest, diff checks and 4/4 restored dist hashes. No owned
 conversion Chrome process remains. No speed improvement or public route is claimed.
+The final ledger regeneration initially hit a transient Windows `UNKNOWN`
+error opening `TESTED.md`. Read-only inspection confirmed a normal intact file;
+one subsequent regeneration succeeded. No conversion was restarted or evidence
+discarded for this bookkeeping failure.
 
 ## 2026-10-04 — H.264 speed-source review and opt-in library LTO
 
