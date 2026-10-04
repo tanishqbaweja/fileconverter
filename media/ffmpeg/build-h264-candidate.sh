@@ -12,6 +12,11 @@ case "${WITHIN_H264_LIBRARY_LTO:-0}" in
   *) printf 'Private H264 library LTO must be 0 or 1.\n' >&2; exit 2 ;;
 esac
 export WITHIN_H264_LIBRARY_LTO="${WITHIN_H264_LIBRARY_LTO:-0}"
+case "${WITHIN_H264_VAA_SIMD:-0}" in
+  0|1) ;;
+  *) printf 'Private H264 VAA SIMD must be 0 or 1.\n' >&2; exit 2 ;;
+esac
+export WITHIN_H264_VAA_SIMD="${WITHIN_H264_VAA_SIMD:-0}"
 
 # Experimental artifacts only; never writes public/engines or existing cores.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -66,6 +71,9 @@ tar -xf ffmpeg.tar.xz
 tar -xf openh264.tar.gz
 mv ffmpeg-8.1.2 ffmpeg
 mv openh264-652bdb7719f30b52b08e506645a7322ff1b2cc6f openh264
+if [[ "${WITHIN_H264_VAA_SIMD}" == 1 ]]; then
+  node "${PROJECT_ROOT}/scripts/apply-vaa-simd.mjs"
+fi
 # Refuse source drift before the narrowly scoped, typed virtual-call fix.
 printf '%s  %s\n' 4c86c9d87fdfb122f2892ca7984a0544877f99f43e4fe49eec9286021cef96eb \
   ffmpeg/libavcodec/libopenh264enc.c | sha256sum --check --strict
@@ -133,6 +141,15 @@ cp ffmpeg.tar.xz openh264.tar.gz within_h264.c "${SCRIPT_DIR}/h264-candidate.c" 
   "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${SCRIPT_DIR}/openh264-force-intra.cpp" \
   "${SCRIPT_DIR}/patches/openh264-force-intra-wasm.patch" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" source-bundle/
+if [[ "${WITHIN_H264_VAA_SIMD}" == 1 ]]; then
+  mkdir -p source-bundle/scripts/lib source-bundle/media/ffmpeg source-bundle/evidence
+  cp "${PROJECT_ROOT}/scripts/apply-vaa-simd.mjs" source-bundle/scripts/
+  cp "${PROJECT_ROOT}/scripts/lib/openh264-vaa-patch.mjs" \
+    "${PROJECT_ROOT}/scripts/lib/openh264-vaa-reference.mjs" source-bundle/scripts/lib/
+  cp "${SCRIPT_DIR}/openh264-vaa-simd.h" source-bundle/media/ffmpeg/
+  cp "${PROJECT_ROOT}/evidence/openh264-vaa-arithmetic-2026-10-04.json" source-bundle/evidence/
+  cp vaa-simd-patch.json source-bundle/
+fi
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

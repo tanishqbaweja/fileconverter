@@ -33,15 +33,26 @@
     "name": "Whole-library link-time optimization",
     "implementation": "Opt-in WITHIN_H264_LIBRARY_LTO=1 adds -flto to OpenH264 C/C++ and FFmpeg compile/link flags; the existing final link already uses -flto. Default remains 0.",
     "primaryReference": "https://emscripten.org/docs/optimizing/Optimizing-Code.html#lto",
-    "unchanged": ["Codec parameters", "Immutable dimensions guard", "Timestamp policy", "Quality thresholds", "Fixed memory", "Threads", "AVIO bounds", "Privacy", "Cancellation", "Public profiles and binaries"],
+    "unchanged": [
+      "Codec parameters",
+      "Immutable dimensions guard",
+      "Timestamp policy",
+      "Quality thresholds",
+      "Fixed memory",
+      "Threads",
+      "AVIO bounds",
+      "Privacy",
+      "Cancellation",
+      "Public profiles and binaries"
+    ],
     "requiredComparison": "Same genuine 105000218-byte 60s 1280x720/30fps input and codec settings; independently validate frames/timestamps/AAC/metadata/SSIM, complete-process memory and cleanup. Compare default against LTO with repeated runs. No public adoption without all original gates.",
     "runtimeVerified": false,
     "speedGainClaim": null
   },
   "currentSources": {
     "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
-    "media/ffmpeg/build-h264-candidate.sh": "edf0e10b2ae2533eb3fca55ceb33da590d9c06552533c4d9fce7d29678da830e",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "b195a06805089df7f35f5a637eac97da6831c59f96de9a0c0ee500b708b711a0"
+    "media/ffmpeg/build-h264-candidate.sh": "07098e9d689d1e9170c9cc259323d8e3e3876a242f2ffe05a95120391f06a3b0",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "03bea9c099f5df4c2746b5e0a38612d259b53cbdc398b721867a3c96dba0c850"
   },
   "publicProfilesChanged": false,
   "publicEnginesChanged": false,

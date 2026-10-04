@@ -841,7 +841,8 @@ diagnostic, not OS CPU utilization, a speed result or release acceptance.
 See [`evidence/h264-cpu-diagnostic-2026-10-04.json`](evidence/h264-cpu-diagnostic-2026-10-04.json).
 
 A separate private exact-result SIMD helper now targets that SAD/background
-hotspot. It is not enabled in a conversion build. The pinned no-Docker
+hotspot. It is now available behind the private, off-by-default
+`WITHIN_H264_VAA_SIMD=1` build option; production-browser A/B is pending. The pinned no-Docker
 arithmetic workflow passed 132,101 actual-Wasm cases against the exact upstream
 scalar function, including all byte pairs in two patterns, signed sums,
 stride/layout edges, overflow, canaries and a Wasm-end boundary. The initial

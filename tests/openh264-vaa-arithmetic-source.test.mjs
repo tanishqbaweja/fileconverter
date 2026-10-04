@@ -8,7 +8,7 @@ test("VAA arithmetic reference refuses source drift rather than comparing agains
   assert.throws(() => makeVaaReference(Buffer.alloc(19566)), /Pinned OpenH264/);
   assert.throws(() => makeVaaReference(Buffer.from("void VAACalcSadBgd_c () {}")), /Pinned OpenH264/);
 });
-test("private SIMD candidate preserves bounds, signed sums, traversal and explicit wrap without changing video builds", async () => {
+test("private SIMD candidate preserves bounds, signed sums, traversal and explicit wrap behind an off-by-default build option", async () => {
   const source = await readFile(new URL("../media/ffmpeg/openh264-vaa-simd.h", import.meta.url), "utf8");
   assert.match(source, /wasm_v128_load64_zero\(current\)/);
   assert.doesNotMatch(source, /wasm_v128_load\(/);
@@ -17,7 +17,9 @@ test("private SIMD candidate preserves bounds, signed sums, traversal and explic
   assert.match(source, /step = \(stride << 4\) - width/);
   assert.match(source, /memcpy\(frame_sad, &frame, sizeof\(frame\)\)/);
   const recipe = await readFile(new URL("../media/ffmpeg/build-h264-candidate.sh", import.meta.url), "utf8");
-  assert.doesNotMatch(recipe, /openh264-vaa-simd|WITHIN_H264_VAA_SIMD/);
+  assert.match(recipe, /export WITHIN_H264_VAA_SIMD="\$\{WITHIN_H264_VAA_SIMD:-0\}"/);
+  assert.match(recipe, /if \[\[ "\$\{WITHIN_H264_VAA_SIMD\}" == 1 \]\]; then/);
+  assert.match(recipe, /scripts\/apply-vaa-simd.mjs/);
 });
 test("arithmetic proof covers finite patterns honestly and owns compiler scratch with terminal cleanup", async () => {
   const script = await readFile(new URL("../scripts/verify-vaa-arithmetic.mjs", import.meta.url), "utf8");

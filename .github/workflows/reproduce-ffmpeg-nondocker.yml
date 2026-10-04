@@ -36,6 +36,14 @@ on:
         options:
           - '0'
           - '1'
+      h264_vaa_simd:
+        description: Exact-result private H264 VAA SIMD experiment only
+        required: false
+        default: '0'
+        type: choice
+        options:
+          - '0'
+          - '1'
 
 permissions:
   contents: read
@@ -85,6 +93,7 @@ jobs:
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_H264_MEMORY_MIB="${{ inputs.h264_memory_mib || '64' }}" \
               WITHIN_H264_LIBRARY_LTO="${{ inputs.h264_library_lto || '0' }}" \
+              WITHIN_H264_VAA_SIMD="${{ inputs.h264_vaa_simd || '0' }}" \
               WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh

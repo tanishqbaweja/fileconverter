@@ -15,6 +15,26 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 opt-in native VAA SIMD integration
+
+Status: **Partially implemented under M-04; native build and browser A/B pending**.
+`WITHIN_H264_VAA_SIMD=1` now applies the proven helper to the exact pinned
+OpenH264 `VAACalcSadBgd_c` body only. Default is 0. The applier verifies the
+complete upstream source and successful 132,101-case proof, checks the helper
+hash against the actually tested bytes, and refuses drift. Every other codec
+algorithm, encoder setting, thread count, fixed memory limit and AVIO bound
+is unchanged. The manifest records the flag, original/patched/helper hashes,
+proof and applier provenance. Corresponding source includes the helper,
+applier, verifier logic and compact arithmetic evidence.
+
+Historical executed reports/manifests are preserved; only latest-source hash
+indexes are refreshed. The next hosted build uses fixed 32 MiB memory,
+whole-library LTO off, and this SIMD option on. It must finish before the
+candidate is staged. Identical-input/default-setting browser tests require
+three jobs per binary, independent content/timing/audio validation, strict
+whole-Chromium <=250 MiB measurements, bounded queues and final cleanup.
+No speed gain, new public route or original-goal completion is claimed.
+
 ## 2026-10-04 — H.264 exact-result SIMD arithmetic candidate
 
 Status: **Partially implemented under M-04; compiled arithmetic proof passed**.

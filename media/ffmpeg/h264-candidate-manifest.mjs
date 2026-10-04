@@ -14,6 +14,9 @@ const memoryMiB = Number(process.env.WITHIN_H264_MEMORY_MIB ?? "64");
 if (![32, 64].includes(memoryMiB)) throw new Error("Private H264 fixed memory must be 32 or 64 MiB");
 const libraryLto = process.env.WITHIN_H264_LIBRARY_LTO ?? "0";
 if (!["0", "1"].includes(libraryLto)) throw new Error("Private H264 library LTO must be 0 or 1");
+const vaaSimd = process.env.WITHIN_H264_VAA_SIMD ?? "0";
+if (!["0", "1"].includes(vaaSimd)) throw new Error("Private H264 VAA SIMD must be 0 or 1");
+const vaaPatch = vaaSimd === "1" ? JSON.parse(await readFile(path.join(build, "vaa-simd-patch.json"), "utf8")) : null;
 const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\\w+)_${kind} 1$`, "gm"))]
   .map((match) => match[1].toLowerCase()).sort();
 const manifest = {
@@ -25,6 +28,8 @@ const manifest = {
   openh264SourceSha256: await sha256(path.join(build, "openh264.tar.gz")),
   emscriptenVersion: "6.0.4",
   libraryLinkTimeOptimization: libraryLto === "1",
+  openh264VaaSimd: vaaSimd === "1",
+  openh264VaaSimdProvenance: vaaPatch,
   libraryOptimizationScope: libraryLto === "1" ? "FFmpeg and OpenH264 objects plus existing final-link LTO" : "Existing final-link LTO only; libraries use Wasm objects",
   currentAvioWrapperSourceSha256: await sha256(path.join(root, "media/ffmpeg/within_remux.c")),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_h264.c")),
