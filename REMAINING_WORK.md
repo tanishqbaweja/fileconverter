@@ -15,6 +15,35 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 exact-result SIMD arithmetic candidate
+
+Status: **Partially implemented under M-04; arithmetic verification pending**.
+The measured `VAACalcSadBgd_c` hotspot now has a separate private SIMD helper.
+It retains all four 8x8 SAD, signed-difference and maximum-difference results,
+macroblock traversal (including the pinned non-aligned-width behavior), and
+exact eight-byte row loads. It allocates no frame buffer, changes no codec
+setting, and is not enabled in any conversion build or public profile.
+
+The no-Docker arithmetic workflow uses pinned Emscripten 6.0.4. Its oracle
+extracts the exact original scalar function after verifying the complete
+19,566-byte upstream source SHA-256; it retains the upstream license rather
+than using a handwritten scalar approximation. Planned actual-Wasm checks
+cover all 65,536 byte pairs in uniform and mixed-sign patterns, individual
+quadrant/lane spikes, random strides/alignments/dimensions, maximum-size frame
+sum overflow, output canaries, input immutability, and a source ending exactly
+at the Wasm memory boundary. This is exhaustive byte-pair coverage, not every
+possible frame. Signed-overflow comparison applies to the actual pinned
+compiled scalar, not a claim of portable C++ overflow semantics.
+
+Three focused source/guard tests and JavaScript/Bash syntax checks pass.
+Compiled arithmetic results are still pending; no speed gain, production
+fidelity, converter memory acceptance, or public H.264 support is claimed.
+Compiler/source/module scratch stays in a dedicated repository-local build
+directory and is removed on success or failure; only compact JSON is retained.
+Next require arithmetic equality, then wire an opt-in private conversion
+build and measure identical-settings production-browser A/B. The full original
+goal and all previously recorded release gates remain open.
+
 ## 2026-10-04 — H.264 bounded worker CPU diagnosis
 
 Status: **Partially implemented under M-04; measured hotspot, not optimization**.

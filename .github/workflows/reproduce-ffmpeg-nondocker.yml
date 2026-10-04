@@ -19,6 +19,7 @@ on:
           - within-theora
           - within-aiff
           - within-h264-candidate
+          - within-h264-vaa-arithmetic
       h264_memory_mib:
         description: Fixed memory for the private H264 candidate only
         required: false
@@ -60,6 +61,8 @@ jobs:
       - name: Install pinned Emscripten SDK without Docker
         shell: bash
         run: |
+          mkdir -p work/sdk-tmp
+          export TMPDIR="$GITHUB_WORKSPACE/work/sdk-tmp"
           git clone --filter=blob:none --no-checkout \
             https://github.com/emscripten-core/emsdk.git work/emsdk
           git -C work/emsdk checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
@@ -75,7 +78,10 @@ jobs:
           WITHIN_BUILD_CORE_FILTER: ${{ inputs.core }}
         run: |
           source work/emsdk/emsdk_env.sh
-          if test "${{ inputs.core }}" = within-h264-candidate; then
+          if test "${{ inputs.core }}" = within-h264-vaa-arithmetic; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            bash media/ffmpeg/verify-vaa-arithmetic.sh
+          elif test "${{ inputs.core }}" = within-h264-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_H264_MEMORY_MIB="${{ inputs.h264_memory_mib || '64' }}" \
               WITHIN_H264_LIBRARY_LTO="${{ inputs.h264_library_lto || '0' }}" \
@@ -110,8 +116,17 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Retain private arithmetic report only
+        if: always() && inputs.core == 'within-h264-vaa-arithmetic'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-vaa-arithmetic-${{ github.run_id }}
+          path: outputs/reports/vaa-arithmetic.json
+          if-no-files-found: warn
+          retention-days: 1
+
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure() && inputs.core != 'within-h264-candidate'
+        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-h264-vaa-arithmetic'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
@@ -133,11 +148,12 @@ jobs:
           fi
           rm -rf -- \
             "$GITHUB_WORKSPACE/work/emsdk" \
+            "$GITHUB_WORKSPACE/work/sdk-tmp" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
-          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output"; do
+          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output" "$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build"; do
             case "$task_path" in
-              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output") ;;
+              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output"|"$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build") ;;
               *) exit 2 ;;
             esac
             rm -rf -- "$task_path"

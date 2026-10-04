@@ -840,6 +840,13 @@ conversion still matches the baseline output exactly; sampling is a partial
 diagnostic, not OS CPU utilization, a speed result or release acceptance.
 See [`evidence/h264-cpu-diagnostic-2026-10-04.json`](evidence/h264-cpu-diagnostic-2026-10-04.json).
 
+A separate private exact-result SIMD helper now targets that SAD/background
+hotspot. It is not enabled in a conversion build. The pinned no-Docker
+arithmetic workflow first compares actual compiled Wasm against the exact
+upstream scalar function, including all byte pairs, signed sums, stride/layout
+edges, overflow, canaries and a Wasm-end boundary. Arithmetic equality is a
+prerequisite, not a file-conversion speed, memory or release result.
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or
