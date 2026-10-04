@@ -1,0 +1,95 @@
+{
+  "recordedAt": "2026-10-05",
+  "status": "partial-private-correctness-protected-failed",
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "dockerUsed": false,
+  "candidate": {
+    "wasmBytes": 33554432,
+    "wasmSha256": "ca9d1318888281253af81364961e1546fb35ed4bc54b4eb84edc2e4f203dd7ab",
+    "javascriptSha256": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+    "publicEnginesChanged": false
+  },
+  "controls": {
+    "testsPassed": 2,
+    "suiteSeconds": 10.3,
+    "rawReport": "output/playwright/2026-10-04T22-04-44.018Z-mpeg2-candidate-output-controls.json",
+    "rawBytes": 44751,
+    "rawSha256": "bbb35c0fcdf099a9c3d80daee6280542b4bc14dbb291e10250faab3af6357110",
+    "source": { "bytes": 869126, "codec": "mpeg4", "width": 640, "height": 360, "fps": 24 },
+    "requested": { "width": 320, "bitRateBps": 2000000, "fps": 15, "quality": "higher" },
+    "output": {
+      "bytes": 209838,
+      "sha256": "df57d9aff065cc9e1c40e846dbd8261cbca90054391273f27ca95da70c1033d4",
+      "codec": "mpeg2video",
+      "width": 320,
+      "height": 180,
+      "frames": 30,
+      "fps": 15,
+      "elapsedMs": 522.675,
+      "ordinalSsim": 0.996871,
+      "fullNativeDecodePassed": true,
+      "bothAacPacketHashesPreserved": true,
+      "unicodeTitleLanguagesChapterPreserved": true
+    },
+    "injectedWriteFailurePassed": true,
+    "primaryMemoryAcceptance": false,
+    "speedAbAcceptance": false,
+    "firstRejectedAdapter": {
+      "incorrectCodecCode": 1,
+      "correctProductionMpeg4Code": 3,
+      "inputBytes": 0,
+      "outputBytes": 0,
+      "errorCode": -28,
+      "rawReport": "output/playwright/2026-10-04T22-02-27.063Z-mpeg2-candidate-output-controls.json",
+      "rawSha256": "01b07a56e9a386c9fba8346087c048e482a8e76054e8f6605f5f50e060484521",
+      "change": "Correct private adapter alias only; unchanged binary, controls, thresholds and source fixture recipe"
+    }
+  },
+  "protectedGate": {
+    "status": "failed",
+    "rawReport": "outputs/reports/2026-10-04T22-11-44-648Z-private-mpeg2-protected-direct-native-100ms.json",
+    "rawBytes": 344614,
+    "rawSha256": "a376eec1de995d21b4ae6b2f1266f5ccdef8e82ab8b95f9b22ba52fe71b2e018",
+    "browser": "154.0.8037.93",
+    "source": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "codec": "hevc",
+      "width": 1920,
+      "height": 804,
+      "fps": 24,
+      "seconds": 12340.096,
+      "otherStreams": ["HE-AAC 5.1 Hindi", "SubRip English", "PNG attached picture"]
+    },
+    "inputBytes": 353857,
+    "outputBytes": 0,
+    "requestedRepeats": 3,
+    "successfulRepeats": 0,
+    "blankPrivateBytes": 245018624,
+    "loadedIdlePrivateBytes": 309370880,
+    "wholeTreeConversionPeakPrivateBytes": 441597952,
+    "incrementalPrivateMiB": 187.47265625,
+    "limitMiB": 250,
+    "nativeAcquisitionIntervalMs": 100,
+    "nativeConversionValidSamples": 19,
+    "nativeConversionUnavailableSamples": 0,
+    "error": "PNG attachment parameters have unspecified size; MP4 dimensions not set; MPEG-2 candidate failed: Invalid argument",
+    "diagnosisScope": "Observed header/attachment failure, not demonstrated heap exhaustion; no accepted output or large-conversion memory certification",
+    "executedSources": {
+      "scripts/mpeg2-protected-memory.mjs": "14f1d77995b9596dbec15275f932b9fc623b10c3af40ae3f15b5080fdbe71f7f",
+      "scripts/stage-mpeg2-large-candidate.mjs": "5130994d3362d136e98a434a60e1427c89e51ca479f2e8235b0239ae4dfa0a9a"
+    },
+    "cleanup": {
+      "runtimeRemoved": true,
+      "sixDistAssetsRestored": true,
+      "ownedChromeServerObserverStopped": true,
+      "protectedFixtureUnchanged": true,
+      "independentPostchecksPassed": true
+    }
+  },
+  "regression": { "unitPassed": 385, "unitFailed": 0, "changedSourceEslintPassed": true, "typescriptPassed": true },
+  "pending": ["Bounded attached-picture parameter fix", "Protected fixture complete genuine re-encode", "Three repeats and clean sessions", "Full large-output fidelity and metadata", "Scaling approaching 10 GB", "Same-setting speed A/B", "Reproducibility/legal/public gates"],
+  "retention": "Compact evidence tracked; diagnostic raw reports/traces retained locally, not uploaded. Generated media/profile/runtime removed; reusable static candidate retained. Previously policy-blocked cleanup paths untouched."
+}

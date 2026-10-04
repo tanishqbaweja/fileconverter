@@ -5,6 +5,56 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-05 — MPEG-2 controls gate, adapter failure diagnosed
+
+Status: **Partially implemented under M-04/M-05**. Previous turn was progress:
+native compile and genuine small MPEG-2 browser outputs were retained/pushed at
+`9d46dff`. Both objectives reread, clean worktree and protected fixture rechecked.
+No unchanged old codec/remux retry, no native rebuild or public promotion.
+
+Separate control adapter/test preserves the executed small-gate sources and
+uses the production scalar controls for requested 320-pixel width, 2 Mbit/s,
+15 fps and higher quality on a genuine 640x360/24fps source. First run failed
+before any input/output or Wasm progress, code -28: the test adapter incorrectly
+assumed production MPEG4 codec code **1**, but `videoCodecCode` defines **3**
+(1 is VP8). The private kernel correctly rejects a nonzero encoder-selector
+sentinel; this is an adapter error, not codec/memory acceptance. The separate
+write-failure case passed. Both per-worker raw reports and failure artifacts
+are retained, generated media removed and dist/scratch restored/absent.
+
+Changed adapter now aliases only exact code 3, without changing requested
+scalar options, quality, output codec, native heap or limits. Focused source
+regression binds the mapping to the production codec function. Identical
+requested-control retest passed **2/2 in 10.3 seconds**, including injected
+write failure. Genuine MPEG-2 output is 320x180, 30 frames at 15 fps,
+209,838 bytes; ordinal SSIM **0.996871**, independent full decode and both
+exact AAC packet hashes passed. This is small correctness, not a speed A/B
+or primary process-memory certification. No failed record is overwritten. Protected
+`test.mkv` remains exactly 2,958,573,265 bytes/SHA31f36695... and is 1920x804,
+24fps HEVC with 5.1 HE-AAC/SubRip/PNG art, 12,340.096 seconds. Its full original
+resolution/timeline will be used for the new large gate, not a cropped source
+or implicit resize. Goal remains active.
+
+The full original protected fixture was subsequently exercised through the
+production browser input/direct selected-handle pipeline, with a fixed
+32 MiB candidate and native 100-ms whole-Chromium-tree sampling. It **failed**
+after 353,857 input bytes and **zero output bytes**: bounded probing could not
+determine PNG attached-art dimensions, and MP4 header creation returned
+"dimensions not set" / Invalid argument. This is not an observed heap OOM.
+SubRip exclusion was disclosed. Early stable blank was 233.668 MiB, loaded
+idle 295.039 MiB, and the incomplete conversion peak increment was 187.473
+MiB; none constitutes accepted large-file conversion or memory certification.
+Three repeats, clean sessions, full output validation and scaling remain pending.
+Do not rerun the unchanged failing candidate. Next diagnosis is bounded
+attached-picture parameter preservation, followed by a genuinely changed test.
+
+All five cleanup flags passed. Independently checked own Chrome/server/observer
+PIDs absent, unique runtime directory absent, six generated dist assets exactly
+restored, protected fixture size/hash unchanged. Compact record:
+`evidence/mpeg2-controls-and-protected-failure-2026-10-05.json`.
+Current unit suite **385/385**, changed-source ESLint and TypeScript pass.
+No Docker, no public route promotion, no full-goal completion claim.
+
 ## 2026-10-05 — Fresh MPEG-2 encoder candidate, source gates
 
 Status: **Partially implemented under M-04; private native compile and browser
