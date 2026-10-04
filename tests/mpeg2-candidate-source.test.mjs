@@ -28,6 +28,15 @@ test("private MPEG2 generator uses unchanged bounded AVIO and refuses existing/p
     assert.match(generated, /coded_side_data/);
     assert.match(generated, /max_index_size = 32 \* 1024/);
     assert.match(generated, /bounded_no_cues/);
+    const original = await source("within_remux.c");
+    const headerReader = original.slice(original.indexOf("static uint16_t artwork_read_be16("),
+      original.indexOf("static int bounded_audio_artwork_stream(const AVStream *stream) {"));
+    assert.ok(generated.includes(headerReader), "reuse audited header reader byte-for-byte");
+    assert.match(generated, /audio_artwork_dimensions\(source, &width, &height\)/);
+    assert.match(generated, /destination->codecpar->width = width/);
+    assert.match(generated, /destination->codecpar->height = height/);
+    assert.match(generated, /refusing silent exclusion/);
+    assert.match(generated, /"encoder", "Within FFmpeg MPEG-2"/);
     assert.equal((generated.match(/EMSCRIPTEN_KEEPALIVE/g) ?? []).length, 1);
     assert.equal(createHash("sha256").update(await source("within_remux.c")).digest("hex"),
       "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");

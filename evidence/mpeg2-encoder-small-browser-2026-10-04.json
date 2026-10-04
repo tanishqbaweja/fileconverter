@@ -376,7 +376,7 @@
     "scripts/stage-mpeg2-candidate.mjs": "2925334d2d2dd1d66daa4e4c62f9ab0b04b309ec6e39c55757d05025ca027614",
     "scripts/validate-mpeg2-small.mjs": "c36d4057de55c5fcb96956dcabbee31d54edf454bf21b50dd696d6d130154f8f",
     "tests/browser/mpeg2-candidate.spec.ts": "33390249295e8c986420f037bf6a03e915eb2744b4a51bd59d54c36dd13f55aa",
-    "tests/mpeg2-candidate-source.test.mjs": "7b986ae92a7f9943cf8c3a7460397686008bbba21c12608730b85e41304d2e92",
+    "tests/mpeg2-candidate-source.test.mjs": "a039dded739a40be9a3a013bd399c9f7e5d4643031431d239a7f405aecfba341",
     ".github/workflows/reproduce-ffmpeg-nondocker.yml": "500143455d6455ba446ed552410c6196cbda65b95112285d29585fc6e49f570a"
   },
   "manifest": {

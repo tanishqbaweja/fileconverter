@@ -7,6 +7,20 @@ not the entire product specification.
 
 ## 2026-10-05 — MPEG-2 controls gate, adapter failure diagnosed
 
+Continuation after pushed `1eb7479` is progress, not an unchanged retry.
+The private generator now includes the exact JPEG/PNG header reader from the
+hash-pinned audited core. It fills attached-picture dimensions from compressed
+attachment headers before mux creation, without image decoding, new file reads,
+larger probing/heap or media exclusion. Invalid/unbounded dimensions refuse
+explicitly. Freshly encoded video now has its own encoder tag, preserving the
+original tag separately rather than mislabeling MPEG-2 as source MPEG-4.
+New dedicated browser artwork suite compares compressed PNG hashes/dimensions,
+real MPEG-2 codec, audio, timestamps, quality, metadata and cleanup. Native
+rebuild/browser execution pending. Source gates 4/4 after one diagnosed
+generator-boundary failure (forward declaration mistaken for definition).
+Old executed evidence remains frozen; only its current unit-source maintenance
+hash updated. Public modules unchanged, full objective still incomplete.
+
 Status: **Partially implemented under M-04/M-05**. Previous turn was progress:
 native compile and genuine small MPEG-2 browser outputs were retained/pushed at
 `9d46dff`. Both objectives reread, clean worktree and protected fixture rechecked.

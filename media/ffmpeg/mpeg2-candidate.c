@@ -1,5 +1,5 @@
 /* Private feasibility kernel, not a published conversion profile. The audited
- * AVIO bridge is prepended by make-h264-candidate.mjs. No filesystem or native
+ * AVIO bridge is prepended by make-mpeg2-candidate.mjs. No filesystem or native
  * helper is used during conversion. */
 #define MPEG2_MAX_STREAMS 32
 #define MPEG2_MAX_CHAPTERS 1024
@@ -305,6 +305,21 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
     map[i] = destination->index;
     result = avcodec_parameters_copy(destination->codecpar, parameters);
     if (result < 0) goto cleanup;
+    if (source->disposition & AV_DISPOSITION_ATTACHED_PIC) {
+      // Without a PNG decoder, bounded stream probing may leave dimensions
+      // unset. Read only the already-demuxed attachment's audited header,
+      // preserve compressed bytes and refuse malformed metadata explicitly.
+      int width = 0, height = 0;
+      if (!audio_artwork_dimensions(source, &width, &height) ||
+          width > WITHIN_ARTWORK_MAX_DIMENSION ||
+          height > WITHIN_ARTWORK_MAX_DIMENSION ||
+          (int64_t)width * height > WITHIN_ARTWORK_MAX_PIXELS) {
+        within_message(2, "Attached-picture dimensions are invalid or exceed the bounded artwork limits; refusing silent exclusion.");
+        result = AVERROR_INVALIDDATA; goto cleanup;
+      }
+      destination->codecpar->width = width;
+      destination->codecpar->height = height;
+    }
     if ((int)i == video) {
       // Preserve display matrices and other stream-side data from the source.
       result = avcodec_parameters_from_context(destination->codecpar, p.encoder);
@@ -331,6 +346,16 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
     destination->disposition = source->disposition;
     result = av_dict_copy(&destination->metadata, source->metadata, 0);
     if (result < 0) goto cleanup;
+    if ((int)i == video) {
+      // The original encoder tag must not misidentify freshly encoded video.
+      const AVDictionaryEntry *source_encoder = av_dict_get(source->metadata, "encoder", NULL, 0);
+      if (source_encoder) {
+        result = av_dict_set(&destination->metadata, "source_encoder", source_encoder->value, 0);
+        if (result < 0) goto cleanup;
+      }
+      result = av_dict_set(&destination->metadata, "encoder", "Within FFmpeg MPEG-2", 0);
+      if (result < 0) goto cleanup;
+    }
     if (source->disposition & AV_DISPOSITION_ATTACHED_PIC) {
       result = av_packet_ref(&destination->attached_pic, &source->attached_pic);
       if (result < 0) goto cleanup;
