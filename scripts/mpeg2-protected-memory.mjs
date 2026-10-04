@@ -231,6 +231,9 @@ try {
     assert.equal(metrics.pendingOperations, 0); assert.equal(metrics.queuedBytes, 0);
     const output = await outputPayload(metrics.outputBytes), after = await probe(output, true);
     const video = after.streams.find((s) => s.codec_type === "video");
+    assert.ok(after.streams.every((s) => Boolean(s.codec_name)), "No unknown/empty output tracks");
+    assert.equal(after.streams.filter((s) => s.codec_type === "video" && !s.disposition?.attached_pic).length,
+      sourceProbe.streams.filter((s) => s.codec_type === "video" && !s.disposition?.attached_pic).length);
     assert.equal(video.codec_name, "mpeg2video"); assert.equal(video.width, 1920); assert.equal(video.height, 804);
     const originalVideo = sourceProbe.streams.find((s) => s.codec_type === "video" && !s.disposition?.attached_pic);
     for (const field of ["sample_aspect_ratio", "display_aspect_ratio", "color_range",

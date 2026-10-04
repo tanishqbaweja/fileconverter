@@ -48,7 +48,7 @@ async function probe(file: string) {
   const { stdout } = await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], "ffprobe");
   return JSON.parse(stdout) as {
     streams: Array<{
-      codec_type: string; codec_name: string; width?: number; height?: number;
+      index: number; codec_type: string; codec_name: string; width?: number; height?: number;
       nb_read_frames?: string; tags?: Record<string, string>; disposition?: { attached_pic: number };
     }>;
     format: { duration: string; tags: Record<string, string> };
@@ -294,14 +294,17 @@ for (const adapter of adapters) {
       expect(Number(afterVideo.nb_read_frames)).toBe(48);
       const inputArt = before.streams.find((s) => s.disposition?.attached_pic);
       const outputArt = after.streams.find((s) => s.disposition?.attached_pic);
+      expect(after.streams.filter((s) => s.disposition?.attached_pic)).toHaveLength(1);
+      expect(after.streams.filter((s) => s.codec_type === "video" && !s.disposition?.attached_pic)).toHaveLength(1);
+      expect(after.streams.every((s) => Boolean(s.codec_name)), "No undeclared empty/unknown tracks").toBe(true);
       expect(inputArt?.codec_name).toBe("png");
       expect(outputArt?.codec_name).toBe("png");
       expect(outputArt?.width).toBe(250); expect(outputArt?.height).toBe(140);
-      const compressedArtworkHash = async (file: string) => (await native([
-        "-v", "error", "-i", file, "-map", "0:v:1", "-c", "copy", "-f", "hash",
+      const compressedArtworkHash = async (file: string, index: number) => (await native([
+        "-v", "error", "-i", file, "-map", `0:${index}`, "-c", "copy", "-f", "hash",
         "-hash", "sha256", "pipe:1"])).stdout.trim();
-      const originalArtworkHash = await compressedArtworkHash(source);
-      expect(await compressedArtworkHash(output)).toBe(originalArtworkHash);
+      const originalArtworkHash = await compressedArtworkHash(source, inputArt!.index);
+      expect(await compressedArtworkHash(output, outputArt!.index)).toBe(originalArtworkHash);
       expect(afterVideo.tags?.encoder).toBe("Within FFmpeg MPEG-2");
       rows.push({ kind: "attached-picture-preservation", status: "passed",
         inputArt, outputArt, compressedArtworkHash: originalArtworkHash,

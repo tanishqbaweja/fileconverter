@@ -21,17 +21,20 @@ try {
   await mkdir(path.join(runtime.directory, "libavformat"));
   await writeFile(path.join(runtime.directory, "libavformat/movenc.c"), data, { flag: "wx" });
   const directory = path.relative(root, runtime.directory).replaceAll(path.sep, "/");
-  await exec("git", ["apply", "--check", "--directory", directory,
-    "media/ffmpeg/patches/mov-bounded-custom-metadata.patch"],
-  { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000 });
-  // Also use the same GNU patch implementation/zero-fuzz gate as hosted Linux.
+  // Check/apply the exact sequence to this owned source artifact only, using
+  // the same GNU implementation and zero-fuzz gate as the hosted build.
   const bash = process.platform === "win32" ? "D:/Program Files/Git/bin/bash.exe" : "bash";
-  const patchPath = path.join(root, "media/ffmpeg/patches/mov-bounded-custom-metadata.patch")
-    .replaceAll("\\", "/");
-  const { stdout } = await exec(bash, ["--noprofile", "--norc", "-c",
-    'patch --dry-run --fuzz=0 --strip=1 --input "$1"', "patch-check", patchPath],
-  { cwd: runtime.directory, env: runtime.env, windowsHide: true, timeout: 30000 });
-  process.stdout.write(`${stdout}Pinned mov patch passes git and GNU zero-fuzz dry runs.\n`);
+  for (const name of ["mov-fragmented-cover-metadata-only.patch", "mov-bounded-custom-metadata.patch"]) {
+    const relative = `media/ffmpeg/patches/${name}`;
+    await exec("git", ["apply", "--check", "--directory", directory, relative],
+      { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000 });
+    const patchPath = path.join(root, relative).replaceAll("\\", "/");
+    const { stdout } = await exec(bash, ["--noprofile", "--norc", "-c",
+      'patch --fuzz=0 --strip=1 --input "$1"', "patch-check", patchPath],
+    { cwd: runtime.directory, env: runtime.env, windowsHide: true, timeout: 30000 });
+    process.stdout.write(stdout);
+  }
+  process.stdout.write("Pinned mov patch sequence passes git checks and GNU zero-fuzz application.\n");
 } finally {
   await runtime.close();
   await assert.rejects(access(runtime.directory), { code: "ENOENT" });

@@ -22,7 +22,7 @@ if (ffmpegSourceSha256 !== "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb408223174
 }
 const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidate.mjs",
   "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
-  "patches/mov-bounded-custom-metadata.patch"];
+  "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch"];
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",

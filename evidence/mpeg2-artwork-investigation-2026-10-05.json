@@ -208,5 +208,289 @@
     "eslintPassed": true,
     "typescriptPassed": true,
     "bashSyntaxPassed": true
+  },
+  "followup": {
+    "recordedAt": "2026-10-05",
+    "run": {
+      "id": 37240916978,
+      "headSha": "32aa5bd972a45fe837faff89460619109061fd9d",
+      "conclusion": "success",
+      "compileSeconds": 291
+    },
+    "manifest": {
+      "status": "private-feasibility-candidate-not-certified-not-public",
+      "ffmpegVersion": "8.1.2",
+      "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+      "emscriptenVersion": "6.0.4",
+      "sources": {
+        "within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+        "mpeg2-candidate.c": "407453956e7d44986da016a72e071a75d0c69063a9ad15862b08aedfd877600e",
+        "make-mpeg2-candidate.mjs": "d8f279333e820166491cff834beae52c91723f4f74b8ad604097accf0e1dac20",
+        "build-mpeg2-candidate.sh": "b5557f17acd6e28bad798981da66fed6037ff408d0fcde2f08022086866bf4b8",
+        "mpeg2-candidate-manifest.mjs": "e5fa0b7fee5390f4f4adad80a7d7cfc510ae584d09a4b11ddda00c2d8a95b24a",
+        "patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+        "patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff"
+      },
+      "generatedWrapperSourceSha256": "3412ae6fe4b20e43d7ac6f1cde7ad31e93dbb6ce4244ef23d837c44f6f8b5e2c",
+      "artifacts": {
+        "within-mpeg2.mjs": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+        "within-mpeg2.wasm": "00db9533862393f6591872dfed1a9df850f42054a1ce5b856d04ad00688719b3"
+      },
+      "enabledDecoders": [
+        "h263",
+        "h264",
+        "hevc",
+        "mpeg2video",
+        "mpeg4",
+        "theora",
+        "vp3",
+        "vp8",
+        "vp9"
+      ],
+      "enabledEncoders": [
+        "mpeg2video"
+      ],
+      "enabledDemuxers": [
+        "avi",
+        "flv",
+        "h264",
+        "ivf",
+        "m4v",
+        "matroska",
+        "mov",
+        "mpegts",
+        "mpegvideo",
+        "ogg"
+      ],
+      "enabledMuxers": [
+        "matroska",
+        "mov",
+        "mp4"
+      ],
+      "enabledParsers": [
+        "aac",
+        "ac3",
+        "flac",
+        "h264",
+        "hevc",
+        "mpeg4video",
+        "mpegaudio",
+        "mpegvideo",
+        "opus",
+        "vorbis",
+        "vp8",
+        "vp9"
+      ],
+      "enabledBitstreamFilters": [
+        "aac_adtstoasc",
+        "extract_extradata",
+        "h264_mp4toannexb",
+        "hevc_mp4toannexb",
+        "pgs_frame_merge",
+        "vp9_superframe",
+        "vp9_superframe_split"
+      ],
+      "initialWasmMemoryBytes": 33554432,
+      "maximumWasmMemoryBytes": 33554432,
+      "allowMemoryGrowth": false,
+      "codecThreads": 1,
+      "pthreadPoolSize": 0,
+      "avioInputBufferBytes": 262144,
+      "avioOutputBufferBytes": 262144,
+      "maximumStreams": 32,
+      "maximumChapters": 1024,
+      "maximumAttachmentBytes": 8388608,
+      "maximumMetadataEntries": 4096,
+      "maximumMetadataTextBytes": 2097152,
+      "mp4Metadata": "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",
+      "genericDemuxIndexHintBytesPerStream": 32768,
+      "demuxIndexBudgetScope": "Generic indexes honoring the hint, not a universal backing-allocation bound",
+      "primaryVideo": "genuine decoding and MPEG-2 encoding; no automatic resizing",
+      "secondaryStreams": "compatible packet copying; incompatible streams explicitly disclosed",
+      "controls": "requested resolution cap, bitrate, quality and rational phase-accumulator frame-rate cap",
+      "timeline": "CFR only; source start offset restored after encoder packet rescaling; VFR refused explicitly",
+      "pixelFormat": "8-bit YUV420P or source YUV422P; other conversions disclosed; full-range video refused",
+      "finalization": "normal seekable Matroska finalization without unbounded cues; bounded fragmented MP4",
+      "licenses": [
+        "FFmpeg LGPL-2.1-or-later"
+      ],
+      "legalScope": "No GPL/nonfree/external encoder enabled; patent/deployment review not yet cleared",
+      "requiredUnpassedGates": [
+        "production-browser conversion",
+        "independent fidelity and timing",
+        "complete-process private memory",
+        "three repeats and multi-gigabyte scaling",
+        "privacy",
+        "success/cancellation/write-failure/cleanup",
+        "same-setting speed A/B",
+        "reproducibility",
+        "legal deployment review",
+        "registry/UI integration"
+      ]
+    },
+    "raw": [
+      {
+        "path": "output/playwright/2026-10-04T22-46-46.855Z-mpeg2-artwork-metadata-37240916978-artwork.json",
+        "bytes": 43969,
+        "sha256": "6d043a3ffca62dc28b7301de8694a3bf225eb1c72208e181689ee5bdb259c75f",
+        "rows": [
+          {
+            "kind": "independent-pre-assertion-probes",
+            "metrics": {
+              "inputBytes": 486996,
+              "outputBytes": 322184,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 82317,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 224852,
+              "maxWriteChunkBytes": 82317,
+              "elapsedMs": 513.8300000000745,
+              "wasmMemoryBytes": 33554432,
+              "peakWasmMemoryBytes": 33554432,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 33554436,
+              "activeWorkerCount": 5,
+              "imageWorkingBytes": 0
+            },
+            "outputBytes": 322184,
+            "outputSha256": "360d82d66d0869e9bc01b7610b1da87d25f46551e01235aadc754aea475292ac",
+            "outputStreams": [
+              {
+                "index": 0,
+                "codec": "mpeg2video",
+                "type": "video",
+                "attached": 0,
+                "frames": "48",
+                "width": 320,
+                "height": 240
+              },
+              {
+                "index": 1,
+                "codec": "aac",
+                "type": "audio",
+                "attached": 0,
+                "frames": "95"
+              },
+              {
+                "index": 2,
+                "codec": "aac",
+                "type": "audio",
+                "attached": 0,
+                "frames": "95"
+              },
+              {
+                "index": 3,
+                "type": "video",
+                "attached": 0,
+                "width": 250,
+                "height": 140
+              },
+              {
+                "index": 4,
+                "codec": "bin_data",
+                "type": "data",
+                "attached": 0
+              },
+              {
+                "index": 5,
+                "codec": "png",
+                "type": "video",
+                "attached": 1,
+                "frames": "1",
+                "width": 250,
+                "height": 140
+              }
+            ],
+            "outputMetadata": {
+              "major_brand": "iso5",
+              "minor_version": "512",
+              "compatible_brands": "iso5iso6mp41",
+              "title": "MPEG-2 café — 音楽",
+              "CUSTOM_音楽": "Unicode retained",
+              "WEBSITE": "example.invalid/café"
+            }
+          },
+          {
+            "status": "failed",
+            "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"SHA256=\u001b[7mc2054a5f9be34cf027cbf53657509e0f9ddaa66caa4587c10d5a679be5396112\u001b[27m\"\u001b[39m\nReceived: \u001b[31m\"SHA256=\u001b[7me3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\u001b[27m\"\u001b[39m",
+            "metrics": {
+              "inputBytes": 486996,
+              "outputBytes": 322184,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 82317,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 224852,
+              "maxWriteChunkBytes": 82317,
+              "elapsedMs": 513.8300000000745,
+              "wasmMemoryBytes": 33554432,
+              "peakWasmMemoryBytes": 33554432,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 33554436,
+              "activeWorkerCount": 5,
+              "imageWorkingBytes": 0
+            }
+          }
+        ]
+      },
+      {
+        "path": "output/playwright/2026-10-04T22-46-56.081Z-mpeg2-artwork-metadata-37240916978-artwork.json",
+        "bytes": 17855,
+        "sha256": "7287fa181896bbf852ba9277201add8387a43e3bcfa544a1ccf955a526c65222",
+        "rows": [
+          {
+            "kind": "direct-write-failure",
+            "status": "passed",
+            "error": "[matroska,webm @ 0x324550] Could not find codec parameters for stream 3 (Video: png, none): unspecified size | Consider increasing the value for the 'analyzeduration' (2000000) and 'probesize' (2097152) options | [mp4 @ 0x2ec8d0] track 1: codec frame size is not set | [mp4 @ 0x2ec8d0] track 2: codec frame size is not set | [mp4 @ 0x2ec8d0] Encoder did not produce proper pts, making some up. | Error: The destination rejected a bounded write. | MPEG-2 candidate failed: I/O error",
+            "metrics": {
+              "inputBytes": 486996,
+              "outputBytes": 0,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 3764,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 224852,
+              "maxWriteChunkBytes": 0,
+              "elapsedMs": 535.429999999702,
+              "wasmMemoryBytes": 33554432,
+              "peakWasmMemoryBytes": 33554432,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 33820708,
+              "activeWorkerCount": 6,
+              "imageWorkingBytes": 0
+            },
+            "partialBytes": []
+          }
+        ]
+      }
+    ],
+    "executedSources": {
+      "tests/browser/mpeg2-artwork-candidate.spec.ts": "a83abf5754cfd1a2367fd85cda53acd5f11c75b6cc14c93e21a49606cea4ef0c",
+      "scripts/validate-mpeg2-artwork.mjs": "89ebb20e12a84637bb67e53e580d5d50fd1a8b5130aab84f99652cf4db8c8df7",
+      "scripts/stage-mpeg2-artwork-candidate.mjs": "69f474d65d58a0df6295d8798109e85dc292f48e2134cfb1d2dfe25c16c4368d"
+    },
+    "acceptance": {
+      "successfulArtworkValidatedOutputs": 0,
+      "primaryMemory": false,
+      "protectedRetry": false,
+      "speedAb": false
+    },
+    "diagnosis": "PNG cover and arbitrary Unicode text are now present, but fragmented MP4 also emitted an empty unknown video track (index 3), so ordinal v:1 hash mapped that instead of actual attached PNG (index 5). Both are defects: fix structural ghost track and select independently probed attached-picture index, without relaxing any hash/track check.",
+    "changedFix": "Pinned private mux patch omits metadata-only cover streams from trak/trex; validator requires exactly one attached image and one real video, every codec known, and original/probed-index compressed cover equality.",
+    "cleanup": {
+      "helperReportedMediaProfilesOpfsRemoved": true,
+      "helperReportedDistRestored": true,
+      "rawDiagnosticReportsLocalOnly": true,
+      "sourceBundleDownloaded": false
+    },
+    "blockedStaticCleanup": {
+      "policyBlockedBeforeExecution": true,
+      "neverRetriedByOtherMechanism": true,
+      "paths": [
+        "work/mpeg2-attachment-baseline-37237343519",
+        "work/mpeg2-candidate-output"
+      ]
+    }
   }
 }

@@ -56,6 +56,8 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
 printf '%s  %s\n' d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068 \
   ffmpeg/libavformat/movenc.c | sha256sum --check --strict
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch"
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch"
 (
   cd ffmpeg
@@ -103,6 +105,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-candidate-manifest.mjs" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

@@ -57,7 +57,8 @@ test("MPEG2 protected acceptance cannot hide artwork, color, metadata or compati
   assert.match(gate, /compressedHash\(output, outputArt\[i\].index\), originalHash/);
   assert.match(gate, /"-map", "0:v", "-map", "0:a"/);
   const browser = await readFile(new URL("./browser/mpeg2-artwork-candidate.spec.ts", import.meta.url), "utf8");
-  assert.match(browser, /compressedArtworkHash\(output\)\).toBe\(originalArtworkHash\)/);
+  assert.match(browser, /compressedArtworkHash\(output, outputArt!\.index\)\).toBe\(originalArtworkHash\)/);
+  assert.match(browser, /No undeclared empty\/unknown tracks/);
   assert.match(browser, /outputArt\?\.width\).toBe\(250\)/);
   assert.match(browser, /outputArt\?\.height\).toBe\(140\)/);
   assert.match(browser, /Within FFmpeg MPEG-2/);

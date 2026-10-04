@@ -1,0 +1,15 @@
+--- a/libavformat/movenc.c
++++ b/libavformat/movenc.c
+@@ -4443,3 +4443,4 @@
+     for (i = 0; i < mov->nb_tracks; i++)
+-        mov_write_trex_tag(pb, &mov->tracks[i]);
++        if (!is_cover_image(mov->tracks[i].st))
++            mov_write_trex_tag(pb, &mov->tracks[i]);
+     return update_size(pb, pos);
+@@ -5253,4 +5254,6 @@
+     for (i = 0; i < mov->nb_tracks; i++) {
++        if (is_cover_image(mov->tracks[i].st))
++            continue;
+         if (mov->tracks[i].entry > 0 || mov->flags & FF_MOV_FLAG_FRAGMENT ||
+             mov->mode == MODE_AVIF) {
+             int ret = mov_write_trak_tag(s, pb, mov, &(mov->tracks[i]), i < mov->nb_streams ? mov->tracks[i].st : NULL);

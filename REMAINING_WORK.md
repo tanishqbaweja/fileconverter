@@ -48,6 +48,26 @@ New downloaded artifacts use a fresh explicit repository-local
 `mpeg2-artwork-metadata-<run-id>` tool slot; private staging/test paths reject
 arbitrary names/drive paths. No converted media remain from either small run.
 
+Corrected non-Docker build `37240916978` at `32aa5bd` succeeded (291-second
+compile; not conversion speed), verified native/source hashes. Changed browser
+suite still **1 failed / 1 passed**: PNG 250x140 attached art and arbitrary
+WEBSITE/Unicode-key text are now present, but fragmented MP4 also contains an
+empty unknown video track at index 3. The validator's ordinal v:1 therefore
+hashed that empty track, not actual attached PNG index 5. Output 322,184 bytes,
+SHA360d82d6..., 48 genuine MPEG-2 frames; no full acceptance claimed.
+Raw failed report SHA6d043a3f... and separate write-fault pass SHA7287fa18...
+remain frozen in compact investigation evidence, with full executed manifest.
+Fixtures/outputs/profiles/scratch removed, dist restored; no protected retry.
+
+New source-pinned patch excludes metadata-only covers from fragmented trak/trex,
+retaining covr bytes and arbitrary text. Validator now selects the independently
+probed attached-picture index and rejects all unknown/empty tracks or extra
+real video/cover streams. Both patches verified in exact build order using
+Git checks and real GNU zero-fuzz application against SHA-verified original
+source, in finally-cleaned owned scratch. Nine focused guards, lint, TS/Bash
+pass; complete latest pre-fix suite387/387. No memory/quality/metadata threshold
+relaxation, no Docker/public profile promotion, full goal still incomplete.
+
 Continuation after pushed `1eb7479` is progress, not an unchanged retry.
 The private generator now includes the exact JPEG/PNG header reader from the
 hash-pinned audited core. It fills attached-picture dimensions from compressed
