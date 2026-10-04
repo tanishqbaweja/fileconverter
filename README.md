@@ -2523,6 +2523,24 @@ the browser profile and converted payload. CI exercises small fixtures;
 multi-gigabyte profiling is documented for a dedicated Windows runner with
 installed stable Chrome and native FFmpeg.
 
+Windows peak-capture work (2026-10-04) adds a private read-only persistent
+100-ms OS observer in `scripts/lib/persistent-chromium-memory.mjs`. It uses
+[Toolhelp32 process snapshots](https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot),
+[GetProcessTimes](https://learn.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes)
+to guard process identity, and
+[GetProcessMemoryInfo/PrivateUsage](https://learn.microsoft.com/en-us/windows/win32/api/psapi/ns-psapi-process_memory_counters_ex)
+for private committed bytes. Unknown descendants and observed orphans stay in
+the total; failed snapshots remain null, and bounded-queue overflow fails.
+The smoke command is `node scripts/test-persistent-memory-monitor.mjs`;
+`node scripts/diagnose-fast-chromium-memory.mjs` is a 240-second blank-Chrome
+control, not a conversion or an acceptance baseline. Both finally delete their
+repository-local profile/compiler scratch. Retained evidence in
+`evidence/persistent-chromium-memory-2026-10-04.json` includes a 264.441-MiB
+short-lived unknown Chrome descendant and measured observer CPU/query cost.
+Do not repeat the unchanged control. Integration into conversion stress gates
+and measuring conversion perturbation remain open under A-09/M-04; this does
+not recertify historical routes or promote private H264 support.
+
 `npm run audit:public-evidence` checks the current registry against the retained
 local stress reports. `npm run evidence:public:write` refreshes the tracked,
 compact `evidence/public-profile-evidence.json` index only after that raw audit

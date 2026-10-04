@@ -5,6 +5,63 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-04 — Sub-second Windows sampling and blank Chrome control
+
+Status: **Partially implemented under A-09/M-04; fast observer validated,
+integration with conversion gates pending**. Previous goal turn made progress:
+the genuine direct H264 output, failed 265.629-MiB primary gate and finally
+cleanup were committed/pushed as `422bc46`. No unchanged conversion/native
+build was repeated in this turn.
+
+The earlier utility appeared in only one slow CIM observation, so the next
+changed experiment addresses peak capture rather than guessing at codec costs.
+New persistent Windows instrumentation enumerates the complete owned process
+tree with documented Toolhelp32 APIs and reads PrivateUsage/WorkingSetSize using
+GetProcessMemoryInfo. Creation times guard PID reuse; already-observed live
+descendants remain counted after their parent exits. No process-type allowlist,
+content read, native conversion, or experimental browser flag. Unknown subtype
+stays unknown and counts in full. One native thread polls at 100 ms; queue 256,
+process count 128, response 8 MiB; overflow/sequence gaps fail explicitly. Failed
+full-tree reads are null, never zero or a partial accepted total. PowerShell and
+compiler scratch remain repository-local and are finally removed.
+
+Initial 23-sample smoke proved ownership and null-on-exit only; a changed smoke
+then additionally launched a real 40-MiB touched allocation held for 450 ms by
+an owned Node child. Five allocated-child snapshots arrived 109–110 ms apart,
+while an unrelated sibling and the observer remained outside the owned tree.
+This is OS instrumentation validation, not a substitute video fixture.
+
+One changed 240-second **blank Chrome 154** control produced 2,192 snapshots:
+2,191 complete and one unavailable transient process read, retained as null.
+The fixed EARLY diagnostic baseline was 248.215 MiB, established by browser age
+12.847 seconds, never replaced by the three-minute peak. Whole-tree peak was
+481.398 MiB at age 181.252 seconds, including a newly spawned unknown-subtype
+Chrome descendant at 264.441 MiB observed ten times. This is not a website
+conversion or memory pass and does not identify that process's subtype. The
+233.184-MiB blank-page increase cannot be substituted into conversion acceptance.
+Five separate slow CIM references each had 4–5 exactly matching native snapshots
+for every process's private bytes. Median native query duration 11.670 ms versus
+540 ms median CIM reference is monitor-query latency, **not conversion speed**.
+Native max query 53.897 ms, max valid gap 219 ms. Observer CPU 28.406 seconds over
+240.399 seconds is 11.8% of one core (~0.59% of this 20-logical-processor host);
+conversion perturbation still needs measurement, not an assumed zero cost.
+
+Compact source-bound timeline/peak/reference/smoke evidence is retained in
+`evidence/persistent-chromium-memory-2026-10-04.json` (375,309 bytes), with raw
+reports under `outputs/reports`. Owned Chrome/observer stopped and new profile,
+compiler scratch and targets removed; zero input selections or conversions,
+no private/public engine staging, no Docker. Existing conversion harnesses
+still use the slower sampler: A-09 is now explicitly partial. Next concrete
+work is incorporating native interval peaks into the identical long candidate
+gate, without changing early baseline, tree membership, quality or the 250-MiB
+formula. No unchanged blank control, blind native rebuild or public promotion.
+The broad original project goal remains active and incomplete.
+
+Regression checkpoint: 355/355 units, full lint, TypeScript and the
+unchanged 405-profile/no-PDF manifest pass. These checks preserve historical
+evidence and validate instrumentation; none recertifies conversion peaks with
+the new observer. No fixture/conversion/native rebuild was repeated.
+
 ## 2026-10-04 — Uninstrumented build and selected-handle gate prepared
 
 Status: **Partially implemented under M-04; uninstrumented direct-handle memory gate failed**.
@@ -1345,7 +1402,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | A-06 | Generated fixtures and converted copies remain project-local and disposable data is removed                                                                                                                                                  | Verified complete                                 | `scripts/cleanup-generated.mjs` exact hash-verified MKV-to-AVI cleanup option, category `finally` cleanup, cleanup ledger, and `work/.gitkeep`; all current generated MKV-to-AVI fixtures and raw reports are now absent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Preflight free space before every new large run and inspect cleanup after every failure.                                    |
 | A-07 | Expensive work runs in dedicated workers; engines are lazy-loaded and terminated/released                                                                                                                                                    | Verified complete for current engines             | `workers/conversion.worker.ts`, route-specific workers, worker lifecycle tests and metrics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Verify the invariant for every new engine.                                                                                  |
 | A-08 | Fixed-size logs/samples/messages; references released; Wasm initial/max memory explicit and fail-safe                                                                                                                                        | Verified complete for current workers             | `tests/worker-lifecycle.test.mjs` inventories all 31 worker modules and both message loops, rejects unreviewed module-scoped mutable state and mutation of module containers, proves terminal worker cleanup, forbids binary response payloads, and locks fixed diagnostic/message/batch bounds. Batches stop at 256 files before inspection/output; progress is throttled to at most 8 non-forced messages/s; phases are 256 characters, warning/errors 2,048 characters, the UI retains 8 warnings, direct writes use one 256 KiB payload plus a 4 KiB error channel, and native diagnostic rings retain 8 or 32 entries of 512 characters. Production Chrome passed 10/10 sequential-batch, ceiling, write/quota/permission, crash/restart, reload, OPFS cancel, and direct-cancel cases in 20.2 seconds. Fixed Wasm manifests and profile memory evidence remain separately enforced. `evidence/worker-lifecycle-bounds-2026-09-01.json` records the audit. | Re-run and explicitly extend the inventory/allowlist whenever a worker or retained-state path changes.                      |
-| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Verified complete for the current Chrome profiler | `scripts/memory-profile.mjs` samples the Windows Chrome tree, page/worker heaps, storage, and route metrics; retained JSON/CSV/HTML reports include null-capable samples and graphs                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | Validate equivalent process-tree collection on any additional supported runner OS before claiming cross-platform profiling. |
+| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Partially implemented: fast sampling integration pending | Existing Windows profiler retains realms/buffers/queues and process totals. New 100-ms native observer/blank-control evidence in evidence/persistent-chromium-memory-2026-10-04.json proves short-lived whole-tree peaks and null-on-unavailable; existing conversion harnesses still use slower CIM readings. | Integrate native interval peaks into production stress reports while preserving early baselines, full-tree formula and all other diagnostic metrics; prove observer overhead during conversion. |
 
 ## Media engines and format coverage
 
