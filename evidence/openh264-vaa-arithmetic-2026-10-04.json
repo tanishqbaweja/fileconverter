@@ -1,0 +1,354 @@
+{
+  "recordedAt": "2026-10-04T08:34:21.833Z",
+  "requirement": "M-04",
+  "status": "compiled-private-simd-arithmetic-equivalence-passed-not-integrated",
+  "publicAcceptance": false,
+  "speedGainClaim": null,
+  "browserConversions": 0,
+  "attempts": [
+    {
+      "run": {
+        "conclusion": "failure",
+        "headSha": "43d5b4479592b01a85a87e86448cac7c4e7fbe90",
+        "jobs": [
+          {
+            "completedAt": "2026-10-04T08:31:28Z",
+            "conclusion": "failure",
+            "databaseId": 111397318768,
+            "name": "reproduce-ffmpeg",
+            "startedAt": "2026-10-04T08:30:11Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-04T08:30:13Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-04T08:30:12Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:30:17Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "startedAt": "2026-10-04T08:30:13Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:30:23Z",
+                "conclusion": "success",
+                "name": "Install native build prerequisites",
+                "number": 3,
+                "startedAt": "2026-10-04T08:30:17Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:30:49Z",
+                "conclusion": "success",
+                "name": "Install pinned Emscripten SDK without Docker",
+                "number": 4,
+                "startedAt": "2026-10-04T08:30:23Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:24Z",
+                "conclusion": "failure",
+                "name": "Rebuild and compare requested FFmpeg module(s)",
+                "number": 5,
+                "startedAt": "2026-10-04T08:30:49Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:24Z",
+                "conclusion": "skipped",
+                "name": "Retain private H264 candidate and corresponding sources",
+                "number": 6,
+                "startedAt": "2026-10-04T08:31:24Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:24Z",
+                "conclusion": "skipped",
+                "name": "Retain corresponding source and configure diagnostics separately",
+                "number": 7,
+                "startedAt": "2026-10-04T08:31:24Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:25Z",
+                "conclusion": "success",
+                "name": "Retain private arithmetic report only",
+                "number": 8,
+                "startedAt": "2026-10-04T08:31:24Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:25Z",
+                "conclusion": "skipped",
+                "name": "Retain mismatched artifacts for bounded diagnosis",
+                "number": 9,
+                "startedAt": "2026-10-04T08:31:25Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:26Z",
+                "conclusion": "success",
+                "name": "Remove repository-local build data",
+                "number": 10,
+                "startedAt": "2026-10-04T08:31:25Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:27Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 20,
+                "startedAt": "2026-10-04T08:31:26Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:31:27Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 21,
+                "startedAt": "2026-10-04T08:31:27Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37189089815/job/111397318768"
+          }
+        ],
+        "status": "completed",
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37189089815"
+      },
+      "report": {
+        "status": "failed-private-arithmetic-proof-only",
+        "publicAcceptance": false,
+        "conversionBuildsChanged": false,
+        "browserConversions": 0,
+        "speedGainClaim": null,
+        "scope": "Actual compiled Wasm scalar/SIMD arithmetic equivalence; not video fidelity, memory or throughput acceptance",
+        "emscriptenVersion": "6.0.4",
+        "initialWasmMemoryBytes": 33554432,
+        "maximumWasmMemoryBytes": 33554432,
+        "upstream": {
+          "url": "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/processing/src/vaacalc/vaacalcfuncs.cpp",
+          "sha256": "69a57a09170a613b472a28f339bf54e72a82c2d46bc0c69e62d0abb676353b3a",
+          "bytes": 19566
+        },
+        "reference": "Exact pinned scalar function body; name changed; byte-difference WELS_ABS supplied; source license retained",
+        "overflowScope": "Compare actual pinned scalar compiled at -O3 against explicit uint32 modulo accumulation; not a portable signed-overflow guarantee",
+        "coverageLimitation": "Exhaustive byte pairs in two block patterns, not exhaustive enumeration of every possible frame",
+        "sourceHashes": {
+          "media/ffmpeg/openh264-vaa-simd.h": "5fc364e12891bd9cbbdbf8c3590d5fde41a8fcbd4f143dbb7ba8ffb068b26655",
+          "media/ffmpeg/openh264-vaa-arithmetic.cpp": "d66f442980c17435144151715c0c90486865449ac7f66d00f6d349e8621d5947",
+          "media/ffmpeg/verify-vaa-arithmetic.sh": "e61219f6f9bdab054f2ba3c97651a48f2ffcce14c90d259f34f28e7df73fb300",
+          "scripts/verify-vaa-arithmetic.mjs": "244bc3a2926152d2ece771443fde120d4d8a5a018da619f2f9bc8604103445e9",
+          "scripts/generate-vaa-reference.mjs": "260ac2458b327014013e524960c995a075d5104d88a92aa1bcdaa0e86902704f",
+          "scripts/lib/openh264-vaa-reference.mjs": "7039180fb07ef52f873516977848269596bb6480b2a2b705180dbb6fce2b2635",
+          ".github/workflows/reproduce-ffmpeg-nondocker.yml": "b429e01ff6db445f67c7669b26f3b8ab849f9528d8c7fa5e41f74090b071266c"
+        },
+        "generatedReferenceSha256": "db8c01fdcbc6ed532549787479ff92bb8d8bd344affb930961ee2925bc40276a",
+        "wasmSha256": "219499887082aee8745ee16e76929c3be41f4fa7db45adde7b2ac9e18968d203",
+        "moduleSha256": "894e8bc18c519011b51aff5b7b157be0c5c2d21ffc2455525dc2fced607cc147",
+        "cases": {},
+        "totalCases": 0,
+        "checkedQuadrants": 0,
+        "error": "RuntimeError: Aborted('HEAPU8' was not exported. add it to EXPORTED_RUNTIME_METHODS (see the Emscripten FAQ))\n    at abort (file:///home/runner/work/fileconverter/fileconverter/work/h264-vaa-arithmetic-build/vaa-arithmetic.mjs:1:8945)\n    at Object.get (file:///home/runner/work/fileconverter/fileconverter/work/h264-vaa-arithmetic-build/vaa-arithmetic.mjs:1:6968)\n    at file:///home/runner/work/fileconverter/fileconverter/scripts/verify-vaa-arithmetic.mjs:34:21"
+      },
+      "reportSha256": "af811794bf678d2445daa17afeed6a2b5dfd3a721b0f837d0e803d83d1386498",
+      "logSha256": "295edc5f7f2cf91f85b560520768515c55014ce20e4db175d415f2816b088e49",
+      "artifactId": 11297684908,
+      "artifactBytes": 1575,
+      "localReport": "outputs/reports/vaa-arithmetic-first-37189089815/vaa-arithmetic.json",
+      "remainingHostedArtifacts": 0
+    },
+    {
+      "run": {
+        "conclusion": "success",
+        "headSha": "be2c875a4a3e581d0afbb1040f8acd99bcdb048f",
+        "jobs": [
+          {
+            "completedAt": "2026-10-04T08:33:58Z",
+            "conclusion": "success",
+            "databaseId": 111397845451,
+            "name": "reproduce-ffmpeg",
+            "startedAt": "2026-10-04T08:32:41Z",
+            "status": "completed",
+            "steps": [
+              {
+                "completedAt": "2026-10-04T08:32:42Z",
+                "conclusion": "success",
+                "name": "Set up job",
+                "number": 1,
+                "startedAt": "2026-10-04T08:32:41Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:32:48Z",
+                "conclusion": "success",
+                "name": "Run actions/checkout@v4",
+                "number": 2,
+                "startedAt": "2026-10-04T08:32:42Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:02Z",
+                "conclusion": "success",
+                "name": "Install native build prerequisites",
+                "number": 3,
+                "startedAt": "2026-10-04T08:32:48Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:24Z",
+                "conclusion": "success",
+                "name": "Install pinned Emscripten SDK without Docker",
+                "number": 4,
+                "startedAt": "2026-10-04T08:33:02Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:53Z",
+                "conclusion": "success",
+                "name": "Rebuild and compare requested FFmpeg module(s)",
+                "number": 5,
+                "startedAt": "2026-10-04T08:33:24Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:53Z",
+                "conclusion": "skipped",
+                "name": "Retain private H264 candidate and corresponding sources",
+                "number": 6,
+                "startedAt": "2026-10-04T08:33:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:53Z",
+                "conclusion": "skipped",
+                "name": "Retain corresponding source and configure diagnostics separately",
+                "number": 7,
+                "startedAt": "2026-10-04T08:33:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:54Z",
+                "conclusion": "success",
+                "name": "Retain private arithmetic report only",
+                "number": 8,
+                "startedAt": "2026-10-04T08:33:53Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:54Z",
+                "conclusion": "skipped",
+                "name": "Retain mismatched artifacts for bounded diagnosis",
+                "number": 9,
+                "startedAt": "2026-10-04T08:33:54Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:57Z",
+                "conclusion": "success",
+                "name": "Remove repository-local build data",
+                "number": 10,
+                "startedAt": "2026-10-04T08:33:54Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:57Z",
+                "conclusion": "success",
+                "name": "Post Run actions/checkout@v4",
+                "number": 20,
+                "startedAt": "2026-10-04T08:33:57Z",
+                "status": "completed"
+              },
+              {
+                "completedAt": "2026-10-04T08:33:57Z",
+                "conclusion": "success",
+                "name": "Complete job",
+                "number": 21,
+                "startedAt": "2026-10-04T08:33:57Z",
+                "status": "completed"
+              }
+            ],
+            "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37189265531/job/111397845451"
+          }
+        ],
+        "status": "completed",
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37189265531"
+      },
+      "report": {
+        "status": "passed-private-arithmetic-proof-only",
+        "publicAcceptance": false,
+        "conversionBuildsChanged": false,
+        "browserConversions": 0,
+        "speedGainClaim": null,
+        "scope": "Actual compiled Wasm scalar/SIMD arithmetic equivalence; not video fidelity, memory or throughput acceptance",
+        "emscriptenVersion": "6.0.4",
+        "initialWasmMemoryBytes": 33554432,
+        "maximumWasmMemoryBytes": 33554432,
+        "upstream": {
+          "url": "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/processing/src/vaacalc/vaacalcfuncs.cpp",
+          "sha256": "69a57a09170a613b472a28f339bf54e72a82c2d46bc0c69e62d0abb676353b3a",
+          "bytes": 19566
+        },
+        "reference": "Exact pinned scalar function body; name changed; byte-difference WELS_ABS supplied; source license retained",
+        "overflowScope": "Compare actual pinned scalar compiled at -O3 against explicit uint32 modulo accumulation; not a portable signed-overflow guarantee",
+        "coverageLimitation": "Exhaustive byte pairs in two block patterns, not exhaustive enumeration of every possible frame",
+        "sourceHashes": {
+          "media/ffmpeg/openh264-vaa-simd.h": "5fc364e12891bd9cbbdbf8c3590d5fde41a8fcbd4f143dbb7ba8ffb068b26655",
+          "media/ffmpeg/openh264-vaa-arithmetic.cpp": "d66f442980c17435144151715c0c90486865449ac7f66d00f6d349e8621d5947",
+          "media/ffmpeg/verify-vaa-arithmetic.sh": "8b45640a4385462608f2f892424534113f463fbd7e1b5ca075ee409a5fe46d06",
+          "scripts/verify-vaa-arithmetic.mjs": "244bc3a2926152d2ece771443fde120d4d8a5a018da619f2f9bc8604103445e9",
+          "scripts/generate-vaa-reference.mjs": "260ac2458b327014013e524960c995a075d5104d88a92aa1bcdaa0e86902704f",
+          "scripts/lib/openh264-vaa-reference.mjs": "7039180fb07ef52f873516977848269596bb6480b2a2b705180dbb6fce2b2635",
+          ".github/workflows/reproduce-ffmpeg-nondocker.yml": "b429e01ff6db445f67c7669b26f3b8ab849f9528d8c7fa5e41f74090b071266c"
+        },
+        "generatedReferenceSha256": "db8c01fdcbc6ed532549787479ff92bb8d8bd344affb930961ee2925bc40276a",
+        "wasmSha256": "219499887082aee8745ee16e76929c3be41f4fa7db45adde7b2ac9e18968d203",
+        "moduleSha256": "e8c50f761141be939c2f011d71d1e0db5e0991ca750d8d38e6073b323bcecadf",
+        "cases": {
+          "exhaustiveUniformBytePairs": 65536,
+          "exhaustiveMixedSignBytePairs": 65536,
+          "singlePixelQuadrantAndLane": 512,
+          "seededRandomStrideAlignmentAndDimensions": 512,
+          "maximumDimensionsAndFrameOverflow": 4,
+          "sourceEndsAtWasmMemoryBoundary": 1
+        },
+        "totalCases": 132101,
+        "checkedQuadrants": 1090864
+      },
+      "reportSha256": "eaa7bc0a7b4dcbea401eef0e9d00e2f54ce1870c02490cd3f99185a5d738215e",
+      "logSha256": "95a2f6269f5d0d4391248c441e71a36425c55f85fc03bef056d693178967b851",
+      "artifactId": 11297413801,
+      "artifactBytes": 1518,
+      "localReport": "outputs/reports/vaa-arithmetic-pass-37189265531/vaa-arithmetic.json",
+      "remainingHostedArtifacts": 0
+    }
+  ],
+  "currentSources": {
+    "media/ffmpeg/openh264-vaa-simd.h": "5fc364e12891bd9cbbdbf8c3590d5fde41a8fcbd4f143dbb7ba8ffb068b26655",
+    "media/ffmpeg/openh264-vaa-arithmetic.cpp": "d66f442980c17435144151715c0c90486865449ac7f66d00f6d349e8621d5947",
+    "media/ffmpeg/verify-vaa-arithmetic.sh": "8b45640a4385462608f2f892424534113f463fbd7e1b5ca075ee409a5fe46d06",
+    "scripts/verify-vaa-arithmetic.mjs": "244bc3a2926152d2ece771443fde120d4d8a5a018da619f2f9bc8604103445e9",
+    "scripts/generate-vaa-reference.mjs": "260ac2458b327014013e524960c995a075d5104d88a92aa1bcdaa0e86902704f",
+    "scripts/lib/openh264-vaa-reference.mjs": "7039180fb07ef52f873516977848269596bb6480b2a2b705180dbb6fce2b2635",
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml": "b429e01ff6db445f67c7669b26f3b8ab849f9528d8c7fa5e41f74090b071266c",
+    "scripts/record-vaa-arithmetic.mjs": "ac72bcb1195af613efae0ebe83c06215db1c5bf11ac19843120f6b99298525dd"
+  },
+  "cleanup": {
+    "hostedArtifactsRemaining": 0,
+    "hostedBuildSdkAndScratchRemovalPassed": true,
+    "localCompilerOrMediaFilesGenerated": false,
+    "downloadedReportsCompactedThenRemoved": true
+  },
+  "remaining": [
+    "Wire opt-in private conversion build",
+    "Production browser identical-settings speed A/B",
+    "Exact file fidelity and unchanged <=250 MiB complete-process memory",
+    "All existing H264 release and full original-goal gates"
+  ]
+}

@@ -842,10 +842,12 @@ See [`evidence/h264-cpu-diagnostic-2026-10-04.json`](evidence/h264-cpu-diagnosti
 
 A separate private exact-result SIMD helper now targets that SAD/background
 hotspot. It is not enabled in a conversion build. The pinned no-Docker
-arithmetic workflow first compares actual compiled Wasm against the exact
-upstream scalar function, including all byte pairs, signed sums, stride/layout
-edges, overflow, canaries and a Wasm-end boundary. Arithmetic equality is a
-prerequisite, not a file-conversion speed, memory or release result.
+arithmetic workflow passed 132,101 actual-Wasm cases against the exact upstream
+scalar function, including all byte pairs in two patterns, signed sums,
+stride/layout edges, overflow, canaries and a Wasm-end boundary. The initial
+heap-export harness failure is retained, not hidden. Arithmetic equality is
+a prerequisite, not a file-conversion speed, memory or release result.
+See [`evidence/openh264-vaa-arithmetic-2026-10-04.json`](evidence/openh264-vaa-arithmetic-2026-10-04.json).
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally

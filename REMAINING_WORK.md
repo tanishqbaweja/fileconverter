@@ -17,7 +17,7 @@ not the entire product specification.
 
 ## 2026-10-04 — H.264 exact-result SIMD arithmetic candidate
 
-Status: **Partially implemented under M-04; arithmetic verification pending**.
+Status: **Partially implemented under M-04; compiled arithmetic proof passed**.
 The measured `VAACalcSadBgd_c` hotspot now has a separate private SIMD helper.
 It retains all four 8x8 SAD, signed-difference and maximum-difference results,
 macroblock traversal (including the pinned non-aligned-width behavior), and
@@ -27,7 +27,7 @@ setting, and is not enabled in any conversion build or public profile.
 The no-Docker arithmetic workflow uses pinned Emscripten 6.0.4. Its oracle
 extracts the exact original scalar function after verifying the complete
 19,566-byte upstream source SHA-256; it retains the upstream license rather
-than using a handwritten scalar approximation. Planned actual-Wasm checks
+than using a handwritten scalar approximation. Actual-Wasm checks
 cover all 65,536 byte pairs in uniform and mixed-sign patterns, individual
 quadrant/lane spikes, random strides/alignments/dimensions, maximum-size frame
 sum overflow, output canaries, input immutability, and a source ending exactly
@@ -42,13 +42,27 @@ requires explicit `HEAPU8` runtime export. The actual error and zero-case
 report are retained; cleanup passed. The arithmetic-only recipe now exports
 that heap view. This is a harness/API correction, not a SIMD mismatch or a
 changed production heap policy. Retry requires this concrete change.
-Compiled arithmetic results are still pending; no speed gain, production
-fidelity, converter memory acceptance, or public H.264 support is claimed.
-Compiler/source/module scratch stays in a dedicated repository-local build
-directory and is removed on success or failure; only compact JSON is retained.
-Next require arithmetic equality, then wire an opt-in private conversion
-build and measure identical-settings production-browser A/B. The full original
-goal and all previously recorded release gates remain open.
+Corrected run `37189265531` at `be2c875` passed all **132,101** cases and
+**1,090,864** quadrant comparisons. The first and corrected builds have the
+same arithmetic Wasm hash and generated-reference hash; only the JavaScript
+heap export changed. These tests prove the tested arithmetic equality, not
+file-conversion speed, production fidelity, converter memory acceptance, or
+public H.264 support. The unchanged video build still uses the scalar loop.
+
+Both hosted runs passed SDK/build cleanup. Their compact reports were checked
+against exact executed Git bytes, embedded with source/module/log/build hashes
+in `evidence/openh264-vaa-arithmetic-2026-10-04.json`, then the two downloaded
+reports and two hosted artifacts were removed (zero remaining). No compiler,
+source download, arithmetic binary, browser profile, fixture or converted
+output was retained locally from this cycle. Existing bounded static A/B
+tools are unchanged. Next wire an opt-in private conversion build using the
+proven helper, then measure identical-settings production-browser A/B. The
+full original goal and all previously recorded release gates remain open.
+Final gates: 301/301 unit tests, lint, TypeScript, unchanged 405-profile/no-PDF
+manifest and diff checks pass. Four public/dist media assets match exactly.
+The initial read-only MPEG-4 asset check used a nonexistent `engines/mpeg4`
+path; file discovery corrected it to `engines/remux`, and the complete check
+passed without a rebuild or mutation. No test or hosted job remains running.
 
 ## 2026-10-04 — H.264 bounded worker CPU diagnosis
 
