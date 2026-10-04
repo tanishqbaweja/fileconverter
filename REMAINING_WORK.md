@@ -14,6 +14,62 @@ shortcuts are rejected. This longer browser gate has **not run yet** and is
 not public acceptance. All 327 unit tests and focused lint pass. Historical
 execution records are preserved; only current-source indexes were refreshed.
 
+## 2026-10-04 — Longer genuine H264 gate failed on fixed-heap allocation
+
+Status: **Partially implemented under M-04; longer scaling/startup gate failed**.
+The prepared startup/scaling test ran once with the existing isolated SAD tool,
+unchanged 720p/30fps/quality/one-thread settings and fixed 32 MiB Wasm heap.
+No native rebuild, browser-flag change, profiler, smaller substitute or baseline
+delay was used. A genuine 600-second MPEG4/two-AAC/chapter source measured
+1,050,296,904 bytes, SHA-256
+`031f4cdf9a40bbeacd84c2c1c4640565d37d96e600cdcb31fece6becf2b5ac12`.
+Independent source inspection counted all 18,000 video frames.
+
+The first conversion ended in **error**, after 72.157 seconds observed,
+316,932,096 input bytes and 58,188,932 partial output bytes. The fixed heap
+aborted trying to reserve 33,586,120 bytes: the actual stack identifies
+`Asyncify.allocateData`, which allocates its configured 1 MiB suspend stack
+plus a 12-byte header. Generated runtime inspection also confirms that it
+frees this stack after rewind. The underlying live allocation or fragmentation
+source is **not proven**; do not label this a diagnosed encoder leak.
+The pinned FFmpeg [MP4 muxer source](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/movenc.c)
+shows that the current `skip_trailer`/no-global-sidx/no-ISM-lookahead combination
+bypasses global fragment-index accumulation in `mov_write_moof_tag`; that
+hypothesis is not sufficient to explain the failure.
+
+The stable early blank-page baseline was 248.922 MiB; loaded idle was
+292.582 MiB. The complete-Chromium observed increment reached 217.602 MiB
+over 53 available pre/active samples, with no unavailable samples. This is
+**not memory acceptance**: zero conversions completed, output validation and
+three repeats were not reached. Actual running browser ages spanned
+37.797–108.114 seconds, so the three-minute utility window was **not reached**
+and startup-overlap remains unproven. Do not infer a utility-caused failure.
+Read/write/queue buffers remained bounded by 256 KiB, peak pending writes one,
+and terminal queues zero; no forbidden conversion request was observed.
+
+Finally cleanup removed the generated source, partial output, browser profile
+and temporary data, stopped owned Chrome/server trees and restored all four
+generated media assets to exact public hashes. Work still contains only five
+static tools (42,206,230 bytes), zero converted media. The 15,795-byte failure
+trace and compact JSON/CSV/HTML reports remain in `outputs/reports`.
+Committed evidence: `evidence/h264-startup-scaling-failure-2026-10-04.json`
+retains the exact raw report, source/manifest hashes, trace hash, process
+samples, failed status and actual cleanup checks. Historical short SAD speed
+evidence remains unchanged; it does not certify longer files.
+
+Next measure native live/free/largest-free allocation usage over time before
+changing allocation behavior. Do not repeat the unchanged long conversion or
+raise/grow the heap to claim compliance. A diagnostic or bounded-allocation
+change must justify another identical 600-second test. Public registry,
+production engines and original quality/memory requirements remain unchanged;
+all remaining original requirements stay open.
+
+Cycle checks: focused startup/failure tests 6/6, complete unit suite 330/330,
+full lint, TypeScript and unchanged 405-public-profile/no-PDF evidence manifest
+passed. An initial manifest-check invocation used a nonexistent script name
+and did not run that gate; the actual `audit:public-evidence:manifest` command
+was then executed successfully. No second browser conversion was started.
+
 ## Status definitions
 
 - **Verified complete** — current source plus an appropriate test or retained
