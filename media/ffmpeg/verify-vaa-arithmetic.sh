@@ -29,5 +29,6 @@ em++ "${SCRIPT_DIR}/openh264-vaa-arithmetic.cpp" -I"${BUILD_ROOT}" -O3 -msimd128
   -sSTACK_SIZE=1048576 -sMALLOC=emmalloc -sFILESYSTEM=0 -sMODULARIZE=1 \
   -sEXPORT_ES6=1 -sENVIRONMENT=node -sASSERTIONS=1 \
   -sEXPORTED_FUNCTIONS='["_vaa_reference","_vaa_simd","_malloc","_free"]' \
+  -sEXPORTED_RUNTIME_METHODS='["HEAPU8"]' \
   -Wl,--no-entry -o "${BUILD_ROOT}/vaa-arithmetic.mjs"
 node "${PROJECT_ROOT}/scripts/verify-vaa-arithmetic.mjs"

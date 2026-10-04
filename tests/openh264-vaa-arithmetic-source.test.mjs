@@ -30,6 +30,7 @@ test("arithmetic proof covers finite patterns honestly and owns compiler scratch
   assert.match(script, /suffix canary overwritten/);
   const shell = await readFile(new URL("../media/ffmpeg/verify-vaa-arithmetic.sh", import.meta.url), "utf8");
   assert.match(shell, /trap cleanup EXIT/);
+  assert.match(shell, /-sEXPORTED_RUNTIME_METHODS='\["HEAPU8"\]'/);
   assert.match(shell, /-sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432/);
   assert.match(shell, /export TMPDIR="\$\{BUILD_ROOT\}\/tmp" EM_CACHE="\$\{BUILD_ROOT\}\/cache"/);
   assert.doesNotMatch(shell, /docker (build|run)/);

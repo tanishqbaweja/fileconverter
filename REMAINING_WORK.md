@@ -36,6 +36,12 @@ possible frame. Signed-overflow comparison applies to the actual pinned
 compiled scalar, not a claim of portable C++ overflow semantics.
 
 Three focused source/guard tests and JavaScript/Bash syntax checks pass.
+First hosted arithmetic run `37189089815` at `43d5b44` compiled successfully
+but its harness stopped before testing any case because Emscripten 6.0.4
+requires explicit `HEAPU8` runtime export. The actual error and zero-case
+report are retained; cleanup passed. The arithmetic-only recipe now exports
+that heap view. This is a harness/API correction, not a SIMD mismatch or a
+changed production heap policy. Retry requires this concrete change.
 Compiled arithmetic results are still pending; no speed gain, production
 fidelity, converter memory acceptance, or public H.264 support is claimed.
 Compiler/source/module scratch stays in a dedicated repository-local build
