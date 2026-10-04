@@ -858,6 +858,15 @@ selected; no public H.264 route is added. Both full reports and exact native
 build/proof provenance are retained in
 [`evidence/h264-vaa-simd-comparison-2026-10-04.json`](evidence/h264-vaa-simd-comparison-2026-10-04.json).
 
+A targeted diagnostic of that rejected module found lower VAA sampled share
+(7.462% historical scalar versus 1.667% SIMD), not matched-frame or end-to-end
+speed evidence. Its identical output and 235.570 MiB whole-tree increment pass
+only the instrumented narrow gate. Full-node aggregation identifies remaining
+SAD/SATD targets. A separate pinned-scalar SAD SIMD arithmetic/cost proof is
+prepared; no production codec, public profile or quality setting is changed.
+See [`evidence/h264-vaa-cpu-comparison-2026-10-04.json`](evidence/h264-vaa-cpu-comparison-2026-10-04.json)
+and the current [remaining-work audit](REMAINING_WORK.md).
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or

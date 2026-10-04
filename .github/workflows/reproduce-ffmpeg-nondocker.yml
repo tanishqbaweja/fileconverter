@@ -20,6 +20,7 @@ on:
           - within-aiff
           - within-h264-candidate
           - within-h264-vaa-arithmetic
+          - within-h264-sad-arithmetic
       h264_memory_mib:
         description: Fixed memory for the private H264 candidate only
         required: false
@@ -86,7 +87,10 @@ jobs:
           WITHIN_BUILD_CORE_FILTER: ${{ inputs.core }}
         run: |
           source work/emsdk/emsdk_env.sh
-          if test "${{ inputs.core }}" = within-h264-vaa-arithmetic; then
+          if test "${{ inputs.core }}" = within-h264-sad-arithmetic; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            bash media/ffmpeg/verify-sad-arithmetic.sh
+          elif test "${{ inputs.core }}" = within-h264-vaa-arithmetic; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             bash media/ffmpeg/verify-vaa-arithmetic.sh
           elif test "${{ inputs.core }}" = within-h264-candidate; then
@@ -135,12 +139,21 @@ jobs:
           retention-days: 1
 
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-h264-vaa-arithmetic'
+        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
           path: work/ffmpeg-nondocker-output/
           if-no-files-found: error
+          retention-days: 1
+
+      - name: Retain private SAD arithmetic report only
+        if: always() && inputs.core == 'within-h264-sad-arithmetic'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-sad-arithmetic-${{ github.run_id }}
+          path: outputs/reports/sad-arithmetic.json
+          if-no-files-found: warn
           retention-days: 1
 
       - name: Remove repository-local build data
@@ -160,9 +173,9 @@ jobs:
             "$GITHUB_WORKSPACE/work/sdk-tmp" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
-          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output" "$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build"; do
+          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output" "$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build" "$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build"; do
             case "$task_path" in
-              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output"|"$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build") ;;
+              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output"|"$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build"|"$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build") ;;
               *) exit 2 ;;
             esac
             rm -rf -- "$task_path"

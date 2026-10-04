@@ -15,6 +15,39 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 SIMD CPU attribution and next primitive proof
+
+Status: **Partially implemented under M-04; diagnostic completed; SAD proof prepared**.
+One instrumented conversion using the actually rejected SIMD module captured
+9,432 samples over 15,029 ms. Aggregating all call-site nodes by function name,
+VAA self share was 7.462% in the historical scalar window versus 1.667% in the
+SIMD window. These windows are not matched processed-frame work or a controlled
+end-to-end speed comparison. The earlier 9.196% slowdown remains authoritative
+for rejecting this unchanged candidate; SIMD remains off, not promoted.
+The instrumented whole-Chromium increment was 235.570 MiB, with the identical
+19,137,689-byte output, all 1,800 PTS, both AAC hashes, full decode and SSIM
+0.987575 preserved. Media/profile/temp were removed and production assets restored.
+Evidence: `evidence/h264-vaa-cpu-comparison-2026-10-04.json`.
+
+Whole-profile function aggregation reveals scalar SAD16x16/SAD8x8 shares of
+4.990%/4.539% and SATD4x4 5.295%; corresponding SIMD-window shares are
+5.310%/4.089%/6.458%. Attribution identifies targets, not per-call speed.
+The actual pinned SAD bodies are in `codec/common/src/sad_common.cpp`, not the
+call sites in `sample.cpp`. A separate exact-result SIMD primitive and pinned
+scalar oracle now cover 8x8/16x8/8x16/16x16. The production recipe is unchanged.
+The proof uses exact row loads, independent strides, bounded 16-bit pair sums,
+fixed 32 MiB Wasm and production compiler optimization/SIMD/thread flags.
+Its no-Docker workflow tests exhaustive byte pairs in two patterns, spikes,
+random independent strides/alignments, overlap/zero strides and both Wasm-end
+inputs, plus seven alternating warm primitive-cost pairs before any expensive
+full FFmpeg build. Compiled proof and primitive measurements are pending.
+Primitive cost is not file-conversion throughput or public-route acceptance.
+The first focused source audit falsely matched the word "quality" in a comment;
+it now checks executable text after stripping line comments. This was an audit
+false positive, not compiled arithmetic failure or a changed acceptance gate.
+All existing cold/startup-overlap, direct/failure/recovery, larger-file,
+controls/fidelity, licensing and release gates remain open.
+
 ## 2026-10-04 — H.264 opt-in native VAA SIMD integration
 
 Status: **Partially implemented under M-04; native build passed, SIMD speed trial rejected**.
