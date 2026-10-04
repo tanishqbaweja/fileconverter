@@ -5,12 +5,32 @@ import { lstat, readFile, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { startupConversionOverlap } from "./lib/h264-stress-profile.mjs";
+import { combinedTreePeak, createNativeMemoryHistory } from "./lib/native-memory-history.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), relative = process.argv[2];
-assert.match(relative ?? "", /^outputs\/reports\/\d{4}-\d{2}-\d{2}T[\d-Z]+-private-h264-startup-scaling-memory(-direct-handle)?\.json$/);
-assert.ok((await stat(path.join(root, relative))).size < 16 * 1024 ** 2);
+assert.match(relative ?? "", /^outputs\/reports\/\d{4}-\d{2}-\d{2}T[\d-Z]+-private-h264-startup-scaling-memory(-direct-handle)?(-native-100ms)?\.json$/);
+const nativeMode = relative.endsWith("-native-100ms.json");
+assert.ok((await stat(path.join(root, relative))).size < (nativeMode ? 64 : 16) * 1024 ** 2);
 const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const raw = await readFile(path.join(root, relative)), report = JSON.parse(raw);
+assert.equal(Boolean(report.nativeMemoryEnabled), nativeMode);
+let nativeHistory = null;
+if (nativeMode) {
+  assert.equal(report.nativeError, null);
+  assert.equal(report.nativeMemory.intervalMs, 100);
+  const h = report.nativeMemory;
+  assert.ok(h.timeline.length <= 32000 && h.identities.length <= 512);
+  const rootPid = h.identities.find((p) => p.type === "browser").pid;
+  nativeHistory = createNativeMemoryHistory(rootPid);
+  for (const p of h.transitions) nativeHistory.setPhase(p.phase, p.at);
+  for (let start = 0; start < h.timeline.length; start += 256) {
+    const samples = h.timeline.slice(start, start + 256).map((r) => ({ sequence: r[0], timestamp: r[1], completedAt: r[1],
+      nativeElapsedMs: r[5], sampleError: r[6], privateBytes: r[3], rssBytes: r[4],
+      processes: r[7]?.map(([i, privateBytes, rssBytes]) => ({ ...h.identities[i], privateBytes, rssBytes })) ?? null }));
+    nativeHistory.consume({ overflow: false, observerCpuMs: 0, samples });
+  }
+  assert.deepEqual(nativeHistory.report().timeline, h.timeline);
+}
 assert.equal(report.candidateName, "h264-uninstrumented-candidate-output");
 assert.equal(report.publicAcceptance, false); assert.equal(report.publicProfilesChanged, false);
 assert.equal(report.cpuEnabled, false); assert.deepEqual(report.allocatorSamples, []);
@@ -40,7 +60,10 @@ for (const run of report.runs) {
     assert.ok(sample.processes.every((p) => Number.isFinite(p.privateBytes) && p.privateBytes > 0));
     assert.equal(sample.privateBytes, sample.processes.reduce((n, p) => n + p.privateBytes, 0));
   }
-  const peak = Math.max(...active.map((s) => s.privateBytes));
+  const cimPeak = Math.max(...active.map((s) => s.privateBytes));
+  const native = nativeHistory?.peaks([`pre-conversion-${run.run}`, `conversion-${run.run}`]);
+  if (nativeMode) assert.deepEqual(run.nativePeaks, native);
+  const peak = nativeMode ? combinedTreePeak(cimPeak, native.peak.privateBytes, report.blankBaseline.privateBytes).peakPrivateBytes : cimPeak;
   assert.equal(run.peakPrivateBytes, peak); assert.equal(run.completeTreeSamples, active.length);
   assert.equal(run.incrementalPrivateMiB, (peak - report.blankBaseline.privateBytes) / 1024 ** 2);
   const metrics = run.state.metrics;
@@ -135,7 +158,7 @@ const evidence = { recordedAt: new Date().toISOString(), requirement: "M-04", pu
   cleanup: { staticTools, staticToolBytes: staticTools.reduce((n, t) => n + t.bytes, 0), buildCaches,
     convertedMediaBytesInWork: 0, ownedBenchmarkChromeProcesses: 0, hostedArtifactsRemaining: 0, distHashes },
 };
-const output = `evidence/h264-uninstrumented-${report.destinationMode}-${report.recordedAt.slice(0, 10)}.json`;
+const output = `evidence/h264-uninstrumented-${report.destinationMode}${nativeMode ? "-native-100ms" : ""}-${report.recordedAt.slice(0, 10)}.json`;
 await writeFile(path.join(root, output), `${JSON.stringify(evidence, null, 2)}\n`, { flag: "wx" });
 process.stdout.write(`${JSON.stringify({ output, status: report.status, runs: report.runs.map((r) => ({
   run: r.run, state: r.state.jobState, incrementalPrivateMiB: r.incrementalPrivateMiB,

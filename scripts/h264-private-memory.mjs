@@ -19,6 +19,8 @@ import { summarizeCpuProfile } from "./lib/cpu-profile-summary.mjs";
 import { h264StressProfile, startupConversionOverlap } from "./lib/h264-stress-profile.mjs";
 import { summarizeUtilityActivity } from "./lib/chromium-utility-summary.mjs";
 import { parseAllocatorConsole } from "./lib/h264-allocator-console.mjs";
+import { startChromiumMemoryMonitor } from "./lib/persistent-chromium-memory.mjs";
+import { combinedTreePeak, createNativeMemoryHistory } from "./lib/native-memory-history.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
@@ -38,6 +40,9 @@ assert.ok(["legacy", "byob"].includes(inputMode));
 const destinationMode = process.env.WITHIN_H264_DESTINATION_MODE ?? "sync-opfs";
 assert.ok(["sync-opfs", "direct-handle"].includes(destinationMode));
 const testQuery = destinationMode === "direct-handle" ? "/?test=1&directory=1" : "/?test=1";
+const nativeMemoryMode = process.env.WITHIN_H264_NATIVE_MEMORY ?? "0";
+assert.ok(["0", "1"].includes(nativeMemoryMode));
+const nativeMemoryEnabled = nativeMemoryMode === "1";
 const startedAt = Date.now();
 const samples = [], runs = [], logs = [], forbiddenRequests = [];
 const allocatorSamples = [];
@@ -47,6 +52,10 @@ let work, server, chrome, browser, context, page, staged = false;
 let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure = null;
 let cdpRealmSampler = null;
 let cpuTransport = null, cpuDiagnostic = null;
+let nativeMonitor = null, nativeHistory = null, nativePump = null, nativeLive = false, nativeError = null;
+async function drainNative() {
+  if (nativeMonitor) nativeHistory.consume(await nativeMonitor.drain());
+}
 const pendingRealms = new WeakSet();
 const observedLargeUtilities = new Set();
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -67,6 +76,8 @@ async function boundedRealm(realm, operation) {
   finally { clearTimeout(timer); }
 }
 async function takeSample(phase) {
+  nativeHistory?.setPhase(phase);
+  assert.equal(nativeError, null, "Parallel native observer failed; no CIM-only acceptance fallback");
   const begin = Date.now();
   let tree = { privateBytes: null, rssBytes: null, processes: null }, sampleError = null;
   try { tree = await sampleChromiumTree(rootPid); } catch (error) { sampleError = String(error); }
@@ -165,6 +176,11 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+if (nativeMemoryEnabled) {
+  assert.equal(candidateName, "h264-uninstrumented-candidate-output");
+  assert.equal(manifest.allocatorDiagnostic, false); assert.equal(cpuEnabled, false);
+  assert.equal(stressProfile.name, "startup-scaling");
+}
 if (candidateName === "h264-uninstrumented-candidate-output" || destinationMode === "direct-handle") {
   assert.equal(manifest.allocatorDiagnostic, false, "Uninstrumented/direct gate cannot use native diagnostic instrumentation");
   assert.equal(cpuEnabled, false);
@@ -186,6 +202,8 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/h264-stress-profile.mjs", "scripts/lib/chromium-utility-summary.mjs",
   "media/ffmpeg/h264-allocator-diagnostic.h", "scripts/lib/h264-allocator-instrumentation.mjs",
   "scripts/lib/h264-allocator-console.mjs",
+  "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/native-memory-history.mjs",
+  "scripts/lib/windows-tree-monitor.cs", "scripts/lib/windows-tree-monitor.ps1",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
@@ -205,7 +223,7 @@ const disk = await statfs(root);
 assert.ok(disk.bavail * disk.bsize > 4 * 1024 ** 3, "Require 4 GiB of free repository disk space before generation");
 await mkdir(reportRoot, { recursive: true });
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
-const reportBase = path.join(reportRoot, `${stamp}-private-h264-${stressProfile.reportLabel}-${cpuEnabled ? "cpu-diagnostic" : "memory"}${destinationMode === "direct-handle" ? "-direct-handle" : ""}`);
+const reportBase = path.join(reportRoot, `${stamp}-private-h264-${stressProfile.reportLabel}-${cpuEnabled ? "cpu-diagnostic" : "memory"}${destinationMode === "direct-handle" ? "-direct-handle" : ""}${nativeMemoryEnabled ? "-native-100ms" : ""}`);
 let sourceEvidence = null, chromeVersion = null;
 try {
   work = await mkdtemp(path.join(root, "work/h264-memory-"));
@@ -236,6 +254,16 @@ try {
     "--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction",
     "--disable-sync", "--metrics-recording-only", "about:blank"], { cwd: root, env: environment, windowsHide: true, stdio: "ignore" });
   rootPid = chrome.pid;
+  if (nativeMemoryEnabled) {
+    nativeMonitor = await startChromiumMemoryMonitor(rootPid, temporary);
+    nativeHistory = createNativeMemoryHistory(rootPid); nativeLive = true;
+    nativeHistory.setPhase("before-baseline");
+    // Drain while CDP/native validators are awaited; never let their latency
+    // overflow a 25.6s native queue or silently lose the utility spike.
+    nativePump = (async () => {
+      while (nativeLive) { await drainNative(); await delay(500); }
+    })().catch((error) => { nativeError = String(error); nativeLive = false; });
+  }
   const debugPort = await waitFor(async () => Number((await readFile(path.join(profile, "DevToolsActivePort"), "utf8")).split(/\r?\n/)[0]), "Chrome");
   browser = await chromium.connectOverCDP(`http://127.0.0.1:${debugPort}`);
   chromeVersion = browser.version(); context = browser.contexts()[0]; page = context.pages()[0];
@@ -307,12 +335,25 @@ try {
     }
     const active = samples.slice(first).filter((sample) => sample.privateBytes != null);
     assert.ok(active.length > 2, "Insufficient complete-tree conversion samples");
-    const peakPrivateBytes = Math.max(...active.map((sample) => sample.privateBytes));
+    nativeHistory?.setPhase(`validation-${run}`);
+    // Await the serial pump's next drain so every already-acquired native
+    // conversion sample is incorporated before evaluating the primary gate.
+    const flushDeadline = Date.now() + 5000;
+    const stoppedAt = Date.now();
+    while (nativeHistory && Date.parse(nativeHistory.report().timeline.at(-1)?.[1]) < stoppedAt && Date.now() < flushDeadline) await delay(50);
+    assert.equal(nativeError, null);
+    if (nativeHistory) assert.ok(Date.parse(nativeHistory.report().timeline.at(-1)?.[1]) >= stoppedAt, "Native coverage flush deadline exceeded");
+    const nativePeaks = nativeHistory?.peaks([`pre-conversion-${run}`, `conversion-${run}`]) ?? null;
+    if (nativeHistory) assert.ok(nativePeaks.peak && nativePeaks.validSamples > 2, "Actual full native conversion coverage required");
+    const cimPeakPrivateBytes = Math.max(...active.map((sample) => sample.privateBytes));
+    const peakPrivateBytes = nativePeaks ? combinedTreePeak(cimPeakPrivateBytes, nativePeaks.peak.privateBytes, blankBaseline.privateBytes).peakPrivateBytes : cimPeakPrivateBytes;
+    const cimPeakRssBytes = Math.max(...active.map((sample) => sample.rssBytes));
+    const peakRssBytes = nativePeaks ? Math.max(cimPeakRssBytes, nativePeaks.peakRssBytes) : cimPeakRssBytes;
     const summary = { run, peakPrivateBytes, incrementalPrivateMiB: (peakPrivateBytes - blankBaseline.privateBytes) / MiB,
       loadedSiteOverheadMiB: (loadedIdle.privateBytes - blankBaseline.privateBytes) / MiB,
       conversionOnlyPrivateMiB: (peakPrivateBytes - loadedIdle.privateBytes) / MiB,
-      peakRssBytes: Math.max(...active.map((sample) => sample.rssBytes)), elapsedObservedMs: Date.now() - conversionStart,
-      completeTreeSamples: active.length, state, independentValidation: null, cleanup: null };
+      peakRssBytes, elapsedObservedMs: Date.now() - conversionStart,
+      completeTreeSamples: active.length, nativePeaks, cimPeakPrivateBytes, state, independentValidation: null, cleanup: null };
     runs.push(summary);
     process.stdout.write(`Run ${run}: ${state?.jobState}, peak increment ${summary.incrementalPrivateMiB.toFixed(2)} MiB.\n`);
     assert.equal(state?.jobState, "complete", state?.error ?? state?.phase);
@@ -374,6 +415,11 @@ try {
   failure = { name: error.name, message: error.message, stack: error.stack };
   process.exitCode = 1;
 } finally {
+  nativeHistory?.setPhase("finally-cleanup");
+  nativeLive = false; await nativePump;
+  if (nativeMonitor && !nativeError) await drainNative().catch((error) => { nativeError = String(error); });
+  await nativeMonitor?.close();
+  if (nativeError && !failure) { failure = { name: "NativeObserverFailure", message: nativeError }; process.exitCode = 1; }
   if (page && !page.isClosed()) await cleanOpfs().catch(() => {});
   await context?.tracing.stop({ path: `${reportBase}-trace.zip` }).catch(() => {});
   cdpRealmSampler?.close();
@@ -395,6 +441,7 @@ try {
     stressProfile, fixtureDurationSeconds: fixtureDuration, startupOverlap: startupConversionOverlap(samples),
     utilityActivity: stressProfile.requireStartupOverlap ? summarizeUtilityActivity(samples) : null,
     cpuEnabled, requestedRunCount, cpuDiagnostic, allocatorSamples,
+    nativeMemoryEnabled, nativeMemory: nativeHistory?.report() ?? null, nativeError,
     allocatorCaptureMode: manifest.allocatorDiagnostic ? "console-event" : null,
     allocatorCaptureError, publicAcceptance: false,
     candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
@@ -405,11 +452,16 @@ try {
   await writeFile(`${reportBase}.json`, `${JSON.stringify(report, null, 2)}\n`, { flag: "wx" });
   await writeFile(`${reportBase}.csv`, "timestamp,phase,privateBytes,rssBytes,outputBytes,queuedBytes\n" + samples.map((sample) =>
     [sample.timestamp, sample.phase, sample.privateBytes ?? "", sample.rssBytes ?? "", sample.metrics?.outputBytes ?? "", sample.metrics?.queuedBytes ?? ""].join(",")).join("\n") + "\n", { flag: "wx" });
+  const nativeTimeline = report.nativeMemory?.timeline ?? [];
+  if (nativeMemoryEnabled) await writeFile(`${reportBase}-native.csv`, "sequence,timestamp,phase,privateBytes,rssBytes,nativeElapsedMs,sampleError\n" + nativeTimeline.map((row) =>
+    row.slice(0, 7).map((value) => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",")).join("\n") + "\n", { flag: "wx" });
   const escape = (value) => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
   const valid = samples.filter((sample) => sample.privateBytes != null);
-  const max = Math.max(MiB, ...valid.map((sample) => sample.privateBytes)), maxTime = Math.max(1, ...samples.map((sample) => sample.elapsedMs));
+  const nativeValid = nativeTimeline.filter((row) => row[3] != null);
+  const max = Math.max(MiB, ...valid.map((sample) => sample.privateBytes), ...nativeValid.map((row) => row[3])), maxTime = Math.max(1, ...samples.map((sample) => sample.elapsedMs), ...nativeValid.map((row) => Date.parse(row[1]) - startedAt));
   const points = valid.map((sample) => `${(sample.elapsedMs / maxTime * 900).toFixed(1)},${(280 - sample.privateBytes / max * 260).toFixed(1)}`).join(" ");
-  await writeFile(`${reportBase}.html`, `<!doctype html><meta charset="utf-8"><title>Private H264 memory gate</title><h1>${escape(report.status)}</h1><p>${escape(report.scope)}</p><p>${escape(report.formula)}</p><svg viewBox="0 0 920 300" role="img" aria-label="Complete Chromium private bytes over elapsed time"><polyline fill="none" stroke="#315acf" stroke-width="2" points="${points}"/></svg><p>Private-memory range: 0–${(max / MiB).toFixed(1)} MiB; time: 0–${(maxTime / 1000).toFixed(1)} s.</p><pre>${escape(JSON.stringify({ blankBaseline, loadedIdle, runs: runs.map(({ independentValidation, state, ...run }) => ({ ...run, quality: independentValidation?.ordinalSsim ?? null, jobState: state?.jobState })), failure }, null, 2))}</pre>`, { flag: "wx" });
+  const nativePoints = nativeValid.map((row) => `${((Date.parse(row[1]) - startedAt) / maxTime * 900).toFixed(1)},${(280 - row[3] / max * 260).toFixed(1)}`).join(" ");
+  await writeFile(`${reportBase}.html`, `<!doctype html><meta charset="utf-8"><title>Private H264 memory gate</title><h1>${escape(report.status)}</h1><p>${escape(report.scope)}</p><p>${escape(report.formula)}</p><svg viewBox="0 0 920 300" role="img" aria-label="Complete Chromium private bytes over elapsed time"><polyline fill="none" stroke="#315acf" stroke-width="2" points="${points}"/><polyline fill="none" stroke="#bd3d32" stroke-width="1" points="${nativePoints}"/></svg><p>Blue: CIM; red: parallel 100-ms native snapshots. Primary uses the greater observed conversion peak, never per-process lifetime maxima.</p><p>Private-memory range: 0–${(max / MiB).toFixed(1)} MiB; time: 0–${(maxTime / 1000).toFixed(1)} s.</p><pre>${escape(JSON.stringify({ blankBaseline, loadedIdle, runs: runs.map(({ independentValidation, state, ...run }) => ({ ...run, quality: independentValidation?.ordinalSsim ?? null, jobState: state?.jobState })), failure }, null, 2))}</pre>`, { flag: "wx" });
   const successMessage = manifest.allocatorDiagnostic ? "Instrumented allocator diagnostic passed; not speed, uninstrumented memory or public certification." :
     stressProfile.requireStartupOverlap ? "Private startup/scaling gate passed; direct, failure, fidelity-control and publication gates remain open." :
     cpuEnabled ? "CPU diagnostic complete; one instrumented run is not repeatability or speed acceptance." :

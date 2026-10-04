@@ -1,9 +1,90 @@
 # Remaining work audit
 
-Updated 2026-10-04. This is the living requirement audit for the original
+Updated 2026-10-05. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-05 — Parallel native sampling integrated into private long gate
+
+Status: **Partially implemented under A-09/M-04; private long gate measured
+and failed**. Previous checkpoint `12e4b99` validated the OS observer, not a
+conversion. The long harness now has an explicit `WITHIN_H264_NATIVE_MEMORY=1`
+mode for the same uninstrumented 600-second candidate. Native instrumentation
+starts before the EARLY blank baseline; the existing CIM baseline and diagnostics
+remain unchanged. A separate serial pump drains while CDP and independent native
+validators are awaited, preventing silent loss during long validation waits.
+
+Every native reading is retained losslessly in a compact bounded timeline with
+shared process identities: 32,000 snapshots/512 identities, null unavailable
+samples, exact acquisition-time phases, no process-type exclusions. Primary
+private peak and diagnostic RSS use the greater observed native/CIM conversion
+peak. Per-process lifetime maxima are never summed into a fictitious tree peak.
+No native coverage/error fallback can quietly accept CIM alone. The sampler is
+finally stopped before owned profile/compiler scratch removal. JSON, ordinary
+and native CSV, and HTML with both sampler curves remain unique and source-bound.
+
+Eight focused checks and changed-source lint pass. Full regression/preflight
+and one changed real browser session follow; no codec/native build, input size,
+quality, dimensions, threads, queue or heap changed. The earlier 265.629-MiB
+direct failure and 481.398-MiB blank control remain frozen. Only maintenance
+current-source indexes/dependent hash were refreshed. Fast-report artifact
+allowance is bounded to 64 MiB versus 16 MiB for prior reports; this is not a
+conversion memory limit, output copy or weakened correctness threshold.
+No unchanged expensive rerun, Docker or public promotion. A-09 remains partial
+for the other conversion harnesses; the full original goal remains incomplete.
+
+Actual changed gate (UTC 2026-10-04 20:25:15 report): same genuine
+1,050,296,904-byte/600-second source completed in 227.422 seconds, producing
+the same real 194,031,981-byte H264 output `08b2da23...`, 1280x720/18,000 frames,
+zero maximum PTS error, both exact AAC packet hashes/languages, Unicode title
+and chapter, full decode, SSIM 0.987764. These are validation results, not a
+speed A/B: unchanged binary/settings and differing observer/session behavior
+cannot establish a new conversion optimization.
+
+EARLY blank baseline 251.422 MiB was fixed by browser age 14.025 seconds;
+loaded idle 316.098 MiB. **Primary increase 434.551 MiB failed**: native tree
+peak 719,294,464 bytes versus CIM 701,640,704 bytes (417.715 MiB increase).
+The same-session native peak adds 16.836 MiB that slower CIM missed. At age
+182.187 seconds, the native peak counts 279,400,448 bytes (266.457 MiB) for
+PID 28668. Its native subtype remains unknown; matching PID and creation time
+with separate CIM evidence identifies OnDeviceModelService (CIM observed
+249.625 MiB). This process is counted in full, not subtracted or disabled.
+Every native/CIM aggregate is independently recomputed from actual process
+rows. There were 2,719 contiguous native snapshots/21 identities: three null
+unavailable reads overall, two within pre/active conversion; 2,104 valid native
+conversion readings. Pump ran across all validation waits with no error or
+overflow. Native observer CPU 29.219 seconds over 296.990 seconds (~9.84% of
+one core, ~0.49% of this host's 20 logical processors), not proof of zero impact.
+Reads <=256 KiB, writes/queue <=166,439 bytes, one pending operation, fixed
+32 MiB Wasm; terminal queues zero and no forbidden requests.
+
+Only one job was independently validated; three-repeat/recovery gates were
+not reached after the primary failure. Finally source/output/profile/compiler
+scratch removed, owned Chrome/server/observer stopped, four dist assets exactly
+restored; zero converted media/hosted artifacts. Eight reusable static tools
+67,119,065 bytes and previously policy-blocked 95-file/294,108-byte cache remain
+explicitly inventoried, with no new deletion attempt. Frozen raw JSON/ordinary
+and native CSV/dual-curve HTML/failure trace and source/build/fidelity evidence
+are retained in `evidence/h264-uninstrumented-direct-handle-native-100ms-2026-10-04.json`.
+
+**Intentionally unsupported exact configuration:** this existing fixed-32-MiB
+single-thread OpenH264 CPU candidate, original 720p30/settings/quality and
+production direct-handle writer, on tested Chrome 154/Windows, cannot be exposed
+after a measured 434.551-MiB strict gate failure. H264 stream-copy support is
+separate and unchanged. Do not retry this unchanged candidate, omit the utility,
+delay/prewarm/raise the baseline, downscale the input, or launch a blind native
+build. This is not proof that every H264 encoder/device is impossible; materially
+different bounded engines/configurations still need their own correctness,
+legal and memory evidence. The next sampling task is broader production-profiler
+integration; continue remaining original codec/control work without promoting
+this failed candidate or treating M-04 as complete.
+
+Regression checkpoint: 360/360 units, full lint (before the changed browser
+session), final changed-source lint, TypeScript, whitespace checks and unchanged
+405-public-profile/no-PDF manifest pass. New evidence tests reconstruct every
+native process sum/phase and retain the greater sampler peak plus output fidelity.
+No second conversion, native rebuild, public engine change or Docker run.
 
 ## 2026-10-04 — Sub-second Windows sampling and blank Chrome control
 
@@ -1402,7 +1483,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | A-06 | Generated fixtures and converted copies remain project-local and disposable data is removed                                                                                                                                                  | Verified complete                                 | `scripts/cleanup-generated.mjs` exact hash-verified MKV-to-AVI cleanup option, category `finally` cleanup, cleanup ledger, and `work/.gitkeep`; all current generated MKV-to-AVI fixtures and raw reports are now absent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Preflight free space before every new large run and inspect cleanup after every failure.                                    |
 | A-07 | Expensive work runs in dedicated workers; engines are lazy-loaded and terminated/released                                                                                                                                                    | Verified complete for current engines             | `workers/conversion.worker.ts`, route-specific workers, worker lifecycle tests and metrics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Verify the invariant for every new engine.                                                                                  |
 | A-08 | Fixed-size logs/samples/messages; references released; Wasm initial/max memory explicit and fail-safe                                                                                                                                        | Verified complete for current workers             | `tests/worker-lifecycle.test.mjs` inventories all 31 worker modules and both message loops, rejects unreviewed module-scoped mutable state and mutation of module containers, proves terminal worker cleanup, forbids binary response payloads, and locks fixed diagnostic/message/batch bounds. Batches stop at 256 files before inspection/output; progress is throttled to at most 8 non-forced messages/s; phases are 256 characters, warning/errors 2,048 characters, the UI retains 8 warnings, direct writes use one 256 KiB payload plus a 4 KiB error channel, and native diagnostic rings retain 8 or 32 entries of 512 characters. Production Chrome passed 10/10 sequential-batch, ceiling, write/quota/permission, crash/restart, reload, OPFS cancel, and direct-cancel cases in 20.2 seconds. Fixed Wasm manifests and profile memory evidence remain separately enforced. `evidence/worker-lifecycle-bounds-2026-09-01.json` records the audit. | Re-run and explicitly extend the inventory/allowlist whenever a worker or retained-state path changes.                      |
-| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Partially implemented: fast sampling integration pending | Existing Windows profiler retains realms/buffers/queues and process totals. New 100-ms native observer/blank-control evidence in evidence/persistent-chromium-memory-2026-10-04.json proves short-lived whole-tree peaks and null-on-unavailable; existing conversion harnesses still use slower CIM readings. | Integrate native interval peaks into production stress reports while preserving early baselines, full-tree formula and all other diagnostic metrics; prove observer overhead during conversion. |
+| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Partially implemented: private long gate integrated; other profilers pending | Existing Windows profiler retains realm/buffer/queue metrics. Native 100-ms blank control and private long direct H264 gate now retain contiguous acquired peaks/null failures and combine native/CIM without changing early baseline. The latter failed at 434.551 MiB; evidence/h264-uninstrumented-direct-handle-native-100ms-2026-10-04.json proves full process sums, native/CIM difference and observed overhead. | Integrate native interval peaks into other production stress profilers and revalidate representative profiles; preserve all metrics/baseline/formula and measure conversion perturbation. |
 
 ## Media engines and format coverage
 

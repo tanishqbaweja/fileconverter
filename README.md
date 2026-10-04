@@ -2541,6 +2541,20 @@ Do not repeat the unchanged control. Integration into conversion stress gates
 and measuring conversion perturbation remain open under A-09/M-04; this does
 not recertify historical routes or promote private H264 support.
 
+The private long H264 harness now enables parallel sampling explicitly with
+`WITHIN_H264_NATIVE_MEMORY=1` alongside its uninstrumented startup-scaling
+candidate. It keeps the original early CIM baseline and uses the greater
+observed native/CIM peak, with contiguous acquisition-time native history,
+null failures, a separate CSV and both curves in HTML. The identical 600-second
+input produced a genuine, fully decoded 194,031,981-byte H264 output, but the
+combined private-memory increase was **434.551 MiB** (CIM alone 417.715 MiB).
+The exact tested configuration remains unsupported/private; this is not a
+conversion-speed improvement or universal H264 impossibility claim. See
+`evidence/h264-uninstrumented-direct-handle-native-100ms-2026-10-04.json`.
+Input/output/profile/compiler scratch were removed and published engines
+restored. Do not repeat the unchanged candidate; other profiler integrations
+and the broader original codec/quality/legal gates remain open.
+
 `npm run audit:public-evidence` checks the current registry against the retained
 local stress reports. `npm run evidence:public:write` refreshes the tracked,
 compact `evidence/public-profile-evidence.json` index only after that raw audit
