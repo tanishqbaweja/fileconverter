@@ -51,8 +51,8 @@
   },
   "currentSources": {
     "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
-    "media/ffmpeg/build-h264-candidate.sh": "07098e9d689d1e9170c9cc259323d8e3e3876a242f2ffe05a95120391f06a3b0",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "03bea9c099f5df4c2746b5e0a38612d259b53cbdc398b721867a3c96dba0c850"
+    "media/ffmpeg/build-h264-candidate.sh": "da0db1b5a51ab346d43aaff7fb2f537ef26075ac8686e564763a6b5cb294bb8d",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "005c0caed02474f0331ee1d358b31bae4f6ca5fe7f494e4d966e8d31887ba620"
   },
   "publicProfilesChanged": false,
   "publicEnginesChanged": false,

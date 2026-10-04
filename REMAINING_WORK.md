@@ -15,6 +15,29 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 isolated SAD SIMD integration
+
+Status: **Partially implemented under M-04; private native build and browser A/B pending**.
+`WITHIN_H264_SAD_SIMD=1` now delegates only the four SHA-pinned SAD bodies to
+the helper proven by 529,564 compiled cases. It defaults to 0 and refuses
+simultaneous rejected VAA SIMD. The applier requires a completed successful
+proof, exact case coverage, raw report hash and actual helper hash. Original
+codec settings, wrapper, I/O, threads and fixed memory limits are unchanged.
+Manifest and corresponding source retain helper/proof/source/applier hashes.
+Pinned-source patch check confirms four delegates, retained license and
+unchanged four-neighbor routines; patched source hash is
+`b646fab437006e5773074cc410ad94a5748d44a4fb74bd253d87a6890f3f9d46`.
+Nine focused checks, focused lint and Bash syntax pass. Latest-source indexes
+and one dependent compact-evidence reference hash are refreshed; historical
+executed reports, proofs and as-built manifests are not relabeled.
+The strict selector now permits one additional explicitly named, bounded
+static SAD tool slot (`work/h264-sad-candidate-output`) to preserve the default
+scalar and previously retained tools without overwriting them. Generated
+media/profile/temp still remain repository-local and finally-cleaned.
+Next build uses fixed 32 MiB, one thread, LTO off, VAA off, SAD on; genuine
+identical-input/default-settings production-browser A/B is mandatory before
+any performance acceptance. No public route or release claim is added.
+
 ## 2026-10-04 — H.264 SIMD CPU attribution and next primitive proof
 
 Status: **Partially implemented under M-04; diagnostic and compiled SAD proof completed**.

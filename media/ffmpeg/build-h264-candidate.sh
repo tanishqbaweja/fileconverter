@@ -17,6 +17,13 @@ case "${WITHIN_H264_VAA_SIMD:-0}" in
   *) printf 'Private H264 VAA SIMD must be 0 or 1.\n' >&2; exit 2 ;;
 esac
 export WITHIN_H264_VAA_SIMD="${WITHIN_H264_VAA_SIMD:-0}"
+case "${WITHIN_H264_SAD_SIMD:-0}" in
+  0|1) ;;
+  *) printf 'Private H264 SAD SIMD must be 0 or 1.\n' >&2; exit 2 ;;
+esac
+export WITHIN_H264_SAD_SIMD="${WITHIN_H264_SAD_SIMD:-0}"
+[[ "${WITHIN_H264_VAA_SIMD}${WITHIN_H264_SAD_SIMD}" != 11 ]] ||
+  { echo 'Do not combine rejected VAA SIMD with the isolated SAD experiment.' >&2; exit 2; }
 
 # Experimental artifacts only; never writes public/engines or existing cores.
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -73,6 +80,9 @@ mv ffmpeg-8.1.2 ffmpeg
 mv openh264-652bdb7719f30b52b08e506645a7322ff1b2cc6f openh264
 if [[ "${WITHIN_H264_VAA_SIMD}" == 1 ]]; then
   node "${PROJECT_ROOT}/scripts/apply-vaa-simd.mjs"
+fi
+if [[ "${WITHIN_H264_SAD_SIMD}" == 1 ]]; then
+  node "${PROJECT_ROOT}/scripts/apply-sad-simd.mjs"
 fi
 # Refuse source drift before the narrowly scoped, typed virtual-call fix.
 printf '%s  %s\n' 4c86c9d87fdfb122f2892ca7984a0544877f99f43e4fe49eec9286021cef96eb \
@@ -149,6 +159,15 @@ if [[ "${WITHIN_H264_VAA_SIMD}" == 1 ]]; then
   cp "${SCRIPT_DIR}/openh264-vaa-simd.h" source-bundle/media/ffmpeg/
   cp "${PROJECT_ROOT}/evidence/openh264-vaa-arithmetic-2026-10-04.json" source-bundle/evidence/
   cp vaa-simd-patch.json source-bundle/
+fi
+if [[ "${WITHIN_H264_SAD_SIMD}" == 1 ]]; then
+  mkdir -p source-bundle/scripts/lib source-bundle/media/ffmpeg source-bundle/evidence
+  cp "${PROJECT_ROOT}/scripts/apply-sad-simd.mjs" source-bundle/scripts/
+  cp "${PROJECT_ROOT}/scripts/lib/openh264-sad-patch.mjs" \
+    "${PROJECT_ROOT}/scripts/lib/openh264-sad-reference.mjs" source-bundle/scripts/lib/
+  cp "${SCRIPT_DIR}/openh264-sad-simd.h" source-bundle/media/ffmpeg/
+  cp "${PROJECT_ROOT}/evidence/openh264-sad-arithmetic-2026-10-04.json" source-bundle/evidence/
+  cp sad-simd-patch.json source-bundle/
 fi
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"

@@ -8,7 +8,7 @@ const exec = promisify(execFile);
 export const H264_SPEED_BASELINE_COMMIT = "a1648ddfe48c0273d45e5cb4e395e7e837b79913";
 export const H264_SPEED_BASELINE_RECIPE_SHA256 = "94ff4a1df7b80095f02182d10674efab43b0e13bef4d1077f230ecdcefa6e5eb";
 export function candidateDirectory(root, name = "h264-candidate-output") {
-  assert.ok(["h264-candidate-output", "h264-speed-baseline-37157670815"].includes(name), "Unknown private H264 tool directory");
+  assert.ok(["h264-candidate-output", "h264-speed-baseline-37157670815", "h264-sad-candidate-output"].includes(name), "Unknown private H264 tool directory");
   return path.join(root, "work", name);
 }
 export async function verifyCandidateRecipe(root, expected, current) {

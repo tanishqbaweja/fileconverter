@@ -870,6 +870,12 @@ cleanup: [`evidence/openh264-sad-arithmetic-2026-10-04.json`](evidence/openh264-
 See [`evidence/h264-vaa-cpu-comparison-2026-10-04.json`](evidence/h264-vaa-cpu-comparison-2026-10-04.json)
 and the current [remaining-work audit](REMAINING_WORK.md).
 
+The proven SAD helper is now available only behind private
+`WITHIN_H264_SAD_SIMD=1` (default 0). It refuses combination with rejected VAA
+SIMD and preserves all codec settings. Its exact proof and source provenance
+are included in the private build manifest and corresponding-source bundle;
+full browser speed/memory/fidelity testing is still required.
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or

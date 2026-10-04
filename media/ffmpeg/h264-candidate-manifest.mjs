@@ -17,6 +17,10 @@ if (!["0", "1"].includes(libraryLto)) throw new Error("Private H264 library LTO 
 const vaaSimd = process.env.WITHIN_H264_VAA_SIMD ?? "0";
 if (!["0", "1"].includes(vaaSimd)) throw new Error("Private H264 VAA SIMD must be 0 or 1");
 const vaaPatch = vaaSimd === "1" ? JSON.parse(await readFile(path.join(build, "vaa-simd-patch.json"), "utf8")) : null;
+const sadSimd = process.env.WITHIN_H264_SAD_SIMD ?? "0";
+if (!["0", "1"].includes(sadSimd)) throw new Error("Private H264 SAD SIMD must be 0 or 1");
+if (vaaSimd === "1" && sadSimd === "1") throw new Error("SAD trial must not combine rejected VAA SIMD");
+const sadPatch = sadSimd === "1" ? JSON.parse(await readFile(path.join(build, "sad-simd-patch.json"), "utf8")) : null;
 const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\\w+)_${kind} 1$`, "gm"))]
   .map((match) => match[1].toLowerCase()).sort();
 const manifest = {
@@ -30,6 +34,8 @@ const manifest = {
   libraryLinkTimeOptimization: libraryLto === "1",
   openh264VaaSimd: vaaSimd === "1",
   openh264VaaSimdProvenance: vaaPatch,
+  openh264SadSimd: sadSimd === "1",
+  openh264SadSimdProvenance: sadPatch,
   libraryOptimizationScope: libraryLto === "1" ? "FFmpeg and OpenH264 objects plus existing final-link LTO" : "Existing final-link LTO only; libraries use Wasm objects",
   currentAvioWrapperSourceSha256: await sha256(path.join(root, "media/ffmpeg/within_remux.c")),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_h264.c")),

@@ -15,7 +15,7 @@
   },
   "precedingSpeedTrial": {
     "path": "evidence/h264-vaa-simd-comparison-2026-10-04.json",
-    "sha256": "8f4377c2cb0691938f5fd7ba94fdb5f3da9f46fc3054ac50bb21b25d61e381b6",
+    "sha256": "651d1435959c3b959e6405009e280f57801c95747ed57d4aa4731137097e0315",
     "accepted": false,
     "measuredSpeedupFraction": -0.09196305597303667
   },

@@ -55536,7 +55536,7 @@
   ],
   "currentSources": {
     "scripts/lib/h264-speed-comparison.mjs": "30cf42bbb169cf2e94cef815a980b287cea066ab3b43523142ec6c322141c597",
-    "scripts/lib/h264-candidate-selection.mjs": "f0cd6c37bc92092e2e3b4dba1c4f984c561410dbb3add6a29b704afcd259fde6",
+    "scripts/lib/h264-candidate-selection.mjs": "db88f6f24620013362d4ac5b3e8a67287f2e70f8a225dbf124f8bc49f1a388f2",
     "scripts/record-h264-speed-comparison.mjs": "3904e98aaa7a9f97bcce8d250684ebfd66bbe57c40c4e990677cd44880d77620"
   },
   "publicAcceptance": false,

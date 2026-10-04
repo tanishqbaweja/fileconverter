@@ -19,7 +19,7 @@ test("private SAD SIMD uses exact-width loads and independently advances both st
   assert.match(source, /wasm_u32x4_extadd_pairwise_u16x8/);
   assert.doesNotMatch(source.replace(/\/\/[^\n]*/g, ""), /malloc|new |quality|frame_skipping/);
   const production = await readFile(new URL("../media/ffmpeg/build-h264-candidate.sh", import.meta.url), "utf8");
-  assert.doesNotMatch(production, /sad-simd|SAD_SIMD|apply-sad/);
+  assert.match(production, /export WITHIN_H264_SAD_SIMD="\$\{WITHIN_H264_SAD_SIMD:-0\}"/);
 });
 test("SAD proof isolates bounded warm primitive measurements from file conversion acceptance", async () => {
   const script = await readFile(new URL("../scripts/verify-sad-arithmetic.mjs", import.meta.url), "utf8");
