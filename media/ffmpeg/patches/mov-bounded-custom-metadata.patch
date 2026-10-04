@@ -1,6 +1,6 @@
 --- a/libavformat/movenc.c
 +++ b/libavformat/movenc.c
-@@ -4423,1 +4423,31 @@
+@@ -4750,4 +4750,34 @@
 +static void mov_write_bounded_custom_metadata(AVIOContext *pb, AVFormatContext *s)
 +{
 +    const AVDictionaryEntry *entry = NULL;
@@ -32,6 +32,11 @@
 +}
 +
  /* iTunes meta data list */
-@@ -4460,1 +4490,2 @@
+ static int mov_write_ilst_tag(AVIOContext *pb, MOVMuxContext *mov,
+                               AVFormatContext *s)
+ {
+@@ -4787,3 +4817,4 @@
      mov_write_tmpo_tag(pb, s);
 +    mov_write_bounded_custom_metadata(pb, s);
+     return update_size(pb, pos);
+ }

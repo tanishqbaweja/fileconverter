@@ -7,7 +7,9 @@ import path from "node:path";
 import { promisify } from "node:util";
 
 const root = path.resolve(import.meta.dirname, "../..");
-const candidateName = "mpeg2-candidate-output";
+const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
+if (!/^(mpeg2-candidate-output|mpeg2-artwork-metadata-[0-9]{8,})$/.test(candidateName))
+  throw new Error("Private candidate must remain in its named repository-local tool slot");
 const candidate = path.join(root, "work", candidateName);
 const expectedManifest = existsSync(path.join(candidate, "build-manifest.json"))
   ? JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")) as {

@@ -5,7 +5,7 @@ import path from "node:path";
 const root = path.resolve(import.meta.dirname, "..");
 const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
 if (!/^(mpeg2-candidate-output|mpeg2-artwork-metadata-[0-9]{8,})$/.test(candidateName))
-  throw new Error("Private candidate must remain in its named repository-local tool slot");
+  throw new Error("Private candidate directory must be a named repository-local tool slot");
 const candidate = path.join(root, "work", candidateName);
 const target = path.join(root, "dist/client/engines/remux");
 const published = path.join(root, "public/engines/remux");
@@ -13,8 +13,8 @@ const digest = async (file) => createHash("sha256").update(await readFile(file))
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
 const inputMode = process.argv[3] ?? "legacy";
 if (!["legacy", "byob"].includes(inputMode)) throw new Error("Private input mode must be legacy or byob");
-const adapter = `// PRIVATE_MPEG2_LARGE_ADAPTER_NOT_PUBLIC_SUPPORT
-import factory from "/engines/remux/_candidate_mpeg2_large_base.mjs";
+const adapter = `// PRIVATE_MPEG2_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT
+import factory from "/engines/remux/_candidate_mpeg2_base.mjs";
 export default async function(options) {
 ${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
     console.debug("WITHIN_MPEG2_ALLOCATOR " + JSON.stringify(sample));
@@ -27,8 +27,6 @@ ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.w
   core.ccall = async (name, type, types, args, settings) => {
     let mapped = [...args];
     if (mapped[0] === 4) mapped = [6, ...mapped.slice(1, 4), 0, 0, 0, ...mapped.slice(4)];
-    if (mapped[0] === 1 && mapped.length === 9)
-      mapped = [6, ...mapped.slice(1, 4), 0, 0, 0, ...mapped.slice(4)];
     if (mapped[0] === 1) mapped[0] = 6;
     try { return await call(name, type, mapped.map(() => "number"), mapped, settings); }
     catch (error) { throw new Error("Candidate ccall: " + String(error.message) + "\\n" + String(error.stack).slice(0, ${manifest.allocatorDiagnostic ? 4096 : 2048})); }
@@ -37,8 +35,8 @@ ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.w
 }
 `;
 const adapterHash = createHash("sha256").update(adapter).digest("hex");
-const files = ["within-remux.mjs", "within-remux.wasm", "within-mpeg4.mjs", "within-mpeg4.wasm", "within-direct.mjs", "within-direct.wasm"];
-const base = path.join(target, "_candidate_mpeg2_large_base.mjs");
+const files = ["within-remux.mjs", "within-remux.wasm", "within-mpeg4.mjs", "within-mpeg4.wasm"];
+const base = path.join(target, "_candidate_mpeg2_base.mjs");
 for (const file of ["within-mpeg2.mjs", "within-mpeg2.wasm"]) {
   if (await digest(path.join(candidate, file)) !== manifest.artifacts[file]) throw new Error(`Candidate artifact mismatch: ${file}`);
 }
@@ -72,4 +70,4 @@ if (process.argv[2] === "stage") {
     if (await digest(path.join(target, file)) !== await digest(path.join(published, file))) throw new Error("Restoration hash mismatch.");
   }
   process.stdout.write("Restored generated production assets to exact published hashes; private adapter deleted.\n");
-} else throw new Error("Usage: node scripts/stage-mpeg2-large-candidate.mjs stage|restore [legacy|byob] (server stopped)");
+} else throw new Error("Usage: node scripts/stage-mpeg2-artwork-candidate.mjs stage|restore [legacy|byob] (server stopped)");

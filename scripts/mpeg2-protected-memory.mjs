@@ -16,7 +16,10 @@ import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), MiB = 1024 ** 2;
-const source = path.join(root, "test.mkv"), candidate = path.join(root, "work/mpeg2-candidate-output");
+const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
+if (!/^(mpeg2-candidate-output|mpeg2-artwork-metadata-[0-9]{8,})$/.test(candidateName))
+  throw new Error("Private candidate must remain in its named repository-local tool slot");
+const source = path.join(root, "test.mkv"), candidate = path.join(root, "work", candidateName);
 const expectedSourceBytes = 2958573265;
 const expectedSourceHash = "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34";
 const baseExec = promisify(execFile), startedAt = Date.now();

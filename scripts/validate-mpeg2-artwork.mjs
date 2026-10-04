@@ -20,7 +20,7 @@ const stop = async (child) => {
 try {
   runtime = await createOwnedRuntimeScratch("mpeg2-artwork-runtime-");
   if (cleanupSmoke) {
-    await exec(process.execPath, ["scripts/stage-mpeg2-candidate.mjs", "stage", "byob"],
+    await exec(process.execPath, ["scripts/stage-mpeg2-artwork-candidate.mjs", "stage", "byob"],
       { cwd: root, env: runtime.env, windowsHide: true }); staged = true;
     process.stdout.write(`Restoration-only cleanup smoke: ${runtime.directory}\n`);
   } else {
@@ -35,7 +35,7 @@ try {
   const environment = { ...runtime.env, WRANGLER_SEND_METRICS: "false",
     WITHIN_REUSE_SERVER: "1", WITHIN_TEST_BASE_URL: origin, WITHIN_TEST_PORT: String(port),
     WITHIN_BROWSER_CHANNEL: "chrome", WITHIN_TEST_VIDEO: "off" };
-  await exec(process.execPath, ["scripts/stage-mpeg2-candidate.mjs", "stage", "byob"],
+  await exec(process.execPath, ["scripts/stage-mpeg2-artwork-candidate.mjs", "stage", "byob"],
     { cwd: root, env: environment, windowsHide: true }); staged = true;
   server = spawn(process.execPath, ["node_modules/wrangler/bin/wrangler.js", "dev",
     "--config", "dist/server/wrangler.json", "--port", String(port)],
@@ -68,7 +68,7 @@ try {
   // Restoration spawns a Node child using this scratch. Its exit/cache flush
   // must finish BEFORE removal; these are dependent, not parallel actions.
   try {
-    if (staged) await exec(process.execPath, ["scripts/stage-mpeg2-candidate.mjs", "restore", "byob"],
+    if (staged) await exec(process.execPath, ["scripts/stage-mpeg2-artwork-candidate.mjs", "restore", "byob"],
       { cwd: root, env: runtime?.env, windowsHide: true });
   } finally { if (runtime) await runtime.close(); }
   if (runtime) await assert.rejects(access(runtime.directory), { code: "ENOENT" });

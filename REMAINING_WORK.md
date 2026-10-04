@@ -31,6 +31,23 @@ and now records independent probes before assertions to preserve diagnostics.
 This further changed candidate must compile and pass, with no unchanged large
 rerun while artwork is unproved. Public modules remain unchanged.
 
+Build `37240697891` at `3514906` failed after 46 seconds, before compilation:
+the second patch hunk could not apply. Web-rendered line offsets differed from
+the actual pinned source. Corrected exact raw-source line numbers and expanded
+function context; **both git and GNU zero-fuzz dry runs pass** against the
+SHA-verified actual upstream file. New diagnostic helper deletes its owned
+downloaded source/scratch in finally. This is a changed patch, not a repeated
+unchanged build; no codec settings/heap/quality change.
+
+Both hosted artifacts from the completed header-only build were deleted and
+API total zero verified; corresponding-source bundle never downloaded.
+Deletion of obsolete local `work/mpeg2-attachment-baseline-37237343519` and
+`work/mpeg2-candidate-output` was policy-blocked **before execution**. About
+14.6 MB static tools remain, no alternate delete/move/overwrite attempted.
+New downloaded artifacts use a fresh explicit repository-local
+`mpeg2-artwork-metadata-<run-id>` tool slot; private staging/test paths reject
+arbitrary names/drive paths. No converted media remain from either small run.
+
 Continuation after pushed `1eb7479` is progress, not an unchanged retry.
 The private generator now includes the exact JPEG/PNG header reader from the
 hash-pinned audited core. It fills attached-picture dimensions from compressed
