@@ -2547,6 +2547,18 @@ profile directory instead of deleting a potentially live session; its own new
 profile and observer compiler scratch are removed in finally. A pre-cleanup
 failure report does not itself prove finally cleanup succeeded.
 
+Future general-profiler runs also own a fresh `work/profile-runtime-*`
+directory. Server, Chrome and independent validators inherit repository-local
+TEMP/TMP/TMPDIR; Node compile-cache and Wrangler log defaults are confined there.
+Finally cleanup attempts the profile, observer scratch and runtime directory
+independently, even if one removal fails. It checks original directory identity
+before deleting new runtime scratch and never sweeps older directories.
+Real helper startup and injected caller-failure tests removed their generated
+logs/update checks and left no new shared work entries. This is helper lifecycle
+evidence, not another conversion/memory/speed certification; the passing
+three-remux report remains bound to its original `b4c8db6` source. Historical
+policy-blocked runtime leftovers remain explicitly inventoried and untouched.
+
 Windows peak-capture work (2026-10-04) adds a private read-only persistent
 100-ms OS observer in `scripts/lib/persistent-chromium-memory.mjs`. It uses
 [Toolhelp32 process snapshots](https://learn.microsoft.com/en-us/windows/win32/api/tlhelp32/nf-tlhelp32-createtoolhelp32snapshot),

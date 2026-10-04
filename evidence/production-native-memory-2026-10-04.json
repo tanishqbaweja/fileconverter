@@ -40,15 +40,18 @@
     "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa"
   },
   "currentSources": {
-    "scripts/memory-profile.mjs": "d14d4b0fd2d6f315cb703c1854d3db500418ba8787a899551d78ec67caa2e17c",
+    "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
     "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
     "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
     "scripts/lib/native-memory-history.mjs": "abfad6cbac33469565f081deee4c49b665771d46bf38e3fcaf487370b77811c5",
     "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
     "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
     "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
-    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa"
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
   },
+  "executedAtCommit": "b4c8db6f92be0f13f7eaeb25b65edba649aa13b6",
+  "postGateMaintenance": "Only current-source maintenance index refreshed after runtime TEMP/TMP/log/cache ownership and navigation-phase labeling changes. Executed hashes, raw reports, baseline, peaks, counts, output validation and measurements remain frozen. Git show at executedAtCommit reproduces the actual d14d4b0f harness hash; newer helper-only evidence is separate and does not recertify conversion.",
   "browser": {
     "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "version": "154.0.8037.93",

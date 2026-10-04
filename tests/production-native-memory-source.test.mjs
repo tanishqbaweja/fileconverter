@@ -11,6 +11,10 @@ test("production profiler requires parallel native peaks, a stable early baselin
   assert.match(source, /combinedTreePeak\(cimPeakPrivateBytes, nativePeaks\.peak\.privateBytes, blankPrivateBytes\)/);
   assert.match(source, /await nativeObserver\.through\(conversionStoppedAt\)/);
   assert.match(source, /sourceHashes,/);
+  assert.match(source, /await createOwnedRuntimeScratch\(\)/);
+  assert.match(source, /env: runtimeScratch\.env/);
+  assert.match(source, /env: options\.env \?\? runtimeScratch\?\.env \?\? process\.env/);
+  assert.ok(source.indexOf('nativeObserver.setPhase("loaded-navigation")') < source.indexOf("await page.goto(testUrl)"));
   assert.match(source, /nativeMemory: nativeObserver\.report\(\)/);
   assert.match(source, /return \(await sampleChromiumTree\(rootPid\)\)\.processes/);
   assert.match(source, /stress-native-100ms/);
@@ -19,4 +23,7 @@ test("production profiler requires parallel native peaks, a stable early baselin
   const final = source.split("} finally {")[1];
   assert.ok(final.indexOf("await nativeObserver?.stop()") < final.indexOf("await removeWithRetries(profileRoot)"));
   assert.match(final, /assertInside\(workRoot, nativeTemporary\)/);
+  assert.match(final, /await finishOwnedCleanup\(/);
+  assert.match(final, /if \(profileOwned\) await removeWithRetries\(profileRoot\)/);
+  assert.match(final, /await runtimeScratch\?\.close\(\)/);
 });

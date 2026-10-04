@@ -1,0 +1,84 @@
+{
+  "recordedAt": "2026-10-04T21:19:28.128Z",
+  "scope": "Actual production server helper runtime isolation and cleanup; no user file selected, no conversion, memory or speed certification",
+  "status": "passed-helper-lifecycle",
+  "raw": {
+    "path": "outputs/reports/2026-10-04T21-19-28-128Z-owned-runtime-scratch.json",
+    "bytes": 4161,
+    "sha256": "33bcf9902e087f96a0eddd94f2f855379646d70b7487b6f251ade56c54c0df06"
+  },
+  "rejectedTest": {
+    "path": "outputs/reports/2026-10-04T21-18-18-982Z-owned-runtime-scratch.json",
+    "bytes": 1976,
+    "sha256": "ba0346ac23ae4eae34744b602792487193fc10a0e3b900ba06e1778198f1248f",
+    "failedAssertion": "Actual Node cache was scoped locally",
+    "reason": "Requiring a cache file to exist was incorrect for a force-stopped helper that may not flush optional Node compile caches. Scope of the cache environment and all actually generated scratch remain required. The failed report retained before/after unchanged shared work entries; it does not prove all two scenarios ran."
+  },
+  "executedSources": {
+    "scripts/test-owned-runtime-scratch.mjs": "be2bbfc59b7316ecc4c6bca9664b5ee0b7950ac8b63d91854dcf1723a5f6e9a0",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/memory-profile.mjs": "471928da90480d845f052b0165bf9acf125d7330c25639016b242f4a7aa34987"
+  },
+  "currentSources": {
+    "scripts/test-owned-runtime-scratch.mjs": "be2bbfc59b7316ecc4c6bca9664b5ee0b7950ac8b63d91854dcf1723a5f6e9a0",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c"
+  },
+  "postHelperMaintenance": "Helper/owned-scratch executed bytes unchanged. Main profiler subsequently routes independent validator execFile calls through the same owned environment; only current-source maintenance index changed. No conversion rerun or replacement of recorded source hashes/results.",
+  "dependency": {
+    "wranglerVersion": "4.92.0",
+    "installedPackageSha256": "b659402d435053012c1843c226a701964abbeb4ce8a9a560d57c5be0ced4916d",
+    "logPathOptionVerifiedFromInstalledSource": true
+  },
+  "runs": [
+    {
+      "scenario": "successful-helper",
+      "serverPid": 32164,
+      "serverExitCodeAfterOwnedForceStop": 1,
+      "callerError": null,
+      "httpReady": true,
+      "coop": "same-origin",
+      "coep": "require-corp",
+      "cspPresent": true,
+      "runtimeFilesRemoved": [
+        { "name": "wrangler-logs/wrangler-2026-10-04_21-19-18_768.log", "bytes": 9029 },
+        { "name": "update-check/wrangler-latest.json", "bytes": 47 }
+      ],
+      "runtimeBytesRemoved": 9076,
+      "compileCacheFilesObserved": 0,
+      "compileCacheConfinedEnvironment": true,
+      "ownedRuntimeAbsent": true,
+      "fileSelectionCount": 0,
+      "conversionCount": 0
+    },
+    {
+      "scenario": "injected-caller-failure",
+      "serverPid": 34424,
+      "serverExitCodeAfterOwnedForceStop": 1,
+      "callerError": "intentional caller failure",
+      "httpReady": true,
+      "coop": "same-origin",
+      "coep": "require-corp",
+      "cspPresent": true,
+      "runtimeFilesRemoved": [
+        { "name": "wrangler-logs/wrangler-2026-10-04_21-19-23_685.log", "bytes": 9029 },
+        { "name": "update-check/wrangler-latest.json", "bytes": 47 }
+      ],
+      "runtimeBytesRemoved": 9076,
+      "compileCacheFilesObserved": 0,
+      "compileCacheConfinedEnvironment": true,
+      "ownedRuntimeAbsent": true,
+      "fileSelectionCount": 0,
+      "conversionCount": 0
+    }
+  ],
+  "newSharedWorkEntries": [],
+  "blockedHistoricalTargetsTouched": false,
+  "totalRuntimeFileBytesRemoved": 18152,
+  "limitations": [
+    "Actual helper HTTP startup, security headers, runtime logs/update-check creation and finally cleanup tested; not a browser conversion rerun",
+    "Node cache path was scoped; no optional compile-cache file creation is invented",
+    "Historical blocked miniflare/update-check/cache targets remain unchanged and were not swept, moved or deleted",
+    "New main profiler scratch wiring/navigation label source checks do not retroactively rewrite the passing b4c8db6 conversion report"
+  ]
+}

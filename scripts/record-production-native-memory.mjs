@@ -59,7 +59,7 @@ assert.equal(fixtureBytes, raw.source.bytes); assert.equal(fixtureHash.digest("h
 // No deletion here. Inspect exact expected-owned scratch/profile absence.
 const remaining = (await import("node:fs/promises")).readdir;
 const names = await remaining(path.join(root, "work"));
-assert.ok(!names.some((name) => name === "memory-profile-chrome" || name.startsWith("memory-observer-")));
+assert.ok(!names.some((name) => name === "memory-profile-chrome" || name.startsWith("memory-observer-") || name.startsWith("profile-runtime-")));
 const sourceHashes = {};
 for (const [file, expected] of Object.entries(raw.sourceHashes)) {
   sourceHashes[file] = sha(await readFile(path.join(root, file))); assert.equal(sourceHashes[file], expected);
@@ -81,7 +81,8 @@ const evidence = {
   runs, nativeMemory: { ...memory, graphBuckets: undefined },
   graph: { retainedBuckets: memory.graphBuckets.length, evictedBuckets: memory.graphBucketsEvicted, durationMs: 1000 },
   cleanup: { protectedFixturePostHashVerified: true, profileAndObserverScratchAbsent: true,
-    convertedPayloadInsideRemovedProfile: true, evidenceRecorderDoesNotDelete: true },
+    convertedPayloadInsideRemovedProfile: true, evidenceRecorderDoesNotDelete: true,
+    runtimeScratchAbsent: raw.runtimeScratch ? !names.includes(path.basename(raw.runtimeScratch.directory)) : null },
   limitations: ["Test-selected real OPFS directory handle uses production selected-handle output; not native OS picker/manual physical-drive proof",
     "Historical route reports are not rewritten or recertified by this instrumentation change",
     "No codec, quality, heap, buffer, queue or production engine change; no conversion-speed or zero-observer-cost claim",

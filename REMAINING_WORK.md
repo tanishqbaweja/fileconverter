@@ -5,6 +5,76 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-05 — Future profiler runtime scratch ownership verified
+
+Status: **Partially implemented under A-09; general-profiler helper ownership
+implemented and focused helper lifecycle verified**. Previous goal turn was
+progress: pushed `b4c8db6` retained three genuine protected-fixture remuxes and
+stronger memory readings. Revalidated the clean branch and reread the complete
+objective/specification; no unchanged large conversion or native codec build.
+
+`scripts/lib/owned-runtime-scratch.mjs` creates only a fresh unpredictable
+repository `work/profile-runtime-*` child, validates the approved canonical
+work path and checks original directory device/inode/real path before deletion.
+It never sweeps/reuses old paths. General profiler server/Chrome/independent
+validators now inherit its TEMP/TMP/TMPDIR, scoped Node compile-cache and
+Wrangler log paths. Existing profile creation moved inside the guarded try;
+only a successfully created profile is owned/removable, so an existing profile
+cannot be deleted after a failed mkdir. Independent finally cleanup attempts
+profile, observer scratch and runtime directory even if one fails; aggregated
+errors stay failures. New report/recorder fields distinguish pre-cleanup
+reporting from independently verified terminal scratch absence.
+
+A separate `loaded-navigation` phase is now marked before converter navigation,
+instead of labeling that loading interval as native blank-baseline history.
+The actual EARLY CIM blank baseline, stability requirement, primary formula,
+full tree, limits and measurements are unchanged. The older raw native phase
+labels/peaks remain frozen, not retroactively renamed or inflated into a baseline.
+
+Four focused unit cases exercise a real failing child, concurrent independent
+scratch ownership, idempotent close, invalid target prefixes and attempting
+all cleanup actions despite failures. A changed real production Wrangler
+4.92.0 helper smoke passes **two** scenarios: HTTP startup and an injected
+caller failure. Same production COOP/COEP/CSP headers and converter HTML;
+each created and finally removed a 9,029-byte local log and 47-byte local
+update-check file, **18,152 bytes total**, plus runtime directories. No new
+shared `work` entries, no file selection/conversion. Node compile-cache path
+was confined but zero cache files were observed; no creation is fabricated.
+First helper smoke wrongly required such a file after force stop and failed;
+its report retained. Changed assertion requires confinement and actual
+generated-scratch cleanup, not optional cache creation. Both server trees were
+owned/force-stopped, not claimed graceful exit. No Docker/browser conversion/
+memory/speed acceptance is inferred from this helper test.
+
+Compact evidence `evidence/owned-runtime-scratch-2026-10-04.json` binds actual
+helper/primitive hashes, dependency, exact generated files, cleanup and failed
+assertion; raw reports `2026-10-04T21-18-18-982Z-owned-runtime-scratch.json`
+and `2026-10-04T21-19-28-128Z-owned-runtime-scratch.json` remain under
+`outputs/reports`. Older blocked two empty miniflare directories, 47-byte
+update-check file and 95-file/294,108-byte cache untouched; no deletion/move
+bypass. Protected `test.mkv` size/hash rechecked; no media fixtures/copies made.
+
+Only prior remux evidence's current-source maintenance index was refreshed;
+executed d14d4b0f harness hash, raw artifact hashes, early baseline, native/CIM
+peaks, output/fidelity/recovery and cleanup inventory are frozen. `git show`
+at `b4c8db6f92be0f13f7eaeb25b65edba649aa13b6` independently reproduces that
+exact executed hash. New validator-environment wiring was added after the
+helper smoke; its current index is distinct from recorded source hashes and
+source-checked, not represented as a new remux execution. Ten focused checks
+and changed-source lint pass; final proportionate regression/ledger update follow.
+A-09 remains partial for other harnesses, perturbation and full release gates;
+all original codec/control/legal/scaling/manual/browser requirements remain.
+
+Final checkpoint: **375/375** unit/evidence tests, full lint, TypeScript,
+405-public-profile/no-PDF manifest and whitespace checks pass. Both accepted
+helper server PIDs/trees are stopped and new owned scratch is absent; protected
+fixture remains exactly 2,958,573,265 bytes/SHA31f36695... . The two real helper
+checks deleted only their own generated logs/update-check data (18,152 bytes),
+not user media or blocked historical directories. No additional conversion,
+production engine rebuild or public capability change. The full goal remains
+active; next work is remaining codec/control requirements and other harness
+adoption, not another unchanged protected remux/H264 or blank-control rerun.
+
 ## 2026-10-05 — General production profiler native peaks and protected-fixture gate
 
 Status: **Partially implemented under A-09; general Windows production stress
@@ -1581,7 +1651,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | A-06 | Generated fixtures and converted copies remain project-local and disposable data is removed                                                                                                                                                  | Verified complete                                 | `scripts/cleanup-generated.mjs` exact hash-verified MKV-to-AVI cleanup option, category `finally` cleanup, cleanup ledger, and `work/.gitkeep`; all current generated MKV-to-AVI fixtures and raw reports are now absent                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Preflight free space before every new large run and inspect cleanup after every failure.                                    |
 | A-07 | Expensive work runs in dedicated workers; engines are lazy-loaded and terminated/released                                                                                                                                                    | Verified complete for current engines             | `workers/conversion.worker.ts`, route-specific workers, worker lifecycle tests and metrics                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      | Verify the invariant for every new engine.                                                                                  |
 | A-08 | Fixed-size logs/samples/messages; references released; Wasm initial/max memory explicit and fail-safe                                                                                                                                        | Verified complete for current workers             | `tests/worker-lifecycle.test.mjs` inventories all 31 worker modules and both message loops, rejects unreviewed module-scoped mutable state and mutation of module containers, proves terminal worker cleanup, forbids binary response payloads, and locks fixed diagnostic/message/batch bounds. Batches stop at 256 files before inspection/output; progress is throttled to at most 8 non-forced messages/s; phases are 256 characters, warning/errors 2,048 characters, the UI retains 8 warnings, direct writes use one 256 KiB payload plus a 4 KiB error channel, and native diagnostic rings retain 8 or 32 entries of 512 characters. Production Chrome passed 10/10 sequential-batch, ceiling, write/quota/permission, crash/restart, reload, OPFS cancel, and direct-cancel cases in 20.2 seconds. Fixed Wasm manifests and profile memory evidence remain separately enforced. `evidence/worker-lifecycle-bounds-2026-09-01.json` records the audit. | Re-run and explicitly extend the inventory/allowlist whenever a worker or retained-state path changes.                      |
-| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Partially implemented: private and general Windows stress gates integrated; remaining harness/release coverage pending | Native 100-ms readings combine actual native/CIM peaks without replacing early baseline. Private H264 failed at 434.551 MiB (evidence/h264-uninstrumented-direct-handle-native-100ms-2026-10-04.json). General production selected-handle MKV-to-MP4 passed three protected-fixture runs at 236.500/233.242/200.441 MiB with independently reconstructed peak/process/count/output/cleanup evidence (evidence/production-native-memory-2026-10-04.json); native graph ring retains exact phase peaks beyond long-history eviction. Post-conversion cleanup utility spike remains explicitly recorded. | Integrate remaining browser harnesses; scope runtime TEMP/TMP to owned finally directories; preserve blocked scratch inventory without bypass; retain every metric/baseline/formula and measure conversion perturbation; broader release revalidation remains. |
+| A-09 | Full diagnostic telemetry: stable blank/loaded baselines, process-tree RSS/private memory, per-process data, every accessible JS realm, Wasm, SAB, queues, workers, output, storage, throughput, and peaks; missing samples are null/retried | Partially implemented: private and general Windows stress gates integrated; remaining harness/release coverage pending | Native 100-ms readings combine actual native/CIM peaks without replacing early baseline. Private H264 failed at 434.551 MiB (evidence/h264-uninstrumented-direct-handle-native-100ms-2026-10-04.json). General production selected-handle MKV-to-MP4 passed three protected-fixture runs at 236.500/233.242/200.441 MiB with independently reconstructed peak/process/count/output/cleanup evidence (evidence/production-native-memory-2026-10-04.json); native graph ring retains exact phase peaks beyond long-history eviction. Post-conversion cleanup utility spike remains explicitly recorded. Future general-profile child scratch/log/cache confinement and real helper success/failure cleanup verified separately (evidence/owned-runtime-scratch-2026-10-04.json), not a new conversion gate. | Integrate remaining browser harnesses and adopt owned child-runtime scratch there; preserve blocked scratch inventory without bypass; retain every metric/baseline/formula and measure conversion perturbation; broader release revalidation remains. |
 
 ## Media engines and format coverage
 

@@ -19,8 +19,13 @@ import { fileURLToPath } from "node:url";
 import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
 import { startParallelMemoryObserver } from "./lib/parallel-memory-observer.mjs";
 import { combinedTreePeak } from "./lib/native-memory-history.mjs";
+import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 
-const execFileAsync = promisify(execFile);
+const execFilePromise = promisify(execFile);
+const execFileAsync = (command, args, options = {}) => execFilePromise(command, args, {
+  ...options,
+  env: options.env ?? runtimeScratch?.env ?? process.env,
+});
 
 function parseBoundedIntegerEnvironment(name, allowed) {
   const raw = process.env[name] ?? "0";
@@ -875,8 +880,6 @@ const testUrl = `${serverUrl}/?test=1${
 assertInside(workRoot, profileRoot);
 assertInside(path.resolve(projectRoot, "outputs"), reportRoot);
 await mkdir(workRoot, { recursive: true });
-// Refuse an existing profile rather than deleting another session's files.
-await mkdir(profileRoot);
 await mkdir(reportRoot, { recursive: true });
 
 let serverProcess;
@@ -892,6 +895,8 @@ let reportWritten = false;
 let terminationSignal = null;
 let nativeObserver = null;
 let nativeTemporary = null;
+let runtimeScratch = null;
+let profileOwned = false;
 let browserStartedAt = null;
 const sourceHashes = {};
 const samples = [];
@@ -915,10 +920,15 @@ process.on("SIGINT", onSigint);
 process.on("SIGTERM", onSigterm);
 
 try {
+  // Refuse an existing profile and never delete it if this mkdir fails.
+  await mkdir(profileRoot);
+  profileOwned = true;
+  runtimeScratch = await createOwnedRuntimeScratch();
   for (const file of ["scripts/memory-profile.mjs", "scripts/lib/native-memory-peaks.mjs",
     "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/native-memory-history.mjs",
     "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
-    "scripts/lib/windows-tree-monitor.cs", "scripts/lib/windows-tree-monitor.ps1"]) {
+    "scripts/lib/windows-tree-monitor.cs", "scripts/lib/windows-tree-monitor.ps1",
+    "scripts/lib/owned-runtime-scratch.mjs"]) {
     sourceHashes[file] = (await hashFile(path.join(projectRoot, file))).sha256;
   }
   serverProcess = spawn(
@@ -933,7 +943,7 @@ try {
     ],
     {
       cwd: projectRoot,
-      env: { ...process.env, WRANGLER_SEND_METRICS: "false" },
+      env: { ...runtimeScratch.env, WRANGLER_SEND_METRICS: "false" },
       stdio: "ignore",
       windowsHide: true,
     },
@@ -961,7 +971,7 @@ try {
     ],
     {
       cwd: projectRoot,
-      env: process.env,
+      env: runtimeScratch.env,
       stdio: "ignore",
       windowsHide: true,
     },
@@ -989,6 +999,7 @@ try {
     throw new Error("Blank Chromium private-memory baseline is unavailable or unstable; no last-sample fallback.");
   }
 
+  nativeObserver.setPhase("loaded-navigation");
   await page.goto(testUrl);
   await page
     .getByRole("heading", { name: "Big files. Small memory." })
@@ -1669,6 +1680,7 @@ try {
       startedAt: new Date(browserStartedAt).toISOString(),
     },
     sourceHashes,
+    runtimeScratch: { directory: runtimeScratch.directory, cleanup: "finally; independently verify after terminal process" },
     nativeMemory: nativeObserver.report(),
     source: fixtureManifest,
     profileId,
@@ -1729,6 +1741,7 @@ try {
         destinationMode,
         source: fixtureManifest,
         sourceHashes,
+        runtimeScratch: runtimeScratch ? { directory: runtimeScratch.directory, cleanup: "finally; independently verify after terminal process" } : null,
         nativeMemory: nativeObserver?.report() ?? null,
         formula:
           "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
@@ -1764,11 +1777,13 @@ try {
   await browser?.close().catch(() => {});
   if (chromeProcess?.pid) await killProcessTree(chromeProcess.pid);
   if (serverProcess?.pid) await killProcessTree(serverProcess.pid);
-  await removeWithRetries(profileRoot);
-  if (nativeTemporary) {
-    assertInside(workRoot, nativeTemporary);
-    await removeWithRetries(nativeTemporary);
-  }
+  await finishOwnedCleanup([
+    async () => { if (profileOwned) await removeWithRetries(profileRoot); },
+    async () => {
+      if (nativeTemporary) { assertInside(workRoot, nativeTemporary); await removeWithRetries(nativeTemporary); }
+    },
+    async () => { await runtimeScratch?.close(); },
+  ]);
 }
 
 async function validateMediaOutput(
