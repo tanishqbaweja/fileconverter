@@ -1,0 +1,752 @@
+{
+  "recordedAt": "2026-10-04T09:38:10.182Z",
+  "requirement": "M-04",
+  "status": "compiled-private-sad-equivalence-and-primitive-cost-not-integrated",
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "speedGainClaim": null,
+  "run": {
+    "conclusion": "success",
+    "headSha": "5950ef50eba4aee733f46b66855dcd1cca8813f0",
+    "jobs": [
+      {
+        "completedAt": "2026-10-04T09:36:31Z",
+        "conclusion": "success",
+        "databaseId": 111407912128,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-04T09:35:32Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-04T09:35:33Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-04T09:35:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:35:37Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-04T09:35:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:35:45Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-04T09:35:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:03Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-04T09:35:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:26Z",
+            "conclusion": "success",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-04T09:36:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:26Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-04T09:36:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:26Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-04T09:36:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:26Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 8,
+            "startedAt": "2026-10-04T09:36:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:26Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 9,
+            "startedAt": "2026-10-04T09:36:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:27Z",
+            "conclusion": "success",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 10,
+            "startedAt": "2026-10-04T09:36:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:29Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 11,
+            "startedAt": "2026-10-04T09:36:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:29Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 22,
+            "startedAt": "2026-10-04T09:36:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T09:36:29Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 23,
+            "startedAt": "2026-10-04T09:36:29Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37192648002/job/111407912128"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37192648002"
+  },
+  "report": {
+    "status": "passed-private-sad-proof-and-primitive-cost-only",
+    "publicAcceptance": false,
+    "browserConversions": 0,
+    "conversionBuildsChanged": false,
+    "speedGainClaim": null,
+    "scope": "Actual compiled Wasm exact SAD arithmetic and warm Node/V8 primitive cost, not browser file throughput, fidelity or memory acceptance",
+    "coverageLimitation": "Exhaustive byte pairs in two patterns, not exhaustive enumeration of all blocks; independent nonnegative strides",
+    "emscriptenVersion": "6.0.4",
+    "nodeVersion": "v22.16.0",
+    "compilerFlags": "-O3 -fno-strict-aliasing -msimd128 -pthread",
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 33554432,
+    "upstream": {
+      "url": "https://raw.githubusercontent.com/cisco/openh264/652bdb7719f30b52b08e506645a7322ff1b2cc6f/codec/common/src/sad_common.cpp",
+      "bytes": 8268,
+      "sha256": "82c47be2c051aa92079ac0c731818c4a33612c6dbe61534ada5c0ac5c33667ae"
+    },
+    "reference": "Exact four upstream scalar bodies and dependency calls with names only changed; license retained",
+    "sourceHashes": {
+      "media/ffmpeg/openh264-sad-simd.h": "76fced1ab34acefce81c858bf8b4f58aaf2319c7c34c2c4f57259ce06535ae68",
+      "media/ffmpeg/openh264-sad-arithmetic.cpp": "1d860fc2925906aa5ebe2d3c1a64c371c063cb27b76dc7524cf01f2858727b1d",
+      "media/ffmpeg/verify-sad-arithmetic.sh": "3b210321c9ac4d4644c5bc66c15dcc920acc17af3b58b67996e658e7ec73be41",
+      "scripts/verify-sad-arithmetic.mjs": "336722e91650762f88672fa7ae79e15a0dd437a27a5ef6f33228eb08c3f9be09",
+      "scripts/generate-sad-reference.mjs": "ccbdb9cd7fe5df68a2542b6ec48aa2f6ac6c180228a72e58e739ce84a10897c6",
+      "scripts/lib/openh264-sad-reference.mjs": "65e4e457434fd7a50230e5e2117286a5821e9cf9529170aff0aa408bbff432d9",
+      ".github/workflows/reproduce-ffmpeg-nondocker.yml": "32891cf29c6c1fe3b4849d5d41a1730aadab075cd45ff0879b7361351e742351"
+    },
+    "generatedReferenceSha256": "33608339c3cd75660a2f1cb4ba575b446922cd9e0a48f1ff41a09de815399cb8",
+    "wasmSha256": "c17117c43cec4b23b30c177cadc1eadea511bf9ba730487a618e5d8b79742f0f",
+    "moduleSha256": "14bd7a8952bc2ffe5490203381cd0f8219f2daa10f49f7e0912c8060f83e55d6",
+    "shapes": [
+      "8x8",
+      "16x8",
+      "8x16",
+      "16x16"
+    ],
+    "cases": {
+      "exhaustiveUniformBytePairs": 262144,
+      "exhaustiveMixedSignBytePairs": 262144,
+      "singlePixelLaneAndRow": 1152,
+      "seededRandomIndependentStrideAndAlignment": 4096,
+      "zeroAndOverlappingNonnegativeStrides": 20,
+      "inputEndsExactlyAtWasmBoundary": 8
+    },
+    "totalCases": 529564,
+    "benchmarks": [
+      {
+        "shape": "8x8",
+        "iterations": 2000000,
+        "pairs": [
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.977364999999963,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.182276999999885,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.945056000000022,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.39089100000001,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.718955999999935,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.074945999999954,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.913860000000113,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.05866100000003,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.764894999999797,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.048295999999937,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.86267299999986,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.127214000000095,
+              "checksum": 2574721658
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 20.772697000000107,
+              "checksum": 2574721658
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 14.182819000000109,
+              "checksum": 2574721658
+            }
+          }
+        ],
+        "scalarMedianMs": 20.86267299999986,
+        "simdMedianMs": 14.127214000000095,
+        "scalarOverSimdRatio": 1.47677192403256,
+        "scope": "Warm hosted Node/V8 primitive microbenchmark; not production Chromium end-to-end speed acceptance"
+      },
+      {
+        "shape": "16x8",
+        "iterations": 2000000,
+        "pairs": [
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 36.26681099999996,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 13.126726999999846,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.616149999999834,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 13.150542999999743,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.58359199999995,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 12.961287999999968,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 36.53452400000015,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 12.924000999999862,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 36.367071000000124,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 13.322241999999733,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.61885399999983,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 13.26367300000038,
+              "checksum": 743226020
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.517411000000266,
+              "checksum": 743226020
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 13.008237999999892,
+              "checksum": 743226020
+            }
+          }
+        ],
+        "scalarMedianMs": 35.61885399999983,
+        "simdMedianMs": 13.126726999999846,
+        "scalarOverSimdRatio": 2.713460407914345,
+        "scope": "Warm hosted Node/V8 primitive microbenchmark; not production Chromium end-to-end speed acceptance"
+      },
+      {
+        "shape": "8x16",
+        "iterations": 2000000,
+        "pairs": [
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.02565000000004,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 22.496303999999782,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.614959,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 22.529203999999936,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 36.75053900000012,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 23.372253,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 36.952964000000065,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 23.358032000000094,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.94420499999978,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 23.079893000000084,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.78012799999988,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 23.473245000000134,
+              "checksum": 505007270
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 2000000,
+              "elapsedMs": 35.99909000000025,
+              "checksum": 505007270
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 2000000,
+              "elapsedMs": 23.53916700000036,
+              "checksum": 505007270
+            }
+          }
+        ],
+        "scalarMedianMs": 35.94420499999978,
+        "simdMedianMs": 23.358032000000094,
+        "scalarOverSimdRatio": 1.5388370475731705,
+        "scope": "Warm hosted Node/V8 primitive microbenchmark; not production Chromium end-to-end speed acceptance"
+      },
+      {
+        "shape": "16x16",
+        "iterations": 1600000,
+        "pairs": [
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 55.64850400000023,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.02335499999981,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 55.60817300000008,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 18.976384000000053,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 56.364512000000104,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.135273000000325,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 56.484022000000095,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.009414000000106,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 56.09866200000033,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.170796999999766,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "simd",
+              "scalar"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 55.52307500000006,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.04918399999997,
+              "checksum": 793086632
+            }
+          },
+          {
+            "order": [
+              "scalar",
+              "simd"
+            ],
+            "scalar": {
+              "optimized": false,
+              "iterations": 1600000,
+              "elapsedMs": 55.68210399999998,
+              "checksum": 793086632
+            },
+            "simd": {
+              "optimized": true,
+              "iterations": 1600000,
+              "elapsedMs": 19.236135999999988,
+              "checksum": 793086632
+            }
+          }
+        ],
+        "scalarMedianMs": 55.68210399999998,
+        "simdMedianMs": 19.04918399999997,
+        "scalarOverSimdRatio": 2.923070300544111,
+        "scope": "Warm hosted Node/V8 primitive microbenchmark; not production Chromium end-to-end speed acceptance"
+      }
+    ]
+  },
+  "reportSha256": "5581dfca01c3d28a57d77808cc7d00953c13be8b865c4561a24162e8a4516a91",
+  "logSha256": "7435e4a37bcc1c173c174d8f4a290120ad929f49354542dd660fc771fe7dc7b6",
+  "artifact": {
+    "id": 11299960518,
+    "bytes": 2614,
+    "remaining": 0
+  },
+  "currentSources": {
+    "media/ffmpeg/openh264-sad-simd.h": "76fced1ab34acefce81c858bf8b4f58aaf2319c7c34c2c4f57259ce06535ae68",
+    "media/ffmpeg/openh264-sad-arithmetic.cpp": "1d860fc2925906aa5ebe2d3c1a64c371c063cb27b76dc7524cf01f2858727b1d",
+    "media/ffmpeg/verify-sad-arithmetic.sh": "3b210321c9ac4d4644c5bc66c15dcc920acc17af3b58b67996e658e7ec73be41",
+    "scripts/verify-sad-arithmetic.mjs": "336722e91650762f88672fa7ae79e15a0dd437a27a5ef6f33228eb08c3f9be09",
+    "scripts/generate-sad-reference.mjs": "ccbdb9cd7fe5df68a2542b6ec48aa2f6ac6c180228a72e58e739ce84a10897c6",
+    "scripts/lib/openh264-sad-reference.mjs": "65e4e457434fd7a50230e5e2117286a5821e9cf9529170aff0aa408bbff432d9",
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml": "32891cf29c6c1fe3b4849d5d41a1730aadab075cd45ff0879b7361351e742351",
+    "scripts/record-sad-arithmetic.mjs": "908fe695d76649c0c572dde67a24eccc5070135feedd1f33e598a114aa0703ae"
+  },
+  "cleanup": {
+    "hostedSdkBuildScratchRemoved": true,
+    "hostedArtifactsRemaining": 0,
+    "localCompilerOrConvertedMediaGenerated": false,
+    "downloadedReportCompactedThenRemoved": true
+  },
+  "remaining": [
+    "Private opt-in production conversion build only if primitive result justifies it",
+    "Identical-input/settings production Chromium speed A/B, output validation and whole-tree <=250 MiB",
+    "All existing H264 control, cold/startup-overlap, direct/recovery, larger-file, licensing and release gates"
+  ]
+}

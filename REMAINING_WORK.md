@@ -17,7 +17,7 @@ not the entire product specification.
 
 ## 2026-10-04 — H.264 SIMD CPU attribution and next primitive proof
 
-Status: **Partially implemented under M-04; diagnostic completed; SAD proof prepared**.
+Status: **Partially implemented under M-04; diagnostic and compiled SAD proof completed**.
 One instrumented conversion using the actually rejected SIMD module captured
 9,432 samples over 15,029 ms. Aggregating all call-site nodes by function name,
 VAA self share was 7.462% in the historical scalar window versus 1.667% in the
@@ -40,13 +40,35 @@ fixed 32 MiB Wasm and production compiler optimization/SIMD/thread flags.
 Its no-Docker workflow tests exhaustive byte pairs in two patterns, spikes,
 random independent strides/alignments, overlap/zero strides and both Wasm-end
 inputs, plus seven alternating warm primitive-cost pairs before any expensive
-full FFmpeg build. Compiled proof and primitive measurements are pending.
+full FFmpeg build. Run `37192648002` at `5950ef5` passed all **529,564**
+actual-Wasm cases: 262,144 uniform and 262,144 mixed-sign byte-pair cases,
+1,152 spikes, 4,096 random-stride/alignment cases, 20 overlapping/zero-stride
+cases and eight exact-end-of-Wasm input cases. Seven alternating warm pairs
+gave scalar/SIMD median ratios **1.477x/2.713x/1.539x/2.923x** for
+8x8/16x8/8x16/16x16. The timed loop uses 64 varying blocks with checked output
+checksums and bounded iterations, not a per-call JS crossing or invariant input.
+This is hosted Node/V8 primitive cost, not Chrome file-conversion speed.
+The build/test step took 23 seconds; its SDK/build/scratch cleanup passed.
+Exact executed Git sources and report/log hashes were independently checked,
+then the compact downloaded report and hosted artifact were removed (zero left).
+No local compiler, arithmetic binary, fixture or converted media was generated.
+Evidence: `evidence/openh264-sad-arithmetic-2026-10-04.json`.
+These results justify the next private opt-in SAD conversion build and a new
+identical-input/settings real-browser A/B; do not combine the rejected VAA
+candidate by default or promote based on this microbenchmark alone.
 Primitive cost is not file-conversion throughput or public-route acceptance.
 The first focused source audit falsely matched the word "quality" in a comment;
 it now checks executable text after stripping line comments. This was an audit
 false positive, not compiled arithmetic failure or a changed acceptance gate.
 All existing cold/startup-overlap, direct/failure/recovery, larger-file,
 controls/fidelity, licensing and release gates remain open.
+Final proof-cycle checks: **317/317** unit tests, full lint, TypeScript,
+unchanged 405-profile/no-PDF manifest and diff checks pass. All four generated
+public/dist media assets match exactly. Hosted run is terminal, artifacts zero,
+and downloaded report/build directories are absent. No owned Chrome process
+remains. Only the same four bounded static tools (33,903,384 bytes) remain in
+`work`, with zero converted media or profiles. The protected fixture was not
+used or modified by this arithmetic cycle; its size is still 2,958,573,265 bytes.
 
 ## 2026-10-04 — H.264 opt-in native VAA SIMD integration
 

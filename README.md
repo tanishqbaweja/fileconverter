@@ -862,8 +862,11 @@ A targeted diagnostic of that rejected module found lower VAA sampled share
 (7.462% historical scalar versus 1.667% SIMD), not matched-frame or end-to-end
 speed evidence. Its identical output and 235.570 MiB whole-tree increment pass
 only the instrumented narrow gate. Full-node aggregation identifies remaining
-SAD/SATD targets. A separate pinned-scalar SAD SIMD arithmetic/cost proof is
-prepared; no production codec, public profile or quality setting is changed.
+SAD/SATD targets. A separate pinned-scalar SAD SIMD proof passed 529,564 compiled
+cases; warm primitive ratios were 1.477x for 8x8 and 2.923x for 16x16. These
+are hosted Node/V8 microbenchmarks, not browser file throughput. No production
+codec, public profile or quality setting is changed. Compiled evidence and
+cleanup: [`evidence/openh264-sad-arithmetic-2026-10-04.json`](evidence/openh264-sad-arithmetic-2026-10-04.json).
 See [`evidence/h264-vaa-cpu-comparison-2026-10-04.json`](evidence/h264-vaa-cpu-comparison-2026-10-04.json)
 and the current [remaining-work audit](REMAINING_WORK.md).
 
