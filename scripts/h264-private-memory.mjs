@@ -16,6 +16,8 @@ import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { candidateDirectory, verifyCandidateRecipe } from "./lib/h264-candidate-selection.mjs";
 import { connectCpuWindow } from "./lib/cdp-cpu-window.mjs";
 import { summarizeCpuProfile } from "./lib/cpu-profile-summary.mjs";
+import { h264StressProfile, startupConversionOverlap } from "./lib/h264-stress-profile.mjs";
+import { summarizeUtilityActivity } from "./lib/chromium-utility-summary.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
@@ -28,6 +30,8 @@ const runCount = 3;
 const cpuMode = process.env.WITHIN_H264_CPU_DIAGNOSTIC ?? "0";
 assert.ok(["0", "1"].includes(cpuMode));
 const cpuEnabled = cpuMode === "1", requestedRunCount = cpuEnabled ? 1 : runCount;
+const stressProfile = h264StressProfile(process.env.WITHIN_H264_STRESS_PROFILE ?? "short", cpuEnabled);
+const fixtureDuration = stressProfile.name === "short" ? duration : stressProfile.durationSeconds;
 const inputMode = process.env.WITHIN_H264_INPUT_MODE ?? "byob";
 assert.ok(["legacy", "byob"].includes(inputMode));
 const startedAt = Date.now();
@@ -38,6 +42,7 @@ let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure 
 let cdpRealmSampler = null;
 let cpuTransport = null, cpuDiagnostic = null;
 const pendingRealms = new WeakSet();
+const observedLargeUtilities = new Set();
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const shaFile = async (file) => {
   const hash = createHash("sha256");
@@ -70,11 +75,20 @@ async function takeSample(phase) {
   }));
   const state = await boundedRealm(page, () => page.evaluate(() => window.__WITHIN_TEST__?.getState() ?? null));
   if (state) lastState = state;
+  const born = Date.parse(tree.processes?.find((entry) => entry.pid === rootPid)?.createdAt);
   const sample = { timestamp: new Date(begin).toISOString(), elapsedMs: begin - startedAt,
+    browserAgeMs: Number.isFinite(born) ? begin - born : null,
     phase, ...tree, sampleError, realms, cdpIsolateHeaps, storageEstimate, metrics: state?.metrics ?? null,
     jobState: state?.jobState ?? null, samplerElapsedMs: Date.now() - begin };
   if (samples.length >= 4096) throw new Error("Memory sample cap reached; preserve evidence before another run");
   samples.push(sample);
+  if (stressProfile.requireStartupOverlap) for (const entry of tree.processes ?? []) {
+    const key = `${entry.pid}:${entry.createdAt}`;
+    if (entry.type === "utility" && entry.privateBytes >= 128 * MiB && !observedLargeUtilities.has(key) && observedLargeUtilities.size < 8) {
+      observedLargeUtilities.add(key);
+      process.stdout.write(`Observed utility ${entry.utilitySubtype ?? "unknown"} at ${(sample.browserAgeMs / 1000).toFixed(1)}s browser age, ${(entry.privateBytes / MiB).toFixed(2)} MiB; it stays in the primary total.\n`);
+    }
+  }
   return sample;
 }
 async function stable(phase, maximumBytes = null) {
@@ -154,6 +168,7 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/cdp-realm-memory.mjs",
   "scripts/lib/h264-candidate-selection.mjs",
   "scripts/lib/cdp-cpu-window.mjs", "scripts/lib/cpu-profile-summary.mjs",
+  "scripts/lib/h264-stress-profile.mjs", "scripts/lib/chromium-utility-summary.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
@@ -173,7 +188,7 @@ const disk = await statfs(root);
 assert.ok(disk.bavail * disk.bsize > 4 * 1024 ** 3, "Require 4 GiB of free repository disk space before generation");
 await mkdir(reportRoot, { recursive: true });
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
-const reportBase = path.join(reportRoot, `${stamp}-private-h264-720p-${cpuEnabled ? "cpu-diagnostic" : "memory"}`);
+const reportBase = path.join(reportRoot, `${stamp}-private-h264-${stressProfile.reportLabel}-${cpuEnabled ? "cpu-diagnostic" : "memory"}`);
 let sourceEvidence = null, chromeVersion = null;
 try {
   work = await mkdtemp(path.join(root, "work/h264-memory-"));
@@ -181,18 +196,18 @@ try {
   await mkdir(profile); await mkdir(temporary);
   const environment = { ...process.env, TEMP: temporary, TMP: temporary, WRANGLER_SEND_METRICS: "false" };
   const source = path.join(work, "source.mkv"), metadata = path.join(work, "chapters.ffmetadata");
-  await writeFile(metadata, `;FFMETADATA1\ntitle=H264 mémoire — 音楽\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=${duration * 1000}\ntitle=Chapitre café\n`);
-  process.stdout.write(`Generating genuine ${duration}s ${width}x${height} ${fps}fps MPEG4 fixture in repository-local work.\n`);
-  await native(["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=${width}x${height}:rate=${fps}:duration=${duration}`,
-    "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${duration}`,
-    "-f", "lavfi", "-i", `sine=frequency=440:sample_rate=48000:duration=${duration}`,
+  await writeFile(metadata, `;FFMETADATA1\ntitle=H264 mémoire — 音楽\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=${fixtureDuration * 1000}\ntitle=Chapitre café\n`);
+  process.stdout.write(`Generating genuine ${fixtureDuration}s ${width}x${height} ${fps}fps MPEG4 fixture in repository-local work.\n`);
+  await native(["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=${width}x${height}:rate=${fps}:duration=${fixtureDuration}`,
+    "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureDuration}`,
+    "-f", "lavfi", "-i", `sine=frequency=440:sample_rate=48000:duration=${fixtureDuration}`,
     "-f", "ffmetadata", "-i", metadata, "-map", "0:v", "-map", "1:a", "-map", "2:a", "-map_metadata", "3", "-map_chapters", "3",
     "-c:v", "mpeg4", "-q:v", "2", "-bf", "0", "-c:a", "aac", "-b:a", "128k",
     "-metadata:s:a:0", "language=eng", "-metadata:s:a:1", "language=hin", "-avoid_negative_ts", "make_zero",
     "-fflags", "+bitexact", "-flags:v", "+bitexact", "-flags:a", "+bitexact", source]);
   sourceEvidence = { bytes: (await stat(source)).size, sha256: await shaFile(source),
     probe: await probe(source), audioPacketHashes: await audioHashes(source), frameTimes: await frameTimes(source) };
-  assert.equal(sourceEvidence.frameTimes.length, duration * fps);
+  assert.equal(sourceEvidence.frameTimes.length, fixtureDuration * fps);
   await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "stage", inputMode, candidateName], { cwd: root, windowsHide: true }); staged = true;
   const port = await freePort(), url = `http://127.0.0.1:${port}`;
   server = spawn(process.execPath, ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", "dist/server/wrangler.json", "--port", String(port)],
@@ -279,7 +294,7 @@ try {
     const output = await payload(metrics.outputBytes), after = await probe(output);
     const video = after.streams.find((stream) => stream.codec_type === "video");
     assert.equal(video.codec_name, "h264"); assert.equal(video.width, width); assert.equal(video.height, height);
-    assert.equal(Number(video.nb_read_frames), duration * fps);
+    assert.equal(Number(video.nb_read_frames), fixtureDuration * fps);
     assert.deepEqual(after.streams.filter((stream) => stream.codec_type === "audio").map((stream) => [stream.codec_name, stream.tags?.language]), [["aac", "eng"], ["aac", "hin"]]);
     assert.equal(after.format.tags.title, sourceEvidence.probe.format.tags.title);
     assert.equal(after.chapters.length, 1); assert.equal(after.chapters[0].tags.title, sourceEvidence.probe.chapters[0].tags.title);
@@ -295,6 +310,10 @@ try {
     summary.independentValidation = { outputBytes: (await stat(output)).size, outputSha256: await shaFile(output),
       outputProbe: after, outputFrameTimes: outputTimes, maximumFrameTimeErrorSeconds, ordinalSsim, audioPacketHashes: hashes, fullDecodePassed: true };
     assert.ok(maximumFrameTimeErrorSeconds <= 0.001); assert.ok(ordinalSsim >= 0.98, `Corresponding-frame SSIM ${ordinalSsim}`);
+    // A primary violation must not be obscured by a later idle-stabilization
+    // failure from the same retained utility. Finally still removes all media.
+    if (stressProfile.requireStartupOverlap) assert.ok(summary.incrementalPrivateMiB <= 250,
+      `Whole-Chromium memory ${summary.incrementalPrivateMiB} exceeds 250 MiB in startup/scaling gate`);
     await takeSample(`output-closed-${run}`);
     await cleanOpfs(); await page.goto(`${url}/?test=1`);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
@@ -317,6 +336,8 @@ try {
     assert.ok(summary.incrementalPrivateMiB <= 250, `Whole-Chromium memory ${summary.incrementalPrivateMiB} exceeds 250 MiB`);
     assert.deepEqual(forbiddenRequests, []);
   }
+  if (stressProfile.requireStartupOverlap) assert.ok(startupConversionOverlap(samples).observed,
+    "Startup gate requires actual running conversion across 190s browser age; no artificial baseline delay allowed");
 } catch (error) {
   failure = { name: error.name, message: error.message, stack: error.stack };
   process.exitCode = 1;
@@ -332,8 +353,10 @@ try {
     await rm(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
   }
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
-  const report = { recordedAt: new Date().toISOString(), scope: cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
-    status: failure ? "failed" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+  const report = { recordedAt: new Date().toISOString(), scope: stressProfile.requireStartupOverlap ? "Private 600s/720p genuine scaling/startup-overlap gate; early clean baseline/full Chromium tree; not speed A/B, direct-output or public certification" : cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
+    status: failure ? "failed" : stressProfile.requireStartupOverlap ? "passed-private-startup-scaling-gate" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+    stressProfile, fixtureDurationSeconds: fixtureDuration, startupOverlap: startupConversionOverlap(samples),
+    utilityActivity: stressProfile.requireStartupOverlap ? summarizeUtilityActivity(samples) : null,
     cpuEnabled, requestedRunCount, cpuDiagnostic, publicAcceptance: false,
     candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,

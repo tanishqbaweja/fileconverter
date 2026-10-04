@@ -5,6 +5,15 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+Push checkpoint (2026-10-04): the private H264 startup/scaling harness now
+supports a genuine 600-second fixture with unchanged resolution, frame rate,
+codec settings, early blank-page baseline, complete Chromium process tree and
+250 MiB limit. It requires actual running-conversion observations before
+120 seconds and beyond 190 seconds of browser age; CPU-profiler/single-run
+shortcuts are rejected. This longer browser gate has **not run yet** and is
+not public acceptance. All 327 unit tests and focused lint pass. Historical
+execution records are preserved; only current-source indexes were refreshed.
+
 ## Status definitions
 
 - **Verified complete** — current source plus an appropriate test or retained
