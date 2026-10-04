@@ -833,6 +833,13 @@ opt-in and off by default. See
 [`evidence/h264-library-lto-comparison-2026-10-04.json`](evidence/h264-library-lto-comparison-2026-10-04.json)
 for exact settings, hashes, full measurements and cleanup limitations.
 
+A bounded 15-second CPU diagnostic now points to OpenH264 encoder stacks
+(about 79% of sampled time), not sampled I/O stacks (under 1%). The top scalar
+background/SAD function accounts for 7.46% of that window. The full genuine
+conversion still matches the baseline output exactly; sampling is a partial
+diagnostic, not OS CPU utilization, a speed result or release acceptance.
+See [`evidence/h264-cpu-diagnostic-2026-10-04.json`](evidence/h264-cpu-diagnostic-2026-10-04.json).
+
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
 downscaled when wider than 640 pixels, and re-encoded to video-only WebM; AAC or

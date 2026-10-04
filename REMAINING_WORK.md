@@ -15,6 +15,52 @@ not the entire product specification.
 - **Intentionally unsupported** — the exact surface is hidden from the public
   selector and has a recorded technical, legal, quality, or memory reason.
 
+## 2026-10-04 — H.264 bounded worker CPU diagnosis
+
+Status: **Partially implemented under M-04; measured hotspot, not optimization**.
+After rejecting unchanged low-complexity and whole-library LTO, one genuine
+105,000,218-byte 60s/720p production-browser conversion ran with a bounded CPU
+sample window. The actual conversion worker is targeted by its own-origin
+URL; no worker pause, precise coverage/deoptimization, retained worker lifetime,
+codec setting, browser flag, native binary or production conversion path changed.
+Because the UI immediately terminates its worker on completion, profiling stops
+after a nominal 15 seconds, rather than delaying normal cleanup. Diagnostic
+transport has an 8-pending-request/16-MiB-response cap, one sample window, and
+explicit shutdown. Default stress mode still requires three jobs; CPU mode is
+one diagnostic job and cannot report repeatability/speed/public acceptance.
+
+The observed window is 15,037 ms with 9,460 samples and 847 nodes. Mutually
+exclusive sampled-stack attribution is 78.998% OpenH264 encoder, 16.656% FFmpeg
+decoder, 0.783% I/O/AVIO, 0.384% muxing, 2.321% idle and 0.858% unclassified.
+These are **sampled wall-time estimates**, not OS CPU utilization or a claim
+about the complete conversion. Inclusive Asyncify/wrapper stacks overlap;
+their high inclusive totals are not evidence that Asyncify itself is costly.
+The top self-sampled function is `WelsVP::VAACalcSadBgd_c` at 7.462% of the
+window. SATD4x4, SAD8x8/16x16 and MPEG-4 block decode are other concrete hotspots.
+Pinned source inspection identifies the scalar background/SAD loop and the
+architecture-specific SAD/SATD initialization; URLs, byte counts and hashes
+are retained with the diagnostic.
+
+The full browser conversion—not merely the profile window—produces the exact
+19,137,689-byte historical output hash, 1,800 frames, exact timing/both AAC
+hashes/metadata/chapter and SSIM 0.987575. Whole-Chromium incremental private
+memory is 221.770 MiB in this instrumented run; this is not release certification.
+All generated media/profile/temp files were deleted and dist assets restored;
+the raw CPU profile is only 304,006 bytes. Compact full report/profile and exact
+source/binary provenance are retained in
+`evidence/h264-cpu-diagnostic-2026-10-04.json`. An initially generic terminal
+success label was corrected for diagnostic mode; raw status/scope already
+explicitly denied repeatability and speed acceptance and were not rewritten.
+
+Next investigate an exact-arithmetic Wasm SIMD path for the measured scalar
+background/SAD loop, with exhaustive scalar equivalence before any browser
+A/B. Preserve every result and codec setting; do not disable a quality heuristic
+or pursue more unchanged I/O/LTO trials based on inclusive-stack guesses.
+All other original requirements and H.264 release gates remain open.
+Final cycle gates passed: 296/296 unit tests, lint, TypeScript, unchanged
+405-profile/no-PDF manifest, diff checks and 4/4 restored dist hashes. No owned
+conversion Chrome process remains. No speed improvement or public route is claimed.
+
 ## 2026-10-04 — H.264 speed-source review and opt-in library LTO
 
 Status: **Partially implemented under M-04; no speed gain claimed**.

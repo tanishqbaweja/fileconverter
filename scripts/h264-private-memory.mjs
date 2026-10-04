@@ -14,6 +14,8 @@ import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { candidateDirectory, verifyCandidateRecipe } from "./lib/h264-candidate-selection.mjs";
+import { connectCpuWindow } from "./lib/cdp-cpu-window.mjs";
+import { summarizeCpuProfile } from "./lib/cpu-profile-summary.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
@@ -23,6 +25,9 @@ const reportRoot = path.join(root, "outputs/reports");
 const MiB = 1024 * 1024;
 const duration = 60, width = 1280, height = 720, fps = 30;
 const runCount = 3;
+const cpuMode = process.env.WITHIN_H264_CPU_DIAGNOSTIC ?? "0";
+assert.ok(["0", "1"].includes(cpuMode));
+const cpuEnabled = cpuMode === "1", requestedRunCount = cpuEnabled ? 1 : runCount;
 const inputMode = process.env.WITHIN_H264_INPUT_MODE ?? "byob";
 assert.ok(["legacy", "byob"].includes(inputMode));
 const startedAt = Date.now();
@@ -31,6 +36,7 @@ const browserLocalRequests = [], outOfOriginRequests = [];
 let work, server, chrome, browser, context, page, staged = false;
 let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure = null;
 let cdpRealmSampler = null;
+let cpuTransport = null, cpuDiagnostic = null;
 const pendingRealms = new WeakSet();
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const shaFile = async (file) => {
@@ -147,6 +153,7 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/private-browser-request.mjs",
   "scripts/lib/cdp-realm-memory.mjs",
   "scripts/lib/h264-candidate-selection.mjs",
+  "scripts/lib/cdp-cpu-window.mjs", "scripts/lib/cpu-profile-summary.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
@@ -166,7 +173,7 @@ const disk = await statfs(root);
 assert.ok(disk.bavail * disk.bsize > 4 * 1024 ** 3, "Require 4 GiB of free repository disk space before generation");
 await mkdir(reportRoot, { recursive: true });
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
-const reportBase = path.join(reportRoot, `${stamp}-private-h264-720p-memory`);
+const reportBase = path.join(reportRoot, `${stamp}-private-h264-720p-${cpuEnabled ? "cpu-diagnostic" : "memory"}`);
 let sourceEvidence = null, chromeVersion = null;
 try {
   work = await mkdtemp(path.join(root, "work/h264-memory-"));
@@ -203,6 +210,7 @@ try {
   const debugVersion = await (await fetch(`http://127.0.0.1:${debugPort}/json/version`)).json();
   // Attach diagnostics before blank baseline; their overhead is not hidden.
   cdpRealmSampler = await connectRealmSampler(debugVersion.webSocketDebuggerUrl, url);
+  if (cpuEnabled) cpuTransport = await connectCpuWindow(debugVersion.webSocketDebuggerUrl, url);
   // Trace collection is enabled before the blank baseline, not hidden from its measurement.
   await context.tracing.start({ screenshots: false, snapshots: false, sources: false });
   context.on("request", (request) => {
@@ -223,7 +231,7 @@ try {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   assert.equal(await page.evaluate(() => crossOriginIsolated), true);
   loadedIdle = await stable("loaded-idle");
-  for (let run = 1; run <= runCount; run++) {
+  for (let run = 1; run <= requestedRunCount; run++) {
     await page.goto(`${url}/?test=1`);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     // Chrome reads the real local File; CDP-connected Playwright's transfer
@@ -239,6 +247,7 @@ try {
     assert.equal(await page.locator('[data-testid="file-input"]').evaluate((input) => input.files[0].size), sourceEvidence.bytes);
     await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mp4");
     const first = samples.length; await takeSample(`pre-conversion-${run}`);
+    const cpuCapture = cpuEnabled ? await cpuTransport.start() : null;
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState !== "idle");
     const conversionStart = Date.now(), deadline = conversionStart + 10 * 60_000;
@@ -291,6 +300,20 @@ try {
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     const recovered = await stable(`cleanup-${run}`, loadedIdle.privateBytes + 96 * MiB);
     summary.cleanup = { recovered, deltaFromLoadedMiB: (recovered.privateBytes - loadedIdle.privateBytes) / MiB, opfsRemainingEntries: await cleanOpfs() };
+    if (cpuCapture) {
+      const capture = await cpuCapture.result;
+      const { profile, ...detail } = capture;
+      cpuDiagnostic = { ...detail, summary: null, rawPath: null, rawSha256: null,
+        scope: "Partial first 15s worker sample window only; not end-to-end timing or full-conversion CPU utilization" };
+      assert.equal(capture.error, null, "Actual CPU diagnostic data is required");
+      cpuDiagnostic.summary = summarizeCpuProfile(profile);
+      assert.ok(cpuDiagnostic.summary.samples > 0);
+      const raw = JSON.stringify(profile);
+      assert.ok(Buffer.byteLength(raw) <= 16 * MiB, "CPU profile file cap");
+      cpuDiagnostic.rawPath = path.relative(root, `${reportBase}.cpuprofile`).replaceAll(path.sep, "/");
+      cpuDiagnostic.rawSha256 = createHash("sha256").update(raw).digest("hex");
+      await writeFile(`${reportBase}.cpuprofile`, raw, { flag: "wx" });
+    }
     assert.ok(summary.incrementalPrivateMiB <= 250, `Whole-Chromium memory ${summary.incrementalPrivateMiB} exceeds 250 MiB`);
     assert.deepEqual(forbiddenRequests, []);
   }
@@ -301,6 +324,7 @@ try {
   if (page && !page.isClosed()) await cleanOpfs().catch(() => {});
   await context?.tracing.stop({ path: `${reportBase}-trace.zip` }).catch(() => {});
   cdpRealmSampler?.close();
+  cpuTransport?.close();
   await browser?.close().catch(() => {}); await stopOwned(chrome); await stopOwned(server);
   if (staged) await exec(process.execPath, ["scripts/stage-h264-candidate.mjs", "restore", inputMode, candidateName], { cwd: root, windowsHide: true });
   if (work) {
@@ -308,8 +332,9 @@ try {
     await rm(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
   }
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
-  const report = { recordedAt: new Date().toISOString(), scope: "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
-    status: failure ? "failed" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+  const report = { recordedAt: new Date().toISOString(), scope: cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
+    status: failure ? "failed" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+    cpuEnabled, requestedRunCount, cpuDiagnostic, publicAcceptance: false,
     candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,
     forbiddenRequests, browserLocalRequests, outOfOriginRequests, lastState, failure, publicProfilesChanged: false, protectedTestMkvUsed: false,
@@ -323,5 +348,5 @@ try {
   const max = Math.max(MiB, ...valid.map((sample) => sample.privateBytes)), maxTime = Math.max(1, ...samples.map((sample) => sample.elapsedMs));
   const points = valid.map((sample) => `${(sample.elapsedMs / maxTime * 900).toFixed(1)},${(280 - sample.privateBytes / max * 260).toFixed(1)}`).join(" ");
   await writeFile(`${reportBase}.html`, `<!doctype html><meta charset="utf-8"><title>Private H264 memory gate</title><h1>${escape(report.status)}</h1><p>${escape(report.scope)}</p><p>${escape(report.formula)}</p><svg viewBox="0 0 920 300" role="img" aria-label="Complete Chromium private bytes over elapsed time"><polyline fill="none" stroke="#315acf" stroke-width="2" points="${points}"/></svg><p>Private-memory range: 0–${(max / MiB).toFixed(1)} MiB; time: 0–${(maxTime / 1000).toFixed(1)} s.</p><pre>${escape(JSON.stringify({ blankBaseline, loadedIdle, runs: runs.map(({ independentValidation, state, ...run }) => ({ ...run, quality: independentValidation?.ordinalSsim ?? null, jobState: state?.jobState })), failure }, null, 2))}</pre>`, { flag: "wx" });
-  process.stdout.write(`Retained JSON/CSV/HTML: ${reportBase}\n${failure ? `FAILED: ${failure.message}` : "Private 720p gate passed; remaining full goal gates are still open."}\n`);
+  process.stdout.write(`Retained JSON/CSV/HTML: ${reportBase}\n${failure ? `FAILED: ${failure.message}` : cpuEnabled ? "CPU diagnostic complete; one instrumented run is not repeatability or speed acceptance." : "Private 720p gate passed; remaining full goal gates are still open."}\n`);
 }

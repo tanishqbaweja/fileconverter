@@ -35,3 +35,16 @@ test("the private BYOB experiment selects the existing production reader, not a 
   assert.match(bridge, /inputReader\.read\(/);
   assert.match(bridge, /inputReader\?\.cancel\("FFmpeg input seek"\)/);
 });
+
+test("CPU diagnostic mode remains one partial bounded window and cannot certify repeatability", async () => {
+  const script = await readFile(path.join(root, "scripts/h264-private-memory.mjs"), "utf8");
+  const helper = await readFile(path.join(root, "scripts/lib/cdp-cpu-window.mjs"), "utf8");
+  assert.match(script, /requestedRunCount = cpuEnabled \? 1 : runCount/);
+  assert.match(script, /passed-instrumented-cpu-diagnostic-only/);
+  assert.match(script, /publicAcceptance: false/);
+  assert.match(helper, /requestedWindowMs: 15000/);
+  assert.match(helper, /pending.size >= 8/);
+  assert.match(helper, /data.length > 16 \* 1024 \*\* 2/);
+  assert.match(helper, /One CPU sample window per diagnostic transport/);
+  assert.doesNotMatch(helper, /Debugger.pause|Runtime.runIfWaitingForDebugger|startPreciseCoverage/);
+});
