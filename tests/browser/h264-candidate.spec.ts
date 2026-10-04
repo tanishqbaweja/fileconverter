@@ -5,9 +5,11 @@ import { existsSync } from "node:fs";
 import { mkdir, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
+import { candidateDirectory } from "../../scripts/lib/h264-candidate-selection.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
-const candidate = path.join(root, "work/h264-candidate-output");
+const candidateName = process.env.WITHIN_H264_CANDIDATE_DIR ?? "h264-candidate-output";
+const candidate = candidateDirectory(root, candidateName);
 const expectedManifest = existsSync(path.join(candidate, "build-manifest.json"))
   ? JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")) as {
     maximumWasmMemoryBytes: number; initialWasmMemoryBytes: number; allowMemoryGrowth: boolean;
@@ -21,7 +23,7 @@ if (expectedManifest && (expectedManifest.initialWasmMemoryBytes !== expectedMem
   throw new Error("Private H264 memory must be fixed with growth disabled");
 }
 const work = path.join(root, "work/h264-browser-validation");
-const report = path.join(root, "output/playwright/h264-candidate.json");
+const report = path.join(root, `output/playwright/${new Date().toISOString().replaceAll(":", "-")}-${candidateName}-correctness.json`);
 const exec = promisify(execFile);
 const rows: Array<Record<string, unknown>> = [];
 type ProcessSample = { timestamp: string; privateBytes: number | null; rssBytes: number | null; processes: unknown; phase: string; realms?: unknown };
@@ -209,18 +211,13 @@ test.afterEach(async ({ page }) => {
 test.afterAll(async () => {
   try {
     await mkdir(path.dirname(report), { recursive: true });
-    const previous = JSON.parse(await readFile(report, "utf8").catch((error) => {
-      if (error.code !== "ENOENT") throw error;
-      return '{"rows":[]}';
-    })) as { rows: Array<Record<string, unknown>> };
-    const combinedRows = [...previous.rows, ...rows];
-    if (combinedRows.length > 1024) throw new Error("Diagnostic history cap reached: retain compact evidence and clean disposable reports before another run.");
+    if (rows.length > 1024) throw new Error("Diagnostic history cap reached: retain compact evidence before another run.");
     await writeFile(report, `${JSON.stringify({
       recordedAt: new Date().toISOString(),
       scope: "Private H264 kernel substituted through production browser worker/I/O; NOT public-profile, stress or complete-process memory certification",
       manifest: JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")),
-      rows: combinedRows,
-    }, null, 2)}\n`);
+      candidateName, rows,
+    }, null, 2)}\n`, { flag: "wx" });
   } finally {
     await rm(work, { recursive: true, force: true });
   }

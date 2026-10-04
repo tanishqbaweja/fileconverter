@@ -140,7 +140,7 @@
     "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
     "media/ffmpeg/h264-candidate-manifest.mjs": "02c924599fe3802f4d75fce3977880341a3df874efeeccd040f27a2c8c99d1a2",
     "scripts/stage-h264-candidate.mjs": "dd08a4be739bf770bd0150edf76d7c90c6057f5d2205febf5a413a8967e58103",
-    "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
+    "tests/browser/h264-candidate.spec.ts": "996aa9b53c75a56dd7b8ca5239b9299da48260d49f9f8ddf2ac770f2e0bfa514"
   },
   "browser": {
     "name": "Chrome",

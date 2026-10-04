@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-04 — Uninstrumented build and selected-handle gate prepared
+
+Status: **Partially implemented under M-04; uninstrumented compile/browser tests pending**.
+Previous goal turn made verified progress: the index-capped diagnostic completed
+three genuine long browser jobs and retained source-bound validation/memory.
+Do not repeat that unchanged diagnostic. Next build removes only native allocator
+instrumentation; bounded kernel/SAD/settings/fidelity/fixed 32 MiB stay unchanged.
+One explicit `work/h264-uninstrumented-candidate-output` slot separates this
+tool from the diagnostic module, with preflight refusing diagnostic/profiler or
+short-fixture substitution.
+
+The existing private long harness now also supports the production selected
+FileSystemFileHandle writer, preserving three jobs, identical 600-second source,
+early baseline, whole tree, 250 MiB cap, independent full output validation and
+finally cleanup. The headless picker adapter selects a real OPFS directory handle
+under the repository-local Chrome profile; it exercises the real async direct
+writer, **not native OS picker/manual drive selection**. That manual gate remains
+separate. OPFS fallback/default behavior is unchanged. Dist/public registry and
+native kernel are unchanged. Two focused source tests plus existing harness
+checks (10/10), focused lint and TypeScript pass; native/browser outcome pending.
+
+Small H264 correctness tests now select the explicit tool rather than a hardcoded
+old binary. Each execution gets a new source-bound report instead of appending
+historical rows beneath a changed manifest. No expensive conversion was rerun
+for this preparation; no new capability, speed or full-goal acceptance.
+The policy-blocked Node build cache remains recorded; do not retry its deletion
+through another mechanism. All remaining original requirements stay open.
+
 ## 2026-10-04 — Index-capped long H264 diagnostic passed all three jobs
 
 Status: **Partially implemented under M-04; native retention fix validated in

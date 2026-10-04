@@ -35,6 +35,9 @@ const stressProfile = h264StressProfile(process.env.WITHIN_H264_STRESS_PROFILE ?
 const fixtureDuration = stressProfile.name === "short" ? duration : stressProfile.durationSeconds;
 const inputMode = process.env.WITHIN_H264_INPUT_MODE ?? "byob";
 assert.ok(["legacy", "byob"].includes(inputMode));
+const destinationMode = process.env.WITHIN_H264_DESTINATION_MODE ?? "sync-opfs";
+assert.ok(["sync-opfs", "direct-handle"].includes(destinationMode));
+const testQuery = destinationMode === "direct-handle" ? "/?test=1&directory=1" : "/?test=1";
 const startedAt = Date.now();
 const samples = [], runs = [], logs = [], forbiddenRequests = [];
 const allocatorSamples = [];
@@ -162,6 +165,11 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+if (candidateName === "h264-uninstrumented-candidate-output" || destinationMode === "direct-handle") {
+  assert.equal(manifest.allocatorDiagnostic, false, "Uninstrumented/direct gate cannot use native diagnostic instrumentation");
+  assert.equal(cpuEnabled, false);
+  assert.equal(stressProfile.name, "startup-scaling");
+}
 if (manifest.allocatorDiagnostic) {
   assert.equal(stressProfile.name, "startup-scaling", "Allocator diagnostics cannot be a short speed trial");
   assert.equal(cpuEnabled, false);
@@ -197,7 +205,7 @@ const disk = await statfs(root);
 assert.ok(disk.bavail * disk.bsize > 4 * 1024 ** 3, "Require 4 GiB of free repository disk space before generation");
 await mkdir(reportRoot, { recursive: true });
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
-const reportBase = path.join(reportRoot, `${stamp}-private-h264-${stressProfile.reportLabel}-${cpuEnabled ? "cpu-diagnostic" : "memory"}`);
+const reportBase = path.join(reportRoot, `${stamp}-private-h264-${stressProfile.reportLabel}-${cpuEnabled ? "cpu-diagnostic" : "memory"}${destinationMode === "direct-handle" ? "-direct-handle" : ""}`);
 let sourceEvidence = null, chromeVersion = null;
 try {
   work = await mkdtemp(path.join(root, "work/h264-memory-"));
@@ -263,12 +271,12 @@ try {
   page.on("pageerror", (error) => { if (logs.length === 32) logs.shift(); logs.push(String(error).slice(0, 1024)); });
   await page.goto("about:blank"); blankBaseline = await stable("blank-baseline");
   process.stdout.write(`Stable complete-tree blank baseline: ${(blankBaseline.privateBytes / MiB).toFixed(2)} MiB.\n`);
-  await page.goto(`${url}/?test=1`);
+  await page.goto(`${url}${testQuery}`);
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   assert.equal(await page.evaluate(() => crossOriginIsolated), true);
   loadedIdle = await stable("loaded-idle");
   for (let run = 1; run <= requestedRunCount; run++) {
-    await page.goto(`${url}/?test=1`);
+    await page.goto(`${url}${testQuery}`);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     // Chrome reads the real local File; CDP-connected Playwright's transfer
     // helper rejects >50 MiB files and must not become a fixture-size ceiling.
@@ -308,7 +316,8 @@ try {
     runs.push(summary);
     process.stdout.write(`Run ${run}: ${state?.jobState}, peak increment ${summary.incrementalPrivateMiB.toFixed(2)} MiB.\n`);
     assert.equal(state?.jobState, "complete", state?.error ?? state?.phase);
-    assert.ok(state.opfsName);
+    if (destinationMode === "sync-opfs") assert.ok(state.opfsName);
+    else assert.equal(state.opfsName, null, "Direct selected handle must not mirror output into a conversion staging file");
     const metrics = state.metrics;
     assert.equal(metrics.peakWasmMemoryBytes, manifest.maximumWasmMemoryBytes);
     assert.ok(metrics.maxReadChunkBytes <= 256 * 1024 && metrics.maxWriteChunkBytes <= 256 * 1024);
@@ -338,7 +347,7 @@ try {
     if (stressProfile.requireStartupOverlap) assert.ok(summary.incrementalPrivateMiB <= 250,
       `Whole-Chromium memory ${summary.incrementalPrivateMiB} exceeds 250 MiB in startup/scaling gate`);
     await takeSample(`output-closed-${run}`);
-    await cleanOpfs(); await page.goto(`${url}/?test=1`);
+    await cleanOpfs(); await page.goto(`${url}${testQuery}`);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     const recovered = await stable(`cleanup-${run}`, loadedIdle.privateBytes + 96 * MiB);
     summary.cleanup = { recovered, deltaFromLoadedMiB: (recovered.privateBytes - loadedIdle.privateBytes) / MiB, opfsRemainingEntries: await cleanOpfs() };
@@ -378,6 +387,9 @@ try {
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
   const report = { recordedAt: new Date().toISOString(), scope: manifest.allocatorDiagnostic ? "Native allocator instrumented 600s/720p diagnostic; early clean baseline/full Chromium tree; not speed, uninstrumented memory or public certification" : stressProfile.requireStartupOverlap ? "Private 600s/720p genuine scaling/startup-overlap gate; early clean baseline/full Chromium tree; not speed A/B, direct-output or public certification" : cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
     status: failure ? "failed" : manifest.allocatorDiagnostic ? "passed-instrumented-allocator-diagnostic-only" : stressProfile.requireStartupOverlap ? "passed-private-startup-scaling-gate" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+    destinationMode, destinationTestScope: destinationMode === "direct-handle" ?
+      "Production FileSystemFileHandle writer; test-only selected OPFS directory handle in repository-local Chrome profile, not a native OS picker/manual drive audit" :
+      "Production synchronous OPFS fallback; not direct selected-destination acceptance",
     stressProfile, fixtureDurationSeconds: fixtureDuration, startupOverlap: startupConversionOverlap(samples),
     utilityActivity: stressProfile.requireStartupOverlap ? summarizeUtilityActivity(samples) : null,
     cpuEnabled, requestedRunCount, cpuDiagnostic, allocatorSamples,

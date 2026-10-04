@@ -7,6 +7,7 @@ const root = path.resolve(import.meta.dirname, "..");
 test("private tool selection accepts only explicitly owned candidate/baseline directories", () => {
   assert.equal(candidateDirectory(root), path.join(root, "work/h264-candidate-output"));
   assert.equal(candidateDirectory(root, "h264-speed-baseline-37157670815"), path.join(root, "work/h264-speed-baseline-37157670815"));
+  assert.equal(candidateDirectory(root, "h264-uninstrumented-candidate-output"), path.join(root, "work/h264-uninstrumented-candidate-output"));
   for (const invalid of ["../public", root, "..", "work/h264-candidate-output", "h264-dimension-baseline-37155139021"]) {
     assert.throws(() => candidateDirectory(root, invalid), /Unknown private H264 tool/);
   }
