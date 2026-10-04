@@ -2518,10 +2518,34 @@ npm run profile:flv
 `scripts/memory-profile.mjs` records complete per-process private/RSS samples,
 accessible page/worker heaps, Wasm memory, SharedArrayBuffer totals, buffers,
 queue depth, worker count, storage estimates, throughput, output size, and
-cleanup recovery. Failed runs retain compact reports for diagnosis but delete
+cleanup recovery. On Windows it now requires a separate read-only native
+whole-tree observer at 100 ms as well as the slower CIM/realm diagnostics.
+The primary peak is the greater actual simultaneous tree peak from either
+sampler; per-process lifetime maxima are never summed. Unknown descendants
+count in full, failed reads remain null, and queue overflow, sequence gaps,
+observer failure or missing native conversion coverage fails the gate rather
+than accepting CIM alone. An independent drain pump continues during browser
+and independent-validator waits. The stable EARLY blank baseline is not
+replaced, delayed to prewarm Chrome, or accepted from an unstable last reading.
+
+Native phase summaries retain exact private and RSS peak snapshots and their
+process rows, counts, last readings and bounded unavailable examples. The
+graph retains at most 4,096 one-second buckets; evicted graph history is
+explicitly counted and never removes a phase peak. Identity/phase/transition
+caps fail explicitly. This allows multi-hour profiling without collecting an
+unbounded 100-ms timeline. Source-bound JSON, native peak CSV, ordinary CSV,
+and dual-sampler HTML reports use a `stress-native-100ms` suffix. Older measured
+reports remain historical evidence, not retroactively recertified fast-sampler
+results. Instrumentation changes are not conversion speed improvements or
+proof that observation has zero performance cost.
+
+Failed runs retain compact reports for diagnosis but delete
 the browser profile and converted payload. CI exercises small fixtures;
 multi-gigabyte profiling is documented for a dedicated Windows runner with
-installed stable Chrome and native FFmpeg.
+installed stable Chrome and native FFmpeg. The profiler refuses an existing
+profile directory instead of deleting a potentially live session; its own new
+profile and observer compiler scratch are removed in finally. A pre-cleanup
+failure report does not itself prove finally cleanup succeeded.
 
 Windows peak-capture work (2026-10-04) adds a private read-only persistent
 100-ms OS observer in `scripts/lib/persistent-chromium-memory.mjs`. It uses

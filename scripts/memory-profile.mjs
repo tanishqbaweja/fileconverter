@@ -4,6 +4,7 @@ import { execFile, spawn } from "node:child_process";
 import { createReadStream } from "node:fs";
 import {
   mkdir,
+  mkdtemp,
   open,
   readFile,
   readdir,
@@ -15,6 +16,9 @@ import { createServer } from "node:net";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
+import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
+import { startParallelMemoryObserver } from "./lib/parallel-memory-observer.mjs";
+import { combinedTreePeak } from "./lib/native-memory-history.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -870,8 +874,9 @@ const testUrl = `${serverUrl}/?test=1${
 
 assertInside(workRoot, profileRoot);
 assertInside(path.resolve(projectRoot, "outputs"), reportRoot);
-await removeWithRetries(profileRoot);
-await mkdir(profileRoot, { recursive: true });
+await mkdir(workRoot, { recursive: true });
+// Refuse an existing profile rather than deleting another session's files.
+await mkdir(profileRoot);
 await mkdir(reportRoot, { recursive: true });
 
 let serverProcess;
@@ -885,6 +890,10 @@ let cancellationCheck = null;
 let activeRun = 0;
 let reportWritten = false;
 let terminationSignal = null;
+let nativeObserver = null;
+let nativeTemporary = null;
+let browserStartedAt = null;
+const sourceHashes = {};
 const samples = [];
 const runSummaries = [];
 const startedAt = Date.now();
@@ -906,6 +915,12 @@ process.on("SIGINT", onSigint);
 process.on("SIGTERM", onSigterm);
 
 try {
+  for (const file of ["scripts/memory-profile.mjs", "scripts/lib/native-memory-peaks.mjs",
+    "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/native-memory-history.mjs",
+    "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
+    "scripts/lib/windows-tree-monitor.cs", "scripts/lib/windows-tree-monitor.ps1"]) {
+    sourceHashes[file] = (await hashFile(path.join(projectRoot, file))).sha256;
+  }
   serverProcess = spawn(
     process.execPath,
     [
@@ -925,6 +940,7 @@ try {
   );
   await waitForServer(serverUrl, 30_000);
 
+  browserStartedAt = Date.now();
   chromeProcess = spawn(
     chromePath,
     [
@@ -951,6 +967,8 @@ try {
     },
   );
 
+  nativeTemporary = await mkdtemp(path.join(workRoot, "memory-observer-"));
+  nativeObserver = await startParallelMemoryObserver(chromeProcess.pid, nativeTemporary);
   const debugPort = await waitForDebugPort(profileRoot, 30_000);
   browser = await chromium.connectOverCDP(`http://127.0.0.1:${debugPort}`);
   const context = browser.contexts()[0];
@@ -967,8 +985,8 @@ try {
     samples,
   );
   const blankPrivateBytes = blankStable.privateBytes;
-  if (blankPrivateBytes == null) {
-    throw new Error("Blank Chromium private-memory baseline is unavailable.");
+  if (blankPrivateBytes == null || blankStable.stable !== true) {
+    throw new Error("Blank Chromium private-memory baseline is unavailable or unstable; no last-sample fallback.");
   }
 
   await page.goto(testUrl);
@@ -984,12 +1002,13 @@ try {
     "loaded-idle",
     samples,
   );
-  if (loadedStable.privateBytes == null) {
-    throw new Error("Loaded-site private-memory baseline is unavailable.");
+  if (loadedStable.privateBytes == null || loadedStable.stable !== true) {
+    throw new Error("Loaded-site private-memory baseline is unavailable or unstable.");
   }
 
   for (let run = 1; run <= runCount; run += 1) {
     activeRun = run;
+    nativeObserver.setPhase(`pre-conversion-${run}`);
     const validationHash = createHash("sha256");
     let validationBytes = 0;
     let outputSha256 = null;
@@ -1055,13 +1074,16 @@ try {
         .locator('[data-testid="video-quality-select"]')
         .selectOption(videoOptions.quality);
     }
+    const beforeConversion = await takeSample(chromeProcess.pid, page, `pre-conversion-${run}`);
+    samples.push(beforeConversion);
+    nativeObserver.setPhase(`conversion-${run}`);
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(
       () => window.__WITHIN_TEST__?.getState().jobState !== "idle",
     );
 
-    let peakPrivateBytes = null;
-    let peakRssBytes = null;
+    let peakPrivateBytes = beforeConversion.privateBytes;
+    let peakRssBytes = beforeConversion.rssBytes;
     let finalState;
     for (;;) {
       const state = await page.evaluate(() =>
@@ -1092,6 +1114,17 @@ try {
       }
       await delay(sampleIntervalMs);
     }
+
+    const conversionStoppedAt = nativeObserver.setPhase(`validation-${run}`);
+    await nativeObserver.through(conversionStoppedAt);
+    const cimPeakPrivateBytes = peakPrivateBytes;
+    const cimPeakRssBytes = peakRssBytes;
+    const nativePeaks = nativeObserver.peaks([`pre-conversion-${run}`, `conversion-${run}`]);
+    if (nativePeaks.peak == null || cimPeakPrivateBytes == null) {
+      throw new Error(`Complete native/CIM conversion coverage unavailable on run ${run}; no CIM-only acceptance fallback.`);
+    }
+    peakPrivateBytes = combinedTreePeak(cimPeakPrivateBytes, nativePeaks.peak.privateBytes, blankPrivateBytes).peakPrivateBytes;
+    peakRssBytes = Math.max(cimPeakRssBytes, nativePeaks.peakRssBytes);
 
     const outputStorageName =
       destinationMode === "direct-handle"
@@ -1355,8 +1388,8 @@ try {
       loadedStable.privateBytes + cleanupRecoveryLimitMiB * 1024 * 1024,
       60_000,
     );
-    if (cleanupStable.privateBytes == null) {
-      throw new Error(`Cleanup memory is unavailable for run ${run}.`);
+    if (cleanupStable.privateBytes == null || cleanupStable.stable !== true) {
+      throw new Error(`Cleanup memory is unavailable or did not recover stably for run ${run}.`);
     }
 
     runSummaries.push({
@@ -1390,6 +1423,9 @@ try {
         finalState.metrics.maxScratchWriteChunkBytes ?? null,
       peakPrivateBytes,
       peakRssBytes,
+      cimPeakPrivateBytes,
+      cimPeakRssBytes,
+      nativePeaks,
       incrementalPrivateMiB:
         (peakPrivateBytes - blankPrivateBytes) / (1024 * 1024),
       conversionOnlyPrivateMiB:
@@ -1432,6 +1468,7 @@ try {
     COMPATIBLE_AVI_PROFILES.includes(profileId) ||
     isIvfProfile
   ) {
+    nativeObserver.setPhase("cancellation");
     const namesBefore = await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory();
       const names = [];
@@ -1548,6 +1585,7 @@ try {
     }
   }
 
+  await nativeObserver.stop();
   const peakPrivateBytes = Math.max(
     ...runSummaries.map((run) => run.peakPrivateBytes),
   );
@@ -1628,7 +1666,10 @@ try {
       version: await browser.version(),
       rootPid: chromeProcess.pid,
       headless: true,
+      startedAt: new Date(browserStartedAt).toISOString(),
     },
+    sourceHashes,
+    nativeMemory: nativeObserver.report(),
     source: fixtureManifest,
     profileId,
     audioOptions,
@@ -1678,6 +1719,7 @@ try {
         // The browser may already be unavailable; prior samples remain useful.
       }
     }
+    await nativeObserver?.stop().catch(() => {});
     try {
       await writeFailureReports({
         generatedAt: new Date().toISOString(),
@@ -1686,6 +1728,8 @@ try {
         videoOptions,
         destinationMode,
         source: fixtureManifest,
+        sourceHashes,
+        nativeMemory: nativeObserver?.report() ?? null,
         formula:
           "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
         blankBaseline: blankStable,
@@ -1716,10 +1760,15 @@ try {
 } finally {
   process.off("SIGINT", onSigint);
   process.off("SIGTERM", onSigterm);
+  await nativeObserver?.stop().catch(() => {});
   await browser?.close().catch(() => {});
   if (chromeProcess?.pid) await killProcessTree(chromeProcess.pid);
   if (serverProcess?.pid) await killProcessTree(serverProcess.pid);
   await removeWithRetries(profileRoot);
+  if (nativeTemporary) {
+    assertInside(workRoot, nativeTemporary);
+    await removeWithRetries(nativeTemporary);
+  }
 }
 
 async function validateMediaOutput(
@@ -6464,27 +6513,9 @@ async function waitForStableMemory(
     const sample = await takeSample(rootPid, page, phase);
     local.push(sample);
     targetSamples.push(sample);
-    const window = local
-      .slice(-5)
-      .map((item) => item.privateBytes)
-      .filter((value) => value != null);
-    if (window.length === 5) {
-      const median = [...window].sort((a, b) => a - b)[2];
-      const spread = Math.max(...window) - Math.min(...window);
-      if (
-        spread / Math.max(1, median) <= 0.02 &&
-        (maximumPrivateBytes == null || median <= maximumPrivateBytes)
-      ) {
-        return {
-          phase,
-          privateBytes: median,
-          rssBytes: [...local.slice(-5).map((item) => item.rssBytes)].sort(
-            (a, b) => a - b,
-          )[2],
-          stable: true,
-          sampleCount: local.length,
-        };
-      }
+    const stable = stableWindow(local);
+    if (stable && (maximumPrivateBytes == null || stable.privateBytes <= maximumPrivateBytes)) {
+      return { phase, ...stable };
     }
     await delay(sampleIntervalMs);
   }
@@ -6499,11 +6530,15 @@ async function waitForStableMemory(
 }
 
 async function takeSample(rootPid, page, phase) {
+  nativeObserver?.setPhase(phase);
+  const acquisitionStartedAt = new Date().toISOString();
   let processes = null;
+  let sampleError = null;
   try {
     processes = await sampleWindowsProcessTree(rootPid);
-  } catch {
+  } catch (error) {
     processes = null;
+    sampleError = String(error.message ?? error).slice(0, 1024);
   }
   let pageHeap = null;
   let workerHeaps = null;
@@ -6543,6 +6578,8 @@ async function takeSample(rootPid, page, phase) {
     timestamp: new Date().toISOString(),
     elapsedMs: Date.now() - startedAt,
     phase,
+    acquisitionStartedAt,
+    sampleError,
     privateBytes:
       processes == null
         ? null
@@ -6573,56 +6610,9 @@ async function diagnosticRealmSample(promise, timeoutMs = 2_000) {
 }
 
 async function sampleWindowsProcessTree(rootPid) {
-  const script = `
-$all = @(Get-CimInstance Win32_Process | Select-Object ProcessId,ParentProcessId,Name,CommandLine,CreationDate,PrivatePageCount,WorkingSetSize)
-$ids = New-Object 'System.Collections.Generic.HashSet[int]'
-[void]$ids.Add(${Number(rootPid)})
-$createdAt = @{}
-foreach ($p in $all) {
-  $createdAt[[int]$p.ProcessId] = [datetime]$p.CreationDate
-}
-do {
-  $changed = $false
-  foreach ($p in $all) {
-    $parentId = [int]$p.ParentProcessId
-    if (
-      $ids.Contains($parentId) -and
-      -not $ids.Contains([int]$p.ProcessId) -and
-      $createdAt.ContainsKey($parentId) -and
-      [datetime]$p.CreationDate -ge [datetime]$createdAt[$parentId]
-    ) {
-      [void]$ids.Add([int]$p.ProcessId)
-      $changed = $true
-    }
-  }
-} while ($changed)
-$result = @($all | Where-Object { $ids.Contains([int]$_.ProcessId) } | ForEach-Object {
-  $type = 'browser'
-  if ($_.CommandLine -match '--type=([^ ]+)') { $type = $Matches[1] }
-  [pscustomobject]@{
-    pid = [int]$_.ProcessId
-    parentPid = [int]$_.ParentProcessId
-    name = [string]$_.Name
-    type = [string]$type
-    createdAt = ([datetime]$_.CreationDate).ToUniversalTime().ToString('o')
-    privateBytes = [double]$_.PrivatePageCount
-    rssBytes = [double]$_.WorkingSetSize
-  }
-})
-$result | ConvertTo-Json -Compress
-`;
-  const { stdout } = await execFileAsync(
-    "powershell.exe",
-    ["-NoProfile", "-NonInteractive", "-Command", script],
-    { windowsHide: true, maxBuffer: 4 * 1024 * 1024 },
-  );
-  if (!stdout.trim()) return [];
-  const parsed = JSON.parse(stdout);
-  return (Array.isArray(parsed) ? parsed : [parsed]).map((process) => ({
-    ...process,
-    privateBytes: Number(process.privateBytes),
-    rssBytes: Number(process.rssBytes),
-  }));
+  // The shared sampler rejects a missing root or invalid per-process counters.
+  // An empty CIM result is unavailable, never a zero-byte baseline.
+  return (await sampleChromiumTree(rootPid)).processes;
 }
 
 async function writeFailureReports(report) {
@@ -6631,13 +6621,14 @@ async function writeFailureReports(report) {
     report.destinationMode === "direct-handle" ? "-direct-handle" : "";
   const base = path.join(
     reportRoot,
-    `${stamp}-${report.profileId}${destinationSuffix}-stress-failure`,
+    `${stamp}-${report.profileId}${destinationSuffix}-stress-native-100ms-failure`,
   );
   await writeFile(
     `${base}.json`,
     `${JSON.stringify(report, null, 2)}\n`,
-    "utf8",
+    { encoding: "utf8", flag: "wx" },
   );
+  await writeNativePeakCsv(base, report.nativeMemory);
   const csvRows = [
     [
       "timestamp",
@@ -6680,7 +6671,8 @@ async function writeFailureReports(report) {
 <p class="fail">FAIL · run ${report.activeRun || "before conversion"}</p>
 <pre>${htmlEscape(report.failure.stack ?? report.failure.message)}</pre>
 <h2>Last 100 process-tree samples</h2><table><thead><tr><th>Timestamp</th><th>Phase</th><th>Private bytes</th><th>RSS bytes</th><th>Processes</th></tr></thead><tbody>${rows}</tbody></table>
-<p>The large project-local browser profile and partial converted output were deleted after these compact diagnostics were written.</p>
+<h2>Native acquisition peaks</h2><pre>${htmlEscape(JSON.stringify(report.nativeMemory?.phases ?? null, null, 2))}</pre>
+<p>Profile/output and observer scratch cleanup runs in finally. Terminal cleanup confirmation is separate from this pre-cleanup report.</p>
 </main></body></html>`,
     "utf8",
   );
@@ -6692,13 +6684,14 @@ async function writeReports(report) {
     report.destinationMode === "direct-handle" ? "-direct-handle" : "";
   const base = path.join(
     reportRoot,
-    `${stamp}-${report.profileId}${destinationSuffix}-stress`,
+    `${stamp}-${report.profileId}${destinationSuffix}-stress-native-100ms`,
   );
   await writeFile(
     `${base}.json`,
     `${JSON.stringify(report, null, 2)}\n`,
-    "utf8",
+    { encoding: "utf8", flag: "wx" },
   );
+  await writeNativePeakCsv(base, report.nativeMemory);
   const csvRows = [
     [
       "timestamp",
@@ -6743,14 +6736,32 @@ table{border-collapse:collapse;width:100%;background:#fff;margin-top:24px}th,td{
 <div class="card">Source<b>${(report.source.bytes / 1073741824).toFixed(2)} GiB</b></div>
 <div class="card">Runs<b>${report.runs.length}</b></div></div>
 <canvas id="chart" width="1050" height="360"></canvas><div id="runs"></div>
-<script>const report=${reportJson};const c=document.getElementById('chart'),x=c.getContext('2d'),s=report.samples.filter(v=>v.privateBytes!=null);
-x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);const min=s[0].elapsedMs,max=s.at(-1).elapsedMs,top=Math.max(...s.map(v=>v.privateBytes));
-x.strokeStyle='#f65e43';x.lineWidth=3;x.beginPath();s.forEach((v,i)=>{const px=30+(v.elapsedMs-min)/(max-min)*(c.width-60),py=c.height-30-v.privateBytes/top*(c.height-60);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke();
-x.fillStyle='#666';x.fillText('Private bytes across full Chromium process tree',30,20);
+<script>const report=${reportJson};const c=document.getElementById('chart'),x=c.getContext('2d'),s=report.samples.filter(v=>v.privateBytes!=null).map(v=>({at:Date.parse(v.timestamp),bytes:v.privateBytes})),n=report.nativeMemory.graphBuckets.filter(b=>b.peak).map(b=>({at:Date.parse(b.peak[1]),bytes:b.peak[3]}));
+x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);const all=s.concat(n),min=Math.min(...all.map(v=>v.at)),max=Math.max(...all.map(v=>v.at)),top=Math.max(...all.map(v=>v.bytes));
+function curve(points,color){x.strokeStyle=color;x.lineWidth=2;x.beginPath();points.forEach((v,i)=>{const px=30+(v.at-min)/Math.max(1,max-min)*(c.width-60),py=c.height-30-v.bytes/top*(c.height-60);i?x.lineTo(px,py):x.moveTo(px,py)});x.stroke()}curve(s,'#f65e43');curve(n,'#2868c8');
+x.fillStyle='#666';x.fillText('Whole tree: CIM (orange), native 100ms bucket peaks (blue). Old graph buckets may be evicted; phase peaks remain exact.',30,20);
 document.getElementById('runs').innerHTML='<table><thead><tr><th>Run</th><th>Output</th><th>Time</th><th>Incremental private</th><th>Cleanup delta</th></tr></thead><tbody>'+report.runs.map(r=>'<tr><td>'+r.run+'</td><td>'+(r.outputBytes/1048576).toFixed(1)+' MiB</td><td>'+(r.elapsedMs/1000).toFixed(1)+' s</td><td>'+r.incrementalPrivateMiB.toFixed(1)+' MiB</td><td>'+r.cleanupDeltaFromLoadedMiB.toFixed(1)+' MiB</td></tr>').join('')+'</tbody></table>';
 </script></main></body></html>`,
     "utf8",
   );
+}
+
+async function writeNativePeakCsv(base, nativeMemory) {
+  if (!nativeMemory) return;
+  const rows = [["kind", "phase", "sequence", "timestamp", "privateBytes", "rssBytes", "validSamples", "unavailableSamples", "processCount"]];
+  for (const [kind, aggregates] of [["phase", nativeMemory.phases], ["graph-bucket", nativeMemory.graphBuckets]]) {
+    for (const aggregate of aggregates) {
+      for (const key of ["peak", "rssPeak", "last"]) {
+        const row = aggregate[key]; if (!row) continue;
+        rows.push([`${kind}-${key}`, aggregate.phase, row[0], row[1], row[3] ?? "", row[4] ?? "",
+          aggregate.validSamples, aggregate.unavailableSamples, row[7]?.length ?? ""]);
+      }
+      for (const row of aggregate.unavailableExamples) {
+        rows.push([`${kind}-unavailable`, aggregate.phase, row[0], row[1], "", "", aggregate.validSamples, aggregate.unavailableSamples, ""]);
+      }
+    }
+  }
+  await writeFile(`${base}-native-peaks.csv`, `${rows.map((row) => row.map(csvCell).join(",")).join("\n")}\n`, { encoding: "utf8", flag: "wx" });
 }
 
 function csvCell(value) {
