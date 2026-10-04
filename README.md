@@ -842,13 +842,21 @@ See [`evidence/h264-cpu-diagnostic-2026-10-04.json`](evidence/h264-cpu-diagnosti
 
 A separate private exact-result SIMD helper now targets that SAD/background
 hotspot. It is now available behind the private, off-by-default
-`WITHIN_H264_VAA_SIMD=1` build option; production-browser A/B is pending. The pinned no-Docker
+`WITHIN_H264_VAA_SIMD=1` build option. The pinned no-Docker
 arithmetic workflow passed 132,101 actual-Wasm cases against the exact upstream
 scalar function, including all byte pairs in two patterns, signed sums,
 stride/layout edges, overflow, canaries and a Wasm-end boundary. The initial
 heap-export harness failure is retained, not hidden. Arithmetic equality is
 a prerequisite, not a file-conversion speed, memory or release result.
 See [`evidence/openh264-vaa-arithmetic-2026-10-04.json`](evidence/openh264-vaa-arithmetic-2026-10-04.json).
+
+The genuine production-browser SIMD A/B is now complete: all six outputs match
+exactly and stay under the strict narrow memory gate, but median time increased
+from 23.916 to 26.116 seconds (9.2% slower in this trial). SIMD is rejected as a
+speed optimization and stays off by default. The scalar static tool remains
+selected; no public H.264 route is added. Both full reports and exact native
+build/proof provenance are retained in
+[`evidence/h264-vaa-simd-comparison-2026-10-04.json`](evidence/h264-vaa-simd-comparison-2026-10-04.json).
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally

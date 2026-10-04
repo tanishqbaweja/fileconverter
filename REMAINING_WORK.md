@@ -17,7 +17,7 @@ not the entire product specification.
 
 ## 2026-10-04 — H.264 opt-in native VAA SIMD integration
 
-Status: **Partially implemented under M-04; native build and browser A/B pending**.
+Status: **Partially implemented under M-04; native build passed, SIMD speed trial rejected**.
 `WITHIN_H264_VAA_SIMD=1` now applies the proven helper to the exact pinned
 OpenH264 `VAACalcSadBgd_c` body only. Default is 0. The applier verifies the
 complete upstream source and successful 132,101-case proof, checks the helper
@@ -28,12 +28,66 @@ proof and applier provenance. Corresponding source includes the helper,
 applier, verifier logic and compact arithmetic evidence.
 
 Historical executed reports/manifests are preserved; only latest-source hash
-indexes are refreshed. The next hosted build uses fixed 32 MiB memory,
-whole-library LTO off, and this SIMD option on. It must finish before the
-candidate is staged. Identical-input/default-setting browser tests require
-three jobs per binary, independent content/timing/audio validation, strict
+indexes are refreshed. The hosted build used fixed 32 MiB memory,
+whole-library LTO off, and this SIMD option on. It finished before the
+candidate was staged. Identical-input/default-setting browser tests performed
+three jobs per binary with independent content/timing/audio validation, strict
 whole-Chromium <=250 MiB measurements, bounded queues and final cleanup.
 No speed gain, new public route or original-goal completion is claimed.
+
+Hosted run `37189794149` at `3a8395e` built the SIMD candidate in 313 seconds
+and passed cleanup. Actual Wasm is fixed at 512 initial/max shared pages;
+JavaScript matches the scalar module while the new Wasm hash is
+`b80c9ea2d6457502c4a511b7781bd502ab0b34c35c8b71b40e63bd473a9d34c6`.
+The fresh scalar benchmark passed three genuine 105,000,218-byte conversions
+in 26.500/23.916/23.079 seconds at 189.469/157.605/160.324 MiB incremental
+whole-Chromium private memory, with exact historical output/SSIM/audio/timing.
+All scalar fixtures, outputs and browser/temp files were cleaned up.
+
+A combined local move/download/cleanup command was policy-blocked before
+execution; it was not retried through another mechanism. The original scalar
+tool remains in `work/h264-candidate-output`. The SIMD tool occupies the
+already allowed second A/B slot `work/h264-speed-baseline-37157670815`; that
+historical directory name is **not** an assertion that its current contents
+are the scalar baseline. Actual SHA, manifest SIMD flag and selected directory
+are preserved in the report. No selector/stager/harness code changed between
+the two benchmarks. An initial manifest check/harness invocation happened
+while the one download handle was still running and failed before generation
+or staging. Awaiting that same handle completed successfully; hashes and
+limits were verified before starting the actual SIMD conversion session.
+No hosted or conversion job was restarted because of a polling timeout.
+
+The SIMD browser jobs took **26.116/26.961/25.981 seconds**, with whole-tree
+increments **221.563/180.973/186.664 MiB**. All six scalar/SIMD outputs are the
+same real 19,137,689-byte H.264 output with 1,800 independently decoded frames,
+exact source PTS/both AAC packet hashes/metadata/chapter and SSIM 0.987575.
+Median elapsed time worsened from **23.916 to 26.116 seconds (9.196% slower)**
+in this trial. The private speed candidate is therefore rejected, not promoted
+because its arithmetic or narrow memory gates passed. Default SIMD remains
+off; the default static tool remains the original scalar binary. No intrinsic
+cross-machine slowdown or statistically isolated cause is claimed from these
+two sessions. Do not repeat this unchanged three-run trial as an optimization.
+
+`evidence/h264-vaa-simd-comparison-2026-10-04.json` retains both complete reports,
+source/build/proof/module hashes and guarded comparison. The comparator
+recomputes all whole-tree peaks from available samples, checks all 1,800 frame
+times and byte-identical output, and refuses altered settings/profiling,
+missing evidence, drifted proof and false reported memory. Both hosted artifacts
+were deleted (zero remaining); the 72 MB source bundle was never downloaded.
+Every generated fixture/output/browser profile/temp file was removed, and all
+four generated production assets were restored exactly. Retain only compact
+reports and four bounded static tools, including the rejected SIMD binary for
+a targeted CPU diagnosis of whether the patched loop sped up while other
+stacks or sampling/I/O dominated. This diagnostic is the next useful action,
+not another native rebuild or a claimed speed improvement. All original
+release, larger-file, control/fidelity and cold/startup-overlap gates stay open.
+Final cycle checks pass: **308/308** unit tests, lint, TypeScript, unchanged
+405-profile/no-PDF evidence manifest, diff checks and 4/4 exact public/dist
+asset hashes. No owned benchmark Chrome process remains, and the hosted build
+is terminal with zero artifacts. The recorded cleanup snapshot contains only
+four bounded static tools and zero converted-media bytes; no default/public
+binary was replaced. A rejected SIMD candidate is not completion of M-04 or
+the full original goal.
 
 ## 2026-10-04 — H.264 exact-result SIMD arithmetic candidate
 
@@ -41,8 +95,9 @@ Status: **Partially implemented under M-04; compiled arithmetic proof passed**.
 The measured `VAACalcSadBgd_c` hotspot now has a separate private SIMD helper.
 It retains all four 8x8 SAD, signed-difference and maximum-difference results,
 macroblock traversal (including the pinned non-aligned-width behavior), and
-exact eight-byte row loads. It allocates no frame buffer, changes no codec
-setting, and is not enabled in any conversion build or public profile.
+exact eight-byte row loads. It allocates no frame buffer and changes no codec
+setting. At this proof-only stage it was not enabled in a conversion build;
+the later opt-in integration and rejection are recorded above. No public profile exists.
 
 The no-Docker arithmetic workflow uses pinned Emscripten 6.0.4. Its oracle
 extracts the exact original scalar function after verifying the complete
@@ -67,7 +122,7 @@ Corrected run `37189265531` at `be2c875` passed all **132,101** cases and
 same arithmetic Wasm hash and generated-reference hash; only the JavaScript
 heap export changed. These tests prove the tested arithmetic equality, not
 file-conversion speed, production fidelity, converter memory acceptance, or
-public H.264 support. The unchanged video build still uses the scalar loop.
+public H.264 support. That cycle's unchanged video build still used the scalar loop.
 
 Both hosted runs passed SDK/build cleanup. Their compact reports were checked
 against exact executed Git bytes, embedded with source/module/log/build hashes
@@ -75,8 +130,8 @@ in `evidence/openh264-vaa-arithmetic-2026-10-04.json`, then the two downloaded
 reports and two hosted artifacts were removed (zero remaining). No compiler,
 source download, arithmetic binary, browser profile, fixture or converted
 output was retained locally from this cycle. Existing bounded static A/B
-tools are unchanged. Next wire an opt-in private conversion build using the
-proven helper, then measure identical-settings production-browser A/B. The
+tools were unchanged. The next opt-in build and identical-settings browser
+A/B were subsequently completed as recorded above. The
 full original goal and all previously recorded release gates remain open.
 Final gates: 301/301 unit tests, lint, TypeScript, unchanged 405-profile/no-PDF
 manifest and diff checks pass. Four public/dist media assets match exactly.
