@@ -7,6 +7,35 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+Follow-up **changed stack-instrumentation diagnostic** on the full original
+fixture identifies `prepare_picture → ff_mpv_encode_picture` as the native
+caller of the failing pooled frame allocation during `avcodec_send_frame`.
+It is the MPEG-2 encoder frame path, not an observed HEVC decoder failure or
+destination buffering. Same native artifact/settings/resolution/fixed heap;
+48-frame stack maximum, 8192-character stack split into fixed 1600-character
+chunks, no arbitrary history. Diagnostic mode cannot certify acceptance and
+stops after one attempt. Failed run again 353,857 input/zero output; full-tree
+diagnostic increment 204.4140625 MiB is not an accepted conversion measurement.
+Raw/source hashes frozen in `evidence/mpeg2-encoder-allocation-diagnosis-2026-10-05.json`.
+All cleanup flags and owned PIDs/runtime absence/six exact-restored assets
+verified. No smaller source, file changes, heap increase or hidden retry.
+
+Next diagnostic implementation is opt-in and leaves the exact failed kernel
+byte-identical except inserted measurement calls. Linker wrapper delegates
+the real `avcodec_default_get_buffer2` unchanged, recording at most 96 native
+heap/frame snapshots with 32 fixed free-block buckets each. Encoder/decoder
+role, actual request dimensions and buffer bytes expose the allocation budget;
+no media data, allocator mutation, trimming or codec-option change. Generator
+requires exact kernel SHA and refuses unknown modes/existing outputs. Native
+non-Docker build and real original-size diagnostic execution still pending;
+12 focused source/instrumentation guards pass. No new conversion acceptance.
+Full regression initially passed 389/391: the two failures were stale
+current-workflow maintenance hashes in older SAD/VAA arithmetic records.
+Updated only their `currentSources` workflow entries, leaving all executed
+source hashes, reports and measurements frozen. Scoped lint/TypeScript/Bash
+syntax pass; a native compile is still required to prove instrumentation.
+After that maintenance-only correction, **391/391 unit tests pass**.
+
 Non-Docker build `37241593281` at `30d23be` succeeded (275-second job,
 227-second compile, neither conversion speed). All native-source/artifact
 hashes verified; actual Wasm remains shared fixed 512/512 pages (32 MiB).

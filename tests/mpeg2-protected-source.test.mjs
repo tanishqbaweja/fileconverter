@@ -64,3 +64,17 @@ test("MPEG2 protected acceptance cannot hide artwork, color, metadata or compati
   assert.match(browser, /Within FFmpeg MPEG-2/);
   assert.match(browser, /toBeGreaterThanOrEqual\(0.98\)/);
 });
+
+test("MPEG2 bounded deeper-stack diagnosis cannot become acceptance or change native memory settings", async () => {
+  const gate = await readFile(new URL("../scripts/mpeg2-protected-memory.mjs", import.meta.url), "utf8");
+  const stage = await readFile(new URL("../scripts/stage-mpeg2-large-candidate.mjs", import.meta.url), "utf8");
+  assert.match(gate, /if \(diagnosticOnly && number > 1\) break/);
+  assert.match(gate, /assert.equal\(diagnosticOnly, false, "Private allocation\/stack diagnostic cannot certify protected acceptance"\)/);
+  assert.match(gate, /stackDiagnostic \|\| manifest.allocatorDiagnostic === true/);
+  assert.match(gate, /allocatorSamples.length === 96/);
+  assert.match(stage, /Error.stackTraceLimit = 48/);
+  assert.match(stage, /String\(error.stack\).slice\(0, 8192\)/);
+  assert.match(stage, /offset \+= 1600/);
+  assert.match(stage, /\["0", "1"\].includes\(stackMode\)/);
+  assert.doesNotMatch(stage, /INITIAL_MEMORY|ALLOW_MEMORY_GROWTH|MAXIMUM_MEMORY/);
+});

@@ -6,6 +6,12 @@ PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 WORK_ROOT="${PROJECT_ROOT}/work"
 BUILD_ROOT="${WORK_ROOT}/mpeg2-candidate-build"
 OUTPUT_ROOT="${WORK_ROOT}/mpeg2-candidate-output"
+ALLOCATOR_DIAGNOSTIC="${WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC:-0}"
+[[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${ALLOCATOR_DIAGNOSTIC}" == 1 ]] || exit 2
+DIAGNOSTIC_LINK_FLAGS=()
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
+  DIAGNOSTIC_LINK_FLAGS=(-Wl,--wrap=avcodec_default_get_buffer2)
+fi
 [[ "$(uname -s)" == Linux ]] || { echo 'An activated Linux Emscripten SDK is required (no Docker).' >&2; exit 1; }
 for command_name in emcc em++ emconfigure emmake emar emranlib emnm curl tar sha256sum make pkg-config node patch; do
   command -v "${command_name}" >/dev/null
@@ -93,6 +99,7 @@ emcc "${BUILD_ROOT}/within_mpeg2.c" -I"${PREFIX}/include" \
   -sASSERTIONS=1 -sWASM_BIGINT=1 -sEXPORTED_FUNCTIONS='["_within_remux"]' \
   -sEXPORTED_RUNTIME_METHODS='["ccall"]' \
   -sASYNCIFY_IMPORTS='["within_input_read","within_output_write","within_output_rotate","within_output_truncate","within_output_flush"]' \
+  "${DIAGNOSTIC_LINK_FLAGS[@]}" \
   -Wl,--no-entry -o "${OUTPUT_ROOT}/within-mpeg2.mjs"
 cp ffmpeg/COPYING.LGPLv2.1 "${OUTPUT_ROOT}/LICENSE.ffmpeg"
 cp ffmpeg/ffbuild/config.log "${OUTPUT_ROOT}/configure.log"
@@ -106,6 +113,8 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
+cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
+  "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

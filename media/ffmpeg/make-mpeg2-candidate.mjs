@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { instrumentMpeg2Allocator } from "../../scripts/lib/mpeg2-allocator-instrumentation.mjs";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, "../..");
@@ -29,6 +30,10 @@ if (source.split(artworkStart).length !== 2 || source.split(artworkEnd).length !
 }
 const artwork = source.slice(source.indexOf(artworkStart), source.indexOf(artworkEnd));
 const kernel = await readFile(path.join(directory, "mpeg2-candidate.c"), "utf8");
-const candidate = bridge + artwork + kernel;
+const diagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(diagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
+const candidate = bridge + artwork + (diagnostic === "1"
+  ? instrumentMpeg2Allocator(kernel, await readFile(path.join(directory, "mpeg2-allocator-diagnostic.h"), "utf8"))
+  : kernel);
 await writeFile(output, candidate, { flag: "wx" });
 process.stdout.write(`${createHash("sha256").update(candidate).digest("hex")}  ${output}\n`);

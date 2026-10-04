@@ -17,6 +17,9 @@ import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runti
 
 const root = path.resolve(import.meta.dirname, ".."), MiB = 1024 ** 2;
 const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
+const stackMode = process.env.WITHIN_MPEG2_STACK_DIAGNOSTIC ?? "0";
+assert.ok(["0", "1"].includes(stackMode), "Private stack diagnostic must be 0 or 1");
+const stackDiagnostic = stackMode === "1";
 if (!/^(mpeg2-candidate-output|mpeg2-artwork-metadata-[0-9]{8,})$/.test(candidateName))
   throw new Error("Private candidate must remain in its named repository-local tool slot");
 const source = path.join(root, "test.mkv"), candidate = path.join(root, "work", candidateName);
@@ -124,10 +127,15 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+const diagnosticOnly = stackDiagnostic || manifest.allocatorDiagnostic === true;
+const allocatorSamples = [];
+let allocatorSamplesEvicted = 0;
 assert.equal(manifest.initialWasmMemoryBytes, 32 * MiB);
 assert.equal(manifest.maximumWasmMemoryBytes, 32 * MiB); assert.equal(manifest.allowMemoryGrowth, false);
 for (const [file, hash] of Object.entries(manifest.artifacts)) assert.equal(await shaFile(path.join(candidate, file)), hash);
 for (const [file, hash] of Object.entries(manifest.sources)) assert.equal(await shaFile(path.join(root, "media/ffmpeg", file)), hash);
+if (manifest.allocatorInstrumentationSha256)
+  assert.equal(await shaFile(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")), manifest.allocatorInstrumentationSha256);
 const actualWasmMemoryLimits = readWasmMemoryLimits(await readFile(path.join(candidate, "within-mpeg2.wasm")));
 assert.deepEqual(actualWasmMemoryLimits, [{ imported: true, initialPages: 512, maximumPages: 512, shared: true }]);
 const sourceFiles = ["scripts/mpeg2-protected-memory.mjs", "scripts/stage-mpeg2-large-candidate.mjs",
@@ -176,7 +184,17 @@ try {
     if (kind === "forbidden" && forbiddenRequests.length < 32) forbiddenRequests.push(detail);
     if (kind === "browser-local" && browserLocalRequests.length < 32) browserLocalRequests.push(detail);
   });
-  page.on("console", (message) => { if (logs.length === 32) logs.shift(); logs.push(message.text().slice(0, 2048)); });
+  page.on("console", (message) => {
+    const text = message.text().slice(0, 2048);
+    if (diagnosticOnly && text.startsWith("WITHIN_MPEG2_ALLOCATOR ")) {
+      try {
+        const sample = JSON.parse(text.slice("WITHIN_MPEG2_ALLOCATOR ".length));
+        if (allocatorSamples.length === 96) { allocatorSamples.shift(); allocatorSamplesEvicted++; }
+        allocatorSamples.push(sample);
+      } catch { /* retain the bounded malformed line in logs, never fabricate telemetry */ }
+    }
+    if (logs.length === 32) logs.shift(); logs.push(text);
+  });
   await page.goto("about:blank"); blankBaseline = await stable("blank-baseline");
   process.stdout.write(`EARLY stable blank: ${(blankBaseline.privateBytes / MiB).toFixed(3)}MiB. Full original source, no resizing.\n`);
   observer.setPhase("loaded-navigation"); await page.goto(query);
@@ -184,6 +202,9 @@ try {
   assert.equal(await page.evaluate(() => crossOriginIsolated), true);
   loadedIdle = await stable("loaded-idle");
   for (let number = 1; number <= 3; number++) {
+    // One changed-instrumentation diagnostic attempt only, no repeated known
+    // failure and no certification from instrumented timing/memory.
+    if (diagnosticOnly && number > 1) break;
     observer.setPhase(`pre-conversion-${number}`);
     await page.goto(query); await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     const cdp = await context.newCDPSession(page);
@@ -287,6 +308,7 @@ try {
     run.recovery = await stable(`cleanup-${number}`, loadedIdle.privateBytes + 96 * MiB);
   }
   assert.deepEqual(forbiddenRequests, []);
+  assert.equal(diagnosticOnly, false, "Private allocation/stack diagnostic cannot certify protected acceptance");
 } catch (error) {
   failure = { name: error.name, message: error.message, stack: error.stack }; process.exitCode = 1;
 } finally {
@@ -324,11 +346,13 @@ try {
     cleanup.errors = cleanupErrors; process.exitCode = 1;
   }
   const report = { recordedAt: new Date().toISOString(), status: failure ? "failed" : "passed-private-protected-session",
-    publicAcceptance: false, scope: "Full protected source HEVC to MPEG2 via production selected OPFS handle; no native OS-picker or speed-A/B certification",
+    publicAcceptance: false, diagnosticOnly,
+    scope: "Full protected source HEVC to MPEG2 via production selected OPFS handle; no native OS-picker or speed-A/B certification",
     source: { path: "test.mkv", bytes: expectedSourceBytes, sha256: expectedSourceHash, probe: sourceProbe },
     browserVersion, manifest, actualWasmMemoryLimits, sourceHashes,
     formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
-    limitMiB: 250, requestedRuns: 3, blankBaseline, loadedIdle, runs, samples, samplesEvicted,
+    limitMiB: 250, requestedRuns: diagnosticOnly ? 1 : 3, blankBaseline, loadedIdle, runs, samples, samplesEvicted,
+    allocatorSamples, allocatorSamplesEvicted,
     nativeMemory, failure, logs, forbiddenRequests, browserLocalRequests, cleanup,
     ownedPids: { chrome: chrome?.pid ?? null, server: server?.pid ?? null, observer: observer?.pid ?? null }, runtimeDirectory: runtime?.directory ?? null };
   const json = JSON.stringify(report, null, 2); assert.ok(Buffer.byteLength(json) <= 32 * MiB, "Report cap; never unlimited histories");

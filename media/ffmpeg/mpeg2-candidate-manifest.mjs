@@ -22,10 +22,16 @@ if (ffmpegSourceSha256 !== "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb408223174
 }
 const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidate.mjs",
   "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
-  "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch"];
+  "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch",
+  "mpeg2-allocator-diagnostic.h"];
+const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
+  allocatorDiagnostic: allocatorDiagnostic === "1",
+  allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")),
+  allocatorDiagnosticScope: "Private fixed 96-snapshot heap/frame-buffer diagnosis; no allocator/codec mutation or acceptance",
   sources: Object.fromEntries(await Promise.all(sourceFiles.map(async (file) =>
     [file, await sha256(path.join(root, "media/ffmpeg", file))]))),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_mpeg2.c")),

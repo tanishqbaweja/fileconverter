@@ -13,9 +13,13 @@ const digest = async (file) => createHash("sha256").update(await readFile(file))
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
 const inputMode = process.argv[3] ?? "legacy";
 if (!["legacy", "byob"].includes(inputMode)) throw new Error("Private input mode must be legacy or byob");
+const stackMode = process.env.WITHIN_MPEG2_STACK_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(stackMode)) throw new Error("Private stack diagnostic must be 0 or 1");
+const stackDiagnostic = stackMode === "1";
 const adapter = `// PRIVATE_MPEG2_LARGE_ADAPTER_NOT_PUBLIC_SUPPORT
 import factory from "/engines/remux/_candidate_mpeg2_large_base.mjs";
 export default async function(options) {
+${stackDiagnostic ? "  Error.stackTraceLimit = 48; // Bounded private failure diagnosis, never acceptance.\n" : ""}
 ${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
     console.debug("WITHIN_MPEG2_ALLOCATOR " + JSON.stringify(sample));
   } } };
@@ -31,7 +35,12 @@ ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.w
       mapped = [6, ...mapped.slice(1, 4), 0, 0, 0, ...mapped.slice(4)];
     if (mapped[0] === 1) mapped[0] = 6;
     try { return await call(name, type, mapped.map(() => "number"), mapped, settings); }
-    catch (error) { throw new Error("Candidate ccall: " + String(error.message) + "\\n" + String(error.stack).slice(0, ${manifest.allocatorDiagnostic ? 4096 : 2048})); }
+    catch (error) {
+${stackDiagnostic ? `      const nativeStack = String(error.stack).slice(0, 8192);
+      for (let offset = 0; offset < nativeStack.length; offset += 1600)
+        console.debug("WITHIN_MPEG2_NATIVE_FAILURE " + offset + " " + nativeStack.slice(offset, offset + 1600));
+` : ""}      throw new Error("Candidate ccall: " + String(error.message) + "\\n" + String(error.stack).slice(0, ${stackDiagnostic ? 8192 : manifest.allocatorDiagnostic ? 4096 : 2048}));
+    }
   };
   return core;
 }

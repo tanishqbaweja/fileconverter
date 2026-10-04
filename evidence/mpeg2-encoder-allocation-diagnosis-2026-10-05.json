@@ -1,0 +1,109 @@
+{
+  "recordedAt": "2026-10-05",
+  "scope": "Full original protected fixture, changed bounded stack instrumentation only. A failed diagnostic, not repeated acceptance or smaller fixture.",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "artifactRunId": 37241593281,
+  "codecArtifactSha256": "f2fec0c8fa3b4c703fd090fa5265b93a9c342828bbd339f218a6622cd24424f4",
+  "raw": {
+    "path": "outputs/reports/2026-10-04T23-07-44-769Z-private-mpeg2-protected-direct-native-100ms.json",
+    "bytes": 333165,
+    "sha256": "6d1f7c95d363d09ec5d4297fe656d07cda3422f5e7c8fe887a9b8ed8d6323bbc"
+  },
+  "diagnosticOnly": true,
+  "error": "Candidate ccall: Aborted(Cannot enlarge memory arrays to size 34794192 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\nRuntimeError: Aborted(Cannot enlarge memory arrays to size 34794192 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n    at abort (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:11095)\n    at abortOnCannotGrowMemory (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:34973)\n    at _emscripten_resize_heap (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:35421)\n    at imports.<computed> (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:38811)\n    at within-mpeg2.wasm.claim_more_memory (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4528]:0x613601)\n    at within-mpeg2.wasm.emmalloc_memalign (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4531]:0x613d6f)\n    at within-mpeg2.wasm.emmalloc_posix_memalign (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4536]:0x61487f)\n    at within-mpeg2.wasm.av_malloc (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4415]:0x601b57)\n    at within-mpeg2.wasm.av_buffer_allocz (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4279]:0x5e83a0)\n    at within-mpeg2.wasm.av_buffer_pool_get (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4286]:0x5e905c)\n    at within-mpeg2.wasm.avcodec_default_get_buffer2 (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[711]:0x107d9",
+  "logs": [
+    "WITHIN_MPEG2_NATIVE_FAILURE 0 RuntimeError: Aborted(Cannot enlarge memory arrays to size 34794192 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n    at abort (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:11095)\n    at abortOnCannotGrowMemory (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:34973)\n    at _emscripten_resize_heap (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:35421)\n    at imports.<computed> (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:38811)\n    at within-mpeg2.wasm.claim_more_memory (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4528]:0x613601)\n    at within-mpeg2.wasm.emmalloc_memalign (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4531]:0x613d6f)\n    at within-mpeg2.wasm.emmalloc_posix_memalign (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4536]:0x61487f)\n    at within-mpeg2.wasm.av_malloc (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4415]:0x601b57)\n    at within-mpeg2.wasm.av_buffer_allocz (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4279]:0x5e83a0)\n    at within-mpeg2.wasm.av_buffer_pool_get (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4286]:0x5e905c)\n    at within-mpeg2.wasm.avcodec_default_get_buf",
+    "WITHIN_MPEG2_NATIVE_FAILURE 1600 fer2 (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[711]:0x107d9e)\n    at within-mpeg2.wasm.prepare_picture (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[2314]:0x35fd7f)\n    at within-mpeg2.wasm.ff_mpv_encode_picture (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[2313]:0x35a65f)\n    at within-mpeg2.wasm.ff_encode_encode_cb (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[691]:0x100d26)\n    at within-mpeg2.wasm.encode_receive_packet_internal (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[693]:0x101cbd)\n    at within-mpeg2.wasm.avcodec_send_frame (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[692]:0x1017ae)\n    at within-mpeg2.wasm.mpeg2_packets (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4565]:0x61dbc0)\n    at within-mpeg2.wasm.mpeg2_frames (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4564]:0x61da32)\n    at within-mpeg2.wasm.within_remux (http://127.0.0.1:62989/engines/remux/within-direct.wasm:wasm-function[4558]:0x61c1a1)\n    at __asyncify_wrapper_4558 (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:39275)\n    at callUserCallback (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:25938)\n    at Object.doRewind (http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:41594)\n    at http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_base.mjs:1:42566\n    at http://127.0.0.1:62989/engines/remux/_candidate_mpeg2_large_ba",
+    "WITHIN_MPEG2_NATIVE_FAILURE 3200 se.mjs:1:43590"
+  ],
+  "cleanup": {
+    "mediaProfileRuntimeRemoved": true,
+    "generatedDistRestored": true,
+    "protectedFixtureUnchanged": true,
+    "observerStopped": true,
+    "sampledChromeRootStopped": true
+  },
+  "ownedPids": {
+    "chrome": 29228,
+    "server": 34228,
+    "observer": 18084
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-large-runtime-4lgYSh",
+  "sourceHashes": {
+    "scripts/mpeg2-protected-memory.mjs": "4770bf083275bc6eebdfe5f3d0a3795c6eb9c849930ea896ac8180960c8e40ac",
+    "scripts/stage-mpeg2-large-candidate.mjs": "ab8aeee26990450a837e539463e8661c68bb28b7a07dc99834eddd567274facd",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 267128832,
+    "spreadBytes": 1888256,
+    "rssBytes": 568483840,
+    "firstTimestamp": "2026-10-04T23:07:56.445Z",
+    "lastTimestamp": "2026-10-04T23:08:02.512Z",
+    "sampleCount": 10,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 312823808,
+    "spreadBytes": 2912256,
+    "rssBytes": 627048448,
+    "firstTimestamp": "2026-10-04T23:08:18.390Z",
+    "lastTimestamp": "2026-10-04T23:08:24.315Z",
+    "sampleCount": 15,
+    "minimumElapsedMs": 8000
+  },
+  "run": {
+    "metrics": {
+      "inputBytes": 353857,
+      "outputBytes": 0,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 0,
+      "pendingOperations": 0,
+      "peakPendingOperations": 0,
+      "maxReadChunkBytes": 196608,
+      "maxWriteChunkBytes": 0,
+      "elapsedMs": 413.19999999925494,
+      "wasmMemoryBytes": 33554432,
+      "peakWasmMemoryBytes": 33554432,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 33554436,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "scratchBytes": 0
+    },
+    "peakPrivateBytes": 481472512,
+    "incrementalPrivateMiB": 204.4140625
+  },
+  "forbiddenRequests": [],
+  "diagnosis": {
+    "actualNativeCaller": "prepare_picture -> ff_mpv_encode_picture -> avcodec_default_get_buffer2 -> av_buffer_pool_get -> av_buffer_allocz -> av_malloc",
+    "failedPhase": "MPEG2 encoder frame allocation during avcodec_send_frame, not destination I/O and not demonstrated HEVC decoder failure",
+    "exactLiveAllocationBytesUnproven": true,
+    "codecSettingsUnchanged": true,
+    "dimensionsUnchanged": true,
+    "heapBytes": 33554432,
+    "nextDiagnostic": "Opt-in linker wrapper delegates real avcodec_default_get_buffer2 unchanged. Up to 96 emmalloc snapshots with codec role, requested frame dimensions, actual frame-buffer bytes, dynamic/free/unclaimed heap and 32 fixed fragmentation buckets. Kernel stays byte-identical except inserted measurement calls."
+  },
+  "verification": {
+    "focusedSourceGuardsPassed": 12,
+    "instrumentationUnitProvesExactKernelRecovery": true,
+    "noNewNativeDiagnosticExecutionYet": true
+  },
+  "cleanupIndependentVerified": {
+    "pidsAbsent": true,
+    "runtimeAbsent": true,
+    "sixDistAssetsRestored": true,
+    "protectedShaUnchanged": true
+  }
+}
