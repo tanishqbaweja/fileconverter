@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const evidence = JSON.parse(await readFile(new URL("../evidence/h264-dimension-regression-2026-10-04.json", import.meta.url)));
@@ -21,7 +23,9 @@ test("production browser proves silent dimension normalization in the older priv
 });
 test("immutable-dimension source fix is recorded separately from historical binary failures", async () => {
   const bytes = await readFile(new URL("../media/ffmpeg/h264-candidate.c", import.meta.url));
-  assert.equal(createHash("sha256").update(bytes).digest("hex"), evidence.currentKernelSha256);
+  const historical = execFileSync("git", ["show", "af4ee8fa010fbf70f8b9da290c2380d7dc0b265d:media/ffmpeg/h264-candidate.c"],
+    { cwd: fileURLToPath(new URL("..", import.meta.url)), windowsHide: true });
+  assert.equal(createHash("sha256").update(historical).digest("hex"), evidence.currentKernelSha256);
   const source = bytes.toString();
   assert.match(source, /frame->width != p->source_width/);
   assert.match(source, /frame->height != p->source_height/);

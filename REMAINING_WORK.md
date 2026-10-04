@@ -14,6 +14,55 @@ shortcuts are rejected. This longer browser gate has **not run yet** and is
 not public acceptance. All 327 unit tests and focused lint pass. Historical
 execution records are preserved; only current-source indexes were refreshed.
 
+## 2026-10-04 — Complete allocator events; bounded demux-index candidate
+
+Status: **Partially implemented under M-04; changed native build and long retest pending**.
+The diagnostic module was rerun only after replacing sparse worker polling with
+bounded numeric console events. All 29 emitted snapshots arrived in order,
+with no capture error. The identical genuine 1,050,296,904-byte source still
+failed: 71.817 seconds observed, 316,932,096 input bytes and 58,188,932 partial
+output bytes; zero completed or independently validated outputs. Observed
+whole-Chromium increment 225.758 MiB is not acceptance. Running browser ages
+25.682–95.373 seconds did not reach the utility-service window.
+
+After initial codec allocations, snapshots 2–29 show used native memory
+including allocator overhead rising by 468,712 bytes. The full first-to-last
+delta of 13,340,620 bytes includes startup allocations, not steady-state leak
+measurement. Last claimed/free/unclaimed bytes were
+28,032,776 / 1,640,352 / 1,016,296; largest free payload remained in the
+1,048,576–2,097,152-byte bucket. These bounds do not prove the suspend stack
+fits, pure fragmentation, the failed instant, or individual allocations.
+Sampler cost was at most 40 microseconds.
+
+Pinned FFmpeg [Matroska source](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/matroskadec.c)
+adds keyframe seek-index entries and calls `ff_reduce_index`.
+The [index reducer](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/seek.c)
+uses `max_index_size` per stream. The candidate now sets a 32 KiB generic
+seek-index hint before opening input, without changing packet/frame reads,
+quality, timestamps, threads, fixed heap, AVIO seeking or output. Diagnostics
+also count actual entries/logical bytes and report the configured hint.
+This is a distinct lower-retention candidate, **not proof of the entire OOM
+cause or a passed conversion**. Backing allocation may have growth slack,
+mandatory full-index demuxers may ignore the hint, and reduced index density
+may affect seeking; those profiles require separate tests.
+
+`evidence/h264-allocator-events-2026-10-04.json` retains the frozen actual report,
+historical build/manifest/source hashes and independently checked cleanup.
+Source/partial output/profile/temp removed, owned Chrome/server stopped,
+four dist assets exactly restored. Six static tools remain (50,510,765 bytes),
+zero converted media; hosted artifacts zero. Historical execution records
+stay frozen when current-source indexes are refreshed. The cap is not yet
+compiled/browser-proven; public engines/registry remain unchanged. Next:
+one changed non-Docker native build and identical 600-second three-job gate;
+no raised heap, smaller input, or public/full-goal acceptance.
+
+Preparation checks: 344/344 unit tests, full lint, TypeScript and unchanged
+405-public-profile/no-PDF manifest pass. First unit run was 342/344 because two
+historical dimension-proof tests compared their old executed kernel to the
+changed current candidate. They now verify exact pinned historical Git bytes
+and still check the current dimension guard; a separate test pins the new
+kernel. No historical browser evidence or quality threshold was rewritten.
+
 ## 2026-10-04 — Longer genuine H264 gate failed on fixed-heap allocation
 
 Status: **Partially implemented under M-04; longer scaling/startup gate failed**.

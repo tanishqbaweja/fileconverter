@@ -52732,7 +52732,7 @@
     "scripts/apply-vaa-simd.mjs": "ab3fd4318fcc0d63a30b32d2b09f467f8eefeb3c143b3fa91f7c338f6782437a",
     "scripts/lib/openh264-vaa-patch.mjs": "ab3cc1f4f1fcdae254e4dc0fa909105c235a54ac427f8c87e12af1c00e82fdc2",
     "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "4016c6da95c229d55ef6bea44817591c1788ab4155a7e372333f66d9d6449b3e"
+    "media/ffmpeg/h264-candidate-manifest.mjs": "02c924599fe3802f4d75fce3977880341a3df874efeeccd040f27a2c8c99d1a2"
   },
   "publicAcceptance": false,
   "cleanup": {

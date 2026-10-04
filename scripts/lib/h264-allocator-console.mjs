@@ -7,6 +7,7 @@ export function parseAllocatorConsole(text) {
   const value = JSON.parse(text.slice(allocatorConsolePrefix.length));
   const numbers = ["sequence", "inputBytes", "outputBytes", "dynamicHeapBytes", "freeDynamicBytes",
     "unclaimedHeapBytes", "freeRegions", "samplerElapsedUs"];
+  if (Object.hasOwn(value, "demuxIndexEntries")) numbers.push("demuxIndexEntries", "demuxIndexLogicalBytes", "inputIndexLimitBytes");
   assert.deepEqual(Object.keys(value).sort(), [...numbers, "freeBlockSizeBuckets"].sort(), "Only numeric allocator diagnostics are allowed");
   for (const key of numbers) assert.ok(Number.isFinite(value[key]) && value[key] >= 0, key);
   assert.ok(Number.isSafeInteger(value.sequence) && value.sequence >= 1 && value.sequence <= 256);

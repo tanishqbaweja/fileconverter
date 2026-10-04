@@ -147,6 +147,10 @@ static int h264_run(int matroska, int max_width, int bit_rate, int fps, int qual
   in->probesize = 2 * 1024 * 1024;
   in->max_analyze_duration = 2 * AV_TIME_BASE;
   in->max_streams = H264_MAX_STREAMS;
+  // Bound generic demux seek-index retention, not packet/frame fidelity.
+  // Matroska honors this via ff_reduce_index before adding keyframe entries.
+  // Mandatory full-index demuxers may ignore it and still need separate gates.
+  in->max_index_size = 32 * 1024;
   result = avformat_open_input(&in, NULL, NULL, NULL);
   if (result < 0) goto cleanup;
   result = avformat_find_stream_info(in, NULL);

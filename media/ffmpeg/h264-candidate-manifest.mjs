@@ -60,6 +60,8 @@ const manifest = {
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
   avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
+  genericDemuxIndexHintBytesPerStream: 32768,
+  demuxIndexBudgetScope: "Generic seek indexes honoring max_index_size only; backing-allocation slack and mandatory full-index demuxers need separate validation",
   encoderFrameSkipping: false, normalizesSourceTiming: false,
   primaryVideo: "decoded-and-encoded-to-H.264", secondaryStreams: "compatible-packet-copy-with-explicit-exclusions",
   licenses: ["FFmpeg LGPL-2.1-or-later", "OpenH264 BSD-2-Clause"],

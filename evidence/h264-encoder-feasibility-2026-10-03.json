@@ -135,10 +135,10 @@
   },
   "currentSourcesScope": "Latest repository sources, including the typed ForceIntraFrame and immutable-dimension fixes. Historical asBuiltManifest and runtime failures remain unchanged; current source indexes are not retrospective proof of that binary.",
   "currentSources": {
-    "media/ffmpeg/h264-candidate.c": "6021062d1fcb1434b44840346e66402b178aa439165c4fef197bd6bcb645587b",
+    "media/ffmpeg/h264-candidate.c": "a6283ed5ee3080044ccabf2d79e8009e680bfb0d9aa26420b3359af25cb682a9",
     "media/ffmpeg/make-h264-candidate.mjs": "9b43faf834d88126a6a03c75a57fe44aca20433667496a40307401e2d2430e37",
     "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "4016c6da95c229d55ef6bea44817591c1788ab4155a7e372333f66d9d6449b3e",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "02c924599fe3802f4d75fce3977880341a3df874efeeccd040f27a2c8c99d1a2",
     "scripts/stage-h264-candidate.mjs": "dd08a4be739bf770bd0150edf76d7c90c6057f5d2205febf5a413a8967e58103",
     "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
   },

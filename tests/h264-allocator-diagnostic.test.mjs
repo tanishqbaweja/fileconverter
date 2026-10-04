@@ -9,7 +9,7 @@ const read = (file) => readFile(new URL(`../${file}`, import.meta.url), "utf8");
 test("native allocator instrumentation changes only two diagnostic calls around an exact pinned codec kernel", async () => {
   const kernel = await read("media/ffmpeg/h264-candidate.c"), header = await read("media/ffmpeg/h264-allocator-diagnostic.h");
   const generated = instrumentH264Allocator(kernel, header);
-  assert.equal(generated.slice(header.length + 1).replace(/ {2,4}h264_allocator_snapshot\(input.position, output.size\);\n/g, ""), kernel);
+  assert.equal(generated.slice(header.length + 1).replace(/ {2,4}h264_allocator_snapshot\(in, input.position, output.size\);\n/g, ""), kernel);
   assert.throws(() => instrumentH264Allocator(kernel + "\n", header), /exact unchanged/);
   assert.match(header, /count >= 256/); assert.match(header, /2500000/);
   assert.match(header, /size_t buckets\[32\]/);

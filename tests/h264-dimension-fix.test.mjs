@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
 import test from "node:test";
 
 const e = JSON.parse(await readFile(new URL("../evidence/h264-dimension-fix-validation-2026-10-04.json", import.meta.url)));
@@ -21,7 +23,10 @@ test("fixed dimension guard rejects both early and after-written-byte changes wi
   assert.equal(e.hostedBuild.remoteArtifactsRemaining, 0);
 });
 test("fixed kernel retains ordinary exact-timing quality/audio regressions and fixed 32 MiB memory", async () => {
-  const hash = createHash("sha256").update(await readFile(new URL("../media/ffmpeg/h264-candidate.c", import.meta.url))).digest("hex");
+  // Bind the historical browser binary to its executed source, not a newer candidate.
+  const historical = execFileSync("git", ["show", "af4ee8fa010fbf70f8b9da290c2380d7dc0b265d:media/ffmpeg/h264-candidate.c"],
+    { cwd: fileURLToPath(new URL("..", import.meta.url)), windowsHide: true });
+  const hash = createHash("sha256").update(historical).digest("hex");
   assert.equal(hash, e.dimension.report.asBuiltManifest.candidateKernelSha256);
   const rows = e.ordinaryRegression.report.rows.filter((row) => row.container && row.status === "passed");
   assert.equal(rows.length, 2);
