@@ -5,7 +5,80 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-Push checkpoint (2026-10-04): the private H264 startup/scaling harness now
+## 2026-10-04 — Index-capped long H264 diagnostic passed all three jobs
+
+Status: **Partially implemented under M-04; native retention fix validated in
+instrumented long browser runs, not public/release acceptance**.
+Non-Docker build 37216461757 at pushed `aee6478` compiled the changed native
+kernel in 184 seconds. Hashes, fixed 512 shared initial/max Wasm pages and
+unchanged quality/frame/timestamp/thread/AVIO settings were independently
+verified. Both hosted artifacts deleted; source bundle never downloaded.
+
+The same genuine 600-second, 1,050,296,904-byte source completed all three
+production-Chrome 154 browser jobs in 245.073 / 233.482 / 240.187 seconds.
+Every output was genuine 1280x720 H264, 194,031,981 bytes, identical SHA-256
+`08b2da23c7c0deba576511af5c5fa77f36aac441607e00a1d03be10817478f7f`.
+Independent validation passed all 18,000 frames, zero frame-time error, both
+exact AAC packet hashes/language tags, Unicode metadata/chapter, full decode
+and ordinal SSIM 0.987764. The former uncapped diagnostic aborted after
+71.817 seconds and 316,932,096 input bytes; this is completion versus failure,
+not an uninstrumented conversion-speed A/B claim.
+
+Early stable blank baseline 248.504 MiB; loaded idle 293.480 MiB. Exact primary
+whole-Chromium increments were **219.742 / 198.164 / 199.180 MiB**, across
+175 / 169 / 172 pre/active samples. All 576 total tree samples were available.
+Actual running browser ages spanned 38.083–881.022 seconds, so startup overlap
+was observed without delaying/enlarging baseline. OnDeviceModelService did
+start at 180.236 seconds and remained in the total; this session observed
+only 13.797 MiB transient private memory, unlike the earlier large-service
+control. No guarantee of a smaller service on other sessions/devices.
+
+All 288 native snapshots arrived in order (98/94/96 per job). Seek-index counts
+cycled as entries were reduced, maximum 4,005 entries / 96,120 logical bytes
+across three streams, below the aggregate 98,304-byte generic hint. These are
+not backing-allocation bytes or a mandatory-index-demuxer guarantee. Used
+native bytes including overhead increased only 183,872 / 154,248 / 157,164
+after each job's startup; maximum observed used bytes 26,107,324. Earlier
+uncapped growth was 468,712 bytes before abort at only ~313 MB read. This
+supports the measured retention fix, not a per-allocation trace or universal
+leak diagnosis. Sampler cost <=50 microseconds, fixed heap unchanged.
+
+Reads <=256 KiB, writes/queues <=166,439 bytes, one pending operation,
+terminal queues zero, no forbidden requests. OPFS empty after each validation;
+idle recovery within 26.855 / 37.914 / 33.840 MiB of loaded baseline. Finally
+removed source/outputs/profile/scratch and success trace, stopped owned
+Chrome/server and restored four dist assets exactly. Seven reusable static
+tools remain (58,815,759 bytes), zero converted media. A website-build Node
+compiler cache remains: 95 files / 294,108 bytes at `work/node-compile-cache`;
+exact-path deletion was policy-blocked and no alternative was attempted.
+It is recorded explicitly, not hidden as complete build-cache cleanup.
+
+Evidence: `evidence/h264-demux-index-diagnostic-2026-10-04.json` freezes the
+actual report/build/source hashes and independent cleanup, with whole-tree,
+allocator and separate logical-index CSV/HTML graphs in `outputs/reports`.
+Recorder initially rejected the 4,294,409-byte long report under its old
+4 MiB artifact limit, before evidence was written; only bounded index-report
+allowance became 16 MiB, with 4,096 tree/768 native/three-job caps. Conversion
+memory and all correctness thresholds stayed unchanged. Another pre-write
+cleanup check found the compiler cache; it is now explicitly inventoried.
+The generic console success label was clarified for diagnostic/startup modes;
+the frozen report already had correct diagnostic-only status/scope.
+
+Next: a fresh uninstrumented build of the same bounded kernel, clean/startup
+repeats, direct-output/cancellation/write-failure/recovery, progressively larger
+real sources including protected `test.mkv`, controls/complex fidelity,
+exact reproducibility/legal review and registry/UI gates. H264 remains private;
+all other original requirements stay open. Do not repeat this unchanged
+diagnostic or claim the whole goal achieved.
+
+Cycle checks: 346/346 units, full lint, TypeScript, production build and
+unchanged 405-profile/no-PDF manifest pass. Only latest-source indexes and
+dependent aggregate references were refreshed; all historical execution
+reports/manifests remain frozen. No second diagnostic job or native build was
+started. Protected `test.mkv` remains unused/unmodified in this deterministic
+test; its 2,958,573,265-byte size and original SHA-256 were rechecked.
+
+Historical push checkpoint (2026-10-04): the private H264 startup/scaling harness now
 supports a genuine 600-second fixture with unchanged resolution, frame rate,
 codec settings, early blank-page baseline, complete Chromium process tree and
 250 MiB limit. It requires actual running-conversion observations before
@@ -62,6 +135,17 @@ historical dimension-proof tests compared their old executed kernel to the
 changed current candidate. They now verify exact pinned historical Git bytes
 and still check the current dimension guard; a separate test pins the new
 kernel. No historical browser evidence or quality threshold was rewritten.
+
+Changed-build checkpoint: pushed `aee6478` produced successful non-Docker run
+[37216461757](https://github.com/tanishqbaweja/fileconverter/actions/runs/37216461757).
+Native step 184 seconds, hosted SDK/build cleanup passed. Static candidate
+8,304,994 bytes; actual Wasm fixed 512 initial/max shared pages. Kernel,
+diagnostic header/injector, generated wrapper, recipe and artifact hashes all
+verified before staging. Both hosted artifacts deleted (zero remaining),
+corresponding source bundle never downloaded. Production website build passes.
+The identical 600-second browser gate is live with an early clean whole-tree
+baseline of 248.50 MiB; outcome remains pending. Do not restart on observation
+timeout or use build speed as conversion throughput.
 
 ## 2026-10-04 — Longer genuine H264 gate failed on fixed-heap allocation
 

@@ -31557,7 +31557,7 @@
   },
   "currentSources": {
     "scripts/lib/h264-allocator-summary.mjs": "bb79b8181041b92f363c51644056c10cc8bc97169bf09f2f9d3c88c79d58e4c5",
-    "scripts/record-h264-allocator-diagnostic.mjs": "b92b32de44503484288da9843b1e3927684da58d10e94dbfbafedef59a38fbf5",
+    "scripts/record-h264-allocator-diagnostic.mjs": "d9ce3e501771de49da30fd9288dc2624e5868ba6089a6306d3ff8e57225907d8",
     "media/ffmpeg/h264-allocator-diagnostic.h": "8ef8934fef37b4348fa2309784d5f063deccb7947277cd91b573bd01e0979b35",
     "scripts/lib/h264-allocator-instrumentation.mjs": "4a59bcda60d6123c2a491f4aa7b79b1456228d5ed36b80aff5dc7a8d730ba255"
   },

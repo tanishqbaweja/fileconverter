@@ -396,5 +396,9 @@ try {
   const max = Math.max(MiB, ...valid.map((sample) => sample.privateBytes)), maxTime = Math.max(1, ...samples.map((sample) => sample.elapsedMs));
   const points = valid.map((sample) => `${(sample.elapsedMs / maxTime * 900).toFixed(1)},${(280 - sample.privateBytes / max * 260).toFixed(1)}`).join(" ");
   await writeFile(`${reportBase}.html`, `<!doctype html><meta charset="utf-8"><title>Private H264 memory gate</title><h1>${escape(report.status)}</h1><p>${escape(report.scope)}</p><p>${escape(report.formula)}</p><svg viewBox="0 0 920 300" role="img" aria-label="Complete Chromium private bytes over elapsed time"><polyline fill="none" stroke="#315acf" stroke-width="2" points="${points}"/></svg><p>Private-memory range: 0–${(max / MiB).toFixed(1)} MiB; time: 0–${(maxTime / 1000).toFixed(1)} s.</p><pre>${escape(JSON.stringify({ blankBaseline, loadedIdle, runs: runs.map(({ independentValidation, state, ...run }) => ({ ...run, quality: independentValidation?.ordinalSsim ?? null, jobState: state?.jobState })), failure }, null, 2))}</pre>`, { flag: "wx" });
-  process.stdout.write(`Retained JSON/CSV/HTML: ${reportBase}\n${failure ? `FAILED: ${failure.message}` : cpuEnabled ? "CPU diagnostic complete; one instrumented run is not repeatability or speed acceptance." : "Private 720p gate passed; remaining full goal gates are still open."}\n`);
+  const successMessage = manifest.allocatorDiagnostic ? "Instrumented allocator diagnostic passed; not speed, uninstrumented memory or public certification." :
+    stressProfile.requireStartupOverlap ? "Private startup/scaling gate passed; direct, failure, fidelity-control and publication gates remain open." :
+    cpuEnabled ? "CPU diagnostic complete; one instrumented run is not repeatability or speed acceptance." :
+    "Private 720p gate passed; remaining full goal gates are still open.";
+  process.stdout.write(`Retained JSON/CSV/HTML: ${reportBase}\n${failure ? `FAILED: ${failure.message}` : successMessage}\n`);
 }
