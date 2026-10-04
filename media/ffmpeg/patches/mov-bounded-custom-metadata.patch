@@ -1,0 +1,37 @@
+--- a/libavformat/movenc.c
++++ b/libavformat/movenc.c
+@@ -4423,1 +4423,31 @@
++static void mov_write_bounded_custom_metadata(AVIOContext *pb, AVFormatContext *s)
++{
++    const AVDictionaryEntry *entry = NULL;
++    // The private caller preflights 4096 entries / 2 MiB aggregate text.
++    // iTunes free-form items retain arbitrary UTF-8 names alongside covr;
++    // no mdta-only path, duplicate meta box, image decode or extra buffer.
++    while ((entry = av_dict_iterate(s->metadata, entry))) {
++        const char *mean = "com.apple.iTunes";
++        size_t mean_size = strlen(mean), key_size = strlen(entry->key);
++        size_t value_size = strlen(entry->value);
++        int64_t item_pos = avio_tell(pb);
++        avio_wb32(pb, 0);
++        ffio_wfourcc(pb, "----");
++        avio_wb32(pb, 12 + mean_size);
++        ffio_wfourcc(pb, "mean");
++        avio_wb32(pb, 0);
++        avio_write(pb, mean, mean_size);
++        avio_wb32(pb, 12 + key_size);
++        ffio_wfourcc(pb, "name");
++        avio_wb32(pb, 0);
++        avio_write(pb, entry->key, key_size);
++        avio_wb32(pb, 16 + value_size);
++        ffio_wfourcc(pb, "data");
++        avio_wb32(pb, 1); // UTF-8 data type.
++        avio_wb32(pb, 0); // Locale.
++        avio_write(pb, entry->value, value_size);
++        update_size(pb, item_pos);
++    }
++}
++
+ /* iTunes meta data list */
+@@ -4460,1 +4490,2 @@
+     mov_write_tmpo_tag(pb, s);
++    mov_write_bounded_custom_metadata(pb, s);

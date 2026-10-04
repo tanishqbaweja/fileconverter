@@ -43,3 +43,23 @@ test("MPEG2 long diagnostics keep bounded histories, failures and independent cl
   assert.match(gate, /protectedFixtureUnchanged = true/);
   assert.doesNotMatch(gate, /file\.arrayBuffer\(\)|Blob\(|MEMFS|fetchFile\(/);
 });
+
+test("MPEG2 protected acceptance cannot hide artwork, color, metadata or compatible-track loss", async () => {
+  const gate = await readFile(new URL("../scripts/mpeg2-protected-memory.mjs", import.meta.url), "utf8");
+  for (const field of ["sample_aspect_ratio", "display_aspect_ratio", "color_range",
+    "color_space", "color_transfer", "color_primaries", "chroma_location", "r_frame_rate"])
+    assert.ok(gate.includes(`"${field}"`), field);
+  assert.match(gate, /Preserve primary video disposition/);
+  assert.match(gate, /Preserve container metadata/);
+  assert.match(gate, /outputAudio.length, inputAudio.length/);
+  assert.match(gate, /after.chapters, sourceProbe.chapters/);
+  assert.match(gate, /outputArt.length, inputArt.length/);
+  assert.match(gate, /compressedHash\(output, outputArt\[i\].index\), originalHash/);
+  assert.match(gate, /"-map", "0:v", "-map", "0:a"/);
+  const browser = await readFile(new URL("./browser/mpeg2-artwork-candidate.spec.ts", import.meta.url), "utf8");
+  assert.match(browser, /compressedArtworkHash\(output\)\).toBe\(originalArtworkHash\)/);
+  assert.match(browser, /outputArt\?\.width\).toBe\(250\)/);
+  assert.match(browser, /outputArt\?\.height\).toBe\(140\)/);
+  assert.match(browser, /Within FFmpeg MPEG-2/);
+  assert.match(browser, /toBeGreaterThanOrEqual\(0.98\)/);
+});

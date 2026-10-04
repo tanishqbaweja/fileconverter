@@ -53,6 +53,10 @@ printf '%s  %s\n' 510df38d806692997594df40a2f587d55984a147e610c7546cfd749116dc26
   ffmpeg/libavformat/matroskaenc.c | sha256sum --check --strict
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch"
+printf '%s  %s\n' d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068 \
+  ffmpeg/libavformat/movenc.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch"
 (
   cd ffmpeg
   trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
@@ -97,7 +101,8 @@ mkdir source-bundle
 cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mpeg2-candidate.c" \
   "${SCRIPT_DIR}/make-mpeg2-candidate.mjs" "${SCRIPT_DIR}/build-mpeg2-candidate.sh" \
   "${SCRIPT_DIR}/mpeg2-candidate-manifest.mjs" \
-  "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" source-bundle/
+  "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
+  "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
 cd "${OUTPUT_ROOT}"
 sha256sum ./*

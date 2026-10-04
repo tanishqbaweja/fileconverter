@@ -101,3 +101,24 @@ test("MPEG2 restoration child finishes before runtime deletion and the validator
   assert.match(browser, /toBeGreaterThanOrEqual\(0.98\)/);
   assert.match(browser, /short fixtures and non-stabilized baseline do not certify/);
 });
+
+test("private MP4 artwork does not trade away arbitrary text metadata", async () => {
+  const kernel = await source("mpeg2-candidate.c");
+  const recipe = await source("build-mpeg2-candidate.sh");
+  const patch = await source("patches/mov-bounded-custom-metadata.patch");
+  assert.doesNotMatch(kernel, /\+use_metadata_tags/);
+  assert.match(kernel, /metadata_entries > 4096/);
+  assert.match(kernel, /bytes > 2097152 - metadata_bytes/);
+  assert.match(recipe, /d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068/);
+  assert.match(recipe, /mov-bounded-custom-metadata.patch/);
+  assert.match(patch, /ffio_wfourcc\(pb, "----"\)/);
+  assert.match(patch, /ffio_wfourcc\(pb, "mean"\)/);
+  assert.match(patch, /ffio_wfourcc\(pb, "name"\)/);
+  assert.match(patch, /ffio_wfourcc\(pb, "data"\)/);
+  assert.match(patch, /avio_wb32\(pb, 1\); \/\/ UTF-8 data type/);
+  assert.match(patch, /av_dict_iterate\(s->metadata, entry\)/);
+  const browser = await readFile(path.join(root, "tests/browser/mpeg2-artwork-candidate.spec.ts"), "utf8");
+  assert.match(browser, /afterTags.website\).toBe\(beforeTags.website\)/);
+  assert.match(browser, /afterTags\["custom_音楽"\]\).toBe\(beforeTags\["custom_音楽"\]\)/);
+  assert.match(browser, /independent-pre-assertion-probes/);
+});

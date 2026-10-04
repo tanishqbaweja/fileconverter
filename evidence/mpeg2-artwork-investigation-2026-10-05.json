@@ -1,0 +1,212 @@
+{
+  "manifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "emscriptenVersion": "6.0.4",
+    "sources": {
+      "within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "mpeg2-candidate.c": "717e15442fa78b0082f1650048230e7ff5e58906bbd0d8df672fbb4e47ff5736",
+      "make-mpeg2-candidate.mjs": "d8f279333e820166491cff834beae52c91723f4f74b8ad604097accf0e1dac20",
+      "build-mpeg2-candidate.sh": "0f0c296c97e99de7ca344a3083f450031ccafb2c4255895e6fefe62e4c046d29",
+      "mpeg2-candidate-manifest.mjs": "7247af14832a10d52b319dbdc760ab75795acad3b5144c1fe197511464a1ac81",
+      "patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62"
+    },
+    "generatedWrapperSourceSha256": "cf13628726243290396890251389872d5ae92303257e79f60c72d4700ad89b7e",
+    "artifacts": {
+      "within-mpeg2.mjs": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+      "within-mpeg2.wasm": "89d4e5e938d7db3e8af8002522da18a445118a94d50cc946d660b85497d7b7f7"
+    },
+    "enabledDecoders": [
+      "h263",
+      "h264",
+      "hevc",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "mpeg2video"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 33554432,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "genericDemuxIndexHintBytesPerStream": 32768,
+    "demuxIndexBudgetScope": "Generic indexes honoring the hint, not a universal backing-allocation bound",
+    "primaryVideo": "genuine decoding and MPEG-2 encoding; no automatic resizing",
+    "secondaryStreams": "compatible packet copying; incompatible streams explicitly disclosed",
+    "controls": "requested resolution cap, bitrate, quality and rational phase-accumulator frame-rate cap",
+    "timeline": "CFR only; source start offset restored after encoder packet rescaling; VFR refused explicitly",
+    "pixelFormat": "8-bit YUV420P or source YUV422P; other conversions disclosed; full-range video refused",
+    "finalization": "normal seekable Matroska finalization without unbounded cues; bounded fragmented MP4",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later"
+    ],
+    "legalScope": "No GPL/nonfree/external encoder enabled; patent/deployment review not yet cleared",
+    "requiredUnpassedGates": [
+      "production-browser conversion",
+      "independent fidelity and timing",
+      "complete-process private memory",
+      "three repeats and multi-gigabyte scaling",
+      "privacy",
+      "success/cancellation/write-failure/cleanup",
+      "same-setting speed A/B",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "raw": [
+    {
+      "path": "output/playwright/2026-10-04T22-30-45.041Z-mpeg2-candidate-output-artwork.json",
+      "bytes": 24251,
+      "sha256": "00d87b755cb78f7f0a788c11c45e36a5f7fb8001c7679e10166088a14498fea3",
+      "rows": [
+        {
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"png\"\u001b[39m\nReceived: \u001b[31mundefined\u001b[39m",
+          "metrics": {
+            "inputBytes": 486915,
+            "outputBytes": 321436,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 82317,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 224771,
+            "maxWriteChunkBytes": 82317,
+            "elapsedMs": 578.730000000447,
+            "wasmMemoryBytes": 33554432,
+            "peakWasmMemoryBytes": 33554432,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 33554436,
+            "activeWorkerCount": 5,
+            "imageWorkingBytes": 0
+          },
+          "jobState": "complete"
+        }
+      ]
+    },
+    {
+      "path": "output/playwright/2026-10-04T22-30-54.282Z-mpeg2-candidate-output-artwork.json",
+      "bytes": 17703,
+      "sha256": "9a9cf423074606935ccdba2439ca696355ccf59da6cab8d63d9cc8663f042aa0",
+      "rows": [
+        {
+          "kind": "direct-write-failure",
+          "status": "passed",
+          "error": "[matroska,webm @ 0x3244f0] Could not find codec parameters for stream 3 (Video: png, none): unspecified size | Consider increasing the value for the 'analyzeduration' (2000000) and 'probesize' (2097152) options | [mp4 @ 0x2ec670] track 1: codec frame size is not set | [mp4 @ 0x2ec670] track 2: codec frame size is not set | [mp4 @ 0x2ec670] Encoder did not produce proper pts, making some up. | Error: The destination rejected a bounded write. | MPEG-2 candidate failed: I/O error",
+          "metrics": {
+            "inputBytes": 486915,
+            "outputBytes": 0,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 3016,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 224771,
+            "maxWriteChunkBytes": 0,
+            "elapsedMs": 475.63000000081956,
+            "wasmMemoryBytes": 33554432,
+            "peakWasmMemoryBytes": 33554432,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 33820708,
+            "activeWorkerCount": 6,
+            "imageWorkingBytes": 0
+          },
+          "partialBytes": []
+        }
+      ]
+    }
+  ],
+  "recordedAt": "2026-10-05",
+  "status": "partial-header-fixed-cover-missing",
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "run": {
+    "id": 37239956075,
+    "headSha": "0398ad10c1699ad10a0238b9932034a37a48fb18",
+    "conclusion": "success",
+    "jobSeconds": 282,
+    "compileSeconds": 232
+  },
+  "executedBrowserSources": {
+    "tests/browser/mpeg2-artwork-candidate.spec.ts": "7555cd22611b219860e6a68c65f45c0d360a95a08b74ab8608a89c854d62e3f4",
+    "scripts/validate-mpeg2-artwork.mjs": "fa2d224f996ce80338e88bfc7ceab0411f932cde078d64df8f74eeffe181a968"
+  },
+  "diagnosis": {
+    "header": "Exact audited JPEG/PNG reader filled missing dimensions; initial header error no longer occurred",
+    "cover": "Pinned movenc.c mdta branch bypasses covr writer; complete job did not preserve compatible art",
+    "primarySource": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/movenc.c",
+    "pinnedMovencSha256": "d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068"
+  },
+  "nextChange": "Private source-pinned iTunes free-form text writer alongside covr; 4096 entries / 2MiB aggregate text preflight. Arbitrary and Unicode text + cover hashes required, not relaxed.",
+  "acceptance": {
+    "successfulArtworkOutputs": 0,
+    "primaryMemory": false,
+    "speedAb": false,
+    "protectedRetry": false
+  },
+  "cleanup": {
+    "runnerReportedMediaAndOpfsRemoved": true,
+    "runnerReportedDistRestored": true,
+    "runnerReportedOwnedRuntimeRemoved": true,
+    "rawTracesLocalOnly": true,
+    "sourceBundleDownloaded": false
+  },
+  "regression": {
+    "unitPassedBeforeLatestMetadataGuard": 386,
+    "focusedLatestGuardsPassed": 9,
+    "eslintPassed": true,
+    "typescriptPassed": true,
+    "bashSyntaxPassed": true
+  }
+}

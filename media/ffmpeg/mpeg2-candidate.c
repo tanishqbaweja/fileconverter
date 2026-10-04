@@ -365,6 +365,24 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
   if (result < 0) goto cleanup;
   result = mpeg2_chapters(out, in);
   if (result < 0) goto cleanup;
+  // Bound all copied text (container, streams and chapters) before metadata
+  // serialization. Refuse oversized metadata rather than silently dropping it.
+  size_t metadata_bytes = 0;
+  unsigned metadata_entries = 0;
+  for (unsigned scope = 0; scope < 1 + out->nb_streams + out->nb_chapters; scope++) {
+    const AVDictionary *dictionary = scope == 0 ? out->metadata :
+        scope <= out->nb_streams ? out->streams[scope - 1]->metadata :
+        out->chapters[scope - 1 - out->nb_streams]->metadata;
+    const AVDictionaryEntry *entry = NULL;
+    while ((entry = av_dict_iterate(dictionary, entry))) {
+      size_t bytes = strlen(entry->key) + strlen(entry->value);
+      if (++metadata_entries > 4096 || bytes > 2097152 - metadata_bytes) {
+        within_message(2, "Source metadata exceeds bounded 4096-entry / 2 MiB text allowance; refusing silent loss.");
+        result = AVERROR(EFBIG); goto cleanup;
+      }
+      metadata_bytes += bytes;
+    }
+  }
   output_buffer = av_malloc(WITHIN_AVIO_OUTPUT_BUFFER_SIZE);
   if (!output_buffer) { result = AVERROR(ENOMEM); goto cleanup; }
   output_io = avio_alloc_context(output_buffer, WITHIN_AVIO_OUTPUT_BUFFER_SIZE, 1,
@@ -373,7 +391,7 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
   output_buffer = NULL;
   out->pb = output_io;
   if (!matroska) {
-    av_dict_set(&mux_options, "movflags", "frag_keyframe+delay_moov+default_base_moof+skip_trailer+use_metadata_tags", 0);
+    av_dict_set(&mux_options, "movflags", "frag_keyframe+delay_moov+default_base_moof+skip_trailer", 0);
     av_dict_set(&mux_options, "use_editlist", "1", 0);
     av_dict_set(&mux_options, "frag_duration", "1000000", 0);
     av_dict_set(&mux_options, "frag_size", "1048576", 0);

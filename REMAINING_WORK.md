@@ -7,6 +7,30 @@ not the entire product specification.
 
 ## 2026-10-05 — MPEG-2 controls gate, adapter failure diagnosed
 
+Changed build `37239956075` at `0398ad1` compiled successfully (282-second
+job, 232-second compile; neither is conversion speed), exact manifest hashes
+verified. Actual unchanged fixed 32 MiB shared heap and sole MPEG-2 encoder.
+The new attachment browser suite **failed 1/2**: header dimensions now work
+and encoding finishes (321,436 output bytes), but independent FFprobe found
+the compatible cover missing. Injected bounded write failure passed; generated
+fixtures/output/profile/scratch removed and assets restored. Raw first failure
+`2026-10-04T22-30-45.041Z-mpeg2-candidate-output-artwork.json` SHA
+`00d87b755cb78f7f0a788c11c45e36a5f7fb8001c7679e10166088a14498fea3`;
+separate fault pass SHA `9a9cf423074606935ccdba2439ca696355ccf59da6cab8d63d9cc8663f042aa0`.
+No accepted artwork output, protected retry, primary memory or speed claim.
+
+Pinned FFmpeg 8.1.2 `movenc.c` confirms `use_metadata_tags` selects mdta and
+bypasses the iTunes `covr` writer. Do not merely turn it off and lose arbitrary
+fields. A separate hash-pinned private mux patch writes original UTF-8 keys
+and values in iTunes free-form `----`/mean/name/data items alongside the normal
+cover writer, using the existing seekable bounded header buffer. No duplicate
+meta boxes or new image decoder. All copied text (container/streams/chapters)
+is preflighted at 4096 entries / 2 MiB aggregate, with explicit safe refusal.
+The changed small test also requires arbitrary WEBSiTE and Unicode-key text,
+and now records independent probes before assertions to preserve diagnostics.
+This further changed candidate must compile and pass, with no unchanged large
+rerun while artwork is unproved. Public modules remain unchanged.
+
 Continuation after pushed `1eb7479` is progress, not an unchanged retry.
 The private generator now includes the exact JPEG/PNG header reader from the
 hash-pinned audited core. It fills attached-picture dimensions from compressed
@@ -16,7 +40,15 @@ explicitly. Freshly encoded video now has its own encoder tag, preserving the
 original tag separately rather than mislabeling MPEG-2 as source MPEG-4.
 New dedicated browser artwork suite compares compressed PNG hashes/dimensions,
 real MPEG-2 codec, audio, timestamps, quality, metadata and cleanup. Native
-rebuild/browser execution pending. Source gates 4/4 after one diagnosed
+rebuild/browser execution pending in non-Docker run `37239956075` at pushed
+`0398ad1`. The protected validator additionally requires compressed-artwork
+hashes, compatible track counts/audio layouts and language, container/video
+metadata, primary video dispositions, aspect/color/rate fields and full decode
+including attached art. These strengthen acceptance, not thresholds relaxation.
+Four focused protected guards pass; complete units 385/385 before the added
+guard, now pending next regression. Old static candidate moved, not duplicated,
+to `work/mpeg2-attachment-baseline-37237343519` while the changed build runs.
+Source gates 4/4 after one diagnosed
 generator-boundary failure (forward declaration mistaken for definition).
 Old executed evidence remains frozen; only its current unit-source maintenance
 hash updated. Public modules unchanged, full objective still incomplete.

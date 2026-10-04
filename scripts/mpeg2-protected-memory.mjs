@@ -229,17 +229,54 @@ try {
     const output = await outputPayload(metrics.outputBytes), after = await probe(output, true);
     const video = after.streams.find((s) => s.codec_type === "video");
     assert.equal(video.codec_name, "mpeg2video"); assert.equal(video.width, 1920); assert.equal(video.height, 804);
+    const originalVideo = sourceProbe.streams.find((s) => s.codec_type === "video" && !s.disposition?.attached_pic);
+    for (const field of ["sample_aspect_ratio", "display_aspect_ratio", "color_range",
+      "color_space", "color_transfer", "color_primaries", "chroma_location", "r_frame_rate"])
+      assert.equal(video[field], originalVideo[field], `Preserve video ${field}`);
+    assert.equal(video.tags?.encoder, "Within FFmpeg MPEG-2", "Fresh video encoder provenance");
+    const normalizedTags = (tags) => Object.fromEntries(Object.entries(tags ?? {}).map(([key, value]) => [key.toLowerCase(), value]));
+    const inputTags = normalizedTags(sourceProbe.format.tags), outputTags = normalizedTags(after.format.tags);
+    for (const [key, value] of Object.entries(inputTags))
+      assert.equal(outputTags[key], value, `Preserve container metadata ${key}`);
+    assert.equal(video.tags?.title, originalVideo.tags?.title, "Preserve primary video title");
+    for (const [flag, enabled] of Object.entries(originalVideo.disposition ?? {}))
+      if (enabled) assert.equal(video.disposition?.[flag], enabled, `Preserve primary video disposition ${flag}`);
+    const inputAudio = sourceProbe.streams.filter((s) => s.codec_type === "audio");
+    const outputAudio = after.streams.filter((s) => s.codec_type === "audio");
+    assert.equal(outputAudio.length, inputAudio.length);
+    for (let i = 0; i < inputAudio.length; i++)
+      for (const field of ["codec_name", "sample_rate", "channels", "channel_layout"])
+        assert.equal(outputAudio[i][field], inputAudio[i][field], `Preserve audio ${i} ${field}`);
+    for (let i = 0; i < inputAudio.length; i++)
+      for (const field of ["language", "title"])
+        assert.equal(outputAudio[i].tags?.[field], inputAudio[i].tags?.[field], `Preserve audio ${i} ${field}`);
+    assert.deepEqual(after.chapters, sourceProbe.chapters);
+    const inputArt = sourceProbe.streams.filter((s) => s.disposition?.attached_pic);
+    const outputArt = after.streams.filter((s) => s.disposition?.attached_pic);
+    assert.equal(outputArt.length, inputArt.length, "Preserve compatible attached pictures");
+    const artworkPacketHashes = [];
+    for (let i = 0; i < inputArt.length; i++) {
+      for (const field of ["codec_name", "width", "height"])
+        assert.equal(outputArt[i][field], inputArt[i][field], `Preserve artwork ${i} ${field}`);
+      const compressedHash = async (file, index) => (await native(["-v", "error", "-i", file,
+        "-map", `0:${index}`, "-c", "copy", "-f", "hash", "-hash", "sha256", "pipe:1"])).stdout.trim();
+      const originalHash = await compressedHash(source, inputArt[i].index);
+      assert.equal(await compressedHash(output, outputArt[i].index), originalHash);
+      artworkPacketHashes.push(originalHash);
+    }
+    assert.ok(run.state.warnings.some((warning) => /subrip.*explicitly excluded/i.test(warning)),
+      "Incompatible subtitle exclusion must be disclosed");
     const inputTimes = await frameTimes(source), outputTimes = await frameTimes(output);
     assert.equal(inputTimes.length, outputTimes.length); let maximumTimestampErrorSeconds = 0;
     for (let i = 0; i < inputTimes.length; i++) maximumTimestampErrorSeconds = Math.max(maximumTimestampErrorSeconds, Math.abs(inputTimes[i] - outputTimes[i]));
     assert.ok(maximumTimestampErrorSeconds <= 0.001);
     assert.deepEqual(await audioHashes(output), await audioHashes(source));
-    await native(["-v", "error", "-xerror", "-i", output, "-map", "0:v:0", "-map", "0:a", "-f", "null", "-"]);
+    await native(["-v", "error", "-xerror", "-i", output, "-map", "0:v", "-map", "0:a", "-f", "null", "-"]);
     const { stderr } = await native(["-v", "info", "-i", source, "-i", output, "-filter_complex",
       "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim", "-an", "-f", "null", "-"]);
     const ssim = Number(/All:([0-9.]+)/.exec(stderr)?.[1]); assert.ok(ssim >= 0.98);
     run.independentValidation = { outputBytes: (await stat(output)).size, sha256: await shaFile(output),
-      probe: after, frameCount: outputTimes.length, maximumTimestampErrorSeconds, ssim, fullDecode: true };
+      probe: after, artworkPacketHashes, frameCount: outputTimes.length, maximumTimestampErrorSeconds, ssim, fullDecode: true };
     await emptyOpfs(); await page.goto(query); await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
     run.recovery = await stable(`cleanup-${number}`, loadedIdle.privateBytes + 96 * MiB);
   }

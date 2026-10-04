@@ -21,7 +21,8 @@ if (ffmpegSourceSha256 !== "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb408223174
   throw new Error("FFmpeg archive changed.");
 }
 const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidate.mjs",
-  "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch"];
+  "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
+  "patches/mov-bounded-custom-metadata.patch"];
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
@@ -37,6 +38,8 @@ const manifest = {
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
   avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
+  maximumMetadataEntries: 4096, maximumMetadataTextBytes: 2097152,
+  mp4Metadata: "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",
   genericDemuxIndexHintBytesPerStream: 32768,
   demuxIndexBudgetScope: "Generic indexes honoring the hint, not a universal backing-allocation bound",
   primaryVideo: "genuine decoding and MPEG-2 encoding; no automatic resizing",
