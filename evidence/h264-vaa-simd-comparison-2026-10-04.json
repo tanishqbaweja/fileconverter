@@ -52731,8 +52731,8 @@
     "scripts/record-h264-vaa-comparison.mjs": "9961859419d82f64f4a22d66633a08c1b4b08958e43ecbfbce0a4806c52e4d31",
     "scripts/apply-vaa-simd.mjs": "ab3fd4318fcc0d63a30b32d2b09f467f8eefeb3c143b3fa91f7c338f6782437a",
     "scripts/lib/openh264-vaa-patch.mjs": "ab3cc1f4f1fcdae254e4dc0fa909105c235a54ac427f8c87e12af1c00e82fdc2",
-    "media/ffmpeg/build-h264-candidate.sh": "da0db1b5a51ab346d43aaff7fb2f537ef26075ac8686e564763a6b5cb294bb8d",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "005c0caed02474f0331ee1d358b31bae4f6ca5fe7f494e4d966e8d31887ba620"
+    "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "4016c6da95c229d55ef6bea44817591c1788ab4155a7e372333f66d9d6449b3e"
   },
   "publicAcceptance": false,
   "cleanup": {

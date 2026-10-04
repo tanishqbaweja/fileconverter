@@ -53610,12 +53610,12 @@
     }
   ],
   "currentSources": {
-    "scripts/lib/h264-sad-speed-comparison.mjs": "fd62d3bde966879fb2af3031f51b8af2f082e46a2d4e1ec254b085109ac909dc",
+    "scripts/lib/h264-sad-speed-comparison.mjs": "0e4361c8ca6e9cbbd148419a2e6af2d0489c127c6f17174a76dc6e7b32afce04",
     "scripts/record-h264-sad-comparison.mjs": "9e35918693037e1c061bb2992cf5fc86b0eb9ca0974f3015ca5c86820c1aec4a",
     "scripts/apply-sad-simd.mjs": "6a8d4e373cb90747adaf95e485a229b9a04311c87664e686ce3b3231fd8e4320",
     "scripts/lib/openh264-sad-patch.mjs": "f008900f19731c0b452256296ccee7f5917780e61e25c82bfda2650732c0e73f",
-    "media/ffmpeg/build-h264-candidate.sh": "da0db1b5a51ab346d43aaff7fb2f537ef26075ac8686e564763a6b5cb294bb8d",
-    "media/ffmpeg/h264-candidate-manifest.mjs": "005c0caed02474f0331ee1d358b31bae4f6ca5fe7f494e4d966e8d31887ba620"
+    "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
+    "media/ffmpeg/h264-candidate-manifest.mjs": "4016c6da95c229d55ef6bea44817591c1788ab4155a7e372333f66d9d6449b3e"
   },
   "publicAcceptance": false,
   "cleanup": {

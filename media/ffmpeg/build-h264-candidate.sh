@@ -22,6 +22,11 @@ case "${WITHIN_H264_SAD_SIMD:-0}" in
   *) printf 'Private H264 SAD SIMD must be 0 or 1.\n' >&2; exit 2 ;;
 esac
 export WITHIN_H264_SAD_SIMD="${WITHIN_H264_SAD_SIMD:-0}"
+case "${WITHIN_H264_ALLOCATOR_DIAGNOSTIC:-0}" in
+  0|1) ;;
+  *) printf 'Private H264 allocator diagnostic must be 0 or 1.\n' >&2; exit 2 ;;
+esac
+export WITHIN_H264_ALLOCATOR_DIAGNOSTIC="${WITHIN_H264_ALLOCATOR_DIAGNOSTIC:-0}"
 [[ "${WITHIN_H264_VAA_SIMD}${WITHIN_H264_SAD_SIMD}" != 11 ]] ||
   { echo 'Do not combine rejected VAA SIMD with the isolated SAD experiment.' >&2; exit 2; }
 
@@ -146,6 +151,9 @@ cp ffmpeg/config_components.h "${OUTPUT_ROOT}/config_components.h"
 node "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${BUILD_ROOT}" "${OUTPUT_ROOT}"
 # Corresponding unmodified dependency sources plus exact wrapper/recipes.
 mkdir source-bundle
+mkdir -p source-bundle/scripts/lib
+cp "${SCRIPT_DIR}/h264-allocator-diagnostic.h" source-bundle/
+cp "${PROJECT_ROOT}/scripts/lib/h264-allocator-instrumentation.mjs" source-bundle/scripts/lib/
 cp ffmpeg.tar.xz openh264.tar.gz within_h264.c "${SCRIPT_DIR}/h264-candidate.c" \
   "${SCRIPT_DIR}/make-h264-candidate.mjs" "${SCRIPT_DIR}/build-h264-candidate.sh" \
   "${SCRIPT_DIR}/h264-candidate-manifest.mjs" "${SCRIPT_DIR}/openh264-force-intra.cpp" \

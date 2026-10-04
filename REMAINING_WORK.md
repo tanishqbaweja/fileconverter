@@ -70,6 +70,31 @@ passed. An initial manifest-check invocation used a nonexistent script name
 and did not run that gate; the actual `audit:public-evidence:manifest` command
 was then executed successfully. No second browser conversion was started.
 
+## 2026-10-04 — Native allocator diagnostic prepared
+
+Status: **Partially implemented under M-04; instrumented build/browser diagnosis pending**.
+An off-by-default build option instruments only two packet-boundary calls
+around the SHA-pinned, unchanged H264 codec kernel. The generated private
+wrapper samples emmalloc's claimed/free/unclaimed bytes and 32 free-block
+size buckets at most every 2.5 seconds, at most 256 times per module. It does
+not allocate or trim native blocks, change quality/codec/thread/AVIO settings,
+grow memory or log file content. Browser sampling retains at most 768 native
+records; worker state holds only the latest snapshot. Instrumented runs are
+diagnostics, never uninstrumented speed or public-memory acceptance.
+
+The private manifest/source bundle retain diagnostic/header/injection hashes.
+One explicit repository-local diagnostic tool slot leaves the five existing
+static tools untouched. Historical SAD recipe verification reads exact pinned
+Git bytes after the current diagnostic recipe changes. Latest-source indexes
+and their aggregate references are refreshed without rewriting any historical
+execution, native manifest, profile or performance measurement. An initial
+source-index patch omitted the trailing comma and failed before editing; the
+correct full block was then applied. A unit failure identified a dependent
+VAA speed-trial aggregate hash that also needed refreshing; the underlying
+rejected speed result remains unchanged. No diagnostic conversion has run yet.
+Fixed 32 MiB/SAD-on/VAA-off/LTO-off no-Docker compilation and the identical
+600-second production-browser fixture are the next actual gates.
+
 ## Status definitions
 
 - **Verified complete** — current source plus an appropriate test or retained

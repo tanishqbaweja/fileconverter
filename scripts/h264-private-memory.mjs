@@ -36,6 +36,7 @@ const inputMode = process.env.WITHIN_H264_INPUT_MODE ?? "byob";
 assert.ok(["legacy", "byob"].includes(inputMode));
 const startedAt = Date.now();
 const samples = [], runs = [], logs = [], forbiddenRequests = [];
+const allocatorSamples = [], lastAllocatorSequences = new WeakMap();
 const browserLocalRequests = [], outOfOriginRequests = [];
 let work, server, chrome, browser, context, page, staged = false;
 let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure = null;
@@ -74,6 +75,14 @@ async function takeSample(phase) {
     return value ? { usage: value.usage ?? null, quota: value.quota ?? null } : null;
   }));
   const state = await boundedRealm(page, () => page.evaluate(() => window.__WITHIN_TEST__?.getState() ?? null));
+  if (manifest.allocatorDiagnostic) for (const worker of page.workers()) {
+    const diagnostic = await boundedRealm(worker, () => worker.evaluate(() => globalThis.__WITHIN_H264_ALLOCATOR_DIAGNOSTIC__ ?? null));
+    if (diagnostic && diagnostic.sequence !== lastAllocatorSequences.get(worker)) {
+      assert.ok(allocatorSamples.length < 768, "Bounded native allocator sample cap");
+      lastAllocatorSequences.set(worker, diagnostic.sequence);
+      allocatorSamples.push({ phase, timestamp: new Date(begin).toISOString(), ...diagnostic });
+    }
+  }
   if (state) lastState = state;
   const born = Date.parse(tree.processes?.find((entry) => entry.pid === rootPid)?.createdAt);
   const sample = { timestamp: new Date(begin).toISOString(), elapsedMs: begin - startedAt,
@@ -159,6 +168,10 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+if (manifest.allocatorDiagnostic) {
+  assert.equal(stressProfile.name, "startup-scaling", "Allocator diagnostics cannot be a short speed trial");
+  assert.equal(cpuEnabled, false);
+}
 assert.ok([32 * MiB, 64 * MiB].includes(manifest.maximumWasmMemoryBytes));
 assert.equal(manifest.initialWasmMemoryBytes, manifest.maximumWasmMemoryBytes);
 assert.equal(manifest.allowMemoryGrowth, false);
@@ -169,6 +182,7 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/h264-candidate-selection.mjs",
   "scripts/lib/cdp-cpu-window.mjs", "scripts/lib/cpu-profile-summary.mjs",
   "scripts/lib/h264-stress-profile.mjs", "scripts/lib/chromium-utility-summary.mjs",
+  "media/ffmpeg/h264-allocator-diagnostic.h", "scripts/lib/h264-allocator-instrumentation.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
@@ -353,11 +367,11 @@ try {
     await rm(work, { recursive: true, force: true, maxRetries: 5, retryDelay: 500 });
   }
   if (!failure) await rm(`${reportBase}-trace.zip`, { force: true });
-  const report = { recordedAt: new Date().toISOString(), scope: stressProfile.requireStartupOverlap ? "Private 600s/720p genuine scaling/startup-overlap gate; early clean baseline/full Chromium tree; not speed A/B, direct-output or public certification" : cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
-    status: failure ? "failed" : stressProfile.requireStartupOverlap ? "passed-private-startup-scaling-gate" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
+  const report = { recordedAt: new Date().toISOString(), scope: manifest.allocatorDiagnostic ? "Native allocator instrumented 600s/720p diagnostic; early clean baseline/full Chromium tree; not speed, uninstrumented memory or public certification" : stressProfile.requireStartupOverlap ? "Private 600s/720p genuine scaling/startup-overlap gate; early clean baseline/full Chromium tree; not speed A/B, direct-output or public certification" : cpuEnabled ? "One genuine 60s 720p conversion with partial 15s worker CPU diagnostics; NOT repeatability/speed/public-profile certification" : "Private 60s 720p candidate memory/repeatability gate; NOT multi-gigabyte scaling, speed A/B, direct-output or public-profile certification",
+    status: failure ? "failed" : manifest.allocatorDiagnostic ? "passed-instrumented-allocator-diagnostic-only" : stressProfile.requireStartupOverlap ? "passed-private-startup-scaling-gate" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
     stressProfile, fixtureDurationSeconds: fixtureDuration, startupOverlap: startupConversionOverlap(samples),
     utilityActivity: stressProfile.requireStartupOverlap ? summarizeUtilityActivity(samples) : null,
-    cpuEnabled, requestedRunCount, cpuDiagnostic, publicAcceptance: false,
+    cpuEnabled, requestedRunCount, cpuDiagnostic, allocatorSamples, publicAcceptance: false,
     candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,
     forbiddenRequests, browserLocalRequests, outOfOriginRequests, lastState, failure, publicProfilesChanged: false, protectedTestMkvUsed: false,

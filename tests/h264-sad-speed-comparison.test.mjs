@@ -47,3 +47,8 @@ test("SAD comparison cannot accept zero/unavailable process samples or synthetic
   assert.equal(result.publicAcceptance, false);
   assert.ok(result.after.jobs.every((job) => job.recalculatedIncrementalPrivateMiB === null));
 });
+test("native allocator instrumentation cannot pass as an uninstrumented speed trial", () => {
+  const [baseline, candidate] = pair();
+  candidate.asBuiltManifest.allocatorDiagnostic = true;
+  assert.throws(() => compareH264SadSpeed(baseline, candidate, proof), /Allocator diagnostics/);
+});

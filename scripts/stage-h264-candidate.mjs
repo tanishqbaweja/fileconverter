@@ -14,6 +14,10 @@ if (!["legacy", "byob"].includes(inputMode)) throw new Error("Private input mode
 const adapter = `// PRIVATE_H264_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT
 import factory from "/engines/remux/_candidate_h264_base.mjs";
 export default async function(options) {
+${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
+    globalThis.__WITHIN_H264_ALLOCATOR_DIAGNOSTIC__ = sample;
+  } } };
+` : ""}
 ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.withinBridge, readSync: undefined } };\n" : ""}  let core;
   try { core = await factory(options); }
   catch (error) { throw new Error("Candidate factory: " + String(error.message) + "\\n" + String(error.stack).slice(0, 2048)); }

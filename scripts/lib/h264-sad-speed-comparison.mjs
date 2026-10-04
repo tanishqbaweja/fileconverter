@@ -12,6 +12,7 @@ export function compareH264SadSpeed(baseline, candidate, arithmeticProof) {
   assert.deepEqual(baseline.sourceHashes, candidate.sourceHashes, "Same executed harness, native kernel and current recipe source required");
   for (const report of [baseline, candidate]) {
     assert.equal(report.cpuEnabled, false, "Profiler must be disabled for speed A/B");
+    assert.ok(!report.asBuiltManifest.allocatorDiagnostic, "Allocator diagnostics must be disabled for speed A/B");
     assert.equal(report.requestedRunCount, 3);
     assert.equal(report.source.bytes, 105000218);
     assert.equal(report.source.sha256, "938eb61229f60a434cc3fede71829e96c30a1d42a64a468d7efc2c7a43622839");

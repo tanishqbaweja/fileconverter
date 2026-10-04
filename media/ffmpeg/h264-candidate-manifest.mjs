@@ -21,6 +21,8 @@ const sadSimd = process.env.WITHIN_H264_SAD_SIMD ?? "0";
 if (!["0", "1"].includes(sadSimd)) throw new Error("Private H264 SAD SIMD must be 0 or 1");
 if (vaaSimd === "1" && sadSimd === "1") throw new Error("SAD trial must not combine rejected VAA SIMD");
 const sadPatch = sadSimd === "1" ? JSON.parse(await readFile(path.join(build, "sad-simd-patch.json"), "utf8")) : null;
+const allocatorDiagnostic = process.env.WITHIN_H264_ALLOCATOR_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private allocator diagnostic must be 0 or 1");
 const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\\w+)_${kind} 1$`, "gm"))]
   .map((match) => match[1].toLowerCase()).sort();
 const manifest = {
@@ -36,6 +38,9 @@ const manifest = {
   openh264VaaSimdProvenance: vaaPatch,
   openh264SadSimd: sadSimd === "1",
   openh264SadSimdProvenance: sadPatch,
+  allocatorDiagnostic: allocatorDiagnostic === "1",
+  allocatorDiagnosticHeaderSha256: await sha256(path.join(root, "media/ffmpeg/h264-allocator-diagnostic.h")),
+  allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/h264-allocator-instrumentation.mjs")),
   libraryOptimizationScope: libraryLto === "1" ? "FFmpeg and OpenH264 objects plus existing final-link LTO" : "Existing final-link LTO only; libraries use Wasm objects",
   currentAvioWrapperSourceSha256: await sha256(path.join(root, "media/ffmpeg/within_remux.c")),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_h264.c")),

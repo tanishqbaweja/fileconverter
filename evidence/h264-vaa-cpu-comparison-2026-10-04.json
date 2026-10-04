@@ -8,14 +8,14 @@
   "scope": "Historical scalar first-15s sample versus one SIMD first-15s sample; not matched frame work, same-time environment or repeated speed experiment",
   "baseline": {
     "path": "evidence/h264-cpu-diagnostic-2026-10-04.json",
-    "evidenceSha256": "93402c296e3464eb5c8ba26f9c890035bb73ab878c015b99bfba03c8f44eb995",
+    "evidenceSha256": "752d189be8cbed007280342782b2491d44618b5d88952cfa87686b387fef64f5",
     "reportSha256": "d2aba733c2befed8f05de20085adca471a1c4f3621ac9f8a03a74128f949c432",
     "cpuProfileSha256": "d67d963879d23342747c3fa102c3936fbc5e967e3a2b88303c0b49757969627e",
     "windowMs": 15037
   },
   "precedingSpeedTrial": {
     "path": "evidence/h264-vaa-simd-comparison-2026-10-04.json",
-    "sha256": "651d1435959c3b959e6405009e280f57801c95747ed57d4aa4731137097e0315",
+    "sha256": "0d3b4ae27ba3df3c6bf0848e96ed0b853f50e47ecbe7012766da047a4d8fdfb2",
     "accepted": false,
     "measuredSpeedupFraction": -0.09196305597303667
   },
@@ -47783,7 +47783,7 @@
   "currentSources": {
     "scripts/lib/vaa-cpu-hotspot.mjs": "449ef6254efef31eb32cfa497212b52d34bb1922ea976f58a3500d3b4c855c46",
     "scripts/record-h264-vaa-cpu-comparison.mjs": "ad00bcdfa193cb5cb7ce0bf7a1572a854ff4581a2d65f08052935cc7ce1b0b7f",
-    "scripts/h264-private-memory.mjs": "58b99bcd9733cc6d9eb280ff3c4de1a86f05378a275a0974baa8054ca5ec23d8",
+    "scripts/h264-private-memory.mjs": "1fc4f38ec74b4b60909d5f091a2623f427dbade790732cb08ca09c364e4ce382",
     "scripts/lib/cdp-cpu-window.mjs": "443c48f696354e7547164691fbb7623a14c9fd0a672c7f7c43c09d97f91c7c01",
     "scripts/lib/cpu-profile-summary.mjs": "377f7e77b2f3b013c63097988b5a18497ca23e1aef4b02bfe85ec5ba5bf8b224"
   },
