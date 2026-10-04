@@ -1,0 +1,82 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import { startupConversionOverlap } from "../scripts/lib/h264-stress-profile.mjs";
+
+const read = (file) => readFile(new URL(`../${file}`, import.meta.url));
+const sha = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const e = JSON.parse(await read("evidence/h264-uninstrumented-direct-handle-2026-10-04.json"));
+const r = e.report.data;
+
+test("genuine uninstrumented selected-handle output remains failed when the entire Chromium tree exceeds 250 MiB", () => {
+  assert.equal(sha(`${JSON.stringify(r, null, 2)}\n`), e.report.sha256);
+  assert.equal(r.status, "failed");
+  assert.equal(e.privateGatePassed, false);
+  assert.equal(e.publicAcceptance, false);
+  assert.equal(r.publicProfilesChanged, false);
+  assert.equal(r.destinationMode, "direct-handle");
+  assert.equal(r.cpuEnabled, false);
+  assert.deepEqual(r.allocatorSamples, []);
+  assert.equal(r.asBuiltManifest.allocatorDiagnostic, false);
+  assert.equal(r.source.bytes, 1050296904);
+  assert.equal(r.fixtureDurationSeconds, 600);
+  assert.equal(r.requestedRunCount, 3);
+  assert.equal(r.runs.length, 1);
+  assert.deepEqual(r.startupOverlap, startupConversionOverlap(r.samples));
+  assert.equal(r.startupOverlap.observed, true);
+  const run = r.runs[0];
+  assert.equal(run.state.jobState, "complete");
+  assert.equal(run.state.opfsName, null);
+  assert.equal(run.cleanup, null);
+  const v = run.independentValidation;
+  assert.equal(v.outputBytes, 194031981);
+  assert.equal(v.outputSha256, "08b2da23c7c0deba576511af5c5fa77f36aac441607e00a1d03be10817478f7f");
+  assert.equal(v.outputProbe.streams[0].codec_name, "h264");
+  assert.deepEqual([v.outputProbe.streams[0].width, v.outputProbe.streams[0].height], [1280, 720]);
+  assert.equal(v.outputFrameTimes.length, 18000);
+  assert.equal(v.maximumFrameTimeErrorSeconds, 0);
+  assert.equal(v.ordinalSsim, 0.987764);
+  assert.equal(v.fullDecodePassed, true);
+  assert.deepEqual(v.audioPacketHashes, r.source.audioPacketHashes);
+  const active = r.samples.filter((s) => ["pre-conversion-1", "conversion-1"].includes(s.phase) && s.privateBytes != null);
+  for (const sample of active) {
+    assert.ok(sample.processes.every((p) => p.privateBytes > 0));
+    assert.equal(sample.privateBytes, sample.processes.reduce((sum, p) => sum + p.privateBytes, 0));
+  }
+  const peak = active.reduce((largest, s) => s.privateBytes > largest.privateBytes ? s : largest);
+  assert.equal(run.peakPrivateBytes, peak.privateBytes);
+  assert.equal(run.incrementalPrivateMiB, (peak.privateBytes - r.blankBaseline.privateBytes) / 1024 ** 2);
+  assert.equal(run.incrementalPrivateMiB, 265.62890625);
+  assert.ok(peak.processes.some((p) => p.privateBytes === 106487808));
+  assert.match(r.failure.message, /265\.62890625 exceeds 250/);
+  assert.equal(r.primaryLimitMiB, 250);
+  assert.deepEqual(r.forbiddenRequests, []);
+});
+
+test("failed direct gate retains executed provenance, bounded buffers and explicit finally-cleanup without publishing the candidate", async () => {
+  assert.equal(e.build.headSha, "71abba203dc8b384ca6462fce694f650b907da77");
+  assert.equal(e.build.conclusion, "success");
+  for (const [file, expected] of Object.entries(e.currentSources)) assert.equal(sha(await read(file)), expected, file);
+  assert.equal(r.sourceHashes["scripts/h264-private-memory.mjs"], "426a3a19b1b37ca0654a3cf01b76af0f4e2068d3f5002fbf693dbe9226fbc78a");
+  assert.equal(sha(await read(e.priorInstrumentedResult.path)), e.priorInstrumentedResult.sha256);
+  const m = r.runs[0].state.metrics;
+  assert.equal(m.peakWasmMemoryBytes, 33554432);
+  assert.equal(m.maxReadChunkBytes, 262144);
+  assert.equal(m.maxWriteChunkBytes, 166439);
+  assert.equal(m.peakQueuedBytes, 166439);
+  assert.equal(m.peakPendingOperations, 1);
+  assert.equal(m.queuedBytes, 0);
+  assert.equal(m.pendingOperations, 0);
+  assert.equal(r.cleanup.repositoryLocalFixtureOutputsProfileAndTempRemoved, true);
+  assert.equal(r.cleanup.generatedDistRestored, true);
+  assert.equal(e.cleanup.convertedMediaBytesInWork, 0);
+  assert.equal(e.cleanup.ownedBenchmarkChromeProcesses, 0);
+  assert.equal(e.cleanup.hostedArtifactsRemaining, 0);
+  assert.equal(e.cleanup.staticTools.length, 8);
+  assert.equal(e.cleanup.staticToolBytes, 67119065);
+  assert.equal(e.cleanup.buildCaches[0].bytes, 294108);
+  assert.equal(e.cleanup.buildCaches[0].retainedDueToPriorDeletionPolicyBlock, true);
+  assert.equal(e.cleanup.buildCaches[0].newDeletionAttempted, false);
+  for (const [file, expected] of Object.entries(e.cleanup.distHashes)) assert.equal(sha(await read(`public/engines/remux/${file}`)), expected);
+});

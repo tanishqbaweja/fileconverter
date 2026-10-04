@@ -7,7 +7,7 @@ not the entire product specification.
 
 ## 2026-10-04 — Uninstrumented build and selected-handle gate prepared
 
-Status: **Partially implemented under M-04; uninstrumented compile/browser tests pending**.
+Status: **Partially implemented under M-04; uninstrumented direct-handle memory gate failed**.
 Previous goal turn made verified progress: the index-capped diagnostic completed
 three genuine long browser jobs and retained source-bound validation/memory.
 Do not repeat that unchanged diagnostic. Next build removes only native allocator
@@ -32,6 +32,46 @@ historical rows beneath a changed manifest. No expensive conversion was rerun
 for this preparation; no new capability, speed or full-goal acceptance.
 The policy-blocked Node build cache remains recorded; do not retry its deletion
 through another mechanism. All remaining original requirements stay open.
+
+Build checkpoint: all 348 units pass; pushed `71abba2` produced successful
+non-Docker run 37219282953. Native step 305 seconds, SDK/build cleanup passed.
+Static uninstrumented tool 8,303,306 bytes: JS `a961142e...`, Wasm
+`63cd22f29b7a00b80c354a45c0944592c74ed648861a0c9c838683032d5794f8`.
+Verified current kernel/header/injector/recipe hashes and generated uninstrumented
+wrapper `591cf1a9...`; no allocator callback in JS; actual fixed 512 shared pages.
+Both hosted artifacts deleted (zero), source bundle never downloaded. One
+direct-handle 600-second browser session completed with early blank baseline
+250.06 MiB. No diagnostic rerun, native-quality/heap change,
+public promotion or OS-picker claim. Eight bounded reusable static tools are
+now retained, not converted media. `record-h264-uninstrumented.mjs` retains
+success/failure, recomputes full-tree peaks and verifies cleanup without hiding
+the previously policy-blocked compiler cache.
+
+Actual result: the genuine 1,050,296,904-byte source produced a valid
+194,031,981-byte H264 output in 255.187 seconds: 1280x720, 18,000 frames,
+exact timestamps and both AAC packet hashes, full decode, SSIM 0.987764.
+The complete Chromium-tree increase was **265.629 MiB**, above 250 MiB,
+so the gate failed after the first validated job; no three-run or recovery
+acceptance. The primary peak includes OnDeviceModelService at 101.555 MiB,
+observed once near browser age 180.255 seconds. This is a counted allocation,
+not proof that the direct writer caused it, nor permission to omit it.
+Reads stayed <=256 KiB, writes/queue <=166,439 bytes, one pending operation,
+fixed 32 MiB Wasm, terminal queues zero. Failure evidence is retained in
+`evidence/h264-uninstrumented-direct-handle-2026-10-04.json` with raw executed
+source/build hashes. Finally cleanup removed generated source/output/profile
+and scratch, stopped owned Chrome/server, and restored all four dist assets.
+Zero converted media or hosted artifacts remain; eight reusable static tools
+total 67,119,065 bytes. No unchanged expensive retry: the next investigation
+must distinguish transient utility allocation and sampling from pipeline costs
+without gaming the early baseline or the complete process-tree formula.
+H264 remains private; all broader original-project gates remain open.
+
+Push checkpoint: all 350 units, focused changed-source lint, TypeScript and
+the unchanged 405-public-profile/no-PDF evidence manifest pass. Two new
+evidence tests retain the validated output and whole-tree memory failure
+without accepting the route. Only current-source indexes and their dependent
+aggregate reference were refreshed; historical executed reports remain frozen.
+No conversion rerun, native rebuild, Docker command or public engine change.
 
 ## 2026-10-04 — Index-capped long H264 diagnostic passed all three jobs
 
