@@ -2626,6 +2626,23 @@ conversions, and exact clean no-Docker reproduction for every one of the 11
 published engine directories. All failure-artifact uploads were skipped and the
 run retains zero artifacts.
 
+## Private MPEG-2 encoding investigation
+
+Fresh MPEG-2 output is **not public yet**. The separate source-pinned,
+non-Docker candidate compiled in run `37237343519` with fixed 32 MiB shared
+Wasm and one codec thread. Three small production-Chrome tests passed: genuine
+MPEG-4-to-MPEG-2 encoding into MP4/MKV and direct write rejection. Independent
+validators confirmed 48 frames, unchanged compatible AAC packets, metadata,
+chapters, timing and 0.992146 corresponding-frame SSIM. This does not prove
+large-file memory, repeatability, controls, speed optimization or legal clearance.
+See `evidence/mpeg2-encoder-small-browser-2026-10-04.json` and `REMAINING_WORK.md`.
+
+Generated media were removed and production assets restored. A restoration/cache
+cleanup race left a 7,972-byte repo-local cache whose deletion was policy-blocked;
+it is recorded, not claimed removed. The ordering fix passed a separate
+restoration-only cleanup smoke. Both hosted artifacts were deleted; only the
+7.3 MB static private tool is retained for upcoming real large-file gates.
+
 ## Repository map
 
 - `app/` — interface, runtime capability display, PWA registration, cleanup UI

@@ -77,3 +77,18 @@ test("MPEG2 specialist recipe is pinned, fixed 32MiB, no external encoder or Doc
   assert.match(workflow, /private-mpeg2-source-/);
   assert.match(workflow, /if: always\(\)/);
 });
+
+test("MPEG2 restoration child finishes before runtime deletion and the validator copy is bounded", async () => {
+  const runner = await readFile(path.join(root, "scripts/validate-mpeg2-small.mjs"), "utf8");
+  assert.match(runner, /createOwnedRuntimeScratch\("mpeg2-runtime-"\)/);
+  assert.match(runner, /finally \{ if \(runtime\) await runtime.close\(\); \}/);
+  assert.match(runner, /assert.rejects\(access\(runtime.directory\), \{ code: "ENOENT" \}\)/);
+  assert.doesNotMatch(runner, /async \(\) => \{ if \(runtime\) await runtime.close/);
+  const browser = await readFile(path.join(root, "tests/browser/mpeg2-candidate.spec.ts"), "utf8");
+  assert.match(browser, /file.slice\(position, position \+ 65536\)/);
+  assert.match(browser, /position \+= 65536/);
+  assert.doesNotMatch(browser, /file.arrayBuffer\(\)/);
+  assert.match(browser, /toBe\("mpeg2video"\)/);
+  assert.match(browser, /toBeGreaterThanOrEqual\(0.98\)/);
+  assert.match(browser, /short fixtures and non-stabilized baseline do not certify/);
+});

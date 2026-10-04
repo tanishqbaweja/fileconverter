@@ -1,0 +1,745 @@
+{
+  "recordedAt": "2026-10-04T21:54:21.223Z",
+  "raw": {
+    "path": "output/playwright/2026-10-04T21-49-51.453Z-mpeg2-candidate-output-correctness.json",
+    "bytes": 77783,
+    "sha256": "c6aa62b585758b92239e03270f3889a5f451bef9c8e308220f3714cc7281868a"
+  },
+  "browserPassedRows": [
+    {
+      "container": "mp4",
+      "status": "passed",
+      "sourceBytes": 486384,
+      "outputBytes": 320957,
+      "sourceCodec": "mpeg4",
+      "outputCodec": "mpeg2video",
+      "frames": "48",
+      "audioTracks": 2,
+      "audioPacketHashes": [
+        "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+        "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+      ],
+      "ssim": 0.992146,
+      "timestampAlignedSsim": 0.964181,
+      "sourceFrameTimes": [
+        0,
+        0.042,
+        0.083,
+        0.125,
+        0.167,
+        0.208,
+        0.25,
+        0.292,
+        0.333,
+        0.375,
+        0.417,
+        0.458,
+        0.5,
+        0.542,
+        0.583,
+        0.625,
+        0.667,
+        0.708,
+        0.75,
+        0.792,
+        0.833,
+        0.875,
+        0.917,
+        0.958,
+        1,
+        1.042,
+        1.083,
+        1.125,
+        1.167,
+        1.208,
+        1.25,
+        1.292,
+        1.333,
+        1.375,
+        1.417,
+        1.458,
+        1.5,
+        1.542,
+        1.583,
+        1.625,
+        1.667,
+        1.708,
+        1.75,
+        1.792,
+        1.833,
+        1.875,
+        1.917,
+        1.958
+      ],
+      "outputFrameTimes": [
+        0,
+        0.041688,
+        0.083312,
+        0.125,
+        0.166688,
+        0.208313,
+        0.25,
+        0.291687,
+        0.333313,
+        0.375,
+        0.416687,
+        0.458313,
+        0.5,
+        0.541687,
+        0.583313,
+        0.625,
+        0.666687,
+        0.708313,
+        0.75,
+        0.791687,
+        0.833313,
+        0.875,
+        0.916687,
+        0.958313,
+        1,
+        1.041688,
+        1.083313,
+        1.125,
+        1.166688,
+        1.208313,
+        1.25,
+        1.291688,
+        1.333313,
+        1.375,
+        1.416688,
+        1.458313,
+        1.5,
+        1.541688,
+        1.583313,
+        1.625,
+        1.666688,
+        1.708313,
+        1.75,
+        1.791688,
+        1.833313,
+        1.875,
+        1.916688,
+        1.958313
+      ],
+      "metrics": {
+        "inputBytes": 486384,
+        "outputBytes": 320957,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 82317,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 224240,
+        "maxWriteChunkBytes": 82317,
+        "elapsedMs": 515.9799999985844,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 5,
+        "imageWorkingBytes": 0
+      },
+      "outputSha256": "b681db58b9b26b5dea927a7e682fd6f95459ff9c95de1a0bf89b819e1ffcdad9",
+      "warnings": []
+    },
+    {
+      "container": "mkv",
+      "status": "passed",
+      "sourceBytes": 488297,
+      "outputBytes": 317933,
+      "sourceCodec": "mpeg4",
+      "outputCodec": "mpeg2video",
+      "frames": "48",
+      "audioTracks": 2,
+      "audioPacketHashes": [
+        "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+        "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+      ],
+      "ssim": 0.992146,
+      "timestampAlignedSsim": 0.960843,
+      "sourceFrameTimes": [
+        0.020996,
+        0.062663,
+        0.104329,
+        0.145996,
+        0.187663,
+        0.229329,
+        0.270996,
+        0.312663,
+        0.354329,
+        0.395996,
+        0.437663,
+        0.479329,
+        0.520996,
+        0.562663,
+        0.604329,
+        0.645996,
+        0.687663,
+        0.729329,
+        0.770996,
+        0.812663,
+        0.854329,
+        0.895996,
+        0.937663,
+        0.979329,
+        1.020996,
+        1.062663,
+        1.104329,
+        1.145996,
+        1.187663,
+        1.229329,
+        1.270996,
+        1.312663,
+        1.354329,
+        1.395996,
+        1.437663,
+        1.479329,
+        1.520996,
+        1.562663,
+        1.604329,
+        1.645996,
+        1.687663,
+        1.729329,
+        1.770996,
+        1.812663,
+        1.854329,
+        1.895996,
+        1.937663,
+        1.979329
+      ],
+      "outputFrameTimes": [
+        0.021,
+        0.063,
+        0.104,
+        0.146,
+        0.188,
+        0.229,
+        0.271,
+        0.313,
+        0.354,
+        0.396,
+        0.438,
+        0.479,
+        0.521,
+        0.563,
+        0.604,
+        0.646,
+        0.688,
+        0.729,
+        0.771,
+        0.813,
+        0.854,
+        0.896,
+        0.938,
+        0.979,
+        1.021,
+        1.063,
+        1.104,
+        1.146,
+        1.188,
+        1.229,
+        1.271,
+        1.313,
+        1.354,
+        1.396,
+        1.438,
+        1.479,
+        1.521,
+        1.563,
+        1.604,
+        1.646,
+        1.688,
+        1.729,
+        1.771,
+        1.813,
+        1.854,
+        1.896,
+        1.938,
+        1.979
+      ],
+      "metrics": {
+        "inputBytes": 488297,
+        "outputBytes": 317933,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 82298,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 82298,
+        "elapsedMs": 493.7450000010431,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "outputSha256": "33c78935b332d091bf2c0ae9e4dbd7ccd7108f4d860c49bb23e4ac96b3cd969b",
+      "warnings": [
+        "Source stream 3 (bin_data) cannot be represented in Matroska and is explicitly excluded."
+      ]
+    },
+    {
+      "kind": "direct-write-failure",
+      "status": "passed",
+      "error": "[mp4 @ 0x2fd710] track 1: codec frame size is not set | [mp4 @ 0x2fd710] track 2: codec frame size is not set | Error: The destination rejected a bounded write. | MPEG-2 candidate failed: I/O error",
+      "metrics": {
+        "inputBytes": 262144,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 2537,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 196608,
+        "maxWriteChunkBytes": 0,
+        "elapsedMs": 383.2949999999255,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33820708,
+        "activeWorkerCount": 6,
+        "imageWorkingBytes": 0
+      },
+      "partialBytes": []
+    }
+  ],
+  "fidelity": [
+    {
+      "container": "mp4",
+      "maxFrameTimestampErrorSeconds": 0.0003130000000000077,
+      "sourceFrameCount": 48,
+      "outputFrameCount": 48,
+      "sourceTitle": "MPEG-2 café — 音楽",
+      "outputTitle": "MPEG-2 café — 音楽",
+      "sourceChapters": [
+        {
+          "id": 1,
+          "time_base": "1/1000000000",
+          "start": 0,
+          "start_time": "0.000000",
+          "end": 2000000000,
+          "end_time": "2.000000",
+          "tags": {
+            "title": "Chapitre café"
+          }
+        }
+      ],
+      "outputChapters": [
+        {
+          "id": 0,
+          "time_base": "1/1000",
+          "start": 0,
+          "start_time": "0.000000",
+          "end": 2000,
+          "end_time": "2.000000",
+          "tags": {
+            "title": "Chapitre café"
+          }
+        }
+      ]
+    },
+    {
+      "container": "mkv",
+      "maxFrameTimestampErrorSeconds": 0.0003370000000000317,
+      "sourceFrameCount": 48,
+      "outputFrameCount": 48,
+      "sourceTitle": "MPEG-2 café — 音楽",
+      "outputTitle": "MPEG-2 café — 音楽",
+      "sourceChapters": [
+        {
+          "id": 0,
+          "time_base": "1/1000",
+          "start": 0,
+          "start_time": "0.000000",
+          "end": 2000,
+          "end_time": "2.000000",
+          "tags": {
+            "title": "Chapitre café"
+          }
+        }
+      ],
+      "outputChapters": [
+        {
+          "id": 1,
+          "time_base": "1/1000000000",
+          "start": 0,
+          "start_time": "0.000000",
+          "end": 2000000000,
+          "end_time": "2.000000",
+          "tags": {
+            "title": "Chapitre café"
+          }
+        }
+      ]
+    }
+  ],
+  "currentSources": {
+    "scripts/stage-mpeg2-candidate.mjs": "2925334d2d2dd1d66daa4e4c62f9ab0b04b309ec6e39c55757d05025ca027614",
+    "scripts/validate-mpeg2-small.mjs": "c36d4057de55c5fcb96956dcabbee31d54edf454bf21b50dd696d6d130154f8f",
+    "tests/browser/mpeg2-candidate.spec.ts": "33390249295e8c986420f037bf6a03e915eb2744b4a51bd59d54c36dd13f55aa",
+    "tests/mpeg2-candidate-source.test.mjs": "7b986ae92a7f9943cf8c3a7460397686008bbba21c12608730b85e41304d2e92",
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml": "500143455d6455ba446ed552410c6196cbda65b95112285d29585fc6e49f570a"
+  },
+  "manifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "emscriptenVersion": "6.0.4",
+    "sources": {
+      "within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "mpeg2-candidate.c": "9e96af900e62bb27c946cbc013471b568f5c8e83be1af9e14008376bcd129ac4",
+      "make-mpeg2-candidate.mjs": "2aa3c783c91e16bc41440e4051f9505572af653c4d57b96228a274f05f2c524c",
+      "build-mpeg2-candidate.sh": "0f0c296c97e99de7ca344a3083f450031ccafb2c4255895e6fefe62e4c046d29",
+      "mpeg2-candidate-manifest.mjs": "7247af14832a10d52b319dbdc760ab75795acad3b5144c1fe197511464a1ac81",
+      "patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62"
+    },
+    "generatedWrapperSourceSha256": "b9d190ba655f6c0df5e77eb5db6f3c9625acecc3d7c117abe811628ad16a9ed5",
+    "artifacts": {
+      "within-mpeg2.mjs": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+      "within-mpeg2.wasm": "ca9d1318888281253af81364961e1546fb35ed4bc54b4eb84edc2e4f203dd7ab"
+    },
+    "enabledDecoders": [
+      "h263",
+      "h264",
+      "hevc",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "mpeg2video"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 33554432,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "genericDemuxIndexHintBytesPerStream": 32768,
+    "demuxIndexBudgetScope": "Generic indexes honoring the hint, not a universal backing-allocation bound",
+    "primaryVideo": "genuine decoding and MPEG-2 encoding; no automatic resizing",
+    "secondaryStreams": "compatible packet copying; incompatible streams explicitly disclosed",
+    "controls": "requested resolution cap, bitrate, quality and rational phase-accumulator frame-rate cap",
+    "timeline": "CFR only; source start offset restored after encoder packet rescaling; VFR refused explicitly",
+    "pixelFormat": "8-bit YUV420P or source YUV422P; other conversions disclosed; full-range video refused",
+    "finalization": "normal seekable Matroska finalization without unbounded cues; bounded fragmented MP4",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later"
+    ],
+    "legalScope": "No GPL/nonfree/external encoder enabled; patent/deployment review not yet cleared",
+    "requiredUnpassedGates": [
+      "production-browser conversion",
+      "independent fidelity and timing",
+      "complete-process private memory",
+      "three repeats and multi-gigabyte scaling",
+      "privacy",
+      "success/cancellation/write-failure/cleanup",
+      "same-setting speed A/B",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "actualWasmMemories": [
+    {
+      "imported": true,
+      "initialPages": 512,
+      "maximumPages": 512,
+      "shared": true
+    }
+  ],
+  "restoredAssets": {
+    "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+    "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6"
+  },
+  "cleanup": {
+    "newSmokeRuntimeAbsent": true,
+    "privateAdapterAbsent": true,
+    "remainingMpeg2Work": [
+      "mpeg2-candidate-output",
+      "mpeg2-runtime-gIYkGj"
+    ],
+    "recreatedRuntimeScratch": {
+      "path": "work/mpeg2-runtime-gIYkGj",
+      "bytes": 7972,
+      "reason": "Restoration/cache-flush child ran concurrently with scratch removal and recreated the directory. Exact checked PowerShell deletion was policy-blocked; no alternate deletion/move attempted."
+    },
+    "orderingFix": "Restoration child now awaited before close; actual restoration-only smoke verifies a separate fresh runtime's terminal absence. No unchanged browser conversion retry.",
+    "conversionInputsOutputs": "Small generated fixtures and validation outputs removed by browser-test finally hooks; OPFS empty after each case."
+  },
+  "protectedFixturePostCheck": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "unchangedFromPreCheck": true
+  },
+  "sampledChromeRootPostCheck": {
+    "pid": 25204,
+    "remainingProcessCount": 0
+  },
+  "finalLocalRegression": {
+    "unitPassed": 381,
+    "unitFailed": 0,
+    "lint": "passed",
+    "typescript": "passed",
+    "publicManifestProfiles": 405,
+    "pdfProfiles": 0,
+    "whitespace": "passed"
+  },
+  "requirement": "M-04",
+  "status": "private-mpeg2-compiled-and-small-browser-correctness-passed-not-public",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "run": {
+    "conclusion": "success",
+    "headSha": "4a92f2b4f957d5a14954bd264aae5700f6a7b6d8",
+    "jobs": [
+      {
+        "completedAt": "2026-10-04T21:48:57Z",
+        "conclusion": "success",
+        "databaseId": 111539017098,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-04T21:45:09Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-04T21:45:11Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-04T21:45:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:45:17Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-04T21:45:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:45:25Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-04T21:45:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:45:44Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-04T21:45:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:51Z",
+            "conclusion": "success",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-04T21:45:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-04T21:48:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:51Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-04T21:48:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:52Z",
+            "conclusion": "success",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-04T21:48:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:53Z",
+            "conclusion": "success",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-04T21:48:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:53Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 10,
+            "startedAt": "2026-10-04T21:48:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:53Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 11,
+            "startedAt": "2026-10-04T21:48:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:53Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 12,
+            "startedAt": "2026-10-04T21:48:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:56Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 13,
+            "startedAt": "2026-10-04T21:48:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:56Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 26,
+            "startedAt": "2026-10-04T21:48:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-04T21:48:56Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 27,
+            "startedAt": "2026-10-04T21:48:56Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37237343519/job/111539017098"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37237343519"
+  },
+  "buildElapsedSeconds": 228,
+  "nativeCompileStepElapsedSeconds": 187,
+  "hostedArtifactProvenance": {
+    "total_count": 2,
+    "artifacts": [
+      {
+        "id": 11315762948,
+        "node_id": "MDg6QXJ0aWZhY3QxMTMxNTc2Mjk0OA==",
+        "name": "private-mpeg2-candidate-37237343519",
+        "size_in_bytes": 2002404,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11315762948",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11315762948/zip",
+        "expired": false,
+        "digest": "sha256:a5d0ca8e625ea3850b1096ab7f1556c93a8b66d96f2b40034adec413e28c212b",
+        "created_at": "2026-10-04T21:48:52Z",
+        "updated_at": "2026-10-04T21:48:52Z",
+        "expires_at": "2026-10-05T21:48:51Z",
+        "workflow_run": {
+          "id": 37237343519,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "media-options",
+          "head_sha": "4a92f2b4f957d5a14954bd264aae5700f6a7b6d8"
+        }
+      },
+      {
+        "id": 11315568584,
+        "node_id": "MDg6QXJ0aWZhY3QxMTMxNTU2ODU4NA==",
+        "name": "private-mpeg2-source-37237343519",
+        "size_in_bytes": 11844777,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11315568584",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11315568584/zip",
+        "expired": false,
+        "digest": "sha256:859c70957628f56e94884793f88ec2a04f05b8ec1e192e142e35081156a0c013",
+        "created_at": "2026-10-04T21:48:53Z",
+        "updated_at": "2026-10-04T21:48:53Z",
+        "expires_at": "2026-10-05T21:48:52Z",
+        "workflow_run": {
+          "id": 37237343519,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "media-options",
+          "head_sha": "4a92f2b4f957d5a14954bd264aae5700f6a7b6d8"
+        }
+      }
+    ]
+  },
+  "hostedArtifactsDeleted": [
+    11315762948,
+    11315568584
+  ],
+  "remainingHostedArtifacts": 0,
+  "sourceBundleDownloaded": false,
+  "retainedStaticCandidateBytes": 7314979,
+  "scopeNotes": [
+    "Small 2-second CFR 320x240 initial correctness fixtures do not replace protected test.mkv or multi-gigabyte scaling.",
+    "Chrome via disposable dist-only adapter; production browser worker/File/AVIO/Wasm/output bridge. UI/profile labels are private test sentinels.",
+    "48 decoded frames, two packet-identical AAC streams, languages, Unicode title/chapter, full native decode and <=1ms presentation timestamp differences.",
+    "Corresponding-frame SSIM 0.992146 after independent timeline gate; lower frame-sync diagnostics retained in raw report.",
+    "Whole-process CIM diagnostics use non-stabilized blank/small fixtures: no 250MiB acceptance, speed A/B or fastest-conversion claim.",
+    "Browser spec/staging unchanged since execution. Wrapper recorded after cleanup ordering fix; original failed-cleanup wrapper bytes not represented by current hash.",
+    "Two older arithmetic workflow current-source hashes refreshed; executed provenance frozen.",
+    "Compilation/artifact hash verification is not an independent reproducibility rerun or legal clearance."
+  ]
+}

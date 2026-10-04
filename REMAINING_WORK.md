@@ -50,6 +50,53 @@ changed. Next: compile this new candidate once, inspect its actual artifacts,
 then execute production-browser validation and unchanged memory/fidelity gates.
 The full goal remains active.
 
+Changed candidate compiled successfully in non-Docker hosted run
+[`37237343519`](https://github.com/tanishqbaweja/fileconverter/actions/runs/37237343519)
+at pushed `4a92f2b`: 228-second job / 187-second compile step, **not conversion
+speed**. Actual binary imports fixed shared 512/512 pages (32 MiB), with exactly
+the MPEG-2 encoder and nine native video decoders including dependency selections.
+Artifact/source hashes verified. Small production Chrome correctness suite
+**3/3 in 14.4 seconds**: MPEG-4 sources produced genuine MPEG-2 in MP4 and MKV,
+plus direct write rejection. Each output has 48 frames at original 320x240,
+two packet-identical AAC tracks/languages, Unicode title/chapter, complete
+native decode, <=1ms timestamp differences and corresponding-frame SSIM
+**0.992146**. MP4 output 320,957 bytes / 0.516s; MKV 317,933 bytes / 0.494s.
+These small-job times are not an A/B optimization or large-file speed claim.
+Reads <=256 KiB, writes/queue <=82,317 bytes, one pending operation and terminal
+zero; no forbidden requests. Small non-stable-blank CIM diagnostics do not
+certify the primary 250 MiB contract. Controls/repeats/scaling/protected fixture/
+native-memory/cancellation/reproducibility/legal/public integration still gate
+publication. No public route was added or engine overwritten.
+
+Finally hooks removed generated small sources/validation copies and empty OPFS;
+four dist files are restored to exact public hashes, private adapter absent.
+The first wrapper falsely printed full runtime cleanup: parallel restoration
+and removal allowed its Node compile-cache child to recreate **7,972 bytes**
+at `work/mpeg2-runtime-gIYkGj`. Exact checked PowerShell removal was policy-blocked;
+no alternate deletion/move attempted. Wrapper now awaits restoration/cache
+flush before removal and checks terminal absence. A **restoration-only** smoke
+verified fresh `work/mpeg2-runtime-6QQRpp` absent and exact dist restoration;
+no unchanged browser conversion rerun. Old blocked targets remain untouched.
+Hosted artifacts 11315762948/11315568584 were deleted after hash/provenance
+recording, API count **zero**, source archive never downloaded. Only the new
+7,314,979-byte static candidate is retained for the next real large gate.
+
+`evidence/mpeg2-encoder-small-browser-2026-10-04.json` retains source/artifact/
+raw-report hashes, compile steps, actual small-job fidelity, failed cleanup,
+fixed ordering smoke and explicit unpassed gates. Its wrapper hash is recorded
+**after** the repair, not passed off as the original wrapper bytes. The 77,783-byte
+raw report remains local. Regression initially failed two stale older arithmetic
+workflow current-source indexes; only those indexes were refreshed, executed
+proofs/raw artifacts frozen. Then **378/378** units and the 405-profile/no-PDF
+manifest passed; final source/evidence guard regression follows. Protected
+fixture remains 2,958,573,265 bytes/SHA31f36695... . Next is changed MPEG-2 control,
+full-tree-memory and actual large-file testing, not a repeat of old H264/remux.
+
+Final focused regression: **381/381** unit/evidence checks, full lint,
+TypeScript and whitespace gates pass; public manifest remains 405/no PDF.
+The real build/browser/helper handles are terminal, not waiting or retried.
+M-04 and the full objective remain partial/active.
+
 ## 2026-10-05 — Future profiler runtime scratch ownership verified
 
 Status: **Partially implemented under A-09; general-profiler helper ownership
