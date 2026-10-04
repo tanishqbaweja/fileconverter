@@ -18,6 +18,7 @@ import { connectCpuWindow } from "./lib/cdp-cpu-window.mjs";
 import { summarizeCpuProfile } from "./lib/cpu-profile-summary.mjs";
 import { h264StressProfile, startupConversionOverlap } from "./lib/h264-stress-profile.mjs";
 import { summarizeUtilityActivity } from "./lib/chromium-utility-summary.mjs";
+import { parseAllocatorConsole } from "./lib/h264-allocator-console.mjs";
 
 const exec = promisify(execFile);
 const root = path.resolve(import.meta.dirname, "..");
@@ -36,7 +37,8 @@ const inputMode = process.env.WITHIN_H264_INPUT_MODE ?? "byob";
 assert.ok(["legacy", "byob"].includes(inputMode));
 const startedAt = Date.now();
 const samples = [], runs = [], logs = [], forbiddenRequests = [];
-const allocatorSamples = [], lastAllocatorSequences = new WeakMap();
+const allocatorSamples = [];
+let allocatorCapturePhase = "before-conversion", allocatorCaptureError = null;
 const browserLocalRequests = [], outOfOriginRequests = [];
 let work, server, chrome, browser, context, page, staged = false;
 let blankBaseline = null, loadedIdle = null, rootPid, lastState = null, failure = null;
@@ -75,14 +77,6 @@ async function takeSample(phase) {
     return value ? { usage: value.usage ?? null, quota: value.quota ?? null } : null;
   }));
   const state = await boundedRealm(page, () => page.evaluate(() => window.__WITHIN_TEST__?.getState() ?? null));
-  if (manifest.allocatorDiagnostic) for (const worker of page.workers()) {
-    const diagnostic = await boundedRealm(worker, () => worker.evaluate(() => globalThis.__WITHIN_H264_ALLOCATOR_DIAGNOSTIC__ ?? null));
-    if (diagnostic && diagnostic.sequence !== lastAllocatorSequences.get(worker)) {
-      assert.ok(allocatorSamples.length < 768, "Bounded native allocator sample cap");
-      lastAllocatorSequences.set(worker, diagnostic.sequence);
-      allocatorSamples.push({ phase, timestamp: new Date(begin).toISOString(), ...diagnostic });
-    }
-  }
   if (state) lastState = state;
   const born = Date.parse(tree.processes?.find((entry) => entry.pid === rootPid)?.createdAt);
   const sample = { timestamp: new Date(begin).toISOString(), elapsedMs: begin - startedAt,
@@ -183,6 +177,7 @@ const sources = ["scripts/h264-private-memory.mjs", "scripts/lib/chromium-privat
   "scripts/lib/cdp-cpu-window.mjs", "scripts/lib/cpu-profile-summary.mjs",
   "scripts/lib/h264-stress-profile.mjs", "scripts/lib/chromium-utility-summary.mjs",
   "media/ffmpeg/h264-allocator-diagnostic.h", "scripts/lib/h264-allocator-instrumentation.mjs",
+  "scripts/lib/h264-allocator-console.mjs",
   "scripts/stage-h264-candidate.mjs", "media/ffmpeg/h264-candidate.c", "media/ffmpeg/build-h264-candidate.sh"];
 const sourceHashes = Object.fromEntries(await Promise.all(sources.map(async (file) => [file, await shaFile(path.join(root, file))])));
 assert.equal(sourceHashes["media/ffmpeg/h264-candidate.c"], manifest.candidateKernelSha256);
@@ -252,7 +247,19 @@ try {
     if (classification === "browser-local" && browserLocalRequests.length < 32) browserLocalRequests.push(detail);
     if (classification === "forbidden" && forbiddenRequests.length < 32) forbiddenRequests.push(detail);
   });
-  page.on("console", (message) => { if (logs.length === 32) logs.shift(); logs.push(message.text().slice(0, 1024)); });
+  page.on("console", (message) => {
+    if (manifest.allocatorDiagnostic) {
+      try {
+        const diagnostic = parseAllocatorConsole(message.text());
+        if (diagnostic) {
+          assert.ok(allocatorSamples.length < 768, "Bounded native allocator sample cap");
+          allocatorSamples.push({ phase: allocatorCapturePhase, timestamp: new Date().toISOString(), ...diagnostic });
+          return;
+        }
+      } catch (error) { allocatorCaptureError = String(error).slice(0, 1024); }
+    }
+    if (logs.length === 32) logs.shift(); logs.push(message.text().slice(0, 1024));
+  });
   page.on("pageerror", (error) => { if (logs.length === 32) logs.shift(); logs.push(String(error).slice(0, 1024)); });
   await page.goto("about:blank"); blankBaseline = await stable("blank-baseline");
   process.stdout.write(`Stable complete-tree blank baseline: ${(blankBaseline.privateBytes / MiB).toFixed(2)} MiB.\n`);
@@ -277,12 +284,14 @@ try {
     await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mp4");
     const first = samples.length; await takeSample(`pre-conversion-${run}`);
     const cpuCapture = cpuEnabled ? await cpuTransport.start() : null;
+    allocatorCapturePhase = `conversion-${run}`;
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState !== "idle");
     const conversionStart = Date.now(), deadline = conversionStart + 10 * 60_000;
     let state;
     for (;;) {
       const sample = await takeSample(`conversion-${run}`);
+      assert.equal(allocatorCaptureError, null, "Native diagnostic transport failed");
       state = lastState;
       if (state?.jobState !== "running") break;
       if (Date.now() > deadline) throw new Error("Genuine conversion deadline exceeded");
@@ -371,7 +380,9 @@ try {
     status: failure ? "failed" : manifest.allocatorDiagnostic ? "passed-instrumented-allocator-diagnostic-only" : stressProfile.requireStartupOverlap ? "passed-private-startup-scaling-gate" : cpuEnabled ? "passed-instrumented-cpu-diagnostic-only" : "passed-private-720p-gate", browserVersion: chromeVersion, inputMode, sourceHashes,
     stressProfile, fixtureDurationSeconds: fixtureDuration, startupOverlap: startupConversionOverlap(samples),
     utilityActivity: stressProfile.requireStartupOverlap ? summarizeUtilityActivity(samples) : null,
-    cpuEnabled, requestedRunCount, cpuDiagnostic, allocatorSamples, publicAcceptance: false,
+    cpuEnabled, requestedRunCount, cpuDiagnostic, allocatorSamples,
+    allocatorCaptureMode: manifest.allocatorDiagnostic ? "console-event" : null,
+    allocatorCaptureError, publicAcceptance: false,
     candidateName, asBuiltRecipeVerification, asBuiltManifest: manifest, actualWasmMemoryLimits, formula: "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
     primaryLimitMiB: 250, blankBaseline, loadedIdle, source: sourceEvidence, runs, samples, logs,
     forbiddenRequests, browserLocalRequests, outOfOriginRequests, lastState, failure, publicProfilesChanged: false, protectedTestMkvUsed: false,

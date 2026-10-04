@@ -139,7 +139,7 @@
     "media/ffmpeg/make-h264-candidate.mjs": "9b43faf834d88126a6a03c75a57fe44aca20433667496a40307401e2d2430e37",
     "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
     "media/ffmpeg/h264-candidate-manifest.mjs": "4016c6da95c229d55ef6bea44817591c1788ab4155a7e372333f66d9d6449b3e",
-    "scripts/stage-h264-candidate.mjs": "edab784e732806045e0e1b0d7be0481fb51572a3f46da7464a2a95cddfdd683b",
+    "scripts/stage-h264-candidate.mjs": "dd08a4be739bf770bd0150edf76d7c90c6057f5d2205febf5a413a8967e58103",
     "tests/browser/h264-candidate.spec.ts": "9954420dbe5e06d91875ba2a0d685a9bdf50223af2806fd1572ff71d53fdb3c7"
   },
   "browser": {

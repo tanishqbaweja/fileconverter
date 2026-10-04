@@ -15,7 +15,7 @@ const adapter = `// PRIVATE_H264_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT
 import factory from "/engines/remux/_candidate_h264_base.mjs";
 export default async function(options) {
 ${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
-    globalThis.__WITHIN_H264_ALLOCATOR_DIAGNOSTIC__ = sample;
+    console.debug("WITHIN_H264_ALLOCATOR " + JSON.stringify(sample));
   } } };
 ` : ""}
 ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.withinBridge, readSync: undefined } };\n" : ""}  let core;
@@ -27,7 +27,7 @@ ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.w
     if (mapped[0] === 4) mapped = [6, ...mapped.slice(1, 4), 0, 0, 0, ...mapped.slice(4)];
     if (mapped[0] === 1) mapped[0] = 6;
     try { return await call(name, type, mapped.map(() => "number"), mapped, settings); }
-    catch (error) { throw new Error("Candidate ccall: " + String(error.message) + "\\n" + String(error.stack).slice(0, 2048)); }
+    catch (error) { throw new Error("Candidate ccall: " + String(error.message) + "\\n" + String(error.stack).slice(0, ${manifest.allocatorDiagnostic ? 4096 : 2048})); }
   };
   return core;
 }

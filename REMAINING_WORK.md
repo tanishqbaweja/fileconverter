@@ -95,6 +95,48 @@ rejected speed result remains unchanged. No diagnostic conversion has run yet.
 Fixed 32 MiB/SAD-on/VAA-off/LTO-off no-Docker compilation and the identical
 600-second production-browser fixture are the next actual gates.
 
+## 2026-10-04 — Compiled allocator diagnosis and capture repair
+
+Status: **Partially implemented under M-04; native diagnostic ran, no allocation fix accepted**.
+No-Docker run `37196170055` at pushed `af4ee8f` compiled in 323 seconds
+and passed SDK/build cleanup. Verified module hashes, unchanged codec kernel,
+SAD on/VAA and LTO off, and actual fixed 512 initial/max shared pages. Static
+diagnostic tool is 8,304,535 bytes; both hosted artifacts deleted, source bundle
+never downloaded. Six static tools total 50,510,765 bytes remain, zero media.
+
+The identical genuine 1,050,296,904-byte/600-second source ran through the
+production Chrome pipeline. First job failed after 85.421 seconds observed:
+380,370,944 input bytes, 69,771,092 partial output bytes subsequently deleted,
+zero completed/validated outputs. Whole-tree observed increment 213.258 MiB
+does not constitute acceptance. Actual running browser ages 39.085–122.977s
+still do not reach the three-minute utility window. Finally cleanup removed
+all generated media/profile/temp, stopped owned browser/server and restored
+the exact four public/dist media assets.
+
+Only five native snapshots were captured by latest-value worker polling,
+at native sequences 6/25/27/29/31. Native claimed bytes stayed 28,031,984;
+free claimed bytes decreased from 2,021,616 to 1,612,636, with 1,017,088
+unclaimed bytes. Used bytes including allocator overhead increased 408,980
+across those captured points. Largest free payload remained in the
+1,048,576–2,097,152-byte bucket, so these observations **do not prove**
+that every free block was too small or identify the allocation at failure.
+Snapshot scans took 10–20 microseconds. They are neither a per-allocation trace
+nor an exact failed-instant measurement. Evidence, raw report and heap CSV/HTML
+graph: `evidence/h264-allocator-diagnostic-2026-10-04.json` and timestamped
+`outputs/reports/2026-10-04T10-50-27-162Z-...`.
+
+The sparse capture is an actual diagnostic transport defect: asynchronous
+worker evaluation often cannot run while the native loop is busy, and worker
+termination loses latest state. Capture now uses fixed-size numeric console
+events from the existing native callback, at the same >=2.5s native interval
+and 256/module cap; harness cap stays 768. Strict parsing rejects unknown
+fields, non-numeric values, invalid buckets and messages >2 KiB. There is no
+filename/content logging. Native binary/header/settings are unchanged, so
+another SDK/native rebuild is unnecessary. Diagnostic-only error stacks are
+bounded to 4 KiB to retain the missing caller. Thirteen focused checks and
+focused lint pass. A fresh identical long run is justified by this capture
+change, not an unchanged conversion retry; no speed or public acceptance.
+
 ## Status definitions
 
 - **Verified complete** — current source plus an appropriate test or retained

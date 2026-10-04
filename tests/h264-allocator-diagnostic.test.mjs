@@ -25,6 +25,8 @@ test("private diagnostic stays opt-in, bounded and separate from public/default 
   assert.match(await read("scripts/h264-private-memory.mjs"), /Allocator diagnostics cannot be a short speed trial/);
   assert.match(candidateDirectory("owned", "h264-allocator-candidate-output"), /h264-allocator-candidate-output$/);
   assert.match(await read("scripts/stage-h264-candidate.mjs"), /manifest.allocatorDiagnostic/);
+  assert.match(await read("scripts/stage-h264-candidate.mjs"), /console.debug\("WITHIN_H264_ALLOCATOR "/);
+  assert.doesNotMatch(await read("scripts/h264-private-memory.mjs"), /__WITHIN_H264_ALLOCATOR_DIAGNOSTIC__/);
 });
 test("retained proven SAD tool still verifies its historical build recipe after diagnostic recipe changes", async () => {
   const result = await verifyCandidateRecipe(path.resolve(import.meta.dirname, ".."),
