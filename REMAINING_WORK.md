@@ -17,7 +17,7 @@ not the entire product specification.
 
 ## 2026-10-04 — H.264 isolated SAD SIMD integration
 
-Status: **Partially implemented under M-04; private native build and browser A/B pending**.
+Status: **Partially implemented under M-04; native build and narrow browser SAD speed gate passed**.
 `WITHIN_H264_SAD_SIMD=1` now delegates only the four SHA-pinned SAD bodies to
 the helper proven by 529,564 compiled cases. It defaults to 0 and refuses
 simultaneous rejected VAA SIMD. The applier requires a completed successful
@@ -34,9 +34,57 @@ The strict selector now permits one additional explicitly named, bounded
 static SAD tool slot (`work/h264-sad-candidate-output`) to preserve the default
 scalar and previously retained tools without overwriting them. Generated
 media/profile/temp still remain repository-local and finally-cleaned.
-Next build uses fixed 32 MiB, one thread, LTO off, VAA off, SAD on; genuine
-identical-input/default-settings production-browser A/B is mandatory before
-any performance acceptance. No public route or release claim is added.
+Build used fixed 32 MiB, one thread, LTO off, VAA off, SAD on. Genuine
+identical-input/default-settings production-browser A/B passed its narrow
+private gate as recorded below. No public route or release claim is added.
+Build run `37193374298` at `5084bd6` finished successfully, with a 320-second
+native build and successful SDK/build cleanup. While that separate hosted build ran,
+the fresh scalar browser baseline completed three real conversions in
+**25.586/24.852/26.096 seconds**, at **210.363/170.547/178.207 MiB** whole-tree
+increment. All produce the same verified 19,137,689-byte output/1,800 PTS/both
+AAC hashes/metadata/chapter/SSIM 0.987575. Media/profile/temp were removed,
+production assets restored and privacy/buffer/queue gates passed.
+Report: `outputs/reports/2026-10-04T09-49-53-123Z-private-h264-720p-memory.json`.
+This fresh baseline uses the exact harness/settings planned for the SAD trial;
+not another unchanged optimization retry. A separate guarded SAD comparison
+preserves full output, exact settings, proven helper and real sampled primary
+memory checks; three negative/positive comparator tests pass. Full lint,
+TypeScript and unchanged 405-profile/no-PDF manifest also pass at this stage.
+The fully awaited download was verified before staging: static tool 8,302,846
+bytes, actual 512 initial/max shared pages, unchanged JS module, new Wasm SHA
+`ce022f84f65a4dbf1e379a500d70581ba1878502cf7a30fb6935104b8fda1cc1`.
+Manifest confirms SAD on, VAA/LTO off, exact proof/helper/patched-source hashes,
+and unchanged wrapper/kernel. The SAD three-run browser session completed; no
+benchmark setting or executed harness source changed after the scalar baseline.
+Hosted candidate/source artifacts (IDs 11300425007/11300390456) were deleted,
+with zero left. The source bundle was never downloaded; the bounded static
+tool remains locally for the remaining gates. No live job was restarted on
+a polling timeout. SAD jobs took **23.834/27.090/24.265 seconds**, with
+complete-Chromium increments **234.105/204.598/207.891 MiB**. Every one of the
+six scalar/SAD outputs is byte-identical (SHA a77bd1fb..., 19,137,689 bytes),
+with all 1,800 source PTS/both AAC hashes/metadata/chapter/full decode and
+SSIM 0.987575 intact. Fixed 32 MiB Wasm, 256 KiB read/write/queued bounds,
+one pending operation, terminal zero queues, privacy and automatic cleanup pass.
+Median conversion time fell **25.586 -> 24.265 seconds (5.161% lower)**, meeting
+the existing >=5% private candidate threshold. One candidate job was slower;
+this is not a cross-machine/statistically isolated speed guarantee. The default
+tool/public registry remains unchanged pending full release gates. Preserve
+the proven SAD tool for cold/clean-session/startup-overlap, direct-output,
+failure/cancellation/recovery and progressively larger genuine conversion
+tests; do not repeat unchanged native builds or the rejected VAA/LTO trial.
+`evidence/h264-sad-simd-comparison-2026-10-04.json` retains both complete reports,
+recomputed positive-sample primary memory peaks, exact native/proof/Git/log
+provenance, guarded comparison and five bounded static-tool cleanup inventory.
+All generated media/profile/temp were deleted and all four production assets
+restored exactly. Hosted artifacts remain zero. No public H.264 route or
+original-goal completion is claimed from these six 105 MB conversions.
+Final SAD cycle gates pass: **324/324** unit tests, full lint, TypeScript,
+unchanged 405-profile/no-PDF evidence manifest, diff checks and 4/4 exact
+public/dist media asset matches. Both browser sessions and the hosted run
+are terminal; no owned Chrome process remains and hosted artifacts are zero.
+`work` contains only five bounded static tools, 42,206,230 bytes total and
+zero converted media/profile/temp/build/download files. The new SAD tool is
+explicitly retained for the remaining acceptance tests, not a converted copy.
 
 ## 2026-10-04 — H.264 SIMD CPU attribution and next primitive proof
 

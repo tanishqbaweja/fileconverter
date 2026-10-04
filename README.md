@@ -874,7 +874,16 @@ The proven SAD helper is now available only behind private
 `WITHIN_H264_SAD_SIMD=1` (default 0). It refuses combination with rejected VAA
 SIMD and preserves all codec settings. Its exact proof and source provenance
 are included in the private build manifest and corresponding-source bundle;
-full browser speed/memory/fidelity testing is still required.
+full release-gate testing is still required.
+
+The first genuine default-setting SAD browser A/B passed its narrow private
+gate: median 25.586 -> 24.265 seconds (5.16% lower), with all six outputs
+byte-identical and whole-Chromium increments <=234.105 MiB. One candidate
+run was slower; this is not a cross-machine speed guarantee or public release.
+The default/public engines remain unchanged while clean/startup-overlap,
+direct/recovery, larger-file, controls/fidelity and legal/release gates remain
+open. Full reports and cleanup are retained in
+[`evidence/h264-sad-simd-comparison-2026-10-04.json`](evidence/h264-sad-simd-comparison-2026-10-04.json).
 
 MP4 and QuickTime MOV use those same optimized VP8 and VP9 cores. Their first
 non-attached H.264 or HEVC video stream is genuinely decoded, proportionally
