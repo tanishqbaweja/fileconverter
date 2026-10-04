@@ -1,0 +1,79 @@
+import assert from "node:assert/strict";
+import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
+import { mkdir, mkdtemp, readFile, rm } from "node:fs/promises";
+import path from "node:path";
+import { promisify } from "node:util";
+import test from "node:test";
+
+const root = path.resolve(import.meta.dirname, "..");
+const work = path.join(root, "work");
+const exec = promisify(execFile);
+const source = (name) => readFile(path.join(root, "media/ffmpeg", name), "utf8");
+
+test("private MPEG2 generator uses unchanged bounded AVIO and refuses existing/public targets", async () => {
+  await mkdir(work, { recursive: true });
+  const temporary = await mkdtemp(path.join(work, "mpeg2-source-unit-"));
+  try {
+    const file = path.join(temporary, "within_mpeg2.c");
+    const generator = path.join(root, "media/ffmpeg/make-mpeg2-candidate.mjs");
+    await exec(process.execPath, [generator, file], { windowsHide: true });
+    const generated = await readFile(file, "utf8");
+    assert.ok(generated.endsWith(await source("mpeg2-candidate.c")));
+    assert.match(generated, /avcodec_find_encoder_by_name\("mpeg2video"\)/);
+    assert.match(generated, /avio_alloc_context/);
+    assert.match(generated, /within_output_truncate/);
+    assert.match(generated, /within_output_flush/);
+    assert.match(generated, /mpeg2_chapters\(out, in\)/);
+    assert.match(generated, /coded_side_data/);
+    assert.match(generated, /max_index_size = 32 \* 1024/);
+    assert.match(generated, /bounded_no_cues/);
+    assert.equal((generated.match(/EMSCRIPTEN_KEEPALIVE/g) ?? []).length, 1);
+    assert.equal(createHash("sha256").update(await source("within_remux.c")).digest("hex"),
+      "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");
+    await assert.rejects(exec(process.execPath, [generator, file], { windowsHide: true }), /EEXIST/);
+    await assert.rejects(exec(process.execPath, [generator, path.join(root, "public/within_mpeg2.c")],
+      { windowsHide: true }), /Usage/);
+  } finally {
+    assert.ok(temporary.startsWith(`${work}${path.sep}`));
+    await rm(temporary, { recursive: true, force: true });
+  }
+});
+
+test("MPEG2 candidate keeps timing, dimensions and format restrictions explicit", async () => {
+  const kernel = await source("mpeg2-candidate.c");
+  assert.match(kernel, /time_base = av_inv_q\(p.encoder->framerate\)/);
+  assert.match(kernel, /strict_std_compliance = FF_COMPLIANCE_NORMAL/);
+  assert.match(kernel, /rate_accumulator \+= p->rate_step/);
+  assert.match(kernel, /rate_accumulator -= p->rate_threshold/);
+  assert.match(kernel, /pts = p->encoded_count\+\+/);
+  assert.match(kernel, /first_source_pts, p->source->time_base/);
+  assert.match(kernel, /variable timing is not silently flattened/);
+  assert.match(kernel, /full-range video is refused/);
+  assert.match(kernel, /frame->width != p->source_width/);
+  assert.match(kernel, /bit depth or chroma/);
+  assert.match(kernel, /p.encoder->sample_aspect_ratio = av_mul_q/);
+  assert.match(kernel, /destination->r_frame_rate = \(int\)i == video \? p.encoder->framerate/);
+  assert.doesNotMatch(kernel, /fps_cap|allow_skip_frames|constrained_baseline|libopenh264/);
+});
+
+test("MPEG2 specialist recipe is pinned, fixed 32MiB, no external encoder or Docker, cleanup on failure", async () => {
+  const recipe = await source("build-mpeg2-candidate.sh");
+  assert.match(recipe, /ffmpeg-8\.1\.2\.tar\.xz/);
+  assert.match(recipe, /464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c/);
+  assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432"/);
+  assert.match(recipe, /--enable-encoder=mpeg2video/);
+  assert.match(recipe, /--enable-decoder=h264,hevc,mpeg4,mpeg2video,theora,vp8,vp9/);
+  assert.match(recipe, /--disable-network/);
+  assert.match(recipe, /-sFILESYSTEM=0/);
+  assert.match(recipe, /export TMPDIR="\$\{BUILD_ROOT\}\/tmp"/);
+  assert.match(recipe, /export EM_CACHE="\$\{BUILD_ROOT\}\/emscripten-cache"/);
+  assert.match(recipe, /trap cleanup EXIT/);
+  assert.match(recipe, /"\$\{status\}" != 0/);
+  assert.match(recipe, /available_kib >= 8388608/);
+  assert.doesNotMatch(recipe, /libopenh264|--enable-gpl|--enable-nonfree|docker (run|build)|-ffast-math|-Ofast/);
+  const workflow = await readFile(path.join(root, ".github/workflows/reproduce-ffmpeg-nondocker.yml"), "utf8");
+  assert.match(workflow, /WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media\/ffmpeg\/build-mpeg2-candidate.sh/);
+  assert.match(workflow, /private-mpeg2-source-/);
+  assert.match(workflow, /if: always\(\)/);
+});

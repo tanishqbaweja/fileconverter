@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-05 — Fresh MPEG-2 encoder candidate, source gates
+
+Status: **Partially implemented under M-04; private native compile and browser
+acceptance pending**. The previous push-only turn verified remote state, not
+implementation progress. Reread both authoritative files and revalidated the
+clean worktree. No unchanged H264, blank-control or protected-remux retry.
+
+Added a separate `mpeg2-candidate.c` and source-hash-checked generator using
+the unchanged audited bounded AVIO prefix. Genuine video decoder/encoder
+send/receive, compatible secondary packet copying, chapters, metadata,
+side-data, aggregate attachment limit and explicit exclusions are retained.
+Single codec thread, zero pthread pool and fixed **32 MiB** Wasm; no input/output
+MEMFS, external codec, native conversion, network or automatic resize.
+User-requested width, bitrate, quality and frame-rate cap are carried through;
+display aspect ratio is adjusted for requested even-height rounding.
+
+MPEG-2 is not OpenH264 with a renamed output: the encoder is FFmpeg's native
+`mpeg2video`, MPEG-2 quantizer ranges are used, and its time base is the inverse
+sequence frame rate. Primary-source inspection of pinned FFmpeg 8.1.2
+`mpeg12enc.c` confirmed the normal-compliance rate check; experimental rate
+acceptance is not enabled. Source start offset is restored after packet
+rescaling to avoid losing sub-frame start precision. A rational accumulator
+implements requested rate caps rather than greedy spacing that underproduces
+24-to-15 fps. The candidate currently refuses variable-rate source timing and
+full-range video with clear errors; other bit-depth/chroma conversion is
+disclosed. These are private feasibility restrictions, not measured reasons
+to remove the broader requested capabilities from the goal.
+
+Separate pinned FFmpeg 8.1.2/Emscripten 6.0.4 recipe and manifest enable exactly
+the MPEG-2 encoder, disabled network/filesystem and a small video-decoder
+inventory. Source/patch/artifact hashes and actual enabled components are
+recorded. New non-Docker workflow choice retains only the candidate and a
+separate corresponding-source archive for one day, with always-run cleanup;
+no media fixtures or user data go to CI. Local tests create/remove only their
+fresh `work/mpeg2-source-unit-*` directories; no converted media generated.
+
+Focused source/generator checks **5/5** (three MPEG-2, two unchanged H264),
+changed-JS lint, Bash syntax and whitespace checks pass. These prove source
+generation and guards, **not native compilation, genuine browser conversion,
+fidelity, speed, process-tree memory, repeats/scaling or legal clearance**.
+The manifest lists those unpassed gates, and no public route/UI/engine was
+changed. Next: compile this new candidate once, inspect its actual artifacts,
+then execute production-browser validation and unchanged memory/fidelity gates.
+The full goal remains active.
+
 ## 2026-10-05 — Future profiler runtime scratch ownership verified
 
 Status: **Partially implemented under A-09; general-profiler helper ownership

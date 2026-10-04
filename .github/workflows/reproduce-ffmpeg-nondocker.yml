@@ -19,6 +19,7 @@ on:
           - within-theora
           - within-aiff
           - within-h264-candidate
+          - within-mpeg2-candidate
           - within-h264-vaa-arithmetic
           - within-h264-sad-arithmetic
       h264_memory_mib:
@@ -118,6 +119,9 @@ jobs:
               WITHIN_H264_SAD_SIMD="${{ inputs.h264_sad_simd || '0' }}" \
               WITHIN_H264_ALLOCATOR_DIAGNOSTIC="${{ inputs.h264_allocator_diagnostic || '0' }}" \
               WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
+          elif test "${{ inputs.core }}" = within-mpeg2-candidate; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media/ffmpeg/build-mpeg2-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh
           fi
@@ -148,6 +152,32 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Retain private MPEG2 candidate
+        if: success() && inputs.core == 'within-mpeg2-candidate'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-candidate-${{ github.run_id }}
+          path: |
+            work/mpeg2-candidate-output/*.mjs
+            work/mpeg2-candidate-output/*.wasm
+            work/mpeg2-candidate-output/*.symbols
+            work/mpeg2-candidate-output/build-manifest.json
+            work/mpeg2-candidate-output/config_components.h
+            work/mpeg2-candidate-output/LICENSE.*
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Retain MPEG2 corresponding source separately
+        if: success() && inputs.core == 'within-mpeg2-candidate'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-source-${{ github.run_id }}
+          path: |
+            work/mpeg2-candidate-output/corresponding-source.tar.gz
+            work/mpeg2-candidate-output/configure.log
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Retain private arithmetic report only
         if: always() && inputs.core == 'within-h264-vaa-arithmetic'
         uses: actions/upload-artifact@v4
@@ -158,7 +188,7 @@ jobs:
           retention-days: 1
 
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic'
+        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-mpeg2-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
@@ -192,9 +222,9 @@ jobs:
             "$GITHUB_WORKSPACE/work/sdk-tmp" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-build" \
             "$GITHUB_WORKSPACE/work/ffmpeg-nondocker-output"
-          for task_path in "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output" "$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build" "$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build"; do
+          for task_path in "$GITHUB_WORKSPACE/work/mpeg2-candidate-build" "$GITHUB_WORKSPACE/work/mpeg2-candidate-output" "$GITHUB_WORKSPACE/work/h264-candidate-build" "$GITHUB_WORKSPACE/work/h264-candidate-output" "$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build" "$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build"; do
             case "$task_path" in
-              "$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output"|"$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build"|"$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build") ;;
+              "$GITHUB_WORKSPACE/work/mpeg2-candidate-build"|"$GITHUB_WORKSPACE/work/mpeg2-candidate-output"|"$GITHUB_WORKSPACE/work/h264-candidate-build"|"$GITHUB_WORKSPACE/work/h264-candidate-output"|"$GITHUB_WORKSPACE/work/h264-vaa-arithmetic-build"|"$GITHUB_WORKSPACE/work/h264-sad-arithmetic-build") ;;
               *) exit 2 ;;
             esac
             rm -rf -- "$task_path"
