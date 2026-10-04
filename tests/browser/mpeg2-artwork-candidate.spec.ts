@@ -140,6 +140,12 @@ test.beforeAll(async () => {
       "-metadata:s:t:0", "filename=cover.png", path.join(work, `source.${extension}`),
     ]);
   }
+  // Separate synthetic safety fixture, never a substitute for the protected
+  // full-resolution input. Enough real frames to cancel after written output.
+  await native(["-v", "error", "-f", "lavfi", "-i",
+    "testsrc2=size=640x360:rate=24:duration=20", "-c:v", "mpeg4", "-q:v", "2",
+    "-bf", "0", "-threads", "1", path.join(work, "cancel.mkv")]);
+  expect((await stat(path.join(work, "cancel.mkv"))).size).toBeLessThan(16 * 1024 * 1024);
 });
 
 test.beforeEach(async ({ context, browser, page }) => {
@@ -392,4 +398,42 @@ test("private MPEG2 propagates direct output write failure and removes partial o
   });
   expect(files.every((size) => size === 0)).toBe(true);
   rows.push({ kind: "direct-write-failure", status: "passed", error: state.error, metrics: state.metrics, partialBytes: files });
+});
+
+test("private MPEG2 cancels after genuine direct output and removes partial output", async ({ page }) => {
+  try {
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+    await page.locator('[data-testid="file-input"]').setInputFiles(path.join(work, "cancel.mkv"));
+    await page.locator('[data-testid="format-select"]').selectOption("mkv-to-mp4");
+    await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction(() => {
+      const state = window.__WITHIN_TEST__?.getState();
+      return state?.jobState === "running" && (state.metrics?.outputBytes ?? 0) > 32768;
+    });
+    const beforeCancel = await page.evaluate(() => window.__WITHIN_TEST__!.getState());
+    await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
+    await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "cancelled");
+    const state = await page.evaluate(() => window.__WITHIN_TEST__!.getState());
+    expect(beforeCancel.jobState).toBe("running");
+    expect(beforeCancel.metrics?.outputBytes).toBeGreaterThan(32768);
+    expect(state.metrics?.pendingOperations).toBe(0);
+    expect(state.metrics?.queuedBytes).toBe(0);
+    expect(state.opfsName).toBeNull();
+    const partialBytes = await page.evaluate(async () => {
+      const directory = await navigator.storage.getDirectory();
+      const sizes: number[] = [];
+      for await (const [, handle] of directory.entries()) {
+        if (handle.kind === "file") sizes.push((await (handle as FileSystemFileHandle).getFile()).size);
+      }
+      return sizes;
+    });
+    expect(partialBytes.every((size) => size === 0)).toBe(true);
+    rows.push({ kind: "cancel-after-direct-output", status: "passed", beforeCancel: beforeCancel.metrics,
+      terminalState: state.jobState, metrics: state.metrics, partialBytes });
+  } catch (error) {
+    rows.push({ kind: "cancel-after-direct-output", status: "failed", error: String(error),
+      state: await page.evaluate(() => window.__WITHIN_TEST__?.getState()).catch(() => null) });
+    throw error;
+  }
 });

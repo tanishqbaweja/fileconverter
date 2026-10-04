@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
+
+Non-Docker build `37241593281` at `30d23be` succeeded (275-second job,
+227-second compile, neither conversion speed). All native-source/artifact
+hashes verified; actual Wasm remains shared fixed 512/512 pages (32 MiB).
+Changed real Chrome artwork/safety suite **3/3 passed in 12.4 seconds**:
+48 genuine MPEG-2 frames at original synthetic 320×240/24 fps, full decode,
+ordinal SSIM 0.992146 with independent ≤1 ms timeline gate, two exact AAC
+packet hashes, exact compressed PNG 250×140, Unicode arbitrary metadata,
+no unknown/empty video track. Direct write rejection cleaned up. Added genuine
+cancel-after-written-output coverage: 232,357 bytes observed before Cancel,
+471,536 bytes at cancelled termination, zero queued/pending work, no partial
+file left. Synthetic fixtures are safety/correctness evidence, not scaling.
+
+Then ran the **full unchanged protected test.mkv**, 2,958,573,265 bytes,
+1920×804/24 fps HEVC, through production browser selected-handle I/O.
+The repaired artwork header exposed a **new actual fixed-heap OOM**:
+`av_buffer_pool_get → av_buffer_allocz → av_malloc/emmalloc` requested heap
+end 34,794,192 bytes against 33,554,432 bytes. 353,857 input bytes, zero
+output, no completed encode. No downscale, altered settings, growth or heap
+increase, no unchanged retry. Exact live decoder/encoder allocation caller
+is still unproved; do not claim a universal impossibility from this candidate.
+
+Mandatory independent 100 ms whole-Chrome observer: EARLY clean stable blank
+262,422,528 bytes; loaded idle 304,979,968 (not substituted); native active
+peak 458,326,016, increment 186.828125 MiB, 13 valid/0 unavailable samples.
+An incomplete failed job is **not** large-output or primary-memory acceptance.
+All five cleanup flags true and independently checked: owned Chrome/server/
+observer PIDs absent, runtime absent, all six dist engine assets exact-restored;
+protected source pre/post SHA unchanged. Generated media/profiles removed.
+Both hosted artifact IDs deleted/API zero; source bundle never downloaded.
+Earlier policy-blocked obsolete static tools/cache are untouched, no bypass.
+Exact resolved-path cleanup of the now-superseded six-file static tool slot
+`work/mpeg2-artwork-metadata-37240916978` (7,317,403 bytes) was also blocked
+before execution; left untouched, no retry/alternate mechanism. It contains
+no converted media. Current tool retained for the next allocation diagnosis.
+
+Frozen compile/browser/failed protected source hashes and raw diagnostics:
+`evidence/mpeg2-artwork-passed-protected-oom-2026-10-05.json`. Next: bounded
+allocation diagnosis at original resolution, then a changed candidate gate.
+No public promotion, speed A/B, repeat/scaling/release or full-goal completion.
+Verification after the changed safety test and frozen evidence: **388/388 unit
+tests**, TypeScript and scoped lint pass. These are regression checks, not a
+substitute for the failed original-size browser acceptance.
+
 ## 2026-10-05 — MPEG-2 controls gate, adapter failure diagnosed
 
 Changed build `37239956075` at `0398ad1` compiled successfully (282-second
