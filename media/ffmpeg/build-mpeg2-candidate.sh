@@ -65,6 +65,12 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch"
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch"
+printf '%s  %s\n' e2d80222a7e8f4c42257540ed9ea011c6a8be7ac447cbf4ed60dae758319f509 \
+  ffmpeg/libavformat/movenc.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch"
+printf '%s  %s\n' f93e901eef7867d56373d07afc32237e051f28cf64b2d9a0bca2474a36c0fcad \
+  ffmpeg/libavformat/movenc.c | sha256sum --check --strict
 # Private allocation policy only: preserve every upstream layout calculation,
 # live frame reference and decoder pool; release inactive encoder planes.
 printf '%s  %s\n' 38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19 \
@@ -129,6 +135,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle

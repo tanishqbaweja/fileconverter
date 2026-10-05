@@ -1,0 +1,28 @@
+--- a/libavformat/movenc.c
++++ b/libavformat/movenc.c
+@@ -4113,2 +4113,12 @@
++    // Private fragmented MP4: retain copied AAC priming at sample precision.
++    // A rounded/positive first DTS alone does not encode the decoder trim.
++    const int exact_aac_priming = mov->mode == MODE_MP4 &&
++        (mov->flags & FF_MOV_FLAG_FRAGMENT) &&
++        track->par->codec_id == AV_CODEC_ID_AAC &&
++        track->par->initial_padding > 0 && track->par->sample_rate > 0;
++    if (exact_aac_priming)
++        start_ct = FFMAX(start_ct, av_rescale(track->par->initial_padding,
++            track->timescale, track->par->sample_rate));
++
+     delay = av_rescale_rnd(start_dts + start_ct, mov->movie_timescale,
+                            track->timescale, AV_ROUND_DOWN);
+@@ -4158,8 +4168,10 @@
+          * here, but use FFMIN in case dts is a small positive integer
+          * rounded to 0 when represented in movie timescale units. */
+         av_assert0(av_rescale_rnd(start_dts, mov->movie_timescale, track->timescale, AV_ROUND_DOWN) <= 0);
+-        start_ct  = -FFMIN(start_dts, 0);
++        start_ct = exact_aac_priming
++            ? FFMAX(start_ct, -FFMIN(start_dts, 0))
++            : -FFMIN(start_dts, 0);
+-
++
+ #if CONFIG_IAMFENC
+         if (track->iamf && track->par->codec_id == AV_CODEC_ID_OPUS)
+             start_ct = av_rescale(start_ct, 48000, track->par->sample_rate);

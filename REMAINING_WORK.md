@@ -7,6 +7,34 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Private AAC sample-precision edit-list candidate implemented, not compiled:**
+Adds only MP4/fragmented/AAC/positive-initial-padding guard and edit-list trim
+arithmetic. It preserves copied initial_padding in audio-track sample units
+even when first DTS is rounded or positive; the negative/zero-delay branch
+does not overwrite that exact trim with rounded timestamp-derived trimming.
+Compressed packets/native packet clocks/codec algorithms/source settings/
+dimensions/quality/fixed32MiB/I/O/auxiliary references remain unchanged.
+No global iTunSMPB tag, audio decoding during conversion, invented packets,
+full buffer or public-engine mutation. Sample-perfect fidelity remains
+**unproven until browser/native validation**; duration threshold60ms and
+frame/packet timing threshold1ms unchanged.
+
+Pinned movenc.c originald7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068;
+after existing metadata patches e2d80222a7e8f4c42257540ed9ea011c6a8be7ac447cbf4ed60dae758319f509;
+after new priming patch f93e901eef7867d56373d07afc32237e051f28cf64b2d9a0bca2474a36c0fcad.
+Three-patch Git/GNUzero-fuzz application passes; reversing only the AAC
+arithmetic restores every pre-existing metadata-stage source byte. Minimal
+hunk-context variants failed source-only application and were corrected,
+not dispatched as native builds. Verifier scratch/source artifacts removed.
+Recipe and corresponding-source bundle include the patch; private manifest
+discloses unproven priming candidate and exact staged source hashes.
+Small browser validator now also computes source/output complete decoded
+PCM SHA256 for both AAC tracks, while exact packet/trim/duration/quality
+checks remain. **409/409units**, focused12/12, scopedlint/TypeScript/Bash
+and source patch application/reversal pass. Next changed uninstrumented
+native build and four-case small browser gate. No protected full retry until
+small fidelity passes, no speed or memory acceptance claim.
+
 **Latest HEVC-plane follow-up compiled; expanded correctness gate failed:**
 Non-Dockerrun37299917049/job111729934445 at0769ecbc succeeded330s job/279s
 native compile, not conversion speed. All11 sources/helper/artifacts/actual

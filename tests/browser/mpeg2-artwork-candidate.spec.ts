@@ -63,6 +63,14 @@ async function audioHashes(file: string) {
   return stdout.trim().split(/\r?\n/).map((line) => line.split(",").at(-1)?.trim());
 }
 
+async function decodedAudioHashes(file: string) {
+  // Independent validator only: compare the complete audible sample content,
+  // not only compressed packet identity or decoder frame counts.
+  const { stdout } = await native(["-v", "error", "-xerror", "-i", file, "-map", "0:a",
+    "-c:a", "pcm_s32le", "-f", "streamhash", "-hash", "sha256", "pipe:1"]);
+  return stdout.trim().split(/\r?\n/).map((line) => line.split(",").at(-1)?.trim());
+}
+
 async function frameTimes(file: string) {
   const { stdout } = await native(["-v", "error", "-select_streams", "v:0", "-show_frames",
     "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", file], "ffprobe");
@@ -365,9 +373,14 @@ for (const adapter of adapters) {
         sourceFormatStart: before.format.start_time, sourceFormatDuration: before.format.duration,
         outputFormatStart: after.format.start_time, outputFormatDuration: after.format.duration,
         sourceAudioTimeline, outputAudioTimeline });
+      const sourceDecodedAudioHashes = await decodedAudioHashes(source);
+      const outputDecodedAudioHashes = await decodedAudioHashes(output);
+      rows.push({ kind: "independent-decoded-audio", sourceCodec: adapter.sourceCodec,
+        sourceDecodedAudioHashes, outputDecodedAudioHashes });
       const copiedAudioTiming = validateCopiedAudioTiming(sourceAudioTimeline, outputAudioTimeline,
         before.streams.filter((s) => s.codec_type === "audio").map((s) => s.index), audio.map((s) => s.index));
       rows.push({ kind: "copied-audio-timing-passed", sourceCodec: adapter.sourceCodec, tracks: copiedAudioTiming });
+      expect(outputDecodedAudioHashes, "Preserve complete decoded audible sample content and exact trim").toEqual(sourceDecodedAudioHashes);
       expect(Math.abs(Number(after.format.duration) - Number(before.format.duration))).toBeLessThan(0.06);
       expect(outputFrameTimes).toHaveLength(sourceFrameTimes.length);
       for (let index = 0; index < sourceFrameTimes.length; index++) {

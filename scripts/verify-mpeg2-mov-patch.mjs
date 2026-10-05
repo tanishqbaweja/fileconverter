@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { access, mkdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
@@ -38,7 +38,9 @@ try {
   // Check/apply the exact sequence to this owned source artifact only, using
   // the same GNU implementation and zero-fuzz gate as the hosted build.
   const bash = process.platform === "win32" ? "D:/Program Files/Git/bin/bash.exe" : "bash";
-  for (const name of ["mov-fragmented-cover-metadata-only.patch", "mov-bounded-custom-metadata.patch"]) {
+  let metadataStage = null;
+  for (const name of ["mov-fragmented-cover-metadata-only.patch", "mov-bounded-custom-metadata.patch",
+    "mov-fragmented-aac-exact-priming.patch"]) {
     const relative = `media/ffmpeg/patches/${name}`;
     await exec("git", ["apply", "--check", "--directory", directory, relative],
       { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000 });
@@ -47,7 +49,29 @@ try {
       'patch --fuzz=0 --strip=1 --input "$1"', "patch-check", patchPath],
     { cwd: runtime.directory, env: runtime.env, windowsHide: true, timeout: 30000 });
     process.stdout.write(stdout);
+    if (name === "mov-bounded-custom-metadata.patch")
+      metadataStage = await readFile(path.join(runtime.directory, "libavformat/movenc.c"), "utf8");
   }
+  const after = await readFile(path.join(runtime.directory, "libavformat/movenc.c"), "utf8");
+  const restored = after.replace(
+    "    // Private fragmented MP4: retain copied AAC priming at sample precision.\n" +
+    "    // A rounded/positive first DTS alone does not encode the decoder trim.\n" +
+    "    const int exact_aac_priming = mov->mode == MODE_MP4 &&\n" +
+    "        (mov->flags & FF_MOV_FLAG_FRAGMENT) &&\n" +
+    "        track->par->codec_id == AV_CODEC_ID_AAC &&\n" +
+    "        track->par->initial_padding > 0 && track->par->sample_rate > 0;\n" +
+    "    if (exact_aac_priming)\n" +
+    "        start_ct = FFMAX(start_ct, av_rescale(track->par->initial_padding,\n" +
+    "            track->timescale, track->par->sample_rate));\n\n", "")
+    .replace("        start_ct = exact_aac_priming\n" +
+      "            ? FFMAX(start_ct, -FFMIN(start_dts, 0))\n" +
+      "            : -FFMIN(start_dts, 0);", "        start_ct  = -FFMIN(start_dts, 0);");
+  assert.equal(restored, metadataStage, "Revert only AAC edit-list arithmetic; every other source byte unchanged");
+  assert.equal(createHash("sha256").update(metadataStage).digest("hex"),
+    "e2d80222a7e8f4c42257540ed9ea011c6a8be7ac447cbf4ed60dae758319f509");
+  assert.equal(createHash("sha256").update(after).digest("hex"),
+    "f93e901eef7867d56373d07afc32237e051f28cf64b2d9a0bca2474a36c0fcad");
+  process.stdout.write(`Metadata-stage SHA ${createHash("sha256").update(metadataStage).digest("hex")}; AAC-patched SHA ${createHash("sha256").update(after).digest("hex")}.\n`);
   process.stdout.write("Pinned mov patch sequence passes git checks and GNU zero-fuzz application.\n");
 } finally {
   await runtime.close();

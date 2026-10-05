@@ -24,7 +24,7 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
   "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch",
   "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch",
-  "patches/hevc-decoder-uncached-frame-buffers.patch"];
+  "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const manifest = {
@@ -52,6 +52,9 @@ const manifest = {
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
   maximumMetadataEntries: 4096, maximumMetadataTextBytes: 2097152,
   mp4Metadata: "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",
+  mp4AacPriming: "Private fragmented AAC edit-list candidate retains copied initial_padding in sample units; no codec, compressed packet or source clock rewriting; browser fidelity unproven",
+  mp4MetadataStageSourceSha256: "e2d80222a7e8f4c42257540ed9ea011c6a8be7ac447cbf4ed60dae758319f509",
+  mp4PrimingPatchedSourceSha256: "f93e901eef7867d56373d07afc32237e051f28cf64b2d9a0bca2474a36c0fcad",
   genericDemuxIndexHintBytesPerStream: 32768,
   demuxIndexBudgetScope: "Generic indexes honoring the hint, not a universal backing-allocation bound",
   primaryVideo: "genuine decoding and MPEG-2 encoding; no automatic resizing",
