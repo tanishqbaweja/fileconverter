@@ -1,0 +1,439 @@
+{
+  "recordedAt": "2026-10-05",
+  "scope": "Uninstrumented MPEG2 LOW_DELAY small strict metadata gate failed; private, not full original acceptance or speed A/B",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "build": {
+    "runId": 37291658159,
+    "headSha": "d7549ac4d54a59d2f65b233c1045b5cd53bef745",
+    "conclusion": "success",
+    "jobSeconds": 353,
+    "compileSeconds": 308,
+    "conversionSpeed": false
+  },
+  "actualWasmMemories": [
+    {
+      "imported": true,
+      "initialPages": 512,
+      "maximumPages": 512,
+      "shared": true
+    }
+  ],
+  "manifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "emscriptenVersion": "6.0.4",
+    "allocatorDiagnostic": false,
+    "allocatorInstrumentationSha256": "e9d5e43db2448b7fa11f8fa00caca8ee04d954c9804f1a632469b22ae2b634af",
+    "allocatorDiagnosticScope": "Private fixed 96-snapshot heap/frame-buffer diagnosis; no allocator/codec mutation or acceptance",
+    "sources": {
+      "within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "mpeg2-candidate.c": "21dd4ed90bdd22fb8960774e48f945bda447b5e1bba89ff24cfa0e35319918d4",
+      "make-mpeg2-candidate.mjs": "0ca53d8147430a24f8b443a6726495c4934d0145af715fef2c87ab9abc23f384",
+      "build-mpeg2-candidate.sh": "2d96846ed902e2246b17ff7db8b6dd4d4725f147df005dee49c979822cc185e1",
+      "mpeg2-candidate-manifest.mjs": "ca722820a42c6c206427ac946a7b9bb5faa0a61ac10e77d1de9204ccdd809d18",
+      "patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "mpeg2-allocator-diagnostic.h": "8cd52be30e569a42137dd9d9e43db563989cda4947d19ae68a79eb72a9a7f294"
+    },
+    "generatedWrapperSourceSha256": "de0bfe47411025e8da0f0dc5f05854629d2f6a77116f19545f17203ab0204725",
+    "artifacts": {
+      "within-mpeg2.mjs": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+      "within-mpeg2.wasm": "4157fc2035463d92def77baa1889cb7cdc435b1bf750c2ce7ebe6f93b2d6981f"
+    },
+    "enabledDecoders": [
+      "h263",
+      "h264",
+      "hevc",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "mpeg2video"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 33554432,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "encoderDelay": "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "maximumMetadataEntries": 4096,
+    "maximumMetadataTextBytes": 2097152,
+    "mp4Metadata": "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",
+    "genericDemuxIndexHintBytesPerStream": 32768,
+    "demuxIndexBudgetScope": "Generic indexes honoring the hint, not a universal backing-allocation bound",
+    "primaryVideo": "genuine decoding and MPEG-2 encoding; no automatic resizing",
+    "secondaryStreams": "compatible packet copying; incompatible streams explicitly disclosed",
+    "controls": "requested resolution cap, bitrate, quality and rational phase-accumulator frame-rate cap",
+    "timeline": "CFR only; source start offset restored after encoder packet rescaling; VFR refused explicitly",
+    "pixelFormat": "8-bit YUV420P or source YUV422P; other conversions disclosed; full-range video refused",
+    "finalization": "normal seekable Matroska finalization without unbounded cues; bounded fragmented MP4",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later"
+    ],
+    "legalScope": "No GPL/nonfree/external encoder enabled; patent/deployment review not yet cleared",
+    "requiredUnpassedGates": [
+      "production-browser conversion",
+      "independent fidelity and timing",
+      "complete-process private memory",
+      "three repeats and multi-gigabyte scaling",
+      "privacy",
+      "success/cancellation/write-failure/cleanup",
+      "same-setting speed A/B",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "browserSources": {
+    "tests/browser/mpeg2-artwork-candidate.spec.ts": "13701b3f02b3d79287186c23e264dcf29b6b12055949846bd243388771f8b104",
+    "scripts/validate-mpeg2-artwork.mjs": "89ebb20e12a84637bb67e53e580d5d50fd1a8b5130aab84f99652cf4db8c8df7",
+    "scripts/stage-mpeg2-artwork-candidate.mjs": "69f474d65d58a0df6295d8798109e85dc292f48e2134cfb1d2dfe25c16c4368d"
+  },
+  "raws": [
+    {
+      "path": "output/playwright/2026-10-05T09-53-24.866Z-mpeg2-artwork-metadata-37291658159-artwork.json",
+      "bytes": 69210,
+      "sha256": "e92dbded3dae781dcdd796e96deccdf52c01b6a0e7f04dfc7b3d0f646862bb17"
+    },
+    {
+      "path": "output/playwright/2026-10-05T09-53-35.093Z-mpeg2-artwork-metadata-37291658159-artwork.json",
+      "bytes": 26480,
+      "sha256": "72d07dd86e3d413a54798c3867e3a9bf7b1836cc7b6cbcedbd2f9f73744f9357"
+    }
+  ],
+  "suite": {
+    "passed": 2,
+    "failed": 1,
+    "seconds": 19.3
+  },
+  "failure": {
+    "field": "encoder",
+    "expected": "Lavf",
+    "actual": null,
+    "sourceContainerTags": {
+      "title": "MPEG-2 café — 音楽",
+      "encoder": "Lavf",
+      "creation_time": "2000-01-01T00:00:00.000000Z",
+      "WEBSITE": "example.invalid/café",
+      "CUSTOM_音楽": "Unicode retained"
+    },
+    "outputContainerTags": {
+      "major_brand": "iso5",
+      "minor_version": "512",
+      "compatible_brands": "iso5iso6mp41",
+      "CUSTOM_音楽": "Unicode retained",
+      "title": "MPEG-2 café — 音楽",
+      "creation_time": "2000-01-01T00:00:00.000000Z",
+      "WEBSITE": "example.invalid/café"
+    }
+  },
+  "genuineEncode": {
+    "status": "diagnostic-not-accepted",
+    "sourceBytes": 487007,
+    "outputBytes": 321617,
+    "outputSha256": "acfd6dd3f40d5d1f2f3527948b2febe916aeee48fb0756cd948feb51b3a283f5",
+    "sourceCodec": "mpeg4",
+    "outputCodec": "mpeg2video",
+    "width": 320,
+    "height": 240,
+    "fps": 24,
+    "sourceFrameCount": 48,
+    "outputFrameCount": 48,
+    "maxFrameTimestampErrorSeconds": 0.0003130000000000077,
+    "ordinalSsim": 0.992146,
+    "timestampAlignedSsim": 0.964181,
+    "nativeFullDecodePassed": true,
+    "audioPacketHashes": [
+      "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+      "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+    ],
+    "metrics": {
+      "inputBytes": 487007,
+      "outputBytes": 321617,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 80916,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 224863,
+      "maxWriteChunkBytes": 80916,
+      "elapsedMs": 497.570000000298,
+      "wasmMemoryBytes": 33554432,
+      "peakWasmMemoryBytes": 33554432,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 33554436,
+      "activeWorkerCount": 5,
+      "imageWorkingBytes": 0
+    },
+    "art": {
+      "kind": "attached-picture-preservation",
+      "status": "passed",
+      "inputArt": {
+        "index": 3,
+        "codec_name": "png",
+        "codec_long_name": "PNG (Portable Network Graphics) image",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 250,
+        "height": 140,
+        "coded_width": 250,
+        "coded_height": 140,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "25:14",
+        "pix_fmt": "rgb24",
+        "level": -99,
+        "color_range": "pc",
+        "color_space": "gbr",
+        "refs": 1,
+        "r_frame_rate": "90000/1",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/90000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 181890,
+        "duration": "2.021000",
+        "nb_read_frames": "1",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 1,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "filename": "cover.png",
+          "mimetype": "image/png"
+        }
+      },
+      "outputArt": {
+        "index": 4,
+        "codec_name": "png",
+        "codec_long_name": "PNG (Portable Network Graphics) image",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "width": 250,
+        "height": 140,
+        "coded_width": 250,
+        "coded_height": 140,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "25:14",
+        "pix_fmt": "rgb24",
+        "level": -99,
+        "color_range": "pc",
+        "color_space": "gbr",
+        "refs": 1,
+        "id": "0x0",
+        "r_frame_rate": "90000/1",
+        "avg_frame_rate": "0/0",
+        "time_base": "1/90000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 182340,
+        "duration": "2.026000",
+        "nb_read_frames": "1",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 1,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        }
+      },
+      "compressedArtworkHash": "SHA256=c2054a5f9be34cf027cbf53657509e0f9ddaa66caa4587c10d5a679be5396112",
+      "actualVideoEncoderTag": "Within FFmpeg MPEG-2"
+    }
+  },
+  "safety": [
+    {
+      "kind": "direct-write-failure",
+      "status": "passed",
+      "error": "The destination rejected a bounded write; I/O error",
+      "metrics": {
+        "inputBytes": 487007,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 3389,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 224863,
+        "maxWriteChunkBytes": 0,
+        "elapsedMs": 490.1499999985099,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33820708,
+        "activeWorkerCount": 6,
+        "imageWorkingBytes": 0
+      },
+      "partialBytes": []
+    },
+    {
+      "kind": "cancel-after-direct-output",
+      "status": "passed",
+      "beforeCancel": {
+        "inputBytes": 524288,
+        "outputBytes": 232261,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 116098,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 116098,
+        "elapsedMs": 385.78999999910593,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33820708,
+        "activeWorkerCount": 6,
+        "imageWorkingBytes": 0
+      },
+      "terminalState": "cancelled",
+      "metrics": {
+        "inputBytes": 1048576,
+        "outputBytes": 471344,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 122415,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 122415,
+        "elapsedMs": 447.695000000298,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33820708,
+        "activeWorkerCount": 6,
+        "imageWorkingBytes": 0
+      },
+      "partialBytes": []
+    }
+  ],
+  "cleanup": {
+    "browserAndRunnerPidsAbsent": [
+      22440,
+      38400,
+      37064,
+      31604
+    ],
+    "ownedArtworkRuntimeAndFixturesAbsent": true,
+    "publishedAssetRestoration": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+      "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+    },
+    "privateAdapterAbsent": true,
+    "remainingHostedArtifacts": 0,
+    "deletedHostedArtifactIds": [
+      11337196739,
+      11337052210
+    ],
+    "sourceBundleDownloaded": false,
+    "retainedStaticTool": "work/mpeg2-artwork-metadata-37291658159",
+    "protectedFixtureUsed": false,
+    "protectedFixtureModified": false
+  },
+  "diagnosis": {
+    "pinnedMuxSourceUrl": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/mux.c",
+    "pinnedMuxSourceBytes": 48534,
+    "pinnedMuxSourceSha256": "57b64d7a1d6d81d7ac05d79085e5f9b282bf1bba773b4200a64aeede6599b55a",
+    "cause": "init_muxer removes encoder and encoder-* metadata under BITEXACT; avformat_write_header previously invoked initialization after copy",
+    "changedCandidate": "Explicit avformat_init_output once, restore only preflighted stripped source provenance before header serialization; retain bitexact and truthful video encoder",
+    "changedCandidateCompiled": false,
+    "changedCandidateBrowserPassed": false,
+    "fullOriginalRunStarted": false
+  },
+  "verification": {
+    "focusedTestsPassed": 15,
+    "unitTestsPassed": 395,
+    "scopedLint": "passed",
+    "typescript": "passed",
+    "pinnedMuxDiagnosisAndMovPatchCheck": "passed"
+  }
+}

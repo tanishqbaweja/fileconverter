@@ -7,6 +7,42 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Latest strict small gate:** follow-up uninstrumented LOW_DELAY build
+`37291658159` at `d7549ac` succeeded (353-second job/308-second compile,
+not conversion speed). All source/artifact hashes and actual shared fixed
+512/512-page Wasm verified, native diagnostic off. Real Chrome suite **one
+failed/two passed in 19.3 seconds**: 48 genuine MPEG-2 frames, exact PNG
+250×140 compressed artwork, two exact AAC hashes, full decode, ≤1 ms frame
+PTS error and ordinal SSIM 0.992146 passed before the stricter container
+field assertion found source `encoder=Lavf` missing. Creation time and
+other Unicode fields matched. Cancellation after 232,261 genuine output
+bytes and injected direct-write rejection passed, zero queued/pending bytes
+and no partial output. No original-size run started on this known failure.
+Small elapsed 497.57 ms is **not** a controlled speed A/B or memory certificate.
+
+**Targeted metadata fix, compiled/browser validation pending:** source-pinned
+FFmpeg 8.1.2 `mux.c` (48,534 bytes, SHA
+`57b64d7a1d6d81d7ac05d79085e5f9b282bf1bba773b4200a64aeede6599b55a`)
+removes container `encoder`/`encoder-*` during initialization under BITEXACT.
+Initialize once explicitly, restore only those preflighted source fields,
+then write the header without repeating initialization. No full dictionary
+copy, disabled BITEXACT, altered encoder identity, skipped field check,
+extra codec, heap growth, resolution/quality change or public promotion.
+Exact kernel instrumentation audit updated only for these source lines;
+executed old hashes remain frozen. Source/pinned patch checks pass, **394/394
+units**, 15 focused guards, scoped lint/TypeScript pass. Next changed native
+build then the same strict small gate; only after it passes may the full
+unchanged protected memory/fidelity test proceed. Added compact-failure guard;
+final pre-compile regression **395/395 units** passes.
+
+Both build artifacts deleted/API zero, source archive never downloaded.
+Owned runtime/fixtures/converted copies absent, both Chrome roots and test
+workers absent, six generated asset hashes restored/private adapter absent.
+Reusable 7.32 MB static LOW_DELAY tool retained for changed-build comparison;
+not a converted file. Protected fixture unused/unmodified this cycle. Frozen
+raw report/native manifest/executed-browser hashes and measurements:
+`evidence/mpeg2-low-delay-metadata-gate-2026-10-05.json`.
+
 **Measured native allocation follow-up:** non-Docker diagnostic build
 `37243145719` at `db2e731` succeeded (319-second job/275-second compile,
 not conversion speed), artifact/source/actual shared fixed 32 MiB verified.

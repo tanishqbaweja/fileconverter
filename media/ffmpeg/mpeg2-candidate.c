@@ -406,6 +406,20 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
     // Disable only the unbounded per-keyframe cue index, not finalization.
     av_dict_set(&mux_options, "bounded_no_cues", "1", 0);
   }
+  // FFmpeg 8.1.2 mux.c init removes encoder / encoder-* under BITEXACT.
+  // Initialize once, then restore only those already-preflighted source fields
+  // before header serialization. Do not copy the whole dictionary again or
+  // disable BITEXACT; the actual video encoder tag above remains truthful.
+  result = avformat_init_output(out, &mux_options);
+  if (result < 0) goto cleanup;
+  if (av_dict_count(mux_options)) { result = AVERROR_OPTION_NOT_FOUND; goto cleanup; }
+  const AVDictionaryEntry *provenance = NULL;
+  while ((provenance = av_dict_get(in->metadata, "encoder", provenance, AV_DICT_IGNORE_SUFFIX))) {
+    if (provenance->key[7] == '\0' || provenance->key[7] == '-') {
+      result = av_dict_set(&out->metadata, provenance->key, provenance->value, 0);
+      if (result < 0) goto cleanup;
+    }
+  }
   result = avformat_write_header(out, &mux_options);
   if (result < 0) goto cleanup;
   if (av_dict_count(mux_options)) { result = AVERROR_OPTION_NOT_FOUND; goto cleanup; }

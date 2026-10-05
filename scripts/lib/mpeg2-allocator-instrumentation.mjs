@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 
-export const MPEG2_DIAGNOSTIC_KERNEL_SHA256 = "21dd4ed90bdd22fb8960774e48f945bda447b5e1bba89ff24cfa0e35319918d4";
+export const MPEG2_DIAGNOSTIC_KERNEL_SHA256 = "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0";
 
 // Only this exact audited kernel is instrumented. The earlier failed kernel
 // and executed instrumentation hash remain frozen in allocation evidence.
-// This audit adds only LOW_DELAY with already-zero B frames, after measurement.
+// This audit retains LOW_DELAY and adds explicit mux initialization followed
+// by bounded source encoder/encoder-* restoration before header writing.
 // Further source edits require a new explicit audit, never a wildcard match.
 export function instrumentMpeg2Allocator(kernel, header) {
   assert.equal(createHash("sha256").update(kernel).digest("hex"), MPEG2_DIAGNOSTIC_KERNEL_SHA256);
