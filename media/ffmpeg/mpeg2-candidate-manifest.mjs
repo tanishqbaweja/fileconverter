@@ -42,6 +42,7 @@ const manifest = {
   enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
   initialWasmMemoryBytes: 33554432, maximumWasmMemoryBytes: 33554432,
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
+  encoderDelay: "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
   avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
   maximumMetadataEntries: 4096, maximumMetadataTextBytes: 2097152,

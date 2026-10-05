@@ -248,6 +248,10 @@ static int mpeg2_run(int matroska, int max_width, int bit_rate, int fps, int qua
   p.encoder->bit_rate = bit_rate ? bit_rate : 2000000;
   p.encoder->gop_size = 48;
   p.encoder->max_b_frames = 0;
+  // MPEG-2 permits low-delay coding with no B frames. Avoid the generic
+  // encoder's otherwise retained one-frame input delay; retain every output
+  // frame, source timing, original dimensions and unchanged quantizer limits.
+  p.encoder->flags |= AV_CODEC_FLAG_LOW_DELAY;
   p.encoder->thread_count = 1;
   p.encoder->slices = 1;
   p.encoder->qmin = quality == 1 ? 8 : quality == 3 ? 2 : 4;

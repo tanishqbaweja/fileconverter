@@ -7,6 +7,35 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Measured native allocation follow-up:** non-Docker diagnostic build
+`37243145719` at `db2e731` succeeded (319-second job/275-second compile,
+not conversion speed), artifact/source/actual shared fixed 32 MiB verified.
+Full original protected fixture produced **52 native snapshots, zero evicted**.
+Three successful encoder padded frame-buffer sets (1952×836) each total
+2,529,861 bytes. Fourth encoder request failed: dynamic heap 30,077,208,
+free dynamic 20,180, unclaimed 446,152 bytes. Decoder buffer sets are
+2,396,229 bytes at coded 1920×808 and coexist with encoder buffers. No output;
+native stack now includes the real delegating buffer wrapper. Same original
+source/settings, no allocator mutation or growth. All cleanup flags true,
+independent PIDs/runtime absence/six asset restoration verified; protected
+hash unchanged, both hosted artifacts deleted/API zero/no source download.
+Raw SHA `7bcf485ca4266be3b17b183c6994296a65ced57c082748ad4c1ff4fa12201c37`.
+Compact frozen build/manifest/52 events/source hashes:
+`evidence/mpeg2-native-allocation-measured-2026-10-05.json`.
+
+**Changed candidate, still unproved:** pinned FFmpeg MPEG-2 source permits
+LOW_DELAY under normal compliance with no B frames; it sets input delay to
+zero rather than one. Add only `AV_CODEC_FLAG_LOW_DELAY` to the existing
+zero-B-frame encoder. No resolution, bitrate, frame-rate, quantizer, GOP,
+thread, reference-decoding, frame-count or heap change. This targets one
+retained input frame; it is not yet evidence that the full job fits or quality
+passes. Diagnostic kernel SHA audit updated explicitly for these four source
+lines; earlier executed hashes remain frozen. Next **uninstrumented** native
+compile, then real small artwork/timing/decode/quality/cancellation gate,
+then full unchanged protected process-tree gate. No public or speed claim.
+Changed-candidate regression: **392/392 units**, scoped lint and TypeScript
+pass. This does not prove native fit, fidelity or throughput.
+
 Follow-up **changed stack-instrumentation diagnostic** on the full original
 fixture identifies `prepare_picture → ff_mpv_encode_picture` as the native
 caller of the failing pooled frame allocation during `avcodec_send_frame`.

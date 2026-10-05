@@ -9,7 +9,7 @@ import { instrumentMpeg2Allocator } from "../scripts/lib/mpeg2-allocator-instrum
 const root = path.resolve(import.meta.dirname, "..");
 const read = (file) => readFile(path.join(root, file), "utf8");
 
-test("MPEG2 instrumentation requires exact failed kernel and delegates buffers without changing codec settings", async () => {
+test("MPEG2 instrumentation requires exact audited kernel and delegates buffers without changing codec settings", async () => {
   const kernel = await read("media/ffmpeg/mpeg2-candidate.c");
   const header = await read("media/ffmpeg/mpeg2-allocator-diagnostic.h");
   const output = instrumentMpeg2Allocator(kernel, header);
