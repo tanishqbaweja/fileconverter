@@ -35,6 +35,14 @@ compile, then real small artwork/timing/decode/quality/cancellation gate,
 then full unchanged protected process-tree gate. No public or speed claim.
 Changed-candidate regression: **392/392 units**, scoped lint and TypeScript
 pass. This does not prove native fit, fidelity or throughput.
+Uninstrumented build **`37291658159` at `d7549ac`** is confirmed live in the
+native compile step, diagnostic flag zero. Follow this same run, no restart.
+Retained earlier small probes also reveal source container `encoder` missing
+from output; the full protected gate already requires all compatible tags.
+Strengthened the small gate to require every normalized source container tag
+after independent fidelity/timing validation, and added deterministic creation
+time to its synthetic metadata. Do not start an expensive full acceptance run
+until this exact field gate passes; native low-delay fit alone is insufficient.
 
 Follow-up **changed stack-instrumentation diagnostic** on the full original
 fixture identifies `prepare_picture → ff_mpv_encode_picture` as the native

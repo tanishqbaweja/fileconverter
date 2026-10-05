@@ -121,7 +121,7 @@ test.beforeAll(async () => {
   await mkdir(path.join(root, "work"), { recursive: true });
   work = await mkdtemp(path.join(root, "work/mpeg2-artwork-validation-"));
   const metadata = path.join(work, "chapters.ffmetadata");
-  await writeFile(metadata, `;FFMETADATA1\ntitle=${title}\nWEBSiTE=example.invalid/café\ncustom_音楽=Unicode retained\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=2000\ntitle=Chapitre café\n`);
+  await writeFile(metadata, `;FFMETADATA1\ntitle=${title}\ncreation_time=2000-01-01T00:00:00.000000Z\nWEBSiTE=example.invalid/café\ncustom_音楽=Unicode retained\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=0\nEND=2000\ntitle=Chapitre café\n`);
   const artwork = path.join(work, "artwork.png");
   await native(["-v", "error", "-f", "lavfi", "-i", "color=c=red:size=250x140",
     "-frames:v", "1", "-threads", "1", "-c:v", "png", artwork]);
@@ -351,6 +351,12 @@ for (const adapter of adapters) {
       // a rounded container timestamp. The separate exact timeline gate above
       // prevents an ordinal quality comparison from hiding timing corruption.
       expect(ordinalSsim).toBeGreaterThanOrEqual(0.98);
+      // Match the full protected gate's compatible container-field contract.
+      // Do not let a shorter metadata allowlist conceal original encoder or
+      // creation-time loss before starting an expensive original-size job.
+      for (const [key, value] of Object.entries(beforeTags)) {
+        expect(afterTags[key], `Preserve compatible container metadata ${key}`).toBe(value);
+      }
       rows.push({ container: adapter.container, status: "passed", sourceBytes: (await stat(source)).size,
         outputBytes: (await stat(output)).size, sourceCodec: beforeVideo.codec_name,
         outputCodec: afterVideo.codec_name, frames: afterVideo.nb_read_frames, audioTracks: audio.length,

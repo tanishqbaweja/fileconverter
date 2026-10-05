@@ -1007,6 +1007,8 @@ lines.push("", "M-04 measured native heap allocation (2026-10-05): diagnostic bu
 
 lines.push("", "Measured LOW_DELAY changed-source regression392/392units, scopedlint/TypeScript pass; native uninstrumented compile and real browser acceptance still pending. No codec promotion or benchmark claim.");
 
+lines.push("", "Uninstrumented MPEG2 LOW_DELAY build37291658159 atd7549ac verifiedlive native compile, diagnostic0; follow samehandle, no restart. Retained old small independent probes show source containerencoder absent; full protected field gate already requires all compatible tags. Strengthened small test to every normalized source container field after independent decode/PTS/SSIM, with deterministiccreation_time, so no expensive full acceptance starts on known hidden metadata loss. New stronger browser gate not yet executed; no acceptance from native fit alone.");
+
 await writeFile(
   ledgerPath,
   `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${threeGpAviCurrentChromeNote}\n\n${mkvAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
