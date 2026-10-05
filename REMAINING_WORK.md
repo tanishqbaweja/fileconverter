@@ -7,6 +7,30 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Read-only post-release encoder pool measurement implemented; execution pending.**
+Actual five-pool retention at the encoder release boundary was not covered by
+last-seen getter snapshots. Audit pins MPEG encoder17eddac...99289f, picture
+209b4d7d...d25a2, pool initialization80e1e845...95ca4, refstructd8936c...742f.
+Picture reset normally unrefs accessory entries and refstruct normally caches
+them; retained byte counts at that boundary remain UNKNOWN, not an optimization
+claim. New diagnostic-only addition calls a scalar reader after the original
+cur_pic release, only for MPEG2/thread_count1. All upstream codec/lifetime bytes
+otherwise unchanged; no allocation/free/reference mutation, no normal-core patch.
+Source check passed Git +GNU0fuzz and exact byte-identical addition reversal.
+Initial GNU check rejected asymmetric context; balanced context fixed before
+any hosted dispatch. PatchSHAe8925b20...70d92; patchedencoderSHA2b166246...9fb57.
+Exactly5 accessory records per event (mbskip/qscale/mbtype/motion/refindex),
+maximum16 events,30 native scalar words,128-link reader cap. Absent pools
+explicitly configured=false/null; incomplete, aliased, concurrent or malformed
+groups unavailable/null, never valid0. Bounded browser total96+128+16=240;
+per-event2KiB/history and report caps unchanged. Manifest checks actual upstream
+encoder source state in BOTH modes; patch included in corresponding sources.
+431/431 units,13focusedguards,zero-warning scoped lint/Bash/diffcheck pass;
+all source-check scratch removed. Fixed32MiB/C+Asyncify256KiB/codec/kernel/
+dimensions/quality/frames/I/O/baseline/publicassets and registry unchanged.
+Next ONE changed diagnostic build and ONE full-original production-browser
+attempt. Native compilation and actual release bytes are not yet proven.
+
 **Latest changed-layout pool diagnostic: five live MV entries, no cached entry;
 stack reallocation still does not solve full-original fit.**
 Non-Docker37337524566 at pushed ef4d1bc compiled successfully (281s build /

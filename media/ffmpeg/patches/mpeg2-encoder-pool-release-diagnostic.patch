@@ -1,0 +1,28 @@
+--- a/libavcodec/mpegvideo_enc.c
++++ b/libavcodec/mpegvideo_enc.c
+@@ -77,6 +77,11 @@
+ #include <limits.h>
+ #include "sp5x.h"
+ 
++/* Private read-only diagnostic, linked only in the diagnostic candidate. */
++void within_mpeg2_encoder_pool_release_diagnostic(const AVCodecContext *avctx,
++    AVRefStructPool *mbskip, AVRefStructPool *qscale, AVRefStructPool *mbtype,
++    AVRefStructPool *motion, AVRefStructPool *refindex);
++
+ #define QUANT_BIAS_SHIFT 8
+ 
+ #define QMAT_SHIFT_MMX 16
+@@ -2120,6 +2125,13 @@
+     }
+ 
+     ff_mpv_unref_picture(&s->c.cur_pic);
++    if (avctx->codec_id == AV_CODEC_ID_MPEG2VIDEO && avctx->thread_count == 1)
++        within_mpeg2_encoder_pool_release_diagnostic(avctx,
++            s->c.buffer_pools.mbskip_table_pool,
++            s->c.buffer_pools.qscale_table_pool,
++            s->c.buffer_pools.mb_type_pool,
++            s->c.buffer_pools.motion_val_pool,
++            s->c.buffer_pools.ref_index_pool);
+ 
+     av_assert1((m->frame_bits & 7) == 0);
+ 

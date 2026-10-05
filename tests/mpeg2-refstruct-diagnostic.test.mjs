@@ -33,7 +33,7 @@ test("Pool diagnostics have a separate finite budget, delegate original get and 
   assert.match(header, /mpeg2_refstruct_snapshot\(20, pool\)/);
   assert.doesNotMatch(header, /av_refstruct_unref|av_refstruct_pool_uninit|qmin|qmax|width\s*=|height\s*=/);
   const harness = await read("scripts/mpeg2-protected-memory.mjs");
-  assert.match(harness, /allocatorSamples.length === 224/);
+  assert.match(harness, /allocatorSamples.length === 240/);
   assert.match(harness, /stackDiagnostic \|\| manifest.allocatorDiagnostic === true/);
 });
 
@@ -45,7 +45,8 @@ test("Pool reader only compiles in diagnostic mode; fixed32, original kernel and
   assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432"/);
   const manifest = await read("media/ffmpeg/mpeg2-candidate-manifest.mjs");
   assert.match(manifest, /refstructSourceSha256 !== \(allocatorDiagnostic === "1"/);
-  assert.match(manifest, /browserEvents: 224/);
+  assert.match(manifest, /encoderReleaseSnapshots: 16/);
+  assert.match(manifest, /browserEvents: 240/);
   const kernel = await read("media/ffmpeg/mpeg2-candidate.c");
   assert.doesNotMatch(kernel, /within_refstruct_pool_diagnostic|refstruct_snapshot/);
   const smoke = await read("media/ffmpeg/refstruct-diagnostic-smoke.c");

@@ -25,7 +25,8 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch",
   "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch",
   "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch",
-  "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c"];
+  "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c",
+  "patches/mpeg2-encoder-pool-release-diagnostic.patch"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
@@ -33,6 +34,11 @@ if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
   ? "715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2"
   : "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"))
   throw new Error("Unexpected refstruct diagnostic source state");
+const encoderReleaseSourceSha256 = await sha256(path.join(build, "ffmpeg/libavcodec/mpegvideo_enc.c"));
+if (encoderReleaseSourceSha256 !== (allocatorDiagnostic === "1"
+  ? "2b16624607a83d6842d35ae053f3a542de82c84b72e7371bdadc6c6b5db9fb57"
+  : "17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f"))
+  throw new Error("Unexpected encoder-release diagnostic source state");
 const refstructPoolDiagnosticSmoke = allocatorDiagnostic === "1"
   ? JSON.parse(await readFile(path.join(output, "refstruct-diagnostic-smoke.json"), "utf8")) : null;
 if (refstructPoolDiagnosticSmoke && JSON.stringify(refstructPoolDiagnosticSmoke) !== JSON.stringify({
@@ -61,9 +67,10 @@ const manifest = {
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
   allocatorDiagnostic: allocatorDiagnostic === "1",
   allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")),
-  allocatorDiagnosticScope: "Private fixed96 heap/frame snapshots plus fixed128 refstruct pool snapshots; read-only128-link cap and null incomplete counts; no allocator/codec mutation or acceptance",
+  allocatorDiagnosticScope: "Private96 heap/frame +128 pool +16 five-pool post-release snapshots; read-only128-link cap, null incomplete counts; no allocator/codec mutation or acceptance",
   refstructSourceSha256,
-  refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, inactiveLinksPerSnapshot: 128, browserEvents: 224 },
+  encoderReleaseSourceSha256,
+  refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, encoderReleaseSnapshots: 16, inactiveLinksPerSnapshot: 128, browserEvents: 240 },
   refstructPoolDiagnosticSmoke,
   sources: Object.fromEntries(await Promise.all(sourceFiles.map(async (file) =>
     [file, await sha256(path.join(root, "media/ffmpeg", file))]))),

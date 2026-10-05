@@ -93,6 +93,13 @@ if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
     < "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch"
   printf '%s  %s\n' 715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2 \
     ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+  # Scalar accessor inventory after normal encoder picture release only.
+  printf '%s  %s\n' 17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f \
+    ffmpeg/libavcodec/mpegvideo_enc.c | sha256sum --check --strict
+  patch --fuzz=0 --directory=ffmpeg --strip=1 \
+    < "${SCRIPT_DIR}/patches/mpeg2-encoder-pool-release-diagnostic.patch"
+  printf '%s  %s\n' 2b16624607a83d6842d35ae053f3a542de82c84b72e7371bdadc6c6b5db9fb57 \
+    ffmpeg/libavcodec/mpegvideo_enc.c | sha256sum --check --strict
 fi
 (
   cd ffmpeg
@@ -159,6 +166,7 @@ cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch" source-bun
 cp "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/mpeg2-encoder-pool-release-diagnostic.patch" source-bundle/
 cp "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" source-bundle/
 cp "${PROJECT_ROOT}/scripts/lib/mpeg2-stack-reserve-adapter.mjs" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \

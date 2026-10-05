@@ -87,3 +87,48 @@ void *__wrap_av_refstruct_pool_get(AVRefStructPool *pool) {
   mpeg2_refstruct_snapshot(20, pool);
   return result;
 }
+
+// Separate16-event budget, each exactly five scalar accessory-pool records.
+// Called after normal picture release, never changes a reference or pool.
+EM_JS(void, mpeg2_encoder_pool_release_emit,
+      (unsigned sequence, int codec_id, int threads, const size_t *records,
+       unsigned dynamic_bytes, unsigned free_bytes, unsigned unclaimed_bytes), {
+  const callback = Module["withinBridge"].allocatorDiagnostic;
+  if (!callback) return;
+  const names = ["mbskip", "qscale", "mbtype", "motion", "refindex"];
+  const values = HEAPU32.subarray(records >> 2, (records >> 2) + 30);
+  callback({ kind: "mpeg2-encoder-pool-release", sequence, codecId: codec_id,
+    codecThreads: threads, scope: "after-normal-cur-picture-release",
+    dynamicHeapBytes: dynamic_bytes, freeDynamicBytes: free_bytes,
+    unclaimedHeapBytes: unclaimed_bytes,
+    pools: names.map((name, i) => {
+      const at = i * 6, configured = values[at] !== 0;
+      const complete = configured && values[at + 1] !== 0;
+      return { name, poolIdentity: values[at], configured, statisticsComplete: complete,
+        entryPayloadBytes: complete ? values[at + 2] : null,
+        entryRequestedAllocationBytes: complete ? values[at + 3] : null,
+        checkedOutEntries: complete ? values[at + 4] : null,
+        cachedEntries: complete ? values[at + 5] : null };
+    }) });
+});
+
+void within_mpeg2_encoder_pool_release_diagnostic(const AVCodecContext *context,
+    AVRefStructPool *mbskip, AVRefStructPool *qscale, AVRefStructPool *mbtype,
+    AVRefStructPool *motion, AVRefStructPool *refindex);
+void within_mpeg2_encoder_pool_release_diagnostic(const AVCodecContext *context,
+    AVRefStructPool *mbskip, AVRefStructPool *qscale, AVRefStructPool *mbtype,
+    AVRefStructPool *motion, AVRefStructPool *refindex) {
+  static unsigned sequence;
+  if (sequence >= 16 || !context || context->codec_id != AV_CODEC_ID_MPEG2VIDEO ||
+      context->thread_count != 1) return;
+  AVRefStructPool *pools[5] = {mbskip, qscale, mbtype, motion, refindex};
+  size_t records[30] = {0};
+  for (unsigned i = 0; i < 5; i++) {
+    size_t *row = records + i * 6;
+    row[0] = (size_t)(uintptr_t)pools[i];
+    if (pools[i]) row[1] = within_refstruct_pool_diagnostic(pools[i], row + 2);
+  }
+  mpeg2_encoder_pool_release_emit(++sequence, context->codec_id, context->thread_count,
+    records, emmalloc_dynamic_heap_size(), emmalloc_free_dynamic_memory(),
+    emmalloc_unclaimed_heap_memory());
+}
