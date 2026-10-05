@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { refstructSampleBytes } from "../scripts/lib/refstruct-sample-bytes.mjs";
+import { provenSourceSha } from "./helpers/nondocker-workflow-provenance.mjs";
 
 const proof = JSON.parse(await readFile(new URL("../evidence/mpeg2-refstruct-live-pool-measured-2026-10-05.json", import.meta.url)));
 test("Actual compiled refstruct measurement preserves source-bound chronology and live-not-idle failure", async () => {
@@ -12,7 +12,7 @@ test("Actual compiled refstruct measurement preserves source-bound chronology an
   assert.equal(proof.manifest.sources["mpeg2-candidate.c"], "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0");
   assert.deepEqual(proof.actualWasmMemoryLimits, [{ imported: true, initialPages: 512, maximumPages: 512, shared: true }]);
   for (const [file, hash] of Object.entries(proof.analysisSources))
-    assert.equal(createHash("sha256").update(await readFile(new URL(`../${file}`, import.meta.url))).digest("hex"), hash, file);
+    assert.equal(provenSourceSha(file, await readFile(new URL(`../${file}`, import.meta.url)), hash), hash, file);
   const t = proof.telemetry;
   assert.equal(t.orderedEvents.length, 191); assert.equal(t.capturedHeapEvents, 66);
   assert.equal(t.capturedPoolEvents, 125); assert.equal(t.evictedEvents, 0);

@@ -85,13 +85,28 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch"
 printf '%s  %s\n' 910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4 \
   ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
+# Private single-thread MPEG2 encoder accessory policy. Only final-reference
+# return skips the idle cache; live objects, reset/free callbacks and decoders
+# remain unchanged. The reserved bit is disjoint from pinned upstream flags.
+printf '%s  %s\n' d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f \
+  ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+printf '%s  %s\n' 8e7be80109d14fce52e3de7a30932efea283abe963ccdd755787e219a4699b19 \
+  ffmpeg/libavutil/refstruct.h | sha256sum --check --strict
+printf '%s  %s\n' 80e1e8455035bd95de6fd051d54a4814db5c791811757cfaaaba16f422595ca4 \
+  ffmpeg/libavcodec/mpegvideo.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-accessories.patch"
+printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084 \
+  ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+printf '%s  %s\n' 4a2b2d1db11b794c3b8f4963e31cfb23124d09cdf8f0d6998037cbf344b45d9f \
+  ffmpeg/libavcodec/mpegvideo.c | sha256sum --check --strict
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
-  # Read-only private pool telemetry. No upstream ownership/allocator edits.
-  printf '%s  %s\n' d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f \
+  # Read-only private pool telemetry atop the independently pinned policy.
+  printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084 \
     ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
   patch --fuzz=0 --directory=ffmpeg --strip=1 \
     < "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch"
-  printf '%s  %s\n' 715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2 \
+  printf '%s  %s\n' 616af42245394f1db14d872554545d83759c6d5889292fdf8e4223ee244633f1 \
     ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
   # Scalar accessor inventory after normal encoder picture release only.
   printf '%s  %s\n' 17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f \
@@ -122,6 +137,15 @@ fi
   emmake make -j4
   emmake make install
 )
+# Mandatory compiled allocation-lifecycle gate in BOTH candidate modes.
+emcc "${SCRIPT_DIR}/mpeg2-accessory-smoke.c" -I"${PREFIX}/include" \
+  "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
+  -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
+  -sMODULARIZE=0 -sEXPORT_ES6=0 \
+  -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
+  -o "${BUILD_ROOT}/mpeg2-accessory-smoke.js"
+node "${BUILD_ROOT}/mpeg2-accessory-smoke.js" > "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
+test -s "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   # Synthetic allocation/source-reader unit, never a native media conversion.
   emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
@@ -168,6 +192,8 @@ cp "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mpeg2-encoder-pool-release-diagnostic.patch" source-bundle/
 cp "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" source-bundle/
+cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-accessories.patch" \
+  "${SCRIPT_DIR}/mpeg2-accessory-smoke.c" source-bundle/
 cp "${PROJECT_ROOT}/scripts/lib/mpeg2-stack-reserve-adapter.mjs" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/

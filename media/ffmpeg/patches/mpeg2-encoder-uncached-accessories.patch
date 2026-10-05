@@ -1,0 +1,44 @@
+--- a/libavutil/refstruct.c
++++ b/libavutil/refstruct.c
+@@ -29,6 +29,9 @@
+ #include "mem_internal.h"
+ #include "thread.h"
+ 
++/* Private pinned-build bit; used only by single-thread MPEG2 encoders. */
++#define WITHIN_MPEG2_POOL_UNCACHED (1u << 30)
++
+ #ifndef REFSTRUCT_CHECKED
+ #ifndef ASSERT_LEVEL
+ #define ASSERT_LEVEL 0
+@@ -226,7 +229,7 @@
+     AVRefStructPool *pool = ref->opaque.nc;
+ 
+     ff_mutex_lock(&pool->mutex);
+-    if (!pool->uninited) {
++    if (!pool->uninited && !(pool->pool_flags & WITHIN_MPEG2_POOL_UNCACHED)) {
+         ref->opaque.nc = pool->available_entries;
+         pool->available_entries = ref;
+         ref = NULL;
+--- a/libavcodec/mpegvideo.c
++++ b/libavcodec/mpegvideo.c
+@@ -44,6 +44,8 @@
+ #include "mpegvideodata.h"
+ #include "libavutil/refstruct.h"
+ 
++/* Private pinned-build bit; default/decoder/other encoder pools unchanged. */
++#define WITHIN_MPEG2_POOL_UNCACHED (1u << 30)
+ 
+ static void gray16(uint8_t *dst, const uint8_t *src, ptrdiff_t linesize, int h)
+ {
+@@ -257,7 +259,10 @@
+     s->mb_index2xy[s->mb_height * s->mb_width] = (s->mb_height - 1) * s->mb_stride + s->mb_width; // FIXME really needed?
+ 
+ #define ALLOC_POOL(name, size, flags) do { \
+-    pools->name ##_pool = av_refstruct_pool_alloc((size), (flags)); \
++    pools->name ##_pool = av_refstruct_pool_alloc((size), (flags) | \
++        (s->encoding && s->codec_id == AV_CODEC_ID_MPEG2VIDEO && \
++         s->avctx->thread_count == 1 ? \
++         WITHIN_MPEG2_POOL_UNCACHED : 0)); \
+     if (!pools->name ##_pool) \
+         return AVERROR(ENOMEM); \
+ } while (0)

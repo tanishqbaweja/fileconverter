@@ -3,14 +3,23 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { provenSourceSha } from "./helpers/nondocker-workflow-provenance.mjs";
 
-test("Historical build workflow provenance reverses only one diagnostic artifact line", async () => {
+test("Historical build workflow provenance reverses only two unit artifact lines", async () => {
   const file = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
   const old = "5a0d4a2a4357abae5715363367aef69c400e584b49836c645eae0e08d5c587c6";
   const bytes = await readFile(new URL(`../${file}`, import.meta.url));
   const line = "            work/mpeg2-candidate-output/refstruct-diagnostic-smoke.json\n";
+  const accessory = "            work/mpeg2-candidate-output/mpeg2-accessory-smoke.json\n";
   assert.equal(provenSourceSha(file, bytes, old), old);
-  assert.equal(provenSourceSha(file, Buffer.from(bytes.toString().replace(line, "")), old), old);
+  assert.equal(provenSourceSha(file, Buffer.from(bytes.toString().replace(line, "").replace(accessory, "")), old), old);
+  assert.throws(() => provenSourceSha(file, Buffer.from(bytes.toString().replace(line, "")), old));
+  assert.throws(() => provenSourceSha(file, Buffer.from(bytes.toString().replace(accessory, "")), old));
   assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from("# changed build\n")]), old));
   assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from(line)]), old));
+  assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from(accessory)]), old));
   assert.notEqual(provenSourceSha("unrelated", bytes, old), old);
+  const readerOnly = "8442e48304e6ba448cad205f1e6dfd5757a41e25f6b20be4a50c611957a1f767";
+  assert.equal(provenSourceSha(file, bytes, readerOnly), readerOnly);
+  assert.equal(provenSourceSha(file, Buffer.from(bytes.toString().replace(accessory, "")), readerOnly), readerOnly);
+  assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from("# changed build\n")]), readerOnly));
+  assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from(accessory)]), readerOnly));
 });

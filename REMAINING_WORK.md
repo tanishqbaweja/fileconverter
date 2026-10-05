@@ -7,6 +7,34 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Measured encoder-accessory uncaching candidate implemented; native gate pending.**
+Private patch changes only idle-cache admission on final reference return and
+the MPEG auxiliary pool flag selector. Only encoding/MPEG2/thread_count1 gets
+reserved bit30; default, decoder and other-encoder pools keep stock caching.
+Pinned upstream refstruct.h8e7be801...99b19 confirms no flag collision. Normal
+reset/free/init-error callbacks, all live references, zeroing, table sizes and
+codec algorithms remain upstream. No HEVC auxiliary allocation policy change.
+Git/GNU0fuzz and two-file exact byte reversal pass; read-only diagnostic overlay
+also applies/reverses without source weakening. First asymmetrical source hunk
+failed GNU before dispatch; balanced context corrected and scratch removed.
+Patch095c43cf...9f645, normal refstructe31af1df...2e084, diagnostic-overlay
+616af422...633f1, MPEG pool initialization4a2b2d1d...45d9f.
+Mandatory compiled Wasm allocation-only smoke in BOTH modes checks default cache
+reuse, final-reference-only release, new entry initialization, reset-before-free,
+owner uninit with live refs, zeroing, init-failure callbacks and overflow refusal.
+No media/native conversion in this smoke. Manifest requires exact smoke schema
+and actual native-source hashes; patch/smoke retained in corresponding sources.
+Workflow additionally retains the smoke JSON; historical compiled hashes stay
+unchanged and only exact reversal of both unit-artifact paths recovers the old
+workflow. Negative guards reject missing/duplicate paths or any other change.
+Full-original contiguous fit, subsequent allocation fit, fidelity and speed
+remain UNPROVEN until the changed uninstrumented core passes the small4 cases
+and original-file whole-tree gate. Do not promote public support yet.
+Changed-source regression435/435 units and zero-warning scoped lint/Bash/diff
+checks pass. One old frozen-workflow guard rejected the extra artifact path;
+exact single-line reversal for that historical SHA now preserves the executed
+workflow bytes without refreshing the old proof or accepting arbitrary changes.
+
 **Actual post-release measurement: 278,222 inactive encoder-accessory bytes.**
 Non-Docker run37340665849 at47a942a passed (232s build/298s job, NOT conversion
 speed). All15 source pins, actual emitter import, 9-transition compiled reader,

@@ -26,14 +26,25 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch",
   "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch",
   "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c",
-  "patches/mpeg2-encoder-pool-release-diagnostic.patch"];
+  "patches/mpeg2-encoder-pool-release-diagnostic.patch",
+  "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
 if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
-  ? "715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2"
-  : "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"))
+  ? "616af42245394f1db14d872554545d83759c6d5889292fdf8e4223ee244633f1"
+  : "e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084"))
   throw new Error("Unexpected refstruct diagnostic source state");
+const encoderAccessorySourceSha256 = await sha256(path.join(build, "ffmpeg/libavcodec/mpegvideo.c"));
+if (encoderAccessorySourceSha256 !== "4a2b2d1db11b794c3b8f4963e31cfb23124d09cdf8f0d6998037cbf344b45d9f")
+  throw new Error("Unexpected encoder accessory allocation policy source state");
+const encoderAccessoryLifecycleSmoke = JSON.parse(await readFile(path.join(output, "mpeg2-accessory-smoke.json"), "utf8"));
+if (JSON.stringify(encoderAccessoryLifecycleSmoke) !== JSON.stringify({
+  status: "passed", scope: "synthetic-lifecycle-unit-not-conversion", payloadBytes: 64,
+  defaultCacheReusePreserved: true, onlyFinalReferenceReleased: true, uncachedNewEntryInitCount: 2,
+  resetBeforeFree: true, ownerUninitWithLiveRefs: true, zeroingPreserved: true,
+  initFailureCallbacksPreserved: true, overflowRefused: true,
+})) throw new Error("Compiled uncached accessory lifecycle proof missing or changed");
 const encoderReleaseSourceSha256 = await sha256(path.join(build, "ffmpeg/libavcodec/mpegvideo_enc.c"));
 if (encoderReleaseSourceSha256 !== (allocatorDiagnostic === "1"
   ? "2b16624607a83d6842d35ae053f3a542de82c84b72e7371bdadc6c6b5db9fb57"
@@ -69,6 +80,9 @@ const manifest = {
   allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")),
   allocatorDiagnosticScope: "Private96 heap/frame +128 pool +16 five-pool post-release snapshots; read-only128-link cap, null incomplete counts; no allocator/codec mutation or acceptance",
   refstructSourceSha256,
+  encoderAccessorySourceSha256,
+  encoderAccessoryLifecycleSmoke,
+  encoderAccessoryPolicy: "Private single-thread MPEG2 encoder auxiliary pools skip only final-reference idle caching; live refs, reset/free/init/zeroing unchanged. HEVC/default/other pools stock; fit/speed unproven",
   encoderReleaseSourceSha256,
   refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, encoderReleaseSnapshots: 16, inactiveLinksPerSnapshot: 128, browserEvents: 240 },
   refstructPoolDiagnosticSmoke,
