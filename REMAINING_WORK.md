@@ -7,7 +7,39 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Private AAC sample-precision edit-list candidate implemented, not compiled:**
+**Latest compiled AAC priming fix: audio passes, HEVC duration still fails.**
+Non-Docker run37302858907/job111739487435 at a5e0b4459f762f529fa61049408ef696735488ca
+succeeded332s job/291s native compile (not conversion speed). All12 native
+sources/helper/artifacts and actual shared512/512pages verified; allocator
+diagnostic off; WasmSHA037d8360118863b1affadac8c2852bf7688aa3b60d5d05fb92bdf139cba4606a.
+One changed strict four-case Chrome suite: **3passed/1failed,27.7s**.
+Both original MPEG4 and separate HEVC fixtures retain exact1024-sample AAC
+priming on both tracks, exact compressed packet hashes, complete decoded
+PCM hashes, packet counts95/189, PTS/DTS errors<=0.333ms. The original MPEG4
+case passes all gates. HEVC retains96 genuine MPEG2 frames, SSIM0.985963,
+full native decode/art/metadata and videoPTS error<=0.313ms, but format
+duration4.104->4.010seconds differs94ms and fails the unchanged60ms gate.
+Output format start now matches source0.083seconds. Exact audio repair is
+not overall mux fidelity, memory, speed or public acceptance. No unchanged
+retry and **no full protected conversion** while this small fidelity fails.
+Investigate native fragmented MP4/edit-list/header timing; do not normalize
+the validator, alter the positive-start fixture, quality, settings or heap.
+
+Frozen actual executed-source hashes/manifest/timelines/decoded audio/packet
+edges/safety/raw-report hashes: `evidence/mpeg2-aac-priming-passed-duration-failure-2026-10-05.json`.
+Write failure and cancellation after genuine output pass. Generated media,
+owned runtime/fixture scratch removed; all four production assets restored
+byte-exact, private adapter absent, Chrome roots41180/36936 independently
+absent. Protected test.mkv unused; original2,958,573,265-byte size/SHA checked.
+HostedIDs11343276036/11342816457 deleted/APIzero; source archive not downloaded.
+Latest six-file static tool retained solely for duration diagnosis, not a
+converted media copy. Previously policy-blocked static files remain recorded;
+no bypass/retry. New compact-proof guard initially assumed scalar partial
+bytes; corrected to assert the actual empty file-size arrays and zero queues.
+**410/410units** and scopedlint pass; no extra native conversion rerun.
+The complete original goal remains open.
+
+**Earlier source-only checkpoint — AAC candidate implemented, not yet compiled:**
 Adds only MP4/fragmented/AAC/positive-initial-padding guard and edit-list trim
 arithmetic. It preserves copied initial_padding in audio-track sample units
 even when first DTS is rounded or positive; the negative/zero-delay branch

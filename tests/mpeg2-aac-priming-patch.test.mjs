@@ -33,3 +33,47 @@ test("AAC patch is pinned, bundled and tested against decoded audio before uncha
   assert.match(browser, /Math.abs\(Number\(after.format.duration\) - Number\(before.format.duration\)\)\)\.toBeLessThan\(0.06\)/);
   assert.match(browser, /toBeLessThanOrEqual\(0.001\)/);
 });
+
+test("Compiled exact AAC priming and decoded PCM do not conceal the remaining HEVC duration failure", async () => {
+  const proof = JSON.parse(await source("evidence/mpeg2-aac-priming-passed-duration-failure-2026-10-05.json"));
+  assert.equal(proof.build.runId, 37302858907);
+  assert.equal(proof.manifest.allocatorDiagnostic, false);
+  assert.equal(proof.manifest.artifacts["within-mpeg2.wasm"], "037d8360118863b1affadac8c2852bf7688aa3b60d5d05fb92bdf139cba4606a");
+  assert.deepEqual(proof.suite, { passed: 3, failed: 1, seconds: 27.7, retries: 0 });
+  assert.equal(proof.cases.length, 2);
+  for (const row of proof.cases) {
+    assert.equal(row.decodedAudio.identical, true);
+    assert.deepEqual(row.decodedAudio.output, row.decodedAudio.source);
+    assert.equal(row.audioTiming.length, 2);
+    for (const track of row.audioTiming) {
+      assert.equal(track.initialSkipSamples, 1024);
+      assert.ok(track.maximumPtsErrorSeconds <= 0.001);
+      assert.ok(track.maximumDtsErrorSeconds <= 0.001);
+      assert.equal(track.packets, row.sourceCodec === "hevc" ? 189 : 95);
+    }
+    assert.ok(row.maximumVideoPtsError <= 0.001);
+    assert.ok(row.ordinalSsim >= 0.98);
+    assert.equal(row.nativeFullDecodePassed, true);
+  }
+  const hevc = proof.cases.find((row) => row.sourceCodec === "hevc");
+  assert.equal(hevc.sourceFrames.length, 96);
+  assert.equal(hevc.outputFrames.length, 96);
+  assert.equal(hevc.sourceStart, hevc.outputStart);
+  assert.ok(Math.abs(Number(hevc.sourceDuration) - Number(hevc.outputDuration)) > 0.060);
+  assert.equal(proof.remainingFailure.absoluteDurationErrorSeconds, 0.094);
+  assert.equal(proof.remainingFailure.unchangedThresholdSeconds, 0.060);
+  assert.equal(proof.protectedFullRetry, false);
+  assert.equal(proof.publicAcceptance, false);
+  assert.equal(proof.primaryMemoryAcceptance, false);
+  assert.equal(proof.speedGainClaim, null);
+  assert.equal(proof.safety.length, 2);
+  for (const row of proof.safety) {
+    assert.equal(row.status, "passed");
+    assert.deepEqual(row.partialBytes, []);
+    assert.equal(row.metrics.queuedBytes, 0);
+    assert.equal(row.metrics.pendingOperations, 0);
+  }
+  assert.equal(proof.cleanup.chromeAbsenceIndependentlyVerified, true);
+  assert.equal(proof.cleanup.hostedArtifactsDeleted, true);
+  assert.deepEqual(proof.cleanup.ownedScratchRemaining, []);
+});
