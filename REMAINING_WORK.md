@@ -7,6 +7,49 @@ not the entire product specification.
 
 ## 2026-10-06 — Private 64KiB AVIO tested; original frame-buffer heap failure
 
+**Changed64KiB read-only diagnostic now identifies the encoder boundary.**
+Non-Docker37359045127/job111928714852 atd37fff5 passed (305s compile/356s job,
+NOT conversion speed);17 source/helper/artifact hashes, actual emitter imports,
+9-transition reader and allocation-lifecycle smokes, fixed32/shared512/StackCheck2
+verified. Downloaded only8 small static files, no source bundle. One full unchanged
+original-file attempt failed at33947688,222785 input/zero output.203 captured
+events=70 heap+128 pool+5 encoder release; no eviction. Pool128 cap REACHED, so
+post-boundary pool inventory is incomplete, NOT silently complete. Heap96 and
+release16 caps not reached. Five measured release groups retain live backing
+278222/556444/556444/556444/556444 and cached0/0/0/0/0; known absent mbskip is NULL.
+This proves current accessory uncaching at those boundaries, not total heap or
+speed savings. The1163536-byte auxiliary entry now succeeds (5->6 checked-out,
+same actual pool identity); no inference about all later auxiliary operations.
+Last captured heap70/phase17/codec2/encoder=true enters default_get_buffer2 with
+internal1952x836, pixel format0, empty frame buffers, free2836176+unclaimed28464=
+2864640 aggregate bytes. Protected visible dimensions remain1920x804; internal
+encoder padding is NOT source resizing. Exact failed plane/request/contiguous
+fit remain NULL; pure fragmentation is NOT proven. No live refs may be released.
+
+EARLYblank261844992/loaded330272768/native478019584/CIM464252928 =>206.16015625MiB
+INCOMPLETE/instrumented, NOT acceptance;38 valid/0 unavailable/all descendants.
+All5 finally flags true BUT cleanup.errors contains AggregateError, cause NULL;
+unqualified cleanup success is NOT claimed. Independent subsequent check finds
+all16 native/CIM-observed/owned PIDs absent, runtime/adapter gone, six assets exact,
+original size/SHA unchanged. Preserve that reported error rather than deleting it.
+Blocked download+scratch-cleanup shell command was rejected BEFORE execution;
+that named scratch never existed and its deletion was NOT retried/bypassed.
+Installed [gh2.76.2 source](https://raw.githubusercontent.com/cli/cli/v2.76.2/pkg/cmd/run/download/http.go)
+shows owned temporary ZIP with automatic close/remove;
+download used existing repository work as TEMP/TMP, ZIP independently absent.
+Both hosted11366420557/11366515275 deleted/API0; reusable8 static files retained.
+Frozen evidence/mpeg2-avio64-allocator-measured-2026-10-06.json binds raw395132/
+SHA2131c47e...dfd58 and current read-only reducer/helper bytes. No browser/native
+job remains live. Next source-audit padded frame reservation/free-block fit and
+investigate changed fixed-heap allocation strategy or smaller specialist core;
+do not repeat unchanged normal/diagnostic, increase heap, discard live refs,
+resize source, relax quality or claim speed A/B. Full repeats/public/goal open.
+Diagnostic evidence regression443/443 units, scoped zero-warning lint,
+TypeScript and diff checks pass. Both read-only reducers reproduce the retained
+facts without launching a browser or converting data. Historical proofs remain
+unchanged. Original test.mkv size/SHA and repository-local cleanup independently
+verified after the final diagnostic; no live build/browser handle remains.
+
 **Executed changed candidate, not a speed or support certification.** Non-Docker
 run37356848855/job111921324148 at41cc684 succeeded (248s compile/297s job,
 NOT conversion speed). Actual17 source/helper/artifact pins, compiled lifecycle
@@ -37,7 +80,7 @@ Reusable small7-file tool retained; converted media/profiles removed by finally.
 Frozen evidence/mpeg2-avio64-protected-failure-2026-10-06.json binds actual small
 raw336844/SHA15bde4ac...04a0b and full341423/SHA0af8ed2a...7b164. Read-only reducer
 and two source-bound guards keep requested393216-byte arithmetic separate from
-NULL measured heap savings. Next: ONE read-only allocator-diagnostic build of
+NULL measured heap savings. Subsequent read-only allocator diagnostic above used
 this changed64KiB candidate to identify the frame/context boundary and measure
 actual post-policy accessory retention. Existing wrapped get_buffer2 snapshots
 can distinguish encoder/decoder and allocation phases without changing lifetime,
