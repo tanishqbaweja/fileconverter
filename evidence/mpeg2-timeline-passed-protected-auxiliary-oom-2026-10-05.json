@@ -1,0 +1,782 @@
+{
+  "recordedAt": "2026-10-05",
+  "scope": "Strict small browser timeline/PCM/artwork gates passed; unchanged full protected source failed HEVC auxiliary refstruct allocation at fixed32MiB. No full memory, speed or public acceptance.",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "manifest": {
+    "status": "private-feasibility-candidate-not-certified-not-public",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "emscriptenVersion": "6.0.4",
+    "allocatorDiagnostic": false,
+    "allocatorInstrumentationSha256": "d2c46dbafafba984e2d45a338313e2659a968376f9cd8e48454cb21c8c6d3aac",
+    "allocatorDiagnosticScope": "Private fixed 96-snapshot heap/frame-buffer diagnosis; no allocator/codec mutation or acceptance",
+    "sources": {
+      "within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+      "make-mpeg2-candidate.mjs": "0ca53d8147430a24f8b443a6726495c4934d0145af715fef2c87ab9abc23f384",
+      "build-mpeg2-candidate.sh": "d6e1d2e938070b3e8ca8d7094de1b3bac57ce4d7361cd683cefbf023c47a2761",
+      "mpeg2-candidate-manifest.mjs": "80770980a9343ed23af3f8ae782b03a1b3c41d1731618e35559910fd8daf9765",
+      "patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "mpeg2-allocator-diagnostic.h": "8cd52be30e569a42137dd9d9e43db563989cda4947d19ae68a79eb72a9a7f294",
+      "patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+      "patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a"
+    },
+    "generatedWrapperSourceSha256": "9076f4e0623f92ef96bed22db3a64c9b942836a4d24bc2b831708f61732252ed",
+    "artifacts": {
+      "within-mpeg2.mjs": "8d1fe53a8903692cc36bacc1e8935c582efbbaf439f522a33877ae34254f2811",
+      "within-mpeg2.wasm": "037d8360118863b1affadac8c2852bf7688aa3b60d5d05fb92bdf139cba4606a"
+    },
+    "enabledDecoders": [
+      "h263",
+      "h264",
+      "hevc",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vp3",
+      "vp8",
+      "vp9"
+    ],
+    "enabledEncoders": [
+      "mpeg2video"
+    ],
+    "enabledDemuxers": [
+      "avi",
+      "flv",
+      "h264",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mpegts",
+      "mpegvideo",
+      "ogg"
+    ],
+    "enabledMuxers": [
+      "matroska",
+      "mov",
+      "mp4"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis",
+      "vp8",
+      "vp9"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vp9_superframe_split"
+    ],
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 33554432,
+    "allowMemoryGrowth": false,
+    "codecThreads": 1,
+    "pthreadPoolSize": 0,
+    "encoderDelay": "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
+    "frameBufferPolicy": "Private encoder-only uncached planes plus HEVC decoder uncached planes; exact upstream alignment/padding/zeroing/live references; other decoder and HEVC auxiliary pools unchanged",
+    "frameBufferOriginalSourceSha256": "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",
+    "frameBufferEncoderStageSourceSha256": "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
+    "frameBufferPatchedSourceSha256": "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4",
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "maximumStreams": 32,
+    "maximumChapters": 1024,
+    "maximumAttachmentBytes": 8388608,
+    "maximumMetadataEntries": 4096,
+    "maximumMetadataTextBytes": 2097152,
+    "mp4Metadata": "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",
+    "mp4AacPriming": "Private fragmented AAC edit-list candidate retains copied initial_padding in sample units; no codec, compressed packet or source clock rewriting; browser fidelity unproven",
+    "mp4MetadataStageSourceSha256": "e2d80222a7e8f4c42257540ed9ea011c6a8be7ac447cbf4ed60dae758319f509",
+    "mp4PrimingPatchedSourceSha256": "f93e901eef7867d56373d07afc32237e051f28cf64b2d9a0bca2474a36c0fcad",
+    "genericDemuxIndexHintBytesPerStream": 32768,
+    "demuxIndexBudgetScope": "Generic indexes honoring the hint, not a universal backing-allocation bound",
+    "primaryVideo": "genuine decoding and MPEG-2 encoding; no automatic resizing",
+    "secondaryStreams": "compatible packet copying; incompatible streams explicitly disclosed",
+    "controls": "requested resolution cap, bitrate, quality and rational phase-accumulator frame-rate cap",
+    "timeline": "CFR only; source start offset restored after encoder packet rescaling; VFR refused explicitly",
+    "pixelFormat": "8-bit YUV420P or source YUV422P; other conversions disclosed; full-range video refused",
+    "finalization": "normal seekable Matroska finalization without unbounded cues; bounded fragmented MP4",
+    "licenses": [
+      "FFmpeg LGPL-2.1-or-later"
+    ],
+    "legalScope": "No GPL/nonfree/external encoder enabled; patent/deployment review not yet cleared",
+    "requiredUnpassedGates": [
+      "production-browser conversion",
+      "independent fidelity and timing",
+      "complete-process private memory",
+      "three repeats and multi-gigabyte scaling",
+      "privacy",
+      "success/cancellation/write-failure/cleanup",
+      "same-setting speed A/B",
+      "reproducibility",
+      "legal deployment review",
+      "registry/UI integration"
+    ]
+  },
+  "browserVersion": "154.0.8037.93",
+  "reports": [
+    {
+      "file": "output/playwright/2026-10-05T11-50-19.300Z-mpeg2-artwork-metadata-37302858907-artwork.json",
+      "bytes": 332946,
+      "sha256": "4dd945d12fad3528d653d9643715ad57c72a304643ad181a7871e12aedb30b25"
+    },
+    {
+      "file": "outputs/reports/2026-10-05T11-51-12-648Z-private-mpeg2-protected-direct-native-100ms.json",
+      "bytes": 267286,
+      "sha256": "57b8447ff8ae92a9e162d0158574aea2ffcbf79a33f0fc2d414cdd5000d8b8f0"
+    }
+  ],
+  "small": {
+    "suite": {
+      "passed": 4,
+      "failed": 0,
+      "seconds": 20.1,
+      "retries": 0
+    },
+    "sourceHashes": {
+      "tests/browser/mpeg2-artwork-candidate.spec.ts": "99c7fd383338c1d55f803cda4e698dbe0dfc987c171bf7a63be876204a171b7c",
+      "scripts/validate-mpeg2-artwork.mjs": "89ebb20e12a84637bb67e53e580d5d50fd1a8b5130aab84f99652cf4db8c8df7",
+      "scripts/stage-mpeg2-artwork-candidate.mjs": "69f474d65d58a0df6295d8798109e85dc292f48e2134cfb1d2dfe25c16c4368d",
+      "scripts/lib/copied-audio-timing.mjs": "31217d3ceb28f8508de4b530ccb1a5630868067c7a2e31dd3f95ba319093cd98",
+      "scripts/lib/small-matroska-mp4-timeline.mjs": "f6712c5663f640cc5ad41f4a29fca6eff1dc5ef633d83a1ea1f76d23728205e2",
+      "scripts/verify-mpeg2-timeline-semantics.mjs": "2e7494579d980e1f34435fc4b64e17e8175b0dccd2718c4140a8c85de1290d5a"
+    },
+    "cases": [
+      {
+        "sourceCodec": "mpeg4",
+        "outputCodec": "mpeg2video",
+        "sourceBytes": 487007,
+        "outputBytes": 321692,
+        "outputSha256": "d366abbe466cbd7a70ae7353efda456471c9b064402996a58fa1d2dd7589bf94",
+        "frames": "48",
+        "ssim": 0.992146,
+        "audioPacketHashes": [
+          "SHA256=22418d82fdd5463d2913f298c65d9539f442629edf5ce37ca6d998c29657d304",
+          "SHA256=967ce3b210bc48fde8e8f7e48a15fda00a9810af666dc7a86adb6523a76d132e"
+        ],
+        "metrics": {
+          "inputBytes": 487007,
+          "outputBytes": 321692,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 80916,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 224863,
+          "maxWriteChunkBytes": 80916,
+          "elapsedMs": 503.88499999791384,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 5,
+          "imageWorkingBytes": 0
+        },
+        "presentation": {
+          "source": {
+            "tracks": [
+              {
+                "type": "video",
+                "start": 0,
+                "end": 1.9996666666666667
+              },
+              {
+                "type": "audio",
+                "index": 1,
+                "start": 0.0003333333333333313,
+                "end": 2.005
+              },
+              {
+                "type": "audio",
+                "index": 2,
+                "start": 0.0003333333333333313,
+                "end": 2.005
+              }
+            ],
+            "start": 0,
+            "end": 2.005
+          },
+          "output": {
+            "tracks": [
+              {
+                "type": "video",
+                "start": 0,
+                "end": 1.9999796666666667
+              },
+              {
+                "type": "audio",
+                "index": 1,
+                "start": 3.3333333333135373e-7,
+                "end": 2.004667
+              },
+              {
+                "type": "audio",
+                "index": 2,
+                "start": 3.3333333333135373e-7,
+                "end": 2.004667
+              }
+            ],
+            "start": 0,
+            "end": 2.004667
+          },
+          "copiedAudio": [
+            {
+              "sourceStreamIndex": 1,
+              "outputStreamIndex": 1,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033300000000013874,
+              "maximumDtsErrorSeconds": 0.00033300000000013874,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            },
+            {
+              "sourceStreamIndex": 2,
+              "outputStreamIndex": 2,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033300000000013874,
+              "maximumDtsErrorSeconds": 0.00033300000000013874,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ],
+          "clockToleranceSeconds": 0.001,
+          "durationToleranceSeconds": 0.06,
+          "sourceHeaderEndErrorSeconds": 0.016000000000000014,
+          "outputHeaderEndErrorSeconds": 0.021332999999999824,
+          "rawFormatDurationDifferenceSeconds": 0.004999999999999893,
+          "sourceHeaderMeaning": "Matroska zero-origin segment duration",
+          "outputHeaderMeaning": "Fragmented MP4 presentation span"
+        },
+        "decodedAudio": {
+          "kind": "independent-decoded-audio",
+          "sourceCodec": "mpeg4",
+          "sourceDecodedAudioHashes": [
+            "SHA256=ffcfd18eb4cb19d65b15a64d76e4c1bfee98df26e37936155d782c65a53f31e6",
+            "SHA256=1fb6be3ab284f598fd7668d42161b3472b817882e9d17de54079148f57177944"
+          ],
+          "outputDecodedAudioHashes": [
+            "SHA256=ffcfd18eb4cb19d65b15a64d76e4c1bfee98df26e37936155d782c65a53f31e6",
+            "SHA256=1fb6be3ab284f598fd7668d42161b3472b817882e9d17de54079148f57177944"
+          ]
+        }
+      },
+      {
+        "sourceCodec": "hevc",
+        "outputCodec": "mpeg2video",
+        "sourceBytes": 562503,
+        "outputBytes": 652521,
+        "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+        "frames": "96",
+        "ssim": 0.985963,
+        "audioPacketHashes": [
+          "SHA256=7a446514eb4f759e62869241d571a851f501b87fe3fdcf520a1d2ba624a11409",
+          "SHA256=3104ffe16b8e753136b37c8934ffa2fd3a84ce08aa8da976b711a2020778670d"
+        ],
+        "metrics": {
+          "inputBytes": 562503,
+          "outputBytes": 652521,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 175105,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 175105,
+          "elapsedMs": 602.8949999958277,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "presentation": {
+          "source": {
+            "tracks": [
+              {
+                "type": "video",
+                "start": 0.083,
+                "end": 4.082666666666667
+              },
+              {
+                "type": "audio",
+                "index": 1,
+                "start": 0.08333333333333333,
+                "end": 4.093
+              },
+              {
+                "type": "audio",
+                "index": 2,
+                "start": 0.08333333333333333,
+                "end": 4.093
+              }
+            ],
+            "start": 0.083,
+            "end": 4.093
+          },
+          "output": {
+            "tracks": [
+              {
+                "type": "video",
+                "start": 0.083,
+                "end": 4.082979666666667
+              },
+              {
+                "type": "audio",
+                "index": 1,
+                "start": 0.08300033333333333,
+                "end": 4.093
+              },
+              {
+                "type": "audio",
+                "index": 2,
+                "start": 0.08300033333333333,
+                "end": 4.093
+              }
+            ],
+            "start": 0.083,
+            "end": 4.093
+          },
+          "copiedAudio": [
+            {
+              "sourceStreamIndex": 1,
+              "outputStreamIndex": 1,
+              "packets": 189,
+              "maximumPtsErrorSeconds": 0.0003330000000003608,
+              "maximumDtsErrorSeconds": 0.0003330000000003608,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            },
+            {
+              "sourceStreamIndex": 2,
+              "outputStreamIndex": 2,
+              "packets": 189,
+              "maximumPtsErrorSeconds": 0.0003330000000003608,
+              "maximumDtsErrorSeconds": 0.0003330000000003608,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ],
+          "clockToleranceSeconds": 0.001,
+          "durationToleranceSeconds": 0.06,
+          "sourceHeaderEndErrorSeconds": 0.01100000000000012,
+          "outputHeaderEndErrorSeconds": 0,
+          "rawFormatDurationDifferenceSeconds": 0.0940000000000003,
+          "sourceHeaderMeaning": "Matroska zero-origin segment duration",
+          "outputHeaderMeaning": "Fragmented MP4 presentation span"
+        },
+        "decodedAudio": {
+          "kind": "independent-decoded-audio",
+          "sourceCodec": "hevc",
+          "sourceDecodedAudioHashes": [
+            "SHA256=ef38c5df240c0e629ecc2372ce75594fb900dd0380af838167bb058045c2c811",
+            "SHA256=cbe0debdb22a19151594660d03eef15b2be2cb23cff221042022e816d9912cdf"
+          ],
+          "outputDecodedAudioHashes": [
+            "SHA256=ef38c5df240c0e629ecc2372ce75594fb900dd0380af838167bb058045c2c811",
+            "SHA256=cbe0debdb22a19151594660d03eef15b2be2cb23cff221042022e816d9912cdf"
+          ]
+        }
+      }
+    ],
+    "safety": [
+      {
+        "kind": "direct-write-failure",
+        "status": "passed",
+        "metrics": {
+          "inputBytes": 487007,
+          "outputBytes": 0,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 3464,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 224863,
+          "maxWriteChunkBytes": 0,
+          "elapsedMs": 383.4050000011921,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33820708,
+          "activeWorkerCount": 6,
+          "imageWorkingBytes": 0
+        },
+        "partialBytes": []
+      },
+      {
+        "kind": "cancel-after-direct-output",
+        "status": "passed",
+        "metrics": {
+          "inputBytes": 1048576,
+          "outputBytes": 471427,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 122415,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 122415,
+          "elapsedMs": 465.57499999552965,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33820708,
+          "activeWorkerCount": 6,
+          "imageWorkingBytes": 0
+        },
+        "partialBytes": [],
+        "beforeCancel": {
+          "inputBytes": 524288,
+          "outputBytes": 232344,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 116098,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 116098,
+          "elapsedMs": 383.29999999701977,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33820708,
+          "activeWorkerCount": 6,
+          "imageWorkingBytes": 0
+        },
+        "terminalState": "cancelled"
+      }
+    ],
+    "chromeRoots": [
+      38488
+    ]
+  },
+  "durationDiagnosis": {
+    "evidence": "evidence/mpeg2-duration-semantics-2026-10-05.json",
+    "historicalRawFailureUnchanged": true,
+    "nativeMuxerChanged": false,
+    "rawDifferenceRetained": true,
+    "headerEndpointToleranceSeconds": 0.06,
+    "allActualTrackClockToleranceSeconds": 0.001,
+    "reason": "Unlike scalar origins were compared. Both headers now independently checked against actual per-track presentation edges; full packet clocks/trim/counts, complete decoded PCM and every frame remain required.",
+    "negativeControls": "Wrong headers, shifted/lost frames, lost priming/PCM, missing data and unbounded histories reject."
+  },
+  "protected": {
+    "requestedRuns": 3,
+    "attemptedRuns": 1,
+    "originalBytes": 2958573265,
+    "originalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "inputSettings": {
+      "width": 1920,
+      "height": 804,
+      "fps": 24,
+      "controls": "default unchanged"
+    },
+    "diagnosticOnly": false,
+    "sourceHashes": {
+      "scripts/mpeg2-protected-memory.mjs": "f6c22ffcfe6762a0c21f44256c55ddd9224f530bbb36e0265bd8acbcdfb9fc32",
+      "scripts/stage-mpeg2-large-candidate.mjs": "ab8aeee26990450a837e539463e8661c68bb28b7a07dc99834eddd567274facd",
+      "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+      "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+      "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+      "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+      "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+      "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+      "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+    },
+    "blankBaseline": {
+      "stable": true,
+      "privateBytes": 265129984,
+      "spreadBytes": 2080768,
+      "rssBytes": 566321152,
+      "firstTimestamp": "2026-10-05T11:51:25.892Z",
+      "lastTimestamp": "2026-10-05T11:51:31.849Z",
+      "sampleCount": 10,
+      "minimumElapsedMs": 8000
+    },
+    "loadedIdle": {
+      "stable": true,
+      "privateBytes": 329048064,
+      "spreadBytes": 28672,
+      "rssBytes": 638328832,
+      "firstTimestamp": "2026-10-05T11:51:35.664Z",
+      "lastTimestamp": "2026-10-05T11:51:41.727Z",
+      "sampleCount": 7,
+      "minimumElapsedMs": 8000
+    },
+    "metrics": {
+      "inputBytes": 353857,
+      "outputBytes": 0,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 0,
+      "pendingOperations": 0,
+      "peakPendingOperations": 0,
+      "maxReadChunkBytes": 196608,
+      "maxWriteChunkBytes": 0,
+      "elapsedMs": 495.55000000447035,
+      "wasmMemoryBytes": 33554432,
+      "peakWasmMemoryBytes": 33554432,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 33554436,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "scratchBytes": 0
+    },
+    "attemptedHeapEndBytes": 34701056,
+    "actualWasmMemoryLimits": [
+      {
+        "imported": true,
+        "initialPages": 512,
+        "maximumPages": 512,
+        "shared": true
+      }
+    ],
+    "nativePeak": {
+      "sequence": 238,
+      "timestamp": "2026-10-05T11:51:43.6733543Z",
+      "phase": "conversion-1",
+      "privateBytes": 473137152,
+      "rssBytes": 843833344,
+      "nativeElapsedMs": 12.250200000000001,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 16616,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.3725542Z",
+          "creationFileTime": "134356746773725542",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 175980544,
+          "rssBytes": 231481344
+        },
+        {
+          "pid": 22412,
+          "parentPid": 30356,
+          "createdAt": "2026-10-05T11:51:42.7284962Z",
+          "creationFileTime": "134356747027284962",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 3727360,
+          "rssBytes": 19193856
+        },
+        {
+          "pid": 28000,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.3106182Z",
+          "creationFileTime": "134356746773106182",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 42565632,
+          "rssBytes": 84680704
+        },
+        {
+          "pid": 30356,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:42.6838099Z",
+          "creationFileTime": "134356747026838099",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 3342336,
+          "rssBytes": 16318464
+        },
+        {
+          "pid": 31968,
+          "parentPid": 32872,
+          "createdAt": "2026-10-05T11:51:17.0538244Z",
+          "creationFileTime": "134356746770538244",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 49528832,
+          "rssBytes": 147288064
+        },
+        {
+          "pid": 32180,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.2331867Z",
+          "creationFileTime": "134356746772331867",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14192640,
+          "rssBytes": 41611264
+        },
+        {
+          "pid": 34208,
+          "parentPid": 22412,
+          "createdAt": "2026-10-05T11:51:42.7478122Z",
+          "creationFileTime": "134356747027478122",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 3125248,
+          "rssBytes": 15413248
+        },
+        {
+          "pid": 34448,
+          "parentPid": 30356,
+          "createdAt": "2026-10-05T11:51:42.7058612Z",
+          "creationFileTime": "134356747027058612",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 3112960,
+          "rssBytes": 15405056
+        },
+        {
+          "pid": 38472,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:32.3570151Z",
+          "creationFileTime": "134356746923570151",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14659584,
+          "rssBytes": 31039488
+        },
+        {
+          "pid": 40580,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.2270529Z",
+          "creationFileTime": "134356746772270529",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 132194304,
+          "rssBytes": 170270720
+        },
+        {
+          "pid": 40852,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.2631985Z",
+          "creationFileTime": "134356746772631985",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8060928,
+          "rssBytes": 17936384
+        },
+        {
+          "pid": 41580,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.0983214Z",
+          "creationFileTime": "134356746770983214",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2654208,
+          "rssBytes": 10334208
+        },
+        {
+          "pid": 42220,
+          "parentPid": 31968,
+          "createdAt": "2026-10-05T11:51:17.6519860Z",
+          "creationFileTime": "134356746776519860",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 19992576,
+          "rssBytes": 42860544
+        }
+      ]
+    },
+    "cimPeakPrivateBytes": 474566656,
+    "incrementalPrivateMiB": 199.734375,
+    "validNativeSamples": 19,
+    "unavailableNativeSamples": 0,
+    "failureCaller": "av_refstruct_pool_get -> alloc_frame",
+    "nativeObserverError": null,
+    "forbiddenRequests": [],
+    "outputValidated": false
+  },
+  "cleanup": {
+    "protected": {
+      "mediaProfileRuntimeRemoved": true,
+      "generatedDistRestored": true,
+      "protectedFixtureUnchanged": true,
+      "observerStopped": true,
+      "sampledChromeRootStopped": true
+    },
+    "ownedPids": {
+      "chrome": 31968,
+      "server": 26192,
+      "observer": 6168
+    },
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-large-runtime-ueOQ7h",
+    "independentChecksPending": false,
+    "independentlyVerified": {
+      "smallChromeRootAbsent": 38488,
+      "allOwnedPidsAbsent": true,
+      "peakUpdaterDescendantsAbsent": [
+        22412,
+        30356,
+        34208,
+        34448
+      ],
+      "runtimeAbsent": true,
+      "generatedScratchRemaining": [],
+      "publishedAssetsRestored": {
+        "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+        "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+        "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+        "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+        "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+        "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+      },
+      "protectedPostBytes": 2958573265,
+      "protectedPostSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "hostedArtifactsRemaining": 0
+    }
+  },
+  "nextAction": {
+    "noUnchangedFullRetry": true,
+    "sourcePins": {
+      "hevcRefs": "340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e",
+      "hevcDecoder": "d6c12610d92a8d8e27bae984172ce1d0f13f8eb16d5998eb58cc25b2fc690974",
+      "refstruct": "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"
+    },
+    "possiblePools": [
+      "HEVC tab_mvf_pool",
+      "HEVC rpl_tab_pool"
+    ],
+    "actualFailingPool": null,
+    "liveAuxiliaryBytes": null,
+    "idleAuxiliaryBytes": null,
+    "meaning": "Normal bounded stack already confirms auxiliary path. Measure pool size/live-versus-idle allocation before choosing an optimization; do not drop needed references, alter decoder algorithms, raise heap or claim attempted-end delta is a measured saving."
+  },
+  "validatorVersion": [
+    "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+    "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers"
+  ]
+}

@@ -6,6 +6,7 @@ import { mkdir, mkdtemp, open, readFile, rm, stat, writeFile } from "node:fs/pro
 import path from "node:path";
 import { promisify } from "node:util";
 import { validateCopiedAudioTiming } from "../../scripts/lib/copied-audio-timing.mjs";
+import { validateSmallMatroskaMp4Timeline } from "../../scripts/lib/small-matroska-mp4-timeline.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
@@ -381,7 +382,17 @@ for (const adapter of adapters) {
         before.streams.filter((s) => s.codec_type === "audio").map((s) => s.index), audio.map((s) => s.index));
       rows.push({ kind: "copied-audio-timing-passed", sourceCodec: adapter.sourceCodec, tracks: copiedAudioTiming });
       expect(outputDecodedAudioHashes, "Preserve complete decoded audible sample content and exact trim").toEqual(sourceDecodedAudioHashes);
-      expect(Math.abs(Number(after.format.duration) - Number(before.format.duration))).toBeLessThan(0.06);
+      // Retain raw duration scalars above, but do not compare unlike origins:
+      // Matroska Segment Duration versus MP4's fragment-derived stream span.
+      // Require every actual track start/end within 1ms, exact decoded audio,
+      // and BOTH headers independently consistent at the original 60ms.
+      const presentationTimeline = validateSmallMatroskaMp4Timeline({
+        sourceProbe: before, outputProbe: after, sourceFrames: sourceFrameTimes, outputFrames: outputFrameTimes,
+        sourcePackets: sourceAudioTimeline, outputPackets: outputAudioTimeline,
+        sourceDecodedAudioHashes, outputDecodedAudioHashes,
+      });
+      rows.push({ kind: "independent-presentation-timeline-passed", sourceCodec: adapter.sourceCodec,
+        presentationTimeline });
       expect(outputFrameTimes).toHaveLength(sourceFrameTimes.length);
       for (let index = 0; index < sourceFrameTimes.length; index++) {
         expect(Number.isFinite(outputFrameTimes[index])).toBe(true);

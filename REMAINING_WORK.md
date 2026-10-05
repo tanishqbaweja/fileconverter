@@ -7,7 +7,52 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Latest compiled AAC priming fix: audio passes, HEVC duration still fails.**
+**Latest strict small timeline gate passes; full original still fails auxiliary heap allocation.**
+Investigated the retained94ms scalar mismatch against exact pinned FFmpeg
+8.1.2 sources AND the actual independent FFprobe revision7e3781e3ca. Matroska
+reads zero-origin Segment Duration directly; fragmented MOV invalidates mvhd
+duration and the generic demuxer estimates stream end minus start. In this
+genuine HEVC fixture both actual audio endpoints are4.093seconds and first
+videoPTS0.083seconds. Sourceheader4.104 has11ms endpoint error; outputheader
+span4.010 plusstart0.083 exactly reaches4.093. No94ms content loss exists.
+Historical raw failure/threshold/data stay frozen; no output-clock/header
+rewriting or changed native artifact. Added independent bounded CFR/AAC
+timeline validator: every video PTS and actual per-track audible start/end
+<=1ms, exact packet clocks/counts/trim/full decoded PCM, and **BOTH** header
+endpoints independently within the original60ms. Wrong headers, shifted or
+lost frames, changed PCM/priming, unknowns and excessive histories reject.
+This corrects unlike scalar definitions rather than increasing a tolerance.
+`evidence/mpeg2-duration-semantics-2026-10-05.json` retains proper per-track
+first/final vectors; initial source-only units using global edge ordering
+failed, corrected without changing data or adding a native conversion.
+
+One changed realChrome four-case suite on SAME compiled37302858907 artifact
+**4/4passed20.1s**: both genuine48/96-frame MPEG2 outputs, exact bothAAC PCM,
+art/tags/chapters/quality/actualtiming, realwritefailure/cancel cleanup.
+Only then one unchanged full test.mkv1920x804/24fps/defaultcontrols/fixed32
+run: **FAILED**,353857input/zerooutput, attemptedheapend34,701,056bytes versus
+33,554,432 limit. Normal boundedstack av_refstruct_pool_get->alloc_frame,
+HEVC auxiliary path; no further identical stack diagnostic needed. Three
+repeats requested/one attempted, no validated output. EARLYblank265129984,
+loaded329048064, nativepeak473137152/CIMpeak474566656/increment199.734375MiB,
+19valid/zero unavailable native samples are **incomplete diagnostics**, not
+memory acceptance. Updater descendants and unknown process types counted.
+Allfivecleanupflags/sourceprepost exact; Chrome31968/server26192/observer6168,
+smallChrome38488 and four observed updater descendants independently absent;
+runtimeueOQ7h and generatedscratch absent, sixassets restored byte-exact.
+Hosted373028 artifacts remainAPIzero; no new build/Docker/source archive.
+Frozenactualsources/manifest/rawhashes/timing/PCM/safety/fullpeak breakdown:
+`evidence/mpeg2-timeline-passed-protected-auxiliary-oom-2026-10-05.json`.
+Source audit identifies HEVCtab_mvf_pool andrpl_tab_pool inrefs.c; actual
+failingpool/livebytes/idlebytes **unknown**, no speculative cache-saving or
+speed claim. Next bounded measurement must distinguish those pools before
+an optimization; do not drop needed refs, alter codec algorithms/settings,
+resize primary source, raiseheap or repeat unchangedfullconversion.
+Current-source **414/414units**, ten focused guards, scopedlint/TypeScript,
+six pinned timing-source checks and diffcheck pass. Publicengines/registry
+unchanged; complete originalgoal stillopen.
+
+**Earlier raw-scalar gate — compiled AAC priming fix passed audio but failed duration comparison.**
 Non-Docker run37302858907/job111739487435 at a5e0b4459f762f529fa61049408ef696735488ca
 succeeded332s job/291s native compile (not conversion speed). All12 native
 sources/helper/artifacts and actual shared512/512pages verified; allocator

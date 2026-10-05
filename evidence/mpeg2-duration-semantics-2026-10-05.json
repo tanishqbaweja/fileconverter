@@ -1,0 +1,721 @@
+{
+  "recordedAt": "2026-10-05",
+  "scope": "Source-pinned timing-semantic diagnosis from retained genuine browser evidence. Boundary vectors only, not full-packet, browser, memory or route acceptance.",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "rawEvidence": {
+    "file": "output/playwright/2026-10-05T11-34-18.491Z-mpeg2-artwork-metadata-37302858907-artwork.json",
+    "sha256": "52473596db940c6410908602a6c8878b48dc2ae4d4cf543d4aaf6a15ae7258ba"
+  },
+  "sourcePins": {
+    "matroskadec": "45261fc3f0bc3f3cce0395966eeadfdacc4779d97fb4b31d2ae490a2ce99e093",
+    "mov": "7ed52b0e5932026058a55483e72880eb592cdef048b0cec15e9ea7e922ad0347",
+    "demux": "463c59c8a2ef0382507a7880a17e73badd498a3e2e546ee6d8d7abe3bb4a1b0c"
+  },
+  "cause": "Matroska header retains zero-origin segment endpoint; fragmented MP4 resets mvhd duration to unknown and independently estimates stream end minus start. Actual per-track packet/frame/PCM/trim checks remain mandatory.",
+  "nativeValidatorSourcePins": {
+    "revision": "7e3781e3ca",
+    "matroskadec": "331596532337bd5312c40f66f60a7fd10310b40907f2ed23295d7c0a73463dad",
+    "mov": "cc303eaed1b0bdbd44260c3897aad64b43f0af5e4ae2d5ffa774978b518e19bd",
+    "demux": "204a43fc0ea584e521b329d2ee8720c8015e557f97f7565084edb29f4088ef95"
+  },
+  "historicalRawGateFailureRetained": true,
+  "clockToleranceSeconds": 0.001,
+  "durationToleranceSeconds": 0.06,
+  "cases": [
+    {
+      "sourceCodec": "mpeg4",
+      "sourceProbe": {
+        "format": {
+          "format_name": "matroska,webm",
+          "start_time": "0.000000",
+          "duration": "2.021000"
+        },
+        "streams": [
+          {
+            "index": 0,
+            "codec_type": "video",
+            "codec_name": "mpeg4",
+            "avg_frame_rate": "24/1",
+            "nb_read_frames": "48",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 1,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "94",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 2,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "94",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 3,
+            "codec_type": "video",
+            "codec_name": "png",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "1",
+            "disposition": {
+              "attached_pic": 1
+            }
+          }
+        ]
+      },
+      "outputProbe": {
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "start_time": "0.000000",
+          "duration": "2.026000"
+        },
+        "streams": [
+          {
+            "index": 0,
+            "codec_type": "video",
+            "codec_name": "mpeg2video",
+            "avg_frame_rate": "24/1",
+            "nb_read_frames": "48",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 1,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "94",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 2,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "94",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 4,
+            "codec_type": "video",
+            "codec_name": "png",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "1",
+            "disposition": {
+              "attached_pic": 1
+            }
+          }
+        ]
+      },
+      "sourceFrames": [
+        0,
+        0.042,
+        0.083,
+        0.125,
+        0.167,
+        0.208,
+        0.25,
+        0.292,
+        0.333,
+        0.375,
+        0.417,
+        0.458,
+        0.5,
+        0.542,
+        0.583,
+        0.625,
+        0.667,
+        0.708,
+        0.75,
+        0.792,
+        0.833,
+        0.875,
+        0.917,
+        0.958,
+        1,
+        1.042,
+        1.083,
+        1.125,
+        1.167,
+        1.208,
+        1.25,
+        1.292,
+        1.333,
+        1.375,
+        1.417,
+        1.458,
+        1.5,
+        1.542,
+        1.583,
+        1.625,
+        1.667,
+        1.708,
+        1.75,
+        1.792,
+        1.833,
+        1.875,
+        1.917,
+        1.958
+      ],
+      "outputFrames": [
+        0,
+        0.041688,
+        0.083312,
+        0.125,
+        0.166688,
+        0.208313,
+        0.25,
+        0.291687,
+        0.333313,
+        0.375,
+        0.416687,
+        0.458313,
+        0.5,
+        0.541687,
+        0.583313,
+        0.625,
+        0.666687,
+        0.708313,
+        0.75,
+        0.791687,
+        0.833313,
+        0.875,
+        0.916687,
+        0.958313,
+        1,
+        1.041688,
+        1.083313,
+        1.125,
+        1.166688,
+        1.208313,
+        1.25,
+        1.291688,
+        1.333313,
+        1.375,
+        1.416688,
+        1.458313,
+        1.5,
+        1.541688,
+        1.583313,
+        1.625,
+        1.666688,
+        1.708313,
+        1.75,
+        1.791688,
+        1.833313,
+        1.875,
+        1.916688,
+        1.958313
+      ],
+      "sourcePackets": [
+        {
+          "stream_index": 1,
+          "pts_time": "-0.021000",
+          "dts_time": "-0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 1,
+          "pts_time": "1.984000",
+          "dts_time": "1.984000",
+          "duration_time": "0.021000"
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "-0.021000",
+          "dts_time": "-0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "1.984000",
+          "dts_time": "1.984000",
+          "duration_time": "0.021000"
+        }
+      ],
+      "outputPackets": [
+        {
+          "stream_index": 1,
+          "pts_time": "-0.021333",
+          "dts_time": "-0.021333",
+          "duration_time": "0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 1,
+          "pts_time": "1.983667",
+          "dts_time": "1.983667",
+          "duration_time": "0.021000"
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "-0.021333",
+          "dts_time": "-0.021333",
+          "duration_time": "0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "1.983667",
+          "dts_time": "1.983667",
+          "duration_time": "0.021000"
+        }
+      ],
+      "sourceDecodedAudioHashes": [
+        "SHA256=ffcfd18eb4cb19d65b15a64d76e4c1bfee98df26e37936155d782c65a53f31e6",
+        "SHA256=1fb6be3ab284f598fd7668d42161b3472b817882e9d17de54079148f57177944"
+      ],
+      "outputDecodedAudioHashes": [
+        "SHA256=ffcfd18eb4cb19d65b15a64d76e4c1bfee98df26e37936155d782c65a53f31e6",
+        "SHA256=1fb6be3ab284f598fd7668d42161b3472b817882e9d17de54079148f57177944"
+      ]
+    },
+    {
+      "sourceCodec": "hevc",
+      "sourceProbe": {
+        "format": {
+          "format_name": "matroska,webm",
+          "start_time": "0.083000",
+          "duration": "4.104000"
+        },
+        "streams": [
+          {
+            "index": 0,
+            "codec_type": "video",
+            "codec_name": "hevc",
+            "avg_frame_rate": "24/1",
+            "nb_read_frames": "96",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 1,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "188",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 2,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "188",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 3,
+            "codec_type": "video",
+            "codec_name": "png",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "1",
+            "disposition": {
+              "attached_pic": 1
+            }
+          }
+        ]
+      },
+      "outputProbe": {
+        "format": {
+          "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+          "start_time": "0.083000",
+          "duration": "4.010000"
+        },
+        "streams": [
+          {
+            "index": 0,
+            "codec_type": "video",
+            "codec_name": "mpeg2video",
+            "avg_frame_rate": "24/1",
+            "nb_read_frames": "96",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 1,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "188",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 2,
+            "codec_type": "audio",
+            "codec_name": "aac",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "188",
+            "sample_rate": "48000",
+            "disposition": {
+              "attached_pic": 0
+            }
+          },
+          {
+            "index": 4,
+            "codec_type": "video",
+            "codec_name": "png",
+            "avg_frame_rate": "0/0",
+            "nb_read_frames": "1",
+            "disposition": {
+              "attached_pic": 1
+            }
+          }
+        ]
+      },
+      "sourceFrames": [
+        0.083,
+        0.125,
+        0.166,
+        0.208,
+        0.25,
+        0.291,
+        0.333,
+        0.375,
+        0.416,
+        0.458,
+        0.5,
+        0.541,
+        0.583,
+        0.625,
+        0.666,
+        0.708,
+        0.75,
+        0.791,
+        0.833,
+        0.875,
+        0.916,
+        0.958,
+        1,
+        1.041,
+        1.083,
+        1.125,
+        1.166,
+        1.208,
+        1.25,
+        1.291,
+        1.333,
+        1.375,
+        1.416,
+        1.458,
+        1.5,
+        1.541,
+        1.583,
+        1.625,
+        1.666,
+        1.708,
+        1.75,
+        1.791,
+        1.833,
+        1.875,
+        1.916,
+        1.958,
+        2,
+        2.041,
+        2.083,
+        2.125,
+        2.166,
+        2.208,
+        2.25,
+        2.291,
+        2.333,
+        2.375,
+        2.416,
+        2.458,
+        2.5,
+        2.541,
+        2.583,
+        2.625,
+        2.666,
+        2.708,
+        2.75,
+        2.791,
+        2.833,
+        2.875,
+        2.916,
+        2.958,
+        3,
+        3.041,
+        3.083,
+        3.125,
+        3.166,
+        3.208,
+        3.25,
+        3.291,
+        3.333,
+        3.375,
+        3.416,
+        3.458,
+        3.5,
+        3.541,
+        3.583,
+        3.625,
+        3.666,
+        3.708,
+        3.75,
+        3.791,
+        3.833,
+        3.875,
+        3.916,
+        3.958,
+        4,
+        4.041
+      ],
+      "outputFrames": [
+        0.083,
+        0.124688,
+        0.166313,
+        0.208,
+        0.249688,
+        0.291313,
+        0.333,
+        0.374688,
+        0.416313,
+        0.458,
+        0.499688,
+        0.541312,
+        0.583,
+        0.624688,
+        0.666312,
+        0.708,
+        0.749688,
+        0.791312,
+        0.833,
+        0.874688,
+        0.916312,
+        0.958,
+        0.999688,
+        1.041313,
+        1.083,
+        1.124688,
+        1.166313,
+        1.208,
+        1.249688,
+        1.291313,
+        1.333,
+        1.374688,
+        1.416313,
+        1.458,
+        1.499688,
+        1.541313,
+        1.583,
+        1.624688,
+        1.666313,
+        1.708,
+        1.749688,
+        1.791313,
+        1.833,
+        1.874688,
+        1.916313,
+        1.958,
+        1.999688,
+        2.041313,
+        2.083,
+        2.124687,
+        2.166313,
+        2.208,
+        2.249687,
+        2.291313,
+        2.333,
+        2.374687,
+        2.416313,
+        2.458,
+        2.499687,
+        2.541313,
+        2.583,
+        2.624687,
+        2.666313,
+        2.708,
+        2.749687,
+        2.791313,
+        2.833,
+        2.874687,
+        2.916313,
+        2.958,
+        2.999688,
+        3.041313,
+        3.083,
+        3.124688,
+        3.166313,
+        3.208,
+        3.249688,
+        3.291313,
+        3.333,
+        3.374688,
+        3.416313,
+        3.458,
+        3.499688,
+        3.541313,
+        3.583,
+        3.624688,
+        3.666313,
+        3.708,
+        3.749688,
+        3.791313,
+        3.833,
+        3.874688,
+        3.916313,
+        3.958,
+        3.999688,
+        4.041313
+      ],
+      "sourcePackets": [
+        {
+          "stream_index": 1,
+          "pts_time": "0.062000",
+          "dts_time": "0.062000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 1,
+          "pts_time": "4.072000",
+          "dts_time": "4.072000",
+          "duration_time": "0.021000"
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "0.062000",
+          "dts_time": "0.062000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "4.072000",
+          "dts_time": "4.072000",
+          "duration_time": "0.021000"
+        }
+      ],
+      "outputPackets": [
+        {
+          "stream_index": 1,
+          "pts_time": "0.061667",
+          "dts_time": "0.061667",
+          "duration_time": "0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 1,
+          "pts_time": "4.071667",
+          "dts_time": "4.071667",
+          "duration_time": "0.021333"
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "0.061667",
+          "dts_time": "0.061667",
+          "duration_time": "0.021000",
+          "side_data_list": [
+            {
+              "side_data_type": "Skip Samples",
+              "skip_samples": 1024,
+              "discard_padding": 0,
+              "skip_reason": 0,
+              "discard_reason": 0
+            }
+          ]
+        },
+        {
+          "stream_index": 2,
+          "pts_time": "4.071667",
+          "dts_time": "4.071667",
+          "duration_time": "0.021333"
+        }
+      ],
+      "sourceDecodedAudioHashes": [
+        "SHA256=ef38c5df240c0e629ecc2372ce75594fb900dd0380af838167bb058045c2c811",
+        "SHA256=cbe0debdb22a19151594660d03eef15b2be2cb23cff221042022e816d9912cdf"
+      ],
+      "outputDecodedAudioHashes": [
+        "SHA256=ef38c5df240c0e629ecc2372ce75594fb900dd0380af838167bb058045c2c811",
+        "SHA256=cbe0debdb22a19151594660d03eef15b2be2cb23cff221042022e816d9912cdf"
+      ]
+    }
+  ]
+}

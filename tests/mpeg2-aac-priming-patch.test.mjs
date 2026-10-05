@@ -30,7 +30,12 @@ test("AAC patch is pinned, bundled and tested against decoded audio before uncha
   assert.match(browser, /"pcm_s32le", "-f", "streamhash"/);
   assert.match(browser, /expect\(outputDecodedAudioHashes[\s\S]*?toEqual\(sourceDecodedAudioHashes\)/);
   assert.match(browser, /validateCopiedAudioTiming\(sourceAudioTimeline, outputAudioTimeline/);
-  assert.match(browser, /Math.abs\(Number\(after.format.duration\) - Number\(before.format.duration\)\)\)\.toBeLessThan\(0.06\)/);
+  assert.match(browser, /validateSmallMatroskaMp4Timeline\(/);
+  const timeline = await source("scripts/lib/small-matroska-mp4-timeline.mjs");
+  assert.match(timeline, /CLOCK_SECONDS = 0.001, DURATION_SECONDS = 0.060/);
+  assert.match(timeline, /sourceHeaderEndErrorSeconds < DURATION_SECONDS/);
+  assert.match(timeline, /outputHeaderEndErrorSeconds < DURATION_SECONDS/);
+  assert.match(timeline, /Complete decoded audio changed/);
   assert.match(browser, /toBeLessThanOrEqual\(0.001\)/);
 });
 
