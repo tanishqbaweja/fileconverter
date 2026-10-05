@@ -7,7 +7,39 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Measured encoder-accessory uncaching candidate implemented; native gate pending.**
+**Encoder-accessory candidate actually tested: small4 pass, full original still OOM.**
+Non-Docker37354667903 at6715eab passed (246s build/295s job, NOT conversion
+speed). Mandatory compiled lifecycle smoke passed; all17 source/helper/artifact
+hashes and actual fixed32MiB/shared512pages/StackCheck2 verified. Real Chrome154
+passed4/4 small browser tests in27.7s:48 MPEG4-input and96 HEVC-input MPEG2 frames,
+SSIM.992146/.985963, <=1ms PTS, exact compressed AAC/artwork and complete decoded
+PCM/priming, tags/chapters, full independent video/audio decode. Both output
+SHA/size are byte-identical to the prior core (321692/652521); no speed AB claim.
+Cancellation after349012 outputbytes reached732122 terminalbytes and then no
+partial file; write-failure cleanup passed. All four measured actual stack bounds
+are guarded256KiB; they are reserves, not stack high-water or memory acceptance.
+
+Full original2958573265-byte1920x804/default-settings test.mkv still failed at
+heap end33902168,353857 input/zero output, normal alloc_frame/av_refstruct_pool_get
+stack.3 repeats requested/only1 failed attempt; no unchanged retry. Actual cache
+retention after this patch and exact failing auxiliary pool identity are NULL,
+not inferred from the previous instrumented layout. EARLYblank267337728 /
+loaded334168064 /native473124864 =>196.25390625MiB INCOMPLETE/not acceptance;
+14valid/0unavailable, every unknown/GPU/utility/updater descendant included.
+All5finally flags; independent20 full +21 small observed/owned PIDs absent,
+six dist assets restored, adapters/runtime gone, original size/SHA unchanged.
+Hosted11362984911/11363808426 deleted/API0; no source bundle download. Converted
+small files/fixtures/profiles removed by finally, no new large output created.
+Frozen evidence/mpeg2-uncached-accessories-protected-failure-2026-10-05.json binds
+both raw reports and actual sources. Next scoped experiment: smaller private
+AVIO buffers (256KiB each currently524288;64KiB each131072,393216 fewer requested
+bytes). That is not proven contiguous/later fit or performance; codec, quality,
+source, live refs, heap and acceptance constraints stay unchanged. Goal open.
+Current regression437/437 units; scoped zero-warning lint, TypeScript, Bash
+syntax, exact source-only policy reversal and diff checks pass. No build/browser
+job remains live from this cycle; no speed A/B or original-file success claim.
+
+**Measured encoder-accessory source/lifecycle implementation (executed above).**
 Private patch changes only idle-cache admission on final reference return and
 the MPEG auxiliary pool flag selector. Only encoding/MPEG2/thread_count1 gets
 reserved bit30; default, decoder and other-encoder pools keep stock caching.
@@ -27,9 +59,8 @@ and actual native-source hashes; patch/smoke retained in corresponding sources.
 Workflow additionally retains the smoke JSON; historical compiled hashes stay
 unchanged and only exact reversal of both unit-artifact paths recovers the old
 workflow. Negative guards reject missing/duplicate paths or any other change.
-Full-original contiguous fit, subsequent allocation fit, fidelity and speed
-remain UNPROVEN until the changed uninstrumented core passes the small4 cases
-and original-file whole-tree gate. Do not promote public support yet.
+Small4 fidelity and compiled lifecycle are proven above; full-original fit and
+speed remain unproven/failed. Do not promote public support yet.
 Changed-source regression435/435 units and zero-warning scoped lint/Bash/diff
 checks pass. One old frozen-workflow guard rejected the extra artifact path;
 exact single-line reversal for that historical SHA now preserves the executed
