@@ -5,6 +5,56 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Specialist compiled; small fidelity passes; original still fails
+
+No-Docker run37367996146/job111957771738 at41e0384b1ad815a30487946b6d70fa587dbbe08b
+succeeded:279s build/329s job, NOT conversion timing. Actual19 source pins/three
+artifact hashes/compiled dlmalloc fingerprint and same-allocator lifecycle proof,
+fixed32MiB shared512/512 pages, StackCheck2/guarded256K C+Asyncify/64K AVIO verified.
+Actual selected decoders h263/hevc/mpeg4; broad/default nine-decoder module remains
+available and all public engines/registry unchanged. Static audit: new Wasm4856513
+vs7228748 bytes/code4435283 vs6695682/passive569 vs594/payload336065 vs400158.
+Actual stackEnd1822912/base2085056 vs1979984/2242128; boundary reduction157072 is
+NOT measured runtime heap saving, free-block capacity or complete-browser memory.
+ZERO import callbacks; only pure stack bounds inspected; heapBase remains NULL.
+
+Chrome154 small4/4 passed19.7s. Genuine48 MPEG4/96 HEVC -> MPEG2 frames, SSIM
+.992146/.985963, <=1ms actual PTS, exact AAC compressed bytes/full decoded PCM/
+priming/artwork/tags/chapters/full video+audio decode;321692/652521 output sizes
+and hashes byte-identical to wide allocator candidate.64K read/write/peakqueue,
+one pending write, actual guarded256K reserves (not stack high-water). Write
+failure/cancellation remove partial[]; cancel observed232344 -> terminal471427
+bytes, then zero queues/operations. Individual440.200/513.155ms timings and suite
+19.7s are NOT controlled same-input A/B or a public/stress acceptance result.
+
+ONE normal unchanged original2958573265-byte1920x804/default-settings test FAILED
+at requested heapend33783808, input222785/output0, stack dlmalloc alignment ->
+av_buffer_allocz/default_get_buffer2. Requested3 repeats stopped after first
+failure. Exact failed plane/codec context/cache retention/contiguous capacity NULL;
+old emmalloc diagnostics cannot be transferred. EARLY stable blank267624448,
+loaded316194816/native462700544/CIM462536704 =>186.0390625MiB INCOMPLETE, NOT
+primary acceptance, saving or speed.11 valid/0 unavailable native samples; all
+descendant/unknown/updater/GPU accounting retained. Smaller specialist did not
+solve fixed32MiB source fit. Do not repeat this unchanged candidate or infer that
+another decoder-only reduction will solve it. Next: bounded read-only exact
+frame-allocation/codec-context attribution before changing allocator/codec policy;
+preserve original dimensions/settings/quality/live references/fixed heap/gates.
+
+All5 finally flags true/no cleanup errors. Independent21 full observed/owned PIDs
+and22 small PIDs absent; six assets restored exactly; all new profiles/runtime/
+fixtures/adapters gone, original size/SHA unchanged. Only7 reusable small static
+tool files retained locally; no converted copy outside repository. Hosted artifact
+IDs11368414042/11368384228 deleted after verification/API0; source bundle never
+downloaded and temporary download ZIP absent. Frozen evidence/
+mpeg2-decoder-module-protected-failure-2026-10-06.json pins actual rawsmall341942/
+SHA486a6344...81344/full345112/SHAbc4e6316...cceb2 and read-only reducer/audit/
+selector sources. Full goal, M-04, repeats/scaling/speed/legal/integration remain
+open; no public promotion. Latest implementation41e0384 independently verified
+on origin/media-options; main not changed.
+Frozen-cycle regression456/456 unit tests and10 focused new/historical guards
+pass; TypeScript, scoped zero-warning ESLint, generated ledger and diff checks
+pass. No expensive failed conversion or native build repeated unchanged.
+
 ## 2026-10-06 — Measured static boundaries; additional decoder module implemented
 
 Read-only scripts/audit-mpeg2-static-layout.mjs validates actual static Wasm
