@@ -8,6 +8,9 @@ not the entire product specification.
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
 **Read-only auxiliary pool diagnostic implemented; native execution pending.**
+Remote branch media-options includes diagnostic source commit f6f4ae4. The
+non-Docker build workflow now also retains the small compiled-reader smoke
+JSON alongside its manifest, with a source guard checking this artifact path.
 Previous fullfailure normalstack confirms av_refstruct_pool_get/alloc_frame,
 but not actual pool/size/live/cache quantities. Added diagnostic-only getter
 to pinned8.1.2 libavutil/refstruct.cSHA d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f;

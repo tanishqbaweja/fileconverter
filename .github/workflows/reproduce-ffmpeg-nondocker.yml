@@ -172,6 +172,7 @@ jobs:
             work/mpeg2-candidate-output/*.wasm
             work/mpeg2-candidate-output/*.symbols
             work/mpeg2-candidate-output/build-manifest.json
+            work/mpeg2-candidate-output/refstruct-diagnostic-smoke.json
             work/mpeg2-candidate-output/config_components.h
             work/mpeg2-candidate-output/LICENSE.*
           if-no-files-found: error
