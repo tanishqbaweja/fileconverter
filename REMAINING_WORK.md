@@ -39,6 +39,14 @@ Current-source regression **400/400 units**, scoped lint, TypeScript and Bash
 syntax pass; pinned source-patch application/reversal passes. Independent
 post-cycle original checksum/size recheck matches exactly. Public source and
 published engines remain unchanged; no new supported route is claimed.
+Candidate/evidence pushed as `dea0e0ac7a9f1f2551fa1468d62cdace83a05fce`.
+Uninstrumented non-Docker **run37297749321**, job111722906711, is confirmed
+in native compilation from10:38:03UTC, diagnostic0. Follow this same handle;
+do not restart on observation expiry. Expected fresh local tool slot after
+success:`work/mpeg2-artwork-metadata-37297749321`. Verify all source/artifact
+hashes/actual shared512pages/newframeBufferPolicy, run strict small gate,
+then unchanged full original protected gate. Earlier small pass does not
+certify this changed allocator.
 
 **Current compiled fix/result:** same non-Docker run `37293968193` at
 `afa47d4` succeeded (350-second job/306-second native compile, not conversion
