@@ -7,7 +7,64 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Read-only auxiliary pool diagnostic implemented; native execution pending.**
+**Latest: compiled pool reader and full-original diagnostic measured. Route still fails.**
+Non-Docker run37331006755 at3a7cc234 succeeded after the recorded runner fix:
+243s compile /290s job, not conversion speed. Actual compiled reader passed
+all9 synthetic transitions, multireference/cache reuse/129-link cap/null pool.
+Downloaded7 small static tool files ONLY into work/mpeg2-artwork-metadata-37331006755.
+All14 native sources, helper and artifact hashes match; real Wasm import is
+shared512/512pages (fixed32MiB). Source archive was not downloaded. Hosted
+artifacts11354591463/11355006298 deleted; run API now returns zero artifacts.
+
+ONE genuine production-browser attempt on the unchanged2,958,573,265-byte
+test.mkv (SHA31f36695...9db34), original1920x804/settings/quality, failed:
+input353857/output0, attempted heap end34702496. No complete conversion or
+accepted profile. Early stable blank268255232, loaded309141504,
+native full-tree peak473718784, increment195.9453125MiB BEFORE fatal stop.
+This incomplete instrumented reading is NOT250MiB acceptance or a saving
+versus another session. All unknown/GPU/utility/updater descendants counted;
+19 valid native conversion samples, zero unavailable; frozen per-process peak.
+
+Captured191 ordered scalar events:66heap/frame +125pool, no evictions, no
+cap exhaustion or incomplete pool statistics. Final phase19 is directly
+after matching HEVC phase18: pinned refs.c alloc_frame's FIRST auxiliary get,
+tab_mvf_pool. Payload1163520/requestedbacking1163536 bytes per entry;5checked-out
+entries (5817680 requested live bytes),0cached. Free307852/unclaimed15536,
+so minimum shortfall840148 BEFORE fragmentation/overhead. Getter includes
+the measured16-byte reference header, not allocator overhead (unknown/null).
+No guessed multi-reference count or simultaneous state of other pools.
+**Do not compile HEVC MV-pool uncaching or repeat this unchanged failing core:**
+this exact pool has no inactive entry to release at the failure point.
+
+Evidence: evidence/mpeg2-refstruct-live-pool-measured-2026-10-05.json (27.5KB),
+raw445221-byte timestampedJSON/CSV/HTML/trace in outputs/reports,
+scripts/freeze-mpeg2-refstruct-measurement.mjs reproduces compact scalar report.
+Typed scalar-byte helper keeps incomplete/malformed/overflow samples null;
+live/cached requested backing is not allocator-overhead or memory certification.
+All5 actual cleanup flags true. Independently verified originalSHA unchanged,
+owned runtime/profile/adapter absent, six production assets restored, all17
+observed Chrome/updater descendants plus server/observer absent. No converted
+copy remains; only compact diagnostics and explicitly reusable static tools.
+
+Next distinct investigation: current recipe reserves1MiB C stack +1MiB
+Asyncify save stack. Audit a smaller guarded reservation INSIDE the same
+fixed32MiB; neither actual stack demand nor full-source fit is yet proven.
+Emscripten's STACK_OVERFLOW_CHECK=2 checks stack-pointer assignments and
+Asyncify traps on overflow; keep assertions, quality, frames, dimensions,
+EARLY baseline, all-process accounting and every acceptance threshold.
+Reference: https://emscripten.org/docs/tools_reference/settings_reference.html.
+Pinned MPEG encoder source17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f
+also rejects direct frame sharing when height is not a multiple of16; original
+804 meets that rejection. Do not change source dimensions/padding algorithms
+merely to bypass it. No stack-reserve optimization or speed gain accepted.
+Full original specification/M-04 remains partial; goal stays active.
+This measurement cycle passes422/422 units, zero-warning focused lint and
+diffcheck. New tests retain exact chronological pool attribution, requested
+bytes/null semantics, incomplete memory status, all-process accounting,
+compiled provenance and independent cleanup boundaries; no acceptance guard
+or fidelity threshold was loosened.
+
+**Earlier source-only implementation stage (before these native runs).**
 Remote branch media-options includes diagnostic source commit f6f4ae4. The
 non-Docker build workflow now also retains the small compiled-reader smoke
 JSON alongside its manifest, with a source guard checking this artifact path.
