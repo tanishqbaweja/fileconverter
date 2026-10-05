@@ -5,7 +5,45 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Private smaller-AVIO candidate; compiled/browser gate pending
+## 2026-10-06 — Private 64KiB AVIO tested; original frame-buffer heap failure
+
+**Executed changed candidate, not a speed or support certification.** Non-Docker
+run37356848855/job111921324148 at41cc684 succeeded (248s compile/297s job,
+NOT conversion speed). Actual17 source/helper/artifact pins, compiled lifecycle
+smoke, fixed32MiB/shared512pages and StackCheck2 verified. Chrome154 small4/4
+passed in21.7s:48 MPEG4-input and96 HEVC-input genuine MPEG2 frames, SSIM.992146/
+.985963, <=1ms PTS, exact compressed AAC/artwork and complete decoded PCM/priming,
+tags/chapters/full video/audio decode. Both321692/652521-byte outputs have the
+same SHA as the previous candidate. Actual read/write/peakqueue64KiB, one pending
+operation. Cancellation after232344 outputbytes reached471427 terminalbytes,
+then partial[]; real write rejection cleaned up too. Four actual guarded256KiB
+stack reserves are capacities, not high-water or memory acceptance. No speed A/B.
+
+ONE full unchanged2958573265-byte1920x804/default-settings test.mkv attempt
+failed at requested heap end33945192,222785 input/zero output. Normal stack now
+shows av_buffer_allocz/avcodec_default_get_buffer2; exact failed plane/codec
+context and post-policy accessory retention remain NULL. Do not infer them from
+the earlier diagnostic layout or interpret changed input buffering as completed
+additional frames.3 repeats requested/1 failed attempt; no unchanged normal retry.
+EARLYblank271601664/loaded316125184/nativepeak460099584/CIMpeak469655552 =>
+188.87890625MiB INCOMPLETE, NOT acceptance.16 valid native samples/0 unavailable;
+all unknown/GPU/utility/updater descendants included. All5 finally flags true.
+Independent22 full observed/owned and21 small observed PIDs absent; six exact
+dist assets restored; candidate adapters, runtime and small fixtures absent;
+original size/SHA31f36695...9db34 unchanged. Hosted11365825131/11364957204 deleted,
+API0 independently rechecked; no source bundle download. No large output created.
+Reusable small7-file tool retained; converted media/profiles removed by finally.
+
+Frozen evidence/mpeg2-avio64-protected-failure-2026-10-06.json binds actual small
+raw336844/SHA15bde4ac...04a0b and full341423/SHA0af8ed2a...7b164. Read-only reducer
+and two source-bound guards keep requested393216-byte arithmetic separate from
+NULL measured heap savings. Next: ONE read-only allocator-diagnostic build of
+this changed64KiB candidate to identify the frame/context boundary and measure
+actual post-policy accessory retention. Existing wrapped get_buffer2 snapshots
+can distinguish encoder/decoder and allocation phases without changing lifetime,
+quality, dimensions, heap or limits. No public promotion; broader goal open.
+Evidence-cycle regression441/441 units, scoped zero-warning lint, TypeScript
+and diff checks pass. No browser conversion or native build remains live.
 
 Changed only the private generated wrapper's WITHIN_AVIO_BUFFER_SIZE from
 256KiB to64KiB; existing output alias inherits64KiB. Requested initial reserves
@@ -17,14 +55,13 @@ the single scalar substitution recovers every bridge byte. Public AVIO source
 SHAae501a2e...3068 and codec kernel67d3b829...eac0 unchanged. Manifest independently
 checks actual generated C64KiB definitions and reports both limits accurately.
 No source dimensions/settings/quality/timestamp/live refs/fixed32MiB/stacks or
-acceptance threshold changes. Next changed non-Docker compile, small4 fidelity/
-adverse tests, then the original-file whole-Chromium gate; fit and I/O-crossing
-performance remain unproven. Do not treat requested-byte arithmetic as an actual
+acceptance threshold changes. Compiled/small4/original-file gate results above;
+fit and I/O-crossing performance remain unproven. Do not treat requested-byte arithmetic as an actual
 memory/speed improvement or use the prior failed core again unchanged.
 Regression439/439 units, scoped zero-warning lint/TypeScript/diff checks pass.
 New exact bridge reversal has its own tests; the historically pinned original
 source-unit file and frozen proof hashes remain byte-identical. Unit scratch
-removed in finally; native compile and browser execution are still pending.
+removed in finally; native compile/browser execution are recorded above.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
