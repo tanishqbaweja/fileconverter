@@ -1,0 +1,38 @@
+{
+  "status": "private-diagnostic-build-failed-before-browser-measurement",
+  "publicAcceptance": false,
+  "speedGainClaim": null,
+  "run": {
+    "databaseId": 37329661532,
+    "jobId": 111829252054,
+    "headSha": "cb7fe075bc147cbbad2d1bb4302b30d8749b7300",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37329661532",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobStartedAt": "2026-10-05T15:03:21Z",
+    "jobCompletedAt": "2026-10-05T15:09:27Z",
+    "buildStartedAt": "2026-10-05T15:04:23Z",
+    "buildCompletedAt": "2026-10-05T15:09:23Z",
+    "cleanupConclusion": "success"
+  },
+  "failure": {
+    "message": "SyntaxError: Unexpected end of JSON input",
+    "location": "media/ffmpeg/mpeg2-candidate-manifest.mjs:45",
+    "emptyFile": "refstruct-diagnostic-smoke.json",
+    "compiledReaderExecuted": false,
+    "cause": "The .mjs output suffix enables EXPORT_ES6 and MODULARIZE; direct Node execution exports the factory without invoking main.",
+    "source": "https://emscripten.org/docs/tools_reference/settings_reference.html#export-es6",
+    "nextChange": "Auto-running .js in CommonJS build root with explicit MODULARIZE=0/EXPORT_ES6=0, forced assertions, nonempty-file guard, exact manifest smoke proof"
+  },
+  "provenance": {
+    "ffmpegVersion": "8.1.2",
+    "emscriptenVersion": "6.0.4",
+    "refstructPatchedSha256": "715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2",
+    "generatedDiagnosticWrapperSha256": "759810aee8622e16aeacec8648736e610db5cc95a9adff3b03ef8c00fd2407fb"
+  },
+  "browserConversions": 0,
+  "protectedMediaRead": false,
+  "sourceBundleDownloaded": false,
+  "hostedArtifactsRemaining": 0,
+  "nextMeasurement": "Still pending. No live/cache bytes, memory acceptance, fidelity or conversion-speed result established."
+}

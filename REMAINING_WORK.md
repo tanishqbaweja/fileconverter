@@ -21,6 +21,15 @@ workflow changes and duplicate artifact paths. Focused lint (zero warnings)
 and TypeScript pass. Six disposable dist media assets match published bytes
 before browser staging. Compiled smoke and full-source measurement remain
 pending; no new conversion, memory acceptance or speed claim yet.
+Build 37329661532 completed with failure: actual patched libavutil and the
+private core compiled, but the smoke report was empty and manifest JSON parse
+failed. The .mjs suffix implicitly exported an Emscripten factory; direct Node
+execution never invoked it. Synthetic reader execution was therefore NOT
+proven. Fix: smoke .js in the existing CommonJS build root, explicit
+MODULARIZE=0/EXPORT_ES6=0, assertions forced on, immediate nonempty-report
+check and exact smoke schema in the manifest. Browser kernel and codec flags
+unchanged. Hosted cleanup succeeded; artifact inventory zero; no browser test
+or protected-media read occurred. Next build is changed, not a blind retry.
 Previous fullfailure normalstack confirms av_refstruct_pool_get/alloc_frame,
 but not actual pool/size/live/cache quantities. Added diagnostic-only getter
 to pinned8.1.2 libavutil/refstruct.cSHA d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f;

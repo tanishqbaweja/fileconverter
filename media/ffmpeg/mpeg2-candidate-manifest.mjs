@@ -33,6 +33,15 @@ if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
   ? "715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2"
   : "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"))
   throw new Error("Unexpected refstruct diagnostic source state");
+const refstructPoolDiagnosticSmoke = allocatorDiagnostic === "1"
+  ? JSON.parse(await readFile(path.join(output, "refstruct-diagnostic-smoke.json"), "utf8")) : null;
+if (refstructPoolDiagnosticSmoke && JSON.stringify(refstructPoolDiagnosticSmoke) !== JSON.stringify({
+  status: "passed", scope: "synthetic-source-reader-unit-not-conversion", payloadBytes: 1024,
+  checkedTransitions: 9, multipleReferencesNotMultipleEntries: true, cacheReuseVerified: true,
+  cap129InactiveLinksUnavailable: true, nullPoolUnavailable: true,
+})) throw new Error("Compiled diagnostic reader did not produce the exact required smoke proof");
+if (allocatorDiagnostic === "1" && !refstructPoolDiagnosticSmoke)
+  throw new Error("Compiled diagnostic smoke proof missing");
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
@@ -41,8 +50,7 @@ const manifest = {
   allocatorDiagnosticScope: "Private fixed96 heap/frame snapshots plus fixed128 refstruct pool snapshots; read-only128-link cap and null incomplete counts; no allocator/codec mutation or acceptance",
   refstructSourceSha256,
   refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, inactiveLinksPerSnapshot: 128, browserEvents: 224 },
-  refstructPoolDiagnosticSmoke: allocatorDiagnostic === "1"
-    ? JSON.parse(await readFile(path.join(output, "refstruct-diagnostic-smoke.json"), "utf8")) : null,
+  refstructPoolDiagnosticSmoke,
   sources: Object.fromEntries(await Promise.all(sourceFiles.map(async (file) =>
     [file, await sha256(path.join(root, "media/ffmpeg", file))]))),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_mpeg2.c")),

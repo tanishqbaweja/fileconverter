@@ -54,7 +54,11 @@ test("Pool reader only compiles in diagnostic mode; fixed32, original kernel and
   assert.match(smoke, /within_refstruct_pool_diagnostic\(pool, capped\) == 0/);
   assert.match(smoke, /av_refstruct_pool_uninit/);
   assert.doesNotMatch(smoke, /avcodec_|avformat_|avio_|File|Blob|test\.mkv/);
-  assert.match(recipe, /refstruct-diagnostic-smoke.mjs" > "\$\{OUTPUT_ROOT\}\/refstruct-diagnostic-smoke.json/);
+  assert.match(recipe, /refstruct-diagnostic-smoke.js" > "\$\{OUTPUT_ROOT\}\/refstruct-diagnostic-smoke.json/);
+  assert.match(recipe, /-sMODULARIZE=0 -sEXPORT_ES6=0/);
+  assert.match(recipe, /-UNDEBUG/);
+  assert.match(recipe, /test -s "\$\{OUTPUT_ROOT\}\/refstruct-diagnostic-smoke.json"/);
+  assert.match(manifest, /Compiled diagnostic reader did not produce the exact required smoke proof/);
   const workflow = await read(".github/workflows/reproduce-ffmpeg-nondocker.yml");
   assert.match(workflow, /work\/mpeg2-candidate-output\/refstruct-diagnostic-smoke.json/);
 });

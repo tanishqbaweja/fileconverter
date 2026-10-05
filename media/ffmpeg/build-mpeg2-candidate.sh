@@ -118,11 +118,14 @@ fi
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   # Synthetic allocation/source-reader unit, never a native media conversion.
   emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
-    "${PREFIX}/lib/libavutil.a" -O2 -pthread -sPTHREAD_POOL_SIZE=0 \
+    "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
     -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
+    -sMODULARIZE=0 -sEXPORT_ES6=0 \
     -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
-    -o "${BUILD_ROOT}/refstruct-diagnostic-smoke.mjs"
-  node "${BUILD_ROOT}/refstruct-diagnostic-smoke.mjs" > "${OUTPUT_ROOT}/refstruct-diagnostic-smoke.json"
+    -o "${BUILD_ROOT}/refstruct-diagnostic-smoke.js"
+  # BUILD_ROOT/package.json is CommonJS. A .mjs factory would not run main.
+  node "${BUILD_ROOT}/refstruct-diagnostic-smoke.js" > "${OUTPUT_ROOT}/refstruct-diagnostic-smoke.json"
+  test -s "${OUTPUT_ROOT}/refstruct-diagnostic-smoke.json"
 fi
 node "${SCRIPT_DIR}/make-mpeg2-candidate.mjs" "${BUILD_ROOT}/within_mpeg2.c"
 emcc "${BUILD_ROOT}/within_mpeg2.c" -I"${PREFIX}/include" \
