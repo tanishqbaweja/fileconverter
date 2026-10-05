@@ -1,0 +1,31 @@
+--- a/libavcodec/get_buffer.c
++++ b/libavcodec/get_buffer.c
+@@ -45,6 +45,7 @@
+     int width, height;
+     int stride_align[AV_NUM_DATA_POINTERS];
+     int linesize[4];
++    size_t buffer_size[4];
+     int planes;
+     int channels;
+     int samples;
+@@ -110,7 +111,8 @@
+                     ret = AVERROR(EINVAL);
+                     goto fail;
+                 }
+-                pool->pools[i] = av_buffer_pool_init(size[i] + 16 + STRIDE_ALIGN - 1,
++                pool->buffer_size[i] = size[i] + 16 + STRIDE_ALIGN - 1;
++                pool->pools[i] = av_buffer_pool_init(pool->buffer_size[i],
+                                                      CONFIG_MEMORY_POISONING ?
+                                                         NULL :
+                                                         av_buffer_allocz);
+@@ -216,3 +218,9 @@
+-        pic->buf[i] = av_buffer_pool_get(pool->pools[i]);
++        // Private MPEG2 core: free inactive encoder planes on last unref.
++        // Preserve upstream layout, padding, zeroing and all live references.
++        // Decoder pools and codec algorithms remain unchanged.
++        pic->buf[i] = av_codec_is_encoder(s->codec)
++            ? (CONFIG_MEMORY_POISONING ? av_buffer_alloc(pool->buffer_size[i])
++                                       : av_buffer_allocz(pool->buffer_size[i]))
++            : av_buffer_pool_get(pool->pools[i]);
+         if (!pic->buf[i])
+             goto fail;

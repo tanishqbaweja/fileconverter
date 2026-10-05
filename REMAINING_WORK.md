@@ -7,6 +7,89 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Measured LOW_DELAY follow-up and new allocation candidate:** diagnostic
+run37295333393 at17c0d66 succeeded332s job/288s compile, not conversion speed.
+Full original fixture/fixed32MiB yields **65 events, zero evicted**, final
+HEVC1920×808 request: dynamic30,357,488/free24,400/unclaimed165,872 bytes.
+Five completed encoder buffer requests each2,529,861 bytes (1952×836);
+later requests reuse earlier backing allocations, but the snapshots do not
+identify which buffers are inactive at the failure. **Idle encoder bytes
+remain unknown**. No output, no accepted full conversion; diagnostic
+191.42578125MiB increase is not memory acceptance. All cleanup flags true,
+protected checksum unchanged, PIDs33840/3604/37240/runtimeyrY6XK absent;
+hostedIDs11338687112/11337818921 deleted/APIzero, source not downloaded.
+Frozen65 events/manifest/executed sources/raw hashes/actual peaks:
+`evidence/mpeg2-low-delay-allocation-measured-2026-10-05.json`.
+
+Implemented **private encoder-only uncached plane candidate**, still uncompiled:
+source-pinned `get_buffer.c` adds plane-size bookkeeping and substitutes direct
+AVBuffer allocation only for the sole enabled MPEG-2 encoder. Decoder pools,
+every original alignment/stride/plane-size/padding calculation, zeroing policy,
+active AVBuffer references, algorithms, source dimensions/timing/metadata,
+quantizers/bitrate/GOP/threads and fixed heap remain unchanged. Inactive encoder
+planes free on the last normal reference release instead of entering cache.
+This is a hypothesis, not proven sufficient savings or speed benefit.
+Patch/recipe/source hashes are recorded and included in corresponding source;
+manifest explicitly states the allocation policy. Git/GNUzero-fuzz source
+application succeeds, and reversing only three audited substitutions recovers
+every original source byte; patched SHA62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478.
+No rewritten codec algorithm or quality/reference reduction. Next uninstrumented
+compile, identical strict small gate, then unchanged original protected gate.
+Current-source regression **400/400 units**, scoped lint, TypeScript and Bash
+syntax pass; pinned source-patch application/reversal passes. Independent
+post-cycle original checksum/size recheck matches exactly. Public source and
+published engines remain unchanged; no new supported route is claimed.
+
+**Current compiled fix/result:** same non-Docker run `37293968193` at
+`afa47d4` succeeded (350-second job/306-second native compile, not conversion
+speed). Exact sources/artifacts/actual fixed shared 32 MiB verified, no native
+diagnostic. Strict real Chrome suite **3/3 passed in 14.3 seconds**: every
+source container tag including encoder/creation time now matches, exact
+compressed PNG250×140/two AAC tracks, 48 genuine MPEG-2 frames, full decode,
+≤1 ms PTS error, ordinal SSIM0.992146; 321,692-byte output. Write rejection
+and cancellation after116,246 actual output bytes passed, no partial output
+or terminal queue/pending operations. Generated media/runtime removed and
+production assets restored. Hosted artifacts11338285895/11338285893 deleted,
+APIzero/source bundle not downloaded.
+
+The resulting **full original unchanged `test.mkv` retry failed** fixed-heap
+OOM: attempted end34,985,384 bytes vs fixed33,554,432, 353,857 input/zero
+output. No accepted full conversion or memory certificate: observed full-tree
+increment192.65625MiB over stable EARLY blank263,901,184 bytes is diagnostic
+for this incomplete run only. Loaded idle330,948,608, native active peak
+465,915,904; 17 valid native conversion observations/zero unavailable. All
+five cleanup flags true, protected pre/post checksum unchanged; PIDs42848/
+5504/42676 absent, owned runtime`mpeg2-large-runtime-ZNpJpy` absent.
+Normal raw:`outputs/reports/2026-10-05T10-10-41-311Z-private-mpeg2-protected-direct-native-100ms.json`.
+LOW_DELAY is therefore **not proven fit**; no blind acceptance retry, resized
+source, raised heap, omitted process or relaxed quality/metadata check.
+Existing bounded deeper-stack diagnostic on this same native artifact is
+running once (one attempt, cannot certify acceptance) to identify whether
+the remaining caller differs from the previous encoder failure.
+That diagnostic **finished failed with a changed caller**:
+`ff_thread_get_buffer → alloc_frame → hevc_receive_frame → avcodec_send_packet`,
+not the earlier encoder`prepare_picture`. Same attempted end34,985,384,
+353,857 input/zero output, diagnostic increment198.2890625MiB, all cleanup
+flags true; PIDs17816/27496/40884 and runtime`mpeg2-large-runtime-0FTq2h`
+absent, source unchanged. Both executions and strict passed small gate frozen
+in `evidence/mpeg2-metadata-passed-decoder-oom-2026-10-05.json`, including
+actual simultaneous full-tree peaks, raw hashes and executed sources.
+Exact resolved-target deletion of superseded static tool
+`work/mpeg2-artwork-metadata-37291658159` (six files/7,318,040 bytes) was
+policy-blocked before execution; no bypass/retry, static files remain.
+No generated/converted media remains from these executions.
+
+Changed bounded native allocator diagnostic **run37295333393**, pushed head
+`17c0d66b21082c81a627cd4708d9272d22a4e365`, job111715103955, is confirmed
+compiling from10:15:30UTC with diagnostic1. Same native kernel/options/fixed
+heap, one full original-size diagnostic attempt after compile; follow this
+same handle, no redispatch. The old52-event encoder evidence does not explain
+the newly observed decoder caller. Pinned upstream`get_buffer.c`9530bytes
+SHA38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19
+caches freed per-plane buffers; encoder-only uncached allocation with exact
+upstream alignment/padding/zeroing is a possible next candidate, **not yet
+implemented or proven sufficient**. No quality/reference/pixel/timing change.
+
 **Latest strict small gate:** follow-up uninstrumented LOW_DELAY build
 `37291658159` at `d7549ac` succeeded (353-second job/308-second compile,
 not conversion speed). All source/artifact hashes and actual shared fixed

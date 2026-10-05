@@ -65,6 +65,14 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch"
 patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch"
+# Private allocation policy only: preserve every upstream layout calculation,
+# live frame reference and decoder pool; release inactive encoder planes.
+printf '%s  %s\n' 38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19 \
+  ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch"
+printf '%s  %s\n' 62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478 \
+  ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
 (
   cd ffmpeg
   trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
@@ -113,6 +121,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle
