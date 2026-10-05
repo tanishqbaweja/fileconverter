@@ -5,7 +5,50 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Private allocator experiment implemented; compile/browser pending
+## 2026-10-06 — Actual dlmalloc compile/small passes; original frame-buffer failure
+
+Non-Docker37364583311/job111946633354 atb0a24676c8a8153812f7943030be428cde371e7d
+succeeded (242s build/287s job, NOT conversion time). Independent actual18 source
+pins/three artifact hashes/complete five-symbol dlmalloc fingerprint/compiled
+same-allocator lifecycle smoke/shared512/512page fixed32MiB/StackCheck2/256KiB
+C+Asyncify/64KiB AVIO verified. JS unchangedSHA5af0005d...59b; actual dlmalloc
+Wasm0fb2d250d63e3d98451044c94b85ef5697fc5f9733cba6a75ff576a1859f7877.
+Only7 small static tool files downloaded into repository work; owned gh ZIP
+automatically removed/independently absent. Hosted11368525504/11368460849 deleted
+after local verification/API0; source bundle never downloaded.
+
+Chrome154 small4/4 passed21.5s:48 MPEG4/96 HEVC source frames genuinely MPEG2,
+SSIM.992146/.985963, <=1ms PTS, exact AAC compressed packets/full decoded PCM/
+priming, artwork/tags/chapters/full video/audio decode.321692/652521 output bytes
+and SHA identical prior allocator.64KiB reads/writes/peakqueue/one pending, four
+actual guarded256K reserves (not stack high-water). Real write failure and
+cancellation pass; cancel232344 observed output ->536963 terminal bytes, then
+partial[]/zero queues. This timing is NOT same-input controlled A/B or acceptance.
+
+ONE unchanged original2958573265-byte1920x804/default-settings full gate failed
+heapend33943552/input222785/output0. Actual stack emscripten_builtin_malloc ->
+dlposix_memalign ->av_buffer_allocz/default_get_buffer2. Exact failed plane,
+codec context, post-policy pool retention and contiguous capacity remain NULL;
+do not transfer old emmalloc diagnostic counts to this changed allocator.
+Requested3 repeats stop after first failure. EARLYblank265043968/loaded313118720/
+native472100864/CIM466419712 =>197.46484375MiB INCOMPLETE, NOT acceptance/savings.
+17 valid/0 unavailable native conversion samples, full descendant/unknown/updater
+accounting retained. All5 finally flags true/no cleanup error; later independent
+21 full observed/owned and21 small PIDs absent, six assets exact, private adapters/
+new runtime/fixtures gone, original SHA unchanged. Earlier numeric-only PID check
+found reused43436 belonging to Opera, NOT proof of retained Chrome; no unrelated
+process killed. Frozen evidence/mpeg2-dlmalloc-protected-failure-2026-10-06.json
+binds rawsmall341525/SHAa5c80818...798ef/full340127/SHAda59b9d1...5f6b4 and
+read-only reducer. Changed allocation strategy does NOT solve source fit. Next
+audit actual static-data footprint and specialist decoder decomposition while
+preserving broad-core availability; no unchanged retry/heap raise/source resize/
+live-ref drop/quality relaxation/unsupported emmalloc-on-dlmalloc telemetry or
+public promotion. Full goal/M-04/repeats/scaling/speed A/B/legal/integration open.
+Frozen-cycle regression450/450 units, scoped zero-warning ESLint, TypeScript and
+diff checks pass. Read-only reducer reproduces the retained facts without a
+conversion. No browser/native job remains live; public engines/registry untouched.
+
+## 2026-10-06 — Allocator implementation and build-verifier history
 
 Changed diagnostic run37363591010/job111943580063 at9050a4796034614e2396e4c73e6d2d3b24c72526
 completed FAILURE at the same check, now with actual15 emitted names/no truncation.
