@@ -26,16 +26,33 @@ test("Allocator fingerprint checks actual emitted symbols and refuses mismatches
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "not a map"), /Malformed/);
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "x".repeat(1024 * 1024 + 1)), /Bounded/);
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "0:malloc\n1:free\n2:tmalloc_large\n"),
-    /selected=dlmalloc; required=dlmalloc,dlfree; observed=\["free","malloc","tmalloc_large"\]; observedCount=3; truncated=false/);
+    /selected=dlmalloc; required=.*; observed=\["free","malloc","tmalloc_large"\]; observedCount=3; truncated=false/);
   const many = Array.from({ length: 30 }, (_, index) => `${index}:dl${"x".repeat(200)}${index}`).join("\n");
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", many), (error) => {
     assert.match(error.message, /observedCount=30; truncated=true/);
-    assert.ok(error.message.length < 3400);
+    assert.ok(error.message.length < 3600);
     return true;
   });
   const manifest = await read("media/ffmpeg/mpeg2-candidate-manifest.mjs");
   assert.match(manifest, /verifyMpeg2AllocatorSymbols\(nativeAllocator/);
   assert.match(manifest, /"within-mpeg2.wasm", "within-mpeg2.mjs.symbols"/);
+});
+test("Observed SDK6.0.4 LTO allocator aliases require both dlmalloc-specific routines and all three builtin aliases", async () => {
+  const evidence = JSON.parse(await read("evidence/mpeg2-dlmalloc-emitted-fingerprint-2026-10-06.json"));
+  const names = evidence.actualEmittedAllocatorRelatedSymbols;
+  assert.equal(evidence.observedCount, names.length); assert.equal(evidence.truncated, false);
+  const map = (values) => values.map((name, index) => `${index}:${index}:${name}`).join("\n");
+  const required = ["dispose_chunk", "dlposix_memalign", "emscripten_builtin_free",
+    "emscripten_builtin_malloc", "emscripten_builtin_realloc"];
+  assert.deepEqual(verifyMpeg2AllocatorSymbols("dlmalloc", map(names)), required);
+  for (const removed of required)
+    assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", map(names.filter((name) => name !== removed))), /fingerprint/);
+  const em = ["emmalloc_malloc", "emmalloc_free", "emmalloc_memalign"];
+  assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", map([...names, ...em])), /fingerprint/);
+  assert.throws(() => verifyMpeg2AllocatorSymbols("emmalloc", map([...names, ...em])), /fingerprint/);
+  assert.throws(() => verifyMpeg2AllocatorSymbols("emmalloc", map([...em, "dlposix_memalign"])), /fingerprint/);
+  assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", map([...names, "emmalloc_future"])), /fingerprint/);
+  assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", map(required.slice(2))), /fingerprint/);
 });
 test("One allocation strategy reaches all compiled lifecycle gates without changing protected codec/kernel or memory limits", async () => {
   const recipe = await read("media/ffmpeg/build-mpeg2-candidate.sh");

@@ -7,6 +7,27 @@ not the entire product specification.
 
 ## 2026-10-06 — Private allocator experiment implemented; compile/browser pending
 
+Changed diagnostic run37363591010/job111943580063 at9050a4796034614e2396e4c73e6d2d3b24c72526
+completed FAILURE at the same check, now with actual15 emitted names/no truncation.
+318s build/363s job NOT conversion speed. Actual allocator fingerprint is
+dispose_chunk/dlposix_memalign/emscripten_builtin_free/emscripten_builtin_malloc/
+emscripten_builtin_realloc; canonical dlmalloc/dlfree absent. SDK6.0.4 source
+defines builtin names as aliases of the corresponding dl routines, and defines
+both specific internal/alignment routines. The previous canonical-only verifier
+was wrong for this real LTO naming, not evidence of allocator/runtime failure.
+Frozen evidence/mpeg2-dlmalloc-emitted-fingerprint-2026-10-06.json retains all15
+actual observed names and source relationships. No artifacts/browser conversion,
+runner cleanup passed/API0; original source size/SHA independently unchanged.
+Corrected verifier requires either canonical pair or ALL five actually observed
+specific/alias names; generic builtin aliases alone never suffice. Both directions
+now reject opposite-allocator fingerprints, including mixed alias maps and unknown
+emmalloc-prefixed names. Negative controls remove each of the five, mix both maps,
+omit specifics and include wrong signatures. Runtime/codecs/settings/fixed heap/
+stacks/quality/AVIO/public bytes unchanged. Next one changed verifier build, then
+small4/full unchanged-source gates only if actual build/artifact verification pass.
+Corrected fingerprint regression448/448 units, scoped zero-warning lint and diff
+checks pass; historical proofs and workflow hashes remain unchanged.
+
 Actual non-Docker run37362351568/job111939735758 at736cda9008d4ea9856972cff478d7b5a4501dacd
 is terminal FAILURE:193s build step/232s job, not conversion time. Compilation
 reached manifest verification; emitted symbol map did not satisfy the strict

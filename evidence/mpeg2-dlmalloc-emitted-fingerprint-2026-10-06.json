@@ -1,0 +1,39 @@
+{
+  "status": "actual-native-symbol-observation-not-conversion-not-acceptance",
+  "repository": "tanishqbaweja/fileconverter",
+  "runId": 37363591010,
+  "jobId": 111943580063,
+  "commit": "9050a4796034614e2396e4c73e6d2d3b24c72526",
+  "runUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37363591010",
+  "jobStartedAt": "2026-10-05T19:28:23Z",
+  "jobCompletedAt": "2026-10-05T19:34:26Z",
+  "buildStepStartedAt": "2026-10-05T19:29:05Z",
+  "buildStepCompletedAt": "2026-10-05T19:34:23Z",
+  "conclusion": "failure",
+  "failureScope": "Strict verifier expected canonical dlmalloc/dlfree names; actual LTO map uses pinned SDK builtin aliases.",
+  "observedVerifierSourceSha256": "6f9b056f0bc0482c09f75316a85ae4d6b9e56470c09883544cca2603b6eb0fce",
+  "allocatorSelection": "dlmalloc",
+  "allocatorDiagnostic": false,
+  "actualEmittedAllocatorRelatedSymbols": [
+    "dispose_chunk", "dlposix_memalign", "emscripten_builtin_free",
+    "emscripten_builtin_malloc", "emscripten_builtin_realloc", "free_apic",
+    "free_buffers", "free_chapter", "free_ctx", "free_duplicate_context",
+    "free_geobtag", "free_lines", "free_priv", "free_tables", "free_vlc_tables"
+  ],
+  "observedCount": 15,
+  "truncated": false,
+  "sdkSource": "https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.4/system/lib/dlmalloc.c",
+  "sdkSourceRelationships": {
+    "emscripten_builtin_malloc": "alias(dlmalloc)",
+    "emscripten_builtin_free": "alias(dlfree)",
+    "emscripten_builtin_realloc": "alias(dlrealloc)",
+    "dispose_chunk": "dlmalloc.c internal consolidation routine",
+    "dlposix_memalign": "dlmalloc.c alignment routine"
+  },
+  "cleanupStepConclusion": "success",
+  "hostedArtifactsTotalCount": 0,
+  "browserConversionsAttempted": 0,
+  "sourceFixtureUsed": false,
+  "conversionSpeedOrFitProven": false,
+  "nextChangedVerification": "Require complete five-symbol actual LTO fingerprint or canonical pair; reject all opposite-allocator names, partial fingerprints and generic aliases alone. Rebuild before any browser test."
+}
