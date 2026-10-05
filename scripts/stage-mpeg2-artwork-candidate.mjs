@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { copyFile, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { mpeg2StackReserveAdapter } from "./lib/mpeg2-stack-reserve-adapter.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
@@ -11,6 +12,9 @@ const target = path.join(root, "dist/client/engines/remux");
 const published = path.join(root, "public/engines/remux");
 const digest = async (file) => createHash("sha256").update(await readFile(file)).digest("hex");
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
+if (manifest.stackReserveAdapterSha256 &&
+  await digest(path.join(root, "scripts/lib/mpeg2-stack-reserve-adapter.mjs")) !== manifest.stackReserveAdapterSha256)
+  throw new Error("Stack reserve adapter source differs from the compiled manifest");
 const inputMode = process.argv[3] ?? "legacy";
 if (!["legacy", "byob"].includes(inputMode)) throw new Error("Private input mode must be legacy or byob");
 const adapter = `// PRIVATE_MPEG2_FEASIBILITY_ADAPTER_NOT_PUBLIC_SUPPORT
@@ -23,7 +27,7 @@ ${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...o
 ${inputMode === "byob" ? "  options = { ...options, withinBridge: { ...options.withinBridge, readSync: undefined } };\n" : ""}  let core;
   try { core = await factory(options); }
   catch (error) { throw new Error("Candidate factory: " + String(error.message) + "\\n" + String(error.stack).slice(0, 2048)); }
-  const call = core.ccall.bind(core);
+${mpeg2StackReserveAdapter(manifest)}  const call = core.ccall.bind(core);
   core.ccall = async (name, type, types, args, settings) => {
     let mapped = [...args];
     if (mapped[0] === 4) mapped = [6, ...mapped.slice(1, 4), 0, 0, 0, ...mapped.slice(4)];

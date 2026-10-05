@@ -42,6 +42,20 @@ if (refstructPoolDiagnosticSmoke && JSON.stringify(refstructPoolDiagnosticSmoke)
 })) throw new Error("Compiled diagnostic reader did not produce the exact required smoke proof");
 if (allocatorDiagnostic === "1" && !refstructPoolDiagnosticSmoke)
   throw new Error("Compiled diagnostic smoke proof missing");
+// Inspect real generated artifacts, not just their declared build flags.
+const generatedRuntime = await readFile(path.join(output, "within-mpeg2.mjs"), "utf8");
+const asyncifyStackSizes = [...generatedRuntime.matchAll(/\bStackSize:(\d+),currData:/g)];
+if (asyncifyStackSizes.length !== 1 || Number(asyncifyStackSizes[0][1]) !== 262144)
+  throw new Error("Generated Asyncify reserve differs from the guarded candidate");
+const compiledModule = new WebAssembly.Module(await readFile(path.join(output, "within-mpeg2.wasm")));
+const compiledImports = WebAssembly.Module.imports(compiledModule);
+const compiledExports = WebAssembly.Module.exports(compiledModule);
+if (!compiledImports.some((entry) => entry.name === "__handle_stack_overflow" && entry.kind === "function")
+  || !compiledExports.some((entry) => entry.name === "__set_stack_limits" && entry.kind === "function"))
+  throw new Error("Compiled StackCheck2 runtime guard missing");
+for (const name of ["emscripten_stack_get_base", "emscripten_stack_get_end"])
+  if (!compiledExports.some((entry) => entry.name === name && entry.kind === "function"))
+    throw new Error("Native stack bound export missing");
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
@@ -61,6 +75,10 @@ const manifest = {
   enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
   initialWasmMemoryBytes: 33554432, maximumWasmMemoryBytes: 33554432,
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
+  nativeStackBytes: 262144, asyncifyStackBytes: Number(asyncifyStackSizes[0][1]),
+  stackOverflowCheck: 2, compiledStackOverflowHandler: true,
+  stackReserveScope: "Private guarded256KiB C +256KiB Asyncify candidate inside unchanged32MiB; actual stack demand, full-source fit and performance not certified",
+  stackReserveAdapterSha256: await sha256(path.join(root, "scripts/lib/mpeg2-stack-reserve-adapter.mjs")),
   encoderDelay: "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
   frameBufferPolicy: "Private encoder-only uncached planes plus HEVC decoder uncached planes; exact upstream alignment/padding/zeroing/live references; other decoder and HEVC auxiliary pools unchanged",
   frameBufferOriginalSourceSha256: "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",

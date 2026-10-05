@@ -7,6 +7,32 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**New private guarded stack-reserve candidate implemented; compile/browser gates pending.**
+After measured live MV pool shortage (not an idle cache), reduce only private
+core C/Asyncify reservations from1MiB each to256KiB each inside the same fixed
+32MiB. Keep assertions; strengthen STACK_OVERFLOW_CHECK to2 (all native SP
+assignments), rather than letting a smaller C stack silently overwrite heap.
+Asyncify retains intrinsic overflow traps. No source/codec/quality/dimension/
+frame/AVIO/queue/heap/baseline change and no public-engine/registry mutation.
+Native kernel remains exact67d3b829...ac0. This is a candidate, NOT a proven
+safe capacity, memory fit, performance saving or supported route.
+Manifest inspects actual JS Asyncify size and real Wasm StackCheck2 handler/
+limit-setter/bound exports. Both browser adapters read actual native base/end
+after the real factory and enforce262144; this is reserved capacity, NOT
+stack high-water. Source-pinned helper hash/source bundle retained. Exact
+Emscripten6.0.4 source audit covers settings/libasync/libcore, no scratch.
+Next one non-Docker uninstrumented build, changed small4-case fidelity/adverse
+suite (required because stack safety changed), then unchanged full original
+three-run gate until completed or its first actual failure. No blind old-core
+retry, priming/timestamp tolerance change, dummy conversion or unsupported
+profile narrowing. Full goal remains active.
+Source-stage validation:424/424 units,10focusedguards,zero-warning scoped
+lint/TypeScript/Bash/diffcheck and three exact6.0.4 compiler-source pins pass.
+Both staging helpers refuse a mismatched adapter hash before changing assets;
+small-browser reports retain at most16 scalar stack-reserve snapshots and
+require the actual262144-byte native bound whenever this guarded core is used.
+Reserved-capacity reallocation is not a measured private-memory saving.
+
 **Latest: compiled pool reader and full-original diagnostic measured. Route still fails.**
 Non-Docker run37331006755 at3a7cc234 succeeded after the recorded runner fix:
 243s compile /290s job, not conversion speed. Actual compiled reader passed

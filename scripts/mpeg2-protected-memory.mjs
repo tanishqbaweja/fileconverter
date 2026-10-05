@@ -136,13 +136,16 @@ for (const [file, hash] of Object.entries(manifest.artifacts)) assert.equal(awai
 for (const [file, hash] of Object.entries(manifest.sources)) assert.equal(await shaFile(path.join(root, "media/ffmpeg", file)), hash);
 if (manifest.allocatorInstrumentationSha256)
   assert.equal(await shaFile(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")), manifest.allocatorInstrumentationSha256);
+if (manifest.stackReserveAdapterSha256)
+  assert.equal(await shaFile(path.join(root, "scripts/lib/mpeg2-stack-reserve-adapter.mjs")), manifest.stackReserveAdapterSha256);
 const actualWasmMemoryLimits = readWasmMemoryLimits(await readFile(path.join(candidate, "within-mpeg2.wasm")));
 assert.deepEqual(actualWasmMemoryLimits, [{ imported: true, initialPages: 512, maximumPages: 512, shared: true }]);
 const sourceFiles = ["scripts/mpeg2-protected-memory.mjs", "scripts/stage-mpeg2-large-candidate.mjs",
   "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/native-memory-peaks.mjs",
   "scripts/lib/chromium-private-memory.mjs", "scripts/lib/cdp-realm-memory.mjs",
   "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/windows-tree-monitor.cs",
-  "scripts/lib/windows-tree-monitor.ps1", "scripts/lib/owned-runtime-scratch.mjs"];
+  "scripts/lib/windows-tree-monitor.ps1", "scripts/lib/owned-runtime-scratch.mjs",
+  "scripts/lib/mpeg2-stack-reserve-adapter.mjs"];
 const sourceHashes = Object.fromEntries(await Promise.all(sourceFiles.map(async (file) => [file, await shaFile(path.join(root, file))])));
 const reports = path.join(root, "outputs/reports"); await mkdir(reports, { recursive: true });
 const reportBase = path.join(reports, `${new Date().toISOString().replaceAll(/[:.]/g, "-")}-private-mpeg2-protected-direct-native-100ms`);

@@ -133,11 +133,12 @@ emcc "${BUILD_ROOT}/within_mpeg2.c" -I"${PREFIX}/include" \
   "${PREFIX}/lib/libswscale.a" "${PREFIX}/lib/libavutil.a" \
   -O3 -flto -msimd128 -pthread --profiling-funcs --emit-symbol-map \
   -sPTHREAD_POOL_SIZE=0 -sPTHREAD_POOL_SIZE_STRICT=2 \
-  -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=1048576 \
+  -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=262144 \
   -sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432" \
-  -sSTACK_SIZE=1048576 -sMALLOC=emmalloc -sMODULARIZE=1 -sEXPORT_ES6=1 \
+  -sSTACK_SIZE=262144 -sSTACK_OVERFLOW_CHECK=2 -sMALLOC=emmalloc -sMODULARIZE=1 -sEXPORT_ES6=1 \
   -sENVIRONMENT=worker -sEXPORT_NAME=createWithinRemuxCore -sFILESYSTEM=0 \
-  -sASSERTIONS=1 -sWASM_BIGINT=1 -sEXPORTED_FUNCTIONS='["_within_remux"]' \
+  -sASSERTIONS=1 -sWASM_BIGINT=1 \
+  -sEXPORTED_FUNCTIONS='["_within_remux","_emscripten_stack_get_base","_emscripten_stack_get_end"]' \
   -sEXPORTED_RUNTIME_METHODS='["ccall"]' \
   -sASYNCIFY_IMPORTS='["within_input_read","within_output_write","within_output_rotate","within_output_truncate","within_output_flush"]' \
   "${DIAGNOSTIC_LINK_FLAGS[@]}" \
@@ -159,6 +160,7 @@ cp "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch" source-bund
 cp "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch" source-bundle/
 cp "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" source-bundle/
+cp "${PROJECT_ROOT}/scripts/lib/mpeg2-stack-reserve-adapter.mjs" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle

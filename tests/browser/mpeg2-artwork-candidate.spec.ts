@@ -16,6 +16,7 @@ const candidate = path.join(root, "work", candidateName);
 const expectedManifest = existsSync(path.join(candidate, "build-manifest.json"))
   ? JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8")) as {
     maximumWasmMemoryBytes: number; initialWasmMemoryBytes: number; allowMemoryGrowth: boolean;
+    nativeStackBytes?: number;
   }
   : null;
 const expectedMemoryBytes = expectedManifest?.maximumWasmMemoryBytes ?? null;
@@ -32,6 +33,8 @@ const rows: Array<Record<string, unknown>> = [];
 type ProcessSample = { timestamp: string; privateBytes: number | null; rssBytes: number | null; processes: unknown; phase: string; realms?: unknown };
 const memorySamples: ProcessSample[] = [];
 const forbiddenRequests: string[] = [];
+const stackReserveSamples: Array<{ nativeStackBytes: number; asyncifyStackBytes: number;
+  stackOverflowCheck: number; scope: string }> = [];
 let sampling = false;
 let memoryTask: Promise<void> | null = null;
 const title = "MPEG-2 café — 音楽";
@@ -178,6 +181,12 @@ test.beforeAll(async () => {
 
 test.beforeEach(async ({ context, browser, page }) => {
   forbiddenRequests.length = 0;
+  stackReserveSamples.length = 0;
+  page.on("console", (message) => {
+    const text = message.text(), prefix = "WITHIN_MPEG2_STACK_RESERVE ";
+    if (text.startsWith(prefix) && text.length <= 512 && stackReserveSamples.length < 16)
+      stackReserveSamples.push(JSON.parse(text.slice(prefix.length)));
+  });
   const origin = new URL(process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${process.env.WITHIN_TEST_PORT ?? "3000"}`).origin;
   context.on("request", (request) => {
     if (new URL(request.url()).origin !== origin || !["GET", "HEAD"].includes(request.method()) || request.postData()) {
@@ -236,6 +245,16 @@ test.afterEach(async ({ page }) => {
   memoryTask = null;
   expect(forbiddenRequests, "conversion must not transmit data or contact external origins").toEqual([]);
   rows.push({ memoryScope: "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract", samples: [...memorySamples] });
+  rows.push({ kind: "actual-native-stack-reserve", samples: [...stackReserveSamples],
+    scope: "Reserved capacity, not measured high-water or memory acceptance" });
+  if (expectedManifest?.nativeStackBytes !== undefined) {
+    expect(stackReserveSamples.length).toBeGreaterThan(0);
+    for (const sample of stackReserveSamples) {
+      expect(sample.nativeStackBytes).toBe(262144); expect(sample.asyncifyStackBytes).toBe(262144);
+      expect(sample.stackOverflowCheck).toBe(2);
+      expect(sample.scope).toBe("reserved-not-high-water-not-acceptance");
+    }
+  }
   if (page.isClosed()) return;
   const entries = await page.evaluate(async () => {
     const directory = await navigator.storage.getDirectory();
