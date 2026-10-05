@@ -61,6 +61,11 @@ if (allocatorDiagnostic === "1" && !refstructPoolDiagnosticSmoke)
   throw new Error("Compiled diagnostic smoke proof missing");
 // Inspect real generated artifacts, not just their declared build flags.
 const generatedRuntime = await readFile(path.join(output, "within-mpeg2.mjs"), "utf8");
+const generatedWrapper = await readFile(path.join(build, "within_mpeg2.c"), "utf8");
+if (generatedWrapper.split("#define WITHIN_AVIO_BUFFER_SIZE (64 * 1024)").length !== 2
+  || generatedWrapper.split("#define WITHIN_AVIO_OUTPUT_BUFFER_SIZE WITHIN_AVIO_BUFFER_SIZE").length !== 2
+  || generatedWrapper.includes("#define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)"))
+  throw new Error("Actual generated private AVIO reserves differ from 64KiB each");
 const asyncifyStackSizes = [...generatedRuntime.matchAll(/\bStackSize:(\d+),currData:/g)];
 if (asyncifyStackSizes.length !== 1 || Number(asyncifyStackSizes[0][1]) !== 262144)
   throw new Error("Generated Asyncify reserve differs from the guarded candidate");
@@ -105,7 +110,8 @@ const manifest = {
   frameBufferOriginalSourceSha256: "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",
   frameBufferEncoderStageSourceSha256: "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
   frameBufferPatchedSourceSha256: "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4",
-  avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
+  avioInputBufferBytes: 65536, avioOutputBufferBytes: 65536,
+  avioReserveScope: "Private64KiB input/output reserves,393216 fewer requested bytes vs256KiB each; callback/codec/quality unchanged, actual fit and crossing performance unproven",
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
   maximumMetadataEntries: 4096, maximumMetadataTextBytes: 2097152,
   mp4Metadata: "iTunes covr plus free-form UTF-8 original-name fields; source-pinned private mux patch",

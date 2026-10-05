@@ -18,8 +18,18 @@ if (digest !== "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068
 }
 const marker = "static int supported_audio_artwork_codec(enum AVCodecID codec_id);";
 if (source.split(marker).length !== 2) throw new Error("Expected AVIO boundary exactly once.");
-const bridge = source.slice(0, source.indexOf(marker))
+const originalBridge = source.slice(0, source.indexOf(marker))
   .replace("#include <libswresample/swresample.h>\n", "");
+// Only the private wrapper's AVIO reserve changes. Public source and every
+// callback/seek/backpressure byte stay pinned; codec/kernel remain unchanged.
+const originalReserve = "#define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)";
+const candidateReserve = "#define WITHIN_AVIO_BUFFER_SIZE (64 * 1024)";
+if (originalBridge.split(originalReserve).length !== 2 ||
+    originalBridge.split("#define WITHIN_AVIO_OUTPUT_BUFFER_SIZE WITHIN_AVIO_BUFFER_SIZE").length !== 2)
+  throw new Error("Expected exactly one pinned input reserve and output alias");
+const bridge = originalBridge.replace(originalReserve, candidateReserve);
+if (bridge.replace(candidateReserve, originalReserve) !== originalBridge)
+  throw new Error("Private AVIO reserve reversal must recover every bridge byte");
 // Reuse the exact audited header-only JPEG/PNG reader. No artwork decoder,
 // expanded pixels, unbounded probing or additional file reads are needed.
 const artworkStart = "static uint16_t artwork_read_be16(";

@@ -1,9 +1,30 @@
 # Remaining work audit
 
-Updated 2026-10-05. This is the living requirement audit for the original
+Updated 2026-10-06. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-06 — Private smaller-AVIO candidate; compiled/browser gate pending
+
+Changed only the private generated wrapper's WITHIN_AVIO_BUFFER_SIZE from
+256KiB to64KiB; existing output alias inherits64KiB. Requested initial reserves
+drop524288->131072 bytes (393216 fewer), NOT measured heap high-water savings.
+Both callbacks already clamp to their respective macros; reads/writes/seeking,
+truncation/flush/backpressure/cancellation and artwork helper bytes unchanged.
+Generator requires one exact original definition plus one output alias; reversing
+the single scalar substitution recovers every bridge byte. Public AVIO source
+SHAae501a2e...3068 and codec kernel67d3b829...eac0 unchanged. Manifest independently
+checks actual generated C64KiB definitions and reports both limits accurately.
+No source dimensions/settings/quality/timestamp/live refs/fixed32MiB/stacks or
+acceptance threshold changes. Next changed non-Docker compile, small4 fidelity/
+adverse tests, then the original-file whole-Chromium gate; fit and I/O-crossing
+performance remain unproven. Do not treat requested-byte arithmetic as an actual
+memory/speed improvement or use the prior failed core again unchanged.
+Regression439/439 units, scoped zero-warning lint/TypeScript/diff checks pass.
+New exact bridge reversal has its own tests; the historically pinned original
+source-unit file and frozen proof hashes remain byte-identical. Unit scratch
+removed in finally; native compile and browser execution are still pending.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
