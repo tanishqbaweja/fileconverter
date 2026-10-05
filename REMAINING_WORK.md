@@ -7,6 +7,22 @@ not the entire product specification.
 
 ## 2026-10-06 — Private allocator experiment implemented; compile/browser pending
 
+Actual non-Docker run37362351568/job111939735758 at736cda9008d4ea9856972cff478d7b5a4501dacd
+is terminal FAILURE:193s build step/232s job, not conversion time. Compilation
+reached manifest verification; emitted symbol map did not satisfy the strict
+dlmalloc/dlfree fingerprint. Logs show selected dlmalloc system libraries, but
+that is not proof of the final function names or allocation behavior. Required
+names remain unchanged; no browser test or conversion ran, no artifact retained
+(API total_count0), runner-owned build cleanup passed. No source fixture used.
+Pinned SDK declares weak generic aliases for dlmalloc/dlfree; an alias naming
+effect is a hypothesis, NOT the established cause. New bounded failure-only
+diagnostic prints at most24 allocator-related emitted names,128 characters each,
+actual total count and truncation. It never prints file/conversion data or accepts
+generic malloc/free as allocator proof. One changed diagnostic build is warranted
+to obtain missing actual names; no unchanged rerun or public promotion.
+Changed diagnostic regression:447/447 units, TypeScript, scoped zero-warning
+ESLint and diff checks pass. Original fingerprint requirements remain intact.
+
 Measured encoder entry has2864640 aggregate free/unclaimed bytes split among
 16 free regions, but neither exact plane request nor contiguous fit is proven.
 Pinned FFmpeg8.1.2 [get_buffer.c](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/get_buffer.c)

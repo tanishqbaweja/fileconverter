@@ -25,6 +25,14 @@ test("Allocator fingerprint checks actual emitted symbols and refuses mismatches
   assert.throws(() => verifyMpeg2AllocatorSymbols("emmalloc", "0:emmalloc_malloc\n"), /fingerprint/);
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "not a map"), /Malformed/);
   assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "x".repeat(1024 * 1024 + 1)), /Bounded/);
+  assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", "0:malloc\n1:free\n2:tmalloc_large\n"),
+    /selected=dlmalloc; required=dlmalloc,dlfree; observed=\["free","malloc","tmalloc_large"\]; observedCount=3; truncated=false/);
+  const many = Array.from({ length: 30 }, (_, index) => `${index}:dl${"x".repeat(200)}${index}`).join("\n");
+  assert.throws(() => verifyMpeg2AllocatorSymbols("dlmalloc", many), (error) => {
+    assert.match(error.message, /observedCount=30; truncated=true/);
+    assert.ok(error.message.length < 3400);
+    return true;
+  });
   const manifest = await read("media/ffmpeg/mpeg2-candidate-manifest.mjs");
   assert.match(manifest, /verifyMpeg2AllocatorSymbols\(nativeAllocator/);
   assert.match(manifest, /"within-mpeg2.wasm", "within-mpeg2.mjs.symbols"/);

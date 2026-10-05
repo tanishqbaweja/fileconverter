@@ -20,7 +20,13 @@ export function verifyMpeg2AllocatorSymbols(allocator, symbols) {
   const dl = ["dlmalloc", "dlfree"];
   const required = allocator === "emmalloc" ? em : dl;
   const forbidden = allocator === "emmalloc" ? dl : em;
-  if (!required.every((name) => names.has(name)) || forbidden.some((name) => names.has(name)))
-    throw new Error("Actual compiled allocator fingerprint differs from selection");
+  if (!required.every((name) => names.has(name)) || forbidden.some((name) => names.has(name))) {
+    // Compile-time names only: no conversion/file data, and no relaxed acceptance.
+    const observed = [...names].filter((name) =>
+      /^(?:emmalloc_|dl|tmalloc_|dispose_chunk|sys_alloc|malloc|free|memalign|calloc|realloc|__libc_|emscripten_builtin_)/.test(name)).sort();
+    throw new Error(`Actual compiled allocator fingerprint differs from selection; selected=${allocator}; `
+      + `required=${required.join(",")}; observed=${JSON.stringify(observed.slice(0, 24).map((name) => name.slice(0, 128)))}; `
+      + `observedCount=${observed.length}; truncated=${observed.length > 24 || observed.some((name) => name.length > 128)}`);
+  }
   return [...names].filter((name) => /^(emmalloc_|dl(?:malloc|free|calloc|realloc|memalign|posix_memalign))/.test(name)).sort();
 }
