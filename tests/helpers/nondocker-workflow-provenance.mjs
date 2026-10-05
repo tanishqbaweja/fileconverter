@@ -12,6 +12,11 @@ const allocatorInput = "      mpeg2_allocator:\n" +
   "        required: false\n        default: emmalloc\n        type: choice\n" +
   "        options:\n          - emmalloc\n          - dlmalloc\n\n";
 const allocatorEnvironment = "              WITHIN_MPEG2_ALLOCATOR=\"${{ inputs.mpeg2_allocator || 'emmalloc' }}\" \\\n";
+const decoderInput = "      mpeg2_decoder_set:\n" +
+  "        description: Additional private decoder module, broad default retained\n" +
+  "        required: false\n        default: wide\n        type: choice\n" +
+  "        options:\n          - wide\n          - hevc-mpeg4\n\n";
+const decoderEnvironment = "              WITHIN_MPEG2_DECODER_SET=\"${{ inputs.mpeg2_decoder_set || 'wide' }}\" \\\n";
 
 // Older compiled proofs predate two additional retained unit JSON files. Do
 // not refresh their hashes: reversing exactly those lines must recover every
@@ -22,6 +27,12 @@ export function provenSourceSha(file, bytes, expected) {
   if (file !== workflow || ![historicalSha, readerOnlyRetentionSha].includes(expected) || sha(bytes) === expected)
     return sha(bytes);
   let text = bytes.toString("utf8");
+  if (text.includes("mpeg2_decoder_set:") || text.includes("WITHIN_MPEG2_DECODER_SET=")) {
+    for (const addition of [decoderInput, decoderEnvironment]) {
+      assert.equal(text.split(addition).length, 2, "Exactly one paired decoder selector addition");
+      text = text.replace(addition, "");
+    }
+  }
   if (text.includes("mpeg2_allocator:") || text.includes("WITHIN_MPEG2_ALLOCATOR=")) {
     for (const addition of [allocatorInput, allocatorEnvironment]) {
       assert.equal(text.split(addition).length, 2, "Exactly one paired allocator selector addition");

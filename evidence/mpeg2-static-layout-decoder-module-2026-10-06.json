@@ -1,0 +1,93 @@
+{
+  "scope": "static-layout-only-not-conversion-not-browser-memory",
+  "rows": [
+    {
+      "name": "mpeg2-artwork-metadata-37356848855",
+      "fileBytes": 7095582,
+      "sha256": "3712ffae4aa15c54166b035d656d1c6e863ac0763435c379c61255f060bbd942",
+      "nativeAllocator": "emmalloc",
+      "decoderSet": "wide",
+      "enabledDecoders": [
+        "h263",
+        "h264",
+        "hevc",
+        "mpeg2video",
+        "mpeg4",
+        "theora",
+        "vp3",
+        "vp8",
+        "vp9"
+      ],
+      "codeSectionBytes": 6561191,
+      "passiveSegments": 594,
+      "passivePayloadBytes": 401434,
+      "stackBase": 2243936,
+      "stackEnd": 1981792,
+      "stackReserveBytes": 262144,
+      "actualMemory": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 512,
+          "shared": true
+        }
+      ],
+      "importCallbacks": 0,
+      "heapBase": null,
+      "runtimeHeapSavingsBytes": null,
+      "primaryMemoryAcceptance": false
+    },
+    {
+      "name": "mpeg2-artwork-metadata-37364583311",
+      "fileBytes": 7228748,
+      "sha256": "0fb2d250d63e3d98451044c94b85ef5697fc5f9733cba6a75ff576a1859f7877",
+      "nativeAllocator": "dlmalloc",
+      "decoderSet": "wide",
+      "enabledDecoders": [
+        "h263",
+        "h264",
+        "hevc",
+        "mpeg2video",
+        "mpeg4",
+        "theora",
+        "vp3",
+        "vp8",
+        "vp9"
+      ],
+      "codeSectionBytes": 6695682,
+      "passiveSegments": 594,
+      "passivePayloadBytes": 400158,
+      "stackBase": 2242128,
+      "stackEnd": 1979984,
+      "stackReserveBytes": 262144,
+      "actualMemory": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 512,
+          "shared": true
+        }
+      ],
+      "importCallbacks": 0,
+      "heapBase": null,
+      "runtimeHeapSavingsBytes": null,
+      "primaryMemoryAcceptance": false
+    }
+  ],
+  "status": "measured-linker-bounds-additional-decoder-module-pending",
+  "limitations": [
+    "Only compiled code artifacts inspected; no source media read or native conversion.",
+    "Wasm file/code section size is not linear-memory occupancy.",
+    "Stack boundaries are not exported heap base or runtime free-block capacity.",
+    "Allocator boundary difference of1808 bytes is not runtime saving or conversion acceptance.",
+    "Both measured artifacts retain broad nine-decoder coverage; specialist footprint, full-source fit and speed remain unproven."
+  ],
+  "sources": {
+    "scripts/audit-mpeg2-static-layout.mjs": "9914de807e87781d605d2caa8ae889f3b0419a29fcf76e0246cce17df6a06105",
+    "media/ffmpeg/mpeg2-decoder-selection.mjs": "9fbac22bdfca4d3d4335e2cdc293eba2019224dfb6eac676504274eda7ff6914"
+  },
+  "sourceReferences": [
+    "https://webassembly.github.io/spec/core/binary/modules.html#data-section",
+    "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/configure"
+  ]
+}

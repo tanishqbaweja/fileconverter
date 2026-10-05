@@ -13,6 +13,12 @@ CANDIDATE_ALLOCATOR="${WITHIN_MPEG2_ALLOCATOR:-emmalloc}"
   { echo 'Private MPEG2 allocator must be emmalloc or dlmalloc.' >&2; exit 2; }
 [[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${CANDIDATE_ALLOCATOR}" == emmalloc ]] ||
   { echo 'emmalloc-specific diagnostics cannot measure dlmalloc.' >&2; exit 2; }
+CANDIDATE_DECODER_SET="${WITHIN_MPEG2_DECODER_SET:-wide}"
+case "${CANDIDATE_DECODER_SET}" in
+  wide) CANDIDATE_DECODER_FLAGS="--enable-decoder=h264,hevc,mpeg4,mpeg2video,theora,vp8,vp9" ;;
+  hevc-mpeg4) CANDIDATE_DECODER_FLAGS="--enable-decoder=hevc,mpeg4" ;;
+  *) echo 'Private MPEG2 decoder set must be wide or hevc-mpeg4.' >&2; exit 2 ;;
+esac
 DIAGNOSTIC_LINK_FLAGS=()
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   DIAGNOSTIC_LINK_FLAGS=(-Wl,--wrap=avcodec_default_get_buffer2 -Wl,--wrap=av_refstruct_pool_get)
@@ -134,7 +140,7 @@ fi
     --enable-swscale --disable-swresample --pkg-config=pkg-config --pkg-config-flags=--static \
     --enable-demuxer=matroska,mov,avi,mpegts,mpegvideo,h264,m4v,ogg,flv,ivf \
     --enable-muxer=mp4,matroska --enable-encoder=mpeg2video \
-    --enable-decoder=h264,hevc,mpeg4,mpeg2video,theora,vp8,vp9 \
+    "${CANDIDATE_DECODER_FLAGS}" \
     --enable-parser=h264,hevc,mpeg4video,mpegvideo,vp8,vp9,aac,mpegaudio,flac,vorbis,opus \
     --enable-bsf=aac_adtstoasc,h264_mp4toannexb,hevc_mp4toannexb,extract_extradata \
     --extra-cflags="-O3 -fno-math-errno -msimd128 -pthread -I${PREFIX}/include" \
@@ -191,6 +197,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/make-mpeg2-candidate.mjs" "${SCRIPT_DIR}/build-mpeg2-candidate.sh" \
   "${SCRIPT_DIR}/mpeg2-candidate-manifest.mjs" \
   "${SCRIPT_DIR}/mpeg2-allocator-selection.mjs" \
+  "${SCRIPT_DIR}/mpeg2-decoder-selection.mjs" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

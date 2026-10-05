@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Measured static boundaries; additional decoder module implemented
+
+Read-only scripts/audit-mpeg2-static-layout.mjs validates actual static Wasm
+hashes/shared512-page limits, bounds-checks known passive data sections, and
+invokes only stack init/bound accessors with every imported callback throwing.
+Both runs use ZERO import callbacks/no source media/native conversion. Old wide
+EM payload401434/code6561191/stackEnd1981792/base2243936; wide DL payload400158/
+code6695682/stackEnd1979984/base2242128.594 passive segments/guarded256K stack each.
+Actual boundary delta1808 is NOT runtime heap saving or free-block capacity;
+heapBase NULL. File/code size is not linear-memory occupancy. Frozen evidence/
+mpeg2-static-layout-decoder-module-2026-10-06.json binds audit/helper source hashes.
+
+New WITHIN_MPEG2_DECODER_SET wide(default unchanged)/hevc-mpeg4 adds a private
+specialist candidate without deleting wide nine-decoder availability or any
+public profile. Requested HEVC+MPEG4 expects actual h263/hevc/mpeg4 per pinned
+FFmpeg8.1.2 dependency selection (MPEG4 selects H263; HEVC still selects shared
+CABAC support). No algorithm, live-reference, codec settings, source dimensions,
+quality, parser/demuxer/muxer/secondary-stream policy,64K AVIO, fixed32M memory,
+guarded256K stacks, lifecycle gate, baseline or validation change. Manifest checks
+exact actual selected decoder set rather than trusting a label; new helper is
+the19th source pin and included in corresponding source. Invalid selector fails
+before SDK/owned scratch. Additional workflow choice stays private/off-by-default;
+strict paired reversal preserves every historical workflow byte/hash, with
+missing/default/other/duplicate changes rejected. Five focused selector/provenance
+tests/Bash syntax/diff pass. Specialist compile, actual footprint comparison,
+small4 and unchanged full-source gates pending; no fit/speed/primary-memory or
+public support claim. No retry of unchanged failed wide allocator candidate.
+Regression454/454 units,13 focused selector/static/historical guards, zero-warning
+scoped lint, TypeScript/Bash syntax/diff pass. Initial literal-flag guard failed;
+changing that test then correctly failed its frozen historical-source hash. Final
+recipe selects complete literal flags and passes the selected flag to configure,
+so the ORIGINAL historical test/hash is restored unchanged, while new guards prove
+exact broad/default and specialist selection. Frozen proof hashes never refreshed.
+Lint-only reserved module variable renamed; repeated actual layout values unchanged.
+
 ## 2026-10-06 — Actual dlmalloc compile/small passes; original frame-buffer failure
 
 Non-Docker37364583311/job111946633354 atb0a24676c8a8153812f7943030be428cde371e7d

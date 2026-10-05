@@ -64,6 +64,15 @@ on:
           - '0'
           - '1'
 
+      mpeg2_decoder_set:
+        description: Additional private decoder module, broad default retained
+        required: false
+        default: wide
+        type: choice
+        options:
+          - wide
+          - hevc-mpeg4
+
       mpeg2_allocator:
         description: Private fixed-32-MiB allocation strategy, never acceptance
         required: false
@@ -141,6 +150,7 @@ jobs:
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC="${{ inputs.mpeg2_allocator_diagnostic || '0' }}" \
               WITHIN_MPEG2_ALLOCATOR="${{ inputs.mpeg2_allocator || 'emmalloc' }}" \
+              WITHIN_MPEG2_DECODER_SET="${{ inputs.mpeg2_decoder_set || 'wide' }}" \
               WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media/ffmpeg/build-mpeg2-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh

@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-allocator-selection.mjs";
+import { verifyMpeg2DecoderSet } from "./mpeg2-decoder-selection.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const build = path.resolve(process.argv[2] ?? "");
@@ -17,6 +18,7 @@ const enabled = (kind) => [...components.matchAll(new RegExp(`^#define CONFIG_(\
 if (JSON.stringify(enabled("ENCODER")) !== '["mpeg2video"]') {
   throw new Error("Specialist build must enable exactly the MPEG-2 encoder.");
 }
+const decoderSelection = verifyMpeg2DecoderSet(process.env.WITHIN_MPEG2_DECODER_SET ?? "wide", enabled("DECODER"));
 const ffmpegSourceSha256 = await sha256(path.join(build, "ffmpeg.tar.xz"));
 if (ffmpegSourceSha256 !== "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c") {
   throw new Error("FFmpeg archive changed.");
@@ -29,7 +31,7 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c",
   "patches/mpeg2-encoder-pool-release-diagnostic.patch",
   "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
-  "mpeg2-allocator-selection.mjs"];
+  "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const nativeAllocator = selectMpeg2Allocator(process.env.WITHIN_MPEG2_ALLOCATOR ?? "emmalloc", allocatorDiagnostic === "1");
@@ -87,6 +89,8 @@ const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
   allocatorDiagnostic: allocatorDiagnostic === "1",
+  decoderSet: decoderSelection.name, requestedDecoders: decoderSelection.requested,
+  decoderModuleScope: "Additional private HEVC/MPEG4 specialist or unchanged broad/default module; no public coverage removed. Static/runtime footprint, source fit and speed require actual comparison",
   nativeAllocator, compiledAllocatorSymbols,
   allocatorScope: "Private allocation-strategy experiment inside unchanged fixed32MiB; byte placement only, codecs/quality/live references unchanged. Fit/speed unproven",
   allocatorLifecycleSmokeAllocator: nativeAllocator,
