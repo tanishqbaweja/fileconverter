@@ -10,7 +10,7 @@ ALLOCATOR_DIAGNOSTIC="${WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC:-0}"
 [[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${ALLOCATOR_DIAGNOSTIC}" == 1 ]] || exit 2
 DIAGNOSTIC_LINK_FLAGS=()
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
-  DIAGNOSTIC_LINK_FLAGS=(-Wl,--wrap=avcodec_default_get_buffer2)
+  DIAGNOSTIC_LINK_FLAGS=(-Wl,--wrap=avcodec_default_get_buffer2 -Wl,--wrap=av_refstruct_pool_get)
 fi
 [[ "$(uname -s)" == Linux ]] || { echo 'An activated Linux Emscripten SDK is required (no Docker).' >&2; exit 1; }
 for command_name in emcc em++ emconfigure emmake emar emranlib emnm curl tar sha256sum make pkg-config node patch; do
@@ -85,6 +85,15 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch"
 printf '%s  %s\n' 910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4 \
   ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
+  # Read-only private pool telemetry. No upstream ownership/allocator edits.
+  printf '%s  %s\n' d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f \
+    ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+  patch --fuzz=0 --directory=ffmpeg --strip=1 \
+    < "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch"
+  printf '%s  %s\n' 715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2 \
+    ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+fi
 (
   cd ffmpeg
   trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
@@ -106,6 +115,15 @@ printf '%s  %s\n' 910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4a
   emmake make -j4
   emmake make install
 )
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
+  # Synthetic allocation/source-reader unit, never a native media conversion.
+  emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
+    "${PREFIX}/lib/libavutil.a" -O2 -pthread -sPTHREAD_POOL_SIZE=0 \
+    -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
+    -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
+    -o "${BUILD_ROOT}/refstruct-diagnostic-smoke.mjs"
+  node "${BUILD_ROOT}/refstruct-diagnostic-smoke.mjs" > "${OUTPUT_ROOT}/refstruct-diagnostic-smoke.json"
+fi
 node "${SCRIPT_DIR}/make-mpeg2-candidate.mjs" "${BUILD_ROOT}/within_mpeg2.c"
 emcc "${BUILD_ROOT}/within_mpeg2.c" -I"${PREFIX}/include" \
   "${PREFIX}/lib/libavformat.a" "${PREFIX}/lib/libavcodec.a" \
@@ -136,6 +154,8 @@ cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundl
 cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-aac-exact-priming.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch" source-bundle/
+cp "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle

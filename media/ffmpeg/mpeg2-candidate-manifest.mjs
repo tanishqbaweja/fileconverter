@@ -24,15 +24,25 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
   "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch",
   "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch",
-  "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch"];
+  "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch",
+  "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
+const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
+if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
+  ? "715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2"
+  : "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"))
+  throw new Error("Unexpected refstruct diagnostic source state");
 const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
   allocatorDiagnostic: allocatorDiagnostic === "1",
   allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")),
-  allocatorDiagnosticScope: "Private fixed 96-snapshot heap/frame-buffer diagnosis; no allocator/codec mutation or acceptance",
+  allocatorDiagnosticScope: "Private fixed96 heap/frame snapshots plus fixed128 refstruct pool snapshots; read-only128-link cap and null incomplete counts; no allocator/codec mutation or acceptance",
+  refstructSourceSha256,
+  refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, inactiveLinksPerSnapshot: 128, browserEvents: 224 },
+  refstructPoolDiagnosticSmoke: allocatorDiagnostic === "1"
+    ? JSON.parse(await readFile(path.join(output, "refstruct-diagnostic-smoke.json"), "utf8")) : null,
   sources: Object.fromEntries(await Promise.all(sourceFiles.map(async (file) =>
     [file, await sha256(path.join(root, "media/ffmpeg", file))]))),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_mpeg2.c")),

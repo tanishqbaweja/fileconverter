@@ -1,0 +1,38 @@
+--- a/libavutil/refstruct.c
++++ b/libavutil/refstruct.c
+@@ -204,8 +204,35 @@
+     RefCount *available_entries;
+     AVMutex mutex;
+ };
+
++/* Private diagnostic-only scalar reader; no ownership/allocation mutation. */
++int within_refstruct_pool_diagnostic(AVRefStructPool *pool, size_t stats[4]);
++int within_refstruct_pool_diagnostic(AVRefStructPool *pool, size_t stats[4])
++{
++    uintptr_t references;
++    unsigned cached = 0;
++    RefCount *entry;
++    int complete;
++    if (!pool || !stats)
++        return 0;
++    ff_mutex_lock(&pool->mutex);
++    references = atomic_load_explicit(&pool->refcount, memory_order_acquire);
++    entry = pool->available_entries;
++    while (entry && cached < 128) {
++        cached++;
++        entry = entry->opaque.nc;
++    }
++    complete = !pool->uninited && references >= 1 && !entry &&
++               pool->size <= SIZE_MAX - REFCOUNT_OFFSET;
++    stats[0] = pool->size;
++    stats[1] = complete ? pool->size + REFCOUNT_OFFSET : 0;
++    stats[2] = complete ? references - 1 : 0;
++    stats[3] = complete ? cached : 0;
++    ff_mutex_unlock(&pool->mutex);
++    return complete;
++}
++
+ static void pool_free(AVRefStructPool *pool)
+ {
+     ff_mutex_destroy(&pool->mutex);
+     if (pool->free_cb)

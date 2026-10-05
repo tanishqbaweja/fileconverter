@@ -71,7 +71,10 @@ test("MPEG2 bounded deeper-stack diagnosis cannot become acceptance or change na
   assert.match(gate, /if \(diagnosticOnly && number > 1\) break/);
   assert.match(gate, /assert.equal\(diagnosticOnly, false, "Private allocation\/stack diagnostic cannot certify protected acceptance"\)/);
   assert.match(gate, /stackDiagnostic \|\| manifest.allocatorDiagnostic === true/);
-  assert.match(gate, /allocatorSamples.length === 96/);
+  assert.match(gate, /allocatorSamples.length === 224/);
+  const diagnosticHeader = await readFile(new URL("../media/ffmpeg/mpeg2-allocator-diagnostic.h", import.meta.url), "utf8");
+  assert.match(diagnosticHeader, /sequence >= 96/);
+  assert.match(diagnosticHeader, /sequence >= 128/);
   assert.match(stage, /Error.stackTraceLimit = 48/);
   assert.match(stage, /String\(error.stack\).slice\(0, 8192\)/);
   assert.match(stage, /offset \+= 1600/);

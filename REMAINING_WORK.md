@@ -7,7 +7,35 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Latest strict small timeline gate passes; full original still fails auxiliary heap allocation.**
+**Read-only auxiliary pool diagnostic implemented; native execution pending.**
+Previous fullfailure normalstack confirms av_refstruct_pool_get/alloc_frame,
+but not actual pool/size/live/cache quantities. Added diagnostic-only getter
+to pinned8.1.2 libavutil/refstruct.cSHA d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f;
+patchedSHA715cba26d3c68d65db8edf584f2dc3daae555de92f1003b5cfe3f32d6ddbb0b2.
+Mutex-protected read ofpayload/requestedbackingbytes/checked-out entries and
+actual inactive linkedlist. Poolcounter starts1 forowner; extra references
+to the same live entry do not count as extra checked-out entries. Walkcap128;
+incomplete/uninitialized counts becomeJSnull, notvalidzero. No pool ownership,
+allocation/reset/free behavior or media changes. New getter compiled ONLY
+whenallocatorDiagnostic1; all upstreambytes restored byremovingtheoneaddition.
+Git/GNU0fuzz/source-byte reversal passes; two source-only hunk-context/count
+errors corrected beforedispatch, allverifier scratch removed.
+
+Existing96heap/frame events remainindependent; new128poolbefore/afterevents,
+browsercollector224 bounded. Linkerwrapper delegates unchangedoriginalget,
+captures precise poolidentity/size/counts beforea possibleabortingallocation.
+Synthetic compiledlibavutil smoke tests9 known transitions, multiple refs,
+cache reuse and129cached entries unavailable; not a native media converter.
+Compiledsmoke/nativebrowser evidence **pending**, no measuredidlebytes/fit/speed
+claim. Recipe/manifest/sourcebundle includereaderpatch, smoke and bounded
+telemetry. **417/417units**,12focused guards, scopedlint/TypeScript/Bash and
+diffcheck pass. Old single96-event collector guard was updated to assert
+the independent96+128 native budgets and224 browser cap, not removed.
+Primarykernel/options/quality/dimensions/fixed32MiB unchanged;
+publicengines/registry untouched. Next diagnosticbuild then ONE fulloriginal
+instrumented measurement, not another unchanged normalconversion or acceptance.
+
+**Earlier strict small timeline gate passed; full original failed auxiliary heap allocation.**
 Investigated the retained94ms scalar mismatch against exact pinned FFmpeg
 8.1.2 sources AND the actual independent FFprobe revision7e3781e3ca. Matroska
 reads zero-origin Segment Duration directly; fragmented MOV invalidates mvhd

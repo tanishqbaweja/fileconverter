@@ -189,7 +189,8 @@ try {
     if (diagnosticOnly && text.startsWith("WITHIN_MPEG2_ALLOCATOR ")) {
       try {
         const sample = JSON.parse(text.slice("WITHIN_MPEG2_ALLOCATOR ".length));
-        if (allocatorSamples.length === 96) { allocatorSamples.shift(); allocatorSamplesEvicted++; }
+        // Independent native budgets:96 heap events +128 read-only pool events.
+        if (allocatorSamples.length === 224) { allocatorSamples.shift(); allocatorSamplesEvicted++; }
         allocatorSamples.push(sample);
       } catch { /* retain the bounded malformed line in logs, never fabricate telemetry */ }
     }

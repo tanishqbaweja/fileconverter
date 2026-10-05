@@ -3,6 +3,7 @@
  * At most 96 scalar snapshots plus 32 fixed free-block buckets per snapshot.
  */
 #include <emscripten/emmalloc.h>
+#include <libavutil/refstruct.h>
 
 EM_JS(void, mpeg2_allocator_emit,
       (unsigned sequence, unsigned phase, int codec_id, int encoder,
@@ -45,5 +46,44 @@ int __wrap_avcodec_default_get_buffer2(AVCodecContext *context, AVFrame *frame, 
   mpeg2_allocator_snapshot(17, context, frame);
   int result = __real_avcodec_default_get_buffer2(context, frame, flags);
   mpeg2_allocator_snapshot(18, context, frame);
+  return result;
+}
+
+// Separate fixed pool-event budget; never consumes the 96 frame/heap slots.
+// Native getter walks at most 128 inactive links under the pool mutex. Only
+// scalar sizes/counts are exposed; no decoded data or pointer dereferencing JS.
+EM_JS(void, mpeg2_refstruct_emit,
+      (unsigned sequence, unsigned phase, unsigned pool_identity, int complete,
+       const size_t *stats, unsigned dynamic_bytes, unsigned free_bytes,
+       unsigned unclaimed_bytes), {
+  const callback = Module["withinBridge"].allocatorDiagnostic;
+  if (!callback) return;
+  const values = HEAPU32.subarray(stats >> 2, (stats >> 2) + 4);
+  callback({ kind: "refstruct-pool", sequence, phase, poolIdentity: pool_identity,
+    statisticsComplete: Boolean(complete),
+    entryPayloadBytes: complete ? values[0] : null,
+    entryRequestedAllocationBytes: complete ? values[1] : null,
+    checkedOutEntries: complete ? values[2] : null,
+    cachedEntries: complete ? values[3] : null,
+    dynamicHeapBytes: dynamic_bytes, freeDynamicBytes: free_bytes,
+    unclaimedHeapBytes: unclaimed_bytes });
+});
+
+int within_refstruct_pool_diagnostic(AVRefStructPool *pool, size_t stats[4]);
+static void mpeg2_refstruct_snapshot(unsigned phase, AVRefStructPool *pool) {
+  static unsigned sequence;
+  if (sequence >= 128) return;
+  size_t stats[4] = {0};
+  int complete = within_refstruct_pool_diagnostic(pool, stats);
+  mpeg2_refstruct_emit(++sequence, phase, (unsigned)(uintptr_t)pool, complete,
+      stats, emmalloc_dynamic_heap_size(), emmalloc_free_dynamic_memory(),
+      emmalloc_unclaimed_heap_memory());
+}
+
+void *__real_av_refstruct_pool_get(AVRefStructPool *pool);
+void *__wrap_av_refstruct_pool_get(AVRefStructPool *pool) {
+  mpeg2_refstruct_snapshot(19, pool);
+  void *result = __real_av_refstruct_pool_get(pool);
+  mpeg2_refstruct_snapshot(20, pool);
   return result;
 }
