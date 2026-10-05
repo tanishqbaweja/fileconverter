@@ -46,7 +46,30 @@ try {
       "            : av_buffer_pool_get(pool->pools[i]);",
     "        pic->buf[i] = av_buffer_pool_get(pool->pools[i]);");
   assert.equal(restored, before);
-  process.stdout.write(`Private encoder-only cache candidate checked; patched source SHA256 ${createHash("sha256").update(after).digest("hex")}. No compiled fit/fidelity/speed claim.\n`);
+  assert.equal(createHash("sha256").update(after).digest("hex"),
+    "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478");
+  process.stdout.write("Encoder-stage exact source/reversal verified.\n");
+  const hevcPatch = "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch";
+  await exec("git", ["apply", "--check", "--directory", directory, hevcPatch],
+    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000 });
+  const checked = await exec(bash, ["--noprofile", "--norc", "-c",
+    'patch --fuzz=0 --strip=1 --input "$1"', "patch-check", path.join(root, hevcPatch).replaceAll("\\", "/")],
+  { cwd: runtime.directory, env: runtime.env, windowsHide: true, timeout: 30000 });
+  process.stdout.write(checked.stdout);
+  const finalSource = await readFile(target, "utf8");
+  // This stage changes only two comments and the codec-specific cache predicate.
+  const encoderStage = finalSource
+    .replace("        // Private specialist core: no inactive encoder / HEVC plane cache.",
+      "        // Private MPEG2 core: free inactive encoder planes on last unref.")
+    .replace("        // Other decoder pools and auxiliary reference pools remain unchanged.",
+      "        // Decoder pools and codec algorithms remain unchanged.")
+    .replace("        pic->buf[i] = (av_codec_is_encoder(s->codec) ||\n" +
+      "                       s->codec_id == AV_CODEC_ID_HEVC)",
+    "        pic->buf[i] = av_codec_is_encoder(s->codec)");
+  assert.equal(encoderStage, after);
+  assert.equal(createHash("sha256").update(finalSource).digest("hex"),
+    "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4");
+  process.stdout.write("Private encoder plus HEVC plane-cache source candidate checked; exact sizes/live references/auxiliary pools unchanged. No compiled fit/fidelity/speed claim.\n");
 } finally {
   await runtime.close();
   await assert.rejects(access(runtime.directory), { code: "ENOENT" });

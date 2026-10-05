@@ -23,7 +23,8 @@ if (ffmpegSourceSha256 !== "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb408223174
 const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidate.mjs",
   "build-mpeg2-candidate.sh", "mpeg2-candidate-manifest.mjs", "patches/matroska-bounded-no-cues.patch",
   "patches/mov-bounded-custom-metadata.patch", "patches/mov-fragmented-cover-metadata-only.patch",
-  "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch"];
+  "mpeg2-allocator-diagnostic.h", "patches/mpeg2-encoder-uncached-frame-buffers.patch",
+  "patches/hevc-decoder-uncached-frame-buffers.patch"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const manifest = {
@@ -43,9 +44,10 @@ const manifest = {
   initialWasmMemoryBytes: 33554432, maximumWasmMemoryBytes: 33554432,
   allowMemoryGrowth: false, codecThreads: 1, pthreadPoolSize: 0,
   encoderDelay: "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
-  frameBufferPolicy: "Private encoder-only uncached planes; exact upstream alignment/padding/zeroing/live references; decoder pools unchanged",
+  frameBufferPolicy: "Private encoder-only uncached planes plus HEVC decoder uncached planes; exact upstream alignment/padding/zeroing/live references; other decoder and HEVC auxiliary pools unchanged",
   frameBufferOriginalSourceSha256: "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",
-  frameBufferPatchedSourceSha256: "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
+  frameBufferEncoderStageSourceSha256: "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
+  frameBufferPatchedSourceSha256: "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4",
   avioInputBufferBytes: 262144, avioOutputBufferBytes: 262144,
   maximumStreams: 32, maximumChapters: 1024, maximumAttachmentBytes: 8388608,
   maximumMetadataEntries: 4096, maximumMetadataTextBytes: 2097152,

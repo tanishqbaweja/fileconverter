@@ -73,6 +73,12 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch"
 printf '%s  %s\n' 62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478 \
   ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
+# Follow-up private cache policy: HEVC pixel planes only. Live decode reference
+# lifetimes, auxiliary reference pools and every other decoder remain upstream.
+patch --fuzz=0 --directory=ffmpeg --strip=1 \
+  < "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch"
+printf '%s  %s\n' 910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4 \
+  ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
 (
   cd ffmpeg
   trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
@@ -122,6 +128,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mpeg2-encoder-uncached-frame-buffers.patch" source-bundle/
+cp "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch" source-bundle/
 cp "${SCRIPT_DIR}/mpeg2-allocator-diagnostic.h" \
   "${PROJECT_ROOT}/scripts/lib/mpeg2-allocator-instrumentation.mjs" source-bundle/
 tar -czf "${OUTPUT_ROOT}/corresponding-source.tar.gz" source-bundle

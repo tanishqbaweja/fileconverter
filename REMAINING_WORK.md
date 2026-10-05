@@ -7,6 +7,47 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Latest encoder-cache candidate executed, not accepted:** non-Docker
+run37297749321 atdea0e0ac succeeded269s job/223s compile (not conversion speed).
+All10 source hashes/helper/artifact hashes and actual shared512/512pages
+verified. Uninstrumented WasmSHAebbb59762f15b2a6a783f69d0dfbecfceeb3ee2b9082db5bca19a36dd20f1eed.
+Strict Chrome gate **3/3 passed in13.3s**, identical321,692-byte output/SHA
+74def572f4ff85144603c7fe579195e44cfc5417d63406d5eb530d377dbf6b4b,
+48 genuine MPEG2 frames/ordinalSSIM0.992146/PTS≤1ms/all source container
+tags/two exact AAC tracks/PNG250×140 retained; failure/cancel cleanup passed.
+Small elapsed500.295ms is **not identical-setting repeated speed A/B**.
+
+Full unchanged original1920×804/24fps/default controls/fixed32MiB retry
+**failed before output**: input353,857/output0, attempted heap end34,551,456.
+The bounded default stack already identifies **av_refstruct_pool_get →
+alloc_frame**, different from the previous pixel-plane pool failure; no
+extra identical/stack-diagnostic rerun was necessary. Attempted-end difference
+is **not a measured heap saving**. Full-tree increment190.3046875MiB over
+EARLY stable blank263,368,704 bytes (loaded312,078,336/native peak462,917,632)
+is an incomplete-run diagnostic, not acceptance. All17 native conversion
+samples valid/zero unavailable; all five cleanup flags true. PIDs35896/40944/
+28240/runtimefXWCpu independently absent, original checksum/size independently
+rechecked, no new disposable media/runtime remains. HostedIDs11339952854/
+11340727443 deleted/APIzero, source bundle not downloaded. Frozen actual
+manifest/executed sources/raw hashes/validators/whole-tree peaks:
+`evidence/mpeg2-uncached-encoder-protected-failure-2026-10-05.json`.
+
+**Next changed source candidate, not compiled or accepted:** a separate
+source-pinned second patch adds only the HEVC codec-specific pixel-plane
+uncaching predicate on top of the encoder patch. Every upstream size/stride/
+alignment/padding/zeroing/live frame reference stays unchanged; HEVC auxiliary
+reference pools, other decoder pools, algorithms/quality/options/heap unchanged.
+Inactive decoder-cache bytes at failure remain unknown. PinnedFFmpeg buffer.c
+SHA810049e1ac054af6870a5c58c02903f29a210732ecfe724b79ece8c8a18ad2ac
+shows only last normal unref returns a backing plane to its pool; direct
+AVBuffer allocation releases at that same lifetime boundary, not early.
+Both Git/GNUzero-fuzz patches and exact two-stage reversals pass; final
+get_buffer.cSHA910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4.
+Private manifest/source bundle disclose both cache policies, no public source
+or published engine change. **403/403 units**, focused13/13, scopedlint,
+TypeScript/Bashsyntax pass. Next uninstrumented native build, strict small
+gate, then unchanged full original gate; saving/fit/speed are unproven.
+
 **Measured LOW_DELAY follow-up and new allocation candidate:** diagnostic
 run37295333393 at17c0d66 succeeded332s job/288s compile, not conversion speed.
 Full original fixture/fixed32MiB yields **65 events, zero evicted**, final

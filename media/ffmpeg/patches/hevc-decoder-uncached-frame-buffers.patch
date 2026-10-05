@@ -1,0 +1,12 @@
+--- a/libavcodec/get_buffer.c
++++ b/libavcodec/get_buffer.c
+@@ -235,5 +235,6 @@
+-        // Private MPEG2 core: free inactive encoder planes on last unref.
++        // Private specialist core: no inactive encoder / HEVC plane cache.
+         // Preserve upstream layout, padding, zeroing and all live references.
+-        // Decoder pools and codec algorithms remain unchanged.
+-        pic->buf[i] = av_codec_is_encoder(s->codec)
++        // Other decoder pools and auxiliary reference pools remain unchanged.
++        pic->buf[i] = (av_codec_is_encoder(s->codec) ||
++                       s->codec_id == AV_CODEC_ID_HEVC)
+             ? (CONFIG_MEMORY_POISONING ? av_buffer_alloc(pool->buffer_size[i])
