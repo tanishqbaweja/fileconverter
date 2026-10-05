@@ -7,13 +7,42 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**Read-only post-release encoder pool measurement implemented; execution pending.**
+**Actual post-release measurement: 278,222 inactive encoder-accessory bytes.**
+Non-Docker run37340665849 at47a942a passed (232s build/298s job, NOT conversion
+speed). All15 source pins, actual emitter import, 9-transition compiled reader,
+fixed32MiB shared Wasm and guarded256KiB stacks verified. ONE full unchanged
+test.mkv attempt still failed at heap end33904664; input353857/output0. Captured
+196 ordered events:66heap/125pool/5encoder-release, no eviction/incomplete/cap
+exhaustion. Five boundary groups measured live backing278222/556444/556444/
+556444/556444 and inactive backing0/0/278222/278222/278222. Absent mbskip is
+configured=false/null, not a failed zero. Last release has qscale6430 +mbtype
+25672 +2motion98360 +2refindex24700 inactive requested bytes; live556444 is
+required and MUST NOT be freed. Seven subsequent events reach HEVC tab_mvf_pool
+failure without another encoder operation/get:5live/0cache, requested1163536,
+free295380+unclaimed813368=1108748, minimum shortfall54788 BEFORE fragmentation
+and unknown overhead. The inactive encoder entries are a measured recovery
+candidate, not proof of contiguous fit, later allocation fit or speed.
+
+Earlyblank250310656/loaded310964224/nativepeak479068160 =>218.16015625MiB
+INCOMPLETE, NOT acceptance.35valid/0unavailable, all unknown/GPU/utility/updater
+descendants retained. All5finally flags true; independent later check finds all
+21 distinct owned/observed PIDs absent, six dist assets restored, adapters/runtime
+gone, test.mkv2958573265/SHA31f36695...9db34 unchanged. An immediate earlier PID
+check reported a live PID without identity output; immediate descendant absence
+is NOT claimed. Both hosted artifacts deleted/API0; source bundle not downloaded.
+Frozen evidence: evidence/mpeg2-encoder-release-measured-2026-10-05.json, with
+actual raw481335-byte report SHA1212856b...d1b5 and source-bound reducer guards.
+Next test only inactive MPEG2 encoder accessory uncaching; no HEVC auxiliary
+mutation/live reference reduction/heap increase/source resize/unchanged retry.
+Public support, full repeats/scaling/speed A/B and goal completion remain open.
+
+**Read-only post-release implementation details (now executed above).**
 Actual five-pool retention at the encoder release boundary was not covered by
 last-seen getter snapshots. Audit pins MPEG encoder17eddac...99289f, picture
 209b4d7d...d25a2, pool initialization80e1e845...95ca4, refstructd8936c...742f.
 Picture reset normally unrefs accessory entries and refstruct normally caches
-them; retained byte counts at that boundary remain UNKNOWN, not an optimization
-claim. New diagnostic-only addition calls a scalar reader after the original
+them; measured retained byte counts are recorded above, not an optimization
+claim. Diagnostic-only addition calls a scalar reader after the original
 cur_pic release, only for MPEG2/thread_count1. All upstream codec/lifetime bytes
 otherwise unchanged; no allocation/free/reference mutation, no normal-core patch.
 Source check passed Git +GNU0fuzz and exact byte-identical addition reversal.
@@ -28,8 +57,8 @@ encoder source state in BOTH modes; patch included in corresponding sources.
 431/431 units,13focusedguards,zero-warning scoped lint/Bash/diffcheck pass;
 all source-check scratch removed. Fixed32MiB/C+Asyncify256KiB/codec/kernel/
 dimensions/quality/frames/I/O/baseline/publicassets and registry unchanged.
-Next ONE changed diagnostic build and ONE full-original production-browser
-attempt. Native compilation and actual release bytes are not yet proven.
+Native compilation and actual boundary bytes are proven above; successful
+original-file fit, fidelity and performance remain unproven.
 
 **Latest changed-layout pool diagnostic: five live MV entries, no cached entry;
 stack reallocation still does not solve full-original fit.**
