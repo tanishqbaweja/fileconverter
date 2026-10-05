@@ -8,6 +8,11 @@ BUILD_ROOT="${WORK_ROOT}/mpeg2-candidate-build"
 OUTPUT_ROOT="${WORK_ROOT}/mpeg2-candidate-output"
 ALLOCATOR_DIAGNOSTIC="${WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC:-0}"
 [[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${ALLOCATOR_DIAGNOSTIC}" == 1 ]] || exit 2
+CANDIDATE_ALLOCATOR="${WITHIN_MPEG2_ALLOCATOR:-emmalloc}"
+[[ "${CANDIDATE_ALLOCATOR}" == emmalloc || "${CANDIDATE_ALLOCATOR}" == dlmalloc ]] ||
+  { echo 'Private MPEG2 allocator must be emmalloc or dlmalloc.' >&2; exit 2; }
+[[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${CANDIDATE_ALLOCATOR}" == emmalloc ]] ||
+  { echo 'emmalloc-specific diagnostics cannot measure dlmalloc.' >&2; exit 2; }
 DIAGNOSTIC_LINK_FLAGS=()
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   DIAGNOSTIC_LINK_FLAGS=(-Wl,--wrap=avcodec_default_get_buffer2 -Wl,--wrap=av_refstruct_pool_get)
@@ -140,6 +145,7 @@ fi
 # Mandatory compiled allocation-lifecycle gate in BOTH candidate modes.
 emcc "${SCRIPT_DIR}/mpeg2-accessory-smoke.c" -I"${PREFIX}/include" \
   "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
+  "-sMALLOC=${CANDIDATE_ALLOCATOR}" \
   -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
   -sMODULARIZE=0 -sEXPORT_ES6=0 \
   -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
@@ -150,6 +156,7 @@ if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   # Synthetic allocation/source-reader unit, never a native media conversion.
   emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
     "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
+    "-sMALLOC=${CANDIDATE_ALLOCATOR}" \
     -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
     -sMODULARIZE=0 -sEXPORT_ES6=0 \
     -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
@@ -166,7 +173,7 @@ emcc "${BUILD_ROOT}/within_mpeg2.c" -I"${PREFIX}/include" \
   -sPTHREAD_POOL_SIZE=0 -sPTHREAD_POOL_SIZE_STRICT=2 \
   -sASYNCIFY=1 -sASYNCIFY_STACK_SIZE=262144 \
   -sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432" \
-  -sSTACK_SIZE=262144 -sSTACK_OVERFLOW_CHECK=2 -sMALLOC=emmalloc -sMODULARIZE=1 -sEXPORT_ES6=1 \
+  -sSTACK_SIZE=262144 -sSTACK_OVERFLOW_CHECK=2 "-sMALLOC=${CANDIDATE_ALLOCATOR}" -sMODULARIZE=1 -sEXPORT_ES6=1 \
   -sENVIRONMENT=worker -sEXPORT_NAME=createWithinRemuxCore -sFILESYSTEM=0 \
   -sASSERTIONS=1 -sWASM_BIGINT=1 \
   -sEXPORTED_FUNCTIONS='["_within_remux","_emscripten_stack_get_base","_emscripten_stack_get_end"]' \
@@ -183,6 +190,7 @@ mkdir source-bundle
 cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mpeg2-candidate.c" \
   "${SCRIPT_DIR}/make-mpeg2-candidate.mjs" "${SCRIPT_DIR}/build-mpeg2-candidate.sh" \
   "${SCRIPT_DIR}/mpeg2-candidate-manifest.mjs" \
+  "${SCRIPT_DIR}/mpeg2-allocator-selection.mjs" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

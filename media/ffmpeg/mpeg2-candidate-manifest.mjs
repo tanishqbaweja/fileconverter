@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-allocator-selection.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const build = path.resolve(process.argv[2] ?? "");
@@ -27,9 +28,13 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/hevc-decoder-uncached-frame-buffers.patch", "patches/mov-fragmented-aac-exact-priming.patch",
   "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c",
   "patches/mpeg2-encoder-pool-release-diagnostic.patch",
-  "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c"];
+  "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
+  "mpeg2-allocator-selection.mjs"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
+const nativeAllocator = selectMpeg2Allocator(process.env.WITHIN_MPEG2_ALLOCATOR ?? "emmalloc", allocatorDiagnostic === "1");
+const compiledAllocatorSymbols = verifyMpeg2AllocatorSymbols(nativeAllocator,
+  await readFile(path.join(output, "within-mpeg2.mjs.symbols"), "utf8"));
 const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
 if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
   ? "616af42245394f1db14d872554545d83759c6d5889292fdf8e4223ee244633f1"
@@ -82,6 +87,9 @@ const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
   allocatorDiagnostic: allocatorDiagnostic === "1",
+  nativeAllocator, compiledAllocatorSymbols,
+  allocatorScope: "Private allocation-strategy experiment inside unchanged fixed32MiB; byte placement only, codecs/quality/live references unchanged. Fit/speed unproven",
+  allocatorLifecycleSmokeAllocator: nativeAllocator,
   allocatorInstrumentationSha256: await sha256(path.join(root, "scripts/lib/mpeg2-allocator-instrumentation.mjs")),
   allocatorDiagnosticScope: "Private96 heap/frame +128 pool +16 five-pool post-release snapshots; read-only128-link cap, null incomplete counts; no allocator/codec mutation or acceptance",
   refstructSourceSha256,
@@ -94,7 +102,7 @@ const manifest = {
   sources: Object.fromEntries(await Promise.all(sourceFiles.map(async (file) =>
     [file, await sha256(path.join(root, "media/ffmpeg", file))]))),
   generatedWrapperSourceSha256: await sha256(path.join(build, "within_mpeg2.c")),
-  artifacts: Object.fromEntries(await Promise.all(["within-mpeg2.mjs", "within-mpeg2.wasm"].map(async (file) =>
+  artifacts: Object.fromEntries(await Promise.all(["within-mpeg2.mjs", "within-mpeg2.wasm", "within-mpeg2.mjs.symbols"].map(async (file) =>
     [file, await sha256(path.join(output, file))]))),
   enabledDecoders: enabled("DECODER"), enabledEncoders: enabled("ENCODER"),
   enabledDemuxers: enabled("DEMUXER"), enabledMuxers: enabled("MUXER"),

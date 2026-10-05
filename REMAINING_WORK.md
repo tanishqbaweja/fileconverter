@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Private allocator experiment implemented; compile/browser pending
+
+Measured encoder entry has2864640 aggregate free/unclaimed bytes split among
+16 free regions, but neither exact plane request nor contiguous fit is proven.
+Pinned FFmpeg8.1.2 [get_buffer.c](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/get_buffer.c)
+keeps codec alignment, per-plane layout and16+STRIDE_ALIGN-1 padding; those bytes
+and the existing exact layout/live-reference patches are unchanged. Emscripten
+6.0.4 [settings](https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.4/src/settings.js)
+supports dlmalloc; its [implementation](https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.4/system/lib/dlmalloc.c)
+uses best-fitting tree chunks for large allocations. That justifies a changed
+allocation-strategy trial, NOT proof of fit, less fragmentation or faster speed.
+
+New explicit WITHIN_MPEG2_ALLOCATOR choice emmalloc(default unchanged)/dlmalloc
+affects only private core allocation plus BOTH mandatory allocation-only unit
+links. All retain fixed32MiB, no growth, guarded256KiB stacks,64KiB AVIO, one
+codec thread, exact kernel/quality/dimensions/metadata/lifetime bytes. Existing
+emmalloc-specific diagnostic mode rejects dlmalloc before SDK/owned-directory
+creation rather than fabricate telemetry. Manifest checks actual emitted
+allocator symbols, rejects mixed/mismatched maps, and hashes symbol artifact
+alongside JS/Wasm; selection helper included in18 source pins/source bundle.
+Compiled smoke is explicitly linked with the SAME selected allocator. No normal
+native conversion, source resizing, baseline/threshold changes or public edits.
+New workflow selector is private/off-by-default. Frozen workflow hashes remain
+unchanged; exact paired input/environment reversal plus the original two unit
+artifact-line reversals recovers every historical byte. Negative controls reject
+partial/default/other/duplicate changes.9 focused tests, scoped lint/Bash syntax/
+diff checks pass; actual old emitted emmalloc fingerprint also checked. Next one
+changed non-Docker dlmalloc compile, small4 fidelity/adverse tests, then full
+unchanged protected source gate. If it fails, record and do not retry unchanged.
+Current447/447 units and TypeScript pass; no native/browser execution of dlmalloc
+has occurred yet. Public assets/registry and executed historical proofs unchanged.
+
 ## 2026-10-06 — Private 64KiB AVIO tested; original frame-buffer heap failure
 
 **Changed64KiB read-only diagnostic now identifies the encoder boundary.**

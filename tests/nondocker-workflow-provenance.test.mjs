@@ -23,3 +23,13 @@ test("Historical build workflow provenance reverses only two unit artifact lines
   assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from("# changed build\n")]), readerOnly));
   assert.throws(() => provenSourceSha(file, Buffer.concat([bytes, Buffer.from(accessory)]), readerOnly));
 });
+test("Private allocator workflow selector reverses exactly and rejects incomplete/default/other changes", async () => {
+  const file = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
+  const old = "5a0d4a2a4357abae5715363367aef69c400e584b49836c645eae0e08d5c587c6";
+  const text = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
+  assert.equal(provenSourceSha(file, Buffer.from(text), old), old);
+  assert.throws(() => provenSourceSha(file, Buffer.from(text.replace("        default: emmalloc", "        default: dlmalloc")), old));
+  assert.throws(() => provenSourceSha(file, Buffer.from(text.replace("      mpeg2_allocator:", "      changed_allocator:")), old));
+  assert.throws(() => provenSourceSha(file, Buffer.from(text.replace("WITHIN_MPEG2_ALLOCATOR=", "CHANGED_MPEG2_ALLOCATOR=")), old));
+  assert.throws(() => provenSourceSha(file, Buffer.from(text + "# unrelated change\n"), old));
+});
