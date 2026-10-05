@@ -34,6 +34,10 @@ units**, 15 focused guards, scoped lint/TypeScript pass. Next changed native
 build then the same strict small gate; only after it passes may the full
 unchanged protected memory/fidelity test proceed. Added compact-failure guard;
 final pre-compile regression **395/395 units** passes.
+The metadata fix is pushed as `afa47d45dba6f054a68c7dee71e19d5c0c028381`.
+Changed non-Docker **run `37293968193`**, job `111710730694`, is confirmed
+in progress in native compilation from 10:03:11 UTC, diagnostic zero.
+Follow that same handle; do not dispatch a duplicate because observation ends.
 
 Both build artifacts deleted/API zero, source archive never downloaded.
 Owned runtime/fixtures/converted copies absent, both Chrome roots and test

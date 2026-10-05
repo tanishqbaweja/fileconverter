@@ -1336,6 +1336,8 @@ M-04/M-08 latest strict MPEG2 small gate (2026-10-05): same uninstrumented LOW_D
 
 Strict metadata failure compact-proof guard added; final pre-compile regression395/395units passes. Native fix remains uncompiled/unaccepted.
 
+Targeted source-provenance fix pushedafa47d45dba6f054a68c7dee71e19d5c0c028381 toorigin/media-options; changed non-Docker run37293968193/job111710730694 confirmedin nativecompile from10:03:11UTC, diagnostic0. Follow this same handle to terminal; no duplicate dispatch on observation expiry. Strict small gate and unchanged original protected gate are still required.
+
 Headed UI audit (2026-09-02/05): eight successful representative routes, a two-file document batch, quota and mobile permission failures, reload cleanup, mobile video controls and the complete keyboard order were reviewed. Failed/cancelled jobs now show Not applicable for remaining time, and encoding selects retain the visible keyboard focus outline. Production build, TypeScript and component ESLint pass; the final browser console and OPFS are clean. See evidence/headed-usability-audit-2026-09-05.json for exact scope; these UI runs do not add output-validation or process-tree memory certification.
 
 T-05 requirement-to-test index (2026-09-05): evidence/requirement-test-index-2026-09-05.json maps all 21 mandated success, adverse, large-file, complex-stream, lifecycle and cleanup scenarios to direct browser tests or retained production-browser reports. tests/requirement-test-index.test.mjs checks every scenario and source anchor plus the three identical direct-save runs, the independently validated 10 GiB run and the complex Matroska streams/chapters/cleanup facts.
