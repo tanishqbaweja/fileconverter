@@ -7,6 +7,40 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Latest changed-layout pool diagnostic: five live MV entries, no cached entry;
+stack reallocation still does not solve full-original fit.**
+Non-Docker37337524566 at pushed ef4d1bc compiled successfully (281s build /
+332s job, NOT conversion speed), with actual9-transition pool-reader smoke,
+14 native source/helper/artifact hashes verified, same guarded256KiB C and
+Asyncify reserves, fixed32MiB/shared512pages, unchanged codec/settings/kernel.
+ONE full-original diagnostic attempt failed at requested heap end33903608,
+input353857/output0. Captured191 ordered scalar events (66heap/125pool), no
+evictions, incomplete statistics or cap exhaustion. Phase18 HEVC buffer then
+first auxiliary phase19 directly identifies tab_mvf_pool:1163520 payload,
+1163536 requested backing,5live/0cache,5817680 live requested bytes. Actual
+free295380 +unclaimed814424 =1109804 upper bound, leaving at least53732 bytes
+short BEFORE fragmentation/unknown allocator overhead. Other pools are not
+simultaneously measured. No MV uncaching, dropped references, codec algorithm
+rewrite, resize, further blind stack shrink or unchanged conversion retry.
+Normal-core288321input failure above and instrumented353857input failure are
+distinct actual reports; do not pretend their allocation layouts are identical.
+
+Early blank254464000/loaded316928000/nativepeak465154048 =>200.9296875MiB
+INCOMPLETE, NOT250MiB acceptance or a private-memory/speed saving.34 valid
+native samples/zero unavailable/all unknown/GPU/utility/updater descendants
+counted. Original SHA/size unchanged; all5finally flags and independent20
+owned/observedPID absence/sixassets restored/private adapter/runtime absent
+verified. Hosted11356967928/11357002856 deleted/API0/source bundle never
+downloaded. Only7 reusable static tools retained locally, no converted media.
+Compact evidence/mpeg2-guarded-live-pool-measured-2026-10-05.json freezes
+actual source/manifest/rawhashes/191events/process peak; read-only reduction
+script and strict null/count/chronology/nonacceptance tests retain the result.
+Next audit independently required auxiliary lifetimes and actual inactive
+encoder-pool retention at release before another memory optimization. Do not
+infer idle bytes from stale per-pool samples. Full goal remains incomplete.
+Measured-layout regression:428/428 units,8 focused frozen-evidence/stack
+guards, zero-warning scoped ESLint and diffcheck pass. No public promotion.
+
 **Guarded stack-reserve candidate compiled and tested: small fidelity passes,
 full unchanged original still fails. Not accepted or public.**
 Non-Docker run37334670866 at7a9a1f05 succeeded:194s build/246s job, not
@@ -25,7 +59,7 @@ ONE uninstrumented original2,958,573,265-byte1920x804/default-settings attempt
 failed at av_refstruct_pool_get -> alloc_frame: requested heap end33902168,
 input288321/output0. Three runs requested, stopped at first actual failure;
 no further unchanged retry. Exact current auxiliary pool/live/cache bytes are
-unknown: the ordinary stack does NOT justify reusing the earlier layout's
+unknown in that normal report: the ordinary stack does NOT justify reusing the earlier layout's
 five-live MV attribution. Early blank263700480/loaded305684480/native
 peak460505088 =187.6875MiB INCOMPLETE, not memory acceptance or a saving;
 16 valid native conversion samples/zero unavailable/all unknown and updater
