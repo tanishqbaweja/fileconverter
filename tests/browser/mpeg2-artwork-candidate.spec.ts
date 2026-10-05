@@ -5,6 +5,7 @@ import { existsSync } from "node:fs";
 import { mkdir, mkdtemp, open, readFile, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
+import { validateCopiedAudioTiming } from "../../scripts/lib/copied-audio-timing.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const candidateName = process.env.WITHIN_MPEG2_CANDIDATE_DIR ?? "mpeg2-candidate-output";
@@ -34,7 +35,8 @@ let sampling = false;
 let memoryTask: Promise<void> | null = null;
 const title = "MPEG-2 café — 音楽";
 const adapters = [
-  { container: "mp4", source: "mkv", profile: "mkv-to-mp4" },
+  { container: "mp4", source: "mkv", fixture: "source", sourceCodec: "mpeg4", frames: 48, profile: "mkv-to-mp4" },
+  { container: "mp4", source: "mkv", fixture: "hevc", sourceCodec: "hevc", frames: 96, profile: "mkv-to-mp4" },
 ] as const;
 
 test.use({ channel: process.env.WITHIN_BROWSER_CHANNEL || undefined, serviceWorkers: "block" });
@@ -51,7 +53,7 @@ async function probe(file: string) {
       index: number; codec_type: string; codec_name: string; width?: number; height?: number;
       nb_read_frames?: string; tags?: Record<string, string>; disposition?: { attached_pic: number };
     }>;
-    format: { duration: string; tags: Record<string, string> };
+    format: { start_time: string; duration: string; tags: Record<string, string> };
     chapters: Array<{ start_time: string; end_time: string; tags: Record<string, string> }>;
   };
 }
@@ -66,6 +68,15 @@ async function frameTimes(file: string) {
     "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", file], "ffprobe");
   const data = JSON.parse(stdout) as { frames: Array<{ best_effort_timestamp_time: string }> };
   return data.frames.map((frame) => Number(frame.best_effort_timestamp_time));
+}
+
+async function copiedAudioTimeline(file: string) {
+  const { stdout } = await native(["-v", "error", "-select_streams", "a", "-show_packets",
+    "-show_entries", "packet=stream_index,pts_time,dts_time,duration_time", "-of", "json", file], "ffprobe");
+  return (JSON.parse(stdout) as { packets: Array<{
+    stream_index: number; pts_time: string; dts_time: string; duration_time: string;
+    side_data_list?: Array<{ side_data_type: string; skip_samples: number; discard_padding: number }>;
+  }> }).packets;
 }
 
 async function compareFrames(source: string, output: string, ordinal: boolean) {
@@ -125,20 +136,28 @@ test.beforeAll(async () => {
   const artwork = path.join(work, "artwork.png");
   await native(["-v", "error", "-f", "lavfi", "-i", "color=c=red:size=250x140",
     "-frames:v", "1", "-threads", "1", "-c:v", "png", artwork]);
-  for (const extension of ["mkv"]) {
+  // Additional HEVC reordered-frame correctness coverage for decoder caching.
+  // Small fixtures never substitute for the full unchanged protected gate.
+  const fixtures = [
+    { name: "source", seconds: 2, codec: ["-c:v", "mpeg4", "-q:v", "2", "-bf", "0"] },
+    { name: "hevc", seconds: 4, codec: ["-c:v", "libx265", "-preset", "ultrafast", "-crf", "18",
+      "-threads:v", "1", "-x265-params", "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error"] },
+  ];
+  for (const fixture of fixtures) {
     await native([
-      "-v", "error", "-y", "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=24:duration=2",
-      "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=2",
-      "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=2",
+      "-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=320x240:rate=24:duration=${fixture.seconds}`,
+      "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixture.seconds}`,
+      "-f", "lavfi", "-i", `sine=frequency=440:sample_rate=48000:duration=${fixture.seconds}`,
       "-f", "ffmetadata", "-i", metadata, "-map", "0:v", "-map", "1:a", "-map", "2:a",
-      "-map_metadata", "3", "-map_chapters", "3", "-c:v", "mpeg4", "-q:v", "2", "-bf", "0",
+      "-map_metadata", "3", "-map_chapters", "3", ...fixture.codec,
       "-c:a", "aac", "-b:a", "128k", "-metadata:s:a:0", "language=eng",
       "-metadata:s:a:1", "language=hin", "-metadata:s:a:0", "title=First café",
       "-metadata:s:a:1", "title=Second 音楽", "-avoid_negative_ts", "make_zero",
       "-fflags", "+bitexact", "-flags:v", "+bitexact", "-flags:a", "+bitexact",
       "-attach", artwork, "-metadata:s:t:0", "mimetype=image/png",
-      "-metadata:s:t:0", "filename=cover.png", path.join(work, `source.${extension}`),
+      "-metadata:s:t:0", "filename=cover.png", path.join(work, `${fixture.name}.mkv`),
     ]);
+    expect((await stat(path.join(work, `${fixture.name}.mkv`))).size).toBeLessThan(16 * 1024 * 1024);
   }
   // Separate synthetic safety fixture, never a substitute for the protected
   // full-resolution input. Enough real frames to cancel after written output.
@@ -238,8 +257,8 @@ test.afterAll(async () => {
 });
 
 for (const adapter of adapters) {
-  test(`private MPEG2 ${adapter.container}: genuine encode preserves bounded PNG attached art plus audio and metadata`, async ({ page }) => {
-    const source = path.join(work, `source.${adapter.source}`);
+  test(`private MPEG2 ${adapter.sourceCodec} to ${adapter.container}: genuine encode preserves bounded PNG attached art plus audio and metadata`, async ({ page }) => {
+    const source = path.join(work, `${adapter.fixture}.${adapter.source}`);
     const output = path.join(work, `result.${adapter.container}`);
     const before = await probe(source);
     try {
@@ -292,12 +311,12 @@ for (const adapter of adapters) {
         outputSha256: createHash("sha256").update(await readFile(output)).digest("hex"), metrics: state.metrics });
       const beforeVideo = before.streams.find((stream) => stream.codec_type === "video")!;
       const afterVideo = after.streams.find((stream) => stream.codec_type === "video")!;
-      expect(beforeVideo.codec_name).toBe("mpeg4");
+      expect(beforeVideo.codec_name).toBe(adapter.sourceCodec);
       expect(afterVideo.codec_name).toBe("mpeg2video");
       expect(afterVideo.width).toBe(beforeVideo.width);
       expect(afterVideo.height).toBe(beforeVideo.height);
       expect(afterVideo.nb_read_frames).toBe(beforeVideo.nb_read_frames);
-      expect(Number(afterVideo.nb_read_frames)).toBe(48);
+      expect(Number(afterVideo.nb_read_frames)).toBe(adapter.frames);
       const inputArt = before.streams.find((s) => s.disposition?.attached_pic);
       const outputArt = after.streams.find((s) => s.disposition?.attached_pic);
       expect(after.streams.filter((s) => s.disposition?.attached_pic)).toHaveLength(1);
@@ -340,6 +359,15 @@ for (const adapter of adapters) {
         audioPacketHashes: await audioHashes(output), sourceBytes: (await stat(source)).size,
         outputBytes: (await stat(output)).size,
         outputSha256: createHash("sha256").update(await readFile(output)).digest("hex"), metrics: state.metrics });
+      const sourceAudioTimeline = await copiedAudioTimeline(source);
+      const outputAudioTimeline = await copiedAudioTimeline(output);
+      rows.push({ kind: "independent-copied-audio-timeline", sourceCodec: adapter.sourceCodec,
+        sourceFormatStart: before.format.start_time, sourceFormatDuration: before.format.duration,
+        outputFormatStart: after.format.start_time, outputFormatDuration: after.format.duration,
+        sourceAudioTimeline, outputAudioTimeline });
+      const copiedAudioTiming = validateCopiedAudioTiming(sourceAudioTimeline, outputAudioTimeline,
+        before.streams.filter((s) => s.codec_type === "audio").map((s) => s.index), audio.map((s) => s.index));
+      rows.push({ kind: "copied-audio-timing-passed", sourceCodec: adapter.sourceCodec, tracks: copiedAudioTiming });
       expect(Math.abs(Number(after.format.duration) - Number(before.format.duration))).toBeLessThan(0.06);
       expect(outputFrameTimes).toHaveLength(sourceFrameTimes.length);
       for (let index = 0; index < sourceFrameTimes.length; index++) {

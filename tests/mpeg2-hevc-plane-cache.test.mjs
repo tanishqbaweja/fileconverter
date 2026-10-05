@@ -86,3 +86,20 @@ test("HEVC follow-up changes only private pixel-cache predicate, with pinned two
   assert.match(checker, /assert.equal\(restored, before\)/);
   assert.match(checker, /runtime.close\(\)/);
 });
+
+test("Private small gate explicitly exercises reordered HEVC without replacing the unchanged protected source", async () => {
+  const browser = await source("tests/browser/mpeg2-artwork-candidate.spec.ts");
+  assert.match(browser, /fixture: "hevc", sourceCodec: "hevc", frames: 96/);
+  assert.match(browser, /pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48/);
+  assert.match(browser, /expect\(beforeVideo.codec_name\).toBe\(adapter.sourceCodec\)/);
+  assert.match(browser, /expect\(Number\(afterVideo.nb_read_frames\)\).toBe\(adapter.frames\)/);
+  assert.match(browser, /toBeLessThanOrEqual\(0.001\)/);
+  assert.match(browser, /expect\(ordinalSsim\).toBeGreaterThanOrEqual\(0.98\)/);
+  assert.match(browser, /for \(const \[key, value\] of Object.entries\(beforeTags\)\)/);
+  assert.match(browser, /file.slice\(position, position \+ 65536\)/);
+  assert.match(browser, /finally \{ await rm\(output, \{ force: true \}\); \}/);
+  const full = await source("scripts/mpeg2-protected-memory.mjs");
+  assert.match(full, /const source = path.join\(root, "test.mkv"\)/);
+  assert.match(full, /assert.equal\(video.width, 1920\); assert.equal\(video.height, 804\)/);
+  assert.match(full, /expectedSourceBytes = 2958573265/);
+});

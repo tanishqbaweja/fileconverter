@@ -7,6 +7,55 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
+**Latest HEVC-plane follow-up compiled; expanded correctness gate failed:**
+Non-Dockerrun37299917049/job111729934445 at0769ecbc succeeded330s job/279s
+native compile, not conversion speed. All11 sources/helper/artifacts/actual
+fixed shared512/512pages verified; WasmSHA5f372026ef1c2491d55484e014896b32a89e293355ccdc794dd71a094379fa3b.
+The old success fixture was MPEG4, so it could not validate changed HEVC
+decoder lifetime behavior. Added separate deterministic320×240/24fps/96-frame
+HEVC B2 correctness coverage, retaining the original MPEG4 fixture/settings,
+AAC/art/text/chapter checks and all quality/timing/cleanup thresholds. Both
+new four-case suites returned **3passed/1failed** (27.7s first coverage;
+27.3s changed bounded packet diagnostic). HEVC produced all96 MPEG2 frames,
+652,521 bytes/SSIM0.985963/full decode/exactAAC compressed hashes/artwork,
+but **duration4.104→4.021seconds differs83ms**, exceeding unchanged60ms gate.
+No failed route promotion and **no full protected conversion retry** while
+this new small fidelity gate fails. Small tests never replace `test.mkv`.
+
+Bounded per-track independent AAC packet diagnostics then show **all95/189
+packets retained per track with zero PTS/DTS error**, but priming is not exact:
+source1024samples→output1008 in zero-start MPEG4 case, and1024→0 in
+positive-start HEVC case, both tracks. Interleave order changes, so comparisons
+must group per track, not compare global mux order. Exact packet hashes do
+not prove decoded audio trimming/timing. Pinned FFmpegmovenc.cSHA
+d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068,
+344,984bytes, `mov_write_edts_tag`line4089 derives trim from DTS/CTS; it
+does not use copiedAACinitial_padding. This is the next private mux fix,
+**not implemented or verified yet**. Do not normalize away the duration
+failure or alter the fixture to hide positive-start timing. Add independent
+decoded-audio/sample-trim validation before accepting any fix.
+
+New `scripts/lib/copied-audio-timing.mjs` now independently enforces exact
+SkipSamples/discardpadding, per-track clocks≤1ms/counts/durations, unknown
+value refusal and a4096-packet small-fixture history cap. It is wired before
+the unchanged duration gate. Retained genuine failure vectors reject both
+trim-loss cases in focused units; **the strengthened browser guard has not
+been rerun against the same known-bad muxer**, avoiding another identical
+conversion. Four raw hashes/compiled manifest/actual executed-source hashes/
+video timelines/packet scalar summaries/safety/next exact fix:
+`evidence/mpeg2-hevc-small-timing-failure-2026-10-05.json`.
+All generated media/profile/runtime removed and production assets restored;
+hostedIDs11340866879/11340772001 deleted/APIzero/no source archive downloaded.
+Exactcontained obsolete diagnostictool37295333393 sixfiles7,321,092bytes
+deletion was policy-blocked before execution; no retry/bypass, static files
+remain and are not converted copies. This is added to the older blocked
+static-tool inventory. Full goal remains open; heap fit/speed/memory/public
+acceptance are all unproven for this changed candidate.
+Current-source **407/407units**, seven focused new/existing guards, scoped
+lint and TypeScript pass. Four production assets independently restored to
+their published hashes; all four observed small-test Chrome roots38276/39900/
+8372/25124 independently absent, no owned small-test scratch directories remain.
+
 **Latest encoder-cache candidate executed, not accepted:** non-Docker
 run37297749321 atdea0e0ac succeeded269s job/223s compile (not conversion speed).
 All10 source hashes/helper/artifact hashes and actual shared512/512pages
