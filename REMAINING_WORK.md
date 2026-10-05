@@ -11,6 +11,16 @@ not the entire product specification.
 Remote branch media-options includes diagnostic source commit f6f4ae4. The
 non-Docker build workflow now also retains the small compiled-reader smoke
 JSON alongside its manifest, with a source guard checking this artifact path.
+Build 37329661532 at cb7fe075 is running. Full regression initially found
+three historical workflow-hash failures after adding that retention path.
+Their frozen evidence remains unchanged: a strict single-line reversal must
+recover the exact old workflow hash; any other byte change or duplicate path
+is rejected. No codec/build invocation or acceptance gate is exempted.
+Regression now passes 418/418 units, including negative controls for extra
+workflow changes and duplicate artifact paths. Focused lint (zero warnings)
+and TypeScript pass. Six disposable dist media assets match published bytes
+before browser staging. Compiled smoke and full-source measurement remain
+pending; no new conversion, memory acceptance or speed claim yet.
 Previous fullfailure normalstack confirms av_refstruct_pool_get/alloc_frame,
 but not actual pool/size/live/cache quantities. Added diagnostic-only getter
 to pinned8.1.2 libavutil/refstruct.cSHA d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f;

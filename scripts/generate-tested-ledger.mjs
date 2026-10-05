@@ -1036,6 +1036,8 @@ lines.push("", "Implemented read-only auxiliary pool diagnostic, not compiled/ex
 
 lines.push("", "Read-only pool diagnostic source regression417/417units,12focusedguards/scopedlint/TypeScript/Bash/diffcheck pass. Existing96nativeheapbudget unchanged; oldsingle96browsercollectorguard now explicitlychecks96+128nativebudgets/224total. Compile/syntheticreader-unit/actualfullsource diagnostic stillpending, no measuredlive/idlebyteclaim.");
 
+lines.push("", "Read-only pool diagnostic workflow retains the compiled smoke JSON separately. Build 37329661532 at cb7fe075 was dispatched once without Docker. After this retention-only workflow change, three historical provenance guards initially failed; frozen proof hashes were preserved and a strict single-line reversal now recovers the exact historical workflow. Negative controls reject other workflow changes and duplicate paths. Regression418/418, zero-warning focused lint and TypeScript pass; native smoke/full-source measurement still pending, no conversion or speed/memory acceptance claim.");
+
 await writeFile(
   ledgerPath,
   `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${threeGpAviCurrentChromeNote}\n\n${mkvAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,

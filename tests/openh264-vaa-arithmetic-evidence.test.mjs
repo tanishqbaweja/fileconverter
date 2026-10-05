@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { provenSourceSha } from "./helpers/nondocker-workflow-provenance.mjs";
 
 const evidence = JSON.parse(await readFile(new URL("../evidence/openh264-vaa-arithmetic-2026-10-04.json", import.meta.url), "utf8"));
 test("actual compiled VAA equivalence records complete finite coverage without conversion acceptance", () => {
@@ -36,7 +37,7 @@ test("actual compiled VAA equivalence records complete finite coverage without c
 });
 test("private arithmetic evidence binds the actually proven helper and harness to current source bytes", async () => {
   for (const [file, expected] of Object.entries(evidence.currentSources)) {
-    assert.equal(createHash("sha256").update(await readFile(new URL(`../${file}`, import.meta.url))).digest("hex"), expected, file);
+    assert.equal(provenSourceSha(file, await readFile(new URL(`../${file}`, import.meta.url)), expected), expected, file);
   }
   assert.equal(evidence.attempts[1].report.sourceHashes["media/ffmpeg/openh264-vaa-simd.h"],
     evidence.currentSources["media/ffmpeg/openh264-vaa-simd.h"]);

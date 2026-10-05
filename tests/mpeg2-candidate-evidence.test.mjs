@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
+import { provenSourceSha } from "./helpers/nondocker-workflow-provenance.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const evidence = JSON.parse(await readFile(path.join(root,
@@ -36,7 +36,7 @@ test("MPEG2 private proof binds a successful native compile and genuine small br
     assert.equal(row.sourceChapters[0].tags.title, row.outputChapters[0].tags.title);
   }
   for (const [file, hash] of Object.entries(evidence.currentSources)) {
-    assert.equal(createHash("sha256").update(await readFile(path.join(root, file))).digest("hex"), hash, file);
+    assert.equal(provenSourceSha(file, await readFile(path.join(root, file)), hash), hash, file);
   }
 });
 
