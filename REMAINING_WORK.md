@@ -7,7 +7,42 @@ not the entire product specification.
 
 ## 2026-10-05 — Artwork and cancellation pass; original-size codec heap failure
 
-**New private guarded stack-reserve candidate implemented; compile/browser gates pending.**
+**Guarded stack-reserve candidate compiled and tested: small fidelity passes,
+full unchanged original still fails. Not accepted or public.**
+Non-Docker run37334670866 at7a9a1f05 succeeded:194s build/246s job, not
+conversion speed. All14 native source hashes, both artifact hashes and both
+helper hashes verified; actual shared Wasm512/512 pages and compiled guard
+imports/exports checked. Six small static tools retained only in the repository.
+Required changed small4-case suite passed4/4 in20.2s. Actual native base/end
+reported262144 in all4 tests; Asyncify262144/StackCheck2. Both genuine encodes
+produce exact prior output hashes/bytes,48/96frames, SSIM.992146/.985963,
+full native decode, complete decoded audio equality, exact packet/time/priming,
+artwork/tags/chapters; real write failure and cancellation after232344 bytes
+passed with no partial output/queued operations. This does not certify stack
+high-water, memory acceptance or a speed gain.
+
+ONE uninstrumented original2,958,573,265-byte1920x804/default-settings attempt
+failed at av_refstruct_pool_get -> alloc_frame: requested heap end33902168,
+input288321/output0. Three runs requested, stopped at first actual failure;
+no further unchanged retry. Exact current auxiliary pool/live/cache bytes are
+unknown: the ordinary stack does NOT justify reusing the earlier layout's
+five-live MV attribution. Early blank263700480/loaded305684480/native
+peak460505088 =187.6875MiB INCOMPLETE, not memory acceptance or a saving;
+16 valid native conversion samples/zero unavailable/all unknown and updater
+descendants counted. Reserved-capacity reallocation alone did not solve fit.
+All5 finally flags true; independent originalSHA, all21 small-suite IDs/all20
+protected owned/observed IDs absent, six assets exact/private adapters and
+owned profiles/runtime gone. Hosted11355607602/11355827172 deleted/API0;
+source bundle never downloaded. Compact evidence is
+evidence/mpeg2-guarded-stack-protected-failure-2026-10-05.json, with raw
+timestampedJSON/CSV/HTML/trace hashes and read-only reduction script.
+Next measure the changed-layout exact auxiliary pool/live/cache demand before
+another optimization. Do not shrink stacks blindly, raise heap/relax quality
+or retry this unchanged normal conversion. Public assets/registry unchanged.
+Cycle regression:426/426 units and6 focused evidence/stack guards pass;
+zero-warning scoped ESLint and diffcheck pass. No acceptance threshold changed.
+
+**Historical source-stage implementation (now tested as recorded above).**
 After measured live MV pool shortage (not an idle cache), reduce only private
 core C/Asyncify reservations from1MiB each to256KiB each inside the same fixed
 32MiB. Keep assertions; strengthen STACK_OVERFLOW_CHECK to2 (all native SP
@@ -21,9 +56,9 @@ limit-setter/bound exports. Both browser adapters read actual native base/end
 after the real factory and enforce262144; this is reserved capacity, NOT
 stack high-water. Source-pinned helper hash/source bundle retained. Exact
 Emscripten6.0.4 source audit covers settings/libasync/libcore, no scratch.
-Next one non-Docker uninstrumented build, changed small4-case fidelity/adverse
-suite (required because stack safety changed), then unchanged full original
-three-run gate until completed or its first actual failure. No blind old-core
+The non-Docker uninstrumented build and changed small4-case fidelity/adverse
+suite (required because stack safety changed) were executed above; unchanged
+full original three-run gate stopped at its first actual failure. No blind old-core
 retry, priming/timestamp tolerance change, dummy conversion or unsupported
 profile narrowing. Full goal remains active.
 Source-stage validation:424/424 units,10focusedguards,zero-warning scoped
