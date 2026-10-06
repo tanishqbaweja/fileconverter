@@ -35,6 +35,10 @@ const memorySamples: ProcessSample[] = [];
 const forbiddenRequests: string[] = [];
 const stackReserveSamples: Array<{ nativeStackBytes: number; encoderNativeStackBytes: number; decoderMemoryBytes: number; encoderMemoryBytes: number; aggregateWasmMemoryBytes: number; asyncifyStackBytes: number;
   stackOverflowCheck: number; scope: string }> = [];
+type SplitFinal = { frames: number; packets: number; completedPackets: number; activePackets: number | null;
+  aggregateWasmMemoryBytes: number; queuedFrames: number; queuedPackets: number; additionalPixelBufferBytes: number;
+  additionalJsPacketBufferBytes: number; closed: boolean; copiedPixelBytes: number; copiedPacketBytes: number };
+const splitFinalSamples: SplitFinal[] = [];
 let sampling = false;
 let memoryTask: Promise<void> | null = null;
 const title = "MPEG-2 café — 音楽";
@@ -182,10 +186,14 @@ test.beforeAll(async () => {
 test.beforeEach(async ({ context, browser, page }) => {
   forbiddenRequests.length = 0;
   stackReserveSamples.length = 0;
+  splitFinalSamples.length = 0;
   page.on("console", (message) => {
     const text = message.text(), prefix = "WITHIN_MPEG2_STACK_RESERVE ";
     if (text.startsWith(prefix) && text.length <= 512 && stackReserveSamples.length < 16)
       stackReserveSamples.push(JSON.parse(text.slice(prefix.length)));
+    const splitPrefix = "WITHIN_MPEG2_SPLIT_FINAL ";
+    if (text.startsWith(splitPrefix) && text.length <= 2048 && splitFinalSamples.length < 16)
+      splitFinalSamples.push(JSON.parse(text.slice(splitPrefix.length)));
   });
   const origin = new URL(process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${process.env.WITHIN_TEST_PORT ?? "3000"}`).origin;
   context.on("request", (request) => {
@@ -247,6 +255,15 @@ test.afterEach(async ({ page }) => {
   rows.push({ memoryScope: "Whole-process diagnostic samples; short fixtures and non-stabilized baseline do not certify the 250 MiB contract", samples: [...memorySamples] });
   rows.push({ kind: "actual-native-stack-reserve", samples: [...stackReserveSamples],
     scope: "Reserved capacity, not measured high-water or memory acceptance" });
+  rows.push({ kind: "actual-split-native-ownership", samples: [...splitFinalSamples],
+    scope: "Codec ownership/transport, not complete-process memory acceptance" });
+  expect(splitFinalSamples.length).toBeGreaterThan(0);
+  for (const sample of splitFinalSamples) {
+    expect(sample.aggregateWasmMemoryBytes).toBe(50331648); expect(sample.activePackets).toBe(0);
+    expect(sample.queuedFrames).toBe(0); expect(sample.queuedPackets).toBe(0);
+    expect(sample.additionalPixelBufferBytes).toBe(0); expect(sample.additionalJsPacketBufferBytes).toBe(0);
+    expect(sample.closed).toBe(true);
+  }
   if (expectedManifest?.nativeStackBytesPerCore !== undefined) {
     expect(stackReserveSamples.length).toBeGreaterThan(0);
     for (const sample of stackReserveSamples) {
@@ -348,6 +365,12 @@ for (const adapter of adapters) {
       expect(afterVideo.height).toBe(beforeVideo.height);
       expect(afterVideo.nb_read_frames).toBe(beforeVideo.nb_read_frames);
       expect(Number(afterVideo.nb_read_frames)).toBe(adapter.frames);
+      expect(splitFinalSamples).toHaveLength(1);
+      expect(splitFinalSamples[0].frames).toBe(adapter.frames);
+      expect(splitFinalSamples[0].packets).toBe(adapter.frames);
+      expect(splitFinalSamples[0].completedPackets).toBe(adapter.frames);
+      expect(splitFinalSamples[0].copiedPixelBytes).toBeGreaterThan(0);
+      expect(splitFinalSamples[0].copiedPacketBytes).toBeGreaterThan(0);
       const inputArt = before.streams.find((s) => s.disposition?.attached_pic);
       const outputArt = after.streams.find((s) => s.disposition?.attached_pic);
       expect(after.streams.filter((s) => s.disposition?.attached_pic)).toHaveLength(1);

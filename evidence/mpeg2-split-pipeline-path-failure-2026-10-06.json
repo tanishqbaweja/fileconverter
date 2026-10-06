@@ -1,0 +1,44 @@
+{
+  "scope": "private-split-pipeline-build-path-failure-before-compilation-not-conversion",
+  "runId": 37444418032,
+  "jobId": 112205680985,
+  "headSha": "966074625e351cb44b51412b0f6b2bc72cfd33d4",
+  "runUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37444418032",
+  "conclusion": "failure",
+  "jobStartedAt": "2026-10-06T09:39:05Z",
+  "jobCompletedAt": "2026-10-06T09:39:53Z",
+  "jobSeconds": 48,
+  "buildStartedAt": "2026-10-06T09:39:45Z",
+  "buildCompletedAt": "2026-10-06T09:39:50Z",
+  "buildSeconds": 5,
+  "failedRecipeSha256": "7b045512844c1477768120ef334bc5e2915e5dd1cc94bef68cfc2b9efe3a9846",
+  "rootCauseProven": true,
+  "failure": {
+    "type": "AssertionError strict path boundary",
+    "script": "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs",
+    "line": 42,
+    "actualSuffix": "work/mpeg2-split-pipeline-build/ffmpeg/libavcodec/hevc/hevcdec.c",
+    "expectedSuffix": "work/mpeg2-candidate-build/ffmpeg/libavcodec/hevc/hevcdec.c",
+    "nativeCompilationStarted": false,
+    "upstreamAndPriorPatchesPinned": true
+  },
+  "correction": {
+    "helper": "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs",
+    "sameExportedTransform": true,
+    "sameReverseByteCheck": true,
+    "onlyNewExactOwnedPath": true,
+    "historicalHelperUnchanged": true
+  },
+  "cleanup": {
+    "conclusion": "success",
+    "startedAt": "2026-10-06T09:39:50Z",
+    "completedAt": "2026-10-06T09:39:51Z",
+    "remainingRunArtifacts": 0,
+    "localArtifactDownloaded": false,
+    "originalRead": false,
+    "mediaRead": false,
+    "mediaWritten": false
+  },
+  "browserConversion": false,
+  "publicAcceptance": false
+}
