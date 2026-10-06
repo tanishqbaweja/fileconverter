@@ -80,7 +80,7 @@ test("HEVC follow-up changes only private pixel-cache predicate, with pinned two
   assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432"/);
   const manifest = await source("media/ffmpeg/mpeg2-candidate-manifest.mjs");
   assert.match(manifest, /HEVC decoder uncached planes/);
-  assert.match(manifest, /other decoder and HEVC auxiliary pools unchanged/);
+  assert.match(manifest, /other decoder plane pools unchanged; HEVC auxiliary admission separately audited/);
   const checker = await source("scripts/verify-mpeg2-frame-pool-patch.mjs");
   assert.match(checker, /assert.equal\(encoderStage, after\)/);
   assert.match(checker, /assert.equal\(restored, before\)/);

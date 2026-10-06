@@ -126,6 +126,12 @@ printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e0
   ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
 printf '%s  %s\n' 4a2b2d1db11b794c3b8f4963e31cfb23124d09cdf8f0d6998037cbf344b45d9f \
   ffmpeg/libavcodec/mpegvideo.c | sha256sum --check --strict
+# Actual measured idle backing justifies a private two-pool HEVC trial.
+# Reuse bit30 final-reference admission only; never alter live refs or sizes.
+node "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.mjs" \
+  "${BUILD_ROOT}/ffmpeg/libavcodec/hevc/hevcdec.c"
+cp "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.h" \
+  ffmpeg/libavcodec/hevc/mpeg2-hevc-auxiliary-policy.h
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 || "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Read-only private pool telemetry atop the independently pinned policy.
   printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084 \
@@ -175,6 +181,16 @@ emcc "${SCRIPT_DIR}/mpeg2-accessory-smoke.c" -I"${PREFIX}/include" \
   -o "${BUILD_ROOT}/mpeg2-accessory-smoke.js"
 node "${BUILD_ROOT}/mpeg2-accessory-smoke.js" > "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
 test -s "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
+# Compile and execute the exact header used by the decoder, never a JS model.
+emcc "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-selector-smoke.c" -I"${PREFIX}/include" \
+  "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
+  "-sMALLOC=${CANDIDATE_ALLOCATOR}" \
+  -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 \
+  -sMODULARIZE=0 -sEXPORT_ES6=0 \
+  -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 \
+  -o "${BUILD_ROOT}/mpeg2-hevc-auxiliary-selector-smoke.js"
+node "${BUILD_ROOT}/mpeg2-hevc-auxiliary-selector-smoke.js" > "${OUTPUT_ROOT}/mpeg2-hevc-auxiliary-selector-smoke.json"
+test -s "${OUTPUT_ROOT}/mpeg2-hevc-auxiliary-selector-smoke.json"
 if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 || "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Synthetic allocation/source-reader unit, never a native media conversion.
   emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
@@ -220,6 +236,9 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.mjs" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.h" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-linkage.mjs" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.mjs" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.h" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-selector-smoke.c" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

@@ -56,7 +56,9 @@ test("Observed SDK6.0.4 LTO allocator aliases require both dlmalloc-specific rou
 });
 test("One allocation strategy reaches all compiled lifecycle gates without changing protected codec/kernel or memory limits", async () => {
   const recipe = await read("media/ffmpeg/build-mpeg2-candidate.sh");
-  assert.equal(recipe.split('"-sMALLOC=${CANDIDATE_ALLOCATOR}"').length, 4);
+  // Main core plus lifecycle, diagnostic reader and actual HEVC selector unit.
+  assert.equal(recipe.split('"-sMALLOC=${CANDIDATE_ALLOCATOR}"').length, 5);
+  assert.match(recipe, /mpeg2-hevc-auxiliary-selector-smoke.c/);
   assert.match(recipe, /WITHIN_MPEG2_ALLOCATOR:-emmalloc/);
   assert.match(recipe, /-sINITIAL_MEMORY=33554432/); assert.match(recipe, /-sMAXIMUM_MEMORY=33554432/);
   assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0/);

@@ -5,6 +5,7 @@ import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-alloc
 import { verifyMpeg2DecoderSet } from "./mpeg2-decoder-selection.mjs";
 import { reverseFrameAllocationDiagnostic, FRAME_ALLOCATION_SOURCE_SHA256 } from "./mpeg2-frame-allocation-diagnostic.mjs";
 import { reverseHevcAuxiliarySource, HEVC_REFS_SOURCE_SHA256, reverseHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
+import { reverseHevcAuxiliaryPolicy, HEVC_DECODER_SOURCE_SHA256 } from "./mpeg2-hevc-auxiliary-policy.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const build = path.resolve(process.argv[2] ?? "");
@@ -35,7 +36,8 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
   "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs",
   "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h",
-  "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h", "mpeg2-hevc-auxiliary-linkage.mjs"];
+  "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h", "mpeg2-hevc-auxiliary-linkage.mjs",
+  "mpeg2-hevc-auxiliary-policy.mjs", "mpeg2-hevc-auxiliary-policy.h", "mpeg2-hevc-auxiliary-selector-smoke.c"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
@@ -50,6 +52,16 @@ const actualHevcRefs = await readFile(path.join(build, "ffmpeg/libavcodec/hevc/r
 if (frameDiagnostic === "1") reverseHevcAuxiliarySource(actualHevcRefs);
 else if (createHash("sha256").update(actualHevcRefs).digest("hex") !== HEVC_REFS_SOURCE_SHA256)
   throw new Error("Unexpected HEVC auxiliary source state");
+const actualHevcDecoder = await readFile(path.join(build, "ffmpeg/libavcodec/hevc/hevcdec.c"), "utf8");
+reverseHevcAuxiliaryPolicy(actualHevcDecoder);
+if (await sha256(path.join(build, "ffmpeg/libavcodec/hevc/mpeg2-hevc-auxiliary-policy.h"))
+  !== await sha256(path.join(root, "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h")))
+  throw new Error("Actual decoder selector header differs from source");
+const hevcAuxiliarySelectorSmoke = JSON.parse(await readFile(path.join(output, "mpeg2-hevc-auxiliary-selector-smoke.json"), "utf8"));
+if (JSON.stringify(hevcAuxiliarySelectorSmoke) !== JSON.stringify({
+  status: "passed", scope: "synthetic-hevc-selector-unit-not-conversion", checkedConfigurations: 60,
+  privateBit: 1073741824, singleThreadDecoderOnly: true, otherCodecAndThreadDefaultsPreserved: true,
+})) throw new Error("Actual compiled HEVC auxiliary selector proof missing or changed");
 const compiledAllocatorSymbols = verifyMpeg2AllocatorSymbols(nativeAllocator,
   await readFile(path.join(output, "within-mpeg2.mjs.symbols"), "utf8"));
 const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
@@ -119,6 +131,10 @@ const manifest = {
   hevcAuxiliaryDiagnostic: frameDiagnostic === "1",
   hevcAuxiliaryDiagnosticLimit: 48,
   hevcAuxiliarySourceSha256: createHash("sha256").update(actualHevcRefs).digest("hex"),
+  hevcAuxiliaryCachePolicy: "Private single-thread HEVC decoder tab_mvf/rpl_tab skip only final-reference idle admission using lifecycle-verified bit30; live refs/DPB/sizes/reset/free/init/zeroing unchanged; fit/speed unproven",
+  hevcDecoderOriginalSourceSha256: HEVC_DECODER_SOURCE_SHA256,
+  hevcDecoderPatchedSourceSha256: createHash("sha256").update(actualHevcDecoder).digest("hex"),
+  hevcAuxiliarySelectorSmoke,
   hevcAuxiliaryDiagnosticScope: "Read-only simultaneous HEVC auxiliary pools and DPB flag counts immediately before encoder send; no live-reference/cache changes or free-block/speed/acceptance claim",
   frameAllocationDiagnosticScope: "Before/after scalar plane requests independent of allocator; no buffer/media/address copying, no codec/layout/reference mutations, no performance or acceptance certification",
   decoderSet: decoderSelection.name, requestedDecoders: decoderSelection.requested,
@@ -131,7 +147,7 @@ const manifest = {
   refstructSourceSha256,
   encoderAccessorySourceSha256,
   encoderAccessoryLifecycleSmoke,
-  encoderAccessoryPolicy: "Private single-thread MPEG2 encoder auxiliary pools skip only final-reference idle caching; live refs, reset/free/init/zeroing unchanged. HEVC/default/other pools stock; fit/speed unproven",
+  encoderAccessoryPolicy: "Private single-thread MPEG2 encoder auxiliary pools skip only final-reference idle caching; live refs, reset/free/init/zeroing unchanged. Other encoder pools stock; HEVC auxiliary policy separate; fit/speed unproven",
   encoderReleaseSourceSha256,
   refstructPoolDiagnosticLimits: { heapSnapshots: 96, poolSnapshots: 128, encoderReleaseSnapshots: 16, inactiveLinksPerSnapshot: 128, browserEvents: 240 },
   refstructPoolDiagnosticSmoke,
@@ -150,7 +166,7 @@ const manifest = {
   stackReserveScope: "Private guarded256KiB C +256KiB Asyncify candidate inside unchanged32MiB; actual stack demand, full-source fit and performance not certified",
   stackReserveAdapterSha256: await sha256(path.join(root, "scripts/lib/mpeg2-stack-reserve-adapter.mjs")),
   encoderDelay: "MPEG2 LOW_DELAY with max_b_frames=0; no omitted frames or dimension/quantizer change",
-  frameBufferPolicy: "Private encoder-only uncached planes plus HEVC decoder uncached planes; exact upstream alignment/padding/zeroing/live references; other decoder and HEVC auxiliary pools unchanged",
+  frameBufferPolicy: "Private encoder-only uncached planes plus HEVC decoder uncached planes; exact upstream alignment/padding/zeroing/live references; other decoder plane pools unchanged; HEVC auxiliary admission separately audited",
   frameBufferOriginalSourceSha256: "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",
   frameBufferEncoderStageSourceSha256: "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
   frameBufferPatchedSourceSha256: "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4",

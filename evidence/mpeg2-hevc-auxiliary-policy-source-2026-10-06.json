@@ -1,0 +1,42 @@
+{
+  "status": "source-only-final-unref-hevc-cache-admission-trial-not-acceptance",
+  "sources": {
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-selector-smoke.c": "117f3f4b46e61543e8e6dda273c27feb31603691d0f7d2c7b2a7e0f8dec50041",
+    "scripts/verify-mpeg2-hevc-auxiliary-policy.mjs": "87cc07a689d764ffddb6c87849c86f0c7857efafa8851e3b71d31df3efc9fa42"
+  },
+  "upstreamSource": {
+    "file": "libavcodec/hevc/hevcdec.c",
+    "bytes": 167708,
+    "sha256": "d6c12610d92a8d8e27bae984172ce1d0f13f8eb16d5998eb58cc25b2fc690974"
+  },
+  "patchedDecoderSha256": "0c91a1622add9eaf483f6fdcf3f9eddb59d5f4540d8a526b97d60b7889de67c5",
+  "byteExactReversal": true,
+  "mutationNegativeControlsPassed": true,
+  "nativeSourceSubstitutions": 5,
+  "affectedPools": [
+    "tab_mvf",
+    "rpl_tab"
+  ],
+  "privateBit": 1073741824,
+  "evidence": {
+    "file": "evidence/mpeg2-hevc-auxiliary-measured-2026-10-06.json",
+    "observedIdleBackingBytes": 1316432,
+    "observedLiveBackingBytes": 6582160
+  },
+  "allocationSizesUnchanged": true,
+  "liveReferencesUnchanged": true,
+  "dpbFlagsUnchanged": true,
+  "pixelsAndCodecSettingsUnchanged": true,
+  "sourceDimensionsUnchanged": true,
+  "fixedMemoryBytes": 33554432,
+  "selectorCompiled": false,
+  "decoderCompiled": false,
+  "runtimeSavingsBytes": null,
+  "speedGainClaim": null,
+  "publicAcceptance": false,
+  "generatedSourceFilesCreated": 0,
+  "scratchFilesCreated": 0,
+  "next": "One changed non-Docker build with mandatory 60-configuration selector and same-allocator lifecycle units; small fidelity/adverse cases then original normal acceptance gate. No live-reference removal, larger heap or guaranteed fit/speed claim."
+}

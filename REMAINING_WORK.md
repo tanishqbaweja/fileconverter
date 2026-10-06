@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Evidence-supported HEVC auxiliary cache-admission trial implemented
+
+Previous turn was progress: actual HEVC idle-backing evidence and chronology
+guards pushed at9a6e452. Implemented private final-reference idle admission
+trial for ONLY tab_mvf/rpl_tab, reusing unchanged lifecycle-tested bit30 policy.
+Real HEVC decoder/source SHA d6c12610...690974 audited from pinned8.1.2 primary
+source; five exact substitutions reverse every byte. Patched SHA0c91a162...e67c5.
+Required live refs, DPB flags, allocation sizes, zeroing/reset/free/init, codec
+settings, source1920x804, fixed32MiB, guarded stacks and64KiB I/O unchanged.
+Selector returns bit30 only for HEVC decoding with exactly one codec thread;
+other codecs, encoder and automatic/multiple-thread configurations stay default.
+
+Build now requires an actual compiled C60-configuration selector unit plus the
+existing same-allocator allocation-lifecycle unit. Manifest checks actual patched
+decoder reversal, exact copied selector-header bytes and exact compiled report;
+27 pinned native recipe/source files included in corresponding source bundle.
+No workflow/public engine/registry change. Bounded source-only audit frozen at
+evidence/mpeg2-hevc-auxiliary-policy-source-2026-10-06.json; mutation negatives
+passed and no scratch/media/source copies created.11 focused tests passed.
+
+Native compilation, runtime savings, fit and speed remain UNPROVEN. Next one
+changed normal non-Docker dlmalloc/hevc-mpeg4 build, both diagnostic inputs0,
+small fidelity/adverse gates then original normal three-run gate (stop on first
+failure). No live-reference removal, heap enlargement, quality relaxation or
+unchanged failed retry. Full goal remains active/incomplete.
+
+Regression483/483 units, TypeScript, scoped zero-warning ESLint, Bash/JS syntax,
+diff whitespace and repeat pinned audit checks passed. Initial whole-suite guard
+correctly noticed a fourth allocator-selected compile (the new selector unit);
+updated exact call count3->4, preserving every allocator/memory/kernel check.
+No native/browser job is live yet at this implementation checkpoint.
+
 ## 2026-10-06 — Actual HEVC idle backing measured; cache-admission trial justified
 
 Previous turn was progress: recorded real link failure, corrected native/EM_JS
