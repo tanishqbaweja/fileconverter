@@ -5,6 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Native pixel/property ownership passed with exact independent byte evidence
+
+Corrected no-Docker run37438448154/job112185969488/ea5597d SUCCESS:202s build,
+245s job, NOT conversion speed. All12 real libavutil synthetic frame cases pass
+18x10/1920x804,420/422,positive/negative source/negative target strides. Each source
+property record637 bytes; exact native fields, metadata entries5, raw-byte side
+entries4 and their metadata/bytes checked independently in C, then re-exported.
+Native signed64-bit ±2^60/INT64_MIN/MAX remain exact. Source backing/properties
+unchanged, pixel refs unchanged, zero refs after finally destruction.17 malformed
+record rejects preserve old destination;100 replacements preserve actual fields/
+contents and refcount;7 oversized/unsupported source rejects leave export slot
+unchanged; empty source actually clears stale metadata/side data. No queued frame,
+third pixel buffer or additional SAB; actual shared fixed512/256-page memories,
+256KiB stacks,64KiB property slots INSIDE those native heaps (not separate heaps).
+
+Only15115-byte report downloaded to work/mpeg2-split-properties-37438448154,
+SHAb05a75e9...a025; all10 source hashes match current files. Independent test-side
+serialization reconstructs every scalar, Unicode/empty/case-sensitive/duplicate
+dictionary entry, four raw payloads and side metadata: all12 complete wire hashes
+match, no production serializer import. Frozen full compact native evidence at
+evidence/mpeg2-split-properties-native-measured-2026-10-06.json with two guards.
+Recipe EXIT cleanup and enclosing hosted finally cleanup SUCCESS; artifact11400496349
+deleted after verification/API0/no download ZIP. No local media/browser profiles,
+binaries or source bundle downloaded; only compact reports retained. Earlier
+cleanup failure remains separately frozen; no failed-result relabeling.
+
+This is still a PRIVATE COMPONENT test, not a video converter, codec execution,
+browser250MiB acceptance or speed improvement. Four raw side types only; structured
+HDR/other side serializers still need audit/implementation or explicit destination
+incompatibility disclosures. Next implement actual separate codec ownership,
+unchanged encoder settings/parameters/extradata, packet timing/flags/side-data and
+production AVIO integration. Then genuine browser fidelity/adverse tests followed
+by changed original three-run full-tree250MiB/scaling and identical-setting speed
+gates.515/515 unit tests, TypeScript, scoped zero-warning lint, Bash syntax,
+three non-mutating Bash cleanup-stub cases and whitespace checks PASS. No unchanged
+production browser conversion/build repeated for this private-only component cycle.
+Full original requirement audit below remains intact and incomplete.
+
 ## 2026-10-06 — Property native assertions ran; recipe cleanup guard rejected its own path
 
 ONE run37437720261/job112183554158/4d7525f FAILED after native assertions completed:
