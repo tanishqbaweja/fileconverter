@@ -47,7 +47,12 @@ six-hour per-run deadlines. Old executed driver/proofs remain unchanged.
 LIVE:session41962, entrypoint scripts/mpeg2-settled-original-memory.mjs,
 driverPID25812 created2026-10-06T15:11:11Z, runtime
 work/mpeg2-settled-original-runtime-zc9EVb. Latest confirmed state is blank-startup
-settling, not completed conversion. Poll this samehandle/PID; no duplicate
+settling at first dispatch, not completed conversion. Subsequent live output
+confirms the fixed settling/stability/no-larger-denominator guard PASSED and
+run1 started: settled same-instance blank231.211MiB, latest input12281409/
+output11392807 bytes and234.152MiB incremental private peak, all PARTIAL.
+No complete-output, quality, memory or speed certification from this checkpoint.
+Poll this samehandle/PID; no duplicate
 conversion/build/stager while it owns generated assets. Startup guard/full
 three-run/fidelity/memory/recovery result is still pending. Regression593/593
 unit/TypeScript/scopedzero-warninglint PASS. No new public route or completion.
