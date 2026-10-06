@@ -144,7 +144,7 @@ const actualWasmMemoryLimits = {
 };
 assert.deepEqual(actualWasmMemoryLimits.decoderMux, [{ imported: true, initialPages: 512, maximumPages: 512, shared: true }]);
 assert.deepEqual(actualWasmMemoryLimits.encoder, [{ imported: true, initialPages: 256, maximumPages: 256, shared: true }]);
-const sourceFiles = ["scripts/mpeg2-split-protected-memory.mjs", "scripts/stage-mpeg2-split-pipeline.mjs",
+const sourceFiles = ["scripts/mpeg2-split-protected-memory.mjs", "scripts/stage-mpeg2-split-direct.mjs",
   "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/native-memory-peaks.mjs",
   "scripts/lib/chromium-private-memory.mjs", "scripts/lib/cdp-realm-memory.mjs",
   "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/windows-tree-monitor.cs",
@@ -161,7 +161,7 @@ try {
   const profile = path.join(runtime.directory, "profile"); await mkdir(profile);
   sourceProbe = await probe(source);
   assert.equal(sourceProbe.streams[0].width, 1920); assert.equal(sourceProbe.streams[0].height, 804);
-  await exec(process.execPath, ["scripts/stage-mpeg2-split-pipeline.mjs", "stage"]); staged = true;
+  await exec(process.execPath, ["scripts/stage-mpeg2-split-direct.mjs", "stage"]); staged = true;
   const port = await new Promise((resolve, reject) => {
     const listener = createServer(); listener.once("error", reject);
     listener.listen(0, "127.0.0.1", () => { const port = listener.address().port;
@@ -245,6 +245,8 @@ try {
       run.peakPrivateBytes = Math.max(run.cimPeakPrivateBytes ?? -Infinity, run.nativePeaks.peak.privateBytes);
       run.incrementalPrivateMiB = (run.peakPrivateBytes - blankBaseline.privateBytes) / MiB;
       run.state = lastState;
+      if ((lastState?.metrics?.wasmMemoryBytes ?? 0) > 0)
+        assert.equal(lastState.metrics.wasmMemoryBytes, 48 * MiB, "Reject any unstaged engine before a full remux can complete");
       // Stop a proven failed profile promptly; never run hours past the same
       // memory failure or change the baseline/quality to conceal it.
       assert.ok(run.incrementalPrivateMiB <= 250, `Complete Chromium increase ${run.incrementalPrivateMiB}MiB exceeds 250MiB`);
@@ -272,7 +274,10 @@ try {
     assert.equal(nativeStackSamples[number - 1].encoderMemoryBytes, 16 * MiB);
     assert.equal(nativeStackSamples[number - 1].nativeStackBytes, 262144);
     assert.equal(nativeStackSamples[number - 1].encoderNativeStackBytes, 262144);
-    assert.ok(metrics.maxReadChunkBytes <= 262144 && metrics.maxWriteChunkBytes <= 262144);
+    assert.ok(ownership.maximumMediaAvioWriteBytes <= 262144, "Native AVIO cap unchanged");
+    assert.ok(metrics.maxReadChunkBytes <= 262144);
+    assert.ok(metrics.maxWriteChunkBytes <= 524288, "Existing bounded512KiB selected-destination fallback copy");
+    assert.ok((metrics.maxScratchReadChunkBytes ?? 0) <= 524288 && (metrics.maxScratchWriteChunkBytes ?? 0) <= 524288);
     assert.ok(metrics.peakQueuedBytes <= 1048576 && metrics.peakPendingOperations <= 1);
     assert.equal(metrics.pendingOperations, 0); assert.equal(metrics.queuedBytes, 0);
     const output = await outputPayload(metrics.outputBytes), after = await probe(output, true);
@@ -363,7 +368,7 @@ try {
   });
   await attempt(async () => {
     // Restoration child uses this scratch, so it must finish before close.
-    if (staged) { await exec(process.execPath, ["scripts/stage-mpeg2-split-pipeline.mjs", "restore"]); cleanup.generatedDistRestored = true; }
+    if (staged) { await exec(process.execPath, ["scripts/stage-mpeg2-split-direct.mjs", "restore"]); cleanup.generatedDistRestored = true; }
   });
   await attempt(async () => {
     if (runtime) { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); cleanup.mediaProfileRuntimeRemoved = true; }

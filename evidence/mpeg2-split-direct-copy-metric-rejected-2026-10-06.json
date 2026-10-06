@@ -1,0 +1,263 @@
+{
+  "scope": "changed-direct-adapter-native-heap-correct-aggregate-copy-check-failed-not-acceptance",
+  "testsPassed": 4,
+  "testsFailed": 1,
+  "suiteSeconds": 30.8,
+  "reports": [
+    {
+      "raw": {
+        "file": "output/playwright/2026-10-06T10-07-46.623Z-mpeg2-split-pipeline-37444860342-direct-artwork.json",
+        "bytes": 332521,
+        "sha256": "16cb9d4bcc3f40a0d5aff2fd9b11d3f0283908d45cd0a2e7f0c27cd1e54130a2"
+      },
+      "rows": [
+        {
+          "kind": "actual-split-native-ownership",
+          "samples": [
+            {
+              "scope": "private-split-production-pipeline-not-public-acceptance",
+              "decoderMemoryBytes": 33554432,
+              "encoderMemoryBytes": 16777216,
+              "aggregateWasmMemoryBytes": 50331648,
+              "frames": 48,
+              "copiedPixelBytes": 5529600,
+              "packets": 48,
+              "completedPackets": 48,
+              "copiedPacketBytes": 253128,
+              "peakFrameBytes": 115200,
+              "peakPacketBytes": 11839,
+              "peakSideBytes": 8,
+              "activePackets": 0,
+              "queuedPackets": 0,
+              "queuedFrames": 0,
+              "additionalPixelBufferBytes": 0,
+              "additionalJsPacketBufferBytes": 0,
+              "failed": false,
+              "closed": true
+            }
+          ],
+          "scope": "Codec ownership/transport, not complete-process memory acceptance"
+        },
+        {
+          "kind": "actual-split-native-ownership",
+          "samples": [
+            {
+              "scope": "private-split-production-pipeline-not-public-acceptance",
+              "decoderMemoryBytes": 33554432,
+              "encoderMemoryBytes": 16777216,
+              "aggregateWasmMemoryBytes": 50331648,
+              "frames": 96,
+              "copiedPixelBytes": 11059200,
+              "packets": 96,
+              "completedPackets": 96,
+              "copiedPacketBytes": 517602,
+              "peakFrameBytes": 115200,
+              "peakPacketBytes": 11228,
+              "peakSideBytes": 8,
+              "activePackets": 0,
+              "queuedPackets": 0,
+              "queuedFrames": 0,
+              "additionalPixelBufferBytes": 0,
+              "additionalJsPacketBufferBytes": 0,
+              "failed": false,
+              "closed": true
+            }
+          ],
+          "scope": "Codec ownership/transport, not complete-process memory acceptance"
+        },
+        {
+          "container": "mp4",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m262144\u001b[39m\nReceived:    \u001b[31m524288\u001b[39m",
+          "state": {
+            "jobState": "complete",
+            "phase": "Saved",
+            "metrics": {
+              "inputBytes": 562503,
+              "outputBytes": 652521,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 524288,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 65536,
+              "maxWriteChunkBytes": 524288,
+              "elapsedMs": 652.2550000026822,
+              "wasmMemoryBytes": 50331648,
+              "peakWasmMemoryBytes": 50331648,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 50331652,
+              "activeWorkerCount": 1,
+              "imageWorkingBytes": 0,
+              "scratchBytes": 0,
+              "peakScratchBytes": 652521,
+              "maxScratchReadChunkBytes": 524288,
+              "maxScratchWriteChunkBytes": 524288
+            },
+            "warnings": [
+              "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file."
+            ]
+          }
+        },
+        {
+          "kind": "actual-split-native-ownership",
+          "samples": [
+            {
+              "scope": "private-split-production-pipeline-not-public-acceptance",
+              "decoderMemoryBytes": 33554432,
+              "encoderMemoryBytes": 16777216,
+              "aggregateWasmMemoryBytes": 50331648,
+              "frames": 96,
+              "copiedPixelBytes": 11059200,
+              "packets": 96,
+              "completedPackets": 96,
+              "copiedPacketBytes": 517602,
+              "peakFrameBytes": 115200,
+              "peakPacketBytes": 11228,
+              "peakSideBytes": 8,
+              "activePackets": 0,
+              "queuedPackets": 0,
+              "queuedFrames": 0,
+              "additionalPixelBufferBytes": 0,
+              "additionalJsPacketBufferBytes": 0,
+              "failed": false,
+              "closed": true
+            }
+          ],
+          "scope": "Codec ownership/transport, not complete-process memory acceptance"
+        }
+      ]
+    },
+    {
+      "raw": {
+        "file": "output/playwright/2026-10-06T10-08-06.364Z-mpeg2-split-pipeline-37444860342-direct-artwork.json",
+        "bytes": 31161,
+        "sha256": "65014c4fd0cc2f8615b21352b2377eead1285373cfdb995bbbb7cda2cc357dab"
+      },
+      "rows": [
+        {
+          "kind": "direct-write-failure",
+          "status": "passed",
+          "error": "The destination rejected a bounded write.",
+          "metrics": {
+            "inputBytes": 562503,
+            "outputBytes": 524288,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 952.7000000029802,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "scratchBytes": 0,
+            "peakScratchBytes": 652521,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "partialBytes": []
+        },
+        {
+          "kind": "actual-split-native-ownership",
+          "samples": [
+            {
+              "scope": "private-split-production-pipeline-not-public-acceptance",
+              "decoderMemoryBytes": 33554432,
+              "encoderMemoryBytes": 16777216,
+              "aggregateWasmMemoryBytes": 50331648,
+              "frames": 96,
+              "copiedPixelBytes": 11059200,
+              "packets": 96,
+              "completedPackets": 96,
+              "copiedPacketBytes": 517602,
+              "peakFrameBytes": 115200,
+              "peakPacketBytes": 11228,
+              "peakSideBytes": 8,
+              "activePackets": 0,
+              "queuedPackets": 0,
+              "queuedFrames": 0,
+              "additionalPixelBufferBytes": 0,
+              "additionalJsPacketBufferBytes": 0,
+              "failed": false,
+              "closed": true
+            }
+          ],
+          "scope": "Codec ownership/transport, not complete-process memory acceptance"
+        },
+        {
+          "kind": "cancel-after-direct-output",
+          "status": "passed",
+          "beforeCancel": {
+            "inputBytes": 554417,
+            "outputBytes": 232344,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 555.609999999404,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50597924,
+            "activeWorkerCount": 6,
+            "imageWorkingBytes": 0
+          },
+          "terminalState": "cancelled",
+          "metrics": {
+            "inputBytes": 1055180,
+            "outputBytes": 471427,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 646.9100000038743,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50597924,
+            "activeWorkerCount": 6,
+            "imageWorkingBytes": 0
+          },
+          "partialBytes": []
+        },
+        {
+          "kind": "actual-split-native-ownership",
+          "samples": [
+            {
+              "scope": "private-split-production-pipeline-not-public-acceptance",
+              "decoderMemoryBytes": 33554432,
+              "encoderMemoryBytes": 16777216,
+              "aggregateWasmMemoryBytes": 50331648,
+              "frames": 60,
+              "copiedPixelBytes": 20736000,
+              "packets": 60,
+              "completedPackets": 60,
+              "copiedPacketBytes": 597137,
+              "peakFrameBytes": 345600,
+              "peakPacketBytes": 20642,
+              "peakSideBytes": 8,
+              "activePackets": 0,
+              "queuedPackets": 0,
+              "queuedFrames": 0,
+              "additionalPixelBufferBytes": 0,
+              "additionalJsPacketBufferBytes": 0,
+              "failed": false,
+              "closed": true
+            }
+          ],
+          "scope": "Codec ownership/transport, not complete-process memory acceptance"
+        }
+      ]
+    }
+  ],
+  "publicAcceptance": false,
+  "correction": "Keep actual native AVIO256KiB cap and audit callbacks directly; independently measure the existing documented512KiB final fallback copy. Buffers and main250MiB cap unchanged. First worker failed direct conversion assertion before independent output validators; replacement worker ran adverse cases, so both raw reports are retained."
+}

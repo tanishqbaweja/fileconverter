@@ -5,6 +5,73 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Corrected split direct module genuine small gate passed
+
+Changed direct stager/native write audit: actual Chrome5/5 PASS44.7s. MPEG4→MPEG2
+OPFS and HEVC→MPEG2 both OPFS and selected-destination fallback produce the exact
+earlier golden321692/652521-byte outputs,48/96frames, SSIM0.992146/0.985963.
+All original independent video/audio/decodedPCM-priming/artwork/metadata/chapter/
+<=1ms presentation validators pass. Third actual direct-module conversion is
+now independently verified, not inferred from compatible remux completion.
+All five codec closes have actual48MiB aggregate/zero held packets and separately
+audited maximum native AVIO65536bytes under the unchanged262144-byte cap. The
+production512KiB fallback copy remains separately bounded/disclosed, with
+scratch0 after completion and one operation; no buffer/growth/250MiB change.
+HEVC direct copy write-fault and cancellation-after-real-output pass, no partial
+files or pending/queued bytes. Fixtures/outputs/profiles/runtime removed; six
+generated media assets restored, nine private additions absent. Protected original
+unused in this small cycle. Raw534515-byte report SHA
+2266614cb5312bb87bab50b52df21dbaa14cd8a9c55ea785d37f3d9fd5f80497 and compact
+evidence/mpeg2-split-direct-small-passed-2026-10-06.json retain exact source pins,
+actual module/memory/ownership/IO proof. Short samples are NOT stable-baseline
+250MiB stress acceptance, suite/fixture timings are NOT speed A/B. The next
+original test is now concretely changed and correctly exercises both modules;
+full three-repeat/clean-session/scaling/speed/legal/public-release goal remains.
+
+## 2026-10-06 — Original split attempt rejected: unstaged direct-module bypass
+
+The first full-size split driver attempt completed a published remux, NOT the
+separate MPEG2 conversion. Only four generated assets had been substituted;
+the selected direct-output path loads within-direct.mjs, which remained published.
+Recorded exact52887552bytes Wasm, no split/native-stack console
+records and2962151522-byte output identify the bypass. Driver correctly rejects
+the48MiB expected-heap assertion before independent acceptance;71.108s and
+198.2578125MiB observed whole-tree increase are NOT MPEG2 speed or memory results.
+All five cleanup flags pass; original pre/post exact hash unchanged, complete
+converted copy and owned profile removed, generated assets restored. Normal
+cancel was attempted after the process had already entered cleanup; helper found
+its runtime absent and made no mutation. No conversion proof inferred from it.
+
+Compact evidence/mpeg2-split-direct-adapter-rejected-2026-10-06.json freezes raw
+report SHA1b161aeae7d66f1ebf88edc0808163e95456bf285953aa295b7d4245c8c445c6,
+the actual telemetry, failure and precise cause. Dedicated direct stager replaces
+all six generated module assets, translates the actual9-argument direct ABI into
+the unchanged12-argument native kernel, and leaves public assets plus the already
+executed small-gate stager unchanged. Active nonzero heap telemetry must now be
+actual48MiB immediately, not only checked after a full remux has completed.
+New small direct-compatible HEVC→MPEG2 route and HEVC direct write-fault validator
+exercise this previously missed path before ONE changed full-original attempt.
+No native rebuild, threshold weakening or unchanged expensive retry is justified.
+
+Changed direct-module small gate then ran5 cases:4pass/1fail30.8s. Direct HEVC
+conversion reports actual48MiB and96 genuinely encoded packets, but aggregate
+maxWriteChunkBytes524288 triggered the old native256KiB assertion before independent
+output validation. The source of this value is the existing production final
+OPFS→selected-destination512KiB copy, not the64KiB codec AVIO. No buffer was grown.
+Four ordinary/adverse cases pass; two raw reports are retained because Playwright
+replaced its worker after the failed case. Fixtures/outputs/runtime removed,
+generated assets restored. Compact frozen
+evidence/mpeg2-split-direct-copy-metric-rejected-2026-10-06.json records both raw
+hashes and explicitly NO acceptance for that direct result.
+
+Correction wraps actual native asynchronous/synchronous write callbacks with the
+unchanged256KiB hard cap and bounded maximum telemetry. Independently checks the
+already documented512KiB fallback-copy chunk/scratch/queue limits. Main250MiB
+formula, quality, metadata and timing requirements stay unchanged. The aggregate
+final-write metric is no longer falsely used as native AVIO evidence. Selected
+fallback-copy mode is disclosed, not advertised as native writing straight into
+the final file. Changed small gate must pass before the original is retried.
+
 ## 2026-10-06 — Split production pipeline compiled; genuine small/adverse gate passed
 
 No-Docker run37444860342/job112207132777/head881913b SUCCESS:536s build,

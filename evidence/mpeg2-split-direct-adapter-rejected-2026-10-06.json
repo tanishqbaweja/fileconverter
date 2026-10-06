@@ -1,0 +1,104 @@
+{
+  "scope": "rejected-full-size-adapter-bypassed-split-codec-not-encoding-or-memory-acceptance",
+  "raw": {
+    "file": "outputs/reports/2026-10-06T10-01-34-581Z-private-mpeg2-split-protected-direct-native-100ms.json",
+    "bytes": 643891,
+    "sha256": "1b161aeae7d66f1ebf88edc0808163e95456bf285953aa295b7d4245c8c445c6"
+  },
+  "failure": {
+    "name": "AssertionError",
+    "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 52887552\n- 50331648\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 52887552\n- 50331648\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/mpeg2-split-protected-memory.mjs:262:12"
+  },
+  "source": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 269402112,
+    "spreadBytes": 2052096,
+    "rssBytes": 570384384,
+    "firstTimestamp": "2026-10-06T10:01:52.540Z",
+    "lastTimestamp": "2026-10-06T10:01:59.662Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 333320192,
+    "spreadBytes": 4603904,
+    "rssBytes": 644165632,
+    "firstTimestamp": "2026-10-06T10:02:02.919Z",
+    "lastTimestamp": "2026-10-06T10:02:09.488Z",
+    "sampleCount": 6,
+    "minimumElapsedMs": 8000
+  },
+  "observed": [
+    {
+      "jobState": "complete",
+      "metrics": {
+        "inputBytes": 2958573265,
+        "outputBytes": 2962151522,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 1048576,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 1048576,
+        "elapsedMs": 71108.39499999583,
+        "wasmMemoryBytes": 52887552,
+        "peakWasmMemoryBytes": 52887552,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 52887556,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 2962151522,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "warnings": [
+        "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+        "The source subtitle stream cannot be stream-copied by this profile and is explicitly excluded.",
+        "The source attached picture is explicitly excluded from this MP4 remux profile."
+      ],
+      "incrementalPrivateMiB": 198.2578125,
+      "peakPrivateBytes": 477290496,
+      "independentValidation": null
+    }
+  ],
+  "nativeOwnership": [],
+  "nativeStacks": [],
+  "cleanup": {
+    "mediaProfileRuntimeRemoved": true,
+    "generatedDistRestored": true,
+    "protectedFixtureUnchanged": true,
+    "observerStopped": true,
+    "sampledChromeRootStopped": true
+  },
+  "ownedPids": {
+    "chrome": 39816,
+    "server": 23672,
+    "observer": 16216
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-split-large-runtime-pm3rhl",
+  "executedSources": {
+    "scripts/mpeg2-split-protected-memory.mjs": "a3015a3e2ce272e9eafcb03002e035493d5ab652a29d4cf0d19945395d1a65e9",
+    "scripts/stage-mpeg2-split-pipeline.mjs": "2e52ad464fec2922897511898366c2d2fa33bde060356cee8384cfb5fcbe21d5",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/mpeg2-stack-reserve-adapter.mjs": "a462f8c911676ffe57d06a6d91760c008e20491a380d13cf75f339418a276633",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f"
+  },
+  "publicAcceptance": false,
+  "rootCause": "Only remux and MPEG4 generated assets were staged; production direct output selected within-direct.mjs unchanged, using published remux rather than separate MPEG2 encoder.",
+  "correction": "Dedicated six-asset stager additionally substitutes within-direct modules and translates its 9-argument ABI to preserved 12-argument MPEG2 kernel; active nonzero heap telemetry must be actual48MiB before completion. New small direct-compatible HEVC encode and direct write-fault gate required before changed original retry."
+}
