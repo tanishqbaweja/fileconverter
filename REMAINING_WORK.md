@@ -5,7 +5,54 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Full protected-original three-run gate LIVE
+## 2026-10-06 — Full attempt rejected; independent blank control proves delayed Chrome startup
+
+Session53487/driver40096 is TERMINAL, not still live. First full attempt stopped
+at the unchanged250MiB gate: full peak757882880 minus original same-instance
+blank265687040 =469.39453125MiB. Native peak includes ALL ten descendants.
+New Chrome child10728, created180.135seconds after root1436, consumed292614144
+private bytes. Matching PID/creation/parent CIM data identifies utility
+on_device_model.mojom.OnDeviceModelService, sandboxon_device_model_execution.
+No bytes/process were subtracted and no baseline was changed. Decoder did not
+OOM:5802genuine frame/packet/mux handoffs at unchanged1920x804/24fps/quality/
+fixed48MiB Wasm/64KiB I/O, then normal cancellation. Input57740480/output62977341
+bytes remain PARTIAL and unvalidated as a completed original conversion. Allfive
+cleanup/sourceprepostSHA flags pass; owned roots1436/server41012/observer41052,
+driver40096 and profile runtime independently absent, assets restored/partial
+copy deleted. Failure retained in evidence/mpeg2-aligned-full-failure-2026-10-06.json.
+
+An independently run FIVE-MINUTE BLANK-ONLY control used identical Chrome154
+launch flags and all descendant sampling, no server/converter/source/media.
+It reproduced the SAME service:child44108 created180148ms after root44188,
+292646912 peak private bytes. Blank-only full peak526487552 bytes; the early
+stable241823744-byte blank was followed by this271.4765625MiB startup burst
+with NO converter. Later quiet233951232 bytes is LOWER than early, not an
+inflated denominator. Two unavailable native samples remain null/excluded;
+2758 valid samples captured the peak. No existing acceptance result was
+recomputed. All observer/Chrome/runtime cleanup passed; no converted copies.
+Compact:evidence/blank-chromium-lifecycle-2026-10-06.json. Browser/json/version
+revisionb859317bf11f6be47f9b7799ec690a0a42a1fb33 pinned primary Chromium source
+confirms delayed performance evaluation and defaultthree-minute timer. Source
+hashes and immutable URLs retained; not inferred only from general HEAD docs.
+
+Prepared and started a PROSPECTIVE full-source derivative that waits a fixed
+300000ms on about:blank before converter load, retaining all startup samples,
+then uses the normal stable same-instance blank. It explicitly rejects a
+settled denominator larger than its early startup window. No new Chrome flag,
+excluded process, changed quality/heaps/I/O/250MiB gate, retrospective subtraction
+or replacing genuine decode/encode. Strict reversible SHA-pinned derivation
+preserves original three runs, full independent validators/adverse cleanup and
+six-hour per-run deadlines. Old executed driver/proofs remain unchanged.
+
+LIVE:session41962, entrypoint scripts/mpeg2-settled-original-memory.mjs,
+driverPID25812 created2026-10-06T15:11:11Z, runtime
+work/mpeg2-settled-original-runtime-zc9EVb. Latest confirmed state is blank-startup
+settling, not completed conversion. Poll this samehandle/PID; no duplicate
+conversion/build/stager while it owns generated assets. Startup guard/full
+three-run/fidelity/memory/recovery result is still pending. Regression593/593
+unit/TypeScript/scopedzero-warninglint PASS. No new public route or completion.
+
+## 2026-10-06 — Full protected-original gate initially live, later rejected above
 
 The unchanged scripts/mpeg2-split-single-navigation-memory.mjs is now running
 against work/mpeg2-split-pipeline-37479749443. Authoritative live terminal

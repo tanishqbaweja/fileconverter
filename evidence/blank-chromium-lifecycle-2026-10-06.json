@@ -1,0 +1,249 @@
+{
+  "recordedAt": "2026-10-06T15:07:50.050Z",
+  "scope": "Blank-only independent delayed-startup control, not conversion certification or retrospective baseline correction",
+  "report": {
+    "path": "output/playwright/2026-10-06T15-00-41-508Z-blank-chromium-lifecycle.json",
+    "bytes": 1424072,
+    "sha256": "559227e84603541661ebfcaeb1fbecb51ad863418c3bea12f3c9541547cf224e"
+  },
+  "browserVersion": "154.0.8037.98",
+  "durationMs": 300000,
+  "fixedArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-component-update",
+    "--disable-default-apps",
+    "--disable-domain-reliability",
+    "--disable-extensions",
+    "--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction",
+    "--disable-sync",
+    "--metrics-recording-only",
+    "about:blank"
+  ],
+  "identicalOriginalDriverFlags": true,
+  "converterLoaded": false,
+  "originalFileRead": false,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "baselineAdjusted": false,
+  "processesExcluded": 0,
+  "earlyStable": {
+    "stable": true,
+    "privateBytes": 241823744,
+    "spreadBytes": 2543616,
+    "rssBytes": 520069120,
+    "firstTimestamp": "2026-10-06T15:01:13.506Z",
+    "lastTimestamp": "2026-10-06T15:01:23.133Z",
+    "sampleCount": 18,
+    "minimumElapsedMs": 8000
+  },
+  "laterQuietWindowDiagnosticOnly": {
+    "stable": true,
+    "privateBytes": 233951232,
+    "spreadBytes": 536576,
+    "rssBytes": 516161536,
+    "firstTimestamp": "2026-10-06T15:05:31.804Z",
+    "lastTimestamp": "2026-10-06T15:05:41.422Z",
+    "sampleCount": 10,
+    "minimumElapsedMs": 8000
+  },
+  "blankOnlyPeak": {
+    "timestamp": "2026-10-06T15:03:44.5274122Z",
+    "privateBytes": 526487552,
+    "rssBytes": 739942400,
+    "processes": [
+      {
+        "pid": 6596,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.6369439Z",
+        "creationFileTime": "134357724416369439",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 76414976,
+        "rssBytes": 101306368
+      },
+      {
+        "pid": 30112,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:42.0075797Z",
+        "creationFileTime": "134357724420075797",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 20127744,
+        "rssBytes": 43417600
+      },
+      {
+        "pid": 33244,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.6415151Z",
+        "creationFileTime": "134357724416415151",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 12976128,
+        "rssBytes": 40140800
+      },
+      {
+        "pid": 36700,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.7365817Z",
+        "creationFileTime": "134357724417365817",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 19226624,
+        "rssBytes": 52252672
+      },
+      {
+        "pid": 38652,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.5278302Z",
+        "creationFileTime": "134357724415278302",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 2510848,
+        "rssBytes": 10338304
+      },
+      {
+        "pid": 41288,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.7700320Z",
+        "creationFileTime": "134357724417700320",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 17469440,
+        "rssBytes": 34037760
+      },
+      {
+        "pid": 44068,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.6675029Z",
+        "creationFileTime": "134357724416675029",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 7929856,
+        "rssBytes": 17633280
+      },
+      {
+        "pid": 44108,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:03:41.6590239Z",
+        "creationFileTime": "134357726216590239",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 292646912,
+        "rssBytes": 224342016
+      },
+      {
+        "pid": 44188,
+        "parentPid": 4356,
+        "createdAt": "2026-10-06T15:00:41.5119958Z",
+        "creationFileTime": "134357724415119958",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 44707840,
+        "rssBytes": 139755520
+      },
+      {
+        "pid": 44764,
+        "parentPid": 44188,
+        "createdAt": "2026-10-06T15:00:41.7041766Z",
+        "creationFileTime": "134357724417041766",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 32477184,
+        "rssBytes": 76718080
+      }
+    ]
+  },
+  "blankOnlyIncreaseAboveEarlyWindowMiB": 271.4765625,
+  "delayedModel": {
+    "actualNativePeakProcess": {
+      "pid": 44108,
+      "parentPid": 44188,
+      "createdAt": "2026-10-06T15:03:41.6590239Z",
+      "creationFileTime": "134357726216590239",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "privateBytes": 292646912,
+      "rssBytes": 224342016
+    },
+    "matchedCimIdentity": {
+      "pid": 44108,
+      "parentPid": 44188,
+      "type": "utility",
+      "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+      "sandboxType": "on_device_model_execution",
+      "createdAt": "2026-10-06T15:03:41.6590230Z",
+      "privateBytes": 42209280,
+      "rssBytes": 34643968
+    },
+    "millisecondsAfterChromeLaunch": 180148
+  },
+  "validNativeSamples": 2758,
+  "unavailableNativeSamples": 2,
+  "missingSamplesRemainNull": true,
+  "primarySources": [
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/b859317bf11f6be47f9b7799ec690a0a42a1fb33/components/optimization_guide/core/model_execution/performance_class.cc?format=TEXT",
+      "sourcePath": "components/optimization_guide/core/model_execution/performance_class.cc",
+      "revision": "b859317bf11f6be47f9b7799ec690a0a42a1fb33",
+      "sha256": "13800eae5ca6f64e4e7b9b4d2c7d9064710f1b6d4be6d2d0ade971d9dbe7981d",
+      "bytes": 21065,
+      "finding": "Performance evaluation is scheduled after startup metric delay"
+    },
+    {
+      "url": "https://chromium.googlesource.com/chromium/src/+/b859317bf11f6be47f9b7799ec690a0a42a1fb33/components/optimization_guide/core/optimization_guide_features.cc?format=TEXT",
+      "sourcePath": "components/optimization_guide/core/optimization_guide_features.cc",
+      "revision": "b859317bf11f6be47f9b7799ec690a0a42a1fb33",
+      "sha256": "3959d2a26ae3334b1d49c2890166159918976c8192ab0a98bce05893c4f3103b",
+      "bytes": 18728,
+      "finding": "Pinned source default startup metric delay is three minutes; actual measured child delay independently matches"
+    }
+  ],
+  "cleanup": {
+    "observerStopped": true,
+    "chromeStopped": true,
+    "runtimeRemoved": true
+  },
+  "ownedPids": {
+    "chrome": 44188,
+    "observer": 36924
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\blank-lifecycle-runtime-uEcoLt",
+  "sourcePins": {
+    "scripts/diagnose-blank-chromium-lifecycle.mjs": "137b1c07da2a58afb42acf93ec9c41e611e3a072f44aa01e75c1fe01a35d4697",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/freeze-blank-chromium-lifecycle.mjs": "5718d9cf700c2ab663457f2385f75ebce3beb73d049aae3ede07195fa57563b5"
+  },
+  "next": "A prospective fixed five-minute blank startup settling period plus stable same-instance baseline, with unchanged flags/all-process counting/250MiB gate and recorded startup samples. Keep the prior full failure; never subtract the service or use its transient peak as denominator."
+}
