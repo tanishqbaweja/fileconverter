@@ -35,7 +35,7 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
   "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs",
   "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h",
-  "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h"];
+  "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h", "mpeg2-hevc-auxiliary-linkage.mjs"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
@@ -101,7 +101,7 @@ const compiledImports = WebAssembly.Module.imports(compiledModule);
 const compiledExports = WebAssembly.Module.exports(compiledModule);
 if (compiledImports.some((entry) => entry.name === "within_mpeg2_plane_emit" && entry.kind === "function") !== (frameDiagnostic === "1"))
   throw new Error("Actual compiled scalar plane observer differs from requested mode");
-if (compiledImports.some((entry) => entry.name === "within_hevc_aux_emit" && entry.kind === "function") !== (frameDiagnostic === "1"))
+if (compiledImports.some((entry) => entry.name === "within_hevc_aux_emit_js" && entry.kind === "function") !== (frameDiagnostic === "1"))
   throw new Error("Actual compiled HEVC auxiliary observer differs from requested mode");
 if (!compiledImports.some((entry) => entry.name === "__handle_stack_overflow" && entry.kind === "function")
   || !compiledExports.some((entry) => entry.name === "__set_stack_limits" && entry.kind === "function"))

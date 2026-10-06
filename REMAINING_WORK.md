@@ -5,6 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Auxiliary diagnostic linker failure recorded; bridge correction pending
+
+Actual non-Docker run37394428454/job112046909611 at6d08583 FAILED final link:
+refs.o could not resolve within_hevc_aux_emit. Build265s/job311s are not conversion
+times. No browser conversion, download or retained artifact; API confirms zero
+artifacts, runner cleanup passed. Frozen evidence/
+mpeg2-hevc-auxiliary-link-build-failure-2026-10-06.json records this failure.
+The historical source-only proof/header/helper hashes remain unchanged.
+
+Correction adds a native C bridge that directly calls a renamed EM_JS import;
+the generated diagnostic header reverses exactly to its original audited bytes.
+Manifest checks the actual renamed import, recipe bundles the new helper (24
+native source pins). Normal wrapper and allocation/codec/kernel policies remain
+unchanged. Compile/browser verification is still pending; no acceptance claim.
+Two bounded scalar-analysis unit tests separately reject unknown/stale/incomplete
+pool groups and separate actual live backing from cached backing without free-
+block or allocator-overhead guesses. They are not native measurement evidence.
+
+Additional pinned-source finding: MPEG encoder load_input_picture disables its
+direct-input path when width OR height is not divisible by16. Original height804
+therefore prevents a stride-only zero-copy shortcut. The actual source hash
+17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f was verified;
+do not remove that guard or resize/pad the advertised source to make it pass.
+Next ONE changed corrected-bridge build, not another unchanged failed compile.
+Correction regression:475/475 units, TypeScript, zero-warning scoped ESLint,
+Bash syntax and diff checks passed. Generated default wrapper remains unchanged.
+
 ## 2026-10-06 — HEVC auxiliary inventory implemented; native measurement pending
 
 The previous cycle made progress: the actual third-plane failure was attributed,

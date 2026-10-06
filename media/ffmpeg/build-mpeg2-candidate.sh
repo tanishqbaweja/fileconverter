@@ -219,6 +219,7 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.h" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.mjs" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.h" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-linkage.mjs" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

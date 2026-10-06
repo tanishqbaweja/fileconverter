@@ -1,0 +1,28 @@
+{
+  "status": "actual-private-diagnostic-link-failure-not-conversion",
+  "run": {
+    "databaseId": 37394428454,
+    "jobId": 112046909611,
+    "headSha": "6d08583db2d8181727011ba3e5cc73c0c524080d",
+    "conclusion": "failure",
+    "buildSeconds": 265,
+    "jobSeconds": 311
+  },
+  "actualLinkerFailure": "libavcodec.a(refs.o): undefined symbol: within_hevc_aux_emit",
+  "generatedWrapperSha256": "17b3e329e1bb3486ba058799c09a09690079c0900dc3a84a5fde2c94a65c4566",
+  "originalHeaderSha256": "b323eca8a8ae2d128b0056c4e3d5f5260aab615e1b297e81156bb864bd79e186",
+  "sourceAuditStillHistorical": true,
+  "browserConversionAttempted": false,
+  "actualInactiveHevcBytesAtFailure": null,
+  "compiledObserverVerified": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "cleanup": {
+    "runnerBuildCleanupPassed": true,
+    "hostedArtifactsRemaining": 0,
+    "artifactsDownloaded": false,
+    "generatedLocalMedia": false
+  },
+  "next": "Changed native C bridge directly calls the renamed EM_JS import. Preserve original audited header and helper; do not refresh their hashes or retry the unchanged link-failing build. Verify actual compiled import before browser tests."
+}

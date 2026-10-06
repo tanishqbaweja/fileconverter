@@ -45,7 +45,7 @@ test("HEVC inventory is read-only, private, budgeted and coupled to actual compi
   const manifest = await source("media/ffmpeg/mpeg2-candidate-manifest.mjs");
   assert.match(manifest, /reverseHevcAuxiliarySource\(actualHevcRefs\)/);
   assert.match(manifest, /reverseHevcEncoderBoundary\(generatedWrapper.slice/);
-  assert.match(manifest, /entry.name === "within_hevc_aux_emit"/);
+  assert.match(manifest, /entry.name === "within_hevc_aux_emit_js"/);
   assert.match(manifest, /hevcAuxiliaryDiagnosticLimit: 48/);
   assert.match(manifest, /allocatorDiagnostic === "1" \|\| frameDiagnostic === "1"/);
 });
