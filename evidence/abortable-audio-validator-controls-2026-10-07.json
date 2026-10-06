@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-10-06T22:33:21.924Z",
+  "status": "passed-native-cancellation-controls-only",
+  "scope": "Quarter-second native AAC fixture controls; not a browser conversion or full-original fidelity proof",
+  "generatedValidatorSha256": "fe776572c73d9c5e4427b7676e1330942ecb43e8014f7f5b63ddafc6a4a23626",
+  "sourcePins": {
+    "scripts/lib/streaming-copied-audio-validation.mjs": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "scripts/lib/abortable-audio-validator-recipe.mjs": "22a5d354b804d07a73238a1ad0838a48108c7ed4805c73f7c592f8db625cf797",
+    "scripts/check-abortable-audio-validator.mjs": "862884ea091577083c1225dcde2e5366b880d35e57ae57aefb6e68e3286477d7",
+    "tests/abortable-audio-validator-recipe.test.mjs": "2c3368aa81064622ff8158832e0cb23404f428b4e4821101c0baa9c86abf7490"
+  },
+  "positive": {
+    "status": "passed-copied-audio-ordinal-only",
+    "audioOrdinal": 0,
+    "canonicalCodec": "pcm_s32le",
+    "clockToleranceSeconds": 0.001,
+    "maximumClockErrorSeconds": 0,
+    "source": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "output": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "limits": {
+      "streams": 16,
+      "chunkBytes": 65536,
+      "lineBytes": 4096,
+      "stderrBytes": 4096,
+      "headerLines": 128,
+      "clockSeconds": 0.001
+    },
+    "retainedFrameRows": 0,
+    "productConversionPerformed": false,
+    "caveat": "Independent copied-audio validator requiring matching decoder frame segmentation. Other ordinals, video, process-tree memory and browser conversion are not certified by this result."
+  },
+  "shiftedClockRejected": "Decoded audio pts changed",
+  "activeReadersCancelled": "Native audio validation cancelled/deadline",
+  "preAbortedSignalRejected": "This operation was aborted",
+  "ownedNativeChildrenAbsent": true,
+  "ownedScratchAndFixturesRemoved": true,
+  "browserConversionsPerformed": 0,
+  "originalFullAudioValidation": false,
+  "completeChromiumMemoryAcceptance": false
+}

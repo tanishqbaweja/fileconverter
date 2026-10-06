@@ -5,6 +5,55 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Cancellable full-audio supplement implemented and attached to the existing run
+
+The previous goal turn was progress: verified validator changes were committed
+and pushed as e10a963. The same original browser driver remains live, confirmed
+by session51813 and PID37064/birth2026-10-06T21:41:32.4486880Z; no restart,
+concurrent production build, stager or codec/settings change. At22:33UTC run1
+was still partial (897,303,644 output bytes), observed peak236.988MiB above the
+same stable blank baseline. This is NOT a completed conversion or acceptance.
+
+New abortable-audio-validator-recipe.mjs creates a strictly reversible derivative
+of the actually executed streaming validator. Only external AbortSignal wiring
+and pre-aborted admission change; all canonical PCM hashes, per-frame clock,
+counts, endpoints, fixed I/O bounds and reader-finally behavior remain intact.
+Real quarter-second native AAC fixture controls passed: identical full decoded
+audio accepted,125ms shift rejected, both active readers cancelled, pre-aborted
+signal refused, native child inventory actually empty and owned fixtures/runtime
+removed. Compact evidence:abortable-audio-validator-controls-2026-10-07.json.
+A variable-name-only Next lint failure was corrected in the control runner and
+these inexpensive native controls genuinely rerun. The first report and EXACT
+executed control-source snapshot are retained in the -initial.json companion;
+historical source pins were not silently rewritten.
+
+watch-original-audio-supplement.mjs attached at22:33:45UTC to the existing root
+identity/profile, after independently rechecking the protected source SHA256
+and native source inspection (one actual audio track). Verified live handle12412,
+watcher35656/birth2026-10-06T22:33:45.9982290Z. It starts NO browser/conversion,
+touches NO app/engine/dist assets and makes ZERO media copies. It recognizes
+only the immutable driver's exact post-completion full output probe, validates
+the closed file's path/identity/unchanged size, checks every full copied-audio
+ordinal, and retains a bounded file SHA256 for joining the owning driver's report.
+Native validation uses64KiB chunks/4KiB lines-stderr, one decoded frame per side,
+15min per-track deadline and external cancellation; file hashes use1MiB chunks.
+Only three result records are admitted. Waiting queries only the known root/
+children every10s; during validation a1s guard checks identity and the owner's
+final decode/SSIM stages and cancels/awaits readers before disposable-output
+cleanup. Only fresh identity-owned supplement scratch is removed in finally;
+the original driver retains sole authority over its media-output disposal.
+
+Eight new focused tests (13 with the original validator tests) passed, including
+strict command admission, malformed arguments, original-source reversibility,
+actual native cancellation evidence and preserved initial source snapshot.
+All626 unit tests and scoped lint passed without disabling rules. Actual closed-output attachment,
+full-original decoded PCM/timestamps, all three stress results and the final
+process-tree/cleanup report remain PENDING. If the supplement misses its safe
+window or a guard fails, record failure, close readers and do not claim fidelity.
+Publication remains blocked on the full original gates and broad goal remains
+active; this supplement alone cannot prove video, memory, scaling or public
+support. No speculative unchanged full conversion was started.
+
 ## 2026-10-07 — Full-original audio fidelity gap identified; bounded validator controls passed
 
 The running original driver compares copied compressed audio hashes, audio codec/

@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-10-06T22:29:25.795Z",
+  "status": "passed-native-cancellation-controls-only",
+  "scope": "Quarter-second native AAC fixture controls; not a browser conversion or full-original fidelity proof",
+  "generatedValidatorSha256": "fe776572c73d9c5e4427b7676e1330942ecb43e8014f7f5b63ddafc6a4a23626",
+  "sourcePins": {
+    "scripts/lib/streaming-copied-audio-validation.mjs": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "scripts/lib/abortable-audio-validator-recipe.mjs": "22a5d354b804d07a73238a1ad0838a48108c7ed4805c73f7c592f8db625cf797",
+    "scripts/check-abortable-audio-validator.mjs": "ba7b1a50a01648c71796e1a196402ca37e0e3dede8afd3e37a7bcfe4954326e4",
+    "tests/abortable-audio-validator-recipe.test.mjs": "2c3368aa81064622ff8158832e0cb23404f428b4e4821101c0baa9c86abf7490"
+  },
+  "positive": {
+    "status": "passed-copied-audio-ordinal-only",
+    "audioOrdinal": 0,
+    "canonicalCodec": "pcm_s32le",
+    "clockToleranceSeconds": 0.001,
+    "maximumClockErrorSeconds": 0,
+    "source": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "output": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "limits": {
+      "streams": 16,
+      "chunkBytes": 65536,
+      "lineBytes": 4096,
+      "stderrBytes": 4096,
+      "headerLines": 128,
+      "clockSeconds": 0.001
+    },
+    "retainedFrameRows": 0,
+    "productConversionPerformed": false,
+    "caveat": "Independent copied-audio validator requiring matching decoder frame segmentation. Other ordinals, video, process-tree memory and browser conversion are not certified by this result."
+  },
+  "shiftedClockRejected": "Decoded audio pts changed",
+  "activeReadersCancelled": "Native audio validation cancelled/deadline",
+  "preAbortedSignalRejected": "This operation was aborted",
+  "ownedNativeChildrenAbsent": true,
+  "ownedScratchAndFixturesRemoved": true,
+  "browserConversionsPerformed": 0,
+  "originalFullAudioValidation": false,
+  "completeChromiumMemoryAcceptance": false,
+  "preservation": {
+    "reason": "First executed control retained with its exact script snapshot before a variable-name-only lint fix and genuine second control execution.",
+    "executedSourceSnapshots": {
+      "scripts/check-abortable-audio-validator.mjs": "// Real native fixture/validator/cancellation controls. No browser conversion.\nimport assert from \"node:assert/strict\";\nimport { execFile } from \"node:child_process\";\nimport { createHash } from \"node:crypto\";\nimport { access, readFile, writeFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nimport { pathToFileURL } from \"node:url\";\nimport { promisify } from \"node:util\";\nimport { createOwnedRuntimeScratch } from \"./lib/owned-runtime-scratch.mjs\";\nimport { makeAbortableAudioValidator } from \"./lib/abortable-audio-validator-recipe.mjs\";\nconst root = path.resolve(import.meta.dirname, \"..\"), execute = promisify(execFile);\nconst sha = bytes => createHash(\"sha256\").update(bytes).digest(\"hex\");\nconst historical = JSON.parse(await readFile(path.join(root, \"evidence/streaming-audio-validator-controls-2026-10-07.json\")));\nconst source = await readFile(path.join(root, \"scripts/lib/streaming-copied-audio-validation.mjs\"), \"utf8\");\nconst generated = makeAbortableAudioValidator(source, historical.sourcePins[\"scripts/lib/streaming-copied-audio-validation.mjs\"]);\nconst runtime = await createOwnedRuntimeScratch(\"audio-cancellation-controls-\");\nlet positive, negative, cancelled, alreadyAborted, childrenAbsent = false;\ntry {\n  const module = path.join(runtime.directory, \"validator.mjs\"); await writeFile(module, generated, { flag: \"wx\" });\n  const { validateCopiedAudioFrames } = await import(pathToFileURL(module).href);\n  const fixture = path.join(runtime.directory, \"source.mka\"), shifted = path.join(runtime.directory, \"shifted.mka\");\n  const executable = \"C:/ffmpeg/bin/ffmpeg.exe\";\n  const native = args => execute(executable, [\"-v\", \"error\", \"-y\", ...args], {\n    env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 65536 });\n  await native([\"-f\", \"lavfi\", \"-i\", \"sine=frequency=997:sample_rate=48000:duration=0.25\", \"-c:a\", \"aac\", \"-b:a\", \"96k\", fixture]);\n  await native([\"-itsoffset\", \"0.125\", \"-i\", fixture, \"-map\", \"0:a\", \"-c\", \"copy\", shifted]);\n  positive = await validateCopiedAudioFrames(fixture, fixture, { env: runtime.env, executable, maximumMs: 30000 });\n  try { await validateCopiedAudioFrames(fixture, shifted, { env: runtime.env, executable, maximumMs: 30000 }); }\n  catch (error) { negative = error.message; }\n  assert.match(negative ?? \"\", /Decoded audio (pts|dts) changed/);\n  const controller = new AbortController();\n  const pending = validateCopiedAudioFrames(fixture, fixture, { env: runtime.env, executable, maximumMs: 30000, signal: controller.signal });\n  // Both generators start native readers synchronously before their first await.\n  // Abort the real active readers before trusting/reading their first record.\n  queueMicrotask(() => controller.abort());\n  try { await pending; } catch (error) { cancelled = error.message; }\n  assert.match(cancelled ?? \"\", /cancelled\\/deadline|abort/i);\n  const stopped = new AbortController(); stopped.abort();\n  try { await validateCopiedAudioFrames(fixture, fixture, { env: runtime.env, executable, signal: stopped.signal }); }\n  catch (error) { alreadyAborted = error.message; }\n  assert.match(alreadyAborted ?? \"\", /abort/i);\n  const { stdout } = await execute(\"powershell.exe\", [\"-NoProfile\", \"-NonInteractive\", \"-Command\",\n    `@(Get-CimInstance Win32_Process -Filter \"ParentProcessId = ${process.pid} AND Name = 'ffmpeg.exe'\").Count`], {\n    env: runtime.env, windowsHide: true, timeout: 15000, maxBuffer: 4096 });\n  assert.equal(Number(stdout.trim()), 0); childrenAbsent = true;\n} finally {\n  await runtime.close(); await assert.rejects(access(runtime.directory), { code: \"ENOENT\" });\n}\nconst sourcePins = {};\nfor (const file of [\"scripts/lib/streaming-copied-audio-validation.mjs\", \"scripts/lib/abortable-audio-validator-recipe.mjs\",\n  \"scripts/check-abortable-audio-validator.mjs\", \"tests/abortable-audio-validator-recipe.test.mjs\"])\n  sourcePins[file] = sha(await readFile(path.join(root, file)));\nconst proof = { recordedAt: new Date().toISOString(), status: \"passed-native-cancellation-controls-only\",\n  scope: \"Quarter-second native AAC fixture controls; not a browser conversion or full-original fidelity proof\",\n  generatedValidatorSha256: sha(generated), sourcePins, positive, shiftedClockRejected: negative,\n  activeReadersCancelled: cancelled, preAbortedSignalRejected: alreadyAborted,\n  ownedNativeChildrenAbsent: childrenAbsent, ownedScratchAndFixturesRemoved: true,\n  browserConversionsPerformed: 0, originalFullAudioValidation: false, completeChromiumMemoryAcceptance: false };\nconst json = JSON.stringify(proof, null, 2) + \"\\n\"; assert.ok(Buffer.byteLength(json) < 8192);\nconst report = path.join(root, \"evidence/abortable-audio-validator-controls-2026-10-07.json\");\nawait writeFile(report, json, { flag: \"wx\" }); console.log(report);\n"
+    }
+  }
+}
