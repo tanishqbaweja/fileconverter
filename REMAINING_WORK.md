@@ -5,6 +5,55 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual HEVC idle backing measured; cache-admission trial justified
+
+Previous turn was progress: recorded real link failure, corrected native/EM_JS
+bridge and dispatched ONE changed build. Corrected non-Docker37395126119/
+job112049169870 at4ca9822 SUCCESS283s build/328s job (not conversion time).
+Actual24 source/3 artifact hashes and both real diagnostic imports were verified;
+fixed32MiB shared512pages, same-DL-allocator nine-transition pool-reader and
+uncached lifecycle units passed. Eight static tools retained locally; source
+bundle not downloaded, hosted11382702760/11382447921 deleted and API confirmed0.
+
+Chrome154 small4/4PASS17.5s:48 MPEG4/96 HEVC frames genuinely encoded to MPEG2;
+SSIM.992146/.985963/full v+a decode/exact AAC and complete PCM+priming/artwork/
+metadata/chapters/<=1msPTS. Output321692/652521bytes and hashes identical normal
+candidate.64KiB read/write/peakqueue/one pending operation. Cancellation observed
+232344->471427 terminal bytes, then partial[] and zero queues; write failure
+cleans partial[]. These timings are not controlled speed A/B or stress acceptance.
+
+ONE unchanged2958573265-byte1920x804/default original diagnostic FAILED heapend
+33771520,input222785/output0. Actual89 ordered scalars:83 planes/41 successes
+plus6 HEVC auxiliary snapshots; no eviction or exhausted cap. Complete chronology
+links the sixth layer0 snapshot to the failed MPEG2 encoder plane2 request421655.
+MV:1163520payload/1163536backing,5live/1cached; reference-list table:152880payload/
+152896backing,5live/1cached. SIMULTANEOUS idle backing1316432 bytes versus LIVE
+6582160. DPB5short-ref/2output flags overlap and are not additive. No live entry
+may be dropped. Idle backing is not contiguous free space, allocator overhead,
+measured saving, guaranteed later fit or proof of exact normal-core placement.
+
+EARLYblank265580544/loaded312664064/nativepeak453660672/CIM441507840 =>179.3671875
+MiB INCOMPLETE diagnostic, not memory acceptance/saving.29valid/0unavailable,
+all unknown/GPU/utility/updater descendants retained. All five finally flags true;
+independent20 full owned/observed numericPIDs and21 smallPIDs absent, six assets
+restored, exact runtime and all new small fixtures/profiles/adapters removed,
+original pre/post size/SHA unchanged and download ZIP absent. No unrelated kill.
+
+Frozen evidence/mpeg2-hevc-auxiliary-measured-2026-10-06.json binds rawsmall343600/
+351d7773...16253/full426566/574966de...862e, read-only reducer and strict ordered
+boundary/live-cache analysis. No native/browser retry is performed by reduction.
+Next: private single-thread cache-admission trial for ONLY these two HEVC pools,
+reusing the verified final-unref uncached policy. Preserve required references,
+DPB/sizes/reset/free/init/zeroing/strides/pixels/quality/source/fixed memory. This
+is now evidence-supported, not an assumed idle-cache or decoder-only fit change.
+Then one changed build, small fidelity/adverse cases and original NORMAL gate.
+Full M04/repeats/scaling/speed/legal/registry/integration and original scope remain
+incomplete; no diagnostic/public acceptance or unchanged failing rerun.
+
+Pre-push regression: 480/480 unit tests, TypeScript, scoped zero-warning ESLint
+and git diff whitespace checks passed. Read-only reduction reproduces the frozen
+measurement exactly; no additional conversion or native build was run.
+
 ## 2026-10-06 — Auxiliary diagnostic linker failure recorded; bridge correction pending
 
 Actual non-Docker run37394428454/job112046909611 at6d08583 FAILED final link:
