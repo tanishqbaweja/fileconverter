@@ -5,7 +5,23 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Bounded split-frame handoff prototype implemented; native contract test pending
+## 2026-10-06 — Synthetic native contract compiler probe failed; package boundary corrected
+
+ONE native contract37434634781/job112173338626/ea0aeb4 FAILED:29s build step/
+70s job, not conversion timings. Actual archive/frame.c/frame.h hashes verified;
+FFmpeg configure then reported emcc cannot create an executable/C compiler test
+failed. Native frame header/test cases never compiled/executed. No original/video
+conversion/local scratch; hosted cleanup SUCCESS/API0. Frozen compact failure at
+evidence/mpeg2-split-frame-build-failure-2026-10-06.json, no false native pass.
+
+Recipe omitted the owned type:commonjs package boundary used by the successful
+existing build; repository is type:module. Added that exact boundary and bounded
+120-line configure stderr on failure. Old failure did not retain compiler log,
+so this is an evidence-backed integration hypothesis, not proven root cause.
+Source pins/pixels/budgets/allocator/quality unchanged. Next ONE changed synthetic
+native attempt, never restart the terminal failed run or retry original video.
+
+## 2026-10-06 — Bounded split-frame handoff prototype implemented (source-only checkpoint)
 
 Previous turn was progress: actual uncapped pending MV pool/zero idle inventory,
 cleanup and493 guards committed/pushed72a56d5. No unchanged conversion retry.

@@ -1,0 +1,26 @@
+{
+  "status": "synthetic-native-contract-compiler-probe-failed-not-conversion",
+  "run": {
+    "databaseId": 37434634781,
+    "jobId": 112173338626,
+    "headSha": "ea0aeb4aab92c07601a80a3b4a518719c6891a7e",
+    "conclusion": "failure",
+    "jobSeconds": 70,
+    "buildStepSeconds": 29
+  },
+  "failedRecipeSha256": "1e56017673421a2eb3ca234611731b6430992776aa9fe0c7d6167b02fae3364d",
+  "verifiedBeforeFailure": ["FFmpeg archive SHA256", "libavutil/frame.c SHA256", "libavutil/frame.h SHA256"],
+  "actualFailure": "emcc is unable to create an executable file. C compiler test failed.",
+  "nativeFrameHeaderCompiled": false,
+  "syntheticFrameCasesExecuted": 0,
+  "conversionPerformed": false,
+  "originalFixtureRead": false,
+  "localScratchCreated": false,
+  "hostedCleanupStepPassed": true,
+  "hostedArtifactsRemaining": 0,
+  "publicAcceptance": false,
+  "speedGainClaim": null,
+  "rootCauseProven": false,
+  "diagnosis": "Owned scratch lacked the CommonJS package boundary used by the successful existing recipe; repository package.json is type:module. Compiler config stderr was not retained, so packaging is a concrete integration hypothesis, not a proven compiler root cause.",
+  "changedNextAttempt": "Add owned type:commonjs package boundary and bounded120-line configure stderr retention. Do not change source pins, frame layout, fixed budgets, allocator, codec settings or quality. One changed synthetic build, no unchanged retry or original conversion. Full goal remains incomplete."
+}

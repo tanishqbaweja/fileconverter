@@ -21,6 +21,9 @@ trap cleanup EXIT
 trap 'exit 130' INT TERM
 export TMPDIR="${BUILD_ROOT}/tmp" EM_CACHE="${BUILD_ROOT}/cache" EMCC_CORES=4
 mkdir -p "${TMPDIR}" "${EM_CACHE}"
+# FFmpeg's Emscripten compiler probe emits CommonJS .js in TMPDIR. The project
+# is type:module; match the successful existing recipe's owned package boundary.
+printf '{"type":"commonjs"}\n' > "${BUILD_ROOT}/package.json"
 curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz \
   --output "${BUILD_ROOT}/ffmpeg.tar.xz"
 printf '%s  %s\n' 464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c \
@@ -35,6 +38,7 @@ for source_check in \
 done
 (
   cd "${FFMPEG_ROOT}"
+  trap 'status=$?; if [[ -f ffbuild/config.log ]]; then tail -n 120 ffbuild/config.log >&2; fi; exit "${status}"' ERR
   emconfigure ./configure --cc=emcc --cxx=em++ --ar=emar --ranlib=emranlib --nm=emnm \
     --arch=wasm --target-os=none --disable-everything --disable-autodetect \
     --disable-programs --disable-doc --disable-debug --disable-network --disable-devices \

@@ -47,10 +47,23 @@ test("Standalone native ownership smoke cannot convert files or certify full-bro
   assert.match(recipe, /memory_bytes=33554432/); assert.match(recipe, /memory_bytes=16777216/);
   assert.match(recipe, /-sMALLOC=dlmalloc/); assert.match(recipe, /-sSTACK_OVERFLOW_CHECK=2/);
   assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0/); assert.match(recipe, /trap cleanup EXIT/);
+  assert.match(recipe, /printf '\{"type":"commonjs"\}/); assert.match(recipe, /tail -n 120 ffbuild\/config.log/);
   assert.match(recipe, /\[\[.*! -L "\$\{BUILD_ROOT\}"/);
   assert.match(verifier, /actualLimits\[role\], \[\{ imported: true/); assert.match(verifier, /assert.notEqual\(pixelHash\(encoder, target\), original/);
   assert.match(verifier, /paddingHash\(encoder, target\), originalPadding/);
   assert.match(verifier, /processMemoryAcceptance: false/); assert.match(verifier, /conversionPerformed: false/);
   assert.match(verifier, /finally \{\s*bridge\?\.close\(\)/);
   assert.doesNotMatch(verifier, /test\.mkv|ffmpeg.*exec|spawn\(/);
+});
+
+test("Executed compiler-probe failure remains distinct from an unexecuted native frame or conversion test", async () => {
+  const proof = JSON.parse(await readFile(new URL("../evidence/mpeg2-split-frame-build-failure-2026-10-06.json", import.meta.url)));
+  assert.equal(proof.run.databaseId, 37434634781); assert.equal(proof.run.jobId, 112173338626);
+  assert.equal(proof.run.headSha, "ea0aeb4aab92c07601a80a3b4a518719c6891a7e");
+  assert.equal(proof.run.conclusion, "failure"); assert.equal(proof.run.buildStepSeconds, 29);
+  assert.equal(proof.nativeFrameHeaderCompiled, false); assert.equal(proof.syntheticFrameCasesExecuted, 0);
+  assert.equal(proof.conversionPerformed, false); assert.equal(proof.originalFixtureRead, false);
+  assert.equal(proof.hostedCleanupStepPassed, true); assert.equal(proof.hostedArtifactsRemaining, 0);
+  assert.equal(proof.publicAcceptance, false); assert.equal(proof.rootCauseProven, false);
+  assert.equal(proof.speedGainClaim, null); assert.match(proof.changedNextAttempt, /One changed synthetic build/);
 });
