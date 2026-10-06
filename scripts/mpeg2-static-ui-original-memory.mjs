@@ -1,0 +1,32 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
+import { makeStaticUiOriginalDriver } from "./lib/mpeg2-static-ui-original-recipe.mjs";
+const root = path.resolve(import.meta.dirname, ".."), sha = value => createHash("sha256").update(value).digest("hex");
+const ui = JSON.parse(await readFile(path.join(root, "evidence/ui-matrix-benchmark-2026-10-07.json")));
+assert.equal(ui.status, "passed-ui-cpu-benchmark-only"); assert.equal(ui.exactMarkupPreserved, true);
+assert.ok(ui.scriptCpuReductionPercent > 0); assert.equal(ui.completeChromiumMemoryAcceptance, false);
+assert.equal(sha(await readFile(path.join(root, "app/converter/ConverterApp.tsx"))), ui.candidate.sourcePins["app/converter/ConverterApp.tsx"]);
+const golden = JSON.parse(await readFile(path.join(root, "evidence/ui-matrix-golden-regression-2026-10-07.json")));
+assert.equal(golden.status, "passed-5-of-5-private-regression"); assert.equal(golden.privateAdditionsAbsent, true);
+const privacy = JSON.parse(await readFile(path.join(root, "evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json")));
+assert.equal(privacy.status, "passed-focused-regression"); assert.equal(privacy.runtimeRemoved, true);
+const prerequisite = JSON.parse(await readFile(path.join(root, "evidence/blank-chromium-lifecycle-2026-10-06.json")));
+assert.equal(prerequisite.identicalOriginalDriverFlags, true); assert.equal(prerequisite.converterLoaded, false);
+assert.equal(prerequisite.processesExcluded, 0); assert.equal(prerequisite.baselineAdjusted, false);
+assert.ok(prerequisite.laterQuietWindowDiagnosticOnly.privateBytes < prerequisite.earlyStable.privateBytes);
+const name = process.env.WITHIN_MPEG2_SPLIT_CANDIDATE_DIR;
+assert.equal(name, "mpeg2-split-pipeline-37479749443", "Do not combine this UI-only attempt with a different codec candidate");
+const manifest = JSON.parse(await readFile(path.join(root, "work", name, "build-manifest.json")));
+assert.equal(manifest.scope, "private-fixed-heap-alignment-reuse-candidate-not-browser-acceptance");
+assert.equal(manifest.alignedReuse.actualLinkedWrapperVerified, true);
+const source = await readFile(path.join(root, "scripts/mpeg2-split-single-navigation-memory.mjs"), "utf8");
+const generated = makeStaticUiOriginalDriver(source, root, specifier => import.meta.resolve(specifier));
+const runtime = await createOwnedRuntimeScratch("mpeg2-static-ui-driver-");
+try {
+  const file = path.join(runtime.directory, "full-source.mjs"); await writeFile(file, generated, { flag: "wx" });
+  await import(pathToFileURL(file).href);
+} finally { await runtime.close(); }

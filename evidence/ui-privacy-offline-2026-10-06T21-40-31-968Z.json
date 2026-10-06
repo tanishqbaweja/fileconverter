@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-10-06T21:40:31.967Z",
+  "status": "passed-focused-regression",
+  "selectedTests": [
+    "functional browser capability probes pass in production Chrome",
+    "conversion transmits no filename or file content",
+    "installed app shell loads offline without eagerly downloading engines"
+  ],
+  "stats": {
+    "startTime": "2026-10-06T21:40:26.373Z",
+    "duration": 5238.16,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "error": null,
+  "cleanupError": null,
+  "runtimeRemoved": true,
+  "originalSuiteChanges": "Only projectRoot and profileRoot; all assertions, real production conversion and offline/cache behavior unchanged.",
+  "conversionMemoryAcceptance": false,
+  "fullOfflineEngineCoverage": false,
+  "sourcePins": {
+    "tests/browser/privacy-offline.spec.ts": "348cc0aa666d382255a7b00fa0bca89300bf1aedef21fa4e61fc7e41802c8f5c",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "scripts/check-ui-privacy-offline.mjs": "34cb6fa2e383abc7b1f0cf9f05acfa91bf10340e174a382820d62588072548fd",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+  }
+}

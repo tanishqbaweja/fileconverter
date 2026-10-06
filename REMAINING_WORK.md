@@ -1,9 +1,58 @@
 # Remaining work audit
 
-Updated 2026-10-06. This is the living requirement audit for the original
+Updated 2026-10-07. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-07 — Measured static UI optimization; original retest LIVE
+
+The former static-matrix candidate below is now implemented and pushed as
+9619cec to origin/media-options. Only the immutable405-card display is memoized;
+source inspection, codec/settings/quality, progress, destinations, privacy and
+registry are unchanged. Exact reversible baseline-source recovery rejects all
+unrelated UI mutations; historical evidence pins are not discarded.
+
+Actual Chrome154.0.8037.98 baseline/candidate each performed the same60 real
+format changes, three20-change batches, alternating gzip-compress/mkv-to-mp4
+after normal protected-original inspection. Convert was NEVER clicked/progress
+simulated. Main-thread Script CPU131.277->56.065ms (57.292595% reduction), exact
+405-card HTML SHA preserved. DOM6725->8345/listeners192->372/documents6 is
+IDENTICAL in both. Layout/style did not improve. This is an interface CPU win,
+NOT conversion-speed or whole-process-memory acceptance or a fix for Blink
+growth. Different Chrome instances/GC timings cannot support a heap-saving
+claim. The pinned derivative uses Performance metrics, no Memory native sampler;
+raw native-sampling labels/boolean are inherited metadata, explicitly corrected
+in evidence/ui-matrix-benchmark-2026-10-07.json. Both pre/post sourceSHA/five
+cleanup/privacy flags passed; owned profiles/runtimes absent.
+
+Real private browser golden/recovery regression passed5/5 in27.2s: MPEG4->MPEG2
+48frames321692bytes/SSIM0.992146; HEVC->MPEG2 OPFS/direct96frames652521bytes/
+SSIM0.985963. Exact historical output hashes, full independent native decode,
+decoded audio equality, artwork and presentation timing retained. Injected write
+failure/actual-output cancellation leave no partial files; five empty inventories.
+Six generated asset hashes independently match published engines/nine private
+additions absent. Compact:evidence/ui-matrix-golden-regression-2026-10-07.json.
+These short fixtures/non-stabilized snapshots do NOT certify250MiB/HD/fullsource.
+
+Focused unchanged production capability/privacy CSV conversion/offline-shell
+tests passed3/3 in5.238s. Only fresh owned project/profile bindings changed in
+the generated suite; no historical profile swept. Runtime/profile/results/temp
+removed in finally; evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json.
+Not full offline-engine coverage. Regression613/613units/scopedzero-warninglint
+PASS; TypeScript/build passed for exact current App before this instrumentation.
+
+ONE full protected-original attempt is actually LIVE at session51813/driver37064,
+Chrome36292/server27344/native100ms observer36816; started21:41:32UTC. Wrapper
+scripts/mpeg2-static-ui-original-memory.mjs uses byte-reversible derivative of
+unchanged original/settled drivers, adds current App/evidence source pins and new
+report/runtime identity ONLY. Same1920x804/24fps/quality/fixed32+16MiB/Chrome flags/
+all descendants250MiB exact formula/full fidelity validators/three required runs/
+6h-per-run deadline/normal cancellation and pre/post originalSHA/finally cleanup.
+Fixed300000ms blank settling/no larger denominator preserved. Runtime
+work/mpeg2-static-ui-original-runtime-0d3tg6, current phase blank startup settling.
+Do not rebuild/stage concurrently or restart on observation timeout. No native
+OS-picker/encoding UI/public promotion/final goal completion from this attempt.
 
 ## 2026-10-07 — Renderer attribution TERMINAL; real idle UI control completed
 

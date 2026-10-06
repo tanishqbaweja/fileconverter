@@ -1,0 +1,227 @@
+{
+  "recordedAt": "2026-10-06T21:39:50.826Z",
+  "status": "passed-ui-cpu-benchmark-only",
+  "scope": "One baseline and one candidate Chrome instance, each with three20-selection batches; production source inspection, no Convert/progress simulation. Not three clean-session conversion acceptance.",
+  "matrixCards": 405,
+  "selectionChangesPerRun": 60,
+  "nativeAllocationSamplingEnabled": false,
+  "inheritedLabelCaveat": "The raw derivative retains native-sampling phase/cleanup labels and nativeSamplingPerturbsMemory:true from its ancestor. Its exact pinned recipe replaces every Memory sampler command with Performance.enable(threadTicks)/getMetrics/disable; native allocation sampling did not run.",
+  "baseline": {
+    "variant": "baseline",
+    "recordedAt": "2026-10-06T21:30:22.527Z",
+    "browserVersion": "154.0.8037.98",
+    "sourcePins": {
+      "scripts/benchmark-ui-format-matrix.mjs": "af2d9770da75ebd26e32b806f63ec48a15b0871066b57242411988e4dc928a6a",
+      "scripts/lib/ui-matrix-benchmark-recipe.mjs": "cdbf6f42eaede4cbd81e274da3441182f82b324b0af498eb8aa8c33a41b747e0",
+      "scripts/lib/static-format-matrix-recipe.mjs": "80819962f8a6b80711ec368b2271f7ec1c3da80d50ce54197f4fb45b26136631",
+      "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+      "app/converter/ConverterApp.tsx": "2dd872f22cc95b3dc5ac66f70ae56ccf4d6da62da165ff4c6e9ce42251c4cf08",
+      "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+      "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+    },
+    "source": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    },
+    "rawReport": {
+      "path": "output/playwright/2026-10-06T21-29-47-865Z-ui-matrix-benchmark.json",
+      "bytes": 42191,
+      "sha256": "47132f5266c63c41fcc170ea4a1b5444aebee5249d418865ba2eea76ffad2ee2"
+    },
+    "matrixMarkupSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+    "alternateProfileId": "gzip-compress",
+    "rows": [
+      {
+        "phase": "native-sampling-start",
+        "dom": {
+          "documents": 6,
+          "nodes": 6725,
+          "jsEventListeners": 192
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0,
+          "TaskDuration": 0.000594,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0
+        }
+      },
+      {
+        "phase": "ui-selections-20",
+        "dom": {
+          "documents": 6,
+          "nodes": 7265,
+          "jsEventListeners": 252
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.05249,
+          "TaskDuration": 0.201758,
+          "LayoutDuration": 0.020849,
+          "RecalcStyleDuration": 0.002633
+        }
+      },
+      {
+        "phase": "ui-selections-40",
+        "dom": {
+          "documents": 6,
+          "nodes": 7805,
+          "jsEventListeners": 312
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.094301,
+          "TaskDuration": 0.378004,
+          "LayoutDuration": 0.040473,
+          "RecalcStyleDuration": 0.005126
+        }
+      },
+      {
+        "phase": "ui-selections-60",
+        "dom": {
+          "documents": 6,
+          "nodes": 8345,
+          "jsEventListeners": 372
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.131277,
+          "TaskDuration": 0.550474,
+          "LayoutDuration": 0.059698,
+          "RecalcStyleDuration": 0.007676
+        }
+      }
+    ],
+    "batchScriptMs": [
+      52.49,
+      41.81099999999999,
+      36.976000000000006
+    ],
+    "totalScriptMs": 131.277,
+    "cleanup": {
+      "samplingStopped": true,
+      "chromeStopped": true,
+      "serverStopped": true,
+      "runtimeRemoved": true,
+      "protectedFixtureUnchanged": true
+    },
+    "ownedPids": {
+      "chrome": 22268,
+      "server": 30428
+    },
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\ui-matrix-benchmark-tUGyuF"
+  },
+  "candidate": {
+    "variant": "static-matrix-candidate",
+    "recordedAt": "2026-10-06T21:32:12.759Z",
+    "browserVersion": "154.0.8037.98",
+    "sourcePins": {
+      "scripts/benchmark-ui-format-matrix.mjs": "af2d9770da75ebd26e32b806f63ec48a15b0871066b57242411988e4dc928a6a",
+      "scripts/lib/ui-matrix-benchmark-recipe.mjs": "cdbf6f42eaede4cbd81e274da3441182f82b324b0af498eb8aa8c33a41b747e0",
+      "scripts/lib/static-format-matrix-recipe.mjs": "80819962f8a6b80711ec368b2271f7ec1c3da80d50ce54197f4fb45b26136631",
+      "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+      "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+      "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+      "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+    },
+    "source": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    },
+    "rawReport": {
+      "path": "output/playwright/2026-10-06T21-31-39-423Z-ui-matrix-benchmark.json",
+      "bytes": 42273,
+      "sha256": "327eeb1f66a9224a5d662853c1a8f2282c74060cb55fb60b8db2a76c960b9218"
+    },
+    "matrixMarkupSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+    "alternateProfileId": "gzip-compress",
+    "rows": [
+      {
+        "phase": "native-sampling-start",
+        "dom": {
+          "documents": 6,
+          "nodes": 6725,
+          "jsEventListeners": 192
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0,
+          "TaskDuration": 0.0006,
+          "LayoutDuration": 0,
+          "RecalcStyleDuration": 0
+        }
+      },
+      {
+        "phase": "ui-selections-20",
+        "dom": {
+          "documents": 6,
+          "nodes": 7265,
+          "jsEventListeners": 252
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.022271,
+          "TaskDuration": 0.181992,
+          "LayoutDuration": 0.023032,
+          "RecalcStyleDuration": 0.002639
+        }
+      },
+      {
+        "phase": "ui-selections-40",
+        "dom": {
+          "documents": 6,
+          "nodes": 7805,
+          "jsEventListeners": 312
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.038058,
+          "TaskDuration": 0.320894,
+          "LayoutDuration": 0.041182,
+          "RecalcStyleDuration": 0.004893
+        }
+      },
+      {
+        "phase": "ui-selections-60",
+        "dom": {
+          "documents": 6,
+          "nodes": 8345,
+          "jsEventListeners": 372
+        },
+        "cpuSeconds": {
+          "ScriptDuration": 0.056065,
+          "TaskDuration": 0.475373,
+          "LayoutDuration": 0.061521,
+          "RecalcStyleDuration": 0.007802
+        }
+      }
+    ],
+    "batchScriptMs": [
+      22.271,
+      15.787000000000003,
+      18.006999999999994
+    ],
+    "totalScriptMs": 56.065,
+    "cleanup": {
+      "samplingStopped": true,
+      "chromeStopped": true,
+      "serverStopped": true,
+      "runtimeRemoved": true,
+      "protectedFixtureUnchanged": true
+    },
+    "ownedPids": {
+      "chrome": 21792,
+      "server": 33912
+    },
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\ui-matrix-benchmark-xDJWjh"
+  },
+  "scriptCpuReductionPercent": 57.29259504711411,
+  "exactMarkupPreserved": true,
+  "domGrowthReduced": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "limitations": [
+    "This alternating universal-gzip/remux control is not media-to-media conversion progress.",
+    "Layout/recalculation did not improve. Identical DOM growth does not prove a retained leak or a native-memory fix.",
+    "Different browser instances and GC timing preclude attributing heap differences to this change."
+  ],
+  "sourcePins": {
+    "scripts/freeze-ui-matrix-benchmark.mjs": "bb9947f45f57032a87101bde360003761632c34d7f0128b702ff37d29623a65a"
+  }
+}
