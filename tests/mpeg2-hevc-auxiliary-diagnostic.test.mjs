@@ -40,10 +40,10 @@ test("HEVC inventory is read-only, private, budgeted and coupled to actual compi
   assert.match(helper, /context->thread_count != 1/);
   assert.doesNotMatch(helper, /av_refstruct_unref\(|av_buffer_unref\(|avcodec_flush_buffers\(|av_refstruct_pool_uninit\(|av_malloc\(/);
   const recipe = await source("media/ffmpeg/build-mpeg2-candidate.sh");
-  assert.match(recipe, /mpeg2-hevc-auxiliary-diagnostic.mjs" \\\n/);
+  assert.match(recipe, /mpeg2-hevc-pool-attempt-diagnostic.mjs" \\\n/);
   assert.match(recipe, /ALLOCATOR_DIAGNOSTIC\}" == 1 \|\| "\$\{FRAME_ALLOCATION_DIAGNOSTIC\}" == 1/);
   const manifest = await source("media/ffmpeg/mpeg2-candidate-manifest.mjs");
-  assert.match(manifest, /reverseHevcAuxiliarySource\(actualHevcRefs\)/);
+  assert.match(manifest, /reverseHevcPoolAttempts\(actualHevcRefs\)/);
   assert.match(manifest, /reverseHevcEncoderBoundary\(generatedWrapper.slice/);
   assert.match(manifest, /entry.name === "within_hevc_aux_emit_js"/);
   assert.match(manifest, /hevcAuxiliaryDiagnosticLimit: 48/);

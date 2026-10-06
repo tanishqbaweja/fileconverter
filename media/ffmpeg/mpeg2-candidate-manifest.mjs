@@ -4,7 +4,8 @@ import path from "node:path";
 import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-allocator-selection.mjs";
 import { verifyMpeg2DecoderSet } from "./mpeg2-decoder-selection.mjs";
 import { reverseFrameAllocationDiagnostic, FRAME_ALLOCATION_SOURCE_SHA256 } from "./mpeg2-frame-allocation-diagnostic.mjs";
-import { reverseHevcAuxiliarySource, HEVC_REFS_SOURCE_SHA256, reverseHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
+import { HEVC_REFS_SOURCE_SHA256, reverseHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
+import { reverseHevcPoolAttempts } from "./mpeg2-hevc-pool-attempt-diagnostic.mjs";
 import { reverseHevcAuxiliaryPolicy, HEVC_DECODER_SOURCE_SHA256 } from "./mpeg2-hevc-auxiliary-policy.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
@@ -37,7 +38,8 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs",
   "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h",
   "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h", "mpeg2-hevc-auxiliary-linkage.mjs",
-  "mpeg2-hevc-auxiliary-policy.mjs", "mpeg2-hevc-auxiliary-policy.h", "mpeg2-hevc-auxiliary-selector-smoke.c"];
+  "mpeg2-hevc-auxiliary-policy.mjs", "mpeg2-hevc-auxiliary-policy.h", "mpeg2-hevc-auxiliary-selector-smoke.c",
+  "mpeg2-hevc-pool-attempt-diagnostic.mjs", "mpeg2-hevc-pool-attempt-diagnostic.h"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
@@ -49,7 +51,7 @@ else if (createHash("sha256").update(actualFrameSource).digest("hex") !== FRAME_
   throw new Error("Unexpected frame-allocation source state");
 const nativeAllocator = selectMpeg2Allocator(process.env.WITHIN_MPEG2_ALLOCATOR ?? "emmalloc", allocatorDiagnostic === "1");
 const actualHevcRefs = await readFile(path.join(build, "ffmpeg/libavcodec/hevc/refs.c"), "utf8");
-if (frameDiagnostic === "1") reverseHevcAuxiliarySource(actualHevcRefs);
+if (frameDiagnostic === "1") reverseHevcPoolAttempts(actualHevcRefs);
 else if (createHash("sha256").update(actualHevcRefs).digest("hex") !== HEVC_REFS_SOURCE_SHA256)
   throw new Error("Unexpected HEVC auxiliary source state");
 const actualHevcDecoder = await readFile(path.join(build, "ffmpeg/libavcodec/hevc/hevcdec.c"), "utf8");
@@ -97,6 +99,9 @@ if ((allocatorDiagnostic === "1" || frameDiagnostic === "1") && !refstructPoolDi
 const generatedRuntime = await readFile(path.join(output, "within-mpeg2.mjs"), "utf8");
 const generatedWrapper = await readFile(path.join(build, "within_mpeg2.c"), "utf8");
 if (frameDiagnostic === "1") {
+  const attemptHeader = await readFile(path.join(root, "media/ffmpeg/mpeg2-hevc-pool-attempt-diagnostic.h"), "utf8");
+  if (generatedWrapper.split(attemptHeader + "\n").length !== 2)
+    throw new Error("Actual generated HEVC allocation-time emitter header differs from source");
   const marker = "/* Private feasibility kernel, not a published conversion profile.";
   if (generatedWrapper.split(marker).length !== 2) throw new Error("Exact diagnostic kernel boundary missing");
   reverseHevcEncoderBoundary(generatedWrapper.slice(generatedWrapper.indexOf(marker)));
@@ -130,12 +135,14 @@ const manifest = {
   frameAllocationDiagnosticLimit: 192,
   hevcAuxiliaryDiagnostic: frameDiagnostic === "1",
   hevcAuxiliaryDiagnosticLimit: 48,
+  hevcPoolAttemptDiagnostic: frameDiagnostic === "1",
+  hevcPoolAttemptDiagnosticScope: "Two actual HEVC pool gets plus encoder snapshots share48 events; read-only two-pool48-byte inventory, original getter executes exactly once, no live-reference/allocation-policy or acceptance changes",
   hevcAuxiliarySourceSha256: createHash("sha256").update(actualHevcRefs).digest("hex"),
   hevcAuxiliaryCachePolicy: "Private single-thread HEVC decoder tab_mvf/rpl_tab skip only final-reference idle admission using lifecycle-verified bit30; live refs/DPB/sizes/reset/free/init/zeroing unchanged; fit/speed unproven",
   hevcDecoderOriginalSourceSha256: HEVC_DECODER_SOURCE_SHA256,
   hevcDecoderPatchedSourceSha256: createHash("sha256").update(actualHevcDecoder).digest("hex"),
   hevcAuxiliarySelectorSmoke,
-  hevcAuxiliaryDiagnosticScope: "Read-only simultaneous HEVC auxiliary pools and DPB flag counts immediately before encoder send; no live-reference/cache changes or free-block/speed/acceptance claim",
+  hevcAuxiliaryDiagnosticScope: "Read-only simultaneous HEVC auxiliary pools and overlapping DPB flag counts at pre/post pool-get and encoder boundaries; shared48 event budget, no free-block/speed/acceptance claim",
   frameAllocationDiagnosticScope: "Before/after scalar plane requests independent of allocator; no buffer/media/address copying, no codec/layout/reference mutations, no performance or acceptance certification",
   decoderSet: decoderSelection.name, requestedDecoders: decoderSelection.requested,
   decoderModuleScope: "Additional private HEVC/MPEG4 specialist or unchanged broad/default module; no public coverage removed. Static/runtime footprint, source fit and speed require actual comparison",

@@ -5,6 +5,47 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Allocation-time HEVC observer implemented, native measurement pending
+
+Previous turn was progress: actual normal trial failed in HEVC alloc_frame/
+av_refstruct_pool_get, exact pool unknown, cleanup/evidence pushed8b26ebd.
+Implemented reversible observation at BOTH upstream tab_mvf/rpl_tab get calls.
+Each wrapper executes the original getter exactly once and returns its unchanged
+result; no pool flags, references, sizes, codec settings or source changes.
+Pre/post attempts and encoder boundaries share ONE48-event native counter;
+plus192 plane events fits unchanged240 browser ring.48-byte synchronous scalar
+inventory/128 inactive-link walk, no addresses/media objects. DPB flag categories
+overlap and do not include not-yet-flagged frames; live auxiliary counts may differ.
+
+Pinned primary refs.c21945/340d1607...e5e audited. Three exact substitutions plus
+appended read-only wrapper reverse EVERY original byte; changed calls, returned
+object, duplicate instrumentation and changed sources reject. Instrumented SHA
+c7c5d94d...23244. Frozen source-only audit at
+evidence/mpeg2-hevc-pool-attempt-source-audit-2026-10-06.json. Prior source/header/
+linkage/failure proofs preserved; current private diagnostic wiring explicitly
+uses new observer. Normal generated wrapper5650af19...c88d remains byte-identical.
+Manifest verifies actual refs reversal, actual full emitter-header inclusion,
+real EM_JS import and29 source pins/corresponding bundle. Existing same-allocator
+reader, selector and lifecycle native units remain mandatory.
+
+Strict chronology reducer distinguishes completed pre/post from final unmatched
+pre-get, and rejects foreign/oversized/gapped/mismatched telemetry. Only uncapped,
+unevicted complete prefix ending at the pending pool get plus native pool OOM
+context attributes a class. Incomplete statistics stay NULL; no free-block/live
+removal/runtime saving/speed/public acceptance claim. Native context may show
+original alloc_frame or the exact pinned HEVC wrapper at the trace depth limit;
+unrelated decoder frames do not qualify. Six new focused guards and17 combined
+focused guards passed;491/491unit/TypeScript/scopedzero-warninglint/Bash syntax/
+whitespace/repeated pinned audit PASS. Initial lint caught a forbidden test-local
+module variable, renamed without changing observer. No media/profile generated;
+only owned generator-unit scratch, verified removed.
+
+Native observer is NOT yet compiled/measured. Next ONE changed no-Docker
+dlmalloc/hevc-mpeg4/frame-diagnostic1/allocator-diagnostic0 build, small strict
+fidelity/adverse cases, then ONE unchanged original-source diagnostic. Never an
+unchanged normal retry or acceptance run; fixed32MiB/source/quality/live refs/
+timestamps and full process-tree formula unchanged. Full goal remains incomplete.
+
 ## 2026-10-06 — Actual HEVC admission trial: small fidelity passes, original normal gate fails
 
 Previous turn was progress: implemented/pushed final-unref trial and dispatched

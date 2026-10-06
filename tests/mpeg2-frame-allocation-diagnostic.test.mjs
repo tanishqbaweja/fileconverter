@@ -9,7 +9,6 @@ import { instrumentFrameAllocation, reverseFrameAllocationDiagnostic, FRAME_ALLO
   from "../media/ffmpeg/mpeg2-frame-allocation-diagnostic.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { reverseHevcEncoderBoundary } from "../media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.mjs";
-import { linkHevcAuxiliaryEmitter } from "../media/ffmpeg/mpeg2-hevc-auxiliary-linkage.mjs";
 
 const source = (name) => readFile(new URL(`../${name}`, import.meta.url), "utf8");
 test("Executed source-only plane audit is hash-bound and cannot masquerade as native or browser evidence", async () => {
@@ -46,7 +45,7 @@ test("Actual generated default wrapper remains byte-identical; diagnostic additi
     assert.equal(createHash("sha256").update(rows[0]).digest("hex"), "5650af19401766cf941bc95c221ff6b03c87192476bc10eacd7e6e47d1e0c88d");
     const header = await source("media/ffmpeg/mpeg2-frame-allocation-diagnostic.h");
     assert.equal(rows[1].split(header + "\n").length, 2);
-    const auxiliaryHeader = linkHevcAuxiliaryEmitter(await source("media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.h"));
+    const auxiliaryHeader = await source("media/ffmpeg/mpeg2-hevc-pool-attempt-diagnostic.h");
     assert.equal(rows[1].split(auxiliaryHeader + "\n").length, 2);
     const stripped = rows[1].replace(header + "\n", "").replace(auxiliaryHeader + "\n", "");
     const marker = "/* Private feasibility kernel, not a published conversion profile.";

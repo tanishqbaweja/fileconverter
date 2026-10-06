@@ -4,7 +4,6 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { instrumentMpeg2Allocator } from "../../scripts/lib/mpeg2-allocator-instrumentation.mjs";
 import { instrumentHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
-import { linkHevcAuxiliaryEmitter } from "./mpeg2-hevc-auxiliary-linkage.mjs";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, "../..");
@@ -49,7 +48,7 @@ if (!["0", "1"].includes(frameDiagnostic)) throw new Error("Private scalar plane
 if (frameDiagnostic === "1" && diagnostic === "1") throw new Error("Separate diagnostic event budgets cannot be combined");
 const candidate = bridge + artwork + (frameDiagnostic === "1"
   ? await readFile(path.join(directory, "mpeg2-frame-allocation-diagnostic.h"), "utf8") + "\n"
-    + linkHevcAuxiliaryEmitter(await readFile(path.join(directory, "mpeg2-hevc-auxiliary-diagnostic.h"), "utf8")) + "\n" : "") + (diagnostic === "1"
+    + await readFile(path.join(directory, "mpeg2-hevc-pool-attempt-diagnostic.h"), "utf8") + "\n" : "") + (diagnostic === "1"
   ? instrumentMpeg2Allocator(kernel, await readFile(path.join(directory, "mpeg2-allocator-diagnostic.h"), "utf8"))
   : frameDiagnostic === "1" ? instrumentHevcEncoderBoundary(kernel) : kernel);
 await writeFile(output, candidate, { flag: "wx" });

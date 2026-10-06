@@ -1,0 +1,46 @@
+{
+  "status": "source-only-hevc-allocation-boundary-observer-not-acceptance",
+  "sources": {
+    "media/ffmpeg/mpeg2-hevc-pool-attempt-diagnostic.mjs": "b4e49165e1aa8b80d993844b0cd68d21e5f733bea85e0e89dc0bdd67a6a32498",
+    "media/ffmpeg/mpeg2-hevc-pool-attempt-diagnostic.h": "d2c94931d1998a9b9fc24f258e0952e034eeaf50f5e4bd9706825a141d861f05",
+    "scripts/verify-mpeg2-hevc-pool-attempt-diagnostic.mjs": "237a52dad0cbabfecd4f1ece610e866ec58ff0b181fb9b57e4fa2014dde404ec",
+    "scripts/lib/hevc-pool-attempt-trace.mjs": "8404cd17b0770ec9a701cdf8ae7bf9d73a9817ce7baa9e283066dd0a49033fff"
+  },
+  "upstreamSource": {
+    "file": "libavcodec/hevc/refs.c",
+    "bytes": 21945,
+    "sha256": "340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e"
+  },
+  "instrumentedSourceSha256": "c7c5d94d904a23d1e77cd8b78d3fdcc2d44ebfd49be4ee03d465157c32c23244",
+  "byteExactSourceReversal": true,
+  "byteExactKernelReversal": true,
+  "mutationNegativeControlsPassed": true,
+  "exactPoolCallSites": 2,
+  "originalGetterCallsPerAttempt": 1,
+  "sharedHevcEventCap": 48,
+  "planeEventCap": 192,
+  "browserEventCap": 240,
+  "inactiveLinkWalkCap": 128,
+  "nativeInventoryBytes": 48,
+  "sharedEventPhases": [
+    "before-pool-get",
+    "after-pool-get",
+    "before-encoder-send"
+  ],
+  "allocationPolicyChanged": false,
+  "liveReferencesChanged": false,
+  "codecSettingsChanged": false,
+  "normalWrapperChanged": false,
+  "sourceDimensionsChanged": false,
+  "compiledObserverVerified": false,
+  "actualFailedPool": null,
+  "actualLiveBackingBytesAtFailure": null,
+  "actualInactiveBackingBytesAtFailure": null,
+  "measuredRuntimeSavingsBytes": null,
+  "speedGainClaim": null,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "generatedSourceFilesCreated": 0,
+  "scratchFilesCreated": 0,
+  "next": "One changed no-Docker dlmalloc/hevc-mpeg4 plane-diagnostic build, mandatory same-allocator reader/selector/lifecycle units, small fidelity/adverse gates and one original-size diagnostic. No unchanged normal retry, larger heap, live-reference removal or acceptance/speed claim."
+}

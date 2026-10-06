@@ -105,10 +105,10 @@ if [[ "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Scalar observer independent of emmalloc/dlmalloc; exact source reversal.
   node "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.mjs" \
     "${BUILD_ROOT}/ffmpeg/libavcodec/get_buffer.c"
-  # Addition-only native inventory, independent of malloc implementation.
+  # Reversible pre/post pool-get and encoder inventory, shared48 scalar budget.
   printf '%s  %s\n' 340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e \
     ffmpeg/libavcodec/hevc/refs.c | sha256sum --check --strict
-  node "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.mjs" \
+  node "${SCRIPT_DIR}/mpeg2-hevc-pool-attempt-diagnostic.mjs" \
     "${BUILD_ROOT}/ffmpeg/libavcodec/hevc/refs.c"
 fi
 # Private single-thread MPEG2 encoder accessory policy. Only final-reference
@@ -239,6 +239,8 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.mjs" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.h" \
   "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-selector-smoke.c" \
+  "${SCRIPT_DIR}/mpeg2-hevc-pool-attempt-diagnostic.mjs" \
+  "${SCRIPT_DIR}/mpeg2-hevc-pool-attempt-diagnostic.h" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/
