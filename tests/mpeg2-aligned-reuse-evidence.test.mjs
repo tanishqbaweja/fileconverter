@@ -1,0 +1,51 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+const read = file => readFile(new URL(`../${file}`, import.meta.url));
+const proof = JSON.parse(await read("evidence/mpeg2-aligned-reuse-2026-10-06.json"));
+const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+test("Actual aligned candidate build and browser goldens are pinned, not promoted", async () => {
+  for (const [file, digest] of Object.entries(proof.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  assert.equal(proof.build.head, "decd483b394ea132e22b9c75148a472c966c3441");
+  assert.equal(proof.build.nativeSyntheticContract.passed, 6);
+  assert.equal(proof.build.aggregateWasmMemoryBytes, 50331648);
+  assert.equal(proof.build.companionEncoderUnchanged, true);
+  assert.equal(proof.build.hostedCleanup.conclusion, "success");
+  assert.equal(proof.browserGoldens.passedTests, 5);
+  assert.equal(proof.browserGoldens.conversions.length, 3);
+  assert.deepEqual(proof.browserGoldens.conversions.map(row => row.frames), [48, 96, 96]);
+  assert.equal(proof.browserGoldens.exactBaselineOutputHashes, true);
+  assert.equal(proof.browserGoldens.writeFailureAndCancellationPassed, true);
+  assert.deepEqual(proof.browserGoldens.observedAfterEachOpfsEntries, [[], [], [], [], []]);
+  for (const row of proof.browserGoldens.conversions) assert.ok(row.ssim >= 0.98);
+  const build = JSON.parse(await read(proof.build.reference.path));
+  assert.equal(sha(await read(proof.build.reference.path)), proof.build.reference.sha256);
+  assert.equal(build.retained["split-encoder.wasm"].sha256, "8b2fd64d3205143971d451f0ed562039d98fbac9f276d6cbb3c8898d889f4242");
+  assert.equal(build.retained["split-encoder.mjs"].sha256, "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e");
+});
+test("Protected probe passed old failure point but remains incomplete with normal cancellation and cleanup", () => {
+  assert.equal(proof.publicAcceptance, false); assert.equal(proof.completedOriginalConversion, false);
+  assert.equal(proof.completeChromiumMemoryAcceptance, false); assert.equal(proof.speedupClaimed, false);
+  assert.equal(proof.progress.requestedRuns, 1);
+  assert.equal(proof.progress.failure.message, "Conversion deadline reached; no automatic restart");
+  assert.equal(proof.progress.splitFinalSamples[0].frames, 4342);
+  assert.equal(proof.progress.splitFinalSamples[0].completedPackets, 4341);
+  assert.equal(proof.progress.splitFinalSamples[0].closed, true);
+  assert.equal(proof.progress.splitFinalSamples[0].activePackets, 0);
+  assert.equal(proof.progress.incrementalPrivateMiBIncomplete, 230.22265625);
+  for (const key of ["mediaProfileRuntimeRemoved", "generatedDistRestored", "protectedFixtureUnchanged", "observerStopped", "sampledChromeRootStopped"])
+    assert.equal(proof.progress.cleanup[key], true, key);
+  assert.equal(proof.progress.cleanup.conversionQuiescence.terminalState, "cancelled");
+  assert.equal(proof.progress.source.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+});
+test("Compiled admission check and changed call target are byte-exact text evidence; inlined fallback is not overclaimed", () => {
+  assert.equal(proof.static.avMallocInstructionsUnchangedApartFromCallTarget, true);
+  assert.equal(proof.static.plainMallocCallVerified, true);
+  assert.equal(proof.static.upstreamFallbackVerified, false);
+  assert.match(proof.static.rejectedSeparateFunctionAssumption.failure, /Selected function names unavailable/);
+  assert.equal(proof.static.rejectedSeparateFunctionAssumption.cleanup.runtimeRemoved, true);
+  assert.equal(proof.static.analysisSlice.instantiated, false);
+  assert.equal(proof.static.analysisSlice.usedForMediaOrBrowser, false);
+  assert.equal(proof.static.analysisSlice.preservedOriginalBodyCount, 2);
+});

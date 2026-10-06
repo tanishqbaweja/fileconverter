@@ -5,6 +5,98 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Full protected-original three-run gate LIVE
+
+The unchanged scripts/mpeg2-split-single-navigation-memory.mjs is now running
+against work/mpeg2-split-pipeline-37479749443. Authoritative live terminal
+session53487, driver PID40096 (created2026-10-06T14:53:05Z), owned runtime
+work/mpeg2-split-single-nav-runtime-NrRnYQ. It reached actual run1 with a stable
+same-instance clean blank253.379MiB. Latest sampled progress was still running,
+not a completed output or acceptance. Poll the same session/PID; do not start
+another original conversion or production build/private stager while it owns
+the generated assets. Three full conversions, unchanged250MiB complete-process
+gate, independent output validation and recovery remain required. Each run has
+the existing six-hour deadline, no automatic restart, finally quiescence and
+restoration. Source remains exactly original1920x804/24fps, no sizing/quality
+change. This cycle's regression588/588unit, TypeScript and scoped lint PASS.
+Do not replace a live process with an inferred stopped state after a timeout.
+
+## 2026-10-06 — Alignment candidate passes exact goldens and advances original to4,342frames
+
+No-Docker run37479749443/job112324464161 completed SUCCESS at pushed
+decd483b394ea132e22b9c75148a472c966c3441. Native build522seconds is NOT
+conversion timing. Synthetic allocator dispatch6/6, unchanged companion encoder,
+actual fixed32+16MiB memories and hosted cleanup passed. Verified nine small
+tool/license/proof files remain in work/mpeg2-split-pipeline-37479749443;
+2,215,538-byte artifact11421351177 was deleted after download/hash verification,
+API inventory then0. Downloader scratch/zip/cache were finally removed.
+
+Static check initially failed because it expected a separately named
+dlposix_memalign. The optimized candidate inlines it inside the wrapper: that
+assumption is rejected, not an encoder failure. Corrected actual-body audit
+proves av_malloc calls the wrapper and the wrapper calls plain malloc. Its
+compiled av_malloc text matches the baseline EXACTLY after replacing only
+the two call-target names; admission, zero-size handling and return logic stay
+unchanged. Actual inline alignment/reservation/splitting body is retained;
+full formal upstream fallback equivalence remains explicitly UNPROVEN.
+Both temporary pinned-disassembler/cache runtimes were removed.
+
+Existing unchanged production-browser suite PASSED5/5 in24.5seconds, including
+three conversions, direct-write failure and cancellation. MPEG4->MPEG2:
+48frames/321692bytes/hashd366abbe.../SSIM0.992146. HEVC->MPEG2 OPFS/direct:
+96frames/652521bytes/hash6c057538.../SSIM0.985963. Full hashes exactly equal the
+baseline goldens. Exact copied decoded audio/priming, PNG art, Unicode tags,
+chapter/packet/frame timeline, every compatible container tag and full native
+independent decode gates are unchanged. Five empty after-test OPFS inventories,
+fixture/output deletion, server/runner shutdown, generated restoration and
+owned runtime cleanup passed. Small golden success is NOT original-HD acceptance.
+
+ONE changed full-original1920x804HEVC two-minute progress probe decoded4342
+frames and mux-accepted4341packets, beyond the prior243-frame allocation abort.
+It did not OOM; it ended at the intentional deadline, then normal production
+cancellation and cleanup. Last progress input48522817/output47659530bytes are
+PARTIAL, not a completed/independently validated original conversion. Pixel
+handoffs10053987840bytes were cumulative copies, never a10GB live buffer;
+peak single frame2315520bytes, no extra JS pixel buffer/queued frame/packet.
+Same clean blank269516800/native peak510922752bytes yields230.22265625MiB
+INCOMPLETE, not memory acceptance or cross-baseline savings. Fixed48MiB Wasm,
+64KiB native reads/writes, one pending operation and unchanged250MiB gate.
+Sourcepre/post SHA/size match; allfive cleanup flags, terminalcancelled, no OPFS
+lock error. Owned Chrome40176/server35300/observer29776 independently absent;
+inner and outer generated-driver runtimes absent, assets restored and partial
+converted output removed with owned profile. No upload/native conversion/Docker.
+
+Compact evidence:evidence/mpeg2-aligned-reuse-2026-10-06.json (32698bytes before
+remote-deletion annotation), build evidence:evidence/mpeg2-aligned-build-37479749443.json.
+Next required: the unchanged full three-run original-session gate, independent
+full-output fidelity, clean-session/stress/scaling/adverse/UI/public-route gates,
+and meaningful same-input/settings speed comparisons. Private staging still
+uses the public remux selector/phase as a test adapter; that is NOT publishable
+encode-route UI. No new public profile or completion claim.
+
+## 2026-10-06 — Alignment candidate build dispatched; next-stage probe guarded
+
+No-Docker hosted run37479749443/job112324464161 was dispatched exactly once
+against pushed headdecd483b394ea132e22b9c75148a472c966c3441. Current observed
+state was IN PROGRESS in the native build step, not then build/browser success.
+Its handle must be polled; never restart because a wait or observation expires.
+
+Prepared an identity-owned successful-artifact downloader which checks terminal
+success, exact head, artifact identity, all tool/source hashes and refuses old
+tool slots. Added actual-binary static call-path audit (not just symbol presence),
+using an uninstantiated byte-exact selected-body slice and temporary pinned Wabt
+with finally-cleaned repo-local cache. Prepared a ONE-attempt two-minute full
+protected-source progress driver by strictly pinned reversible derivation of
+the executed single-navigation driver. It retains original hash/disk checks,
+fixed heaps, unchanged quality/I/O, complete-process250MiB gate, quiescence,
+restoration and finally cleanup. Diagnostic-only prevents any acceptance claim;
+partial output/frames and incomplete memory cannot certify a completed route.
+These tools have NOT yet downloaded/disassembled/run a browser on this candidate.
+Local unit suite585/585 (including all four new guards), TypeScript and scoped
+zero-warning lint passed. No original video or converted copy was used in
+this preparation. Small browser golden/fidelity checks and actual call-path
+proof must precede the changed protected-source probe. No public engine changed.
+
 ## 2026-10-06 — Private alignment-reuse build candidate prepared, not accepted
 
 Added a separate, opt-in no-Docker build candidate without changing the frozen
