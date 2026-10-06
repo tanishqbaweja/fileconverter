@@ -78,6 +78,26 @@ const splitEncoderAdditions = [
     "          rm -rf -- \"$task_path\"\n",
 ];
 
+const splitPipelineAdditions = [
+  "          - within-mpeg2-split-pipeline\n",
+  "          elif test \"${{ inputs.core }}\" = within-mpeg2-split-pipeline; then\n" +
+    "            export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\n" +
+    "            bash media/ffmpeg/build-mpeg2-split-pipeline.sh\n",
+  "      - name: Retain private split production pipeline\n" +
+    "        if: success() && inputs.core == 'within-mpeg2-split-pipeline'\n" +
+    "        uses: actions/upload-artifact@v4\n        with:\n" +
+    "          name: private-mpeg2-split-pipeline-${{ github.run_id }}\n" +
+    "          path: work/mpeg2-split-pipeline-output/\n" +
+    "          if-no-files-found: error\n          retention-days: 1\n\n",
+  " && inputs.core != 'within-mpeg2-split-pipeline'",
+  "          task_path=\"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-build\"\n" +
+    "          test \"$task_path\" = \"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-build\" && ! test -L \"$task_path\"\n" +
+    "          rm -rf -- \"$task_path\"\n" +
+    "          task_path=\"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-output\"\n" +
+    "          test \"$task_path\" = \"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-output\" && ! test -L \"$task_path\"\n" +
+    "          rm -rf -- \"$task_path\"\n",
+];
+
 // Older compiled proofs predate two additional retained unit JSON files. Do
 // not refresh their hashes: reversing exactly those lines must recover every
 // byte of the workflow actually used. The later private allocator selector
@@ -87,6 +107,12 @@ export function provenSourceSha(file, bytes, expected) {
   if (file !== workflow || ![historicalSha, readerOnlyRetentionSha].includes(expected) || sha(bytes) === expected)
     return sha(bytes);
   let text = bytes.toString("utf8");
+  if (text.includes("within-mpeg2-split-pipeline")) {
+    for (const addition of splitPipelineAdditions) {
+      assert.equal(text.split(addition).length, 2, "Exactly one complete split production pipeline workflow addition");
+      text = text.replace(addition, "");
+    }
+  }
   if (text.includes("within-mpeg2-split-encoder")) {
     for (const addition of splitEncoderAdditions) {
       assert.equal(text.split(addition).length, 2, "Exactly one complete separate encoder workflow addition");

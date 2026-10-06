@@ -1,0 +1,23 @@
+import { createHash } from "node:crypto";
+import { readFile, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeMpeg2SplitKernel } from "./mpeg2-split-kernel.mjs";
+const directory = import.meta.dirname, root = path.resolve(directory, "../.."), output = path.resolve(process.argv[2] ?? "");
+if (output !== path.join(root, "work/mpeg2-split-pipeline-build/within_split_pipeline.c"))
+  throw new Error("Generated split wrapper must stay in its exact owned build slot");
+const sha = text => createHash("sha256").update(text).digest("hex");
+const source = await readFile(path.join(directory, "within_remux.c"), "utf8");
+if (sha(source) !== "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068") throw new Error("AVIO source changed");
+const marker = "static int supported_audio_artwork_codec(enum AVCodecID codec_id);";
+if (source.split(marker).length !== 2) throw new Error("AVIO boundary changed");
+let bridge = source.slice(0, source.indexOf(marker)).replace("#include <libswresample/swresample.h>\n", "");
+const reserve = "#define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)";
+if (bridge.split(reserve).length !== 2) throw new Error("Bounded AVIO reserve changed");
+bridge = bridge.replace(reserve, "#define WITHIN_AVIO_BUFFER_SIZE (64 * 1024)");
+const artworkStart = "static uint16_t artwork_read_be16(", artworkEnd = "static int bounded_audio_artwork_stream(const AVStream *stream) {";
+if (source.split(artworkStart).length !== 2 || source.split(artworkEnd).length !== 2) throw new Error("Artwork boundary changed");
+const artwork = source.slice(source.indexOf(artworkStart), source.indexOf(artworkEnd));
+const kernel = makeMpeg2SplitKernel(await readFile(path.join(directory, "mpeg2-candidate.c"), "utf8"));
+const generated = bridge + artwork + '#include "mpeg2-split-mux-bridge.h"\n' + kernel;
+await writeFile(output, generated, { flag: "wx" });
+process.stdout.write(`${sha(generated)}  ${output}\n`);

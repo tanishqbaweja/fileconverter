@@ -5,6 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Split production AVIO integration implemented (native build pending)
+
+Connected the separate encoder through synchronous same-worker handoffs to the
+original native decoder/mux loop. Exactly five checked/reversible substitutions
+recover every byte of the old private kernel; original CFR checks, user-selected
+settings, dimensions, native packet time rescaling/source-offset restoration,
+metadata/artwork/audio/chapter handling and actual production AVIO callbacks stay
+unchanged. Encoder lives16MiB, decoder/mux32MiB; both must be measured, not counted
+as one32MiB heap. Encoded bytes copy directly into one mux-owned native AVPacket,
+with zero padding and bounded side data, not an extra payload staging array.
+The original mux writes with backpressure before encoder packet release. No
+nested Asyncify call or native reentry is needed during this handoff.
+
+Synchronous JS owner preserves exact BigInt clocks, clears foreign pointers
+before native import, retains one packet until mux acknowledgement, distinguishes
+copied/released versus completed writes, rejects malformed transfers before
+writes, and closes native codec/JS references in finally including cancellation,
+bad descriptors and unknown release failures. Three executable mock-protocol
+units plus three kernel/source/workflow guards pass; five historical workflow
+guards still pass with byte-exact old hashes. An initial source guard matched an
+English comment containing 'await'; corrected the guard to inspect C/JS code
+without comments, no runtime contract change.
+
+New no-Docker pipeline build preserves pinned existing mux/HEVC cache patches,
+the broad seven-decoder set,64KiB AVIO and checked256KiB stacks, while disabling
+encoding in the decoder/mux module. It separately rebuilds the unchanged proven
+16MiB actual encoder. Native compilation, production-browser conversion,
+fidelity/adverse/output cleanup, aggregate telemetry and original-size250MiB
+repeat/scaling/speed gates remain to execute. Public assets/selector unchanged.
+
 ## 2026-10-06 — Actual separate encoder compiled and initialized; browser integration remains
 
 No-Docker run37442072537/job112197987211/026a736 SUCCESS:213s build/262s
