@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Renderer attribution TERMINAL; real idle UI control completed
+
+Session99905/driver36364 is TERMINAL, not still live. The original-source diagnostic
+hit253.60546875MiB at native peak502648832 minus LOWER settled blank236724224 bytes;
+all ten processes, including new tracing service35588, counted. Capture finalized
+before normal cancellation; conversion continued during those bounded dump/trace
+operations. The retained FINAL conversion-phase peak is HIGHER:508932096 bytes,
+(508932096-236724224)/1048576 =259.59765625MiB. Do not quote only the trigger peak
+as full conversion peak or compare instrumented timing/memory to uninstrumented
+277.97265625MiB as a saving. Three light dumps/825events/3157576serialized bytes,
+327realm samples/no eviction/trace loss/overflow. Actual renderer31872 PID/CIM join
+and main-thread Blink allocator17039440->60162128 bytes measured; worker JS sampled
+peak2686672 bytes. Object/call-site and cause of the prior uninstrumented transient
+remain UNKNOWN. Original1181 decoded/mux packets are PARTIAL, not independently
+validated output. Allfive cleanup/source pre-post flags pass; root29296/server40132/
+observer34964/driver36364 and both owned runtimes absent, assets restored/partial
+copy removed. Independently rehashed protected original remains exact.
+Compact:evidence/mpeg2-renderer-attribution-2026-10-06.json includes trigger AND
+final phase peaks, full allocator rows, realm peaks, limitations and source pins.
+
+ONE real production UI-only control then selected the original file normally and
+changed format controls60times, NEVER clicked Convert or synthesized progress.
+Every observed job state idle, conversions0/outputcopies0. DOM6723->8343nodes,
+listeners192->372, documents6unchanged; page embedder heap16635776->28386208 bytes.
+Native sampling512KiB interval succeeded but only1..3live samples/phase and all
+stacks unresolved Windows addresses. This tool alone is insufficient to identify
+Blink object/call-site; do not repeat the full original just to collect those same
+unresolved sparse addresses. DOM growth may include uncollected garbage and is
+not proof of a retained leak or the earlier original-conversion cause. No forced
+GC/new Chrome flags/fulltree/speed acceptance. Source exact pre/post SHA, sampler/
+Chrome/server/runtime cleanup, no forbidden requests. Session16026 TERMINAL.
+Compact:evidence/ui-native-allocation-2026-10-06.json. No files converted or left
+outside approved repository directories; only compact evidence retained.
+
+Next concrete options: capture DOM plus JS allocation stacks during actual progress,
+or benchmark static-format-matrix render reuse against identical UI before an
+original retest. Source shows405static registry cards rebuilt on every progress/
+heap render; avoiding that work is an optimization candidate, NOT a proven memory
+fix or speed win yet. No native rebuild/unchanged original retry/public promotion.
+Full original specification/repeats/validation/scaling/fresh codecs/speed remain open.
+Regression606/606unit tests, TypeScript, scopedzero-warninglint and diff checks
+PASS. UI-control roots26096/server37180/runtime independently absent; all six
+restored generated asset hashes equal published files and nine private additions
+are absent. No active conversion/server/stager remains from these sessions.
+
 ## 2026-10-06 — Bounded renderer-attribution prerequisite passed; changed original diagnostic live
 
 Blank-only prerequisite completed with identical original Chrome arguments,

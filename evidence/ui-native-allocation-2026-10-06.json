@@ -1,0 +1,1275 @@
+{
+  "recordedAt": "2026-10-06T21:20:54.264Z",
+  "status": "completed-diagnostic",
+  "scope": "Actual production UI source inspection and60format-selection changes; native allocation/DOM control only",
+  "sourcePins": {
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "app/converter/ConverterApp.tsx": "2dd872f22cc95b3dc5ac66f70ae56ccf4d6da62da165ff4c6e9ce42251c4cf08",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/freeze-ui-native-allocation.mjs": "953836d0251385961f9e83d32abae130371601c493d9ff938e15666a4c62778e"
+  },
+  "browserVersion": "154.0.8037.98",
+  "originalSourceBytes": 2958573265,
+  "originalSourceSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "nativeSamplingPerturbsMemory": true,
+  "rows": [
+    {
+      "phase": "blank-ui-control-only",
+      "timestamp": "2026-10-06T21:20:26.569Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 38785024,
+          "rssBytes": 124928000
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 93523968,
+          "rssBytes": 117383168
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 12931072,
+          "rssBytes": 39129088
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8032256,
+          "rssBytes": 17563648
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 42967040,
+          "rssBytes": 84467712
+        },
+        {
+          "pid": 2532,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6413040Z",
+          "privateBytes": 17436672,
+          "rssBytes": 45821952
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 15024128,
+          "rssBytes": 31473664
+        },
+        {
+          "pid": 28560,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6840800Z",
+          "privateBytes": 18022400,
+          "rssBytes": 46505984
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20467712,
+          "rssBytes": 43634688
+        }
+      ],
+      "privateBytes": 269844480,
+      "rssBytes": 561336320,
+      "error": null,
+      "dom": {
+        "documents": 2,
+        "nodes": 8,
+        "jsEventListeners": 0
+      },
+      "heap": {
+        "usedSize": 666856,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 1384432,
+        "backingStorageSize": 30
+      },
+      "selectedProfileId": null,
+      "jobState": null
+    },
+    {
+      "phase": "source-inspected-before-native-sampling",
+      "timestamp": "2026-10-06T21:20:29.366Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 46596096,
+          "rssBytes": 142123008
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 101203968,
+          "rssBytes": 135462912
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14688256,
+          "rssBytes": 41709568
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17846272
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 42971136,
+          "rssBytes": 84615168
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 64577536,
+          "rssBytes": 120791040
+        },
+        {
+          "pid": 28560,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6840800Z",
+          "privateBytes": 18026496,
+          "rssBytes": 46583808
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20467712,
+          "rssBytes": 43683840
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17825792,
+          "rssBytes": 34213888
+        }
+      ],
+      "privateBytes": 337051648,
+      "rssBytes": 677457920,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 6687,
+        "jsEventListeners": 189
+      },
+      "heap": {
+        "usedSize": 5864760,
+        "totalSize": 10338304,
+        "embedderHeapUsedSize": 16635776,
+        "backingStorageSize": 674429
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    },
+    {
+      "phase": "native-sampling-start",
+      "timestamp": "2026-10-06T21:20:29.845Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 46739456,
+          "rssBytes": 142778368
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 117993472,
+          "rssBytes": 156250112
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14688256,
+          "rssBytes": 41717760
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17846272
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 42971136,
+          "rssBytes": 84615168
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 64897024,
+          "rssBytes": 121966592
+        },
+        {
+          "pid": 28560,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6840800Z",
+          "privateBytes": 18026496,
+          "rssBytes": 46583808
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20467712,
+          "rssBytes": 43683840
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17825792,
+          "rssBytes": 34213888
+        }
+      ],
+      "privateBytes": 354304000,
+      "rssBytes": 700084224,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 6723,
+        "jsEventListeners": 192
+      },
+      "heap": {
+        "usedSize": 6406284,
+        "totalSize": 10506240,
+        "embedderHeapUsedSize": 16635776,
+        "backingStorageSize": 674714
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-20",
+      "timestamp": "2026-10-06T21:20:35.693Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 46866432,
+          "rssBytes": 143142912
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 119230464,
+          "rssBytes": 157511680
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14737408,
+          "rssBytes": 41783296
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17846272
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 42975232,
+          "rssBytes": 84635648
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 76390400,
+          "rssBytes": 133844992
+        },
+        {
+          "pid": 28560,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6840800Z",
+          "privateBytes": 18026496,
+          "rssBytes": 46596096
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20471808,
+          "rssBytes": 43692032
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17825792,
+          "rssBytes": 34222080
+        }
+      ],
+      "privateBytes": 367218688,
+      "rssBytes": 713703424,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 7263,
+        "jsEventListeners": 252
+      },
+      "heap": {
+        "usedSize": 8014512,
+        "totalSize": 14962688,
+        "embedderHeapUsedSize": 20362184,
+        "backingStorageSize": 674783
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-40",
+      "timestamp": "2026-10-06T21:20:41.444Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 47046656,
+          "rssBytes": 143257600
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10452992
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 116834304,
+          "rssBytes": 155729920
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14737408,
+          "rssBytes": 41820160
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17932288
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 41480192,
+          "rssBytes": 83271680
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 78536704,
+          "rssBytes": 136376320
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20164608,
+          "rssBytes": 43388928
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17489920,
+          "rssBytes": 33890304
+        }
+      ],
+      "privateBytes": 346984448,
+      "rssBytes": 666120192,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 7803,
+        "jsEventListeners": 312
+      },
+      "heap": {
+        "usedSize": 8680680,
+        "totalSize": 15486976,
+        "embedderHeapUsedSize": 24450688,
+        "backingStorageSize": 674783
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-60",
+      "timestamp": "2026-10-06T21:20:47.232Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 47046656,
+          "rssBytes": 143327232
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10452992
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 116826112,
+          "rssBytes": 155729920
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14737408,
+          "rssBytes": 41820160
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17932288
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 41480192,
+          "rssBytes": 83271680
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 83025920,
+          "rssBytes": 141144064
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20164608,
+          "rssBytes": 43388928
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17489920,
+          "rssBytes": 33890304
+        }
+      ],
+      "privateBytes": 351465472,
+      "rssBytes": 670957568,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 8343,
+        "jsEventListeners": 372
+      },
+      "heap": {
+        "usedSize": 8695356,
+        "totalSize": 15486976,
+        "embedderHeapUsedSize": 28386208,
+        "backingStorageSize": 674783
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-control-settled-3s",
+      "timestamp": "2026-10-06T21:20:50.784Z",
+      "processes": [
+        {
+          "pid": 26096,
+          "parentPid": 36440,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3052530Z",
+          "privateBytes": 47050752,
+          "rssBytes": 143433728
+        },
+        {
+          "pid": 35176,
+          "parentPid": 26096,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.3288560Z",
+          "privateBytes": 2654208,
+          "rssBytes": 10452992
+        },
+        {
+          "pid": 9676,
+          "parentPid": 26096,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.5259060Z",
+          "privateBytes": 116822016,
+          "rssBytes": 155680768
+        },
+        {
+          "pid": 38936,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-06T21:20:25.5302940Z",
+          "privateBytes": 14737408,
+          "rssBytes": 41820160
+        },
+        {
+          "pid": 36368,
+          "parentPid": 26096,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-06T21:20:25.5586400Z",
+          "privateBytes": 8040448,
+          "rssBytes": 17932288
+        },
+        {
+          "pid": 26324,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6169300Z",
+          "privateBytes": 41480192,
+          "rssBytes": 83271680
+        },
+        {
+          "pid": 33844,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.6796410Z",
+          "privateBytes": 83030016,
+          "rssBytes": 141099008
+        },
+        {
+          "pid": 29220,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:25.8947360Z",
+          "privateBytes": 20164608,
+          "rssBytes": 43388928
+        },
+        {
+          "pid": 24784,
+          "parentPid": 26096,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:26.6054510Z",
+          "privateBytes": 17489920,
+          "rssBytes": 33890304
+        },
+        {
+          "pid": 44796,
+          "parentPid": 26096,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:49.0202420Z",
+          "privateBytes": 3325952,
+          "rssBytes": 16293888
+        },
+        {
+          "pid": 40668,
+          "parentPid": 44796,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:49.0465780Z",
+          "privateBytes": 3190784,
+          "rssBytes": 15478784
+        },
+        {
+          "pid": 30836,
+          "parentPid": 44796,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:49.0712320Z",
+          "privateBytes": 3796992,
+          "rssBytes": 19214336
+        },
+        {
+          "pid": 44760,
+          "parentPid": 30836,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-06T21:20:49.0921160Z",
+          "privateBytes": 3112960,
+          "rssBytes": 15409152
+        }
+      ],
+      "privateBytes": 364896256,
+      "rssBytes": 737366016,
+      "error": null,
+      "dom": {
+        "documents": 6,
+        "nodes": 8343,
+        "jsEventListeners": 372
+      },
+      "heap": {
+        "usedSize": 8732508,
+        "totalSize": 15486976,
+        "embedderHeapUsedSize": 28386208,
+        "backingStorageSize": 674783
+      },
+      "selectedProfileId": "mkv-to-mp4",
+      "jobState": "idle"
+    }
+  ],
+  "profiles": [
+    {
+      "phase": "native-sampling-start",
+      "profile": {
+        "samples": [
+          {
+            "size": 40,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdcf7574f5",
+              "0x7ffdceb20d8d",
+              "0x7ffdceecc036",
+              "0x7ffdceecb524",
+              "0x7ffdced00e58",
+              "0x7ffdced00980",
+              "0x7ffdcf800248",
+              "0x7ffdceea8682",
+              "0x7ffdce1cbc58",
+              "0x7ffdce1c9750",
+              "0x7ffdce1c62df",
+              "0x7ffdce4725f5",
+              "0x7ffdcf9c6adb",
+              "0x7ffdcf51bef6",
+              "0x7ffdce58aced",
+              "0x7ffdce588c48",
+              "0x7ffdce61acee",
+              "0x7ffdce4938ba",
+              "0x7ffdce492e2d",
+              "0x7ffdce14fe63",
+              "0x7ffdce146a32",
+              "0x7ffdca6308c3",
+              "0x7ffdcf5a50fe",
+              "0x7ffdcb2c496f",
+              "0x7ffdcb2c3f04",
+              "0x7ffdcadd5d9f",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          }
+        ],
+        "modules": [
+          {
+            "name": "chrome.dll.pdb",
+            "uuid": "01EAF91EB3FFBDEB4C4C44205044422E1",
+            "baseAddress": "0x7ffdca5a0000",
+            "size": 305266688
+          },
+          {
+            "name": "kernel32.pdb",
+            "uuid": "EB96AE1E1A7EFE44176774C15ED1FEB01",
+            "baseAddress": "0x7ffeeec40000",
+            "size": 831488
+          },
+          {
+            "name": "ntdll.pdb",
+            "uuid": "CDE33ED1E32C78E3ECA6171C84A5493B1",
+            "baseAddress": "0x7ffeef560000",
+            "size": 2519040
+          }
+        ]
+      }
+    },
+    {
+      "phase": "ui-selections-20",
+      "profile": {
+        "samples": [
+          {
+            "size": 18360,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdcebd95b1",
+              "0x7ffdcebcd89a",
+              "0x7ffdcebcada4",
+              "0x7ffdcebc71d2",
+              "0x7ffdca9343dd",
+              "0x7ffdcebad4e8",
+              "0x7ffdca92fdf5",
+              "0x7ffdcaffa52c",
+              "0x7ffdcaff9e59",
+              "0x7ffdcaa4a787",
+              "0x7ffdcaf6627c",
+              "0x7ffdcaf64fac",
+              "0x7ffdcaf64cdf",
+              "0x7ffdce2bbf6a",
+              "0x7ffdcf2da71c",
+              "0x7ffdcf5a50fe",
+              "0x7ffdcb2c496f",
+              "0x7ffdcae99f22",
+              "0x7ffdcae7849a",
+              "0x7ffdcae7671e",
+              "0x7ffdcae75ee3",
+              "0x7ffdcae7455e",
+              "0x7ff6c5c8efe5",
+              "0x7ff6c5c8cba2",
+              "0x7ff6c5e73d29",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          },
+          {
+            "size": 136,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcecb3da7",
+              "0x7ffdceca0492",
+              "0x7ffdceca7f46",
+              "0x7ffdcec97b30",
+              "0x7ffdceca75a6",
+              "0x7ffdceca3b59",
+              "0x7ffdcec9c0d9",
+              "0x7ffdceca33ca",
+              "0x7ffdcec9c0d9",
+              "0x7ffdceca33ca",
+              "0x7ffdcec9c0d9",
+              "0x7ffdceca33ca",
+              "0x7ffdcec9c0d9",
+              "0x7ffdceca33ca",
+              "0x7ffdcec9c0d9",
+              "0x7ffdcec973fa",
+              "0x7ffdcec90c43",
+              "0x7ffdcec8fe5d",
+              "0x7ffdca93744a",
+              "0x7ffdca935e08",
+              "0x7ffdca933b4b",
+              "0x7ffdcebad4e8",
+              "0x7ffdca92fdf5",
+              "0x7ffdcaffa52c",
+              "0x7ffdcaff9e59",
+              "0x7ffdcaa4a787",
+              "0x7ffdcaf6627c",
+              "0x7ffdcaf64fac",
+              "0x7ffdcaf64cdf",
+              "0x7ffdce2bbf6a",
+              "0x7ffdcf2da71c",
+              "0x7ffdcf5a50fe",
+              "0x7ffdcb2c496f",
+              "0x7ffdcae99f22",
+              "0x7ffdcae7849a",
+              "0x7ffdcae7671e",
+              "0x7ffdcae75ee3",
+              "0x7ffdcae7455e",
+              "0x7ff6c5c8efe5",
+              "0x7ff6c5c8cba2",
+              "0x7ff6c5e73d29",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          },
+          {
+            "size": 56,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdced3c5f4",
+              "0x7ffdced39ea4",
+              "0x7ffdced398dc",
+              "0x7ffdced37cd2",
+              "0x7ffdcfcf7c04",
+              "0x7ffdce08bce1",
+              "0x7ffdce08a2dc",
+              "0x7ffdce0884f7",
+              "0x7ffdca61cb38",
+              "0x7ffdcadd5d9f",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          }
+        ],
+        "modules": [
+          {
+            "name": "chrome.exe.pdb",
+            "uuid": "874730B7CC29722C4C4C44205044422E1",
+            "baseAddress": "0x7ff6c5c60000",
+            "size": 4587520
+          },
+          {
+            "name": "chrome.dll.pdb",
+            "uuid": "01EAF91EB3FFBDEB4C4C44205044422E1",
+            "baseAddress": "0x7ffdca5a0000",
+            "size": 305266688
+          },
+          {
+            "name": "kernel32.pdb",
+            "uuid": "EB96AE1E1A7EFE44176774C15ED1FEB01",
+            "baseAddress": "0x7ffeeec40000",
+            "size": 831488
+          },
+          {
+            "name": "ntdll.pdb",
+            "uuid": "CDE33ED1E32C78E3ECA6171C84A5493B1",
+            "baseAddress": "0x7ffeef560000",
+            "size": 2519040
+          }
+        ]
+      }
+    },
+    {
+      "phase": "ui-selections-40",
+      "profile": {
+        "samples": [
+          {
+            "size": 56,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdced3c5f4",
+              "0x7ffdced39ea4",
+              "0x7ffdced398dc",
+              "0x7ffdced37cd2",
+              "0x7ffdcfcf7c04",
+              "0x7ffdce08bce1",
+              "0x7ffdce08a2dc",
+              "0x7ffdce0884f7",
+              "0x7ffdca61cb38",
+              "0x7ffdcadd5d9f",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          }
+        ],
+        "modules": [
+          {
+            "name": "chrome.dll.pdb",
+            "uuid": "01EAF91EB3FFBDEB4C4C44205044422E1",
+            "baseAddress": "0x7ffdca5a0000",
+            "size": 305266688
+          },
+          {
+            "name": "kernel32.pdb",
+            "uuid": "EB96AE1E1A7EFE44176774C15ED1FEB01",
+            "baseAddress": "0x7ffeeec40000",
+            "size": 831488
+          },
+          {
+            "name": "ntdll.pdb",
+            "uuid": "CDE33ED1E32C78E3ECA6171C84A5493B1",
+            "baseAddress": "0x7ffeef560000",
+            "size": 2519040
+          }
+        ]
+      }
+    },
+    {
+      "phase": "ui-selections-60",
+      "profile": {
+        "samples": [
+          {
+            "size": 56,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdced3c5f4",
+              "0x7ffdced39ea4",
+              "0x7ffdced398dc",
+              "0x7ffdced37cd2",
+              "0x7ffdcfcf7c04",
+              "0x7ffdce08bce1",
+              "0x7ffdce08a2dc",
+              "0x7ffdce0884f7",
+              "0x7ffdca61cb38",
+              "0x7ffdcadd5d9f",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          }
+        ],
+        "modules": [
+          {
+            "name": "chrome.dll.pdb",
+            "uuid": "01EAF91EB3FFBDEB4C4C44205044422E1",
+            "baseAddress": "0x7ffdca5a0000",
+            "size": 305266688
+          },
+          {
+            "name": "kernel32.pdb",
+            "uuid": "EB96AE1E1A7EFE44176774C15ED1FEB01",
+            "baseAddress": "0x7ffeeec40000",
+            "size": 831488
+          },
+          {
+            "name": "ntdll.pdb",
+            "uuid": "CDE33ED1E32C78E3ECA6171C84A5493B1",
+            "baseAddress": "0x7ffeef560000",
+            "size": 2519040
+          }
+        ]
+      }
+    },
+    {
+      "phase": "ui-control-settled-3s",
+      "profile": {
+        "samples": [
+          {
+            "size": 56,
+            "total": 524288,
+            "stack": [
+              "0x7ffdd4ca791a",
+              "0x7ffdcf298f3a",
+              "0x7ffdcfd3276e",
+              "0x7ffdced3c5f4",
+              "0x7ffdced39ea4",
+              "0x7ffdced398dc",
+              "0x7ffdced37cd2",
+              "0x7ffdcfcf7c04",
+              "0x7ffdce08bce1",
+              "0x7ffdce08a2dc",
+              "0x7ffdce0884f7",
+              "0x7ffdca61cb38",
+              "0x7ffdcadd5d9f",
+              "0x7ffeeec6cdf7",
+              "0x7ffeef5dee4c"
+            ]
+          }
+        ],
+        "modules": [
+          {
+            "name": "chrome.dll.pdb",
+            "uuid": "01EAF91EB3FFBDEB4C4C44205044422E1",
+            "baseAddress": "0x7ffdca5a0000",
+            "size": 305266688
+          },
+          {
+            "name": "kernel32.pdb",
+            "uuid": "EB96AE1E1A7EFE44176774C15ED1FEB01",
+            "baseAddress": "0x7ffeeec40000",
+            "size": 831488
+          },
+          {
+            "name": "ntdll.pdb",
+            "uuid": "CDE33ED1E32C78E3ECA6171C84A5493B1",
+            "baseAddress": "0x7ffeef560000",
+            "size": 2519040
+          }
+        ]
+      }
+    }
+  ],
+  "forbidden": [],
+  "failure": null,
+  "cleanupErrors": [],
+  "cleanup": {
+    "samplingStopped": true,
+    "chromeStopped": true,
+    "serverStopped": true,
+    "runtimeRemoved": true,
+    "protectedFixtureUnchanged": true
+  },
+  "ownedPids": {
+    "chrome": 26096,
+    "server": 37180
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\ui-native-allocation-ow4TkR",
+  "report": {
+    "path": "output/playwright/2026-10-06T21-20-21-338Z-ui-native-allocation.json",
+    "bytes": 36399,
+    "sha256": "42e77b80f097a92bb6771c4a3748b48955ffd35adcb5033ea23e553c80b72bb6"
+  },
+  "observedDeltas": {
+    "nodes": 1620,
+    "eventListeners": 180,
+    "documents": 0,
+    "pageEmbedderHeapBytes": 11750432
+  },
+  "nativeStackSymbolsResolved": false,
+  "originalConversionAllocationCauseProven": false,
+  "causalFixProven": false,
+  "forcedGcUsed": false,
+  "conversionOutputsCreated": 0,
+  "limitations": [
+    "DOM counters include objects not yet collected; growth is not by itself a retained leak.",
+    "The1-to3live native samples per phase have unresolved Windows addresses; they do not identify the Blink allocation object/call-site.",
+    "Changing format controls is not conversion progress. This control does not prove the source of the prior original-conversion peak.",
+    "No full-tree250MiB or conversion-speed certification. Only phase snapshots; no exact A/B timing or retained alternate-format identity."
+  ],
+  "next": "Capture DOM/JS allocation stacks during real conversion or benchmark isolated static-UI render reuse; do not retry unchanged original or apply an unproven codec/heap-quality fix."
+}
