@@ -5,6 +5,77 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Burst diagnostic terminal; brief heap-summary omission corrected and browser-tested
+
+This supersedes the LIVE session40351 notes below. The same owning driver ended
+exit1; no restart. Full native peak540,237,824 minus stable same-instance blank
+240,594,944 = **285.76171875MiB**, rejected above250MiB. All TEN peak processes
+remain counted, including unknown native types. Prospective settlement310,139ms;
+chosen blank is LOWER than early244,756,480, with no flag/process/quality/heap
+changes. Instrumentation perturbs memory/time: do NOT compare this as a saving,
+regression magnitude or causal explanation of the earlier uninstrumented260.527.
+
+Four retained adjacent bursts include two blank-startup events and two conversion
+events; ZERO evictions/skipped/busy requests. Conversion peak3573 at23:19:26.0326609
+shows renderer24872 alone increasing58,884,096bytes, other private-byte values
+unchanged. Exact GUID0x18 dump requested94ms after acquisition but finished4070ms
+after acquisition, NOT a contemporaneous peak snapshot. First GUID0x12 request/
+completion109/237ms. Three light dumps/956trace events/3,204,756serialized bytes/
+547realm rows/no loss-overflow. Later main Blink provider size64,356,432 versus
+pre-conversion16,908,288 is a provider observation, not an object/callsite or proof
+of the earlier uninstrumented transient. Native/trace birth/PID/GUID joins and
+latency caveats are retained in evidence/mpeg2-burst-attribution-2026-10-07.json.
+
+Actual1356fresh decoded/re-encoded frames/1356completed packets are PARTIAL,
+not a completed or independently validated original. Pre-cancel input23,750,209/
+output16,650,904 bytes, fixed48MiB Wasm/64KiB reads-writes-peakqueue/one pending
+remain bounded. Native frame/packet ownership closed with no retained queue.
+Inherited private "Lossless remux" phase text is again explicitly disclaimed.
+
+Normal cancellation, partial-media/profile/generated-driver removal and six
+published asset restorations/nine private-addition absences passed. The driver's
+IMMEDIATE root-absence assertion failed (CIM count1); its false flag and error
+are preserved, not rewritten. Later independent PID/birth inspection confirmed
+ALL23 native identities plus owning driver/helper roots absent and both owned
+runtime directories gone. The exact reason for the initial count is not proven.
+Independent full source post-hash again matches2,958,573,265 bytes/31f36695...34b9db34.
+Current cleanup is confirmed separately from the historical failed root check.
+No leftover converted copy was kept; raw2,725,789-byte diagnostic is a bounded
+report, not media. Final native peak includes trace finalization, not just trigger.
+
+Concrete diagnostic gap found: historical memory-infra-attribution.mjs intentionally
+filters out blink_gc/main/heap and worker heap children. Chromium's provider source
+distinguishes resident/committed/allocated-object/pooled fields there. New
+complete-blink-heap-summary.mjs preserves those bounded child records while retaining
+the exact global GUID/interval joins, null-unavailable policy and no allocator sums.
+Nondeterministic allocated-object bytes may include garbage; they are not all live
+objects. The immutable old parser/helper/proofs were NOT altered or repinned.
+
+Source-pinned, strictly reversible complete-blink-attribution-recipe.mjs changes
+ONLY the tracing helper's summary import. Actual Chrome154.0.8037.98 short blank
+control passed at23:29UTC, with original flags/40MiB SYNTHETIC allocation and
+unchanged light dump mode/4MiB trace buffer/16MiB serialized cap/no forced GC.
+It actually retained four main heap rows across two renderer identities/two
+dumps: resident917,504/allocated870,880 and resident1,441,792/allocated1,384,432,
+committed/pooled fields available. The separate40MiB allocation did not become a
+fictitious Blink heap total. All seven cleanup flags plus outer generated-runtime
+removal passed; no original/user file/converter loaded, zero conversions/copies.
+Compact evidence/complete-blink-heap-control-2026-10-07.json archives EXACT generated
+sources/hashes and pins the actually used summary/recipe. HEAD provider source is
+an explanatory reference, NOT a verified match to this installed build; runtime
+field availability is actually measured. All13focused join/parser/proof tests and
+scoped lint passed. Next: use these complete heap fields to distinguish capacity/
+allocated-object behavior in a justified changed diagnostic, or repair the precise
+cleanup observation gap; do NOT repeat an unchanged full conversion or sparse
+unresolved-address sample. Original cause/fidelity/full250MiB/three runs/10GB/new
+profiles and the full project remain UNPROVEN; nothing newly promoted publicly.
+
+Final regression for this terminal/heap-summary cycle:653/653 unit tests passed
+in4.74s; all13 focused tests and scoped zero-warning lint/diff checks passed.
+No production App/codec/worker/registry change or unchanged full retry. Both
+short control profiles and the original partial output were finally removed;
+only bounded reports/compact proof and reusable tool assets remain for this cycle.
+
 ## 2026-10-07 — Native burst measurement prerequisite passed; hosted CI terminal green
 
 LIVE execution checkpoint23:13UTC supersedes the prepared/pending note below:
