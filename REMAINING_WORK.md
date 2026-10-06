@@ -5,6 +5,61 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Failure-time free space and aligned-reservation fragmentation measured
+
+ONE changed, failure-only original-source browser run inspected allocator FREE
+HEADERS on the exact unchanged32MiB decoder, not decoded pixels or native
+allocator APIs. Static analysis first identified the pinned Emscripten6.0.4
+DLmalloc root1786392 and corroborated maps/dv/top/bin/footprint/mutex/segment
+addresses against byte-exact original function bodies. The whole-module text
+attempt exceeded its64MiB cap and was rejected/cleaned. The corrected static
+analysis uses a541841-byte NONEXECUTED derivative:3 selected function bodies
+remain byte-identical with original indices/types/names,4607 unrelated bodies
+become unreachable solely for disassembly. No derivative entered Chromium,
+media conversion or publication. Temporary pinned Wabt1.0.39/npm cache removed
+in identity-checked finally; no source video read or Wasm function executed by
+the static audit. Compact proof:evidence/split-dlmalloc-static-layout-2026-10-06.json.
+
+At the original failure after243 genuine1920x804 HEVC -> MPEG2 handoffs/mux-
+accepted packets, the COMPLETE free-header traversal measured241 free chunks,
+8940352 aggregate free CHUNK bytes, largest1597472, top2664, designated victim232.
+Dynamic allocator footprint30000128/segmentbase2182144, additional1372160bytes
+above the segment. Traversal reads889 header words only, no heap copy/payload,
+native call, lock, allocator mutation, codec/reference release or debugger
+tier-down. Hard caps4096chunks/32768words/64tree-frontier entries; bitmap/index,
+size/state, backward links, parent links, cycles and single-segment checks fail
+closed with NULL unavailable state. Scalar output <=8192chars and <=2 events,
+original abort handling preserved even when inspection/emission fails.
+
+The prior actual av_buffer_allocz/av_malloc size1597463 and SAME compiled
+dlposix_memalign body prove plain padded chunk1597472; aligned temporary malloc
+request1597500 (also captured in prior real native local), requiring1597504
+chunk bytes. Thus the aligned reservation is32bytes larger than every existing
+free chunk despite8.94MB aggregate free space. Failed fixed-heap MORECORE cannot
+claim the extra contiguous allocation. Alignment-related fragmentation at abort
+is now evidenced; arbitrary malloc alignment, successful reuse, complete codec
+fit, live-frame ownership/count and idle-plane-cache bytes remain unproven.
+Do not free live reference pictures, return misaligned pointers, lower quality,
+raise heaps, or retry unchanged. Next separate pinned private native candidate:
+alignment-preserving reuse, retaining upstream fallback and all codec/I/O gates.
+
+Diagnostic blank273862656/complete native peak482115584bytes(all descendants),
+198.60546875MiB INCOMPLETE is not completed250MiB acceptance or a speed/memory
+comparison with a different blank. Decoder32+encoder16MiB,256KiB native stacks,
+codec options/quality, native core bytes, original source and250MiB fail-fast
+gate unchanged. Source pre/post size+SHA and independent final verification
+passed; allfive cleanup flags/no OPFSlock error, original intact, owned browser/
+server/observer PIDs/profile/runtime absent, six assets restored and all12 private
+assets absent. Partial converted copy deleted. Compact measured report,
+compiled-formula corroboration and source pins:
+evidence/split-free-headers-measured-2026-10-06.json.
+
+577/577 unit tests, TypeScript and scoped zero-warning ESLint pass. Public
+registry/application/engines unchanged; no unchanged production build or costly
+acceptance suite repeated. Obsolete pre-lint static-disassembly report removed
+after compact final evidence; rejected whole-text report retained. No Docker,
+native conversion, public-route promotion or goal-completion claim.
+
 ## 2026-10-06 — Actual original failed plane-buffer request measured
 
 ONE changed original-source diagnostic now measures the native allocation size,

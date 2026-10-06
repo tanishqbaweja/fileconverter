@@ -1,0 +1,324 @@
+{
+  "recordedAt": "2026-10-06T14:09:14.095Z",
+  "scope": "Static exact-binary allocator layout audit only. No original/media/codec/native conversion/Wasm instantiation.",
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFileUsed": false,
+  "conversionsPerformed": 0,
+  "wasmFunctionsExecuted": 0,
+  "allocatorFreeSpaceMeasured": false,
+  "liveFramesMeasured": false,
+  "report": {
+    "path": "output/playwright/2026-10-06T14-04-50-737Z-split-dlmalloc-static.json",
+    "bytes": 138199,
+    "sha256": "c0ff089c6cfa8e392f9497bb63866a9410bdb99188e58e71600246779f7a8274"
+  },
+  "rejectedWholeModuleText": {
+    "path": "output/playwright/2026-10-06T14-02-03-013Z-split-dlmalloc-static.json",
+    "bytes": 622,
+    "sha256": "09f48504b2edd3668c7dc522c3b1400617647a0351deb2e99b1ec6fc87bd9020",
+    "failure": "AssertionError [ERR_ASSERTION]: Static disassembly cap",
+    "executedSourceSha256": "ae86424f8d2468a96e4c46a835296569f9baf6ebcf3483a30565ddc16574626a",
+    "cleanup": {
+      "runtimeRemoved": true
+    }
+  },
+  "actualBinary": {
+    "path": "work/mpeg2-split-pipeline-37444860342/within-mpeg2-split.wasm",
+    "bytes": 6903583,
+    "sha256": "7b8a42b60efc439f0ceca045f4caaabfd4b0ebf0706397b6011cceedada4980c"
+  },
+  "disassembler": {
+    "version": "1.0.39",
+    "registryIntegrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+    "entrySha256": "cecf06ab5c65c3b7c05bafe601bbba61a45e4939889c5c51351e8817ac06f48d"
+  },
+  "analysisOnlySlice": {
+    "bytes": 541841,
+    "sha256": "03013879fff6da1784e3674f818838a291059be3623f04f0c6900a255702d1ee",
+    "preservedOriginalBodyCount": 3,
+    "unreachableReplacementCount": 4607,
+    "instantiated": false,
+    "selectedBodyBytesUnchanged": true,
+    "originalIndicesTypesAndNamesPreserved": true,
+    "usedForMediaOrBrowser": false
+  },
+  "allocatorRootAddress": 1786392,
+  "allocatorLayoutReferences": {
+    "smallmap": {
+      "absoluteAddress": 1786392,
+      "relativeOffset": 0,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.get $l1",
+        "                  if $I14",
+        "                    i32.const 1786392",
+        "                    i32.load",
+        "                    local.tee $l3",
+        "                    i32.const 16",
+        "                    local.get $p0"
+      ]
+    },
+    "treemap": {
+      "absoluteAddress": 1786396,
+      "relativeOffset": 4,
+      "referencedInActualFunction": true,
+      "context": [
+        "                      br $B9",
+        "                    end",
+        "                    i32.const 1786396",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.eqz",
+        "                    br_if $B13"
+      ]
+    },
+    "dvsize": {
+      "absoluteAddress": 1786400,
+      "relativeOffset": 8,
+      "referencedInActualFunction": true,
+      "context": [
+        "                    end",
+        "                    local.get $l6",
+        "                    i32.const 1786400",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.le_u",
+        "                    br_if $B13"
+      ]
+    },
+    "topsize": {
+      "absoluteAddress": 1786404,
+      "relativeOffset": 12,
+      "referencedInActualFunction": true,
+      "context": [
+        "                end",
+        "                local.get $l6",
+        "                i32.const 1786404",
+        "                i32.load",
+        "                local.tee $p0",
+        "                i32.lt_u",
+        "                local.tee $l1"
+      ]
+    },
+    "leastAddress": {
+      "absoluteAddress": 1786408,
+      "relativeOffset": 16,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        end",
+        "                        local.get $l2",
+        "                        i32.const 1786408",
+        "                        i32.load",
+        "                        i32.lt_u",
+        "                        local.tee $p0",
+        "                        br_if $B11"
+      ]
+    },
+    "dv": {
+      "absoluteAddress": 1786412,
+      "relativeOffset": 20,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.add",
+        "                        local.set $p0",
+        "                        i32.const 1786412",
+        "                        i32.load",
+        "                        local.set $l2",
+        "                        block $B22",
+        "                          local.get $l3"
+      ]
+    },
+    "top": {
+      "absoluteAddress": 1786416,
+      "relativeOffset": 24,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $l1",
+        "                  i32.store",
+        "                  i32.const 1786416",
+        "                  local.get $l6",
+        "                  i32.const 1786416",
+        "                  i32.load",
+        "                  local.tee $l3"
+      ]
+    },
+    "smallbins": {
+      "absoluteAddress": 1786432,
+      "relativeOffset": 40,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.shl",
+        "                        local.tee $l4",
+        "                        i32.const 1786432",
+        "                        i32.add",
+        "                        local.tee $l1",
+        "                        local.get $l4",
+        "                        i32.load offset=1786440"
+      ]
+    },
+    "treebins": {
+      "absoluteAddress": 1786696,
+      "relativeOffset": 304,
+      "referencedInActualFunction": true,
+      "context": [
+        "                            if $I36",
+        "                              local.get $p0",
+        "                              i32.const 1786696",
+        "                              i32.add",
+        "                              local.get $l1",
+        "                              i32.store",
+        "                              local.get $l1"
+      ]
+    },
+    "footprint": {
+      "absoluteAddress": 1786824,
+      "relativeOffset": 432,
+      "referencedInActualFunction": true,
+      "context": [
+        "                if $I83",
+        "                  local.get $l4",
+        "                  i32.const 1786824",
+        "                  i32.load",
+        "                  local.tee $l1",
+        "                  i32.add",
+        "                  local.tee $p0"
+      ]
+    },
+    "maxFootprint": {
+      "absoluteAddress": 1786828,
+      "relativeOffset": 436,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $p0",
+        "                  i32.store",
+        "                  i32.const 1786828",
+        "                  i32.load",
+        "                  local.get $p0",
+        "                  i32.lt_u",
+        "                  if $I110"
+      ]
+    },
+    "footprintLimit": {
+      "absoluteAddress": 1786832,
+      "relativeOffset": 440,
+      "referencedInActualFunction": true,
+      "context": [
+        "                i32.ge_u",
+        "                br_if $B9",
+        "                i32.const 1786832",
+        "                i32.load",
+        "                local.tee $l3",
+        "                if $I83",
+        "                  local.get $l4"
+      ]
+    },
+    "flags": {
+      "absoluteAddress": 1786836,
+      "relativeOffset": 444,
+      "referencedInActualFunction": true,
+      "context": [
+        "      i32.eqz",
+        "      if $I5",
+        "        i32.const 1786836",
+        "        i32.load8_u",
+        "        i32.const 2",
+        "        i32.and",
+        "        local.set $l1"
+      ]
+    },
+    "mutex": {
+      "absoluteAddress": 1786840,
+      "relativeOffset": 448,
+      "referencedInActualFunction": true,
+      "context": [
+        "          i32.or",
+        "          if $I8",
+        "            i32.const 1786840",
+        "            call $__pthread_mutex_timedlock",
+        "            i32.const 1",
+        "            global.get $g12",
+        "            i32.const 1"
+      ]
+    },
+    "segment": {
+      "absoluteAddress": 1786864,
+      "relativeOffset": 472,
+      "referencedInActualFunction": true,
+      "context": [
+        "                              i32.eqz",
+        "                              if $I93",
+        "                                i32.const 1786864",
+        "                                local.set $p0",
+        "                                loop $L94",
+        "                                  local.get $l3",
+        "                                  local.get $p0"
+      ]
+    }
+  },
+  "actualFunctions": {
+    "emscripten_builtin_malloc": {
+      "originalMetadata": {
+        "functionIndex": 4434,
+        "name": "emscripten_builtin_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6258118,
+        "bodyEnd": 6264673
+      },
+      "originalBodySha256": "02c406e3707fc34b44415af767b2851a5103a06a3498519f00904ee600419a4a",
+      "disassembledTextBytes": 110340,
+      "disassembledTextSha256": "e03cdeb8d6770bab0119293e5e4de15d2acdf3cac1aeb3e9f8c556b5e904edd1"
+    },
+    "dlposix_memalign": {
+      "originalMetadata": {
+        "functionIndex": 4438,
+        "name": "dlposix_memalign",
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6268753,
+        "bodyEnd": 6269487
+      },
+      "originalBodySha256": "2a4771082c938280273190a71811962018f2761de1f421bd081b27004b04e671",
+      "disassembledTextBytes": 8842,
+      "disassembledTextSha256": "37476e485bda445a9b9d0ccc3b0d6cbb78ff1529e5c2ef24e83534eb49bf773c"
+    },
+    "av_malloc": {
+      "originalMetadata": {
+        "functionIndex": 4310,
+        "name": "av_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6157015,
+        "bodyEnd": 6157427
+      },
+      "originalBodySha256": "effbb54c042bfb49c625cbc608f3ad8a94f216d68d8186d3fff5bc37a46c4a21",
+      "disassembledTextBytes": 4407,
+      "disassembledTextSha256": "b31196d0c482b2e58ec7b174d03b557dca5bddcaeefa6b37a9b1b22956680c3d"
+    }
+  },
+  "primaryAllocatorSource": "https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.4/system/lib/dlmalloc.c",
+  "sourcePins": {
+    "scripts/audit-split-dlmalloc-static.mjs": "13fbb3db01d0dc6fd8412fec6bd31497357917379af3cafb49b7ce003e8259f1",
+    "scripts/lib/wasm-static-function-slice.mjs": "4b0aebb2f41d4bd7059c953f78031ecb21fedd88fbbd0d546d5fe4ffaad8f60f",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360"
+  },
+  "cleanup": {
+    "runtimeRemoved": true
+  },
+  "runtimeAndDisassemblerCacheRemoved": true,
+  "next": "Bounded free-header inventory on the exact unmodified core at failure; no unsafe native allocator call while its mutex may be held."
+}
