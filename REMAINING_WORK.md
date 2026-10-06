@@ -7,6 +7,14 @@ not the entire product specification.
 
 ## 2026-10-07 — Measured static UI optimization; original retest LIVE
 
+Live checkpoint21:49:32UTC supersedes the blank-startup phase recorded below:
+same session51813 completed prospective blank settling, baseline223.391MiB,
+and run1 is genuinely running. Latest input48588353/output47879942bytes; observed
+incremental fulltree peak226.527MiB. All numbers PARTIAL/rounded console readings,
+not final exact-byte peak, completed output/fidelity, three-run or speed acceptance.
+No restart, forced GC, changed quality/baseline or public promotion. Keep polling
+the same live handle; do not rebuild/stage while it owns generated engines.
+
 The former static-matrix candidate below is now implemented and pushed as
 9619cec to origin/media-options. Only the immutable405-card display is memoized;
 source inspection, codec/settings/quality, progress, destinations, privacy and
