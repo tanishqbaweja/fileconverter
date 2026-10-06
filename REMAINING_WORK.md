@@ -37,6 +37,13 @@ correctly noticed a fourth allocator-selected compile (the new selector unit);
 updated exact call count3->4, preserving every allocator/memory/kernel check.
 No native/browser job is live yet at this implementation checkpoint.
 
+Implementation pushedcb9ec7654e6c42985a5155ec5c5d97fd803966b0. ONE changed
+normal no-Docker build dispatched: run37397131884/job112055657628, confirmed
+in_progress atthat exacthead (checkout running). Inputs corewithin-mpeg2-candidate,
+allocator dlmalloc, decoder hevc-mpeg4, bothdiagnostics0. Continue observing this
+same run; do not restart because a poll times out. No new media/browser fixtures
+or converted files created locally this turn. Build success/browser fit pending.
+
 ## 2026-10-06 — Actual HEVC idle backing measured; cache-admission trial justified
 
 Previous turn was progress: recorded real link failure, corrected native/EM_JS
