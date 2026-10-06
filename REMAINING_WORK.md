@@ -5,6 +5,64 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Static-UI original attempt TERMINAL: late native renderer peak rejects the route
+
+This supersedes every LIVE checkpoint below. Session51813 ended exit1 at
+22:44:29UTC: complete Chromium peak507,424,768 minus the SAME instance's stable
+blank234,242,048 bytes = **260.52734375MiB**, above the unchanged250MiB gate.
+All nine native peak processes are retained. Prospective blank settlement was
+309,340ms; the chosen blank is LOWER than early239,779,840, with no flags,
+excluded processes, quality, source, codec or fixed heap changes. The UI CPU
+optimization did NOT certify/fix original-size video memory.
+
+Normal production cancellation stopped at97,772 genuinely decoded/re-encoded
+frames/97,771 completed encoder packets. Last pre-cancel input976,483,415 and
+output1,093,365,538 bytes are PARTIAL, not structural/fidelity/speed acceptance.
+Actual aggregate Wasm stayed48MiB, reads/writes/peak queue64KiB, one pending
+operation; no pixel/packet history was retained. The private adapter's inherited
+public selector still says "Lossless remux"; that label does NOT describe its
+fresh MPEG2 encoding and is explicitly disclaimed in the frozen evidence.
+
+Native peak process38208/private255,291,392 is joined to the later CIM renderer
+by PID/parent/birth. The later query began22:44:24.566, AFTER the native peak
+22:44:24.0053977, and showed renderer201,478,144. Its main/worker heap figures
+are post-peak observations, not proof of a DOM, compiler, I/O buffer or other
+allocation cause. Allocation source remains UNKNOWN. No model service is among
+the nine peak identities. The failed old allocation explanation is not revived.
+
+Actual cleanup passed: native packet/frame ownership closed, cancellation
+terminal, partial media/profile and generated-driver scratch removed, six
+public asset hashes restored and nine private additions absent. Independent
+post-run source size/SHA256 check again matches2,958,573,265 bytes and31f36695...
+34b9db34. Chrome/server/observer/driver/supplement process roots are absent.
+Audio supplement12412 exited0 with INCOMPLETE status and ZERO outputs validated:
+the parent never produced a completed closed output. Supplement source SHA/
+native readers/scratch cleanup passed; full original PCM/timestamps remain
+UNPROVEN. No discarded output or new converted copy was retained.
+
+Compact: evidence/mpeg2-static-ui-original-failure-2026-10-07.json, emitted by
+freeze-mpeg2-static-ui-failure.mjs, retains the exact17,571,292-byte raw report
+hash, nine-process peak/identity join, bounded I/O, terminal cleanup, supplement
+outcome and actually executed source pins. Three new proof tests plus five
+related tests passed; scoped lint/diff checks passed. No unchanged original retry
+was launched. Next: bounded changed allocation-time renderer attribution before
+another original attempt; never guess a callsite from the later heap sample,
+raise the heap/limit/baseline, change quality, or promote this private profile.
+
+Hosted non-Docker CI37542422149 was dispatched once at22:43:56UTC for actual
+pushed5e28e8f, engine=verify-only. Branch pushes do not auto-run CI (push trigger
+is main-only). Hosted verify (full lint/TypeScript/build/unit/public evidence/
+privacy-offline) and audio-source-metadata/streaming/image browser jobs passed;
+media-remux job112538348568 is STILL RUNNING. Overall CI acceptance is pending.
+This mode intentionally skips engine rebuilding and original-size memory/scaling,
+so it cannot replace those gates or close the full goal even when green.
+
+Terminal-proof regression:629/629 unit tests and scoped lint passed. Independent
+CIM PID/birth checks found ZERO survivors among all22 recorded native identities.
+Retained CSV69,837/HTML42,971/Playwright trace173,081 bytes are bounded reports,
+not converted media and not allocation-time native attribution. No extra copies
+were made; only compact evidence/audit/test changes are being pushed.
+
 ## 2026-10-07 — Cancellable full-audio supplement implemented and attached to the existing run
 
 The previous goal turn was progress: verified validator changes were committed
