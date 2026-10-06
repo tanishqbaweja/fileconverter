@@ -5,6 +5,87 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Native burst measurement prerequisite passed; hosted CI terminal green
+
+LIVE execution checkpoint23:13UTC supersedes the prepared/pending note below:
+ONE changed diagnostic was actually launched at23:12:39UTC. Session40351 remains
+running; owning driver34664/birth2026-10-06T23:12:39.6283990Z and Chrome31336/
+birth23:12:54.8039510Z independently confirmed live. The driver's required full
+source hash/disk preflight/native source inspection passed before Chrome launched.
+It is currently in the prospective five-minute blank-startup phase, NOT yet a
+completed conversion, allocation-source finding or memory/speed acceptance.
+Keep observing this SAME handle; never restart on observation timeout, rebuild
+or stage competing engines while it owns dist/private assets. Partial media and
+profile are finally-owned and remain inside this repository. Final cleanup must
+be confirmed at its actual terminal state, not assumed now.
+
+Final local regression640/640 unit tests passed in7.30s, plus25 focused tests,
+generated-driver syntax check and scoped lint. Recipe-only pre-conversion phase
+coverage adjustment then passed the three targeted evidence/recipe/syntax tests;
+pre-conversion instrumentation remains INCLUDED in the same complete-tree peak
+formula. Historical drivers/engines/App/source/settings stay unchanged.
+
+The push-only turn verified the actual remote at f8b59ab; it did not change the
+implementation. This goal turn has made concrete progress: retained native rows
+34486->34487 show a59,551,744-byte (56.79296875MiB) increase in renderer38208
+alone, all eight other private-byte readings EXACTLY unchanged. The two original
+timestamps differ by about108ms; full timestamps are retained, not replaced with
+an invented spike duration. Row34496 is the next retained post-peak row, NOT an
+adjacent100ms row: renderer drops53,813,248 while GPU increases20,480, so the
+whole tree drops53,792,768. The initial analyzer assertion confused the renderer
+and tree decreases; the raw readings corrected it before evidence was emitted.
+Compact evidence/original-renderer-burst-2026-10-07.json pins the raw report and
+executed analyzer; allocation/callsite cause remains UNKNOWN.
+
+New native-memory-bursts.mjs and burst-memory-observer.mjs preserve the original
+100ms native sampling/full-tree peak collector while draining every100ms rather
+than500ms. Diagnostic callbacks run independently of draining with ONE pending
+request and ZERO queued callbacks. Eight event records/two complete snapshots
+per event are the fixed cap; overflow/unavailable data are not fabricated as zero,
+and new/reused process identities have null deltas. Acquisition phases, PID/birth
+identity, unavailable rows, phase gaps and diagnostic errors remain explicit.
+Historical executed observer/driver sources and pins are untouched.
+
+Actual Chrome154.0.8037.98 blank-browser control with a fixed40MiB touched
+SYNTHETIC allocation passed: native-triggered light dumps requested78/79ms after
+acquisition and finished49/23ms after request; three dumps total including blank
+control,837trace events/3,419,533serialized bytes/no trace loss/overflow,23realm
+rows. The first native trigger contains43,126,784 positive renderer bytes and
+43,102,208 whole-tree increase; other actual process changes are retained, not
+rounded into an exact40MiB attribution. This deliberate allocation/trace is NOT
+a conversion, stable-clean baseline, production-memory/speed pass or proof of
+the original failure's cause. No original/user file/production converter loaded,
+zero media copies. All seven cleanup flags passed, including actual sampled
+PID/birth absence, native helper/socket/trace shutdown and owned runtime removal.
+
+Initial real control failed because the allocation occurred before the first
+native row in its phase. Preserve phase-boundary rejection; the control now waits
+for actual coverage IN that phase before allocating. That genuine failed report,
+all source pins and EXACT executed runner are archived in
+evidence/native-burst-control-initial-2026-10-07.json; the successful control is
+evidence/native-burst-control-passed-2026-10-07.json. The freezer initially rejected
+the timestamp'sZ; only the explicit three-line control addition was reversed to
+recover the first runner, and the actual original digest was required, NOT repinned.
+
+mpeg2-burst-attribution.mjs now offers ONE strictly reversible changed diagnostic:
+same protected full source/staticUI/candidate37479749443/quality/fixed32+16MiB/
+Chrome flags/lower prospective blank/allprocesses250MiB/formula/source hashes/
+disk/cancel/finally.32MiB adjacent trigger,at most seven light dumps,70min
+conversion deadline; budget/queue gaps fail explicitly. Native observer continues
+during trace finalization so its private bytes are not excluded. This is private
+perturbing instrumentation, never public acceptance, even if an output completes.
+Do not repeat the old uninstrumented failure or90s periodic-dump diagnostic.
+Focused25/25 tests and generated-driver syntax check passed; scoped lint passed.
+Actual changed original execution is still pending at this checkpoint.
+
+Hosted non-Docker CI37542422149 is TERMINAL SUCCESS for actual5e28e8f; final
+media-remux job ended22:57:30UTC. Verify and all four independently validated
+public browser families passed. Engine matrix/reproduction were intentionally
+SKIPPED (verify-only); Windows original250MiB/three-run/10GB/new profile gates
+are not covered. Compact evidence/hosted-verify-only-2026-10-07.json records the
+actual head/jobs/scope. Supersedes every CI-STILL-RUNNING note below, not the
+failed260.52734375MiB original or any remaining material requirement.
+
 ## 2026-10-07 — Static-UI original attempt TERMINAL: late native renderer peak rejects the route
 
 This supersedes every LIVE checkpoint below. Session51813 ended exit1 at
