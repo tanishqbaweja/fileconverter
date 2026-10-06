@@ -5,6 +5,62 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Bounded renderer-attribution prerequisite passed; changed original diagnostic live
+
+Blank-only prerequisite completed with identical original Chrome arguments,
+no server/converter/fixture: three explicit light non-GC memory dumps,19 higher-rate
+realm samples,746 trace events/3173906 serialized bytes, no overflow/data loss.
+All trace/browser/runtime cleanup passed. Exact global GUID-to-interval join
+retains allocator scalar bytes; overlapping categories are NEVER summed into
+OS private memory. Trace names alone do not prove site/process ownership;
+this blank API prerequisite has no OS join and grants NO conversion acceptance.
+Compact: evidence/renderer-attribution-prerequisite-2026-10-06.json (under64KiB).
+
+New private helper caps Chromium trace at4MiB, serialized trace at16MiB/read256KiB,
+eight light dumps/one pending,1024 realm rows/100ms interval, bounded null/error
+handling. It never forces GC, snapshots heaps, logs file payloads, or changes
+Chrome flags. Trace is compacted before release; raw scratch is not retained.
+Negative tests reject overlapping dump requests, oversized IO replies and
+missing data-loss status; original-driver mutations reject via exact SHA.
+An unescaped nested template string was caught by source-only syntax/lint,
+fixed BEFORE any original diagnostic launch; no failed browser repetition.
+
+ONE changed original-source diagnostic started at session99905 via
+scripts/mpeg2-renderer-attribution.mjs. SHA-pinned reversible derivative preserves
+full1920x804/quality/fixed48MiB/boundedI/O/pre-post-source/disk/normalcancel-finally,
+all processes and unchanged250MiB exact gate. Fixed300000ms blank settling/no
+larger denominator guard remain. Trace starts only after loaded-idle/preconversion
+measurement; capture every15s plus memory-failure dump,90s conversion deadline,
+one diagnostic-only attempt. Faster realm sampling and tracing PERTURB timing/
+memory: no speed/fidelity/memory acceptance or public promotion. Current status
+is LIVE blank-startup settling; poll actual handle/PID, no duplicate stager/build.
+Regression601/601units, TypeScript and scopedzero-warninglint PASS. Latest
+failed acceptance remains277.97265625MiB below, not replaced by this diagnostic.
+
+## 2026-10-06 — Settled-original retry TERMINAL: renderer transient still exceeds strict gate
+
+Session41962/driver25812 is TERMINAL, superseding its historical live checkpoints
+below. Prospective fixed five-minute blank settling passed: early249208832 bytes,
+settled242442240 bytes (LOWER), actual309195ms. No flags changed, processes omitted
+or baseline inflated. Full nine-process conversion peak533917696 minus that same
+settled blank =277.97265625MiB, FAILED the unchanged250MiB gate. Peak renderer43324
+used277508096 private bytes; its PID/parent/creation identity matches later CIM.
+No OnDeviceModelService among the nine peak processes. Later renderer201539584
+bytes/realm heaps are NOT allocation-time measurements and do not establish the
+cause. Actual allocation source remains UNKNOWN; no guessed fix or unchanged retry.
+
+Original1920x804/24fps/quality/fixed32+16MiB Wasm/64KiB I/O preserved. Run1 reached
+1646 decoded frames/1645 mux-accepted packets, input33711681/output22959384 bytes,
+all PARTIAL, no completed-output independent validation/recovery or speed result.
+All five cleanup/source pre/post hash flags passed; normal cancellation, assets
+restored and partial output/profile removed. Root4084/server35220/observer15656,
+driver25812 and both owned runtimes independently absent at terminal observation.
+Compact proof: evidence/mpeg2-settled-original-failure-2026-10-06.json; native
+100ms peak/all identities/lower baseline/source pins/later-only realm evidence
+retained. Next bounded renderer allocation-attribution prerequisite, then ONE
+changed original diagnostic; no heap/quality/limit relaxation or public promotion.
+Whole original scope, full three repeats, validation, scaling and speed gates remain open.
+
 ## 2026-10-06 — Full attempt rejected; independent blank control proves delayed Chrome startup
 
 Session53487/driver40096 is TERMINAL, not still live. First full attempt stopped

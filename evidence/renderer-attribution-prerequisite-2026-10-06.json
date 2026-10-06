@@ -1,0 +1,1867 @@
+{
+  "scope": "blank-only-renderer-attribution-prerequisite",
+  "status": "completed-diagnostic",
+  "sourcePins": {
+    "scripts/probe-bounded-renderer-attribution.mjs": "8b1a9dd4caecb3c6aaac76b6204c94f124bef2d4adfbdf5b56fbff9a19299e8c",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/freeze-renderer-attribution-prerequisite.mjs": "8848697b29940faf592962d0abb5fed40eabb55856f3c3d2587bc1a2a3c5cbce"
+  },
+  "publicAcceptance": false,
+  "converterLoaded": false,
+  "originalRead": false,
+  "conversionsPerformed": 0,
+  "identicalOriginalFlags": true,
+  "flags": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "PROFILE",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-component-update",
+    "--disable-default-apps",
+    "--disable-domain-reliability",
+    "--disable-extensions",
+    "--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction",
+    "--disable-sync",
+    "--metrics-recording-only",
+    "about:blank"
+  ],
+  "result": {
+    "scope": "bounded-private-renderer-allocation-attribution-not-acceptance",
+    "limits": {
+      "chromiumBufferBytes": 4194304,
+      "maximumSerializedBytes": 16777216,
+      "maximumDumps": 8,
+      "maximumRealmRows": 1024,
+      "realmIntervalMs": 100,
+      "ioReadBytes": 262144
+    },
+    "perturbsMemory": true,
+    "acceptanceMetric": false,
+    "status": "completed-diagnostic",
+    "trace": {
+      "serializedBytes": 3173906,
+      "sha256": "a833fd65d8be4c3ad5b03a25d9ccfc6f44f9d8a35563625a8996d60d2754b5e7",
+      "overflow": false,
+      "dataLossOccurred": false,
+      "parseError": null,
+      "events": 746,
+      "compactedBeforeRelease": true,
+      "rawRetained": false
+    },
+    "dumps": [
+      {
+        "phase": "blank-only-0",
+        "timestamp": "2026-10-06T15:33:23.682Z",
+        "processes": null,
+        "memoryDump": {
+          "dumpGuid": "0x2",
+          "success": true
+        },
+        "finishedAt": "2026-10-06T15:33:24.108Z"
+      },
+      {
+        "phase": "blank-only-1",
+        "timestamp": "2026-10-06T15:33:24.621Z",
+        "processes": null,
+        "memoryDump": {
+          "dumpGuid": "0x3",
+          "success": true
+        },
+        "finishedAt": "2026-10-06T15:33:24.638Z"
+      },
+      {
+        "phase": "blank-only-2",
+        "timestamp": "2026-10-06T15:33:25.150Z",
+        "processes": null,
+        "memoryDump": {
+          "dumpGuid": "0x4",
+          "success": true
+        },
+        "finishedAt": "2026-10-06T15:33:25.167Z"
+      }
+    ],
+    "allocatorSummary": [
+      {
+        "phase": "blank-only-0",
+        "requestDumpGuid": "0x2",
+        "serializedDumpIds": [
+          "0x0"
+        ],
+        "traceIntervalMicroseconds": [
+          59822353281,
+          59822774560
+        ],
+        "processes": [
+          {
+            "pid": 43472,
+            "traceName": "Service: tracing.mojom.TracingService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 12861440,
+            "allocators": {
+              "malloc": {
+                "effective_size": 1316311,
+                "size": 1316352,
+                "virtual_size": 1191936
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 147911,
+                "size": 286720
+              },
+              "skia": {}
+            }
+          },
+          {
+            "pid": 26088,
+            "traceName": "Service: network.mojom.NetworkService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 11173888,
+            "allocators": {
+              "malloc": {
+                "effective_size": 2279103,
+                "size": 2279136,
+                "virtual_size": 2113536
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 31175,
+                "size": 57344
+              },
+              "skia": {},
+              "global": {
+                "effective_size": 4104,
+                "size": 13288328
+              }
+            }
+          },
+          {
+            "pid": 28384,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 18243584,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 5600380,
+                "size": 5675184,
+                "virtual_size": 4997120
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 602983,
+                "size": 614400
+              },
+              "shared_memory": {
+                "effective_size": 56570,
+                "size": 102400
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1647664,
+                "size": 1647664
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "web_cache": {
+                "effective_size": 11417,
+                "size": 11417
+              }
+            }
+          },
+          {
+            "pid": 35900,
+            "traceName": "GPU Process",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 76959744,
+            "allocators": {
+              "cc": {
+                "size": 1277952
+              },
+              "discardable": {},
+              "gpu": {
+                "effective_size": 185320,
+                "size": 4727656
+              },
+              "malloc": {
+                "effective_size": 4180424,
+                "size": 4180448,
+                "virtual_size": 3956736
+              },
+              "mojo": {},
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 86471,
+                "size": 4603904
+              },
+              "skia": {
+                "effective_size": 4325376,
+                "size": 4326400
+              }
+            }
+          },
+          {
+            "pid": 39916,
+            "traceName": "WebUI Top Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 48844800,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1572864,
+                "size": 1572864
+              },
+              "blink_gc/main": {
+                "effective_size": 1572864,
+                "size": 1572864
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 5663906,
+                "size": 13831024,
+                "virtual_size": 13213696
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 8279026,
+                "size": 9510912
+              },
+              "shared_memory": {
+                "effective_size": 58618,
+                "size": 106496
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 11050664,
+                "size": 11050664
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "web_cache": {
+                "effective_size": 1231886,
+                "size": 1231886
+              }
+            }
+          },
+          {
+            "pid": 40104,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 17698816,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "gpu": {
+                "effective_size": 262016,
+                "size": 262016
+              },
+              "malloc": {
+                "effective_size": 5314804,
+                "size": 5397840,
+                "virtual_size": 4804608
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 581632,
+                "size": 581632
+              },
+              "shared_memory": {
+                "effective_size": 58618,
+                "size": 368512
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1393712,
+                "size": 1393712
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 41792,
+            "traceName": "Browser",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 38989824,
+            "allocators": {
+              "accessibility": {},
+              "cc": {
+                "effective_size": 2281600,
+                "size": 2281600
+              },
+              "devtools": {},
+              "frame_evictor": {},
+              "gpu": {
+                "effective_size": 4325248,
+                "size": 4325248
+              },
+              "leveldatabase": {
+                "effective_size": 8208,
+                "size": 8208
+              },
+              "malloc": {
+                "effective_size": 22395444,
+                "size": 22979744,
+                "virtual_size": 22069248
+              },
+              "mojo": {},
+              "omnibox": {
+                "effective_size": 116432,
+                "size": 116432
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 1574138,
+                "size": 6111104
+              },
+              "site_storage": {},
+              "skia": {
+                "effective_size": 9600,
+                "size": 9600
+              },
+              "sqlite": {
+                "effective_size": 574636,
+                "malloc_high_wmark_size": 611504,
+                "size": 574636
+              }
+            }
+          },
+          {
+            "pid": 43080,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 15327232,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_gc/main": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 4193845,
+                "size": 4255376,
+                "virtual_size": 3936256
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 479232,
+                "size": 479232
+              },
+              "shared_memory": {
+                "effective_size": 38138,
+                "size": 73728
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 847928,
+                "size": 847928
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 43264,
+            "traceName": "Service: storage.mojom.StorageService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 8151040,
+            "allocators": {
+              "leveldatabase": {
+                "size": 4104
+              },
+              "malloc": {
+                "effective_size": 1131481,
+                "size": 1131504,
+                "virtual_size": 937984
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 29127,
+                "size": 49152
+              },
+              "skia": {}
+            }
+          },
+          {
+            "pid": 31680,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 0,
+            "allocators": {}
+          }
+        ],
+        "allocatorValuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "phase": "blank-only-1",
+        "requestDumpGuid": "0x3",
+        "serializedDumpIds": [
+          "0x1"
+        ],
+        "traceIntervalMicroseconds": [
+          59823291450,
+          59823304383
+        ],
+        "processes": [
+          {
+            "pid": 43472,
+            "traceName": "Service: tracing.mojom.TracingService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 13086720,
+            "allocators": {
+              "malloc": {
+                "effective_size": 1486478,
+                "size": 1486496,
+                "virtual_size": 1351680
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 346521,
+                "size": 684032
+              },
+              "skia": {}
+            }
+          },
+          {
+            "pid": 26088,
+            "traceName": "Service: network.mojom.NetworkService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 13406208,
+            "allocators": {
+              "malloc": {
+                "effective_size": 4169189,
+                "size": 4169216,
+                "virtual_size": 3756032
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 45465,
+                "size": 86016
+              },
+              "skia": {},
+              "global": {
+                "effective_size": 8208,
+                "size": 24042984
+              }
+            }
+          },
+          {
+            "pid": 28384,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 18509824,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 5907114,
+                "size": 5981968,
+                "virtual_size": 5210112
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 602983,
+                "size": 614400
+              },
+              "shared_memory": {
+                "effective_size": 58435,
+                "size": 106496
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1647664,
+                "size": 1647664
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "web_cache": {
+                "effective_size": 11417,
+                "size": 11417
+              }
+            }
+          },
+          {
+            "pid": 35900,
+            "traceName": "GPU Process",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 93011968,
+            "allocators": {
+              "cc": {
+                "size": 1261568
+              },
+              "discardable": {},
+              "gpu": {
+                "effective_size": 2006816,
+                "size": 8875552
+              },
+              "malloc": {
+                "effective_size": 6455062,
+                "size": 6458480,
+                "virtual_size": 6160384
+              },
+              "mojo": {},
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 104857,
+                "size": 4898816
+              },
+              "skia": {
+                "effective_size": 12740965,
+                "size": 12746789
+              }
+            }
+          },
+          {
+            "pid": 39916,
+            "traceName": "WebUI Top Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 46338048,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 5373952,
+                "size": 5373952
+              },
+              "blink_gc/main": {
+                "effective_size": 5373952,
+                "size": 5373952
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 8461266,
+                "size": 8640064,
+                "virtual_size": 7876608
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 22830,
+                "unparked_size": 22830
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 4435632,
+                "size": 7405568
+              },
+              "shared_memory": {
+                "effective_size": 60483,
+                "size": 110592
+              },
+              "skia": {
+                "effective_size": 1552,
+                "size": 1552
+              },
+              "v8": {
+                "effective_size": 10662948,
+                "size": 10662948
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 166976,
+                "effective_size": 262144,
+                "size": 262144,
+                "virtual_size": 262144
+              },
+              "web_cache": {
+                "effective_size": 2992962,
+                "size": 2992962
+              }
+            }
+          },
+          {
+            "pid": 40104,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 18210816,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "gpu": {
+                "effective_size": 262016,
+                "size": 262016
+              },
+              "malloc": {
+                "effective_size": 5985859,
+                "size": 6068896,
+                "virtual_size": 5263360
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 585728,
+                "size": 585728
+              },
+              "shared_memory": {
+                "effective_size": 68675,
+                "size": 388992
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1393712,
+                "size": 1393712
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 41792,
+            "traceName": "Browser",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 42586112,
+            "allocators": {
+              "accessibility": {},
+              "cc": {
+                "effective_size": 2283200,
+                "size": 2283200
+              },
+              "devtools": {},
+              "extensions": {
+                "effective_size": 12312,
+                "size": 12312
+              },
+              "frame_evictor": {},
+              "gpu": {
+                "effective_size": 4325248,
+                "size": 4325248
+              },
+              "leveldatabase": {
+                "effective_size": 24624,
+                "size": 36936
+              },
+              "malloc": {
+                "effective_size": 25352009,
+                "size": 26079824,
+                "virtual_size": 24891392
+              },
+              "mojo": {},
+              "omnibox": {
+                "effective_size": 173424,
+                "size": 173424
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 1883203,
+                "size": 6643584
+              },
+              "site_storage": {},
+              "skia": {
+                "effective_size": 9600,
+                "size": 9600
+              },
+              "sqlite": {
+                "effective_size": 718156,
+                "malloc_high_wmark_size": 841200,
+                "size": 718156
+              }
+            }
+          },
+          {
+            "pid": 43080,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 15716352,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_gc/main": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 4503515,
+                "size": 4565056,
+                "virtual_size": 4231168
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 479232,
+                "size": 479232
+              },
+              "shared_memory": {
+                "effective_size": 42051,
+                "size": 81920
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 847928,
+                "size": 847928
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 43264,
+            "traceName": "Service: storage.mojom.StorageService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 8450048,
+            "allocators": {
+              "leveldatabase": {
+                "size": 8208
+              },
+              "malloc": {
+                "effective_size": 1324773,
+                "size": 1324816,
+                "virtual_size": 1089536
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 29081,
+                "size": 49152
+              },
+              "site_storage": {},
+              "skia": {}
+            }
+          },
+          {
+            "pid": 31680,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 21065728,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1703936,
+                "size": 1703936
+              },
+              "blink_gc/main": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_gc/workers": {
+                "effective_size": 786432,
+                "size": 786432
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 7274714,
+                "size": 7411056,
+                "virtual_size": 6696960
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 581632,
+                "size": 581632
+              },
+              "shared_memory": {
+                "effective_size": 52291,
+                "size": 98304
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1971304,
+                "size": 1971304
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "v8/workers/heap/code_space": {}
+            }
+          }
+        ],
+        "allocatorValuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "phase": "blank-only-2",
+        "requestDumpGuid": "0x4",
+        "serializedDumpIds": [
+          "0x2"
+        ],
+        "traceIntervalMicroseconds": [
+          59823820245,
+          59823833432
+        ],
+        "processes": [
+          {
+            "pid": 43472,
+            "traceName": "Service: tracing.mojom.TracingService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 13160448,
+            "allocators": {
+              "malloc": {
+                "effective_size": 1568252,
+                "size": 1568288,
+                "virtual_size": 1425408
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 577945,
+                "size": 1146880
+              },
+              "skia": {}
+            }
+          },
+          {
+            "pid": 26088,
+            "traceName": "Service: network.mojom.NetworkService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 13361152,
+            "allocators": {
+              "malloc": {
+                "effective_size": 4133272,
+                "size": 4133312,
+                "virtual_size": 3710976
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 45465,
+                "size": 86016
+              },
+              "skia": {},
+              "global": {
+                "effective_size": 8208,
+                "size": 24374760
+              }
+            }
+          },
+          {
+            "pid": 28384,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 18747392,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 6174462,
+                "size": 6249312,
+                "virtual_size": 5443584
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 602983,
+                "size": 614400
+              },
+              "shared_memory": {
+                "effective_size": 58435,
+                "size": 106496
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1647664,
+                "size": 1647664
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "web_cache": {
+                "effective_size": 11417,
+                "size": 11417
+              }
+            }
+          },
+          {
+            "pid": 35900,
+            "traceName": "GPU Process",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 92905472,
+            "allocators": {
+              "cc": {
+                "size": 1261568
+              },
+              "discardable": {},
+              "gpu": {
+                "effective_size": 2006752,
+                "size": 8744480
+              },
+              "malloc": {
+                "effective_size": 6331526,
+                "size": 6334944,
+                "virtual_size": 6025216
+              },
+              "mojo": {},
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 104857,
+                "size": 4767744
+              },
+              "skia": {
+                "effective_size": 12740965,
+                "size": 12746789
+              }
+            }
+          },
+          {
+            "pid": 39916,
+            "traceName": "WebUI Top Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 46252032,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 5373952,
+                "size": 5373952
+              },
+              "blink_gc/main": {
+                "effective_size": 5373952,
+                "size": 5373952
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 8374116,
+                "size": 8552896,
+                "virtual_size": 7782400
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 22830,
+                "unparked_size": 22830
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 4435632,
+                "size": 7405568
+              },
+              "shared_memory": {
+                "effective_size": 60483,
+                "size": 110592
+              },
+              "skia": {
+                "effective_size": 1552,
+                "size": 1552
+              },
+              "v8": {
+                "effective_size": 10662948,
+                "size": 10662948
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 166976,
+                "effective_size": 262144,
+                "size": 262144,
+                "virtual_size": 262144
+              },
+              "web_cache": {
+                "effective_size": 2992962,
+                "size": 2992962
+              }
+            }
+          },
+          {
+            "pid": 40104,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 18411520,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_gc/main": {
+                "effective_size": 1441792,
+                "size": 1441792
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "gpu": {
+                "effective_size": 131008,
+                "size": 131008
+              },
+              "malloc": {
+                "effective_size": 6202905,
+                "size": 6285936,
+                "virtual_size": 5451776
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 585728,
+                "size": 585728
+              },
+              "shared_memory": {
+                "effective_size": 68675,
+                "size": 257984
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1393712,
+                "size": 1393712
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 41792,
+            "traceName": "Browser",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 42946560,
+            "allocators": {
+              "accessibility": {},
+              "cc": {
+                "effective_size": 2283200,
+                "size": 2283200
+              },
+              "devtools": {},
+              "extensions": {
+                "effective_size": 12312,
+                "size": 12312
+              },
+              "frame_evictor": {},
+              "gpu": {
+                "effective_size": 4325248,
+                "size": 4325248
+              },
+              "leveldatabase": {
+                "effective_size": 24624,
+                "size": 36936
+              },
+              "malloc": {
+                "effective_size": 25811086,
+                "size": 26538896,
+                "virtual_size": 25346048
+              },
+              "mojo": {},
+              "omnibox": {
+                "effective_size": 173424,
+                "size": 173424
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 2114627,
+                "size": 7106432
+              },
+              "site_storage": {},
+              "skia": {
+                "effective_size": 9600,
+                "size": 9600
+              },
+              "sqlite": {
+                "effective_size": 718156,
+                "malloc_high_wmark_size": 718156,
+                "size": 718156
+              }
+            }
+          },
+          {
+            "pid": 43080,
+            "traceName": "Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 15794176,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_gc/main": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 4579262,
+                "size": 4640800,
+                "virtual_size": 4304896
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 479232,
+                "size": 479232
+              },
+              "shared_memory": {
+                "effective_size": 42051,
+                "size": 81920
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 847928,
+                "size": 847928
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              }
+            }
+          },
+          {
+            "pid": 43264,
+            "traceName": "Service: storage.mojom.StorageService",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 8523776,
+            "allocators": {
+              "leveldatabase": {
+                "size": 8208
+              },
+              "malloc": {
+                "effective_size": 1405586,
+                "size": 1405616,
+                "virtual_size": 1163264
+              },
+              "partition_alloc": {},
+              "shared_memory": {
+                "effective_size": 29081,
+                "size": 49152
+              },
+              "site_storage": {},
+              "skia": {}
+            }
+          },
+          {
+            "pid": 31680,
+            "traceName": "Extension Renderer",
+            "osType": null,
+            "osPrivateBytesBeforeDump": null,
+            "tracePrivateFootprintBytes": 21794816,
+            "allocators": {
+              "blink_gc": {
+                "effective_size": 1703936,
+                "size": 1703936
+              },
+              "blink_gc/main": {
+                "effective_size": 917504,
+                "size": 917504
+              },
+              "blink_gc/workers": {
+                "effective_size": 786432,
+                "size": 786432
+              },
+              "blink_objects": {},
+              "canvas": {},
+              "discardable": {},
+              "malloc": {
+                "effective_size": 7948202,
+                "size": 8084544,
+                "virtual_size": 7356416
+              },
+              "mojo": {},
+              "parkable_images": {
+                "on_disk_size": 0,
+                "total_size": 0,
+                "unparked_size": 0
+              },
+              "parkable_strings": {
+                "compressed_size": 0,
+                "metadata_size": 0,
+                "on_disk_footprint": 0,
+                "on_disk_free_chunks": 0,
+                "on_disk_size": 0,
+                "original_size": 0,
+                "overhead_size": 0,
+                "savings_size": 0,
+                "uncompressed_size": 0
+              },
+              "partition_alloc": {
+                "effective_size": 581632,
+                "size": 581632
+              },
+              "shared_memory": {
+                "effective_size": 52291,
+                "size": 98304
+              },
+              "skia": {},
+              "v8": {
+                "effective_size": 1971304,
+                "size": 1971304
+              },
+              "v8/main/heap/code_space": {
+                "allocated_objects_size": 0,
+                "virtual_size": 0
+              },
+              "v8/workers/heap/code_space": {}
+            }
+          }
+        ],
+        "allocatorValuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    ],
+    "realmRows": [
+      {
+        "startedAt": 1791300803682,
+        "finishedAt": 1791300803687,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 616556,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300803794,
+        "finishedAt": 1791300803795,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 616556,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300803902,
+        "finishedAt": 1791300803903,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617396,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804012,
+        "finishedAt": 1791300804013,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804121,
+        "finishedAt": 1791300804122,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804230,
+        "finishedAt": 1791300804231,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804339,
+        "finishedAt": 1791300804341,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804448,
+        "finishedAt": 1791300804449,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804558,
+        "finishedAt": 1791300804559,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804666,
+        "finishedAt": 1791300804667,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804775,
+        "finishedAt": 1791300804777,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804884,
+        "finishedAt": 1791300804886,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300804994,
+        "finishedAt": 1791300804995,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805103,
+        "finishedAt": 1791300805104,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805212,
+        "finishedAt": 1791300805213,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805322,
+        "finishedAt": 1791300805323,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805431,
+        "finishedAt": 1791300805433,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805541,
+        "finishedAt": 1791300805542,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      },
+      {
+        "startedAt": 1791300805652,
+        "finishedAt": 1791300805653,
+        "value": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "3AFA96533D172E942B2D0E7A1D068CCA",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 617956,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384432,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        }
+      }
+    ],
+    "realmRowsEvicted": 0,
+    "samplingError": null,
+    "allocatorValuesOverlap": true,
+    "summedAllocatorTotal": null
+  },
+  "failure": null,
+  "errors": [],
+  "ownedChromePid": 41792,
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\renderer-attribution-prerequisite-EnyNXe",
+  "cleanup": {
+    "browserStopped": true,
+    "runtimeRemoved": true,
+    "traceStopped": true
+  },
+  "report": {
+    "path": "output/playwright/2026-10-06T15-33-23-298Z-renderer-attribution-prerequisite.json",
+    "bytes": 56736,
+    "sha256": "200a6cc27ef46f1c07f5045185dd4d4cef4822024ad5934084d5e5ff7c76944e"
+  },
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "traceProcessOwnership": "Blank prerequisite has no OS process join; trace names alone do not prove attribution to the tested site"
+}
