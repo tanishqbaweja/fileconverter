@@ -117,6 +117,7 @@ test("heap replacement and consumer/release failures preserve errors and prevent
   const drain = createMpeg2SplitPacketDrain({ encoder: f.core, isCancelled: () => false, consume: () => { throw first; } });
   await assert.rejects(drain.drain(), error => error instanceof AggregateError && error.errors[0] === first && /release/.test(error.errors[1].message));
   assert.equal(drain.metrics().observedPackets, 1); assert.equal(drain.metrics().completedPackets, 0);
+  assert.equal(drain.metrics().activePackets, null, "Release failure cannot be reported as zero native packet ownership");
   await assert.rejects(drain.drain(), /failed/); drain.close();
   const swapped = fixture();
   const owner = createMpeg2SplitPacketDrain({ encoder: swapped.core, isCancelled: () => false,

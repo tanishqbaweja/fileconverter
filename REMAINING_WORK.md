@@ -5,7 +5,46 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Separate actual encoder implementation (compile pending)
+## 2026-10-06 — Actual separate encoder compiled and initialized; browser integration remains
+
+No-Docker run37442072537/job112197987211/026a736 SUCCESS:213s build/262s
+job, NOT conversion time. Actual FFmpeg MPEG2 encoder opens18x10 and original
+1920x804,420/422, with native settings and imported parameters field/payload
+comparison.100 prepare/abort cycles per layout preserve actual native backing
+and one owned reference; close releases it to0 and zeroes bounded slots. All15
+previous bitrate/quality pairs initialize unchanged;13 malformed/unsupported
+configurations fail without retained input refs. Actual binary has fixed shared
+256pages/16MiB,256KiB checked stack, MPEG2 encoder only, no decoders or FS.
+The native final-ref-only accessory lifecycle gate passes as well.
+
+Downloaded only13 reusable small static tool/source/license/report files,
+902729bytes total, under work/mpeg2-split-encoder-37442072537. Exact10 source pins,
+five artifact hashes, copied wrappers, actual binary memory section and7332-byte
+report SHA2bc5d26960d2a14ad8b86f4dff3484a2be452a6ae916dc70ffd50a4ab4f3f227
+verified locally. Independently opened the actual downloaded module at1920x804,
+checked actual native settings/parameters, prepared/aborted/released input,
+closed refs0: zero frames encoded/packets produced. Hosted recipe EXIT/finally
+cleanup SUCCESS; exact artifact11401926260 deleted and API remaining0; no ZIP
+left. Original/media/profile/converted output never read/generated here.
+
+Frozen evidence/mpeg2-split-encoder-initialized-2026-10-06.json and two regression
+guards preserve exact provenance/scope. This proves buildability and actual
+codec initialization, NOT packet encoding/fidelity, complete production-browser
+conversion, original-file allocation fit,250MiB acceptance or speed improvement.
+Next real implementation step: connect this codec to the production decoder,
+native timestamp rescaling/mux, existing AVIO/writer/backpressure/cancellation,
+then genuine small fidelity/adverse tests before original-size stress/repeats.
+No public route or previous accepted module was changed; full goal incomplete.
+
+Packet release-failure telemetry is conservative: unknown active native packet
+ownership is null, never false zero. The JS handoff closes its references after
+failure, while the enclosing codec owner must always close native resources in
+finally. This is unit-tested; production integration remains the next step.
+Final focused/regression checks:528/528 unit tests PASS3.26s; TypeScript,
+scoped lint, actual Bash syntax and diff checks PASS. No production/browser
+conversion rerun was warranted before the missing integration is implemented.
+
+## 2026-10-06 — Separate actual encoder implementation (initial source checkpoint)
 
 Implemented a private MPEG2 libavcodec owner in mpeg2-split-encoder.c, separate
 from the decoder/mux module, with a fixed16MiB heap, unchanged original dimensions,

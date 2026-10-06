@@ -55,7 +55,8 @@ export function createMpeg2SplitPacketDrain(options) {
   let peakPacketBytes = 0, peakSideBytes = 0, held = false;
   const metrics = () => Object.freeze({ scope: "private-encoded-packet-ownership-not-conversion-acceptance",
     observedPackets, completedPackets, observedBytes, peakPacketBytes, peakSideBytes,
-    activePackets: held ? 1 : 0, queuedPackets: 0, additionalPacketBufferBytes: 0, closed, failed });
+    activePackets: held === null ? null : held ? 1 : 0,
+    queuedPackets: 0, additionalPacketBufferBytes: 0, closed, failed });
   function cancelled() { if (isCancelled()) throw new Error("Encoded packet handoff cancelled"); }
   return Object.freeze({ metrics,
     async drain({ flushing = false } = {}) {
@@ -87,8 +88,13 @@ export function createMpeg2SplitPacketDrain(options) {
           finally {
             try {
               if (encoder._within_split_encoder_release_packet() !== 0) throw new Error("Native encoded packet release failed");
-            } catch (error) { failure = failure ? new AggregateError([failure, error], "Encoded packet consumption and release failed") : error; }
-            held = false;
+              held = false;
+            } catch (error) {
+              // A failed release is not proof of zero native ownership. The
+              // enclosing codec owner must close its native module in finally.
+              held = null;
+              failure = failure ? new AggregateError([failure, error], "Encoded packet consumption and release failed") : error;
+            }
           }
           if (failure) throw failure;
         }
@@ -96,7 +102,7 @@ export function createMpeg2SplitPacketDrain(options) {
       finally { active = false; }
     },
     close() {
-      if (active || held) throw new Error("Cannot close an active encoded packet handoff");
+      if (active || held === true) throw new Error("Cannot close an active encoded packet handoff");
       closed = true; encoder = consume = isCancelled = null;
       return metrics();
     },
