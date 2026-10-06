@@ -1350,6 +1350,49 @@ export function ConverterApp() {
       ]
     : [];
 
+  // The compiled registry is immutable; progress must not rebuild its static display.
+  const publishedFormatsSection = useMemo(() => (
+      <section className="formats-section" id="formats">
+        <div className="section-intro">
+          <p className="eyebrow">Published from the test registry</p>
+          <h2>Only verified routes appear.</h2>
+          <p>
+            Format buttons are generated from the same machine-readable records
+            used by the tests. Media routes remain invisible until their custom
+            engine passes output validation and the complete browser memory gate.
+          </p>
+        </div>
+        <div className="matrix">
+          {conversionProfiles
+            .filter(
+              (profile) =>
+                profile.public && profile.automatedTestStatus === "passed",
+            )
+            .map((profile) => (
+              <article key={profile.id}>
+                <span>{formatById(profile.input)?.label}</span>
+                <b aria-hidden="true">→</b>
+                <span>{formatById(profile.output)?.label}</span>
+                <small>
+                  {profile.route} · tested to{" "}
+                  {profile.maxTestedBytes == null
+                    ? "pending"
+                    : formatBytes(profile.maxTestedBytes)}
+                </small>
+              </article>
+            ))}
+          {!conversionProfiles.some(
+            (profile) =>
+              profile.public && profile.automatedTestStatus === "passed",
+          ) ? (
+            <div className="matrix-empty">
+              Verification is running. No untested conversion is being advertised.
+            </div>
+          ) : null}
+        </div>
+      </section>
+  ), []);
+
   return (
     <main>
       <header className="site-header">
@@ -2537,45 +2580,7 @@ export function ConverterApp() {
         </div>
       </section>
 
-      <section className="formats-section" id="formats">
-        <div className="section-intro">
-          <p className="eyebrow">Published from the test registry</p>
-          <h2>Only verified routes appear.</h2>
-          <p>
-            Format buttons are generated from the same machine-readable records
-            used by the tests. Media routes remain invisible until their custom
-            engine passes output validation and the complete browser memory gate.
-          </p>
-        </div>
-        <div className="matrix">
-          {conversionProfiles
-            .filter(
-              (profile) =>
-                profile.public && profile.automatedTestStatus === "passed",
-            )
-            .map((profile) => (
-              <article key={profile.id}>
-                <span>{formatById(profile.input)?.label}</span>
-                <b aria-hidden="true">→</b>
-                <span>{formatById(profile.output)?.label}</span>
-                <small>
-                  {profile.route} · tested to{" "}
-                  {profile.maxTestedBytes == null
-                    ? "pending"
-                    : formatBytes(profile.maxTestedBytes)}
-                </small>
-              </article>
-            ))}
-          {!conversionProfiles.some(
-            (profile) =>
-              profile.public && profile.automatedTestStatus === "passed",
-          ) ? (
-            <div className="matrix-empty">
-              Verification is running. No untested conversion is being advertised.
-            </div>
-          ) : null}
-        </div>
-      </section>
+      {publishedFormatsSection}
 
       <footer>
         <div className="brand">

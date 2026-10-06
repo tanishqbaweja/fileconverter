@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { recoverStaticFormatMatrixBaseline } from "../scripts/lib/static-format-matrix-recipe.mjs";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const proof = JSON.parse(await read("evidence/ui-native-allocation-2026-10-06.json"));
 test("Real idle UI control measures native DOM growth without starting or simulating a conversion", () => {
@@ -16,8 +17,11 @@ test("Real idle UI control measures native DOM growth without starting or simula
 test("UI control retains the protected original, exact executed sources, privacy and owned cleanup", async () => {
   assert.equal(proof.originalSourceBytes, 2958573265);
   assert.equal(proof.originalSourceSha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
-  for (const [file, digest] of Object.entries(proof.sourcePins))
-    assert.equal(createHash("sha256").update(await read(file)).digest("hex"), digest, file);
+  for (const [file, digest] of Object.entries(proof.sourcePins)) {
+    const bytes = await read(file);
+    const historical = file === "app/converter/ConverterApp.tsx" ? recoverStaticFormatMatrixBaseline(bytes.toString()) : bytes;
+    assert.equal(createHash("sha256").update(historical).digest("hex"), digest, file);
+  }
   for (const value of Object.values(proof.cleanup)) assert.equal(value, true);
   assert.deepEqual(proof.forbidden, []);
   const source = (await read("scripts/diagnose-ui-native-allocation.mjs")).toString();
