@@ -98,3 +98,23 @@ test("Executed direct split proof distinguishes native AVIO from final fallback 
   assert.ok(stage.includes('write(offset, bytes) { checkNativeWrite(bytes)'));
   assert.ok(stage.includes('checkNativeWrite(bytes); return originalBridge.writeSync'));
 });
+
+test("Actual original split memory failure remains failed with the entire process total and explicit cleanup lock error", async () => {
+  const proof = JSON.parse(await read("evidence/mpeg2-split-original-memory-failed-2026-10-06.json"));
+  assert.equal(proof.publicAcceptance, false); assert.equal(proof.allocationRootCauseProven, false);
+  assert.equal(proof.source.bytes, 2958573265); assert.equal(proof.source.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  assert.match(proof.failure.message, /259\.79296875MiB exceeds 250MiB/);
+  assert.equal(proof.actualCompleteNativePeak.processes.reduce((n, p) => n + p.privateBytes, 0), proof.actualCompleteNativePeak.privateBytes);
+  assert.equal((proof.actualCompleteNativePeak.privateBytes - proof.blankBaseline.privateBytes) / 1048576, proof.incrementalPrivateMiB);
+  assert.equal(proof.processChanges.reduce((n, p) => n + p.deltaBytes, 0), proof.actualCompleteNativePeak.privateBytes - proof.blankBaseline.privateBytes);
+  assert.equal(proof.lastState.metrics.wasmMemoryBytes, 50331648);
+  assert.equal(proof.lastState.metrics.outputBytes, 0); assert.deepEqual(proof.nativeOwnershipSamples, []);
+  assert.ok(proof.cleanup.errors.some(v => v.includes("NoModificationAllowedError")));
+  assert.equal(proof.independentRuntimeAbsence, true); assert.equal(proof.cleanup.protectedFixtureUnchanged, true);
+  const cleaned = JSON.parse(await read("evidence/mpeg2-split-memory-abort-cleanup-passed-2026-10-06.json"));
+  assert.equal(cleaned.actual250MiBMeasurement, false); assert.equal(cleaned.outcome.terminalState, "cancelled");
+  assert.equal(cleaned.ownership[0].closed, true); assert.equal(cleaned.ownership[0].activePackets, 0);
+  assert.equal(cleaned.removedLockedOpfsWithoutError, true); assert.deepEqual(cleaned.forbidden, []);
+  for (const [file, hash] of Object.entries(cleaned.sourcePins))
+    assert.equal(createHash("sha256").update(await read(file)).digest("hex"), hash, file);
+});

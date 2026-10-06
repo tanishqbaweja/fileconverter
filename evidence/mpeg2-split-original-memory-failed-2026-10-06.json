@@ -1,0 +1,355 @@
+{
+  "scope": "actual-full-unchanged-source-split-codec-complete-Chromium-memory-failure-not-acceptance",
+  "raw": {
+    "file": "outputs/reports/2026-10-06T10-14-12-168Z-private-mpeg2-split-protected-direct-native-100ms.json",
+    "bytes": 381252,
+    "sha256": "3c223301d91db27fbe62db09e1abe6cc8fd1d8bc81ba119a1871148d0435554e"
+  },
+  "failure": {
+    "name": "AssertionError",
+    "message": "Complete Chromium increase 259.79296875MiB exceeds 250MiB",
+    "stack": "AssertionError [ERR_ASSERTION]: Complete Chromium increase 259.79296875MiB exceeds 250MiB\n    at file:///H:/Github%20Repositories/fileconverter/scripts/mpeg2-split-protected-memory.mjs:252:14"
+  },
+  "source": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 242483200,
+    "spreadBytes": 16384,
+    "rssBytes": 523599872,
+    "firstTimestamp": "2026-10-06T10:14:55.948Z",
+    "lastTimestamp": "2026-10-06T10:15:03.322Z",
+    "sampleCount": 18,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 314413056,
+    "spreadBytes": 135168,
+    "rssBytes": 630206464,
+    "firstTimestamp": "2026-10-06T10:15:09.392Z",
+    "lastTimestamp": "2026-10-06T10:15:15.640Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "actualCompleteNativePeak": {
+    "sequence": 499,
+    "timestamp": "2026-10-06T10:15:17.8916991Z",
+    "phase": "conversion-1",
+    "privateBytes": 514895872,
+    "rssBytes": 824029184,
+    "nativeElapsedMs": 13.6981,
+    "sampleError": null,
+    "processes": [
+      {
+        "pid": 2344,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:15:04.2052395Z",
+        "creationFileTime": "134357553042052395",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 15745024,
+        "rssBytes": 31571968
+      },
+      {
+        "pid": 34296,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.7545997Z",
+        "creationFileTime": "134357552627545997",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 14340096,
+        "rssBytes": 42340352
+      },
+      {
+        "pid": 34416,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.8838593Z",
+        "creationFileTime": "134357552628838593",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 8081408,
+        "rssBytes": 18120704
+      },
+      {
+        "pid": 37416,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.8839225Z",
+        "creationFileTime": "134357552628839225",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 34344960,
+        "rssBytes": 78143488
+      },
+      {
+        "pid": 41488,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.9699519Z",
+        "creationFileTime": "134357552629699519",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 235343872,
+        "rssBytes": 277499904
+      },
+      {
+        "pid": 42804,
+        "parentPid": 45004,
+        "createdAt": "2026-10-06T10:14:22.1275576Z",
+        "creationFileTime": "134357552621275576",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 50286592,
+        "rssBytes": 150093824
+      },
+      {
+        "pid": 42996,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.7466166Z",
+        "creationFileTime": "134357552627466166",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 134193152,
+        "rssBytes": 173051904
+      },
+      {
+        "pid": 43492,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:23.1694136Z",
+        "creationFileTime": "134357552631694136",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 20025344,
+        "rssBytes": 42893312
+      },
+      {
+        "pid": 44652,
+        "parentPid": 42804,
+        "createdAt": "2026-10-06T10:14:22.3632492Z",
+        "creationFileTime": "134357552623632492",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 2535424,
+        "rssBytes": 10313728
+      }
+    ]
+  },
+  "incrementalPrivateMiB": 259.79296875,
+  "processChanges": [
+    {
+      "pid": 42804,
+      "blankPrivateBytes": 48607232,
+      "peakPrivateBytes": 50286592,
+      "deltaBytes": 1679360,
+      "cimType": "browser",
+      "nativePeakType": "browser",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 44652,
+      "blankPrivateBytes": 2535424,
+      "peakPrivateBytes": 2535424,
+      "deltaBytes": 0,
+      "cimType": "crashpad-handler",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 42996,
+      "blankPrivateBytes": 77000704,
+      "peakPrivateBytes": 134193152,
+      "deltaBytes": 57192448,
+      "cimType": "gpu-process",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 34296,
+      "blankPrivateBytes": 13553664,
+      "peakPrivateBytes": 14340096,
+      "deltaBytes": 786432,
+      "cimType": "utility",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 34416,
+      "blankPrivateBytes": 8056832,
+      "peakPrivateBytes": 8081408,
+      "deltaBytes": 24576,
+      "cimType": "utility",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 37416,
+      "blankPrivateBytes": 33898496,
+      "peakPrivateBytes": 34344960,
+      "deltaBytes": 446464,
+      "cimType": "renderer",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 43576,
+      "blankPrivateBytes": 21237760,
+      "peakPrivateBytes": null,
+      "deltaBytes": -21237760,
+      "cimType": "renderer",
+      "nativePeakType": null,
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 41488,
+      "blankPrivateBytes": 17567744,
+      "peakPrivateBytes": 235343872,
+      "deltaBytes": 217776128,
+      "cimType": "renderer",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 43492,
+      "blankPrivateBytes": 20025344,
+      "peakPrivateBytes": 20025344,
+      "deltaBytes": 0,
+      "cimType": "renderer",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    },
+    {
+      "pid": 2344,
+      "blankPrivateBytes": null,
+      "peakPrivateBytes": 15745024,
+      "deltaBytes": 15745024,
+      "cimType": "renderer",
+      "nativePeakType": "unknown",
+      "absentMeansExitedOrNotYetBornNotAFailedMeasurement": true
+    }
+  ],
+  "lastState": {
+    "jobState": "running",
+    "metrics": {
+      "inputBytes": 222785,
+      "outputBytes": 0,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 0,
+      "pendingOperations": 0,
+      "peakPendingOperations": 0,
+      "maxReadChunkBytes": 65536,
+      "maxWriteChunkBytes": 0,
+      "elapsedMs": 537.265000000596,
+      "wasmMemoryBytes": 50331648,
+      "peakWasmMemoryBytes": 50331648,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 50331652,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0
+    },
+    "warnings": [
+      "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+      "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+    ]
+  },
+  "nativeStackSamples": [
+    {
+      "nativeStackBytes": 262144,
+      "encoderNativeStackBytes": 262144,
+      "asyncifyStackBytes": 262144,
+      "stackOverflowCheck": 2,
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "aggregateWasmMemoryBytes": 50331648,
+      "scope": "reserved-not-high-water-not-acceptance"
+    }
+  ],
+  "nativeOwnershipSamples": [],
+  "accessibleRealmDiagnostics": [
+    {
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "80251854C3162597B2037BC29932C41B",
+          "type": "worker",
+          "url": "http://127.0.0.1:60393/assets/conversion.worker-DwlcpCZl.js",
+          "usedJSHeapBytes": 1608096,
+          "allocatedJSHeapBytes": 2883584,
+          "embedderHeapUsedBytes": 796776,
+          "backingStorageBytes": 734877,
+          "error": null
+        },
+        {
+          "targetId": "BFF4CB8F83170ACBBE28D8E0FB689065",
+          "type": "page",
+          "url": "http://127.0.0.1:60393/?test=1&directory=1",
+          "usedJSHeapBytes": 9767260,
+          "allocatedJSHeapBytes": 16330752,
+          "embedderHeapUsedBytes": 32868896,
+          "backingStorageBytes": 681574,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "cleanup": {
+    "mediaProfileRuntimeRemoved": true,
+    "generatedDistRestored": true,
+    "protectedFixtureUnchanged": true,
+    "observerStopped": true,
+    "sampledChromeRootStopped": true,
+    "errors": [
+      "Error: page.evaluate: NoModificationAllowedError: Failed to execute 'removeEntry' on 'FileSystemDirectoryHandle': An attempt was made to modify an object where modifications are not allowed."
+    ]
+  },
+  "independentRuntimeAbsence": true,
+  "restoredAssets": {
+    "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+    "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+    "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+    "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+  },
+  "ownedPids": {
+    "chrome": 42804,
+    "server": 28788,
+    "observer": 9884
+  },
+  "executedSources": {
+    "scripts/mpeg2-split-protected-memory.mjs": "ddeb6432f57d5aa412054af735b0caf16edd4e0fc8bc9e6562b9719664ed9967",
+    "scripts/stage-mpeg2-split-direct.mjs": "2526f8900924e062659bfe1dabc185a81e7d1c668dce0a8a8e4007da8ee6ca60",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/mpeg2-stack-reserve-adapter.mjs": "a462f8c911676ffe57d06a6d91760c008e20491a380d13cf75f339418a276633",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f"
+  },
+  "publicAcceptance": false,
+  "allocationRootCauseProven": false,
+  "interpretation": "Main growth is actual renderer and GPU process private memory. Fixed48MiB Wasm and small JS heaps do not explain all renderer allocations. Every process remains included; no baseline or250MiB change. No encoded original output accepted; conversion was interrupted early.",
+  "next": "Quiesce memory-aborted native conversion via normal cancellation before OPFS removal and test that path on real small production codec; then investigate renderer/UI/navigation/native-code module allocations from measured contributions before another concrete memory candidate, not unchanged rerun."
+}

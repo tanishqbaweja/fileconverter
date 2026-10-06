@@ -14,6 +14,7 @@ import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
+import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), MiB = 1024 ** 2;
 const candidateName = process.env.WITHIN_MPEG2_SPLIT_CANDIDATE_DIR ?? "mpeg2-split-pipeline-output";
@@ -149,7 +150,8 @@ const sourceFiles = ["scripts/mpeg2-split-protected-memory.mjs", "scripts/stage-
   "scripts/lib/chromium-private-memory.mjs", "scripts/lib/cdp-realm-memory.mjs",
   "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/windows-tree-monitor.cs",
   "scripts/lib/windows-tree-monitor.ps1", "scripts/lib/owned-runtime-scratch.mjs",
-  "scripts/lib/mpeg2-stack-reserve-adapter.mjs", "scripts/lib/mpeg2-split-session.mjs"];
+  "scripts/lib/mpeg2-stack-reserve-adapter.mjs", "scripts/lib/mpeg2-split-session.mjs",
+  "scripts/lib/cancel-browser-conversion-before-cleanup.mjs"];
 const sourceHashes = Object.fromEntries(await Promise.all(sourceFiles.map(async (file) => [file, await shaFile(path.join(root, file))])));
 const reports = path.join(root, "outputs/reports"); await mkdir(reports, { recursive: true });
 const reportBase = path.join(reports, `${new Date().toISOString().replaceAll(/[:.]/g, "-")}-private-mpeg2-split-protected-direct-native-100ms`);
@@ -347,6 +349,9 @@ try {
 } finally {
   const cleanupErrors = [];
   const attempt = async (action) => { try { await action(); } catch (error) { cleanupErrors.push(String(error)); } };
+  await attempt(async () => {
+    cleanup.conversionQuiescence = await cancelBrowserConversionBeforeCleanup(page);
+  });
   await attempt(async () => {
     if (observer) {
       try { observer.setPhase("finally-cleanup"); await observer.stop(); cleanup.observerStopped = true; }

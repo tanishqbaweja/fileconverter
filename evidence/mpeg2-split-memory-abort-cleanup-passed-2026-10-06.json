@@ -1,0 +1,54 @@
+{
+  "scope": "real-codec-cleanup-after-synthetic-parent-memory-failure-not-memory-acceptance",
+  "outcome": {
+    "scope": "normal-production-cancellation-before-storage-removal",
+    "cancellationRequested": true,
+    "terminalState": "cancelled"
+  },
+  "ownership": [
+    {
+      "scope": "private-split-production-pipeline-not-public-acceptance",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "aggregateWasmMemoryBytes": 50331648,
+      "frames": 18,
+      "copiedPixelBytes": 6220800,
+      "packets": 17,
+      "completedPackets": 17,
+      "copiedPacketBytes": 156798,
+      "peakFrameBytes": 345600,
+      "peakPacketBytes": 18916,
+      "peakSideBytes": 8,
+      "activePackets": 0,
+      "queuedPackets": 0,
+      "queuedFrames": 0,
+      "additionalPixelBufferBytes": 0,
+      "additionalJsPacketBufferBytes": 0,
+      "failed": true,
+      "closed": true,
+      "maximumMediaAvioWriteBytes": 0
+    }
+  ],
+  "forbidden": [],
+  "removedLockedOpfsWithoutError": true,
+  "publicAcceptance": false,
+  "testsPassed": 1,
+  "suiteSeconds": 9,
+  "raw": {
+    "file": "output/playwright/2026-10-06T10-22-27.039Z-mpeg2-memory-abort-cleanup.json",
+    "bytes": 1042,
+    "sha256": "9c97eee694ea9c0b65255a09da18ad57f5311490470c76d0c9d117e7f020eaf3"
+  },
+  "sourcePins": {
+    "scripts/lib/cancel-browser-conversion-before-cleanup.mjs": "c2ce30b773592c7d0ed2a035ec16a49871fa1781d5f19b382ac07abcd34407df",
+    "scripts/validate-mpeg2-memory-abort-cleanup.mjs": "fe51c097ac1bdbdc6d7be5b3f2194f95d6a9ac5497aa61cd92cab5ef2933966c",
+    "tests/browser/mpeg2-split-memory-abort-cleanup.spec.ts": "dfe08bc10de113237719d2b7c19fb8144905b81be7efa11f4dcc983892d47140",
+    "scripts/mpeg2-split-protected-memory.mjs": "254f876ccfa6343eb22dc4315e4536c7fe5cd10137d2bbde6e8e10b64b030104"
+  },
+  "cleanup": {
+    "fixtureProfileRuntimeRemoved": true,
+    "generatedAssetsRestored": true
+  },
+  "originalRead": false,
+  "actual250MiBMeasurement": false
+}

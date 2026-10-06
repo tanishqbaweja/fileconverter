@@ -5,6 +5,52 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual separated original memory gate FAILED; cancellation cleanup repaired
+
+Corrected full original2958573265-byte test.mkv attempt loads both actual fixed
+32MiB decoder/mux and16MiB encoder, checked256KiB native stacks. Stable clean
+blank242483200, loaded314413056, actual complete native peak514895872bytes at
+sequence499:259.79296875MiB increase, above unchanged250MiB. The driver fails
+immediately; last state input222785/output0/running, no independent output
+acceptance and no accepted full original encoded frame/fit/speed result. Do NOT
+repeat unchanged core or substitute loaded baseline/smaller samples/omit processes.
+
+All nine peak processes are retained, including native unknown classifications.
+Same-identity CIM diagnostic types show dominant renderer private growth
+217776128bytes and GPU57192448bytes versus blank; an exited spare renderer and
+new renderer are separately accounted, and every delta sums exactly to the
+primary full-tree increase. Accessible workerJS1608096/pageJS9767260 and actual
+fixed48MiB Wasm do NOT explain all renderer allocations. Native-code/JIT, UI,
+reload/duplicate document retention and graphics allocation sources remain to
+attribute; no exact underlying allocator cause is yet proven. Frozen compact
+evidence/mpeg2-split-original-memory-failed-2026-10-06.json pins raw381252-byte
+JSON SHA3c223301d91db27fbe62db09e1abe6cc8fd1d8bc81ba119a1871148d0435554e,
+full actual peak/process identities, delta accounting, realm metrics and source
+hashes; JSON/CSV/HTML plus trace retained. Original pre/post SHA unchanged.
+
+Final browser-root/runtime/profile/output removal and six generated asset
+restoration succeed, but an intermediate OPFS removeEntry fails with a live
+SyncAccessHandle because fail-fast interrupted a still-running job. This is
+explicitly preserved, not hidden behind successful final directory deletion.
+Changed helper now invokes normal production Cancel and waits at most30s for
+cancelled/error/complete BEFORE observer/storage cleanup. Failure to quiesce is
+reported, never silently claimed as resource release. Two mock ordering/error
+units pass.
+
+Actual Chrome cleanup test1/1 PASS9s uses real synthetic HEVC source through the
+same split production codec/direct-module/staged writer. Parent guard exception
+is deliberately simulated ONLY to exercise failure cleanup, not to certify
+memory. Actual18 frames sent/17 packets produced, native close/held0, normal
+cancelled terminal, locked OPFS removed without error, forbidden requests[],
+fixture/profile/runtime removed and generated assets restored. Compact proof
+evidence/mpeg2-split-memory-abort-cleanup-passed-2026-10-06.json pins1042-byte
+rawreport SHA9c97eee694ea9c0b65255a09da18ad57f5311490470c76d0c9d117e7f020eaf3
+and exact executed helpers. Original unused in this small cleanup check. No
+unchanged full-size retry; next concrete memory work must attribute renderer/GPU
+growth while preserving all processes, fixed heaps, original settings/fidelity
+and250MiB formula. Full specification, stress/repeats/scaling/speed/public release
+remain incomplete; goal stays active.
+
 ## 2026-10-06 — Corrected split direct module genuine small gate passed
 
 Changed direct stager/native write audit: actual Chrome5/5 PASS44.7s. MPEG4→MPEG2
