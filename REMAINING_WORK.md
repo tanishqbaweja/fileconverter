@@ -5,6 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual plane attribution measured; original conversion still fails
+
+Non-Docker build 37392190577 at a5bdf2f succeeded. All 21 native source pins,
+three artifact pins, the real diagnostic import and fixed 32 MiB shared memory
+were verified. Four small browser fidelity/adverse cases passed; successful
+outputs remain byte-identical to the normal candidate. No speed A/B claim.
+
+One unchanged original test.mkv diagnostic failed with zero output. The complete
+83-event scalar trace attributes the abort to MPEG-2 encoder plane index 2:
+421655 requested bytes after 2108206 bytes of current-frame payload were already
+allocated. This identifies THIS instrumented failure, not the exact normal-core
+failure, fragmentation, recoverable cache bytes or simultaneously live buffers.
+186.48828125 MiB incremental private memory is an INCOMPLETE diagnostic result,
+not a passing conversion or memory acceptance. No heap, quality or source change.
+
+Retained evidence: evidence/mpeg2-frame-plane-measured-2026-10-06.json and its
+source-bound read-only reducer. Generated media, profiles and adapters were
+cleaned; original checksum and six public assets were independently verified.
+All 15 original full-test process identities and 20 small-test PIDs were absent.
+One numeric PID had been reused by an unrelated updater; it was not killed.
+Hosted artifact archives were deleted; seven reusable local static tools remain.
+
+Next: establish genuinely live versus inactive HEVC auxiliary objects or a bounded
+decoder/encoder decomposition before another optimization. Do not repeat the
+unchanged failing conversion. Full original scope, stress acceptance, controlled
+speed comparisons, legal review and integration remain incomplete.
+
 ## 2026-10-06 — Exact plane attribution implemented; source-only audit passed
 
 Previous cycle was progress: actual specialist build/small passes/original failure
