@@ -129,7 +129,7 @@ printf '%s  %s\n' 4a2b2d1db11b794c3b8f4963e31cfb23124d09cdf8f0d6998037cbf344b45d
   ffmpeg/libavcodec/mpegvideo.c | sha256sum --check --strict
 # Actual measured idle backing justifies a private two-pool HEVC trial.
 # Reuse bit30 final-reference admission only; never alter live refs or sizes.
-node "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.mjs" \
+node "${SCRIPT_DIR}/apply-mpeg2-split-hevc-policy.mjs" \
   "${BUILD_ROOT}/ffmpeg/libavcodec/hevc/hevcdec.c"
 cp "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-policy.h" \
   ffmpeg/libavcodec/hevc/mpeg2-hevc-auxiliary-policy.h

@@ -28,7 +28,7 @@ for (const file of ["media/ffmpeg/build-mpeg2-split-pipeline.sh", "media/ffmpeg/
   "media/ffmpeg/patches/mov-bounded-custom-metadata.patch", "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch",
   "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch", "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch",
   "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch", "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs",
-  "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h"]) sources[file] = sha(await readFile(new URL(file, root)));
+  "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h", "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs"]) sources[file] = sha(await readFile(new URL(file, root)));
 const text = JSON.stringify({ scope: "private-production-AVIO-split-codec-pipeline-not-browser-acceptance",
   ffmpeg: "8.1.2", emscripten: "6.0.4", artifacts, sources, memories,
   decoderMemoryBytes: 33554432, encoderMemoryBytes: 16777216, aggregateWasmMemoryBytes: 50331648,

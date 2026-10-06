@@ -37,3 +37,11 @@ test("optional split pipeline dispatch preserves historical workflow bytes and r
     ["          task_path=\"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-output\"\n", ""]])
     assert.throws(() => provenSourceSha(file, Buffer.from(text.replace(from, to)), old));
 });
+test("split build calls the same proven HEVC transform through its own strict nonlinked path guard", async () => {
+  const recipe = await read("media/ffmpeg/build-mpeg2-split-pipeline.sh"), helper = await read("media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs");
+  assert.match(recipe, /node "\$\{SCRIPT_DIR\}\/apply-mpeg2-split-hevc-policy\.mjs"/);
+  assert.doesNotMatch(recipe, /node "\$\{SCRIPT_DIR\}\/mpeg2-hevc-auxiliary-policy\.mjs"/);
+  assert.match(helper, /work\/mpeg2-split-pipeline-build\/ffmpeg\/libavcodec\/hevc\/hevcdec\.c/);
+  assert.match(helper, /assert.equal\(await realpath\(target\), target\)/);
+  assert.match(helper, /!info.isSymbolicLink\(\)/); assert.match(helper, /reverseHevcAuxiliaryPolicy\(after\), before/);
+});

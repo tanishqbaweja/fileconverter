@@ -5,6 +5,19 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Split pipeline initial build path failure; precise correction
+
+Run37444418032/job112205680985/9660746 FAILED5s build/48s job BEFORE
+compilation. Upstream/archive and prior patches all pass hashes, then the old
+HEVC policy CLI explicitly refuses the new split-pipeline path because its
+strict guard permits only mpeg2-candidate-build. Root cause proven by exact
+AssertionError actual/expected paths. No C/codecs compiled, no conversion or
+original access; enclosing cleanup SUCCESS/artifacts API0. New dedicated helper
+calls the same exported pinned apply/reverse transform, checks only the exact
+new owned file, realpath/nonlink/size, and leaves the historical CLI unchanged.
+Regression guard prevents calling the old CLI or widening the new boundary.
+The next build is changed for this proven cause, not an unchanged retry.
+
 ## 2026-10-06 — Split production AVIO integration implemented (native build pending)
 
 Connected the separate encoder through synchronous same-worker handoffs to the
