@@ -57,3 +57,17 @@ test("Additional private decoder selector preserves exact broad default and hist
     assert.throws(() => provenSourceSha(file, Buffer.from(text.replace(from, to)), old));
   assert.throws(() => provenSourceSha(file, Buffer.from(text + "      mpeg2_decoder_set:\n"), old));
 });
+
+test("Synthetic split-unit dispatch reverses exactly; changed report/cleanup/recipe or duplicate additions reject", async () => {
+  const file = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
+  const old = "5a0d4a2a4357abae5715363367aef69c400e584b49836c645eae0e08d5c587c6";
+  const text = await readFile(new URL(`../${file}`, import.meta.url), "utf8");
+  assert.equal(provenSourceSha(file, Buffer.from(text), old), old);
+  for (const [from, to] of [["          - within-mpeg2-split-contract\n", ""],
+    ["bash media/ffmpeg/verify-mpeg2-split-frame.sh", "bash media/ffmpeg/other.sh"],
+    ["path: outputs/reports/mpeg2-split-frame-contract.json", "path: work/unsafe/**"],
+    ["&& ! test -L \"$task_path\"", ""],
+    [" && inputs.core != 'within-mpeg2-split-contract'", ""]])
+    assert.throws(() => provenSourceSha(file, Buffer.from(text.replace(from, to)), old));
+  assert.throws(() => provenSourceSha(file, Buffer.from(text + "          - within-mpeg2-split-contract\n"), old));
+});

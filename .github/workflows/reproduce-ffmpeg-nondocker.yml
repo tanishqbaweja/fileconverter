@@ -20,6 +20,7 @@ on:
           - within-aiff
           - within-h264-candidate
           - within-mpeg2-candidate
+          - within-mpeg2-split-contract
           - within-h264-vaa-arithmetic
           - within-h264-sad-arithmetic
       h264_memory_mib:
@@ -155,6 +156,9 @@ jobs:
               WITHIN_H264_SAD_SIMD="${{ inputs.h264_sad_simd || '0' }}" \
               WITHIN_H264_ALLOCATOR_DIAGNOSTIC="${{ inputs.h264_allocator_diagnostic || '0' }}" \
               WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
+          elif test "${{ inputs.core }}" = within-mpeg2-split-contract; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            bash media/ffmpeg/verify-mpeg2-split-frame.sh
           elif test "${{ inputs.core }}" = within-mpeg2-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC="${{ inputs.mpeg2_allocator_diagnostic || '0' }}" \
@@ -220,6 +224,15 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Retain synthetic split frame contract only
+        if: success() && inputs.core == 'within-mpeg2-split-contract'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-split-contract-${{ github.run_id }}
+          path: outputs/reports/mpeg2-split-frame-contract.json
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Retain private arithmetic report only
         if: always() && inputs.core == 'within-h264-vaa-arithmetic'
         uses: actions/upload-artifact@v4
@@ -230,7 +243,7 @@ jobs:
           retention-days: 1
 
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-mpeg2-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic'
+        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-mpeg2-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic' && inputs.core != 'within-mpeg2-split-contract'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
@@ -271,3 +284,6 @@ jobs:
             esac
             rm -rf -- "$task_path"
           done
+          task_path="$GITHUB_WORKSPACE/work/mpeg2-split-frame-build"
+          test "$task_path" = "$GITHUB_WORKSPACE/work/mpeg2-split-frame-build" && ! test -L "$task_path"
+          rm -rf -- "$task_path"

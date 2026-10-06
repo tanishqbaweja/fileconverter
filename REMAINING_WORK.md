@@ -5,6 +5,58 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Bounded split-frame handoff prototype implemented; native contract test pending
+
+Previous turn was progress: actual uncapped pending MV pool/zero idle inventory,
+cleanup and493 guards committed/pushed72a56d5. No unchanged conversion retry.
+Implemented browser-neutral private pixel transport between separate fixed
+32MiB and16MiB heaps (48MiB total, NOT a48MiB replacement heap). Native codec
+modules are NOT yet separated; these are prototype ownership budgets only.
+Active pixels move directly into encoder-owned storage, no third pixel buffer,
+frame history or queued frames. Contiguous planes use one bounded view/set;
+padded/negative strides copy rows and leave target padding untouched. Dimensions/
+8-bit420-or422/layout/all three actual native allocation bounds/overlapping spans
+validate before any write. No implicit crop/resize or unsupported-format fallback.
+
+Single-flight sender waits for encoder/packet backpressure, refuses another frame
+or premature close, releases its OWN handoff storage on cancellation/failure and
+keeps both failure causes if cleanup also fails. Live HEVC references remain the
+decoder owner's responsibility, never discarded by the bridge. Layouts are
+frozen scalar snapshots across awaits, current heap sizes/identities checked;
+actual binary maxima must be independently verified by the module owner. Scalar
+metrics distinguish copied from completed frames, include failed copies and
+actual peak occupancy, and close drops module/callback references.
+
+Native64-byte wasm32 descriptor uses pinned FFmpeg8.1.2's read-only existing
+AVBufferRef getter; no ref increment/decrement, allocation or pixel/frame mutation.
+Primary frame.c25268/3f004de1...6534 and frame.h42294/91275238...3be9 verified from
+the official tagged source; recipe verifies archive464beb5e...24c plus BOTH files.
+JS reader preserves signed strides, returns frozen scalars, no borrowed record
+view or telemetry addresses. Local guards cover exact1920x804/2315520 active
+bytes, source backing unchanged/encoder padding unchanged, both stride signs,
+420/422, bounds/overlaps/malformed ABI, cancellation/error cleanup, heap replacement
+and100 repeats. These are synthetic transport tests, NOT encoding evidence.
+
+Added standalone no-Docker libavutil-only synthetic native test: compile32/16
+fixed shared Wasm heaps with same DL/guarded256KiB stacks, instantiate real native
+AVFrames, compare12 small/original-dimension synthetic cases with initially
+different destination pixels, unchanged source backing/padding/ref counts and
+finally destruction. No codecs/demux/mux/file conversion/original fixture access;
+only <=64KiB report retained, build scratch removed by recipe/workflow. Optional
+new workflow CORE choice (no extra inputs) has strict exact reversal to BOTH
+historical workflow hashes; changed/missing/duplicate report/recipe/cleanup rejects,
+frozen proof hashes unchanged.16 focused guards,505/505unit tests, TypeScript,
+scoped zero-warning lint, Bash syntax and whitespace checks PASS.
+
+Native test has NOT yet run. Next ONE new synthetic native build, not original
+conversion. Remaining split-converter work: exact encoder settings/codec parameters
+and extradata/coded side data; all AVFrame timing/flags/SAR/colors/metadata/side
+data (never raw FFmpeg struct pointer transfer); encoded packet flags/timestamps/
+side data; bounded synchronous/asynchronous ownership and production AVIO callback
+integration; all native heaps in runtime metrics; genuine small fidelity/adverse
+validation THEN changed original full-tree250MiB/repeats/scaling/speed gates.
+No encoder performance/full-source fit/public promotion or full-goal claim.
+
 ## 2026-10-06 — Actual allocation-time result: MV pool failure with zero idle backing
 
 Previous implementation goal turn was progress; intervening push confirmed the
