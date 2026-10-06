@@ -5,6 +5,67 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Bounded frame property handoff implemented; native execution pending
+
+Added private pointer-free160-byte scalar header plus bounded native dictionary/
+byte-side records, one64KiB native slot inside EACH existing32/16MiB heap. No
+third pixel buffer, JS metadata decode, retained record/history or additional SAB.
+PTS/DTS/best-effort/duration use exact64-bit little-endian values, never JS Number;
+picture/quality/repeat/flags/error/SAR/time-base/color/chroma/alpha fields preserved.
+Frame metadata and side metadata retain UTF-8 bytes, empty values, case-sensitive
+keys and duplicate entries. Bounds:64 dictionary entries each,16 side entries,
+1024-byte keys/8192-byte values,64KiB TOTAL wire including all payloads/headers.
+
+Export preflights everything before writing. Import validates entire record before
+allocation, builds bounded metadata in a fresh property-only native frame, then
+transactionally replaces destination metadata/side data without touching pixel
+storage or native pixel refs. Every rejection/allocation failure preserves the
+old destination. Empty source clears stale properties; old metadata is freed.
+Decoder private_ref is NEVER inspected/changed/transferred (upstream prohibition).
+Opaque/hardware/audio/crop properties refuse explicitly. Current side payloads
+are only documented raw bytes:A53 CC,unregistered SEI,ICC,EXIF; structured/unknown
+side data explicitly refuse, not silently omitted. Broader audited side payload
+serializers remain needed; this is NOT a narrowed definition of project success.
+
+New synthetic native fixture checks actual fields/dictionaries/payloads independently
+of re-export, ±2^60 timestamps/INT64_MIN/MAX, Unicode/duplicate/case/empty metadata,
+12 pixel+property cases,17 malformed records,100 replacements,7 rejected sources,
+empty replacement and final zero refs. Dedicated optional mode in EXISTING no-Docker
+workflow retains only compact report, finally exact owned build scratch removed.
+Five precise additions reverse to both original workflow hashes; defaults and
+historical source hashes unchanged. Four new local/source/provenance guards PASS;
+512/512 unit tests, TypeScript, scoped zero-warning lint, Bash syntax and whitespace
+checks PASS. Native recipe execution pending. No real codec/file/original/browser conversion,
+performance improvement, process-memory fit or public promotion claimed. Next
+ONE new property contract compile; then actual encoder configuration/packets/codecs
+and production I/O integration, with original full-fidelity250MiB/repeats/scaling.
+
+## 2026-10-06 — Real libavutil split-frame transport contract passed (not conversion)
+
+Previous goal implementation was progress; intervening push verified local/remote
+f5bba0c. Revalidated terminal corrected run37435181293/job112175137251 at that
+head: SUCCESS,207s build/252s job (NOT conversion speed). Actual native12/12
+cases passed:18x10 and1920x804,420/422, positive/negative source/negative target
+strides. Actual binary memories fixed shared512/256 pages; stacks256KiB each.
+Native source backing and destination padding unchanged, refs1 before/after,
+finally destruction verifies0. All cases one frame/copy/completion, no queued
+frame/extra pixel buffer;1920x804 active2315520/3087360 bytes, no cropping.
+
+Only12379-byte compact report downloaded under work/mpeg2-split-contract-37435181293;
+SHAf368256c...3125. All7 source pins locally matched and all12 active pixel hashes
+independently regenerated. Four compiled artifact hashes retained in report;
+no binaries/source bundle/media/profile downloaded. Hosted cleanup SUCCESS;
+artifact11399630528 deleted after verification/API0; no download ZIP retained.
+Frozen evidence/mpeg2-split-frame-native-measured-2026-10-06.json plus two guards
+retain executed results, distinct from earlier failed build/source-only checkpoint.
+
+No decoder/encoder codec executed, no original fixture read, no browser conversion,
+no speed/process-memory/public acceptance. Prior missing compiler stderr remains
+unrecovered; old rootCauseProven:false preserved. Next implement bounded frame
+properties/metadata/side-data ownership, encoder configuration and packet transport,
+then integrate actual split codecs into production AVIO. Full original specification,
+fidelity, three stress repeats, scaling and250MiB remain required and incomplete.
+
 ## 2026-10-06 — Synthetic native contract compiler probe failed; package boundary corrected
 
 ONE native contract37434634781/job112173338626/ea0aeb4 FAILED:29s build step/

@@ -41,6 +41,23 @@ const splitAdditions = [
     "          rm -rf -- \"$task_path\"\n",
 ];
 
+const splitPropertyAdditions = [
+  "          - within-mpeg2-split-properties\n",
+  "          elif test \"${{ inputs.core }}\" = within-mpeg2-split-properties; then\n" +
+    "            export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\n" +
+    "            bash media/ffmpeg/verify-mpeg2-split-properties.sh\n",
+  "      - name: Retain synthetic split properties contract only\n" +
+    "        if: success() && inputs.core == 'within-mpeg2-split-properties'\n" +
+    "        uses: actions/upload-artifact@v4\n        with:\n" +
+    "          name: private-mpeg2-split-properties-${{ github.run_id }}\n" +
+    "          path: outputs/reports/mpeg2-split-properties-contract.json\n" +
+    "          if-no-files-found: error\n          retention-days: 1\n\n",
+  " && inputs.core != 'within-mpeg2-split-properties'",
+  "          task_path=\"$GITHUB_WORKSPACE/work/mpeg2-split-properties-build\"\n" +
+    "          test \"$task_path\" = \"$GITHUB_WORKSPACE/work/mpeg2-split-properties-build\" && ! test -L \"$task_path\"\n" +
+    "          rm -rf -- \"$task_path\"\n",
+];
+
 // Older compiled proofs predate two additional retained unit JSON files. Do
 // not refresh their hashes: reversing exactly those lines must recover every
 // byte of the workflow actually used. The later private allocator selector
@@ -50,6 +67,12 @@ export function provenSourceSha(file, bytes, expected) {
   if (file !== workflow || ![historicalSha, readerOnlyRetentionSha].includes(expected) || sha(bytes) === expected)
     return sha(bytes);
   let text = bytes.toString("utf8");
+  if (text.includes("within-mpeg2-split-properties")) {
+    for (const addition of splitPropertyAdditions) {
+      assert.equal(text.split(addition).length, 2, "Exactly one complete synthetic properties workflow addition");
+      text = text.replace(addition, "");
+    }
+  }
   if (text.includes("within-mpeg2-split-contract")) {
     for (const addition of splitAdditions) {
       assert.equal(text.split(addition).length, 2, "Exactly one complete synthetic split-unit workflow addition");

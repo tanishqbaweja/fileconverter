@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "scope": "executed-synthetic-libavutil-split-frame-contract-not-conversion",
+  "run": {
+    "databaseId": 37435181293,
+    "jobId": 112175137251,
+    "headSha": "f5bba0c174c4a223b24d2033f2a838e9cca1755c",
+    "conclusion": "success",
+    "startedAt": "2026-10-06T08:18:04Z",
+    "completedAt": "2026-10-06T08:22:16Z",
+    "jobSeconds": 252,
+    "buildStepSeconds": 207,
+    "buildStartedAt": "2026-10-06T08:18:45Z",
+    "buildCompletedAt": "2026-10-06T08:22:12Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37435181293"
+  },
+  "report": {
+    "path": "work/mpeg2-split-contract-37435181293/mpeg2-split-frame-contract.json",
+    "bytes": 12379,
+    "sha256": "f368256ca45440d5d32b1c45622e3312c78667c9b6d0a7d8433491a7e5713125"
+  },
+  "artifact": {
+    "id": 11399630528,
+    "zipBytes": 2055,
+    "zipDigest": "3b894419b45d0b611b8b339b4d293000d5199c92c15905bf16840c7f8165a732",
+    "deletedAfterLocalValidation": true,
+    "remainingArtifactsAfterDeletion": 0
+  },
+  "cleanup": {
+    "hostedStepPassed": true,
+    "hostedStartedAt": "2026-10-06T08:22:13Z",
+    "hostedCompletedAt": "2026-10-06T08:22:15Z",
+    "localDownloadZipRetained": false,
+    "localMediaOrBrowserProfilesCreated": false,
+    "binariesAndSourceBundleDownloaded": false
+  },
+  "independentLocalChecks": {
+    "sourceHashesMatched": 7,
+    "regeneratedActivePixelHashesMatched": 12
+  },
+  "nativeReport": {
+    "status": "passed-synthetic-native-frame-transport-not-conversion",
+    "publicAcceptance": false,
+    "conversionPerformed": false,
+    "processMemoryAcceptance": false,
+    "speedGainClaim": null,
+    "ffmpegVersion": "8.1.2",
+    "emscriptenVersion": "6.0.4",
+    "allocator": "dlmalloc",
+    "primarySources": {
+      "libavutil/frame.c": "3f004de1ba09a2f1749eea93d7c75d1a942732532b669a165517091203566534",
+      "libavutil/frame.h": "91275238d0abfc4fef41f2f6a4f182e279886af78e2f525864329279206a3be9"
+    },
+    "sources": {
+      "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+      "media/ffmpeg/mpeg2-split-frame-smoke.c": "e75d48a26991e68d7f6c28811b2d447569ab4f291cfed23709aebb37f2c57328",
+      "media/ffmpeg/verify-mpeg2-split-frame.sh": "9cac03f0fd9846d95f0adde521c905efec25a446397c8e827ce86574e39ba3a6",
+      "scripts/verify-mpeg2-split-frame-native.mjs": "a50b87402c1d531a3e1740f12abf121f49677afe23bf42a30527fcec1c491cd3",
+      "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+      "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a"
+    },
+    "artifacts": {
+      "split-decoder.mjs": "c8722782d58c5098bca7cf1e8f9f1797bb620adb7bfe9fd75b718ac43b995ee3",
+      "split-decoder.wasm": "5a8ceec3617374119f0611ed3ab9daa1382e1d17b9352f9d73e5094fe652cb7e",
+      "split-encoder.mjs": "05386c28efe8d5a08f2e9dea61befb26140c6df540a5f8ba6913512296fb48b4",
+      "split-encoder.wasm": "aa5155f0f46baf2b0e5ac4e780926e917377021229b22c30eb574f623967aedb"
+    },
+    "actualLimits": {
+      "decoder": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 512,
+          "shared": true
+        }
+      ],
+      "encoder": [
+        {
+          "imported": true,
+          "initialPages": 256,
+          "maximumPages": 256,
+          "shared": true
+        }
+      ]
+    },
+    "nativeStackBytesEach": 262144,
+    "checkedCases": 12,
+    "rows": [
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv420p",
+        "negativeSource": false,
+        "negativeTarget": false,
+        "activePixelSha256": "e61b1b5a89023a3b71a26d11ffa3c69b12099b8c723639c8c6000407d460824b",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 270,
+          "peakFrameBytes": 270,
+          "closed": true
+        }
+      },
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv420p",
+        "negativeSource": true,
+        "negativeTarget": false,
+        "activePixelSha256": "e61b1b5a89023a3b71a26d11ffa3c69b12099b8c723639c8c6000407d460824b",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 270,
+          "peakFrameBytes": 270,
+          "closed": true
+        }
+      },
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv420p",
+        "negativeSource": false,
+        "negativeTarget": true,
+        "activePixelSha256": "e61b1b5a89023a3b71a26d11ffa3c69b12099b8c723639c8c6000407d460824b",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 270,
+          "peakFrameBytes": 270,
+          "closed": true
+        }
+      },
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv422p",
+        "negativeSource": false,
+        "negativeTarget": false,
+        "activePixelSha256": "fd8b61e5486707c762ea7b91e994dd2fc8864e7084ba6b78c0773dac629be216",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 360,
+          "peakFrameBytes": 360,
+          "closed": true
+        }
+      },
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv422p",
+        "negativeSource": true,
+        "negativeTarget": false,
+        "activePixelSha256": "fd8b61e5486707c762ea7b91e994dd2fc8864e7084ba6b78c0773dac629be216",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 360,
+          "peakFrameBytes": 360,
+          "closed": true
+        }
+      },
+      {
+        "width": 18,
+        "height": 10,
+        "pixelFormat": "yuv422p",
+        "negativeSource": false,
+        "negativeTarget": true,
+        "activePixelSha256": "fd8b61e5486707c762ea7b91e994dd2fc8864e7084ba6b78c0773dac629be216",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 360,
+          "peakFrameBytes": 360,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv420p",
+        "negativeSource": false,
+        "negativeTarget": false,
+        "activePixelSha256": "336499d37fedc0aa9b0bbdef135627362c9a422b6dd5304b54379b9db43442c4",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 2315520,
+          "peakFrameBytes": 2315520,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv420p",
+        "negativeSource": true,
+        "negativeTarget": false,
+        "activePixelSha256": "336499d37fedc0aa9b0bbdef135627362c9a422b6dd5304b54379b9db43442c4",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 2315520,
+          "peakFrameBytes": 2315520,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv420p",
+        "negativeSource": false,
+        "negativeTarget": true,
+        "activePixelSha256": "336499d37fedc0aa9b0bbdef135627362c9a422b6dd5304b54379b9db43442c4",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 2315520,
+          "peakFrameBytes": 2315520,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv422p",
+        "negativeSource": false,
+        "negativeTarget": false,
+        "activePixelSha256": "b14fd697a29b56efbaedef2a67cc4e0c6eb90f01c83446a25e10bfbcf3896536",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 3087360,
+          "peakFrameBytes": 3087360,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv422p",
+        "negativeSource": true,
+        "negativeTarget": false,
+        "activePixelSha256": "b14fd697a29b56efbaedef2a67cc4e0c6eb90f01c83446a25e10bfbcf3896536",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 3087360,
+          "peakFrameBytes": 3087360,
+          "closed": true
+        }
+      },
+      {
+        "width": 1920,
+        "height": 804,
+        "pixelFormat": "yuv422p",
+        "negativeSource": false,
+        "negativeTarget": true,
+        "activePixelSha256": "b14fd697a29b56efbaedef2a67cc4e0c6eb90f01c83446a25e10bfbcf3896536",
+        "decoderBackingUnchanged": true,
+        "encoderPaddingUnchanged": true,
+        "nativeReferenceCountBeforeAndAfter": 1,
+        "metrics": {
+          "scope": "private-pixel-transport-not-conversion-acceptance",
+          "decoderMemoryBytes": 33554432,
+          "encoderMemoryBytes": 16777216,
+          "additionalPixelBufferBytes": 0,
+          "queuedFrames": 0,
+          "activeFrames": 0,
+          "peakActiveFrames": 1,
+          "completedFrames": 1,
+          "copiedFrames": 1,
+          "copiedBytes": 3087360,
+          "peakFrameBytes": 3087360,
+          "closed": true
+        }
+      }
+    ],
+    "mediaFilesRead": false,
+    "mediaFilesWritten": false,
+    "originalFixtureRead": false,
+    "limits": "Synthetic AVFrames/real libavutil allocation/getter only, no decoder/encoder code. Native refs stay1; destroy finally returns0refs. Pixel transport does not carry properties/side data/configuration or encoded packets. Those contracts and real production-browser/full-source/fidelity/250MiB/speed gates remain incomplete. Scratch cleanup is performed by the enclosing recipe/workflow and must be verified separately."
+  },
+  "publicAcceptance": false,
+  "conversionPerformed": false,
+  "processMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "limitations": "Real libavutil frames only. No decode/encode, frame properties, side data, codec configuration, packets, production browser conversion, full-source fit or 250 MiB proof. Recipe assertions include native frame destruction/refcount zero. Build time is not conversion time. Earlier failed compiler probe remains rootCauseProven:false; successful changed build does not recover its missing stderr."
+}
