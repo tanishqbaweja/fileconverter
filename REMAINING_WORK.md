@@ -5,6 +5,54 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual original failed plane-buffer request measured
+
+ONE changed original-source diagnostic now measures the native allocation size,
+not just its call path. First a real Chrome154 dedicated-worker prerequisite
+used a 57-byte Wasm module with known argument123456; the same event-capable CDP
+transport captured that native scalar and resumed. No original/media/codec I/O
+in that prerequisite. Its profile was deleted in finally. The superseded broad
+prototype only ran that tiny probe; the executed production inspector now skips
+all JavaScript frames, getters, typed arrays, Modules and media buffers. It reads
+only verified Wasm scalar wrappers, at most64 property operations/128KiB output,
+one abort pause; normal execution resumes even after unavailable local reads.
+
+The original1920x804 HEVC -> MPEG2 run again stopped after243 genuine handoffs
+and mux-accepted packets. At the existing abort callback, BOTH av_buffer_allocz
+and av_malloc local0 were1597463bytes. Actual pinned binary function indices,
+single-i32 signatures and pause offsets within their body extents independently
+corroborate this request against pinned FFmpeg8.1.2 size-argument source. This
+1,597,463-byte PLANE request is not the33,779,712-byte requested TOTAL heap end.
+Decoder32MiB/encoder16MiB, native256KiB stacks, options, quality, native code,
+one-pending256KiB I/O caps and the250MiB complete-process-tree fail-fast gate
+remain unchanged. No successful allocation/output, public promotion, comparable
+speed improvement or completed250MiB acceptance is claimed. Debugger tier-down
+perturbs execution. The observed incomplete increase was204.5625MiB, complete
+native peak481521664 minus same blank267022336bytes; never substitute that
+partial result for completed acceptance or compare it to another baseline.
+
+Live-frame count, largest free block, cached-plane bytes and capacity-versus-
+fragmentation remain NULL/unproven. Optimized nonparameter locals are recorded
+without guessing their meaning. Next inspect actual DLmalloc free blocks and
+live HEVC ownership at this exact failure, not another unchanged conversion or
+speculative release of still-live reference pictures.
+
+evidence/mpeg2-split-oom-locals-measured-2026-10-06.json retains compact actual
+scalar values/binary types/extents/source hashes/report hashes/full native peak.
+Original pre/post size+SHA plus independent final verification passed. Allfive
+cleanup flags passed with no OPFS lock error; owned browser/server/observer PIDs
+and runtime/profile independently absent. All six generated assets match their
+published hashes; every private helper/core asset absent. Partial converted copy
+deleted, original untouched. Historical executed drivers/stagers and evidence
+source pins are preserved. No Docker command or native conversion ran.
+
+Cycle regression:566/566 unit tests, TypeScript, scoped zero-warning ESLint and
+git diff whitespace checks pass. No public engine/registry/application code
+changed, so unchanged production build and expensive stress suites were not
+repeated. The obsolete25,602-byte broad tiny-probe report was removed after the
+safer2,628-byte dedicated-worker prerequisite and compact proof superseded it;
+neither probe used the source video or performed conversion.
+
 ## 2026-10-06 — Actual original OOM call path identified: HEVC decoded-frame buffer
 
 ONE changed, explicitly non-accepting original-source browser diagnostic uses
