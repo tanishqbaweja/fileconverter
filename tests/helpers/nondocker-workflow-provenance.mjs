@@ -98,6 +98,20 @@ const splitPipelineAdditions = [
     "          rm -rf -- \"$task_path\"\n",
 ];
 
+const alignedReuseAdditions = [
+  "          - within-mpeg2-aligned-reuse\n",
+  "          elif test \"${{ inputs.core }}\" = within-mpeg2-aligned-reuse; then\n" +
+    "            export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\n" +
+    "            node media/ffmpeg/build-mpeg2-aligned-reuse.mjs\n",
+  "      - name: Retain private aligned-reuse split candidate\n" +
+    "        if: success() && inputs.core == 'within-mpeg2-aligned-reuse'\n" +
+    "        uses: actions/upload-artifact@v4\n        with:\n" +
+    "          name: private-mpeg2-aligned-reuse-${{ github.run_id }}\n" +
+    "          path: work/mpeg2-split-pipeline-output/\n" +
+    "          if-no-files-found: error\n          retention-days: 1\n\n",
+  " && inputs.core != 'within-mpeg2-aligned-reuse'",
+];
+
 // Older compiled proofs predate two additional retained unit JSON files. Do
 // not refresh their hashes: reversing exactly those lines must recover every
 // byte of the workflow actually used. The later private allocator selector
@@ -107,6 +121,12 @@ export function provenSourceSha(file, bytes, expected) {
   if (file !== workflow || ![historicalSha, readerOnlyRetentionSha].includes(expected) || sha(bytes) === expected)
     return sha(bytes);
   let text = bytes.toString("utf8");
+  if (text.includes("within-mpeg2-aligned-reuse")) {
+    for (const addition of alignedReuseAdditions) {
+      assert.equal(text.split(addition).length, 2, "Exactly one complete aligned reuse workflow addition");
+      text = text.replace(addition, "");
+    }
+  }
   if (text.includes("within-mpeg2-split-pipeline")) {
     for (const addition of splitPipelineAdditions) {
       assert.equal(text.split(addition).length, 2, "Exactly one complete split production pipeline workflow addition");

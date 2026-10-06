@@ -5,6 +5,28 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Private alignment-reuse build candidate prepared, not accepted
+
+Added a separate, opt-in no-Docker build candidate without changing the frozen
+baseline recipe, public engines, codec options or 32+16MiB fixed memories.
+For posix_memalign requests of at least256KiB with alignment16, the wrapper tries
+malloc and returns its pointer ONLY when actually16-byte aligned; otherwise it
+frees only that freshly acquired, unexposed pointer and calls upstream.
+FFmpeg av_malloc admission/initialization and live codec references are unchanged.
+The generated recipe reverses byte-for-byte to the pinned baseline. The builder
+requires a six-case synthetic C dispatch test, an actually linked wrapper and
+byte-identical companion encoder, with identity-owned scratch cleanup. Those
+native build gates have NOT executed yet; local C compilation was unavailable.
+
+Local source/recipe/provenance tests passed4/4; complete unit suite581/581,
+TypeScript and scoped zero-warning ESLint passed. Workflow YAML parsed without
+duplicate keys. Historical workflow evidence remains valid only by reversing
+the exact four paired additions; missing/mutated additions are rejected.
+No source video read, converted copy, hosted build or browser conversion in this
+cycle. Actual allocator alignment/reuse, fidelity, speed and complete-process
+250MiB acceptance remain unproved. This is private candidate infrastructure,
+not a new advertised route or completion of the project.
+
 ## 2026-10-06 — Failure-time free space and aligned-reservation fragmentation measured
 
 ONE changed, failure-only original-source browser run inspected allocator FREE

@@ -24,6 +24,7 @@ on:
           - within-mpeg2-split-properties
           - within-mpeg2-split-encoder
           - within-mpeg2-split-pipeline
+          - within-mpeg2-aligned-reuse
           - within-h264-vaa-arithmetic
           - within-h264-sad-arithmetic
       h264_memory_mib:
@@ -171,6 +172,9 @@ jobs:
           elif test "${{ inputs.core }}" = within-mpeg2-split-pipeline; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             bash media/ffmpeg/build-mpeg2-split-pipeline.sh
+          elif test "${{ inputs.core }}" = within-mpeg2-aligned-reuse; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            node media/ffmpeg/build-mpeg2-aligned-reuse.mjs
           elif test "${{ inputs.core }}" = within-mpeg2-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC="${{ inputs.mpeg2_allocator_diagnostic || '0' }}" \
@@ -272,6 +276,15 @@ jobs:
           if-no-files-found: error
           retention-days: 1
 
+      - name: Retain private aligned-reuse split candidate
+        if: success() && inputs.core == 'within-mpeg2-aligned-reuse'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-aligned-reuse-${{ github.run_id }}
+          path: work/mpeg2-split-pipeline-output/
+          if-no-files-found: error
+          retention-days: 1
+
       - name: Retain private arithmetic report only
         if: always() && inputs.core == 'within-h264-vaa-arithmetic'
         uses: actions/upload-artifact@v4
@@ -282,7 +295,7 @@ jobs:
           retention-days: 1
 
       - name: Retain mismatched artifacts for bounded diagnosis
-        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-mpeg2-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic' && inputs.core != 'within-mpeg2-split-contract' && inputs.core != 'within-mpeg2-split-properties' && inputs.core != 'within-mpeg2-split-encoder' && inputs.core != 'within-mpeg2-split-pipeline'
+        if: failure() && inputs.core != 'within-h264-candidate' && inputs.core != 'within-mpeg2-candidate' && inputs.core != 'within-h264-vaa-arithmetic' && inputs.core != 'within-h264-sad-arithmetic' && inputs.core != 'within-mpeg2-split-contract' && inputs.core != 'within-mpeg2-split-properties' && inputs.core != 'within-mpeg2-split-encoder' && inputs.core != 'within-mpeg2-split-pipeline' && inputs.core != 'within-mpeg2-aligned-reuse'
         uses: actions/upload-artifact@v4
         with:
           name: ffmpeg-nondocker-mismatch-${{ github.run_id }}
