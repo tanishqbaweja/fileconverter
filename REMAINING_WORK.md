@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Split production pipeline compiled; genuine small/adverse gate passed
+
+No-Docker run37444860342/job112207132777/head881913b SUCCESS:536s build,
+580s job, not conversion time. Hosted finally cleanup succeeds. Nine reusable
+static tools/license/compact contract files,7958435bytes total, remain only in
+work/mpeg2-split-pipeline-37444860342. All26 source pins, seven artifact hashes,
+actual fixed shared512/256page memories and zero encoders in decoder/mux module
+verified. Broad seven requested decoders retain the explicitly audited H263/VP3
+upstream dependencies; an initial ad-hoc seven-only audit assumption was corrected
+against the unchanged decoder-selection contract, not by changing the build.
+Exact hosted artifact11403345701 deleted/API0; no download ZIP remains.
+
+Actual production Chrome small suite4/4 PASS23.5s. MPEG4 and reordered HEVC
+genuinely decode/re-encode48/96 MPEG2 frames. Independent output hashes match
+the earlier validated golden files exactly:321692/652521bytes, ordinal SSIM
+0.992146/0.985963. Full native decode, every video presentation timestamp within
+1ms, exact copied AAC and decoded PCM/priming, two audio tracks/languages,
+PNG250x140 compressed artwork, compatible Unicode container metadata and chapter
+checks pass without lowered thresholds. Actual fixed32MiB decoder+16MiB encoder
+and checked256KiB native stacks are measured; production worker reports48MiB
+aggregate, not32MiB. Codec handoff closes with zero held packets, no frame/packet
+queue or extra JS pixel/packet buffer. Mux-accepted packet counts match frames
+on successful outputs; these counters do not alone prove external disk writes.
+
+Write failure propagates and removes partial output. Cancellation observes
+116246 genuine output bytes before Cancel,471427 at cancelled terminal, zero
+pending/queued bytes and no partial files. All synthetic fixtures, outputs,
+profiles and owned runtime removed; independent inventory confirms no matching
+live Chrome/runtime, nine private additions absent, six public/generated media
+asset hashes identical. No original fixture read or modified in this small gate.
+Raw337349-byte browser report and compact frozen
+evidence/mpeg2-split-pipeline-small-passed-2026-10-06.json preserve provenance.
+Short diagnostic memory samples are NOT a stable-baseline250MiB certificate;
+~0.8s small conversions are NOT an identical-input speed A/B measurement.
+
+New separate protected-source driver keeps the existing full test.mkv byte/hash,
+32GiB free-disk preflight, production direct writer, stable blank baseline,
+whole Chromium tree/native100ms observer, unchanged250MiB fail-fast formula,
+independent original-resolution/color/timing/SSIM/audio/artwork/metadata validators
+and three required repeats. It additionally verifies both actual fixed heaps,
+aggregate48MiB and closed codec ownership. It does not rerun the unchanged combined
+32MiB failure. Full original-file fit, stress/repeats, clean sessions, scaling,
+speed A/B and public/legal/reproducibility release gates remain pending. Full
+original scope remains incomplete; public assets and selectors unchanged.
+
 ## 2026-10-06 — Split pipeline initial build path failure; precise correction
 
 Run37444418032/job112205680985/9660746 FAILED5s build/48s job BEFORE
