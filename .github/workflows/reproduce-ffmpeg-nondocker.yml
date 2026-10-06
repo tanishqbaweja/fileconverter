@@ -64,6 +64,15 @@ on:
           - '0'
           - '1'
 
+      mpeg2_frame_allocation_diagnostic:
+        description: Private scalar plane attribution only, never acceptance
+        required: false
+        default: '0'
+        type: choice
+        options:
+          - '0'
+          - '1'
+
       mpeg2_decoder_set:
         description: Additional private decoder module, broad default retained
         required: false
@@ -151,6 +160,7 @@ jobs:
             WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC="${{ inputs.mpeg2_allocator_diagnostic || '0' }}" \
               WITHIN_MPEG2_ALLOCATOR="${{ inputs.mpeg2_allocator || 'emmalloc' }}" \
               WITHIN_MPEG2_DECODER_SET="${{ inputs.mpeg2_decoder_set || 'wide' }}" \
+              WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC="${{ inputs.mpeg2_frame_allocation_diagnostic || '0' }}" \
               WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media/ffmpeg/build-mpeg2-candidate.sh
           else
             bash media/ffmpeg/reproduce-nondocker.sh

@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-allocator-selection.mjs";
 import { verifyMpeg2DecoderSet } from "./mpeg2-decoder-selection.mjs";
+import { reverseFrameAllocationDiagnostic, FRAME_ALLOCATION_SOURCE_SHA256 } from "./mpeg2-frame-allocation-diagnostic.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const build = path.resolve(process.argv[2] ?? "");
@@ -31,9 +32,17 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/refstruct-readonly-pool-diagnostic.patch", "refstruct-diagnostic-smoke.c",
   "patches/mpeg2-encoder-pool-release-diagnostic.patch",
   "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
-  "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs"];
+  "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs",
+  "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
+const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(frameDiagnostic)) throw new Error("Private scalar plane diagnostic must be 0 or 1");
+if (frameDiagnostic === "1" && allocatorDiagnostic === "1") throw new Error("Separate diagnostic event budgets cannot be combined");
+const actualFrameSource = await readFile(path.join(build, "ffmpeg/libavcodec/get_buffer.c"), "utf8");
+if (frameDiagnostic === "1") reverseFrameAllocationDiagnostic(actualFrameSource);
+else if (createHash("sha256").update(actualFrameSource).digest("hex") !== FRAME_ALLOCATION_SOURCE_SHA256)
+  throw new Error("Unexpected frame-allocation source state");
 const nativeAllocator = selectMpeg2Allocator(process.env.WITHIN_MPEG2_ALLOCATOR ?? "emmalloc", allocatorDiagnostic === "1");
 const compiledAllocatorSymbols = verifyMpeg2AllocatorSymbols(nativeAllocator,
   await readFile(path.join(output, "within-mpeg2.mjs.symbols"), "utf8"));
@@ -79,6 +88,8 @@ if (asyncifyStackSizes.length !== 1 || Number(asyncifyStackSizes[0][1]) !== 2621
 const compiledModule = new WebAssembly.Module(await readFile(path.join(output, "within-mpeg2.wasm")));
 const compiledImports = WebAssembly.Module.imports(compiledModule);
 const compiledExports = WebAssembly.Module.exports(compiledModule);
+if (compiledImports.some((entry) => entry.name === "within_mpeg2_plane_emit" && entry.kind === "function") !== (frameDiagnostic === "1"))
+  throw new Error("Actual compiled scalar plane observer differs from requested mode");
 if (!compiledImports.some((entry) => entry.name === "__handle_stack_overflow" && entry.kind === "function")
   || !compiledExports.some((entry) => entry.name === "__set_stack_limits" && entry.kind === "function"))
   throw new Error("Compiled StackCheck2 runtime guard missing");
@@ -89,6 +100,10 @@ const manifest = {
   status: "private-feasibility-candidate-not-certified-not-public",
   ffmpegVersion: "8.1.2", ffmpegSourceSha256, emscriptenVersion: "6.0.4",
   allocatorDiagnostic: allocatorDiagnostic === "1",
+  frameAllocationDiagnostic: frameDiagnostic === "1",
+  frameAllocationDiagnosticSourceSha256: createHash("sha256").update(actualFrameSource).digest("hex"),
+  frameAllocationDiagnosticLimit: 192,
+  frameAllocationDiagnosticScope: "Before/after scalar plane requests independent of allocator; no buffer/media/address copying, no codec/layout/reference mutations, no performance or acceptance certification",
   decoderSet: decoderSelection.name, requestedDecoders: decoderSelection.requested,
   decoderModuleScope: "Additional private HEVC/MPEG4 specialist or unchanged broad/default module; no public coverage removed. Static/runtime footprint, source fit and speed require actual comparison",
   nativeAllocator, compiledAllocatorSymbols,

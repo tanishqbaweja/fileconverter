@@ -42,7 +42,11 @@ const artwork = source.slice(source.indexOf(artworkStart), source.indexOf(artwor
 const kernel = await readFile(path.join(directory, "mpeg2-candidate.c"), "utf8");
 const diagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(diagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
-const candidate = bridge + artwork + (diagnostic === "1"
+const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
+if (!["0", "1"].includes(frameDiagnostic)) throw new Error("Private scalar plane diagnostic must be 0 or 1");
+if (frameDiagnostic === "1" && diagnostic === "1") throw new Error("Separate diagnostic event budgets cannot be combined");
+const candidate = bridge + artwork + (frameDiagnostic === "1"
+  ? await readFile(path.join(directory, "mpeg2-frame-allocation-diagnostic.h"), "utf8") + "\n" : "") + (diagnostic === "1"
   ? instrumentMpeg2Allocator(kernel, await readFile(path.join(directory, "mpeg2-allocator-diagnostic.h"), "utf8"))
   : kernel);
 await writeFile(output, candidate, { flag: "wx" });

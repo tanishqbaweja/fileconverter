@@ -24,7 +24,7 @@ const adapter = `// PRIVATE_MPEG2_LARGE_ADAPTER_NOT_PUBLIC_SUPPORT
 import factory from "/engines/remux/_candidate_mpeg2_large_base.mjs";
 export default async function(options) {
 ${stackDiagnostic ? "  Error.stackTraceLimit = 48; // Bounded private failure diagnosis, never acceptance.\n" : ""}
-${manifest.allocatorDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
+${manifest.allocatorDiagnostic || manifest.frameAllocationDiagnostic ? `  options = { ...options, withinBridge: { ...options.withinBridge, allocatorDiagnostic(sample) {
     console.debug("WITHIN_MPEG2_ALLOCATOR " + JSON.stringify(sample));
   } } };
 ` : ""}

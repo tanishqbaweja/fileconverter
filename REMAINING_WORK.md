@@ -5,6 +5,45 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Exact plane attribution implemented; source-only audit passed
+
+Previous cycle was progress: actual specialist build/small passes/original failure
+were frozen and pushed50fe20e, not a successful conversion or an unchanged wait.
+New WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC defaults0 and accepts only0/1 before
+SDK/scratch. It is independent of malloc implementation and cannot be combined
+with emmalloc heap/pool instrumentation (separate caps). Three exact scalar-only
+insertions into pinned get_buffer.c: declaration plus before/after each real
+video plane acquisition. Records requested bytes, plane index, codec/encoder,
+actual context/coded/frame dimensions, pixel format, stride and already allocated
+current-frame bytes; before-result NULL, after-result actual bool. No addresses,
+media payload, heap/free-block guesses, allocator mutation, pixel-buffer copy,
+layout/reference/cache/quality/source/algorithm change. Native cap192/browser240;
+unchanged fixed32M, guarded256K stacks,64K I/O, kernel and production gate.
+
+Source-only verifier fetched bounded32K pinned FFmpeg8.1.2 get_buffer.c, applied
+the two already audited plane-cache patches, checked existing910da629...c4ab4,
+then exact diagnostic71fb08761ce7c72554ec48ec2a64dfa1973d558c21ec1731f82d62939a7f46d7.
+Reversing only the three inserted blocks recovers EVERY allocation/source byte.
+Duplicate instrumentation, changed allocation and changed insertion rejected;
+source artifact and unique owned scratch removed. Frozen evidence/
+mpeg2-frame-plane-source-audit-2026-10-06.json pins helper/header/verifier sources;
+actual failed plane/runtime saving/speed still NULL, compiled observer not yet
+verified. Synthetic scalar emitter tests are not native conversion evidence.
+
+Native recipe/manifest/bundle wired; manifest validates actual source reversal and
+presence/absence of the real Wasm scalar import, with21 source pins. Generated
+normal wrapper remains byte-exact when feature0. Private full harness captures
+events, performs at mostONE diagnostic attempt, and refuses diagnostic acceptance.
+Workflow optional default0 paired selector reversal is exact; historical hashes
+unchanged, unpaired/default/other changes rejected. Broad decoder module/public
+engines/registry retained. Next one changed DL/hevc-mpeg4 diagnostic build and
+one full ORIGINAL source attribution, not an unchanged normal conversion retry.
+Regression462/462 units,21 focused guards, zero-warning scoped ESLint, TypeScript,
+Bash syntax/diff and source-only reversal/cleanup pass. No browser conversion or
+Docker ran in this implementation cycle; existing failed evidence is unchanged.
+Generated default wrapper actualSHA5650af19...c88d remains identical; removing the
+diagnostic header from generated feature1 wrapper recovers feature0 byte-exactly.
+
 ## 2026-10-06 — Specialist compiled; small fidelity passes; original still fails
 
 No-Docker run37367996146/job111957771738 at41e0384b1ad815a30487946b6d70fa587dbbe08b

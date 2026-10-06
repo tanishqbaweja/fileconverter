@@ -1,0 +1,26 @@
+{
+  "scope": "source-only-not-conversion-not-memory-acceptance",
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "compiledObserverVerified": false,
+  "sources": {
+    "media/ffmpeg/mpeg2-frame-allocation-diagnostic.mjs": "8ff25498058278c77f15a98a56dca680e280a1bac02f4e03f6a265229f8a5a31",
+    "media/ffmpeg/mpeg2-frame-allocation-diagnostic.h": "1af47bb6236c2b56e81e969da13c442d66e97aeb7e0477a60b58ffbdd0482cf6",
+    "scripts/verify-mpeg2-frame-allocation-diagnostic.mjs": "a9b6411db9217a8df60a576f45ebd3e4c347a7f7fb6c829f40ef10425ed81409"
+  },
+  "originalSourceSha256": "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19",
+  "beforeSourceSha256": "910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4",
+  "afterSourceSha256": "71fb08761ce7c72554ec48ec2a64dfa1973d558c21ec1731f82d62939a7f46d7",
+  "byteExactReversal": true,
+  "insertions": 3,
+  "allocationCodeChanged": false,
+  "eventCap": 192,
+  "duplicateInstrumentationRejected": true,
+  "changedAllocationRejected": true,
+  "changedInsertionRejected": true,
+  "sourceArtifactAndOwnedScratchRemoved": true,
+  "actualFailedPlane": null,
+  "runtimeHeapSavingsBytes": null,
+  "conversionSpeedGain": null,
+  "next": "Compile one changed dlmalloc/hevc-mpeg4 scalar-plane diagnostic with fixed32MiB, then run one original-source diagnostic. Source reversal and synthetic emitter checks do not prove native compilation, observed failure attribution, speed or acceptance."
+}

@@ -127,7 +127,7 @@ async function stopOwned(child) {
   }
 }
 const manifest = JSON.parse(await readFile(path.join(candidate, "build-manifest.json"), "utf8"));
-const diagnosticOnly = stackDiagnostic || manifest.allocatorDiagnostic === true;
+const diagnosticOnly = stackDiagnostic || manifest.allocatorDiagnostic === true || manifest.frameAllocationDiagnostic === true;
 const allocatorSamples = [];
 let allocatorSamplesEvicted = 0;
 assert.equal(manifest.initialWasmMemoryBytes, 32 * MiB);

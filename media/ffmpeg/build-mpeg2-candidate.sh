@@ -13,6 +13,11 @@ CANDIDATE_ALLOCATOR="${WITHIN_MPEG2_ALLOCATOR:-emmalloc}"
   { echo 'Private MPEG2 allocator must be emmalloc or dlmalloc.' >&2; exit 2; }
 [[ "${ALLOCATOR_DIAGNOSTIC}" == 0 || "${CANDIDATE_ALLOCATOR}" == emmalloc ]] ||
   { echo 'emmalloc-specific diagnostics cannot measure dlmalloc.' >&2; exit 2; }
+FRAME_ALLOCATION_DIAGNOSTIC="${WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC:-0}"
+[[ "${FRAME_ALLOCATION_DIAGNOSTIC}" == 0 || "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]] ||
+  { echo 'Private scalar plane diagnostic must be 0 or 1.' >&2; exit 2; }
+[[ "${FRAME_ALLOCATION_DIAGNOSTIC}" == 0 || "${ALLOCATOR_DIAGNOSTIC}" == 0 ]] ||
+  { echo 'Plane and allocator diagnostics use separate event budgets; do not combine.' >&2; exit 2; }
 CANDIDATE_DECODER_SET="${WITHIN_MPEG2_DECODER_SET:-wide}"
 case "${CANDIDATE_DECODER_SET}" in
   wide) CANDIDATE_DECODER_FLAGS="--enable-decoder=h264,hevc,mpeg4,mpeg2video,theora,vp8,vp9" ;;
@@ -96,6 +101,11 @@ patch --fuzz=0 --directory=ffmpeg --strip=1 \
   < "${SCRIPT_DIR}/patches/hevc-decoder-uncached-frame-buffers.patch"
 printf '%s  %s\n' 910da6292a78066b114da7d26c7c1684969022960efc8becf116dc2b5acc4ab4 \
   ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
+if [[ "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
+  # Scalar observer independent of emmalloc/dlmalloc; exact source reversal.
+  node "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.mjs" \
+    "${BUILD_ROOT}/ffmpeg/libavcodec/get_buffer.c"
+fi
 # Private single-thread MPEG2 encoder accessory policy. Only final-reference
 # return skips the idle cache; live objects, reset/free callbacks and decoders
 # remain unchanged. The reserved bit is disjoint from pinned upstream flags.
@@ -198,6 +208,8 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-candidate-manifest.mjs" \
   "${SCRIPT_DIR}/mpeg2-allocator-selection.mjs" \
   "${SCRIPT_DIR}/mpeg2-decoder-selection.mjs" \
+  "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.mjs" \
+  "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.h" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

@@ -18,6 +18,12 @@ const decoderInput = "      mpeg2_decoder_set:\n" +
   "        options:\n          - wide\n          - hevc-mpeg4\n\n";
 const decoderEnvironment = "              WITHIN_MPEG2_DECODER_SET=\"${{ inputs.mpeg2_decoder_set || 'wide' }}\" \\\n";
 
+const planeInput = "      mpeg2_frame_allocation_diagnostic:\n" +
+  "        description: Private scalar plane attribution only, never acceptance\n" +
+  "        required: false\n        default: '0'\n        type: choice\n" +
+  "        options:\n          - '0'\n          - '1'\n\n";
+const planeEnvironment = "              WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC=\"${{ inputs.mpeg2_frame_allocation_diagnostic || '0' }}\" \\\n";
+
 // Older compiled proofs predate two additional retained unit JSON files. Do
 // not refresh their hashes: reversing exactly those lines must recover every
 // byte of the workflow actually used. The later private allocator selector
@@ -27,6 +33,12 @@ export function provenSourceSha(file, bytes, expected) {
   if (file !== workflow || ![historicalSha, readerOnlyRetentionSha].includes(expected) || sha(bytes) === expected)
     return sha(bytes);
   let text = bytes.toString("utf8");
+  if (text.includes("mpeg2_frame_allocation_diagnostic:") || text.includes("WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC=")) {
+    for (const addition of [planeInput, planeEnvironment]) {
+      assert.equal(text.split(addition).length, 2, "Exactly one paired scalar plane diagnostic addition");
+      text = text.replace(addition, "");
+    }
+  }
   if (text.includes("mpeg2_decoder_set:") || text.includes("WITHIN_MPEG2_DECODER_SET=")) {
     for (const addition of [decoderInput, decoderEnvironment]) {
       assert.equal(text.split(addition).length, 2, "Exactly one paired decoder selector addition");
