@@ -24,7 +24,7 @@ test("Post-release diagnostic is addition-only, opt-in, source pinned and bounde
   assert.match(header, /within_refstruct_pool_diagnostic\(pools\[i\], row \+ 2\)/);
   assert.doesNotMatch(header, /av_refstruct_unref|av_refstruct_pool_uninit|av_malloc|av_free|memory\.grow/);
   const recipe = await read("media/ffmpeg/build-mpeg2-candidate.sh");
-  assert.match(recipe, /if \[\[ "\$\{ALLOCATOR_DIAGNOSTIC\}" == 1 \]\]; then\s*# Read-only private pool telemetry/);
+  assert.match(recipe, /if \[\[ "\$\{ALLOCATOR_DIAGNOSTIC\}" == 1 \]\]; then\s*# Scalar accessor inventory after normal encoder picture release only/);
   assert.match(recipe, /2b16624607a83d6842d35ae053f3a542de82c84b72e7371bdadc6c6b5db9fb57/);
   assert.match(recipe, /mpeg2-encoder-pool-release-diagnostic.patch" source-bundle\//);
   const manifest = await read("media/ffmpeg/mpeg2-candidate-manifest.mjs");

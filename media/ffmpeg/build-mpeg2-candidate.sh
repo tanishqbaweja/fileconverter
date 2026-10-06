@@ -105,6 +105,11 @@ if [[ "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Scalar observer independent of emmalloc/dlmalloc; exact source reversal.
   node "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.mjs" \
     "${BUILD_ROOT}/ffmpeg/libavcodec/get_buffer.c"
+  # Addition-only native inventory, independent of malloc implementation.
+  printf '%s  %s\n' 340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e \
+    ffmpeg/libavcodec/hevc/refs.c | sha256sum --check --strict
+  node "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.mjs" \
+    "${BUILD_ROOT}/ffmpeg/libavcodec/hevc/refs.c"
 fi
 # Private single-thread MPEG2 encoder accessory policy. Only final-reference
 # return skips the idle cache; live objects, reset/free callbacks and decoders
@@ -121,7 +126,7 @@ printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e0
   ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
 printf '%s  %s\n' 4a2b2d1db11b794c3b8f4963e31cfb23124d09cdf8f0d6998037cbf344b45d9f \
   ffmpeg/libavcodec/mpegvideo.c | sha256sum --check --strict
-if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 || "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Read-only private pool telemetry atop the independently pinned policy.
   printf '%s  %s\n' e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084 \
     ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
@@ -129,6 +134,8 @@ if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
     < "${SCRIPT_DIR}/patches/refstruct-readonly-pool-diagnostic.patch"
   printf '%s  %s\n' 616af42245394f1db14d872554545d83759c6d5889292fdf8e4223ee244633f1 \
     ffmpeg/libavutil/refstruct.c | sha256sum --check --strict
+fi
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
   # Scalar accessor inventory after normal encoder picture release only.
   printf '%s  %s\n' 17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f \
     ffmpeg/libavcodec/mpegvideo_enc.c | sha256sum --check --strict
@@ -168,7 +175,7 @@ emcc "${SCRIPT_DIR}/mpeg2-accessory-smoke.c" -I"${PREFIX}/include" \
   -o "${BUILD_ROOT}/mpeg2-accessory-smoke.js"
 node "${BUILD_ROOT}/mpeg2-accessory-smoke.js" > "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
 test -s "${OUTPUT_ROOT}/mpeg2-accessory-smoke.json"
-if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 ]]; then
+if [[ "${ALLOCATOR_DIAGNOSTIC}" == 1 || "${FRAME_ALLOCATION_DIAGNOSTIC}" == 1 ]]; then
   # Synthetic allocation/source-reader unit, never a native media conversion.
   emcc "${SCRIPT_DIR}/refstruct-diagnostic-smoke.c" -I"${PREFIX}/include" \
     "${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 \
@@ -210,6 +217,8 @@ cp ffmpeg.tar.xz within_mpeg2.c "${SCRIPT_DIR}/within_remux.c" "${SCRIPT_DIR}/mp
   "${SCRIPT_DIR}/mpeg2-decoder-selection.mjs" \
   "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.mjs" \
   "${SCRIPT_DIR}/mpeg2-frame-allocation-diagnostic.h" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.mjs" \
+  "${SCRIPT_DIR}/mpeg2-hevc-auxiliary-diagnostic.h" \
   "${SCRIPT_DIR}/patches/matroska-bounded-no-cues.patch" \
   "${SCRIPT_DIR}/patches/mov-bounded-custom-metadata.patch" source-bundle/
 cp "${SCRIPT_DIR}/patches/mov-fragmented-cover-metadata-only.patch" source-bundle/

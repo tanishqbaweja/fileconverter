@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { instrumentMpeg2Allocator } from "../../scripts/lib/mpeg2-allocator-instrumentation.mjs";
+import { instrumentHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
 
 const directory = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(directory, "../..");
@@ -46,8 +47,9 @@ const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? 
 if (!["0", "1"].includes(frameDiagnostic)) throw new Error("Private scalar plane diagnostic must be 0 or 1");
 if (frameDiagnostic === "1" && diagnostic === "1") throw new Error("Separate diagnostic event budgets cannot be combined");
 const candidate = bridge + artwork + (frameDiagnostic === "1"
-  ? await readFile(path.join(directory, "mpeg2-frame-allocation-diagnostic.h"), "utf8") + "\n" : "") + (diagnostic === "1"
+  ? await readFile(path.join(directory, "mpeg2-frame-allocation-diagnostic.h"), "utf8") + "\n"
+    + await readFile(path.join(directory, "mpeg2-hevc-auxiliary-diagnostic.h"), "utf8") + "\n" : "") + (diagnostic === "1"
   ? instrumentMpeg2Allocator(kernel, await readFile(path.join(directory, "mpeg2-allocator-diagnostic.h"), "utf8"))
-  : kernel);
+  : frameDiagnostic === "1" ? instrumentHevcEncoderBoundary(kernel) : kernel);
 await writeFile(output, candidate, { flag: "wx" });
 process.stdout.write(`${createHash("sha256").update(candidate).digest("hex")}  ${output}\n`);

@@ -39,7 +39,7 @@ test("Pool diagnostics have a separate finite budget, delegate original get and 
 
 test("Pool reader only compiles in diagnostic mode; fixed32, original kernel and public artifacts remain unchanged", async () => {
   const recipe = await read("media/ffmpeg/build-mpeg2-candidate.sh");
-  assert.match(recipe, /if \[\[ "\$\{ALLOCATOR_DIAGNOSTIC\}" == 1 \]\]; then\s*# Read-only private pool telemetry/);
+  assert.match(recipe, /if \[\[ "\$\{ALLOCATOR_DIAGNOSTIC\}" == 1 \|\| "\$\{FRAME_ALLOCATION_DIAGNOSTIC\}" == 1 \]\]; then\s*# Read-only private pool telemetry/);
   assert.match(recipe, /--wrap=av_refstruct_pool_get/);
   assert.match(recipe, /refstruct-readonly-pool-diagnostic.patch" source-bundle\//);
   assert.match(recipe, /-sALLOW_MEMORY_GROWTH=0 "-sINITIAL_MEMORY=33554432" "-sMAXIMUM_MEMORY=33554432"/);

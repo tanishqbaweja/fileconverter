@@ -8,6 +8,7 @@ import { promisify } from "node:util";
 import { instrumentFrameAllocation, reverseFrameAllocationDiagnostic, FRAME_ALLOCATION_SOURCE_SHA256 }
   from "../media/ffmpeg/mpeg2-frame-allocation-diagnostic.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
+import { reverseHevcEncoderBoundary } from "../media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.mjs";
 
 const source = (name) => readFile(new URL(`../${name}`, import.meta.url), "utf8");
 test("Executed source-only plane audit is hash-bound and cannot masquerade as native or browser evidence", async () => {
@@ -29,7 +30,7 @@ test("Private plane source observer rejects unknown, malformed and already chang
     assert.throws(() => instrumentFrameAllocation(value));
   for (const value of [null, "", "x".repeat(32769)]) assert.throws(() => reverseFrameAllocationDiagnostic(value));
 });
-test("Actual generated default wrapper remains byte-identical; diagnostic differs only by its scalar header", async () => {
+test("Actual generated default wrapper remains byte-identical; diagnostic additions reverse exactly", async () => {
   const root = path.resolve(import.meta.dirname, ".."), runtime = await createOwnedRuntimeScratch("mpeg2-plane-generator-unit-");
   try {
     const rows = [];
@@ -44,7 +45,12 @@ test("Actual generated default wrapper remains byte-identical; diagnostic differ
     assert.equal(createHash("sha256").update(rows[0]).digest("hex"), "5650af19401766cf941bc95c221ff6b03c87192476bc10eacd7e6e47d1e0c88d");
     const header = await source("media/ffmpeg/mpeg2-frame-allocation-diagnostic.h");
     assert.equal(rows[1].split(header + "\n").length, 2);
-    assert.equal(rows[1].replace(header + "\n", ""), rows[0]);
+    const auxiliaryHeader = await source("media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.h");
+    assert.equal(rows[1].split(auxiliaryHeader + "\n").length, 2);
+    const stripped = rows[1].replace(header + "\n", "").replace(auxiliaryHeader + "\n", "");
+    const marker = "/* Private feasibility kernel, not a published conversion profile.";
+    const index = stripped.indexOf(marker);
+    assert.equal(stripped.slice(0, index) + reverseHevcEncoderBoundary(stripped.slice(index)), rows[0]);
   } finally {
     await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" });
   }

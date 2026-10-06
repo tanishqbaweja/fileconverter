@@ -4,6 +4,7 @@ import path from "node:path";
 import { selectMpeg2Allocator, verifyMpeg2AllocatorSymbols } from "./mpeg2-allocator-selection.mjs";
 import { verifyMpeg2DecoderSet } from "./mpeg2-decoder-selection.mjs";
 import { reverseFrameAllocationDiagnostic, FRAME_ALLOCATION_SOURCE_SHA256 } from "./mpeg2-frame-allocation-diagnostic.mjs";
+import { reverseHevcAuxiliarySource, HEVC_REFS_SOURCE_SHA256, reverseHevcEncoderBoundary } from "./mpeg2-hevc-auxiliary-diagnostic.mjs";
 
 const root = path.resolve(import.meta.dirname, "../..");
 const build = path.resolve(process.argv[2] ?? "");
@@ -33,7 +34,8 @@ const sourceFiles = ["within_remux.c", "mpeg2-candidate.c", "make-mpeg2-candidat
   "patches/mpeg2-encoder-pool-release-diagnostic.patch",
   "patches/mpeg2-encoder-uncached-accessories.patch", "mpeg2-accessory-smoke.c",
   "mpeg2-allocator-selection.mjs", "mpeg2-decoder-selection.mjs",
-  "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h"];
+  "mpeg2-frame-allocation-diagnostic.mjs", "mpeg2-frame-allocation-diagnostic.h",
+  "mpeg2-hevc-auxiliary-diagnostic.mjs", "mpeg2-hevc-auxiliary-diagnostic.h"];
 const allocatorDiagnostic = process.env.WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC ?? "0";
 if (!["0", "1"].includes(allocatorDiagnostic)) throw new Error("Private MPEG2 allocator diagnostic must be 0 or 1");
 const frameDiagnostic = process.env.WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC ?? "0";
@@ -44,10 +46,14 @@ if (frameDiagnostic === "1") reverseFrameAllocationDiagnostic(actualFrameSource)
 else if (createHash("sha256").update(actualFrameSource).digest("hex") !== FRAME_ALLOCATION_SOURCE_SHA256)
   throw new Error("Unexpected frame-allocation source state");
 const nativeAllocator = selectMpeg2Allocator(process.env.WITHIN_MPEG2_ALLOCATOR ?? "emmalloc", allocatorDiagnostic === "1");
+const actualHevcRefs = await readFile(path.join(build, "ffmpeg/libavcodec/hevc/refs.c"), "utf8");
+if (frameDiagnostic === "1") reverseHevcAuxiliarySource(actualHevcRefs);
+else if (createHash("sha256").update(actualHevcRefs).digest("hex") !== HEVC_REFS_SOURCE_SHA256)
+  throw new Error("Unexpected HEVC auxiliary source state");
 const compiledAllocatorSymbols = verifyMpeg2AllocatorSymbols(nativeAllocator,
   await readFile(path.join(output, "within-mpeg2.mjs.symbols"), "utf8"));
 const refstructSourceSha256 = await sha256(path.join(build, "ffmpeg/libavutil/refstruct.c"));
-if (refstructSourceSha256 !== (allocatorDiagnostic === "1"
+if (refstructSourceSha256 !== (allocatorDiagnostic === "1" || frameDiagnostic === "1"
   ? "616af42245394f1db14d872554545d83759c6d5889292fdf8e4223ee244633f1"
   : "e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084"))
   throw new Error("Unexpected refstruct diagnostic source state");
@@ -66,18 +72,23 @@ if (encoderReleaseSourceSha256 !== (allocatorDiagnostic === "1"
   ? "2b16624607a83d6842d35ae053f3a542de82c84b72e7371bdadc6c6b5db9fb57"
   : "17eddac164020668201e0b6d25140cf1328db6ba953559587240d8c73199289f"))
   throw new Error("Unexpected encoder-release diagnostic source state");
-const refstructPoolDiagnosticSmoke = allocatorDiagnostic === "1"
+const refstructPoolDiagnosticSmoke = allocatorDiagnostic === "1" || frameDiagnostic === "1"
   ? JSON.parse(await readFile(path.join(output, "refstruct-diagnostic-smoke.json"), "utf8")) : null;
 if (refstructPoolDiagnosticSmoke && JSON.stringify(refstructPoolDiagnosticSmoke) !== JSON.stringify({
   status: "passed", scope: "synthetic-source-reader-unit-not-conversion", payloadBytes: 1024,
   checkedTransitions: 9, multipleReferencesNotMultipleEntries: true, cacheReuseVerified: true,
   cap129InactiveLinksUnavailable: true, nullPoolUnavailable: true,
 })) throw new Error("Compiled diagnostic reader did not produce the exact required smoke proof");
-if (allocatorDiagnostic === "1" && !refstructPoolDiagnosticSmoke)
+if ((allocatorDiagnostic === "1" || frameDiagnostic === "1") && !refstructPoolDiagnosticSmoke)
   throw new Error("Compiled diagnostic smoke proof missing");
 // Inspect real generated artifacts, not just their declared build flags.
 const generatedRuntime = await readFile(path.join(output, "within-mpeg2.mjs"), "utf8");
 const generatedWrapper = await readFile(path.join(build, "within_mpeg2.c"), "utf8");
+if (frameDiagnostic === "1") {
+  const marker = "/* Private feasibility kernel, not a published conversion profile.";
+  if (generatedWrapper.split(marker).length !== 2) throw new Error("Exact diagnostic kernel boundary missing");
+  reverseHevcEncoderBoundary(generatedWrapper.slice(generatedWrapper.indexOf(marker)));
+}
 if (generatedWrapper.split("#define WITHIN_AVIO_BUFFER_SIZE (64 * 1024)").length !== 2
   || generatedWrapper.split("#define WITHIN_AVIO_OUTPUT_BUFFER_SIZE WITHIN_AVIO_BUFFER_SIZE").length !== 2
   || generatedWrapper.includes("#define WITHIN_AVIO_BUFFER_SIZE (256 * 1024)"))
@@ -90,6 +101,8 @@ const compiledImports = WebAssembly.Module.imports(compiledModule);
 const compiledExports = WebAssembly.Module.exports(compiledModule);
 if (compiledImports.some((entry) => entry.name === "within_mpeg2_plane_emit" && entry.kind === "function") !== (frameDiagnostic === "1"))
   throw new Error("Actual compiled scalar plane observer differs from requested mode");
+if (compiledImports.some((entry) => entry.name === "within_hevc_aux_emit" && entry.kind === "function") !== (frameDiagnostic === "1"))
+  throw new Error("Actual compiled HEVC auxiliary observer differs from requested mode");
 if (!compiledImports.some((entry) => entry.name === "__handle_stack_overflow" && entry.kind === "function")
   || !compiledExports.some((entry) => entry.name === "__set_stack_limits" && entry.kind === "function"))
   throw new Error("Compiled StackCheck2 runtime guard missing");
@@ -103,6 +116,10 @@ const manifest = {
   frameAllocationDiagnostic: frameDiagnostic === "1",
   frameAllocationDiagnosticSourceSha256: createHash("sha256").update(actualFrameSource).digest("hex"),
   frameAllocationDiagnosticLimit: 192,
+  hevcAuxiliaryDiagnostic: frameDiagnostic === "1",
+  hevcAuxiliaryDiagnosticLimit: 48,
+  hevcAuxiliarySourceSha256: createHash("sha256").update(actualHevcRefs).digest("hex"),
+  hevcAuxiliaryDiagnosticScope: "Read-only simultaneous HEVC auxiliary pools and DPB flag counts immediately before encoder send; no live-reference/cache changes or free-block/speed/acceptance claim",
   frameAllocationDiagnosticScope: "Before/after scalar plane requests independent of allocator; no buffer/media/address copying, no codec/layout/reference mutations, no performance or acceptance certification",
   decoderSet: decoderSelection.name, requestedDecoders: decoderSelection.requested,
   decoderModuleScope: "Additional private HEVC/MPEG4 specialist or unchanged broad/default module; no public coverage removed. Static/runtime footprint, source fit and speed require actual comparison",

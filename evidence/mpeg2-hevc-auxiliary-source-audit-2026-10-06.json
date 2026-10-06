@@ -1,0 +1,36 @@
+{
+  "status": "source-only-hevc-boundary-observer-verified-not-conversion",
+  "sources": {
+    "media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.mjs": "10798955a5a8755b1f943d83357e46d064cf454a83ba4762019fc36005de0243",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-diagnostic.h": "b323eca8a8ae2d128b0056c4e3d5f5260aab615e1b297e81156bb864bd79e186",
+    "scripts/verify-mpeg2-hevc-auxiliary.mjs": "e9f5422eb058ea9cb0d826151ca5350ae6bd5d0d0de1da59f47b758a53e190d0"
+  },
+  "upstreamSources": {
+    "libavcodec/hevc/refs.c": {"bytes": 21945, "sha256": "340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e"},
+    "libavcodec/hevc/hevcdec.c": {"bytes": 167708, "sha256": "d6c12610d92a8d8e27bae984172ce1d0f13f8eb16d5998eb58cc25b2fc690974"},
+    "libavcodec/hevc/hevcdec.h": {"bytes": 21885, "sha256": "8702d174fc97001cfb38323ee34a2bb8e3a34eaceb0ff63c9ff4d0212d2d088d"},
+    "libavutil/refstruct.c": {"bytes": 11308, "sha256": "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"}
+  },
+  "patchedRefsSha256": "19568e3953d4da6a5c233f717f6c6d3ad6d66c7d8a890ba3eb42e7ad0d46d691",
+  "generatedDiagnosticKernelSha256": "1698c2490a47cb640f5d091a7f507b017253a8022197fb69af6a391338b3eb25",
+  "byteExactNativeSourceReversal": true,
+  "byteExactKernelReversal": true,
+  "mutationNegativeControlsPassed": true,
+  "hevcPoolFlagsUnchanged": true,
+  "liveReferencesUnchanged": true,
+  "allocationCodeUnchanged": true,
+  "auxiliaryEventCap": 48,
+  "planeEventCap": 192,
+  "browserEventCap": 240,
+  "inactiveLinkWalkCap": 128,
+  "nativeSnapshotBytes": 48,
+  "generatedSourceFilesCreated": 0,
+  "scratchFilesCreated": 0,
+  "compiledObserverVerified": false,
+  "actualInactiveHevcBytesAtFailure": null,
+  "contiguousFreeBlockCapacity": null,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null,
+  "next": "One changed non-Docker compile with existing plane diagnostic mode, mandatory same-allocator reader unit, small fidelity/adverse cases and one original-source diagnostic. No unchanged failing retry or live-reference removal."
+}
