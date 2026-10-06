@@ -1,0 +1,66 @@
+{
+  "scope": "actual split code/linker component audit, not runtime heap or conversion acceptance",
+  "originalRead": false,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "source": {
+    "file": "scripts/audit-mpeg2-split-static-layout.mjs",
+    "sha256": "781d01c4152644100d4df1e1fa5a8d28ee70c002f79ca8bf8e5e01a5b53ec1f4"
+  },
+  "manifestSha256": "8a675863c65924848f95c2779d95565324e781ae92958aaae5a8eea9aaa426a3",
+  "rows": [
+    {
+      "file": "within-mpeg2-split.wasm",
+      "bytes": 6903583,
+      "sha256": "7b8a42b60efc439f0ceca045f4caaabfd4b0ebf0706397b6011cceedada4980c",
+      "memory": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 512,
+          "shared": true
+        }
+      ],
+      "codeSectionBytes": 6387878,
+      "passiveDataSegments": 579,
+      "passiveDataPayloadBytes": 385131,
+      "stackBase": 2182144,
+      "stackEnd": 1920000,
+      "checkedNativeStackReserveBytes": 262144,
+      "importCallbacks": 0,
+      "heapBase": null,
+      "availableHeapBytes": null,
+      "freeBlocks": null,
+      "liveFrameBytes": null,
+      "runtimeHeapSavingsBytes": null,
+      "completeChromiumMemoryAcceptance": false
+    },
+    {
+      "file": "split-encoder.wasm",
+      "bytes": 674961,
+      "sha256": "8b2fd64d3205143971d451f0ed562039d98fbac9f276d6cbb3c8898d889f4242",
+      "memory": [
+        {
+          "imported": true,
+          "initialPages": 256,
+          "maximumPages": 256,
+          "shared": true
+        }
+      ],
+      "codeSectionBytes": 527648,
+      "passiveDataSegments": 265,
+      "passiveDataPayloadBytes": 142665,
+      "stackBase": 730288,
+      "stackEnd": 468144,
+      "checkedNativeStackReserveBytes": 262144,
+      "importCallbacks": 0,
+      "heapBase": null,
+      "availableHeapBytes": null,
+      "freeBlocks": null,
+      "liveFrameBytes": null,
+      "runtimeHeapSavingsBytes": null,
+      "completeChromiumMemoryAcceptance": false
+    }
+  ]
+}

@@ -5,6 +5,57 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual original OOM call path identified: HEVC decoded-frame buffer
+
+ONE changed, explicitly non-accepting original-source browser diagnostic uses
+Emscripten's existing onAbort callback; actual Wasm/native code/options/quality
+remain byte-identical. Capture is failure-only, maximum2 records/8192stackchars,
+512messagechars; temporary32-frame Error stack limit restored in finally, normal
+abort callback preserved even if instrumentation fails. No per-frame allocation
+history, module growth, native conversion, heap-limit relaxation or retry loop.
+Private generated stager owns one extra small helper asset and restores all six
+published assets; prior executed stager/driver/helper source pins unchanged.
+
+Actual Chrome154 failure reproduces243 original1920x804 frames/packets accepted
+by mux, reads2417508/progresswrites1092290bytes, decoder32MiB requests33779712
+and aborts. Captured15 native frames independently mapped from the ACTUAL pinned
+Wasm's name section (4655names), not guessed external symbol names:
+sbrk -> emscripten_builtin_malloc -> dlposix_memalign -> av_malloc ->
+av_buffer_allocz -> avcodec_default_get_buffer2 -> ff_get_buffer ->
+ff_thread_get_buffer -> alloc_frame -> hevc_receive_frame -> decode/send path.
+This proves the failed allocation call path is the decoded-frame-buffer path,
+NOT the previous auxiliary av_refstruct_pool_get failure. Stock pinned8.1.2
+get_buffer.c and the existing uncached-HEVC-plane patch confirm that code path.
+Requested PLANE size, live-frame count, largest free block, cache bytes and
+capacity-vs-fragmentation cause remain NULL/unproven; requested33779712 is total
+heap end, not the plane buffer's size. No unchanged retry or speculative pool
+release: never free live reference pictures to force fit.
+
+Diagnostic blank267800576, complete native peak500875264bytes/all descendants,
+222.27734375MiB INCOMPLETE, not a250MiB certificate or like-for-like speed/memory
+comparison. Original pre/post size+SHA and independent final hash verified;
+allfive cleanup flags, no OPFSlock error, normal worker replacement and storage
+usage0. Browser/server/observer PIDs and owned runtime/profile independently
+absent; six dist assets match published and extra diagnostic assets absent.
+Partial output deleted; only compact JSON/CSV/HTML and small failure trace kept.
+evidence/mpeg2-split-oom-stack-measured-2026-10-06.json pins report, unchanged
+actual binary, native names/offsets, source hashes, full peak and scope limits.
+Next measure actual plane request/free blocks/live-frame state and static/heap
+footprint before choosing a changed specialist build. No route promoted;
+original completion/repeats/scaling/speed and full specification remain open.
+
+Actual split binary component/linker audit (no media or codec function calls):
+decoder code6387878bytes/passive385131/579segments, native stack1920000..2182144;
+encoder code527648/passive142665/265segments, stack468144..730288. Each pure
+stack accessor confirms256KiB; zero imported callbacks. These are NOT available
+heap/free-block/capacity measurements. Compact evidence/mpeg2-split-static-layout-2026-10-06.json
+pins exact unchanged binaries and executed audit source. Prior combined-module
+specialization evidence had only157072-byte linker-bound reduction, not measured
+usable free space; do not assume smaller code alone solves this plane allocation.
+Regression555/555 unit tests, TypeScript, scoped zero-warning lint and diff checks
+pass. No application/public asset/registry changes and no accepted speed or memory
+improvement claimed from this failure-only diagnostic. Checkpoint ready to push.
+
 ## 2026-10-06 — Startup attribution measured; single-navigation original reaches encoding then OOM
 
 Two actual Chrome154 component-only diagnostics use the same pinned fixed32MiB
