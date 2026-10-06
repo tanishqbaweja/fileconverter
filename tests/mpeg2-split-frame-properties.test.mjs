@@ -67,3 +67,20 @@ test("Properties-only native workflow additions reverse exactly and cannot refre
     assert.throws(() => provenSourceSha(file, Buffer.from(changed), "5a0d4a2a4357abae5715363367aef69c400e584b49836c645eae0e08d5c587c6"));
   }
 });
+
+test("Property recipe cleanup names the exact owned build root and keeps the failed run's facts frozen", async () => {
+  const recipe = await readFile(new URL("../media/ffmpeg/verify-mpeg2-split-properties.sh", import.meta.url), "utf8");
+  const root = recipe.match(/^BUILD_ROOT="([^"\n]+)"$/m)?.[1];
+  assert.equal(root, "${PROJECT_ROOT}/work/mpeg2-split-properties-build");
+  assert.ok(recipe.includes(`[[ "\u0024{BUILD_ROOT}" == "${root}" && ! -L "\u0024{BUILD_ROOT}" ]] || exit 2`));
+  assert.doesNotMatch(recipe, /mpeg2-split-frame-build/);
+  assert.match(recipe, /trap cleanup EXIT/); assert.match(recipe, /rm -rf -- "\u0024\{BUILD_ROOT\}"/);
+  const p = JSON.parse(await readFile(new URL("../evidence/mpeg2-split-properties-cleanup-failure-2026-10-06.json", import.meta.url)));
+  assert.equal(p.run.databaseId, 37437720261); assert.equal(p.run.jobId, 112183554158);
+  assert.equal(p.run.conclusion, "failure"); assert.equal(p.rootCauseProven, true);
+  assert.equal(p.nativeAssertionsCompleted, true); assert.equal(p.fullReportValuesVerified, false);
+  assert.equal(p.recipeCleanupSucceeded, false); assert.equal(p.hostedFinallyCleanupSucceeded, true);
+  assert.equal(p.hostedArtifactsRemaining, 0); assert.equal(p.conversionPerformed, false);
+  assert.equal(p.publicAcceptance, false); assert.equal(p.processMemoryAcceptance, false);
+  assert.equal(p.speedGainClaim, null);
+});

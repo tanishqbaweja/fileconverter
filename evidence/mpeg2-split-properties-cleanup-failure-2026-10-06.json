@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "scope": "synthetic-native-tests-completed-then-recipe-cleanup-refused-not-conversion",
+  "run": {
+    "databaseId": 37437720261,
+    "jobId": 112183554158,
+    "headSha": "4d7525f9e553194c0e167138da3f68f2abfe19a6",
+    "conclusion": "failure",
+    "startedAt": "2026-10-06T08:40:51Z",
+    "completedAt": "2026-10-06T08:43:39Z",
+    "jobSeconds": 168,
+    "buildStepSeconds": 128,
+    "buildStartedAt": "2026-10-06T08:41:25Z",
+    "buildCompletedAt": "2026-10-06T08:43:33Z"
+  },
+  "failedRecipeSha256": "22caf94e30f5d45de3744d8abcc89f5a9596ca69da827a970aa98c4926d2c39b",
+  "actualLog": [
+    "2026-10-06T08:43:33.5309062Z Synthetic native pixels/properties: 12 cases, 17 rejects, 100 repeats; not conversion.",
+    "2026-10-06T08:43:33.5371390Z ##[error]Process completed with exit code 2."
+  ],
+  "nativeAssertionsCompleted": true,
+  "nativeCasesReportedByLog": 12,
+  "malformedRejectionsReportedByLog": 17,
+  "repeatedTransfersReportedByLog": 100,
+  "fullReportDownloaded": false,
+  "fullReportValuesVerified": false,
+  "hostedArtifactsRemaining": 0,
+  "recipeCleanupSucceeded": false,
+  "hostedFinallyCleanupSucceeded": true,
+  "hostedCleanupStartedAt": "2026-10-06T08:43:33Z",
+  "hostedCleanupCompletedAt": "2026-10-06T08:43:37Z",
+  "rootCauseProven": true,
+  "rootCause": "Recipe BUILD_ROOT is work/mpeg2-split-properties-build but EXIT cleanup compared it against the previous work/mpeg2-split-frame-build literal. Guard therefore exits 2 before rm, after native assertions/report creation. Success-only artifact upload skipped. Exact enclosing workflow finally guard correctly removed owned property scratch.",
+  "changedNextAttempt": "One changed recipe build with only the cleanup guard literal corrected; no pixel, metadata, heap, allocator, codec, quality or acceptance changes. Add exact path agreement/source regression and exercise actual Bash cleanup with a non-mutating rm stub before dispatch.",
+  "localMediaOrProfilesCreated": false,
+  "originalFixtureRead": false,
+  "conversionPerformed": false,
+  "publicAcceptance": false,
+  "processMemoryAcceptance": false,
+  "speedGainClaim": null
+}

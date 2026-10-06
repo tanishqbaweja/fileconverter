@@ -13,7 +13,7 @@ available_kib="$(df -Pk "${PROJECT_ROOT}/work" | awk 'NR == 2 { print $4 }')"
 mkdir -p "${BUILD_ROOT}" "${REPORT_ROOT}"
 cleanup() {
   local status=$?
-  [[ "${BUILD_ROOT}" == "${PROJECT_ROOT}/work/mpeg2-split-frame-build" && ! -L "${BUILD_ROOT}" ]] || exit 2
+  [[ "${BUILD_ROOT}" == "${PROJECT_ROOT}/work/mpeg2-split-properties-build" && ! -L "${BUILD_ROOT}" ]] || exit 2
   rm -rf -- "${BUILD_ROOT}"
   exit "${status}"
 }

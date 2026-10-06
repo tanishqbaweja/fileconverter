@@ -5,6 +5,21 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Property native assertions ran; recipe cleanup guard rejected its own path
+
+ONE run37437720261/job112183554158/4d7525f FAILED after native assertions completed:
+actual log reports12 cases,17 malformed rejects,100 repeated transfers, not conversion.
+128s build/168s job. The EXIT guard I copied still compared the property build root
+to the old pixel-test directory, so it exited2 before cleanup. Full report was not
+uploaded/downloaded; its individual values remain unverified, not a passing job.
+Enclosing hosted finally cleanup SUCCESS/API artifacts0; no local media or profile.
+Frozen evidence/mpeg2-split-properties-cleanup-failure-2026-10-06.json records the
+exact mismatch/log/job facts. Corrected only the guard literal, added an exact path
+agreement regression and non-mutating actual Bash cleanup-stub checks. Next ONE
+changed build to verify the report and complete recipe cleanup; never same terminal
+run restart, no unchanged original conversion retry. Native source/budgets/settings
+unchanged. Actual codec/production browser250MiB/fidelity/speed gates still pending.
+
 ## 2026-10-06 — Bounded frame property handoff implemented; native execution pending
 
 Added private pointer-free160-byte scalar header plus bounded native dictionary/
