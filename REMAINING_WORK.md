@@ -5,6 +5,40 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Full-original audio fidelity gap identified; bounded validator controls passed
+
+The running original driver compares copied compressed audio hashes, audio codec/
+rate/channels/layout, and successful full native decode. It does NOT compare the
+full decoded PCM or every audio-frame presentation clock. Small fixture timeline/
+PCM proofs alone cannot close that original-size gap. Even a later three-run
+private memory pass must not promote MPEG2 until supplementary original-output
+audio validation is retained alongside the other gates.
+
+New independent scripts/lib/streaming-copied-audio-validation.mjs decodes only
+the selected audio ordinal to canonical PCM32 SHA256 frame records through
+native validator pipes, never a converted media file. It compares EVERY decoded
+frame payload hash/size/sample duration and PTS/DTS at unchanged1ms tolerance,
+plus full decoded byte/sample/frame counts and presentation endpoints. No PCM
+buffers or frame history retained; two active children/one row per side,64KiB
+stdout chunks/4KiB lines/4KiB stderr/128headers/16ordinal admission, fixed30min
+deadline, failure/cancellation closes native readers. Caller must iterate all
+actual audio ordinals and prove the browser output is complete. This is a copied-
+audio same-decoder-frame-segmentation validator, not general lossy-audio or
+browser/memory/scaling certification.
+
+Three pure tests exercise10,000 streaming frames, allowed sub-ms clock drift,
+changed content/sample counts/metadata/clocks, unavailable/unsafe values and
+oversized records. Real quarter-second native AAC FIXTURE/VALIDATOR controls
+accepted identical decoded audio, rejected125ms shift and changed content,
+and rejected absent executable without hanging children. Owned fixtures/temp
+removed in finally; zero browser conversions. Compact retained evidence:
+evidence/streaming-audio-validator-controls-2026-10-07.json pins actual executed
+helper/control sources. A too-strict summary equality was fixed before these
+native controls: endpoints allow the existing1ms tolerance, payload/counts remain
+exact. No executed application, native core, original-driver or heap/quality/
+Chrome flag changed. Supplement must run after actual original browser completion,
+before its disposable output is removed; full original audio is STILL UNPROVEN.
+
 ## 2026-10-07 — Measured static UI optimization; original retest LIVE
 
 Live checkpoint21:49:32UTC supersedes the blank-startup phase recorded below:

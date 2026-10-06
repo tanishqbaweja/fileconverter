@@ -1,0 +1,61 @@
+{
+  "recordedAt": "2026-10-06T22:15:55.171Z",
+  "scope": "Independent native validator controls with generated quarter-second AAC fixtures, NOT browser conversion or original-size fidelity acceptance",
+  "status": "passed-validator-controls",
+  "positive": {
+    "status": "passed-copied-audio-ordinal-only",
+    "audioOrdinal": 0,
+    "canonicalCodec": "pcm_s32le",
+    "clockToleranceSeconds": 0.001,
+    "maximumClockErrorSeconds": 0,
+    "source": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "output": {
+      "frames": 12,
+      "decodedBytes": 49152,
+      "samples": 12288,
+      "startSeconds": 0,
+      "endSeconds": 0.256,
+      "orderedFramePayloadHashesSha256": "ab5dbe041b35c2b34b07de4ae01c0602a87683ac57c7ef1c3d1a1ebdcc5e7a35"
+    },
+    "limits": {
+      "streams": 16,
+      "chunkBytes": 65536,
+      "lineBytes": 4096,
+      "stderrBytes": 4096,
+      "headerLines": 128,
+      "clockSeconds": 0.001
+    },
+    "retainedFrameRows": 0,
+    "productConversionPerformed": false,
+    "caveat": "Independent copied-audio validator requiring matching decoder frame segmentation. Other ordinals, video, process-tree memory and browser conversion are not certified by this result."
+  },
+  "negative": [
+    {
+      "kind": "shifted-clock",
+      "status": "rejected-as-required",
+      "error": "Decoded audio pts changed"
+    },
+    {
+      "kind": "changed-content",
+      "status": "rejected-as-required",
+      "error": "Decoded audio sha256 changed\n+ actual - expected\n\n+ '8ca7ee45d23a1eb76c8479609c21bbe7d177e78574093707e259465b04798bd6'\n- 'ce1b53d3915abd4ee4bf8e880d72ced394f6f61aeca7659afe24ef4038fba785'\n"
+    }
+  ],
+  "nativeSpawnFailureRejected": true,
+  "ownedScratchAndFixturesRemoved": true,
+  "browserConversionsPerformed": 0,
+  "originalFullAudioValidation": false,
+  "completeChromiumMemoryAcceptance": false,
+  "sourcePins": {
+    "scripts/check-streaming-audio-validator.mjs": "65882e075fae0c6d1c2260de0cd480a7cc22f7a5558dc6cdde9605abbf0d6981",
+    "scripts/lib/streaming-copied-audio-validation.mjs": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "tests/streaming-copied-audio-validation.test.mjs": "d5086f1844150b198263d10a5642155786ed5b1686114881bceb187ad2184b9a"
+  }
+}
