@@ -5,6 +5,56 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Actual HEVC admission trial: small fidelity passes, original normal gate fails
+
+Previous turn was progress: implemented/pushed final-unref trial and dispatched
+ONE changed build. Same no-Docker37397131884/job112055657628 atcb9ec76 SUCCESS,
+194s compile/218s job (not conversion time). Independently verified actual27
+source/3 artifact hashes, patched HEVC decoder0c91a162...e67c5, same-DL compiled
+60-configuration selector and full lifecycle proof, unchanged normal wrapper
+5650af19...c88d/fixed32shared512/guarded256KiB stacks/64KiB I/O. Both diagnostics
+off; real Wasm contains guard import but neither diagnostic emitter. Seven small
+static tools retained; source bundle undownloaded, hosted11384415314/11384440294
+deleted/API0, own temporary ZIP absent.
+
+Chrome154 small4/4PASS18.0s: MPEG4/HEVC sources genuinely encoded48/96 frames
+to MPEG2, SSIM.992146/.985963, independent video/audio decode, exact AAC/complete
+PCM+priming/artwork/tags/chapters/<=1msPTS. Outputs321692/652521 bytes + SHA are
+byte-identical to prior normal candidate.64KiB read/write/peakqueue/one operation;
+cancellation232344->599048 terminal bytes/partial[]/zeroqueues, write failure
+partial[]/zerooperations. Individual443.355/477.615ms are NOT controlled speed A/B.
+
+ONE normal original2958573265-byte1920x804/default acceptance attempt FAILED,
+requested3/attempted1/completed0; heapend34426880/input222785/output0. Actual
+stack av_malloc -> av_refstruct_pool_get -> HEVC alloc_frame, now auxiliary-pool
+allocation rather than earlier observed encoder-plane path. Exact failed pool,
+simultaneous live/cache entries and runtime savings UNKNOWN: this normal build
+has no observer. Pinned refs.c has separate tab_mvf then rpl_tab gets; stack cannot
+distinguish them. Do NOT transfer earlier instrumented1316432 idle backing or
+frame-plane2 attribution to this run, drop required live entries, infer savings
+from heap-end changes, or retry unchanged.
+
+EARLYblank266133504/loaded332517376/nativepeak464281600/CIM443949056 =>188.96875
+MiB INCOMPLETE, not stress acceptance/savings.26valid/0unavailable, all descendants
+retained (including unknowns/updaters). Native RSS peak774115328. All5finally flags
+true; independently19 full observed/owned and21 small numericPIDs absent, exact
+runtimeymIxMp/fixtures/profiles/adapters gone, six assets restored and original
+pre/post checksum unchanged. No unrelated kill or retained converted media.
+Compact JSON/CSV/HTML and6,110-byte failure trace retained as diagnostic reports.
+
+Frozen evidence/mpeg2-hevc-auxiliary-trial-failure-2026-10-06.json binds actual
+small346273/d501dc17...742e/full277480/ce193ab3...ad5 and read-only source-pinned
+reducer; five focused guards and exact reproduction pass with no new conversion.
+Next: bounded read-only pre/post at BOTH actual HEVC auxiliary pool-get callsites,
+with encoder snapshots sharing48-event budget plus192planes/unchanged240 browser
+ring. Measure failed class/live-versus-idle at allocation before choosing further
+allocation policy or bounded decoder/encoder separation. No larger heap/source
+resize/quality/reference/PTS relaxation, public promotion or full-goal claim.
+
+Post-cycle485/485 unit tests, TypeScript, scoped zero-warning ESLint, whitespace
+and exact read-only raw-report reproduction passed. No live build/browser/helper
+remains; no unchanged conversion retry performed. Full goal remains active.
+
 ## 2026-10-06 — Evidence-supported HEVC auxiliary cache-admission trial implemented
 
 Previous turn was progress: actual HEVC idle-backing evidence and chronology
