@@ -5,6 +5,65 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Startup attribution measured; single-navigation original reaches encoding then OOM
+
+Two actual Chrome154 component-only diagnostics use the same pinned fixed32MiB
+decoder/mux and16MiB encoder, without codec open/send or media I/O. No original
+read or conversion acceptance. First detailed trace exceeded the8MiB cap and
+reported data loss: preserved as failed attribution, not retried unchanged.
+Narrowed memory-infra-only light trace completed,1911events/8261053-byte file,
+no overflow or data loss. All eight explicit global dump GUIDs are joined to
+their validated trace-time intervals; serialized dump IDs are different ordinals,
+NOT interchangeable with request GUIDs. Hex scalar bytes/missing-null preserved.
+Allocator categories overlap and are never summed into a fake private total.
+
+In narrowed run, single navigation has6282nodes/6documents/164listeners,
+312.41015625MiB OS private; redundant navigation12586nodes/10documents/329listeners,
+355.296875MiB immediate,360.1328125MiB after3s. Trace renderer Blink15.875->30.75MiB;
+page embedder15552824->30895392bytes. This identifies a concrete redundant-document
+effect, not the exact cause of the prior full-original259.79MiB failure.
+Same component run both actual modules441.375MiB OS private; worker termination
+352.71875MiB after3s. Memory tracing itself perturbs allocations; these are NOT
+250MiB stress certificates, speed results or evidence of encoded-video quality.
+
+Both owned browser/server/observer PIDs and profile/runtime directories verified
+absent, cleanup errors/forbidden requests empty, six dist assets match unchanged
+published originals. Frozen269909-byte evidence/mpeg2-split-initialization-attribution-2026-10-06.json
+retains both raw report hashes, complete process phase peaks/realms and compact
+allocator summaries. The exact owned8261053-byte trace was deleted after
+compaction; raw scalar JSON reports retained, no converted media created.
+
+Separately pinned scripts/mpeg2-split-single-navigation-memory.mjs changes ONLY
+page reuse and its own report/source identity; historical executed driver and
+core source pins unchanged. It reuses production worker replacement, keeps all
+three full2958573265-byte original repeats,32GiB preflight, pre/post source hash,
+unchanged48MiB heaps/native stacks/options/quality/1920x804/SSIM>=.98/<=1msPTS,
+full-tree100ms monitoring/250MiB fail-fast and cancellation-before-cleanup.
+ONE changed original run is terminal FAILED (requested3/attempted1/completed0).
+Decoder/mux32MiB heap aborts at requested33779712bytes after actual243 original
+1920x804 HEVC->MPEG2 frames/packets/mux-accepted completions. Progress reads2417508
+and writes1092290bytes; packet-copy total1492086 is NOT independently verified
+disk output. Session encoder closes/held packets0, normal production worker
+replacement runs, terminalerror and OPFSusage0; no complete output/fidelity gate.
+Exact failed native allocation/function/free blocks/fragmentation unproven.
+
+Early blank271507456, loaded318738432, complete native peak487358464bytes, all9
+processes counted:205.8515625MiB INCOMPLETE, not a250MiB stress certificate.
+Blank differs from prior242483200 baseline, so no like-for-like memory-saving
+or speed claim. Native stacks256K each/aggregate48MiB/AVIO64K/one write and64K
+peak queue unchanged. Allfive cleanup flags true, no intermediate OPFSlock
+error, original pre/post size+SHA verified plus independent final hash/PID/runtime
+absence/sixasset restoration. JSON/CSV/HTML and small failure trace retained;
+partial output/profile removed. Frozen evidence/mpeg2-split-single-navigation-original-failed-2026-10-06.json
+pins full raw report/actual full peak/243frame ownership/metrics/source hashes.
+Five new focused tests pass. No unchanged retry: next attribute decoder
+static/heap footprint and actual failing allocation before choosing a changed
+specialist build. Original fit/repeats/clean sessions/scaling/speed/public release
+and the full requirement audit remain open. Regression547/547 unit tests,
+TypeScript and scoped zero-warning lint pass. No application/core/buffer/quality
+or public registry change; production assets verified restored, not rebuilt or
+mistakenly promoted from the private diagnostics.
+
 ## 2026-10-06 — Actual separated original memory gate FAILED; cancellation cleanup repaired
 
 Corrected full original2958573265-byte test.mkv attempt loads both actual fixed
