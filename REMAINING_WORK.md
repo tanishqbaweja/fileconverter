@@ -5,7 +5,62 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-06 — Allocation-time HEVC observer implemented, native measurement pending
+## 2026-10-06 — Actual allocation-time result: MV pool failure with zero idle backing
+
+Previous implementation goal turn was progress; intervening push confirmed the
+remote at21cf480 with a clean tree. Revalidated the SAME live37399371287 job,
+never restarted it. No-Docker job112062866531/head21cf480 SUCCESS:282s compile,
+329s job (not conversion speed). Downloaded only eight small static tools into
+work/mpeg2-artwork-metadata-37399371287; independently verified29 native source
+pins/3 artifact hashes, six actual component sets, instrumented refs.c
+c7c5d94d...23244, correct observer imports/StackCheck2, actual fixed512 shared
+pages, same-DL reader9/selector60/uncached lifecycle proofs. Source bundle not
+downloaded; hosted11385110461/11384805868 deleted/API0, own temporary ZIP absent.
+
+Chrome154 small4/4PASS17.6s: genuine48/96-frame MPEG4/HEVC->MPEG2 output hashes
+unchanged, SSIM.992146/.985963, full independent video/audio decode, exact AAC/
+PCM+priming/artwork/tags/chapters/all frame PTS<=1ms.64KiB read/write/peakqueue,
+one outstanding operation. Cancellation349012->599048 terminal bytes/partial[],
+write failure output0/partial[], both terminal queues/operations0. Individual
+461.135/477.450ms are diagnostic timings, NOT controlled speed A/B. Actual worker
+counts and SAB totals retained as observed, not assumed zero or fixed after close.
+
+ONE original2958573265-byte1920x804/default-source diagnostic FAILED before
+output; fixed32MiB/quality/live refs unchanged. Bounded extended error stack1,
+frameDiagnostic1/allocatorDiagnostic0, no acceptance retry. Heapend34582528,
+input222785/output0.146 native events:102 plane (51 completed successful),44 HEVC
+pool/encoder events,18 completed successful pool requests; no eviction or cap.
+Final event44 is exact pending layer0 tab_mvf get; actual native pool OOM context.
+Both inventories complete: MV1163520 payload/1163536 backing/live5/cache0;
+RPL152880/152896/live5/cache0. Simultaneous required live backing6582160, inactive
+backing0, requested MV entry1163536. DPB flags5active/5short/0long/2output overlap.
+No failed plane, free-block capacity, normal-core placement, runtime savings or
+safe live-reference removal claim. This rules out further trimming THESE empty
+caches at THIS boundary; it does not prove all heap contents or fundamental fit.
+
+EARLY stable blank264339456/loadedidle309243904/nativeprivatepeak460468224/CIM
+441614336 =>187.04296875MiB INCOMPLETE, not acceptance.29 valid/0 unavailable
+native samples; all observed unknown/updater processes retained in measurement.
+All five finally cleanup flags true, forbiddenRequests[]. Independent original
+post-hash/six restored assets/both adapters/runtime removal checks PASS;20 full
+observed/owned PIDs absent and21 small PIDs absent after full cleanup. Small Chrome
+renderer26936 was briefly reused by a different full-run node helper; identity
+checked, not killed as a small process. No media/profile/validation copies remain.
+Compact raw475863-byte JSON/CSV/HTML/14592-byte diagnostic trace retained, not
+converted media. Frozen evidence/mpeg2-hevc-pool-attempts-measured-2026-10-06.json
+and read-only freeze-mpeg2-hevc-pool-attempts.mjs reproduce exact measurements;
+two new evidence guards pass;493/493 unit tests, TypeScript, scoped zero-warning
+lint and whitespace checks PASS. Historical proof/hash artifacts remain unchanged.
+
+Next: do NOT retry the unchanged combined32MiB module, trim empty caches, drop
+live HEVC references or relax source/quality. Investigate bounded decoder/encoder
+separation with ONE reusable frame bridge, fixed module budgets, same production
+I/O/timestamps/audio/artwork/metadata and full-tree250MiB requirement. Audit native
+ownership and implement/validate a small split prototype before a changed native
+build/full-original run. Separation is not yet implemented or proven to fit;
+no uniform heap increase, speed claim or public promotion. Full goal incomplete.
+
+## 2026-10-06 — Allocation-time HEVC observer implemented (historical source-only checkpoint)
 
 Previous turn was progress: actual normal trial failed in HEVC alloc_frame/
 av_refstruct_pool_get, exact pool unknown, cleanup/evidence pushed8b26ebd.
