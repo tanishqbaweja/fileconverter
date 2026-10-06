@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-06 — Separate actual encoder implementation (compile pending)
+
+Implemented a private MPEG2 libavcodec owner in mpeg2-split-encoder.c, separate
+from the decoder/mux module, with a fixed16MiB heap, unchanged original dimensions,
+bitrate/quality pairs, single-thread/GOP48/no-B-frame settings, native pixel
+ownership and send/receive/flush state handling. Encoded packets remain owned
+until an awaited mux consumer finishes; one packet, no queue or extra JS payload
+buffer. Packet records preserve int64 clocks as BigInt, native flags and bounded
+side data, including empty side-data-only packets. The bridge becomes failed
+after cancellation, malformed records, native failure or partial destination
+failure; it cannot retry a partially written mux transaction.
+
+Codec parameters now have an explicit bounded144-byte-header/64KiB-total wire
+serializer, not a foreign AVCodecParameters pointer/struct transfer. Extradata
+gets zero native padding; CPB fields are explicit little-endian int64 values;
+unsupported side types fail rather than disappear. Initialization audit imports
+into another actual native object and compares its real fields, payloads and
+extradata padding with avcodec_parameters_from_context. No-Docker recipe pins
+FFmpeg8.1.2/SDK6.0.4, actual final-ref-only encoder cache patches,16MiB DL/256KiB
+checked stack, and enables only MPEG2 encoding, no decoder or filesystem.
+
+Seven executable JS protocol units pass, including100 handoffs, awaited packet
+lifetime, cancellation, phase/backing/side-budget failures, heap replacement and
+combined consume/release errors. Four source/provenance guards pass; five old
+workflow guards still pass with exact historical hashes unchanged. This is
+implementation progress, NOT yet native compile evidence, genuine conversion,
+browser fidelity, memory acceptance, speed improvement or public support.
+Next: compile/initialize this actual encoder, then integrate actual decoded
+frames and returned packets with the production native demux/mux/AVIO pipeline,
+preserving settings, timestamps, audio, metadata and original source. The full
+goal remains incomplete, and the previous combined-module original-file
+allocation failure must not be retried unchanged.
+
 ## 2026-10-06 — Native pixel/property ownership passed with exact independent byte evidence
 
 Corrected no-Docker run37438448154/job112185969488/ea5597d SUCCESS:202s build,
