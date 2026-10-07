@@ -1,0 +1,54 @@
+{
+  "recordedAt": "2026-10-07T19:02:54.347Z",
+  "status": "verified-terminal-preconversion-harness-failure-not-acceptance",
+  "input": {
+    "path": "evidence/mpeg2-abort-original-2026-10-08.json",
+    "bytes": 214929,
+    "sha256": "aabdf5a25fe10b7aa93af7c7b7285d00d961e9b50290969d993ef6ef1697aaff"
+  },
+  "rawReportVerified": true,
+  "allExecutedSourcesVerified": true,
+  "failure": {
+    "name": "AssertionError",
+    "message": "The expression evaluated to a falsy value:\n\n  assert.ok(abortDiagnostic.staticAssets.length > 0)\n",
+    "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(abortDiagnostic.staticAssets.length > 0)\n\n    at file:///H:/Github%20Repositories/fileconverter/work/mpeg2-abort-original-driver-gSxor9/full-source.mjs:316:12"
+  },
+  "browserConversionsStarted": 0,
+  "completeOriginalConversions": 0,
+  "actualAbortStacksCaptured": 0,
+  "preConversionIncrementalMiB": 75.5390625,
+  "conversionPeakMiB": null,
+  "publicAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "cause": "The harness asserted intercepted adapter inventory before the Convert click. No adapter had been captured; no real conversion or OOM occurred. Existing browser harness separately warns worker-import routing is unreliable; this failed attempt does not prove lazy timing was the only problem.",
+  "cleanup": {
+    "allSampledNativeBirthsAbsent": true,
+    "nativeIdentities": 21,
+    "helperBirthsAbsent": true,
+    "checkedPids": 25,
+    "observedCurrentProcesses": [
+      {
+        "pid": 46340,
+        "parentPid": 40184,
+        "createdAt": "2026-10-07T19:02:22.6603760Z"
+      }
+    ],
+    "reusedPidsAreNotOldProcesses": true,
+    "bothRuntimeDirectoriesAbsent": true,
+    "restoredAssets": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+      "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+    },
+    "ninePrivateAssetsAbsent": true,
+    "protectedFullPostHashVerified": true,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "scripts/analyze-mpeg2-abort-preconversion.mjs": "5cf7454e3733945c1f5b2b23b746d21b81a7270f7dcb71896f0ea8d0108e0a38"
+  },
+  "next": "Use existing owned generated-adapter staging with the same proven failure hook, test all five actual browser golden/recovery cases, then a new full-source diagnostic. Do not edit/repin this executed failed route-based recipe."
+}

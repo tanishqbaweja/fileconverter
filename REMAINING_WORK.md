@@ -5,6 +5,59 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Route-hook attempt TERMINAL before conversion; staged browser prerequisite PASS
+
+This supersedes LIVE53003 below: actual session ended exit1 at18:52:54UTC.
+The new harness asserted intercepted adapter inventory before Convert; inventory
+was empty, so it never clicked and never started a conversion. No HEVC OOM or
+original abort stack captured. Lazy loading is NOT proved to be the only issue:
+the existing browser harness explicitly warns worker imports cannot reliably
+use request substitution. Failed script/recipe/proof remain immutable and failed.
+No source/binary/quality/heap/250MiB change. Native75.5390625MiB is PRE-CONVERSION
+ONLY (320782336 minus241573888bytes), NOT conversion peak/acceptance. Zero fresh
+frames/complete originals/validators/repeats/quality/speed/scaling acceptance.
+
+`evidence/mpeg2-abort-original-2026-10-08.json` (214929bytes) preserves exact
+executed source/empty hook inventories/native samples/failure/finally. Independent
+`evidence/mpeg2-abort-preconversion-analysis-2026-10-08.json` verifies all pins,
+rawSHA,21native and four helper PID/parent/birth identities absent/25checkedPIDs,
+both scratch folders absent/six published assets restored/nine private assets
+absent/complete protected-source postSHA unchanged. Reused PID46340 observed with
+different birth/parent, NOT killed or treated as the old process. No converted
+media was created by this failed test. Redundant1725570byte raw report removed
+ONLY after streaming verified lossless compression to50064byte same-folder gzip;
+`evidence/mpeg2-abort-preconversion-compaction-2026-10-08.json` preserves raw/archive
+SHA/size/identity checks. Failure data remains exactly recoverable; no directory sweep.
+
+Corrected diagnostic staging uses the existing exclusive generated-asset ownership
+method, not speculative worker routing. `stage-mpeg2-split-abort-diagnostic.mjs`
+strictly reconstructs the pinned old stager, changes ONLY its adapter to include
+the actually controlled inactive-until-abort helper, and closes fresh stager scratch.
+Same binary/quality/AVIO/session/native stacks/codec mapping; all six generated
+assets restored by exact SHA and nine additions removed. Historical stager untouched.
+`validate-mpeg2-split-abort-goldens.mjs` retains all FIVE existing real-browser
+conversion/validator/recovery assertions, binds test artifacts/temp/profile to
+fresh repo-owned scratch, no public rebuild/Docker/native converter. Actual5/5
+Chrome tests PASS26.1s: MPEG4 OPFS/HEVC OPFS/HEVC selected-destination genuine
+fresh MPEG2 outputs retain EXACT golden SHA/48 or96frames/SSIM0.992146 or0.985963/
+metadata/chapters/PNG artwork/timestamps<=1ms/two audio tracks/exact decoded PCM.
+Write-failure and cancellation cleanup pass; five empty private-storage inventories,
+fixed48MiB/one pending operation. Generated fixtures/converted copies/profiles/
+runtime/artifacts removed, only528425byte bounded browser report and compactevidence
+retained. `evidence/mpeg2-abort-golden-regression-2026-10-08.json` pins actual scripts.
+
+This is a changed browser wiring prerequisite, NOT an original-size conversion or
+memory/fidelity/scaling substitute. Next full-source driver must use this verified
+generated staging, preserve every full gate, and retain actual failure stacks.
+That corrected full-source attempt is NOT yet launched. Full goal OPEN.
+
+Terminal/staged-prerequisite cycle regression:10/10 focused failure/archive/
+golden/recipe/hook checks PASS162.3239ms; full734/734unit PASS3722.8119ms;
+seven changed/new JavaScript files scoped zero-warning lint PASS. Read-only final
+inventory found no fresh abort-stager/goldens runtime/driver directories remaining.
+Old route-based53003 and browser-prerequisite6634 are both terminal; no full-source
+retry/live conversion at this handoff. Published App/assets/registry untouched.
+
 ## 2026-10-08 — Changed full-original failure-hook attempt LIVE, session53003
 
 This supersedes the prepared/NOT-launched checkpoint below. ONE actual launch

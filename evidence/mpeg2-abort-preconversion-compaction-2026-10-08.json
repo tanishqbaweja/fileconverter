@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-07T19:04:17.096Z",
+  "status": "verified-lossless-diagnostic-compaction",
+  "scope": "ONE terminal JSON diagnostic report, not converted media; no converter or protected-source access",
+  "raw": {
+    "path": "outputs/reports/2026-10-07T18-47-16-311Z-private-mpeg2-abort-original-native-100ms.json",
+    "bytes": 1725570,
+    "sha256": "cfd62aa646232df66ed75c62c13ac5c0c32b3ae7677d5e2c5db3112de109e77e"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-07T18-47-16-311Z-private-mpeg2-abort-original-native-100ms.json.gz",
+    "bytes": 50064,
+    "sha256": "0dc622d7da59b0c701d4bb8e845f5c35950ef22c9a2d971ca9bb9cfa085f909a"
+  },
+  "reconstructedRawSizeAndSha256Verified": true,
+  "rawIdentityRevalidatedBeforeRemoval": true,
+  "uncompressedRawRemoved": true,
+  "removedBytes": 1725570,
+  "ownedScratchRemoved": true,
+  "protectedSourceRead": false,
+  "browserConversionsPerformed": 0,
+  "rawFailurePreserved": true,
+  "publicAcceptance": false,
+  "sourcePins": {
+    "scripts/compact-mpeg2-abort-preconversion-report.mjs": "64857234fb413e51a7ca89583e243ac2e21e6915ff2d159ebcdce515327938ee"
+  },
+  "bounds": {
+    "streamChunkBytes": 65536,
+    "maximumRawBytes": 33554432,
+    "maximumArchiveBytes": 4194304
+  },
+  "recovery": "The verified gzip archive reconstructs the exact raw JSON and its recorded SHA-256. Do not confuse removal of a redundant raw report with loss of failure evidence."
+}
