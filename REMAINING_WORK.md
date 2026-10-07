@@ -5,6 +5,96 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Bounded largest-type attribution passed; offscreen-only optimization is not a worst-case fix
+
+Previous turn was progress (actual brief UI heap/schema measurements, failure
+proofs,666unit tests and verified GitHub push229bcab), not an unchanged wait.
+New largest-blink-type-summary.mjs scans the already bounded trace and retains
+only64largest known-byte rows plus8unavailable rows/process/dump. Explicit
+inspected/zero/known/unavailable/omitted counts,1024-character prefixes/full SHA
+identities, missing !=0, overlapping provider/no sums/no live-object claims.
+This avoids the failed512record full inventory WITHOUT raising4MiBtrace,
+16MiBserialization/8dump/1024realm/100ms caps or forcing GC. Historical actually
+executed failure/parser/helper sources remain unchanged and source-pinned.
+
+Actual Chrome154.0.8037.98 single blank prerequisite PASSED: one detailed dump,
+4,093,481serializedbytes/259events/no loss/overflow/parseerror;256retained rows
+across four renderers. Inspected611/1039/607/84records,64known retained each;
+omitted547/975/543/20 disclosed. Real C++ type names available. No source/file/
+converter, synthetic allocation, native observer or converted copy. Trace/
+socket/Chrome/runtime plus generated wrapper removed. Exact executed sources/
+pins in evidence/largest-blink-type-control-2026-10-07.json.
+
+Actual production original-source inspection/60real selections then used TWO
+separately closed one-dump sessions, not accumulated multi-dump tracing. Both
+passed at5,934,741/5,603,290serializedbytes,162/158events/no loss/parseerror.
+Native PID/parent/birth join for renderer32860 matches; trace itself has no birth.
+Partial retained intersection only, no zeros for absent top64 types. Main Blink
+resident17,039,440 ->29,622,352 and nondeterministic allocated15,929,600 ->
+27,560,064. Actual GridSizingTrackCollection4,342,560 ->6,749,280 (+2,406,720,
+2490 ->3870objects); PlainTextNode+2,157,600/+1740objects; LogicalLineItems
++1,039,680/+570objects. This identifies actual growing UI LAYOUT types, not
+the prior original conversion transient's callsite/leak/cause. Seven real
+workflow snapshots retained/idle throughout/no fake progress/conversion. All
+five cleanup flags/outer removal/full protected pre/post SHA passed. Exact
+evidence/ui-largest-blink-types-2026-10-07.json preserves source-pinned recipes,
+native identities, GUIDs, top64 omissions and unavailable fields.
+
+Measured private CSS experiment appended ONLY84bytes to one26,139-byte same-
+origin STATIC stylesheet response. No production CSS/dist/engine/profile edit;
+all405card HTML exactlySHA4d2f0c1d...df8f7c1. content-visibility:auto and bounded
+intrinsic placeholder reduced the observed offscreen pre-selection Runtime
+embedder heap16,634,000 ->3,728,528bytes versus preceding measured baseline.
+The first experiment FAILED its post-measurement exact-role navbar click:
+the responsive navbar is hidden at the unchanged test viewport. Preserve
+evidence/ui-offscreen-matrix-experiment-2026-10-07.json failure/false navigation
+flags, not a secretly rewritten success. Source CSS/delivered dist text confirm
+the link exists; no CSS rule/browser flag was disabled to force a hidden click.
+
+Changed derivative explicitly checks/discloses navbar visibility and uses native
+fragment navigation when hidden (as typing#formats in the address bar), then
+verifies all405real card geometries and unchanged markup AFTER memory snapshots.
+It PASSED both trace sessions5,660,323/5,311,477bytes/no loss/parseerror, real
+navigation/rendering and cleanup. Runtime embedder3,729,008 before selections,
+15,016,008 after60while offscreen, then28,100,608 AFTER actual matrix rendering.
+Unchanged baseline final28,333,832. GridSizingTrackCollection growth is STILL
+exactly+2,406,720/+1380objects despite offscreen initial101,152 vsbaseline4,342,560.
+Thus lower offscreen overhead does NOT remove the growth or prove a worst-case
+250MiB fix when users view the matrix. Do NOT publish this as memory compliance,
+conversion speed or a proven original-cause correction. Exact executed variants/
+CSS asset hashes and eight-snapshot rendered state are retained in evidence/
+ui-offscreen-rendered-matrix-experiment-2026-10-07.json; original failure unchanged.
+All scratch/profiles finally removed; source post-hashes identical2,958,573,265/
+31f36695...34b9db34. Zero media copies/native conversion/Docker/new public routes.
+
+Next justified step: use bounded largest-type/complete-heap fields in a CHANGED
+original native-burst diagnostic with independent one-dump sessions and full
+native phase coverage; do not rerun old unresolved-address sampling/full type
+inventory/unchanged long conversion or assume offscreen-only numbers solve the
+all-process worst case. Permanent layout optimization may follow relevant
+evidence, but source of original failure/full250MiB/fidelity/three-run scaling/
+near10GB/new encoders/broad remaining requirements and the full goal are OPEN.
+
+Initial regression for this cycle:677/677unit tests PASS in3.578s, including11new
+ranking/identity/recipe/executed-proof checks. All16changed/new JavaScript files
+passed scoped zero-warning lint. No production rebuild or unchanged full browser
+suite was repeated for private diagnostics. Both CSS experiments remain PRIVATE;
+the lower offscreen point must not substitute for a worst-case conversion gate.
+
+Later independent read-only CIM PID/birth check:ALL44sampled identities from the
+three UI variants absent, all three inner runtimes absent, no matching diagnostic
+Node/Wrangler process or outer-wrapper prefix remains. First nested-shell check
+had a PowerShell interpolation syntax error and supplied NO cleanup result; the
+single-shell checked retry above is the actual result. RootPID11420 genuinely
+reused across the two CSS variants with DIFFERENT births10:34:57.996423UTC and
+10:38:53.136946UTC/parents; do not compare or kill by PID alone. New actual-evidence
+test covers this observed reuse. This does not retroactively explain the earlier
+original driver's immediate root-check failure, whose cause remains unknown.
+
+Final extended regression:678/678unit tests passed in8.609s after adding the
+actual PID-reuse proof; final changed-test/generator lint passed. All measured
+source pins still match and scratch cleanup completed before the branch push.
+
 ## 2026-10-07 — Actual complete UI heap measurement; detailed-type prerequisites investigated
 
 Previous turn was progress: terminal original diagnostic frozen, cleanup/source
