@@ -5,6 +5,46 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — M-08 destination-scope browser checks PREPARED, not executed
+
+M-08 remains Partially implemented. Read-only inspection found the existing
+2026-09-20 production-browser report already records seven M4A tags in Vorbis
+and Opus output audio-stream scope; the corresponding media-options test selects
+that scope correctly. This is not evidence that all Unicode fields from every
+source work, but it does not justify an untested native-wrapper change either.
+The immutable nine-route Unicode source matrix remains unchanged.
+
+New `tests/browser/audio-destination-scopes.spec.ts` prepares eight existing
+public routes: WAV/FLAC/ALAC-M4A to Vorbis and Opus, Vorbis to Opus, and Opus to
+Vorbis. Explicit source/destination scopes use the previously tested bounded
+validator; each case requires seven exact Unicode fields, changed-title rejection,
+wrong-format-scope rejection, real production completion, codec/rate/channels/
+duration checks and complete independent native decode. Native FFmpeg creates
+fixtures and validates outputs ONLY. Validation copies use one 64 KiB slice,
+partial-write handling and streamed hashes, never a whole-file output buffer.
+Each case owns fresh repo-local scratch, cleans its OPFS and fixture/output files
+in finally, and retains a unique <=256 KiB source/engine-pinned report only after
+recording actual outcome and cleanup. Success cannot be claimed if cleanup or
+source-pin stability fails. These checks do NOT certify lossy quality, artwork,
+complete-Chromium memory, scaling, speed or a new public implementation.
+
+Actual preparation checks:11/11 focused unit PASS455.0391ms; scoped two-file
+zero-warning ESLint PASS; Playwright --list discovered exactly eight tests without
+launching a browser/server or running conversion. TypeScript syntax transpilation
+passed; full semantic typecheck and actual browser execution remain PENDING.
+No production C/App/engine/registry/staged asset or live-driver source was changed.
+No build, new browser, native conversion, Docker or generated media launched.
+Run the new suite only AFTER session10189 terminates and its staged assets are
+verified restored; normal Playwright config builds production and must not run
+concurrently with that owned full-original diagnostic.
+
+Same session10189 independently remained alive at20:34UTC: actual Run1 console
+input266,904,867/output301,132,802bytes, rounded observed peak241.770MiB; unchanged
+five helper PID/parent/birth identities. This is partial progress, not exact final
+memory/completion/fidelity/repeats/public acceptance. Active media/profile is still
+needed and remains repo-local pending finally; full protected postSHA/cleanup and
+actual failure-provider outcome are PENDING. Do not restart or repin the live run.
+
 ## 2026-10-08 — Quiesced FULL-original diagnostic LIVE, session10189
 
 This supersedes PREPARED status below. ONE actual launch20:14:19UTC from source
