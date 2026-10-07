@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Quiesced FULL-original diagnostic LIVE, session10189
+
+This supersedes PREPARED status below. ONE actual launch20:14:19UTC from source
+dc682c6 already pushed/remote-verified media-options; main unchanged0904d93.
+Same10189 live on bounded polls; wrapper43740/parent37540/birth20:14:19.392272UTC;
+driver35724/parent43740/birth20:14:19.444325UTC; Chrome43728/parent35724/birth
+20:14:28.732530UTC; server14212/birth20:14:26.479608UTC/port57915; nativeobserver
+23360/birth20:14:28.746734UTC. Fresh `work/mpeg2-quiesced-budget-driver-NMWTYV`
+and `work/mpeg2-quiesced-budget-runtime-PZ2c41` ACTIVE, not claimed cleaned.
+Host8,589,942,784physical/12,490,137,600virtualbytes passed unchanged2GiB guard;
+both actual controls/current pins/old264.242terminal/full protected preSHA/native
+source inspection/32GiBdisk/candidate manifests/three staged adapter size-SHAs
+passed BEFORE Chrome. Prospective five-minute blank settling now; no actual
+conversion/provider/peak/fidelity/repeats/final cleanup/postSHA acceptance yet.
+Same original/actualbinary/quality/fixed48MiB/14flags/full250MiB/allprocesses/
+lowerblank/threeFULLruns/full validators/recovery/finally. Only after genuine
+budget failure normal app cancellation/worker replacement/actualoldclose then
+one bounded raw-retained detailed dump; delayed post-cancel NOT peak allocation
+proof. Poll SAME10189; no duplicate launch/timeout restart/concurrentbuild-stager/
+pinnedsource edits/Docker/nativeconverter/GC/publicpromotion. Full goal OPEN.
+
 ## 2026-10-08 — Quiesced target-provider control PASS; changed original diagnostic PREPARED
 
 Second short control session92507 is TERMINAL exit0, not an original conversion.
