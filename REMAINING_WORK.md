@@ -5,6 +5,54 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Changed original largest-type diagnostic launched; result pending
+
+Previous development cycle was progress: actual largest-type/UI measurements,
+rejected offscreen-only optimization,678tests and verified pushed4a11d65. The
+following push-confirmation turn verified the remote only; this cycle resumes
+the next justified changed original diagnostic rather than an unchanged retry.
+
+New independent-blink-sessions.mjs closes/drains/detaches EACH one-dump detailed
+trace before admitting another. Seven sessions maximum, ONE pending/zero queue,
+4MiB compact aggregate report cap; original4MiB Chromium trace/16MiB serialized
+trace/1024realm/100ms sampling limits unchanged. Failed dump/loss/drain/detach
+remains failed. Same production protected original/candidate37479749443/codecs/
+settings/fixed32+16MiB Wasm/prospective five-minute lower stable blank/all-process
+250MiB formula/normal cancellation/finally. Native observer remains LIVE during
+each trace's finalization. Instrumented timing/memory is diagnostic, NOT speed,
+fidelity, three-run, scaling or public acceptance. No forced GC/Docker/new route.
+
+Read-only owned-process-exit-observation.mjs retries at most10queries/10seconds,
+keeps unavailable observations null, and compares actual PID/birth/parent rather
+than treating a reused PID as a surviving old root. It kills NO process; historical
+failed root-check report and executed sources remain unchanged. Same-birth/changed
+parent is not secretly accepted as exit. First launch failed BEFORE Chrome/runtime/
+conversion because blank prerequisite's actual completed-largest-blink-type-control
+label differs from UI completed-diagnostic. Corrected schema-specific prerequisite
+check and test against BOTH actual retained reports; no rewritten historical proof.
+
+Eight new unit checks cover independent drain/detach/stop/no-queue/caps/loss,
+unavailable/identity reuse, strict reversible actual driver/syntax and prerequisite
+schemas. Complete regression686/686 PASS4.401s. Scoped zero-warning lint passed.
+
+Actual corrected execution started2026-10-07T11:00:58UTC, unified session3456:
+wrapperPID39988, driverPID45204, ChromePID38132/birth11:01:08.9421150UTC,
+WranglerPID28716/helper35480. Independently observed LIVE; in required blank
+startup settlement at checkpoint, not a terminal/missing handle. Fresh owned
+work/mpeg2-largest-burst-driver-n3ATPV and mpeg2-largest-burst-runtime-vOvzoG;
+all disposable media/profile/output confined there and finally-owned cleanup.
+Repository drive had1,728,810,627,072free bytes; driver also requires32GiB before
+stage. Original full pre-hash passed before server/Chrome launched. No post-hash,
+cleanup or full conversion claim while LIVE. ONE70minute diagnostic deadline;
+do not restart just because a poll has no output. No concurrent dist build/stage.
+
+Next: poll SAME live session, preserve terminal raw/compact reports and exact
+executed sources, inspect real GUID/type/native-identity/latency evidence and
+final native peak INCLUDING tracing finalization; independently check source/
+restored assets/all sampled identities/owned runtime removal. Then choose an
+actual justified allocation correction, never promote these measurements as
+original-failure cause or weaken fidelity/full250MiB. Broad original goal OPEN.
+
 ## 2026-10-07 — Bounded largest-type attribution passed; offscreen-only optimization is not a worst-case fix
 
 Previous turn was progress (actual brief UI heap/schema measurements, failure
