@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Corrected staged FULL-original failure-hook driver prepared
+
+The new `mpeg2-staged-abort-original-memory.mjs` uses the ACTUALLY validated
+exclusive `stage-mpeg2-split-abort-diagnostic.mjs`, not worker request routing.
+Strict `mpeg2-staged-abort-original-recipe.mjs` reverses byte-for-byte to the
+executed flex driver except explicit proven staging/failure collector/provenance.
+All three generated adapter size/SHA values checked before page/conversion; same
+actual decoder/encoder/binary/source/settings/I/O/quality/fixed32+16MiB/14flags/
+ALL-process250MiB/lowerprospectivefive-minute blank/threeFULLruns/six-hourdeadline/
+full validators/timestamps<=1ms/SSIM>=0.98/recovery/sourcepostSHA/finally remain.
+Historical failed route driver/recipe/source pins untouched; no pre-click lazy
+worker-route inventory assertion. Hook inactive until real abort, reason512/
+stack8192/console65536/max8records/zeroqueue; preserves original callback/error.
+Same controlled binary-name join, unavailable/live heap/allocation-size remainnull.
+No native converter/Docker/GC/debugger/heap dump or public promotion.
+
+Launch wrapper checks previous actual long-run failure/pins, actual hook control,
+all five staged browser-prerequisite outcomes/pins, terminal setup-failure cleanup,
+and unchanged2GiB physical AND virtual guard BEFORE new source/profile/staging.
+Native inspection/full-source preSHA/32GiB localdisk check remain inherited before
+Chrome. Fresh owned driver/runtime/profile and outputs remain here and are removed
+in normal attempt-every-action finally, with six generated assets restored/nine
+private assets removed by exact-hash ownership. Prospective final proof:
+`evidence/mpeg2-staged-abort-original-2026-10-08.json` (does not exist yet).
+Focused9/9tests PASS157.7275ms/generated-driver and wrapper syntax/scopedzero-warning
+lint PASS; actual full-source launch/stack/callsite/memory/fidelity/repeats/cleanup
+PENDING. Read-only host precheck19:14:34UTC safe (6591578112physical/8621940736virtual
+bytes); actual launcher will recheck. Full goal OPEN.
+
+Final staged-driver pre-launch regression:736/736unit PASS4005.244ms;
+four changed/new JavaScript files scoped zero-warning lint and diff checks PASS.
+No browser conversion/source read/build/staging started by that regression.
+
 ## 2026-10-08 — Route-hook attempt TERMINAL before conversion; staged browser prerequisite PASS
 
 This supersedes LIVE53003 below: actual session ended exit1 at18:52:54UTC.
