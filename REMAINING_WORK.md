@@ -1,9 +1,59 @@
 # Remaining work audit
 
-Updated 2026-10-07. This is the living requirement audit for the original
+Updated 2026-10-08. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-08 — Bounded actual-Wasm abort control; original callsite still unknown
+
+Status: **Verified complete for the diagnostic-control subset only; P-04/P-06/
+P-08 remain Partially implemented.** No production converter/route/heap/quality
+change. No protected-source read, converted media, Docker or native converter.
+The new failure-only hook stays inactive until Emscripten's real `onAbort`,
+captures ONE actual stack at most8192characters/reason512, restores the prior
+stack setting, retains no queue, and preserves the existing callback/fatal error.
+
+Three short real Chrome154.0.8037.98 worker controls used the same unchanged
+private decoder SHA/fixed32MiB shared heap/14flags and unchanged2GiB physical AND
+virtual preflight. Initial control FAILED because `_malloc` is not exposed on
+the generated JS module: no OOM/hook invocation; evidence remains failed.
+Corrected control called the actual instance's Wasm `malloc` export, captured
+real `sbrk`4439 and `emscripten_builtin_malloc`4434 frames, then FAILED its
+unscoped request guard on Chrome's local TTS script. Neither report/source is
+repinned or relabeled. Origin-checked control uses the EXISTING full-original
+source-aware request guard, not an HTTP/privacy exception: the exact TTS script
+was actually initiated by its own extension service worker; converter initiation,
+query payloads/POSTs/external HTTP remain forbidden. This control PASSED;
+forbidden requests empty. Its original fatal OOM still throws, callback once,
+heap remains33554432bytes, stack setting10->10, hook emits once/no queue.
+
+Retained compact proofs (19606/25450/25072bytes):
+`evidence/wasm-abort-capture-control-2026-10-08.json`,
+`evidence/wasm-abort-capture-control-retry-2026-10-08.json`,
+`evidence/wasm-abort-capture-control-origin-checked-2026-10-08.json`.
+Each pins its exact executed control/helper/worker source and reports its actual
+failure/cleanup. All three worker/server/root and11sampled native birth identities
+per run are gone, fresh runtime/profile directories removed via attempt-every-step
+finally. Only small tools/proofs retained; no user programs closed/killed.
+This intentionally synthetic32MiB request is NOT the original106112-frame failed
+allocation size/callsite/live heap/cause. Blank/loaded snapshots are NOT stable
+blank/continuous peaks/250MiB acceptance. Zero browser conversions/public acceptance.
+
+Next: a strict served-only failure-hook derivative of the executed flex original
+driver, preserving the actual binary/input/quality/fixed48MiB/full-tree250MiB/
+lower blank/validation/repeat/cleanup gates. This changed full-source diagnostic
+has NOT been launched; do not repeat either old full-source run unchanged.
+The prior243-frame failure's already measured aligned-plane allocation path is
+historical, not proof of the changed aligned-reuse106112-frame failure's callsite.
+Full goal remains OPEN.
+
+This cycle:10/10 focused hook/symbol/privacy/executed-evidence checks PASS
+133.4985ms; full727/727unit regression PASS4728.1083ms; all eight changed/new JS
+files scoped zero-warning lint PASS. Independent read-only CIM verification at
+18:37:53UTC found all33 sampled native PID/parent/microsecond-birth identities
+absent and all three fresh runtime folders absent. No new browser/conversion
+was started for that verification. Original full-source acceptance remains failed.
 
 ## 2026-10-07 — Full-original flex attempt TERMINAL: fixed decoder heap OOM, not accepted
 

@@ -1,0 +1,551 @@
+{
+  "recordedAt": "2026-10-07T18:35:44.474Z",
+  "status": "passed-synthetic-abort-control",
+  "scope": "Actual unchanged decoder binary in dedicated Chromium worker, intentional SYNTHETIC32MiB malloc request; no media/converter",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-07T18:35:41.4178452Z",
+    "freePhysicalBytes": 4115681280,
+    "freeVirtualBytes": 6140219392,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserVersion": "154.0.8037.98",
+  "flags": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\wasm-abort-control-cwnmJu\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-component-update",
+    "--disable-default-apps",
+    "--disable-domain-reliability",
+    "--disable-extensions",
+    "--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction",
+    "--disable-sync",
+    "--metrics-recording-only",
+    "about:blank"
+  ],
+  "workerSource": "import decoderFactory from \"/decoder.mjs\";\nimport {createBoundedWasmAbortCapture} from \"/capture.mjs\";\nlet core; let actualMalloc; let emitted=null; let originalCalls=0;\nconst capture=createBoundedWasmAbortCapture({role:\"decoder\",emit:row=>{emitted=row;}});\nself.onmessage=async event=>{\n  try {\n    if(event.data===\"load\") {\n      core=await decoderFactory({locateFile:()=>\"/decoder.wasm\",print:()=>{},printErr:()=>{},\n        onAbort:capture.withPriorOnAbort(()=>{originalCalls++;}),\n        instantiateWasm(imports,receive){\n          WebAssembly.instantiateStreaming(fetch(\"/decoder.wasm\"),imports).then(result=>{\n            actualMalloc=result.instance.exports.malloc;\n            receive(result.instance,result.module);\n          },error=>self.postMessage({phase:\"control-error\",message:String(error).slice(0,2048)}));\n          return {};\n        }});\n      if(core.HEAPU8.byteLength!==33554432)throw new Error(\"Actual heap changed\");\n      self.postMessage({phase:\"loaded\",heapBytes:core.HEAPU8.byteLength,\n        shared:core.HEAPU8.buffer instanceof SharedArrayBuffer,originIsolated:self.crossOriginIsolated,\n        capture:capture.report(),stackLimit:Error.stackTraceLimit??null});\n    }else if(event.data===\"synthetic-oom\") {\n      const beforeLimit=Error.stackTraceLimit??null; let failure=null;\n      try{actualMalloc(33554432);}catch(error){failure={message:String(error.message).slice(0,1024),stack:String(error.stack).slice(0,8192)};}\n      self.postMessage({phase:\"terminal\",heapBytes:core.HEAPU8.byteLength,originalCalls,\n        capture:capture.report(),emitted,beforeLimit,afterLimit:Error.stackTraceLimit??null,failure,\n        syntheticRequestedAllocationBytes:33554432,syntheticFunctionCall:\"actual-instance.exports.malloc\",converterInvoked:false});\n    }else throw new Error(\"Unexpected control command\");\n  }catch(error){self.postMessage({phase:\"control-error\",message:String(error).slice(0,2048)});}\n};",
+  "workerSourceSha256": "0c8db24f0f7421682481bb6f76c85b9e1b9f00ccef67af6ca1ef0624945af4c7",
+  "sourcePins": {
+    "scripts/check-wasm-abort-capture-origin-checked.mjs": "17fbe2c4a2e84cc28881c5bfacd88808de6a118e0d0164e8dd23466d6aaebe04",
+    "scripts/lib/private-browser-request.mjs": "d24e7a443abc21f564c2e15d79b8b29054b48a6b924f7556d6d6b48c9f6d900c",
+    "scripts/lib/bounded-wasm-abort-capture.mjs": "8726ca6eaba04736fa97f5f3b0483548d92550464c331b3397e3b383728a391e",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "result": {
+    "loaded": {
+      "phase": "loaded",
+      "heapBytes": 33554432,
+      "shared": true,
+      "originIsolated": true,
+      "capture": {
+        "maximumRecords": 1,
+        "queuedRecords": 0,
+        "captureStarted": false,
+        "first": null,
+        "emitFailure": null,
+        "noNormalConversionSampling": true,
+        "noNativeFunctionCalled": true,
+        "noForcedGc": true,
+        "nativeErrorSuppressed": false
+      },
+      "stackLimit": 10
+    },
+    "terminal": {
+      "phase": "terminal",
+      "heapBytes": 33554432,
+      "originalCalls": 1,
+      "capture": {
+        "maximumRecords": 1,
+        "queuedRecords": 0,
+        "captureStarted": true,
+        "first": {
+          "scope": "one-actual-wasm-abort-stack-not-allocation-size-or-conversion-acceptance",
+          "role": "decoder",
+          "observedAt": "2026-10-07T18:35:43.347Z",
+          "reason": "Cannot enlarge memory arrays to size 35741696 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0",
+          "reasonTruncated": false,
+          "stack": "Error: Actual Emscripten abort observation\n    at onAbort (http://127.0.0.1:50137/capture.mjs:19:22)\n    at Object.onAbort (http://127.0.0.1:50137/capture.mjs:35:47)\n    at abort (http://127.0.0.1:50137/decoder.mjs:1:10902)\n    at abortOnCannotGrowMemory (http://127.0.0.1:50137/decoder.mjs:1:35496)\n    at _emscripten_resize_heap (http://127.0.0.1:50137/decoder.mjs:1:35944)\n    at imports.<computed> (http://127.0.0.1:50137/decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.sbrk (http://127.0.0.1:50137/decoder.wasm:wasm-function[4439]:0x5faeab)\n    at within-mpeg2-split.wasm.emscripten_builtin_malloc (http://127.0.0.1:50137/decoder.wasm:wasm-function[4434]:0x5f8b69)\n    at self.onmessage (http://127.0.0.1:50137/worker.mjs:23:11)",
+          "stackTruncated": false,
+          "unavailable": null,
+          "stackLimitRestored": true,
+          "maximumReasonCharacters": 512,
+          "maximumStackCharacters": 8192,
+          "maximumStackFrames": 64,
+          "failedIndividualAllocationBytes": null,
+          "heapLiveBytes": null,
+          "publicAcceptance": false
+        },
+        "emitFailure": null,
+        "noNormalConversionSampling": true,
+        "noNativeFunctionCalled": true,
+        "noForcedGc": true,
+        "nativeErrorSuppressed": false
+      },
+      "emitted": {
+        "scope": "one-actual-wasm-abort-stack-not-allocation-size-or-conversion-acceptance",
+        "role": "decoder",
+        "observedAt": "2026-10-07T18:35:43.347Z",
+        "reason": "Cannot enlarge memory arrays to size 35741696 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0",
+        "reasonTruncated": false,
+        "stack": "Error: Actual Emscripten abort observation\n    at onAbort (http://127.0.0.1:50137/capture.mjs:19:22)\n    at Object.onAbort (http://127.0.0.1:50137/capture.mjs:35:47)\n    at abort (http://127.0.0.1:50137/decoder.mjs:1:10902)\n    at abortOnCannotGrowMemory (http://127.0.0.1:50137/decoder.mjs:1:35496)\n    at _emscripten_resize_heap (http://127.0.0.1:50137/decoder.mjs:1:35944)\n    at imports.<computed> (http://127.0.0.1:50137/decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.sbrk (http://127.0.0.1:50137/decoder.wasm:wasm-function[4439]:0x5faeab)\n    at within-mpeg2-split.wasm.emscripten_builtin_malloc (http://127.0.0.1:50137/decoder.wasm:wasm-function[4434]:0x5f8b69)\n    at self.onmessage (http://127.0.0.1:50137/worker.mjs:23:11)",
+        "stackTruncated": false,
+        "unavailable": null,
+        "stackLimitRestored": true,
+        "maximumReasonCharacters": 512,
+        "maximumStackCharacters": 8192,
+        "maximumStackFrames": 64,
+        "failedIndividualAllocationBytes": null,
+        "heapLiveBytes": null,
+        "publicAcceptance": false
+      },
+      "beforeLimit": 10,
+      "afterLimit": 10,
+      "failure": {
+        "message": "Aborted(Cannot enlarge memory arrays to size 35741696 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)",
+        "stack": "RuntimeError: Aborted(Cannot enlarge memory arrays to size 35741696 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n    at abort (http://127.0.0.1:50137/decoder.mjs:1:11112)\n    at abortOnCannotGrowMemory (http://127.0.0.1:50137/decoder.mjs:1:35496)\n    at _emscripten_resize_heap (http://127.0.0.1:50137/decoder.mjs:1:35944)\n    at imports.<computed> (http://127.0.0.1:50137/decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.sbrk (http://127.0.0.1:50137/decoder.wasm:wasm-function[4439]:0x5faeab)\n    at within-mpeg2-split.wasm.emscripten_builtin_malloc (http://127.0.0.1:50137/decoder.wasm:wasm-function[4434]:0x5f8b69)\n    at self.onmessage (http://127.0.0.1:50137/worker.mjs:23:11)"
+      },
+      "syntheticRequestedAllocationBytes": 33554432,
+      "syntheticFunctionCall": "actual-instance.exports.malloc",
+      "converterInvoked": false
+    },
+    "actualBinarySha256": "f4c5c17e6d0e53d0612ac6ae66dcf5f7057b9d7b923df99713a2b36d5545924a",
+    "actualBinaryNames": 4655,
+    "symbolizedAbortFrames": [
+      {
+        "functionIndex": 4439,
+        "functionNameFromActualBinary": "sbrk",
+        "codeOffset": "0x5faeab"
+      },
+      {
+        "functionIndex": 4434,
+        "functionNameFromActualBinary": "emscripten_builtin_malloc",
+        "codeOffset": "0x5f8b69"
+      }
+    ]
+  },
+  "snapshots": [
+    {
+      "phase": "blank-control-snapshot-NOT-stable-baseline",
+      "processes": [
+        {
+          "pid": 42960,
+          "parentPid": 28744,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.4651380Z",
+          "privateBytes": 39157760,
+          "rssBytes": 124936192
+        },
+        {
+          "pid": 46720,
+          "parentPid": 42960,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.4823180Z",
+          "privateBytes": 2678784,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 44932,
+          "parentPid": 42960,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.6118170Z",
+          "privateBytes": 95358976,
+          "rssBytes": 117993472
+        },
+        {
+          "pid": 45796,
+          "parentPid": 42960,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-07T18:35:41.6163470Z",
+          "privateBytes": 12845056,
+          "rssBytes": 39018496
+        },
+        {
+          "pid": 41220,
+          "parentPid": 42960,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T18:35:41.6496640Z",
+          "privateBytes": 8044544,
+          "rssBytes": 17543168
+        },
+        {
+          "pid": 22672,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.6966970Z",
+          "privateBytes": 43347968,
+          "rssBytes": 84746240
+        },
+        {
+          "pid": 35324,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.7521810Z",
+          "privateBytes": 18591744,
+          "rssBytes": 45813760
+        },
+        {
+          "pid": 26436,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.7586460Z",
+          "privateBytes": 15134720,
+          "rssBytes": 31551488
+        },
+        {
+          "pid": 19804,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.7628450Z",
+          "privateBytes": 18018304,
+          "rssBytes": 46391296
+        },
+        {
+          "pid": 46192,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.9986900Z",
+          "privateBytes": 20496384,
+          "rssBytes": 43638784
+        }
+      ],
+      "privateBytes": 273674240,
+      "rssBytes": 562061312
+    },
+    {
+      "phase": "loaded-control-snapshot-NOT-peak-acceptance",
+      "processes": [
+        {
+          "pid": 42960,
+          "parentPid": 28744,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.4651380Z",
+          "privateBytes": 40165376,
+          "rssBytes": 127569920
+        },
+        {
+          "pid": 46720,
+          "parentPid": 42960,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.4823180Z",
+          "privateBytes": 2678784,
+          "rssBytes": 10428416
+        },
+        {
+          "pid": 44932,
+          "parentPid": 42960,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.6118170Z",
+          "privateBytes": 95821824,
+          "rssBytes": 119009280
+        },
+        {
+          "pid": 45796,
+          "parentPid": 42960,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-07T18:35:41.6163470Z",
+          "privateBytes": 12939264,
+          "rssBytes": 39530496
+        },
+        {
+          "pid": 41220,
+          "parentPid": 42960,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T18:35:41.6496640Z",
+          "privateBytes": 8056832,
+          "rssBytes": 17743872
+        },
+        {
+          "pid": 22672,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.6966970Z",
+          "privateBytes": 43352064,
+          "rssBytes": 84840448
+        },
+        {
+          "pid": 26436,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.7586460Z",
+          "privateBytes": 98242560,
+          "rssBytes": 96415744
+        },
+        {
+          "pid": 19804,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.7628450Z",
+          "privateBytes": 18018304,
+          "rssBytes": 46391296
+        },
+        {
+          "pid": 46192,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:41.9986900Z",
+          "privateBytes": 20496384,
+          "rssBytes": 43638784
+        },
+        {
+          "pid": 27664,
+          "parentPid": 42960,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:35:42.7181160Z",
+          "privateBytes": 14999552,
+          "rssBytes": 31313920
+        }
+      ],
+      "privateBytes": 354770944,
+      "rssBytes": 616882176
+    }
+  ],
+  "nativeIdentities": [
+    {
+      "pid": 42960,
+      "parentPid": 28744,
+      "type": "browser",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.4651380Z",
+      "privateBytes": 40165376,
+      "rssBytes": 127569920
+    },
+    {
+      "pid": 46720,
+      "parentPid": 42960,
+      "type": "crashpad-handler",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.4823180Z",
+      "privateBytes": 2678784,
+      "rssBytes": 10428416
+    },
+    {
+      "pid": 44932,
+      "parentPid": 42960,
+      "type": "gpu-process",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.6118170Z",
+      "privateBytes": 95821824,
+      "rssBytes": 119009280
+    },
+    {
+      "pid": 45796,
+      "parentPid": 42960,
+      "type": "utility",
+      "utilitySubtype": "network.mojom.NetworkService",
+      "sandboxType": "none",
+      "createdAt": "2026-10-07T18:35:41.6163470Z",
+      "privateBytes": 12939264,
+      "rssBytes": 39530496
+    },
+    {
+      "pid": 41220,
+      "parentPid": 42960,
+      "type": "utility",
+      "utilitySubtype": "storage.mojom.StorageService",
+      "sandboxType": "service",
+      "createdAt": "2026-10-07T18:35:41.6496640Z",
+      "privateBytes": 8056832,
+      "rssBytes": 17743872
+    },
+    {
+      "pid": 22672,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.6966970Z",
+      "privateBytes": 43352064,
+      "rssBytes": 84840448
+    },
+    {
+      "pid": 35324,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.7521810Z",
+      "privateBytes": 18591744,
+      "rssBytes": 45813760
+    },
+    {
+      "pid": 26436,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.7586460Z",
+      "privateBytes": 98242560,
+      "rssBytes": 96415744
+    },
+    {
+      "pid": 19804,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.7628450Z",
+      "privateBytes": 18018304,
+      "rssBytes": 46391296
+    },
+    {
+      "pid": 46192,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:41.9986900Z",
+      "privateBytes": 20496384,
+      "rssBytes": 43638784
+    },
+    {
+      "pid": 27664,
+      "parentPid": 42960,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:35:42.7181160Z",
+      "privateBytes": 14999552,
+      "rssBytes": 31313920
+    }
+  ],
+  "failure": null,
+  "closeRequestError": null,
+  "serverError": null,
+  "chromeError": null,
+  "forbiddenRequests": [],
+  "browserLocalRequests": [
+    {
+      "url": "chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/tts_extension.js",
+      "method": "GET",
+      "postData": null,
+      "frameUrl": null,
+      "serviceWorkerUrl": "chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/service_worker.js"
+    }
+  ],
+  "cleanup": {
+    "workerTerminated": true,
+    "errors": [],
+    "normalBrowserCloseRequested": true,
+    "rootExit": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 42960,
+        "parentPid": 28744,
+        "createdAt": "2026-10-07T18:35:41.4651380Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-07T18:35:43.877Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 504,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "serverClosed": true,
+    "allSampledNativeBirthsAbsent": true,
+    "checkedNativeIdentities": 11,
+    "observedProcesses": [],
+    "runtimeProfileRemoved": true
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\wasm-abort-control-cwnmJu",
+  "decoderArtifactSources": {
+    "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+    "media/ffmpeg/mpeg2-split-pipeline-manifest.mjs": "7c9a3a0d2f57f985b5a07a72ab7454c7a87f34e97205816a508f1c538e73160b",
+    "media/ffmpeg/make-mpeg2-split-pipeline.mjs": "bfcdabf4e36b9c339bab2558a5177dbc23e005aa14e75dcd8af2c24b328232dd",
+    "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+    "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+    "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "media/ffmpeg/mpeg2-split-codec-parameters.h": "dd3500db5cf0d437a9042424a9ddd97aee556c497abe7f5b6648c3756d120ccc",
+    "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+    "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+    "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+    "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+    "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+    "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+    "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+    "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+    "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+    "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+    "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+    "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs": "795b028f1941e3b9b053080772c83dc9f905faf296ea8943f40a755573a39f81",
+    "media/ffmpeg/build-mpeg2-aligned-reuse.mjs": "7c920650273882d831b211d7f7eaddea0bbed2f9e00f4221f7966bb39639de57",
+    "media/ffmpeg/mpeg2-aligned-reuse-recipe.mjs": "fc14903561417fc91b0f6161f212f056fee19393aa9905f36888b9d70e52b387",
+    "media/ffmpeg/mpeg2-aligned-reuse.c": "57c83bb5dfe204cee152381002963a72394789abfa03efc7ac6685a8f3b9f785",
+    "media/ffmpeg/mpeg2-aligned-reuse-smoke.c": "8c8d4048b24e4c4abf10dd65398f180efcb5668f0bce96c8843fbc6205920e3c",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965"
+  },
+  "browserConversionsPerformed": 0,
+  "protectedSourceRead": false,
+  "nativeConverterUsed": false,
+  "primaryMemoryAcceptance": false,
+  "primaryIncrementalPrivateMiB": null,
+  "publicAcceptance": false,
+  "heapGrowthAllowed": false,
+  "debuggerPauseOrHeapDumpUsed": false,
+  "actualOriginalOomAllocationCallsite": null,
+  "caveat": "This controls only the failure hook and binary-name join. Synthetic malloc is NOT the old106112frame HEVC allocation, its size, live heap or original cause. Snapshot samples are NOT stable blank/continuous peak/250MiB conversion acceptance."
+}

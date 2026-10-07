@@ -1,0 +1,503 @@
+{
+  "recordedAt": "2026-10-07T18:32:57.205Z",
+  "status": "failed-synthetic-abort-control",
+  "scope": "Actual unchanged decoder binary in dedicated Chromium worker, intentional SYNTHETIC32MiB malloc request; no media/converter",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-07T18:32:53.8664893Z",
+    "freePhysicalBytes": 3579154432,
+    "freeVirtualBytes": 5471342592,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserVersion": "154.0.8037.98",
+  "flags": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\wasm-abort-control-NobldZ\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--disable-background-networking",
+    "--disable-component-update",
+    "--disable-default-apps",
+    "--disable-domain-reliability",
+    "--disable-extensions",
+    "--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction",
+    "--disable-sync",
+    "--metrics-recording-only",
+    "about:blank"
+  ],
+  "workerSource": "import decoderFactory from \"/decoder.mjs\";\nimport {createBoundedWasmAbortCapture} from \"/capture.mjs\";\nlet core; let emitted=null; let originalCalls=0;\nconst capture=createBoundedWasmAbortCapture({role:\"decoder\",emit:row=>{emitted=row;}});\nself.onmessage=async event=>{\n  try {\n    if(event.data===\"load\") {\n      core=await decoderFactory({locateFile:()=>\"/decoder.wasm\",print:()=>{},printErr:()=>{},\n        onAbort:capture.withPriorOnAbort(()=>{originalCalls++;})});\n      if(core.HEAPU8.byteLength!==33554432)throw new Error(\"Actual heap changed\");\n      self.postMessage({phase:\"loaded\",heapBytes:core.HEAPU8.byteLength,\n        shared:core.HEAPU8.buffer instanceof SharedArrayBuffer,originIsolated:self.crossOriginIsolated,\n        capture:capture.report(),stackLimit:Error.stackTraceLimit??null});\n    }else if(event.data===\"synthetic-oom\") {\n      const beforeLimit=Error.stackTraceLimit??null; let failure=null;\n      try{core._malloc(33554432);}catch(error){failure={message:String(error.message).slice(0,1024),stack:String(error.stack).slice(0,8192)};}\n      self.postMessage({phase:\"terminal\",heapBytes:core.HEAPU8.byteLength,originalCalls,\n        capture:capture.report(),emitted,beforeLimit,afterLimit:Error.stackTraceLimit??null,failure,\n        syntheticRequestedAllocationBytes:33554432,converterInvoked:false});\n    }else throw new Error(\"Unexpected control command\");\n  }catch(error){self.postMessage({phase:\"control-error\",message:String(error).slice(0,2048)});}\n};",
+  "workerSourceSha256": "648928f495bc9e5f78522ee9956bcc8bd0db6eba3ac253e3a19511ad9d963fc6",
+  "sourcePins": {
+    "scripts/check-wasm-abort-capture.mjs": "e11f58bc18c593668922a791e47c0e0c903e52b524fd2c7efd3cd7084260398b",
+    "scripts/lib/bounded-wasm-abort-capture.mjs": "8726ca6eaba04736fa97f5f3b0483548d92550464c331b3397e3b383728a391e",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "result": {
+    "loaded": {
+      "phase": "loaded",
+      "heapBytes": 33554432,
+      "shared": true,
+      "originIsolated": true,
+      "capture": {
+        "maximumRecords": 1,
+        "queuedRecords": 0,
+        "captureStarted": false,
+        "first": null,
+        "emitFailure": null,
+        "noNormalConversionSampling": true,
+        "noNativeFunctionCalled": true,
+        "noForcedGc": true,
+        "nativeErrorSuppressed": false
+      },
+      "stackLimit": 10
+    },
+    "terminal": {
+      "phase": "terminal",
+      "heapBytes": 33554432,
+      "originalCalls": 0,
+      "capture": {
+        "maximumRecords": 1,
+        "queuedRecords": 0,
+        "captureStarted": false,
+        "first": null,
+        "emitFailure": null,
+        "noNormalConversionSampling": true,
+        "noNativeFunctionCalled": true,
+        "noForcedGc": true,
+        "nativeErrorSuppressed": false
+      },
+      "emitted": null,
+      "beforeLimit": 10,
+      "afterLimit": 10,
+      "failure": {
+        "message": "core._malloc is not a function",
+        "stack": "TypeError: core._malloc is not a function\n    at self.onmessage (http://127.0.0.1:57334/worker.mjs:16:16)"
+      },
+      "syntheticRequestedAllocationBytes": 33554432,
+      "converterInvoked": false
+    }
+  },
+  "snapshots": [
+    {
+      "phase": "blank-control-snapshot-NOT-stable-baseline",
+      "processes": [
+        {
+          "pid": 35176,
+          "parentPid": 38036,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:53.9312650Z",
+          "privateBytes": 40693760,
+          "rssBytes": 128770048
+        },
+        {
+          "pid": 46084,
+          "parentPid": 35176,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:53.9587530Z",
+          "privateBytes": 2662400,
+          "rssBytes": 10399744
+        },
+        {
+          "pid": 32496,
+          "parentPid": 35176,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.2323590Z",
+          "privateBytes": 95780864,
+          "rssBytes": 118321152
+        },
+        {
+          "pid": 26812,
+          "parentPid": 35176,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-07T18:32:54.2396630Z",
+          "privateBytes": 12894208,
+          "rssBytes": 39047168
+        },
+        {
+          "pid": 42648,
+          "parentPid": 35176,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T18:32:54.3128000Z",
+          "privateBytes": 9097216,
+          "rssBytes": 17551360
+        },
+        {
+          "pid": 28540,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.3886440Z",
+          "privateBytes": 43163648,
+          "rssBytes": 84938752
+        },
+        {
+          "pid": 26304,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.4264130Z",
+          "privateBytes": 17498112,
+          "rssBytes": 45764608
+        },
+        {
+          "pid": 32152,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.4672770Z",
+          "privateBytes": 15163392,
+          "rssBytes": 31584256
+        },
+        {
+          "pid": 37244,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.4685040Z",
+          "privateBytes": 17997824,
+          "rssBytes": 46374912
+        },
+        {
+          "pid": 26840,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.7162500Z",
+          "privateBytes": 20451328,
+          "rssBytes": 43614208
+        }
+      ],
+      "privateBytes": 275402752,
+      "rssBytes": 566366208
+    },
+    {
+      "phase": "loaded-control-snapshot-NOT-peak-acceptance",
+      "processes": [
+        {
+          "pid": 35176,
+          "parentPid": 38036,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:53.9312650Z",
+          "privateBytes": 41570304,
+          "rssBytes": 131284992
+        },
+        {
+          "pid": 46084,
+          "parentPid": 35176,
+          "type": "crashpad-handler",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:53.9587530Z",
+          "privateBytes": 2662400,
+          "rssBytes": 10399744
+        },
+        {
+          "pid": 32496,
+          "parentPid": 35176,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.2323590Z",
+          "privateBytes": 96321536,
+          "rssBytes": 119369728
+        },
+        {
+          "pid": 26812,
+          "parentPid": 35176,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "createdAt": "2026-10-07T18:32:54.2396630Z",
+          "privateBytes": 12967936,
+          "rssBytes": 39530496
+        },
+        {
+          "pid": 42648,
+          "parentPid": 35176,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T18:32:54.3128000Z",
+          "privateBytes": 9109504,
+          "rssBytes": 17752064
+        },
+        {
+          "pid": 28540,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.3886440Z",
+          "privateBytes": 43192320,
+          "rssBytes": 85041152
+        },
+        {
+          "pid": 32152,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.4672770Z",
+          "privateBytes": 98029568,
+          "rssBytes": 99323904
+        },
+        {
+          "pid": 37244,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.4685040Z",
+          "privateBytes": 17997824,
+          "rssBytes": 46374912
+        },
+        {
+          "pid": 26840,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:54.7162500Z",
+          "privateBytes": 20451328,
+          "rssBytes": 43614208
+        },
+        {
+          "pid": 17424,
+          "parentPid": 35176,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T18:32:55.4597640Z",
+          "privateBytes": 18853888,
+          "rssBytes": 34123776
+        }
+      ],
+      "privateBytes": 361156608,
+      "rssBytes": 626814976
+    }
+  ],
+  "nativeIdentities": [
+    {
+      "pid": 35176,
+      "parentPid": 38036,
+      "type": "browser",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:53.9312650Z",
+      "privateBytes": 41570304,
+      "rssBytes": 131284992
+    },
+    {
+      "pid": 46084,
+      "parentPid": 35176,
+      "type": "crashpad-handler",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:53.9587530Z",
+      "privateBytes": 2662400,
+      "rssBytes": 10399744
+    },
+    {
+      "pid": 32496,
+      "parentPid": 35176,
+      "type": "gpu-process",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.2323590Z",
+      "privateBytes": 96321536,
+      "rssBytes": 119369728
+    },
+    {
+      "pid": 26812,
+      "parentPid": 35176,
+      "type": "utility",
+      "utilitySubtype": "network.mojom.NetworkService",
+      "sandboxType": "none",
+      "createdAt": "2026-10-07T18:32:54.2396630Z",
+      "privateBytes": 12967936,
+      "rssBytes": 39530496
+    },
+    {
+      "pid": 42648,
+      "parentPid": 35176,
+      "type": "utility",
+      "utilitySubtype": "storage.mojom.StorageService",
+      "sandboxType": "service",
+      "createdAt": "2026-10-07T18:32:54.3128000Z",
+      "privateBytes": 9109504,
+      "rssBytes": 17752064
+    },
+    {
+      "pid": 28540,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.3886440Z",
+      "privateBytes": 43192320,
+      "rssBytes": 85041152
+    },
+    {
+      "pid": 26304,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.4264130Z",
+      "privateBytes": 17498112,
+      "rssBytes": 45764608
+    },
+    {
+      "pid": 32152,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.4672770Z",
+      "privateBytes": 98029568,
+      "rssBytes": 99323904
+    },
+    {
+      "pid": 37244,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.4685040Z",
+      "privateBytes": 17997824,
+      "rssBytes": 46374912
+    },
+    {
+      "pid": 26840,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:54.7162500Z",
+      "privateBytes": 20451328,
+      "rssBytes": 43614208
+    },
+    {
+      "pid": 17424,
+      "parentPid": 35176,
+      "type": "renderer",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-07T18:32:55.4597640Z",
+      "privateBytes": 18853888,
+      "rssBytes": 34123776
+    }
+  ],
+  "failure": {
+    "message": "Expected values to be strictly equal:\n\n0 !== 1\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/check-wasm-abort-capture.mjs:142:54"
+  },
+  "closeRequestError": null,
+  "serverError": null,
+  "chromeError": null,
+  "forbiddenRequests": [
+    {
+      "url": "chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/tts_extension.js",
+      "method": "GET",
+      "postData": null
+    }
+  ],
+  "cleanup": {
+    "workerTerminated": true,
+    "errors": [],
+    "normalBrowserCloseRequested": true,
+    "rootExit": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 35176,
+        "parentPid": 38036,
+        "createdAt": "2026-10-07T18:32:53.9312650Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-07T18:32:56.696Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 517,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "serverClosed": true,
+    "allSampledNativeBirthsAbsent": true,
+    "checkedNativeIdentities": 11,
+    "observedProcesses": [],
+    "runtimeProfileRemoved": true
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\wasm-abort-control-NobldZ",
+  "decoderArtifactSources": {
+    "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+    "media/ffmpeg/mpeg2-split-pipeline-manifest.mjs": "7c9a3a0d2f57f985b5a07a72ab7454c7a87f34e97205816a508f1c538e73160b",
+    "media/ffmpeg/make-mpeg2-split-pipeline.mjs": "bfcdabf4e36b9c339bab2558a5177dbc23e005aa14e75dcd8af2c24b328232dd",
+    "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+    "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+    "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "media/ffmpeg/mpeg2-split-codec-parameters.h": "dd3500db5cf0d437a9042424a9ddd97aee556c497abe7f5b6648c3756d120ccc",
+    "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+    "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+    "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+    "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+    "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+    "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+    "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+    "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+    "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+    "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+    "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+    "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs": "795b028f1941e3b9b053080772c83dc9f905faf296ea8943f40a755573a39f81",
+    "media/ffmpeg/build-mpeg2-aligned-reuse.mjs": "7c920650273882d831b211d7f7eaddea0bbed2f9e00f4221f7966bb39639de57",
+    "media/ffmpeg/mpeg2-aligned-reuse-recipe.mjs": "fc14903561417fc91b0f6161f212f056fee19393aa9905f36888b9d70e52b387",
+    "media/ffmpeg/mpeg2-aligned-reuse.c": "57c83bb5dfe204cee152381002963a72394789abfa03efc7ac6685a8f3b9f785",
+    "media/ffmpeg/mpeg2-aligned-reuse-smoke.c": "8c8d4048b24e4c4abf10dd65398f180efcb5668f0bce96c8843fbc6205920e3c",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965"
+  },
+  "browserConversionsPerformed": 0,
+  "protectedSourceRead": false,
+  "nativeConverterUsed": false,
+  "primaryMemoryAcceptance": false,
+  "primaryIncrementalPrivateMiB": null,
+  "publicAcceptance": false,
+  "heapGrowthAllowed": false,
+  "debuggerPauseOrHeapDumpUsed": false,
+  "actualOriginalOomAllocationCallsite": null,
+  "caveat": "This controls only the failure hook and binary-name join. Synthetic malloc is NOT the old106112frame HEVC allocation, its size, live heap or original cause. Snapshot samples are NOT stable blank/continuous peak/250MiB conversion acceptance."
+}
