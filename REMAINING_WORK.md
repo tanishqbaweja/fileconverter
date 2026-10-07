@@ -5,6 +5,47 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Scope-aware audio tag validator: native controls only
+
+Status: **Verified complete for this independent validator/control subset;
+M-08 remains Partially implemented overall**. The existing nine-route historical
+browser test reads only FFprobe format tags. Its source/evidence remain untouched.
+Ogg/Opus destination tags need explicit selected-audio-stream scope; silently
+merging scopes could conceal a dropped stream tag or read the wrong track.
+
+New `scripts/lib/scoped-audio-tag-validation.mjs` requires an explicit format or
+audio-stream scope and audio ordinal, preserves actual stream index/key/value,
+checks exact Unicode values with case-insensitive field names, and returns missing
+values as null. No cross-scope fallback, value normalization, alias policy, artwork
+policy, or conversion implementation. Fixed limits: 64 streams, 128 observed tags,
+32 expected fields, 128-character keys and 4096-character values; iteration rejects
+excess tags before collecting an unbounded entry array. Ambiguous case-folded
+keys, unavailable scope/index, malformed/nontext tags and invalid ordinals reject.
+
+Executed `scripts/check-scoped-audio-tags.mjs` at 12:45:43UTC: five synthetic
+0.1-second native fixtures (WAV/FLAC/Opus/Vorbis/AIFF), each 1650–9911 bytes.
+All 32 expected Unicode fields passed in their actual FFprobe scopes. All five
+changed-title controls failed as required; both Ogg/Opus wrong-format-scope
+controls failed with all seven fields genuinely missing. Native FFmpeg created
+only deterministic fixtures; it performed no browser conversion or protected-
+source operation. The 18,287-byte proof retains probes, hashes and exact source
+pins: `evidence/scoped-audio-tag-controls-2026-10-07.json`.
+
+Fresh identity-owned `work/scoped-audio-tags-ky0oEP` and every fixture were deleted
+in finally; independent path-absence check passed. Existing full-original browser
+session15198/driver43704/Chrome24276/native9512 remains live with unchanged birth
+identities, staged assets, source, settings and 250MiB gate. No concurrent browser
+test, production build, engine/source pin, public profile or CSS change. Native
+controls overlapped that run, so no isolated conversion-speed comparison is
+claimed. New validator/actual-proof checks plus existing metadata evidence checks
+passed 11/11 (158.5843ms); scoped zero-warning lint passed. No full unit/browser
+suite was repeated for this isolated diagnostic-tool change while the original
+conversion remains active.
+
+Browser preservation/correctness/quality, destination alias mappings, artwork,
+three-run stress/full-tree memory, scaling, release and full-goal acceptance
+remain pending; these native fixture checks do not satisfy any of those gates.
+
 ## 2026-10-07 — Measured flex candidate full-original attempt LIVE; all full gates retained
 
 Previous cycle was progress: fresh real grid/flex pair, nine identical layout

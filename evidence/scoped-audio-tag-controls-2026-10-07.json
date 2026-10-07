@@ -1,0 +1,632 @@
+{
+  "recordedAt": "2026-10-07T12:45:43.413Z",
+  "status": "passed-native-validator-controls",
+  "scope": "Five 0.1-second synthetic native fixtures establish exact FFprobe tag scopes and negative controls, NOT browser conversions",
+  "ffmpegVersion": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+  "ffprobeVersion": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+  "cases": [
+    {
+      "id": "wav",
+      "bytes": 9810,
+      "sha256": "34731d5daa42ee2b7b07e1e1496b4cca10db46894365f66aac2f8fec285640b1",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "format_name": "wav",
+          "tags": {
+            "artist": "Émile / कलाकार",
+            "comment": "αβγ & <texte>",
+            "date": "2026",
+            "genre": "Essai",
+            "title": "Titre café — 音楽",
+            "album": "Album naïf",
+            "track": "3/9"
+          }
+        }
+      },
+      "positive": {
+        "status": "passed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": "artist",
+            "actualValue": "Émile / कलाकार",
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": "album",
+            "actualValue": "Album naïf",
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": "genre",
+            "actualValue": "Essai",
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": "date",
+            "actualValue": "2026",
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": "track",
+            "actualValue": "3/9",
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": "comment",
+            "actualValue": "αβγ & <texte>",
+            "status": "preserved"
+          }
+        ]
+      },
+      "changed": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": null
+    },
+    {
+      "id": "flac",
+      "bytes": 9911,
+      "sha256": "5647ed53f76b6140e19ad9489ebbefa702e9c00a394bb7d478b606b1062cb5a3",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "flac",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "format_name": "flac",
+          "tags": {
+            "title": "Titre café — 音楽",
+            "artist": "Émile / कलाकार",
+            "album": "Album naïf",
+            "genre": "Essai",
+            "date": "2026",
+            "track": "3/9",
+            "comment": "αβγ & <texte>"
+          }
+        }
+      },
+      "positive": {
+        "status": "passed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": "artist",
+            "actualValue": "Émile / कलाकार",
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": "album",
+            "actualValue": "Album naïf",
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": "genre",
+            "actualValue": "Essai",
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": "date",
+            "actualValue": "2026",
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": "track",
+            "actualValue": "3/9",
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": "comment",
+            "actualValue": "αβγ & <texte>",
+            "status": "preserved"
+          }
+        ]
+      },
+      "changed": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": null
+    },
+    {
+      "id": "opus",
+      "bytes": 1650,
+      "sha256": "30fe8d531675ec15c06ba0912a59441672486daa29844b4d8cd84bd3989d24c4",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "opus",
+            "codec_type": "audio",
+            "tags": {
+              "encoder": "Lavc libopus",
+              "title": "Titre café — 音楽",
+              "artist": "Émile / कलाकार",
+              "album": "Album naïf",
+              "genre": "Essai",
+              "date": "2026",
+              "track": "3/9",
+              "comment": "αβγ & <texte>"
+            }
+          }
+        ],
+        "format": {
+          "format_name": "ogg"
+        }
+      },
+      "positive": {
+        "status": "passed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": "artist",
+            "actualValue": "Émile / कलाकार",
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": "album",
+            "actualValue": "Album naïf",
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": "genre",
+            "actualValue": "Essai",
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": "date",
+            "actualValue": "2026",
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": "track",
+            "actualValue": "3/9",
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": "comment",
+            "actualValue": "αβγ & <texte>",
+            "status": "preserved"
+          }
+        ]
+      },
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ogg",
+      "bytes": 4014,
+      "sha256": "5a8e97b7f0a9ef89eae8a9e8496c3512333a67a2bed323f152e14745627b077d",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "vorbis",
+            "codec_type": "audio",
+            "tags": {
+              "encoder": "Lavc libvorbis",
+              "title": "Titre café — 音楽",
+              "artist": "Émile / कलाकार",
+              "album": "Album naïf",
+              "genre": "Essai",
+              "date": "2026",
+              "track": "3/9",
+              "comment": "αβγ & <texte>"
+            }
+          }
+        ],
+        "format": {
+          "format_name": "ogg"
+        }
+      },
+      "positive": {
+        "status": "passed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": "artist",
+            "actualValue": "Émile / कलाकार",
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": "album",
+            "actualValue": "Album naïf",
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": "genre",
+            "actualValue": "Essai",
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": "date",
+            "actualValue": "2026",
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": "track",
+            "actualValue": "3/9",
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": "comment",
+            "actualValue": "αβγ & <texte>",
+            "status": "preserved"
+          }
+        ]
+      },
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "aiff",
+      "bytes": 9756,
+      "sha256": "8d5b0e12e6853e00721cc6613d69a6f9a3c37c0e933a7aabed578b1c709740be",
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16be",
+            "codec_type": "audio"
+          }
+        ],
+        "format": {
+          "format_name": "aiff",
+          "tags": {
+            "title": "Titre café — 音楽",
+            "author": "Auteur Émile",
+            "copyright": "Copyright © 2026",
+            "comment": "αβγ & <texte>"
+          }
+        }
+      },
+      "positive": {
+        "status": "passed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 4,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "preserved"
+          },
+          {
+            "field": "author",
+            "expectedValue": "Auteur Émile",
+            "actualKey": "author",
+            "actualValue": "Auteur Émile",
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": "comment",
+            "actualValue": "αβγ & <texte>",
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "Copyright © 2026",
+            "actualKey": "copyright",
+            "actualValue": "Copyright © 2026",
+            "status": "preserved"
+          }
+        ]
+      },
+      "changed": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 4,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": null
+    }
+  ],
+  "sourcePins": {
+    "scripts/check-scoped-audio-tags.mjs": "104f38a0309223f2cccfb762c2ee6c36c855d9127be7e561014a3ca31de9d04e",
+    "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+    "tests/scoped-audio-tag-validation.test.mjs": "0ff1a56e7b4fb3e01f5de932bf38f6729dadc7939ed5650dcd730237441ecb8d"
+  },
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\scoped-audio-tags-ky0oEP",
+  "ownedScratchAndFixturesRemoved": true,
+  "browserConversionsPerformed": 0,
+  "protectedSourceRead": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "limitations": [
+    "No audio-engine metadata mapping was changed or certified.",
+    "No alias policy, artwork, PCM quality, browser preservation, original-size, speed, or memory acceptance.",
+    "Existing nine-route historical browser suite and evidence remain unchanged."
+  ]
+}
