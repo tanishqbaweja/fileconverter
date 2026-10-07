@@ -26,6 +26,15 @@ one bounded raw-retained detailed dump; delayed post-cancel NOT peak allocation
 proof. Poll SAME10189; no duplicate launch/timeout restart/concurrentbuild-stager/
 pinnedsource edits/Docker/nativeconverter/GC/publicpromotion. Full goal OPEN.
 
+Actual-conversion checkpoint20:22:49UTC supersedes blank-only status: SAME10189
+still Run1 running, console input48,981,569/output48,757,306bytes/observed rounded
+241.770MiB incremental peak against rounded233.184MiB blank. No completed
+conversion, exact terminal peak, full independent validators, repeats, speed,
+scaling or public acceptance. This changed driver has not invoked post-budget
+dump yet (no reported failure); abort/provider/final cleanup/postSHA PENDING.
+Current active media/profile remains OWNED/NEEDED in repo until terminal finally;
+do not claim it removed, restart, repin sources or mutate staged assets.
+
 ## 2026-10-08 — Quiesced target-provider control PASS; changed original diagnostic PREPARED
 
 Second short control session92507 is TERMINAL exit0, not an original conversion.
