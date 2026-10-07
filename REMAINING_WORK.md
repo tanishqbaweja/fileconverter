@@ -5,6 +5,60 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Full-original flex attempt TERMINAL: fixed decoder heap OOM, not accepted
+
+Previous cycle was a verified wait; session15198 is now authoritatively terminal
+exit1. It must NOT be restarted unchanged. Real first conversion ran until
+13:19:41UTC and failed with `Cannot enlarge memory arrays to size33587200bytes`
+against the fixed33554432byte decoder. The requested capacity difference32768
+is NOT the individual allocation size, live heap, fragmentation amount or an
+identified allocation callsite. Allocation samples are absent, not invented.
+
+Native complete-tree peak502538240 minus lower stable blank240975872 equals
+249.4453125MiB (all nine actual processes at peak; peak12:19:07.0888257UTC).
+33934 actual conversion samples plus6 pre-conversion samples, zero unavailable;
+no native budget breach/first-failure callback or detailed heap dump occurred.
+This is measured partial-run evidence, NOT full memory acceptance or a proven
+CSS full-tree benefit. First run reached106112 freshly encoded frames/packets,
+1060017306 bytes read and1206298852 bytes written, then error. Zero completed
+original conversions, zero full independent output validators, no three repeats,
+no quality/fidelity/speed/scaling/public acceptance. No heap increase, forcedGC,
+quality/settings reduction or smaller/streamcopy/native-converter substitute.
+
+Actual closure retained fixed32+16MiB Wasm, 64KiB I/O and peakqueue, one pending
+operation maximum, zero final queues/packets/additional frame or JS packet buffers.
+The bounded page-counter sampler closed2260 actual commands/one pending maximum/
+zeroqueue. Retained1024 rows cover only12:50:01–13:19:41;1236 earlier rows evicted.
+Retained nodes6759–6763, listeners178–346/documents1 are not whole-run growth,
+live bytes, leak/callsite or native renderer attribution. Initial counters cannot
+be reconstructed, and no old renderer spike cause is inferred.
+
+Terminal2,143,176byte source-pinned proof:
+`evidence/mpeg2-flex-original-2026-10-07.json`. Independent read-only analysis:
+`evidence/mpeg2-flex-original-analysis-2026-10-07.json` (13,793bytes). Exact raw
+18,915,883byte report SHA and every executed/source/archive hash verified. All20
+native PID/parent/birth identities and24 PID numbers (including driver/wrapper/
+observer/server) are absent. Both fresh runtime/profile folders and the1.21GB
+partial output are gone; six staged assets equal published SHA, nine private
+assets absent, complete protected-source SHA/2958573265bytes unchanged. No process
+killed; reusable8MB private tool37479749443 retained only for the next changed
+investigation. Raw failure JSON was losslessly compacted to571813byte `.json.gz`
+in the same reports folder. Streaming reconstruction verified the exact18,915,883
+bytes/SHA before validated-identity removal of ONLY the redundant uncompressed
+report. Complete failure data remains recoverable from the archive; no media/source
+or historical directory was swept. Compaction proof:
+`evidence/mpeg2-flex-original-compaction-2026-10-07.json`. Fresh compaction scratch
+removed in finally. Public App/CSS/engines untouched.
+
+Next: capture the failing native allocation/call stack or fix a proven allocation
+problem in the same fixed decoder before a changed full-source attempt. Do not
+reinterpret capacity shortfall as malloc size or run the same candidate again.
+Focused terminal-proof/counter/recipe regression passed6/6 in200.7033ms and
+scoped zero-warning lint passed. Full719/719unit regression passed5.0692189s
+before archive-regression addition; archive/terminal/counter/recipe focused
+regression passed7/7 in291.3136ms and scoped zero-warning lint passed. Full goal
+OPEN. No new converter, hosted build or unchanged original test started.
+
 ## 2026-10-07 — Scope-aware audio tag validator: native controls only
 
 Status: **Verified complete for this independent validator/control subset;
@@ -33,7 +87,7 @@ pins: `evidence/scoped-audio-tag-controls-2026-10-07.json`.
 
 Fresh identity-owned `work/scoped-audio-tags-ky0oEP` and every fixture were deleted
 in finally; independent path-absence check passed. Existing full-original browser
-session15198/driver43704/Chrome24276/native9512 remains live with unchanged birth
+session15198/driver43704/Chrome24276/native9512 was live with unchanged birth
 identities, staged assets, source, settings and 250MiB gate. No concurrent browser
 test, production build, engine/source pin, public profile or CSS change. Native
 controls overlapped that run, so no isolated conversion-speed comparison is
@@ -46,7 +100,7 @@ Browser preservation/correctness/quality, destination alias mappings, artwork,
 three-run stress/full-tree memory, scaling, release and full-goal acceptance
 remain pending; these native fixture checks do not satisfy any of those gates.
 
-## 2026-10-07 — Measured flex candidate full-original attempt LIVE; all full gates retained
+## 2026-10-07 — Historical flex candidate launch; terminal failure follow-up above
 
 Previous cycle was progress: fresh real grid/flex pair, nine identical layout
 checks, allocator evidence and independent cleanup, pushed7e53b86. Smaller heap
@@ -59,8 +113,8 @@ Read-only host physical5,843,959,808/virtual7,031,193,600bytes passed unchanged
 Chrome24276birth12:12:47.773480UTCparent43704/native observer9512/server41000;
 independently alive in blank settling12:15:06UTC. Two ACTIVE owned scratch slots:
 work/mpeg2-flex-original-driver-ivDSru and runtime/profile
-work/mpeg2-flex-original-runtime-hft2BS. They are not yet claimed cleaned.
-Poll SAME session; no duplicate conversion, concurrent dist build/stage or change
+work/mpeg2-flex-original-runtime-hft2BS. They were active at launch; terminal
+analysis above now verifies cleanup. No duplicate conversion, concurrent build/stage or change
 to the now-executed pinned recipe/helper while this attempt owns staged assets.
 
 Strict reversible recipe differs ONLY by the exact measured dynamic-control flex
@@ -91,7 +145,8 @@ killed. No primary completion inferred from smaller counters.
 Four new focused counter/recipe checks PASS; full710/710unit PASS4.387s, scoped
 zero-warning lint PASS. Source-pinned generated full-source script stays in owned
 work until finally; prospective terminal compact proof:
-evidence/mpeg2-flex-original-2026-10-07.json. It does not exist yet. No Docker/native
+evidence/mpeg2-flex-original-2026-10-07.json. Terminal failed proof now exists;
+this paragraph preserves the original launch scope. No Docker/native
 converter/generated media outside the repo. Full goal remains OPEN.
 
 ## 2026-10-07 — Real UI grid/flex pair: layout identical, allocator improvement NOT primary acceptance
