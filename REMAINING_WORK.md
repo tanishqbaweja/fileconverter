@@ -25,6 +25,15 @@ stack/peak/fidelity/repeats/final cleanup/postSHA remain PENDING. Poll SAME22394
 no timeout restart/other build-stager/pinned-source mutation/GC/debugger/native
 converter/Docker or public promotion. Entire original goal remains OPEN.
 
+Verified first-conversion checkpoint supersedes blank-settling only: SAME22394
+reported `Run1 running`, input10970689/output10802281bytes and234.148MiB rounded
+observed incremental peak. Baseline console228.406MiB is rounded, not substituted
+for exact byte-level final evidence. The corrected staging successfully reached
+real full-source conversion; no source substitution/restart/heap or gate change.
+This is PARTIAL progress, NOT completion/full independent validation/fidelity/
+all-three repeats/final250MiB acceptance/speed/scaling/public support. Actual abort
+stack and terminal cleanup/postSHA still pending; poll the SAME live handle.
+
 ## 2026-10-08 — Corrected staged FULL-original failure-hook driver prepared
 
 The new `mpeg2-staged-abort-original-memory.mjs` uses the ACTUALLY validated
