@@ -5,6 +5,64 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Real UI grid/flex pair: layout identical, allocator improvement NOT primary acceptance
+
+Previous cycle was progress: original failure and independent cleanup were
+measured/recorded/pushed, not an unchanged live wait. No new original conversion
+was started in this cycle. Existing production App/CSS/engines remain untouched.
+
+New private static-CSS candidate replaces only dynamic control/option/source-
+facts/plan/metrics grids with equivalent flex layout; no hidden/offscreen content,
+changed ordering, settings, source, engines or registry. Identical stylesheet
+interception in BOTH fresh modes, same fourteen original Chrome flags, actual
+protected-source inspection,60real format selections at250ms intervals, two
+independent one-dump largest64 traces with unchanged4MiB/16MiB/1024realm/100ms
+limits/noGC. Both physical AND virtual2GiB host checks and512MiB disk preflight
+passed; no user application killed. Old failed/offscreen recipes preserved.
+
+Actual grid/flex browser controls both PASSED, session89489 TERMINAL exit0.
+Nine combinations: copyMP4, MPEG4 re-encoding controls and WAV audio controls at
+758x482/1280x900/390x844. AFTER memory measurement, every inspected control/plan
+markup hash and control inventory matched, maximum geometry difference ZERO CSS
+pixels for all nine, no horizontal overflow. All405published cards/exact matrix
+markup hash unchanged. Not a conversion or headed/keyboard/manual-flow release
+gate; runtime metrics layout while actively converting remains untested here.
+
+Observed within-run retained GridSizingTrackCollection growth:
+grid2,406,720bytes/1380objects ->flex209,280bytes/120objects (91.3043% reduction).
+Main Blink allocated growth11,630,464 ->8,652,976bytes, reduction2,977,488bytes;
+embedder growth11,691,904 ->8,564,800, reduction3,127,104bytes. Partial type
+inventory/garbage/non-live/overlap caveats apply. Types carry different pointer
+suffixes across fresh browsers; no cross-run exact type/native birth match claim.
+PlainTextNode growth STILL2,157,600bytes in BOTH; DOM6725->8345/listeners192->372
+also unchanged. This is not a fix for the original57MiB transient renderer jump.
+
+The COMPLETE private snapshots were NOT better: grid361,922,560->364,654,592,
+flex358,522,880->379,482,112bytes. Keep ALL processes. Flex after-snapshot includes
+four additional real descendants classified browser plus tracing utility;
+grid adds its tracing utility. Exact executable identity/cause of extra descendants
+was not retained, so browser/updater description is only a possible classification,
+not a proved updater cause. No exclusion or lower heap metric substitutes for
+complete private memory. Snapshots are NOT continuous peaks or a stable primary
+blank denominator. No speed benchmark, full-source memory/fidelity/public pass
+or production promotion is justified. Candidate remains PRIVATE for a changed
+full protected-source test with the unchanged250MiB/lower five-minute blank/
+quality/independent validators/repeatability/recovery/finally gates.
+
+Evidence: ui-grid-layout-2026-10-07.json (886,601bytes), ui-flex-layout-
+2026-10-07.json (889,699bytes), ui-flex-layout-comparison-2026-10-07.json;
+exact generated helper/control, source pins and raw report SHA retained.
+Independent read-only ui-flex-layout-analysis-2026-10-07.json PASSED32sampled
+PID/parent/birth identities/34observed PIDs absent/four fresh scratch directories
+absent/full protected source size+SHA unchanged. No media copies generated.
+Initial recipe/test syntax checks FAILED extra closing parentheses before any
+browser; corrected before actual execution. Three focused checks PASS, full
+706/706unit PASS4.521s, scoped zero-warning lint PASS. No Docker, native conversion,
+unchanged original retry, offscreen deferral retry, production build or public
+profile promotion. Next safe full-source attempt must differ by this measured
+private candidate, preferably retaining bounded real DOM counters to test whether
+conversion-state updates cause the still-unexplained renderer transient. Full goal OPEN.
+
 ## 2026-10-07 — Failure-only original TERMINAL: memory FAILED, dump unavailable, cleanup verified
 
 Session1099 is TERMINAL exit1, not a live wait; do not restart unchanged.

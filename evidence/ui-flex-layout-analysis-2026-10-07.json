@@ -1,0 +1,132 @@
+{
+  "recordedAt": "2026-10-07T12:02:16.745Z",
+  "status": "terminal-readonly-flex-layout-pair-not-public-acceptance",
+  "sourcePins": {
+    "evidence/ui-grid-layout-2026-10-07.json": "67b0d7c29d3c575f2cb390cc9fd1a37a49148829884e6188a654c7329e20ddde",
+    "evidence/ui-flex-layout-2026-10-07.json": "d2a4dc223e8742ec130fda8c3b49429f444d9f39997c25a6cdcbbf73f54ccbcf",
+    "evidence/ui-flex-layout-comparison-2026-10-07.json": "b507fc6a506ad43ef015c2669dd48de4bc7ea35a8f29badfbd8fc0bf5320cc68",
+    "scripts/analyze-ui-flex-layout.mjs": "c0f201b48a86d6fb7effa0fed196848417ac315b6a9b32dd56b3e07eaefff70c",
+    "scripts/lib/microsecond-native-type-join.mjs": "708c80abedaaf2f4a02677d2c1279d9fd18bb6183c1cf037f0c04156e2e0f279"
+  },
+  "modes": [
+    {
+      "mode": "grid",
+      "fullTreePrivateBeforeBytes": 361922560,
+      "fullTreePrivateAfterBytes": 364654592,
+      "fullTreePrivateDeltaBytes": 2732032,
+      "embedderGrowthBytes": 11691904,
+      "mainBlinkAllocatedGrowthBytes": 11630464,
+      "mainBlinkResidentGrowthBytes": 12320768,
+      "gridTrackGrowthBytes": 2406720,
+      "gridTrackGrowthObjects": 1380,
+      "plainTextGrowthBytes": 2157600,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 31564,
+          "parentPid": 24196,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T11:57:05.4236470Z",
+          "privateBytes": 10440704,
+          "rssBytes": 34136064
+        }
+      ],
+      "missingTypesAreUnavailableNotZero": true,
+      "snapshotsNotContinuousNativePeaks": true
+    },
+    {
+      "mode": "flex",
+      "fullTreePrivateBeforeBytes": 358522880,
+      "fullTreePrivateAfterBytes": 379482112,
+      "fullTreePrivateDeltaBytes": 20959232,
+      "embedderGrowthBytes": 8564800,
+      "mainBlinkAllocatedGrowthBytes": 8652976,
+      "mainBlinkResidentGrowthBytes": 9175040,
+      "gridTrackGrowthBytes": 209280,
+      "gridTrackGrowthObjects": 120,
+      "plainTextGrowthBytes": 2157600,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 34304,
+          "parentPid": 38344,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-07T11:57:47.1340530Z",
+          "privateBytes": 11493376,
+          "rssBytes": 34086912
+        },
+        {
+          "pid": 42940,
+          "parentPid": 38344,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T11:58:05.2875920Z",
+          "privateBytes": 3325952,
+          "rssBytes": 16252928
+        },
+        {
+          "pid": 38804,
+          "parentPid": 42940,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T11:58:05.3302430Z",
+          "privateBytes": 3153920,
+          "rssBytes": 15421440
+        },
+        {
+          "pid": 35888,
+          "parentPid": 42940,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T11:58:05.3765160Z",
+          "privateBytes": 3706880,
+          "rssBytes": 19116032
+        },
+        {
+          "pid": 39900,
+          "parentPid": 35888,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-07T11:58:05.4037580Z",
+          "privateBytes": 3203072,
+          "rssBytes": 15437824
+        }
+      ],
+      "missingTypesAreUnavailableNotZero": true,
+      "snapshotsNotContinuousNativePeaks": true
+    }
+  ],
+  "gridTrackGrowthReductionPercent": 91.30434782608697,
+  "embedderGrowthReductionBytes": 3127104,
+  "mainBlinkAllocatedGrowthReductionBytes": 2977488,
+  "geometryCases": 9,
+  "identicalGeometryMarkupControls": true,
+  "publishedMatrixCards": 405,
+  "fullTreeImprovementProven": false,
+  "sameNativeIdentityAcrossFreshModes": false,
+  "cleanup": {
+    "sampledIdentities": 32,
+    "checkedPids": 34,
+    "allSampledIdentitiesAbsent": true,
+    "allObservedPidsAbsent": true,
+    "observedProcesses": [],
+    "fourScratchDirectoriesAbsent": true,
+    "protectedFullPostHashMatches": true,
+    "noProcessesKilled": true
+  },
+  "productionChanged": false,
+  "originalConversionCause": null,
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "publicAcceptance": false,
+  "originalFullSourceMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "nextGate": "Candidate may be tested privately against actual full original with unchanged complete-tree250MiB/lower five-minute blank/quality/fidelity/cleanup. Never promote from smaller heap/snapshots alone; no repeated unchanged original or offscreen deferral.",
+  "caveat": "91.3% smaller retained grid-track growth and identical9geometries are observed for this pair, not live-object/causal/original-spike proof. Complete private snapshot was higher for flex and includes additional real Chromium browser/updater births: retain ALL of them, never filter to accept. Fresh modes have different PIDs/births/type pointer suffixes. DOM/event-listener and PlainTextNode growth remains. No conversion/fidelity/speed or continuous primary gate measured; production untouched."
+}

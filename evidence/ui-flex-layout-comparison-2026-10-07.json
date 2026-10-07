@@ -1,0 +1,467 @@
+{
+  "recordedAt": "2026-10-07T11:58:17.024Z",
+  "status": "paired-layout-geometry-pass-not-public-acceptance",
+  "modes": [
+    {
+      "mode": "grid",
+      "status": "completed-diagnostic",
+      "rawReport": {
+        "path": "output/playwright/2026-10-07T11-56-55-085Z-ui-grid-layout.json",
+        "bytes": 706633,
+        "sha256": "d2420db0ae4dab31ef9d3c3ce66a6d06bb49884fb249c7f2d2899835e1e6f2f2"
+      },
+      "heaps": [
+        {
+          "phase": "native-sampling-start",
+          "privateBytes": 361922560,
+          "rssBytes": 703242240,
+          "heap": {
+            "usedSize": 5293648,
+            "totalSize": 8929280,
+            "embedderHeapUsedSize": 16630440,
+            "backingStorageSize": 745629
+          },
+          "dom": {
+            "documents": 6,
+            "nodes": 6725,
+            "jsEventListeners": 192
+          }
+        },
+        {
+          "phase": "ui-control-settled-3s",
+          "privateBytes": 364654592,
+          "rssBytes": 719708160,
+          "heap": {
+            "usedSize": 6585472,
+            "totalSize": 7618560,
+            "embedderHeapUsedSize": 28322344,
+            "backingStorageSize": 745698
+          },
+          "dom": {
+            "documents": 6,
+            "nodes": 8345,
+            "jsEventListeners": 372
+          }
+        }
+      ],
+      "selectedTypeIntersection": [
+        {
+          "pid": 32108,
+          "nativeBirthMatched": true,
+          "beforeHeaps": [
+            {
+              "name": "blink_gc/main/heap",
+              "residentBytes": 17039440,
+              "committedBytes": 17039440,
+              "allocatedObjectsBytes": 15952528,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 1086912,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_gc/workers/worker_0x6884000F8710/heap",
+              "residentBytes": 786432,
+              "committedBytes": 786432,
+              "allocatedObjectsBytes": 24464,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 761968,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            }
+          ],
+          "afterHeaps": [
+            {
+              "name": "blink_gc/main/heap",
+              "residentBytes": 29360208,
+              "committedBytes": 29360208,
+              "allocatedObjectsBytes": 27582992,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 1777216,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_gc/workers/worker_0x6884000F8710/heap",
+              "residentBytes": 786432,
+              "committedBytes": 786432,
+              "allocatedObjectsBytes": 24464,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 761968,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            }
+          ],
+          "selectedTypes": [
+            {
+              "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x352)",
+              "type": "blink::GridSizingTrackCollection (0x352)",
+              "fullNameSha256": "a881c88dd555e6d951c2ebdb71d8aa4e2a268fd32b80b7545b761d43ead5090a",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 4342560,
+              "afterAllocatedObjectsBytes": 6749280,
+              "deltaAllocatedObjectsBytes": 2406720,
+              "beforeObjectCount": 2490,
+              "afterObjectCount": 3870,
+              "deltaObjectCount": 1380,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_objects/blink_gc/main/blink::PlainTextNode (0x353)",
+              "type": "blink::PlainTextNode (0x353)",
+              "fullNameSha256": "f9791b3f27d617d8dcb5f8c82644cbc46c9c436bfc0ece67cfcf2f83bf25a6b6",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 71920,
+              "afterAllocatedObjectsBytes": 2229520,
+              "deltaAllocatedObjectsBytes": 2157600,
+              "beforeObjectCount": 58,
+              "afterObjectCount": 1798,
+              "deltaObjectCount": 1740,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_objects/blink_gc/main/blink::LogicalLineItems (0x34a)",
+              "type": "blink::LogicalLineItems (0x34a)",
+              "fullNameSha256": "4e01113bc504f1bba6633df9fcaed0b05138531332c46071a4401e2364bb1044",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 3106272,
+              "afterAllocatedObjectsBytes": 4145952,
+              "deltaAllocatedObjectsBytes": 1039680,
+              "beforeObjectCount": 1703,
+              "afterObjectCount": 2273,
+              "deltaObjectCount": 570,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            }
+          ]
+        }
+      ],
+      "cleanup": {
+        "samplingStopped": true,
+        "chromeStopped": true,
+        "serverStopped": true,
+        "runtimeRemoved": true,
+        "protectedFixtureUnchanged": true
+      }
+    },
+    {
+      "mode": "flex",
+      "status": "completed-diagnostic",
+      "rawReport": {
+        "path": "output/playwright/2026-10-07T11-57-37-312Z-ui-flex-layout.json",
+        "bytes": 709716,
+        "sha256": "1974300d726e93fbb71728bdab512bdca31b11441ea8febc03c6d6d90e02ab1b"
+      },
+      "heaps": [
+        {
+          "phase": "native-sampling-start",
+          "privateBytes": 358522880,
+          "rssBytes": 698720256,
+          "heap": {
+            "usedSize": 5308632,
+            "totalSize": 8667136,
+            "embedderHeapUsedSize": 16510504,
+            "backingStorageSize": 745631
+          },
+          "dom": {
+            "documents": 6,
+            "nodes": 6725,
+            "jsEventListeners": 192
+          }
+        },
+        {
+          "phase": "ui-control-settled-3s",
+          "privateBytes": 379482112,
+          "rssBytes": 784113664,
+          "heap": {
+            "usedSize": 6483152,
+            "totalSize": 7880704,
+            "embedderHeapUsedSize": 25075304,
+            "backingStorageSize": 745700
+          },
+          "dom": {
+            "documents": 6,
+            "nodes": 8345,
+            "jsEventListeners": 372
+          }
+        }
+      ],
+      "selectedTypeIntersection": [
+        {
+          "pid": 43108,
+          "nativeBirthMatched": true,
+          "beforeHeaps": [
+            {
+              "name": "blink_gc/main/heap",
+              "residentBytes": 16908368,
+              "committedBytes": 16908368,
+              "allocatedObjectsBytes": 15861752,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 1046616,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_gc/workers/worker_0x3F24010B5080/heap",
+              "residentBytes": 786432,
+              "committedBytes": 786432,
+              "allocatedObjectsBytes": 24464,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 761968,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            }
+          ],
+          "afterHeaps": [
+            {
+              "name": "blink_gc/main/heap",
+              "residentBytes": 26083408,
+              "committedBytes": 26083408,
+              "allocatedObjectsBytes": 24514728,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 1568680,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_gc/workers/worker_0x3F24010B5080/heap",
+              "residentBytes": 786432,
+              "committedBytes": 786432,
+              "allocatedObjectsBytes": 24464,
+              "pooledBytes": 0,
+              "unallocatedResidentBytes": 761968,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationObjectOrCallsite": null,
+              "valuesOverlap": true,
+              "summedAllocatorTotal": null,
+              "acceptanceMetric": false
+            }
+          ],
+          "selectedTypes": [
+            {
+              "name": "blink_objects/blink_gc/main/blink::PlainTextNode (0x368)",
+              "type": "blink::PlainTextNode (0x368)",
+              "fullNameSha256": "ad65a64598e9240c932ced1e6071377826acc1545b18e62f419d90c67bff7eef",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 71920,
+              "afterAllocatedObjectsBytes": 2229520,
+              "deltaAllocatedObjectsBytes": 2157600,
+              "beforeObjectCount": 58,
+              "afterObjectCount": 1798,
+              "deltaObjectCount": 1740,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_objects/blink_gc/main/blink::LogicalLineItems (0x34f)",
+              "type": "blink::LogicalLineItems (0x34f)",
+              "fullNameSha256": "9a93cd9d23e3ca082f650ccd1851751aeb1571d986ebdff9095d7e7a8afd2fc3",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 3106272,
+              "afterAllocatedObjectsBytes": 4145952,
+              "deltaAllocatedObjectsBytes": 1039680,
+              "beforeObjectCount": 1703,
+              "afterObjectCount": 2273,
+              "deltaObjectCount": 570,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            },
+            {
+              "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x356)",
+              "type": "blink::GridSizingTrackCollection (0x356)",
+              "fullNameSha256": "171d2d8c1a67e44c43f6f161ba0663280ad2a9b4f78a6919421ae5d550d74e13",
+              "heap": "blink_gc/main",
+              "beforeAllocatedObjectsBytes": 4269312,
+              "afterAllocatedObjectsBytes": 4478592,
+              "deltaAllocatedObjectsBytes": 209280,
+              "beforeObjectCount": 2448,
+              "afterObjectCount": 2568,
+              "deltaObjectCount": 120,
+              "nondeterministicDumpMayIncludeGarbage": true,
+              "allocationCallsite": null,
+              "acceptanceMetric": false
+            }
+          ]
+        }
+      ],
+      "cleanup": {
+        "samplingStopped": true,
+        "chromeStopped": true,
+        "serverStopped": true,
+        "runtimeRemoved": true,
+        "protectedFixtureUnchanged": true
+      }
+    }
+  ],
+  "geometry": [
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "geometryPass": true,
+      "differences": []
+    }
+  ],
+  "sameMatrixMarkup": true,
+  "matrixCards": 405,
+  "noDeferralOrHiddenContent": true,
+  "css": "\n.control-grid,.encoding-options-grid,.source-inspection dl,.live-metrics{display:flex;flex-wrap:wrap}\n.control-grid>*{flex:0 0 calc((100% - .8rem)/2);min-width:0}\n.encoding-options-grid>*{flex:0 0 calc((100% - 1.3rem)/3);min-width:0}\n.source-inspection dl>*{flex:0 0 calc((100% - 1rem)/2);min-width:0}\n.live-metrics>*{flex:0 0 calc((100% - 1.4rem)/3);min-width:0}\n.conversion-plan>ul{display:flex;flex-direction:column}\n.conversion-plan>ul>li{display:flex;align-items:flex-start}\n.conversion-plan>ul>li>span:first-child{flex:0 0 5.25rem}\n.conversion-plan>ul>li>span:last-child{display:flex;flex:1;flex-direction:column;min-width:0}\n@media(max-width:680px){.control-grid>*,.encoding-options-grid>*{flex-basis:100%}.live-metrics>*{flex-basis:calc((100% - .7rem)/2)}}\n",
+  "sourcePins": {
+    "scripts/diagnose-ui-flex-layout.mjs": "666a498fdef902ca582cee566c9e42552a6d33f7ca359e6de92f205c806db55c",
+    "scripts/lib/ui-flex-layout-recipe.mjs": "8c24ac3404a614b664481ce5e1191a7be8bdfec066835e0ecfafe37bf0f415fc",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "scripts/diagnose-ui-largest-blink.mjs": "c9e20cd64efde4fe445d19421cf482873df4a903a092af05b76be14f2679e180",
+    "scripts/lib/ui-largest-blink-recipe.mjs": "1ee048e61c98f7a37eb1b08e16ea67dafc1c0176d3bb00f4da176fb8915423a7",
+    "scripts/lib/largest-blink-attribution-recipe.mjs": "febea639ec59fdd1559ed0e0650769ea3ccd73db4248a15dad86e485b7719c1c",
+    "scripts/lib/largest-blink-type-summary.mjs": "de32cf2c7d19af82541153c86c8f6a4d4318a2557bb59fecd995a6e96769d2ea",
+    "scripts/lib/bounded-detailed-blink-type-summary.mjs": "11bd495d00a8dea875aaa8648ac959349750b4b73ee6a183db28ce4321efc7e5",
+    "scripts/diagnose-ui-complete-blink.mjs": "3952f590dc1cf7e961c444281e657e5ef6dfff58fbcc0ade75fd214a7ef466c6",
+    "scripts/lib/ui-complete-blink-recipe.mjs": "75e2328767951473ac50f10b2fb39005baed1cca14905df359353f6d01568df2",
+    "scripts/lib/complete-blink-attribution-recipe.mjs": "a706383b4ca746549e2072efbbf885806b838b72d9d9aa7c40b59203f6a1fda0",
+    "scripts/lib/complete-blink-heap-summary.mjs": "93bbf422d245a247f6270759a7f45145cc420687efc5c9946851be61088c508c",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+  },
+  "noForcedGc": true,
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "publicAcceptance": false,
+  "originalFailureAllocationCause": null,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "caveat": "Fresh paired grid/flex controls, same60realchoices/source/flags/tracecaps/visibleHTML. Only observed partialtypes, no absent-as-zero or cross-run exact native-process identity claim. Geometries at9actual profile/viewport combinations AFTER measurement. Short idle diagnostic, not full-source conversion/memory/speed or a proven spike fix; production untouched."
+}
