@@ -1,0 +1,1605 @@
+{
+  "recordedAt": "2026-10-07T11:45:44.610Z",
+  "status": "terminal-private-one-native-failure-original-diagnostic-not-acceptance",
+  "rawReport": {
+    "path": "outputs/reports/2026-10-07T11-38-56-492Z-private-mpeg2-failure-only-attribution-native-100ms.json",
+    "bytes": 2325658,
+    "sha256": "26e8dffb1b86621d4a443a2ac8d20d679c4e6c02be842faf0c5ad25a4ff7f5be"
+  },
+  "generatedSources": {
+    "helper": "// Private diagnostic only. Trace/realm sampling perturbs execution, never acceptance.\nimport assert from \"node:assert/strict\";\nimport { createHash } from \"node:crypto\";\nimport { summarizeMemoryInfraTrace } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/largest-blink-type-summary.mjs\";\n\nexport const ATTRIBUTION_LIMITS = Object.freeze({ chromiumBufferBytes: 4194304,\n  maximumSerializedBytes: 16777216, maximumDumps: 8, maximumRealmRows: 1024,\n  realmIntervalMs: 100, ioReadBytes: 262144 });\nconst delay = ms => new Promise(resolve => setTimeout(resolve, ms));\nasync function deadline(promise, ms) {\n  let timer;\n  try { return await Promise.race([promise, new Promise((_, reject) => {\n    timer = setTimeout(() => reject(new Error(\"Attribution shutdown deadline\")), ms);\n  })]); } finally { clearTimeout(timer); }\n}\nexport async function startBoundedRendererAttribution(session, realms) {\n  await session.send(\"Tracing.start\", { transferMode: \"ReturnAsStream\", traceConfig: {\n    recordMode: \"recordUntilFull\", traceBufferSizeInKb: ATTRIBUTION_LIMITS.chromiumBufferBytes / 1024,\n    includedCategories: [\"disabled-by-default-memory-infra\"], excludedCategories: [\"*\"],\n    memoryDumpConfig: { allowed_dump_modes: [\"detailed\"], triggers: [] } } });\n  const dumps = [], realmRows = [];\n  let live = true, realmRowsEvicted = 0, samplingError = null, stopping = null, dumpPending = null;\n  const pump = (async () => {\n    try {\n      while (live) {\n        const startedAt = Date.now(), value = await realms.sample();\n        if (realmRows.length === ATTRIBUTION_LIMITS.maximumRealmRows) { realmRows.shift(); realmRowsEvicted++; }\n        realmRows.push({ startedAt, finishedAt: Date.now(), value });\n        await delay(ATTRIBUTION_LIMITS.realmIntervalMs);\n      }\n    } catch (error) { samplingError = String(error).slice(0, 512); live = false; }\n  })();\n  return {\n    async dump(phase, processes = null) {\n      assert.equal(dumpPending, null, \"Only one outstanding memory dump\");\n      assert.ok(dumps.length < ATTRIBUTION_LIMITS.maximumDumps, \"Memory dump cap\");\n      const row = { phase, timestamp: new Date().toISOString(), processes, memoryDump: null };\n      dumps.push(row);\n      dumpPending = session.send(\"Tracing.requestMemoryDump\", { levelOfDetail: \"detailed\", deterministic: false });\n      try { row.memoryDump = await dumpPending; }\n      catch (error) { row.memoryDump = { success: false, dumpGuid: null, error: String(error).slice(0, 512) }; }\n      finally { dumpPending = null; row.finishedAt = new Date().toISOString(); }\n      return row.memoryDump;\n    },\n    stop() {\n      stopping ??= (async () => {\n        live = false; await pump; if (dumpPending) await dumpPending.catch(() => {});\n        const completed = new Promise(resolve => session.once(\"Tracing.tracingComplete\", resolve));\n        await session.send(\"Tracing.end\");\n        const result = await deadline(completed, 15000);\n        assert.ok(result.stream, \"Trace stream required\");\n        const chunks = []; let bytes = 0, overflow = false, trace = null, summary = null, parseError = null;\n        const hash = createHash(\"sha256\");\n        try {\n          for (;;) {\n            const chunk = await session.send(\"IO.read\", { handle: result.stream, size: ATTRIBUTION_LIMITS.ioReadBytes });\n            const data = chunk.base64Encoded ? Buffer.from(chunk.data, \"base64\") : Buffer.from(chunk.data);\n            assert.ok(data.length <= ATTRIBUTION_LIMITS.ioReadBytes, \"Bounded trace read\");\n            bytes += data.length;\n            if (bytes > ATTRIBUTION_LIMITS.maximumSerializedBytes) { overflow = true; break; }\n            hash.update(data); chunks.push(data); if (chunk.eof) break;\n          }\n        } finally { await session.send(\"IO.close\", { handle: result.stream }); }\n        if (!overflow) {\n          try {\n            trace = JSON.parse(Buffer.concat(chunks).toString());\n            summary = summarizeMemoryInfraTrace(trace, dumps);\n          } catch (error) { parseError = String(error).slice(0, 512); }\n        }\n        const dataLossOccurred = result.dataLossOccurred ?? null;\n        return { scope: \"bounded-private-renderer-allocation-attribution-not-acceptance\", limits: ATTRIBUTION_LIMITS,\n          perturbsMemory: true, acceptanceMetric: false,\n          status: overflow || dataLossOccurred !== false || parseError || samplingError || dumps.some(row => !row.memoryDump?.success)\n            ? \"failed-diagnostic\" : \"completed-diagnostic\",\n          trace: { serializedBytes: bytes, sha256: overflow ? null : hash.digest(\"hex\"),\n            overflow, dataLossOccurred, parseError, events: trace?.traceEvents?.length ?? null,\n            compactedBeforeRelease: Boolean(summary), rawRetained: false },\n          dumps, allocatorSummary: summary, realmRows, realmRowsEvicted, samplingError,\n          allocatorValuesOverlap: true, summedAllocatorTotal: null };\n      })();\n      return stopping;\n    },\n  };\n}\n",
+    "driver": "// Full protected source, ONE page navigation; normal production worker recycling between repeats.\n// Historical redundant-navigation driver remains unchanged for its executed source pins.\nimport assert from \"node:assert/strict\";\nimport { chromium } from \"file:///H:/Github%20Repositories/fileconverter/node_modules/@playwright/test/index.mjs\";\nimport { execFile, spawn } from \"node:child_process\";\nimport { createHash } from \"node:crypto\";\nimport { createReadStream } from \"node:fs\";\nimport { access, mkdir, readFile, readdir, stat, statfs, writeFile } from \"node:fs/promises\";\nimport { createServer } from \"node:net\";\nimport path from \"node:path\";\nimport { promisify } from \"node:util\";\nimport { sampleChromiumTree, stableWindow } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/chromium-private-memory.mjs\";\nimport { startParallelMemoryObserver } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/parallel-memory-observer.mjs\";\nimport { connectRealmSampler } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/cdp-realm-memory.mjs\";\nimport { classifyPrivateRequest } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/private-browser-request.mjs\";\nimport { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/wasm-memory-limits.mjs\";\nimport { createOwnedRuntimeScratch, finishOwnedCleanup } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\nimport { cancelBrowserConversionBeforeCleanup } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/cancel-browser-conversion-before-cleanup.mjs\";\n\nconst root = \"H:\\\\Github Repositories\\\\fileconverter\", MiB = 1024 ** 2;\nconst candidateName = process.env.WITHIN_MPEG2_SPLIT_CANDIDATE_DIR ?? \"mpeg2-split-pipeline-output\";\nconst diagnosticOnly = true; // Uninstrumented real split conversion, all three stress runs required.\nif (!/^(mpeg2-split-pipeline-output|mpeg2-split-pipeline-[0-9]{8,})$/.test(candidateName))\n  throw new Error(\"Private candidate must remain in its named repository-local tool slot\");\nconst source = path.join(root, \"test.mkv\"), candidate = path.join(root, \"work\", candidateName);\nconst expectedSourceBytes = 2958573265;\nconst expectedSourceHash = \"31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34\";\nconst baseExec = promisify(execFile), startedAt = Date.now();\nlet runtime, chrome, server, browser, context, page, observer, realms, staged = false;\nimport { startNativeBudgetFailureObserver } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/native-budget-failure-observer.mjs\";\nimport { startBoundedRendererAttribution } from \"file:///H:/Github%20Repositories/fileconverter/work/mpeg2-failure-only-driver-lqg6Zb/attribution.mjs\";\nimport { createIndependentBlinkSessions } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/independent-blink-sessions.mjs\";\nimport { observeOwnedProcessExit } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-process-exit-observation.mjs\";\nlet rendererAttribution = null, rendererAttributionResult = null, nativeFailureCapture = null;\nlet completedReport, completedReportPath; export { completedReport, completedReportPath };\nlet startupSettlement = null;\nlet blankBaseline = null, loadedIdle = null, sourceProbe = null, browserVersion = null;\nlet lastState = null, failure = null, nativeMemory = null;\nconst samples = [], runs = [], logs = [], forbiddenRequests = [], browserLocalRequests = [];\nlet samplesEvicted = 0;\nconst cleanup = { mediaProfileRuntimeRemoved: false, generatedDistRestored: false,\n  protectedFixtureUnchanged: false, observerStopped: false, sampledChromeRootStopped: false };\nconst delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));\nconst exec = (file, args, options = {}) => baseExec(file, args,\n  { cwd: root, windowsHide: true, env: runtime?.env ?? process.env, ...options });\nconst shaFile = async (file) => {\n  const hash = createHash(\"sha256\");\n  for await (const chunk of createReadStream(file, { highWaterMark: MiB })) hash.update(chunk);\n  return hash.digest(\"hex\");\n};\nconst native = (args, executable = \"ffmpeg\") => exec(executable, args,\n  { timeout: 30 * 60_000, maxBuffer: 32 * MiB });\nasync function probe(file, count = false) {\n  const { stdout } = await native([\"-v\", \"error\", ...(count ? [\"-count_frames\"] : []),\n    \"-show_streams\", \"-show_format\", \"-show_chapters\", \"-of\", \"json\", file], \"ffprobe\");\n  return JSON.parse(stdout);\n}\nasync function frameTimes(file) {\n  // Independent validator outside Chromium, with a fixed 32MiB stdout cap.\n  const { stdout } = await native([\"-v\", \"error\", \"-select_streams\", \"v:0\", \"-show_frames\",\n    \"-show_entries\", \"frame=best_effort_timestamp_time\", \"-of\", \"csv=p=0\", file], \"ffprobe\");\n  return stdout.split(/\\r?\\n/).filter((line) => /^-?\\d+(?:\\.\\d+)?(?:,|$)/.test(line))\n    .map((line) => Number(line.split(\",\")[0]));\n}\nasync function audioHashes(file) {\n  const { stdout } = await native([\"-v\", \"error\", \"-i\", file, \"-map\", \"0:a\", \"-c\", \"copy\",\n    \"-f\", \"streamhash\", \"-hash\", \"sha256\", \"pipe:1\"]);\n  return stdout.trim().split(/\\r?\\n/).map((line) => line.split(\",\").at(-1).trim());\n}\nasync function verifySource() {\n  assert.equal((await stat(source)).size, expectedSourceBytes);\n  assert.equal(await shaFile(source), expectedSourceHash);\n}\nasync function takeSample(phase) {\n  observer.healthy(); observer.setPhase(phase);\n  const begin = Date.now();\n  let tree = { privateBytes: null, rssBytes: null, processes: null }, sampleError = null;\n  try { tree = await sampleChromiumTree(chrome.pid); } catch (error) { sampleError = String(error); }\n  const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState() ?? null).catch(() => null);\n  if (state) lastState = state;\n  const storageEstimate = await page.evaluate(async () => {\n    const value = await navigator.storage.estimate(); return { usage: value.usage ?? null, quota: value.quota ?? null };\n  }).catch(() => null);\n  const sample = { timestamp: new Date(begin).toISOString(), elapsedMs: begin - startedAt,\n    phase, ...tree, sampleError, metrics: state?.metrics ?? null, jobState: state?.jobState ?? null,\n    storageEstimate, cdpIsolateHeaps: await realms.sample(), samplerElapsedMs: Date.now() - begin };\n  if (samples.length === 1024) { samples.shift(); samplesEvicted++; }\n  samples.push(sample); return sample;\n}\nasync function stable(phase, maximumBytes = Infinity) {\n  const local = [], deadline = Date.now() + 45_000;\n  while (Date.now() < deadline) {\n    local.push(await takeSample(phase));\n    const result = stableWindow(local);\n    if (result && result.privateBytes <= maximumBytes) return result;\n    await delay(1000);\n  }\n  throw new Error(`${phase} did not stabilize; no baseline substitution`);\n}\nasync function waitFor(operation, label) {\n  const deadline = Date.now() + 30_000;\n  while (Date.now() < deadline) {\n    try { const value = await operation(); if (value) return value; } catch { /* startup retry only */ }\n    await delay(250);\n  }\n  throw new Error(`${label} startup deadline exceeded`);\n}\nasync function outputPayload(bytes) {\n  const directories = [path.join(runtime.directory, \"profile\")], matches = [];\n  let inspected = 0;\n  while (directories.length) {\n    for (const entry of await readdir(directories.pop(), { withFileTypes: true })) {\n      assert.ok(++inspected <= 20000, \"Profile inventory cap\");\n      assert.ok(!entry.isSymbolicLink(), \"Profile must not escape owned scratch\");\n      // Dirent.parentPath is the actual directory enumerated, not a guessed root.\n      const file = path.join(entry.parentPath, entry.name);\n      if (entry.isDirectory()) directories.push(file);\n      else if (entry.isFile() && (await stat(file)).size === bytes) matches.push(file);\n    }\n  }\n  assert.equal(matches.length, 1, \"Unique real disk-backed output required\"); return matches[0];\n}\nasync function emptyOpfs() {\n  return page.evaluate(async () => {\n    const directory = await navigator.storage.getDirectory();\n    for await (const [name] of directory.entries()) await directory.removeEntry(name, { recursive: true });\n    const names = []; for await (const [name] of directory.entries()) names.push(name);\n    if (names.length) throw new Error(\"OPFS cleanup failed\"); return names;\n  });\n}\nasync function stopOwned(child) {\n  if (child?.pid && child.exitCode == null && child.signalCode == null) {\n    await exec(\"taskkill.exe\", [\"/PID\", String(child.pid), \"/T\", \"/F\"], { timeout: 15000 });\n  }\n}\nconst manifest = JSON.parse(await readFile(path.join(candidate, \"build-manifest.json\"), \"utf8\"));\nconst splitFinalSamples = [];\nconst nativeStackSamples = [];\nconst allocatorSamples = [];\nlet allocatorSamplesEvicted = 0;\nassert.equal(manifest.decoderMemoryBytes, 32 * MiB);\nassert.equal(manifest.encoderMemoryBytes, 16 * MiB);\nassert.equal(manifest.aggregateWasmMemoryBytes, 48 * MiB); assert.equal(manifest.allowMemoryGrowth, false);\nfor (const [file, hash] of Object.entries(manifest.artifacts)) assert.equal(await shaFile(path.join(candidate, file)), hash);\nfor (const [file, hash] of Object.entries(manifest.sources)) assert.equal(await shaFile(path.join(root, file)), hash);\nif (manifest.allocatorInstrumentationSha256)\n  assert.equal(await shaFile(path.join(root, \"scripts/lib/mpeg2-allocator-instrumentation.mjs\")), manifest.allocatorInstrumentationSha256);\nif (manifest.stackReserveAdapterSha256)\n  assert.equal(await shaFile(path.join(root, \"scripts/lib/mpeg2-stack-reserve-adapter.mjs\")), manifest.stackReserveAdapterSha256);\nconst actualWasmMemoryLimits = {\n  decoderMux: readWasmMemoryLimits(await readFile(path.join(candidate, \"within-mpeg2-split.wasm\"))),\n  encoder: readWasmMemoryLimits(await readFile(path.join(candidate, \"split-encoder.wasm\"))),\n};\nassert.deepEqual(actualWasmMemoryLimits.decoderMux, [{ imported: true, initialPages: 512, maximumPages: 512, shared: true }]);\nassert.deepEqual(actualWasmMemoryLimits.encoder, [{ imported: true, initialPages: 256, maximumPages: 256, shared: true }]);\nconst sourceFiles = [\"scripts/mpeg2-failure-only-attribution.mjs\", \"scripts/lib/mpeg2-failure-only-attribution-recipe.mjs\", \"scripts/lib/host-memory-preflight.mjs\", \"scripts/lib/native-budget-failure-observer.mjs\", \"scripts/lib/independent-blink-sessions.mjs\", \"scripts/lib/owned-process-exit-observation.mjs\", \"scripts/lib/largest-blink-attribution-recipe.mjs\", \"scripts/lib/largest-blink-type-summary.mjs\", \"scripts/lib/bounded-detailed-blink-type-summary.mjs\", \"scripts/lib/complete-blink-heap-summary.mjs\", \"scripts/lib/bounded-renderer-attribution.mjs\", \"scripts/lib/memory-infra-attribution.mjs\", \"scripts/lib/native-memory-bursts.mjs\", \"scripts/lib/largest-burst-prerequisites.mjs\", \"evidence/native-budget-failure-control-retry-2026-10-07.json\", \"evidence/largest-blink-type-control-2026-10-07.json\", \"evidence/mpeg2-largest-burst-attribution-2026-10-07.json\", \"scripts/mpeg2-static-ui-original-memory.mjs\", \"scripts/lib/mpeg2-static-ui-original-recipe.mjs\", \"app/converter/ConverterApp.tsx\", \"scripts/lib/static-format-matrix-recipe.mjs\", \"evidence/ui-matrix-benchmark-2026-10-07.json\", \"evidence/ui-matrix-golden-regression-2026-10-07.json\", \"evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json\", \"scripts/mpeg2-settled-original-memory.mjs\", \"scripts/lib/mpeg2-settled-original-recipe.mjs\", \"scripts/lib/mpeg2-aligned-progress-recipe.mjs\", \"evidence/blank-chromium-lifecycle-2026-10-06.json\", \"evidence/mpeg2-aligned-full-failure-2026-10-06.json\", \"scripts/mpeg2-split-single-navigation-memory.mjs\", \"scripts/stage-mpeg2-split-direct.mjs\",\n  \"scripts/lib/parallel-memory-observer.mjs\", \"scripts/lib/native-memory-peaks.mjs\",\n  \"scripts/lib/chromium-private-memory.mjs\", \"scripts/lib/cdp-realm-memory.mjs\",\n  \"scripts/lib/persistent-chromium-memory.mjs\", \"scripts/lib/windows-tree-monitor.cs\",\n  \"scripts/lib/windows-tree-monitor.ps1\", \"scripts/lib/owned-runtime-scratch.mjs\",\n  \"scripts/lib/mpeg2-stack-reserve-adapter.mjs\", \"scripts/lib/mpeg2-split-session.mjs\",\n  \"scripts/lib/cancel-browser-conversion-before-cleanup.mjs\"];\nconst sourceHashes = Object.fromEntries(await Promise.all(sourceFiles.map(async (file) => [file, await shaFile(path.join(root, file))])));\nconst reports = path.join(root, \"outputs/reports\"); await mkdir(reports, { recursive: true });\nconst reportBase = path.join(reports, `${new Date().toISOString().replaceAll(/[:.]/g, \"-\")}-private-mpeg2-failure-only-attribution-native-100ms`);\ntry {\n  await verifySource();\n  const disk = await statfs(root);\n  assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3, \"32GiB repository-local disk preflight required\");\n  runtime = await createOwnedRuntimeScratch(\"mpeg2-failure-only-runtime-\");\n  const profile = path.join(runtime.directory, \"profile\"); await mkdir(profile);\n  sourceProbe = await probe(source);\n  assert.equal(sourceProbe.streams[0].width, 1920); assert.equal(sourceProbe.streams[0].height, 804);\n  await exec(process.execPath, [\"scripts/stage-mpeg2-split-direct.mjs\", \"stage\"]); staged = true;\n  const port = await new Promise((resolve, reject) => {\n    const listener = createServer(); listener.once(\"error\", reject);\n    listener.listen(0, \"127.0.0.1\", () => { const port = listener.address().port;\n      listener.close((error) => error ? reject(error) : resolve(port)); });\n  });\n  const origin = `http://127.0.0.1:${port}`, query = `${origin}/?test=1&directory=1`;\n  server = spawn(process.execPath, [\"node_modules/wrangler/bin/wrangler.js\", \"dev\", \"--config\",\n    \"dist/server/wrangler.json\", \"--port\", String(port)], { cwd: root, env: runtime.env, windowsHide: true, stdio: \"ignore\" });\n  await waitFor(async () => (await fetch(origin)).ok, \"production server\");\n  chrome = spawn(\"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\", [\"--headless=new\", \"--remote-debugging-port=0\",\n    `--user-data-dir=${profile}`, \"--no-first-run\", \"--no-default-browser-check\", \"--disable-background-networking\",\n    \"--disable-component-update\", \"--disable-default-apps\", \"--disable-domain-reliability\", \"--disable-extensions\",\n    \"--disable-features=MediaRouter,OptimizationGuideModelDownloading,OptimizationHints,OptimizationTargetPrediction\",\n    \"--disable-sync\", \"--metrics-recording-only\", \"about:blank\"], { cwd: root, env: runtime.env, windowsHide: true, stdio: \"ignore\" });\n  observer = await startNativeBudgetFailureObserver(chrome.pid, runtime.directory, {\n    getBlankBaseline: () => blankBaseline,\n    onFailure: async event => {\n      assert.equal(rendererAttribution, null, \"Only one post-failure trace, none at startup\");\n      rendererAttribution = createIndependentBlinkSessions({ createSession: () => browser.newBrowserCDPSession(), startAttribution: startBoundedRendererAttribution, realms });\n      return rendererAttribution.dump(\"native-budget-failure-\" + event.after.sequence, event.after.processes);\n    },\n  });\n  const debugPort = await waitFor(async () => Number((await readFile(path.join(profile, \"DevToolsActivePort\"), \"utf8\")).split(/\\r?\\n/)[0]), \"Chrome\");\n  browser = await chromium.connectOverCDP(`http://127.0.0.1:${debugPort}`);\n  browserVersion = browser.version(); context = browser.contexts()[0]; page = context.pages()[0];\n  const version = await (await fetch(`http://127.0.0.1:${debugPort}/json/version`)).json();\n  realms = await connectRealmSampler(version.webSocketDebuggerUrl, origin);\n  await context.tracing.start({ screenshots: false, snapshots: false, sources: false });\n  context.on(\"request\", (request) => {\n    let frameUrl = null; try { frameUrl = request.frame().url(); } catch { /* worker request */ }\n    const detail = { url: request.url(), method: request.method(), postData: request.postData(), frameUrl,\n      serviceWorkerUrl: request.serviceWorker()?.url() ?? null };\n    const kind = classifyPrivateRequest(detail, origin);\n    if (kind === \"forbidden\" && forbiddenRequests.length < 32) forbiddenRequests.push(detail);\n    if (kind === \"browser-local\" && browserLocalRequests.length < 32) browserLocalRequests.push(detail);\n  });\n  page.on(\"console\", (message) => {\n    const text = message.text().slice(0, 2048);\n    for (const [prefix, records] of [[\"WITHIN_MPEG2_SPLIT_FINAL \", splitFinalSamples], [\"WITHIN_MPEG2_STACK_RESERVE \", nativeStackSamples]]) {\n      if (text.startsWith(prefix) && records.length < 16) {\n        try { records.push(JSON.parse(text.slice(prefix.length))); } catch { /* missing telemetry never means zero */ }\n      }\n    }\n    if (diagnosticOnly && text.startsWith(\"WITHIN_MPEG2_ALLOCATOR \")) {\n      try {\n        const sample = JSON.parse(text.slice(\"WITHIN_MPEG2_ALLOCATOR \".length));\n        // Independent budgets:96 heap +128 pool +16 five-pool release events.\n        if (allocatorSamples.length === 240) { allocatorSamples.shift(); allocatorSamplesEvicted++; }\n        allocatorSamples.push(sample);\n      } catch { /* retain the bounded malformed line in logs, never fabricate telemetry */ }\n    }\n    if (logs.length === 32) logs.shift(); logs.push(text);\n  });\n  await page.goto(\"about:blank\");\n  startupSettlement = { minimumMs: 300000, startedAt: Date.now(), earlyWindow: null,\n    pageStayedBlank: true, flagsChanged: false, processesExcluded: 0, baselineInflated: false };\n  const startupSamples = [];\n  while (Date.now() - startupSettlement.startedAt < startupSettlement.minimumMs) {\n    assert.equal(page.url(), \"about:blank\");\n    assert.ok(startupSamples.length < 256, \"Startup observation sample cap\");\n    startupSamples.push(await takeSample(\"blank-startup-settle\"));\n    startupSettlement.earlyWindow ??= stableWindow(startupSamples);\n    await delay(2000);\n  }\n  blankBaseline = await stable(\"blank-baseline\");\n  assert.ok(startupSettlement.earlyWindow, \"Actual early startup window required for no-inflation guard\");\n  assert.ok(blankBaseline.privateBytes <= startupSettlement.earlyWindow.privateBytes,\n    \"Settled blank exceeds early blank; cannot substitute a larger baseline\");\n  startupSettlement.finishedAt = Date.now();\n  startupSettlement.actualMs = startupSettlement.finishedAt - startupSettlement.startedAt;\n  process.stdout.write(`EARLY stable blank: ${(blankBaseline.privateBytes / MiB).toFixed(3)}MiB. Full original source, no resizing.\\n`);\n  observer.setPhase(\"loaded-navigation\"); await page.goto(query);\n  await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === \"ready\");\n  assert.equal(await page.evaluate(() => crossOriginIsolated), true);\n  loadedIdle = await stable(\"loaded-idle\");\n  for (let number = 1; number <= 3; number++) {\n    // One changed-instrumentation diagnostic attempt only, no repeated known\n    // failure and no certification from instrumented timing/memory.\n    if (diagnosticOnly && number > 1) break;\n    observer.setPhase(`pre-conversion-${number}`);\n    // No reload/forced GC/larger baseline: exercise the existing production worker lifecycle.\n    await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === \"ready\");\n    const cdp = await context.newCDPSession(page);\n    try {\n      const doc = await cdp.send(\"DOM.getDocument\");\n      const { nodeId } = await cdp.send(\"DOM.querySelector\", { nodeId: doc.root.nodeId, selector: '[data-testid=\"file-input\"]' });\n      assert.ok(nodeId); await cdp.send(\"DOM.setFileInputFiles\", { nodeId, files: [source] });\n    } finally { await cdp.detach(); }\n    await page.locator('[data-testid=\"format-select\"]').selectOption(\"mkv-to-mp4\");\n    assert.equal(await page.locator('[data-testid=\"file-input\"]').evaluate((input) => input.files[0].size), expectedSourceBytes);\n    const run = { number, cimPeakPrivateBytes: null, cimPeakRssBytes: null, nativePeaks: null,\n      incrementalPrivateMiB: null, state: null, independentValidation: null, recovery: null };\n    runs.push(run);\n    const first = await takeSample(`pre-conversion-${number}`);\n    run.cimPeakPrivateBytes = first.privateBytes; run.cimPeakRssBytes = first.rssBytes;\n    observer.setPhase(`conversion-${number}`);\n    // No tracing before this point. Require complete native pre-click coverage.\n    await observer.through(Date.now());\n    const conversionPhaseAt = observer.setPhase(\"conversion-\" + number);\n    await observer.through(conversionPhaseAt);\n    await page.locator('[data-testid=\"convert-button\"]').click();\n    const deadline = Date.now() + 70 * 60_000; let nextLog = Date.now();\n    for (;;) {\n      const sample = await takeSample(`conversion-${number}`);\n      if (sample.privateBytes != null) run.cimPeakPrivateBytes = Math.max(run.cimPeakPrivateBytes ?? 0, sample.privateBytes);\n      if (sample.rssBytes != null) run.cimPeakRssBytes = Math.max(run.cimPeakRssBytes ?? 0, sample.rssBytes);\n      await observer.through(Date.now()); run.nativePeaks = observer.peaks([`pre-conversion-${number}`, `conversion-${number}`]);\n      assert.ok(run.nativePeaks.peak, \"Actual native conversion peak required\");\n      run.peakPrivateBytes = Math.max(run.cimPeakPrivateBytes ?? -Infinity, run.nativePeaks.peak.privateBytes);\n      run.incrementalPrivateMiB = (run.peakPrivateBytes - blankBaseline.privateBytes) / MiB;\n      run.state = lastState;\n      if ((lastState?.metrics?.wasmMemoryBytes ?? 0) > 0)\n        assert.equal(lastState.metrics.wasmMemoryBytes, 48 * MiB, \"Reject any unstaged engine before a full remux can complete\");\n      // Stop a proven failed profile promptly; never run hours past the same\n      // memory failure or change the baseline/quality to conceal it.\n      assert.ok(run.incrementalPrivateMiB <= 250, `Complete Chromium increase ${run.incrementalPrivateMiB}MiB exceeds 250MiB`);\n      if (Date.now() >= nextLog) {\n        process.stdout.write(`Run${number} ${lastState?.jobState}: input=${lastState?.metrics?.inputBytes ?? \"unavailable\"}, output=${lastState?.metrics?.outputBytes ?? \"unavailable\"}, peak=${run.incrementalPrivateMiB.toFixed(3)}MiB.\\n`);\n        nextLog = Date.now() + 30_000;\n      }\n      if (lastState?.jobState === \"error\" || lastState?.jobState === \"complete\" || lastState?.jobState === \"cancelled\") break;\n      assert.ok(Date.now() < deadline, \"Conversion deadline reached; no automatic restart\"); await delay(1000);\n    }\n    observer.setPhase(`validation-${number}`);\n    assert.equal(run.state.jobState, \"complete\", run.state.error ?? run.state.phase);\n    assert.equal(run.state.opfsName, null, \"Selected handle must not use conversion staging\");\n    const metrics = run.state.metrics;\n    assert.equal(metrics.wasmMemoryBytes, 48 * MiB);\n    assert.equal(metrics.peakWasmMemoryBytes, 48 * MiB);\n    assert.equal(splitFinalSamples.length, number);\n    const ownership = splitFinalSamples[number - 1];\n    assert.equal(ownership.closed, true); assert.equal(ownership.activePackets, 0);\n    assert.equal(ownership.aggregateWasmMemoryBytes, 48 * MiB);\n    assert.equal(ownership.queuedFrames, 0); assert.equal(ownership.queuedPackets, 0);\n    assert.equal(ownership.additionalPixelBufferBytes, 0); assert.equal(ownership.additionalJsPacketBufferBytes, 0);\n    assert.equal(nativeStackSamples.length, number);\n    assert.equal(nativeStackSamples[number - 1].decoderMemoryBytes, 32 * MiB);\n    assert.equal(nativeStackSamples[number - 1].encoderMemoryBytes, 16 * MiB);\n    assert.equal(nativeStackSamples[number - 1].nativeStackBytes, 262144);\n    assert.equal(nativeStackSamples[number - 1].encoderNativeStackBytes, 262144);\n    assert.ok(ownership.maximumMediaAvioWriteBytes <= 262144, \"Native AVIO cap unchanged\");\n    assert.ok(metrics.maxReadChunkBytes <= 262144);\n    assert.ok(metrics.maxWriteChunkBytes <= 524288, \"Existing bounded512KiB selected-destination fallback copy\");\n    assert.ok((metrics.maxScratchReadChunkBytes ?? 0) <= 524288 && (metrics.maxScratchWriteChunkBytes ?? 0) <= 524288);\n    assert.ok(metrics.peakQueuedBytes <= 1048576 && metrics.peakPendingOperations <= 1);\n    assert.equal(metrics.pendingOperations, 0); assert.equal(metrics.queuedBytes, 0);\n    const output = await outputPayload(metrics.outputBytes), after = await probe(output, true);\n    const video = after.streams.find((s) => s.codec_type === \"video\");\n    assert.ok(after.streams.every((s) => Boolean(s.codec_name)), \"No unknown/empty output tracks\");\n    assert.equal(after.streams.filter((s) => s.codec_type === \"video\" && !s.disposition?.attached_pic).length,\n      sourceProbe.streams.filter((s) => s.codec_type === \"video\" && !s.disposition?.attached_pic).length);\n    assert.equal(video.codec_name, \"mpeg2video\"); assert.equal(video.width, 1920); assert.equal(video.height, 804);\n    const originalVideo = sourceProbe.streams.find((s) => s.codec_type === \"video\" && !s.disposition?.attached_pic);\n    for (const field of [\"sample_aspect_ratio\", \"display_aspect_ratio\", \"color_range\",\n      \"color_space\", \"color_transfer\", \"color_primaries\", \"chroma_location\", \"r_frame_rate\"])\n      assert.equal(video[field], originalVideo[field], `Preserve video ${field}`);\n    assert.equal(video.tags?.encoder, \"Within FFmpeg MPEG-2\", \"Fresh video encoder provenance\");\n    const normalizedTags = (tags) => Object.fromEntries(Object.entries(tags ?? {}).map(([key, value]) => [key.toLowerCase(), value]));\n    const inputTags = normalizedTags(sourceProbe.format.tags), outputTags = normalizedTags(after.format.tags);\n    for (const [key, value] of Object.entries(inputTags))\n      assert.equal(outputTags[key], value, `Preserve container metadata ${key}`);\n    assert.equal(video.tags?.title, originalVideo.tags?.title, \"Preserve primary video title\");\n    for (const [flag, enabled] of Object.entries(originalVideo.disposition ?? {}))\n      if (enabled) assert.equal(video.disposition?.[flag], enabled, `Preserve primary video disposition ${flag}`);\n    const inputAudio = sourceProbe.streams.filter((s) => s.codec_type === \"audio\");\n    const outputAudio = after.streams.filter((s) => s.codec_type === \"audio\");\n    assert.equal(outputAudio.length, inputAudio.length);\n    for (let i = 0; i < inputAudio.length; i++)\n      for (const field of [\"codec_name\", \"sample_rate\", \"channels\", \"channel_layout\"])\n        assert.equal(outputAudio[i][field], inputAudio[i][field], `Preserve audio ${i} ${field}`);\n    for (let i = 0; i < inputAudio.length; i++)\n      for (const field of [\"language\", \"title\"])\n        assert.equal(outputAudio[i].tags?.[field], inputAudio[i].tags?.[field], `Preserve audio ${i} ${field}`);\n    assert.deepEqual(after.chapters, sourceProbe.chapters);\n    const inputArt = sourceProbe.streams.filter((s) => s.disposition?.attached_pic);\n    const outputArt = after.streams.filter((s) => s.disposition?.attached_pic);\n    assert.equal(outputArt.length, inputArt.length, \"Preserve compatible attached pictures\");\n    const artworkPacketHashes = [];\n    for (let i = 0; i < inputArt.length; i++) {\n      for (const field of [\"codec_name\", \"width\", \"height\"])\n        assert.equal(outputArt[i][field], inputArt[i][field], `Preserve artwork ${i} ${field}`);\n      const compressedHash = async (file, index) => (await native([\"-v\", \"error\", \"-i\", file,\n        \"-map\", `0:${index}`, \"-c\", \"copy\", \"-f\", \"hash\", \"-hash\", \"sha256\", \"pipe:1\"])).stdout.trim();\n      const originalHash = await compressedHash(source, inputArt[i].index);\n      assert.equal(await compressedHash(output, outputArt[i].index), originalHash);\n      artworkPacketHashes.push(originalHash);\n    }\n    assert.ok(run.state.warnings.some((warning) => /subrip.*explicitly excluded/i.test(warning)),\n      \"Incompatible subtitle exclusion must be disclosed\");\n    const inputTimes = await frameTimes(source), outputTimes = await frameTimes(output);\n    assert.equal(inputTimes.length, outputTimes.length);\n    assert.equal(ownership.frames, outputTimes.length); assert.equal(ownership.packets, outputTimes.length);\n    assert.equal(ownership.completedPackets, outputTimes.length);\n    let maximumTimestampErrorSeconds = 0;\n    for (let i = 0; i < inputTimes.length; i++) maximumTimestampErrorSeconds = Math.max(maximumTimestampErrorSeconds, Math.abs(inputTimes[i] - outputTimes[i]));\n    assert.ok(maximumTimestampErrorSeconds <= 0.001);\n    assert.deepEqual(await audioHashes(output), await audioHashes(source));\n    await native([\"-v\", \"error\", \"-xerror\", \"-i\", output, \"-map\", \"0:v\", \"-map\", \"0:a\", \"-f\", \"null\", \"-\"]);\n    const { stderr } = await native([\"-v\", \"info\", \"-i\", source, \"-i\", output, \"-filter_complex\",\n      \"[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim\", \"-an\", \"-f\", \"null\", \"-\"]);\n    const ssim = Number(/All:([0-9.]+)/.exec(stderr)?.[1]); assert.ok(ssim >= 0.98);\n    run.independentValidation = { outputBytes: (await stat(output)).size, sha256: await shaFile(output),\n      probe: after, artworkPacketHashes, frameCount: outputTimes.length, maximumTimestampErrorSeconds, ssim, fullDecode: true };\n    await emptyOpfs(); await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === \"ready\");\n    run.recovery = await stable(`cleanup-${number}`, loadedIdle.privateBytes + 96 * MiB);\n  }\n  assert.deepEqual(forbiddenRequests, []);\n  assert.equal(diagnosticOnly, false, \"Private allocation/stack diagnostic cannot certify protected acceptance\");\n} catch (error) {\n  failure = { name: error.name, message: error.message, stack: error.stack }; process.exitCode = 1;\n} finally {\n  const cleanupErrors = [];\n  const attempt = async (action) => { try { await action(); } catch (error) { cleanupErrors.push(String(error)); } };\n  await attempt(async () => {\n    // Native sampler stays LIVE through the post-failure dump and trace drain.\n    if (observer) nativeFailureCapture = await observer.finishCapture();\n    if (rendererAttribution) {\n      rendererAttributionResult = await rendererAttribution.stop();\n      assert.equal(rendererAttributionResult.sessions.length, 1, \"Exactly one post-failure detailed trace\");\n      assert.equal(rendererAttributionResult.status, \"completed-diagnostic\");\n      assert.equal(nativeFailureCapture.callback?.result?.success, true);\n    }\n  });\n  await attempt(async () => {\n    cleanup.conversionQuiescence = await cancelBrowserConversionBeforeCleanup(page);\n  });\n  await attempt(async () => {\n    if (observer) {\n      try { observer.setPhase(\"finally-cleanup\"); await observer.stop(); cleanup.observerStopped = true; }\n      finally { nativeMemory = observer.report(); nativeFailureCapture = observer.failureCaptureReport(); }\n    }\n  });\n  await attempt(async () => { if (page && !page.isClosed()) await emptyOpfs(); });\n  await attempt(async () => { if (context) await context.tracing.stop({ path: `${reportBase}-trace.zip` }); });\n  await attempt(() => realms?.close());\n  await attempt(() => browser?.close());\n  await attempt(() => finishOwnedCleanup([() => stopOwned(chrome), () => stopOwned(server)]));\n  await attempt(async () => {\n    if (chrome) {\n      const identity = samples.flatMap(row => row.processes ?? []).find(row => row.pid === chrome.pid);\n      assert.ok(identity, \"Actual owned root birth required\");\n      cleanup.chromeRootExitObservation = await observeOwnedProcessExit(identity);\n      assert.equal(cleanup.chromeRootExitObservation.status, \"owned-identity-absent\");\n      cleanup.sampledChromeRootStopped = true;\n    }\n  });\n  await attempt(async () => {\n    // Restoration child uses this scratch, so it must finish before close.\n    if (staged) { await exec(process.execPath, [\"scripts/stage-mpeg2-split-direct.mjs\", \"restore\"]); cleanup.generatedDistRestored = true; }\n  });\n  await attempt(async () => {\n    if (runtime) { await runtime.close(); await assert.rejects(access(runtime.directory), { code: \"ENOENT\" }); cleanup.mediaProfileRuntimeRemoved = true; }\n  });\n  await attempt(async () => { await verifySource(); cleanup.protectedFixtureUnchanged = true; });\n  if (cleanupErrors.length) {\n    failure ??= { name: \"CleanupFailure\", message: cleanupErrors.join(\" | \") };\n    cleanup.errors = cleanupErrors; process.exitCode = 1;\n  }\n  const report = { recordedAt: new Date().toISOString(), status: failure ? \"failed\" : \"passed-private-protected-session\",\n    publicAcceptance: false, diagnosticOnly,\n    scope: \"ONE full-source private changed diagnostic: NO detailed tracing before actual native full-tree250MiB failure, then exactly one independently closed largest64 dump. Native acquisition remains live through finalization. Same original source/settings/fixed heaps/lower prospective blank/full formula/quality/cancel/finally;70minute diagnostic deadline. Not public/fidelity/speed/scaling acceptance or every-burst/callsite attribution.\",\n    source: { path: \"test.mkv\", bytes: expectedSourceBytes, sha256: expectedSourceHash, probe: sourceProbe },\n    browserVersion, manifest, actualWasmMemoryLimits, sourceHashes,\n    formula: \"peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory\",\n    limitMiB: 250, requestedRuns: diagnosticOnly ? 1 : 3, startupSettlement, blankBaseline, loadedIdle, runs, samples, samplesEvicted,\n    allocatorSamples, allocatorSamplesEvicted, splitFinalSamples, nativeStackSamples,\n    nativeMemory, nativeFailureCapture, rendererAttributionResult, failure, logs, forbiddenRequests, browserLocalRequests, cleanup,\n    ownedPids: { chrome: chrome?.pid ?? null, server: server?.pid ?? null, observer: observer?.pid ?? null }, runtimeDirectory: runtime?.directory ?? null };\n  const json = JSON.stringify(report, null, 2); assert.ok(Buffer.byteLength(json) <= 32 * MiB, \"Report cap; never unlimited histories\");\n  await writeFile(`${reportBase}.json`, `${json}\\n`, { flag: \"wx\" });\n  await writeFile(`${reportBase}.csv`, \"timestamp,phase,privateBytes,rssBytes,outputBytes\\n\" + samples.map((s) =>\n    [s.timestamp, s.phase, s.privateBytes ?? \"\", s.rssBytes ?? \"\", s.metrics?.outputBytes ?? \"\"].join(\",\")).join(\"\\n\"), { flag: \"wx\" });\n  const points = (nativeMemory?.graphBuckets ?? []).filter((b) => b.peak).map((b) => [Date.parse(b.peak[1]), b.peak[3]]);\n  const max = points.reduce((m, p) => Math.max(m, p[1]), MiB), first = points[0]?.[0] ?? 0, span = Math.max(1, (points.at(-1)?.[0] ?? first) - first);\n  const graph = points.map(([t, value]) => `${((t - first) / span * 900).toFixed(1)},${(280 - value / max * 260).toFixed(1)}`).join(\" \");\n  const escape = (s) => String(s).replaceAll(\"&\", \"&amp;\").replaceAll(\"<\", \"&lt;\");\n  await writeFile(`${reportBase}.html`, `<!doctype html><meta charset=\"utf-8\"><title>Protected MPEG2 private gate</title><h1>${escape(report.status)}</h1><p>${escape(report.formula)}</p><svg viewBox=\"0 0 920 300\"><polyline fill=\"none\" stroke=\"red\" points=\"${graph}\"/></svg><pre>${escape(JSON.stringify({ blankBaseline, loadedIdle, failure, cleanup }, null, 2))}</pre>`, { flag: \"wx\" });\n  completedReport = report; completedReportPath = `${reportBase}.json`;\n  process.stdout.write(`${report.status}: ${reportBase}.json\\n`);\n}\n"
+  },
+  "generatedSourceHashes": {
+    "helper": "c24a74ea3bbabcadca9e38d634f3663ab73fdfb98eb10db98becb57cceb265f6",
+    "driver": "512e2b3d4e454ac4244bc7f41205166f47c6c6b341f0b48fa468038afde10a7c"
+  },
+  "sourcePins": {
+    "scripts/mpeg2-failure-only-attribution.mjs": "ba4e7c0c24415348f8b75f565018ab0a3aa503552c53ee84f88298ceec9dfa05",
+    "scripts/lib/mpeg2-failure-only-attribution-recipe.mjs": "91515d63bd8b19aa7e92309ab17849c0491cc36f1a4d5cfe8a0b3f55a5bd5dc5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/native-budget-failure-observer.mjs": "fd9b8a554f8ab4092c4fa9d1b128aaed16282469f500d8cb1d3725a09ef4b332",
+    "scripts/lib/independent-blink-sessions.mjs": "e7fb47bdd681f82a7bc9cba7c642429741a12910fe8f3115e8c3034c792be9f3",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/largest-blink-attribution-recipe.mjs": "febea639ec59fdd1559ed0e0650769ea3ccd73db4248a15dad86e485b7719c1c",
+    "scripts/lib/largest-blink-type-summary.mjs": "de32cf2c7d19af82541153c86c8f6a4d4318a2557bb59fecd995a6e96769d2ea",
+    "scripts/lib/bounded-detailed-blink-type-summary.mjs": "11bd495d00a8dea875aaa8648ac959349750b4b73ee6a183db28ce4321efc7e5",
+    "scripts/lib/complete-blink-heap-summary.mjs": "93bbf422d245a247f6270759a7f45145cc420687efc5c9946851be61088c508c",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/native-memory-bursts.mjs": "d7a77b5347330689b467700a2b9d79cdf35fff97b17f3734b39d9e8a98e0d674",
+    "scripts/lib/largest-burst-prerequisites.mjs": "8cbc7ab2c805a6e0477fb44e452a09540e2a8409d859f538098b7457ec035c23",
+    "evidence/native-budget-failure-control-retry-2026-10-07.json": "ad78a99af1935ad3a526f732f50518532809c9773c332f21467cfe5bd94da012",
+    "evidence/largest-blink-type-control-2026-10-07.json": "c410d9b08f114ff9b6cacc6cfe8bfba3d1735dae62e3ed96a30d131acc01a7e3",
+    "evidence/mpeg2-largest-burst-attribution-2026-10-07.json": "dc25c080115ab6eba2d03a18de475798d8f378b66e948c356f819531edca30fe",
+    "scripts/mpeg2-static-ui-original-memory.mjs": "0379740f9b2443b3ff68e0b5a82a50789dc336ea65f8713ba49f67a213ec9823",
+    "scripts/lib/mpeg2-static-ui-original-recipe.mjs": "f55e57896b1314f9f523f7096074a0515182f1b182cc38124c6c8bad12aee3e5",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "scripts/lib/static-format-matrix-recipe.mjs": "80819962f8a6b80711ec368b2271f7ec1c3da80d50ce54197f4fb45b26136631",
+    "evidence/ui-matrix-benchmark-2026-10-07.json": "c04b4c5047020780a1e0c0de07550893394b557cbf7a8d7b8da822143e82ef80",
+    "evidence/ui-matrix-golden-regression-2026-10-07.json": "db57d5ac10bfd6bb26608a863388d2cdaf221870c44cf35eb7f4d11abb0015b0",
+    "evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json": "53d4de3d0ba4900a22999c5c96c792ee6f50d58c70ae3d4894f9e3f659b674fd",
+    "scripts/mpeg2-settled-original-memory.mjs": "a60e39a29095c06ecb3a10eafb4c96506a7123e19bf6b220cf42720bdb68cf21",
+    "scripts/lib/mpeg2-settled-original-recipe.mjs": "81844773d490491d58b1ecd5890a3a2990594425cbddc5d83ec1856262b8e6f1",
+    "scripts/lib/mpeg2-aligned-progress-recipe.mjs": "b6b6fa5225d5e7e4db5051a223b9ffbe016053413e37f3cf7cd6021d3746b47b",
+    "evidence/blank-chromium-lifecycle-2026-10-06.json": "4c8819d51ca7dd5afa4de21ff19fc36896473d3afbac6f192564222a0fd689ef",
+    "evidence/mpeg2-aligned-full-failure-2026-10-06.json": "eff1499eb76a5ec87ce6e24bba94a199b4beb1b559fd48579f79fffed6f3014a",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/stage-mpeg2-split-direct.mjs": "2526f8900924e062659bfe1dabc185a81e7d1c668dce0a8a8e4007da8ee6ca60",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/mpeg2-stack-reserve-adapter.mjs": "a462f8c911676ffe57d06a6d91760c008e20491a380d13cf75f339418a276633",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/cancel-browser-conversion-before-cleanup.mjs": "c2ce30b773592c7d0ed2a035ec16a49871fa1781d5f19b382ac07abcd34407df"
+  },
+  "browserVersion": "154.0.8037.98",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-07T11:38:56.0925967Z",
+    "freePhysicalBytes": 7625351168,
+    "freeVirtualBytes": 10432167936,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "limitMiB": 250,
+  "source": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "startupSettlement": {
+    "minimumMs": 300000,
+    "startedAt": 1791373145011,
+    "earlyWindow": {
+      "stable": true,
+      "privateBytes": 245104640,
+      "spreadBytes": 2572288,
+      "rssBytes": 526974976,
+      "firstTimestamp": "2026-10-07T11:39:35.773Z",
+      "lastTimestamp": "2026-10-07T11:39:45.846Z",
+      "sampleCount": 17,
+      "minimumElapsedMs": 8000
+    },
+    "pageStayedBlank": true,
+    "flagsChanged": false,
+    "processesExcluded": 0,
+    "baselineInflated": false,
+    "finishedAt": 1791373455126,
+    "actualMs": 310115
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 238407680,
+    "spreadBytes": 221184,
+    "rssBytes": 525950976,
+    "firstTimestamp": "2026-10-07T11:44:08.491Z",
+    "lastTimestamp": "2026-10-07T11:44:14.643Z",
+    "sampleCount": 7,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 316190720,
+    "spreadBytes": 995328,
+    "rssBytes": 633249792,
+    "firstTimestamp": "2026-10-07T11:44:18.511Z",
+    "lastTimestamp": "2026-10-07T11:44:24.672Z",
+    "sampleCount": 7,
+    "minimumElapsedMs": 8000
+  },
+  "nativeFailureCapture": {
+    "scope": "one-first-full-tree-budget-failure-only-not-every-burst-not-acceptance",
+    "limits": {
+      "incrementalPrivateBytes": 262144000,
+      "maximumCallbacks": 1,
+      "drainIntervalMs": 100,
+      "maximumTransitions": 256
+    },
+    "sequence": 3626,
+    "evaluatedConversionSamples": 697,
+    "unavailableSamples": 0,
+    "firstFailure": {
+      "phase": "conversion-1",
+      "observedAt": 1791373522383,
+      "acquisitionLagMs": 47,
+      "baseline": {
+        "stable": true,
+        "privateBytes": 238407680,
+        "spreadBytes": 221184,
+        "rssBytes": 525950976,
+        "firstTimestamp": "2026-10-07T11:44:08.491Z",
+        "lastTimestamp": "2026-10-07T11:44:14.643Z",
+        "sampleCount": 7,
+        "minimumElapsedMs": 8000
+      },
+      "incrementalPrivateMiB": 252.9921875,
+      "before": {
+        "sequence": 3451,
+        "timestamp": "2026-10-07T11:45:22.2272530Z",
+        "privateBytes": 445861888,
+        "rssBytes": 780931072,
+        "processes": [
+          {
+            "pid": 14240,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.8096656Z",
+            "creationFileTime": "134358467448096656",
+            "executableName": "chrome.exe",
+            "privateBytes": 20099072,
+            "rssBytes": 43180032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 23232,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5486748Z",
+            "creationFileTime": "134358467445486748",
+            "executableName": "chrome.exe",
+            "privateBytes": 33087488,
+            "rssBytes": 77078528,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 31364,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4617166Z",
+            "creationFileTime": "134358467444617166",
+            "executableName": "chrome.exe",
+            "privateBytes": 13578240,
+            "rssBytes": 41644032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 33120,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5964205Z",
+            "creationFileTime": "134358467445964205",
+            "executableName": "chrome.exe",
+            "privateBytes": 193282048,
+            "rssBytes": 257941504,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37236,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4563498Z",
+            "creationFileTime": "134358467444563498",
+            "executableName": "chrome.exe",
+            "privateBytes": 114601984,
+            "rssBytes": 153391104,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37668,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.3328813Z",
+            "creationFileTime": "134358467443328813",
+            "executableName": "chrome.exe",
+            "privateBytes": 2588672,
+            "rssBytes": 10506240,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 43844,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:44:15.1807641Z",
+            "creationFileTime": "134358470551807641",
+            "executableName": "chrome.exe",
+            "privateBytes": 14700544,
+            "rssBytes": 31105024,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 44680,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4926519Z",
+            "creationFileTime": "134358467444926519",
+            "executableName": "chrome.exe",
+            "privateBytes": 8056832,
+            "rssBytes": 18022400,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 45304,
+            "parentPid": 40948,
+            "createdAt": "2026-10-07T11:39:04.3164715Z",
+            "creationFileTime": "134358467443164715",
+            "executableName": "chrome.exe",
+            "privateBytes": 45867008,
+            "rssBytes": 148062208,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ]
+      },
+      "after": {
+        "sequence": 3452,
+        "timestamp": "2026-10-07T11:45:22.3365114Z",
+        "privateBytes": 503689216,
+        "rssBytes": 827060224,
+        "processes": [
+          {
+            "pid": 14240,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.8096656Z",
+            "creationFileTime": "134358467448096656",
+            "executableName": "chrome.exe",
+            "privateBytes": 20099072,
+            "rssBytes": 43180032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 23232,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5486748Z",
+            "creationFileTime": "134358467445486748",
+            "executableName": "chrome.exe",
+            "privateBytes": 33087488,
+            "rssBytes": 77078528,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 31364,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4617166Z",
+            "creationFileTime": "134358467444617166",
+            "executableName": "chrome.exe",
+            "privateBytes": 13578240,
+            "rssBytes": 41644032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 33120,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5964205Z",
+            "creationFileTime": "134358467445964205",
+            "executableName": "chrome.exe",
+            "privateBytes": 251109376,
+            "rssBytes": 304070656,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37236,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4563498Z",
+            "creationFileTime": "134358467444563498",
+            "executableName": "chrome.exe",
+            "privateBytes": 114601984,
+            "rssBytes": 153391104,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37668,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.3328813Z",
+            "creationFileTime": "134358467443328813",
+            "executableName": "chrome.exe",
+            "privateBytes": 2588672,
+            "rssBytes": 10506240,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 43844,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:44:15.1807641Z",
+            "creationFileTime": "134358470551807641",
+            "executableName": "chrome.exe",
+            "privateBytes": 14700544,
+            "rssBytes": 31105024,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 44680,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4926519Z",
+            "creationFileTime": "134358467444926519",
+            "executableName": "chrome.exe",
+            "privateBytes": 8056832,
+            "rssBytes": 18022400,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 45304,
+            "parentPid": 40948,
+            "createdAt": "2026-10-07T11:39:04.3164715Z",
+            "creationFileTime": "134358467443164715",
+            "executableName": "chrome.exe",
+            "privateBytes": 45867008,
+            "rssBytes": 148062208,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ]
+      },
+      "delta": {
+        "beforeSequence": 3451,
+        "afterSequence": 3452,
+        "beforeTimestamp": "2026-10-07T11:45:22.2272530Z",
+        "afterTimestamp": "2026-10-07T11:45:22.3365114Z",
+        "adjacent": true,
+        "elapsedMs": 109,
+        "elapsedPrecision": "milliseconds; original timestamps retained",
+        "treeDeltaPrivateBytes": 57827328,
+        "processDeltas": [
+          {
+            "pid": 14240,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.8096656Z",
+            "creationFileTime": "134358467448096656",
+            "beforePrivateBytes": 20099072,
+            "afterPrivateBytes": 20099072,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 23232,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5486748Z",
+            "creationFileTime": "134358467445486748",
+            "beforePrivateBytes": 33087488,
+            "afterPrivateBytes": 33087488,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 31364,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4617166Z",
+            "creationFileTime": "134358467444617166",
+            "beforePrivateBytes": 13578240,
+            "afterPrivateBytes": 13578240,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 33120,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5964205Z",
+            "creationFileTime": "134358467445964205",
+            "beforePrivateBytes": 193282048,
+            "afterPrivateBytes": 251109376,
+            "deltaPrivateBytes": 57827328
+          },
+          {
+            "pid": 37236,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4563498Z",
+            "creationFileTime": "134358467444563498",
+            "beforePrivateBytes": 114601984,
+            "afterPrivateBytes": 114601984,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 37668,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.3328813Z",
+            "creationFileTime": "134358467443328813",
+            "beforePrivateBytes": 2588672,
+            "afterPrivateBytes": 2588672,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 43844,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:44:15.1807641Z",
+            "creationFileTime": "134358470551807641",
+            "beforePrivateBytes": 14700544,
+            "afterPrivateBytes": 14700544,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 44680,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4926519Z",
+            "creationFileTime": "134358467444926519",
+            "beforePrivateBytes": 8056832,
+            "afterPrivateBytes": 8056832,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 45304,
+            "parentPid": 40948,
+            "createdAt": "2026-10-07T11:39:04.3164715Z",
+            "creationFileTime": "134358467443164715",
+            "beforePrivateBytes": 45867008,
+            "afterPrivateBytes": 45867008,
+            "deltaPrivateBytes": 0
+          }
+        ],
+        "addedIdentities": [],
+        "removedIdentities": [],
+        "allocationSource": null,
+        "acceptanceMetric": false
+      },
+      "cause": null,
+      "acceptanceMetric": false
+    },
+    "additionalOverBudgetSamples": 0,
+    "denominator": {
+      "stable": true,
+      "privateBytes": 238407680,
+      "spreadBytes": 221184,
+      "rssBytes": 525950976,
+      "firstTimestamp": "2026-10-07T11:44:08.491Z",
+      "lastTimestamp": "2026-10-07T11:44:14.643Z",
+      "sampleCount": 7,
+      "minimumElapsedMs": 8000
+    },
+    "acceptanceMetric": false,
+    "callback": {
+      "sequence": 3452,
+      "requestedAt": 1791373522384,
+      "finishedAt": 1791373541233,
+      "status": "completed",
+      "result": {
+        "success": false,
+        "dumpGuid": "0x16",
+        "sessionIndex": 0,
+        "error": null,
+        "traceStatus": "failed-diagnostic"
+      },
+      "error": null
+    },
+    "maximumPendingCallbacks": 1,
+    "callbackQueueLength": 0,
+    "rawNativePeaksRemainComplete": true
+  },
+  "preTraceNativeFailure": {
+    "phase": "conversion-1",
+    "observedAt": 1791373522383,
+    "acquisitionLagMs": 47,
+    "baseline": {
+      "stable": true,
+      "privateBytes": 238407680,
+      "spreadBytes": 221184,
+      "rssBytes": 525950976,
+      "firstTimestamp": "2026-10-07T11:44:08.491Z",
+      "lastTimestamp": "2026-10-07T11:44:14.643Z",
+      "sampleCount": 7,
+      "minimumElapsedMs": 8000
+    },
+    "incrementalPrivateMiB": 252.9921875,
+    "before": {
+      "sequence": 3451,
+      "timestamp": "2026-10-07T11:45:22.2272530Z",
+      "privateBytes": 445861888,
+      "rssBytes": 780931072,
+      "processes": [
+        {
+          "pid": 14240,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.8096656Z",
+          "creationFileTime": "134358467448096656",
+          "executableName": "chrome.exe",
+          "privateBytes": 20099072,
+          "rssBytes": 43180032,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23232,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5486748Z",
+          "creationFileTime": "134358467445486748",
+          "executableName": "chrome.exe",
+          "privateBytes": 33087488,
+          "rssBytes": 77078528,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31364,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4617166Z",
+          "creationFileTime": "134358467444617166",
+          "executableName": "chrome.exe",
+          "privateBytes": 13578240,
+          "rssBytes": 41644032,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 33120,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5964205Z",
+          "creationFileTime": "134358467445964205",
+          "executableName": "chrome.exe",
+          "privateBytes": 193282048,
+          "rssBytes": 257941504,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 37236,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4563498Z",
+          "creationFileTime": "134358467444563498",
+          "executableName": "chrome.exe",
+          "privateBytes": 114601984,
+          "rssBytes": 153391104,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 37668,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.3328813Z",
+          "creationFileTime": "134358467443328813",
+          "executableName": "chrome.exe",
+          "privateBytes": 2588672,
+          "rssBytes": 10506240,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 43844,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:44:15.1807641Z",
+          "creationFileTime": "134358470551807641",
+          "executableName": "chrome.exe",
+          "privateBytes": 14700544,
+          "rssBytes": 31105024,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44680,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4926519Z",
+          "creationFileTime": "134358467444926519",
+          "executableName": "chrome.exe",
+          "privateBytes": 8056832,
+          "rssBytes": 18022400,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 45304,
+          "parentPid": 40948,
+          "createdAt": "2026-10-07T11:39:04.3164715Z",
+          "creationFileTime": "134358467443164715",
+          "executableName": "chrome.exe",
+          "privateBytes": 45867008,
+          "rssBytes": 148062208,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "after": {
+      "sequence": 3452,
+      "timestamp": "2026-10-07T11:45:22.3365114Z",
+      "privateBytes": 503689216,
+      "rssBytes": 827060224,
+      "processes": [
+        {
+          "pid": 14240,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.8096656Z",
+          "creationFileTime": "134358467448096656",
+          "executableName": "chrome.exe",
+          "privateBytes": 20099072,
+          "rssBytes": 43180032,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23232,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5486748Z",
+          "creationFileTime": "134358467445486748",
+          "executableName": "chrome.exe",
+          "privateBytes": 33087488,
+          "rssBytes": 77078528,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31364,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4617166Z",
+          "creationFileTime": "134358467444617166",
+          "executableName": "chrome.exe",
+          "privateBytes": 13578240,
+          "rssBytes": 41644032,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 33120,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5964205Z",
+          "creationFileTime": "134358467445964205",
+          "executableName": "chrome.exe",
+          "privateBytes": 251109376,
+          "rssBytes": 304070656,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 37236,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4563498Z",
+          "creationFileTime": "134358467444563498",
+          "executableName": "chrome.exe",
+          "privateBytes": 114601984,
+          "rssBytes": 153391104,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 37668,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.3328813Z",
+          "creationFileTime": "134358467443328813",
+          "executableName": "chrome.exe",
+          "privateBytes": 2588672,
+          "rssBytes": 10506240,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 43844,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:44:15.1807641Z",
+          "creationFileTime": "134358470551807641",
+          "executableName": "chrome.exe",
+          "privateBytes": 14700544,
+          "rssBytes": 31105024,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44680,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4926519Z",
+          "creationFileTime": "134358467444926519",
+          "executableName": "chrome.exe",
+          "privateBytes": 8056832,
+          "rssBytes": 18022400,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 45304,
+          "parentPid": 40948,
+          "createdAt": "2026-10-07T11:39:04.3164715Z",
+          "creationFileTime": "134358467443164715",
+          "executableName": "chrome.exe",
+          "privateBytes": 45867008,
+          "rssBytes": 148062208,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "delta": {
+      "beforeSequence": 3451,
+      "afterSequence": 3452,
+      "beforeTimestamp": "2026-10-07T11:45:22.2272530Z",
+      "afterTimestamp": "2026-10-07T11:45:22.3365114Z",
+      "adjacent": true,
+      "elapsedMs": 109,
+      "elapsedPrecision": "milliseconds; original timestamps retained",
+      "treeDeltaPrivateBytes": 57827328,
+      "processDeltas": [
+        {
+          "pid": 14240,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.8096656Z",
+          "creationFileTime": "134358467448096656",
+          "beforePrivateBytes": 20099072,
+          "afterPrivateBytes": 20099072,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 23232,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5486748Z",
+          "creationFileTime": "134358467445486748",
+          "beforePrivateBytes": 33087488,
+          "afterPrivateBytes": 33087488,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 31364,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4617166Z",
+          "creationFileTime": "134358467444617166",
+          "beforePrivateBytes": 13578240,
+          "afterPrivateBytes": 13578240,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 33120,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.5964205Z",
+          "creationFileTime": "134358467445964205",
+          "beforePrivateBytes": 193282048,
+          "afterPrivateBytes": 251109376,
+          "deltaPrivateBytes": 57827328
+        },
+        {
+          "pid": 37236,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4563498Z",
+          "creationFileTime": "134358467444563498",
+          "beforePrivateBytes": 114601984,
+          "afterPrivateBytes": 114601984,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 37668,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.3328813Z",
+          "creationFileTime": "134358467443328813",
+          "beforePrivateBytes": 2588672,
+          "afterPrivateBytes": 2588672,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 43844,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:44:15.1807641Z",
+          "creationFileTime": "134358470551807641",
+          "beforePrivateBytes": 14700544,
+          "afterPrivateBytes": 14700544,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 44680,
+          "parentPid": 45304,
+          "createdAt": "2026-10-07T11:39:04.4926519Z",
+          "creationFileTime": "134358467444926519",
+          "beforePrivateBytes": 8056832,
+          "afterPrivateBytes": 8056832,
+          "deltaPrivateBytes": 0
+        },
+        {
+          "pid": 45304,
+          "parentPid": 40948,
+          "createdAt": "2026-10-07T11:39:04.3164715Z",
+          "creationFileTime": "134358467443164715",
+          "beforePrivateBytes": 45867008,
+          "afterPrivateBytes": 45867008,
+          "deltaPrivateBytes": 0
+        }
+      ],
+      "addedIdentities": [],
+      "removedIdentities": [],
+      "allocationSource": null,
+      "acceptanceMetric": false
+    },
+    "cause": null,
+    "acceptanceMetric": false
+  },
+  "traceRequestedOnlyAfterActualNativeFailure": true,
+  "acquisitionToDumpRequestMs": 82,
+  "acquisitionToDumpCompletionMs": 18567,
+  "nativePeakIncludingTraceFinalization": {
+    "sequence": 3452,
+    "timestamp": "2026-10-07T11:45:22.3365114Z",
+    "phase": "conversion-1",
+    "privateBytes": 503689216,
+    "rssBytes": 827060224,
+    "processes": [
+      {
+        "pid": 14240,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.8096656Z",
+        "creationFileTime": "134358467448096656",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 20099072,
+        "rssBytes": 43180032
+      },
+      {
+        "pid": 23232,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.5486748Z",
+        "creationFileTime": "134358467445486748",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 33087488,
+        "rssBytes": 77078528
+      },
+      {
+        "pid": 31364,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.4617166Z",
+        "creationFileTime": "134358467444617166",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 13578240,
+        "rssBytes": 41644032
+      },
+      {
+        "pid": 33120,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.5964205Z",
+        "creationFileTime": "134358467445964205",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 251109376,
+        "rssBytes": 304070656
+      },
+      {
+        "pid": 37236,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.4563498Z",
+        "creationFileTime": "134358467444563498",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 114601984,
+        "rssBytes": 153391104
+      },
+      {
+        "pid": 37668,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.3328813Z",
+        "creationFileTime": "134358467443328813",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 2588672,
+        "rssBytes": 10506240
+      },
+      {
+        "pid": 43844,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:44:15.1807641Z",
+        "creationFileTime": "134358470551807641",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 14700544,
+        "rssBytes": 31105024
+      },
+      {
+        "pid": 44680,
+        "parentPid": 45304,
+        "createdAt": "2026-10-07T11:39:04.4926519Z",
+        "creationFileTime": "134358467444926519",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 8056832,
+        "rssBytes": 18022400
+      },
+      {
+        "pid": 45304,
+        "parentPid": 40948,
+        "createdAt": "2026-10-07T11:39:04.3164715Z",
+        "creationFileTime": "134358467443164715",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 45867008,
+        "rssBytes": 148062208
+      }
+    ]
+  },
+  "nativePeakIncludingTraceIncrementalPrivateMiB": 252.9921875,
+  "nativeObserverError": null,
+  "nativePhaseCoverage": [
+    {
+      "phase": "pre-conversion-1",
+      "validSamples": 6,
+      "unavailableSamples": 0
+    },
+    {
+      "phase": "conversion-1",
+      "validSamples": 691,
+      "unavailableSamples": 0
+    }
+  ],
+  "attribution": {
+    "scope": "independent-single-detailed-largest64-traces-not-acceptance",
+    "status": "failed-diagnostic",
+    "limits": {
+      "maximumSessions": 7,
+      "maximumRetainedReportBytes": 4194304
+    },
+    "sessions": [
+      {
+        "phase": "native-budget-failure-3452",
+        "startedAt": "2026-10-07T11:45:22.384Z",
+        "finishedAt": "2026-10-07T11:45:41.232Z",
+        "trace": {
+          "scope": "bounded-private-renderer-allocation-attribution-not-acceptance",
+          "limits": {
+            "chromiumBufferBytes": 4194304,
+            "maximumSerializedBytes": 16777216,
+            "maximumDumps": 8,
+            "maximumRealmRows": 1024,
+            "realmIntervalMs": 100,
+            "ioReadBytes": 262144
+          },
+          "perturbsMemory": true,
+          "acceptanceMetric": false,
+          "status": "failed-diagnostic",
+          "trace": {
+            "serializedBytes": 2695724,
+            "sha256": "1fc8ef333b8d45b87a9614953fda0ac775d1f38d9b79fdf0351816e7fc077152",
+            "overflow": false,
+            "dataLossOccurred": false,
+            "parseError": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(phases.length > 0 && phases.length <= 16)\n",
+            "events": 306,
+            "compactedBeforeRelease": false,
+            "rawRetained": false
+          },
+          "dumps": [
+            {
+              "phase": "native-budget-failure-3452",
+              "timestamp": "2026-10-07T11:45:22.418Z",
+              "processes": [
+                {
+                  "pid": 14240,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.8096656Z",
+                  "creationFileTime": "134358467448096656",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 20099072,
+                  "rssBytes": 43180032,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 23232,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.5486748Z",
+                  "creationFileTime": "134358467445486748",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 33087488,
+                  "rssBytes": 77078528,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 31364,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.4617166Z",
+                  "creationFileTime": "134358467444617166",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 13578240,
+                  "rssBytes": 41644032,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 33120,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.5964205Z",
+                  "creationFileTime": "134358467445964205",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 251109376,
+                  "rssBytes": 304070656,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 37236,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.4563498Z",
+                  "creationFileTime": "134358467444563498",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 114601984,
+                  "rssBytes": 153391104,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 37668,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.3328813Z",
+                  "creationFileTime": "134358467443328813",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 2588672,
+                  "rssBytes": 10506240,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 43844,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:44:15.1807641Z",
+                  "creationFileTime": "134358470551807641",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 14700544,
+                  "rssBytes": 31105024,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 44680,
+                  "parentPid": 45304,
+                  "createdAt": "2026-10-07T11:39:04.4926519Z",
+                  "creationFileTime": "134358467444926519",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 8056832,
+                  "rssBytes": 18022400,
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                },
+                {
+                  "pid": 45304,
+                  "parentPid": 40948,
+                  "createdAt": "2026-10-07T11:39:04.3164715Z",
+                  "creationFileTime": "134358467443164715",
+                  "executableName": "chrome.exe",
+                  "privateBytes": 45867008,
+                  "rssBytes": 148062208,
+                  "type": "browser",
+                  "utilitySubtype": null,
+                  "sandboxType": null
+                }
+              ],
+              "memoryDump": {
+                "dumpGuid": "0x16",
+                "success": false
+              },
+              "finishedAt": "2026-10-07T11:45:40.903Z"
+            }
+          ],
+          "allocatorSummary": null,
+          "realmRows": 169,
+          "realmRowsEvicted": 0,
+          "samplingError": null,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        },
+        "error": null,
+        "sessionDetached": true
+      }
+    ],
+    "dumps": [
+      {
+        "phase": "native-budget-failure-3452",
+        "timestamp": "2026-10-07T11:45:22.418Z",
+        "processes": [
+          {
+            "pid": 14240,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.8096656Z",
+            "creationFileTime": "134358467448096656",
+            "executableName": "chrome.exe",
+            "privateBytes": 20099072,
+            "rssBytes": 43180032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 23232,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5486748Z",
+            "creationFileTime": "134358467445486748",
+            "executableName": "chrome.exe",
+            "privateBytes": 33087488,
+            "rssBytes": 77078528,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 31364,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4617166Z",
+            "creationFileTime": "134358467444617166",
+            "executableName": "chrome.exe",
+            "privateBytes": 13578240,
+            "rssBytes": 41644032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 33120,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.5964205Z",
+            "creationFileTime": "134358467445964205",
+            "executableName": "chrome.exe",
+            "privateBytes": 251109376,
+            "rssBytes": 304070656,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37236,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4563498Z",
+            "creationFileTime": "134358467444563498",
+            "executableName": "chrome.exe",
+            "privateBytes": 114601984,
+            "rssBytes": 153391104,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37668,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.3328813Z",
+            "creationFileTime": "134358467443328813",
+            "executableName": "chrome.exe",
+            "privateBytes": 2588672,
+            "rssBytes": 10506240,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 43844,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:44:15.1807641Z",
+            "creationFileTime": "134358470551807641",
+            "executableName": "chrome.exe",
+            "privateBytes": 14700544,
+            "rssBytes": 31105024,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 44680,
+            "parentPid": 45304,
+            "createdAt": "2026-10-07T11:39:04.4926519Z",
+            "creationFileTime": "134358467444926519",
+            "executableName": "chrome.exe",
+            "privateBytes": 8056832,
+            "rssBytes": 18022400,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 45304,
+            "parentPid": 40948,
+            "createdAt": "2026-10-07T11:39:04.3164715Z",
+            "creationFileTime": "134358467443164715",
+            "executableName": "chrome.exe",
+            "privateBytes": 45867008,
+            "rssBytes": 148062208,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ],
+        "memoryDump": {
+          "dumpGuid": "0x16",
+          "success": false
+        },
+        "finishedAt": "2026-10-07T11:45:40.903Z"
+      }
+    ],
+    "allocatorSummary": [],
+    "noQueuedRequests": true,
+    "maximumPendingSessions": 1,
+    "perturbsMemory": true,
+    "acceptanceMetric": false,
+    "rawTraceRetained": false,
+    "summedAllocatorTotal": null
+  },
+  "noBeforeFailureTypeBaseline": true,
+  "typeDeltaFromAnotherRun": null,
+  "lastPreCancellationMetrics": {
+    "inputBytes": 32532033,
+    "outputBytes": 21072617,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 65536,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 65536,
+    "elapsedMs": 57148.18499998748,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0
+  },
+  "splitFinalSamples": [
+    {
+      "scope": "private-split-production-pipeline-not-public-acceptance",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "aggregateWasmMemoryBytes": 50331648,
+      "frames": 2440,
+      "copiedPixelBytes": 5649868800,
+      "packets": 2439,
+      "completedPackets": 2439,
+      "copiedPacketBytes": 23219751,
+      "peakFrameBytes": 2315520,
+      "peakPacketBytes": 200927,
+      "peakSideBytes": 8,
+      "activePackets": 0,
+      "queuedPackets": 0,
+      "queuedFrames": 0,
+      "additionalPixelBufferBytes": 0,
+      "additionalJsPacketBufferBytes": 0,
+      "failed": true,
+      "closed": true,
+      "maximumMediaAvioWriteBytes": 65536
+    }
+  ],
+  "nativeStackSamples": [
+    {
+      "nativeStackBytes": 262144,
+      "encoderNativeStackBytes": 262144,
+      "asyncifyStackBytes": 262144,
+      "stackOverflowCheck": 2,
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "aggregateWasmMemoryBytes": 50331648,
+      "scope": "reserved-not-high-water-not-acceptance"
+    }
+  ],
+  "failure": {
+    "name": "AssertionError",
+    "message": "Complete Chromium increase 252.9921875MiB exceeds 250MiB",
+    "stack": "AssertionError [ERR_ASSERTION]: Complete Chromium increase 252.9921875MiB exceeds 250MiB\n    at file:///H:/Github%20Repositories/fileconverter/work/mpeg2-failure-only-driver-lqg6Zb/control.mjs:290:14"
+  },
+  "cleanup": {
+    "mediaProfileRuntimeRemoved": true,
+    "generatedDistRestored": true,
+    "protectedFixtureUnchanged": true,
+    "observerStopped": true,
+    "sampledChromeRootStopped": true,
+    "conversionQuiescence": {
+      "scope": "normal-production-cancellation-before-storage-removal",
+      "cancellationRequested": true,
+      "terminalState": "cancelled"
+    },
+    "chromeRootExitObservation": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 45304,
+        "parentPid": 40948,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-07T11:39:04.3164710Z",
+        "privateBytes": 39866368,
+        "rssBytes": 126013440
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-07T11:45:42.324Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 400,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "errors": [
+      "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'failed-diagnostic'\n- 'completed-diagnostic'\n"
+    ]
+  },
+  "outerGeneratedRuntimeRemoved": true,
+  "forbiddenRequests": [],
+  "ownedPids": {
+    "chrome": 45304,
+    "server": 44376,
+    "observer": 46016
+  },
+  "sampledNativeIdentities": [
+    {
+      "pid": 14240,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.8096656Z",
+      "creationFileTime": "134358467448096656",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 23232,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.5486748Z",
+      "creationFileTime": "134358467445486748",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 31364,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.4617166Z",
+      "creationFileTime": "134358467444617166",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 32656,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.5701754Z",
+      "creationFileTime": "134358467445701754",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 33120,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.5964205Z",
+      "creationFileTime": "134358467445964205",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 37236,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.4563498Z",
+      "creationFileTime": "134358467444563498",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 37668,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.3328813Z",
+      "creationFileTime": "134358467443328813",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 38688,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.6024801Z",
+      "creationFileTime": "134358467446024801",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 44680,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:04.4926519Z",
+      "creationFileTime": "134358467444926519",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 45304,
+      "parentPid": 40948,
+      "createdAt": "2026-10-07T11:39:04.3164715Z",
+      "creationFileTime": "134358467443164715",
+      "executableName": "chrome.exe",
+      "type": "browser",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 26980,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:06.9503220Z",
+      "creationFileTime": "134358467469503220",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 21612,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:27.8582632Z",
+      "creationFileTime": "134358467678582632",
+      "executableName": "updater.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 27740,
+      "parentPid": 21612,
+      "createdAt": "2026-10-07T11:39:27.8787532Z",
+      "creationFileTime": "134358467678787532",
+      "executableName": "updater.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 43716,
+      "parentPid": 21612,
+      "createdAt": "2026-10-07T11:39:27.9009709Z",
+      "creationFileTime": "134358467679009709",
+      "executableName": "updater.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 44908,
+      "parentPid": 43716,
+      "createdAt": "2026-10-07T11:39:27.9184212Z",
+      "creationFileTime": "134358467679184212",
+      "executableName": "updater.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 39896,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:39:34.4722164Z",
+      "creationFileTime": "134358467744722164",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 4840,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:41:04.4707931Z",
+      "creationFileTime": "134358468644707931",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 42828,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:42:04.4701588Z",
+      "creationFileTime": "134358469244701588",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 43844,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:44:15.1807641Z",
+      "creationFileTime": "134358470551807641",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    },
+    {
+      "pid": 45396,
+      "parentPid": 45304,
+      "createdAt": "2026-10-07T11:45:22.3905933Z",
+      "creationFileTime": "134358471223905933",
+      "executableName": "chrome.exe",
+      "type": "unknown",
+      "utilitySubtype": null,
+      "sandboxType": null
+    }
+  ],
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-failure-only-runtime-paCMrg",
+  "completeOriginalConversion": false,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "noDocker": true,
+  "noForcedGc": true,
+  "originalUninstrumentedFailureCause": null,
+  "allocationObjectOrCallsite": null,
+  "caveat": "ONE actual full-tree native budget failure only; not every warmup burst. NO detailed trace before the failure. Subsequent dump/finalization still counted in separate full native peak, no process exclusions. Delayed partial largest64 types may contain garbage; no live/callsite/causal or matched-baseline type-delta claim. No forcedGC, quality change, native conversion, smaller source, weakened denominator, public profile or full-source acceptance from partial data."
+}

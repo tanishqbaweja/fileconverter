@@ -1,0 +1,55 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import test from "node:test";
+const root = path.resolve(import.meta.dirname, "..");
+const load = async name => JSON.parse(await readFile(path.join(root, `evidence/${name}-2026-10-07.json`)));
+const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+
+test("actual original failure precedes any detailed trace and preserves unchanged complete-tree gate", async () => {
+  const p = await load("mpeg2-failure-only-attribution"), c = p.nativeFailureCapture, e = c.firstFailure;
+  assert.equal(p.completeOriginalConversion, false); assert.equal(p.limitMiB, 250);
+  assert.equal(p.blankBaseline.privateBytes, 238407680); assert.equal(p.startupSettlement.minimumMs, 300000);
+  assert.equal(p.startupSettlement.pageStayedBlank, true); assert.ok(p.startupSettlement.actualMs >= 300000);
+  assert.equal(p.startupSettlement.baselineInflated, false);
+  assert.deepEqual(e.baseline, p.blankBaseline);
+  assert.equal(e.incrementalPrivateMiB, (e.after.privateBytes - p.blankBaseline.privateBytes) / 1048576);
+  assert.equal(e.incrementalPrivateMiB, 252.9921875); assert.equal(e.after.processes.length, 9);
+  assert.equal(e.after.processes.reduce((sum, row) => sum + row.privateBytes, 0), e.after.privateBytes);
+  assert.equal(e.delta.treeDeltaPrivateBytes, 57827328);
+  assert.deepEqual(e.delta.processDeltas.filter(row => row.deltaPrivateBytes !== 0).map(row => row.pid), [33120]);
+  assert.equal(p.attribution.sessions.length, 1);
+  assert.ok(Date.parse(p.attribution.sessions[0].startedAt) > Date.parse(e.after.timestamp));
+  assert.ok(c.sequence > e.after.sequence); assert.equal(c.callbackQueueLength, 0);
+  assert.equal(p.nativeObserverError, null);
+  assert.ok(p.nativePhaseCoverage.every(row => row.validSamples > 0 && row.unavailableSamples === 0));
+  assert.equal(p.noBeforeFailureTypeBaseline, true); assert.equal(p.typeDeltaFromAnotherRun, null);
+  for (const [file, hash] of Object.entries(p.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
+  for (const [name, source] of Object.entries(p.generatedSources)) assert.equal(sha(source), p.generatedSourceHashes[name]);
+});
+
+test("unsuccessful actual Chromium dump and subsequent summary failure are NEVER accepted as allocation attribution", async () => {
+  const p = await load("mpeg2-failure-only-attribution"), a = await load("mpeg2-failure-only-analysis");
+  assert.equal(a.input.sha256, sha(await readFile(path.join(root, a.input.path))));
+  const session = p.attribution.sessions[0], trace = session.trace, dump = trace.dumps[0];
+  assert.equal(dump.memoryDump.success, false); assert.equal(dump.memoryDump.dumpGuid, "0x16");
+  assert.equal(trace.status, "failed-diagnostic"); assert.equal(p.attribution.status, "failed-diagnostic");
+  assert.equal(p.nativeFailureCapture.callback.result.success, false);
+  assert.equal(trace.trace.serializedBytes, 2695724); assert.equal(trace.trace.events, 306);
+  assert.equal(trace.trace.dataLossOccurred, false); assert.equal(trace.trace.overflow, false);
+  assert.match(trace.trace.parseError, /phases.length > 0/);
+  assert.equal(trace.trace.compactedBeforeRelease, false); assert.equal(trace.allocatorSummary, null);
+  assert.equal(session.sessionDetached, true); assert.equal(p.cleanup.errors.length, 1);
+  assert.equal(a.failedAttribution.rawFailedTraceRetained, false); assert.equal(a.failedAttribution.recoveredMissingDump, false);
+  assert.equal(a.partialFreshFrames, 2440); assert.equal(a.partialFreshPackets, 2439);
+  assert.equal(a.metrics.wasmMemoryBytes, 48 * 1048576); assert.equal(a.metrics.maxReadChunkBytes, 65536);
+  assert.equal(a.metrics.peakPendingOperations, 1); assert.equal(a.metrics.queuedBytes, 0);
+  assert.equal(p.splitFinalSamples[0].queuedFrames, 0); assert.equal(p.splitFinalSamples[0].closed, true);
+  assert.equal(a.originalUninstrumentedFailureCause, null); assert.equal(a.allocationObjectOrCallsite, null);
+  assert.equal(a.publicAcceptance, false); assert.equal(a.fidelityAcceptance, false);
+  assert.equal(a.cleanup.sampledIdentities, 20); assert.equal(a.cleanup.checkedPids, 27);
+  assert.equal(a.cleanup.allObservedPidsAbsent, true); assert.equal(a.cleanup.protectedFullPostHashMatches, true);
+  assert.equal(a.cleanup.sixPublishedAssetsRestored, true); assert.equal(a.cleanup.ninePrivateAssetsAbsent, true);
+  for (const [file, hash] of Object.entries(a.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
+});

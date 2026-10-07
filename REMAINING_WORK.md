@@ -5,6 +5,56 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Failure-only original TERMINAL: memory FAILED, dump unavailable, cleanup verified
+
+Session1099 is TERMINAL exit1, not a live wait; do not restart unchanged.
+First actual full-tree failure occurred BEFORE any detailed trace:
+503,689,216bytes across NINE processes minus unchanged lower settled blank
+238,407,680bytes =252.9921875MiB, above250. Prospective blank settlement310.115s,
+page stayed blank/no exclusions/no inflated baseline. Adjacent native3451->3452
+109ms rise57,827,328bytes is ONLY renderer33120; all other eight unchanged,
+no new/removed identities. This reproduces renderer-only transient growth without
+startup tracing, but does NOT identify its allocator or callsite.
+
+ONE detailed session began11:45:22.384UTC AFTER native11:45:22.3365114UTC.
+Request11:45:22.418/GUID0x16 returned success=false11:45:40.903 (18.485s).
+Trace2,695,724bytes/306events/no loss/overflow; summary then FAILED because zero
+successful dump phases. Not a successful attribution, not missing bytes=zero.
+Exact failed trace SHA remains, but raw failed payload was not retained by the
+executed helper and cannot be recovered. No types/live-object/cause claim or
+silent success. Callback status completed refers to callback completion ONLY:
+its success=false/traceStatus=failed-diagnostic remain explicit. One cleanup
+assertion error about failed attribution remains in the original report.
+Native continued through sequence3626 during dump/drain,697valid pre/conversion
+samples/zero unavailable; no further over-budget row and no trace-overhead
+exclusions. Normal production cancellation reached cancelled and closed engines.
+
+Only2440fresh decoded frames/2439encoder packets before cancellation. Last
+metricsinput32,532,033/output21,072,617bytes, fixed48MiBWasm/48MiB+4SAB,
+64KiBmaximum reads/writes/one outstanding operation/zero final frame+packet queues.
+This is NOT complete original, validated usable output, fidelity/speed/scaling,
+three repeats, or a reason to publish the private route. All failure evidence/
+executed source hashes retained in evidence/mpeg2-failure-only-attribution-
+2026-10-07.json (96,802bytes); raw report SHA checked without rerunning conversion.
+
+Independent read-only analysis PASSED20native PID/parent/birth identities and
+27observed PIDs absent, both generated/runtime directories absent, six published
+dist assets restored and nine private assets absent, full protected source size
+2,958,573,265bytes/SHA31f36695...34b9db34 unchanged. No user process killed;
+no converted copy retained. Compact evidence/mpeg2-failure-only-analysis-
+2026-10-07.json explicitly preserves failed dump, summarizer and cleanup assertion.
+Two new focused actual-evidence tests PASS; full703/703unit PASS4.135s and scoped
+zero-warning lint PASS. No unchanged original/detailed-dump retry or public change.
+
+Next: targeted short real-UI layout optimization against the already measured
+GridSizingTrackCollection/PlainTextNode growth, with same visible controls/matrix,
+real interactions, layout/keyboard/accessibility checks and memory before/after.
+Offscreen-only deferral already failed worst-case and must not be repeated.
+Investigate lower-allocation dynamic control layout/rendering; do not claim it
+fixes native57MiB spikes until changed full-source measurements prove that.
+Future failed captures must preserve bounded usable failure diagnostics without
+pretending unsuccessful detailed dumps are complete. Full goal remains OPEN.
+
 ## 2026-10-07 — Failure-only control PASSED; changed original diagnostic LIVE
 
 This supersedes the previous proposed next investigation, not its failed evidence.
