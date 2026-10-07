@@ -5,7 +5,52 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-08 — Corrected staged FULL-original diagnostic LIVE, session22394
+## 2026-10-08 — Staged FULL-original diagnostic TERMINAL: 264.242 MiB rejected
+
+This supersedes ALL LIVE/prepared/checkpoint notes below. Session22394 exited1
+at19:23:52UTC; do not restart or poll it as live. Actual protected full-source
+browser encoding stopped at1,530 fresh frames/packets; input33,187,393 and
+output21,727,310bytes at the last state, NOT a completed validated output.
+All-nine-process simultaneous private peak516,579,328 minus LOWER stable blank
+239,501,312 = **264.2421875 MiB**, over unchanged250MiB. Five-minute settlement
+309381ms/earlyblank245764096 retained; no flags/process exclusions/baseline
+inflation. Three actual staged adapter sizes/SHAs passed; failure hook captured
+ZERO Wasm aborts because the complete-tree gate failed first. The old106112-frame
+fixed-heap OOM remains a different failure; no allocation size/callsite inferred.
+
+Read-only independent analyzer verifies all executed source pins/raw report SHA,
+formula/process sums and exact adjacent native sequences3457→3458. ONE renderer
+47084/parent37312/birth19:17:33.1939275UTC accounts for49,987,584 additional bytes
+over about108ms, with matching parent/microsecond CIM type. Allocator/object/
+callsite UNKNOWN; DOM callback arrived later and is not peak-time allocation
+proof. Failure collector retains one unavailable sample as unavailable; native
+active phase coverage525 conversion+6 pre-conversion valid/zero unavailable.
+Fixed32+16MiB Wasm,64KiB reads/writes/queue and one pending operation unchanged;
+final packet/frame queues empty, adapter closed, normal cancellation completed.
+
+Independent ALL21native+4helper identities/25PIDs absent; both owned runtime
+directories absent, six dist engine hashes equal published assets, nine private
+assets absent, full2,958,573,265-byte protected postSHA31f36695...34b9db34 matches.
+No apps killed/Docker/native conversion/public promotion. ZERO completed full
+originals/independent full-output validators/three repeats/speed/scaling acceptance.
+`evidence/mpeg2-staged-abort-original-2026-10-08.json` and terminal-analysis proof
+retain exact sources and diagnostics. Exact2,105,564-byte raw JSON was losslessly
+archived to65,327-byte gzip (reconstructed byte size/SHA verified) before removing
+ONLY redundant raw. Converted media/profiles were already removed in finally.
+Compaction evidence documents recoverability, bounds and exact ownership.
+
+Next: investigate the actual renderer allocation behind the budget burst with a
+bounded prerequisite-tested diagnostic; do not repeat this unchanged full-source
+attempt or disable the gate to reach the decoder OOM. All original goal gaps and
+public-profile/full-source memory, fidelity and speed gates remain OPEN.
+
+Terminal-cycle regression:10/10 focused evidence/recipe/archive checks PASS
+175.2221ms;740/740 unit checks PASS5284.1247ms; scoped four-file zero-warning
+lint PASS. No production build/full browser repeat/rebuild was needed for these
+read-only analysis/archive/docs/evidence-test additions; pre-launch production
+and codec evidence is not recast as post-failure acceptance.
+
+## Historical LIVE checkpoint — superseded by terminal result above
 
 This supersedes the prepared checkpoint below. ONE actual launch19:17:29UTC,
 same session22394 authoritatively live on repeated bounded polls. Independent
