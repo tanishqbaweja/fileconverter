@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Changed hosted scope retry LIVE; full typecheck passed
+
+One changed-source retry37684741516 was actually dispatched20:47:47UTC at pushed
+bb45f39bd6081cf5fe8598dec43a080fedd4ef3b on media-options; remote hash verified,
+main unchanged0904d93447d2163a8c8130de4b244f76ab9687e2. Full semantic TypeScript
+step actually PASSED before browser dependencies. Only narrow job is live;
+engine/general verification/unrelated browser jobs actually SKIPPED. At20:51:24UTC
+runner still installing Chromium; actual eight conversions/validators/report
+availability/terminal cleanup PENDING. Poll SAME run37684741516, not the terminal
+failed37683872743 and not an unchanged duplicate dispatch. Changed declaration/
+harness18 focused unit PASS1139.4428ms and scoped four-file zero-warning lint PASS.
+
+Local SAME10189 independently still running20:51:24UTC: last actual console
+input555,647,224/output605,733,818bytes, rounded observed peak241.770MiB. No new
+local build/browser/stager or pinned-source change. This is partial progress only;
+terminal result/failure capture/full validators/repeats/owned media cleanup/full
+protected postSHA PENDING. Needed active output/profile stays repo-local; no
+Docker/native conversion/quality relaxation/public promotion/full-goal completion.
+
 ## 2026-10-08 — Hosted scope gate stopped at types; runtime source unchanged
 
 Actual narrow hosted run37683872743 at pushed7d8ae494256f4ab080b30b1c391174c9d1257287
