@@ -5,6 +5,54 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Measured flex candidate full-original attempt LIVE; all full gates retained
+
+Previous cycle was progress: fresh real grid/flex pair, nine identical layout
+checks, allocator evidence and independent cleanup, pushed7e53b86. Smaller heap
+did NOT prove full-tree improvement and no production CSS was promoted.
+
+ONE changed actual full-original candidate launched12:12:37UTC/session15198.
+Read-only host physical5,843,959,808/virtual7,031,193,600bytes passed unchanged
+2GiB minimums BEFORE source/profile/staging. Full protected-source pre-SHA and
+32GiB repo-local disk preflight inherited and passed. Driver43704parent27076,
+Chrome24276birth12:12:47.773480UTCparent43704/native observer9512/server41000;
+independently alive in blank settling12:15:06UTC. Two ACTIVE owned scratch slots:
+work/mpeg2-flex-original-driver-ivDSru and runtime/profile
+work/mpeg2-flex-original-runtime-hft2BS. They are not yet claimed cleaned.
+Poll SAME session; no duplicate conversion, concurrent dist build/stage or change
+to the now-executed pinned recipe/helper while this attempt owns staged assets.
+
+Strict reversible recipe differs ONLY by the exact measured dynamic-control flex
+CSS static response, bounded actual page DOM counters, first-native-budget-failure
+counter callback, provenance and identity-aware final root observation. Published
+App/CSS/engines remain unchanged. Same full2,958,573,265byte original, same candidate
+37479749443, quality/settings/dimensions, fixed32+16MiB heaps, lower prospective
+five-minute blank (cannot exceed early blank), fourteen flags, ALL-process250MiB
+formula and normal lifecycle. NO detailed heap dump/sparse native profile/forcedGC.
+Original THREE full repetitions and six-hour per-run deadline retained; not the
+old70minute partial diagnostic. All full independent stream/metadata/artwork/
+frame-count/timestamp<=1ms/audio-packet-hash/decode/SSIM>=0.98 and recovery checks
+remain. No smaller source, streamcopy substitute, codec/settings reduction or
+public promotion. Full conversion, independent validators, memory/fidelity/speed/
+three repeats/cleanup and post-source SHA are PENDING until actual terminal proof.
+
+New bounded-dom-counters helper: one outstanding Memory.getDOMCounters command,
+zero queue,1000ms observation deadline; a timed-out operation remains pending and
+is shared, not duplicated. Request phase/start/finish/observed phase preserved;
+unavailable/malformed fields=null, genuine zero accepted. TargetId alone does NOT
+identify an OS renderer birth. Counts may contain garbage, not live bytes/callsite/
+leak/cause. Existing1024sample ring bounds counter history; first failure preserves
+ONE additional counter row while native acquisition remains active. Original
+native100ms peak/identities/phase evidence unchanged; callback does not substitute
+for the primary gate. Session detaches during normal finally, no user processes
+killed. No primary completion inferred from smaller counters.
+
+Four new focused counter/recipe checks PASS; full710/710unit PASS4.387s, scoped
+zero-warning lint PASS. Source-pinned generated full-source script stays in owned
+work until finally; prospective terminal compact proof:
+evidence/mpeg2-flex-original-2026-10-07.json. It does not exist yet. No Docker/native
+converter/generated media outside the repo. Full goal remains OPEN.
+
 ## 2026-10-07 — Real UI grid/flex pair: layout identical, allocator improvement NOT primary acceptance
 
 Previous cycle was progress: original failure and independent cleanup were
