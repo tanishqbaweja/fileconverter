@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Changed full-original failure-hook driver prepared, NOT yet launched
+
+The passing actual-binary control now gates a strict reversible derivative of
+the executed flex full-source driver. Three exact served private adapter paths
+only: original adapter SHA verified before bounded static-code substitution;
+unchanged published files/Wasm binaries/I/O/session/quality/native call mapping.
+Proven helper is inlined into the served adapter, inactive until real `onAbort`;
+one record per decoder/encoder instance, max8 actual abort records/zeroqueue,
+512char reason/8192char stack/65536char console line cap. Exact actual binary
+names join preserves original stack and explicit omitted Wasm-frame counts.
+No synthetic malloc/debugger/heap dump/GC/native conversion in this driver.
+
+FULL protected source/1920x804/fixed32+16MiB/same14Chrome flags/all-process250MiB/
+prospective lower five-minute blank/three FULL repeats/six-hour per-run deadline/
+full frame timestamps<=1ms/copied audio/full decode/metadata/artwork/SSIM>=0.98/
+recovery/cancellation/attempt-every-step finally/source pre/postSHA unchanged.
+There is no changed heap, source substitution, reduced quality or gate relaxation.
+Even a successful instrumented run is withheld from public/memory/speed acceptance.
+Wrapper checks actual prior failure and all executed pins before any test;
+existing RAM/disk/source checks run before browser/staging. Profile/output/driver
+scratch remain fresh owned children of this repository and are deleted in finally.
+
+Prepared files:`scripts/mpeg2-abort-original-memory.mjs`,
+`scripts/lib/mpeg2-abort-original-recipe.mjs`; actual source/route/worker-call
+regression:`tests/mpeg2-abort-original-recipe.test.mjs`. Focused12/12 tests
+PASS300.0432ms; generated syntax/scoped zero-warning lint PASS before the final
+metadata/null-availability hardening. Launch/actual original stack/callsite/peak/
+fidelity/full repeat acceptance/cleanup remain PENDING. The old106112-frame
+failure must not be restarted unchanged; this is a justified new failure-only
+measurement, not a claimed fix. Full goal OPEN.
+
+Final pre-launch regression after metadata/null-availability hardening:
+730/730unit PASS9186.9511ms; all four changed/new JavaScript files scoped
+zero-warning lint PASS. No actual full-source test was started by those tests.
+
 ## 2026-10-08 — Bounded actual-Wasm abort control; original callsite still unknown
 
 Status: **Verified complete for the diagnostic-control subset only; P-04/P-06/
