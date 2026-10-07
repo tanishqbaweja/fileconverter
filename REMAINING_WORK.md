@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Changed full-original failure-hook attempt LIVE, session53003
+
+This supersedes the prepared/NOT-launched checkpoint below. ONE actual launch
+18:47:15UTC; session53003 remains live on a verified poll. Independent CIM joins
+driver38492/parent40984/birth18:47:15.180904UTC, Chrome29924/parent38492/
+birth18:47:26.835553UTC, observer44916 and server43844/port52611.
+Fresh owned `work/mpeg2-abort-original-driver-gSxor9` and
+`work/mpeg2-abort-original-runtime-qMqrOn` are ACTIVE, NOT yet cleaned.
+Actual host5182836736physical/6998089728virtualbytes passed unchanged2GiB guard;
+full protected-source preSHA/native inspection and32GiB repository-local disk
+guard passed before staging/Chrome. Same production driver/BINARY/input/settings/
+fixed48MiB/flags/lowerfive-minute blank/full-tree250MiB/repeats/validators/finally,
+with only served failure-hook adapter and compact actual stack collection added.
+No Docker/native conversion/source replacement/debugger/GC/public promotion.
+Actual prospective blank settling is in progress; full conversion/stack/peak/
+output validation/repeats/terminal cleanup/postSHA remain PENDING.
+Poll SAME53003. Do not restart on timeout or run another build/stager while this
+driver owns generated assets. Executed source commit7ed5ed6 is already pushed
+to media-options; main unchanged. Full goal remains OPEN.
+
 ## 2026-10-08 — Changed full-original failure-hook driver prepared, NOT yet launched
 
 The passing actual-binary control now gates a strict reversible derivative of
