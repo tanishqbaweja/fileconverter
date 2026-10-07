@@ -5,6 +5,74 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Actual complete UI heap measurement; detailed-type prerequisites investigated
+
+Previous turn was progress: terminal original diagnostic frozen, cleanup/source
+independently checked, and missing brief heap fields implemented/browser-tested.
+This cycle did NOT retry the unchanged full original conversion or change public
+App/engine/profile/quality/memory gates. Actual current Chrome154.0.8037.98
+production UI inspected the protected original, made60real format selections,
+and remained idle throughout. Exact source-pinned derivative replaces ONLY old
+sparse native-address sampling with complete brief memory-infra/realm diagnostics;
+seven original workflow snapshots/GUIDs retained. No simulated progress/conversion.
+
+evidence/ui-complete-blink-heap-2026-10-07.json records actual seven light dumps,
+931events/7,630,478serialized trace bytes/no loss-overflow,236realm rows/noeviction.
+Same post-navigation renderer12452/birth10:07:34.260719UTC: main heap resident
+17,039,440 ->29,491,200; committed equals resident; allocated-object bytes
+16,634,664 ->28,237,344 (+11,602,680); pooled0. Runtime embedder value matches
+the latter. Unallocated resident grows404,776 ->1,253,856, so the observation is
+not merely unused heap capacity. DOM6723 ->8343/listeners192 ->372. Garbage may
+be included; this is NOT live-object/leak/callsite or original-transient cause
+proof. Sparse CIM snapshots are not continuous peaks/stable blank acceptance.
+Blank renderer identity changes during navigation; no cross-identity subtraction.
+Inherited "native-sampling-start" phase is an old workflow label, not use of
+Memory.startSampling. Zero conversions/media copies/forbidden network requests.
+All five cleanup flags plus outer scratch removal passed; full protected pre/post
+SHA matches2,958,573,265bytes/31f36695...34b9db34. No generated media retained.
+
+Chromium official HEAD provider source suggests detailed aggregate object types,
+but remains an explanatory reference, NOT matched-build-source proof. Actual
+bounded prerequisite sequence, with original14Chrome flags/no forced GC:
+
+- Multi-dump detailed blank/synthetic40MiB control FAILED at4MiB trace buffer:
+  dataLossOccurred=true, missing GUID0x4; serialized7,359,475bytes. Actual failed
+  evidence/detailed-blink-type-control-2026-10-07.json is preserved. It is NOT
+  a successful measurement despite individual dump replies reporting success.
+- ONE detailed blank snapshot/noallocation/noobserver fit the SAME trace caps:
+  4,095,712serializedbytes/no loss, but parser FAILED Type name cap. Exact
+  evidence/single-detailed-blink-type-control-2026-10-07.json retained.
+- Bounded1024-character type prefixes/full SHA identities and explicit zero
+  omissions fixed name retention without raising caps. ONE new snapshot again
+  had no trace loss,4,561,251serializedbytes, but FAILED genuine512nonzero/
+  unavailable record cap. evidence/bounded-detailed-blink-type-control-2026-10-07.json
+  remains failed; rejected sources were not edited or silently repinned.
+- Changed schema-only ONE snapshot PASSED: at most8layouts/process, no type
+  inventory retained;3,866,063serializedbytes/260events/no loss/parseerror. Actual
+  fields are scalar hexadecimal strings with bytes/objects units. All1019WebUI,
+  607blank-renderer,611extension-renderer and84other-renderer records have
+  AVAILABLE/NONZERO byte/count fields, not a unit mismatch or invented null->0.
+  Actual maximum type name1972characters. evidence/detailed-blink-type-schema-
+  2026-10-07.json archives exact generated helper/control/schema-driver/recipe
+  strings/hashes and executed source pins. No source/userfile/converter loaded.
+
+All four detailed controls actually closed trace/socket/Chrome/scratch; native
+observer/all sampled identities absent where one actually ran. Wrapper finally
+removal also verified. No Docker/native conversion/large media copy/new promotion.
+Pre-browser recipe tests caught an incorrect new baseline hash and a duplicate
+import reverse-binding bug; both corrected BEFORE their respective execution,
+not hidden as successful browser runs. Next action: bounded largest-type selection
+with explicit inspected/omitted counts, NOT a larger record/trace limit or an
+unchanged detailed full inventory. Then relevant real UI/conversion attribution.
+Original failure cause/full250MiB/fidelity/three runs/near10GB/new profiles/full
+spec remain OPEN. New diagnostics are feasibility tools, not a memory/speed fix.
+
+Regression for this cycle:666/666unit tests passed in3.841s, including13new
+recipe/parser/executed-evidence checks; all19changed/new JavaScript files passed
+scoped zero-warning lint. No production rebuild/full unchanged browser suite
+was needed for these measurement-only sources. Branch push follows verified
+audit generation/diff/cleanup checks; main remains untouched.
+
 ## 2026-10-07 — Burst diagnostic terminal; brief heap-summary omission corrected and browser-tested
 
 This supersedes the LIVE session40351 notes below. The same owning driver ended

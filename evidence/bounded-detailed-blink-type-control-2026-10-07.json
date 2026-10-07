@@ -1,0 +1,105 @@
+{
+  "recordedAt": "2026-10-07T10:15:40.920Z",
+  "status": "failed-bounded-detailed-blink-type-control",
+  "scope": "actual-bounded-name-single-detailed-blink-type-blank-browser-prerequisite",
+  "rawReport": {
+    "path": "output/playwright/2026-10-07T10-15-40-917Z-bounded-name-single-detailed-blink-type-control.json",
+    "bytes": 7038,
+    "sha256": "c128fc649ba010d69eac961bae646015b2fbc82fddf42fcb7eec09fa53076035"
+  },
+  "browserVersion": "Chrome/154.0.8037.98",
+  "generatedSources": {
+    "helper": "// Private diagnostic only. Trace/realm sampling perturbs execution, never acceptance.\nimport assert from \"node:assert/strict\";\nimport { createHash } from \"node:crypto\";\nimport { summarizeMemoryInfraTrace } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/bounded-detailed-blink-type-summary.mjs\";\n\nexport const ATTRIBUTION_LIMITS = Object.freeze({ chromiumBufferBytes: 4194304,\n  maximumSerializedBytes: 16777216, maximumDumps: 8, maximumRealmRows: 1024,\n  realmIntervalMs: 100, ioReadBytes: 262144 });\nconst delay = ms => new Promise(resolve => setTimeout(resolve, ms));\nasync function deadline(promise, ms) {\n  let timer;\n  try { return await Promise.race([promise, new Promise((_, reject) => {\n    timer = setTimeout(() => reject(new Error(\"Attribution shutdown deadline\")), ms);\n  })]); } finally { clearTimeout(timer); }\n}\nexport async function startBoundedRendererAttribution(session, realms) {\n  await session.send(\"Tracing.start\", { transferMode: \"ReturnAsStream\", traceConfig: {\n    recordMode: \"recordUntilFull\", traceBufferSizeInKb: ATTRIBUTION_LIMITS.chromiumBufferBytes / 1024,\n    includedCategories: [\"disabled-by-default-memory-infra\"], excludedCategories: [\"*\"],\n    memoryDumpConfig: { allowed_dump_modes: [\"detailed\"], triggers: [] } } });\n  const dumps = [], realmRows = [];\n  let live = true, realmRowsEvicted = 0, samplingError = null, stopping = null, dumpPending = null;\n  const pump = (async () => {\n    try {\n      while (live) {\n        const startedAt = Date.now(), value = await realms.sample();\n        if (realmRows.length === ATTRIBUTION_LIMITS.maximumRealmRows) { realmRows.shift(); realmRowsEvicted++; }\n        realmRows.push({ startedAt, finishedAt: Date.now(), value });\n        await delay(ATTRIBUTION_LIMITS.realmIntervalMs);\n      }\n    } catch (error) { samplingError = String(error).slice(0, 512); live = false; }\n  })();\n  return {\n    async dump(phase, processes = null) {\n      assert.equal(dumpPending, null, \"Only one outstanding memory dump\");\n      assert.ok(dumps.length < ATTRIBUTION_LIMITS.maximumDumps, \"Memory dump cap\");\n      const row = { phase, timestamp: new Date().toISOString(), processes, memoryDump: null };\n      dumps.push(row);\n      dumpPending = session.send(\"Tracing.requestMemoryDump\", { levelOfDetail: \"detailed\", deterministic: false });\n      try { row.memoryDump = await dumpPending; }\n      catch (error) { row.memoryDump = { success: false, dumpGuid: null, error: String(error).slice(0, 512) }; }\n      finally { dumpPending = null; row.finishedAt = new Date().toISOString(); }\n      return row.memoryDump;\n    },\n    stop() {\n      stopping ??= (async () => {\n        live = false; await pump; if (dumpPending) await dumpPending.catch(() => {});\n        const completed = new Promise(resolve => session.once(\"Tracing.tracingComplete\", resolve));\n        await session.send(\"Tracing.end\");\n        const result = await deadline(completed, 15000);\n        assert.ok(result.stream, \"Trace stream required\");\n        const chunks = []; let bytes = 0, overflow = false, trace = null, summary = null, parseError = null;\n        const hash = createHash(\"sha256\");\n        try {\n          for (;;) {\n            const chunk = await session.send(\"IO.read\", { handle: result.stream, size: ATTRIBUTION_LIMITS.ioReadBytes });\n            const data = chunk.base64Encoded ? Buffer.from(chunk.data, \"base64\") : Buffer.from(chunk.data);\n            assert.ok(data.length <= ATTRIBUTION_LIMITS.ioReadBytes, \"Bounded trace read\");\n            bytes += data.length;\n            if (bytes > ATTRIBUTION_LIMITS.maximumSerializedBytes) { overflow = true; break; }\n            hash.update(data); chunks.push(data); if (chunk.eof) break;\n          }\n        } finally { await session.send(\"IO.close\", { handle: result.stream }); }\n        if (!overflow) {\n          try {\n            trace = JSON.parse(Buffer.concat(chunks).toString());\n            summary = summarizeMemoryInfraTrace(trace, dumps);\n          } catch (error) { parseError = String(error).slice(0, 512); }\n        }\n        const dataLossOccurred = result.dataLossOccurred ?? null;\n        return { scope: \"bounded-private-renderer-allocation-attribution-not-acceptance\", limits: ATTRIBUTION_LIMITS,\n          perturbsMemory: true, acceptanceMetric: false,\n          status: overflow || dataLossOccurred !== false || parseError || samplingError || dumps.some(row => !row.memoryDump?.success)\n            ? \"failed-diagnostic\" : \"completed-diagnostic\",\n          trace: { serializedBytes: bytes, sha256: overflow ? null : hash.digest(\"hex\"),\n            overflow, dataLossOccurred, parseError, events: trace?.traceEvents?.length ?? null,\n            compactedBeforeRelease: Boolean(summary), rawRetained: false },\n          dumps, allocatorSummary: summary, realmRows, realmRowsEvicted, samplingError,\n          allocatorValuesOverlap: true, summedAllocatorTotal: null };\n      })();\n      return stopping;\n    },\n  };\n}\n",
+    "control": "// Real Windows/Chromium prerequisite. SYNTHETIC allocation only, not a user file,\n// converter, production asset, speed test or memory-acceptance run. No forced GC.\nimport assert from \"node:assert/strict\";\nimport { chromium } from \"@playwright/test\";\nimport { execFile, spawn } from \"node:child_process\";\nimport { createHash } from \"node:crypto\";\nimport { access, mkdir, readFile, statfs, writeFile } from \"node:fs/promises\";\nimport path from \"node:path\";\nimport { promisify } from \"node:util\";\nimport { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\nimport { connectRealmSampler } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/cdp-realm-memory.mjs\";\nimport { startBoundedRendererAttribution } from \"file:///H:/Github%20Repositories/fileconverter/work/bounded-type-blink-driver-UAg2kL/attribution.mjs\";\nimport { startBurstMemoryObserver } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/burst-memory-observer.mjs\";\nconst root = \"H:\\\\Github Repositories\\\\fileconverter\", exec = promisify(execFile);\nconst sha = bytes => createHash(\"sha256\").update(bytes).digest(\"hex\");\nconst pause = ms => new Promise(resolve => setTimeout(resolve, ms));\nconst original = await readFile(path.join(root, \"scripts/mpeg2-split-single-navigation-memory.mjs\"), \"utf8\");\nassert.equal(sha(original), \"acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417\");\nconst spawnText = original.slice(original.indexOf(\"chrome = spawn(\"), original.indexOf(\"observer = await startParallelMemoryObserver\"));\nconst argsText = spawnText.slice(spawnText.indexOf(\"[\"), spawnText.lastIndexOf(\"], {\"));\nconst flags = [...argsText.matchAll(/\"([^\"\\n]*)\"|`--user-data-dir=\\$\\{profile\\}`/g)].map(match => match[1] ?? \"PROFILE\");\nassert.equal(flags.length, 14); assert.equal(flags.at(-1), \"about:blank\");\nexport let completedReport = null, completedReportPath = null;\nlet runtime, chrome, browser, realms, attribution, observer, page;\nlet failure = null, trace = null, native = null, bursts = null, version = null;\nlet allocationStartedAt = null, allocationReleasedAt = null;\nconst cleanup = { traceStopped: false,\n  realmSocketClosed: false, browserStopped: false, runtimeRemoved: false };\nconst errors = [];\ntry {\n  const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 512 * 1048576);\n  runtime = await createOwnedRuntimeScratch(\"native-burst-control-\");\n  const profile = path.join(runtime.directory, \"profile\"); await mkdir(profile);\n  chrome = spawn(\"C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe\",\n    flags.map(value => value === \"PROFILE\" ? `--user-data-dir=${profile}` : value),\n    { cwd: root, env: runtime.env, windowsHide: true, stdio: \"ignore\" });\n  let port = null; const startupDeadline = Date.now() + 30000;\n  while (!port && Date.now() < startupDeadline) {\n    try { port = Number((await readFile(path.join(profile, \"DevToolsActivePort\"), \"utf8\")).split(/\\r?\\n/)[0]); } catch { /* startup only */ }\n    if (!port) await pause(100);\n  }\n  assert.ok(port, \"Chrome startup deadline\");\n  browser = await chromium.connectOverCDP(`http://127.0.0.1:${port}`);\n  page = browser.contexts()[0].pages()[0]; assert.equal(page.url(), \"about:blank\");\n  version = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json();\n  realms = await connectRealmSampler(version.webSocketDebuggerUrl, \"http://127.0.0.1:1\");\n  attribution = await startBoundedRendererAttribution(await browser.newBrowserCDPSession(), realms);\n  assert.equal((await attribution.dump(\"blank-single-detailed-control\")).success, true);\n  trace = await attribution.stop(); cleanup.traceStopped = true;\n  assert.equal(trace.status, \"completed-diagnostic\");\n  assert.equal(trace.trace.dataLossOccurred, false); assert.equal(trace.trace.overflow, false);\n  assert.equal(trace.allocatorSummary.length, 1);\n} catch (error) { failure = String(error); process.exitCode = 1; }\nfinally {\n  const attempt = async fn => { try { await fn(); } catch (error) { errors.push(String(error)); process.exitCode = 1; } };\n  await attempt(async () => {\n    if (observer) {\n      await observer.stop(); cleanup.observerStopped = true;\n      native = observer.report(); bursts = observer.burstReport();\n    }\n  });\n  await attempt(async () => { if (attribution) { trace ??= await attribution.stop(); cleanup.traceStopped = true; } });\n  await attempt(async () => { if (realms) { realms.close(); cleanup.realmSocketClosed = true; } });\n  await attempt(() => browser?.close());\n  await attempt(async () => {\n    if (chrome?.pid && chrome.exitCode == null && chrome.signalCode == null)\n      await exec(\"taskkill.exe\", [\"/PID\", String(chrome.pid), \"/T\", \"/F\"], { windowsHide: true, timeout: 15000 });\n    if (chrome?.pid) {\n      const { stdout } = await exec(\"powershell.exe\", [\"-NoProfile\", \"-NonInteractive\", \"-Command\",\n        `@(Get-CimInstance Win32_Process -Filter 'ProcessId = ${chrome.pid}').Count`], { windowsHide: true, timeout: 15000 });\n      assert.equal(Number(stdout.trim()), 0); cleanup.browserStopped = true;\n    }\n    if (native?.identities?.length) {\n      const filter = native.identities.map(p => `ProcessId = ${p.pid}`).join(\" or \");\n      const { stdout } = await exec(\"powershell.exe\", [\"-NoProfile\", \"-NonInteractive\", \"-Command\",\n        `$ErrorActionPreference = 'Stop'; ConvertTo-Json -InputObject @(Get-CimInstance Win32_Process -Filter '${filter}' | ForEach-Object { @{ pid = $_.ProcessId; createdAt = $_.CreationDate.ToUniversalTime().ToString('o') } }) -Compress`],\n      { windowsHide: true, timeout: 15000 });\n      const current = JSON.parse(stdout);\n      assert.equal(current.filter(p => native.identities.some(old => old.pid === p.pid &&\n        Math.abs(Date.parse(old.createdAt) - Date.parse(p.createdAt)) < 1)).length, 0);\n      cleanup.sampledIdentitiesAbsent = true;\n    }\n  });\n  await attempt(async () => {\n    if (runtime) { await runtime.close(); await assert.rejects(access(runtime.directory), { code: \"ENOENT\" }); cleanup.runtimeRemoved = true; }\n  });\n  const files = [\"scripts/probe-bounded-detailed-blink-types.mjs\", \"scripts/lib/bounded-name-detailed-blink-recipe.mjs\", \"scripts/lib/bounded-detailed-blink-type-summary.mjs\", \"scripts/probe-single-detailed-blink-types.mjs\", \"scripts/lib/single-detailed-blink-control-recipe.mjs\", \"scripts/probe-detailed-blink-types.mjs\", \"scripts/lib/detailed-blink-attribution-recipe.mjs\", \"scripts/lib/detailed-blink-type-summary.mjs\", \"scripts/probe-complete-blink-heap.mjs\", \"scripts/lib/complete-blink-attribution-recipe.mjs\", \"scripts/lib/complete-blink-heap-summary.mjs\", \"scripts/probe-native-burst-attribution.mjs\", \"scripts/lib/native-memory-bursts.mjs\",\n    \"scripts/lib/burst-memory-observer.mjs\", \"scripts/lib/parallel-memory-observer.mjs\",\n    \"scripts/lib/native-memory-peaks.mjs\", \"scripts/lib/persistent-chromium-memory.mjs\",\n    \"scripts/lib/windows-tree-monitor.ps1\", \"scripts/lib/windows-tree-monitor.cs\",\n    \"scripts/lib/bounded-renderer-attribution.mjs\", \"scripts/lib/memory-infra-attribution.mjs\",\n    \"scripts/lib/cdp-realm-memory.mjs\", \"scripts/lib/owned-runtime-scratch.mjs\",\n    \"scripts/mpeg2-split-single-navigation-memory.mjs\"];\n  const sourcePins = Object.fromEntries(await Promise.all(files.map(async file => [file, sha(await readFile(path.join(root, file)))])));\n  const report = { recordedAt: new Date().toISOString(), scope: \"actual-bounded-name-single-detailed-blink-type-blank-browser-prerequisite\",\n    status: failure || errors.length || Object.values(cleanup).some(value => value !== true) ? \"failed-diagnostic\" : \"completed-diagnostic\",\n    browserVersion: version?.Browser ?? null, sourcePins, flags, identicalOriginalFlags: true,\n    syntheticAllocationBytes: 0, allocationStartedAt, allocationReleasedAt,\n    originalRead: false, converterLoaded: false, conversionsPerformed: 0, generatedMediaCopies: 0,\n    publicAcceptance: false, completeChromiumMemoryAcceptance: false, conversionSpeedAcceptance: false,\n    native, bursts, trace, failure, errors, cleanup, ownedChromePid: chrome?.pid ?? null,\n    ownedObserverPid: observer?.pid ?? null, runtimeDirectory: runtime?.directory ?? null,\n    caveat: \"Single nondeterministic detailed blank dump only; no native observer, synthetic allocation, converter or user file. Existing trace caps unchanged. No original-cause, live-object, stable baseline or conversion acceptance proof. No GC forced.\" };\n  const json = JSON.stringify(report, null, 2) + \"\\n\"; assert.ok(Buffer.byteLength(json) <= 2 * 1048576);\n  const stamp = new Date().toISOString().replaceAll(/[:.]/g, \"-\");\n  const output = path.join(root, `output/playwright/${stamp}-bounded-name-single-detailed-blink-type-control.json`);\n  await mkdir(path.dirname(output), { recursive: true }); await writeFile(output, json, { flag: \"wx\" });\n  completedReport = report; completedReportPath = output;\n  console.log(output); console.log(JSON.stringify({ status: report.status, failure, errors, cleanup,\n    callbackLatenciesMs: bursts?.callbacks.map(row => row.acquisitionLagMs) ?? null }));\n}\n"
+  },
+  "generatedSourceHashes": {
+    "helper": "67261286985afc80a0f68c747ac1740fb683b3f54cf7e45049111b43641032f4",
+    "control": "9f043872fd17d3d9dc4c06193f4a3518abab45190b0f54254ab27cc9e6c69d6e"
+  },
+  "sourcePins": {
+    "scripts/probe-bounded-detailed-blink-types.mjs": "1fcd7caf65525f2a7d0925e671ef95d53daa21e21f0bc760e8373d94d0ee9ec3",
+    "scripts/lib/bounded-name-detailed-blink-recipe.mjs": "03d436552c18a4b8882c16f6f26a937bf3a495ac85e2a902723b28c3c74225e5",
+    "scripts/lib/bounded-detailed-blink-type-summary.mjs": "11bd495d00a8dea875aaa8648ac959349750b4b73ee6a183db28ce4321efc7e5",
+    "scripts/probe-single-detailed-blink-types.mjs": "8bea9a0b8a0f4b7a913b8c99b2b802f8daf0146926acd5298ac6ed53cdd5c6d2",
+    "scripts/lib/single-detailed-blink-control-recipe.mjs": "36041a3bbae8906fbeaa5da4e1faaa46d16bd42d06ea07763b92dbc52f22a498",
+    "scripts/probe-detailed-blink-types.mjs": "ea474a52b5036d264383216336156fb628608f7373a834558e1274775832144b",
+    "scripts/lib/detailed-blink-attribution-recipe.mjs": "3de9398fca28cf7e40c268c0091310ae06228282fc79321b8491ea8d9666cc31",
+    "scripts/lib/detailed-blink-type-summary.mjs": "8baa7d700cd344e2b9dff2f339fe73ba46d5cb7d6b6d5f19d3933057dfcc5282",
+    "scripts/probe-complete-blink-heap.mjs": "388ddcb0c74e851d60d07778a00cf498f218a2b6daad2a3646fb84596ad291c2",
+    "scripts/lib/complete-blink-attribution-recipe.mjs": "a706383b4ca746549e2072efbbf885806b838b72d9d9aa7c40b59203f6a1fda0",
+    "scripts/lib/complete-blink-heap-summary.mjs": "93bbf422d245a247f6270759a7f45145cc420687efc5c9946851be61088c508c",
+    "scripts/probe-native-burst-attribution.mjs": "39eee5e4339dc66bf5b4f7b89de480ab806db09a3c0f7a1429c289d51d161209",
+    "scripts/lib/native-memory-bursts.mjs": "d7a77b5347330689b467700a2b9d79cdf35fff97b17f3734b39d9e8a98e0d674",
+    "scripts/lib/burst-memory-observer.mjs": "1a08e1075242f4e16277a39510ad1615a86606348493091d49858ac94cd7e8f0",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417"
+  },
+  "trace": {
+    "status": "failed-diagnostic",
+    "limits": {
+      "chromiumBufferBytes": 4194304,
+      "maximumSerializedBytes": 16777216,
+      "maximumDumps": 8,
+      "maximumRealmRows": 1024,
+      "realmIntervalMs": 100,
+      "ioReadBytes": 262144
+    },
+    "trace": {
+      "serializedBytes": 4561251,
+      "sha256": "38e8281b218f37b259723f3c9df9b213a619794c52733b5e8d9af8160ab62a8d",
+      "overflow": false,
+      "dataLossOccurred": false,
+      "parseError": "AssertionError [ERR_ASSERTION]: Nonzero/unavailable type record cap",
+      "events": 289,
+      "compactedBeforeRelease": false,
+      "rawRetained": false
+    },
+    "dumps": [
+      {
+        "phase": "blank-single-detailed-control",
+        "timestamp": "2026-10-07T10:15:39.160Z",
+        "processes": null,
+        "memoryDump": {
+          "dumpGuid": "0x2",
+          "success": true
+        },
+        "finishedAt": "2026-10-07T10:15:39.350Z"
+      }
+    ],
+    "allocatorSummary": null,
+    "realmRows": 2,
+    "realmRowsEvicted": 0
+  },
+  "types": [],
+  "typeFieldsAvailable": false,
+  "syntheticAllocationBytes": 0,
+  "nativeObserverStarted": false,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'failed-diagnostic'\n- 'completed-diagnostic'\n",
+  "errors": [],
+  "cleanup": {
+    "traceStopped": true,
+    "realmSocketClosed": true,
+    "browserStopped": true,
+    "runtimeRemoved": true
+  },
+  "outerGeneratedRuntimeRemoved": true,
+  "originalRead": false,
+  "converterLoaded": false,
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "noForcedGc": true,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "allocationSourceOfOriginalFailure": null,
+  "summedAllocatorTotal": null,
+  "caveat": "Single nondeterministic detailed blank dump only; no native observer, synthetic allocation, converter or user file. Existing trace caps unchanged. No original-cause, live-object, stable baseline or conversion acceptance proof. No GC forced."
+}
