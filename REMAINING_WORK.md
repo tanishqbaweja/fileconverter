@@ -5,6 +5,52 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Failure-only control PASSED; changed original diagnostic LIVE
+
+This supersedes the previous proposed next investigation, not its failed evidence.
+The first new blank control was held BEFORE browser/profile/runtime/allocation:
+available physical RAM was below the unchanged 2GiB host safety check. Its failed
+report and exact executed source remain immutable. The user closed applications;
+actual read-only physical AND virtual memory checks then passed. No user program
+was closed or killed by the agent and no safety limit was reduced.
+
+Changed retry of the SAME synthetic blank control PASSED in Chrome154.0.8037.98:
+264MiB touched test allocation, ZERO detailed traces before allocation, exactly
+ONE trace after actual full-tree native failure267.1328125MiB above its short
+control blank269,328,384bytes. Ten processes counted at sequence134; native
+observation continued through sequence143/nine further over-budget samples.
+One trace3,743,080bytes/277events/GUID0x3, no loss/overflow/parse error, detached;
+request131ms/completion254ms after native failure. All six owned cleanup checks
+passed. Original read=false/converter loaded=false/conversions=0/media copies=0.
+This short synthetic control is NOT original-conversion or five-minute-baseline
+acceptance. Reports: evidence/native-budget-failure-control-2026-10-07.json and
+evidence/native-budget-failure-control-retry-2026-10-07.json. No forced collection.
+
+ONE changed protected-original diagnostic launched11:38:55UTC/session1099:
+physical7,625,351,168/virtual10,432,167,936bytes passed unchanged2GiB preflights.
+Driver40948, Chrome45304 born11:39:04.316471UTC/parent40948, native observer46016;
+independently alive in blank startup11:40:25UTC. Owned generated scratch
+work/mpeg2-failure-only-driver-lqg6Zb and runtime/profile
+work/mpeg2-failure-only-runtime-paCMrg are ACTIVE, not cleanup leaks.
+Strict source-pinned failure-only recipe retains full protected source/candidate,
+fixed32+16MiB Wasm, quality/settings, lower prospective five-minute blank,
+complete-process250MiB gate, normal cancellation/finally/source post-hash.
+There is NO initial detailed trace: exactly one is requested only after actual
+native250MiB failure. Native acquisition remains live through trace finalization;
+later diagnostic overhead is still included in a separate full peak, not excluded.
+Absolute partial largest64 types cannot claim a matched before/after type delta,
+live allocation/callsite or causal fix. Seventy-minute diagnostic deadline is NOT
+full-source timing/fidelity/speed/scaling/three-run acceptance. No production
+App/CSS/engine/public-profile promotion. Original terminal evidence, post-hash and
+cleanup are PENDING; poll SAME session, do not launch another or rebuild/stage dist.
+
+Ten new unit checks plus full701/701 regression PASS3.604s; scoped zero-warning
+lint passed. Initial two new proof-test assertions FAILED because test expectations
+used wrong actual schema keys/status (detached vs sessionDetached and owned-process-
+identity-absent vs owned-identity-absent). Expectations corrected against the
+immutable actual report; no runtime/report/source pins changed or control rerun.
+No Docker or native converter used. Full project goal remains OPEN.
+
 ## 2026-10-07 — Independent original dumps completed; early instrumented run FAILED, cleaned
 
 The launch checkpoint below is superseded by this terminal evidence, not a live
