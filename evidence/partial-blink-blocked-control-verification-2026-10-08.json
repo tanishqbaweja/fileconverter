@@ -1,0 +1,307 @@
+{
+  "recordedAt": "2026-10-07T19:56:53.858Z",
+  "status": "verified-partial-failed-global-dump-control-not-target-allocation-attribution",
+  "input": {
+    "path": "evidence/partial-blink-blocked-control-2026-10-08.json",
+    "bytes": 591565,
+    "sha256": "a0efb7f2b0f599f4353a90a2d175c846d82915f8d84eb257dce9d5015a6173f8"
+  },
+  "executedSourcesVerified": true,
+  "generatedSourcesVerified": true,
+  "globalDumpSucceeded": false,
+  "partialRecordsRecovered": true,
+  "serializedTrace": {
+    "bytes": 3006807,
+    "sha256": "75c49df631c8e13e71e54e4e6222bb51285829aa0fa4373c6661e69e449a32ca"
+  },
+  "rawArchive": {
+    "path": "outputs/reports/2026-10-08-partial-blink-blocked-control-partial-blink-trace.json.gz",
+    "bytes": 203155,
+    "sha256": "10662098bd7e4533880fab483d7d3bbf6110729c4ebeda8dbca681aa69708272",
+    "reconstructsExactSerializedTrace": true,
+    "maximumBytes": 4194304
+  },
+  "rawTraceReconstructionAndReparseVerified": true,
+  "guid": "0x3",
+  "processRecordCount": 9,
+  "processCoverage": [
+    {
+      "pid": 40744,
+      "name": "Service: tracing.mojom.TracingService",
+      "privateFootprintBytes": 12898304,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 2632,
+      "name": "Renderer",
+      "privateFootprintBytes": 15175680,
+      "blinkHeapRecords": 1,
+      "retainedKnownTypes": 64,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 84,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 84,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 20,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 12144,
+      "name": "Renderer",
+      "privateFootprintBytes": 310677504,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 24772,
+      "name": "Service: storage.mojom.StorageService",
+      "privateFootprintBytes": 8323072,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 30960,
+      "name": "GPU Process",
+      "privateFootprintBytes": 82092032,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 31904,
+      "name": "Extension Renderer",
+      "privateFootprintBytes": 23592960,
+      "blinkHeapRecords": 2,
+      "retainedKnownTypes": 64,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 231,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 231,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 167,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 40948,
+      "name": "Service: network.mojom.NetworkService",
+      "privateFootprintBytes": 13639680,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 41060,
+      "name": "WebUI Top Renderer",
+      "privateFootprintBytes": 48881664,
+      "blinkHeapRecords": 1,
+      "retainedKnownTypes": 64,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 1040,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 1040,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 976,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    },
+    {
+      "pid": 46096,
+      "name": "Browser",
+      "privateFootprintBytes": 48463872,
+      "blinkHeapRecords": 0,
+      "retainedKnownTypes": 0,
+      "selection": {
+        "limits": {
+          "knownRowsPerProcessPerDump": 64,
+          "unavailableRowsPerProcessPerDump": 8,
+          "inspectedRecordsPerProcessPerDump": 100000
+        },
+        "partialInventory": true,
+        "inspectedRecords": 0,
+        "zeroRecordsOmitted": 0,
+        "knownEligibleRecords": 0,
+        "unavailableRecords": 0,
+        "knownRecordsNotRetained": 0,
+        "unavailableRecordsNotRetained": 0,
+        "selection": "largest-known-allocated-object-bytes",
+        "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+        "missingTypeMeansUnavailableNotZero": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    }
+  ],
+  "target": {
+    "nativeIdentity": {
+      "pid": 12144,
+      "parentPid": 46096,
+      "createdAt": "2026-10-07T19:52:21.0884431Z",
+      "creationFileTime": "134358763410884431",
+      "beforePrivateBytes": 17379328,
+      "afterPrivateBytes": 308326400,
+      "deltaPrivateBytes": 290947072
+    },
+    "privateFootprintBytes": 310677504,
+    "blinkHeapAvailable": false,
+    "blinkTypesAvailable": false,
+    "missingProvidersAreUnavailableNotZero": true,
+    "allocationObjectOrCallsite": null
+  },
+  "diagnosticFinding": "Failed global dumps can contain actual process records. Busy worker control's target renderer has OS footprint but NO Blink heap/type records; availability from other renderers must not be substituted for the target. Before another full source run, test ordinary worker quiescence followed by one complete dump. This is not proof of why the historical production dump failed.",
+  "cleanup": {
+    "original": {
+      "syntheticReferenceRemoved": true,
+      "traceStopped": true,
+      "nativeObserverStopped": true,
+      "realmSocketClosed": true,
+      "ownedBrowserBirthAbsent": true,
+      "runtimeRemoved": true
+    },
+    "sampledNativeBirthsAbsent": true,
+    "nativeBirths": 17,
+    "wrapperDriverBirthsAbsent": true,
+    "observerPidAbsent": true,
+    "observerBirthAvailable": false,
+    "checkedPids": 20,
+    "observedCurrentProcesses": [],
+    "bothRuntimeDirectoriesAbsent": true,
+    "noProcessesKilledByVerifier": true
+  },
+  "originalRead": false,
+  "converterLoaded": false,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "originalFailureCause": null,
+  "sourcePins": {
+    "scripts/freeze-partial-blink-blocked-control.mjs": "51ed154cd196b9c18464f016d6b05738b9da0fd7b1c210ff5a343411ade86014"
+  }
+}

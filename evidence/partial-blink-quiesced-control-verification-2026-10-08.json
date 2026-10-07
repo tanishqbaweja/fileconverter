@@ -1,0 +1,112 @@
+{
+  "recordedAt": "2026-10-07T20:04:56.787Z",
+  "status": "verified-quiesced-worker-target-provider-recovery-not-original-attribution",
+  "input": {
+    "path": "evidence/partial-blink-quiesced-control-2026-10-08.json",
+    "bytes": 666273,
+    "sha256": "55f53309e21e2b9b1bc9f45b38ac132308a7ed4d775fc91e65547a8d3c7f721e"
+  },
+  "executedSourcesVerified": true,
+  "generatedSourcesVerified": true,
+  "globalDumpSucceeded": true,
+  "serializedTrace": {
+    "bytes": 3730674,
+    "sha256": "afdb6c56a397f031e6089bd160f9a4608e82c27b742bb23d0a2a378d7b9ebdff"
+  },
+  "rawArchive": {
+    "path": "outputs/reports/2026-10-08-partial-blink-quiesced-control-partial-blink-trace.json.gz",
+    "bytes": 250906,
+    "sha256": "b25a7371151c0578870e5f22f258d0c9204e14c3f8b0c6b3561814a6b5544be1",
+    "reconstructsExactSerializedTrace": true,
+    "maximumBytes": 4194304
+  },
+  "rawTraceReconstructionAndReparseVerified": true,
+  "quiescence": {
+    "startedAt": 1791403278320,
+    "closedAt": 1791403280326,
+    "actualWorkerCloseObserved": true,
+    "retainedSyntheticBytes": 276824064,
+    "noForcedGc": true
+  },
+  "guid": "0x3",
+  "processRecordCount": 9,
+  "target": {
+    "nativeIdentity": {
+      "pid": 28108,
+      "parentPid": 35876,
+      "createdAt": "2026-10-07T20:01:03.3097340Z",
+      "creationFileTime": "134358768633097340",
+      "beforePrivateBytes": 18599936,
+      "afterPrivateBytes": 308772864,
+      "deltaPrivateBytes": 290172928
+    },
+    "privateFootprintBytes": 307339264,
+    "blinkHeapAvailable": true,
+    "blinkTypesAvailable": true,
+    "heaps": [
+      {
+        "name": "blink_gc/main/heap",
+        "residentBytes": 1441792,
+        "committedBytes": 1441792,
+        "allocatedObjectsBytes": 283520,
+        "pooledBytes": 0,
+        "unallocatedResidentBytes": 1158272,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationObjectOrCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    ],
+    "retainedKnownTypes": 64,
+    "selection": {
+      "limits": {
+        "knownRowsPerProcessPerDump": 64,
+        "unavailableRowsPerProcessPerDump": 8,
+        "inspectedRecordsPerProcessPerDump": 100000
+      },
+      "partialInventory": true,
+      "inspectedRecords": 567,
+      "zeroRecordsOmitted": 0,
+      "knownEligibleRecords": 567,
+      "unavailableRecords": 0,
+      "knownRecordsNotRetained": 503,
+      "unavailableRecordsNotRetained": 0,
+      "selection": "largest-known-allocated-object-bytes",
+      "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+      "missingTypeMeansUnavailableNotZero": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    "allocationObjectOrCallsite": null
+  },
+  "diagnosticFinding": "Ordinary worker termination with actual close observed restores target Blink provider availability in this synthetic control while fixed264MiB storage remains referenced. It does not identify the production allocation or prove its old failed dump had this cause. A production diagnostic must use normal cancellation/worker replacement, preserve the pre-cancel peak, and disclose delayed post-cancel providers.",
+  "cleanup": {
+    "original": {
+      "syntheticReferenceRemoved": true,
+      "traceStopped": true,
+      "nativeObserverStopped": true,
+      "realmSocketClosed": true,
+      "ownedBrowserBirthAbsent": true,
+      "runtimeRemoved": true
+    },
+    "sampledNativeBirthsAbsent": true,
+    "nativeBirths": 13,
+    "driverObserverPidsAbsent": true,
+    "helperBirthsAvailable": false,
+    "wrapperIdentityAvailable": false,
+    "checkedPids": 15,
+    "observedCurrentProcesses": [],
+    "innerRuntimeAbsent": true,
+    "generatedDriverInventory": [],
+    "noProcessesKilledByVerifier": true
+  },
+  "originalRead": false,
+  "converterLoaded": false,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "originalFailureCause": null,
+  "sourcePins": {
+    "scripts/freeze-partial-blink-quiesced-control.mjs": "707807efba665df7f45a6a05678de848badf5c91e99716610a39d42f00b5af00"
+  }
+}

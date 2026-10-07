@@ -5,6 +5,74 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Quiesced target-provider control PASS; changed original diagnostic PREPARED
+
+Second short control session92507 is TERMINAL exit0, not an original conversion.
+Actual worker-close event observed20:01:20.326UTC AFTER native277.875MiB synthetic
+budget failure; SAME264MiB touched storage remained referenced. Following global
+dump0x3 actually succeeded in103ms, with3,730,674serializedbytes/265events/no
+loss-overflow-parse error and actual target28108 heap/type providers available.
+Target main resident1,441,792/allocated283,520bytes, largest64 of567type records/
+503known omissions; not a live-object or production-cause measurement. Exact
+250,906-byte gzip reconstructs/reparses identically. Six own cleanup flags pass;
+independent13sampled native births/driver-observer PIDs15PIDs absent, actual inner
+runtime absent/outer fresh-prefix inventory empty. Unsampled helper births and
+wrapper identity unavailable, NOT invented. No source/media/converter/native
+conversion/GC/Docker/public promotion. Verification proof preserves source pins.
+
+Prepared `scripts/mpeg2-quiesced-budget-memory.mjs` and strict recipe derivative
+of ACTUALLY executed staged-abort original driver. SAME full protected source,
+actual binary/settings/SSIM>=0.98/frame clocks<=1ms/fixed32+16MiB/64KiBIO/onepending/
+14flags/lowerfive-minute stable blank/full-tree250MiB/threeFULLruns/sixhourdeadline/
+all independent validators/recovery/pre-postSHA/finally. No pre-failure trace,
+test-worker termination, synthetic allocation, allocator probing or GC in the
+full-source driver. ONE actual-budget-failure callback uses normal production
+Cancel safely/worker replacement and actual old-worker close before independent
+detailed dump; late state/types explicitly POST-CANCEL, not spike-time/live/
+callsite/causal proof. Native sampling continues through cancellation/trace drain;
+pre-cancel peak preserved, failed global requests remain failures with partial
+records/unavailable fields and4MiB raw gzip/16MiB serialization bounds.
+
+Wrapper checks both actual controls/independent archives/cleanup and old264.242
+terminal result BEFORE launch plus every inherited golden/binary/host/source/disk
+gate. Historical executed sources/pins unchanged. Eleven focused tests PASS
+176.5864ms/generated full-driver syntax PASS/scoped15-file zero-warning lint PASS.
+Actual changed full-original execution/provider availability/terminal cleanup
+PENDING; no memory/fidelity/speed/scaling/public acceptance. Full goal remains OPEN.
+
+Final pre-launch regression:751/751unit PASS3753.5513ms; no public source/engine/
+registry change or repeated full browser suite/build. Reusable candidate remains
+small and required; all generated controls/profiles/synthetic storage removed,
+only compact source-bound reports and two recoverable raw traces retained.
+
+## 2026-10-08 — Failed-global-dump partial records verified in a short control
+
+No new full-original attempt. Historical failed dump discarded all306events
+because global success=false; raw trace was not retained and cannot be recovered.
+New separate closed-GUID partial parser preserves false status, unavailable/null
+fields, existing64known/8unknown type/16heap/100000event limits,4MiB trace and
+16MiB serialized cap. Bounded lossless raw-trace archive prevents future loss.
+Historical helper/parser/failed sources/pins unchanged. Five focused parser/
+recipe cases PASS109.1246ms; scoped zero-warning lint PASS.
+
+Actual Chrome154 synthetic blocked-worker prerequisite TERMINAL exit0/session16103:
+ONE trace begins only after real native277.60546875MiB budget failure from fixed
+264MiB touched diagnostic storage, no converter/media/original. Global request
+0x3 returned success=false after15.065s;3,006,807-byte trace/281events/no loss,
+overflow or parse error, nine process records recovered, exact203,155-byte gzip
+reconstruction and reparse match. The busy target12144 has actual OS footprint
+310,677,504bytes but NO Blink heap/type provider records. Other renderer types
+must NOT substitute for target availability. This is a controlled unavailability
+finding, not proof of why the older production dump failed or its memory cause.
+All six own cleanup flags/17native births plus wrapper/driver births/observerPID
+absent20PIDs/twofreshruntimes gone independently verified. No originals touched,
+public acceptance, process exclusions, GC, quality/heap/250MiB changes or Docker.
+`evidence/partial-blink-blocked-control-2026-10-08.json` and verification proof
+retain executed generated sources, exact pins and raw recoverability. Next short
+changed prerequisite: normal worker termination BEFORE dump, same live264MiB
+synthetic storage/native failure; prove target provider recovery before deciding
+whether a changed full-original diagnostic is justified. Do not rerun unchanged.
+
 ## 2026-10-08 — Staged FULL-original diagnostic TERMINAL: 264.242 MiB rejected
 
 This supersedes ALL LIVE/prepared/checkpoint notes below. Session22394 exited1
