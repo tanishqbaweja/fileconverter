@@ -11,6 +11,7 @@ on:
         options:
           - all
           - verify-only
+          - audio-destination-scopes
           - reproduce-only
           - ffmpeg-remux
           - bzip2
@@ -33,7 +34,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || inputs.engine != 'verify-only'
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -200,6 +201,7 @@ jobs:
           - image-conversions
           - media-remux
           - audio-source-metadata
+          - audio-destination-scopes
           - streaming-conversions
     name: Browser conversions (${{ matrix.suite }})
     steps:
@@ -237,3 +239,56 @@ jobs:
             output/playwright/artifacts
             output/playwright/report
           if-no-files-found: ignore
+
+  audio-destination-scopes:
+    if: github.event_name == 'workflow_dispatch' && inputs.engine == 'audio-destination-scopes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      npm_config_cache: ${{ github.workspace }}/work/audio-scope-npm-cache
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/work/audio-scope-browsers
+      WRANGLER_SEND_METRICS: "false"
+      NEXT_TELEMETRY_DISABLED: "1"
+      WITHIN_TEST_VIDEO: "off"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - run: mkdir -p work
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+
+      - name: Check TypeScript semantics before browser execution
+        run: npx tsc --noEmit --incremental false
+
+      - name: Run only genuine browser destination-scope checks
+        shell: bash
+        run: |
+          task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX")"
+          trap 'rm -rf -- "$task_browser_tmp"' EXIT
+          TMPDIR="$task_browser_tmp" TEMP="$task_browser_tmp" TMP="$task_browser_tmp" \
+            npx playwright test tests/browser/audio-destination-scopes.spec.ts
+
+      - name: Retain compact scope results, never generated media
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audio-destination-scopes-${{ github.run_id }}
+          path: output/playwright/audio-destination-scopes-*.json
+          if-no-files-found: warn
+          retention-days: 1
+
+      - name: Remove owned browser dependencies and caches
+        if: always()
+        shell: bash
+        run: |
+          for task_path in "$GITHUB_WORKSPACE/work/audio-scope-npm-cache" "$GITHUB_WORKSPACE/work/audio-scope-browsers"; do
+            case "$task_path" in
+              "$GITHUB_WORKSPACE/work/audio-scope-npm-cache"|"$GITHUB_WORKSPACE/work/audio-scope-browsers") ;;
+              *) exit 2 ;;
+            esac
+            test ! -L "$task_path"
+            rm -rf -- "$task_path"
+          done

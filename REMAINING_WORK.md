@@ -5,6 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Narrow hosted M-08 gate wired, execution pending
+
+The prior local-launch restriction still applies to this machine and its staged
+assets. An isolated hosted runner can execute the published engine without
+touching the live local original-test process tree, dist, private candidate or
+protected source. `.github/workflows/ci.yml` adds an explicit manual
+`engine=audio-destination-scopes` mode that skips engine-matrix/reproduction,
+general verification and unrelated browser suites; it runs only the new eight
+small production-browser metadata checks with native FFmpeg as fixture generator
+and independent decoder. Default CI also includes the new suite alongside the
+historical Unicode source suite. No Docker or public conversion change.
+
+The narrow job keeps browser/npm downloads in its own repo-local work paths,
+uses a fresh short repo-local browser TMPDIR compatible with Linux singleton
+sockets, removes only those owned paths, and retains only the bounded JSON scope
+reports for one day (never generated input/output media). The test verifies fresh
+fixture/output and OPFS cleanup; hosted reports are not a Windows memory or
+original-size/quality/artwork certification. Actual hosted execution, validators,
+outcomes and cleanup remain PENDING until inspected, not assumed from wiring.
+
+Actual focused checks:16/16 unit PASS511.6503ms, including existing source-matrix
+evidence and Linux temp-path checks; scoped unit-file zero-warning ESLint PASS.
+The existing source/metadata evidence and live original-driver pins are unchanged.
+Same session10189 still running20:39:11UTC, input359,469,449/output405,359,937bytes,
+rounded observed incremental peak241.770MiB; final outcome/failure capture/full
+validators/repeats/cleanup/postSHA pending. Full goal remains OPEN.
+
 ## 2026-10-08 — M-08 destination-scope browser checks PREPARED, not executed
 
 M-08 remains Partially implemented. Read-only inspection found the existing

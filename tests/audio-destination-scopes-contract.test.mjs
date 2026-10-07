@@ -45,3 +45,18 @@ test("new harness parses as TypeScript; this is not browser execution evidence",
     reportDiagnostics: true, compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext } });
   assert.deepEqual(result.diagnostics, []);
 });
+test("CI can run this suite alone without engine rebuilds or unrelated browser suites", async () => {
+  const workflow = await readFile(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
+  assert.ok(workflow.includes("inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes'"));
+  assert.ok(workflow.includes("- audio-destination-scopes"));
+  const narrow = workflow.slice(workflow.indexOf("  audio-destination-scopes:\n"));
+  assert.ok(narrow.includes("github.event_name == 'workflow_dispatch' && inputs.engine == 'audio-destination-scopes'"));
+  assert.ok(narrow.includes("test tests/browser/audio-destination-scopes.spec.ts"));
+  assert.ok(!narrow.includes("reproduce-nondocker"));
+  assert.ok(!narrow.includes("docker build"));
+  assert.ok(narrow.includes('mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX"'));
+  assert.ok(narrow.includes("path: output/playwright/audio-destination-scopes-*.json"));
+  assert.ok(narrow.includes("retention-days: 1"));
+  for (const owned of ["audio-scope-npm-cache", "audio-scope-browsers"])
+    assert.ok(narrow.includes(`$GITHUB_WORKSPACE/work/${owned}`));
+});
