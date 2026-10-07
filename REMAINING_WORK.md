@@ -5,6 +5,77 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-07 — Independent original dumps completed; early instrumented run FAILED, cleaned
+
+The launch checkpoint below is superseded by this terminal evidence, not a live
+wait. Session3456 exited1 after complete finally; no restart. Actual blank median
+238,915,584bytes, loaded idle319,758,336. Final native pre/conversion peak510,779,392
+across TEN complete owned processes ->259.26953125MiB, above250.14pre-conversion/
+12conversion native valid rows, zero unavailable/errors. Peak includes diagnostic
+start/dump/finalization. No process was omitted; private source/settings unchanged.
+
+TWO independently closed detailed traces PASSED:4,814,086/5,179,050serializedbytes,
+284/283events,no loss/overflow/parseerror; one GUID0x11/0x12 each, sockets detached.
+Native2980 tree+51,187,712bytes (renderer30556+49,307,648), request56ms and dump
+completion244ms after actual trigger. Next adjacent2981 tree+45,211,648 includes
+renderer+18,448,384/browser+22,908,928/other actual deltas. It arrived while ONE
+callback was still draining; skipped-busy-no-queue remains explicit and driver
+FAILED "Diagnostic callback unavailable or busy; record failure rather than
+queue requests". No queuing, cap increase or secretly accepted missing dump.
+
+This stopped near conversion startup: last metrics input222,785/output0bytes,
+fixed50,331,648Wasm/50,331,652SAB/64KiBmax read. Finally recorded37fresh MPEG2
+frames/37encoder packets, all closed/zero frame+packet queues/no extra pixel or
+JS packet buffers. NOT full source completion, usable large output, fidelity,
+timing/speed/scaling/three-run acceptance, or the old late97,772-frame failure.
+No public promotion or production CSS/App/engine/profile change. Exact actually
+executed helper/driver sources and pins/raw report SHA in evidence/
+mpeg2-largest-burst-attribution-2026-10-07.json (1,292,145bytes).
+
+First retained type-delta join was EMPTY because CIM before trace timestamps end
+in a zero100ns digit and native timestamps keep that digit. Preserve empty result
+and original executed source. A SEPARATE read-only microsecond-precision analysis
+matches actual PID/parent/birth at observed CIM precision, retains BOTH exact
+strings/full native FILETIME, rejects different microsecond/parent/unavailable,
+does not use a millisecond tolerance or rerun conversion. Renderer30556 main
+resident17,039,440 ->17,694,800/allocated15,932,000 ->16,409,992 (+477,992);
+worker resident786,432 unchanged/allocated24,464 ->104,304. Largest positive
+retained-type intersection is only1,936bytes. Partial top64/missing-not-zero/
+nondeterministic garbage/overlap/no summed or callsite/late-original-cause claims.
+This does NOT demonstrate the earlier large late Blink growth or its cause.
+
+First read-only cleanup analysis FAILED a PID-only absence assumption: historical
+native updaterPID25932/birth11:01:30.7115620UTC/parent44736 was reused by a NEW
+process birth11:10:46.5247600UTC/parent37376. No process killed. Exact failed
+analyzer source/SHA/current+old identities archived in evidence/mpeg2-largest-
+burst-analysis-pid-only-failure-2026-10-07.json BEFORE changing its identity check.
+Changed retry PASSED:21sampled native identities absent/26observed PIDs currently
+absent/all helpers absent, inner+generated runtimes absent,6public assets restored,
+9private assets absent, protected2,958,573,265byte full post-SHA31f36695...34b9db34
+matches. No media copy left. Actual driver root exit observation independently
+passed first read-only query in456ms (null actual root, not failed query=zero).
+Read-only result/pins/detailed type intersection in evidence/mpeg2-largest-burst-
+analysis-2026-10-07.json. This later PID reuse does not explain the STILL UNKNOWN
+older31336 immediate-root-check failure.
+
+Next justified original investigation must avoid adding detailed-trace overhead
+at startup: prospective ONE detailed capture only when the actual native full-
+tree250MiB failure is observed, while keeping native acquisition live through
+finalization and stopping normal conversion promptly. Explicit single-failure
+capture scope, not pretending every warmup burst was attributed; no larger blank,
+missing samples/process exclusions/forcedGC/weaker gate/quality/smaller substitute.
+Do not rerun this early instrumented startup recipe unchanged. Absolute partial
+types at a later failed peak are diagnostic, NOT a matched baseline/live callsite
+or public acceptance. Permanent visible UI optimization may proceed on measured
+layout growth, but no unproven cause-fix or completion claim. Full goal OPEN.
+
+New focused terminal-evidence and precision-join checks5/5PASS. Final complete
+regression691/691PASS4.771s; final scoped zero-warning lint passed. All new
+diagnostic/validator sessions terminal, no owned browser/Node/Wrangler or these
+runtime prefixes remain. Reports only, no converted copies. No unchanged build/
+browser suite/CI/long conversion repeated. Push terminal checkpoint after these
+results; full source of late original failure and project completion remain OPEN.
+
 ## 2026-10-07 — Changed original largest-type diagnostic launched; result pending
 
 Previous development cycle was progress: actual largest-type/UI measurements,
