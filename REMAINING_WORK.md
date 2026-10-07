@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Corrected staged FULL-original diagnostic LIVE, session22394
+
+This supersedes the prepared checkpoint below. ONE actual launch19:17:29UTC,
+same session22394 authoritatively live on repeated bounded polls. Independent
+CIM: driver38312/parent46236/birth19:17:29.069649UTC; wrapper46236/parent46472/
+birth19:17:29.026571UTC; Chrome37312/parent38312/birth19:17:32.919549UTC;
+server43968/birth19:17:31.653437UTC/port64822; observer18576/birth19:17:32.932909UTC.
+Fresh `work/mpeg2-staged-abort-original-driver-6JN5P0` and
+`work/mpeg2-staged-abort-original-runtime-Hnm4V4` ACTIVE, not claimed cleaned.
+Actual host6534098944physical/8810496000virtualbytes passed unchanged2GiB guard;
+protected fullpreSHA/nativeinspection/32GiB localdisk/manifest hashes/three exact
+staged adapter sizes-SHAs all passed BEFORE Chrome. New source236c71e pushed to
+media-options before launch; main unchanged. Same input/binary/quality/fixed48MiB/
+14flags/allprocess250MiB/lowerfive-minute blank/full three repeats/validators/
+recovery/sourcepostSHA/finally; only actual-golden-validated failure observer added.
+Prospective blank settling still in progress at19:19:45UTC. Actual conversion/
+stack/peak/fidelity/repeats/final cleanup/postSHA remain PENDING. Poll SAME22394,
+no timeout restart/other build-stager/pinned-source mutation/GC/debugger/native
+converter/Docker or public promotion. Entire original goal remains OPEN.
+
 ## 2026-10-08 — Corrected staged FULL-original failure-hook driver prepared
 
 The new `mpeg2-staged-abort-original-memory.mjs` uses the ACTUALLY validated
