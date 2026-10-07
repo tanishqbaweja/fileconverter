@@ -5,6 +5,29 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Hosted scope gate stopped at types; runtime source unchanged
+
+Actual narrow hosted run37683872743 at pushed7d8ae494256f4ab080b30b1c391174c9d1257287
+is TERMINAL failure, not a failed conversion. Typecheck20:43:55–20:44:04UTC found
+four TS2353 errors at the new browser-test lines78/128/129/130: inferred JavaScript
+options exposed audioOrdinal but omitted scope. Browser conversion step SKIPPED;
+zero actual conversions or validator reports. Engine matrix/reproduction/general
+verification/unrelated suites all SKIPPED. Owned dependency/cache cleanup step
+actually succeeded; artifact API independently returned total_count0. No hosted
+conversion, memory, source fidelity, quality or public-acceptance claim.
+
+New `scripts/lib/scoped-audio-tag-validation.d.mts` declares the actual explicit
+format/audio-stream options and nullable missing-value result. It does not alter
+the runtime `.mjs` or any historically source-pinned control. Two real TypeScript
+compiler-host checks accept both scopes and reject missing/invalid scope, nonnumeric
+ordinal and false nonnull assumptions. New browser reports include pre/post pins
+for this declaration too. Hosted typechecking now precedes browser/native installs
+to avoid expensive setup when semantics fail. Full semantic check and eight actual
+browser conversions on this changed source remain PENDING until a new hosted run.
+18 focused unit PASS1540.9396ms; scoped declaration/test zero-warning lint PASS.
+No pinned local stress source/staged asset changed, no Docker or native converter.
+The prior hosted failure remains recorded and is not overwritten or called success.
+
 ## 2026-10-08 — Narrow hosted M-08 gate wired, execution pending
 
 The prior local-launch restriction still applies to this machine and its staged

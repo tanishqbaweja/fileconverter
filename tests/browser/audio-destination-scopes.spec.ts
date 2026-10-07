@@ -64,7 +64,8 @@ for (const conversion of cases) {
     const pins: Record<string, string> = {};
     try {
       for (const file of ["tests/browser/audio-destination-scopes.spec.ts",
-        "scripts/lib/scoped-audio-tag-validation.mjs", "public/engines/remux/within-remux.wasm"])
+        "scripts/lib/scoped-audio-tag-validation.mjs", "scripts/lib/scoped-audio-tag-validation.d.mts",
+        "public/engines/remux/within-remux.wasm"])
         pins[file] = await hashFile(path.join(root, file));
       report.sourcePins = pins;
       // Native FFmpeg generates only the deterministic input fixture.
@@ -173,7 +174,7 @@ for (const conversion of cases) {
         const postPins: Record<string, string> = {};
         for (const file of Object.keys(pins)) postPins[file] = await hashFile(path.join(root, file));
         report.postSourcePins = postPins;
-        const pinsUnchanged = Object.keys(pins).length === 3 &&
+        const pinsUnchanged = Object.keys(pins).length === 4 &&
           Object.entries(pins).every(([file, hash]) => postPins[file] === hash);
         report.sourcePinsUnchanged = pinsUnchanged;
         if (conversionVerified && report.opfsCleanupVerified === true && pinsUnchanged)

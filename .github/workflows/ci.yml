@@ -257,11 +257,12 @@ jobs:
           node-version: "24"
       - run: mkdir -p work
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
 
       - name: Check TypeScript semantics before browser execution
         run: npx tsc --noEmit --incremental false
+
+      - run: npx playwright install --with-deps chromium
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
 
       - name: Run only genuine browser destination-scope checks
         shell: bash
