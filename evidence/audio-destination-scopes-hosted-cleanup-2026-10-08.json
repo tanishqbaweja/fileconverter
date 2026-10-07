@@ -1,0 +1,46 @@
+{
+  "recordedAt": "2026-10-07T21:02:10.730Z",
+  "status": "verified-owned-hosted-json-artifact-deleted",
+  "runId": 37684741516,
+  "artifactId": 11511031377,
+  "before": {
+    "total_count": 1,
+    "artifacts": [
+      {
+        "id": 11511031377,
+        "node_id": "MDg6QXJ0aWZhY3QxMTUxMTAzMTM3Nw==",
+        "name": "audio-destination-scopes-37684741516",
+        "size_in_bytes": 19852,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11511031377",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11511031377/zip",
+        "expired": false,
+        "digest": "sha256:b4423dc64f580582651650d630aaa299f2dc3640140f098d2c3e0c0a19888f1a",
+        "created_at": "2026-10-07T20:56:52Z",
+        "updated_at": "2026-10-07T20:56:52Z",
+        "expires_at": "2026-10-08T20:56:51Z",
+        "workflow_run": {
+          "id": 37684741516,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "media-options",
+          "head_sha": "bb45f39bd6081cf5fe8598dec43a080fedd4ef3b"
+        }
+      }
+    ]
+  },
+  "after": {
+    "total_count": 0,
+    "artifacts": []
+  },
+  "verificationProof": {
+    "path": "evidence/audio-destination-scopes-hosted-verification-2026-10-08.json",
+    "bytes": 41939,
+    "sha256": "343c94e00c4ca89d41e73bd2d052c17b436681490801fc9c57223503367f8ef0"
+  },
+  "localCompactReportsRetained": true,
+  "deletionTargetWasGeneratedJsonOnly": true,
+  "deletionCanBeRecoveredFromLocalRetainedRawReports": true,
+  "ownedRuntimeRemoved": true,
+  "noOtherArtifactsOrUserFilesDeleted": true,
+  "protectedOriginalRead": false
+}

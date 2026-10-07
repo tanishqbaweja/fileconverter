@@ -1,0 +1,1329 @@
+{
+  "recordedAt": "2026-10-07T21:01:01.645Z",
+  "status": "verified-small-hosted-destination-scopes-not-memory-or-quality-certification",
+  "browser": "151.0.7922.34",
+  "cases": [
+    {
+      "profileId": "flac-to-ogg",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 36584,
+      "outputBytes": 7517,
+      "sourceSha256": "cba5afafef0388bbe89789b596ad22ed7d5a383fe3dc53ebcf131b62e967cebc",
+      "outputSha256": "4e866536135455bc4aa9758f8d5e11d2284650e8408ca714d81c598bd645b565",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 36584,
+        "outputBytes": 7517,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 3694,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 36584,
+        "maxWriteChunkBytes": 3694,
+        "elapsedMs": 446.3149999999441,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "flac-to-opus",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 36584,
+      "outputBytes": 16430,
+      "sourceSha256": "cba5afafef0388bbe89789b596ad22ed7d5a383fe3dc53ebcf131b62e967cebc",
+      "outputSha256": "79fcecbb02f09e601ab7cf9fd750b7bfa890d8adcc56dfd2fb93a55f64e3869c",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 36584,
+        "outputBytes": 16430,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7993,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 36584,
+        "maxWriteChunkBytes": 7993,
+        "elapsedMs": 444.4399999999441,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "m4a-to-ogg",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 46887,
+      "outputBytes": 7638,
+      "sourceSha256": "9f5698b70dc656078c06dee1fee168265aef82f2f74fb1b16f9bef9d8fb069bc",
+      "outputSha256": "e7e6c9b3e33bda21f5a0e518cbf786a6200fdb984855fd7d8ad8644f6b23f5ac",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 12,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 46887,
+        "outputBytes": 7638,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 3815,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 46887,
+        "maxWriteChunkBytes": 3815,
+        "elapsedMs": 459.0700000000652,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "m4a-to-opus",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 46887,
+      "outputBytes": 16551,
+      "sourceSha256": "9f5698b70dc656078c06dee1fee168265aef82f2f74fb1b16f9bef9d8fb069bc",
+      "outputSha256": "c369d15a48a9ebd2aa35caeefe0b36daaf9fec6257f87edc65d03d37065c26e1",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 12,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 46887,
+        "outputBytes": 16551,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7993,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 46887,
+        "maxWriteChunkBytes": 7993,
+        "elapsedMs": 455,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "ogg-to-opus",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 7532,
+      "outputBytes": 16412,
+      "sourceSha256": "698ff41086d0e5339a5f729fda82e764652fc1a24381a9880e89083f4f0a9743",
+      "outputSha256": "04120dd6b69bf9510d4f8d1a21e005f55f39469d0295347b37cfc3575750bf2c",
+      "sourceScope": "audio-stream",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 7532,
+        "outputBytes": 16412,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7956,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 7532,
+        "maxWriteChunkBytes": 7956,
+        "elapsedMs": 454.86999999999534,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "opus-to-ogg",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 20079,
+      "outputBytes": 7976,
+      "sourceSha256": "4225a81f66f3499e9602b97e97e2e67ff59b1232c2b00ae6543327218cf14b7c",
+      "outputSha256": "524ccf86a9782340e132e980f29f40d35423046cdc0de3d9922a0b9696170b54",
+      "sourceScope": "audio-stream",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 8,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 20079,
+        "outputBytes": 7976,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 3718,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 20079,
+        "maxWriteChunkBytes": 3718,
+        "elapsedMs": 463.0600000000559,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "wav-to-ogg",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 192210,
+      "outputBytes": 7517,
+      "sourceSha256": "3e4e53bb0fd1a687920849cbfb58f45cee86da5259d04af2e66f16bff946c4f6",
+      "outputSha256": "14256657a4badf1e74e39a87d034333a168ed79f817ff6c53d7dbc574dbbe252",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 192210,
+        "outputBytes": 7517,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 3694,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 192210,
+        "maxWriteChunkBytes": 3694,
+        "elapsedMs": 449.86999999999534,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    },
+    {
+      "profileId": "wav-to-opus",
+      "browser": "151.0.7922.34",
+      "sourceBytes": 192210,
+      "outputBytes": 16430,
+      "sourceSha256": "3e4e53bb0fd1a687920849cbfb58f45cee86da5259d04af2e66f16bff946c4f6",
+      "outputSha256": "47120a90e4ad6cc185e16789ef7ba305d69822c4002f43e2b61e412f078f82fb",
+      "sourceScope": "format",
+      "destinationScope": "audio-stream",
+      "fields": [
+        {
+          "field": "title",
+          "expectedValue": "Titre café — 音楽",
+          "actualKey": "title",
+          "actualValue": "Titre café — 音楽",
+          "status": "preserved"
+        },
+        {
+          "field": "artist",
+          "expectedValue": "Émile / कलाकार",
+          "actualKey": "artist",
+          "actualValue": "Émile / कलाकार",
+          "status": "preserved"
+        },
+        {
+          "field": "album",
+          "expectedValue": "Album naïf",
+          "actualKey": "album",
+          "actualValue": "Album naïf",
+          "status": "preserved"
+        },
+        {
+          "field": "genre",
+          "expectedValue": "Essai",
+          "actualKey": "genre",
+          "actualValue": "Essai",
+          "status": "preserved"
+        },
+        {
+          "field": "date",
+          "expectedValue": "2026",
+          "actualKey": "date",
+          "actualValue": "2026",
+          "status": "preserved"
+        },
+        {
+          "field": "track",
+          "expectedValue": "3/9",
+          "actualKey": "track",
+          "actualValue": "3/9",
+          "status": "preserved"
+        },
+        {
+          "field": "comment",
+          "expectedValue": "αβγ & <texte>",
+          "actualKey": "comment",
+          "actualValue": "αβγ & <texte>",
+          "status": "preserved"
+        }
+      ],
+      "changed": {
+        "status": "failed",
+        "scope": "audio-stream",
+        "audioOrdinal": 0,
+        "streamIndex": 0,
+        "observedTagCount": 7,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Changed title",
+            "actualKey": "title",
+            "actualValue": "Titre café — 音楽",
+            "status": "changed"
+          }
+        ]
+      },
+      "wrongScope": {
+        "status": "failed",
+        "scope": "format",
+        "audioOrdinal": null,
+        "streamIndex": null,
+        "observedTagCount": 0,
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualKey": null,
+            "actualValue": null,
+            "status": "missing"
+          }
+        ]
+      },
+      "metrics": {
+        "inputBytes": 192210,
+        "outputBytes": 16430,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7993,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 192210,
+        "maxWriteChunkBytes": 7993,
+        "elapsedMs": 452.4399999999441,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "sourcePins": {
+        "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+        "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+        "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e",
+        "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+      },
+      "fullIndependentDecode": "passed",
+      "perConversionOpfsEmpty": true,
+      "ownedFixturesAndOutputsRemoved": true
+    }
+  ],
+  "preservedFields": 56,
+  "changedTitleControls": 8,
+  "wrongScopeControls": 8,
+  "unavailableWrongScopeFields": 56,
+  "fullIndependentDecodes": 8,
+  "perConversionOpfsEmpty": true,
+  "hostedOwnedCleanupStepSucceeded": true,
+  "completeChromiumMemoryAcceptance": false,
+  "currentStableChromeAcceptance": false,
+  "lossyQualityAcceptance": false,
+  "artworkAcceptance": false,
+  "scalingAcceptance": false,
+  "publicAcceptance": false,
+  "input": {
+    "path": "evidence/audio-destination-scopes-hosted-2026-10-08.json",
+    "bytes": 105438,
+    "sha256": "267f564404eb9147c35b27804b0787db3235b6e2da6a1b84cd71f43e1a288f89"
+  },
+  "runId": 37684741516,
+  "executedCommit": "bb45f39bd6081cf5fe8598dec43a080fedd4ef3b",
+  "artifactId": 11511031377,
+  "ownedDownloadIndependentlyAbsent": true,
+  "executedHarnessValidatorDeclarationEnginePinsVerified": true,
+  "sourcePins": {
+    "scripts/freeze-audio-destination-scopes-hosted.mjs": "36941d1bc9bbfdf2c9c742973133b963f95d9de275d34f725a322694ef6b7c71",
+    "scripts/lib/hosted-audio-scope-proof.mjs": "d74ee06af8acd33d7722f597daa48bad15840dc0f4535d4d30a51b57c3329959"
+  },
+  "limitations": [
+    "Bundled Chromium 151 is the observed hosted browser, not current installed stable Chrome/Edge/Brave/Opera.",
+    "Small 2-second fixtures: no new original-size or scaling, complete-process-memory, speed A/B, lossy quality, artwork or privacy/offline acceptance.",
+    "Exact common Unicode fields do not prove every alias, arbitrary representable field or destination-specific artwork.",
+    "Hosted cleanup step/report assertions passed; remote filesystem identities are not independently accessible after runner teardown.",
+    "The prior failed typecheck is distinct and remains recorded; production runtime/engine is unchanged."
+  ]
+}
