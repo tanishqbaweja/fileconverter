@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-08T13:26:10.585Z",
+  "status": "production-candidate-built-not-browser-acceptance",
+  "baselineSha256": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+  "candidateSha256": "83b13cee8a3877cab46bc0af67ed5d42ac3bc84311f992f79ea10f5183633b01",
+  "candidateBytes": 99439,
+  "archive": {
+    "path": "outputs/reports/2026-10-08T13-25-27-825Z-stable-progress-ui-candidate.tsx.gz",
+    "bytes": 18852,
+    "sha256": "f5d6d8215528afb0a6908e439f77baa3384b791a359fdd722fdb09a2b9a10997"
+  },
+  "candidateLintErrors": 0,
+  "candidateLintWarnings": 0,
+  "candidateTypeDiagnostics": 0,
+  "overlayLoads": [
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    }
+  ],
+  "assets": [
+    {
+      "url": "/assets/ConverterApp-SNmCD3M3.js",
+      "bytes": 315826,
+      "sha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143"
+    }
+  ],
+  "publishedSourceUnchanged": true,
+  "cssChanged": false,
+  "engineChanged": false,
+  "limitsChanged": false,
+  "publicAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false
+}

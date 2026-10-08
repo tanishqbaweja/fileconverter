@@ -5,6 +5,58 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Stable progress UI candidate built; future work headless
+
+User now requires headless/background work with no visible command windows.
+Use `scripts/validate-stable-progress-ui-headless.mjs` for the next changed UI
+browser regression, not the preserved old headed launcher. It explicitly
+switches the generated suite to `headless: true` while retaining the same
+1280x900 viewport and all five genuine conversion/quality/privacy/recovery gates.
+Native validators, runner, server and build subprocesses use `windowsHide: true`;
+do not open visible shells/browser windows or close unrelated applications.
+Headless screenshots do not count as newly performed headed/manual validation.
+
+Allocation evidence led to a reversible candidate that memoizes the unchanged
+source-inspection tree, output-format options, media-plan tree and capability
+strip, including its derived labels. Dependency lists cover all original source,
+inspection, profile, batch and capability inputs; real progress remains live.
+Every original JSX/control byte reconstructs exactly. Production TSX and CSS,
+codec/quality/defaults, workers, file I/O, queues and memory limits remain unchanged.
+Candidate is deliberately NOT installed in the published source before browser
+fidelity and matched real-progress A/B evidence. No speedup/native-memory fix is
+claimed. Three focused recipe/AST/transpile tests pass; four initial new files
+zero-warning lint passed. Actual candidate production build via a source overlay
+passed whole-project TypeScript and candidate component lint (zero diagnostics),
+and reached client/RSC/SSR build environments. Exact source and 315826-byte client
+asset hashes retained in `evidence/2026-10-08T13-25-27-825Z-stable-progress-ui-build.json`.
+Candidate source archive is only18852bytes, repository-local and reversible.
+
+First attempt13:24:44 stopped BEFORE build/browser at physical2121887744 and
+virtual813522944bytes. Fresh recovered host justified ONE retry, not a replay of
+an executed browser test. Session61747 TERMINALexit1: initial physical3134349312/
+virtual2328727552 passed; candidate build succeeded but fresh pre-browser guard
+failed at launcherline66. That second check did not retain its numeric values;
+do not invent them. Zero browser launches/conversions/media/profile/validation
+copies. Ordinary finally restored the normal production build, removed the owned
+wrapper and independently verified full protected source pre/post SHA and size.
+All12 recorded source pins unchanged. Keep compact build/failed-run receipts and
+compressed candidate/prepared sources, not converted files. Headless derivative
+now records the second host reading explicitly; earlier executed source remains
+unchanged. New headless test initially used two incorrect test-title anchors;
+corrected to the actual existing names (not weakened quality assertions).
+
+Next distinct work: headless five-case browser regression when fresh host guards
+pass, then matched genuine-progress allocation/CPU/geometry evidence using the
+duration-bounded sampler. Broad product/full-original/repeat/scaling requirements
+remain incomplete; this candidate build alone is not acceptance. No Docker.
+
+Final focused7/7 PASS700.8458ms; combined863/863 units PASS5950.5481ms,
+zero skipped/failed; all eight new script/helper/test files zero-warning lint
+PASS and diff whitespace PASS. Public manifest audit405/405/no pending/nonpassing/
+PDF is unchanged registry consistency, not browser re-certification. Preserve
+the18852-byte candidate archive and13391-byte prepared-source archive because
+the evidence tests verify them; no converted copies remain from this cycle.
+
 ## 2026-10-08 — Genuine-progress probe TERMINAL; useful UI callsites, no acceptance
 
 Supersedes all20633 LIVE/pending notes. ONE actual instrumented original run from

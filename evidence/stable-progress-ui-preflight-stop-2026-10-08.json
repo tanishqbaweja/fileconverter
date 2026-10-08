@@ -1,0 +1,26 @@
+{
+  "recordedAt": "2026-10-08T13:24:44.1581195Z",
+  "status": "stopped-before-build-or-browser-host-memory-guard",
+  "executedLauncher": {
+    "path": "scripts/validate-stable-progress-ui-goldens.mjs",
+    "sha256": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19"
+  },
+  "hostPreflight": {
+    "freePhysicalBytes": 2121887744,
+    "freeVirtualBytes": 813522944,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false
+  },
+  "exitCode": 1,
+  "candidateBuildStarted": false,
+  "browserLaunched": false,
+  "conversionsStarted": 0,
+  "convertedFilesCreated": 0,
+  "unrelatedApplicationsClosed": false,
+  "retryReason": "Fresh read-only check at 13:25:09.6544916Z found 3391598592 physical and 2548625408 virtual bytes; subsequent launch retained both guards.",
+  "laterRunReceipt": "evidence/2026-10-08T13-25-27-825Z-stable-progress-ui-goldens.json",
+  "publicAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false
+}

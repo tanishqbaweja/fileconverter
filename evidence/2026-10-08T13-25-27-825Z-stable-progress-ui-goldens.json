@@ -1,0 +1,74 @@
+{
+  "recordedAt": "2026-10-08T13:26:36.411Z",
+  "status": "failed-or-incomplete",
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/validate-stable-progress-ui-goldens.mjs:66:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-08T13:25:28.4395929Z",
+    "freePhysicalBytes": 3134349312,
+    "freeVirtualBytes": 2328727552,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskPreflightBytes": 1703278903296,
+  "protectedPre": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedPost": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a"
+  },
+  "postSourcePins": {
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a"
+  },
+  "buildProof": "evidence/2026-10-08T13-25-27-825Z-stable-progress-ui-build.json",
+  "reports": [],
+  "generatedArchive": {
+    "path": "outputs/reports/2026-10-08T13-25-27-825Z-stable-ui-executed-sources.json.gz",
+    "bytes": 13391,
+    "sha256": "447c487936382cc74b7412e06e1f7f5324f989e772bf94f449a33ac6f96529c8"
+  },
+  "generatedHashes": {
+    "spec": "75c0c8edebddd2bc9ca10ef4bfe253dac0a3a7d5af7cc6c80ec3a256ceda109a",
+    "driver": "ca393a2e2b2eb88afe90731361b35aad1edd33009bf157be8132765a5f8e9e5b",
+    "config": "b1d3c74e03c1fe7c6665ac08336214acf924a05d2bc1429be52fa4ccec46bee9"
+  },
+  "cleanup": {
+    "ownedWrapper": "H:\\Github Repositories\\fileconverter\\work\\stable-progress-ui-goldens-gxxP5J",
+    "ownedWrapperRemoved": true,
+    "restoredProductionBuild": true
+  },
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false
+}
