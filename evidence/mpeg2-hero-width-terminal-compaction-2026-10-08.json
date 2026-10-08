@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-08T12:06:52.333Z",
+  "status": "verified-lossless-diagnostic-compaction",
+  "scope": "ONE terminal JSON diagnostic, not converted media; no browser or protected-source access",
+  "raw": {
+    "path": "outputs/reports/2026-10-08T11-54-34-107Z-private-mpeg2-hero-width-original-native-100ms.json",
+    "bytes": 2684059,
+    "sha256": "49fbcdc377b9f07c68ee4b8ab09d571bdef30d123eaafd9732427c89af0f6d86"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-08T11-54-34-107Z-private-mpeg2-hero-width-original-native-100ms.json.gz",
+    "bytes": 123512,
+    "sha256": "9c1c9338db78fe1cc9b402090782bdd84a34d0fd1f8d2d9f5ae157800ed75747"
+  },
+  "companions": [
+    {
+      "path": "outputs/reports/2026-10-08T11-54-34-107Z-private-mpeg2-hero-width-original-native-100ms-trace.zip",
+      "bytes": 27469,
+      "sha256": "7a8e95ac2f891c2a666fce7b8ac7203312acb66af05d6be5773cdfb19792a217"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T11-54-34-107Z-private-mpeg2-hero-width-original-native-100ms.csv",
+      "bytes": 10973,
+      "sha256": "2aab889a6effe7467ec68ffdb8a75d38627276bad702869f3a55f0fc3a7676c6"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T11-54-34-107Z-private-mpeg2-hero-width-original-native-100ms.html",
+      "bytes": 6953,
+      "sha256": "5dd31740484a21d799962e2798868ea457403ef2d256d98780cb821ded81aea9"
+    }
+  ],
+  "reconstructedRawSizeAndSha256Verified": true,
+  "rawIdentityRevalidatedBeforeRemoval": true,
+  "uncompressedRawRemoved": true,
+  "removedBytes": 2684059,
+  "ownedScratchRemoved": true,
+  "protectedSourceRead": false,
+  "browserConversionsPerformed": 0,
+  "rawFailurePreserved": true,
+  "publicAcceptance": false,
+  "sourcePins": {
+    "scripts/compact-mpeg2-hero-width-terminal-report.mjs": "8cd218a6463196ef1131f504a5b11a490d24669cc25cd481ded4dcbb8ec4e6ff"
+  },
+  "bounds": {
+    "streamChunkBytes": 65536,
+    "maximumRawBytes": 33554432,
+    "maximumArchiveBytes": 4194304
+  },
+  "recovery": "The retained gzip reconstructs the exact failed raw JSON and SHA-256; trace/CSV/HTML remain. Only the redundant verified raw JSON was removed."
+}

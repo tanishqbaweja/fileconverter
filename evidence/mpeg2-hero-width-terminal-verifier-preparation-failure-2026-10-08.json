@@ -1,0 +1,11 @@
+{
+  "status": "failed-derivative-reversibility-before-independent-verification",
+  "sourcePins": {
+    "scripts/analyze-mpeg2-hero-width-terminal.mjs": "c0dc565eb36afa00ababdd70e6bd6252bcceb8598d492b8a3e3ef030a287c179"
+  },
+  "reason": "Actual tree and renderer deltas both equal40828928; global numeric replacements made the reverse mapping ambiguous. Exact reversal gate correctly failed before writing analysis.",
+  "independentAnalysisWritten": false,
+  "conversionRepeated": false,
+  "validationThresholdChanged": false,
+  "next": "New derivative must use distinct full assertion-expression anchors for tree and renderer constants; preserve this actually executed failed source."
+}

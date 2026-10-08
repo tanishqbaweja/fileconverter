@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-08T11:58:05.3101272Z",
+  "status": "historical-live-launch-observation-not-conversion-acceptance",
+  "sessionId": 49484,
+  "launchCommit": "5e0d563bca02fbca679d77c120606eedf2c01350",
+  "remoteBranch": "media-options",
+  "mainUnchanged": "0904d93447d2163a8c8130de4b244f76ab9687e2",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-08T11:54:33.5531437Z",
+    "freePhysicalBytes": 3323420672,
+    "freeVirtualBytes": 2877747200,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "noProcessesKilled": true
+  },
+  "observedProcesses": [
+    { "pid": 46840, "parentPid": 20924, "createdAt": "2026-10-08T11:54:32.9411490Z", "name": "node.exe" },
+    { "pid": 36240, "parentPid": 46840, "createdAt": "2026-10-08T11:54:32.9827860Z", "name": "node.exe" },
+    { "pid": 14700, "parentPid": 36240, "createdAt": "2026-10-08T11:54:42.6192740Z", "name": "chrome.exe" }
+  ],
+  "observedPage": "about:blank",
+  "otherObservedTargets": [
+    { "type": "browser_ui", "url": "chrome://omnibox-popup.top-chrome/" },
+    { "type": "browser_ui", "url": "chrome://omnibox-popup.top-chrome/omnibox_popup_aim.html" },
+    { "type": "service_worker", "url": "chrome-extension://fignfifoniblkonapihmkfakmlgkbkcf/service_worker.js" }
+  ],
+  "observedRepositoryRuntimeDirectories": [
+    "work/mpeg2-hero-width-launch-wrapper-eyKxh9",
+    "work/mpeg2-hero-width-launch-wrapper-J7UfmK",
+    "work/mpeg2-hero-width-original-driver-vS2JXy",
+    "work/mpeg2-hero-width-original-runtime-xmYQEZ",
+    "work/mpeg2-hero-width-original-wrapper-SWJMWf"
+  ],
+  "runtimeDirectoriesStillInUseAtObservation": true,
+  "cleanupPending": true,
+  "blankBaselinePendingAtObservation": true,
+  "fullSourceAnd32GiBDiskAssertionsPrecedeObservedChromeLaunch": true,
+  "sourcePreparationEvidence": "evidence/mpeg2-hero-width-original-preparation-2026-10-08.json",
+  "functionalChange": "Only verified equivalent hero width CSS added to the executed matrix full-source recipe",
+  "primaryMemoryLimitMiB": 250,
+  "completeChromiumTreeProcessesOmitted": false,
+  "fixedWasmMiB": { "decoder": 32, "encoder": 16 },
+  "fullCompletedOutputs": 0,
+  "independentlyValidatedFullOutputs": 0,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "caveat": "Historical observation only, not future liveness. Continue polling SAME49484/identities; quiet output is not terminal. Five runtime directories remain owned/in use; never delete or duplicate a running attempt. Supersede this launch record with actual terminal proof/cleanup when available. Full original/SHA/defaults/quality/lower stable five-minute blank/ALL-process250MiB/three full repeats/validators/finally remain; no forced GC or omitted Chromium targets."
+}

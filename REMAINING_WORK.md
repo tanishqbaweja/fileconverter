@@ -5,6 +5,80 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Hero full-original TERMINAL:256.43359375MiB still FAILS
+
+Supersedes ALL49484 launch/LIVE/pending notes below. Actual session49484 exited1,
+normal production cancellation completed, browser/worker closed. Run1 ended at
+1631 genuine MPEG2 frames,33,711,681 input/22,959,384 partial output bytes,
+56,211.47ms metrics. ZERO full completed/validated outputs/repeats/speed/public
+acceptance. Same source/defaults/quality/fixed32+16MiB/64KiB/one write unchanged.
+Primary ALL-process peak511,279,104 minus SAME lower stable blank242,388,992 =
+256.43359375MiB >250 by6.43359375MiB. Loaded idle311,611,392 only diagnostic.
+Both saved run and actual post-cancel statecancelled; not stale running liveness.
+
+Actual adjacent109ms jump40,828,928bytes wholly same renderer20320; other eight
+processes unchanged/no added or removed births at peak. Later new renderer birth
+is AFTER peak/cancellation and still retained in observation/cleanup, never
+discarded. Native phase coverage5 pre/527active valid/0unavailable; run native
+peak envelope531samples is separate retained end-of-run coverage. No unavailable
+sample becomes zero. No decoder abort/stacks/late native request/free headers;
+this remains a process-memory failure, NOT proof of the older decoder OOM cause.
+
+Independent verification passes96actual source hashes/generated source+helper/
+raw/formula/ALLprocess sum/delta/globalGUID0x16/raw trace reparse. Actual worker
+closed12:01:01.546 before successful detailed dump12:01:01.584.296326-byte gzip
+reconstructs exact4511218bytes/280events/hash. Delayed Renderer116,854,784private;
+Blink main resident/committed65,667,152/object7,781,760/pooled51,380,224bytes.
+Largest partial type nowLayoutResult527520bytes/6594objects, not Grid; next
+PhysicalBoxFragment518480/5599, LayoutText331296/2958.64of1039eligible retained;
+975notretained. Garbage-inclusive/overlapping POST-CANCEL snapshot, not live
+peak allocations/callsites or proven cause. Hero CSS reduced diagnostic object
+growth but did not pass actual250MiB; reject as a memory fix. No further unchanged
+full-original replay or speculative CSS tweak based only on the delayed inventory.
+Next distinct investigation: bounded native renderer allocation-stack sampling,
+using the local pinned CDP Memory.startSampling/getSamplingProfile definitions.
+Availability/symbolization are UNTESTED; missing stacks remain unavailable and
+profiler overhead cannot certify the primary conversion or a speed improvement.
+No GC/purge/leak-preparation/pressure manipulation permitted to manufacture a pass.
+
+Initial independent-verifier preparation failed exact reversal: tree and renderer
+constants BOTH40828928 made global numeric reverse mapping ambiguous. Executed
+failed source c0dc565e...c179 preserved with failure proof. NEW bound derivative
+uses distinct complete assertion expressions; ALL verification/caps unchanged,
+no conversion replay. Corrected independent17,627-byte analysis PASS.
+Cleanup21native PID-parent-birth identities/helperPIDs absent/all FIVE actual
+runtime directories absent/six dist assets restored/nine private additions absent/
+protected full source size+SHA exact. Partial media/profile/scratch removed finally.
+Launch report remains historical only, superseded by terminal proof here.
+
+Redundant2684059-byte raw report removed ONLY after bounded streaming/hash/full
+lossless reconstruction/file-identity verification;123512-byte gzip recoverable.
+TraceZIP27469/CSV10973/HTML6953/raw Blink gzip retained repository-local.
+Focused9/9 PASS205.0265ms/four new analyzer-compactor-test files zero-warning lint
+PASS. Earlier836 combined units remain separate and predate four new tests;
+not840 retroactively. Public405manifest unchanged/no Docker/native conversion/
+quality/heap/limit/baseline/process-exclusion changes. Entire original goal active.
+Evidence: `mpeg2-hero-width-original/terminal-analysis/terminal-compaction-2026-10-08.json`
+and `mpeg2-hero-width-terminal-verifier-preparation-failure-2026-10-08.json`.
+
+## 2026-10-08 — Hero full-original actually launched; acceptance pending
+
+ONE actual attempt49484 was launched from pushed/remote-verified5e0d563;
+main0904d93 unchanged. Host11:54:33 passed physical3,323,420,672/virtual
+2,877,747,200bytes. Full protected SHA/size and32GiB repository-disk assertions
+precede observed Chrome launch. Read-only native observation11:58:05 confirms
+outer46840/runner36240/Chrome14700 with exact parents and microsecond births;
+owned pageabout:blank while lower stable five-minute baseline settles. Chrome
+UI/extension targets observed and NOT excluded from complete-tree measurement.
+
+This launch observation is historical, NOT conversion/primary-memory/speed/public
+acceptance or future liveness. ZERO full completed/validated outputs at observation;
+all FIVE named runtime directories are in use, cleanup/post-source verification
+pending. Keep polling SAME49484/current identities; never restart solely for quiet
+output or delete active scratch. Supersede with actual terminal report and full
+identity/hash/dist/media cleanup when done. Do not replay the prior matrix failure.
+See `evidence/mpeg2-hero-width-original-launch-2026-10-08.json`. Goal active.
+
 ## 2026-10-08 — Full-original hero candidate prepared, not yet accepted
 
 New `mpeg2-hero-width-original-memory.mjs`/recipe derives byte-exact from the
