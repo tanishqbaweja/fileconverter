@@ -46,6 +46,14 @@ active media/profile or infer terminal state from timeout. No local engine/App/
 stager/test-source mutation or extra browser while this job is active.
 See mpeg2-late-allocator-original-launch-2026-10-08.json.
 
+Same27354 subsequently passed blank settling: EARLY stable blank232.992MiB
+(console rounded). Actual run1 now RUNNING, input10,459,218/output10,802,281
+bytes, observed rounded incremental peak228.605MiB. Real full-original browser
+conversion started, but no full runs/independent validations completed. Partial
+sub250 is NOT acceptance. No native converter/resize/live-reference change;
+runtime still in use/final cleanup/post-SHA pending. Continue SAME27354 to
+terminal result; do not replay an earlier failure or start a duplicate.
+
 ## 2026-10-08 — Nested diagnostic import binding corrected; production checks initially held
 
 Previous goal turn was PROGRESS: actual native bounded allocator control,

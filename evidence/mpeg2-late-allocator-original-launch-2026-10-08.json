@@ -46,5 +46,18 @@
   "originalFullSourceAcceptance": false,
   "publicAcceptance": false,
   "cleanupPendingWhileOwnedRuntimeInUse": true,
+  "afterBlankBaselineObservation": {
+    "observedFromSameSessionHandle": 27354,
+    "phase": "run1-running-real-production-conversion",
+    "stableBlankPrivateMiBRoundedFromConsole": 232.992,
+    "inputBytes": 10459218,
+    "outputBytes": 10802281,
+    "peakIncrementalPrivateMiBRoundedFromConsole": 228.605,
+    "exactPrivateBytesAtThisCheckpoint": null,
+    "completedFullRuns": 0,
+    "independentlyValidatedFullOutputs": 0,
+    "acceptance": false,
+    "caveat": "Rounded console progress is partial, not complete-process memory/fidelity/speed acceptance. Exact native samples and actual abort request/free headers will be in the terminal report."
+  },
   "caveat": "Historical launch observation only, not a liveness claim for later turns. Re-poll session27354 or these exact native births; never restart on timeout or delete active owned media/profile. Final proof, post-source hash and finally cleanup remain pending."
 }
