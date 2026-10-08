@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-10-08T21:53:29.145Z",
+  "status": "independently-verified-matched-headless-ui-and-five-goldens",
+  "executionReceipt": {
+    "path": "evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline.json",
+    "bytes": 16988,
+    "sha256": "7f81a27bc0e570c288f715f06caed02a63133d915b8f239c824a1866de6839df"
+  },
+  "verifier": {
+    "path": "scripts/freeze-stable-ui-headless-baseline.mjs",
+    "sha256": "1f51c686fbac774c6eac84a75f60b82a84c56e8dbc557c21a93f2d353e84ed97"
+  },
+  "geometryMaximumDeltaCssPixels": 0,
+  "matchedUiStates": 6,
+  "actualBaselineBindings": 5,
+  "goldenConversions": 3,
+  "fullDecodes": 3,
+  "identicalDecodedAudioComparisons": 3,
+  "artworkChecks": 3,
+  "timelineChecks": 3,
+  "recoveryChecks": 2,
+  "emptyCleanupInventories": 5,
+  "unchangedSourcePins": 18,
+  "rawLosslesslyCompacted": true,
+  "bytesSaved": 510838,
+  "visualReview": {
+    "allSixHeadlessScreenshotsInspected": true,
+    "metricsAndControlsReadable": true,
+    "errorAndCancelVisible": true,
+    "noNewOverlapObserved": true,
+    "caveat": "Same scroll-clipped heading edges; private public remux/MPEG4/10GiB labels remain unsuitable for publication",
+    "headedManualValidation": false
+  },
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false
+}

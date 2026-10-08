@@ -5,6 +5,55 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Matched headless layout comparison passes exactly
+
+ONE actual control run used the unchanged normal production UI with the same
+headless1280x900 mode, actual base/patched stylesheet hashes, real fixtures,
+conversion settings, five correctness/recovery cases and cleanup assertions as
+the already executed candidate. All5 cases passed in29.7 seconds. Baseline client
+response bytes were verified on all5 navigations; no native conversion or fake
+progress was introduced. All3 genuine MPEG-2 outputs again matched the exact
+earlier hashes, frame counts, two audio tracks and SSIM, with independent full
+decode, decoded-audio, timeline and artwork checks. Recovery and all5 empty
+cleanup inventories passed. No browser window or CMD window was requested.
+
+All6 measured complete/error/real-running/cancelled UI observations have exactly
+matching x/y/width/height for every captured selector: maximum delta0 CSS pixels.
+Stylesheet before/after hashes,405-card markup, states, viewport and lack of
+overflow also match. Independently inspected all6 new screenshots: metrics,
+controls, write error and cancellation remain readable without new overlap.
+Viewport-scroll-clipped heading edges remain the same. Private adapter's public
+remux/MPEG4/10GiB labels are still unsuitable for publishing this private engine.
+This supersedes the pending matched-mode geometry question, NOT the unknown
+cause of the older headed/headless geometry difference. The suite selects the
+installed Chrome channel but did not retain exact binary/version hashes; this
+does not establish a binary-pinned performance A/B or new headed/manual coverage.
+
+Evidence: `evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline.json` and
+its independent `-validation.json`. All18 executed source pins are unchanged;
+full protected test.mkv pre/post size/SHA match. Both fresh physical/virtual2GiB
+guards and repository disk preflight passed. Normal client and six engine assets
+were verified restored, nine private additions absent, owned scratch removed.
+All25 observed numeric Chrome PIDs were absent at the terminal query; native
+birth identities remain unavailable, not invented. No unrelated process killed.
+Converted files/profiles/temporary fixture copies were deleted by ordinary
+finally cleanup. The550460-byte raw report was replaced only after identity and
+byte-exact lossless39622-byte archive verification, saving510838 bytes. Preserve
+compact evidence/source archives and six proof screenshots, not converted media.
+
+Production UI/CSS, codec settings, I/O, quality, memory limits and registry are
+still unchanged. Headless UI fidelity/geometry gates now pass, but actual-progress
+CPU/allocation A/B, complete Chromium250MiB, full-original/repeats/scaling and
+publication gates remain pending. Next distinct work is the duration-bounded
+genuine-progress comparison; do not replay these small goldens without a change.
+Whole project goal remains active and incomplete. No Docker.
+
+Final focused10/10 PASS757.3246ms, combined872/872 PASS6023.4808ms (zero
+failed/skipped), five new files and ledger generator zero-warning lint PASS,
+syntax and diff whitespace PASS. An initial read-only report query assumed
+every row had a kind and failed on diagnostic rows; optional-kind filtering
+corrected only that inspection query. No browser/test was repeated for it.
+
 ## 2026-10-09 — Headless candidate fidelity and recovery verified
 
 The actual 2026-10-08 13:49 UTC headless candidate run completed all five browser
