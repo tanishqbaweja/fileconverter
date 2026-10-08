@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Actual React cache invalidation verified; headless launch held
+
+New `tests/stable-progress-ui-render.test.mjs` compiles the exact original display
+expressions and candidate declarations using the original helper functions and
+real React JSX/server rendering. Matching HTML covers absent/changing/Unicode/
+batch/error sources, audio/video/structured/image/package inspections, selectors,
+copy/re-encode/reject/exclude plans and missing/changed browser capabilities.
+A real React render-phase state-update probe runs20 bounded rerenders (not fake
+converter progress), proves unchanged JSX objects/derived capability arrays are
+reused, and verifies every relevant source/inspection/profile/batch/capability
+dependency invalidates exactly the expected cached tree. All20 results equal
+the original markup; clearing the source drops its inspection tree to null.
+Actual focused3/3 PASS795.6696ms; new render test zero-warning lint PASS. This
+is component-only SSR/hook evidence, not hydrated browser behavior, conversion
+throughput, native/Blink cause, primary-memory or full-original acceptance.
+
+Read-only host13:33:19 showed physical1322680320/virtual3306479616bytes, so no
+browser was attempted then. After unrelated-render work, fresh13:37:55 recovered
+physical2302050304/virtual2744729600; ONE headless launcher attempt13:38:23 exited1
+before build/browser because physical2117623808 fell just below unchanged2GiB
+(virtual2383429632 remained above). No Chrome/visible window/conversion/media/
+validation/profile created; fresh owned wrapperma4azQ removed and absence checked.
+Executed launcher/recipe/source hashes and exact host values retained in
+`evidence/stable-ui-headless-preflight-stop-2026-10-08.json`. Its generated-source
+hash is explicitly deterministic reconstruction AFTER terminal, not an archived
+executed-source claim. No retry loop at the memory boundary; no applications closed.
+
+One read-only generated-hash query using bare Node `-e` failed auto TS/CommonJS
+top-level-await handling; `--input-type=module` corrected that query only. No
+browser, source or conversion settings changed by either query. Production source,
+engines, registry, defaults and earlier failure evidence remain unchanged. Next
+actual headless browser/fidelity regression still needs both fresh host guards;
+then matched real-progress allocation/CPU/geometry and original full-source gates.
+Goal remains active across the complete specification, not merely these UI tests.
+
+Final focused11/11 PASS806.3362ms/0skip/0fail includes the new rendering checks,
+actual early headless-stop receipt verification, reversible candidate/launcher and
+previous build/cleanup evidence. Both new tests zero-warning lint PASS; diff
+whitespace PASS. Generated historical Windows source is reconstructed canonically
+for different CI checkout roots without repinning its recorded hash. No full
+browser/production re-certification or fresh combined-unit claim. The last combined
+run remains863/863 from the preceding cycle. No disposable conversion data exists
+from this cycle; no live browser/test handle remains. Asked for additional RAM
+headroom, not permission to close programs or to lower any guard.
+
 ## 2026-10-08 — Stable progress UI candidate built; future work headless
 
 User now requires headless/background work with no visible command windows.

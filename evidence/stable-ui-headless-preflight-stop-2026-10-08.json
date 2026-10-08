@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-10-08T13:38:23.5976809Z",
+  "status": "terminal-exit1-before-build-or-browser-host-memory-guard",
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19"
+  },
+  "hostPreflight": {
+    "freePhysicalBytes": 2117623808,
+    "freeVirtualBytes": 2383429632,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false
+  },
+  "generatedLauncher": {
+    "provenance": "Strict deterministic reconstruction after terminal; no executed source archive was saved on this early failure",
+    "bytes": 8528,
+    "sha256": "bc81cdacf19709f27edd6b6568e2d7d0039c2c0412add22a0d49e5cbcf3c2c3a"
+  },
+  "cleanup": {
+    "ownedWrapper": "H:\\Github Repositories\\fileconverter\\work\\stable-ui-headless-launch-ma4azQ",
+    "ownedWrapperAbsentVerifiedAfterTerminal": true
+  },
+  "visibleBrowserLaunched": false,
+  "headlessBrowserLaunched": false,
+  "candidateBuildStarted": false,
+  "conversionsStarted": 0,
+  "convertedFilesCreated": 0,
+  "protectedOriginalRead": false,
+  "unrelatedApplicationsClosed": false,
+  "publicAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false
+}
