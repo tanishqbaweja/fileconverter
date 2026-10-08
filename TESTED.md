@@ -4,6 +4,8 @@ Updated 2026-10-08 from the capability registry, retained successful Chrome stre
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+2026-10-08 changed fully rendered matrix grid/flex diagnostic: current Chrome154 paired controls completed actual protected-source inspection/60selections, two capped traces each, and nine responsive geometry cases. All405cards/markup/choices preserved, no hidden/deferred content; geometry maximum0.015625 CSS pixels. Static main Blink allocated bytes15,860,344->9,599,672 and observed static grid-track bytes4,269,312->27,904 across fresh modes. Selection growth remains8,652,976/8,652,864 and grid growth209,280 in BOTH. ALL-process final private snapshots367,362,048/366,497,792 with different additional births; NOT continuous primary peaks/stable blank/cause/speed/full-original acceptance. No conversion or public-source change. Independent freeze verifies raw/generated/source hashes, joins/geometry,28sampled births/30PIDs absent/four scratch gone/full protected SHA exact. Two raw JSONs removed only after verified lossless70,467/71,094-byte archives;1,490,559bytes saved. Candidate remains PRIVATE pending active conversion/headed/quality/recovery/fulloriginal250MiB/repeat gates. See evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout{,-analysis,-compaction}.json. Goal ACTIVE; no unchanged original retry or public promotion.
+
 ## What the labels mean
 
 - **Public passed**: implemented, small production-browser correctness tested, independently validated, cleanup tested, and accepted by the registry.

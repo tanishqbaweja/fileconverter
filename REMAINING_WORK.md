@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Changed fully rendered matrix candidate measured; still PRIVATE
+
+User RAM recheck08:36:01UTC:4.395GiB physical/4.346GiB virtual, above unchanged
+2GiB physical AND virtual guard. Both actual browser launches passed fresh guards.
+No Docker/application closure/system-setting change. Prior full-original27354 is
+terminal, never resumed or repeated unchanged.
+
+Changed CSS-only private A/B replaces the405matrix/card grids with fully rendered
+flex layout. BOTH modes retain the previous dynamic-control flex candidate. No
+hidden/removed/deferred content or source/engine/registry/settings change. Current
+Chrome154.0.8037.98 both controls PASS: protected full source inspection,60actual
+format selections, two bounded independently closed detailed dumps per mode,
+no forcedGC/privacy violations. Nine profile/viewport cases preserve all controls,
+markup/cards/choices; maximum geometry difference0.015625 CSS pixels.
+
+Static main Blink allocated15,860,344 grid vs9,599,672 flex (6,260,672bytes less);
+static partial grid-track4,269,312 vs27,904. BUT selection allocated growth is
+8,652,976 vs8,652,864, grid-track growth209,280 BOTH, PlainTextNode growth2,157,600
+BOTH. All-process final private snapshots367,362,048 vs366,497,792; candidate has
+four extra descendants plus tracing utility, all retained in totals. These are
+garbage-inclusive overlapping partial type inventories/seven native snapshots,
+NOT live allocations/continuous peak/stable primary blank/original spike cause.
+No conversion speed/full-original250MiB/fidelity/repeat acceptance. No public
+CSS/App/engine/profile modified. Candidate not promoted from smaller Blink heap.
+
+Independent freeze PASS verifies generated/source/raw hashes, rejoined traces,
+geometry,28sampled PID-parent-birth identities/30observed PIDs all absent/four
+scratch directories gone/full protected post-size+SHA unchanged. Zero media
+copies generated. Both redundant raw reports removed ONLY after file identity,
+SHA and bounded exact lossless archive reconstruction verification:816002/816118
+raw bytes ->70467/71094gzip bytes;1,490,559bytes saved, fully recoverable.
+Retain compact execution/analysis/compaction proof and gzip traces repository-local.
+
+Evidence: evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout.json and
+-analysis.json/-compaction.json. Next: private candidate active-conversion/headed
+geometry and unchanged golden quality/cancel/write-failure gates before a changed
+full-original stress test; keep all processes/lower stable blank/250MiB/fixed
+heaps/quality/source/cleanup constraints. Entire original scope remains ACTIVE.
+
+Final focused checkpoint8/8 tests PASS310.4582ms (new matrix recipe/evidence,
+prior dynamic-flex recipe and terminal-original failure evidence). All seven
+scoped source/test/ledger-generator files zero-warning lint PASS; ledger
+regenerated. No production source changed, so no new production build or full
+unit/browser-release acceptance is inferred from these focused checks.
+
 ## 2026-10-08 — Full-original attempt TERMINAL: whole-tree memory exceeded
 
 Supersedes all LIVE/RUNNING launch notes for27354 below. Actual session exited1;

@@ -1,0 +1,287 @@
+{
+  "recordedAt": "2026-10-08T08:40:50.448Z",
+  "status": "verified-terminal-matrix-layout-pair-not-public-acceptance",
+  "evidenceStatus": "paired-matrix-layout-geometry-pass-not-public-acceptance",
+  "sourcePins": {
+    "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout.json": "8bd5cdcdaa95ef1c5c8d2c1bb7f24be72c068fc5ac6b78b941d28c9f621be224",
+    "scripts/analyze-ui-matrix-flex-layout.mjs": "42f579df9ab8347c259f2e7335bfc9fe12d80055526a67fca2dd8659c47e9af0"
+  },
+  "modes": [
+    {
+      "mode": "matrix-grid",
+      "fullTreePrivateBeforeBytes": 364388352,
+      "fullTreePrivateAfterBytes": 367362048,
+      "fullTreePrivateDeltaBytes": 2973696,
+      "embedderGrowthBytes": 8627576,
+      "mainBlinkAllocatedGrowthBytes": 8652976,
+      "mainBlinkResidentGrowthBytes": 9306112,
+      "selectedTypes": [
+        {
+          "name": "blink_objects/blink_gc/main/blink::PlainTextNode (0x388)",
+          "type": "blink::PlainTextNode (0x388)",
+          "fullNameSha256": "0363247437c10b0d8e7d244bfdd32d721bcce123cf94dcc2e731b467a089428e",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 71920,
+          "afterAllocatedObjectsBytes": 2229520,
+          "deltaAllocatedObjectsBytes": 2157600,
+          "beforeObjectCount": 58,
+          "afterObjectCount": 1798,
+          "deltaObjectCount": 1740,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        },
+        {
+          "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x355)",
+          "type": "blink::GridSizingTrackCollection (0x355)",
+          "fullNameSha256": "a313da919aa4d4762465f4f27b19b5d946120a8dc7653cf39cc0d4fc3f302eba",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 4269312,
+          "afterAllocatedObjectsBytes": 4478592,
+          "deltaAllocatedObjectsBytes": 209280,
+          "beforeObjectCount": 2448,
+          "afterObjectCount": 2568,
+          "deltaObjectCount": 120,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        }
+      ],
+      "gridTrackGrowthBytes": 209280,
+      "nativeSampleCount": 7,
+      "unavailableNativeSamples": 0,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 34740,
+          "parentPid": 46916,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-08T08:39:02.6358860Z",
+          "privateBytes": 11481088,
+          "rssBytes": 34078720
+        }
+      ],
+      "snapshotsNotContinuousPeaks": true,
+      "missingTypesAreUnavailableNotZero": true
+    },
+    {
+      "mode": "matrix-flex",
+      "fullTreePrivateBeforeBytes": 354242560,
+      "fullTreePrivateAfterBytes": 366497792,
+      "fullTreePrivateDeltaBytes": 12255232,
+      "embedderGrowthBytes": 8522952,
+      "mainBlinkAllocatedGrowthBytes": 8652864,
+      "mainBlinkResidentGrowthBytes": 9175040,
+      "selectedTypes": [
+        {
+          "name": "blink_objects/blink_gc/main/blink::PlainTextNode (0x36a)",
+          "type": "blink::PlainTextNode (0x36a)",
+          "fullNameSha256": "0ec0b9acde97b9a3329f301f70c17880106862d03d600dce86e39f7296ca3793",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 71920,
+          "afterAllocatedObjectsBytes": 2229520,
+          "deltaAllocatedObjectsBytes": 2157600,
+          "beforeObjectCount": 58,
+          "afterObjectCount": 1798,
+          "deltaObjectCount": 1740,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        },
+        {
+          "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x359)",
+          "type": "blink::GridSizingTrackCollection (0x359)",
+          "fullNameSha256": "e5efb03bff4d02bacb7951dd841a46534ff0efb0fa8cde0db9c3b43833d4ad24",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 27904,
+          "afterAllocatedObjectsBytes": 237184,
+          "deltaAllocatedObjectsBytes": 209280,
+          "beforeObjectCount": 16,
+          "afterObjectCount": 136,
+          "deltaObjectCount": 120,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        }
+      ],
+      "gridTrackGrowthBytes": 209280,
+      "nativeSampleCount": 7,
+      "unavailableNativeSamples": 0,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 27736,
+          "parentPid": 31264,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-08T08:39:41.4132730Z",
+          "privateBytes": 10571776,
+          "rssBytes": 34201600
+        },
+        {
+          "pid": 46192,
+          "parentPid": 31264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T08:40:00.5593480Z",
+          "privateBytes": 3330048,
+          "rssBytes": 16351232
+        },
+        {
+          "pid": 28116,
+          "parentPid": 46192,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T08:40:00.5871850Z",
+          "privateBytes": 3112960,
+          "rssBytes": 15482880
+        },
+        {
+          "pid": 28260,
+          "parentPid": 46192,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T08:40:00.6147500Z",
+          "privateBytes": 3747840,
+          "rssBytes": 19251200
+        },
+        {
+          "pid": 36936,
+          "parentPid": 28260,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T08:40:00.6402910Z",
+          "privateBytes": 3174400,
+          "rssBytes": 15527936
+        }
+      ],
+      "snapshotsNotContinuousPeaks": true,
+      "missingTypesAreUnavailableNotZero": true
+    }
+  ],
+  "geometry": [
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    }
+  ],
+  "candidateGeometryAccepted": true,
+  "cleanup": {
+    "sampledIdentities": 28,
+    "checkedPids": 30,
+    "allSampledIdentitiesAbsent": true,
+    "allObservedPidsAbsent": true,
+    "observedProcesses": [],
+    "fourScratchDirectoriesAbsent": true,
+    "protectedFullPostHashMatches": true,
+    "noProcessesKilled": true
+  },
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "originalFailureAllocationCause": null,
+  "publishedFilesChanged": false,
+  "caveat": "Independent raw/hash/generated-source/join/geometry/cleanup verification; partial types include garbage and overlap. No original peak allocation cause, native continuous acceptance, speed or public promotion from this idle UI diagnostic."
+}

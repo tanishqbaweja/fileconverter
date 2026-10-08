@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-10-08T08:44:28.888Z",
+  "status": "verified-lossless-ui-matrix-raw-report-compaction",
+  "sourcePins": {
+    "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout.json": "8bd5cdcdaa95ef1c5c8d2c1bb7f24be72c068fc5ac6b78b941d28c9f621be224",
+    "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout-analysis.json": "bfcc02eb027c158c5da0ff2462a9a6638d7644b34611b5b953938c6bc90e20b3",
+    "scripts/compact-ui-matrix-flex-reports.mjs": "421d4a095cdbbcd1ff0bba7a9a7a3bc1b21a4ec0430f96d4e92495969c36c76f"
+  },
+  "reports": [
+    {
+      "rawPath": "output/playwright/2026-10-08T08-38-49-275Z-ui-matrix-grid-layout.json",
+      "rawBytes": 816002,
+      "rawSha256": "4c20dc2f5cf685dad7034138b2601dd36e7141be4a72b86fc9683d3d0693ef5f",
+      "archivePath": "output/playwright/2026-10-08T08-38-49-275Z-ui-matrix-grid-layout.json.gz",
+      "archiveBytes": 70467,
+      "archiveSha256": "7aa12c6d4ac6a78516a9ea616927851236ec3d86526af19c0cfb4400f137696a",
+      "reconstructionVerified": true,
+      "rawRemovedAfterVerification": true
+    },
+    {
+      "rawPath": "output/playwright/2026-10-08T08-39-33-418Z-ui-matrix-flex-layout.json",
+      "rawBytes": 816118,
+      "rawSha256": "9a24e0eed423f99ebdde1331a64cfec56bbf6fdcad94f1a4f3a73b2a53f8625d",
+      "archivePath": "output/playwright/2026-10-08T08-39-33-418Z-ui-matrix-flex-layout.json.gz",
+      "archiveBytes": 71094,
+      "archiveSha256": "4d01ba189df79ec54af493643e1bf537e74c5d7f9e3a92c3f8d0618ac80f6e1d",
+      "reconstructionVerified": true,
+      "rawRemovedAfterVerification": true
+    }
+  ],
+  "bytesSaved": 1490559,
+  "originalMediaTouched": false,
+  "publishedFilesChanged": false,
+  "conversionAcceptance": false
+}
