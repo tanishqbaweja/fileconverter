@@ -1,0 +1,56 @@
+{
+  "recordedAt": "2026-10-08T11:09:24.9418806Z",
+  "status": "live-confirmed-startup-blank-settlement-not-acceptance",
+  "sessionId": 83524,
+  "codeHead": "c7f81ac47159cbc03c60cd57755571134b891f87",
+  "remoteBranch": "media-options",
+  "remoteHeadVerified": true,
+  "mainUnchanged": "0904d93447d2163a8c8130de4b244f76ab9687e2",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-08T11:06:49.2653340Z",
+    "freePhysicalBytes": 5473517568,
+    "freeVirtualBytes": 7837712384,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true
+  },
+  "runner": {
+    "pid": 34604,
+    "parentPid": 33784,
+    "createdAt": "2026-10-08T11:06:48.7350600Z"
+  },
+  "chrome": {
+    "pid": 31168,
+    "parentPid": 34604,
+    "createdAt": "2026-10-08T11:06:57.7590600Z",
+    "actualPageUrlObserved": "about:blank"
+  },
+  "outerNodeWrapper": {
+    "pid": 33784,
+    "parentPid": 45820,
+    "createdAt": "2026-10-08T11:06:48.6929900Z"
+  },
+  "runtimeDirectoriesInUse": [
+    "work/mpeg2-matrix-launch-wrapper-sOfF9k",
+    "work/mpeg2-matrix-original-wrapper-rQP4zi",
+    "work/mpeg2-matrix-original-driver-5YqjqK",
+    "work/mpeg2-matrix-original-runtime-HRkGol"
+  ],
+  "sourcePins": {
+    "scripts/mpeg2-matrix-original-memory.mjs": "13676230f8155f706e34e0013973a3e6b9e9394c5528632057ca689a7b3b02ca",
+    "scripts/lib/mpeg2-matrix-original-recipe.mjs": "c9db540e135c09e0a00bc0f48d06966cdf5cc590eda473493e82facefb1534f1"
+  },
+  "generatedActualDriverSha256": "c29bbb6f226ada32edace5e828dae68aa54968211bfc89ef16fc26ad44ebd77e",
+  "fullProtectedPreHashAnd32GiBDiskChecksCompletedBeforeChrome": true,
+  "preflightInferenceBasis": "Actual generated driver verifies entire original SHA/size and32GiB disk before Chrome spawn; observed owned Chrome launch implies those assertions passed.",
+  "minimumBlankSettlementMs": 300000,
+  "completedOriginalConversions": 0,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFailureCauseProven": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "nativeConverterUsed": false,
+  "cleanupAndPostHashPending": true,
+  "nextAction": "Poll SAME83524 and actual PID/parent/birth identities to terminal result; never duplicate or remove active runtimes/media/profile, nor infer terminal from missing fresh output. Historical LIVE status must be superseded if terminal evidence appears."
+}

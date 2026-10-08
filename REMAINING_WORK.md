@@ -5,6 +5,22 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Changed full-original matrix attempt confirmed LIVE
+
+Checkpoint c7f81ac pushed and remote-verified on media-options; main0904d93
+unchanged. Actual new session83524 running as of11:09:24UTC: runner34604(parent
+33784,birth11:06:48.7350600Z), Chrome31168(parent34604,birth11:06:57.7590600Z)
+both observed live; actual pageabout:blank. Host11:06:49UTC physical5473517568/
+virtual7837712384 safe. Full protected size/SHA and32GiB disk assertions precede
+observed Chrome launch. Same lower stable five-minute blank/ALL-process250MiB/
+three FULL runs/fixed32+16MiB/quality/validators/cancel/write-failure/finally gates.
+Only measured fully rendered matrix CSS differs from prior actual original run.
+Zero full completed/validated outputs or speed/memory/public acceptance yet.
+Four named matrix runtimes IN USE; cleanup/post-SHA pending. Poll SAME83524;
+do not delete active data/profile, restart on quiet output or mutate App/core/
+stager/recipe/test source during the live test. Historical LIVE note superseded
+only by actual terminal evidence. See mpeg2-matrix-original-launch-2026-10-08.json.
+
 ## 2026-10-08 — Matrix CSS headed production regression PASS; changed original ready
 
 Previous turn was PROGRESS: fully rendered matrix A/B, independent cleanup,
