@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-08T11:20:47.224Z",
+  "status": "verified-lossless-diagnostic-compaction",
+  "scope": "ONE terminal JSON diagnostic, not converted media; no browser or protected-source access",
+  "raw": {
+    "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms.json",
+    "bytes": 2684761,
+    "sha256": "f29215d9e5e5dc9a711ab89b344866d1ca3b56a996d68e16a073ae2cadd3eb3e"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms.json.gz",
+    "bytes": 122200,
+    "sha256": "bd3af20eca84da7ddb0a68c5c3ae5d20a74e9c477b2cf9a13429d1077fdbdfc5"
+  },
+  "companions": [
+    {
+      "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms-trace.zip",
+      "bytes": 27546,
+      "sha256": "783a674464d50e87aef8a5561ec0014cabf406e8d12aa4b7b2e38d336f9425bc"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms.csv",
+      "bytes": 11040,
+      "sha256": "ea360be87ada0fa317fb1402fab348aab0b5745dbaa13eac34b371830ede4602"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms.html",
+      "bytes": 6812,
+      "sha256": "eda9d2bd85c11859b7b35a4d97695a99a74d08ac325c60c25a968d80a59aedf7"
+    }
+  ],
+  "reconstructedRawSizeAndSha256Verified": true,
+  "rawIdentityRevalidatedBeforeRemoval": true,
+  "uncompressedRawRemoved": true,
+  "removedBytes": 2684761,
+  "ownedScratchRemoved": true,
+  "protectedSourceRead": false,
+  "browserConversionsPerformed": 0,
+  "rawFailurePreserved": true,
+  "publicAcceptance": false,
+  "sourcePins": {
+    "scripts/compact-mpeg2-matrix-terminal-report.mjs": "ff62d4075dbd9337ab439e715113f2ff0086247711565f89ee133e19e10dc4c9"
+  },
+  "bounds": {
+    "streamChunkBytes": 65536,
+    "maximumRawBytes": 33554432,
+    "maximumArchiveBytes": 4194304
+  },
+  "recovery": "The retained gzip reconstructs the exact failed raw JSON and SHA-256; trace/CSV/HTML remain. Only the redundant verified raw JSON was removed."
+}

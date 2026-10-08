@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Matrix original attempt TERMINAL:251.484375MiB still FAILS
+
+Supersedes ALL83524 LIVE/launch notes below. Actual session exited1; raw report
+failed, normal post-cancel statecancelled, owned processes gone. Saved run snapshot
+still saysrunning; it is explicitly historical, NOT liveness or a reason to
+restart/poll a finished job. Initial independent verifier caught that stale-state
+assumption; corrected to require BOTH actual savedrunning and actual post-cancel
+cancelled states, no conversion replay or relaxed cleanup requirement.
+
+Run1 stopped at1721 genuine MPEG2 frames,33,777,217 input/23,214,284 partial output
+bytes (~55.943s). Whole-tree peak505,249,792 minus SAME lower stable blank
+241,549,312 =251.484375MiB, above250 by1.484375MiB. Loaded idle308,756,480 only
+diagnostic. ZERO full completed/independently validated outputs or repeat/speed
+acceptance. Fixed32MiB decoder+16MiB encoder/64KiB read-write-queue/one pending
+write/end queues0 remain unchanged. No decoder abort records/stacks/request/free
+headers; original native allocation/live/fragmentation cause still null.
+
+Adjacent111ms actual native delta57,626,624bytes: same renderer37936 adds57,622,528,
+GPU adds4096, all other seven unchanged/no births added or removed; ALL included.
+87 executed source hashes/generated driver/helper/raw/formula verified. ONE
+successful detailed global GUID0x16 dump AFTER ordinary production cancellation
+and observed worker close.303780-byte gzip reconstructs exact4674185bytes/
+282events/hash/global-GUID/type reparse. Delayed Renderer private114,020,352,
+main Blink resident65,405,008/object11,639,608/pooled49,545,216; largest partial
+GridSizingTrackCollection1,757,952bytes/1008objects. Garbage-inclusive, overlapping
+POST-CANCEL values, NOT peak-time liveness/callsite/proven cause. Matrix card CSS
+alone is insufficient; investigate remaining dynamic ancestor hero grid with a
+changed bounded equivalent-layout A/B before another original. No unchanged retry.
+
+Primary263.64453125->251.484375MiB across these two fresh sessions is an observed
+comparison, NOT repeatable gain/causal fix/public pass. One native unavailable
+sample over ALL observation, none in5 pre-conversion or523 active samples; missing
+remains unavailable, never zero. Independent cleanup PASS22native PID-parent-birth
+identities/helpers absent/all FOUR named runtimes gone/six dist assets restored/
+nine additions absent/protected full size+SHA exact. All partial media/profile/
+scratch removed finally. Redundant2684761-byte raw report removed ONLY after exact
+bounded lossless122200-byte gzip/hash/file-identity verification; fully recoverable
+traceZIP/CSV/HTML/raw Blink archive retained repository-local.
+
+Evidence: mpeg2-matrix-original/terminal-analysis/terminal-compaction-2026-10-08
+JSONs. Focused7/7 tests PASS206.0327ms; three new verifier/compactor/test files
+zero-warning lint PASS. Earlier820 combined pass PRE-DATES3new terminal tests;
+not claimed as823 retroactively. Full goal remains ACTIVE, no public promotion,
+Docker/native conversion/smaller-source/quality/heap/baseline/limit/process changes.
+
 ## 2026-10-08 — Changed full-original matrix attempt confirmed LIVE
 
 Checkpoint c7f81ac pushed and remote-verified on media-options; main0904d93

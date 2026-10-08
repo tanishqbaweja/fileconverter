@@ -1,0 +1,511 @@
+{
+  "recordedAt": "2026-10-08T11:18:08.586Z",
+  "status": "verified-terminal-whole-tree-budget-failure-with-delayed-renderer-types-not-cause",
+  "input": {
+    "path": "evidence/mpeg2-matrix-original-2026-10-08.json",
+    "bytes": 874409,
+    "sha256": "c02794efb6d5dd4d5a3809986eaed660140e3e9c5faef0b7ed56e2f7a9d0076a"
+  },
+  "rawReport": {
+    "path": "outputs/reports/2026-10-08T11-06-49-778Z-private-mpeg2-matrix-original-native-100ms.json",
+    "bytes": 2684761,
+    "sha256": "f29215d9e5e5dc9a711ab89b344866d1ca3b56a996d68e16a073ae2cadd3eb3e"
+  },
+  "rawReportVerified": true,
+  "executedSourcesVerified": 87,
+  "generatedSourcesVerified": true,
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 241549312,
+    "spreadBytes": 8192,
+    "rssBytes": 528502784,
+    "firstTimestamp": "2026-10-08T11:12:02.351Z",
+    "lastTimestamp": "2026-10-08T11:12:08.332Z",
+    "sampleCount": 7,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 308756480,
+    "spreadBytes": 1060864,
+    "rssBytes": 627372032,
+    "firstTimestamp": "2026-10-08T11:12:12.219Z",
+    "lastTimestamp": "2026-10-08T11:12:18.136Z",
+    "sampleCount": 7,
+    "minimumElapsedMs": 8000
+  },
+  "nativePeak": {
+    "sequence": 3455,
+    "timestamp": "2026-10-08T11:13:15.3890820Z",
+    "phase": "conversion-1",
+    "privateBytes": 505249792,
+    "rssBytes": 829997056,
+    "processes": [
+      {
+        "pid": 7804,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0381072Z",
+        "creationFileTime": "134359312180381072",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 113778688,
+        "rssBytes": 152731648
+      },
+      {
+        "pid": 14228,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:57.7910125Z",
+        "creationFileTime": "134359312177910125",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 2637824,
+        "rssBytes": 10539008
+      },
+      {
+        "pid": 23640,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:12:08.8528911Z",
+        "creationFileTime": "134359315288528911",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 14614528,
+        "rssBytes": 31059968
+      },
+      {
+        "pid": 31168,
+        "parentPid": 34604,
+        "createdAt": "2026-10-08T11:06:57.7590605Z",
+        "creationFileTime": "134359312177590605",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 47079424,
+        "rssBytes": 150245376
+      },
+      {
+        "pid": 33732,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.1457138Z",
+        "creationFileTime": "134359312181457138",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 32841728,
+        "rssBytes": 77041664
+      },
+      {
+        "pid": 37936,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.1990312Z",
+        "creationFileTime": "134359312181990312",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 251924480,
+        "rssBytes": 305504256
+      },
+      {
+        "pid": 38276,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0426577Z",
+        "creationFileTime": "134359312180426577",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 12931072,
+        "rssBytes": 41037824
+      },
+      {
+        "pid": 38768,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0832695Z",
+        "creationFileTime": "134359312180832695",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 9138176,
+        "rssBytes": 18051072
+      },
+      {
+        "pid": 47056,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.4550276Z",
+        "creationFileTime": "134359312184550276",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 20303872,
+        "rssBytes": 43786240
+      }
+    ]
+  },
+  "nativePeakIncrementalMiB": 251.484375,
+  "nativePhaseCoverage": [
+    {
+      "phase": "pre-conversion-1",
+      "validSamples": 5,
+      "unavailableSamples": 0
+    },
+    {
+      "phase": "conversion-1",
+      "validSamples": 523,
+      "unavailableSamples": 0
+    }
+  ],
+  "actualFailure": {
+    "name": "AssertionError",
+    "message": "Complete Chromium increase 251.484375MiB exceeds 250MiB",
+    "stack": "AssertionError [ERR_ASSERTION]: Complete Chromium increase 251.484375MiB exceeds 250MiB\n    at file:///H:/Github%20Repositories/fileconverter/work/mpeg2-matrix-original-driver-5YqjqK/full-source.mjs:364:14"
+  },
+  "metrics": {
+    "inputBytes": 33777217,
+    "outputBytes": 23214284,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 65536,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 65536,
+    "elapsedMs": 55943.04500001669,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0
+  },
+  "frames": 1721,
+  "completedFullOutputs": 0,
+  "actualDecoderAbortRecords": 0,
+  "individualOriginalFailureAllocationBytes": null,
+  "originalFailureFreeHeaders": null,
+  "liveHeapBytes": null,
+  "allocationCauseProven": false,
+  "adjacentNativeDelta": {
+    "beforeSequence": 3454,
+    "afterSequence": 3455,
+    "beforeTimestamp": "2026-10-08T11:13:15.2781117Z",
+    "afterTimestamp": "2026-10-08T11:13:15.3890820Z",
+    "adjacent": true,
+    "elapsedMs": 111,
+    "elapsedPrecision": "milliseconds; original timestamps retained",
+    "treeDeltaPrivateBytes": 57626624,
+    "processDeltas": [
+      {
+        "pid": 7804,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0381072Z",
+        "creationFileTime": "134359312180381072",
+        "beforePrivateBytes": 113774592,
+        "afterPrivateBytes": 113778688,
+        "deltaPrivateBytes": 4096
+      },
+      {
+        "pid": 14228,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:57.7910125Z",
+        "creationFileTime": "134359312177910125",
+        "beforePrivateBytes": 2637824,
+        "afterPrivateBytes": 2637824,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 23640,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:12:08.8528911Z",
+        "creationFileTime": "134359315288528911",
+        "beforePrivateBytes": 14614528,
+        "afterPrivateBytes": 14614528,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 31168,
+        "parentPid": 34604,
+        "createdAt": "2026-10-08T11:06:57.7590605Z",
+        "creationFileTime": "134359312177590605",
+        "beforePrivateBytes": 47079424,
+        "afterPrivateBytes": 47079424,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 33732,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.1457138Z",
+        "creationFileTime": "134359312181457138",
+        "beforePrivateBytes": 32841728,
+        "afterPrivateBytes": 32841728,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 37936,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.1990312Z",
+        "creationFileTime": "134359312181990312",
+        "beforePrivateBytes": 194301952,
+        "afterPrivateBytes": 251924480,
+        "deltaPrivateBytes": 57622528
+      },
+      {
+        "pid": 38276,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0426577Z",
+        "creationFileTime": "134359312180426577",
+        "beforePrivateBytes": 12931072,
+        "afterPrivateBytes": 12931072,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 38768,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.0832695Z",
+        "creationFileTime": "134359312180832695",
+        "beforePrivateBytes": 9138176,
+        "afterPrivateBytes": 9138176,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 47056,
+        "parentPid": 31168,
+        "createdAt": "2026-10-08T11:06:58.4550276Z",
+        "creationFileTime": "134359312184550276",
+        "beforePrivateBytes": 20303872,
+        "afterPrivateBytes": 20303872,
+        "deltaPrivateBytes": 0
+      }
+    ],
+    "addedIdentities": [],
+    "removedIdentities": [],
+    "allocationSource": null,
+    "acceptanceMetric": false
+  },
+  "globalTraceReconstructionAndReparseVerified": true,
+  "globalDumpSucceeded": true,
+  "nativeUnavailableSamples": 1,
+  "missingSamplesNeverZero": true,
+  "lastSavedRunJobState": "running",
+  "actualPostCancelJobState": "cancelled",
+  "rawTraceArchive": {
+    "path": "outputs/reports/2026-10-08T11-06-49-325Z-matrix-original-partial-blink-trace.json.gz",
+    "bytes": 303780,
+    "sha256": "0c6e1fcd68c8fd5df69292c78f9c302f6f15570385aa91f579889b6478ab8e06",
+    "reconstructsExactSerializedTrace": true,
+    "maximumBytes": 4194304
+  },
+  "serializedTrace": {
+    "bytes": 4674185,
+    "sha256": "79630fadb2eba60d4b2b841191fcba0bb6eb85d55044ed281326454a50b22abf",
+    "events": 282
+  },
+  "actualWorkerClosedBeforeDump": true,
+  "delayedDumpGuid": "0x16",
+  "delayedTarget": {
+    "pid": 37936,
+    "traceName": "Renderer",
+    "privateBytes": 114020352,
+    "heaps": [
+      {
+        "name": "blink_gc/main/heap",
+        "residentBytes": 65405008,
+        "committedBytes": 65405008,
+        "allocatedObjectsBytes": 11639608,
+        "pooledBytes": 49545216,
+        "unallocatedResidentBytes": 53765400,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationObjectOrCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    ],
+    "largestSixTypes": [
+      {
+        "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x229)",
+        "type": "blink::GridSizingTrackCollection (0x229)",
+        "originalNameSha256": "cc7eac3757711a47c5a6f4bc19e4808837312ac8508c794b4a1638b25be6d997",
+        "originalNameCharacters": 68,
+        "originalTypeCharacters": 40,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 1757952,
+        "objectCount": 1008,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "name": "blink_objects/blink_gc/main/blink::LayoutResult (0x15f)",
+        "type": "blink::LayoutResult (0x15f)",
+        "originalNameSha256": "a9f85a3672c57aea9bc3246666319f06a3c6fbf8de6e4701becf3209f58c51ab",
+        "originalNameCharacters": 55,
+        "originalTypeCharacters": 27,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 702960,
+        "objectCount": 8787,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "name": "blink_objects/blink_gc/main/blink::PhysicalBoxFragment (0x160)",
+        "type": "blink::PhysicalBoxFragment (0x160)",
+        "originalNameSha256": "6da2e3d14cc6853fe44411b324cffe2095cac79ee7730b7de661630bf0ce9e0b",
+        "originalNameCharacters": 62,
+        "originalTypeCharacters": 34,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 649320,
+        "objectCount": 7222,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "name": "blink_objects/blink_gc/main/blink::GridItemData (0x228)",
+        "type": "blink::GridItemData (0x228)",
+        "originalNameSha256": "05178cca8bfec28fe1491963308b389ded165d2f0994e9d5d653835670082be8",
+        "originalNameCharacters": 55,
+        "originalTypeCharacters": 27,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 334656,
+        "objectCount": 1992,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "name": "blink_objects/blink_gc/main/blink::LayoutText (0x3ea)",
+        "type": "blink::LayoutText (0x3ea)",
+        "originalNameSha256": "0134c45629c240c52cabb8044372a8b0638ef6f64d5028bc996a506bb54b0402",
+        "originalNameCharacters": 53,
+        "originalTypeCharacters": 25,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 331296,
+        "objectCount": 2958,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      },
+      {
+        "name": "blink_objects/blink_gc/main/blink::HeapVectorBacking<blink::FragmentItem> (0x322)",
+        "type": "blink::HeapVectorBacking<blink::FragmentItem> (0x322)",
+        "originalNameSha256": "2b866da508bb1cc1fd49e36fd007a3f23203e6fc93158471aa4b8e2ee3382c02",
+        "originalNameCharacters": 81,
+        "originalTypeCharacters": 53,
+        "typeNameTruncated": false,
+        "heap": "blink_gc/main",
+        "allocatedObjectsBytes": 326512,
+        "objectCount": 1789,
+        "nondeterministicDumpMayIncludeGarbage": true,
+        "allocationCallsite": null,
+        "valuesOverlap": true,
+        "summedAllocatorTotal": null,
+        "acceptanceMetric": false
+      }
+    ],
+    "selection": {
+      "limits": {
+        "knownRowsPerProcessPerDump": 64,
+        "unavailableRowsPerProcessPerDump": 8,
+        "inspectedRecordsPerProcessPerDump": 100000
+      },
+      "partialInventory": true,
+      "inspectedRecords": 1040,
+      "zeroRecordsOmitted": 0,
+      "knownEligibleRecords": 1040,
+      "unavailableRecords": 0,
+      "knownRecordsNotRetained": 976,
+      "unavailableRecordsNotRetained": 0,
+      "selection": "largest-known-allocated-object-bytes",
+      "recordCountsAreOccurrencesNotGuaranteedUniqueTypes": true,
+      "missingTypeMeansUnavailableNotZero": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    }
+  },
+  "cleanup": {
+    "mediaProfileRuntimeRemoved": true,
+    "generatedDistRestored": true,
+    "protectedFixtureUnchanged": true,
+    "observerStopped": true,
+    "sampledChromeRootStopped": true,
+    "conversionQuiescence": {
+      "scope": "no-running-conversion",
+      "cancellationRequested": false,
+      "terminalState": "cancelled"
+    },
+    "chromeRootExitObservation": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 31168,
+        "parentPid": 34604,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-08T11:06:57.7590600Z",
+        "privateBytes": 40775680,
+        "rssBytes": 127184896
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-08T11:13:17.176Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 406,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "protectedFullPostHashVerified": true,
+    "allSampledNativeBirthsAbsent": true,
+    "nativeBirths": 22,
+    "helperPidsAbsent": true,
+    "helperBirthsAvailableForAll": false,
+    "allFourOwnedRuntimeDirectoriesAbsent": true,
+    "restoredAssets": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+      "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+    },
+    "ninePrivateAdditionsAbsent": true,
+    "noProcessesKilledByVerifier": true
+  },
+  "publicAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "next": "Fully rendered matrix candidate still fails250MiB. Investigate remaining ancestor hero-grid/layout allocation with a changed bounded UI pair before another original attempt; never retry this unchanged candidate. Delayed values are not peak-time liveness or allocation callsite proof; late decoder request/free headers remain unobserved.",
+  "sourcePins": {
+    "scripts/analyze-mpeg2-matrix-terminal.mjs": "87934117b6d68461ed85129b94467eda1237d6fa81148d423e3c43b8d101666a"
+  }
+}
