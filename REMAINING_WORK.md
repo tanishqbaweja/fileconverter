@@ -5,7 +5,59 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-09 — Matched split-render/native pair ACTUALLY LIVE; results pending
+## 2026-10-09 — Matched split-render pair TERMINAL: both over budget; standalone render fix rejected
+
+Session52353 is TERMINAL/controller exit0; both actual diagnostic children exit1.
+Do not poll or restart it. This supersedes the historical LIVE/PREPARED entries
+below. Controller success means collection/restoration only, not conversion pass.
+Independent reconstruction: evidence/2026-10-08T23-33-58-528Z-split-render-progress-analysis.json;
+receipt: same prefix .json; both raw/source archives retained losslessly in
+outputs/reports. All127 pre/post source pins, actual client bodies, matched Chrome
+154.0.8037.98/binary hashes/options/full protected source reconstruct exactly.
+No allocation profiler was active; reports are null, not invented zero costs.
+
+Baseline blank243879936B; late-inclusive full-tree peak522616832B gives
+265.82421875MiB FAIL. Candidate blank240975872B; complete observed peak514228224B
+(CIM, above native505536512B) gives260.59375MiB FAIL. Same lower five-minute
+settled blank rule, ALL Chromium processes, fixed48MiB Wasm/64KiB read-write-queue/
+one write/quality unchanged. Native active coverage baseline525/candidate192,
+plus five pre-conversion samples each, zero unavailable in these phases.
+Do not infer an accepted memory benefit from unequal-work single failed runs.
+Baseline only16MiB crossing bracket41746.465..43437.960ms; candidate output
+7942949B/input6992792B at20283.385ms, no16MiB checkpoint. All16/32/64MiB matched
+timing windows unavailable/null; NO speed comparison or complete throughput claim.
+
+Baseline first native failure3465 at23:40:26.6491653UTC records55955456B in111ms
+entirely one birth-matched renderer43648; eight other deltas0/no process births.
+It predates normal production cancellation and delayed dump. Candidate first
+native failure3122 records5849088B in109ms: GPU5033984/browser4096/renderer811008,
+no births. Candidate callback explicitly not-captured-after-finalization-start;
+post-cancel timing/dump unavailable, NOT proof of renderer allocation cause.
+Both cause fields null. Neither a post-close dump nor source-function size
+identifies actual native allocation provenance. Render splitting alone rejected;
+keep private, no App/engine/registry promotion or further unchanged pair replay.
+
+Independent post-terminal check proves42 original Chromium birth identities
+absent (conservative1ms CIM/native rounding guard), both runtime directories gone,
+normal UI/six engine assets restored/nine private additions absent, and full
+protected2958573265B test.mkv SHA31f36695...b9db34 unchanged. Normal production
+cancellation reached cancelled; observed queue/pending0 is a snapshot, not a
+separately captured terminal engine-ownership claim. No unrelated processes killed.
+Disposable media/profiles/scratch removed by actual finally; raw originals removed
+only after exact gzip identity/size/hash/lossless verification. No Docker/windows.
+
+Verifier harness corrections before proof: candidate's absent cancellation-start
+timestamp must stay null; bounded2MiB JSON reader cannot hash9MiB restored Wasm,
+now separately streams approved assets with fixed1MiB buffer/128MiB size guard.
+These were postprocessing assertion failures, not conversion replays. Focused
+7/7 evidence/recipe/bookkeeping tests PASS117.7121ms; scoped lint zero. Previous
+combined output was unavailable, so tiny unit/lint checks were rerun, not Chrome.
+ZERO completed/full-output validated/repeat/scaling/speed/memory/public acceptance.
+Full original goal remains ACTIVE/INCOMPLETE; late decoder/pool OOM also unresolved.
+Next investigate native allocation/engine lifetime using retained evidence; no
+more unchanged goldens, full-source pairs, profiler dumps or UI-only guesses.
+
+## Historical snapshot — Matched split-render/native pair was LIVE; now superseded
 
 Supersedes PREPARED ONLY below. ONE launched23:33:58UTC from pushed+remote-verified
 a5b9d67/media-options; main unchanged0904d93. SAME session52353 confirmed LIVE by
