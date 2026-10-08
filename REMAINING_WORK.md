@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Progress-launch preparation failure corrected before Chrome
+
+Actual first launch from3354d30 exited1 BEFORE browser/conversion/staging: the
+partial Blink helper correctly rejected the new archive basename's suffix.
+Physical6,470,516,736/virtual3,570,917,376bytes passed the host guard, but no
+conversion-driver source read, partial media or browser profile was started.
+Owned driver scratch removed finally; read-only inventories show no remaining
+new progress runtime/reports. Actual failed source6596fb04...d78386 preserved.
+See `evidence/mpeg2-js-progress-launch-failure-2026-10-08.json`.
+
+NEW reversible bound launcher uses the required `-partial-blink-trace.json.gz`
+schema and preparation now constructs/syntax-checks the actual trace helper,
+not just the conversion module. No guard/cap or original settings changed.
+Focused4/4 PASS226.439ms/three new bound files zero-warning lint PASS. Corrected
+preparation2026-10-08T12-48-31-206Z verifies111source pins; conversion module stays
+45340bytes/SHA9d66673d...9fe0. ZERO browser executions from these preparations.
+Next ONE actual bound diagnostic remains pending behind a fresh2GiB physical
+ANDvirtual preflight; no original/source/memory/speed/public acceptance yet.
+
 ## 2026-10-08 — Actual-progress JS diagnostic prepared; original gates intact
 
 New diagnostic changes measurement, not codec/quality/input/CSS/defaults. The
