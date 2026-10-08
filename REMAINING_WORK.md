@@ -5,6 +5,57 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Actual abort-only native allocator inventory passed
+
+Previous goal turn was PROGRESS: actual pool control, five unchanged production
+goldens, static compiled allocator ABI, 795 units and remote checkpoint 0536368.
+New failure-only wrapper reads the verified root1786520 only AFTER a qualified
+pending pool abort, using the unchanged bounded header inspector. Actual current
+Chrome control PASS: request82, 42 free chunks/3760 bytes, largest2776 bytes,
+169 header words read (cap32768), dynamic footprint90944 bytes. Separately
+31,281,152 bytes above the current native segment are UNCLAIMED Wasm address
+space, not free chunks/live-heap evidence. Synthetic request33,554,448 is too
+large for the fixed32MiB heap; none of these values describe the original failure.
+No payload read, native function at abort, heap copy/mutation or normal sampling.
+Prior fatal callback preserved, unavailable remains null, 11 sampled native
+births absent/worker/server/profile gone, outer derivative scratch finally removed.
+First generation stopped before browser on ambiguous root-expression replacement;
+unique declaration corrected, original failed source exactly reconstructible.
+Nine focused units PASS283.8323ms, scoped zero-warning lint PASS. Production
+adapter changes only fatal observer; same compiled core, encoder, I/O/quality/
+heap/cleanup paths. Real unchanged five conversion goldens NEXT, not yet passed
+for this allocator wrapper. Original free/live state still unknown/full goal OPEN.
+Evidence: late-pool-allocator-abort-control and control-preflight-failure JSON.
+
+Production goldens held twice BEFORE staging/browser/conversion by unchanged2GiB
+physical+virtual host guard. Between holds a read-only sample07:47:02UTC was safe
+(4,302,430,208 physical/2,672,361,472 virtual bytes), but availability fell again
+at launch. Exact hold bytes unavailable, not invented/zero. Both wrapper scratch
+directories removed. Asked user to free an unused application; no app killed,
+no duplicate live browser, no weakened guard. New independent golden freezer
+prepared but unexecuted; it preserves all prior exact content/restore assertions.
+Elapsed suite time will remain null there rather than copying an old run's time.
+See mpeg2-late-allocator-goldens-host-held-2026-10-08.json.
+
+Prepared full-original runner refuses to start without the new five-case golden
+validation proof. Its derivative keeps full input/hash/disk/defaults/three runs/
+six-hour deadline/lower five-minute blank/full-tree250MiB/fidelity/recovery/
+finally checks. New manifest workflow provenance is verified using the exact
+canonical-to-build one-line shim, not bypassed. Actual failure request/free-header
+records will be joined to the actual binary; live heap/cause remain null.
+Prepared stager/runner/freezer generated sources and complete original driver
+parse-check PASS without executing a stage, browser or protected input. Seven
+focused controls/evidence/preparation tests PASS678.8385ms. This is source
+preparation, NOT production goldens or original execution. Next action awaits
+user RAM reply, then unchanged five goldens and freeze before ONE changed long
+attempt. No unbounded retry/live browser/media copy is present.
+
+Final combined checkpoint802/802 units PASS4264.4609ms; all11 changed JavaScript/
+test files zero-warning lint PASS. No browser source or TypeScript changed since
+the prior semantic TypeScript pass. Actual production five-case allocator goldens
+and full original remain unexecuted, so this checkpoint is not conversion,
+whole-process memory, scaling, speed or full-goal acceptance.
+
 ## 2026-10-08 — Production late observer retains all five goldens; allocator ABI verified
 
 Final combined checkpoint: 795/795 unit tests passed in 5,158.0563 ms,

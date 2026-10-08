@@ -1,0 +1,12 @@
+{
+  "status": "source-generator-held-before-browser",
+  "sourcePath": "scripts/check-late-pool-allocator-abort-control.mjs",
+  "executedSourceSha256": "0e9ca5f42ddb7fc44ea1dac5da26481577e759494b0c10fd6c4aeb7874f67c41",
+  "reason": "Unqualified root expression occurred twice because the pinned driver contains its own generation template; assertion rejected ambiguous replacement (2 !== 1).",
+  "correction": "Match the unique full outer root declaration, not its nested template expression.",
+  "browserStarted": false,
+  "converterCalls": 0,
+  "generatedControlBinaryWritten": false,
+  "protectedOriginalRead": false,
+  "publicAcceptance": false
+}

@@ -1,0 +1,32 @@
+{
+  "status": "host-preflight-held-before-stage-browser-conversion",
+  "executedSourcePath": "scripts/validate-mpeg2-late-allocator-abort-goldens.mjs",
+  "executedSourceSha256": "1f94fe9f9bb74d08d79dc22354495f37d71be8efeeba553a9b6eb79e932614d8",
+  "reason": "Unchanged Keep2GiB physical-and-virtual host guard returned false; exact failed-query byte values were not retained and remain unavailable.",
+  "heldFreePhysicalBytes": null,
+  "heldFreeVirtualBytes": null,
+  "stageStarted": false,
+  "browserStarted": false,
+  "conversions": 0,
+  "heldOwnedWrapper": "work/mpeg2-late-allocator-goldens-wrapper-GSQQ4D",
+  "heldWrapperFinallyRemoved": true,
+  "secondHeldAttempt": {
+    "reason": "Fresh safe read-only confirmation was followed by another unsafe guard result at browser launch; no stage/browser/conversion started. No repeated automatic attempts after this held launch.",
+    "ownedWrapper": "work/mpeg2-late-allocator-goldens-wrapper-xwk2Mi",
+    "ownedWrapperFinallyRemoved": true,
+    "actualPhysicalBytesAtHold": null,
+    "actualVirtualBytesAtHold": null,
+    "awaitingUserMemoryReply": true
+  },
+  "subsequentReadOnlyConfirmation": {
+    "acquiredAtUtc": "2026-10-08T07:47:02.1699022Z",
+    "freePhysicalBytes": 4302430208,
+    "freeVirtualBytes": 2672361472,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true
+  },
+  "noProgramsKilled": true,
+  "memoryFormulaChanged": false,
+  "publicAcceptance": false
+}
