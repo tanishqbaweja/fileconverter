@@ -5,6 +5,47 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — New live native-category diagnostic prepared
+
+Previous cycle is PROGRESS: independently verified real-progress evidence,
+876 passing unit cases, logs and compact artifacts were pushed as22fa256.
+The native Memory sampler was already exercised on Chrome154 and returned
+unresolved Windows addresses; do not repeat it unchanged. Existing detailed
+dumps followed worker cancellation and cannot identify live-worker retention.
+
+New five-file live-memory tooling pins/reverses the ACTUALLY executed baseline
+driver497e3667..., retaining FULL test.mkv, fixed32+16MiB/defaults/quality,
+one bounded writer, five-minute LOWER blank, ALL-process250MiB, full completion/
+validation/three-run and finally gates. Headless/hidden children remain required.
+Only measurement callbacks change: bounded light memory-infra captures before
+conversion, after8MiB genuine output and on the first native-budget failure
+BEFORE normal production cancel. If no budget failure occurs, normal checkpoint
+cancel is64MiB with the existing120s maximum diagnostic window; cancellation or
+deadline still fails the full-conversion gate. No profile becomes public.
+
+Each isolated trace has4MiB Chrome buffer,8MiB serialized cap,256KiB reads,
+15s deadline, one outstanding trace, at most3 dumps; raw bytes are preserved in
+verified lossless repository-local gzips. V8 main/worker, malloc, PartitionAlloc,
+Blink and related available counters are retained, missing values null and
+overlapping allocator totals NEVER summed. These are live category observations,
+NOT native allocation stacks, exact peak liveness, causal proof or acceptance.
+Browser command functionality/category availability remains UNVERIFIED until
+actual execution. Primary source guidance is Chromium's
+[memory-infra component guide](https://www.chromium.org/developers/how-tos/trace-event-profiling-tool/memory/howto-adding-memory-infra-tracing-to-a-component/),
+[malloc dump provider](https://chromium.googlesource.com/chromium/src.git/+/main/base/trace_event/malloc_dump_provider.cc)
+and [DevTools protocol schema](https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/master/json/browser_protocol.json).
+Current upstream source is guidance, not proof of this installed binary's behavior.
+
+Preparation receipt `evidence/2026-10-08T22-39-26-191Z-live-memory-preparation.json`:
+generated driver syntax/reversible pins PASS, ZERO new browser conversions.
+Initial2/2 unit PASS141.7307ms; expanded focused9/9 PASS992.5554ms (including
+mock-only archive/oversize/cleanup and actual native-observer lifecycle tests),
+five-file zero-warning lint PASS. These fixtures are NOT converter runs.
+Read-only guessed helper filename lookup failed; rg file discovery found the
+actual bounded attribution helper. No browser replay or production changes.
+Next ONE changed live diagnostic after fresh2GiB physical/virtual and32GiB disk
+guards. Whole original-spec goal remains ACTIVE / INCOMPLETE; no Docker.
+
 ## 2026-10-09 — Real-progress UI comparison is mixed, not a speed/memory fix
 
 Actual headless pair completed in terminal session48317; do not restart it.
