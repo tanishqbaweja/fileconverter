@@ -24,7 +24,7 @@ synthetic export derivative NEVER staged/media-used. Freezer pins its source
 separately and leaves machine elapsed time null;27.3s is actual CLI suite output,
 not a transplanted benchmark. This is diagnostic compatibility, NOT full-original,
 whole-process250MiB/scaling/repeat/speed or public profile acceptance.
-ONE changed full-original attempt is next after committing this checkpoint;
+ONE changed full-original attempt launched after committing this checkpoint;
 original failing pool/request/free/live state still unmeasured/full goal ACTIVE.
 Evidence: mpeg2-late-allocator-abort-goldens-origin-bound and golden-validation
 2026-10-08 JSONs; raw output/playwright/2026-10-08T08-06-45.873Z report.
@@ -33,6 +33,18 @@ Pre-long-run combined checkpoint807/807 units PASS4088.2214ms;12 focused
 diagnostic/evidence tests PASS447.0371ms; all five scoped changed source/test/
 generator files zero-warning lint PASS. No browser/TypeScript source changed
 since prior semantic pass. This checkpoint does not certify the full original.
+
+Actual full-original session27354 LIVE at08:13:33UTC, code2fdeaf9 pushed and
+remote-verified/mainunchanged0904d93. Safe host08:10:44UTC, protected full
+size/hash verification and32GiB disk preflight passed before Chrome startup.
+Runner43804(parent43328,birth08:10:44.0657870Z), Chrome27896(parent43804,
+birth08:10:52.7599600Z) both actually observed live. Current phase lower stable
+five-minute blank startup settling; no conversion/completion/cause acceptance.
+Own runtimeQyN1rK/driverOcXxaT/wrapperKbNYUe remain repo-local and IN USE;
+finally cleanup/post-SHA pending. Poll SAME27354, never duplicate/kill/delete
+active media/profile or infer terminal state from timeout. No local engine/App/
+stager/test-source mutation or extra browser while this job is active.
+See mpeg2-late-allocator-original-launch-2026-10-08.json.
 
 ## 2026-10-08 — Nested diagnostic import binding corrected; production checks initially held
 

@@ -1,0 +1,50 @@
+{
+  "recordedAtUtc": "2026-10-08T08:13:33Z",
+  "statusAtObservation": "live-blank-startup-settling-not-conversion-or-acceptance",
+  "sessionHandle": 27354,
+  "headAtLaunch": "2fdeaf91a5b073f9b3e93e395bace4d8be279c79",
+  "sourcePins": {
+    "scripts/mpeg2-late-allocator-original-memory.mjs": "a450b8bd54b75b36c80e8009d197b49109ed9f589221ef94cb2ae1aa4a4011c9",
+    "scripts/lib/mpeg2-late-allocator-original-recipe.mjs": "834f24e29fc378a1f811da467d96975cc6031afbb2bc732ce683e36997e0c41d"
+  },
+  "hostPreflight": {
+    "acquiredAtUtc": "2026-10-08T08:10:44.5701185Z",
+    "freePhysicalBytes": 5584379904,
+    "freeVirtualBytes": 3021656064,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true
+  },
+  "runnerIdentity": {
+    "pid": 43804,
+    "parentPid": 43328,
+    "createdAtUtc": "2026-10-08T08:10:44.0657870Z"
+  },
+  "browserIdentity": {
+    "pid": 27896,
+    "parentPid": 43804,
+    "createdAtUtc": "2026-10-08T08:10:52.7599600Z"
+  },
+  "ownedRuntime": "work/mpeg2-late-allocator-original-runtime-QyN1rK",
+  "ownedDriver": "work/mpeg2-late-allocator-original-driver-OcXxaT",
+  "ownedWrapper": "work/mpeg2-late-allocator-original-wrapper-KbNYUe",
+  "expectedProtectedSource": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "verificationBeforeBrowserStartupPassed": true
+  },
+  "diskPreflightMinimumBytes": 34359738368,
+  "diskPreflightPassedBeforeBrowserStartup": true,
+  "productionSmallGoldenProof": "evidence/mpeg2-late-allocator-abort-golden-validation-2026-10-08.json",
+  "compiledNormalCoreSha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c",
+  "syntheticExportDerivativeUsedForMedia": false,
+  "minimumBlankSettlementMs": 300000,
+  "fullOriginalConversionsCompletedAtObservation": 0,
+  "individualOriginalFailureAllocationBytes": null,
+  "originalFailureFreeHeaders": null,
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "cleanupPendingWhileOwnedRuntimeInUse": true,
+  "caveat": "Historical launch observation only, not a liveness claim for later turns. Re-poll session27354 or these exact native births; never restart on timeout or delete active owned media/profile. Final proof, post-source hash and finally cleanup remain pending."
+}
