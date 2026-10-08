@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-08T11:53:22.651Z",
+  "status": "source-and-syntax-prepared-not-browser-executed",
+  "sourcePins": {
+    "scripts/mpeg2-hero-width-original-memory.mjs": "fcd97238681a49772ba89dd9c67acfba05cea5b8b4b36250b66a3b55e207d9ec",
+    "scripts/lib/mpeg2-hero-width-original-recipe.mjs": "7c34c26966ca31051b663f2cde3a3d60b0d676bb9666acdf643f278bd0f0a645",
+    "scripts/mpeg2-matrix-original-memory.mjs": "13676230f8155f706e34e0013973a3e6b9e9394c5528632057ca689a7b3b02ca",
+    "scripts/lib/mpeg2-matrix-original-recipe.mjs": "c9db540e135c09e0a00bc0f48d06966cdf5cc590eda473493e82facefb1534f1",
+    "scripts/lib/ui-hero-width-flex-layout-recipe.mjs": "d74c450b8ff17fa9d2351d25678dc97c4ea4343966f038e2834ef8954703a047",
+    "tests/mpeg2-hero-width-original-recipe.test.mjs": "f2fb34e7400216c8e88271b8c671a98b95ca65cdf3fb024fd8abe1466593cac0",
+    "evidence/2026-10-08T11-43-06-973Z-mpeg2-hero-width-golden-validation.json": "9931527a2bf643066731c4cd4fbb59d11f1ac2a775d77df45cd0ddb5a8f59e36",
+    "evidence/2026-10-08T11-39-44-157Z-ui-hero-width-flex-layout-analysis.json": "b68e3c7c20612b163077da6319dec5225ac9a32fe117fae429a12f440fa27278"
+  },
+  "generatedHash": "16d0b456e5bf1f8e0bf16a0f6e7995b0e53c2d79aa601bfcf967840f134fc9e0",
+  "generatedBytes": 3962,
+  "protectedSourceChanged": false,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "changedReason": "Only new hero width CSS, verified9responsive geometries and5headed genuine golden/recovery cases; all protected full-source/defaults/250MiB/ALLprocesses/three-repeats/validators/finally remain"
+}

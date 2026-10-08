@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Full-original hero candidate prepared, not yet accepted
+
+New `mpeg2-hero-width-original-memory.mjs`/recipe derives byte-exact from the
+executed matrix full-source harness; ONLY previously geometry/golden/recovery-
+verified hero CSS, provenance, proof/report names differ. Normal compiled3e744,
+full `test.mkv`, input/output AVIO, quality/default dimensions/settings, fixed32+16MiB,
+64KiB bounds, one pending write, same lower stable five-minute blank, ALL-process
+250MiB, three full repeats, independent output validators/recovery/finally remain.
+New source guards are reversible and original executed files stay immutable.
+
+Focused7/7 PASS230.7278ms (including one new full-source recipe check); three new
+files zero-warning lint PASS. Preparation checks generated launcher syntax and
+records exact current source hashes; ZERO browser executions/conversions or new
+memory/speed/public acceptance from preparation. Earlier836 combined unit result
+predates this one new test; not837 retroactively. The next ONE actual candidate
+launch is gated by actual headed golden+layout evidence and unchanged disk/RAM/
+protected full SHA checks. Goal remains active; no unchanged retry or limit change.
+See `evidence/mpeg2-hero-width-original-preparation-2026-10-08.json`.
+
 ## 2026-10-08 — Hero width correction verified; full-original acceptance still pending
 
 Progress, not completion. The first actual hero-grid/flex pair (terminal94752)
