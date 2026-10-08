@@ -1,0 +1,42 @@
+{
+  "recordedAt": "2026-10-08T22:56:19.998Z",
+  "status": "two-terminal-proof-jsons-losslessly-compacted",
+  "compactor": {
+    "path": "scripts/compact-live-memory-proof.mjs",
+    "sha256": "950f8145377eb42e4c03fe7732ef9a4612b7798b74c48bd6898255d79bb9709e"
+  },
+  "records": [
+    {
+      "original": {
+        "path": "evidence/2026-10-08T22-41-09-984Z-live-memory.json",
+        "bytes": 1103114,
+        "sha256": "29abba875ddd5ff06a8a6c915ebfc5ed3a8747ae54393757ce40c5f1d007de55"
+      },
+      "archive": {
+        "path": "evidence/2026-10-08T22-41-09-984Z-live-memory.json.gz",
+        "bytes": 82855,
+        "sha256": "c5f6b05b2a9179295234ab22ca10b34814d20df9fbd3c14711f3abc84fb18d0d"
+      },
+      "originalRemovedAfterIdentityAndByteExactLosslessValidation": true,
+      "bytesSaved": 1020259
+    },
+    {
+      "original": {
+        "path": "evidence/2026-10-08T22-41-09-984Z-live-memory-analysis.json",
+        "bytes": 944902,
+        "sha256": "208364b79acdba8f7aa36d9f723cabac5505b9d0ab0a87068cc9c4d1d42dcd8d"
+      },
+      "archive": {
+        "path": "evidence/2026-10-08T22-41-09-984Z-live-memory-analysis.json.gz",
+        "bytes": 68883,
+        "sha256": "6149e068cddecffde37a9bf1ac9769316b4136cba3dd02bdec9144bdd0517e11"
+      },
+      "originalRemovedAfterIdentityAndByteExactLosslessValidation": true,
+      "bytesSaved": 876019
+    }
+  ],
+  "totalBytesSaved": 1896278,
+  "semanticsChanged": false,
+  "sourceMediaTouched": false,
+  "newBrowserRuns": 0
+}

@@ -5,6 +5,88 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Actual live category capture completed; long-run cause still open
+
+Session41515 is TERMINALexit0 (diagnostic controller only), child ACTUALexit1
+with `Conversion deadline reached; no automatic restart`. No duplicate run.
+Chrome154 headless flag was independently observed on original native birth
+6628/parent28840/2026-10-08T22:41:20.5045360Z. Host physical5324341248 and
+virtual4504350720 bytes, fresh launch2GiB and32GiB repository-disk guards passed.
+FULL protected original size/SHA and124 executed source pins match pre/post.
+
+Same lower five-minute settled blank243912704, all-process late-inclusive
+conversion peak492367872 =>236.9453125MiB partial/instrumented, NOT acceptance.
+9pre+1119active valid native samples, zero unavailable/errors. First native
+budget failure is genuinely null: the earlier burst did NOT recur within this
+120s window. Therefore only TWO light dumps were executed, no failure-time or
+end-window snapshot. The64MiB checkpoint was not reached. Do NOT repeat this
+unchanged two-snapshot workflow or claim that tracing fixed the earlier failure.
+Final observed partial output47879942/input48588353 bytes at121234.555ms, no
+complete-output validation or new speed comparison. Fixed48MiB Wasm/50331652
+SAB,64KiB read/write/peak queue, one outstanding operation; no limit/quality/
+process/baseline manipulation. ZERO complete original conversions/repeats/
+scaling/speed/memory/public acceptance. Prior full-source256.43359375 failure
+and separate late decoder OOM remain unresolved, not superseded.
+
+Before-conversion dump22:46:43.701–.940UTC: idle both sides, input/output metrics
+null, not fabricated zeros. Live dump22:47:06.309–12.956UTC: running both sides,
+actual output8427700 ->10510526 bytes. Both raw traces are exact/reconstructable
+77096/77444-byte gzips. Renderer27180 OS private snapshots59883520 ->163848192.
+Its reported `v8/main/malloc/peak_size` rose3323864 ->32204636 bytes, while
+current `size` remained86052. Main V8 heap6832128 ->6569984, workers heap
+1835008 ->3670016; Blink main10354768 ->17694800; malloc/allocated_objects
+12954332 ->42120528. These categories overlap and must NOT be added. Peak_size
+is a historical counter, not live bytes at the snapshot or the OS-private peak.
+No wasm-named allocator was returned for that renderer; that is absent trace
+coverage, not zero Wasm memory. This narrows a transient-main-V8 investigation,
+but does NOT attribute the previous40.8MB burst to React, compilation, codec or
+these dump requests. No allocation callsite/cause is proved.
+
+Actual90s JS sampling duration stop fired/finished without errors; unlike the
+earlier checkpoint pair, this is now observed timer evidence. Normal production
+cancel, source hash, restored normal assets, all owned scratch/media/profiles
+gone. Independent21 original native births absent; PID42736 has a proved later
+unrelated birth and was not killed. Terminal pending metrics were not separately
+captured and remain null. Saved last running metrics are not terminal metrics.
+3584708-byte raw report removed ONLY after identity/hash/lossless160447-byte
+archive validation (3424261 bytes saved); CSV/HTML/trace ZIP and compact actual
+profiles remain repo-local proof, not converted copies. Old inherited raw scope
+text describes post-cancel detailed tracing; actual pinned derivative/live
+states prove these NEW light captures. Preserve that historical mismatch openly.
+
+Independent `evidence/2026-10-08T22-41-09-984Z-live-memory-analysis.json.gz` verifies
+actual driver reversal,124 pins, trace GUID intervals/all counters/archives,
+asset response/body restoration, primary formula/late peaks, full protected SHA
+and birth cleanup. Normal app/codec/I-O/CSS/public registry unchanged; no Docker
+or visible windows. One read-only counter query printed too many bucket names
+and was truncated; a bounded two-renderer projection corrected the inspection
+only. Guessed verifier-helper filename and upstream-source lookup failed, not
+conversion tests. Next evidence-guided work: isolate the transient V8 main
+malloc cost (a smaller root-render function is a PRIVATE hypothesis, not an
+accepted optimization), retaining identical UI/content/core/defaults and exact
+behavior before a meaningful matched benchmark. Do not replay full-original
+unchanged or infer a native cause from JS samples. Goal ACTIVE / INCOMPLETE.
+
+Closure: new actual-evidence plus live trace/recipe/duration focused6/6
+PASS201.2477ms; CURRENT881/881 combined unit cases PASS (dot reporter, exit0,
+zero failed/skipped). Independent verifier/evidence test/ledger generator
+zero-warning lint and verifier syntax PASS. Public manifest405/405 with zero
+pending/public-nonpassing/PDF remains consistent, NOT freshly stress-certified.
+All newly tested approaches and the absent failure/end-window dump are recorded.
+
+Final storage follow-up: the1103114-byte execution receipt and944902-byte
+independent proof were also replaced ONLY after terminal-status, file identity,
+SHA and byte-exact lossless gzip validation. Their executed bytes remain fully
+recoverable in82855/68883-byte `.json.gz` archives, saving1896278 more bytes.
+`evidence/2026-10-08T22-41-09-984Z-live-memory-compaction.json` records every hash.
+The immutable executed verifier/receipt claims were NOT rewritten; the evidence
+test reads/restores the archived bytes instead. This is no new conversion or
+native measurement. The earlier881-unit pass predates the added archive test;
+Final archive-aware focused7/7 PASS331.6072ms and CURRENT882/882 combined unit
+cases PASS (dot reporter, exit0, zero failed/skipped) now actually executed.
+Compactor/archive-aware evidence reader zero-warning lint PASS. No browser,
+conversion, protected-source edit or primary measurement was repeated for this.
+
 ## 2026-10-09 — New live native-category diagnostic prepared
 
 Previous cycle is PROGRESS: independently verified real-progress evidence,
