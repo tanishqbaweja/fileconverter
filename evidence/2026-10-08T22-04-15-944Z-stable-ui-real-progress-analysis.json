@@ -1,0 +1,259 @@
+{
+  "recordedAt": "2026-10-08T22:19:35.156Z",
+  "status": "verified-paired-real-progress-instrumented-diagnostic-not-acceptance",
+  "executionReceipt": {
+    "path": "evidence/2026-10-08T22-04-15-944Z-stable-ui-real-progress.json",
+    "bytes": 159728,
+    "sha256": "3ce135e088ffcad939ab6fd52d602abc44a0bbb0edd8654d8b475f4d28803251"
+  },
+  "verifier": {
+    "path": "scripts/analyze-stable-ui-real-progress.mjs",
+    "sha256": "4696e5b8d0d8e5e803bddfc3a84b9fb53a7d9cc9266b85013664eb63f6f49c40"
+  },
+  "comparisonHelper": {
+    "path": "scripts/lib/real-progress-comparison.mjs",
+    "sha256": "37f17b5e7fe689fefb580b3e3b9562c00278cb7a2ca4bba13cfabca2d8aeb74b"
+  },
+  "comparison": {
+    "browserVersion": "154.0.8037.98",
+    "matchedBrowserHashes": true,
+    "matchedViewport": {
+      "width": 1280,
+      "height": 900
+    },
+    "allocations": [
+      {
+        "thresholdOutputBytes": 1048576,
+        "baseline": {
+          "observedInputBytes": 2677240,
+          "observedOutputBytes": 1612877,
+          "elapsedMs": 5838.75,
+          "estimatedAllocatedBytes": 2720888,
+          "sourceLocatedEstimatedBytes": 1999544,
+          "sampleCount": 41,
+          "nodeCount": 182
+        },
+        "candidate": {
+          "observedInputBytes": 2647271,
+          "observedOutputBytes": 1612877,
+          "elapsedMs": 5802.184999972582,
+          "estimatedAllocatedBytes": 2694032,
+          "sourceLocatedEstimatedBytes": 1807620,
+          "sampleCount": 40,
+          "nodeCount": 71
+        },
+        "estimatedBytesDifference": -26856,
+        "observedOutputBytesDifference": 0,
+        "caveat": "Random statistical cumulative allocation estimates; threshold polling can overshoot; not exact live/native bytes or equal-work speed proof"
+      },
+      {
+        "thresholdOutputBytes": 8388608,
+        "baseline": {
+          "observedInputBytes": 7352421,
+          "observedOutputBytes": 8427700,
+          "elapsedMs": 21570.82499998808,
+          "estimatedAllocatedBytes": 8821228,
+          "sourceLocatedEstimatedBytes": 6591888,
+          "sampleCount": 134,
+          "nodeCount": 273
+        },
+        "candidate": {
+          "observedInputBytes": 7172606,
+          "observedOutputBytes": 8427700,
+          "elapsedMs": 21406.25,
+          "estimatedAllocatedBytes": 7021148,
+          "sourceLocatedEstimatedBytes": 5282288,
+          "sampleCount": 106,
+          "nodeCount": 100
+        },
+        "estimatedBytesDifference": -1800080,
+        "observedOutputBytesDifference": 0,
+        "caveat": "Random statistical cumulative allocation estimates; threshold polling can overshoot; not exact live/native bytes or equal-work speed proof"
+      },
+      {
+        "thresholdOutputBytes": 16777216,
+        "baseline": {
+          "observedInputBytes": 24864321,
+          "observedOutputBytes": 17793716,
+          "elapsedMs": 45154.69999998808,
+          "estimatedAllocatedBytes": 17999396,
+          "sourceLocatedEstimatedBytes": 14065068,
+          "sampleCount": 274,
+          "nodeCount": 289
+        },
+        "candidate": {
+          "observedInputBytes": 24077889,
+          "observedOutputBytes": 17197466,
+          "elapsedMs": 44296.69999998808,
+          "estimatedAllocatedBytes": 11888024,
+          "sourceLocatedEstimatedBytes": 8772432,
+          "sampleCount": 180,
+          "nodeCount": 181
+        },
+        "estimatedBytesDifference": -6111372,
+        "observedOutputBytesDifference": -596250,
+        "caveat": "Random statistical cumulative allocation estimates; threshold polling can overshoot; not exact live/native bytes or equal-work speed proof"
+      }
+    ],
+    "pageThreadCpuSeconds": {
+      "baseline": {
+        "TaskDuration": 9.76752,
+        "ScriptDuration": 0.342811,
+        "LayoutDuration": 1.329062,
+        "RecalcStyleDuration": 0.5136400000000001
+      },
+      "candidate": {
+        "TaskDuration": 10.255515,
+        "ScriptDuration": 0.23366900000000002,
+        "LayoutDuration": 1.378859,
+        "RecalcStyleDuration": 0.548266
+      },
+      "scope": "CDP threadTicks page task/script/layout/style only; excludes workers/whole conversion CPU; sampling/threshold overshoot perturbs timing"
+    },
+    "samplingIntervalBytes": 65536,
+    "forcedGcUsed": false,
+    "nativeAllocationCauseProven": false,
+    "completeOutputIndependentlyValidated": false,
+    "completeOriginalConversions": 0,
+    "conversionSpeedAcceptance": false,
+    "completeChromiumMemoryAcceptance": false,
+    "publicAcceptance": false
+  },
+  "nativeFacts": [
+    {
+      "mode": "baseline",
+      "blankPrivateBytes": 239738880,
+      "actualPeakPrivateBytes": 484724736,
+      "observedIncrementalPrivateMiB": 233.63671875,
+      "lastLoopReportedIncrementalMiB": 233.63671875,
+      "latePhasePeaksIncluded": true,
+      "phaseCoverage": [
+        {
+          "phase": "pre-conversion-1",
+          "validSamples": 6,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-1",
+          "validSamples": 420,
+          "unavailableSamples": 0
+        }
+      ],
+      "primaryMemoryAcceptance": false
+    },
+    {
+      "mode": "candidate",
+      "blankPrivateBytes": 237592576,
+      "actualPeakPrivateBytes": 483102720,
+      "observedIncrementalPrivateMiB": 234.13671875,
+      "lastLoopReportedIncrementalMiB": 234.13671875,
+      "latePhasePeaksIncluded": true,
+      "phaseCoverage": [
+        {
+          "phase": "pre-conversion-1",
+          "validSamples": 6,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-1",
+          "validSamples": 413,
+          "unavailableSamples": 0
+        }
+      ],
+      "primaryMemoryAcceptance": false
+    }
+  ],
+  "profileFacts": [
+    {
+      "mode": "baseline",
+      "records": 4,
+      "maximumSamplingMs": 90000,
+      "durationStop": null,
+      "stoppedSummary": {
+        "serializedBytes": 62949,
+        "nodeCount": 289,
+        "sampleCount": 274,
+        "estimatedSelfBytes": 17999396
+      },
+      "servedScripts": [
+        {
+          "asset": "/assets/framework-CXnKph_e.js",
+          "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+          "bytes": 189805,
+          "sha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+          "actualServedBytesCaptured": true
+        },
+        {
+          "asset": "/assets/ConverterApp-BuCmNpWV.js",
+          "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+          "bytes": 315630,
+          "sha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+          "actualServedBytesCaptured": true
+        }
+      ]
+    },
+    {
+      "mode": "candidate",
+      "records": 4,
+      "maximumSamplingMs": 90000,
+      "durationStop": null,
+      "stoppedSummary": {
+        "serializedBytes": 38309,
+        "nodeCount": 181,
+        "sampleCount": 180,
+        "estimatedSelfBytes": 11888024
+      },
+      "servedScripts": [
+        {
+          "asset": "/assets/framework-CXnKph_e.js",
+          "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+          "bytes": 189805,
+          "sha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+          "actualServedBytesCaptured": true
+        },
+        {
+          "asset": "/assets/ConverterApp-SNmCD3M3.js",
+          "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+          "bytes": 315826,
+          "sha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+          "actualServedBytesCaptured": true
+        }
+      ]
+    }
+  ],
+  "cleanupIdentities": {
+    "originalIdentityCount": 42,
+    "originalIdentitiesAbsent": true,
+    "reusedPids": [
+      {
+        "current": {
+          "pid": 7840,
+          "parentPid": 14264,
+          "createdAt": "2026-10-08T22:13:10.1003670Z"
+        },
+        "original": [
+          {
+            "pid": 7840,
+            "parentPid": 45284,
+            "createdAt": "2026-10-08T22:04:52.5976586Z",
+            "creationFileTime": "134359706925976586",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ]
+      }
+    ],
+    "noProcessesKilled": true,
+    "unavailableBirthsAssumedAbsent": false
+  },
+  "protectedFullPostHashVerified": true,
+  "conversionsCompleted": 0,
+  "nativeAllocationCauseProven": false,
+  "repeatabilityAccepted": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false
+}

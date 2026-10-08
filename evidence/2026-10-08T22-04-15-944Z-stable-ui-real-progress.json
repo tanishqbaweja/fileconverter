@@ -1,0 +1,3366 @@
+{
+  "recordedAt": "2026-10-08T22:17:49.604Z",
+  "status": "paired-real-progress-diagnostic-returned-independent-analysis-pending",
+  "failure": null,
+  "sourcePins": {
+    "scripts/mpeg2-hero-width-original-memory.mjs": "fcd97238681a49772ba89dd9c67acfba05cea5b8b4b36250b66a3b55e207d9ec",
+    "scripts/lib/mpeg2-hero-width-original-recipe.mjs": "7c34c26966ca31051b663f2cde3a3d60b0d676bb9666acdf643f278bd0f0a645",
+    "scripts/lib/ui-hero-width-flex-layout-recipe.mjs": "d74c450b8ff17fa9d2351d25678dc97c4ea4343966f038e2834ef8954703a047",
+    "scripts/lib/ui-hero-flex-layout-recipe.mjs": "97af90520e0525a4b70e7808f0b8c716257362adc7f178bbb6ed662794cc1081",
+    "scripts/validate-mpeg2-hero-width-goldens.mjs": "43f64e633557974b9d7a80db10d8c3bce25dd38489778ad842341cf17e2d21fc",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/freeze-mpeg2-hero-width-goldens.mjs": "e12ce13d62b03bae2ceea766e3b958864eb828a4980e204439ca8e81084243ce",
+    "evidence/2026-10-08T11-43-06-973Z-mpeg2-hero-width-golden-validation.json": "9931527a2bf643066731c4cd4fbb59d11f1ac2a775d77df45cd0ddb5a8f59e36",
+    "evidence/2026-10-08T11-39-44-157Z-ui-hero-width-flex-layout-analysis.json": "b68e3c7c20612b163077da6319dec5225ac9a32fe117fae429a12f440fa27278",
+    "scripts/mpeg2-matrix-original-memory.mjs": "13676230f8155f706e34e0013973a3e6b9e9394c5528632057ca689a7b3b02ca",
+    "scripts/lib/mpeg2-matrix-original-recipe.mjs": "c9db540e135c09e0a00bc0f48d06966cdf5cc590eda473493e82facefb1534f1",
+    "scripts/lib/ui-matrix-flex-layout-recipe.mjs": "db58c642ca199b69e85ad81fd1c524f98b287b43c241ce652757724c1810532d",
+    "scripts/validate-mpeg2-matrix-goldens.mjs": "9f9d90c366b5f8025bc26e33e65b14cbb6497aaa62b346f268740e1ac2805d25",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/freeze-mpeg2-matrix-goldens.mjs": "0529a1246f60db69fe03c7ab31779c5e76240454044de6519d3dc9e631e108ec",
+    "scripts/freeze-mpeg2-matrix-goldens-compact.mjs": "f77a584df673ba1f47684914a9d7585912bd6be5198937959053842026e5ebac",
+    "evidence/2026-10-08T08-50-53-044Z-mpeg2-matrix-golden-validation.json": "38dcd7dcb55fa3e860d89c1ace8b00d9e5b60cad123b60767d6f65fd49eba82e",
+    "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout-analysis.json": "bfcc02eb027c158c5da0ff2462a9a6638d7644b34611b5b953938c6bc90e20b3",
+    "scripts/mpeg2-late-allocator-original-memory.mjs": "a450b8bd54b75b36c80e8009d197b49109ed9f589221ef94cb2ae1aa4a4011c9",
+    "scripts/lib/mpeg2-late-allocator-original-recipe.mjs": "834f24e29fc378a1f811da467d96975cc6031afbb2bc732ce683e36997e0c41d",
+    "scripts/lib/mpeg2-late-allocator-abort-adapter.mjs": "15f83296240aea55cdc932ebb8699eaf904dbb2d12ba4bc5d61de680020cdca9",
+    "scripts/lib/late-pool-allocator-abort-capture.mjs": "87f6bded4c905f2014d241de23b2b5d37a1efb893b3a0b766cb917fe429eccb9",
+    "scripts/lib/dlmalloc-free-header-inspection.mjs": "53a5d07597dd7e7ad0077fcaa9c116117ae732a7f8020c2e954bdc6238113135",
+    "scripts/lib/mpeg2-late-abort-adapter.mjs": "2c1964d0f8c14afb932065d946faf96130d245fde005840f26dbd492178fb438",
+    "scripts/lib/late-pool-abort-capture.mjs": "f0150d1866f12dc281aa401746df6518be17cf19a82404267f4c06b785a21143",
+    "scripts/lib/late-refstruct-abort-snapshot.mjs": "4b08a49d159b301b0878d7bf778c721635acbbc1b0ff231d83bb1dd3a3b0005d",
+    "scripts/lib/late-slot-build-workflow.mjs": "b7ab6d69bd0f72b13c2899fa9ff8639d39fbcb401ebf72598a0ab3aeb37872c1",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "scripts/check-late-pool-allocator-abort-control.mjs": "59c76f9b588065603840a8f640bef516f6b5277fd56bd1b8971cb4f31f75366e",
+    "evidence/late-pool-allocator-abort-control-2026-10-08.json": "6b6b2937b78273fa76b10737370effcba28987862e8000530f8c21780f075bc5",
+    "evidence/mpeg2-late-dlmalloc-layout-2026-10-08.json": "dc1e4a4398b19b4b4415f05e302a01dc5d7ec9a0c4007a5943d2dad90771fa2d",
+    "scripts/validate-mpeg2-late-allocator-abort-goldens.mjs": "1f94fe9f9bb74d08d79dc22354495f37d71be8efeeba553a9b6eb79e932614d8",
+    "scripts/validate-mpeg2-late-allocator-abort-goldens-origin-bound.mjs": "9b13f7dbab99f3b2ddae270a53c4517400069c067fc0636fb1762c310f1ab1ad",
+    "scripts/freeze-mpeg2-late-allocator-abort-goldens.mjs": "b6c8dbd5d8e836b27d1b4d4152ea16f0df533fc29ba8853bc5d3c59f4c1374ea",
+    "evidence/mpeg2-late-allocator-abort-golden-validation-2026-10-08.json": "b42e4a31a17701486cd7a8400ffa0ad6ca5982b4a739312c2d7701d5e52bded0",
+    "scripts/mpeg2-quiesced-budget-memory.mjs": "d1c6d7e29cb470375cd36fb9eba75573650502cf6e06d37cc36648252d720306",
+    "scripts/lib/mpeg2-quiesced-budget-recipe.mjs": "6f35093d4fcf54965f399cde65af9c2afaa3402c93df1f2b2eaadae0267088c3",
+    "scripts/lib/partial-blink-attribution-recipe.mjs": "7d9262a0f8ae12927054cd46643d4001a7e94ed04ae8880fab0d956e745f877d",
+    "scripts/lib/partial-memory-infra-attribution.mjs": "47b40fabe213a36babe3a4d91035890dd37776a6a7bd43eba25b2563d9a1573b",
+    "scripts/lib/partial-complete-blink-heap-summary.mjs": "78f66f93f99ef56e1f8d0ca0ffc1bd775e5e7e0c5a797fda168a3a18d9a6fd21",
+    "scripts/lib/partial-largest-blink-type-summary.mjs": "8b5cdfca5da1a9355026d5e6cc75a69a504db18a00f78b5abdd5ec3e3e8bd9a6",
+    "scripts/lib/independent-blink-sessions.mjs": "e7fb47bdd681f82a7bc9cba7c642429741a12910fe8f3115e8c3034c792be9f3",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/largest-blink-attribution-recipe.mjs": "febea639ec59fdd1559ed0e0650769ea3ccd73db4248a15dad86e485b7719c1c",
+    "scripts/lib/detailed-blink-attribution-recipe.mjs": "3de9398fca28cf7e40c268c0091310ae06228282fc79321b8491ea8d9666cc31",
+    "scripts/lib/complete-blink-heap-summary.mjs": "93bbf422d245a247f6270759a7f45145cc420687efc5c9946851be61088c508c",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "evidence/partial-blink-blocked-control-verification-2026-10-08.json": "a5819ce63886e28c7681bba806ae1d0bb496946933f5ad850bb1f8a7e3acfacb",
+    "evidence/partial-blink-quiesced-control-verification-2026-10-08.json": "cdea1d38c57c3a183492e90d6fd0df9142b2a336ecce6f157a678f89934004f4",
+    "evidence/mpeg2-staged-abort-terminal-analysis-2026-10-08.json": "149401a24174dca58e4e7493db1dd0cc010256956384c4b9d2afd8d04ed71016",
+    "scripts/mpeg2-staged-abort-original-memory.mjs": "feeb3e4e8a1d35eae57651817abc2cbe978fe1981dbd9c48273890344d47f627",
+    "scripts/lib/mpeg2-staged-abort-original-recipe.mjs": "4378d3e098a3630cf8928fc6e97d881e91dda5d317097f322273c13d43cd9eed",
+    "scripts/lib/mpeg2-abort-original-recipe.mjs": "0cf755ac0698f0f6ae4512e2c075c335832ff88195f2628182ef4a557d1b2e37",
+    "scripts/lib/bounded-wasm-abort-capture.mjs": "8726ca6eaba04736fa97f5f3b0483548d92550464c331b3397e3b383728a391e",
+    "scripts/validate-mpeg2-split-abort-goldens.mjs": "d0701a3c273d3b696ed1c604d215e84a93829cc45b66ec7142d990059aca4b0a",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a",
+    "evidence/mpeg2-abort-golden-regression-2026-10-08.json": "786e7bc14b92cbb6a81df9ed518751ac9169d8425cb8d42212e792aec9f92cd1",
+    "evidence/mpeg2-abort-preconversion-analysis-2026-10-08.json": "b05f21c70b6c9a3a7c778cf3e1687295133dfca3bcc22cff92b3abbfda1093f8",
+    "evidence/wasm-abort-capture-control-origin-checked-2026-10-08.json": "564e4b8046f2259489085f6847b129ef33a2e0d144d5558e8cd59fcf6d705909",
+    "scripts/mpeg2-flex-original-memory.mjs": "301572a71a067fcf578c2571aaca71c7b0128770f3cf7ee438d0e534303744cc",
+    "scripts/lib/mpeg2-flex-original-recipe.mjs": "4de7dbcd272043e9b9c837308126b95e014310744e1a3d155b323bf7a045661e",
+    "scripts/lib/ui-flex-layout-recipe.mjs": "8c24ac3404a614b664481ce5e1191a7be8bdfec066835e0ecfafe37bf0f415fc",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/native-budget-failure-observer.mjs": "fd9b8a554f8ab4092c4fa9d1b128aaed16282469f500d8cb1d3725a09ef4b332",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "evidence/ui-flex-layout-2026-10-07.json": "d2a4dc223e8742ec130fda8c3b49429f444d9f39997c25a6cdcbbf73f54ccbcf",
+    "evidence/ui-grid-layout-2026-10-07.json": "67b0d7c29d3c575f2cb390cc9fd1a37a49148829884e6188a654c7329e20ddde",
+    "evidence/ui-flex-layout-comparison-2026-10-07.json": "b507fc6a506ad43ef015c2669dd48de4bc7ea35a8f29badfbd8fc0bf5320cc68",
+    "evidence/ui-flex-layout-analysis-2026-10-07.json": "0b3dee268b95ff1d9f2f01a3644593499ae554c89217a069583a204a62605a9d",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "scripts/mpeg2-static-ui-original-memory.mjs": "0379740f9b2443b3ff68e0b5a82a50789dc336ea65f8713ba49f67a213ec9823",
+    "scripts/lib/mpeg2-static-ui-original-recipe.mjs": "f55e57896b1314f9f523f7096074a0515182f1b182cc38124c6c8bad12aee3e5",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "scripts/lib/static-format-matrix-recipe.mjs": "80819962f8a6b80711ec368b2271f7ec1c3da80d50ce54197f4fb45b26136631",
+    "evidence/ui-matrix-benchmark-2026-10-07.json": "c04b4c5047020780a1e0c0de07550893394b557cbf7a8d7b8da822143e82ef80",
+    "evidence/ui-matrix-golden-regression-2026-10-07.json": "db57d5ac10bfd6bb26608a863388d2cdaf221870c44cf35eb7f4d11abb0015b0",
+    "evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json": "53d4de3d0ba4900a22999c5c96c792ee6f50d58c70ae3d4894f9e3f659b674fd",
+    "scripts/mpeg2-settled-original-memory.mjs": "a60e39a29095c06ecb3a10eafb4c96506a7123e19bf6b220cf42720bdb68cf21",
+    "scripts/lib/mpeg2-settled-original-recipe.mjs": "81844773d490491d58b1ecd5890a3a2990594425cbddc5d83ec1856262b8e6f1",
+    "scripts/lib/mpeg2-aligned-progress-recipe.mjs": "b6b6fa5225d5e7e4db5051a223b9ffbe016053413e37f3cf7cd6021d3746b47b",
+    "evidence/blank-chromium-lifecycle-2026-10-06.json": "4c8819d51ca7dd5afa4de21ff19fc36896473d3afbac6f192564222a0fd689ef",
+    "evidence/mpeg2-aligned-full-failure-2026-10-06.json": "eff1499eb76a5ec87ce6e24bba94a199b4beb1b559fd48579f79fffed6f3014a",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/stage-mpeg2-split-direct.mjs": "2526f8900924e062659bfe1dabc185a81e7d1c668dce0a8a8e4007da8ee6ca60",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/mpeg2-stack-reserve-adapter.mjs": "a462f8c911676ffe57d06a6d91760c008e20491a380d13cf75f339418a276633",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/cancel-browser-conversion-before-cleanup.mjs": "c2ce30b773592c7d0ed2a035ec16a49871fa1781d5f19b382ac07abcd34407df",
+    "scripts/diagnose-ui-js-allocation.mjs": "266ad5854528f128d84bd95f92f261bd6c43f9c1fbb0e3493c9f201bb633b2af",
+    "scripts/lib/ui-js-allocation-recipe.mjs": "88fd8f9521033d26e2c0e391108df014259035a0b1f218faaba2aebfb897f607",
+    "scripts/lib/bounded-js-allocation.mjs": "bda886855a70f5f04f1d381e73b096d916e70bcfbe150607658f8a5998941044",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "scripts/lib/private-browser-request.mjs": "d24e7a443abc21f564c2e15d79b8b29054b48a6b924f7556d6d6b48c9f6d900c",
+    "tests/bounded-js-allocation.test.mjs": "2928efac1cfd59924f2c2dcb8f947421957b9f31a1dc9d99f2cb51f706f1911d",
+    "scripts/mpeg2-js-progress-original-bound.mjs": "149e4c2e3def72e04fef7126b704053c60aef11932197eebe6b124009d7933b9",
+    "scripts/lib/mpeg2-js-progress-launch-recipe.mjs": "23e37cc8aec9b38323f14986deb20fb139f30a4f237376aa50bf6ed87749dca1",
+    "tests/mpeg2-js-progress-launch.test.mjs": "2ab825d6ed27e68dc4dfbbdb54ca92e2fe4e58785c0e2845960cc5103db57292",
+    "scripts/mpeg2-js-progress-original.mjs": "6596fb04dc7f7bc2dc90c288688f25723a0344c5b7bd2a81c240614572d78386",
+    "scripts/lib/mpeg2-js-progress-recipe.mjs": "79630dad9058b69d501efc620bc93d2be287ee2cd672c872e4c39677f037280e",
+    "scripts/lib/conversion-js-allocation.mjs": "afe8e12d484117d1a66bd3e4603b698c071f9f5b1c2e05537c3ba0af8e12aaac",
+    "tests/conversion-js-allocation.test.mjs": "bdd61b8ab370869cd1bc63a91fe831ce71b8dacace8b27500d02d60c130f6906",
+    "tests/mpeg2-js-progress-recipe.test.mjs": "c324bda4022fc49f88d7c7e3ef822b6693ace719744f557dc468b4a5659c1cd3",
+    "evidence/ui-js-allocation-tooling-2026-10-08.json": "2af464a27b50fcb7bdaa731268d404d64a38c165cc0df25b3939e2d18198a485",
+    "scripts/diagnose-stable-ui-real-progress.mjs": "a9bcd10ec6ab57e10a50dcb7868bc689918944f0d8b9454cd3bae05ccb388775",
+    "scripts/lib/stable-ui-progress-probe-recipe.mjs": "98e095ac5d8922a781000c0fc4ca8a7d7bca369a0c7c45cc1a4964c3439715fa",
+    "tests/stable-ui-progress-probe.test.mjs": "a8c43a87ccda946dc52e7f778441f865ca893c9ca9731452eede1a8e760ed0e4",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "scripts/lib/conversion-js-allocation-duration-bound.mjs": "6071ef969cf3c65aabc7e3d009bbcfa6c7b5e1e36878206719093feb51d0ac69",
+    "tests/conversion-js-allocation-duration.test.mjs": "1cf8cc2903d1a66c6a53fef16d46e53fad6d7f6e87b9993e0f4dcf965fb5f5f3",
+    "evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline-validation.json": "365541dadb32331fa6b0f95e6f322fe7e8106ae53ca910d100ed8a88f72f3308"
+  },
+  "postSourcePins": {
+    "scripts/mpeg2-hero-width-original-memory.mjs": "fcd97238681a49772ba89dd9c67acfba05cea5b8b4b36250b66a3b55e207d9ec",
+    "scripts/lib/mpeg2-hero-width-original-recipe.mjs": "7c34c26966ca31051b663f2cde3a3d60b0d676bb9666acdf643f278bd0f0a645",
+    "scripts/lib/ui-hero-width-flex-layout-recipe.mjs": "d74c450b8ff17fa9d2351d25678dc97c4ea4343966f038e2834ef8954703a047",
+    "scripts/lib/ui-hero-flex-layout-recipe.mjs": "97af90520e0525a4b70e7808f0b8c716257362adc7f178bbb6ed662794cc1081",
+    "scripts/validate-mpeg2-hero-width-goldens.mjs": "43f64e633557974b9d7a80db10d8c3bce25dd38489778ad842341cf17e2d21fc",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/freeze-mpeg2-hero-width-goldens.mjs": "e12ce13d62b03bae2ceea766e3b958864eb828a4980e204439ca8e81084243ce",
+    "evidence/2026-10-08T11-43-06-973Z-mpeg2-hero-width-golden-validation.json": "9931527a2bf643066731c4cd4fbb59d11f1ac2a775d77df45cd0ddb5a8f59e36",
+    "evidence/2026-10-08T11-39-44-157Z-ui-hero-width-flex-layout-analysis.json": "b68e3c7c20612b163077da6319dec5225ac9a32fe117fae429a12f440fa27278",
+    "scripts/mpeg2-matrix-original-memory.mjs": "13676230f8155f706e34e0013973a3e6b9e9394c5528632057ca689a7b3b02ca",
+    "scripts/lib/mpeg2-matrix-original-recipe.mjs": "c9db540e135c09e0a00bc0f48d06966cdf5cc590eda473493e82facefb1534f1",
+    "scripts/lib/ui-matrix-flex-layout-recipe.mjs": "db58c642ca199b69e85ad81fd1c524f98b287b43c241ce652757724c1810532d",
+    "scripts/validate-mpeg2-matrix-goldens.mjs": "9f9d90c366b5f8025bc26e33e65b14cbb6497aaa62b346f268740e1ac2805d25",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/freeze-mpeg2-matrix-goldens.mjs": "0529a1246f60db69fe03c7ab31779c5e76240454044de6519d3dc9e631e108ec",
+    "scripts/freeze-mpeg2-matrix-goldens-compact.mjs": "f77a584df673ba1f47684914a9d7585912bd6be5198937959053842026e5ebac",
+    "evidence/2026-10-08T08-50-53-044Z-mpeg2-matrix-golden-validation.json": "38dcd7dcb55fa3e860d89c1ace8b00d9e5b60cad123b60767d6f65fd49eba82e",
+    "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout-analysis.json": "bfcc02eb027c158c5da0ff2462a9a6638d7644b34611b5b953938c6bc90e20b3",
+    "scripts/mpeg2-late-allocator-original-memory.mjs": "a450b8bd54b75b36c80e8009d197b49109ed9f589221ef94cb2ae1aa4a4011c9",
+    "scripts/lib/mpeg2-late-allocator-original-recipe.mjs": "834f24e29fc378a1f811da467d96975cc6031afbb2bc732ce683e36997e0c41d",
+    "scripts/lib/mpeg2-late-allocator-abort-adapter.mjs": "15f83296240aea55cdc932ebb8699eaf904dbb2d12ba4bc5d61de680020cdca9",
+    "scripts/lib/late-pool-allocator-abort-capture.mjs": "87f6bded4c905f2014d241de23b2b5d37a1efb893b3a0b766cb917fe429eccb9",
+    "scripts/lib/dlmalloc-free-header-inspection.mjs": "53a5d07597dd7e7ad0077fcaa9c116117ae732a7f8020c2e954bdc6238113135",
+    "scripts/lib/mpeg2-late-abort-adapter.mjs": "2c1964d0f8c14afb932065d946faf96130d245fde005840f26dbd492178fb438",
+    "scripts/lib/late-pool-abort-capture.mjs": "f0150d1866f12dc281aa401746df6518be17cf19a82404267f4c06b785a21143",
+    "scripts/lib/late-refstruct-abort-snapshot.mjs": "4b08a49d159b301b0878d7bf778c721635acbbc1b0ff231d83bb1dd3a3b0005d",
+    "scripts/lib/late-slot-build-workflow.mjs": "b7ab6d69bd0f72b13c2899fa9ff8639d39fbcb401ebf72598a0ab3aeb37872c1",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "scripts/check-late-pool-allocator-abort-control.mjs": "59c76f9b588065603840a8f640bef516f6b5277fd56bd1b8971cb4f31f75366e",
+    "evidence/late-pool-allocator-abort-control-2026-10-08.json": "6b6b2937b78273fa76b10737370effcba28987862e8000530f8c21780f075bc5",
+    "evidence/mpeg2-late-dlmalloc-layout-2026-10-08.json": "dc1e4a4398b19b4b4415f05e302a01dc5d7ec9a0c4007a5943d2dad90771fa2d",
+    "scripts/validate-mpeg2-late-allocator-abort-goldens.mjs": "1f94fe9f9bb74d08d79dc22354495f37d71be8efeeba553a9b6eb79e932614d8",
+    "scripts/validate-mpeg2-late-allocator-abort-goldens-origin-bound.mjs": "9b13f7dbab99f3b2ddae270a53c4517400069c067fc0636fb1762c310f1ab1ad",
+    "scripts/freeze-mpeg2-late-allocator-abort-goldens.mjs": "b6c8dbd5d8e836b27d1b4d4152ea16f0df533fc29ba8853bc5d3c59f4c1374ea",
+    "evidence/mpeg2-late-allocator-abort-golden-validation-2026-10-08.json": "b42e4a31a17701486cd7a8400ffa0ad6ca5982b4a739312c2d7701d5e52bded0",
+    "scripts/mpeg2-quiesced-budget-memory.mjs": "d1c6d7e29cb470375cd36fb9eba75573650502cf6e06d37cc36648252d720306",
+    "scripts/lib/mpeg2-quiesced-budget-recipe.mjs": "6f35093d4fcf54965f399cde65af9c2afaa3402c93df1f2b2eaadae0267088c3",
+    "scripts/lib/partial-blink-attribution-recipe.mjs": "7d9262a0f8ae12927054cd46643d4001a7e94ed04ae8880fab0d956e745f877d",
+    "scripts/lib/partial-memory-infra-attribution.mjs": "47b40fabe213a36babe3a4d91035890dd37776a6a7bd43eba25b2563d9a1573b",
+    "scripts/lib/partial-complete-blink-heap-summary.mjs": "78f66f93f99ef56e1f8d0ca0ffc1bd775e5e7e0c5a797fda168a3a18d9a6fd21",
+    "scripts/lib/partial-largest-blink-type-summary.mjs": "8b5cdfca5da1a9355026d5e6cc75a69a504db18a00f78b5abdd5ec3e3e8bd9a6",
+    "scripts/lib/independent-blink-sessions.mjs": "e7fb47bdd681f82a7bc9cba7c642429741a12910fe8f3115e8c3034c792be9f3",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "scripts/lib/largest-blink-attribution-recipe.mjs": "febea639ec59fdd1559ed0e0650769ea3ccd73db4248a15dad86e485b7719c1c",
+    "scripts/lib/detailed-blink-attribution-recipe.mjs": "3de9398fca28cf7e40c268c0091310ae06228282fc79321b8491ea8d9666cc31",
+    "scripts/lib/complete-blink-heap-summary.mjs": "93bbf422d245a247f6270759a7f45145cc420687efc5c9946851be61088c508c",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "evidence/partial-blink-blocked-control-verification-2026-10-08.json": "a5819ce63886e28c7681bba806ae1d0bb496946933f5ad850bb1f8a7e3acfacb",
+    "evidence/partial-blink-quiesced-control-verification-2026-10-08.json": "cdea1d38c57c3a183492e90d6fd0df9142b2a336ecce6f157a678f89934004f4",
+    "evidence/mpeg2-staged-abort-terminal-analysis-2026-10-08.json": "149401a24174dca58e4e7493db1dd0cc010256956384c4b9d2afd8d04ed71016",
+    "scripts/mpeg2-staged-abort-original-memory.mjs": "feeb3e4e8a1d35eae57651817abc2cbe978fe1981dbd9c48273890344d47f627",
+    "scripts/lib/mpeg2-staged-abort-original-recipe.mjs": "4378d3e098a3630cf8928fc6e97d881e91dda5d317097f322273c13d43cd9eed",
+    "scripts/lib/mpeg2-abort-original-recipe.mjs": "0cf755ac0698f0f6ae4512e2c075c335832ff88195f2628182ef4a557d1b2e37",
+    "scripts/lib/bounded-wasm-abort-capture.mjs": "8726ca6eaba04736fa97f5f3b0483548d92550464c331b3397e3b383728a391e",
+    "scripts/validate-mpeg2-split-abort-goldens.mjs": "d0701a3c273d3b696ed1c604d215e84a93829cc45b66ec7142d990059aca4b0a",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a",
+    "evidence/mpeg2-abort-golden-regression-2026-10-08.json": "786e7bc14b92cbb6a81df9ed518751ac9169d8425cb8d42212e792aec9f92cd1",
+    "evidence/mpeg2-abort-preconversion-analysis-2026-10-08.json": "b05f21c70b6c9a3a7c778cf3e1687295133dfca3bcc22cff92b3abbfda1093f8",
+    "evidence/wasm-abort-capture-control-origin-checked-2026-10-08.json": "564e4b8046f2259489085f6847b129ef33a2e0d144d5558e8cd59fcf6d705909",
+    "scripts/mpeg2-flex-original-memory.mjs": "301572a71a067fcf578c2571aaca71c7b0128770f3cf7ee438d0e534303744cc",
+    "scripts/lib/mpeg2-flex-original-recipe.mjs": "4de7dbcd272043e9b9c837308126b95e014310744e1a3d155b323bf7a045661e",
+    "scripts/lib/ui-flex-layout-recipe.mjs": "8c24ac3404a614b664481ce5e1191a7be8bdfec066835e0ecfafe37bf0f415fc",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/native-budget-failure-observer.mjs": "fd9b8a554f8ab4092c4fa9d1b128aaed16282469f500d8cb1d3725a09ef4b332",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "evidence/ui-flex-layout-2026-10-07.json": "d2a4dc223e8742ec130fda8c3b49429f444d9f39997c25a6cdcbbf73f54ccbcf",
+    "evidence/ui-grid-layout-2026-10-07.json": "67b0d7c29d3c575f2cb390cc9fd1a37a49148829884e6188a654c7329e20ddde",
+    "evidence/ui-flex-layout-comparison-2026-10-07.json": "b507fc6a506ad43ef015c2669dd48de4bc7ea35a8f29badfbd8fc0bf5320cc68",
+    "evidence/ui-flex-layout-analysis-2026-10-07.json": "0b3dee268b95ff1d9f2f01a3644593499ae554c89217a069583a204a62605a9d",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "scripts/mpeg2-static-ui-original-memory.mjs": "0379740f9b2443b3ff68e0b5a82a50789dc336ea65f8713ba49f67a213ec9823",
+    "scripts/lib/mpeg2-static-ui-original-recipe.mjs": "f55e57896b1314f9f523f7096074a0515182f1b182cc38124c6c8bad12aee3e5",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "scripts/lib/static-format-matrix-recipe.mjs": "80819962f8a6b80711ec368b2271f7ec1c3da80d50ce54197f4fb45b26136631",
+    "evidence/ui-matrix-benchmark-2026-10-07.json": "c04b4c5047020780a1e0c0de07550893394b557cbf7a8d7b8da822143e82ef80",
+    "evidence/ui-matrix-golden-regression-2026-10-07.json": "db57d5ac10bfd6bb26608a863388d2cdaf221870c44cf35eb7f4d11abb0015b0",
+    "evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json": "53d4de3d0ba4900a22999c5c96c792ee6f50d58c70ae3d4894f9e3f659b674fd",
+    "scripts/mpeg2-settled-original-memory.mjs": "a60e39a29095c06ecb3a10eafb4c96506a7123e19bf6b220cf42720bdb68cf21",
+    "scripts/lib/mpeg2-settled-original-recipe.mjs": "81844773d490491d58b1ecd5890a3a2990594425cbddc5d83ec1856262b8e6f1",
+    "scripts/lib/mpeg2-aligned-progress-recipe.mjs": "b6b6fa5225d5e7e4db5051a223b9ffbe016053413e37f3cf7cd6021d3746b47b",
+    "evidence/blank-chromium-lifecycle-2026-10-06.json": "4c8819d51ca7dd5afa4de21ff19fc36896473d3afbac6f192564222a0fd689ef",
+    "evidence/mpeg2-aligned-full-failure-2026-10-06.json": "eff1499eb76a5ec87ce6e24bba94a199b4beb1b559fd48579f79fffed6f3014a",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "scripts/stage-mpeg2-split-direct.mjs": "2526f8900924e062659bfe1dabc185a81e7d1c668dce0a8a8e4007da8ee6ca60",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/mpeg2-stack-reserve-adapter.mjs": "a462f8c911676ffe57d06a6d91760c008e20491a380d13cf75f339418a276633",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/cancel-browser-conversion-before-cleanup.mjs": "c2ce30b773592c7d0ed2a035ec16a49871fa1781d5f19b382ac07abcd34407df",
+    "scripts/diagnose-ui-js-allocation.mjs": "266ad5854528f128d84bd95f92f261bd6c43f9c1fbb0e3493c9f201bb633b2af",
+    "scripts/lib/ui-js-allocation-recipe.mjs": "88fd8f9521033d26e2c0e391108df014259035a0b1f218faaba2aebfb897f607",
+    "scripts/lib/bounded-js-allocation.mjs": "bda886855a70f5f04f1d381e73b096d916e70bcfbe150607658f8a5998941044",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "scripts/lib/private-browser-request.mjs": "d24e7a443abc21f564c2e15d79b8b29054b48a6b924f7556d6d6b48c9f6d900c",
+    "tests/bounded-js-allocation.test.mjs": "2928efac1cfd59924f2c2dcb8f947421957b9f31a1dc9d99f2cb51f706f1911d",
+    "scripts/mpeg2-js-progress-original-bound.mjs": "149e4c2e3def72e04fef7126b704053c60aef11932197eebe6b124009d7933b9",
+    "scripts/lib/mpeg2-js-progress-launch-recipe.mjs": "23e37cc8aec9b38323f14986deb20fb139f30a4f237376aa50bf6ed87749dca1",
+    "tests/mpeg2-js-progress-launch.test.mjs": "2ab825d6ed27e68dc4dfbbdb54ca92e2fe4e58785c0e2845960cc5103db57292",
+    "scripts/mpeg2-js-progress-original.mjs": "6596fb04dc7f7bc2dc90c288688f25723a0344c5b7bd2a81c240614572d78386",
+    "scripts/lib/mpeg2-js-progress-recipe.mjs": "79630dad9058b69d501efc620bc93d2be287ee2cd672c872e4c39677f037280e",
+    "scripts/lib/conversion-js-allocation.mjs": "afe8e12d484117d1a66bd3e4603b698c071f9f5b1c2e05537c3ba0af8e12aaac",
+    "tests/conversion-js-allocation.test.mjs": "bdd61b8ab370869cd1bc63a91fe831ce71b8dacace8b27500d02d60c130f6906",
+    "tests/mpeg2-js-progress-recipe.test.mjs": "c324bda4022fc49f88d7c7e3ef822b6693ace719744f557dc468b4a5659c1cd3",
+    "evidence/ui-js-allocation-tooling-2026-10-08.json": "2af464a27b50fcb7bdaa731268d404d64a38c165cc0df25b3939e2d18198a485",
+    "scripts/diagnose-stable-ui-real-progress.mjs": "a9bcd10ec6ab57e10a50dcb7868bc689918944f0d8b9454cd3bae05ccb388775",
+    "scripts/lib/stable-ui-progress-probe-recipe.mjs": "98e095ac5d8922a781000c0fc4ca8a7d7bca369a0c7c45cc1a4964c3439715fa",
+    "tests/stable-ui-progress-probe.test.mjs": "a8c43a87ccda946dc52e7f778441f865ca893c9ca9731452eede1a8e760ed0e4",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "scripts/lib/conversion-js-allocation-duration-bound.mjs": "6071ef969cf3c65aabc7e3d009bbcfa6c7b5e1e36878206719093feb51d0ac69",
+    "tests/conversion-js-allocation-duration.test.mjs": "1cf8cc2903d1a66c6a53fef16d46e53fad6d7f6e87b9993e0f4dcf965fb5f5f3",
+    "evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline-validation.json": "365541dadb32331fa6b0f95e6f322fe7e8106ae53ca910d100ed8a88f72f3308"
+  },
+  "templates": {},
+  "executions": [
+    {
+      "mode": "baseline",
+      "actualExitCode": 1,
+      "rawStatus": "failed",
+      "failure": {
+        "name": "AssertionError",
+        "message": "Cancelled\n+ actual - expected\n\n+ 'cancelled'\n- 'complete'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Cancelled\n+ actual - expected\n\n+ 'cancelled'\n- 'complete'\n\n    at file:///H:/Github%20Repositories/fileconverter/work/stable-ui-progress-baseline-PVorvq/probe.mjs:398:12"
+      },
+      "sourceArchive": {
+        "path": "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-baseline-executed-sources.json.gz",
+        "bytes": 16201,
+        "sha256": "5111278bc1b5bbe47585679fda04a351e6885aa6974def53663800a81b8bc695",
+        "driverSha256": "497e36673ec4cfe92918e3fc47c0cf230d01fb250e7d0fdb14ca496fc50969c9",
+        "traceHelperSha256": "1dc7d48d4fb9d281f09ad96fc584a1eb13ed4c892af368321c88dccc1e17de61"
+      },
+      "rawReport": {
+        "path": "outputs/reports/2026-10-08T22-04-17-477Z-private-mpeg2-ui-progress-baseline-native-100ms.json",
+        "bytes": 2103798,
+        "sha256": "81115bbebf8cd57b6cfad17e016e5cc0b8a1fb8cbfc17b0e08e83cb85c8a9757"
+      },
+      "compressedReport": {
+        "path": "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-baseline-raw.json.gz",
+        "bytes": 73881,
+        "sha256": "65cf8787041223a316231aa2ad4d06a9cd1527966dd43608cd746b12b60d5190"
+      },
+      "rawRemovedAfterLosslessArchive": true,
+      "progressProbe": {
+        "mode": "baseline",
+        "checkpointOutputBytes": 16777216,
+        "maximumConversionMs": 120000,
+        "expectedAsset": {
+          "url": "/assets/ConverterApp-BuCmNpWV.js",
+          "bytes": 315630,
+          "sha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172"
+        },
+        "checkpointReached": true,
+        "beforeCancellation": {
+          "jobState": "running",
+          "phase": "Lossless remux",
+          "metrics": {
+            "inputBytes": 24864321,
+            "outputBytes": 17793716,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 45154.69999998808,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0
+          },
+          "error": null,
+          "warnings": [
+            "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+            "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+          ],
+          "automaticRouteNotice": null,
+          "selectedProfileId": "mkv-to-mp4",
+          "audioOptions": {
+            "codec": "automatic",
+            "compression": "automatic",
+            "bitRateBps": 0,
+            "sampleRateHz": 0,
+            "channels": 0,
+            "quality": "automatic"
+          },
+          "videoOptions": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "opfsName": null,
+          "opfsNames": [],
+          "batchOutputNames": [
+            "test.mp4"
+          ],
+          "batchCompleted": 0,
+          "batchTotal": 1,
+          "startupCleanupComplete": true,
+          "workerStatus": "ready",
+          "capabilities": {
+            "secure": true,
+            "wasm": true,
+            "wasmSimd": true,
+            "workers": true,
+            "fileSystemAccess": true,
+            "directoryAccess": true,
+            "opfs": true,
+            "storageEstimate": true,
+            "compressionGzip": true,
+            "compressionDeflate": true,
+            "compressionDeflateRaw": true,
+            "sharedArrayBuffer": true,
+            "crossOriginIsolated": true,
+            "webCrypto": true,
+            "webCodecsVideo": true,
+            "webCodecsAudio": true,
+            "imageDecoder": true,
+            "imageDecoderTypes": {
+              "image/avif": true,
+              "image/gif": true,
+              "image/heic": false,
+              "image/heic-sequence": false,
+              "image/heif": false,
+              "image/heif-sequence": false,
+              "image/jpeg": true,
+              "image/png": true,
+              "image/webp": true,
+              "image/x-adobe-dng": false,
+              "image/x-canon-cr2": false,
+              "image/x-nikon-nef": false,
+              "image/x-sony-arw": false
+            },
+            "offscreenCanvas": true
+          }
+        },
+        "afterCancellation": {
+          "jobState": "cancelled",
+          "phase": "Cancelled",
+          "metrics": {
+            "inputBytes": 24995393,
+            "outputBytes": 17793716,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 45477.3599999845,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "scratchBytes": 0
+          },
+          "error": null,
+          "warnings": [
+            "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+            "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+          ],
+          "automaticRouteNotice": null,
+          "selectedProfileId": "mkv-to-mp4",
+          "audioOptions": {
+            "codec": "automatic",
+            "compression": "automatic",
+            "bitRateBps": 0,
+            "sampleRateHz": 0,
+            "channels": 0,
+            "quality": "automatic"
+          },
+          "videoOptions": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "opfsName": null,
+          "opfsNames": [],
+          "batchOutputNames": [
+            "test.mp4"
+          ],
+          "batchCompleted": 0,
+          "batchTotal": 1,
+          "startupCleanupComplete": true,
+          "workerStatus": "ready",
+          "capabilities": {
+            "secure": true,
+            "wasm": true,
+            "wasmSimd": true,
+            "workers": true,
+            "fileSystemAccess": true,
+            "directoryAccess": true,
+            "opfs": true,
+            "storageEstimate": true,
+            "compressionGzip": true,
+            "compressionDeflate": true,
+            "compressionDeflateRaw": true,
+            "sharedArrayBuffer": true,
+            "crossOriginIsolated": true,
+            "webCrypto": true,
+            "webCodecsVideo": true,
+            "webCodecsAudio": true,
+            "imageDecoder": true,
+            "imageDecoderTypes": {
+              "image/avif": true,
+              "image/gif": true,
+              "image/heic": false,
+              "image/heic-sequence": false,
+              "image/heif": false,
+              "image/heif-sequence": false,
+              "image/jpeg": true,
+              "image/png": true,
+              "image/webp": true,
+              "image/x-adobe-dng": false,
+              "image/x-canon-cr2": false,
+              "image/x-nikon-nef": false,
+              "image/x-sony-arw": false
+            },
+            "offscreenCanvas": true
+          }
+        },
+        "cancellation": {
+          "scope": "normal-production-cancellation-before-storage-removal",
+          "cancellationRequested": true,
+          "terminalState": "cancelled"
+        },
+        "profilerClosed": true,
+        "performanceBefore": {
+          "metrics": [
+            {
+              "name": "Timestamp",
+              "value": 256399.286225
+            },
+            {
+              "name": "AudioHandlers",
+              "value": 0
+            },
+            {
+              "name": "AudioWorkletProcessors",
+              "value": 0
+            },
+            {
+              "name": "Documents",
+              "value": 1
+            },
+            {
+              "name": "Frames",
+              "value": 1
+            },
+            {
+              "name": "JSEventListeners",
+              "value": 178
+            },
+            {
+              "name": "LayoutObjects",
+              "value": 5143
+            },
+            {
+              "name": "MediaKeySessions",
+              "value": 0
+            },
+            {
+              "name": "MediaKeys",
+              "value": 0
+            },
+            {
+              "name": "Nodes",
+              "value": 6689
+            },
+            {
+              "name": "Resources",
+              "value": 6
+            },
+            {
+              "name": "ContextLifecycleStateObservers",
+              "value": 12
+            },
+            {
+              "name": "V8PerContextDatas",
+              "value": 2
+            },
+            {
+              "name": "WorkerGlobalScopes",
+              "value": 1
+            },
+            {
+              "name": "UACSSResources",
+              "value": 0
+            },
+            {
+              "name": "RTCPeerConnections",
+              "value": 0
+            },
+            {
+              "name": "ResourceFetchers",
+              "value": 2
+            },
+            {
+              "name": "AdSubframes",
+              "value": 0
+            },
+            {
+              "name": "DetachedScriptStates",
+              "value": 0
+            },
+            {
+              "name": "ArrayBufferContents",
+              "value": 3
+            },
+            {
+              "name": "LayoutCount",
+              "value": 5
+            },
+            {
+              "name": "RecalcStyleCount",
+              "value": 5
+            },
+            {
+              "name": "LayoutDuration",
+              "value": 0.07179
+            },
+            {
+              "name": "RecalcStyleDuration",
+              "value": 0.009612
+            },
+            {
+              "name": "DevToolsCommandDuration",
+              "value": 0.041478
+            },
+            {
+              "name": "ScriptDuration",
+              "value": 0.086785
+            },
+            {
+              "name": "V8CompileDuration",
+              "value": 0.000295
+            },
+            {
+              "name": "TaskDuration",
+              "value": 0.274561
+            },
+            {
+              "name": "TaskOtherDuration",
+              "value": 0.064601
+            },
+            {
+              "name": "ThreadTime",
+              "value": 0.402548
+            },
+            {
+              "name": "ProcessTime",
+              "value": 0.541483
+            },
+            {
+              "name": "JSHeapUsedSize",
+              "value": 4842644
+            },
+            {
+              "name": "JSHeapTotalSize",
+              "value": 7094272
+            },
+            {
+              "name": "FirstMeaningfulPaint",
+              "value": 256388.635504
+            },
+            {
+              "name": "DomContentLoaded",
+              "value": 256388.515055
+            },
+            {
+              "name": "NavigationStart",
+              "value": 256388.249483
+            }
+          ]
+        },
+        "performanceAfter": {
+          "metrics": [
+            {
+              "name": "Timestamp",
+              "value": 256444.962708
+            },
+            {
+              "name": "AudioHandlers",
+              "value": 0
+            },
+            {
+              "name": "AudioWorkletProcessors",
+              "value": 0
+            },
+            {
+              "name": "Documents",
+              "value": 1
+            },
+            {
+              "name": "Frames",
+              "value": 1
+            },
+            {
+              "name": "JSEventListeners",
+              "value": 181
+            },
+            {
+              "name": "LayoutObjects",
+              "value": 5213
+            },
+            {
+              "name": "MediaKeySessions",
+              "value": 0
+            },
+            {
+              "name": "MediaKeys",
+              "value": 0
+            },
+            {
+              "name": "Nodes",
+              "value": 6759
+            },
+            {
+              "name": "Resources",
+              "value": 16
+            },
+            {
+              "name": "ContextLifecycleStateObservers",
+              "value": 12
+            },
+            {
+              "name": "V8PerContextDatas",
+              "value": 2
+            },
+            {
+              "name": "WorkerGlobalScopes",
+              "value": 1
+            },
+            {
+              "name": "UACSSResources",
+              "value": 0
+            },
+            {
+              "name": "RTCPeerConnections",
+              "value": 0
+            },
+            {
+              "name": "ResourceFetchers",
+              "value": 3
+            },
+            {
+              "name": "AdSubframes",
+              "value": 0
+            },
+            {
+              "name": "DetachedScriptStates",
+              "value": 0
+            },
+            {
+              "name": "ArrayBufferContents",
+              "value": 5
+            },
+            {
+              "name": "LayoutCount",
+              "value": 10531
+            },
+            {
+              "name": "RecalcStyleCount",
+              "value": 10468
+            },
+            {
+              "name": "LayoutDuration",
+              "value": 1.400852
+            },
+            {
+              "name": "RecalcStyleDuration",
+              "value": 0.523252
+            },
+            {
+              "name": "DevToolsCommandDuration",
+              "value": 0.083376
+            },
+            {
+              "name": "ScriptDuration",
+              "value": 0.429596
+            },
+            {
+              "name": "V8CompileDuration",
+              "value": 0.000295
+            },
+            {
+              "name": "TaskDuration",
+              "value": 10.042081
+            },
+            {
+              "name": "TaskOtherDuration",
+              "value": 7.60471
+            },
+            {
+              "name": "ThreadTime",
+              "value": 10.446952
+            },
+            {
+              "name": "ProcessTime",
+              "value": 58.325656
+            },
+            {
+              "name": "JSHeapUsedSize",
+              "value": 5411512
+            },
+            {
+              "name": "JSHeapTotalSize",
+              "value": 6569984
+            },
+            {
+              "name": "FirstMeaningfulPaint",
+              "value": 256388.635504
+            },
+            {
+              "name": "DomContentLoaded",
+              "value": 256388.515055
+            },
+            {
+              "name": "NavigationStart",
+              "value": 256388.249483
+            }
+          ]
+        },
+        "chromeLauncherSha256": "6849d2982038de9f9489a7b3858f3b785b7fec06a842c93c517281d21995c8ca",
+        "chromeLibrarySha256": "ee522fdc3adafa17c48d351e4613d40b61fe98ddbd7de57b3f20a36b43561c5d",
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "originalFullSourceAcceptance": false,
+        "publicAcceptance": false,
+        "conversionSpeedAcceptance": false,
+        "launchHost": {
+          "acquiredAt": "2026-10-08T22:04:22.2621446Z",
+          "freePhysicalBytes": 5688508416,
+          "freeVirtualBytes": 4087951360,
+          "requiredPhysicalBytes": 2147483648,
+          "requiredVirtualBytes": 2147483648,
+          "safeToStart": true,
+          "primaryConversionLimitMiB": 250,
+          "primaryMemoryFormulaChanged": false,
+          "noProcessesKilled": true
+        }
+      },
+      "conversionJsReport": {
+        "scope": "page-isolate-actual-conversion-progress-and-pre-cancel-JS-only",
+        "records": [
+          {
+            "phase": "before-real-conversion",
+            "capturedAt": "2026-10-08T22:09:45.348Z",
+            "state": {
+              "jobState": "idle",
+              "metrics": null
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 165,
+              "nodeCount": 1,
+              "sampleCount": 0,
+              "sampleBytes": 0,
+              "estimatedSelfBytes": 0,
+              "sourceLocatedSelfBytes": 0,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-04-17-477Z-private-mpeg2-ui-progress-baseline-native-100ms-js-before-real-conversion.json.gz",
+              "bytes": 400,
+              "sha256": "487275d60368bf1a231da9371e98a65c77c725f6ae553e79ff4ccdc6271874ba",
+              "restoredBytes": 635,
+              "restoredSha256": "fae0c280cb06df4753e8a04faceb502af44df0288f2df05d458129e737748594"
+            }
+          },
+          {
+            "phase": "output-1048576",
+            "capturedAt": "2026-10-08T22:09:51.744Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 2677240,
+                "outputBytes": 1612877,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 5838.75,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 34091,
+              "nodeCount": 182,
+              "sampleCount": 41,
+              "sampleBytes": 2720940,
+              "estimatedSelfBytes": 2720888,
+              "sourceLocatedSelfBytes": 1999544,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 950496,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 327808,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 196672,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 196672,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "Td",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 130917
+                },
+                "estimatedSelfBytes": 65664,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "listeners:x}),y.data=b)),md(o,e,r,n,i)}yd(o,t)})}function Td(e,t,n){return{instance:e,listener:t,currentTarget:n}}function Ed(e,t){for(var n=t+`Capture`,r=[];e!==null;){var i=e,a=i.stateNode;if(i=i.tag,i!==5&&i!==26&&i!==27||a===null||(i=vn(e,n),i!=null&&r.unshift(Td(e,i,a)),i=vn"
+              },
+              {
+                "callFrame": {
+                  "functionName": "e",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 54264
+                },
+                "estimatedSelfBytes": 65576,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "e,Re,V]),(0,Q.useEffect)(()=>{if(E!==`running`)return;let e=()=>{let e=performance.memory;e&&(ce(e.usedJSHeapSize),ue(t=>Math.max(t??0,e.usedJSHeapSize)))};e();let t=window.setInterval(e,500);return()=>window.clearInterval(t)},[E]),(0,Q.useEffect)(()=>{Pe.current={jobState:E,phas"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 84945
+                },
+                "estimatedSelfBytes": 65568,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": ",$.jsx)(`div`,{className:`capability-strip`,children:mt.map(([e,t])=>(0,$.jsxs)(`span`,{className:t?`yes`:`no`,children:[(0,$.jsx)(`i`,{\"aria-hidden\":`true`}),e]},e))}),(0,$.jsxs)(`div`,{className:`storage-card`,children:[(0,$.jsxs)(`div`,{children:[(0,$.jsx)(`strong`,{children:`"
+              },
+              {
+                "callFrame": {
+                  "functionName": "Fd",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 8,
+                  "columnNumber": 7845
+                },
+                "estimatedSelfBytes": 65548,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "Property(c)&&(r=n[c],r!=null&&$(e,t,c,r,n,null))}function Fd(e,t,n,r){switch(t){case`div`:case`span`:case`svg`:case`path`:case`a`:case`g`:case`p`:case`li`:break;case`input`:var i=null,o=null,s=null,c=null,l=null,u=null,d=null;for(m in n){var f=n[m];if(n.hasOwnProperty(m)&&f!=null"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-04-17-477Z-private-mpeg2-ui-progress-baseline-native-100ms-js-output-1048576.json.gz",
+              "bytes": 4291,
+              "sha256": "8ecbfa83502953e5d2d470f68cbd8e0d9479623674da192858a71690749bdf72",
+              "restoredBytes": 67085,
+              "restoredSha256": "67d278bc0d5cf5b0f77cc85cbf5f8883cc2c37f7455fc1a28e75dd09b707dee8"
+            }
+          },
+          {
+            "phase": "output-8388608",
+            "capturedAt": "2026-10-08T22:10:07.458Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 7352421,
+                "outputBytes": 8427700,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 21570.82499998808,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 54364,
+              "nodeCount": 273,
+              "sampleCount": 134,
+              "sampleBytes": 8821468,
+              "estimatedSelfBytes": 8821228,
+              "sourceLocatedSelfBytes": 6591888,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 2786416,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 1376640,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 524480,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 393312,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 84945
+                },
+                "estimatedSelfBytes": 262236,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": ",$.jsx)(`div`,{className:`capability-strip`,children:mt.map(([e,t])=>(0,$.jsxs)(`span`,{className:t?`yes`:`no`,children:[(0,$.jsx)(`i`,{\"aria-hidden\":`true`}),e]},e))}),(0,$.jsxs)(`div`,{className:`storage-card`,children:[(0,$.jsxs)(`div`,{children:[(0,$.jsx)(`strong`,{children:`"
+              },
+              {
+                "callFrame": {
+                  "functionName": "h",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 40398
+                },
+                "estimatedSelfBytes": 262208,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=te)return m(e,t,n,ua(t,r),i);Ua(t,r)}return null}function h(i,a,s,c){for(var l=null,u=null,d=a,h=a=0,g=null;d!==null&&h<s.length;h++){d.index>h?(g=d,d=null):g=d.sibling;var _=p(i,d,s[h],c);if(_===null){d===null&&(d=g);break}e&&d&&_.alternate===null&&t(i,d),a=o(_,a,h),u===null?l="
+              },
+              {
+                "callFrame": {
+                  "functionName": "Fd",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 8,
+                  "columnNumber": 7845
+                },
+                "estimatedSelfBytes": 196652,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "Property(c)&&(r=n[c],r!=null&&$(e,t,c,r,n,null))}function Fd(e,t,n,r){switch(t){case`div`:case`span`:case`svg`:case`path`:case`a`:case`g`:case`p`:case`li`:break;case`input`:var i=null,o=null,s=null,c=null,l=null,u=null,d=null;for(m in n){var f=n[m];if(n.hasOwnProperty(m)&&f!=null"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 72278
+                },
+                "estimatedSelfBytes": 196636,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": ",re(i?.reason??null)},disabled:E===`running`,children:H.map(e=>(0,$.jsx)(`option`,{value:e.id,children:G(e.output)?.label??e.output},e.id))})]}),(0,$.jsxs)(`div`,{className:`route-panel`,children:[(0,$.jsx)(`span`,{children:`Processing route`}),(0,$.jsx)(`strong`,{children:U?.rou"
+              },
+              {
+                "callFrame": {
+                  "functionName": "e.onmessage",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 51156
+                },
+                "estimatedSelfBytes": 134316,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "a.url),{name:`within-conversion`});je.current=e,e.onmessage=async t=>{let n=t.data;if(n.type===`ready`){Oe(!0),Ae(!1);return}if(n.jobId===L.current)if(n.type===`progress`)k(n.phase),ne(n.metrics);else if(n.type===`warning`){let e=z.current,t=(e&&e.files.length>1?`${e.files[e.inde"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-04-17-477Z-private-mpeg2-ui-progress-baseline-native-100ms-js-output-8388608.json.gz",
+              "bytes": 5948,
+              "sha256": "e21bcc360bcd610b7aae0769fbab9c67182170447ffa9ee1f1262b9ee51ba8fa",
+              "restoredBytes": 99673,
+              "restoredSha256": "b2eb8f4fea8dc25154dd442dfc10674379981e27f73b41554206f9001d935a1b"
+            }
+          },
+          {
+            "phase": "output-16777216",
+            "capturedAt": "2026-10-08T22:10:31.000Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 24864321,
+                "outputBytes": 17793716,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 45154.69999998808,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 62949,
+              "nodeCount": 289,
+              "sampleCount": 274,
+              "sampleBytes": 18000184,
+              "estimatedSelfBytes": 17999396,
+              "sourceLocatedSelfBytes": 14065068,
+              "omittedCallsiteCount": 3,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 4950028,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 3408768,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "h",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 40398
+                },
+                "estimatedSelfBytes": 983208,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=te)return m(e,t,n,ua(t,r),i);Ua(t,r)}return null}function h(i,a,s,c){for(var l=null,u=null,d=a,h=a=0,g=null;d!==null&&h<s.length;h++){d.index>h?(g=d,d=null):g=d.sibling;var _=p(i,d,s[h],c);if(_===null){d===null&&(d=g);break}e&&d&&_.alternate===null&&t(i,d),a=o(_,a,h),u===null?l="
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 786688,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 72278
+                },
+                "estimatedSelfBytes": 721004,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": ",re(i?.reason??null)},disabled:E===`running`,children:H.map(e=>(0,$.jsx)(`option`,{value:e.id,children:G(e.output)?.label??e.output},e.id))})]}),(0,$.jsxs)(`div`,{className:`route-panel`,children:[(0,$.jsx)(`span`,{children:`Processing route`}),(0,$.jsx)(`strong`,{children:U?.rou"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 84945
+                },
+                "estimatedSelfBytes": 524408,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": ",$.jsx)(`div`,{className:`capability-strip`,children:mt.map(([e,t])=>(0,$.jsxs)(`span`,{className:t?`yes`:`no`,children:[(0,$.jsx)(`i`,{\"aria-hidden\":`true`}),e]},e))}),(0,$.jsxs)(`div`,{className:`storage-card`,children:[(0,$.jsxs)(`div`,{children:[(0,$.jsx)(`strong`,{children:`"
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 458880,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "e.onmessage",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 51156
+                },
+                "estimatedSelfBytes": 265440,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "a.url),{name:`within-conversion`});je.current=e,e.onmessage=async t=>{let n=t.data;if(n.type===`ready`){Oe(!0),Ae(!1);return}if(n.jobId===L.current)if(n.type===`progress`)k(n.phase),ne(n.metrics);else if(n.type===`warning`){let e=z.current,t=(e&&e.files.length>1?`${e.files[e.inde"
+              },
+              {
+                "callFrame": {
+                  "functionName": "hi",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 44205
+                },
+                "estimatedSelfBytes": 262224,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "Math.round(e/1e3).toLocaleString(`en-US`)} kb/s`}function hi(e){let t=[e.codec];return e.width&&e.height&&t.push(`${e.width}×${e.height}`),e.frameRate&&t.push(`${e.frameRate.toFixed(2)} fps`),e.sampleRateHz&&t.push(`${e.sampleRateHz.toLocaleString(`en-US`)} Hz`),e.channelLayout&&"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 66985
+                },
+                "estimatedSelfBytes": 262192,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "0,$.jsx)(`dd`,{children:f.streams.length})]}),f.streams.map((e,t)=>(0,$.jsxs)(`div`,{children:[(0,$.jsxs)(`dt`,{children:[`Stream `,t+1,` (`,e.mediaType===`video`?`Video`:e.mediaType===`audio`?`Audio`:`Subtitle`,`)`]}),(0,$.jsx)(`dd`,{children:hi(e)})]},`${e.mediaType}-${t}`))]})"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+                  "lineNumber": 6,
+                  "columnNumber": 79422
+                },
+                "estimatedSelfBytes": 262180,
+                "servedSha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+                "servedBytes": 315630,
+                "context": "en:e},e))})]}):null,(0,$.jsx)(`ul`,{children:He.streams.map(e=>(0,$.jsxs)(`li`,{\"data-testid\":`media-plan-stream-${e.streamIndex}`,children:[(0,$.jsx)(`span`,{className:`plan-action plan-action-${e.action}`,children:gi(e.action)}),(0,$.jsxs)(`span`,{children:[(0,$.jsxs)(`strong`,"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-04-17-477Z-private-mpeg2-ui-progress-baseline-native-100ms-js-output-16777216.json.gz",
+              "bytes": 7267,
+              "sha256": "8a863aefc006b9861eda8e49c7e534d85530fe1fd28867940b185f3e740c9b22",
+              "restoredBytes": 118903,
+              "restoredSha256": "43c74a0efb7b20476cd7c01457f5c861c734762b7f3a50c2ca078d538a9f4768"
+            }
+          }
+        ],
+        "errors": [],
+        "stopped": true,
+        "stoppedSummary": {
+          "serializedBytes": 62949,
+          "nodeCount": 289,
+          "sampleCount": 274,
+          "estimatedSelfBytes": 17999396
+        },
+        "servedScripts": [
+          {
+            "asset": "/assets/framework-CXnKph_e.js",
+            "url": "http://127.0.0.1:62712/assets/framework-CXnKph_e.js",
+            "bytes": 189805,
+            "sha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+            "actualServedBytesCaptured": true
+          },
+          {
+            "asset": "/assets/ConverterApp-BuCmNpWV.js",
+            "url": "http://127.0.0.1:62712/assets/ConverterApp-BuCmNpWV.js",
+            "bytes": 315630,
+            "sha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+            "actualServedBytesCaptured": true
+          }
+        ],
+        "thresholds": [
+          1048576,
+          8388608,
+          16777216
+        ],
+        "workersAllocationProfiled": false,
+        "realmHeapsMeasuredSeparately": true,
+        "profilerPerturbsMemory": true,
+        "includesNaturallyCollectedObjects": true,
+        "nativeAllocationCauseProven": false,
+        "primaryMemoryAcceptance": false,
+        "conversionSpeedAcceptance": false,
+        "publicAcceptance": false,
+        "forcedGcUsed": false,
+        "maximumSamplingMs": 90000,
+        "startedAt": 1791497385346,
+        "durationStop": null,
+        "unavailableAtFailure": null,
+        "samplingHistoryBoundedIndependentlyOfConversionLength": true,
+        "conversionStoppedByProfiler": false
+      },
+      "browserVersion": "154.0.8037.98",
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 239738880,
+        "spreadBytes": 114688,
+        "rssBytes": 527278080,
+        "firstTimestamp": "2026-10-08T22:09:27.376Z",
+        "lastTimestamp": "2026-10-08T22:09:33.681Z",
+        "sampleCount": 7,
+        "minimumElapsedMs": 8000
+      },
+      "runs": [
+        {
+          "number": 1,
+          "cimPeakPrivateBytes": 455569408,
+          "cimPeakRssBytes": 784805888,
+          "nativePeaks": {
+            "peak": {
+              "sequence": 2965,
+              "timestamp": "2026-10-08T22:09:46.3707394Z",
+              "phase": "conversion-1",
+              "privateBytes": 484724736,
+              "rssBytes": 795975680,
+              "nativeElapsedMs": 14.687700000000001,
+              "sampleError": null,
+              "processes": [
+                {
+                  "pid": 10196,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.7162127Z",
+                  "creationFileTime": "134359706627162127",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 198938624,
+                  "rssBytes": 239366144
+                },
+                {
+                  "pid": 12252,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.6447741Z",
+                  "creationFileTime": "134359706626447741",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 33083392,
+                  "rssBytes": 77406208
+                },
+                {
+                  "pid": 24192,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:09:34.3792525Z",
+                  "creationFileTime": "134359709743792525",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 17465344,
+                  "rssBytes": 33939456
+                },
+                {
+                  "pid": 27012,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.9875808Z",
+                  "creationFileTime": "134359706629875808",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 20570112,
+                  "rssBytes": 44179456
+                },
+                {
+                  "pid": 29172,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.3167422Z",
+                  "creationFileTime": "134359706623167422",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 2580480,
+                  "rssBytes": 10452992
+                },
+                {
+                  "pid": 31644,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5956514Z",
+                  "creationFileTime": "134359706625956514",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 8253440,
+                  "rssBytes": 18554880
+                },
+                {
+                  "pid": 32784,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5655351Z",
+                  "creationFileTime": "134359706625655351",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 13090816,
+                  "rssBytes": 41185280
+                },
+                {
+                  "pid": 42380,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5535077Z",
+                  "creationFileTime": "134359706625535077",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 140861440,
+                  "rssBytes": 179781632
+                },
+                {
+                  "pid": 45284,
+                  "parentPid": 41084,
+                  "createdAt": "2026-10-08T22:04:22.2929473Z",
+                  "creationFileTime": "134359706622929473",
+                  "executableName": "chrome.exe",
+                  "type": "browser",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 49881088,
+                  "rssBytes": 151109632
+                }
+              ]
+            },
+            "rssPeak": {
+              "sequence": 2965,
+              "timestamp": "2026-10-08T22:09:46.3707394Z",
+              "phase": "conversion-1",
+              "privateBytes": 484724736,
+              "rssBytes": 795975680,
+              "nativeElapsedMs": 14.687700000000001,
+              "sampleError": null,
+              "processes": [
+                {
+                  "pid": 10196,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.7162127Z",
+                  "creationFileTime": "134359706627162127",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 198938624,
+                  "rssBytes": 239366144
+                },
+                {
+                  "pid": 12252,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.6447741Z",
+                  "creationFileTime": "134359706626447741",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 33083392,
+                  "rssBytes": 77406208
+                },
+                {
+                  "pid": 24192,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:09:34.3792525Z",
+                  "creationFileTime": "134359709743792525",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 17465344,
+                  "rssBytes": 33939456
+                },
+                {
+                  "pid": 27012,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.9875808Z",
+                  "creationFileTime": "134359706629875808",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 20570112,
+                  "rssBytes": 44179456
+                },
+                {
+                  "pid": 29172,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.3167422Z",
+                  "creationFileTime": "134359706623167422",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 2580480,
+                  "rssBytes": 10452992
+                },
+                {
+                  "pid": 31644,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5956514Z",
+                  "creationFileTime": "134359706625956514",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 8253440,
+                  "rssBytes": 18554880
+                },
+                {
+                  "pid": 32784,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5655351Z",
+                  "creationFileTime": "134359706625655351",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 13090816,
+                  "rssBytes": 41185280
+                },
+                {
+                  "pid": 42380,
+                  "parentPid": 45284,
+                  "createdAt": "2026-10-08T22:04:22.5535077Z",
+                  "creationFileTime": "134359706625535077",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 140861440,
+                  "rssBytes": 179781632
+                },
+                {
+                  "pid": 45284,
+                  "parentPid": 41084,
+                  "createdAt": "2026-10-08T22:04:22.2929473Z",
+                  "creationFileTime": "134359706622929473",
+                  "executableName": "chrome.exe",
+                  "type": "browser",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 49881088,
+                  "rssBytes": 151109632
+                }
+              ]
+            },
+            "peakRssBytes": 795975680,
+            "validSamples": 424,
+            "unavailableSamples": 0
+          },
+          "incrementalPrivateMiB": 233.63671875,
+          "state": {
+            "jobState": "cancelled",
+            "phase": "Cancelled",
+            "metrics": {
+              "inputBytes": 24995393,
+              "outputBytes": 17793716,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 65536,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 65536,
+              "maxWriteChunkBytes": 65536,
+              "elapsedMs": 45477.3599999845,
+              "wasmMemoryBytes": 50331648,
+              "peakWasmMemoryBytes": 50331648,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 50331652,
+              "activeWorkerCount": 1,
+              "imageWorkingBytes": 0,
+              "scratchBytes": 0
+            },
+            "error": null,
+            "warnings": [
+              "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+              "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+            ],
+            "automaticRouteNotice": null,
+            "selectedProfileId": "mkv-to-mp4",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": null,
+            "opfsNames": [],
+            "batchOutputNames": [
+              "test.mp4"
+            ],
+            "batchCompleted": 0,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          },
+          "independentValidation": null,
+          "recovery": null,
+          "peakPrivateBytes": 484724736
+        }
+      ],
+      "cleanup": {
+        "mediaProfileRuntimeRemoved": true,
+        "generatedDistRestored": true,
+        "protectedFixtureUnchanged": true,
+        "observerStopped": true,
+        "sampledChromeRootStopped": true,
+        "conversionQuiescence": {
+          "scope": "no-running-conversion",
+          "cancellationRequested": false,
+          "terminalState": "cancelled"
+        },
+        "chromeRootExitObservation": {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 45284,
+            "parentPid": 41084,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-08T22:04:22.2929470Z",
+            "privateBytes": 40660992,
+            "rssBytes": 126013440
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-08T22:10:32.799Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 486,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      },
+      "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-ui-progress-baseline-runtime-wVdkI9",
+      "forbiddenRequests": []
+    },
+    {
+      "mode": "candidate",
+      "actualExitCode": 1,
+      "rawStatus": "failed",
+      "failure": {
+        "name": "AssertionError",
+        "message": "Cancelled\n+ actual - expected\n\n+ 'cancelled'\n- 'complete'\n",
+        "stack": "AssertionError [ERR_ASSERTION]: Cancelled\n+ actual - expected\n\n+ 'cancelled'\n- 'complete'\n\n    at file:///H:/Github%20Repositories/fileconverter/work/stable-ui-progress-candidate-NjUrjA/probe.mjs:398:12"
+      },
+      "sourceArchive": {
+        "path": "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-candidate-executed-sources.json.gz",
+        "bytes": 16206,
+        "sha256": "6a6abe7ab04f3f259df714fdb91f573f46dd3661180d7666501fadcbadbf385f",
+        "driverSha256": "a009940e2c3df936c733504a52a834c5a83906947d4cdafa5096f4429cea3e01",
+        "traceHelperSha256": "8e6ffeaa84645e4562d664ec92294b23c3a0ec3ad1f9610ed70a2d44b7fc850e"
+      },
+      "rawReport": {
+        "path": "outputs/reports/2026-10-08T22-11-13-869Z-private-mpeg2-ui-progress-candidate-native-100ms.json",
+        "bytes": 2136276,
+        "sha256": "8ad17345697f3d927466bb6ff149337c7045d5be54a606ca7bd3cd07cd035a26"
+      },
+      "compressedReport": {
+        "path": "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-candidate-raw.json.gz",
+        "bytes": 74996,
+        "sha256": "e5f881aa8ccf1e5a51294fc8d7adf29575ba49aaa79af8d830c43f1ef323d9bf"
+      },
+      "rawRemovedAfterLosslessArchive": true,
+      "progressProbe": {
+        "mode": "candidate",
+        "checkpointOutputBytes": 16777216,
+        "maximumConversionMs": 120000,
+        "expectedAsset": {
+          "url": "/assets/ConverterApp-SNmCD3M3.js",
+          "bytes": 315826,
+          "sha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143"
+        },
+        "checkpointReached": true,
+        "beforeCancellation": {
+          "jobState": "running",
+          "phase": "Lossless remux",
+          "metrics": {
+            "inputBytes": 24077889,
+            "outputBytes": 17197466,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 44296.69999998808,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0
+          },
+          "error": null,
+          "warnings": [
+            "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+            "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+          ],
+          "automaticRouteNotice": null,
+          "selectedProfileId": "mkv-to-mp4",
+          "audioOptions": {
+            "codec": "automatic",
+            "compression": "automatic",
+            "bitRateBps": 0,
+            "sampleRateHz": 0,
+            "channels": 0,
+            "quality": "automatic"
+          },
+          "videoOptions": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "opfsName": null,
+          "opfsNames": [],
+          "batchOutputNames": [
+            "test.mp4"
+          ],
+          "batchCompleted": 0,
+          "batchTotal": 1,
+          "startupCleanupComplete": true,
+          "workerStatus": "ready",
+          "capabilities": {
+            "secure": true,
+            "wasm": true,
+            "wasmSimd": true,
+            "workers": true,
+            "fileSystemAccess": true,
+            "directoryAccess": true,
+            "opfs": true,
+            "storageEstimate": true,
+            "compressionGzip": true,
+            "compressionDeflate": true,
+            "compressionDeflateRaw": true,
+            "sharedArrayBuffer": true,
+            "crossOriginIsolated": true,
+            "webCrypto": true,
+            "webCodecsVideo": true,
+            "webCodecsAudio": true,
+            "imageDecoder": true,
+            "imageDecoderTypes": {
+              "image/avif": true,
+              "image/gif": true,
+              "image/heic": false,
+              "image/heic-sequence": false,
+              "image/heif": false,
+              "image/heif-sequence": false,
+              "image/jpeg": true,
+              "image/png": true,
+              "image/webp": true,
+              "image/x-adobe-dng": false,
+              "image/x-canon-cr2": false,
+              "image/x-nikon-nef": false,
+              "image/x-sony-arw": false
+            },
+            "offscreenCanvas": true
+          }
+        },
+        "afterCancellation": {
+          "jobState": "cancelled",
+          "phase": "Cancelled",
+          "metrics": {
+            "inputBytes": 24340033,
+            "outputBytes": 17197466,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 44639.26999998093,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "scratchBytes": 0
+          },
+          "error": null,
+          "warnings": [
+            "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+            "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+          ],
+          "automaticRouteNotice": null,
+          "selectedProfileId": "mkv-to-mp4",
+          "audioOptions": {
+            "codec": "automatic",
+            "compression": "automatic",
+            "bitRateBps": 0,
+            "sampleRateHz": 0,
+            "channels": 0,
+            "quality": "automatic"
+          },
+          "videoOptions": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "opfsName": null,
+          "opfsNames": [],
+          "batchOutputNames": [
+            "test.mp4"
+          ],
+          "batchCompleted": 0,
+          "batchTotal": 1,
+          "startupCleanupComplete": true,
+          "workerStatus": "ready",
+          "capabilities": {
+            "secure": true,
+            "wasm": true,
+            "wasmSimd": true,
+            "workers": true,
+            "fileSystemAccess": true,
+            "directoryAccess": true,
+            "opfs": true,
+            "storageEstimate": true,
+            "compressionGzip": true,
+            "compressionDeflate": true,
+            "compressionDeflateRaw": true,
+            "sharedArrayBuffer": true,
+            "crossOriginIsolated": true,
+            "webCrypto": true,
+            "webCodecsVideo": true,
+            "webCodecsAudio": true,
+            "imageDecoder": true,
+            "imageDecoderTypes": {
+              "image/avif": true,
+              "image/gif": true,
+              "image/heic": false,
+              "image/heic-sequence": false,
+              "image/heif": false,
+              "image/heif-sequence": false,
+              "image/jpeg": true,
+              "image/png": true,
+              "image/webp": true,
+              "image/x-adobe-dng": false,
+              "image/x-canon-cr2": false,
+              "image/x-nikon-nef": false,
+              "image/x-sony-arw": false
+            },
+            "offscreenCanvas": true
+          }
+        },
+        "cancellation": {
+          "scope": "normal-production-cancellation-before-storage-removal",
+          "cancellationRequested": true,
+          "terminalState": "cancelled"
+        },
+        "profilerClosed": true,
+        "performanceBefore": {
+          "metrics": [
+            {
+              "name": "Timestamp",
+              "value": 256825.285399
+            },
+            {
+              "name": "AudioHandlers",
+              "value": 0
+            },
+            {
+              "name": "AudioWorkletProcessors",
+              "value": 0
+            },
+            {
+              "name": "Documents",
+              "value": 1
+            },
+            {
+              "name": "Frames",
+              "value": 1
+            },
+            {
+              "name": "JSEventListeners",
+              "value": 178
+            },
+            {
+              "name": "LayoutObjects",
+              "value": 5143
+            },
+            {
+              "name": "MediaKeySessions",
+              "value": 0
+            },
+            {
+              "name": "MediaKeys",
+              "value": 0
+            },
+            {
+              "name": "Nodes",
+              "value": 6689
+            },
+            {
+              "name": "Resources",
+              "value": 6
+            },
+            {
+              "name": "ContextLifecycleStateObservers",
+              "value": 12
+            },
+            {
+              "name": "V8PerContextDatas",
+              "value": 2
+            },
+            {
+              "name": "WorkerGlobalScopes",
+              "value": 1
+            },
+            {
+              "name": "UACSSResources",
+              "value": 0
+            },
+            {
+              "name": "RTCPeerConnections",
+              "value": 0
+            },
+            {
+              "name": "ResourceFetchers",
+              "value": 2
+            },
+            {
+              "name": "AdSubframes",
+              "value": 0
+            },
+            {
+              "name": "DetachedScriptStates",
+              "value": 0
+            },
+            {
+              "name": "ArrayBufferContents",
+              "value": 3
+            },
+            {
+              "name": "LayoutCount",
+              "value": 5
+            },
+            {
+              "name": "RecalcStyleCount",
+              "value": 6
+            },
+            {
+              "name": "LayoutDuration",
+              "value": 0.070957
+            },
+            {
+              "name": "RecalcStyleDuration",
+              "value": 0.008792
+            },
+            {
+              "name": "DevToolsCommandDuration",
+              "value": 0.038784
+            },
+            {
+              "name": "ScriptDuration",
+              "value": 0.079343
+            },
+            {
+              "name": "V8CompileDuration",
+              "value": 0.00026
+            },
+            {
+              "name": "TaskDuration",
+              "value": 0.272414
+            },
+            {
+              "name": "TaskOtherDuration",
+              "value": 0.074278
+            },
+            {
+              "name": "ThreadTime",
+              "value": 0.277513
+            },
+            {
+              "name": "ProcessTime",
+              "value": 0.513746
+            },
+            {
+              "name": "JSHeapUsedSize",
+              "value": 4781872
+            },
+            {
+              "name": "JSHeapTotalSize",
+              "value": 7192576
+            },
+            {
+              "name": "FirstMeaningfulPaint",
+              "value": 256814.468472
+            },
+            {
+              "name": "DomContentLoaded",
+              "value": 256814.349482
+            },
+            {
+              "name": "NavigationStart",
+              "value": 256814.100216
+            }
+          ]
+        },
+        "performanceAfter": {
+          "metrics": [
+            {
+              "name": "Timestamp",
+              "value": 256870.16796
+            },
+            {
+              "name": "AudioHandlers",
+              "value": 0
+            },
+            {
+              "name": "AudioWorkletProcessors",
+              "value": 0
+            },
+            {
+              "name": "Documents",
+              "value": 1
+            },
+            {
+              "name": "Frames",
+              "value": 1
+            },
+            {
+              "name": "JSEventListeners",
+              "value": 178
+            },
+            {
+              "name": "LayoutObjects",
+              "value": 5213
+            },
+            {
+              "name": "MediaKeySessions",
+              "value": 0
+            },
+            {
+              "name": "MediaKeys",
+              "value": 0
+            },
+            {
+              "name": "Nodes",
+              "value": 6759
+            },
+            {
+              "name": "Resources",
+              "value": 16
+            },
+            {
+              "name": "ContextLifecycleStateObservers",
+              "value": 12
+            },
+            {
+              "name": "V8PerContextDatas",
+              "value": 2
+            },
+            {
+              "name": "WorkerGlobalScopes",
+              "value": 1
+            },
+            {
+              "name": "UACSSResources",
+              "value": 0
+            },
+            {
+              "name": "RTCPeerConnections",
+              "value": 0
+            },
+            {
+              "name": "ResourceFetchers",
+              "value": 3
+            },
+            {
+              "name": "AdSubframes",
+              "value": 0
+            },
+            {
+              "name": "DetachedScriptStates",
+              "value": 0
+            },
+            {
+              "name": "ArrayBufferContents",
+              "value": 5
+            },
+            {
+              "name": "LayoutCount",
+              "value": 10415
+            },
+            {
+              "name": "RecalcStyleCount",
+              "value": 10355
+            },
+            {
+              "name": "LayoutDuration",
+              "value": 1.449816
+            },
+            {
+              "name": "RecalcStyleDuration",
+              "value": 0.557058
+            },
+            {
+              "name": "DevToolsCommandDuration",
+              "value": 0.080004
+            },
+            {
+              "name": "ScriptDuration",
+              "value": 0.313012
+            },
+            {
+              "name": "V8CompileDuration",
+              "value": 0.00026
+            },
+            {
+              "name": "TaskDuration",
+              "value": 10.527929
+            },
+            {
+              "name": "TaskOtherDuration",
+              "value": 8.127779
+            },
+            {
+              "name": "ThreadTime",
+              "value": 10.834838
+            },
+            {
+              "name": "ProcessTime",
+              "value": 58.208331
+            },
+            {
+              "name": "JSHeapUsedSize",
+              "value": 5310348
+            },
+            {
+              "name": "JSHeapTotalSize",
+              "value": 6144000
+            },
+            {
+              "name": "FirstMeaningfulPaint",
+              "value": 256814.468472
+            },
+            {
+              "name": "DomContentLoaded",
+              "value": 256814.349482
+            },
+            {
+              "name": "NavigationStart",
+              "value": 256814.100216
+            }
+          ]
+        },
+        "chromeLauncherSha256": "6849d2982038de9f9489a7b3858f3b785b7fec06a842c93c517281d21995c8ca",
+        "chromeLibrarySha256": "ee522fdc3adafa17c48d351e4613d40b61fe98ddbd7de57b3f20a36b43561c5d",
+        "viewport": {
+          "width": 1280,
+          "height": 900
+        },
+        "originalFullSourceAcceptance": false,
+        "publicAcceptance": false,
+        "conversionSpeedAcceptance": false,
+        "launchHost": {
+          "acquiredAt": "2026-10-08T22:11:17.8238937Z",
+          "freePhysicalBytes": 4866846720,
+          "freeVirtualBytes": 3435622400,
+          "requiredPhysicalBytes": 2147483648,
+          "requiredVirtualBytes": 2147483648,
+          "safeToStart": true,
+          "primaryConversionLimitMiB": 250,
+          "primaryMemoryFormulaChanged": false,
+          "noProcessesKilled": true
+        }
+      },
+      "conversionJsReport": {
+        "scope": "page-isolate-actual-conversion-progress-and-pre-cancel-JS-only",
+        "records": [
+          {
+            "phase": "before-real-conversion",
+            "capturedAt": "2026-10-08T22:16:51.348Z",
+            "state": {
+              "jobState": "idle",
+              "metrics": null
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 165,
+              "nodeCount": 1,
+              "sampleCount": 0,
+              "sampleBytes": 0,
+              "estimatedSelfBytes": 0,
+              "sourceLocatedSelfBytes": 0,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-11-13-869Z-private-mpeg2-ui-progress-candidate-native-100ms-js-before-real-conversion.json.gz",
+              "bytes": 400,
+              "sha256": "0ee2bde2e8d6a750f19ba43d678023a4f1feb2b75415e9cf7ac3abd0f657cb93",
+              "restoredBytes": 635,
+              "restoredSha256": "f9278c1952f22def2d12e6281414708d7bb47463dc3cc89ba510764f5948ac24"
+            }
+          },
+          {
+            "phase": "output-1048576",
+            "capturedAt": "2026-10-08T22:16:57.561Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 2647271,
+                "outputBytes": 1612877,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 5802.184999972582,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 12939,
+              "nodeCount": 71,
+              "sampleCount": 40,
+              "sampleBytes": 2694240,
+              "estimatedSelfBytes": 2694032,
+              "sourceLocatedSelfBytes": 1807620,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 623064,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 196672,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 196672,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 196672,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "ie",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 9214
+                },
+                "estimatedSelfBytes": 135432,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction re(){return g?!0:!(e.unstable_now()-ne<S)}function ie(){if(g=!1,ee){var t=e.unstable_now();ne=t;var i=!0;try{a:{m=!1,h&&(h=!1,v(te),te=-1),p=!0;var a=f;try{b:{for(b(t),d=n(c);d!==null&&!(d.expirationTime>t&&re());){var o=d.callback;if(typeof o==`function`){d.callback=null,"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 127141
+                },
+                "estimatedSelfBytes": 131156,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=27){r=a=o;continue a}s=s.parentNode}}r=r.return}_n(function(){var r=a,i=fn(n),o=[];a:{var s=ri.get(e);if(s!==void 0){var c=jn,u=e;switch(e){case`keypress`:if(En(n)===0)break a;case`keydown`:case`keyup`:c=Yn;break;case`focusin`:u=`focus`,c=Bn;break;case`focusout`:u=`blur`,c=Bn;br"
+              },
+              {
+                "callFrame": {
+                  "functionName": "h",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 40398
+                },
+                "estimatedSelfBytes": 131108,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=te)return m(e,t,n,ua(t,r),i);Ua(t,r)}return null}function h(i,a,s,c){for(var l=null,u=null,d=a,h=a=0,g=null;d!==null&&h<s.length;h++){d.index>h?(g=d,d=null):g=d.sibling;var _=p(i,d,s[h],c);if(_===null){d===null&&(d=g);break}e&&d&&_.alternate===null&&t(i,d),a=o(_,a,h),u===null?l="
+              },
+              {
+                "callFrame": {
+                  "functionName": "e.onmessage",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 51156
+                },
+                "estimatedSelfBytes": 65660,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "a.url),{name:`within-conversion`});je.current=e,e.onmessage=async t=>{let n=t.data;if(n.type===`ready`){Oe(!0),Ae(!1);return}if(n.jobId===L.current)if(n.type===`progress`)k(n.phase),ne(n.metrics);else if(n.type===`warning`){let e=z.current,t=(e&&e.files.length>1?`${e.files[e.inde"
+              },
+              {
+                "callFrame": {
+                  "functionName": "bi",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 28098
+                },
+                "estimatedSelfBytes": 65624,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "{return e=e.prototype,!(!e||!e.isReactComponent)}function bi(e,t){var n=e.alternate;return n===null?(n=vi(e.tag,t,e.key,e.mode),n.elementType=e.elementType,n.type=e.type,n.stateNode=e.stateNode,n.alternate=e,e.alternate=n):(n.pendingProps=t,n.type=e.type,n.flags=0,n.subtreeFlags="
+              },
+              {
+                "callFrame": {
+                  "functionName": "us",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 54814
+                },
+                "estimatedSelfBytes": 65560,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "queue.dispatch;return n.memoizedState=e,[t,r,!1]}function us(e,t,n,r){return e={tag:e,create:n,deps:r,inst:t,next:null},t=P.updateQueue,t===null&&(t=Io(),P.updateQueue=t),n=t.lastEffect,n===null?t.lastEffect=e.next=e:(r=n.next,n.next=e,e.next=r,t.lastEffect=e),e}function ds(){ret"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-11-13-869Z-private-mpeg2-ui-progress-candidate-native-100ms-js-output-1048576.json.gz",
+              "bytes": 4155,
+              "sha256": "9bc36b90b415b6f600eac151519f835994b900f719446d52db3b1a74778e72e7",
+              "restoredBytes": 40221,
+              "restoredSha256": "70f5f8dfd584c65539238ecacf59442380ff5502c487031102a8549fc999257a"
+            }
+          },
+          {
+            "phase": "output-8388608",
+            "capturedAt": "2026-10-08T22:17:13.225Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 7172606,
+                "outputBytes": 8427700,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 21406.25,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 20671,
+              "nodeCount": 100,
+              "sampleCount": 106,
+              "sampleBytes": 7021696,
+              "estimatedSelfBytes": 7021148,
+              "sourceLocatedSelfBytes": 5282288,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 2065212,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 1048832,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 327808,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "h",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 40398
+                },
+                "estimatedSelfBytes": 327768,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=te)return m(e,t,n,ua(t,r),i);Ua(t,r)}return null}function h(i,a,s,c){for(var l=null,u=null,d=a,h=a=0,g=null;d!==null&&h<s.length;h++){d.index>h?(g=d,d=null):g=d.sibling;var _=p(i,d,s[h],c);if(_===null){d===null&&(d=g);break}e&&d&&_.alternate===null&&t(i,d),a=o(_,a,h),u===null?l="
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 262208,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "di",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 43726
+                },
+                "estimatedSelfBytes": 262184,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "tanceof Error?e.message:String(e)}`.slice(0,oi)}}function di(e){if(!Number.isFinite(e))return`Unavailable`;let t=[`B`,`KiB`,`MiB`,`GiB`,`TiB`],n=Math.max(0,e),r=0;for(;n>=1024&&r<t.length-1;)n/=1024,r+=1;return`${n>=10||r===0?n.toFixed(0):n.toFixed(1)} ${t[r]}`}function fi(e){let"
+              },
+              {
+                "callFrame": {
+                  "functionName": "ie",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 9214
+                },
+                "estimatedSelfBytes": 201096,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction re(){return g?!0:!(e.unstable_now()-ne<S)}function ie(){if(g=!1,ee){var t=e.unstable_now();ne=t;var i=!0;try{a:{m=!1,h&&(h=!1,v(te),te=-1),p=!0;var a=f;try{b:{for(b(t),d=n(c);d!==null&&!(d.expirationTime>t&&re());){var o=d.callback;if(typeof o==`function`){d.callback=null,"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 127141
+                },
+                "estimatedSelfBytes": 196708,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=27){r=a=o;continue a}s=s.parentNode}}r=r.return}_n(function(){var r=a,i=fn(n),o=[];a:{var s=ri.get(e);if(s!==void 0){var c=jn,u=e;switch(e){case`keypress`:if(En(n)===0)break a;case`keydown`:case`keyup`:c=Yn;break;case`focusin`:u=`focus`,c=Bn;break;case`focusout`:u=`blur`,c=Bn;br"
+              },
+              {
+                "callFrame": {
+                  "functionName": "up",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 8,
+                  "columnNumber": 28390
+                },
+                "estimatedSelfBytes": 131388,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "a=T.p;try{T.p=8,up(e,t,n,r)}finally{T.p=a,w.T=i}}function up(e,t,n,r){if(sp){var i=dp(r);if(i===null)wd(e,t,r,fp,n),Cp(e,r);else if(Tp(i,e,t,n,r))r.stopPropagation();else if(Cp(e,r),t&4&&-1<Sp.indexOf(e)){for(;i!==null;){var a=Dt(i);if(a!==null)switch(a.tag){case 3:if(a=a.stateNo"
+              },
+              {
+                "callFrame": {
+                  "functionName": "e.onmessage",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 51156
+                },
+                "estimatedSelfBytes": 131236,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "a.url),{name:`within-conversion`});je.current=e,e.onmessage=async t=>{let n=t.data;if(n.type===`ready`){Oe(!0),Ae(!1);return}if(n.jobId===L.current)if(n.type===`progress`)k(n.phase),ne(n.metrics);else if(n.type===`warning`){let e=z.current,t=(e&&e.files.length>1?`${e.files[e.inde"
+              },
+              {
+                "callFrame": {
+                  "functionName": "rd",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 121050
+                },
+                "estimatedSelfBytes": 131120,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "(e,t)}var Zu=null,Qu=null,$u=!1,ed=!1,td=!1,nd=0;function rd(e){e!==Qu&&e.next===null&&(Qu===null?Zu=Qu=e:Qu=Qu.next=e),ed=!0,$u||($u=!0,ud())}function id(e,t){if(!td&&ed){td=!0;do for(var n=!1,r=Zu;r!==null;){if(!t)if(e!==0){var i=r.pendingLanes;if(i===0)var a=0;else{var o=r.sus"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-11-13-869Z-private-mpeg2-ui-progress-candidate-native-100ms-js-output-8388608.json.gz",
+              "bytes": 5268,
+              "sha256": "5ed5b72b38b9d09ec73dd9faa8365cd844c552275a4d49f8cdfe2f1cbe6e1259",
+              "restoredBytes": 56567,
+              "restoredSha256": "0f7d9fd1ff130756f3e17c3b3b41b906cec078edba411bebe0019f64c6f5b43c"
+            }
+          },
+          {
+            "phase": "output-16777216",
+            "capturedAt": "2026-10-08T22:17:36.214Z",
+            "state": {
+              "jobState": "running",
+              "metrics": {
+                "inputBytes": 24077889,
+                "outputBytes": 17197466,
+                "queuedBytes": 0,
+                "peakQueuedBytes": 65536,
+                "pendingOperations": 0,
+                "peakPendingOperations": 1,
+                "maxReadChunkBytes": 65536,
+                "maxWriteChunkBytes": 65536,
+                "elapsedMs": 44296.69999998808,
+                "wasmMemoryBytes": 50331648,
+                "peakWasmMemoryBytes": 50331648,
+                "wasmMemories": {},
+                "sharedArrayBufferBytes": 50331652,
+                "activeWorkerCount": 1,
+                "imageWorkingBytes": 0
+              }
+            },
+            "nativeEvent": null,
+            "status": "captured",
+            "summary": {
+              "serializedBytes": 38309,
+              "nodeCount": 181,
+              "sampleCount": 180,
+              "sampleBytes": 11889944,
+              "estimatedSelfBytes": 11888024,
+              "sourceLocatedSelfBytes": 8772432,
+              "omittedCallsiteCount": 0,
+              "includesNaturallyCollectedObjects": true,
+              "exactLiveMemory": false,
+              "nativeAllocationAttribution": false,
+              "completeChromiumMemoryAcceptance": false
+            },
+            "bundleBindings": [
+              {
+                "callFrame": {
+                  "functionName": "Ci",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 46520
+                },
+                "estimatedSelfBytes": 3769684,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+              },
+              {
+                "callFrame": {
+                  "functionName": "r",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 7655
+                },
+                "estimatedSelfBytes": 1704384,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+              },
+              {
+                "callFrame": {
+                  "functionName": "R",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 48589
+                },
+                "estimatedSelfBytes": 590048,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": ";return I===null?P.memoizedState=I=e:I=I.next=e,I}function R(){if(F===null){var e=P.alternate;e=e===null?null:e.memoizedState}else e=F.next;var t=I===null?P.memoizedState:I.next;if(t!==null)I=t,F=e;else{if(e===null)throw P.alternate===null?Error(a(467)):Error(a(310));F=e,e={memoi"
+              },
+              {
+                "callFrame": {
+                  "functionName": "h",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 40398
+                },
+                "estimatedSelfBytes": 589948,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=te)return m(e,t,n,ua(t,r),i);Ua(t,r)}return null}function h(i,a,s,c){for(var l=null,u=null,d=a,h=a=0,g=null;d!==null&&h<s.length;h++){d.index>h?(g=d,d=null):g=d.sibling;var _=p(i,d,s[h],c);if(_===null){d===null&&(d=g);break}e&&d&&_.alternate===null&&t(i,d),a=o(_,a,h),u===null?l="
+              },
+              {
+                "callFrame": {
+                  "functionName": "Ho",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 49841
+                },
+                "estimatedSelfBytes": 327776,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction`?t(e):t}function Vo(e){return Ho(R(),F,e)}function Ho(e,t,n){var r=e.queue;if(r===null)throw Error(a(311));r.lastRenderedReducer=n;var i=e.baseQueue,o=r.pending;if(o!==null){if(i!==null){var s=i.next;i.next=o.next,o.next=s}t.baseQueue=i=o,r.pending=null}if(o=e.baseState,i="
+              },
+              {
+                "callFrame": {
+                  "functionName": "di",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 43726
+                },
+                "estimatedSelfBytes": 327720,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "tanceof Error?e.message:String(e)}`.slice(0,oi)}}function di(e){if(!Number.isFinite(e))return`Unavailable`;let t=[`B`,`KiB`,`MiB`,`GiB`,`TiB`],n=Math.max(0,e),r=0;for(;n>=1024&&r<t.length-1;)n/=1024,r+=1;return`${n>=10||r===0?n.toFixed(0):n.toFixed(1)} ${t[r]}`}function fi(e){let"
+              },
+              {
+                "callFrame": {
+                  "functionName": "e.onmessage",
+                  "scriptId": "14",
+                  "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+                  "lineNumber": 6,
+                  "columnNumber": 51156
+                },
+                "estimatedSelfBytes": 278036,
+                "servedSha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+                "servedBytes": 315826,
+                "context": "a.url),{name:`within-conversion`});je.current=e,e.onmessage=async t=>{let n=t.data;if(n.type===`ready`){Oe(!0),Ae(!1);return}if(n.jobId===L.current)if(n.type===`progress`)k(n.phase),ne(n.metrics);else if(n.type===`warning`){let e=z.current,t=(e&&e.files.length>1?`${e.files[e.inde"
+              },
+              {
+                "callFrame": {
+                  "functionName": "ie",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 0,
+                  "columnNumber": 9214
+                },
+                "estimatedSelfBytes": 201096,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "nction re(){return g?!0:!(e.unstable_now()-ne<S)}function ie(){if(g=!1,ee){var t=e.unstable_now();ne=t;var i=!0;try{a:{m=!1,h&&(h=!1,v(te),te=-1),p=!0;var a=f;try{b:{for(b(t),d=n(c);d!==null&&!(d.expirationTime>t&&re());){var o=d.callback;if(typeof o==`function`){d.callback=null,"
+              },
+              {
+                "callFrame": {
+                  "functionName": "",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 127141
+                },
+                "estimatedSelfBytes": 196708,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "=27){r=a=o;continue a}s=s.parentNode}}r=r.return}_n(function(){var r=a,i=fn(n),o=[];a:{var s=ri.get(e);if(s!==void 0){var c=jn,u=e;switch(e){case`keypress`:if(En(n)===0)break a;case`keydown`:case`keyup`:c=Yn;break;case`focusin`:u=`focus`,c=Bn;break;case`focusout`:u=`blur`,c=Bn;br"
+              },
+              {
+                "callFrame": {
+                  "functionName": "up",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 8,
+                  "columnNumber": 28390
+                },
+                "estimatedSelfBytes": 131388,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "a=T.p;try{T.p=8,up(e,t,n,r)}finally{T.p=a,w.T=i}}function up(e,t,n,r){if(sp){var i=dp(r);if(i===null)wd(e,t,r,fp,n),Cp(e,r);else if(Tp(i,e,t,n,r))r.stopPropagation();else if(Cp(e,r),t&4&&-1<Sp.indexOf(e)){for(;i!==null;){var a=Dt(i);if(a!==null)switch(a.tag){case 3:if(a=a.stateNo"
+              },
+              {
+                "callFrame": {
+                  "functionName": "bi",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 28098
+                },
+                "estimatedSelfBytes": 131164,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "{return e=e.prototype,!(!e||!e.isReactComponent)}function bi(e,t){var n=e.alternate;return n===null?(n=vi(e.tag,t,e.key,e.mode),n.elementType=e.elementType,n.type=e.type,n.stateNode=e.stateNode,n.alternate=e,e.alternate=n):(n.pendingProps=t,n.type=e.type,n.flags=0,n.subtreeFlags="
+              },
+              {
+                "callFrame": {
+                  "functionName": "us",
+                  "scriptId": "13",
+                  "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+                  "lineNumber": 7,
+                  "columnNumber": 54814
+                },
+                "estimatedSelfBytes": 131128,
+                "servedSha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+                "servedBytes": 189805,
+                "context": "queue.dispatch;return n.memoizedState=e,[t,r,!1]}function us(e,t,n,r){return e={tag:e,create:n,deps:r,inst:t,next:null},t=P.updateQueue,t===null&&(t=Io(),P.updateQueue=t),n=t.lastEffect,n===null?t.lastEffect=e.next=e:(r=n.next,n.next=e,e.next=r,t.lastEffect=e),e}function ds(){ret"
+              }
+            ],
+            "archive": {
+              "path": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\2026-10-08T22-11-13-869Z-private-mpeg2-ui-progress-candidate-native-100ms-js-output-16777216.json.gz",
+              "bytes": 6605,
+              "sha256": "405870c7561706e590e13da339d9ae02cd070fa0a7e498b7c2ffed708d7cb07e",
+              "restoredBytes": 84429,
+              "restoredSha256": "5f8100c5beabcd2e6eb0087c90d811696112263cf4728d6593c3d8ce4c3020be"
+            }
+          }
+        ],
+        "errors": [],
+        "stopped": true,
+        "stoppedSummary": {
+          "serializedBytes": 38309,
+          "nodeCount": 181,
+          "sampleCount": 180,
+          "estimatedSelfBytes": 11888024
+        },
+        "servedScripts": [
+          {
+            "asset": "/assets/framework-CXnKph_e.js",
+            "url": "http://127.0.0.1:55469/assets/framework-CXnKph_e.js",
+            "bytes": 189805,
+            "sha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+            "actualServedBytesCaptured": true
+          },
+          {
+            "asset": "/assets/ConverterApp-SNmCD3M3.js",
+            "url": "http://127.0.0.1:55469/assets/ConverterApp-SNmCD3M3.js",
+            "bytes": 315826,
+            "sha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143",
+            "actualServedBytesCaptured": true
+          }
+        ],
+        "thresholds": [
+          1048576,
+          8388608,
+          16777216
+        ],
+        "workersAllocationProfiled": false,
+        "realmHeapsMeasuredSeparately": true,
+        "profilerPerturbsMemory": true,
+        "includesNaturallyCollectedObjects": true,
+        "nativeAllocationCauseProven": false,
+        "primaryMemoryAcceptance": false,
+        "conversionSpeedAcceptance": false,
+        "publicAcceptance": false,
+        "forcedGcUsed": false,
+        "maximumSamplingMs": 90000,
+        "startedAt": 1791497811346,
+        "durationStop": null,
+        "unavailableAtFailure": null,
+        "samplingHistoryBoundedIndependentlyOfConversionLength": true,
+        "conversionStoppedByProfiler": false
+      },
+      "browserVersion": "154.0.8037.98",
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 237592576,
+        "spreadBytes": 24576,
+        "rssBytes": 524427264,
+        "firstTimestamp": "2026-10-08T22:16:33.380Z",
+        "lastTimestamp": "2026-10-08T22:16:39.627Z",
+        "sampleCount": 7,
+        "minimumElapsedMs": 8000
+      },
+      "runs": [
+        {
+          "number": 1,
+          "cimPeakPrivateBytes": 456024064,
+          "cimPeakRssBytes": 786231296,
+          "nativePeaks": {
+            "peak": {
+              "sequence": 3057,
+              "timestamp": "2026-10-08T22:16:52.3691283Z",
+              "phase": "conversion-1",
+              "privateBytes": 483102720,
+              "rssBytes": 794935296,
+              "nativeElapsedMs": 13.0752,
+              "sampleError": null,
+              "processes": [
+                {
+                  "pid": 14148,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1516935Z",
+                  "creationFileTime": "134359710781516935",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 12988416,
+                  "rssBytes": 40910848
+                },
+                {
+                  "pid": 22532,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1774636Z",
+                  "creationFileTime": "134359710781774636",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 8069120,
+                  "rssBytes": 17993728
+                },
+                {
+                  "pid": 30232,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.3254448Z",
+                  "creationFileTime": "134359710783254448",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 200929280,
+                  "rssBytes": 242581504
+                },
+                {
+                  "pid": 30344,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:16:40.2296402Z",
+                  "creationFileTime": "134359714002296402",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 14618624,
+                  "rssBytes": 31051776
+                },
+                {
+                  "pid": 32460,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1382577Z",
+                  "creationFileTime": "134359710781382577",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 142147584,
+                  "rssBytes": 180547584
+                },
+                {
+                  "pid": 34664,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:17.8806961Z",
+                  "creationFileTime": "134359710778806961",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 2592768,
+                  "rssBytes": 10469376
+                },
+                {
+                  "pid": 35144,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.6271024Z",
+                  "creationFileTime": "134359710786271024",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 20324352,
+                  "rssBytes": 43663360
+                },
+                {
+                  "pid": 45928,
+                  "parentPid": 41252,
+                  "createdAt": "2026-10-08T22:11:17.8584329Z",
+                  "creationFileTime": "134359710778584329",
+                  "executableName": "chrome.exe",
+                  "type": "browser",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 48254976,
+                  "rssBytes": 150478848
+                },
+                {
+                  "pid": 46928,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.2572120Z",
+                  "creationFileTime": "134359710782572120",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 33177600,
+                  "rssBytes": 77238272
+                }
+              ]
+            },
+            "rssPeak": {
+              "sequence": 3057,
+              "timestamp": "2026-10-08T22:16:52.3691283Z",
+              "phase": "conversion-1",
+              "privateBytes": 483102720,
+              "rssBytes": 794935296,
+              "nativeElapsedMs": 13.0752,
+              "sampleError": null,
+              "processes": [
+                {
+                  "pid": 14148,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1516935Z",
+                  "creationFileTime": "134359710781516935",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 12988416,
+                  "rssBytes": 40910848
+                },
+                {
+                  "pid": 22532,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1774636Z",
+                  "creationFileTime": "134359710781774636",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 8069120,
+                  "rssBytes": 17993728
+                },
+                {
+                  "pid": 30232,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.3254448Z",
+                  "creationFileTime": "134359710783254448",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 200929280,
+                  "rssBytes": 242581504
+                },
+                {
+                  "pid": 30344,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:16:40.2296402Z",
+                  "creationFileTime": "134359714002296402",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 14618624,
+                  "rssBytes": 31051776
+                },
+                {
+                  "pid": 32460,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.1382577Z",
+                  "creationFileTime": "134359710781382577",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 142147584,
+                  "rssBytes": 180547584
+                },
+                {
+                  "pid": 34664,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:17.8806961Z",
+                  "creationFileTime": "134359710778806961",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 2592768,
+                  "rssBytes": 10469376
+                },
+                {
+                  "pid": 35144,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.6271024Z",
+                  "creationFileTime": "134359710786271024",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 20324352,
+                  "rssBytes": 43663360
+                },
+                {
+                  "pid": 45928,
+                  "parentPid": 41252,
+                  "createdAt": "2026-10-08T22:11:17.8584329Z",
+                  "creationFileTime": "134359710778584329",
+                  "executableName": "chrome.exe",
+                  "type": "browser",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 48254976,
+                  "rssBytes": 150478848
+                },
+                {
+                  "pid": 46928,
+                  "parentPid": 45928,
+                  "createdAt": "2026-10-08T22:11:18.2572120Z",
+                  "creationFileTime": "134359710782572120",
+                  "executableName": "chrome.exe",
+                  "type": "unknown",
+                  "utilitySubtype": null,
+                  "sandboxType": null,
+                  "privateBytes": 33177600,
+                  "rssBytes": 77238272
+                }
+              ]
+            },
+            "peakRssBytes": 794935296,
+            "validSamples": 417,
+            "unavailableSamples": 0
+          },
+          "incrementalPrivateMiB": 234.13671875,
+          "state": {
+            "jobState": "cancelled",
+            "phase": "Cancelled",
+            "metrics": {
+              "inputBytes": 24340033,
+              "outputBytes": 17197466,
+              "queuedBytes": 0,
+              "peakQueuedBytes": 65536,
+              "pendingOperations": 0,
+              "peakPendingOperations": 1,
+              "maxReadChunkBytes": 65536,
+              "maxWriteChunkBytes": 65536,
+              "elapsedMs": 44639.26999998093,
+              "wasmMemoryBytes": 50331648,
+              "peakWasmMemoryBytes": 50331648,
+              "wasmMemories": {},
+              "sharedArrayBufferBytes": 50331652,
+              "activeWorkerCount": 1,
+              "imageWorkingBytes": 0,
+              "scratchBytes": 0
+            },
+            "error": null,
+            "warnings": [
+              "mkv-to-mp4 uses bounded private-storage staging for fast random-access muxing, then copies through one 512 KiB buffer to the selected destination and deletes the temporary file.",
+              "Source stream 2 (subrip) cannot be represented in MP4 and is explicitly excluded."
+            ],
+            "automaticRouteNotice": null,
+            "selectedProfileId": "mkv-to-mp4",
+            "audioOptions": {
+              "codec": "automatic",
+              "compression": "automatic",
+              "bitRateBps": 0,
+              "sampleRateHz": 0,
+              "channels": 0,
+              "quality": "automatic"
+            },
+            "videoOptions": {
+              "codec": "automatic",
+              "maxWidth": 0,
+              "bitRateBps": 0,
+              "frameRateFps": 0,
+              "quality": "automatic"
+            },
+            "opfsName": null,
+            "opfsNames": [],
+            "batchOutputNames": [
+              "test.mp4"
+            ],
+            "batchCompleted": 0,
+            "batchTotal": 1,
+            "startupCleanupComplete": true,
+            "workerStatus": "ready",
+            "capabilities": {
+              "secure": true,
+              "wasm": true,
+              "wasmSimd": true,
+              "workers": true,
+              "fileSystemAccess": true,
+              "directoryAccess": true,
+              "opfs": true,
+              "storageEstimate": true,
+              "compressionGzip": true,
+              "compressionDeflate": true,
+              "compressionDeflateRaw": true,
+              "sharedArrayBuffer": true,
+              "crossOriginIsolated": true,
+              "webCrypto": true,
+              "webCodecsVideo": true,
+              "webCodecsAudio": true,
+              "imageDecoder": true,
+              "imageDecoderTypes": {
+                "image/avif": true,
+                "image/gif": true,
+                "image/heic": false,
+                "image/heic-sequence": false,
+                "image/heif": false,
+                "image/heif-sequence": false,
+                "image/jpeg": true,
+                "image/png": true,
+                "image/webp": true,
+                "image/x-adobe-dng": false,
+                "image/x-canon-cr2": false,
+                "image/x-nikon-nef": false,
+                "image/x-sony-arw": false
+              },
+              "offscreenCanvas": true
+            }
+          },
+          "independentValidation": null,
+          "recovery": null,
+          "peakPrivateBytes": 483102720
+        }
+      ],
+      "cleanup": {
+        "mediaProfileRuntimeRemoved": true,
+        "generatedDistRestored": true,
+        "protectedFixtureUnchanged": true,
+        "observerStopped": true,
+        "sampledChromeRootStopped": true,
+        "conversionQuiescence": {
+          "scope": "no-running-conversion",
+          "cancellationRequested": false,
+          "terminalState": "cancelled"
+        },
+        "chromeRootExitObservation": {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 45928,
+            "parentPid": 41252,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-08T22:11:17.8584320Z",
+            "privateBytes": 40218624,
+            "rssBytes": 126173184
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-08T22:17:37.936Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 447,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      },
+      "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-ui-progress-candidate-runtime-i1ONiC",
+      "forbiddenRequests": []
+    }
+  ],
+  "hostPreflight": {
+    "acquiredAt": "2026-10-08T22:04:16.4556798Z",
+    "freePhysicalBytes": 6348226560,
+    "freeVirtualBytes": 4845068288,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskPreflightBytes": 1623612129280,
+  "productionRestored": true,
+  "publicAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false
+}

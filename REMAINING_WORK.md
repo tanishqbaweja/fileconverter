@@ -5,6 +5,74 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Real-progress UI comparison is mixed, not a speed/memory fix
+
+Actual headless pair completed in terminal session48317; do not restart it.
+Both fresh Chrome154.0.8037.98 runs used matching chrome.exe/chrome.dll hashes,
+1280x900 viewport, production response-body asset bindings, the FULL unchanged
+2958573265-byte protected test.mkv, identical private MPEG-2 core/settings/CSS,
+fixed32+16MiB Wasm,64KiB reads/writes and one pending operation. All119 executed
+source pins match. Five-minute lower stable blank, complete-process accounting,
+250MiB limit, full-source fidelity and three-complete-run gates are unchanged.
+The only intended conversion termination was normal production cancellation
+after at least16MiB of REAL encoded output; this is NOT a completed conversion.
+Both children actually exit1 with cancelled != complete. Parent exit0 certifies
+the diagnostic collection only. Independent proof supersedes its pending receipt:
+`evidence/2026-10-08T22-04-15-944Z-stable-ui-real-progress-analysis.json`.
+
+Observed output at1/8MiB thresholds matches exactly (1612877/8427700 bytes).
+Final baseline/candidate output differs17793716/17197466 bytes because polling
+overshoots the16MiB threshold; processed input24864321/24077889 bytes and elapsed
+45154.7/44296.7ms therefore do NOT establish an equal-work speed improvement.
+Cumulative sampled JS allocation estimates at the final threshold fell
+17999396 ->11888024 bytes, but are statistical, not exact live/native bytes.
+Page threadTicks ScriptDuration fell0.342811 ->0.233669 seconds; TaskDuration
+increased9.767520 ->10.255515 seconds, LayoutDuration1.329062 ->1.378859 and
+RecalcStyleDuration0.513640 ->0.548266. These exclude workers/whole-conversion CPU
+and are instrumented observations, not a speed acceptance benchmark.
+
+Required whole-Chromium private metric did NOT improve: baseline
+(484724736 -239738880)/1048576 =233.63671875MiB; candidate
+(483102720 -237592576)/1048576 =234.13671875MiB. The slightly lower absolute
+candidate peak must NOT be called a win against its different lower blank.
+Late conversion-phase peaks are included; native coverage6pre+420active and
+6pre+413active, respectively, with zero unavailable samples/errors. Neither
+partial sub250MiB observation supersedes the earlier256.43359375MiB full-source
+failure. ZERO complete original conversions, independent complete-output
+validations, repeats, scaling, speed, memory or public acceptance.
+
+Eight actual allocation profiles (before/1/8/16MiB per run) are archived and
+independently reconstructable. Sampling maximum90000ms, closed normally earlier
+at the checkpoint; no claim that the duration timer fired. No forced GC,
+pressure, process exclusions or codec/quality/heap/limit changes. Normal
+production build/assets were restored. Independent audit finds all42 original
+native Chrome birth identities gone; one observed PID reuse is proved by its
+later birth, not killed. Fresh host/disk guards and full pre/post protected SHA
+pass. Disposable media, profiles and identity-owned scratch are finally gone.
+Retain compact raw/profile/executed-source gzips plus CSV/HTML/trace evidence
+inside outputs/reports, not converted copies. No Docker or visible windows.
+
+The UI candidate remains PRIVATE: small goldens/geometry/cache invalidation
+pass, but no overall speed/native-memory benefit is established. A source-only
+duplicate source-inspection/encoder hypothesis was not established: inspection
+uses bounded header parsers, not a native probe core. V8/native/layout allocation
+causes remain unproved; next distinct work is live native allocation attribution
+or a justified engine change, NOT an unchanged16MiB probe replay or promotion.
+
+Read-only inspection errors (a Node parenthesis typo, nullable pre-conversion
+metrics assumption, invalid PowerShell rg argument globs, and a nonexistent
+ledger-generator filename) changed no converter/test and caused no browser
+rerun. Null pre-conversion metrics remain null, not zero. Initial focused4/4
+PASS197.7647ms, comparison2/2 PASS71.1408ms; new actual-evidence plus focused
+checks5/5 PASS242.5872ms. Earlier872 combined result predates four new tests;
+Closure now actually passed876/876 combined unit cases (dot reporter, exit0),
+and manifest405/405 with zero public pending/nonpassing/PDF. This is code and
+evidence consistency, not another conversion or stress acceptance.
+Eight new/updated scripts and tests passed zero-warning lint; regenerated
+TESTED.md and git diff whitespace checks passed. Compact CSV/HTML/trace ZIPs
+remain retained proof (492442 bytes combined), not duplicate converted media.
+Whole original-spec goal remains ACTIVE / INCOMPLETE; public405 unchanged.
+
 ## 2026-10-09 — Matched headless layout comparison passes exactly
 
 ONE actual control run used the unchanged normal production UI with the same
