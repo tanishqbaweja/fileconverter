@@ -1,0 +1,43 @@
+{
+  "status": "actual-regression-passed-not-conversion-acceptance",
+  "unitCommand": "node scripts/run-repository-owned-node.mjs --test tests/*.test.mjs",
+  "unitExitCode": 0,
+  "unitTests": 849,
+  "unitPassed": 849,
+  "unitFailed": 0,
+  "unitSkipped": 0,
+  "unitDurationMs": 5513.525,
+  "focusedTests": 11,
+  "focusedPassed": 11,
+  "focusedDurationMs": 111.6134,
+  "lintExitCode": 0,
+  "lintWarnings": 0,
+  "lintFiles": [
+    "scripts/lib/bounded-js-allocation.mjs",
+    "scripts/lib/ui-js-allocation-recipe.mjs",
+    "scripts/diagnose-ui-js-allocation.mjs",
+    "scripts/freeze-ui-js-allocation.mjs",
+    "scripts/freeze-ui-js-allocation-bound.mjs",
+    "scripts/lib/js-probe-identity-cleanup.mjs",
+    "tests/bounded-js-allocation.test.mjs",
+    "tests/js-probe-identity-cleanup.test.mjs",
+    "tests/ui-js-allocation-evidence.test.mjs"
+  ],
+  "publicManifestAudit": {
+    "exitCode": 0,
+    "publicPassedProfiles": 405,
+    "compactEvidenceEntries": 405,
+    "pendingProfiles": 0,
+    "hiddenPendingProfiles": 0,
+    "publicNonPassingProfiles": 0,
+    "pdfFormats": 0,
+    "pdfProfiles": 0
+  },
+  "browserDiagnosticProof": "evidence/ui-js-allocation-tooling-2026-10-08.json",
+  "productionBuildPerformedInThisCycle": false,
+  "conversionsPerformedInThisCycle": 0,
+  "primaryMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "entireGoalComplete": false
+}

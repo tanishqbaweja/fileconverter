@@ -1,0 +1,15 @@
+{
+  "status": "verifier-failed-before-compression-or-deletion",
+  "failedVerifier": "scripts/freeze-ui-js-allocation.mjs",
+  "failedVerifierSha256": "0e207b11611e6cc2fc770be406ed6750ad3280ef9d68874f170ba458c9acaf76",
+  "receipt": "evidence/2026-10-08T12-23-38-737Z-ui-js-allocation-receipt.json",
+  "failure": "Verifier incorrectly required absence of every numeric PID instead of absence of original PID-parent-birth identities",
+  "originalRenderer": { "pid": 32192, "parentPid": 43592, "createdAt": "2026-10-08T12:23:50.7667340Z", "type": "renderer" },
+  "unrelatedReusedPidAtFailedCheck": { "pid": 32192, "parentPid": 25576, "createdAt": "2026-10-08T12:27:14.4124730Z" },
+  "browserControlTerminalAt": "2026-10-08T12:24:21.442Z",
+  "originalIdentityStillPresent": false,
+  "unrelatedProcessKilled": false,
+  "browserReplayed": false,
+  "newBoundVerifier": "scripts/freeze-ui-js-allocation-bound.mjs",
+  "next": "Verify exact original PID-parent-birth absence, retain any observed reused identity explicitly, and keep all other independent proof/compression gates unchanged"
+}

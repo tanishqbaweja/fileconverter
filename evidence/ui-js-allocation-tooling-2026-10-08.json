@@ -1,0 +1,1237 @@
+{
+  "recordedAt": "2026-10-08T12:29:39.340Z",
+  "status": "verified-js-callsite-tooling-not-conversion-acceptance",
+  "verifier": {
+    "path": "scripts/freeze-ui-js-allocation-bound.mjs",
+    "sha256": "85b334d9aa70ac070ada3e8a3ed843987384d0a0e3276fa289da17cd0eabdef7",
+    "failedOriginalPath": "scripts/freeze-ui-js-allocation.mjs",
+    "failedOriginalSha256": "0e207b11611e6cc2fc770be406ed6750ad3280ef9d68874f170ba458c9acaf76",
+    "identityHelperSha256": "a61c8bec0a6d15733ededf73df075bb5b2299e98772441479e834524d4a3ea65"
+  },
+  "browserVersion": "154.0.8037.98",
+  "host": {
+    "acquiredAt": "2026-10-08T12:23:39.2702343Z",
+    "freePhysicalBytes": 4902289408,
+    "freeVirtualBytes": 2518401024,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "scripts/diagnose-ui-js-allocation.mjs": "266ad5854528f128d84bd95f92f261bd6c43f9c1fbb0e3493c9f201bb633b2af",
+    "scripts/lib/ui-js-allocation-recipe.mjs": "88fd8f9521033d26e2c0e391108df014259035a0b1f218faaba2aebfb897f607",
+    "scripts/lib/bounded-js-allocation.mjs": "bda886855a70f5f04f1d381e73b096d916e70bcfbe150607658f8a5998941044",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/private-browser-request.mjs": "d24e7a443abc21f564c2e15d79b8b29054b48a6b924f7556d6d6b48c9f6d900c",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "tests/bounded-js-allocation.test.mjs": "2928efac1cfd59924f2c2dcb8f947421957b9f31a1dc9d99f2cb51f706f1911d"
+  },
+  "generatedControl": {
+    "bytes": 10712,
+    "sha256": "86c04399aadd5eaf666afe400302d553c70b76ac7ca0fa2c06a4b74fe2a511a4"
+  },
+  "receipt": {
+    "path": "evidence/2026-10-08T12-23-38-737Z-ui-js-allocation-receipt.json",
+    "bytes": 2065,
+    "sha256": "5d35531e3c50130eb6645d3fe09345206e21b35bc43acca98569dd2c2d3312ad"
+  },
+  "originalReport": {
+    "path": "output/playwright/2026-10-08T12-23-38-737Z-ui-js-allocation.json",
+    "bytes": 1746120,
+    "sha256": "528374452447a916d5fc2d56ff98b6d5fa7d851bea0b667459a7f7dc89a71972"
+  },
+  "compressedReport": {
+    "path": "output/playwright/2026-10-08T12-23-38-737Z-ui-js-allocation.json.gz",
+    "bytes": 50953,
+    "sha256": "177a0966176298eb5d2b1a4646b2503ae776aa25443f345e31d932f54005563c",
+    "losslesslyRestoredBytes": 1746120,
+    "losslesslyRestoredSha256": "528374452447a916d5fc2d56ff98b6d5fa7d851bea0b667459a7f7dc89a71972"
+  },
+  "settings": {
+    "samplingInterval": 65536,
+    "stackDepth": 64,
+    "includeObjectsCollectedByMajorGC": true,
+    "includeObjectsCollectedByMinorGC": true
+  },
+  "limits": {
+    "responseBytes": 524288,
+    "nodes": 4096,
+    "samples": 4096,
+    "depth": 64,
+    "callsites": 32,
+    "profiles": 5
+  },
+  "profiles": [
+    {
+      "phase": "native-sampling-start",
+      "serializedBytes": 339,
+      "nodeCount": 2,
+      "sampleCount": 1,
+      "estimatedSelfBytes": 65548,
+      "sourceLocatedSelfBytes": 0
+    },
+    {
+      "phase": "ui-selections-20",
+      "serializedBytes": 24860,
+      "nodeCount": 142,
+      "sampleCount": 33,
+      "estimatedSelfBytes": 2197880,
+      "sourceLocatedSelfBytes": 524576
+    },
+    {
+      "phase": "ui-selections-40",
+      "serializedBytes": 29421,
+      "nodeCount": 161,
+      "sampleCount": 70,
+      "estimatedSelfBytes": 4624612,
+      "sourceLocatedSelfBytes": 1311684
+    },
+    {
+      "phase": "ui-selections-60",
+      "serializedBytes": 54648,
+      "nodeCount": 291,
+      "sampleCount": 104,
+      "estimatedSelfBytes": 6854224,
+      "sourceLocatedSelfBytes": 2098788
+    },
+    {
+      "phase": "ui-control-settled-3s",
+      "serializedBytes": 54648,
+      "nodeCount": 291,
+      "sampleCount": 104,
+      "estimatedSelfBytes": 6854224,
+      "sourceLocatedSelfBytes": 2098788
+    }
+  ],
+  "topCallsites": [
+    {
+      "callFrame": {
+        "functionName": "next",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 2752952,
+      "nodeCount": 4,
+      "exampleStackTail": [
+        {
+          "functionName": "safeJson",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 327,
+          "columnNumber": 21
+        },
+        {
+          "functionName": "jsonValue",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 321,
+          "columnNumber": 11
+        },
+        {
+          "functionName": "serializeAsCallArgument",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 171,
+          "columnNumber": 32
+        },
+        {
+          "functionName": "serialize",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 174,
+          "columnNumber": 18
+        },
+        {
+          "functionName": "innerSerialize",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 185,
+          "columnNumber": 23
+        },
+        {
+          "functionName": "next",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "Ci",
+        "scriptId": "14",
+        "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+        "lineNumber": 6,
+        "columnNumber": 46520
+      },
+      "estimatedSelfBytes": 787056,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "Ou",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 114130
+        },
+        {
+          "functionName": "ku",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 114586
+        },
+        {
+          "functionName": "Ic",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 79657
+        },
+        {
+          "functionName": "yc",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 69934
+        },
+        {
+          "functionName": "Oo",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 47406
+        },
+        {
+          "functionName": "Ci",
+          "scriptId": "14",
+          "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+          "lineNumber": 6,
+          "columnNumber": 46520
+        }
+      ],
+      "inspectedBundle": "assets/ConverterApp-BuCmNpWV.js",
+      "postRunBundleContext": "n.size===t.size&&n.lastModified===t.lastModified}function Ci(){let[e,t]=(0,Q.useState)(null),[n,r]=(0,Q.useState)([]),[i,a]=(0,Q.useState)(`binary`),[o,s]=(0,Q.useState)(null),[c,l]=(0,Q.useState)({...Cr}),[u,d]=(0,Q.useState)({...wr}),[f,p]=(0,Q.useState)(null),[m,h]=(0,Q.useSta"
+    },
+    {
+      "callFrame": {
+        "functionName": "(V8 API)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 525568,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "(root)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "(V8 API)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "r",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 0,
+        "columnNumber": 7655
+      },
+      "estimatedSelfBytes": 393312,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "ku",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 114586
+        },
+        {
+          "functionName": "Ic",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 79657
+        },
+        {
+          "functionName": "yc",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 69934
+        },
+        {
+          "functionName": "Oo",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 47406
+        },
+        {
+          "functionName": "Ci",
+          "scriptId": "14",
+          "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+          "lineNumber": 6,
+          "columnNumber": 46520
+        },
+        {
+          "functionName": "r",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 0,
+          "columnNumber": 7655
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "sitional.element`),n=Symbol.for(`react.fragment`);function r(e,n,r){var i=null;if(r!==void 0&&(i=``+r),n.key!==void 0&&(i=``+n.key),`key`in n)for(var a in r={},n)a!==`key`&&(r[a]=n[a]);else r=n;return n=r.ref,{$$typeof:t,type:e,key:i,ref:n===void 0?null:n,props:r}}e.Fragment=n,e."
+    },
+    {
+      "callFrame": {
+        "functionName": "",
+        "scriptId": "14",
+        "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+        "lineNumber": 6,
+        "columnNumber": 72278
+      },
+      "estimatedSelfBytes": 327732,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "Ic",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 79657
+        },
+        {
+          "functionName": "yc",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 69934
+        },
+        {
+          "functionName": "Oo",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 47406
+        },
+        {
+          "functionName": "Ci",
+          "scriptId": "14",
+          "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+          "lineNumber": 6,
+          "columnNumber": 46520
+        },
+        {
+          "functionName": "map",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "",
+          "scriptId": "14",
+          "url": "http://127.0.0.1:59421/assets/ConverterApp-BuCmNpWV.js",
+          "lineNumber": 6,
+          "columnNumber": 72278
+        }
+      ],
+      "inspectedBundle": "assets/ConverterApp-BuCmNpWV.js",
+      "postRunBundleContext": ",re(i?.reason??null)},disabled:E===`running`,children:H.map(e=>(0,$.jsx)(`option`,{value:e.id,children:G(e.output)?.label??e.output},e.id))})]}),(0,$.jsxs)(`div`,{className:`route-panel`,children:[(0,$.jsx)(`span`,{children:`Processing route`}),(0,$.jsx)(`strong`,{children:U?.rou"
+    },
+    {
+      "callFrame": {
+        "functionName": "Map",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 262352,
+      "nodeCount": 3,
+      "exampleStackTail": [
+        {
+          "functionName": "",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 335,
+          "columnNumber": 14
+        },
+        {
+          "functionName": "safeJson",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 327,
+          "columnNumber": 21
+        },
+        {
+          "functionName": "jsonValue",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 321,
+          "columnNumber": 11
+        },
+        {
+          "functionName": "serializeAsCallArgument",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 171,
+          "columnNumber": 32
+        },
+        {
+          "functionName": "Map",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "eval",
+        "scriptId": "29",
+        "url": "",
+        "lineNumber": 6849,
+        "columnNumber": 6
+      },
+      "estimatedSelfBytes": 197292,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "(root)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "",
+          "scriptId": "23",
+          "url": "",
+          "lineNumber": 0,
+          "columnNumber": 1
+        },
+        {
+          "functionName": "evaluate",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 304,
+          "columnNumber": 10
+        },
+        {
+          "functionName": "callMatchedElements",
+          "scriptId": "32",
+          "url": "",
+          "lineNumber": 0,
+          "columnNumber": 29
+        },
+        {
+          "functionName": "eval",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 6849,
+          "columnNumber": 6
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "Si",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 7,
+        "columnNumber": 29206
+      },
+      "estimatedSelfBytes": 131144,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 43077
+        },
+        {
+          "functionName": "b",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 41717
+        },
+        {
+          "functionName": "h",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 40398
+        },
+        {
+          "functionName": "m",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 39892
+        },
+        {
+          "functionName": "l",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 38344
+        },
+        {
+          "functionName": "Si",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 29206
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "l:{lanes:t.lanes,firstContext:t.firstContext}),e}function Si(e,t,n,r,i,o){var s=0;if(r=e,typeof e==`function`)yi(e)&&(s=1);else if(typeof e==`string`)s=Uf(e,n,ge.current)?26:e===`html`||e===`head`||e===`body`?27:5;else a:switch(e){case ae:return e=vi(31,n,t,i),e.elementType=ae,e."
+    },
+    {
+      "callFrame": {
+        "functionName": "values",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 131088,
+      "nodeCount": 2,
+      "exampleStackTail": [
+        {
+          "functionName": "safeJson",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 327,
+          "columnNumber": 21
+        },
+        {
+          "functionName": "jsonValue",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 321,
+          "columnNumber": 11
+        },
+        {
+          "functionName": "serializeAsCallArgument",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 171,
+          "columnNumber": 32
+        },
+        {
+          "functionName": "serialize",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 174,
+          "columnNumber": 18
+        },
+        {
+          "functionName": "innerSerialize",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 185,
+          "columnNumber": 23
+        },
+        {
+          "functionName": "values",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "(IDLE_EXTERNAL)",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 99504,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "(root)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "(IDLE_EXTERNAL)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "ie",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 0,
+        "columnNumber": 9214
+      },
+      "estimatedSelfBytes": 65920,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "(root)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "ie",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 0,
+          "columnNumber": 9214
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "nction re(){return g?!0:!(e.unstable_now()-ne<S)}function ie(){if(g=!1,ee){var t=e.unstable_now();ne=t;var i=!0;try{a:{m=!1,h&&(h=!1,v(te),te=-1),p=!0;var a=f;try{b:{for(b(t),d=n(c);d!==null&&!(d.expirationTime>t&&re());){var o=d.callback;if(typeof o==`function`){d.callback=null,"
+    },
+    {
+      "callFrame": {
+        "functionName": "ll",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 7,
+        "columnNumber": 97146
+      },
+      "estimatedSelfBytes": 65664,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "Il",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 109025
+        },
+        {
+          "functionName": "Fl",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 108842
+        },
+        {
+          "functionName": "Il",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 109025
+        },
+        {
+          "functionName": "Fl",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 108842
+        },
+        {
+          "functionName": "Rl",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 109626
+        },
+        {
+          "functionName": "ll",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 97146
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "n),il=i,V=a}break;case 30:break;default:Sl(e,n)}}function ll(e){var t=e.alternate;t!==null&&(e.alternate=null,ll(t)),e.child=null,e.deletions=null,e.sibling=null,e.tag===5&&(t=e.stateNode,t!==null&&Tt(t)),e.stateNode=null,e.return=null,e.dependencies=null,e.memoizedProps=null,e.m"
+    },
+    {
+      "callFrame": {
+        "functionName": "Tt",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 7,
+        "columnNumber": 4077
+      },
+      "estimatedSelfBytes": 65664,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "Fl",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 108842
+        },
+        {
+          "functionName": "Rl",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 109626
+        },
+        {
+          "functionName": "ll",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 97146
+        },
+        {
+          "functionName": "ll",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 97146
+        },
+        {
+          "functionName": "ll",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 97146
+        },
+        {
+          "functionName": "Tt",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 4077
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "Ct=`__reactResources$`+gt,wt=`__reactMarker$`+gt;function Tt(e){delete e[_t],delete e[vt],delete e[bt],delete e[xt],delete e[St]}function Et(e){var t=e[_t];if(t)return t;for(var n=e.parentNode;n;){if(t=n[yt]||n[_t]){if(n=t.alternate,t.child!==null||n!==null&&n.child!==null)for(e="
+    },
+    {
+      "callFrame": {
+        "functionName": "wi",
+        "scriptId": "13",
+        "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+        "lineNumber": 7,
+        "columnNumber": 30011
+      },
+      "estimatedSelfBytes": 65624,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "cc",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 66497
+        },
+        {
+          "functionName": "",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 43077
+        },
+        {
+          "functionName": "b",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 41717
+        },
+        {
+          "functionName": "h",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 40398
+        },
+        {
+          "functionName": "f",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 38924
+        },
+        {
+          "functionName": "wi",
+          "scriptId": "13",
+          "url": "http://127.0.0.1:59421/assets/framework-CXnKph_e.js",
+          "lineNumber": 7,
+          "columnNumber": 30011
+        }
+      ],
+      "inspectedBundle": "assets/framework-CXnKph_e.js",
+      "postRunBundleContext": "ion Ci(e,t,n,r){return e=vi(7,e,r,t),e.lanes=n,e}function wi(e,t,n){return e=vi(6,e,null,t),e.lanes=n,e}function Ti(e){var t=vi(18,null,null,0);return t.stateNode=e,t}function Ei(e,t,n){return t=vi(4,e.children===null?[]:e.children,e.key,t),t.lanes=n,t.stateNode={containerInfo:e."
+    },
+    {
+      "callFrame": {
+        "functionName": "push",
+        "scriptId": "0",
+        "url": "",
+        "lineNumber": -1,
+        "columnNumber": -1
+      },
+      "estimatedSelfBytes": 65588,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "_cached",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5387,
+          "columnNumber": 9
+        },
+        {
+          "functionName": "",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5425,
+          "columnNumber": 116
+        },
+        {
+          "functionName": "_querySimple",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5482,
+          "columnNumber": 14
+        },
+        {
+          "functionName": "_queryCSS",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5603,
+          "columnNumber": 11
+        },
+        {
+          "functionName": "_cached",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5387,
+          "columnNumber": 9
+        },
+        {
+          "functionName": "push",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        }
+      ]
+    },
+    {
+      "callFrame": {
+        "functionName": "end",
+        "scriptId": "29",
+        "url": "",
+        "lineNumber": 5373,
+        "columnNumber": 5
+      },
+      "estimatedSelfBytes": 65588,
+      "nodeCount": 1,
+      "exampleStackTail": [
+        {
+          "functionName": "(root)",
+          "scriptId": "0",
+          "url": "",
+          "lineNumber": -1,
+          "columnNumber": -1
+        },
+        {
+          "functionName": "",
+          "scriptId": "23",
+          "url": "",
+          "lineNumber": 0,
+          "columnNumber": 1
+        },
+        {
+          "functionName": "evaluate",
+          "scriptId": "16",
+          "url": "",
+          "lineNumber": 304,
+          "columnNumber": 10
+        },
+        {
+          "functionName": "callMatchedElements",
+          "scriptId": "32",
+          "url": "",
+          "lineNumber": 0,
+          "columnNumber": 29
+        },
+        {
+          "functionName": "querySelectorAll",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 6919,
+          "columnNumber": 18
+        },
+        {
+          "functionName": "end",
+          "scriptId": "29",
+          "url": "",
+          "lineNumber": 5373,
+          "columnNumber": 5
+        }
+      ]
+    }
+  ],
+  "inspectedBundles": {
+    "assets/ConverterApp-BuCmNpWV.js": {
+      "file": "dist/client/assets/ConverterApp-BuCmNpWV.js",
+      "bytes": 315630,
+      "sha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172",
+      "inspectedAfterRun": true,
+      "servedBytesCapturedDuringRun": false
+    },
+    "assets/framework-CXnKph_e.js": {
+      "file": "dist/client/assets/framework-CXnKph_e.js",
+      "bytes": 189805,
+      "sha256": "73b45b606448e4dc310fbe851d8089ee752f3eb081980b3a6fec88988820ee12",
+      "inspectedAfterRun": true,
+      "servedBytesCapturedDuringRun": false
+    }
+  },
+  "stoppedProfileSummary": {
+    "serializedBytes": 54648,
+    "nodeCount": 291,
+    "sampleCount": 104
+  },
+  "observedRows": [
+    {
+      "phase": "blank-ui-control-only",
+      "timestamp": "2026-10-08T12:23:51.772Z",
+      "dom": {
+        "documents": 2,
+        "nodes": 8,
+        "jsEventListeners": 0
+      },
+      "heap": {
+        "usedSize": 666856,
+        "totalSize": 1310720,
+        "embedderHeapUsedSize": 1384432,
+        "backingStorageSize": 30
+      },
+      "privateBytes": 283205632,
+      "rssBytes": 575463424,
+      "jobState": null
+    },
+    {
+      "phase": "source-inspected-before-native-sampling",
+      "timestamp": "2026-10-08T12:23:55.201Z",
+      "dom": {
+        "documents": 6,
+        "nodes": 6723,
+        "jsEventListeners": 192
+      },
+      "heap": {
+        "usedSize": 5747464,
+        "totalSize": 8142848,
+        "embedderHeapUsedSize": 16636944,
+        "backingStorageSize": 674715
+      },
+      "privateBytes": 347770880,
+      "rssBytes": 682143744,
+      "jobState": "idle"
+    },
+    {
+      "phase": "native-sampling-start",
+      "timestamp": "2026-10-08T12:23:56.234Z",
+      "dom": {
+        "documents": 6,
+        "nodes": 6723,
+        "jsEventListeners": 192
+      },
+      "heap": {
+        "usedSize": 5784820,
+        "totalSize": 8142848,
+        "embedderHeapUsedSize": 16636944,
+        "backingStorageSize": 674715
+      },
+      "privateBytes": 351174656,
+      "rssBytes": 690630656,
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-20",
+      "timestamp": "2026-10-08T12:24:02.402Z",
+      "dom": {
+        "documents": 1,
+        "nodes": 7225,
+        "jsEventListeners": 238
+      },
+      "heap": {
+        "usedSize": 5946192,
+        "totalSize": 7356416,
+        "embedderHeapUsedSize": 12652664,
+        "backingStorageSize": 599291
+      },
+      "privateBytes": 356610048,
+      "rssBytes": 705785856,
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-40",
+      "timestamp": "2026-10-08T12:24:08.453Z",
+      "dom": {
+        "documents": 1,
+        "nodes": 7225,
+        "jsEventListeners": 238
+      },
+      "heap": {
+        "usedSize": 6054788,
+        "totalSize": 7094272,
+        "embedderHeapUsedSize": 12495184,
+        "backingStorageSize": 599264
+      },
+      "privateBytes": 338894848,
+      "rssBytes": 660090880,
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-selections-60",
+      "timestamp": "2026-10-08T12:24:14.366Z",
+      "dom": {
+        "documents": 1,
+        "nodes": 7225,
+        "jsEventListeners": 238
+      },
+      "heap": {
+        "usedSize": 6066196,
+        "totalSize": 7094272,
+        "embedderHeapUsedSize": 12458176,
+        "backingStorageSize": 599264
+      },
+      "privateBytes": 338644992,
+      "rssBytes": 660332544,
+      "jobState": "idle"
+    },
+    {
+      "phase": "ui-control-settled-3s",
+      "timestamp": "2026-10-08T12:24:18.130Z",
+      "dom": {
+        "documents": 1,
+        "nodes": 6685,
+        "jsEventListeners": 178
+      },
+      "heap": {
+        "usedSize": 5265544,
+        "totalSize": 6569984,
+        "embedderHeapUsedSize": 8249632,
+        "backingStorageSize": 599107
+      },
+      "privateBytes": 352632832,
+      "rssBytes": 727269376,
+      "jobState": "idle"
+    }
+  ],
+  "observedProcessIdentities": [
+    {
+      "pid": 43592,
+      "parentPid": 33364,
+      "createdAt": "2026-10-08T12:23:50.0938110Z",
+      "type": "browser"
+    },
+    {
+      "pid": 8708,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.1246070Z",
+      "type": "crashpad-handler"
+    },
+    {
+      "pid": 39596,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.5465220Z",
+      "type": "gpu-process"
+    },
+    {
+      "pid": 37120,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.5564660Z",
+      "type": "utility"
+    },
+    {
+      "pid": 35612,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.6267530Z",
+      "type": "utility"
+    },
+    {
+      "pid": 31740,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.6898130Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 5284,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.7334510Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 31176,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.7666690Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 32192,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:50.7667340Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 25888,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:51.0507670Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 42324,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:23:51.8976320Z",
+      "type": "renderer"
+    },
+    {
+      "pid": 25696,
+      "parentPid": 43592,
+      "createdAt": "2026-10-08T12:24:15.8870680Z",
+      "type": "browser"
+    },
+    {
+      "pid": 10316,
+      "parentPid": 25696,
+      "createdAt": "2026-10-08T12:24:15.9074790Z",
+      "type": "browser"
+    },
+    {
+      "pid": 41768,
+      "parentPid": 25696,
+      "createdAt": "2026-10-08T12:24:15.9306890Z",
+      "type": "browser"
+    },
+    {
+      "pid": 31436,
+      "parentPid": 41768,
+      "createdAt": "2026-10-08T12:24:15.9497940Z",
+      "type": "browser"
+    }
+  ],
+  "observedPidsAbsent": [
+    43592,
+    8708,
+    39596,
+    37120,
+    35612,
+    31740,
+    5284,
+    31176,
+    32192,
+    25888,
+    42324,
+    25696,
+    10316,
+    41768,
+    31436,
+    31628
+  ],
+  "identityCleanup": {
+    "originalIdentityCount": 15,
+    "originalIdentitiesAbsent": true,
+    "reusedPids": [],
+    "noProcessesKilled": true,
+    "unavailableBirthsAssumedAbsent": false
+  },
+  "nativeIdentityCleanupVerified": true,
+  "cleanup": {
+    "samplingStopped": true,
+    "chromeStopped": true,
+    "serverStopped": true,
+    "runtimeRemoved": true,
+    "protectedFixtureUnchanged": true
+  },
+  "runtimeDirectories": [
+    "H:\\Github Repositories\\fileconverter\\work\\ui-js-allocation-iW6B1U",
+    "H:\\Github Repositories\\fileconverter\\work\\ui-js-allocation-wrapper-gXA9Sf"
+  ],
+  "runtimeDirectoriesAbsent": true,
+  "historicalNativeSampling": {
+    "path": "evidence/ui-native-allocation-2026-10-06.json",
+    "sha256": "82f30da82c452475fc604b54c809be94467cbc7202c3a8c3e4691431bfa5288a",
+    "browserVersion": "154.0.8037.98",
+    "raw": {
+      "path": "output/playwright/2026-10-06T21-20-21-338Z-ui-native-allocation.json",
+      "bytes": 36399,
+      "sha256": "42e77b80f097a92bb6771c4a3748b48955ffd35adcb5033ea23e553c80b72bb6"
+    },
+    "sampleCounts": [
+      1,
+      3,
+      1,
+      1,
+      1
+    ],
+    "symbolsResolved": false
+  },
+  "historicalPhaseNamesOnly": true,
+  "nativeSamplerUsedInThisRun": false,
+  "jsSourceLocationsObserved": true,
+  "originalSourceBytes": 2958573265,
+  "originalSourceSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "protectedFixturePrePostVerified": true,
+  "forbiddenRequests": [],
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "forcedGcUsed": false,
+  "includesNaturallyCollectedObjects": true,
+  "exactLiveMemory": false,
+  "nativeAllocationCauseProven": false,
+  "primaryMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "rawJsonRemovedAfterVerifiedLosslessCompression": true,
+  "bytesSaved": 1695167,
+  "next": "Do not repeat this idle probe or unresolved native sampler. Integrate bounded JS sampling into actual conversion progress, distinguish automation/runtime allocations, and capture exact served bundle hashes. JS sampling alone cannot explain Blink/native pools or certify primary memory; full-original/repeats/quality/privacy/cleanup gates remain."
+}

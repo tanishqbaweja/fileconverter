@@ -5,6 +5,69 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — JS allocation tooling actually verified; no original replay
+
+Supersedes the preparation/pending note below. One actual unchanged production
+Chrome154.0.8037.98 probe12287 completed exit0; source inspection and60 real
+format changes remained idle throughout. Actual launch host physical4,902,289,408/
+virtual2,518,401,024bytes passed both2GiB guards. Five JS profiles yielded
+1/33/70/104/104samples, maximum291nodes/54,648serializedbytes, below unchanged
+bounds. Final estimated allocated6,854,224bytes includes naturally collected
+objects;2,098,788bytes have source URL/line/column. This is NOT exact live memory,
+native/Blink/Wasm accounting, or the original40,828,928-byte renderer jump cause.
+Some top samples are Playwright serialization (`next`/`innerSerialize`); app
+`Ci` and framework callsites are available. Bundle contexts/hashes were inspected
+AFTER the run, not captured served bytes; preserve that provenance limitation.
+
+Independent terminal source/generated/raw/profile/privacy/host/cleanup checks
+passed15native PID-parent-birth identities and16 observed PIDs absent, two named
+inner/wrapper runtimes absent/full protected pre/post SHA exact. Initial verifier
+incorrectly demanded numeric PID absence: renderer32192 was reused after terminal
+by a different parent/birth. Failed verifier/source hash and exact observations
+remain in `ui-js-allocation-verifier-pid-reuse-2026-10-08.json`; NEW reversible
+bound derivative checks original identities and records reuse, never kills an
+unrelated process or replays Chrome. Missing births remain failures/unavailable.
+
+Raw1,746,120bytes removed only after exact file-identity/hash/lossless compression
+checks;50,953-byte gzip reconstructs it exactly, saving1,695,167bytes. ZERO media
+copies/conversions/CSS/engine changes/forced GC/primary250MiB/speed/public acceptance.
+Focused11/11 PASS111.6134ms; actual browser tooling evidence is
+`evidence/ui-js-allocation-tooling-2026-10-08.json`. No unchanged idle or unresolved
+native sampler replay. Next distinct gate: instrument ACTUAL conversion progress
+with bounded sampling, separate automation allocations, and capture exact served
+assets. Native/Blink cause, full original completion/repeats and broad product
+requirements remain unverified; the whole goal is still active.
+
+Final regression for this cycle:849/849 combined units PASS5513.525ms, zero skipped
+or failed; all nine new script/helper/test files zero-warning lint PASS.
+Manifest-only public evidence audit remains405/405 passing/no pending/public
+nonpassing or PDF profiles. This is registry consistency, not current full-browser
+re-certification or completion of the broader original specification. Diff whitespace
+check PASS. No additional conversion, production build, or memory/speed gate claimed.
+
+## 2026-10-08 — Native-sampler history corrected; new JS tooling probe prepared
+
+The previous terminal entry incorrectly called native CDP Memory.startSampling
+availability/symbolization untested. The retained actual Oct6 control already ran
+on this same Chrome154.0.8037.98: only1–3 live samples per phase, all unresolved
+Windows addresses. Its exact source/raw hashes and cleanup proof remain in
+`evidence/ui-native-allocation-2026-10-06.json`. This historical result supersedes
+the erroneous NEXT claim below; no unchanged native profiler or original replay.
+
+The genuinely different probe uses HeapProfiler sampling with JS callframes and
+64KiB sampling interval/64-frame depth, retaining naturally collected objects.
+Each response is capped512KiB/4096nodes/4096samples, five snapshots/one pending
+profiler command. Same actual source inspection/60format changes/idle-state/privacy/
+full protected pre/post hash/owned finally cleanup preserved by exact reversible
+source guards. No CSS, public engine, conversion, synthetic progress, forced GC,
+memory formula or quality changes. Initial focused test/lint caught one test-only
+syntax errors before browser execution; corrected. Browser execution and source
+locations remain pending. This tooling check cannot prove native/Blink allocation
+cause, exact live memory, full-original conversion, primary250MiB, or speedup.
+RAM recheck17:47:40+05:30 physical6,698,004,480/virtual6,015,201,280bytes passed
+the unchanged2GiB guard; the actual diagnostic must check again before launch.
+All scratch stays repository-local; zero generated/converted media copies.
+
 ## 2026-10-08 — Hero full-original TERMINAL:256.43359375MiB still FAILS
 
 Supersedes ALL49484 launch/LIVE/pending notes below. Actual session49484 exited1,

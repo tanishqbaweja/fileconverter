@@ -1,0 +1,34 @@
+{
+  "recordedAt": "2026-10-08T12:24:21.486Z",
+  "status": "completed-diagnostic",
+  "sourcePins": {
+    "scripts/diagnose-ui-js-allocation.mjs": "266ad5854528f128d84bd95f92f261bd6c43f9c1fbb0e3493c9f201bb633b2af",
+    "scripts/lib/ui-js-allocation-recipe.mjs": "88fd8f9521033d26e2c0e391108df014259035a0b1f218faaba2aebfb897f607",
+    "scripts/lib/bounded-js-allocation.mjs": "bda886855a70f5f04f1d381e73b096d916e70bcfbe150607658f8a5998941044",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/private-browser-request.mjs": "d24e7a443abc21f564c2e15d79b8b29054b48a6b924f7556d6d6b48c9f6d900c",
+    "scripts/mpeg2-split-single-navigation-memory.mjs": "acb179454985fdc2167f9e463d1d720b777d4c829d313d8e3ee45fdf82ff3417",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "tests/bounded-js-allocation.test.mjs": "2928efac1cfd59924f2c2dcb8f947421957b9f31a1dc9d99f2cb51f706f1911d"
+  },
+  "generatedControl": {
+    "bytes": 10712,
+    "sha256": "86c04399aadd5eaf666afe400302d553c70b76ac7ca0fa2c06a4b74fe2a511a4"
+  },
+  "report": {
+    "path": "output/playwright/2026-10-08T12-23-38-737Z-ui-js-allocation.json",
+    "bytes": 1746120,
+    "sha256": "528374452447a916d5fc2d56ff98b6d5fa7d851bea0b667459a7f7dc89a71972"
+  },
+  "wrapperRuntimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\ui-js-allocation-wrapper-gXA9Sf",
+  "wrapperRuntimeRemoved": true,
+  "sourcePinsUnchanged": true,
+  "browserRuns": 1,
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "publicAcceptance": false
+}
