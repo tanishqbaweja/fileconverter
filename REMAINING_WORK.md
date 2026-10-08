@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Actual-progress JS diagnostic prepared; original gates intact
+
+New diagnostic changes measurement, not codec/quality/input/CSS/defaults. The
+exact hero full-original driver now samples the page JS isolate at real output
+growth1/8/16MiB and immediately BEFORE normal production cancellation on the first
+250MiB native-tree failure. Sampling starts only after actual page navigation and
+source inspection; the same lower stable five-minute blank is unchanged. Actual
+served app/framework bodies are bounded/hash-captured, not inferred from later
+dist files. Other source locations explicitly unavailable; worker JS allocations
+NOT sampled, while existing separate realm heap/native/Wasm measurements remain.
+
+Same FULL protected test.mkv/pre-post SHA/32GiB disk guard/production pipeline/
+normal compiled3e744/fixed32+16MiB/64KiB/one write/ALL processes250MiB/three full
+runs/six-hour deadline/independent fidelity/recovery/owned finally remain by exact
+reversible recipe. Existing headed golden/source pins are verified before any
+launch. Five512KiB/4096-node/4096-sample profiles maximum; each1MiB diagnostic
+archive is compressed repository-local. Static capture limited to two1MiB assets/
+2MiB total outside Chromium; never captures user-file content. No forced GC,
+native/PDF/Docker converter, hidden cards, larger denominator or relaxed settings.
+
+Focused7/7 PASS218.1831ms/five new files zero-warning lint PASS. Preparation
+2026-10-08T12-44-36-114Z verified108source pins and syntax45340-byte generated
+driver SHA9d66673d...9fe0 with ZERO browser execution. This remains diagnostic-only:
+no new full conversion, primary-memory acceptance, speedup, causal fix or public
+route yet. Next ONE changed diagnostic launch requires both free physical AND
+virtual memory>=2GiB again; do not repeat the prior idle/native sampler or treat
+preparation as an executed conversion. Goal active.
+
 ## 2026-10-08 — JS allocation tooling actually verified; no original replay
 
 Supersedes the preparation/pending note below. One actual unchanged production
