@@ -5,6 +5,57 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Matched split-render/native comparison PREPARED, not executed
+
+Previous goal turn PROGRESS: real new-candidate goldens, independent proofs,
+normal restoration/cleanup and remote-verified fd986f1. No live old handle;
+do not poll/restart terminal51342/41805 or repeat unchanged small goldens.
+
+New scripts/diagnose-split-render-progress.mjs and exact reversible recipe use
+ACTUALLY executed baseline497e3667 driver, not guessed source.127 current source
+pins match;13 declared replacements preserve full protected original/SHA,
+same3e744 specialist/defaults/quality/fixed32+16MiB/onewrite/bounded I-O,
+ALL Chromium processes/250MiB/SAME lower five-minute blank/three full-run and
+independent fidelity gates. New diagnostic stops at64MiB REAL output or300s
+conversion maximum; normal cancellation MUST still fail full completion. This
+is explicitly not the full-source acceptance test and cannot certify publication.
+No repeated JS allocation profiles during conversion (null report/disabled
+sampler), actual served-client response bytes/SHA checked explicitly instead.
+Same headless1280x900/Chrome launcher+library hashes, private CSS/native/realm
+monitoring; native-budget violation still stops promptly and keeps old bounded
+post-production-cancel detailed diagnostic, NOT peak-time cause attribution.
+
+Bounded output-work-checkpoints.mjs retains only three threshold brackets and
+one last observation:16/32/64MiB, actual before/after input/output/elapsed values.
+Unavailable metrics stay unavailable, not fabricated zero; first crossing without
+prior sample has null lower time. No interpolation or final-overshoot speed
+claim; comparison uses conservative equal-output timing windows and explicitly
+does not prove validated complete-conversion throughput or memory acceptance.
+Partial diagnostic permits collecting each changed version's actual failure;
+it does not turn cancelled/over-budget/deadline outcomes into passed profiles.
+
+Actual prepare-only receipt evidence/2026-10-08T23-31-37-065Z-split-render-progress-
+preparation.json: executions0, no browser/build/converted output,127 pre/post pins,
+baseline/candidate templates48265/48268 UTF8 bytes/generated syntax PASS.
+Two new unit bookkeeping/reversal tests PASS80.2877ms; expanded10/10 including
+actual prior source/SSR/build/golden proofs PASS1763.0274ms. Four-file zero-warning
+lint PASS. Unit metric inputs are synthetic ONLY to test bracket bookkeeping,
+never conversion evidence. Fresh read-only host6726651904physical/
+11482734592virtual bytes passes same2GiB physical AND virtual guard; actual
+launch still must recheck and enforce32GiB repository-local disk guard.
+No Docker, visible browser/CMD, unrelated apps closed, public/engine/source/limits
+changed. Playwright skill read/used for real-browser workflow and original goal
+explicitly requests tests. Prior outer read combined output was truncated;
+original specification reread completely before edits; no converter replay.
+
+NEXT ONE matched diagnostic pair after source/tooling is pushed and fresh guards.
+Do not edit its pinned sources or rebuild/stage concurrently while live; poll
+the same confirmed live handle. Source/media/profiles/scratch cleanup remains
+finally-owned; retain only compact lossless reports. Earlier full-source
+256.43359375MiB failure and separate late decoder OOM remain unresolved. ZERO
+new actual comparisons/completed/repeated/scaling/public/speed/memory accepts;
+full goal ACTIVE/INCOMPLETE.
+
 ## 2026-10-09 — New private split-render candidate: real browser fidelity passed
 
 Previous user-instruction turn only inspected CMD processes, not converter progress.
