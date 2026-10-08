@@ -1,0 +1,275 @@
+{
+  "recordedAt": "2026-10-08T13:58:02.770Z",
+  "status": "passed-5-of-5-headless-private-fidelity-recovery-not-speed-or-memory-acceptance",
+  "executionEnvelope": {
+    "path": "evidence/2026-10-08T13-49-53-644Z-stable-progress-ui-headless-goldens.json",
+    "bytes": 5909,
+    "sha256": "948d6b1802b2aa604b39b37063313e639f7bd213b99977f34b594bfaa54bb22a"
+  },
+  "buildProof": {
+    "path": "evidence/2026-10-08T13-49-53-644Z-stable-progress-ui-build.json",
+    "bytes": 1671,
+    "sha256": "8eba940752acf6ff858fde294436ab261c868e1494e08eb6566d7dc8d0561e00"
+  },
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a"
+  },
+  "verifier": {
+    "path": "scripts/freeze-stable-ui-headless-goldens.mjs",
+    "sha256": "f01b8fa91d95facef4bcb4ef04127159c5574d8b75a64ced6496684e5233905d"
+  },
+  "rawReport": {
+    "path": "output/playwright/2026-10-08T13-50-37.670Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+    "bytes": 548373,
+    "sha256": "1312cb8313e98a7135e098a477bfc5d513ff3d72488afa13fb8a9201692deb8b"
+  },
+  "compressedReport": {
+    "path": "outputs/reports/2026-10-08T13-50-37.670Z-mpeg2-split-pipeline-37739125738-direct-artwork-stable-ui-headless-goldens.json.gz",
+    "bytes": 39541,
+    "sha256": "1c28cd90a8c069c2ba52721c91fb2f2a728a27fd6d73c0889209beff131076ab",
+    "originalHash": "1312cb8313e98a7135e098a477bfc5d513ff3d72488afa13fb8a9201692deb8b"
+  },
+  "rawReportRemovedAfterLosslessArchive": true,
+  "bytesSaved": 508832,
+  "conversions": [
+    {
+      "sourceCodec": "mpeg4",
+      "destination": "opfs",
+      "sourceBytes": 487007,
+      "outputBytes": 321692,
+      "outputCodec": "mpeg2video",
+      "frames": "48",
+      "audioTracks": 2,
+      "ssim": 0.992146,
+      "outputSha256": "d366abbe466cbd7a70ae7353efda456471c9b064402996a58fa1d2dd7589bf94",
+      "metrics": {
+        "inputBytes": 487007,
+        "outputBytes": 321692,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 588.0649999976158,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 5,
+        "imageWorkingBytes": 0
+      }
+    },
+    {
+      "sourceCodec": "hevc",
+      "destination": "opfs",
+      "sourceBytes": 562503,
+      "outputBytes": 652521,
+      "outputCodec": "mpeg2video",
+      "frames": "96",
+      "audioTracks": 2,
+      "ssim": 0.985963,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "metrics": {
+        "inputBytes": 562503,
+        "outputBytes": 652521,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 614.6649999916553,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      }
+    },
+    {
+      "sourceCodec": "hevc",
+      "destination": "direct",
+      "sourceBytes": 562503,
+      "outputBytes": 652521,
+      "outputCodec": "mpeg2video",
+      "frames": "96",
+      "audioTracks": 2,
+      "ssim": 0.985963,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "metrics": {
+        "inputBytes": 562503,
+        "outputBytes": 652521,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 640.0300000011921,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 652521,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      }
+    }
+  ],
+  "nativeFullDecodePassed": true,
+  "decodedAudioHashesIdentical": true,
+  "timelinesPassed": 3,
+  "artworkPassed": 3,
+  "recovery": [
+    {
+      "kind": "direct-write-failure",
+      "status": "passed",
+      "partialBytes": []
+    },
+    {
+      "kind": "cancel-after-direct-output",
+      "status": "passed",
+      "terminalState": "cancelled",
+      "partialBytes": []
+    }
+  ],
+  "emptyCleanupInventories": 5,
+  "actualServedCandidateBindingCount": 5,
+  "actualServedCandidate": {
+    "url": "/assets/ConverterApp-SNmCD3M3.js",
+    "bytes": 315826,
+    "sha256": "d884d80703f4157695736f4fd632f8c1bab06f8a815cff8bb4ea9b6b23514143"
+  },
+  "ui": [
+    {
+      "observationPhase": "terminal-after-cleanup",
+      "jobState": "complete",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-1.png",
+        "bytes": 139399,
+        "sha256": "cd43dccfa3018b52c9e4c31cd05f57d240a97fe4d6b7a2b1a9a9bc6b983c84ae"
+      }
+    },
+    {
+      "observationPhase": "terminal-after-cleanup",
+      "jobState": "complete",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-2.png",
+        "bytes": 127130,
+        "sha256": "54cc5123a47095c0723755b114b4f045d86bc48e648d693c988e6b7428d7b716"
+      }
+    },
+    {
+      "observationPhase": "terminal-after-cleanup",
+      "jobState": "complete",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-3.png",
+        "bytes": 144890,
+        "sha256": "2a6bd864325da8a015c90ce35c344728ea4cc967381ee9191647d3d7dfe38dd5"
+      }
+    },
+    {
+      "observationPhase": "terminal-after-cleanup",
+      "jobState": "error",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-4.png",
+        "bytes": 147705,
+        "sha256": "1f41d6878b5d761feddfd98453a4e854c66ba4b83e12e9c52c3728ce972e969e"
+      }
+    },
+    {
+      "observationPhase": "real-output-before-cancel",
+      "jobState": "running",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-5.png",
+        "bytes": 152500,
+        "sha256": "aeddd676da5d3a41dd9bcf4f2cf07be792f02ef177a632cc65a3befa2ba19a6c"
+      }
+    },
+    {
+      "observationPhase": "terminal-after-cleanup",
+      "jobState": "cancelled",
+      "matrixCards": 405,
+      "overflow": false,
+      "matrixSha256": "4d2f0c1da04db1bbd47e2bee964503f510cc31c001b619bc454fe6780df8f7c1",
+      "screenshot": {
+        "path": "output/playwright/2026-10-08T13-49-53-644Z-matrix-goldens-6.png",
+        "bytes": 151742,
+        "sha256": "4b775e95db4fd9bcd81b3aad535c4c771458e80e8f03a5b10914f1280f0c26c1"
+      }
+    }
+  ],
+  "visualReview": {
+    "allSixHeadlessScreenshotsInspected": true,
+    "metricsAndButtonsReadable": true,
+    "errorAndCancelVisible": true,
+    "noNewOverlapOrClippingObserved": true,
+    "headedManualValidation": false,
+    "caveat": "Private adapter retains public remux/MPEG4 labels; not suitable for publication. Previous headed geometry differs; matched headless baseline geometry still required."
+  },
+  "cleanup": {
+    "observedPidCount": 25,
+    "allObservedNumericPidsAbsent": false,
+    "currentProcesses": [
+      {
+        "createdAt": "2026-10-08T13:58:01.9482430Z",
+        "pid": 9556
+      }
+    ],
+    "nativeBirthsUnavailable": true,
+    "ownedWrapperAbsent": true,
+    "restoredAssetHashes": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+      "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+    },
+    "privateAdditionsAbsent": true
+  },
+  "originalCompiledCoreSha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c",
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "matchingHeadlessGeometryAccepted": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false
+}

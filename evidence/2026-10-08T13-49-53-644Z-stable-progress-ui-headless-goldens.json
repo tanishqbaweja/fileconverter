@@ -1,0 +1,99 @@
+{
+  "recordedAt": "2026-10-08T13:51:13.077Z",
+  "status": "headless-suite-returned-success-independent-freeze-pending",
+  "failure": null,
+  "hostPreflight": {
+    "acquiredAt": "2026-10-08T13:49:54.0642481Z",
+    "freePhysicalBytes": 5412769792,
+    "freeVirtualBytes": 2726707200,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "launchHostPreflight": {
+    "acquiredAt": "2026-10-08T13:50:34.0086585Z",
+    "freePhysicalBytes": 5060083712,
+    "freeVirtualBytes": 3287261184,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "diskPreflightBytes": 1680083480576,
+  "protectedPre": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedPost": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a"
+  },
+  "postSourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a"
+  },
+  "buildProof": "evidence/2026-10-08T13-49-53-644Z-stable-progress-ui-build.json",
+  "reports": [
+    {
+      "path": "output/playwright/2026-10-08T13-50-37.670Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+      "bytes": 548373,
+      "sha256": "1312cb8313e98a7135e098a477bfc5d513ff3d72488afa13fb8a9201692deb8b"
+    }
+  ],
+  "generatedArchive": {
+    "path": "outputs/reports/2026-10-08T13-49-53-644Z-stable-ui-executed-sources.json.gz",
+    "bytes": 13388,
+    "sha256": "47c73eda6246884fe4a13af75c28cec8ba50bcde7e7cd12ab39dcba9187da971"
+  },
+  "generatedHashes": {
+    "spec": "e2d47f8759db9cb243a9b0ce0294b6a75724a829f5085a7f357cbfd9aef419b0",
+    "driver": "bc081c1581a0d051f9f6ad0611040fa7ac62faca4ed71f6bfaf4d6aaadea4760",
+    "config": "20b93d63038fb5c493062fb58e948790253c5475ec2f6cbb5f886771d2526ba6"
+  },
+  "cleanup": {
+    "ownedWrapper": "H:\\Github Repositories\\fileconverter\\work\\stable-ui-headless-goldens-QirrgQ",
+    "ownedWrapperRemoved": true,
+    "restoredProductionBuild": true
+  },
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false
+}

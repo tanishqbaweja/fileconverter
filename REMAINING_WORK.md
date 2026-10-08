@@ -1,9 +1,57 @@
 # Remaining work audit
 
-Updated 2026-10-08. This is the living requirement audit for the original
+Updated 2026-10-09. This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-09 — Headless candidate fidelity and recovery verified
+
+The actual 2026-10-08 13:49 UTC headless candidate run completed all five browser
+cases in 27.2 seconds. Independent verification is retained in
+`evidence/2026-10-08T13-49-53-644Z-stable-progress-ui-headless-golden-validation.json`.
+Three genuine MPEG-2 encodes matched the earlier exact output hashes: MPEG-4
+487007 -> 321692 bytes (48 frames, SSIM 0.992146), and HEVC
+562503 -> 652521 bytes through OPFS and the direct-mode adapter (96 frames,
+SSIM 0.985963). All retained two audio tracks; full native decode, identical
+decoded-audio hashes, timeline and artwork checks passed. Native tools only
+generated fixtures and independently validated browser-produced outputs.
+Write rejection and cancellation after real encoded output both passed with
+no partial output. Five cleanup inventories were empty. Fixed aggregate Wasm
+memory remained 50331648 bytes, with no growth, one outstanding operation,
+reads at most 65536 bytes and writes/queues at most 524288 bytes.
+
+The exact production-built candidate asset was hashed from the actual browser
+response on all five navigations, not inferred from dist afterward. All15
+pre/post source pins match. Six headless screenshots were inspected: complete,
+error, real running and cancelled states remained readable, with all405 cards
+and no document overflow. This is not new headed/manual coverage. The older
+headed baseline has geometry differences, so matched headless baseline geometry
+is still pending; neither a regression nor the cause of those differences is
+proved. Private adapter labels remain unsuitable for publication.
+
+Both fresh physical/virtual 2GiB host guards passed. Full protected test.mkv
+pre/post size and SHA-256 match exactly. Normal production build and engine
+assets were restored; owned scratch, profiles and converted files were cleaned.
+Of25 recorded numeric Chrome PIDs, all were absent or demonstrably reused after
+the terminal run (PID9556 had a later birth). Original native birth identities
+were unavailable in this older short sampler; no exact birth audit is claimed
+and no unrelated process was killed. The548373-byte raw report was removed only
+after byte-exact lossless39541-byte gzip verification, saving508832 bytes. Retain
+compact evidence, source archives and six proof screenshots, not media copies.
+
+The launcher recheck on2026-10-09 passed2/2 tests for headless mode and hidden
+native/build/runner/server subprocesses. Future work remains windowless, without
+Docker or closing unrelated applications. This cycle does NOT accept conversion
+speed, complete-process250MiB, full-original, repeats, scaling or public release.
+Next distinct test is a matched headless baseline UI comparison, followed by
+duration-bounded genuine-progress A/B and the original stress acceptance gates.
+The whole specification remains active and incomplete.
+
+Closure regression: combined869/869 unit cases passed (dot reporter, exit0),
+new freezer/evidence test and ledger generator zero-warning lint passed, and
+public manifest405/405/no pending/nonpassing/PDF remained consistent. These
+are proportionate code/evidence gates, not fresh stress or browser certification.
 
 ## 2026-10-08 — Actual React cache invalidation verified; headless launch held
 
