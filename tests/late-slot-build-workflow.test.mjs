@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
 import test from "node:test";
 import { makeLateSlotBuildWorkflow, LATE_SLOT_WORKFLOW_BEFORE, LATE_SLOT_WORKFLOW_AFTER } from "../scripts/lib/late-slot-build-workflow.mjs";
 const root = new URL("../", import.meta.url);
@@ -22,4 +23,19 @@ test("branch preparation cannot change canonical HEAD/index/workflow or publish 
   assert.ok(source.includes('assert.equal(await git(["rev-parse", "HEAD"]), parent)'));
   assert.ok(source.includes('finally { await runtime.close()'));
   assert.doesNotMatch(source, /git\(\["(?:checkout|switch|reset|worktree)"|--force|readFile\([^\n]*test\.mkv/);
+});
+test("actual isolated build branch retains one changed workflow and removes its own index scratch", async () => {
+  const proof = JSON.parse(await readFile(new URL("evidence/mpeg2-late-slot-build-branch-2026-10-08.json", root)));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const canonical = await readFile(new URL(proof.workflow.path, root), "utf8");
+  assert.equal(sha(canonical), proof.workflow.canonicalSha256);
+  assert.equal(proof.workflow.generatedExactSource, makeLateSlotBuildWorkflow(canonical));
+  assert.equal(sha(proof.workflow.generatedExactSource), proof.workflow.generatedSha256);
+  assert.deepEqual(proof.workflow.changedTrackedFiles, [".github/workflows/reproduce-ffmpeg-nondocker.yml"]);
+  for (const field of ["remoteVerified", "canonicalHeadAndIndexUnchanged", "canonicalWorkflowUnchanged",
+    "mainUnchanged", "noCheckoutOrMediaCopyCreated", "ownedIndexRuntimeRemoved", "noDocker"])
+    assert.equal(proof[field], true);
+  assert.equal(proof.protectedSourceRead, false); assert.equal(proof.browserConversionsPerformed, 0);
+  for (const [file, hash] of Object.entries(proof.sourcePins)) assert.equal(sha(await readFile(new URL(file, root))), hash);
+  await assert.rejects(access(proof.runtimeDirectory), { code: "ENOENT" });
 });

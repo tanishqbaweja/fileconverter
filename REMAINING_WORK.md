@@ -5,6 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Current Chrome audio destination-scope gate passed
+
+M-08 remains Partially implemented, but the eight previously hosted routes now
+also passed installed current Chrome154.0.8037.98 in22.2s. Existing production
+suite/native fixture creation/independent validator are unchanged:56 exact
+Unicode fields in selected audio-stream scope;8 changed-title and8 wrong-scope
+negatives;56 absent fields remain null. Full independent decodes/codec/rate/
+mono/duration/fixed32MiB/bounded256KiB I/O/one pending/zero terminal queues pass.
+Eight fixtures/converted copies/OPFS outputs were deleted, all recorded owned
+directories absent and source pins unchanged. Production build ran successfully
+as server prerequisite. No protected-original read, Docker/native conversion,
+full-tree memory/stress/scaling/lossy quality/artwork/speedup acceptance.
+
+First local attempt failed before any conversion because bare wrangler was not
+on PATH; zero reports/conversions and finally removal retained in
+`evidence/audio-destination-scopes-current-chrome-2026-10-08.json`. Exact reversible
+runner-path/explicit pinned Wrangler correction passed, with unchanged tests/
+validators, in `evidence/audio-destination-scopes-current-chrome-cli-2026-10-08.json`.
+Eight compact raw JSON reports remain under output/playwright, no media. Two
+actual-evidence regressions PASS73.7574ms; new runner/retry/test zero-warning lint
+PASS. Playwright skill informed owned browser workflow and current Chrome check.
+Edge/Brave/Opera/broader metadata fields and existing full-spec gaps remain OPEN.
+Semantic TypeScript PASS. Combined five focused current-browser/actual build-branch
+proof tests PASS83.1924ms; generator/branch-test zero-warning lint PASS.
+
+## 2026-10-08 — Late-slot build actually dispatched once; poll same run
+
+Canonical sources pushed+remote verifiedd172133/media-options, main unchanged.
+Actual isolated temporary Git-index operation produced/pushed0e26ce4 on
+codex/mpeg2-late-slot-20261008, exact one workflow-command change, no checkout/
+media copy/canonical HEAD/index/workflow/main change; owned index scratch gone.
+Actual GitHub run37739125738/head0e26ce4/job113185498749 dispatchedONCE at
+06:42:47UTC via registered reproduce-ffmpeg-nondocker workflow,
+core=within-mpeg2-aligned-reuse. Its isolated command runs the new late-refstruct
+builder, NOT the unregistered new standalone workflow. Build currently in progress;
+compiled82-request unit/browser abort/full-original acceptance still pending.
+Branch/dispatch proofs under evidence. Do not duplicate or restart on wait timeout.
+
 ## 2026-10-08 — One late allocation slot prepared; actual Wasm build pending
 
 Source-only diagnostic adds one64-byte native slot recording the current fresh

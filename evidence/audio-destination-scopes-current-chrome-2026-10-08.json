@@ -1,0 +1,31 @@
+{
+  "startedAt": "2026-10-08T06:46:19.172Z",
+  "endedAt": "2026-10-08T06:46:29.215Z",
+  "status": "failed-or-incomplete",
+  "exitCode": 1,
+  "failure": null,
+  "hostPreflight": {
+    "FreePhysicalMemory": 7864712,
+    "FreeVirtualMemory": 7618264
+  },
+  "sourcePins": {
+    "scripts/check-audio-destination-scopes-current-chrome.mjs": "c5888a25b3b94d9e26b0549f2979d3058e685d4c73f9bc7aea01994ae4ec8c64",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+    "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+    "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e"
+  },
+  "reports": [],
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\audio-scope-current-chrome-N16FOd",
+  "ownedRuntimeRemoved": true,
+  "scope": "Existing production-browser suite, exact common Unicode destination tags and independent full decode only",
+  "protectedOriginalRead": false,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "completeChromiumMemoryAcceptance": false,
+  "scalingAcceptance": false,
+  "lossyQualityAcceptance": false,
+  "artworkAcceptance": false,
+  "speedupAcceptance": false,
+  "publicAcceptance": false
+}

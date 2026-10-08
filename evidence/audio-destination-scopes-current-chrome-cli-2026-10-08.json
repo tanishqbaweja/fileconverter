@@ -1,0 +1,129 @@
+{
+  "startedAt": "2026-10-08T06:48:02.330Z",
+  "endedAt": "2026-10-08T06:48:25.580Z",
+  "status": "passed-eight-current-installed-chrome-small-scope-checks",
+  "exitCode": 0,
+  "failure": null,
+  "hostPreflight": {
+    "FreePhysicalMemory": 6781340,
+    "FreeVirtualMemory": 6422060
+  },
+  "sourcePins": {
+    "scripts/check-audio-destination-scopes-current-chrome.mjs": "c5888a25b3b94d9e26b0549f2979d3058e685d4c73f9bc7aea01994ae4ec8c64",
+    "scripts/check-audio-destination-scopes-current-chrome-cli.mjs": "0f173f8086f3dc4000592a38941009b83d6b6ff08d4b8006488bc161d77d3d79",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/audio-destination-scopes.spec.ts": "e51b5029c94faabed348d24b3448d191050c624cf740e7f309e6a8c4b1ed886f",
+    "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+    "scripts/lib/scoped-audio-tag-validation.d.mts": "6bd935e9c37f84d513d84413ddde26bd11c0b7af8dbc80ccb66ac786a2af894e"
+  },
+  "reports": [
+    {
+      "path": "output/playwright/audio-destination-scopes-flac-to-ogg-3e108162-f0a8-49b8-97a6-c93c205a896c.json",
+      "sha256": "021e581b79210a3862b29e842fb37d791dcbbf738f3f6ddf7f46e84ff84a1904",
+      "profileId": "flac-to-ogg",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-flac-to-opus-cfac2122-2a2c-4bca-83a1-d4ed6857dbc3.json",
+      "sha256": "48a86c4b396c61ea7c7a415e28c231ec0d187920756d41525e809954d4bd53c9",
+      "profileId": "flac-to-opus",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-m4a-to-ogg-c83f5e6b-2c6e-48b5-9e39-f792c443128e.json",
+      "sha256": "0b2769df57cd24d80bf0f4ba6d4de09c0f76195ff1acfb6e40e8978cbfbc306d",
+      "profileId": "m4a-to-ogg",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-m4a-to-opus-9b74987b-68b5-4b9f-a3dc-22253a6b1179.json",
+      "sha256": "8a7d33720dc998095c58564bdb7b8f653a4dba4a7fabcc2f371c47a123204e60",
+      "profileId": "m4a-to-opus",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-ogg-to-opus-e28308d4-477b-4cde-acfc-ddac03d5c791.json",
+      "sha256": "0f9591dd66c8c8190f2450bcbce857034ef4db647aaf7ae36fe6500b072b612d",
+      "profileId": "ogg-to-opus",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-opus-to-ogg-fe55ee4b-f5cc-4423-8105-4d1fdbc5f34c.json",
+      "sha256": "c6ad5bd3f20fa87a6119fc1ea3f7b2af193ecbcadaf712ba9c4e2f75efecd4c5",
+      "profileId": "opus-to-ogg",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-wav-to-ogg-32c6c3e8-224e-4d8d-bf7b-a31073bad989.json",
+      "sha256": "4817698b0570e3561de44731893efc65cc6fa814a169e1950a2e06237561a26e",
+      "profileId": "wav-to-ogg",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    },
+    {
+      "path": "output/playwright/audio-destination-scopes-wav-to-opus-4229bf3f-9a1d-48ca-9791-6d3b2c2e6bc9.json",
+      "sha256": "85dadcd8d9cd2561202c1ad182fb9db64cd991acd0e7ad9f05bca9dc4592164d",
+      "profileId": "wav-to-opus",
+      "browser": "154.0.8037.98",
+      "status": "passed-small-destination-scope-check",
+      "opfsCleanupVerified": true,
+      "ownedFixturesAndOutputsRemoved": true,
+      "sourcePinsUnchanged": true,
+      "fullIndependentDecode": "passed",
+      "failure": null
+    }
+  ],
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\audio-scope-current-chrome-P6ghcI",
+  "ownedRuntimeRemoved": true,
+  "scope": "Existing production-browser suite, exact common Unicode destination tags and independent full decode only",
+  "protectedOriginalRead": false,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "completeChromiumMemoryAcceptance": false,
+  "scalingAcceptance": false,
+  "lossyQualityAcceptance": false,
+  "artworkAcceptance": false,
+  "speedupAcceptance": false,
+  "publicAcceptance": false
+}
