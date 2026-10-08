@@ -5,6 +5,74 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Production late observer retains all five goldens; allocator ABI verified
+
+Final combined checkpoint: 795/795 unit tests passed in 5,158.0563 ms,
+semantic TypeScript passed, and all 12 changed JavaScript/test files passed
+zero-warning lint. Nine focused diagnostic/evidence tests passed in 167.4764 ms.
+These checks do not constitute full-original or memory acceptance.
+
+After RAM temporarily fell below2GiB, attempted goldens were held BEFORE staging,
+browser startup or conversion. Subsequent read-only confirmation1,372,766,208bytes
+physical was unsafe; user requested recheck yielded3,835,953,152bytes/3.57GiB and
+safe status. Same unchanged guard/source then proceeded; no programs killed or
+heap/memory/quality gate weakened. Held evidence remains separately retained.
+
+Actual current-Chrome production suite5/5 PASS27.0s with new compiled3e744 core
+and failure-only10,414byte adapter. Synthetic export-only derivative NEVER staged
+or used for media. Three genuine re-encodes: MPEG4→MPEG2/48frames321,692bytes,
+HEVC→MPEG2/96frames652,521bytes in OPFS and direct destination. Full output SHAs
+match prior d366abbe...bf94/6c057538...fc32 byte-exact; SSIM0.992146/0.985963,
+all decoded-audio/packet-timing/presentation-timeline/artwork/metadata/full-decode
+checks and write-failure/cancel partial-output cleanup pass unchanged. Five empty
+cleanup inventories, six published dist asset hashes restored/nine additions gone.
+Nine actual runner/stager/adapter/helper/test/App source pins captured pre/post
+unchanged, independently frozen. Seven focused regressions PASS188.5118ms/scoped
+zero-warning lint PASS. No full-original/whole-tree250MiB/scaling/speed acceptance.
+Raw compact native/validator report and execution envelope retained; converted
+inputs/outputs/profile/owned goldens-driver/stager scratch removed.
+
+Actual linkmap _gm_ symbol1b4298/496bytes gives1786520, NOT old1786392 default.
+Pinned WABT1.0.39 actual compiled malloc independently references all13 required
+ABI fields and mutex1786968; new static layout proof passes without browser or
+allocator calls. First historical symbol selection failed because new optimized
+core has no separately named dlposix_memalign; missing symbol is NOT absent
+fallback proof. Corrected selection preserves every compiled-layout/mutex/read/
+integrity/finally check; failed source byte-reconstructible and failure retained.
+Both owned WABT/package/cache/driver scratch removed. Static root verification
+does NOT measure actual failure free chunks/live heap or prove fragmentation.
+Next: failure-only bounded free-header read/control tied to this actual ABI, then
+ONE changed original attempt after prerequisites. Full goal remains OPEN.
+Evidence: late-pool-abort-control, mpeg2-late-abort-goldens/golden-validation,
+mpeg2-late-goldens-host-held and mpeg2-late-dlmalloc-layout2026-10-08 JSON proofs.
+
+## 2026-10-08 — Real current-Chrome late pool abort control passed
+
+Previous goal turn was PROGRESS: current Chrome eight-route metadata gate,
+786-unit regression, compiled82-request unit/artifact validation and remote pushes.
+This cycle now observes an actual native av_refstruct_pool_get abort in current
+Chrome154.0.8037.98:81 successful fresh requests plus real cache reuse, then
+request82 fails. Failure-only64-byte read captures payload33,554,432 plus actual
+16-byte header =33,554,448 requested bytes, actual synthetic pool pointer,
+zero pre-request live/cache entries, one untruncated independently symbolized
+av_refstruct_pool_get/av_malloc/malloc/sbrk stack. This intentionally oversized
+SYNTHETIC pool request is NOT the original106112-frame failure size/pool/cause.
+
+Control-only export-table derivative adds three existing compiled native exports;
+all code/data/types/imports/tables/memory sections and body/index/signatures remain
+byte-exact, verified by hash and3 focused tests PASS163.4863ms. It is NEVER staged,
+published or used for media; original compiled3e744dc4 core unchanged. Actual
+browser control PASS, zero converter/user-file/native-FFmpeg calls, no live-codec
+reference/policy/heap changes. Observer reads only on qualified native abort;
+missing/unqualified state unavailable, emit errors cannot mask native callback.
+Initial lint rejected a module variable name; corrected before browser dispatch.
+Four-file zero-warning lint PASS. `evidence/late-pool-abort-control-2026-10-08.json`
+retains actual request/compiled-body/export-only provenance/source pins/11 sampled
+native births all absent/normal close/worker-server-profile cleanup. Outer fresh
+control Wasm/driver/cache also finally removed. No memory/fidelity/speed/original
+acceptance; allocator free blocks/root remain unknown. Next production adapter
+wiring and unchanged five genuine conversion/recovery goldens before long source.
+
 ## 2026-10-08 — Late-slot Wasm build TERMINAL success, browser capture pending
 
 This supersedes prior INPROGRESS/PENDING compilation notes for37739125738.

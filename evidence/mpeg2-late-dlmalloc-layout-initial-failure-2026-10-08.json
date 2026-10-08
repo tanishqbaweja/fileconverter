@@ -1,0 +1,15 @@
+{
+  "status": "failed-static-symbol-selection-not-conversion",
+  "executedSource": "scripts/audit-late-dlmalloc-layout.mjs",
+  "executedSourceSha256": "79478d0be14a13caa760e7b67e755ee6fc3e23850e84dddb8c310e974c69cf9b",
+  "generatedSourceSha256": "40c3b6989586b00bceccb272774e6260e966136c0f76607fb84d48ce6ee8c74b",
+  "rawReport": "output/playwright/2026-10-08T07-26-42-926Z-late-dlmalloc-static.json",
+  "failure": "Selected function names unavailable or ambiguous",
+  "reason": "Historical baseline selected dlposix_memalign as a separately named function; the new aligned core does not expose that name. This does not prove its fallback path absent.",
+  "correction": "Select actual named malloc and av_malloc only, preserving all compiled-root/layout/mutex/source-integrity/read-cap checks",
+  "disassemblerRuntimeFinallyRemoved": true,
+  "driverRuntimeFinallyRemoved": true,
+  "conversionsPerformed": 0,
+  "protectedOriginalRead": false,
+  "publicAcceptance": false
+}

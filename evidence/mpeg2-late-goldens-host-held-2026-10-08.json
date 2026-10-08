@@ -1,0 +1,29 @@
+{
+  "status": "held-before-staging-browser-or-conversion",
+  "attemptExitCode": 1,
+  "source": "scripts/validate-mpeg2-late-abort-goldens.mjs",
+  "executedSourceSha256": "474ed106d016643161215796395b25b21b0df3b76d00f9ec44110293e4a4be17",
+  "subsequentReadOnlyConfirmation": {
+    "acquiredAt": "2026-10-08T07:16:16.9343499Z",
+    "freePhysicalBytes": 1372766208,
+    "freeVirtualBytes": 2350759936,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false
+  },
+  "userRequestedRecheck": {
+    "acquiredAt": "2026-10-08T07:17:49.4729221Z",
+    "freePhysicalBytes": 3835953152,
+    "freeVirtualBytes": 7148957696,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true
+  },
+  "enginesStaged": false,
+  "browserStarted": false,
+  "conversionsPerformed": 0,
+  "protectedOriginalRead": false,
+  "noProcessesKilled": true,
+  "primaryMemoryFormulaChanged": false,
+  "publicAcceptance": false
+}

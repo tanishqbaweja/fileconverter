@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-08T07:26:42.924Z",
+  "scope": "Actual pinned binary static allocator audit, no codec/media/native conversion or original read",
+  "publicAcceptance": false,
+  "originalFileUsed": false,
+  "conversionsPerformed": 0,
+  "wasmFunctionsExecuted": 0,
+  "inspection": null,
+  "failure": "Error: Selected function names unavailable or ambiguous",
+  "cleanup": {
+    "runtimeRemoved": true
+  },
+  "cleanupErrors": [],
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\dlmalloc-static-audit-CZ3ACD",
+  "sourceSha256": "40c3b6989586b00bceccb272774e6260e966136c0f76607fb84d48ce6ee8c74b"
+}

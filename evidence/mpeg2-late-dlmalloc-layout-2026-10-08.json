@@ -1,0 +1,244 @@
+{
+  "recordedAt": "2026-10-08T07:27:40.375Z",
+  "status": "actual-link-map-and-compiled-malloc-layout-verified-not-dynamic-free-capacity",
+  "mapSha256": "84e5386970234e506d3017decbbc0e332f5502a174ca5547490081af948c7a9b",
+  "mapSymbolLine": "1b4298        0      1f0                 _gm_",
+  "allocatorRootAddress": 1786520,
+  "rawReport": {
+    "path": "output/playwright/2026-10-08T07-27-40-370Z-late-dlmalloc-static.json",
+    "bytes": 128420,
+    "sha256": "d03b161ce389d252949bd1d36dda90298a58bd090084c2401218a17e2c3a2f16"
+  },
+  "allocatorLayoutReferences": {
+    "smallmap": {
+      "absoluteAddress": 1786520,
+      "relativeOffset": 0,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.get $l1",
+        "                  if $I14",
+        "                    i32.const 1786520",
+        "                    i32.load",
+        "                    local.tee $l3",
+        "                    i32.const 16",
+        "                    local.get $p0"
+      ]
+    },
+    "treemap": {
+      "absoluteAddress": 1786524,
+      "relativeOffset": 4,
+      "referencedInActualFunction": true,
+      "context": [
+        "                      br $B9",
+        "                    end",
+        "                    i32.const 1786524",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.eqz",
+        "                    br_if $B13"
+      ]
+    },
+    "dvsize": {
+      "absoluteAddress": 1786528,
+      "relativeOffset": 8,
+      "referencedInActualFunction": true,
+      "context": [
+        "                    end",
+        "                    local.get $l6",
+        "                    i32.const 1786528",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.le_u",
+        "                    br_if $B13"
+      ]
+    },
+    "topsize": {
+      "absoluteAddress": 1786532,
+      "relativeOffset": 12,
+      "referencedInActualFunction": true,
+      "context": [
+        "                end",
+        "                local.get $l6",
+        "                i32.const 1786532",
+        "                i32.load",
+        "                local.tee $p0",
+        "                i32.lt_u",
+        "                local.tee $l1"
+      ]
+    },
+    "leastAddress": {
+      "absoluteAddress": 1786536,
+      "relativeOffset": 16,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        end",
+        "                        local.get $l2",
+        "                        i32.const 1786536",
+        "                        i32.load",
+        "                        i32.lt_u",
+        "                        local.tee $p0",
+        "                        br_if $B11"
+      ]
+    },
+    "dv": {
+      "absoluteAddress": 1786540,
+      "relativeOffset": 20,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.add",
+        "                        local.set $p0",
+        "                        i32.const 1786540",
+        "                        i32.load",
+        "                        local.set $l2",
+        "                        block $B22",
+        "                          local.get $l3"
+      ]
+    },
+    "top": {
+      "absoluteAddress": 1786544,
+      "relativeOffset": 24,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $l1",
+        "                  i32.store",
+        "                  i32.const 1786544",
+        "                  local.get $l6",
+        "                  i32.const 1786544",
+        "                  i32.load",
+        "                  local.tee $l3"
+      ]
+    },
+    "smallbins": {
+      "absoluteAddress": 1786560,
+      "relativeOffset": 40,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.shl",
+        "                        local.tee $l4",
+        "                        i32.const 1786560",
+        "                        i32.add",
+        "                        local.tee $l1",
+        "                        local.get $l4",
+        "                        i32.load offset=1786568"
+      ]
+    },
+    "treebins": {
+      "absoluteAddress": 1786824,
+      "relativeOffset": 304,
+      "referencedInActualFunction": true,
+      "context": [
+        "                            if $I36",
+        "                              local.get $p0",
+        "                              i32.const 1786824",
+        "                              i32.add",
+        "                              local.get $l1",
+        "                              i32.store",
+        "                              local.get $l1"
+      ]
+    },
+    "footprint": {
+      "absoluteAddress": 1786952,
+      "relativeOffset": 432,
+      "referencedInActualFunction": true,
+      "context": [
+        "                if $I83",
+        "                  local.get $l4",
+        "                  i32.const 1786952",
+        "                  i32.load",
+        "                  local.tee $l1",
+        "                  i32.add",
+        "                  local.tee $p0"
+      ]
+    },
+    "maxFootprint": {
+      "absoluteAddress": 1786956,
+      "relativeOffset": 436,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $p0",
+        "                  i32.store",
+        "                  i32.const 1786956",
+        "                  i32.load",
+        "                  local.get $p0",
+        "                  i32.lt_u",
+        "                  if $I110"
+      ]
+    },
+    "footprintLimit": {
+      "absoluteAddress": 1786960,
+      "relativeOffset": 440,
+      "referencedInActualFunction": true,
+      "context": [
+        "                i32.ge_u",
+        "                br_if $B9",
+        "                i32.const 1786960",
+        "                i32.load",
+        "                local.tee $l3",
+        "                if $I83",
+        "                  local.get $l4"
+      ]
+    },
+    "flags": {
+      "absoluteAddress": 1786964,
+      "relativeOffset": 444,
+      "referencedInActualFunction": true,
+      "context": [
+        "      i32.eqz",
+        "      if $I5",
+        "        i32.const 1786964",
+        "        i32.load8_u",
+        "        i32.const 2",
+        "        i32.and",
+        "        local.set $l1"
+      ]
+    },
+    "mutex": {
+      "absoluteAddress": 1786968,
+      "relativeOffset": 448,
+      "referencedInActualFunction": true,
+      "context": [
+        "          i32.or",
+        "          if $I8",
+        "            i32.const 1786968",
+        "            call $__pthread_mutex_timedlock",
+        "            i32.const 1",
+        "            global.get $g12",
+        "            i32.const 1"
+      ]
+    },
+    "segment": {
+      "absoluteAddress": 1786992,
+      "relativeOffset": 472,
+      "referencedInActualFunction": true,
+      "context": [
+        "                              i32.eqz",
+        "                              if $I93",
+        "                                i32.const 1786992",
+        "                                local.set $p0",
+        "                                loop $L94",
+        "                                  local.get $l3",
+        "                                  local.get $p0"
+      ]
+    }
+  },
+  "binary": {
+    "path": "work/mpeg2-split-pipeline-37739125738/within-mpeg2-split.wasm",
+    "bytes": 6904087,
+    "sha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c"
+  },
+  "disassembler": {
+    "version": "1.0.39",
+    "registryIntegrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+    "entrySha256": "cecf06ab5c65c3b7c05bafe601bbba61a45e4939889c5c51351e8817ac06f48d"
+  },
+  "sourceSha256": "4f98fb2a64e66e2700fef8092109d96a652dcb31a2a621f4b91805d3afe7423c",
+  "generatedSourceSha256": "1113c37a783a01063497f15ab269355df0fbc12d9e5f428f330ecea64acde7f9",
+  "driverRuntime": "H:\\Github Repositories\\fileconverter\\work\\late-dlmalloc-layout-driver-Ftr8hJ",
+  "driverRemoved": true,
+  "disassemblerRuntime": "H:\\Github Repositories\\fileconverter\\work\\dlmalloc-static-audit-XO5DLr",
+  "disassemblerRuntimeRemoved": true,
+  "actualAllocatorFreeCapacityMeasured": false,
+  "protectedOriginalRead": false,
+  "browserConversions": 0,
+  "publicAcceptance": false
+}
