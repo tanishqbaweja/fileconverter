@@ -5,6 +5,45 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Full-original attempt TERMINAL: whole-tree memory exceeded
+
+Supersedes all LIVE/RUNNING launch notes for27354 below. Actual session exited1;
+run1 stopped at1515 encoded frames,32,859,713 input/21,072,617 partial output
+bytes. Native primary peak520,761,344 minus SAME stable blank244,310,016 =
+263.64453125MiB, exceeding250; loaded idle317,034,496 separately diagnostic.
+Zero full completed/independently validated outputs or repeat/speed acceptance.
+This is a whole-Chromium budget failure, NOT the prior106112-frame decoder OOM.
+No abort stack/pool request/free headers emitted; those actual failure values
+remain null. Decoder32MiB/encoder16MiB and64KiB buffers/one pending write intact.
+
+Actual adjacent107ms native delta56,823,808 bytes; same renderer26280 adds
+56,807,424 and GPU16,384. No added/removed identities. Normal production
+cancellation and observed old-worker close precede ONE successful detailed global
+dump (GUID0x16). Retained299326-byte archive reconstructs exact4,613,122-byte/
+280-event trace, independently reparsed against global GUID and original summary.
+Delayed renderer private118,423,552; Blink main resident64,356,432/object11,844,872/
+pooled44,302,336; largest retained type GridSizingTrackCollection3,794,944 bytes.
+These are partial POST-CANCEL records, NOT peak-time live objects, exact callsite
+or proven cause; allocator sizes overlap and cannot be summed as primary memory.
+Next investigate renderer/layout growth with a changed bounded production UI
+candidate/control before another full-original attempt. Never retry unchanged,
+increase blank denominator/heap/limit, remove processes or fabricate old OOM data.
+
+Independent terminal verification PASS:78 executed source pins/generated sources/
+exact formula/raw report/trace reconstruction,21 sampled native births absent,
+helpers absent (not all helper births available), all three runtime directories
+gone, six dist assets restored/nine additions absent. Full protected size/SHA
+rechecked exactly. All partial media/profile/scratch removed by finally; no live
+27354 remains. Redundant2,692,717-byte raw JSON removed ONLY after lossless
+121,824-byte gzip reconstruction and file-identity checks; trace/CSV/HTML retained.
+No Docker/native converter/public promotion/full-goal completion.
+See mpeg2-late-allocator-original/terminal-analysis/terminal-compaction JSONs.
+
+Terminal focused checkpoint8/8 tests PASS254.9596ms; four changed verifier/
+compactor/test/generator files zero-warning lint PASS. Earlier807 combined pass
+predates the three new terminal tests; not claimed as810 retroactively. No new
+conversion, build, public-source change or memory acceptance from these checks.
+
 ## 2026-10-08 — Allocator observer production goldens actually PASS
 
 Supersedes the held production checks below, not the full-original failure.

@@ -1,0 +1,52 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { access, readFile } from "node:fs/promises";
+import { gunzipSync } from "node:zlib";
+import test from "node:test";
+import { summarizeMemoryInfraTrace } from "../scripts/lib/partial-largest-blink-type-summary.mjs";
+const read=file=>readFile(new URL("../"+file,import.meta.url));
+const json=async file=>JSON.parse(await read(file));
+const sha=bytes=>createHash("sha256").update(bytes).digest("hex");
+test("actual original attempt is terminal whole-tree budget failure, not the older decoder abort or accepted conversion",async()=>{
+  const p=await json("evidence/mpeg2-late-allocator-original-2026-10-08.json"),a=await json("evidence/mpeg2-late-allocator-terminal-analysis-2026-10-08.json");
+  assert.equal(p.rawStatus,"failed");assert.match(p.failure.message,/263\.64453125MiB exceeds 250MiB/);
+  assert.equal(p.completeOriginalConversions,0);assert.equal(a.completedFullOutputs,0);assert.equal(a.actualDecoderAbortRecords,0);
+  assert.equal(p.blankBaseline.privateBytes,244310016);assert.equal(p.nativePeak.privateBytes,520761344);
+  assert.equal((p.nativePeak.privateBytes-p.blankBaseline.privateBytes)/1048576,263.64453125);
+  assert.equal(p.nativePeak.processes.reduce((sum,row)=>sum+row.privateBytes,0),p.nativePeak.privateBytes);
+  assert.equal(a.frames,1515);assert.equal(a.metrics.inputBytes,32859713);assert.equal(a.metrics.outputBytes,21072617);
+  assert.equal(a.metrics.wasmMemoryBytes,50331648);assert.equal(a.metrics.peakPendingOperations,1);
+  assert.equal(a.individualOriginalFailureAllocationBytes,null);assert.equal(a.originalFailureFreeHeaders,null);
+  assert.equal(a.liveHeapBytes,null);assert.equal(a.allocationCauseProven,false);
+  assert.deepEqual(p.abortDiagnostic.records,[]);assert.equal(p.runs[0].state.jobState,"cancelled");
+  assert.equal(p.publicAcceptance,false);assert.equal(p.originalFullSourceMemoryAcceptance,false);
+  for(const[file,hash]of Object.entries(p.sourcePins))assert.equal(sha(await read(file)),hash,file);
+  for(const[file,hash]of Object.entries(a.sourcePins))assert.equal(sha(await read(file)),hash,file);
+});
+test("actual successful delayed dump reconstructs exact trace/GUID/types, not peak-time liveness or a decoder cause",async()=>{
+  const p=await json("evidence/mpeg2-late-allocator-original-2026-10-08.json"),a=await json("evidence/mpeg2-late-allocator-terminal-analysis-2026-10-08.json");
+  const archive=await read(a.rawTraceArchive.path);assert.equal(sha(archive),a.rawTraceArchive.sha256);
+  const trace=gunzipSync(archive,{maxOutputLength:16777216});assert.equal(trace.length,a.serializedTrace.bytes);assert.equal(sha(trace),a.serializedTrace.sha256);
+  const session=p.rendererAttributionResult.sessions[0].trace;
+  assert.deepEqual(summarizeMemoryInfraTrace(JSON.parse(trace),session.dumps),session.allocatorSummary);
+  assert.equal(session.dumps[0].memoryDump.success,true);assert.equal(a.globalDumpSucceeded,true);
+  assert.equal(a.actualWorkerClosedBeforeDump,true);assert.equal(a.adjacentNativeDelta.treeDeltaPrivateBytes,56823808);
+  assert.equal(a.delayedTarget.pid,26280);assert.equal(a.delayedTarget.heaps[0].residentBytes,64356432);
+  assert.equal(a.delayedTarget.heaps[0].allocatedObjectsBytes,11844872);assert.equal(a.delayedTarget.heaps[0].pooledBytes,44302336);
+  assert.match(a.delayedTarget.largestSixTypes[0].type,/GridSizingTrackCollection/);
+  assert.equal(a.delayedTarget.largestSixTypes[0].allocatedObjectsBytes,3794944);
+  assert.equal(a.delayedTarget.selection.partialInventory,true);assert.equal(a.allocationCauseProven,false);
+  assert.equal(a.cleanup.nativeBirths,21);assert.equal(a.cleanup.allSampledNativeBirthsAbsent,true);
+  assert.equal(a.cleanup.protectedFullPostHashVerified,true);assert.equal(a.cleanup.allThreeOwnedRuntimeDirectoriesAbsent,true);
+});
+test("redundant terminal raw JSON removed only after exact bounded gzip reconstruction; compact companions retained",async()=>{
+  const c=await json("evidence/mpeg2-late-allocator-terminal-compaction-2026-10-08.json");
+  const archive=await read(c.archive.path);assert.equal(archive.length,121824);assert.equal(sha(archive),c.archive.sha256);
+  const raw=gunzipSync(archive,{maxOutputLength:c.bounds.maximumRawBytes});assert.equal(raw.length,2692717);assert.equal(sha(raw),c.raw.sha256);
+  assert.equal(JSON.parse(raw).status,"failed");assert.equal(c.reconstructedRawSizeAndSha256Verified,true);
+  assert.equal(c.rawIdentityRevalidatedBeforeRemoval,true);assert.equal(c.uncompressedRawRemoved,true);
+  await assert.rejects(access(new URL("../"+c.raw.path,import.meta.url)),{code:"ENOENT"});
+  for(const row of c.companions){const bytes=await read(row.path);assert.equal(bytes.length,row.bytes);assert.equal(sha(bytes),row.sha256);}
+  assert.equal(c.protectedSourceRead,false);assert.equal(c.browserConversionsPerformed,0);
+  for(const[file,hash]of Object.entries(c.sourcePins))assert.equal(sha(await read(file)),hash,file);
+});

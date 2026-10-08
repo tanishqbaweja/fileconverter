@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-08T08:26:12.596Z",
+  "status": "verified-lossless-diagnostic-compaction",
+  "scope": "ONE terminal JSON diagnostic, not converted media; no browser or protected-source access",
+  "raw": {
+    "path": "outputs/reports/2026-10-08T08-10-44-963Z-private-mpeg2-late-allocator-original-native-100ms.json",
+    "bytes": 2692717,
+    "sha256": "800b388bdb5c75602f2c7c84b4f1a148449c16872ca556629435c6873202e52c"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-08T08-10-44-963Z-private-mpeg2-late-allocator-original-native-100ms.json.gz",
+    "bytes": 121824,
+    "sha256": "32ebfc0d0c060c676a805ddcf14e1f9e42e9886a197e93a46d55ab794221ebe7"
+  },
+  "companions": [
+    {
+      "path": "outputs/reports/2026-10-08T08-10-44-963Z-private-mpeg2-late-allocator-original-native-100ms-trace.zip",
+      "bytes": 27507,
+      "sha256": "280734944f9267a142a49cac3fc0d8b074073eb24cd19edb5bbab6e5ad0bca5c"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T08-10-44-963Z-private-mpeg2-late-allocator-original-native-100ms.csv",
+      "bytes": 11173,
+      "sha256": "2cbdc94206b6219d237e92a72085d16575ab6a49b7883d2628fbfebe6bb757b8"
+    },
+    {
+      "path": "outputs/reports/2026-10-08T08-10-44-963Z-private-mpeg2-late-allocator-original-native-100ms.html",
+      "bytes": 6824,
+      "sha256": "f9a6bfc5084f70e0f3a32d2004892e6383356d6d1c01bafb8fadd1c8406d2ea0"
+    }
+  ],
+  "reconstructedRawSizeAndSha256Verified": true,
+  "rawIdentityRevalidatedBeforeRemoval": true,
+  "uncompressedRawRemoved": true,
+  "removedBytes": 2692717,
+  "ownedScratchRemoved": true,
+  "protectedSourceRead": false,
+  "browserConversionsPerformed": 0,
+  "rawFailurePreserved": true,
+  "publicAcceptance": false,
+  "sourcePins": {
+    "scripts/compact-mpeg2-late-allocator-terminal-report.mjs": "4cbd7bebdfcc1f4d31e5a96d062b95e206891b2f64c18cdba6c6d05d4954f1a3"
+  },
+  "bounds": {
+    "streamChunkBytes": 65536,
+    "maximumRawBytes": 33554432,
+    "maximumArchiveBytes": 4194304
+  },
+  "recovery": "The retained gzip reconstructs the exact failed raw JSON and SHA-256; trace/CSV/HTML remain. Only the redundant verified raw JSON was removed."
+}
