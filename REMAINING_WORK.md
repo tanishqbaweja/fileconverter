@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Matched split-render/native pair ACTUALLY LIVE; results pending
+
+Supersedes PREPARED ONLY below. ONE launched23:33:58UTC from pushed+remote-verified
+a5b9d67/media-options; main unchanged0904d93. SAME session52353 confirmed LIVE by
+write_stdin and native/CIM identities: controller40500/parent26956/birth
+23:33:58.4876080Z; driver42912/parent40500/birth23:33:59.6896430Z; Chrome7344/
+parent42912/birth23:34:07.1408800Z. Actual --headless=new and repo-local profile
+observed; server18208/parent42912/birth23:34:05.0711920Z/port52818;
+native100ms observer38864/parent42912/birth23:34:07.1526650Z/root7344.
+Read-only actual CDP page52846/EA4E158E521FBA62A953687CB6B85BF5 about:blank at
+23:35:01.788UTC confirms baseline settling, not conversion or final baseline.
+Controller physical6409797632/virtual10950000640 and baseline6336757760/
+10882260992 passed same2GiB safety guard; unchanged32GiB disk/source/core/adapter
+guards precede Chrome launch in actual driver. Not a separately finished audit.
+
+Actual17584-byte source archive SHA2ce143d4e542853d28c4c97edf635c6b4c370a616ad515bc6b7654ab49b38d64
+reconstructs driver18eeb28b25ae3eeb150a5de271446cb6c32538cad3f89b4fb25f6ec0e0fffde4,
+same13-diff declared recipe/actual497e3667 baseline. Independent read of each
+staged within-remux/mpeg4/direct adapter18330bytes/SHA020b3bdc...92837 exact.
+Evidence2026-10-08T23-33-58-528Z-split-render-progress-live.json is a HISTORICAL
+snapshot, never substitute for live-handle revalidation. Profiles/scratch under
+work/split-render-progress-baseline-ILwEYF and
+work/mpeg2-split-render-baseline-runtime-z1cT4I are ACTIVE/stillneeded, not cleanup
+failures; do not delete them mid-run. Candidate not yet started at snapshot.
+No conversion peak/timing/fidelity/repeats/scaling/finalcleanup/public/speed/memory
+claim. Prospective baseline still unsettled; values null, not invented zeros.
+
+NEXT poll SAME52353 and inspect native births if observation fails, no duplicate
+restart/unchanged goldens/fullsuite/concurrent build/stager/pinned-source edits.
+Parent automatically runs candidate only after baseline child actually exits and
+finally cleans its runtime, with fresh guards; parent finally rebuilds normal
+production. At terminal independently verify real checkpoints/native peaks/
+asset bindings/protected SHA/cleanup/reports, archive compactly, record failures.
+Full goal ACTIVE/INCOMPLETE; prior native256.43359375 and late decoderOOM open.
+
 ## 2026-10-09 — Matched split-render/native comparison PREPARED, not executed
 
 Previous goal turn PROGRESS: real new-candidate goldens, independent proofs,
