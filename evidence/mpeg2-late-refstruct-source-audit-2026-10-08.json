@@ -1,0 +1,155 @@
+{
+  "recordedAt": "2026-10-08T06:01:40.650Z",
+  "status": "verified-pinned-source-late-refstruct-callpath-audit-not-runtime-fix",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-terminal-analysis-2026-10-08.json",
+    "bytes": 16067,
+    "sha256": "5c7f5af32e7d2294adc71304b22183d90c48dbc1620db17195a060176f17062e"
+  },
+  "upstream": [
+    {
+      "file": "libavcodec/hevc/refs.c",
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/hevc/refs.c",
+      "bytes": 21945,
+      "sha256": "340d160758ec36928907132618c0d989a0f09869cca5fe57ab936ad54a9a3e5e"
+    },
+    {
+      "file": "libavutil/refstruct.c",
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavutil/refstruct.c",
+      "bytes": 11308,
+      "sha256": "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"
+    },
+    {
+      "file": "libavcodec/hevc/hevcdec.c",
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/hevc/hevcdec.c",
+      "bytes": 167708,
+      "sha256": "d6c12610d92a8d8e27bae984172ce1d0f13f8eb16d5998eb58cc25b2fc690974"
+    }
+  ],
+  "candidateManifest": {
+    "path": "work/mpeg2-split-pipeline-37479749443/build-manifest.json",
+    "bytes": 6232,
+    "sha256": "0b2642b32b80c3d269f8cd76f10d440407305566c7a9e214b7e83b01b74e453a"
+  },
+  "allActualCandidateSourcePinsVerified": true,
+  "patchedRefstructSha256": "e31af1df1e6e7b60b9112e2fcd22917664bc365d65db6c1d2b7038f5d532e084",
+  "actualAbortCallpath": {
+    "role": "decoder",
+    "observedAt": "2026-10-07T21:19:32.767Z",
+    "binarySha256": "f4c5c17e6d0e53d0612ac6ae66dcf5f7057b9d7b923df99713a2b36d5545924a",
+    "actualBinaryNames": 4655,
+    "wasmFramesSeen": 12,
+    "omittedWasmFrames": 0,
+    "frames": [
+      {
+        "functionIndex": 4439,
+        "functionNameFromActualBinary": "sbrk",
+        "codeOffset": "0x5faeab"
+      },
+      {
+        "functionIndex": 4434,
+        "functionNameFromActualBinary": "emscripten_builtin_malloc",
+        "codeOffset": "0x5f8b69"
+      },
+      {
+        "functionIndex": 4469,
+        "functionNameFromActualBinary": "__wrap_posix_memalign",
+        "codeOffset": "0x606b8c"
+      },
+      {
+        "functionIndex": 4310,
+        "functionNameFromActualBinary": "av_malloc",
+        "codeOffset": "0x5df390"
+      },
+      {
+        "functionIndex": 4378,
+        "functionNameFromActualBinary": "av_refstruct_pool_get",
+        "codeOffset": "0x5ee0cd"
+      },
+      {
+        "functionIndex": 2059,
+        "functionNameFromActualBinary": "alloc_frame",
+        "codeOffset": "0x30b508"
+      },
+      {
+        "functionIndex": 1979,
+        "functionNameFromActualBinary": "hevc_receive_frame",
+        "codeOffset": "0x2b8fd6"
+      },
+      {
+        "functionIndex": 667,
+        "functionNameFromActualBinary": "ff_decode_receive_frame_internal",
+        "codeOffset": "0x10fbc7"
+      },
+      {
+        "functionIndex": 670,
+        "functionNameFromActualBinary": "decode_receive_frame_internal",
+        "codeOffset": "0x111497"
+      },
+      {
+        "functionIndex": 669,
+        "functionNameFromActualBinary": "avcodec_send_packet",
+        "codeOffset": "0x110a75"
+      },
+      {
+        "functionIndex": 4467,
+        "functionNameFromActualBinary": "mpeg2_frames",
+        "codeOffset": "0x60478e"
+      },
+      {
+        "functionIndex": 4461,
+        "functionNameFromActualBinary": "within_remux",
+        "codeOffset": "0x603822"
+      }
+    ],
+    "failedIndividualAllocationBytes": null,
+    "heapLiveBytes": null,
+    "causalOriginalAllocationSizeClaim": null
+  },
+  "verifiedStaticFacts": {
+    "allocFrameHasExactlyTwoPoolGetSites": true,
+    "poolNamesInSourceOrder": [
+      "tab_mvf",
+      "rpl_tab"
+    ],
+    "refstructFreshAllocationRequestsPayloadPlusRefcountHeader": true,
+    "freshAllocationRunsWhenNoReusableEntryWasReturned": true,
+    "pinnedPrivatePolicyChangesFinalReferenceIdleAdmissionOnly": true,
+    "sourcePixelDimensionsAndLiveReferenceRulesNotChanged": true
+  },
+  "runtimeUnknowns": {
+    "actualFailedPool": null,
+    "failedIndividualAllocationBytes": null,
+    "livePoolEntryCountsAtLateFailure": null,
+    "cachedPoolEntryCountsAtLateFailure": null,
+    "heapLiveBytes": null,
+    "largestFreeBlockBytes": null,
+    "fragmentationProven": false
+  },
+  "earlierEvidenceIsNotThisLateState": "The earlier 48-event observer stopped near initial frames and cannot supply pool counts or allocation size at frame106112 in this different split binary.",
+  "rejectedInspection": {
+    "tool": "installed @webassemblyjs/wasm-parser1.14.1",
+    "scope": "single extracted function, no Wasm execution or media",
+    "error": "Unexpected instruction: 0xfd (SIMD)",
+    "callsiteMappingVerified": false,
+    "noOpcodeSubstringGuessUsed": true,
+    "installedDependenciesChanged": false
+  },
+  "next": "Use a bounded late-failure-capable request/pool/allocator snapshot, not the exhausted first48-event observer. Verify a SIMD-capable disassembler before mapping the actual caller offset to either source site. Preserve fixed32+16MiB and all source, quality, timing, memory, privacy and cleanup gates.",
+  "sourcePins": {
+    "scripts/audit-mpeg2-late-refstruct-source.mjs": "de1883a0c7d73054971bd6e3aa638f16fc6adb6057eb1f77fcae0b06cb566138"
+  },
+  "generatedSourceFilesCreated": 0,
+  "temporaryFilesCreated": 0,
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "productionSourceChanged": false,
+  "heapLimitRaised": false,
+  "liveReferencesRemoved": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null
+}

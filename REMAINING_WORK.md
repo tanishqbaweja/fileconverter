@@ -5,6 +5,106 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Late compiled callsite narrowed without another video run
+
+Pinned WABT1.0.39 successfully disassembled an analysis-only slice preserving
+the actual alloc_frame body/index/type/name byte-exact; other bodies replaced by
+unreachable solely for static inspection, NEVER instantiated or used for media.
+Three compiled av_refstruct_pool_get calls appear at0x30b28b/0x30b508/0x30b541.
+The actual abort caller offset0x30b508 matches the second instruction exactly,
+including bytes109a22 and target4378. This is a compiled ordinal, NOT a source
+pool identity: upstream has two explicit gets, but inlining introduces another.
+Pool pointer/request size/live entries/free-block state remain unavailable; no
+tab_mvf guess or fragmentation claim. The legacy sourceSiteOrdinal report field
+is explicitly interpreted as compiled ordinal only.
+
+Initial static attempts failed an88,609-byte function-text retention assumption,
+then the two-call assumption, then a context-regex escaping error. All remain
+failed records, not conversion failures or success claims; each fresh package/
+cache/slice runtime was finally removed. Corrected inventory retains only33
+instruction-context lines under32KiB plus full-function text hash/bytes, while
+the existing whole disassembler stdout stays bounded4MiB. No media/source read,
+conversion, engine build, Docker, native converter or production-byte change.
+Actual `evidence/mpeg2-late-pool-callsite-inventory-2026-10-08.json` and two new
+evidence regressions retain exact call joins and reconstruct the pre-correction
+failed source. Focused10/10 PASS353.878ms. Source-pool/allocator failure snapshot
+remains the next prerequisite before any changed long original attempt.
+
+Earlier full regression770/770 PASS4172.5046ms and semantic TypeScript PASS;
+these preceded the two callsite tests and are not retroactively called772.
+No final production build/browser rerun was needed or claimed for source-only
+audit/analysis/generator changes. Public/full-original acceptance still withheld.
+
+Final combined regression772/772 PASS4391.9344ms;12-file zero-warning lint PASS;
+semantic TypeScript PASS. All generated source-test and static-disassembler
+scratch removed; no active original conversion or disposable converted copy
+from session10189 remains. Full-spec statuses are unchanged: P-06/P-08/M-08 and
+original re-encode/scaling/repeats/current-browser broad gates remain partial.
+
+## 2026-10-08 — Original session10189 TERMINAL; actual late decoder stack verified
+
+This supersedes ALL session10189 LIVE/checkpoint notes below. It exited1 at
+21:19:32UTC on Oct7, not completion. One genuine production-browser attempt
+encoded106,112 frames and wrote1,206,298,852 partial bytes after reading
+1,060,017,306 bytes of the protected2,958,573,265-byte original. Zero full
+conversions, full independent output validators or three-run acceptance.
+The exact complete-tree peak498,024,448 minus stable same-instance blank
+244,510,720 is241.76953125MiB. Being below250 does not rescue a heap failure.
+Fixed decoder32MiB/encoder16MiB,64KiB I/O/queue and one pending write remained
+unchanged. Two failure-collector unavailable samples remain unavailable, not0.
+
+The actual failure-only hook captured one untruncated decoder stack; independent
+re-symbolization against the exact f4c5c17e...5924a binary matches all12 frames:
+HEVC alloc_frame -> av_refstruct_pool_get -> av_malloc -> aligned allocation ->
+malloc -> sbrk. Requested heap extent33,587,200 is NOT the failed individual
+allocation size or live bytes. No whole-tree budget failure occurred, so normal
+post-budget cancellation/detailed dump did NOT execute; no missing dump is
+invented. Actual failed pool, live/cached counts and fragmentation remain unknown.
+
+Exact pinned FFmpeg8.1.2 refs.c/refstruct.c/hevcdec.c and actual candidate source
+pins verified. alloc_frame has two source pool gets, tab_mvf then rpl_tab.
+The earlier48-event observer cannot establish the late frame106112 runtime
+state. Installed wasm-parser1.14.1 cannot decode the extracted SIMD function
+(0xfd); no byte-substring guess or pool attribution is used. A new bounded
+late-failure-capable diagnostic or verified SIMD disassembler must precede any
+changed original run. Do not retry unchanged, enlarge heaps, drop live references
+or lower quality/timing/250MiB gates. No public engine/runtime/registry changed.
+
+Independent post-run checks: all20 sampled native births plus four recorded
+helper identities absent across24 PIDs; both owned runtime directories absent;
+six generated engine assets exactly restored; nine private additions absent;
+full original size/SHA unchanged. Partial output/profile already removed in
+finally. The exact18,558,177-byte raw JSON was losslessly archived to569,328bytes
+after reconstruction size/SHA verification, then only that redundant raw JSON
+was removed. Trace224,304/CSV70,030/HTML45,838bytes retained; no media copies
+remain from this attempt. `evidence/mpeg2-quiesced-budget-terminal-analysis-2026-10-08.json`,
+the terminal compaction proof and `evidence/mpeg2-late-refstruct-source-audit-2026-10-08.json`
+record these checks. No new conversion or Docker/native conversion was run.
+
+User freed RAM: current read-only host check7.613GiB physical/7.417GiB virtual
+passes the existing2GiB guard. This is capacity, not authority to repeat the
+failed unchanged run. Initial scoped lint found one unused destructuring warning;
+the exact pre-lint audit remains separately retained and its executed source is
+byte-reconstructible. Metadata-only projection correction and repeated source
+audit preserve every finding. Final12/12 focused tests PASS371.4312ms;
+seven-file zero-warning lint PASS. Full-source acceptance/full goal remain OPEN.
+Local current-stable metadata checks can now follow verified terminal restoration.
+
+## 2026-10-08 — Private AIFF ID3 specialist source prepared, not compiled
+
+M-08 remains Partially implemented. Three source/test files generate a private
+metadata-only derivative of the exact published specialist sourcea542881b...5814.
+Five reversible edits add common tags/bounded JPEG-PNG packet artwork/ID3v2 and
+artist-to-author only when author is absent, with checked dictionary errors.
+Reversal is byte-exact; codec settings/profile28-only entry/I/O/heaps/public C and
+published engines remain unchanged. Actual generator/negative no-overwrite/source
+integrity/finally test PASS; generated C/test scratch removed. Included in the
+12-test result above. No Wasm compilation, hosted workflow preparation, browser
+conversion, memory/fidelity/speed acceptance or public promotion is claimed.
+Unlike the rejected historical general32MiB candidate, this targets the already
+published smaller specialist; it must still pass actual reproducibility, tags/
+artwork/alias/fidelity/current-browser/full-tree stress and recovery gates.
+
 ## 2026-10-08 — Eight actual Ogg/Opus destination-scope checks verified
 
 This supersedes hosted LIVE/PENDING status below. Run37684741516 at actual
@@ -24,7 +124,8 @@ stable Chrome154 or Edge/Brave/Opera. No new current-stable compatibility, large
 source/scaling, whole-process memory, quality, speed A/B, artwork, privacy/offline
 or public acceptance. Native FFmpeg generated deterministic fixtures and fully
 decoded browser outputs only. No production runtime/engine/registry change.
-Current-stable local rerun waits for original session10189 terminal/restoration.
+The current-stable local rerun was deferred until original session10189 terminal/
+restoration, now independently verified above; that rerun is not yet claimed.
 M-08 stays Partially implemented: broader fields, AIFF output aliases and
 destination-specific artwork remain open; the seven-field destination subset is
 now backed by actual scope-aware browser evidence, not an unexecuted plan.
@@ -163,7 +264,7 @@ memory/completion/fidelity/repeats/public acceptance. Active media/profile is st
 needed and remains repo-local pending finally; full protected postSHA/cleanup and
 actual failure-provider outcome are PENDING. Do not restart or repin the live run.
 
-## 2026-10-08 — Quiesced FULL-original diagnostic LIVE, session10189
+## Historical LIVE launch — session10189 superseded by terminal result above
 
 This supersedes PREPARED status below. ONE actual launch20:14:19UTC from source
 dc682c6 already pushed/remote-verified media-options; main unchanged0904d93.

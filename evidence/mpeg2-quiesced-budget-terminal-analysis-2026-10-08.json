@@ -1,0 +1,373 @@
+{
+  "recordedAt": "2026-10-08T05:54:20.369Z",
+  "status": "verified-terminal-decoder-heap-abort-with-actual-native-callpath-not-acceptance",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-original-2026-10-08.json",
+    "bytes": 2164989,
+    "sha256": "0f5a192ea5fb148fde2cfa9f40d7d6b58239a106b096fc0d7f782c00fa05c445"
+  },
+  "rawReportVerified": true,
+  "allExecutedSourcesVerified": true,
+  "failure": {
+    "name": "AssertionError",
+    "message": "Aborted(Cannot enlarge memory arrays to size 33587200 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n+ actual - expected\n\n+ 'error'\n- 'complete'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Aborted(Cannot enlarge memory arrays to size 33587200 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n+ actual - expected\n\n+ 'error'\n- 'complete'\n\n    at file:///H:/Github%20Repositories/fileconverter/work/mpeg2-quiesced-budget-driver-NMWTYV/full-source.mjs:359:12"
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 244510720,
+    "spreadBytes": 4096,
+    "rssBytes": 529092608,
+    "firstTimestamp": "2026-10-07T20:19:34.494Z",
+    "lastTimestamp": "2026-10-07T20:19:40.878Z",
+    "sampleCount": 7,
+    "minimumElapsedMs": 8000
+  },
+  "nativePeak": {
+    "sequence": 3499,
+    "timestamp": "2026-10-07T20:20:51.5688676Z",
+    "phase": "conversion-1",
+    "privateBytes": 498024448,
+    "rssBytes": 822194176,
+    "processes": [
+      {
+        "pid": 3584,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:28.7523261Z",
+        "creationFileTime": "134358776687523261",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 2633728,
+        "rssBytes": 10534912,
+        "observedCimType": "crashpad-handler",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 17420,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:28.8839680Z",
+        "creationFileTime": "134358776688839680",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 115060736,
+        "rssBytes": 153845760,
+        "observedCimType": "gpu-process",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 27896,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:29.0195865Z",
+        "creationFileTime": "134358776690195865",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 239427584,
+        "rssBytes": 295907328,
+        "observedCimType": "renderer",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 33724,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:28.9681477Z",
+        "creationFileTime": "134358776689681477",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 33001472,
+        "rssBytes": 77287424,
+        "observedCimType": "renderer",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 37808,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:28.8882050Z",
+        "creationFileTime": "134358776688882050",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 13012992,
+        "rssBytes": 40972288,
+        "observedCimType": "utility",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 37916,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:28.9176114Z",
+        "creationFileTime": "134358776689176114",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 9199616,
+        "rssBytes": 18145280,
+        "observedCimType": "utility",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 40772,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:14:29.2883470Z",
+        "creationFileTime": "134358776692883470",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 24182784,
+        "rssBytes": 46157824,
+        "observedCimType": "renderer",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 43728,
+        "parentPid": 35724,
+        "createdAt": "2026-10-07T20:14:28.7325304Z",
+        "creationFileTime": "134358776687325304",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 46841856,
+        "rssBytes": 148267008,
+        "observedCimType": "browser",
+        "observedCimBirthMatched": true
+      },
+      {
+        "pid": 44020,
+        "parentPid": 43728,
+        "createdAt": "2026-10-07T20:19:41.5488883Z",
+        "creationFileTime": "134358779815488883",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "privateBytes": 14663680,
+        "rssBytes": 31076352,
+        "observedCimType": "renderer",
+        "observedCimBirthMatched": true
+      }
+    ]
+  },
+  "nativePeakIncrementalMiB": 241.76953125,
+  "nativePhaseCoverage": [
+    {
+      "phase": "pre-conversion-1",
+      "validSamples": 6,
+      "unavailableSamples": 0
+    },
+    {
+      "phase": "conversion-1",
+      "validSamples": 32810,
+      "unavailableSamples": 0
+    }
+  ],
+  "failureCollectorUnavailableSamples": 2,
+  "unavailableIsNotZero": true,
+  "actualAbort": {
+    "scope": "one-actual-wasm-abort-stack-not-allocation-size-or-conversion-acceptance",
+    "role": "decoder",
+    "observedAt": "2026-10-07T21:19:32.767Z",
+    "reason": "Cannot enlarge memory arrays to size 33587200 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0",
+    "reasonTruncated": false,
+    "stack": "Error: Actual Emscripten abort observation\n    at onAbort (http://127.0.0.1:57915/engines/remux/within-direct.mjs:19:22)\n    at Object.onAbort (http://127.0.0.1:57915/engines/remux/within-direct.mjs:35:47)\n    at abort (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:10902)\n    at abortOnCannotGrowMemory (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:35496)\n    at _emscripten_resize_heap (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:35944)\n    at imports.<computed> (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.sbrk (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4439]:0x5faeab)\n    at within-mpeg2-split.wasm.emscripten_builtin_malloc (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4434]:0x5f8b69)\n    at within-mpeg2-split.wasm.__wrap_posix_memalign (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4469]:0x606b8c)\n    at within-mpeg2-split.wasm.av_malloc (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4310]:0x5df390)\n    at within-mpeg2-split.wasm.av_refstruct_pool_get (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4378]:0x5ee0cd)\n    at within-mpeg2-split.wasm.alloc_frame (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[2059]:0x30b508)\n    at within-mpeg2-split.wasm.hevc_receive_frame (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[1979]:0x2b8fd6)\n    at within-mpeg2-split.wasm.ff_decode_receive_frame_internal (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[667]:0x10fbc7)\n    at within-mpeg2-split.wasm.decode_receive_frame_internal (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[670]:0x111497)\n    at within-mpeg2-split.wasm.avcodec_send_packet (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[669]:0x110a75)\n    at within-mpeg2-split.wasm.mpeg2_frames (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4467]:0x60478e)\n    at within-mpeg2-split.wasm.within_remux (http://127.0.0.1:57915/engines/remux/_private_split_decoder.wasm:wasm-function[4461]:0x603822)\n    at __asyncify_wrapper_4461 (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:39798)\n    at callUserCallback (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:26461)\n    at Object.doRewind (http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:42116)\n    at http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:43088\n    at http://127.0.0.1:57915/engines/remux/_private_split_decoder.mjs:1:44112",
+    "stackTruncated": false,
+    "unavailable": null,
+    "stackLimitRestored": true,
+    "maximumReasonCharacters": 512,
+    "maximumStackCharacters": 8192,
+    "maximumStackFrames": 64,
+    "failedIndividualAllocationBytes": null,
+    "heapLiveBytes": null,
+    "publicAcceptance": false
+  },
+  "actualStackSymbols": {
+    "role": "decoder",
+    "observedAt": "2026-10-07T21:19:32.767Z",
+    "binarySha256": "f4c5c17e6d0e53d0612ac6ae66dcf5f7057b9d7b923df99713a2b36d5545924a",
+    "actualBinaryNames": 4655,
+    "wasmFramesSeen": 12,
+    "omittedWasmFrames": 0,
+    "frames": [
+      {
+        "functionIndex": 4439,
+        "functionNameFromActualBinary": "sbrk",
+        "codeOffset": "0x5faeab"
+      },
+      {
+        "functionIndex": 4434,
+        "functionNameFromActualBinary": "emscripten_builtin_malloc",
+        "codeOffset": "0x5f8b69"
+      },
+      {
+        "functionIndex": 4469,
+        "functionNameFromActualBinary": "__wrap_posix_memalign",
+        "codeOffset": "0x606b8c"
+      },
+      {
+        "functionIndex": 4310,
+        "functionNameFromActualBinary": "av_malloc",
+        "codeOffset": "0x5df390"
+      },
+      {
+        "functionIndex": 4378,
+        "functionNameFromActualBinary": "av_refstruct_pool_get",
+        "codeOffset": "0x5ee0cd"
+      },
+      {
+        "functionIndex": 2059,
+        "functionNameFromActualBinary": "alloc_frame",
+        "codeOffset": "0x30b508"
+      },
+      {
+        "functionIndex": 1979,
+        "functionNameFromActualBinary": "hevc_receive_frame",
+        "codeOffset": "0x2b8fd6"
+      },
+      {
+        "functionIndex": 667,
+        "functionNameFromActualBinary": "ff_decode_receive_frame_internal",
+        "codeOffset": "0x10fbc7"
+      },
+      {
+        "functionIndex": 670,
+        "functionNameFromActualBinary": "decode_receive_frame_internal",
+        "codeOffset": "0x111497"
+      },
+      {
+        "functionIndex": 669,
+        "functionNameFromActualBinary": "avcodec_send_packet",
+        "codeOffset": "0x110a75"
+      },
+      {
+        "functionIndex": 4467,
+        "functionNameFromActualBinary": "mpeg2_frames",
+        "codeOffset": "0x60478e"
+      },
+      {
+        "functionIndex": 4461,
+        "functionNameFromActualBinary": "within_remux",
+        "codeOffset": "0x603822"
+      }
+    ],
+    "failedIndividualAllocationBytes": null,
+    "heapLiveBytes": null,
+    "causalOriginalAllocationSizeClaim": null
+  },
+  "actualBinarySymbolJoinReverified": true,
+  "allocationPath": "HEVC alloc_frame -> av_refstruct_pool_get -> av_malloc -> aligned allocation -> malloc -> sbrk",
+  "failedIndividualAllocationBytes": null,
+  "heapLiveBytes": null,
+  "fragmentationProven": false,
+  "requestedHeapExtentBytes": 33587200,
+  "fixedDecoderHeapBytes": 33554432,
+  "heapExtentIsNotAllocationSize": true,
+  "actualFailedPool": null,
+  "noBudgetFailureOccurred": true,
+  "quiescedCancellationOrDumpExecuted": false,
+  "partialFreshFrames": 106112,
+  "partialMetrics": {
+    "inputBytes": 1060017306,
+    "outputBytes": 1206298852,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 65536,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 65536,
+    "elapsedMs": 3579072.8650000095,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0,
+    "scratchBytes": 0
+  },
+  "splitFinalSamples": [
+    {
+      "scope": "private-split-production-pipeline-not-public-acceptance",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "aggregateWasmMemoryBytes": 50331648,
+      "frames": 106112,
+      "copiedPixelBytes": 245704458240,
+      "packets": 106112,
+      "completedPackets": 106112,
+      "copiedPacketBytes": 1115346558,
+      "peakFrameBytes": 2315520,
+      "peakPacketBytes": 244740,
+      "peakSideBytes": 8,
+      "activePackets": 0,
+      "queuedPackets": 0,
+      "queuedFrames": 0,
+      "additionalPixelBufferBytes": 0,
+      "additionalJsPacketBufferBytes": 0,
+      "failed": false,
+      "closed": true,
+      "maximumMediaAvioWriteBytes": 65536
+    }
+  ],
+  "cleanup": {
+    "allSampledNativeBirthsAbsent": true,
+    "nativeIdentities": 20,
+    "helperBirthsAbsent": true,
+    "historicalHelperIdentities": [
+      {
+        "pid": 43740,
+        "parentPid": 37540,
+        "createdAt": "2026-10-07T20:14:19.3922720Z"
+      },
+      {
+        "pid": 35724,
+        "parentPid": 43740,
+        "createdAt": "2026-10-07T20:14:19.4443250Z"
+      },
+      {
+        "pid": 14212,
+        "parentPid": 35724,
+        "createdAt": "2026-10-07T20:14:26.4796080Z"
+      },
+      {
+        "pid": 23360,
+        "parentPid": 35724,
+        "createdAt": "2026-10-07T20:14:28.7467340Z"
+      }
+    ],
+    "checkedPids": 24,
+    "observedCurrentProcesses": [],
+    "reusedPidsAreNotOldProcesses": true,
+    "bothRuntimeDirectoriesAbsent": true,
+    "restoredAssets": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+      "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+    },
+    "ninePrivateAssetsAbsent": true,
+    "protectedFullPostHashVerified": true,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "scripts/analyze-mpeg2-quiesced-budget-terminal.mjs": "f71fe9aec7623df548fd7a65778fcaa1b4485a7b9f6569f7feb52693797d0dcb"
+  },
+  "browserConversionsStarted": 1,
+  "completeOriginalConversions": 0,
+  "fullIndependentValidationPerformed": false,
+  "publicAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "noNewConversion": true,
+  "next": "Inspect exact pinned FFmpeg8.1.2 HEVC refs.c alloc_frame and refstruct.c. Capture the actual late pool/request and allocator state before any fix; earlier capped early-frame observations do not establish this allocation size or heap fragmentation. Do not rerun unchanged, enlarge heaps, drop live references, or weaken fidelity."
+}

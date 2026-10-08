@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-08T06:06:21.933Z",
+  "status": "failed-static-inspection-not-acceptance",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-original-2026-10-08.json",
+    "bytes": 2164989,
+    "sha256": "0f5a192ea5fb148fde2cfa9f40d7d6b58239a106b096fc0d7f782c00fa05c445"
+  },
+  "inspection": null,
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Buffer.byteLength(text) <= 65536)\n",
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndAnalysisSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\late-pool-static-ATNDSf"
+  },
+  "sourcePins": {
+    "scripts/audit-mpeg2-late-pool-callsite.mjs": "704799908a626f6494f831d8e0e8049817a676e1a46ca45cb8adc19bbc23c301"
+  },
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "productionEngineChanged": false,
+  "heapLimitRaised": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null
+}

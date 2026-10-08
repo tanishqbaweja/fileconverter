@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-08T06:09:11.931Z",
+  "status": "failed-static-inspection-not-acceptance",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-original-2026-10-08.json",
+    "bytes": 2164989,
+    "sha256": "0f5a192ea5fb148fde2cfa9f40d7d6b58239a106b096fc0d7f782c00fa05c445"
+  },
+  "inspection": null,
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(index >= 0)\n",
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndAnalysisSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\late-pool-static-6Ght2K"
+  },
+  "sourcePins": {
+    "scripts/audit-mpeg2-late-pool-callsite-inventory.mjs": "4ff5209199110a3ff900a23b2c38b8e9bf59b4d529c2fd5c19445cc6c7e062e6"
+  },
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "productionEngineChanged": false,
+  "heapLimitRaised": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null
+}

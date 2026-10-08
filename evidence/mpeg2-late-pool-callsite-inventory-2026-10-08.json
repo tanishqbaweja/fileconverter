@@ -1,0 +1,173 @@
+{
+  "recordedAt": "2026-10-08T06:09:44.795Z",
+  "status": "verified-exact-compiled-callsite-inventory-with-source-pool-unavailable",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-original-2026-10-08.json",
+    "bytes": 2164989,
+    "sha256": "0f5a192ea5fb148fde2cfa9f40d7d6b58239a106b096fc0d7f782c00fa05c445"
+  },
+  "inspection": {
+    "binary": {
+      "path": "work/mpeg2-split-pipeline-37479749443/within-mpeg2-split.wasm",
+      "bytes": 6903737,
+      "sha256": "f4c5c17e6d0e53d0612ac6ae66dcf5f7057b9d7b923df99713a2b36d5545924a"
+    },
+    "actualStackCaller": {
+      "functionIndex": 2059,
+      "functionNameFromActualBinary": "alloc_frame",
+      "codeOffset": "0x30b508"
+    },
+    "actualStackCallee": {
+      "functionIndex": 4378,
+      "functionNameFromActualBinary": "av_refstruct_pool_get",
+      "codeOffset": "0x5ee0cd"
+    },
+    "originalMetadata": {
+      "functionIndex": 2059,
+      "name": "alloc_frame",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 3190651,
+      "bodyEnd": 3193552
+    },
+    "slicedMetadata": {
+      "functionIndex": 2059,
+      "name": "alloc_frame",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 23751,
+      "bodyEnd": 26652
+    },
+    "originalBodySha256": "eef6072c5cdd39b6b5274c07978f3f56f3535922967fa5f8c2af461310f8980d",
+    "functionDisassemblyBytes": 88609,
+    "functionDisassemblySha256": "34039e285d4221a7e86eb10f4f58153996087787c5b5e616fbbf9c1137703938",
+    "decodedCallContexts": [
+      [
+        " 005fcf: 20 07                      |           local.get 7",
+        " 005fd1: 45                         |           i32.eqz",
+        " 005fd2: 72                         |           i32.or",
+        " 005fd3: 04 40                      |           if",
+        " 005fd5: 20 02                      |             local.get 2",
+        " 005fd7: 10 9a 22                   |             call 4378 <av_refstruct_pool_get>",
+        " 005fda: 41 00                      |             i32.const 0",
+        " 005fdc: 23 0c                      |             global.get 12",
+        " 005fde: 41 01                      |             i32.const 1",
+        " 005fe0: 46                         |             i32.eq",
+        " 005fe1: 0d 05                      |             br_if 5"
+      ],
+      [
+        " 00624c: 41 07                      |           i32.const 7",
+        " 00624e: 46                         |           i32.eq",
+        " 00624f: 72                         |           i32.or",
+        " 006250: 04 40                      |           if",
+        " 006252: 20 02                      |             local.get 2",
+        " 006254: 10 9a 22                   |             call 4378 <av_refstruct_pool_get>",
+        " 006257: 41 07                      |             i32.const 7",
+        " 006259: 23 0c                      |             global.get 12",
+        " 00625b: 41 01                      |             i32.const 1",
+        " 00625d: 46                         |             i32.eq",
+        " 00625e: 0d 05                      |             br_if 5"
+      ],
+      [
+        " 006285: 41 08                      |           i32.const 8",
+        " 006287: 46                         |           i32.eq",
+        " 006288: 72                         |           i32.or",
+        " 006289: 04 40                      |           if",
+        " 00628b: 20 02                      |             local.get 2",
+        " 00628d: 10 9a 22                   |             call 4378 <av_refstruct_pool_get>",
+        " 006290: 41 08                      |             i32.const 8",
+        " 006292: 23 0c                      |             global.get 12",
+        " 006294: 41 01                      |             i32.const 1",
+        " 006296: 46                         |             i32.eq",
+        " 006297: 0d 05                      |             br_if 5"
+      ]
+    ],
+    "disassembler": {
+      "version": "1.0.39",
+      "registryIntegrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+      "executableSha256": "a9e6a2c224afeecd347c7f931b9efc8a817c146bfdeae2598974d5797284d214"
+    },
+    "calls": [
+      {
+        "slicedOffset": 24535,
+        "originalOffset": 3191435,
+        "originalOffsetHex": "0x30b28b",
+        "targetIndex": 4378,
+        "targetName": "av_refstruct_pool_get",
+        "instructionHex": "109a22"
+      },
+      {
+        "slicedOffset": 25172,
+        "originalOffset": 3192072,
+        "originalOffsetHex": "0x30b508",
+        "targetIndex": 4378,
+        "targetName": "av_refstruct_pool_get",
+        "instructionHex": "109a22"
+      },
+      {
+        "slicedOffset": 25229,
+        "originalOffset": 3192129,
+        "originalOffsetHex": "0x30b541",
+        "targetIndex": 4378,
+        "targetName": "av_refstruct_pool_get",
+        "instructionHex": "109a22"
+      }
+    ],
+    "matchedCall": {
+      "slicedOffset": 25172,
+      "originalOffset": 3192072,
+      "originalOffsetHex": "0x30b508",
+      "targetIndex": 4378,
+      "targetName": "av_refstruct_pool_get",
+      "instructionHex": "109a22"
+    },
+    "sourceSiteOrdinal": 1,
+    "poolIdentityInference": null,
+    "mappingCaveat": "Inlining can introduce extra pool getters into alloc_frame. This inventory proves the exact compiled call instruction/ordinal only, not its source pool name, size, live entries, or free blocks.",
+    "inferredFailedPool": null,
+    "observedRuntimePoolPointer": null,
+    "failedIndividualAllocationBytes": null,
+    "livePoolEntryCountsAtLateFailure": null,
+    "largestFreeBlockBytes": null,
+    "fragmentationProven": false,
+    "analysisOnlySlice": {
+      "bytes": 537050,
+      "sha256": "c6abcc12480ac5807491a1b7ba2abffba0149f6d0115ca2e772d06312d417af3",
+      "preservedFunctions": 1,
+      "unreachableReplacements": 4609,
+      "selectedBodyByteExact": true,
+      "instantiated": false,
+      "usedForMedia": false
+    }
+  },
+  "failure": null,
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndAnalysisSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\late-pool-static-qBElhC"
+  },
+  "sourcePins": {
+    "scripts/audit-mpeg2-late-pool-callsite-inventory.mjs": "0fa799cdb6cce32ede8cc1cc4c1b8130fee8f46f33965412004392e642b16b55"
+  },
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "productionEngineChanged": false,
+  "heapLimitRaised": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null
+}

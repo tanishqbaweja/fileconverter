@@ -1,0 +1,50 @@
+{
+  "recordedAt": "2026-10-08T05:55:32.152Z",
+  "status": "verified-lossless-diagnostic-compaction",
+  "scope": "ONE terminal JSON diagnostic, not converted media; no browser or protected-source access",
+  "raw": {
+    "path": "outputs/reports/2026-10-07T20-14-20-373Z-private-mpeg2-quiesced-budget-native-100ms.json",
+    "bytes": 18558177,
+    "sha256": "e9009d96731f601978ca37b1613f92c007128038b78379941721a6616387b354"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-07T20-14-20-373Z-private-mpeg2-quiesced-budget-native-100ms.json.gz",
+    "bytes": 569328,
+    "sha256": "7577df207c86b7a39551225a9242ac8b2829ebfe2d0b785403d7e5338b6c2007"
+  },
+  "companions": [
+    {
+      "path": "outputs/reports/2026-10-07T20-14-20-373Z-private-mpeg2-quiesced-budget-native-100ms-trace.zip",
+      "bytes": 224304,
+      "sha256": "e0968be3f9801a094151ca1798efa2f55db03a8875dac40085b8aef01811e4eb"
+    },
+    {
+      "path": "outputs/reports/2026-10-07T20-14-20-373Z-private-mpeg2-quiesced-budget-native-100ms.csv",
+      "bytes": 70030,
+      "sha256": "be297a399103abc1152ccae1a2ffa2328b6df11c3e8008849b3d4e6ac7e8fb3c"
+    },
+    {
+      "path": "outputs/reports/2026-10-07T20-14-20-373Z-private-mpeg2-quiesced-budget-native-100ms.html",
+      "bytes": 45838,
+      "sha256": "d1b319960f42a3807db912c6167ec983bf1fc2c6e3c5987c3dd47a12bf9cea26"
+    }
+  ],
+  "reconstructedRawSizeAndSha256Verified": true,
+  "rawIdentityRevalidatedBeforeRemoval": true,
+  "uncompressedRawRemoved": true,
+  "removedBytes": 18558177,
+  "ownedScratchRemoved": true,
+  "protectedSourceRead": false,
+  "browserConversionsPerformed": 0,
+  "rawFailurePreserved": true,
+  "publicAcceptance": false,
+  "sourcePins": {
+    "scripts/compact-mpeg2-quiesced-budget-terminal-report.mjs": "b5711dfce68e3f823ff725fa4a13f8a999526da23aad7ff55bee548599aa80e6"
+  },
+  "bounds": {
+    "streamChunkBytes": 65536,
+    "maximumRawBytes": 33554432,
+    "maximumArchiveBytes": 4194304
+  },
+  "recovery": "The retained gzip reconstructs the exact failed raw JSON and SHA-256; trace/CSV/HTML remain. Only the redundant verified raw JSON was removed."
+}

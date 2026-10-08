@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-10-08T06:08:06.581Z",
+  "status": "failed-static-inspection-not-acceptance",
+  "input": {
+    "path": "evidence/mpeg2-quiesced-budget-original-2026-10-08.json",
+    "bytes": 2164989,
+    "sha256": "0f5a192ea5fb148fde2cfa9f40d7d6b58239a106b096fc0d7f782c00fa05c445"
+  },
+  "inspection": null,
+  "failure": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n3 !== 2\n",
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndAnalysisSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\late-pool-static-crHep0"
+  },
+  "sourcePins": {
+    "scripts/audit-mpeg2-late-pool-callsite-bounded.mjs": "5c468f8ea7dc14b5705f26417b03331821f5f5868119d155504aa81b5160ebee"
+  },
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "nativeConverterUsed": false,
+  "noDocker": true,
+  "productionEngineChanged": false,
+  "heapLimitRaised": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainClaim": null
+}
