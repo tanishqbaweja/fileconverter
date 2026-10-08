@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { gunzipSync } from "node:zlib";
+import test from "node:test";
+import { makeSplitRenderUiGoldens } from "../scripts/lib/split-render-ui-golden-recipe.mjs";
+import { sha,makeStableUiHeadlessBaseline } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
+const root=path.resolve(import.meta.dirname,".."),read=file=>readFile(path.join(root,file));
+const receipt=JSON.parse(await read("evidence/2026-10-08T13-49-53-644Z-stable-progress-ui-headless-goldens.json"));
+const gzip=await read(receipt.generatedArchive.path);assert.equal(sha(gzip),receipt.generatedArchive.sha256);
+const executed=JSON.parse(gunzipSync(gzip,{maxOutputLength:262144}));
+const build=JSON.parse(await read("evidence/2026-10-08T23-13-16-883Z-split-render-ui-build.json"));
+test("New private render candidate retains exact five actual headless conversion/recovery gates; no headed or weakened replacement",()=>{
+  const runtime=path.join(root,"work","split-render-UNIT-ONLY"),stamp="2026-10-09T00-00-00-000Z";
+  const candidate=makeSplitRenderUiGoldens(executed,root,runtime,stamp,build.asset),baseline=makeStableUiHeadlessBaseline(executed,root,runtime,stamp);
+  assert.equal(candidate.driver,baseline.driver);assert.equal(candidate.config,baseline.config);
+  let source=candidate.spec;for(const [before,after] of candidate.patches.toReversed())source=source.replace(after,before);
+  assert.equal(source,baseline.spec);assert.equal(sha(source),candidate.baselineSpecSha256);
+  assert.ok(candidate.spec.includes(JSON.stringify(build.asset))&&candidate.spec.includes("headless: true"));
+  assert.equal((candidate.driver.match(/windowsHide: true/g)??[]).length,6);
+  assert.throws(()=>makeSplitRenderUiGoldens(executed,root,runtime,stamp,{...build.asset,url:"/unbound.js"}));
+});

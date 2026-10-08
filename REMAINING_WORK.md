@@ -5,6 +5,95 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — New private split-render candidate: real browser fidelity passed
+
+Previous user-instruction turn only inspected CMD processes, not converter progress.
+Current cycle advances the distinct transient-V8 investigation without replaying
+the unchanged two-dump diagnostic or altering the published UI/engines/registry.
+No AGENTS instructions or agents, Docker, visible shells/browsers, unrelated kills.
+Playwright skill used for actual real-browser checks; original goal explicitly
+requests test files, so retain its existing five-case test suite, headless only.
+
+Private exact-source overlay separates the original controller/hook/lifecycle/
+handler statements into a custom hook and15 typed ordinary render helpers.
+No new React component/fiber boundaries or DOM wrappers; original JSX is retained,
+no cache candidate stacked, no codec/settings/I-O/limits/CSS/registry changes.
+Real React whole-component SSR is byte-identical, all405 cards retained; eight
+fixture display states explicitly exercise source inspection, both actual audio/
+video control branches, running, error, cancellation and storage. Fixtures are
+UNIT ONLY, not fabricated conversion measurements. Published source remains
+b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b.
+
+Actual private production build2026-10-08T23-13-16-883Z: zero candidate lint/type
+diagnostics; full Vite builds completed. Largest actual compiled JS function
+39778 ->15917 UTF-16 source units; independently verified true UTF-8 function
+bytes39792 ->15920. Frozen builder `bytes` fields actually use AST UTF-16 offsets;
+preserved openly with source-units.md follow-up, not rewritten executed receipts.
+Total bundle315630 ->318956 real bytes (3326 bytes LARGER).
+This proves compiler-preserved decomposition, NOT native allocation cause, memory
+or conversion speed improvement. Two exact source/client gzip archives roundtrip,
+eight source pins checked pre/post; normal production rebuilt and hash restored.
+Independent build/structure/SSR + prior regression13/13 PASS1992.0828ms.
+New unchanged-gate recipe6/6 PASS1950.4148ms/scoped zero-warninglint PASS.
+
+Session51342 now TERMINALexit0. ONE new candidate headless run5/5 PASS31.7s;
+normal driver stopped helpers/restored assets/removed its owned runtime, outer
+controller rebuilt normal production and verified full protected original SHA
+pre/post. Fresh host physical5400166400/virtual5925289984, launch6677721088/
+5562863616; same2GiB physical AND virtual guard, repository disk1624201789440.
+25 pinned source files unchanged. All five actual response bodies match candidate
+/assets/ConverterApp-CXZw4L_k.js SHA52c6af6f8e49ddd0b2787d00bb29b9baab6075bf7e1f1fe490b78ea326441121.
+Three GENUINE decode/encode outputs match old golden hashes: MPEG4 input487007
+->MPEG2 output321692/48frames/SSIM0.992146; HEVC562503 ->MPEG2 652521/96frames/
+SSIM0.985963 through OPFS and direct adapter. All retain two audio tracks,
+independent full video decode/decoded PCM/timeline/artwork gates unchanged.
+Fixed48MiB Wasm, one pending write, <=64KiB reads/<=512KiB write/queue caps,
+terminal pending/queued0. Write-failure and real-running cancellation recovery
+pass, five empty temp inventories. All six actual UI states match same-mode
+baseline CSS/405-card markup/geometry with0 CSS-pixel delta and no overflow;
+six screenshots opened/reviewed, readable controls/errors/no overlap.
+Inherited private adapter MPEG4/remux/2.8/10GiB labels remain unsuitable for
+publication; no new headed/manual or exact binary-pinned speed comparison.
+27 observed numeric PIDs absent at terminal; native births unavailable, no
+unrelated process was killed. Media/profiles/generated fixtures/scratch gone,
+six original engine asset hashes restored/nine private additions absent.
+
+Independent actual verifier reconstructs archive/source/driver reversals, exact
+five body bindings, three golden outputs, all fidelity/queue/cleanup/geometry
+fields and full-original pre/post evidence.548675-byte raw report removed ONLY
+after exact identity/SHA/lossless39613-byte gzip validation,509062 bytes saved.
+Retain compact JSON/gzip/screenshot proof in repository, not converted copies.
+Evidence:2026-10-08T23-16-24-605Z-split-render-ui-{goldens,golden-validation}.json
+and-visual-review.md, plus both split-render build receipts.
+
+Failed harness approaches recorded, not silently retried: direct Node import
+failed on extensionless nested TS dependency; installed tsx scoped loader stalled
+42.231s and ONLY verified owned test worker6456/parent45000 was stopped, wrapper
+finally returnedexit1. Replaced with temporary lib-only built-in TS resolution
+hook, deregistered finally. Lint rejected variable `module`; renamed. SSR CommonJS
+VM couldn't parse import.meta.url; binds the equivalent absolute source URL ONLY
+in SSR test, worker effects never execute. Stronger display test found guessed
+case-sensitive `Privacy` marker; corrected to actual site-header. Assert fixtures
+use actual snapshot fields and render branches, not unused properties. Guessed
+older test filename absent; corrected lookup, no browser replay.
+
+ZERO new full-original completed/validated/repeat/scaling/public/memory/speed
+acceptance. Prior256.43359375MiB full-source failure and separate late decoder
+OOM remain unresolved. Candidate stays PRIVATE. Next concrete step is a matched,
+meaningful actual native-memory/throughput comparison of THIS newly built split
+candidate against original, same full source/settings/binaries/lower stable blank
+and all Chromium processes, preserving fidelity and cleanup. Do not rerun these
+unchanged small goldens or treat source-function bytes as allocated native bytes.
+Other full-spec missing/partial items below remain required; goal ACTIVE.
+
+Closure: actual-evidence focused16/16 PASS2670.3222ms; combined890/890 unit
+cases PASS(dot reporter exit0/two workers/no failures/skips).12 scoped JS files
+and ledger zero-warninglint/public405/405 manifest/zero pending/PDF/whitespace
+PASS. Follow-up UTF8-vs-UTF16 assertions recorded after combined run; focused
+revalidation below, no second unchanged full or browser test. No live handle.
+Post-clarification focused4/4 PASS1488.683ms and scoped zero-warninglint PASS;
+true UTF8 assertions now checked. Regenerated ledger retains every earlier failure.
+
 ## 2026-10-09 — Actual live category capture completed; long-run cause still open
 
 Session41515 is TERMINALexit0 (diagnostic controller only), child ACTUALexit1

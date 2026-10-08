@@ -1,0 +1,101 @@
+{
+  "recordedAt": "2026-10-08T23:19:24.642Z",
+  "status": "independently-verified-and-losslessly-compacted",
+  "proofPath": "evidence/2026-10-08T23-16-24-605Z-split-render-ui-goldens.json",
+  "proofSha256": "ff936f5e617be806944e201cd3dc7fcd8f334a53229fccd4e2e1a748659245d3",
+  "buildProofSha256": "98d0de08bad9bec02d5a3765c277f86cff952a686fc6b3a3f94445c7e191aa15",
+  "sourcePinCount": 25,
+  "conversions": [
+    {
+      "sourceBytes": 487007,
+      "outputBytes": 321692,
+      "sourceCodec": "mpeg4",
+      "outputCodec": "mpeg2video",
+      "frames": "48",
+      "audioTracks": 2,
+      "ssim": 0.992146,
+      "outputSha256": "d366abbe466cbd7a70ae7353efda456471c9b064402996a58fa1d2dd7589bf94",
+      "destination": "opfs"
+    },
+    {
+      "sourceBytes": 562503,
+      "outputBytes": 652521,
+      "sourceCodec": "hevc",
+      "outputCodec": "mpeg2video",
+      "frames": "96",
+      "audioTracks": 2,
+      "ssim": 0.985963,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "destination": "opfs"
+    },
+    {
+      "sourceBytes": 562503,
+      "outputBytes": 652521,
+      "sourceCodec": "hevc",
+      "outputCodec": "mpeg2video",
+      "frames": "96",
+      "audioTracks": 2,
+      "ssim": 0.985963,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "destination": "direct"
+    }
+  ],
+  "observedProcessIdCount": 27,
+  "nativeBirthsUnavailable": true,
+  "maximumGeometryDeltaCssPixels": 0,
+  "rawReport": {
+    "rawPath": "output/playwright/2026-10-08T23-17-09.982Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+    "rawBytes": 548675,
+    "rawSha256": "a257ccf4633120c76ead924099b9eafa5852da4fef711db58f4fe29cd7829a41",
+    "archive": {
+      "path": "outputs/reports/2026-10-08T23-16-24-605Z-split-render-ui-golden-report.json.gz",
+      "bytes": 39613,
+      "sha256": "30658fc033268014e2efcf46bb6610b6bf802989e0a49902a5e4ffee932f18a4",
+      "restoredBytes": 548675,
+      "restoredSha256": "a257ccf4633120c76ead924099b9eafa5852da4fef711db58f4fe29cd7829a41"
+    }
+  },
+  "screenshots": [
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-1.png",
+      "bytes": 139337,
+      "sha256": "b9181d0497852573b286fc80ddc734e37c9868a34017f7b30f1cc406f02cdff4"
+    },
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-2.png",
+      "bytes": 127104,
+      "sha256": "bc02fef2a1fb188c1b15a49dbb338242003f6a95fea607ab1c3ff5079ef29f51"
+    },
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-3.png",
+      "bytes": 144946,
+      "sha256": "04c18a4991887149050ba7941a98b92ee9eb9f1d27ed977d1d9580f15b6afecb"
+    },
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-4.png",
+      "bytes": 147670,
+      "sha256": "80e759292381f0b49a8cace8225b627784808eaea1eec45c8daa7bf881024d72"
+    },
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-5.png",
+      "bytes": 152402,
+      "sha256": "621fe7556d6d1d8382d70c758264629c026de9d9e29199f7d1af8b1931b39eb9"
+    },
+    {
+      "path": "output/playwright/2026-10-08T23-16-24-605Z-split-render-matrix-goldens-6.png",
+      "bytes": 151605,
+      "sha256": "ea95d88eebae8bfdf68be2403767d078dd705cdb67bf194a26ee514bcef7aff8"
+    }
+  ],
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "sourcePins": {
+    "scripts/analyze-split-render-ui-goldens.mjs": "f1f9c5d9b0189c5f2f23bf838c12b9bb9bff9c0f3b4e5c84d3107961689ff7dc",
+    "scripts/lib/split-render-ui-golden-evidence.mjs": "6e06f7264e85f0f0ae9bd362bbca8d60b09e5649956d61dde416d884504be76e"
+  },
+  "rawRemovedAfterIdentityShaAndLosslessVerification": true,
+  "bytesSaved": 509062,
+  "visualReviewPending": true
+}
