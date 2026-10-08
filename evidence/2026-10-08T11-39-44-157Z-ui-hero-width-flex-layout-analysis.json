@@ -1,0 +1,296 @@
+{
+  "recordedAt": "2026-10-08T11:41:20.039Z",
+  "status": "verified-terminal-hero-width-layout-pair-not-public-acceptance",
+  "evidenceStatus": "paired-hero-width-layout-geometry-pass-not-public-acceptance",
+  "sourcePins": {
+    "evidence/2026-10-08T11-39-44-157Z-ui-hero-width-flex-layout.json": "5f387b74b5144dab0a30bd4081fc83ba89a9fa488142aa29ddb0178585154aa4",
+    "scripts/analyze-ui-hero-width-flex-layout.mjs": "a702ee3563dbced74a63b712fd40427185e647f01075d14f5c0b5fea8242f88a"
+  },
+  "modes": [
+    {
+      "mode": "hero-width-grid",
+      "fullTreePrivateBeforeBytes": 353443840,
+      "fullTreePrivateAfterBytes": 375218176,
+      "fullTreePrivateDeltaBytes": 21774336,
+      "embedderGrowthBytes": 8458752,
+      "mainBlinkAllocatedGrowthBytes": 8653120,
+      "mainBlinkResidentGrowthBytes": 9043968,
+      "selectedTypes": [
+        {
+          "name": "blink_objects/blink_gc/main/blink::PlainTextNode (0x369)",
+          "type": "blink::PlainTextNode (0x369)",
+          "fullNameSha256": "da646a303979b0b71b13a6021d0e671928bacb24a2c5d9d819b27b27eff9cd81",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 71920,
+          "afterAllocatedObjectsBytes": 2229520,
+          "deltaAllocatedObjectsBytes": 2157600,
+          "beforeObjectCount": 58,
+          "afterObjectCount": 1798,
+          "deltaObjectCount": 1740,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        },
+        {
+          "name": "blink_objects/blink_gc/main/blink::GridSizingTrackCollection (0x356)",
+          "type": "blink::GridSizingTrackCollection (0x356)",
+          "fullNameSha256": "171d2d8c1a67e44c43f6f161ba0663280ad2a9b4f78a6919421ae5d550d74e13",
+          "heap": "blink_gc/main",
+          "beforeAllocatedObjectsBytes": 27904,
+          "afterAllocatedObjectsBytes": 237184,
+          "deltaAllocatedObjectsBytes": 209280,
+          "beforeObjectCount": 16,
+          "afterObjectCount": 136,
+          "deltaObjectCount": 120,
+          "nondeterministicDumpMayIncludeGarbage": true,
+          "allocationCallsite": null,
+          "acceptanceMetric": false
+        }
+      ],
+      "gridTrackGrowthBytes": 209280,
+      "nativeSampleCount": 7,
+      "unavailableNativeSamples": 0,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 26344,
+          "parentPid": 44056,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-08T11:39:58.6494910Z",
+          "privateBytes": 10395648,
+          "rssBytes": 34029568
+        },
+        {
+          "pid": 41780,
+          "parentPid": 44056,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:16.9889830Z",
+          "privateBytes": 3411968,
+          "rssBytes": 16343040
+        },
+        {
+          "pid": 21224,
+          "parentPid": 41780,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:17.0107720Z",
+          "privateBytes": 3121152,
+          "rssBytes": 15396864
+        },
+        {
+          "pid": 42120,
+          "parentPid": 41780,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:17.0310490Z",
+          "privateBytes": 3768320,
+          "rssBytes": 19177472
+        },
+        {
+          "pid": 6528,
+          "parentPid": 42120,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:17.0498560Z",
+          "privateBytes": 3133440,
+          "rssBytes": 15400960
+        }
+      ],
+      "snapshotsNotContinuousPeaks": true,
+      "missingTypesAreUnavailableNotZero": true
+    },
+    {
+      "mode": "hero-width-flex",
+      "fullTreePrivateBeforeBytes": 351637504,
+      "fullTreePrivateAfterBytes": 361947136,
+      "fullTreePrivateDeltaBytes": 10309632,
+      "embedderGrowthBytes": 3955720,
+      "mainBlinkAllocatedGrowthBytes": 4388632,
+      "mainBlinkResidentGrowthBytes": 4587520,
+      "selectedTypes": [],
+      "gridTrackGrowthBytes": null,
+      "nativeSampleCount": 7,
+      "unavailableNativeSamples": 0,
+      "addedProcessIdentitiesAtAfterSnapshot": [
+        {
+          "pid": 46144,
+          "parentPid": 37408,
+          "type": "utility",
+          "utilitySubtype": "tracing.mojom.TracingService",
+          "sandboxType": "service",
+          "createdAt": "2026-10-08T11:40:34.9094710Z",
+          "privateBytes": 11341824,
+          "rssBytes": 33976320
+        },
+        {
+          "pid": 37420,
+          "parentPid": 37408,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:54.1236310Z",
+          "privateBytes": 3346432,
+          "rssBytes": 16297984
+        },
+        {
+          "pid": 22532,
+          "parentPid": 37420,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:54.1436880Z",
+          "privateBytes": 3117056,
+          "rssBytes": 15421440
+        },
+        {
+          "pid": 45836,
+          "parentPid": 37420,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:54.1639530Z",
+          "privateBytes": 3739648,
+          "rssBytes": 19169280
+        },
+        {
+          "pid": 46152,
+          "parentPid": 45836,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-08T11:40:54.1816940Z",
+          "privateBytes": 3125248,
+          "rssBytes": 15413248
+        }
+      ],
+      "snapshotsNotContinuousPeaks": true,
+      "missingTypesAreUnavailableNotZero": true
+    }
+  ],
+  "geometry": [
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-mp4-mpeg4",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 758,
+        "height": 482
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0.015625,
+      "pass": true
+    },
+    {
+      "profileId": "mkv-to-wav",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "sameControls": true,
+      "sameMarkup": true,
+      "maxDifferenceCssPixels": 0,
+      "pass": true
+    }
+  ],
+  "candidateGeometryAccepted": true,
+  "cleanup": {
+    "sampledIdentities": 32,
+    "checkedPids": 34,
+    "allSampledIdentitiesAbsent": true,
+    "allObservedPidsAbsent": true,
+    "observedProcesses": [],
+    "fourScratchDirectoriesAbsent": true,
+    "protectedFullPostHashMatches": true,
+    "noProcessesKilled": true
+  },
+  "conversionsPerformed": 0,
+  "generatedMediaCopies": 0,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "originalFailureAllocationCause": null,
+  "publishedFilesChanged": false,
+  "caveat": "Independent raw/hash/generated-source/join/geometry/cleanup verification; partial types include garbage and overlap. No original peak allocation cause, native continuous acceptance, speed or public promotion from this idle UI diagnostic."
+}

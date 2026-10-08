@@ -1,0 +1,35 @@
+{
+  "recordedAt": "2026-10-08T11:37:45.670Z",
+  "status": "verified-lossless-ui-hero-raw-report-compaction",
+  "sourcePins": {
+    "evidence/2026-10-08T11-27-43-052Z-ui-hero-flex-layout.json": "28e8bb6686ad39ce6d755b12250b7a341fba8984fa46c5490d8f76dd7070771f",
+    "evidence/2026-10-08T11-27-43-052Z-ui-hero-flex-layout-analysis.json": "055a1d0f4c251ae0199bcc6b90a71bfee08169d990fa0663ef74106ffa814cbc",
+    "scripts/compact-ui-hero-flex-reports.mjs": "0b6273b0fb070df97af3753a901c12271b3e9d36e75de097a6d948b9203c1017"
+  },
+  "reports": [
+    {
+      "rawPath": "output/playwright/2026-10-08T11-27-43-780Z-ui-hero-grid-layout.json",
+      "rawBytes": 827175,
+      "rawSha256": "3c1ea815d01e39347b4b17295036014347e19c1bcacb44c1d5e92c744ca83089",
+      "archivePath": "output/playwright/2026-10-08T11-27-43-780Z-ui-hero-grid-layout.json.gz",
+      "archiveBytes": 71858,
+      "archiveSha256": "d4f3ae7827d7813f9176af7f451cada866246ab232a9ec511feb1702b1bce224",
+      "reconstructionVerified": true,
+      "rawRemovedAfterVerification": true
+    },
+    {
+      "rawPath": "output/playwright/2026-10-08T11-28-20-254Z-ui-hero-flex-layout.json",
+      "rawBytes": 826331,
+      "rawSha256": "d8c8bb4168d3ac9f12a9b0644a5b3e824725771434a7da36eb166cba539891ca",
+      "archivePath": "output/playwright/2026-10-08T11-28-20-254Z-ui-hero-flex-layout.json.gz",
+      "archiveBytes": 71910,
+      "archiveSha256": "530fb8d2bc36520d243312116a2e9924eabe176fc8f364ac51924cc49cbc9b30",
+      "reconstructionVerified": true,
+      "rawRemovedAfterVerification": true
+    }
+  ],
+  "bytesSaved": 1509738,
+  "originalMediaTouched": false,
+  "publishedFilesChanged": false,
+  "conversionAcceptance": false
+}

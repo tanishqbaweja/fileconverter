@@ -1,0 +1,64 @@
+{
+  "recordedAt": "2026-10-08T11:39:27.103Z",
+  "status": "prepared-syntax-and-source-verified-not-browser-executed",
+  "changedReason": "Rejected zero-basis hero flex widened desktop card34.9375CSSpx; explicit border-box weighted widths now match .86:1 grid/min30rem/mobilesource geometry",
+  "sourcePins": {
+    "scripts/diagnose-ui-hero-flex-layout.mjs": "c066295cad5a6c7f2b6209647a29b83c325b11e8ea074bce210131adc8c18af2",
+    "scripts/lib/ui-hero-flex-layout-recipe.mjs": "97af90520e0525a4b70e7808f0b8c716257362adc7f178bbb6ed662794cc1081",
+    "scripts/diagnose-ui-matrix-flex-layout.mjs": "62e3b1d9a9fd59983ba4ec9077cf5f3a48516800ffd2a42fe9ccaa5c42d47156",
+    "scripts/lib/ui-matrix-flex-layout-recipe.mjs": "db58c642ca199b69e85ad81fd1c524f98b287b43c241ce652757724c1810532d",
+    "scripts/lib/ui-flex-layout-recipe.mjs": "8c24ac3404a614b664481ce5e1191a7be8bdfec066835e0ecfafe37bf0f415fc",
+    "scripts/diagnose-ui-native-allocation.mjs": "76b50f530ee0d117064be896c1051893db1ef4c875418915e86a353653e72974",
+    "scripts/lib/bounded-renderer-attribution.mjs": "ee5ce8eded7290a230c1eda69404bde6bd79ab4225c45ee1589677f3abf8cdb2",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "scripts/diagnose-ui-hero-width-flex-layout.mjs": "39a741c46aa36620aaabcfdf29bddba1e67b51dba8c07518569eadeaefae3ca6",
+    "scripts/lib/ui-hero-width-flex-layout-recipe.mjs": "d74c450b8ff17fa9d2351d25678dc97c4ea4343966f038e2834ef8954703a047",
+    "scripts/lib/largest-blink-attribution-recipe.mjs": "febea639ec59fdd1559ed0e0650769ea3ccd73db4248a15dad86e485b7719c1c",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "tests/ui-hero-width-flex-layout-recipe.test.mjs": "3737248e7b795138ce32530cddbfcd909470df8551c6feec1cba751ad8bf9891",
+    "evidence/2026-10-08T11-27-43-052Z-ui-hero-flex-layout.json": "28e8bb6686ad39ce6d755b12250b7a341fba8984fa46c5490d8f76dd7070771f"
+  },
+  "generatedHashes": {
+    "pair": {
+      "bytes": 7332,
+      "sha256": "c8e7dd3c8d1a81f93b402f509630c6b372bba2b391def6d6b2434d70142a8992",
+      "syntaxCheckPassed": true
+    },
+    "attribution": {
+      "bytes": 4949,
+      "sha256": "c24a74ea3bbabcadca9e38d634f3663ab73fdfb98eb10db98becb57cceb265f6",
+      "syntaxCheckPassed": true
+    },
+    "baseline": {
+      "bytes": 17104,
+      "sha256": "977663748063e615f27709f71954b9cae07ba84d4624942d0a558a8025e25e5d",
+      "syntaxCheckPassed": true
+    },
+    "candidate": {
+      "bytes": 17502,
+      "sha256": "1b9ba616c441974d066c18a33c80eef86fed8381343d236bff3ffe7bea595763",
+      "syntaxCheckPassed": true
+    }
+  },
+  "host": {
+    "acquiredAt": "2026-10-08T11:39:27.0697910Z",
+    "freePhysicalBytes": 4212695040,
+    "freeVirtualBytes": 5585174528,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "originalSourceChanged": false,
+  "publishedFilesChanged": false,
+  "browserExecutions": 0,
+  "generatedMediaCopies": 0,
+  "candidateGeometryAccepted": null,
+  "memoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "nextGate": "Same actual bounded 60-selection two-trace A/B and nine geometries when physical AND virtual free memory are >=2GiB; do not launch full original until geometry and headed golden/recovery gates pass"
+}
