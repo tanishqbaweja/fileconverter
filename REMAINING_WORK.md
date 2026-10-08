@@ -5,6 +5,59 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Genuine-progress probe TERMINAL; useful UI callsites, no acceptance
+
+Supersedes all20633 LIVE/pending notes. ONE actual instrumented original run from
+6fd1c64 ended by explicit normal production cancellation, exit1 on unchanged
+`cancelled != complete` gate. Source remained FULL/unchanged; no cropped/sparse/
+replacement input or native conversion. Real66,771,171 input/75,014,957 partial
+output bytes/189,100.9ms recorded. Zero full outputs, independent complete-output
+validation, repeats, speed or public acceptance. No native250MiB failure occurred:
+ALL-process peak465,039,360 minus SAME lower stable blank242,888,704 =211.859375MiB.
+Loaded idle311,275,520 is only diagnostic. Native coverage6pre/1748active/0unavailable.
+Instrumented partial observation does NOT supersede earlier full-profile failures.
+
+Four actual JS profiles at pre-conversion and real1/8/16MiB output growth captured
+0/25/131/289samples, maximum210nodes/49005serializedbytes. Naturally collected
+allocation estimates at16MiB are18,951,096bytes,15,869,648source-located, NOT live
+memory or native/Blink cause. Served app/framework SHA/body context binding is now
+actual, not post-run inference. Callsite contexts show rootCi6,031,160estimated
+bytes, React element creation3,474,304, repeated capability-strip983,284, selector
+options786,568, stream-plan list327,808 and source summary formatter327,784bytes.
+This changes the next action to isolating unchanged source/capability/options/plan
+rendering during progress, with exact markup/interaction/geometry/fidelity gates.
+It does NOT prove these JavaScript allocations caused the earlier40MiB native jump.
+
+The probe was safely cancelled because five saved-profile slots alone did NOT
+bound Chrome's retained collected-allocation history until a future long-run
+failure. At stop1048samples/503nodes/133020response bytes/69,309,548estimated
+cumulative allocated bytes; no exact live-memory claim. Preserve this actually
+executed source and do not replay the unbounded-lifetime sampler. NEW90-second
+duration wrapper stops only the instrument, not conversion, joins one close,
+and records later failure profiling unavailable rather than inventing a snapshot.
+Unit simulation passed; wired launcher/helper/source preparation13-04-05 verifies
+115pins/45572generatedbytes/SHA dcdd778d...80d22. ZERO browser execution of the fix.
+
+Independent terminal verification passes111source pins/generated-source/helper
+archives/full raw hashes/profile reconstruction/served-binding/native tree sums/
+unchanged formula/24original PID-parent-birth identities gone/three observed owned
+runtimes absent/protected full2,958,573,265byte source post SHA exact. Partial media
+and browser profile were removed by ordinary finally cleanup; no unrelated app
+closed. Generated-dist restoration/queue closure remain recorded in raw cleanup;
+no live20633.
+Raw2,985,911bytes removed only after lossless99,296byte gzip and exact file-identity/
+hash verification, saving2,886,615bytes. Keep four small JS archives, exact generated
+source archive and compact trace/CSV/HTML, all repository-local. No Docker/PDF,
+baseline/process exclusion, codec/default/quality/heap/read/write-limit changes.
+
+Focused7/7 PASS217.4956ms; combined856/856 units PASS4875.3233ms/0skip/0fail;
+scoped new analyzer/duration/recipe/launcher/tests zero-warning lint PASS. Public
+manifest consistency remains405/405/no pending/nonpassing/PDF, not browser re-
+certification. See `evidence/mpeg2-js-progress-terminal-2026-10-08.json` and actual
+receipt12-49-20. Next implement sampled stable-UI render reuse, then focused real
+headed goldens/geometry and matched actual-progress A/B with90-second profiler;
+no unchanged full-original or idle probe replay. Whole original goal remains active.
+
 ## 2026-10-08 — Progress-launch preparation failure corrected before Chrome
 
 Actual first launch from3354d30 exited1 BEFORE browser/conversion/staging: the
