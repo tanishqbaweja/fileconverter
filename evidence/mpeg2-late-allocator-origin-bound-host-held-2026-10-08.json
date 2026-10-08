@@ -1,0 +1,31 @@
+{
+  "status": "corrected-import-binding-attempt-held-before-stage-browser-conversion",
+  "initialRecheck": {
+    "acquiredAt": "2026-10-08T07:57:19.6496810Z",
+    "freePhysicalBytes": 6288617472,
+    "freeVirtualBytes": 3134636032,
+    "safeToStart": true
+  },
+  "previousAttempt": "evidence/mpeg2-late-allocator-abort-goldens-2026-10-08.json",
+  "previousAttemptStatus": "module-import-failed-before-staging",
+  "correctedAttempt": "scripts/validate-mpeg2-late-allocator-abort-goldens-origin-bound.mjs",
+  "correctedAttemptHeldWrapper": "work/mpeg2-late-allocator-goldens-wrapper-MCVJRV",
+  "correctedAttemptHeldWrapperFinallyRemoved": true,
+  "heldExactFreePhysicalBytes": null,
+  "heldExactFreeVirtualBytes": null,
+  "subsequentReadOnlyConfirmation": {
+    "acquiredAt": "2026-10-08T08:01:07.7668923Z",
+    "freePhysicalBytes": 5493391360,
+    "freeVirtualBytes": 1977700352,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false
+  },
+  "stageStarted": false,
+  "browserStarted": false,
+  "conversions": 0,
+  "protectedOriginalRead": false,
+  "programsClosed": false,
+  "windowsSettingsChanged": false,
+  "publicAcceptance": false
+}

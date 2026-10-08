@@ -5,6 +5,66 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Allocator observer production goldens actually PASS
+
+Supersedes the held production checks below, not the full-original failure.
+Fresh08:05:27UTC host sample5,582,372,864 physical/3,401,076,736 virtual bytes
+passed the unchanged guard. Corrected origin-bound runner actually executed all
+five current-Chrome production tests:5/5 PASS27.3s. Three genuine MPEG4/HEVC to
+MPEG2 encodes retain exact prior48/96frames,321692/652521bytes and full output
+SHA d366abbe...bf94/6c057538...fc32, SSIM0.992146/0.985963; full independent
+decode/audio/timelines/artwork/metadata validators unchanged. Both direct-write
+failure/cancel cases recover and remove partials; five empty OPFS inventories,
+six published dist assets hash-restored/nine additions absent. All generated
+media/profile/stager/golden/outer wrapper scratch finally removed.
+
+Independent freeze PASS verifies actual13 unchanged pre/post source pins, raw
+report+execution-envelope hashes and normal unmodified compiled3e744 core;
+synthetic export derivative NEVER staged/media-used. Freezer pins its source
+separately and leaves machine elapsed time null;27.3s is actual CLI suite output,
+not a transplanted benchmark. This is diagnostic compatibility, NOT full-original,
+whole-process250MiB/scaling/repeat/speed or public profile acceptance.
+ONE changed full-original attempt is next after committing this checkpoint;
+original failing pool/request/free/live state still unmeasured/full goal ACTIVE.
+Evidence: mpeg2-late-allocator-abort-goldens-origin-bound and golden-validation
+2026-10-08 JSONs; raw output/playwright/2026-10-08T08-06-45.873Z report.
+
+Pre-long-run combined checkpoint807/807 units PASS4088.2214ms;12 focused
+diagnostic/evidence tests PASS447.0371ms; all five scoped changed source/test/
+generator files zero-warning lint PASS. No browser/TypeScript source changed
+since prior semantic pass. This checkpoint does not certify the full original.
+
+## 2026-10-08 — Nested diagnostic import binding corrected; production checks initially held
+
+Previous goal turn was PROGRESS: actual native bounded allocator control,
+802 combined units and pushed0ab8337. Fresh host recheck07:57:19UTC passed
+(6,288,617,472 physical/3,134,636,032 virtual bytes). The attempted production
+suite then FAILED before staging/browser/conversion: broad module-import rebasing
+also rewrote the nested generator's string-literal match, so its final runner
+could not resolve owned-runtime-scratch from fresh scratch. Actual13 pre/post
+source pins unchanged, zero output reports, driver scratch removed; failure
+retained at mpeg2-late-allocator-abort-goldens-2026-10-08.json, not overwritten.
+
+New origin-bound runner derives from that exact executed source, rebases ONLY
+actual top-level imports and preserves nested generator literals. Reversibility,
+literal-cause negative control, actual top-level import binding and source syntax
+checked without browser. New independent freezer consumes only the new
+origin-bound envelope; full-original recipe pins the new runner too. No codec,
+native core, quality, I/O, 250MiB formula or existing assertion changed.
+Eleven focused control/evidence/import-preparation tests PASS441.3476ms.
+Initial lint found one unused test import; removed before final lint checkpoint.
+
+Corrected launch was HELD before staging/browser/conversion by unchanged2GiB
+physical+virtual guard. Subsequent read-only08:01:07UTC sample:5,493,391,360
+physical/1,977,700,352 virtual bytes (virtual unsafe). Exact hold bytes were not
+retained and remain null. All owned wrapper/profile scratch absent, no app closed
+or Windows settings changed. Pending user memory reply; no unchanged browser
+retry or protected original read. Actual five-case production allocator goldens
+and ONE changed full-original attempt remain unexecuted. Old five-case late-slot
+goldens remain valid only for the preceding observer, not this new wrapper.
+Full goal remains ACTIVE; no conversion/fidelity/memory/speed/public acceptance.
+See mpeg2-late-allocator-origin-bound-host-held-2026-10-08.json.
+
 ## 2026-10-08 — Actual abort-only native allocator inventory passed
 
 Previous goal turn was PROGRESS: actual pool control, five unchanged production

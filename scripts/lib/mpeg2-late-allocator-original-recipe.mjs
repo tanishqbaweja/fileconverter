@@ -33,7 +33,7 @@ export function makeLateAllocatorOriginalDriver(source,root,resolvePackage,adapt
       '"scripts/lib/mpeg2-late-abort-adapter.mjs","scripts/lib/late-pool-abort-capture.mjs","scripts/lib/late-refstruct-abort-snapshot.mjs","scripts/lib/late-slot-build-workflow.mjs",\n'+
       '"scripts/stage-mpeg2-late-allocator-abort.mjs","scripts/check-late-pool-allocator-abort-control.mjs",\n'+
       '"evidence/late-pool-allocator-abort-control-2026-10-08.json","evidence/mpeg2-late-dlmalloc-layout-2026-10-08.json",\n'+
-      '"scripts/validate-mpeg2-late-allocator-abort-goldens.mjs","scripts/freeze-mpeg2-late-allocator-abort-goldens.mjs",\n'+
+      '"scripts/validate-mpeg2-late-allocator-abort-goldens.mjs","scripts/validate-mpeg2-late-allocator-abort-goldens-origin-bound.mjs","scripts/freeze-mpeg2-late-allocator-abort-goldens.mjs",\n'+
       '"evidence/mpeg2-late-allocator-abort-golden-validation-2026-10-08.json","scripts/mpeg2-quiesced-budget-memory.mjs",'],
     ['-private-mpeg2-quiesced-budget-native-100ms','-private-mpeg2-late-allocator-original-native-100ms'],
     ['"mpeg2-quiesced-budget-runtime-"','"mpeg2-late-allocator-original-runtime-"'],

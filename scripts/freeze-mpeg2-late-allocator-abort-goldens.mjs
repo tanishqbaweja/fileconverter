@@ -12,7 +12,7 @@ assert.equal(sha(source),prior.freezerSourceSha256);
 const ownSha=sha(await readFile(new URL(import.meta.url)));
 const patches=[
   ['const root = path.resolve(import.meta.dirname, ".."), sha = bytes => createHash("sha256").update(bytes).digest("hex");',`const root = ${JSON.stringify(root)}, sha = bytes => createHash("sha256").update(bytes).digest("hex");`],
-  ["evidence/mpeg2-late-abort-goldens-2026-10-08.json","evidence/mpeg2-late-allocator-abort-goldens-2026-10-08.json"],
+  ["evidence/mpeg2-late-abort-goldens-2026-10-08.json","evidence/mpeg2-late-allocator-abort-goldens-origin-bound-2026-10-08.json"],
   ["evidence/mpeg2-late-abort-golden-validation-2026-10-08.json","evidence/mpeg2-late-allocator-abort-golden-validation-2026-10-08.json"],
   ['"elapsedBrowserTestSeconds: 27.0"','"elapsedBrowserTestSeconds: null"'],
   ["Nine actual runner/stager/adapter/helper/test/App pins", "Thirteen actual runner/stager/adapter/helper/test/App pins"],
