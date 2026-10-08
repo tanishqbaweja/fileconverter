@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Matrix CSS headed production regression PASS; changed original ready
+
+Previous turn was PROGRESS: fully rendered matrix A/B, independent cleanup,
+lossless raw report compaction and remote-verified d39a7c7. New actual Chrome154
+headed suite5/5 PASS29.0s at08:50:53UTC, physical4,881,448,960/virtual3,450,765,312
+safe before launch. Same production worker/normal compiled3e744 decoder32MiB+
+encoder16MiB/AVIO/writers/defaults; only measured dynamic+matrix CSS and bounded
+UI observations added. Three genuine outputs retain exact48/96frames,
+321692/652521bytes, SHA d366abbe...bf94/6c057538...fc32, SSIM0.992146/0.985963.
+Full decode/exact audible PCM/copied packets/timelines/artwork/metadata assertions
+unchanged. Write-failure and cancellation after REAL output pass/zero partials;
+five empty OPFS inventories, six dist assets restored/nine private additions gone.
+Fixtures/copies/profiles/driver/stager/outer scratch removed by finally.
+
+Six real1280x900 headed PNGs reviewed: three complete,error,actual running with
+297880outputbytes before cancel,cancelled. All405matrix cards/markup/controls
+preserved, positive inspected geometry/no viewport overflow. Progress metrics,
+buttons,cancelled Not applicable remaining time and actual write error readable.
+Private adapter still uses existing public remux/MPEG4 route labels, NOT accurate
+private MPEG2 route disclosure; no public promotion allowed with those labels.
+Not keyboard/mobile/nativeOS-picker/broad-manual certification or speed benchmark.
+
+Independent freeze initially FAILED32KiB summary size cap, no validation output,
+owned freeze scratch absent; actual executed source preserved0529a124...108ec.
+Correction retains full raw UI/PNG evidence, reduces summary fields ONLY and keeps
+all raw/golden/UI/screenshot/process/restore assertions and32KiB cap. Initial
+compact preparation caught ambiguous root match3vs2 BEFORE generated freeze;
+actual-line binding fixed, no conversion replay. Corrected freeze PASS24465byte
+proof/25observed PIDs absent (old sampler birth unavailable, no invented birth).
+Pre/post actual source pins/generated spec/driver/config/raw hashes rechecked;
+normal core verified, synthetic export-only derivative NEVER media-used.
+Raw report544212bytes SHA458a8bb0...fed6 and six bounded PNGs retained locally.
+Machine elapsed null;29.0s actual CLI suite duration, not transplanted benchmark.
+
+Evidence: evidence/2026-10-08T08-50-53-044Z-mpeg2-matrix-goldens.json and
+-golden-validation.json; mpeg2-matrix-golden-freeze-size-failure-2026-10-08.json.
+Full combined820/820units PASS5179.423ms; nine scoped files zero-warning lint
+PASS; public manifest405/405/no PDF unchanged. No production source change.
+New full-original recipe reversibly adds ONLY measured matrix CSS/provenance;
+keeps original full input/hash/disk/fixed heaps/codec/quality/lower five-minute
+blank/ALL-process250MiB/three repeats/independent validators/recovery/finally.
+Preparation test passes actual generated driver syntax/gates; launch not yet
+claimed here. Next ONE changed full-original attempt, no unchanged retry.
+Entire original scope remains ACTIVE; no new memory/scaling/speed/public pass.
+
 ## 2026-10-08 — Changed fully rendered matrix candidate measured; still PRIVATE
 
 User RAM recheck08:36:01UTC:4.395GiB physical/4.346GiB virtual, above unchanged

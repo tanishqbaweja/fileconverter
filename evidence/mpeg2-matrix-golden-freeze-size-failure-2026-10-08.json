@@ -1,0 +1,16 @@
+{
+  "status": "failed-independent-freeze-summary-size-cap",
+  "sourcePins": {
+    "scripts/freeze-mpeg2-matrix-goldens.mjs": "0529a1246f60db69fe03c7ab31779c5e76240454044de6519d3dc9e631e108ec"
+  },
+  "failure": "AssertionError at generated freeze.mjs:52:60: Buffer.byteLength(json) < 32768",
+  "browserSuitePassedBeforeFreeze": true,
+  "browserSuiteTests": 5,
+  "browserSuiteCliSeconds": 29.0,
+  "ownedFreezeDirectory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-matrix-golden-freeze-mWZQ4u",
+  "ownedFreezeDirectoryVerifiedAbsent": true,
+  "validationOutputVerifiedAbsent": true,
+  "conversionRepeated": false,
+  "summaryCapChanged": false,
+  "fullMemoryAcceptance": false
+}
