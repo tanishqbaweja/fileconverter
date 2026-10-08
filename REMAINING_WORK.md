@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — One late allocation slot prepared; actual Wasm build pending
+
+Source-only diagnostic adds one64-byte native slot recording the current fresh
+refstruct request, rather than retaining an event history capped at48. Every
+original allocation/reset/free call and codec/heap/quality setting reverses
+byte-exactly; no live reference or allocation policy changes. Initialization
+binds its address once; each request updates native scalars without a JS crossing.
+Failure-only reader accepts a pending validated32MiB Wasm32 snapshot; missing,
+completed or malformed data remains unavailable. Actual late failed request,
+pool identity, live bytes and allocator fragmentation are STILL unknown.
+
+Executed pinned FFmpeg8.1.2 source preflight passed; evidence is
+`evidence/mpeg2-late-refstruct-source-preflight-2026-10-08.json`. A real-libavutil
+82-request/cache-reuse/address-binding Wasm unit and linker map are prepared,
+NOT yet compiled or run. No actual browser abort capture or runtime fix yet.
+15/15 focused tests PASS141.2489ms;11-file zero-warning lint PASS after correcting
+one unused-expression warning in the unexecuted branch helper. Generated Bash
+syntax PASS; scratch finally removed. First YAML check failed because optional
+`yaml` is absent; installed js-yaml then correctly parsed the files, but the first
+presence assertion incorrectly rejected a valid null manual trigger. Corrected
+own-property check passed both workflows; both earlier checks remain failures.
+
+GitHub registers only existing workflows. The isolated build-branch helper will
+use its own temporary Git index to change one existing private builder command,
+without copying a checkout/media or changing canonical HEAD/index/workflow/main.
+Compilation/dispatch/branch preparation remain pending at this checkpoint.
+Combined regression780/780 PASS4596.8325ms; generator/helper zero-warning lint
+PASS. These are source/unit checks, not compiled or browser acceptance.
+No Docker, original read/conversion, public engine/registry promotion, speed or
+250MiB acceptance. Source-only generated scratch is removed; user-freed RAM now
+7.94GiB passes unchanged2GiB guard. P-06/P-08/M-08/full-original/scaling/repeats/
+current-stable broad gates remain Partially implemented; full goal remains OPEN.
+
 ## 2026-10-08 — Late compiled callsite narrowed without another video run
 
 Pinned WABT1.0.39 successfully disassembled an analysis-only slice preserving

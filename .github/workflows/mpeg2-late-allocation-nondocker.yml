@@ -1,0 +1,71 @@
+name: Private late MPEG2 allocation diagnostic without Docker
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: private-mpeg2-late-allocation
+  cancel-in-progress: false
+
+jobs:
+  private-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install build prerequisites only
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            autoconf automake ca-certificates curl libtool make patch pkg-config xz-utils
+
+      - name: Activate pinned Emscripten without Docker
+        shell: bash
+        run: |
+          mkdir -p work/sdk-tmp
+          export TMPDIR="$GITHUB_WORKSPACE/work/sdk-tmp"
+          git clone --filter=blob:none --no-checkout \
+            https://github.com/emscripten-core/emsdk.git work/emsdk
+          git -C work/emsdk checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          test "$(git -C work/emsdk rev-parse HEAD)" = 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          work/emsdk/emsdk install 6.0.4
+          work/emsdk/emsdk activate 6.0.4
+
+      - name: Compile fixed heaps and real synthetic request-slot lifecycle
+        shell: bash
+        run: |
+          source work/emsdk/emsdk_env.sh
+          export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+          node media/ffmpeg/build-mpeg2-late-refstruct.mjs
+
+      - name: Retain small private diagnostic tools only
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-late-refstruct-${{ github.run_id }}
+          path: |
+            work/mpeg2-split-pipeline-output/*.mjs
+            work/mpeg2-split-pipeline-output/*.wasm
+            work/mpeg2-split-pipeline-output/build-manifest.json
+            work/mpeg2-split-pipeline-output/config_components.h
+            work/mpeg2-split-pipeline-output/LICENSE.*
+            work/mpeg2-split-pipeline-output/encoder-initialization.json
+            work/mpeg2-split-pipeline-output/late-refstruct-smoke.json
+            work/mpeg2-split-pipeline-output/late-refstruct-source.sha256
+            work/mpeg2-split-pipeline-output/decoder-link.map
+          if-no-files-found: error
+          retention-days: 1
+
+      - name: Remove only this isolated checkout's generated build data
+        if: always()
+        shell: bash
+        run: |
+          for task_name in emsdk sdk-tmp mpeg2-split-pipeline-build mpeg2-split-pipeline-output mpeg2-split-encoder-build mpeg2-split-encoder-output; do
+            task_path="$GITHUB_WORKSPACE/work/$task_name"
+            test "$(dirname "$task_path")" = "$GITHUB_WORKSPACE/work" && ! test -L "$task_path"
+            rm -rf -- "$task_path"
+          done

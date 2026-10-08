@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { lstat, readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { instrumentLateRefstruct, reverseLateRefstruct } from "./mpeg2-late-refstruct-source.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), target = path.resolve(process.argv[2] ?? "");
+assert.equal(process.argv.length, 3);
+assert.equal(target, path.join(root, "work/mpeg2-split-pipeline-build/ffmpeg/libavutil/refstruct.c"));
+assert.equal(await realpath(target), target);
+const info = await lstat(target); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= 32768);
+const original = await readFile(target, "utf8"), changed = instrumentLateRefstruct(original);
+assert.equal(reverseLateRefstruct(changed), original);
+await writeFile(target, changed);
+console.log(`${createHash("sha256").update(changed).digest("hex")}  fixed64-byte-late-request-slot`);
