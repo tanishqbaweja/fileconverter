@@ -1,0 +1,16 @@
+{
+  "status": "collector-failed-before-retention-not-engine-build-or-conversion-failure",
+  "source": "scripts/collect-mpeg2-late-slot-build.mjs",
+  "executedSourceSha256": "798fd590e64831b8e8d1d3e6260d7641a62ee9dd5f0f988ce6c7bb6f554a971c",
+  "exitCode": 1,
+  "failedAssertion": "Static-tool allowlist rejected actual split-encoder.mjs",
+  "reason": "Collector assumed within-mpeg2-encoder names instead of existing split-encoder names and omitted existing mjs.symbols",
+  "actualHostedBuild": "completed-success",
+  "runId": 37739125738,
+  "freshDownloadFinallyRemoved": true,
+  "reusableCoreCreated": false,
+  "browserConversions": 0,
+  "protectedOriginalRead": false,
+  "publicAcceptance": false,
+  "reconstruction": "Regression reverses only exact static allowlist and the two encoder manifest keys in corrected source to verify this executed SHA"
+}

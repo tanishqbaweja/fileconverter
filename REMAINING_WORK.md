@@ -5,6 +5,43 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-08 — Late-slot Wasm build TERMINAL success, browser capture pending
+
+This supersedes prior INPROGRESS/PENDING compilation notes for37739125738.
+Actual no-Docker build step06:43:31–06:53:09UTC passed;82 real Wasm32 libavutil
+fresh requests, observation beyond48, cache reuse/no fresh request,64-byte slot,
+one initialization address binding and16-byte refcount header all passed.
+Actual decoder SHA3e744dc4...8c6c is fixed512 shared pages/32MiB, bind import
+present; encoder JS/Wasm exactly unchanged. No media conversion performed by
+this build/unit. Actual linkmap retained, allocator root/free-block state still
+UNVERIFIED; no actual late-request/pool-size/cause/fragmentation attribution.
+
+Collected/verified12 static files9,615,834bytes in one explicitly reusable
+`work/mpeg2-split-pipeline-37739125738` tool set needed for upcoming actual-browser
+failure capture/goldens. This is NOT a converted media copy; remove when no longer
+needed/superseded. Fresh download scratch gone; hosted finally cleanup passed.
+Actual branch workflow hashd280472f...d78d verified separately from unchanged
+canonical workflowcda0b434...c965; all manifest source/artifact pins checked.
+`evidence/mpeg2-late-slot-build-2026-10-08.json` retains actual run/job/manifest/
+unit/12file hashes. Initial collector allowlist incorrectly named split encoder
+and omitted .mjs.symbols; failed before reusable retention, scratch removed.
+Corrected exact allowlist/manifest keys pass; initial executed source remains
+byte-reconstructible from recordedSHA798fd590...971c and regression.
+
+Initial new evidence test assumed license/config all appeared in manifest artifact
+map; they instead have independent collected-file hashes. Corrected test verifies
+ALL collected hashes and ALL declared manifest artifacts separately, no weaker
+gate or engine change. Actual compiled/browser acceptance remain distinct.
+No Docker/native converter/protected-original read/public promotion. Next bounded
+actual failure hook/control and actual production goldens/validators, then a
+changed original attempt only with those prerequisites; no unchanged long retry.
+P-06/P-08/M-08/original/scaling/repeat/fullgoal statuses remain partial/OPEN.
+Final actual build/branch evidence6/6 PASS114.1424ms; combined786/786 unit
+PASS4716.2253ms; collector/build-test/generator zero-warning lint PASS. Earlier
+semantic TypeScript and current-Chrome production build/eight browser routes pass.
+Read-only postcleanup query finds no process using these fresh browser/download
+runtime prefixes (excluding the query's own shell); no program was killed.
+
 ## 2026-10-08 — Current Chrome audio destination-scope gate passed
 
 M-08 remains Partially implemented, but the eight previously hosted routes now
