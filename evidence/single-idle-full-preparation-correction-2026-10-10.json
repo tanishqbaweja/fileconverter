@@ -1,0 +1,16 @@
+{
+  "status": "source-pin-extension-boundary-corrected-before-build-browser-or-original-read",
+  "failedPreparation": {
+    "command": "node scripts/run-repository-owned-node.mjs scripts/run-single-idle-original-full.mjs --prepare-only",
+    "exitCode": 1,
+    "rejectedBuildSource": "media/ffmpeg/build-mpeg2-split-pipeline.sh",
+    "cause": "The immutable source-list union validates driver code/report extensions, not shell/patch build inputs."
+  },
+  "correction": "Keep the original union validator unchanged. Add all actual build-manifest inputs to the final bounded union with explicit repository-relative path, two-MiB size and exact source-hash verification.",
+  "successfulPreparation": "evidence/2026-10-09T20-53-12-747Z-single-idle-original-full-preparation.json",
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalRead": false,
+  "disposableRuntimeRemoved": true,
+  "publicAcceptance": false
+}

@@ -1,0 +1,32 @@
+{
+  "status": "read-only-static-selector-location-corrected-before-any-browser-launch",
+  "firstCheck": {
+    "executedSourceSha256": "96ccf0eaea2da4179ba96708391399d6d48a97d51aa88f17cd22c85b406ea57c",
+    "command": "node scripts/run-repository-owned-node.mjs scripts/qualify-single-idle-abort-layout.mjs",
+    "exitCode": 1,
+    "failedAssertion": "assert.notEqual(sha(before), sha(after), actual.name)",
+    "incorrectSelectedName": "hevc_decode_init",
+    "actualAndExpectedBodySha256": "a3bf9dbee1f00b0a7de5901218485773fbaf274a521089f18997a0014691c332",
+    "meaning": "Decoder initialization was unchanged. The changed HEVC selector is in set_sps, not hevc_decode_init. This is not a conversion failure."
+  },
+  "secondReadOnlyInspection": {
+    "exitCode": 1,
+    "incorrectSelectedName": "hevc_init_context",
+    "error": "Selected function names unavailable or ambiguous",
+    "meaning": "This source-level name is not a defined named function in the actual optimized binary. No absent-code conclusion drawn."
+  },
+  "boundedActualNameInspection": {
+    "hevcAndPoolCandidateNames": 212,
+    "metadataBatchMaximumNames": 32,
+    "changedPoolReturnIndex": 4381,
+    "changedSelectorName": "set_sps",
+    "changedSelectorIndex": 1976,
+    "unchangedOtherObservedName": "pic_arrays_free"
+  },
+  "browserLaunches": 0,
+  "conversions": 0,
+  "nativeFunctionsExecuted": 0,
+  "originalRead": false,
+  "temporaryMediaCreated": false,
+  "publicAcceptance": false
+}

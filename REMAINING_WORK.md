@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Failure diagnostics qualified for new core; full run ready
+
+Status: **Partially implemented**. New binary4 diagnostic function bodies/indices/
+types byte-exact to verified old ABI; actual new linker allocator root1786520/
+496bytes and slot1918608/64bytes verified. New pool_return_entry/set_sps bodies
+different as expected. Qualification source/body evidence in
+`evidence/mpeg2-single-idle-abort-layout-2026-10-10.json`; read-only/no disassembler
+redownload, codec/native allocator execution or original read. Initial wrong
+HEVC selector name and source-union .sh extension boundary are retained failed
+preparation checks, corrected before browser. Frozen original union unchanged;
+all real manifest shell/patch inputs separately bounded/hash-pinned.
+
+New full driver preserves exact executed full-original/three-repeat/250MiB/
+lower five-minute blank/default-quality/SSIM/timestamps/fixed-heaps/cancellation/
+finally gates.26 focused PASS818.4983ms/six-file lint0. Preparation ZERO browser
+executions/owned runtime absent: `evidence/2026-10-09T20-53-12-747Z-single-idle-original-full-preparation.json`.
+Actual new-slot stage/restore smoke passed, exact prior controlled failure
+observer/six hashes restored/nine private additions absent:
+`evidence/single-idle-stage-cleanup-2026-10-10.json`.
+Next safe action: ONE changed full-original attempt, with actual live PID record
+and same-handle observation only. Still missing real full-original completion,
+three independent validations/repeats/scaling and fastest-speed acceptance.
+This cycle PROGRESS (qualified new compiled ABI/new full implementation/source
+gates/real staging-cleanup); not merely restating the prior success.
+
 ## 2026-10-10 — Changed native candidate passed all five real headless goldens
 
 Status: **Partially implemented**; actual small-browser correctness/recovery

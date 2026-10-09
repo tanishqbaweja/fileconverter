@@ -4,6 +4,30 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — New-binary failure ABI and full-run preparation verified
+
+Read-only qualification joins actual NEW86704920…a8ec binary to decoded old ABI:
+av_malloc/pool_get/builtin_malloc/aligned wrapper bodies, indices and types all
+byte-exact; new map root1786520/496bytes and request-slot1918608/64bytes verified.
+Only compiled pool_return_entry and HEVC set_sps policy bodies differ. No new
+disassembler download/allocator/media execution. Proof:
+`evidence/mpeg2-single-idle-abort-layout-2026-10-10.json` (bounded body archive).
+Wrong initial selector-name assumption and shell-extension coverage preparation
+failure retained; both corrected BEFORE browser/original read. No native failure
+or successful conversion inferred from either static check.
+
+Full new driver reverses to the ACTUALLY executed original-full gate with only
+candidate slot/workflow/stager/report/helper bindings changed. Original source,
+three repeats,≥0.98 SSIM,≤1ms timestamps,48MiB heaps,250MiB complete-tree budget,
+same lower stable five-minute blank, six-hour PER-RUN deadline and finally gates
+unchanged.26 focused tests PASS818.4983ms/six-file lint0. Preparation proof
+`evidence/2026-10-09T20-53-12-747Z-single-idle-original-full-preparation.json`
+has ZERO browser executions; runtime gone. Real new-slot staging/restoration
+smoke passed with unchanged controlled18330-byte observer, six assets restored/
+nine private additions absent: `evidence/single-idle-stage-cleanup-2026-10-10.json`.
+Next: ONE changed full-original launch; no old-core/small-suite replay. Still
+no full-file, speed, repeat or memory acceptance; goal active.
+
 ## 2026-10-10 — Changed single-idle core: 5/5 real headless goldens PASS
 
 ONE changed-core suite completed5/5 tests in29.1s (small suite elapsed time,

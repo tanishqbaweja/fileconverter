@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-10-09T20:54:08.948Z",
+  "status": "actual-new-core-and-byte-exact-observer-stage-restore-passed",
+  "failure": null,
+  "stagedNewDecoderSha256": "86704920f30ed243240614df92d05deba9f76c33e739a927903677b677f8a8ec",
+  "observerSha256": "020b3bdc7d3902367358094a8db2d1fa990691443bdc4ec465c5b0ae34792837",
+  "restored": {
+    "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "within-mpeg4.mjs": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+    "within-mpeg4.wasm": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+    "within-direct.mjs": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+    "within-direct.wasm": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+  },
+  "ninePrivateAdditionsAbsent": true,
+  "subprocessWindowsHidden": true,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalRead": false,
+  "publicAcceptance": false
+}

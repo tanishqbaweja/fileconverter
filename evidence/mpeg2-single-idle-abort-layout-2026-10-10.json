@@ -1,0 +1,462 @@
+{
+  "recordedAt": "2026-10-09T20:48:40.845Z",
+  "status": "new-binary-abort-ABI-byte-exact-qualified-not-conversion-acceptance",
+  "binary": {
+    "path": "work/mpeg2-single-idle-37986418102/within-mpeg2-split.wasm",
+    "bytes": 6904110,
+    "sha256": "86704920f30ed243240614df92d05deba9f76c33e739a927903677b677f8a8ec"
+  },
+  "buildProofSha256": "de35c69f291584d1c0e8f1f5bae44a53edfc5031a208d47ea3edde54024062b1",
+  "previousQualification": {
+    "path": "evidence/mpeg2-late-dlmalloc-layout-2026-10-08.json",
+    "sha256": "dc1e4a4398b19b4b4415f05e302a01dc5d7ec9a0c4007a5943d2dad90771fa2d",
+    "rawPath": "output/playwright/2026-10-08T07-27-40-370Z-late-dlmalloc-static.json",
+    "rawSha256": "d03b161ce389d252949bd1d36dda90298a58bd090084c2401218a17e2c3a2f16",
+    "binarySha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c"
+  },
+  "mapSha256": "eb7f74824d287cb3ca9287cd07c3c0931cd8ab62ea53422c00634fd6fc5d2c08",
+  "allocator": {
+    "name": "_gm_",
+    "address": 1786520,
+    "bytes": 496,
+    "mapLine": "1b4298        0      1f0                 _gm_"
+  },
+  "slot": {
+    "name": "within_refstruct_abort_words",
+    "address": 1918608,
+    "bytes": 64,
+    "mapLine": "1d4690        0       40                 within_refstruct_abort_words"
+  },
+  "functions": [
+    {
+      "name": "av_malloc",
+      "old": {
+        "functionIndex": 4311,
+        "name": "av_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6157062,
+        "bodyEnd": 6157474
+      },
+      "actual": {
+        "functionIndex": 4311,
+        "name": "av_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6157062,
+        "bodyEnd": 6157474
+      },
+      "bodyBytes": 412,
+      "bodySha256": "71871358e30da08d048ae856c1fc17650e78deefa12d951593c679fbf8e46a56",
+      "byteExact": true,
+      "retainedBodyInArchive": true
+    },
+    {
+      "name": "av_refstruct_pool_get",
+      "old": {
+        "functionIndex": 4379,
+        "name": "av_refstruct_pool_get",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6217670,
+        "bodyEnd": 6218837
+      },
+      "actual": {
+        "functionIndex": 4379,
+        "name": "av_refstruct_pool_get",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6217670,
+        "bodyEnd": 6218837
+      },
+      "bodyBytes": 1167,
+      "bodySha256": "970614eae4a1677cd5bba4b33316de7749764abb6322ae02bfea801baa5d79ca",
+      "byteExact": true,
+      "retainedBodyInArchive": true
+    },
+    {
+      "name": "emscripten_builtin_malloc",
+      "old": {
+        "functionIndex": 4435,
+        "name": "emscripten_builtin_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6258432,
+        "bodyEnd": 6264987
+      },
+      "actual": {
+        "functionIndex": 4435,
+        "name": "emscripten_builtin_malloc",
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6258455,
+        "bodyEnd": 6265010
+      },
+      "bodyBytes": 6555,
+      "bodySha256": "06e67fc4cb52bb04d550ea948bf4c3a61b81bb2851fb7262b5c061c39751688b",
+      "byteExact": true,
+      "retainedBodyInArchive": true
+    },
+    {
+      "name": "__wrap_posix_memalign",
+      "old": {
+        "functionIndex": 4470,
+        "name": "__wrap_posix_memalign",
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6319000,
+        "bodyEnd": 6319884
+      },
+      "actual": {
+        "functionIndex": 4470,
+        "name": "__wrap_posix_memalign",
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 6319023,
+        "bodyEnd": 6319907
+      },
+      "bodyBytes": 884,
+      "bodySha256": "82857249c915acb2db80f070cec845e57f7a4f040bc4e60c136165182d15e9ca",
+      "byteExact": true,
+      "retainedBodyInArchive": true
+    }
+  ],
+  "changedFunctions": [
+    {
+      "name": "set_sps",
+      "old": {
+        "functionIndex": 1976,
+        "name": "set_sps",
+        "params": [
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 2807711,
+        "bodyEnd": 2814624
+      },
+      "actual": {
+        "functionIndex": 1976,
+        "name": "set_sps",
+        "params": [
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 2807711,
+        "bodyEnd": 2814624
+      },
+      "oldBodySha256": "7504dfb5be06216e65663cbb94908f3585b904f22fb1b734f4d4c28838cc11a9",
+      "newBodySha256": "b2b654ae8e9f6cbdbd97ffc50d1a0f8183f0372b9826ebbff8d1ccff329521db",
+      "different": true
+    },
+    {
+      "name": "pool_return_entry",
+      "old": {
+        "functionIndex": 4381,
+        "name": "pool_return_entry",
+        "params": [
+          "i32"
+        ],
+        "results": [],
+        "bodyStart": 6219129,
+        "bodyEnd": 6219799
+      },
+      "actual": {
+        "functionIndex": 4381,
+        "name": "pool_return_entry",
+        "params": [
+          "i32"
+        ],
+        "results": [],
+        "bodyStart": 6219129,
+        "bodyEnd": 6219822
+      },
+      "oldBodySha256": "a3fac1652081d6e143fd5145136284d2c43df8344e0c483e1993a546a0087e52",
+      "newBodySha256": "c64f864c845e61b894c01e096b3c54c98f58968e62d9665718638efdf75af1de",
+      "different": true
+    }
+  ],
+  "allocatorLayoutReferences": {
+    "smallmap": {
+      "absoluteAddress": 1786520,
+      "relativeOffset": 0,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.get $l1",
+        "                  if $I14",
+        "                    i32.const 1786520",
+        "                    i32.load",
+        "                    local.tee $l3",
+        "                    i32.const 16",
+        "                    local.get $p0"
+      ]
+    },
+    "treemap": {
+      "absoluteAddress": 1786524,
+      "relativeOffset": 4,
+      "referencedInActualFunction": true,
+      "context": [
+        "                      br $B9",
+        "                    end",
+        "                    i32.const 1786524",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.eqz",
+        "                    br_if $B13"
+      ]
+    },
+    "dvsize": {
+      "absoluteAddress": 1786528,
+      "relativeOffset": 8,
+      "referencedInActualFunction": true,
+      "context": [
+        "                    end",
+        "                    local.get $l6",
+        "                    i32.const 1786528",
+        "                    i32.load",
+        "                    local.tee $l5",
+        "                    i32.le_u",
+        "                    br_if $B13"
+      ]
+    },
+    "topsize": {
+      "absoluteAddress": 1786532,
+      "relativeOffset": 12,
+      "referencedInActualFunction": true,
+      "context": [
+        "                end",
+        "                local.get $l6",
+        "                i32.const 1786532",
+        "                i32.load",
+        "                local.tee $p0",
+        "                i32.lt_u",
+        "                local.tee $l1"
+      ]
+    },
+    "leastAddress": {
+      "absoluteAddress": 1786536,
+      "relativeOffset": 16,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        end",
+        "                        local.get $l2",
+        "                        i32.const 1786536",
+        "                        i32.load",
+        "                        i32.lt_u",
+        "                        local.tee $p0",
+        "                        br_if $B11"
+      ]
+    },
+    "dv": {
+      "absoluteAddress": 1786540,
+      "relativeOffset": 20,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.add",
+        "                        local.set $p0",
+        "                        i32.const 1786540",
+        "                        i32.load",
+        "                        local.set $l2",
+        "                        block $B22",
+        "                          local.get $l3"
+      ]
+    },
+    "top": {
+      "absoluteAddress": 1786544,
+      "relativeOffset": 24,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $l1",
+        "                  i32.store",
+        "                  i32.const 1786544",
+        "                  local.get $l6",
+        "                  i32.const 1786544",
+        "                  i32.load",
+        "                  local.tee $l3"
+      ]
+    },
+    "smallbins": {
+      "absoluteAddress": 1786560,
+      "relativeOffset": 40,
+      "referencedInActualFunction": true,
+      "context": [
+        "                        i32.shl",
+        "                        local.tee $l4",
+        "                        i32.const 1786560",
+        "                        i32.add",
+        "                        local.tee $l1",
+        "                        local.get $l4",
+        "                        i32.load offset=1786568"
+      ]
+    },
+    "treebins": {
+      "absoluteAddress": 1786824,
+      "relativeOffset": 304,
+      "referencedInActualFunction": true,
+      "context": [
+        "                            if $I36",
+        "                              local.get $p0",
+        "                              i32.const 1786824",
+        "                              i32.add",
+        "                              local.get $l1",
+        "                              i32.store",
+        "                              local.get $l1"
+      ]
+    },
+    "footprint": {
+      "absoluteAddress": 1786952,
+      "relativeOffset": 432,
+      "referencedInActualFunction": true,
+      "context": [
+        "                if $I83",
+        "                  local.get $l4",
+        "                  i32.const 1786952",
+        "                  i32.load",
+        "                  local.tee $l1",
+        "                  i32.add",
+        "                  local.tee $p0"
+      ]
+    },
+    "maxFootprint": {
+      "absoluteAddress": 1786956,
+      "relativeOffset": 436,
+      "referencedInActualFunction": true,
+      "context": [
+        "                  local.tee $p0",
+        "                  i32.store",
+        "                  i32.const 1786956",
+        "                  i32.load",
+        "                  local.get $p0",
+        "                  i32.lt_u",
+        "                  if $I110"
+      ]
+    },
+    "footprintLimit": {
+      "absoluteAddress": 1786960,
+      "relativeOffset": 440,
+      "referencedInActualFunction": true,
+      "context": [
+        "                i32.ge_u",
+        "                br_if $B9",
+        "                i32.const 1786960",
+        "                i32.load",
+        "                local.tee $l3",
+        "                if $I83",
+        "                  local.get $l4"
+      ]
+    },
+    "flags": {
+      "absoluteAddress": 1786964,
+      "relativeOffset": 444,
+      "referencedInActualFunction": true,
+      "context": [
+        "      i32.eqz",
+        "      if $I5",
+        "        i32.const 1786964",
+        "        i32.load8_u",
+        "        i32.const 2",
+        "        i32.and",
+        "        local.set $l1"
+      ]
+    },
+    "mutex": {
+      "absoluteAddress": 1786968,
+      "relativeOffset": 448,
+      "referencedInActualFunction": true,
+      "context": [
+        "          i32.or",
+        "          if $I8",
+        "            i32.const 1786968",
+        "            call $__pthread_mutex_timedlock",
+        "            i32.const 1",
+        "            global.get $g12",
+        "            i32.const 1"
+      ]
+    },
+    "segment": {
+      "absoluteAddress": 1786992,
+      "relativeOffset": 472,
+      "referencedInActualFunction": true,
+      "context": [
+        "                              i32.eqz",
+        "                              if $I93",
+        "                                i32.const 1786992",
+        "                                local.set $p0",
+        "                                loop $L94",
+        "                                  local.get $l3",
+        "                                  local.get $p0"
+      ]
+    }
+  },
+  "decoderJavascriptByteExact": true,
+  "javascriptSha256": "8b5aa532a0f65e4dc303d78a520d536ef1959d348c31a75812a732d8f90702d0",
+  "archive": {
+    "path": "outputs/reports/2026-10-10-single-idle-qualified-function-bodies.json.gz",
+    "bytes": 6144,
+    "sha256": "b895927c031cec97560bb5bd4855ba9642de89bfa03e373ba32c6a5bf7bb357a",
+    "restoredBytes": 14692,
+    "restoredSha256": "fe118ad8fdc177bd5ad98071f1f7009755e3cc90cbd253c3d9af9597da30f0a9"
+  },
+  "sourcePins": {
+    "scripts/qualify-single-idle-abort-layout.mjs": "62a8d1dd27216e4884b37028a69850f8f5374d1fe6801ba3c1149d2a735574ba",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975",
+    "scripts/lib/single-idle-browser-recipe.mjs": "d71c515d59e3dd8668a4fc8fe29cad200690a9e909fd14403775be39ead56c6a",
+    "scripts/lib/mpeg2-late-allocator-abort-adapter.mjs": "15f83296240aea55cdc932ebb8699eaf904dbb2d12ba4bc5d61de680020cdca9",
+    "scripts/lib/mpeg2-late-abort-adapter.mjs": "2c1964d0f8c14afb932065d946faf96130d245fde005840f26dbd492178fb438",
+    "scripts/lib/bounded-wasm-abort-capture.mjs": "8726ca6eaba04736fa97f5f3b0483548d92550464c331b3397e3b383728a391e",
+    "scripts/lib/late-refstruct-abort-snapshot.mjs": "4b08a49d159b301b0878d7bf778c721635acbbc1b0ff231d83bb1dd3a3b0005d",
+    "scripts/lib/late-pool-abort-capture.mjs": "f0150d1866f12dc281aa401746df6518be17cf19a82404267f4c06b785a21143",
+    "scripts/lib/late-pool-allocator-abort-capture.mjs": "87f6bded4c905f2014d241de23b2b5d37a1efb893b3a0b766cb917fe429eccb9",
+    "scripts/lib/dlmalloc-free-header-inspection.mjs": "53a5d07597dd7e7ad0077fcaa9c116117ae732a7f8020c2e954bdc6238113135"
+  },
+  "qualificationMethod": "Actual new/old function byte/index/type comparison, new actual linker map, exact previous decoded allocator proof and JS binding; no redownload/re-disassembly",
+  "instantiated": false,
+  "wasmFunctionsExecuted": 0,
+  "browserConversions": 0,
+  "originalRead": false,
+  "dynamicFreeCapacityMeasured": false,
+  "actualFullSourceFailureResolved": false,
+  "publicAcceptance": false
+}
