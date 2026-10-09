@@ -1,0 +1,269 @@
+{
+  "recordedAt": "2026-10-09T16:25:47.760Z",
+  "status": "partial-progress-ui-window-below250-not-full-acceptance",
+  "receipt": {
+    "path": "evidence/2026-10-09T16-13-20-461Z-progress-compositing-original.json",
+    "sha256": "5f7a5dc9be26f66e02b7ab55afd49b651ed2a76c707bd167ef013a29fab088dc"
+  },
+  "originalControllerFailurePreserved": true,
+  "exactExecutedSourcePreimages": 145,
+  "supplementaryExecutedSourcePreimages": 3,
+  "supplementarySourceArchive": {
+    "path": "outputs/reports/2026-10-09T16-13-20-461Z-progress-compositing-original-supplementary-source-preimages.json.gz",
+    "bytes": 11010,
+    "sha256": "8598cf882acbe4a43daad9a10fe659195cdaf03cc52f9ed79f0753db3d822779",
+    "restoredBytes": 29316,
+    "restoredSha256": "591de33b5ade3976e02947d8a3ab587591ff0aa05eb0b1dc18f1daa009a44bef",
+    "executedCommit": "9479876"
+  },
+  "completeDriverSourceListNowVerified": true,
+  "exactDriverAndHelperReconstructed": true,
+  "reusedBaselineNoRerun": true,
+  "sameFullProtectedSource": true,
+  "sameChromeBinaryHashes": true,
+  "sameNativeModulesAndLimits": true,
+  "originalJsCopyTransport": true,
+  "actualServedApp": {
+    "url": "/assets/ConverterApp-BcOk2BNt.js",
+    "bytes": 315645,
+    "sha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "actualServedStylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "afterBytes": 27940,
+    "afterSha256": "81862974af7b02ede01b5122b4a8bc372600fb6f528bd11fabee2687ea78e311",
+    "matrixCssBytes": 1586,
+    "matrixCssSha256": "37257965a98bdeede4bdcba5677e0f75f42431b7405530169fcfeb2ef106022a"
+  },
+  "identicalHistoricalPrivateCssSuffix": true,
+  "native": {
+    "mode": "candidate",
+    "blankPrivateBytes": 240709632,
+    "actualPeakPrivateBytes": 481742848,
+    "observedIncrementalPrivateMiB": 229.8671875,
+    "nativePeakSequence": 2977,
+    "nativePeakTimestamp": "2026-10-09T16:19:21.6644797Z",
+    "nativePeakProcessRows": [
+      [
+        19,
+        17444864,
+        33779712
+      ],
+      [
+        0,
+        32931840,
+        77107200
+      ],
+      [
+        1,
+        20140032,
+        43012096
+      ],
+      [
+        2,
+        2625536,
+        10375168
+      ],
+      [
+        3,
+        142843904,
+        181096448
+      ],
+      [
+        6,
+        13041664,
+        40890368
+      ],
+      [
+        7,
+        8060928,
+        17862656
+      ],
+      [
+        8,
+        48246784,
+        150245376
+      ],
+      [
+        9,
+        196407296,
+        235548672
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 229.8671875,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 5,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 1657,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false
+  },
+  "firstFailure": {
+    "firstFailure": null,
+    "causeProven": false
+  },
+  "workWindows": [
+    {
+      "thresholdBytes": 4194304,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        8420.02999999933,
+        9964.615000000224
+      ],
+      "candidateElapsedWindowMs": [
+        8777.504999998957,
+        10450.125
+      ],
+      "candidateMinusBaselineMs": [
+        -1187.1100000012666,
+        2030.0950000006706
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 8388608,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        19576.449999999255,
+        21208.20999999903
+      ],
+      "candidateElapsedWindowMs": [
+        20845.474999997765,
+        22547.504999998957
+      ],
+      "candidateMinusBaselineMs": [
+        -362.7350000012666,
+        2971.054999999702
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 16777216,
+      "status": "candidate-later-window",
+      "baselineElapsedWindowMs": [
+        43537.015000000596,
+        45114.98000000045
+      ],
+      "candidateElapsedWindowMs": [
+        45525.74499999732,
+        47170.6799999997
+      ],
+      "candidateMinusBaselineMs": [
+        410.76499999687076,
+        3633.664999999106
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 33554432,
+      "status": "candidate-later-window",
+      "baselineElapsedWindowMs": [
+        93777.94999999925,
+        95382.91999999993
+      ],
+      "candidateElapsedWindowMs": [
+        97682.21999999881,
+        99557.9849999994
+      ],
+      "candidateMinusBaselineMs": [
+        2299.2999999988824,
+        5780.035000000149
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 67108864,
+      "status": "candidate-later-window",
+      "baselineElapsedWindowMs": [
+        169544.06000000052,
+        171428.17499999888
+      ],
+      "candidateElapsedWindowMs": [
+        176802.20999999717,
+        178381.55999999866
+      ],
+      "candidateMinusBaselineMs": [
+        5374.034999998286,
+        8837.499999998137
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    }
+  ],
+  "finalSplitMetrics": {
+    "scope": "private-split-production-pipeline-not-public-acceptance",
+    "decoderMemoryBytes": 33554432,
+    "encoderMemoryBytes": 16777216,
+    "aggregateWasmMemoryBytes": 50331648,
+    "frames": 6044,
+    "copiedPixelBytes": 13995002880,
+    "packets": 6044,
+    "completedPackets": 6044,
+    "copiedPacketBytes": 63047080,
+    "peakFrameBytes": 2315520,
+    "peakPacketBytes": 200927,
+    "peakSideBytes": 8,
+    "activePackets": 0,
+    "queuedPackets": 0,
+    "queuedFrames": 0,
+    "additionalPixelBufferBytes": 0,
+    "additionalJsPacketBufferBytes": 0,
+    "failed": false,
+    "closed": true,
+    "maximumMediaAvioWriteBytes": 65536
+  },
+  "lastReportedMetrics": {
+    "inputBytes": 60367771,
+    "outputBytes": 68103002,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 65536,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 65536,
+    "elapsedMs": 178662.3599999994,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0,
+    "scratchBytes": 0
+  },
+  "cleanupIdentities": {
+    "originalIdentityCount": 23,
+    "originalIdentitiesAbsent": true,
+    "reusedPids": [],
+    "noProcessesKilled": true,
+    "unavailableBirthsAssumedAbsent": false,
+    "conservativeBirthToleranceMs": 1
+  },
+  "normalProductionAndEngineAssetsRestored": true,
+  "allElevenPrivateAssetsAbsent": true,
+  "fullProtectedPostSha256Verified": true,
+  "completedConversions": 0,
+  "completeOutputsIndependentlyValidated": 0,
+  "partialCheckpointReached": true,
+  "decision": "Observed prefix only; keep private. Separate previously proven late HEVC-pool OOM remains unresolved before any full conversion acceptance.",
+  "browserMode": "headless",
+  "windowsHidden": true,
+  "headedManualValidation": false,
+  "causalSpeedImprovementProven": false,
+  "nativeAllocationCauseProven": false,
+  "delayedDumpIsPeakAllocationEvidence": false,
+  "lateHevcPoolOomResolved": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false
+}

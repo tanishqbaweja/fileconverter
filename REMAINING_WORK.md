@@ -5,6 +5,40 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Actual progress UI prefix audited; full-completion blocker remains
+
+Status: **Partially implemented**, not public/full-file acceptance. Actual headless
+run16-13-20-461Z/session27582 is terminal1, not live. Whole simultaneous Chromium
+tree481742848B minus same stable blank240709632B =229.8671875MiB in the observed
+prefix (5 valid preconversion/1657 active samples, no missing active samples).
+Selected unchanged full2958573265B `test.mkv`;6044 genuine frames/packets,
+68103002 output bytes before deliberate64MiB diagnostic cancellation. No completed
+file/independent full-output validation/repeats/scaling. Fixed32+16MiB/native/defaults/
+strict64KiB IO/backpressure/privacy unchanged; no copy-kernel stacking.
+
+Post-terminal controller failed its source-pin check:145 caller pins omitted three
+historical source-list entries. Original failed receipt retained, not rewritten.
+Independent analysis archives/verifies those exact9479876 Git blobs alongside145
+executed preimages, all130 actual driver source entries and generated driver/helper.
+Future launch controllers must derive the source-pin union from the actual driver's
+source list before launching. No conversion replay to fix receipt bookkeeping.
+
+Actual layout count28939→1548 and layout duration3.410801→0.279679s, but4/8MiB
+work windows overlap and16/32/64MiB windows are later (64MiB+5374.035–8837.50ms).
+Therefore do not claim faster conversion, causal regression, fastest configuration,
+or publish this private candidate. All23 birth-bound identities absent; owned
+media/profile/runtime finally removed, full protected SHA verified, normal App/CSS/
+six engines restored,11 private assets absent. Compact archives/CSV/HTML/trace kept.
+11 focused tests PASS266.4881ms; four-file lint0. Evidence:
+`evidence/2026-10-09T16-13-20-461Z-progress-compositing-original-analysis.json`.
+
+Next meaningful work: resolve the independently proven late HEVC RefStruct-pool
+abort (failed individual request/live pool/free-capacity snapshot, without changing
+heap/quality/live-reference rules), or other missing specification/CI work. Do not
+rerun unchanged progress UI/copy/render-prefix diagnostics. Full original goal
+remains ACTIVE/incomplete; headed/manual coverage remains unverified per user's
+headless-only instruction.
+
 ## 2026-10-09 — Isolated recipe checkout passes; fresh RAM now permits diagnostic
 
 Actual verifier16-09-36-433Z from committed1eda910: THREE recipe tests PASS
