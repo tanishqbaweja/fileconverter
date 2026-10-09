@@ -4,6 +4,27 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Missing full-audio gate prepared without changing the active run
+
+New separate `scripts/lib/full-copied-audio-gate-recipe.mjs` adds the bounded
+decoded-audio validator for EVERY copied ordinal, sequentially, before OPFS
+cleanup; compact per-track results enter the independent report. It derives only
+from the actual archived e65e464a…f96a driver and reverses byte-exact to it, leaving
+all original full-source/three-repeat/250MiB/quality/timing/I/O/finally gates intact.
+12 focused offline tests PASS246.6837ms, two-file lint0 and diff-check0. Unit
+controls prove sequential coverage, failure propagation and cleanup ordering;
+these are not actual HE-AAC output validation. Preparation proof:
+`evidence/full-copied-audio-gate-preparation-2026-10-10.json`.
+
+All203 active source pins independently rechecked unchanged; two new files are
+outside that union. No new browser/conversion/native media decoder/output copy.
+Same session16225 and native identities live21:16:13Z; Run1 stdout281,649,668 input/
+317,616,041 output bytes/rounded227.785MiB observed increment, NOT acceptance.
+The additive recipe is NOT integrated into the live controller and retains its
+archived trace binding: a future controller must use a fresh owned wrapper and
+new source pins after actual terminal. Full decoded-audio proof remains missing.
+This cycle PROGRESS (new implemented/tested gate); no expensive full rerun.
+
 ## 2026-10-10 — Full-source audio fidelity verification gap found
 
 Read-only audit of the actual live driver (SHA e65e464a…f96a) confirms its

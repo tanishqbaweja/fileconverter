@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-10-09T21:16:13Z",
+  "status": "prepared-source-gate-and-unit-tests-passed-not-full-audio-validation",
+  "base": {
+    "liveReceipt": "evidence/2026-10-09T20-55-24-319Z-single-idle-full-live.json",
+    "archive": "outputs/reports/2026-10-09T20-55-24-319Z-single-idle-full-executed-sources.json.gz",
+    "driverSha256": "e65e464a1065d54e4c3da78b58ac1030cc0bfe7b17ca86602de803532a7bf96a",
+    "archiveCompressedAndRestoredHashesVerified": true
+  },
+  "preparation": {
+    "generatedBytes": 51776,
+    "generatedSha256": "a473e29af0b0833659629e765105e0ec264b334e8f2166917b580a5ea0872213",
+    "generatedDriverPersistedOrLaunched": false,
+    "edits": 5,
+    "originalFullGateByteExactReversalPassed": true,
+    "generatedGateRequiresEveryCopiedAudioOrdinalSequentiallyBeforeCleanup": true,
+    "maximumAudioOrdinals": 16,
+    "retainedEvidence": "At most 16 compact ordinal summaries; decoded PCM and frame histories are not retained.",
+    "freshOwnedWrapperTraceBindingRequiredBeforeAnyFutureLaunch": true,
+    "futureSourcePinsMustInclude": [
+      "scripts/lib/full-copied-audio-gate-recipe.mjs",
+      "scripts/lib/streaming-copied-audio-validation.mjs",
+      "tests/full-copied-audio-gate-recipe.test.mjs"
+    ]
+  },
+  "sourcePins": {
+    "scripts/lib/full-copied-audio-gate-recipe.mjs": "934f71cc915f186c56ce7e4a75089245456ffd5d205ad638ec853f3cc9c3d709",
+    "tests/full-copied-audio-gate-recipe.test.mjs": "cfb0650c4b33d2cd2f658a1c1fabf6cebb048672254c5cd28eb796794e117e5f",
+    "scripts/lib/streaming-copied-audio-validation.mjs": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "tests/streaming-copied-audio-validation.test.mjs": "d5086f1844150b198263d10a5642155786ed5b1686114881bceb187ad2184b9a",
+    "tests/streaming-audio-validator-evidence.test.mjs": "d59ac13801cbf1d12246a7441637f890a558aff5ad470d423faf189ad06ba798"
+  },
+  "checks": {
+    "command": "node scripts/run-repository-owned-node.mjs --test tests/full-copied-audio-gate-recipe.test.mjs tests/streaming-copied-audio-validation.test.mjs tests/streaming-audio-validator-evidence.test.mjs",
+    "passed": 12,
+    "failed": 0,
+    "durationMs": 246.6837,
+    "scope": "Offline source preparation, inserted-statement unit doubles, bounded frame parser controls, and retained prior native-control evidence. No new native media validation or browser conversion.",
+    "syntaxCheckExitCode": 0,
+    "twoFileEslintExitCode": 0,
+    "gitDiffCheckExitCode": 0,
+    "all203CurrentLiveSourcePinsUnchanged": true,
+    "newFilesOutsideLiveSourceUnion": true
+  },
+  "sameRunObservation": {
+    "sessionId": 16225,
+    "driverPid": 27484,
+    "driverBirthUtc": "2026-10-09T20:56:05.2534960Z",
+    "chromePid": 20708,
+    "chromeBirthUtc": "2026-10-09T20:56:14.8257790Z",
+    "monitorPid": 28596,
+    "monitorBirthUtc": "2026-10-09T20:56:15.3307280Z",
+    "nativeBirthAndParentIdentityVerifiedLive": true,
+    "runNumber": 1,
+    "inputBytesFromLatestStdout": 281649668,
+    "outputBytesFromLatestStdout": 317616041,
+    "roundedPeakIncrementalMiBFromStdout": 227.785,
+    "terminal": false,
+    "currentDecodedAudioEvidence": null
+  },
+  "actualNewBrowserLaunches": 0,
+  "actualNewConversions": 0,
+  "actualNewNativeMediaDecoderLaunches": 0,
+  "activeOutputCopiesOrDeletions": 0,
+  "originalFullAudioValidation": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "nextAction": "Continue the same actual run to terminal and diagnose its real result first. This additive recipe is not integrated into the active controller. Integrate it into a fresh, source-pinned controller only after terminal, rebind the archived trace-helper import to that controller's fresh owned wrapper, and apply the real full-output audio checks before cleanup. Do not rerun merely because an observation window expired."
+}

@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Full-audio validation insertion implemented; real proof still pending
+
+Status: **Partially implemented**. Separate additive recipe now inserts the
+existing bounded decoded-audio validator for EVERY copied audio ordinal before
+output cleanup, sequentially, and retains compact results in independent evidence.
+Exact archived actual-driver binding and byte-exact reversal preserve all original
+full-file/three-repeat/250MiB/quality/timing/I/O/finally gates.12 offline tests
+PASS246.6837ms/two-file lint0/diff-check0. Evidence:
+`evidence/full-copied-audio-gate-preparation-2026-10-10.json`.
+
+NOT integrated into live controller; no complete HE-AAC output was decoded by
+this cycle. After current actual terminal, inspect/diagnose its genuine result
+first; integrate the prepared gate with a fresh owned wrapper/trace binding and
+all new dependency source pins before any future full-fidelity acceptance.
+All203 live source hashes remain unchanged; same session16225/driver27484/
+Chrome20708/monitor28596 verified live21:16:13Z. No restart/new browser/native
+media decoder, output copy or active-file deletion. Current full audio fidelity,
+stress repeats/scaling, memory and speed acceptance remain unproven. This cycle
+PROGRESS (new implementation/source tests), not full conversion acceptance.
+
 ## 2026-10-10 — Full HE-AAC fidelity gate remains incomplete
 
 Status: **Partially implemented**. Read-only audit of the actual pinned live
