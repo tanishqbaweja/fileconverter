@@ -1,0 +1,72 @@
+{
+  "recordedAt": "2026-10-09T16:09:36.434Z",
+  "status": "three-recipe-tests-pass-from-isolated-committed-checkout",
+  "failure": null,
+  "commit": "1eda9107878265fd5c3271dc8be4b330299c5e62",
+  "sourcePins": {
+    "scripts/lib/archived-js-copy-control.mjs": {
+      "bytes": 2928,
+      "sha256": "13fd4364add731156d272263a9fad8e54ec710e638d03b9cc75d3500ed01470b"
+    },
+    "scripts/lib/progress-compositing-progress-recipe.mjs": {
+      "bytes": 6758,
+      "sha256": "466b356a18b0e43bd270a002c769636f755dbef20862a6bf0841a0a9254ecdf2"
+    },
+    "scripts/lib/split-copy-progress-recipe.mjs": {
+      "bytes": 2708,
+      "sha256": "8cd9e83dd4037f429706514d80a49bd45d54ba045504fd3b09913a68b07a39da"
+    },
+    "scripts/lib/split-render-progress-recipe.mjs": {
+      "bytes": 5803,
+      "sha256": "ccd31e409f109a2a3029b00504f752f7ee057062918c97c08307166f84685a4d"
+    },
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": {
+      "bytes": 5058,
+      "sha256": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046"
+    },
+    "scripts/diagnose-progress-compositing-original.mjs": {
+      "bytes": 15967,
+      "sha256": "5b0d94491d3790d4b5f14d7bba6786a4b32a7e992b2983e4575834e776b72f26"
+    },
+    "tests/progress-compositing-progress.test.mjs": {
+      "bytes": 4539,
+      "sha256": "d2f197967391cf042670e97076985400acadebc624f45cfeceade60fce2a95f6"
+    },
+    "evidence/2026-10-09T15-42-44-939Z-progress-compositing-golden-analysis.json": {
+      "bytes": 15349,
+      "sha256": "bd19a56f5efb5a3553d0cc3cfd5fc13adc632d28e883c1cf6f993e676fb9e876"
+    },
+    "evidence/2026-10-09T14-31-37-500Z-split-copy-progress.json": {
+      "bytes": 542899,
+      "sha256": "2a71fe9dcecc4ef91a2b8012973625648daabbfa8cfcbcff8754294c15931817"
+    },
+    "outputs/reports/2026-10-09T14-31-37-500Z-split-copy-progress-baseline-raw.json.gz": {
+      "bytes": 95863,
+      "sha256": "d90b1f2ae26471fc735e45ea53f63ece41f48fa8c5247861f0f19d3719646f38"
+    },
+    "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-baseline-executed-sources.json.gz": {
+      "bytes": 16201,
+      "sha256": "5111278bc1b5bbe47585679fda04a351e6885aa6974def53663800a81b8bc695"
+    }
+  },
+  "copiedBytes": 714073,
+  "directory": "H:\\Github Repositories\\fileconverter\\work\\progress-control-fresh-checkout-R7ydbt\\checkout",
+  "ownedRuntimeAbsent": true,
+  "platform": "win32",
+  "architecture": "x64",
+  "node": "v24.7.0",
+  "noLocalNodeModulesOrDistOrCoreOrProtectedFixture": true,
+  "noBrowserLaunch": true,
+  "noConversion": true,
+  "windowsHidden": true,
+  "tests": {
+    "passed": 3,
+    "failed": 0,
+    "stdout": "✔ Full-input candidate derives reversibly from JS-copy control, not rejected kernel; exact new App/CSS guards (60.6503ms)\n✔ No full-file, blank, codec, quality, native-memory, writer, cancellation, completion or hidden-process gates weakened (2.5613ms)\n✔ Unbound stylesheet/source/default UI rejected; controller has one launch and no baseline rerun (4.6767ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 162.1376\n",
+    "stderr": ""
+  },
+  "scope": "This one recipe-test family in an isolated Windows Git-blob checkout; not Linux or all-repository CI/reproducibility acceptance",
+  "fullRepositoryCiAcceptance": false,
+  "linuxAcceptance": false,
+  "conversionAcceptance": false
+}

@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Isolated recipe checkout passes; fresh RAM now permits diagnostic
+
+Actual verifier16-09-36-433Z from committed1eda910: THREE recipe tests PASS
+162.1376ms in isolated repository-owned checkout of11 Git blobs/714073B. No
+node_modules/dist/private core/test.mkv available; all sources exactly committed,
+owned checkout/runtime removed finally, WindowsNode24.7.0 only. This proves this
+recipe family no longer borrows local build/engine artifacts, NOT Linux/full CI/
+reproducibility/conversion/memory acceptance. New actual evidence tests verify
+fresh-checkout metadata/hash pins and earlier ZERO-execution low-RAM hold.
+Five focused tests PASS160.2769ms, five-file lint0. No browser/codec replay for
+this pure source/evidence cycle; small checkout deleted, compact receipt retained.
+
+ONE fresh read-only host recheck16:12:08.2924490Z: free physical11973574656B
+(~11.2GiB), virtual14212866048B;2GiB requirements pass, formula/250 unchanged,
+no process killed. Genuine external-state change permits previously held launch;
+old16-02-48 attempt TERMINAL/ZERO browser launches, not a live test to restart.
+NEXT one changed progress UI/full original diagnostic; reuse old JS-copy control,
+no baseline rerun, current145 source pins/core/Chrome/codec/quality/native gates.
+Observe same new handle through terminal, preserve failures and independently
+analyze; no full speed/250/full-source/public acceptance until required gates.
+
 ## 2026-10-09 — Browser launch held by RAM; portable recipe tests improved
 
 ONE launch attempt from pushed4d063b2,16-02-48-645Z, TERMINAL1 at host preflight.
