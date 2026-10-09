@@ -5,6 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Full single-idle terminal failure and independent AIFF build correction
+
+Status: **Partially implemented**. Full original run16225 actually failed in the
+separate16MiB encoder, not the earlier decoder allocation. Zero complete outputs,
+zero of3 validated repeats; same-run audio supplement37437 terminal/incomplete,
+zero closed-output checks. Observed complete-tree227.78515625MiB stays below250
+but does NOT prove full correctness/fidelity/scaling or a safe supported profile.
+Individual encoder allocation/live/free-block sizes unavailable; no name section
+in actual encoder binary. Next targeted exact-binary/source attribution required,
+not an unchanged full replay or higher heap/lower quality/smaller fixture.
+Owned profiles/wrappers/partial output removed, native identities absent, normal
+UI/CSS restored and protected original size/SHA independently confirmed. Evidence:
+`evidence/single-idle-full-terminal-analysis-2026-10-10.json` and both terminal
+receipts. P-06/P-08/M-04 remain partial; no speed or public acceptance.
+
+M-08 actual hosted no-Docker compile37997746676/job114047994121 failed before
+private link: owned TMPDIR configure probe escaped BUILD_ROOT's CommonJS package
+boundary and inherited repository ESM. Artifacts0, upload/no-files failure and
+successful always cleanup recorded. No compiled binary exists to recover.
+Builder now creates correct fresh-temp CommonJS boundary before Bash; actual
+negative/positive extensionless-probe execution proves fix locally, cleanup0.
+Anticipated manifest schema mismatch also fixed/tested with real `modules` shape
+and correct16/32MiB top-level limits, not reached in failed job. Final7 focused
+tests PASS468.2584ms/lint0 (earlier424.6474ms retained); evidence
+`evidence/aiff-id3-specialist-build-failure-37997746676.json`.
+Next normal descendant isolated branch/ONE corrected-SHA hosted compile justified
+by reproduced compiler failure, no timeout-driven or unchanged retry. Real native
+compile/reproducibility/tag-artwork/full-audio/browser250MiB/repeats/recovery/public
+gates remain missing. No new browser launched. This cycle PROGRESS.
+
 ## 2026-10-10 — M-08 smaller AIFF metadata specialist build implementation ready
 
 Status: **Partially implemented**. The earlier source-only five-edit AIFF

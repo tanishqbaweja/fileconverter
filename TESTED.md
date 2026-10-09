@@ -4,6 +4,45 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Actual full single-idle run FAILED in encoder; owned output cleaned
+
+Same session16225 ended, driver exit1; NOT a successful conversion. First abort
+was separate fixed16MiB encoder OOM requesting heap16875520B; outer error then
+reported mutex deadlock. This is NOT the older decoder's eight-byte shortage.
+Actual encoder has no binary name section; individual allocation/live/free-block
+size and fragmentation cause remain unknown. No unchanged replay is justified.
+Full source/default quality/48MiB aggregate unchanged; run stopped after
+4148354.755ms with input1274765938B/output1417619354B, zero completed of3 and no
+independent output validation. Complete native100ms conversion38212valid/0missing,
+peak478404608B minus stable239554560B =227.78515625MiB. Passing observed memory
+before failure does NOT make this profile pass. Queue64KiB/one operation bounded.
+Audio session37437 terminal/incomplete, zero closed-output checks/native readers.
+Both wrappers/profile/partial conversion output removed by owned finally; actual
+PIDs absent, normal production UI/CSS restored, original2958573265B SHA31f36695…db34
+independently rechecked. Actual report/source archives retained without repinning.
+Proof: `evidence/single-idle-full-terminal-analysis-2026-10-10.json` and both exact
+terminal receipts. Next: targeted encoder-allocation attribution, not a larger
+heap/lower quality/smaller source or repeated unchanged stress run.
+
+## 2026-10-10 — AIFF compile37997746676 FAILED at configure; real fix controlled
+
+One isolated no-Docker job114047994121/commit4cb9284 actually ran and failed before
+private module linking. Extensionless CommonJS Emscripten probe in owned TMPDIR
+inherited repo ESM scope (`require is not defined`); existing BUILD_ROOT boundary
+did not cover that different directory. Artifact upload failed because no files
+existed; actual API artifacts0, always cleanup succeeded. No compiled/recovered
+tool, conversion or success claim. The anticipated `cores`/`modules` formatter bug
+was NOT reached; also fixed against actual linker schema and top-level16/32MiB.
+Builder creates CommonJS boundary in its fresh owned temp BEFORE spawning Bash.
+Actual negative extensionless-probe failure followed by positive corrected
+execution/finally cleanup PASS; final7 focused tests PASS468.2584ms/lint0
+(earlier same seven checks424.6474ms retained).
+Proof: `evidence/aiff-id3-specialist-build-failure-37997746676.json`. Failed branch
+source remains unchanged; next normal descendant build commit/ONE new-SHA compile
+is justified by this reproduced failure. M-08 still partial, no browser/public
+acceptance. This cycle PROGRESS; previous headless process audit was a verified
+wait on existing sessions, not a new conversion.
+
 ## 2026-10-10 — Smaller AIFF ID3 specialist: no-Docker build support prepared
 
 Separate private builder derives reversibly from exact no-Docker reproduction

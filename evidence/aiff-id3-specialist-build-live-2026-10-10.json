@@ -1,0 +1,23 @@
+{
+  "recordedAtUtc": "2026-10-09T22:11:05Z",
+  "status": "actual-isolated-no-docker-compile-running-not-acceptance",
+  "runId": 37997746676,
+  "jobId": 114047994121,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37997746676",
+  "headSha": "4cb9284053124b38c434a3f50822bc1ddd908a1c",
+  "branch": "codex/aiff-id3-specialist-20261010",
+  "runAttempt": 1,
+  "core": "within-aiff",
+  "existingRunsBeforeDispatch": 0,
+  "dispatches": 1,
+  "observedStartedSteps": ["Set up job", "Run actions/checkout@v4", "Install native build prerequisites", "Install pinned Emscripten SDK without Docker", "Rebuild and compare requested FFmpeg module(s)"],
+  "knownPostCompileIssue": "Dispatched builder 06bf623b...a387 uses previous.cores; actual unchanged linker emits modules. Compilation and C/Wasm validation precede this formatter. Do not redispatch solely for formatter correction; independently verify retained failure artifact if genuine compile succeeds. Keep original artifact manifest unchanged and disclose failed workflow.",
+  "localSourceCorrectionIsNotTheExecutedRemoteSource": true,
+  "actualCompilationCompleted": false,
+  "actualBrowserConversionVerified": false,
+  "memoryOrFidelityAcceptance": false,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "canonicalWorkflowAndMainUnchanged": true,
+  "localBrowserStagingDeferredUntilExistingTestsTerminal": true
+}

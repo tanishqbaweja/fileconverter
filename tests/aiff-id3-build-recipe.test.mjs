@@ -1,11 +1,14 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
+import { access, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import yaml from "js-yaml";
 import { makeAiffId3BuildRecipe } from "../media/ffmpeg/aiff-id3-build-recipe.mjs";
 import { makeAiffId3BuildWorkflow } from "../scripts/lib/aiff-id3-build-workflow.mjs";
+import { makeAiffId3BuildManifest } from "../media/ffmpeg/aiff-id3-build-manifest.mjs";
+import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
 const parse = yaml.load;
 const base = await read("media/ffmpeg/reproduce-nondocker.sh"), recipe = makeAiffId3BuildRecipe(base);
@@ -47,9 +50,12 @@ test("Generated private shell parses without compiling or touching any build/out
 });
 test("Native builder is Linux-only/private, verifies actual compiled source reversal/16-32 MiB memory, and never touches browser or fixture", async () => {
   const builder = await read("media/ffmpeg/build-aiff-id3-specialist.mjs");
+  const manifestSource = await read("media/ffmpeg/aiff-id3-build-manifest.mjs");
   for (const token of ['process.platform, "linux"', "AIFF_BASE_LINK_SHA", "AIFF_ID3_SPECIALIST_EDITS.toReversed()", "PUBLISHED_AIFF_SOURCE_SHA256",
-    "initialPages: 256, maximumPages: 512", "windowsHide: true", "await runtime.close()", "reproductionOfPublishedBinaryAttempted: false", "publicAcceptance: false"])
+    "initialPages: 256, maximumPages: 512", "windowsHide: true", "await runtime.close()", "makeAiffId3BuildManifest"])
     assert.ok(builder.includes(token), token);
+  assert.ok(manifestSource.includes("reproductionOfPublishedBinaryAttempted: false"));
+  assert.ok(manifestSource.includes("publicAcceptance: false"));
   for (const token of ["test.mkv", "chromium.launch", "ffmpeg.exe", 'writeFile(path.join(root, "public', "child.kill"]) assert.ok(!builder.includes(token));
 });
 test("Branch helper uses an isolated index, guards protected fixture/main/canonical HEAD and refuses an existing branch", async () => {
@@ -65,4 +71,39 @@ test("Branch helper uses an isolated index, guards protected fixture/main/canoni
   assert.ok(!helper.includes('["checkout"'));
   const checked = spawnSync(process.execPath, ["--check", "--input-type=module"], { input: helper, encoding: "utf8", windowsHide: true });
   assert.equal(checked.status, 0, checked.stderr);
+});
+test("Private manifest uses actual linker's modules schema and correct top-level limits without mutating published data", async () => {
+  const previous = JSON.parse(await read("public/engines/remux/build-manifest.json"));
+  const original = JSON.stringify(previous);
+  const pins = { compiledSourceSha256: "candidate", publishedSourceRecoveredSha256: "published",
+    generatedRecipeSha256: "recipe", sources: {}, artifacts: {} };
+  const manifest = makeAiffId3BuildManifest(previous, pins);
+  assert.equal(JSON.stringify(previous), original);
+  assert.equal(manifest.modules.length, 1); assert.equal(manifest.modules[0].name, "within-aiff");
+  assert.equal(manifest.modules[0].sourceSha256, "candidate");
+  assert.ok(!Object.hasOwn(manifest, "cores"));
+  assert.deepEqual(manifest.profiles, ["m4a-to-aiff"]);
+  assert.equal(manifest.initialWasmMemoryBytes, 16777216);
+  assert.equal(manifest.maximumWasmMemoryBytes, 33554432);
+  assert.equal(manifest.metadataCandidate.publicAcceptance, false);
+  assert.equal(manifest.ffmpegSourceSha256, previous.ffmpegSourceSha256);
+  assert.throws(() => makeAiffId3BuildManifest({ ...previous, modules: undefined }, pins));
+  assert.throws(() => makeAiffId3BuildManifest({ ...previous, modules: [] }, pins));
+  assert.throws(() => makeAiffId3BuildManifest({ ...previous, modules: [...previous.modules, previous.modules.at(-1)] }, pins));
+  assert.throws(() => makeAiffId3BuildManifest({ ...previous, modules: [{ ...previous.modules.at(-1), maximumWasmMemoryBytes: 67108864 }] }, pins));
+});
+test("Actual extensionless configure probe fails under repository ESM scope and succeeds inside owned CommonJS temp scope", async () => {
+  const runtime = await createOwnedRuntimeScratch("aiff-configure-control-");
+  try {
+    const probe = path.join(runtime.directory, "test");
+    await writeFile(probe, 'const assert = require("node:assert/strict"); assert.equal(6 * 7, 42); process.stdout.write("commonjs-probe-ok");\n', { flag: "wx" });
+    const before = spawnSync(process.execPath, [probe], { env: runtime.env, windowsHide: true, encoding: "utf8" });
+    assert.notEqual(before.status, 0);
+    assert.match(before.stderr, /require is not defined in ES module scope/);
+    await writeFile(path.join(runtime.directory, "package.json"), '{"type":"commonjs"}\n', { flag: "wx" });
+    const after = spawnSync(process.execPath, [probe], { env: runtime.env, windowsHide: true, encoding: "utf8" });
+    assert.equal(after.status, 0, after.stderr); assert.equal(after.stdout, "commonjs-probe-ok");
+    const builder = await read("media/ffmpeg/build-aiff-id3-specialist.mjs");
+    assert.ok(builder.indexOf('path.join(runtime.directory, "package.json")') < builder.indexOf('spawn("bash"'));
+  } finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
 });
