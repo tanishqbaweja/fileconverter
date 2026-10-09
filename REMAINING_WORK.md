@@ -5,6 +5,18 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — User requires hidden/headless execution
+
+All further unattended work must run without visible command or browser windows;
+the root AGENTS.md records this requirement, including nested Windows helpers.
+Read-only inspection found no live fileconverter cmd.exe; the identifiable live
+cmd.exe belonged to another project and was left untouched. Current repository
+Node launcher, copy-comparison controller, host preflight, and persistent memory
+observer already use windowsHide:true; generated conversion drivers require
+--headless=new. No browser/conversion/build was started for this inspection, no
+unrelated application was closed, and no conversion acceptance claim was added.
+Previous headed/manual coverage gaps remain honestly unverified.
+
 ## 2026-10-09 — Matched full-original copy-kernel comparison PREPARED; no browser yet
 
 Previous turn PROGRESS: new142-byte two-existing-heaps kernel, real five-case
