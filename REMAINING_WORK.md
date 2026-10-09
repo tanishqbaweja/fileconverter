@@ -5,6 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Full-input progress UI diagnostic prepared with retained JS control
+
+Previous turn PROGRESS pushedfb9cd22: actual five golden tests/independent archive
+verification complete; session73427 TERMINAL1, never restart it. New full-input
+driver derives reversibly from checked old baseline branch, NOT rejected kernel.
+Only progress UI App/CSS + explicit bindings, source pins, artifact names and
+birth-bound Chrome/server cleanup differ. Same fulltest.mkv/HEVC decode→MPEG2,
+native settings/fixed32+16MiB/strictALLtree250/lower settled5minblank/SSIM≥.98/
+direct bounded writer/genuine cancellation/finally. Retains64MiB-output or300s
+diagnostic stop; cancelling remains FAILED full completion/3repeat/validation
+acceptance. Reuses old verified237.13671875MiB partial control and output windows,
+NO baseline rerun. Actual new App+CSS before/final SHA and identical historic
+private matrix suffix required. No active allocation profiler/forcedGC/native
+copy-kernel stacking. Failure-only old delayed dump not peak allocation evidence.
+
+3/3 new reversible/syntax/gate/drift focused tests PASS411.4957ms, three-file
+lint0. Initial pure source token check failed because existing48MiB gate spells
+48 * MiB, not decimal50331648; corrected assertion to exact existing expression,
+no runtime gate changed/no browser retry. Preparation16-01-35-455Z ZERO launches,
+all144 source pins/current core/normal production/archive control bindings match.
+New controller retains exact executed source byte preimages (including tiny
+binary source pins) in bounded archive, fresh2GiB RAM/32GiB disk and same Chrome
+binary hashes; one hidden child only, birth-bound original control absence,
+caller scratch not removed while child live. Normal rebuild only if driver's
+existing restoration did not restore App/CSS; no redundant successful rebuild.
+NEXT one changed full-input diagnostic, observe same handle through terminal and
+independently verify outputs/windows/nativepeak/cleanup. No speed/full-source/
+complete-memory/public acceptance yet; full specification still ACTIVE.
+
 ## 2026-10-09 — Progress compositing passes actual correctness; full-original test next
 
 ONE changed private UI suite from pushed cb6cb6a, session73427 now TERMINAL1.
