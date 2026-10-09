@@ -5,6 +5,32 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Genuine full-completion test mode prepared
+
+Status: **Partially implemented; actual full results pending**. Current controller
+supports `--full-completion` (and safe combined `--prepare-only`). Reversible
+derivative of the validated private progress UI driver removes the64MiB output
+cancellation block, restores original six-hour21600000ms per-run deadline and
+retains three full completed independently validated repeats. Exact unchanged
+full source/codec/defaults/quality/native48MiB/ALL-tree250MiB/lower five-minute
+blank/qualified late-pool+allocator failure observer/strict IO/fidelity/privacy/
+finally checks remain. Failure stops the attempt, no automatic restart; no public
+or fastest-speed certification. Summary includes native and simultaneous CIM
+peaks from all repeats, never sum of disjoint process maxima. Any actual full-mode
+failure is retained rather than requiring the predicted decoder-abort wording.
+
+17 focused tests PASS250.3032ms; post-final receipt check12 focused tests
+PASS210.3579ms/three-file lint0. Preparation16-52-31-747Z:
+ZERO executions/build/conversion,151 source pins/132 unique driver files,
+checkpointnull/deadline21600000. Read-only preflight16:53:29.6015527Z physical
+6741786624B/virtual10633670656B safe; repository free disk1594647138304B safe
+against unchanged32GiB check. Actual launcher repeats preflights, full protected
+SHA, pinned current engines/Chrome and source coverage before conversion.
+Next ONE changed full-completion attempt, NOT unchanged64MiB-prefix replay.
+If budget or decoder fails, preserve actual raw failure/pending pool/free-header
+state, remove disposable partial media/profile/scratch finally, and diagnose
+that state. Full success/memory/repeat/scaling/specification remain unverified.
+
 ## 2026-10-09 — Prevent post-run source-list omissions before launch
 
 Status: **Verified complete for this source-coverage defect only**. Current caller

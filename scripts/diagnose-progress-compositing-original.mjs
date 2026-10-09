@@ -17,23 +17,27 @@ import { makeProgressCompositingProgressDriver, makeProgressCompositingTraceHelp
 import { splitRenderNativeFacts } from "./lib/split-render-progress-evidence.mjs";
 import { compareOutputWorkWindows } from "./lib/split-copy-work-checkpoints.mjs";
 import { deriveDriverSourcePinFiles } from "./lib/driver-source-pin-union.mjs";
+import { makeProgressCompositingFullDriver, fullProgressNativeFacts, fullProgressFiles } from "./lib/progress-compositing-full-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file)), exec = promisify(execFile);
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && process.argv[2] === "--prepare-only"));
-const prepareOnly = process.argv[2] === "--prepare-only", stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
+const args = process.argv.slice(2);
+assert.ok(args.length <= 2 && new Set(args).size === args.length && args.every(arg => ["--prepare-only", "--full-completion"].includes(arg)));
+const prepareOnly = args.includes("--prepare-only"), fullCompletion = args.includes("--full-completion");
+const modeSuffix = fullCompletion ? "-full-completion" : "", stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const retained = await loadRetainedCopyProgress(root), base = retained.baseline.raw;
 const goldenPath = "evidence/2026-10-09T15-42-44-939Z-progress-compositing-golden-analysis.json", goldenBytes = await read(goldenPath), golden = JSON.parse(goldenBytes);
 assert.equal(golden.status, "independently-verified-five-goldens-with-follow-up-numeric-cleanup");
 assert.equal(golden.geometry.maximumDeltaCssPixels, 0); assert.equal(golden.conversions.length, 3); assert.equal(golden.emptyStorageInventories, 5);
 assert.equal(golden.publicAcceptance, false); assert.equal(sha(await read(golden.proof.path)), golden.proof.sha256);
 const sourcePins = { ...retained.receipt.sourcePins };
-for (const file of progressCompositingFiles) sourcePins[file] = sha(await read(file));
+for (const file of [...progressCompositingFiles, ...fullProgressFiles]) sourcePins[file] = sha(await read(file));
 for (const [file, hash] of Object.entries(sourcePins)) assert.equal(sha(await read(file)), hash, file);
 const syntax = source => {
   const result = spawnSync(process.execPath, ["--check", "--input-type=module"], { input: source, encoding: "utf8", windowsHide: true, maxBuffer: 131072 });
   assert.equal(result.status, 0, result.stderr);
 };
 const makeDriver = helperUri => {
-  const recipe = makeProgressCompositingProgressDriver(retained.executed.generated, root, helperUri, golden.actualServedApp, golden.actualServedStylesheet);
+  const partialRecipe = makeProgressCompositingProgressDriver(retained.executed.generated, root, helperUri, golden.actualServedApp, golden.actualServedStylesheet);
+  const recipe = fullCompletion ? makeProgressCompositingFullDriver(partialRecipe) : partialRecipe;
   syntax(recipe.generated); return recipe;
 };
 // Hash the actual driver's full source-list union BEFORE any host/build/browser
@@ -51,7 +55,8 @@ const normal = async () => {
   const app = await read("dist/client" + baselineBinding.url); assert.equal(app.length, baselineBinding.bytes); assert.equal(sha(app), baselineBinding.sha256);
   assert.equal(sha(await read("dist/client/assets/index-CIzbeB0A.css")), golden.normalStylesheetArchive.rawSha256);
 };
-const proof = { recordedAt: null, status: "prepared-not-browser-executed", failure: null, executions: 0, sourcePins, sourcePinCoverage, postSourcePins: null,
+const proof = { recordedAt: null, status: "prepared-not-browser-executed", executionMode: fullCompletion ? "full-completion" : "partial-diagnostic",
+  failure: null, executions: 0, sourcePins, sourcePinCoverage, postSourcePins: null,
   reusedBaseline: { receipt: retainedCopyReceipt, sha256: retainedCopyReceiptSha256, rawArchive: retained.baseline.record.compressedReport,
     sourceArchive: retained.baseline.record.sourceArchive, native: retained.native, workCheckpoints: base.progressProbe.workCheckpoints,
     noBaselineRerun: true, cancelledPartialOnly: true }, golden: { path: goldenPath, sha256: sha(goldenBytes) },
@@ -63,7 +68,8 @@ const proof = { recordedAt: null, status: "prepared-not-browser-executed", failu
 if (prepareOnly) {
   const recipe = makeDriver("file:///UNIT_ONLY_NOT_EXECUTED/trace-helper.mjs");
   proof.preparation = { bytes: Buffer.byteLength(recipe.generated), sha256: recipe.generatedSha256, patches: recipe.patches,
-    checkpointOutputBytes: 67108864, maximumConversionMs: 300000, originalAdapterBytes: 18330 };
+    checkpointOutputBytes: fullCompletion ? null : 67108864, maximumConversionMs: fullCompletion ? recipe.maximumConversionMs : 300000,
+    fullCompletionRequired: fullCompletion, originalAdapterBytes: 18330 };
 } else {
   let runtime, child, childDone;
   try {
@@ -90,12 +96,12 @@ if (prepareOnly) {
     proof.buildProof = { path: buildPath, sha256: sha(buildBytes) };
     const tracePath = path.join(runtime.directory, "trace-helper.mjs"), driverPath = path.join(runtime.directory, "probe.mjs");
     const traceHelper = makeProgressCompositingTraceHelper(retained.executed.traceHelper,
-      path.join(root, "outputs/reports", `${stamp}-progress-compositing-post-cancel-partial-blink.json.gz`)); syntax(traceHelper);
+      path.join(root, "outputs/reports", `${stamp}-progress-compositing${modeSuffix}-post-cancel-partial-blink.json.gz`)); syntax(traceHelper);
     const recipe = makeDriver(pathToFileURL(tracePath).href), sourcePreimages = {};
     for (const file of Object.keys(sourcePins)) sourcePreimages[file] = { encoding: "base64", data: (await read(file)).toString("base64") };
     const sourceBytes = Buffer.from(JSON.stringify({ ...recipe, traceHelper, sourcePreimages })), sourceGzip = gzipSync(sourceBytes, { level: 9 });
     assert.ok(sourceBytes.length <= 8 * 1024 ** 2 && sourceGzip.length <= 2 * 1024 ** 2);
-    const sourcePath = `outputs/reports/${stamp}-progress-compositing-original-executed-sources.json.gz`;
+    const sourcePath = `outputs/reports/${stamp}-progress-compositing-original${modeSuffix}-executed-sources.json.gz`;
     await writeFile(path.join(root, sourcePath), sourceGzip, { flag: "wx" }); assert.deepEqual(gunzipSync(await read(sourcePath)), sourceBytes);
     proof.sourceArchive = { path: sourcePath, bytes: sourceGzip.length, sha256: sha(sourceGzip), restoredBytes: sourceBytes.length,
       restoredSha256: sha(sourceBytes), driverSha256: sha(recipe.generated), traceHelperSha256: sha(traceHelper), preimageCount: Object.keys(sourcePreimages).length };
@@ -107,12 +113,13 @@ if (prepareOnly) {
     proof.ownedDriver = await queryProcessIdentity(child.pid); assert.ok(proof.ownedDriver && proof.ownedDriver.parentPid === process.pid);
     console.log(JSON.stringify({ driverPid: child.pid, driverIdentity: proof.ownedDriver, wrapper: runtime.directory, sourceArchive: sourcePath }));
     const code = await childDone; proof.driverAbsent = await observeOwnedProcessExit(proof.ownedDriver); assert.equal(proof.driverAbsent.status, "owned-identity-absent");
-    const names = (await readdir(reports)).filter(name => !before.has(name) && name.endsWith("-private-mpeg2-progress-compositing-native-100ms.json"));
+    const names = (await readdir(reports)).filter(name => !before.has(name) && name.endsWith(
+      fullCompletion ? "-private-mpeg2-progress-compositing-full-native-100ms.json" : "-private-mpeg2-progress-compositing-native-100ms.json"));
     assert.equal(names.length, 1, "Missing evidence is not success; no automatic retry");
     const file = path.join(reports, names[0]), identity = await lstat(file, { bigint: true });
     assert.ok(identity.isFile() && !identity.isSymbolicLink()); assert.equal(await realpath(file), file);
     const rawBytes = await readFile(file); assert.ok(rawBytes.length <= 32 * 1024 ** 2); const raw = JSON.parse(rawBytes);
-    const compressed = gzipSync(rawBytes, { level: 9 }), compressedPath = `outputs/reports/${stamp}-progress-compositing-original-raw.json.gz`;
+    const compressed = gzipSync(rawBytes, { level: 9 }), compressedPath = `outputs/reports/${stamp}-progress-compositing-original${modeSuffix}-raw.json.gz`;
     await writeFile(path.join(root, compressedPath), compressed, { flag: "wx" }); assert.deepEqual(gunzipSync(await read(compressedPath)), rawBytes);
     const present = await lstat(file, { bigint: true }); for (const key of ["dev", "ino", "size"]) assert.equal(present[key], identity[key]);
     assert.equal(sha(await readFile(file)), sha(rawBytes)); await unlink(file); await assert.rejects(access(file), { code: "ENOENT" });
@@ -120,13 +127,21 @@ if (prepareOnly) {
       compressedReport: { path: compressedPath, bytes: compressed.length, sha256: sha(compressed) },
       rawReport: { path: path.relative(root, file).replaceAll("\\", "/"), bytes: rawBytes.length, sha256: sha(rawBytes) }, rawRemovedAfterLosslessArchive: true,
       browserVersion: raw.browserVersion, progressProbe: raw.progressProbe, splitFinalSamples: raw.splitFinalSamples,
-      native: raw.nativeMemory && raw.runs.length ? splitRenderNativeFacts(raw, "candidate") : null, ownedPids: raw.ownedPids, ownedLaunches: raw.ownedLaunches,
+      native: raw.nativeMemory && raw.runs.length ? (fullCompletion ? fullProgressNativeFacts(raw) : splitRenderNativeFacts(raw, "candidate")) : null,
+      completedConversions: raw.runs.filter(run => run.state?.jobState === "complete" && run.independentValidation).length,
+      abortDiagnostic: raw.abortDiagnostic, ownedPids: raw.ownedPids, ownedLaunches: raw.ownedLaunches,
       cleanup: raw.cleanup, runtimeDirectory: raw.runtimeDirectory };
-    assert.equal(code, 1); assert.equal(raw.status, "failed"); assert.equal(raw.runs.length, 1);
+    if (fullCompletion) {
+      assert.ok([0, 1].includes(code)); assert.equal(raw.status, code === 0 ? "passed-private-protected-session" : "failed");
+      assert.equal(raw.requestedRuns, 3); assert.ok(raw.runs.length <= 3);
+      assert.equal(raw.progressProbe.fullCompletionRequired, true); assert.equal(raw.progressProbe.partialOutputStopEnabled, false);
+      assert.equal(raw.progressProbe.checkpointOutputBytes, null); assert.equal(raw.progressProbe.maximumConversionMs, 21600000);
+      if (code === 0) assert.equal(proof.candidate.completedConversions, 3, "All repeats require independent full-output validation");
+    } else { assert.equal(code, 1); assert.equal(raw.status, "failed"); assert.equal(raw.runs.length, 1); }
     assert.deepEqual(raw.progressProbe.actualServedAsset, golden.actualServedApp); assert.deepEqual(raw.forbiddenRequests, []);
     assert.deepEqual(raw.source, base.source); assert.deepEqual(raw.manifest, base.manifest); assert.deepEqual(raw.actualWasmMemoryLimits, base.actualWasmMemoryLimits);
     assert.equal(raw.limitMiB, 250); assert.equal(raw.conversionJsReport, null); assert.equal(raw.browserVersion, base.browserVersion);
-    for (const key of ["chromeLauncherSha256", "chromeLibrarySha256", "viewport", "checkpointOutputBytes", "maximumConversionMs"])
+    for (const key of ["chromeLauncherSha256", "chromeLibrarySha256", "viewport", ...(fullCompletion ? [] : ["checkpointOutputBytes", "maximumConversionMs"])])
       assert.deepEqual(raw.progressProbe[key], base.progressProbe[key]);
     for (const [file, hash] of Object.entries(raw.sourceHashes)) assert.equal(hash, sourcePins[file], file);
     const style = raw.cssCandidate.staticAssets; assert.equal(style.length, 1); assert.equal(raw.cssCandidate.interceptionError, null);
@@ -139,7 +154,8 @@ if (prepareOnly) {
     for (const key of ["mediaProfileRuntimeRemoved", "generatedDistRestored", "protectedFixtureUnchanged", "observerStopped", "sampledChromeRootStopped"])
       assert.equal(raw.cleanup[key], true, key);
     assert.ok(!raw.cleanup.errors?.length); await assert.rejects(access(raw.runtimeDirectory), { code: "ENOENT" });
-    assert.ok(raw.progressProbe.checkpointReached || /exceeds 250MiB|deadline reached|cancelled|memory|abort/i.test(raw.failure?.message ?? ""));
+    if (fullCompletion) assert.ok(code === 0 || typeof raw.failure?.message === "string", "Retain any actual failure, not only the predicted decoder abort");
+    else assert.ok(raw.progressProbe.checkpointReached || /exceeds 250MiB|deadline reached|cancelled|memory|abort/i.test(raw.failure?.message ?? ""));
     proof.workWindows = compareOutputWorkWindows(base.progressProbe.workCheckpoints, raw.progressProbe.workCheckpoints);
     proof.status = "candidate-diagnostic-returned-independent-analysis-pending";
   } catch (error) { proof.failure = String(error.stack ?? error).slice(0, 8192); proof.status = "failed-or-incomplete"; process.exitCode = 1; console.error(proof.failure); }
@@ -161,7 +177,7 @@ if (prepareOnly) {
 }
 proof.postSourcePins = {}; for (const file of Object.keys(sourcePins)) proof.postSourcePins[file] = sha(await read(file));
 assert.deepEqual(proof.postSourcePins, sourcePins); proof.recordedAt = new Date().toISOString();
-const output = `evidence/${stamp}-progress-compositing-original${prepareOnly ? "-preparation" : ""}.json`;
+const output = `evidence/${stamp}-progress-compositing-original${modeSuffix}${prepareOnly ? "-preparation" : ""}.json`;
 await writeFile(path.join(root, output), JSON.stringify(proof, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output, status: proof.status, executions: proof.executions, productionRestored: proof.productionRestored,
   workWindows: proof.workWindows, noBaselineRerun: true })); assert.equal(proof.failure, null);
