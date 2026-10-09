@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-09T04:06:06.512Z",
+  "scope": "private-two-existing-heaps-copy-only-not-conversion-acceptance",
+  "source": {
+    "path": "media/ffmpeg/mpeg2-split-copy.wat",
+    "sha256": "de3fad232221c2ede3ab2bae956285b92a217fc4706382bf838877de0230964a"
+  },
+  "artifact": {
+    "path": "media/ffmpeg/mpeg2-split-copy.wasm",
+    "bytes": 142,
+    "sha256": "d666446d70374e2ee7dffba3459b01aa81523a5b9434cf8427a56311fb30c893"
+  },
+  "tool": {
+    "name": "wabt",
+    "version": "1.0.39",
+    "integrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg=="
+  },
+  "twiceCompiledByteIdentical": true,
+  "importedMemories": [
+    {
+      "initial": 512,
+      "maximum": 512,
+      "shared": true
+    },
+    {
+      "initial": 256,
+      "maximum": 256,
+      "shared": true
+    }
+  ],
+  "additionalWasmMemoryBytes": 0,
+  "codecChanges": false,
+  "conversionsPerformed": 0,
+  "browserSupportVerified": false,
+  "publicAcceptance": false,
+  "ownedBuildRuntimeRemoved": true
+}

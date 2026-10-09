@@ -5,6 +5,66 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — New private two-memory copy kernel: real browser correctness passed; speed/memory pending
+
+Concrete new transport candidate, not another UI-only change. Auditable
+media/ffmpeg/mpeg2-split-copy.wat imports the EXISTING fixed shared32MiB decoder
+and16MiB encoder memories. Its indexed memory.copy row loop defines no additional
+memory, data storage, table, allocator, frame queue or third pixel buffer.
+Actual142-byte binary SHAd666446d...0c893 compiled twice byte-identically using
+integrity-pinned wabt1.0.39; fresh repository-local tool/cache scratch removed.
+Build evidence2026-10-09T04-06-06-637Z-split-copy-kernel-build.json. Module code/
+instance/JS overhead are NOT claimed zero; full Chromium memory remains unproved.
+
+New exact reversible private frame/session/adapter/glue derivatives retain ALL
+existing layout/allocation checks BEFORE the first write, padding preservation,
+negative strides, codec settings, frame properties, timestamps, actual AVIO,
+backpressure, cancellation and native owners. Glue exposes the already-created
+memory objects, not a second allocation. The old JS copy path remains intact.
+Three native calls per frame replace per-row JavaScript calls where padding
+requires row copies. Actual original-file plane strides/copy-cost contribution
+remain unmeasured; no assertion that this caused the earlier native/pool failure.
+No original source, codec binary, public engine, App, CSS or registry changed.
+
+15/15 focused CPU/ownership tests PASS973.5571ms: full1920x804 active bytes and
+untouched padding match original copy, contiguous/padded/negative/YUV420/YUV422,
+all-plane bounds before partial write, heap identity, growable import rejection,
+close and exact actual18330-byte old adapter derivation. Initial generic module
+variable lint and guessed final-log literal were corrected BEFORE browser launch;
+six-file scoped lint zero. Preparation2026-10-09T04-15-33-675Z executions0 only.
+
+ONE actual headless production suite56971 TERMINAL exit0;5/5 PASS30.6s. Actual
+new kernel ran in the SAME conversion worker and both codec heaps: first three
+jobs144/288/288 native plane calls, matching all5,529,600/11,059,200/11,059,200
+copied bytes; kernel closed in all five cases. Three genuine MPEG4/HEVC-to-MPEG2
+outputs retain the EXACT old independently validated hashes/frame counts/SSIM/
+audio PCM/timelines/artwork/metadata/two tracks. Both OPFS and direct destinations,
+write-failure/cancel recovery, five empty inventories and fixed48MiB/onewrite/
+bounded I-O assertions retained. Existing private UI labels remain unsuitable
+for public promotion. No headed windows; Playwright skill used for this goal's
+explicit production-browser test requirement, user headless preference respected.
+
+Receipt2026-10-09T04-15-41-611Z-split-copy-kernel-goldens.json.gz binds25 pre/post
+source pins, exact seven overlays/two additions, generated suite and compact raw
+archive. Independent two retained-evidence tests PASS243.8873ms reconstruct exact
+sources and outputs; no browser replay. All25 sampled numeric PIDs absent, native
+births unavailable (not falsely identity-certified), own wrapper absent, normal
+UI/six original assets restored/eleven private assets absent, full original pre/
+post2958573265B/SHA31f36695...b9db34 unchanged. Disposable fixtures/conversions/
+profiles/scratch removed by actual finally; small hash-bound reports/screens kept.
+Receipt475989->95873B and raw report550035->39852B gzip reconstruct exactly;
+two redundant JSON originals removed ONLY after unchanged identity/size/hash and
+saved-archive/lossless checks, saving930151B. Compaction proof is retained beside
+the receipt; all original bytes recoverable from the compressed archives.
+Final combined focused regression25/25 PASS1451.7853ms; nine-file zero-warning
+lint PASS. Ledger regeneration hit one transient UNKNOWN file-open error while
+TESTED.md remained intact; revalidated read/stat before retry, no browser replay.
+ZERO original full completion/repeats/scaling/speed/250MiB/public acceptance.
+Next measure actual original-frame strides and a meaningful same-settings
+production-browser work/memory comparison of this NEW kernel. Do not replay
+unchanged render pair or small codec goldens. Separate native heap/pool OOM remains
+unresolved; this transport is NOT claimed as its fix. Full goal ACTIVE/INCOMPLETE.
+
 ## 2026-10-09 — Matched split-render pair TERMINAL: both over budget; standalone render fix rejected
 
 Session52353 is TERMINAL/controller exit0; both actual diagnostic children exit1.

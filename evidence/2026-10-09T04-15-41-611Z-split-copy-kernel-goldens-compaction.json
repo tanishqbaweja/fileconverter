@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-09T04:23:32.752Z",
+  "scope": "two-redundant-JSON-copies-only-not-conversion-acceptance",
+  "receipt": {
+    "rawPath": "evidence/2026-10-09T04-15-41-611Z-split-copy-kernel-goldens.json",
+    "rawBytes": 475989,
+    "rawSha256": "3db94721340b8d633dc3e62c269c9c7e4b0ab0ad4247c481cd91f6e6a1580000",
+    "compressedPath": "evidence/2026-10-09T04-15-41-611Z-split-copy-kernel-goldens.json.gz",
+    "compressedBytes": 95873,
+    "compressedSha256": "44eb903290a93187487d38b3764bd11793cd34f926371916dc5ca82398e67ac3"
+  },
+  "report": {
+    "rawPath": "output/playwright/2026-10-09T04-15-53.498Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+    "rawBytes": 550035,
+    "rawSha256": "700af60366b211063195ed16ead2044df9d00955d269d089ee64f918b727b418",
+    "archivePath": "outputs/reports/2026-10-09T04-15-41-611Z-split-copy-kernel-golden-report.json.gz",
+    "archiveBytes": 39852,
+    "archiveSha256": "8675b4c17c131e5e48ef91fe98998e953554ba1c44c402ed36b9749ac6b92bb2"
+  },
+  "identitySizeHashAndLosslessVerified": true,
+  "removed": [
+    "output/playwright/2026-10-09T04-15-53.498Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+    "evidence/2026-10-09T04-15-41-611Z-split-copy-kernel-goldens.json"
+  ],
+  "savedBytes": 930151,
+  "mediaDeletedByThisCommand": false,
+  "otherFilesTouched": false
+}
