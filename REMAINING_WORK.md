@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Full HE-AAC fidelity gate remains incomplete
+
+Status: **Partially implemented**. Read-only audit of the actual pinned live
+driver shows compressed audio packet hash comparison and complete output decode,
+but no complete decoded-audio hashes/trim/sample-count/frame-clock comparison.
+Small AAC-LC goldens do not prove fidelity for the full protected HE-AAC source.
+Evidence: `evidence/single-idle-full-audio-validation-gap-2026-10-10.json`.
+Even three successful existing-driver results cannot alone close this requirement.
+
+Keep the SAME active session16225; native identities verified21:10:22Z, Chrome
+is headless. Do not mutate its captured sources, validate a growing/prefix output,
+copy the completed file, race OPFS cleanup or launch a duplicate conversion.
+After actual terminal, diagnose its genuine result. Before full acceptance,
+integrate the existing bounded `validateCopiedAudioFrames` for EVERY copied audio
+track before `emptyOpfs`, record the actual decoded/timing result and retain the
+unchanged tolerances/quality/memory/cleanup requirements in new source pins.
+The current driver deletes each output after its existing validations, so its
+terminal report cannot retrospectively supply the missing decoded-audio proof.
+No native/audio/browser test executed for this source audit; goal remains active.
+
 ## 2026-10-10 — New full-original run ACTUALLY CONVERTING, acceptance still pending
 
 Verified21:03:12Z same session16225/driver27484/Chrome20708/monitor28596 live by

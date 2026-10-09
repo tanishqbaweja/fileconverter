@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "observedAtUtc": "2026-10-09T21:10:22Z",
+  "kind": "read-only-executed-validator-audit",
+  "liveSessionId": 16225,
+  "driver": {
+    "path": "work/single-idle-full-wrapper-TIX1MR/probe.mjs",
+    "bytes": 50890,
+    "sha256": "e65e464a1065d54e4c3da78b58ac1030cc0bfe7b17ca86602de803532a7bf96a",
+    "processId": 27484,
+    "parentProcessId": 34760,
+    "birthUtc": "2026-10-09T20:56:05.2534960Z",
+    "runningAtObservation": true
+  },
+  "browser": {
+    "processId": 20708,
+    "parentProcessId": 27484,
+    "birthUtc": "2026-10-09T20:56:14.8257790Z",
+    "headlessArgument": "--headless=new",
+    "runningAtObservation": true
+  },
+  "monitor": {
+    "processId": 28596,
+    "parentProcessId": 27484,
+    "birthUtc": "2026-10-09T20:56:15.3307280Z",
+    "intervalMs": 100,
+    "runningAtObservation": true
+  },
+  "executedValidatorSourceFacts": {
+    "compressedAudioPacketHashes": { "definedAtLine": 79, "comparedAtLine": 483 },
+    "completeOutputDecode": { "line": 484, "argumentsInclude": ["-xerror", "-map", "0:a", "-f", "null"] },
+    "independentValidationResult": { "lines": [488, 489], "decodedAudioFrameHashesPresent": false },
+    "outputDeletedAfterExistingValidation": { "line": 490, "function": "emptyOpfs" }
+  },
+  "gap": "The full protected HE-AAC source/output validator does not compare complete decoded audio payload hashes, trim, sample counts or every audio-frame clock. Matching compressed packet hashes and a successful output decode alone do not establish identical audible output or priming/trim preservation.",
+  "availableBoundedValidator": {
+    "path": "scripts/lib/streaming-copied-audio-validation.mjs",
+    "bytes": 9251,
+    "sha256": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "export": "validateCopiedAudioFrames",
+    "executedAgainstCurrentCompleteOutput": false
+  },
+  "actions": {
+    "newConversionLaunches": 0,
+    "newBrowserLaunches": 0,
+    "liveDriverOrPinnedSourceEdits": 0,
+    "liveOutputOrProfileDeletions": 0,
+    "additionalNativeAudioDecodeLaunches": 0,
+    "futureRequirement": "After the current attempt terminates, inspect its genuine result first. Before any full-fidelity acceptance, extend the pinned validator to compare every copied audio track with the bounded decoded-frame validator before emptyOpfs. Do not test a growing file or a prefix, copy the complete output, race live cleanup, or relabel small AAC-LC evidence as full HE-AAC evidence. If the current candidate fails, diagnose that actual failure before scheduling further full runs."
+  },
+  "acceptance": {
+    "currentCompletedOutputsIndependentlyValidated": null,
+    "fullAudioFidelityVerified": false,
+    "publicPromotionAllowedByThisAudit": false,
+    "goalComplete": false
+  }
+}

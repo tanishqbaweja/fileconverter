@@ -4,6 +4,27 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Full-source audio fidelity verification gap found
+
+Read-only audit of the actual live driver (SHA e65e464a…f96a) confirms its
+audio validator compares compressed packet hashes and fully decodes the output,
+but does NOT compare decoded audio hashes, trim, sample counts or every audio
+frame clock. The protected source is HE-AAC; the small AAC-LC golden evidence
+does not close this full-source gap. A successful terminal result from this
+driver alone MUST NOT be labelled complete audio-fidelity/public acceptance.
+Evidence: `evidence/single-idle-full-audio-validation-gap-2026-10-10.json`.
+
+Same driver27484/Chrome20708/monitor28596 verified live by birth/parent at
+21:10:22Z; browser command includes `--headless=new`. No restart, new browser,
+native decoder, live-source edit, output copy or live-file cleanup. Existing
+output is removed by `emptyOpfs` after native validation, so do not race that
+cleanup with an extra reader or assume it remains available after terminal.
+After this attempt terminates, inspect its actual result first; before future
+full-fidelity acceptance, integrate `validateCopiedAudioFrames` for every copied
+audio track BEFORE output cleanup in a newly pinned validator. No expensive
+rerun is authorized by an unchanged observation alone; diagnose any actual
+candidate failure first. Current full audio verification remains missing.
+
 ## 2026-10-10 — ONE changed full-original attempt actually converting
 
 21:03:12Z same session16225/PID27484/Chrome20708/monitor28596 still live by
