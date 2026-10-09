@@ -16,6 +16,7 @@ import { loadRetainedCopyProgress, retainedCopyReceipt, retainedCopyReceiptSha25
 import { makeProgressCompositingProgressDriver, makeProgressCompositingTraceHelper, progressCompositingFiles } from "./lib/progress-compositing-progress-recipe.mjs";
 import { splitRenderNativeFacts } from "./lib/split-render-progress-evidence.mjs";
 import { compareOutputWorkWindows } from "./lib/split-copy-work-checkpoints.mjs";
+import { deriveDriverSourcePinFiles } from "./lib/driver-source-pin-union.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file)), exec = promisify(execFile);
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && process.argv[2] === "--prepare-only"));
 const prepareOnly = process.argv[2] === "--prepare-only", stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
@@ -35,12 +36,22 @@ const makeDriver = helperUri => {
   const recipe = makeProgressCompositingProgressDriver(retained.executed.generated, root, helperUri, golden.actualServedApp, golden.actualServedStylesheet);
   syntax(recipe.generated); return recipe;
 };
+// Hash the actual driver's full source-list union BEFORE any host/build/browser
+// action. Historical caller pin lists are not guaranteed to cover derivatives.
+const sourcePinCoverage = deriveDriverSourcePinFiles(
+  makeDriver("file:///UNIT_ONLY_NOT_EXECUTED/trace-helper.mjs").generated,
+  [...Object.keys(sourcePins), "scripts/lib/driver-source-pin-union.mjs"]);
+for (const file of sourcePinCoverage.files) {
+  const bytes = await read(file); assert.ok(bytes.length <= 2 * 1024 ** 2);
+  if (sourcePins[file] !== undefined) assert.equal(sha(bytes), sourcePins[file], file);
+  sourcePins[file] = sha(bytes);
+}
 const shaFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
 const normal = async () => {
   const app = await read("dist/client" + baselineBinding.url); assert.equal(app.length, baselineBinding.bytes); assert.equal(sha(app), baselineBinding.sha256);
   assert.equal(sha(await read("dist/client/assets/index-CIzbeB0A.css")), golden.normalStylesheetArchive.rawSha256);
 };
-const proof = { recordedAt: null, status: "prepared-not-browser-executed", failure: null, executions: 0, sourcePins, postSourcePins: null,
+const proof = { recordedAt: null, status: "prepared-not-browser-executed", failure: null, executions: 0, sourcePins, sourcePinCoverage, postSourcePins: null,
   reusedBaseline: { receipt: retainedCopyReceipt, sha256: retainedCopyReceiptSha256, rawArchive: retained.baseline.record.compressedReport,
     sourceArchive: retained.baseline.record.sourceArchive, native: retained.native, workCheckpoints: base.progressProbe.workCheckpoints,
     noBaselineRerun: true, cancelledPartialOnly: true }, golden: { path: goldenPath, sha256: sha(goldenBytes) },

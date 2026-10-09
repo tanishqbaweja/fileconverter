@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
+import { gunzipSync } from "node:zlib";
 import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file));
 const held = JSON.parse(await read("evidence/2026-10-09T16-02-48-645Z-progress-compositing-original.json"));
@@ -30,8 +31,17 @@ test("Three actual recipe tests pass from bounded committed checkout without pri
   assert.equal(fresh.noBrowserLaunch, true); assert.equal(fresh.noConversion, true); assert.equal(fresh.platform, "win32");
   for (const field of ["fullRepositoryCiAcceptance", "linuxAcceptance", "conversionAcceptance"]) assert.equal(fresh[field], false);
   for (const [file, record] of Object.entries(fresh.sourcePins)) {
-    // References only committed, explicitly retained small source/report blobs.
-    const bytes = await read(file); assert.equal(bytes.length, record.bytes); assert.equal(sha(bytes), record.sha256, file);
+    // Preserve the actual historical checkout claim without freezing a caller
+    // that now fixes a post-run source-list omission. Its exact prior bytes are
+    // already retained in the independently bound executed source archive.
+    let bytes;
+    if (file === "scripts/diagnose-progress-compositing-original.mjs") {
+      const receipt = JSON.parse(await read("evidence/2026-10-09T16-13-20-461Z-progress-compositing-original.json"));
+      const gzip = await read(receipt.sourceArchive.path); assert.equal(sha(gzip), receipt.sourceArchive.sha256);
+      const source = JSON.parse(gunzipSync(gzip, { maxOutputLength: 8 * 1024 ** 2 }));
+      bytes = Buffer.from(source.sourcePreimages[file].data, "base64");
+    } else bytes = await read(file);
+    assert.equal(bytes.length, record.bytes); assert.equal(sha(bytes), record.sha256, file);
     assert.ok(!file.startsWith("work/") && !file.startsWith("dist/") && file !== "test.mkv");
   }
 });

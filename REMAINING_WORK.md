@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Prevent post-run source-list omissions before launch
+
+Status: **Verified complete for this source-coverage defect only**. Current caller
+uses the exact generated driver's static JSON source list to derive a prelaunch
+union; preserves all caller pins, includes three omitted historical files and new
+helper. Preparation16-46-58-985Z:149 matching pre/post pins,130 unique driver
+files/131 declarations, ZERO executions/build/stage/browser/conversion. All
+historical failed receipts and exact source preimages remain unchanged.
+Dynamic/missing/ambiguous/oversized lists and unsafe paths/media extensions fail
+closed, no eval. Initial parser/test/preparation rejected existing `.json.gz`
+evidence before mutation; fixed specifically for compact JSON archives. Actual
+14 focused tests PASS281.4099ms; five-file lint0; corrected preparation terminal0.
+Existing isolated-checkout evidence uses the archived previous caller bytes, so
+new implementation need not be frozen to old source; next verifier includes the
+new helper/12files. No expensive replay for bookkeeping. This is not full/Linux
+CI or conversion acceptance. Next full-original execution must not reuse the
+unchanged short diagnostic: preserve full-completion/three-run/250MiB/fidelity/
+cleanup gates and the qualified late-pool/allocator failure observer. Late
+HEVC decoder failure and the broader original specification remain partial/open.
+
 ## 2026-10-09 — Actual progress UI prefix audited; full-completion blocker remains
 
 Status: **Partially implemented**, not public/full-file acceptance. Actual headless

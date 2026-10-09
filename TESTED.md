@@ -4,6 +4,12 @@ Updated 2026-10-09 from the capability registry, retained successful Chrome stre
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-09 — Driver/caller source coverage fixed before launch
+
+The current controller now derives its source-pin union from the exact generated driver's static JSON list BEFORE host/build/browser actions, retaining every existing caller pin and adding the three previously missed files plus the new helper. `evidence/2026-10-09T16-46-58-985Z-progress-compositing-original-preparation.json`:149 pre/post pins,130 unique driver files (131 declared entries), ZERO executions, no conversion/media/profile/staging/build. No unchanged conversion replay. Parser rejects dynamic/ambiguous/unbounded lists, absolute/traversal paths and media extensions without evaluating source. Historical failed run/145-pin archives stay unchanged. Fresh-checkout evidence now reads the previous caller's exact retained preimage instead of freezing current caller source; future isolated-checkout verifier includes the new helper (12files).
+
+Initial new parser rejected an existing compact `.json.gz` evidence path:13/14 tests passed, preparation exited1 BEFORE any runtime/build/browser mutation. Added explicit JSON-gzip allowance, not arbitrary media archives; dynamic/traversal/media rejection tests remain. Corrected actual14/14 focused tests PASS281.4099ms; five-file lint0; preparation terminal0. This repairs evidence coverage only, not speed/native allocation/full conversion/CI acceptance. Do not launch another unchanged64MiB diagnostic; next full-file work must retain all gates and investigate the separate late decoder failure.
+
 ## 2026-10-09 — Progress UI full-input diagnostic closed; no speed acceptance
 
 Actual run `2026-10-09T16-13-20-461Z` is terminal (session27582, exit1). The unchanged full `test.mkv` was selected, but the deliberate 64MiB-output diagnostic cancellation produced no completed independently validated file. Its observed complete-Chromium-tree peak was481742848B minus the same stable blank240709632B =229.8671875MiB; five valid preconversion and1657 valid active samples, no missing active samples. This is a prefix measurement, NOT full-file250MiB acceptance. Actual6044 frames/packets,68103002 output bytes,60367771 input bytes; fixed50331648B aggregate Wasm,64KiB reads/writes/queue,one pending operation, final queues0/native closed; original JS transport, no rejected copy kernel.

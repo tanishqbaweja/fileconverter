@@ -10,7 +10,7 @@ const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile)
 assert.equal(process.argv.length, 2);
 const files = ["scripts/lib/archived-js-copy-control.mjs", "scripts/lib/progress-compositing-progress-recipe.mjs",
   "scripts/lib/split-copy-progress-recipe.mjs", "scripts/lib/split-render-progress-recipe.mjs", "scripts/lib/stable-ui-headless-baseline-recipe.mjs",
-  "scripts/diagnose-progress-compositing-original.mjs", "tests/progress-compositing-progress.test.mjs",
+  "scripts/diagnose-progress-compositing-original.mjs", "scripts/lib/driver-source-pin-union.mjs", "tests/progress-compositing-progress.test.mjs",
   "evidence/2026-10-09T15-42-44-939Z-progress-compositing-golden-analysis.json", "evidence/2026-10-09T14-31-37-500Z-split-copy-progress.json",
   "outputs/reports/2026-10-09T14-31-37-500Z-split-copy-progress-baseline-raw.json.gz", "outputs/reports/2026-10-08T22-04-15-944Z-ui-progress-baseline-executed-sources.json.gz"];
 const { stdout: commit } = await exec("git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true, timeout: 15000 });
