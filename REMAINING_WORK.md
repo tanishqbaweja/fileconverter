@@ -5,6 +5,30 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — New progress compositing candidate, controlled UI test next
+
+Previous turn PROGRESS: one actual candidate rejected and evidence pushed0883743;
+session73415 is TERMINAL, never poll/restart. Current tree clean at inspection.
+Production progress already throttled to8/s; do NOT add speculative throttling.
+Concrete separate source cost: current progress-track animates width160ms linear,
+which drives layout while moving. New private reversible recipe changes ONLY its
+JSX style to scaleX(real progress/100) and CSS to full-width/transformed fill with
+left origin/same160ms linear. Preserves original0.2rem marker with a fixed pseudo
+element; original accessible/percentage/metrics/options/terminal handlers untouched.
+No forced layer promotion, containment, CSS layout experiment stacking, worker,
+codec, native setting, IO, registry or public source mutation. Entire original App
+and CSS hashes required, drift rejected.3/3 source/geometry algebra tests
+PASS387.8108ms; three-file scoped lint0. Not built/published or browser-proven yet.
+
+NEXT one headless controlled CSS comparison in actual normal production page,
+seven percentages including0/sub-marker/100 and four ABBA workload repeats using
+recorded real-input progress values resampled at existing125ms update interval.
+This is explicitly synthetic UI geometry/layout instrumentation, selects NO file,
+performs NO conversion, and cannot prove conversion speed/full-tree memory/native
+allocation causality. Actual changed-source build+real conversion/fidelity/250MiB
+gates still required before acceptance. Do not present isolated CSS savings as a
+fix for the observed renderer burst or separate late HEVC-pool OOM.
+
 ## 2026-10-09 — Corrected copy candidate tested and REJECTED for original profile
 
 ONE candidate-only production-browser diagnostic from pusheda07988f; retained
