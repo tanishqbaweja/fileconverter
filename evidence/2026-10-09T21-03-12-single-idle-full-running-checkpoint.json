@@ -1,0 +1,33 @@
+{
+  "observedAt": "2026-10-09T21:03:12Z",
+  "status": "same-full-driver-live-real-conversion-running-not-acceptance",
+  "classification": "verified-wait",
+  "sessionId": 16225,
+  "launchReceipt": "evidence/2026-10-09T20-55-24-319Z-single-idle-full-live.json",
+  "source": "Actual stdout returned from same exec session plus native CIM process identity verification",
+  "liveIdentities": [
+    { "pid": 27484, "parentPid": 34760, "createdAt": "2026-10-09T20:56:05.253496Z", "role": "full-driver" },
+    { "pid": 20708, "parentPid": 27484, "createdAt": "2026-10-09T20:56:14.825779Z", "role": "headless-chrome" },
+    { "pid": 28596, "parentPid": 27484, "createdAt": "2026-10-09T20:56:15.330728Z", "role": "native-100ms-monitor" }
+  ],
+  "stdout": [
+    "EARLY stable blank: 228.457MiB. Full original source, no resizing.",
+    "Run1 running: input=222785, output=0, peak=205.543MiB.",
+    "Run1 running: input=12281409, output=11392807, peak=227.785MiB.",
+    "Run1 running: input=34432577, output=24133266, peak=227.785MiB."
+  ],
+  "memoryScope": "Console metrics rounded to three decimal places; terminal raw samples/baseline/full validation are not yet available. Do not substitute these samples for final exact whole-process acceptance.",
+  "primaryLimitMiB": 250,
+  "baselineFormulaChanged": false,
+  "sourceOrSettingsChangedWhileLive": false,
+  "additionalBrowserOrDriverLaunches": 0,
+  "driverRestarted": false,
+  "liveScratchDeleted": false,
+  "requestedRuns": 3,
+  "completedOutputsIndependentlyValidated": null,
+  "originalFullSourceAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "speedImprovementProven": false,
+  "publicAcceptance": false,
+  "nextAction": "Observe same live session/PID. On actual terminal inspect compact report, independent validation, exact memory, protected fixture and finally cleanup. Do not restart on observation timeout."
+}

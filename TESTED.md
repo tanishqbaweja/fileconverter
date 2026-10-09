@@ -4,14 +4,23 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-10 — ONE changed full-original attempt actually live
+## 2026-10-10 — ONE changed full-original attempt actually converting
+
+21:03:12Z same session16225/PID27484/Chrome20708/monitor28596 still live by
+birth/parent CIM identity. Settled blank228.457MiB; actual Run1 now running:
+34,432,577 input bytes/24,133,266 output bytes; rounded observed increment peak
+227.785MiB so far. No terminal/output-validation/memory acceptance inferred.
+Checkpoint: `evidence/2026-10-09T21-03-12-single-idle-full-running-checkpoint.json`.
+This observation cycle VERIFIED WAIT; no restart, new browser, source change or
+live-file cleanup. Terminal exact raw metrics required; console is rounded.
 
 Launched controller session16225/stamp2026-10-09T20-55-24-319Z. Actual driver
 PID27484/parent34760/birth20:56:05.253496Z verified live via native CIM;
 headless Chrome20708, production server5248 and100ms native monitor28596 are
 live descendants. Chrome profile ONLY in `work/mpeg2-single-idle-full-runtime-UnvbTZ`;
 wrapper ONLY in `work/single-idle-full-wrapper-TIX1MR`. Clean five-minute blank
-baseline/startup in progress; real conversion completion NOT observed/inferred.
+baseline/startup was in progress at launch; actual Run1 conversion now observed
+above, completion NOT observed/inferred.
 Launch RAM7,878,197,248bytes/disk1,563,138,695,168bytes pass unchanged guards.
 ONE actual new86704920…a8ec core, same controlled observer/AppCSS/default-quality/
 I/O/lower blank/whole-tree250 and three requested completed repeats.203 executed

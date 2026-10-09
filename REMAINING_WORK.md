@@ -5,12 +5,20 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-10 — New full-original run ACTUALLY LIVE, acceptance still pending
+## 2026-10-10 — New full-original run ACTUALLY CONVERTING, acceptance still pending
+
+Verified21:03:12Z same session16225/driver27484/Chrome20708/monitor28596 live by
+native birth/parent identities. Stable blank228.457MiB and real Run1 progress
+34,432,577 input/24,133,266 output bytes; rounded observed increment227.785MiB.
+Bounded checkpoint: `evidence/2026-10-09T21-03-12-single-idle-full-running-checkpoint.json`.
+VERIFIED WAIT only, no restart/new source edit or live scratch deletion. Still
+no independently validated completed output/full-source/memory/speed acceptance.
 
 Status: **Partially implemented**. ONE actual new-core controller session16225,
 stamp2026-10-09T20-55-24-319Z. Driver27484/parent34760/birth20:56:05.253496Z,
 headless Chrome20708/server5248/native100ms monitor28596 verified live by CIM.
-Initial clean five-minute baseline/startup, no completed conversion inferred.
+Initial clean five-minute baseline/startup completed; Run1 now genuinely running
+as observed above, no completed conversion inferred.
 Host RAM7,878,197,248bytes/disk1,563,138,695,168bytes pass unchanged preflight;
 same full protected original/default-quality/SSIM/three repeats/whole-tree250/
 lower stable blank/codec-I/O/observer/finally gates.203 source preimages archived
