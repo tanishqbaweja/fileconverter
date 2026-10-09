@@ -5,6 +5,24 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Full-completion attempt launched, authoritative handle LIVE
+
+Status: **Partially implemented / execution pending**, not completion. ONE actual
+launch from pushedf2bfe98, stamp16-55-27-062Z, tool session23942; launch2GiB host
+guard passes (physical6826762240B/virtual10853621760B). Actual executed source
+archive841820B/SHAc7293307…0896 retained. Read-only16:57:36.4264600Z confirms
+wrapper41600/controller32304/driver32096/server36504/Chrome34020/native helper31160
+with exact recorded parent+birth identities; Chrome `--headless=new` observed.
+No settled blank/completed conversion/primary-memory/validated output/finally
+cleanup result yet; unknowns remain null. Three genuinely validated full repeats,
+same stable lower blank/ALLtree250MiB/fixed32+16MiB/qualified late-pool observer/
+fidelity/privacy/repository-local output/finally remain mandatory.
+Resume by polling SAME session23942; missing handle requires checking exact
+identities, not assuming terminal. Never start duplicate/replay or remove live
+scratch on timeout. Launch receipt:
+`evidence/2026-10-09T16-55-27-062Z-progress-compositing-full-live-launch.json`.
+Terminal evidence and cleanup still to be verified; full original goal ACTIVE.
+
 ## 2026-10-09 — Genuine full-completion test mode prepared
 
 Status: **Partially implemented; actual full results pending**. Current controller

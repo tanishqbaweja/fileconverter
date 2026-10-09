@@ -1,0 +1,50 @@
+{
+  "observedAt": "2026-10-09T16:57:36.4264600Z",
+  "status": "observed-live-not-terminal-no-conversion-acceptance",
+  "sessionId": 23942,
+  "executedCommit": "f2bfe98f9d704c45885e135a57b85e359d394fef",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/diagnose-progress-compositing-original.mjs --full-completion",
+  "stamp": "2026-10-09T16-55-27-062Z",
+  "hostPreflight": {
+    "acquiredAt": "2026-10-09T16:55:28.7280671Z",
+    "freePhysicalBytes": 6826762240,
+    "freeVirtualBytes": 10853621760,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "identities": [
+    { "role": "owned-node-wrapper", "pid": 41600, "parentPid": 39484, "createdAt": "2026-10-09T16:55:26.9548400Z" },
+    { "role": "full-completion-controller", "pid": 32304, "parentPid": 41600, "createdAt": "2026-10-09T16:55:27.0020060Z" },
+    { "role": "actual-full-input-driver", "pid": 32096, "parentPid": 32304, "createdAt": "2026-10-09T16:55:57.8778570Z" },
+    { "role": "production-server", "pid": 36504, "parentPid": 32096, "createdAt": "2026-10-09T16:56:05.3796870Z" },
+    { "role": "headless-chrome-root", "pid": 34020, "parentPid": 32096, "createdAt": "2026-10-09T16:56:07.7077050Z", "headlessNewFlagObserved": true },
+    { "role": "native-memory-helper", "pid": 31160, "parentPid": 32096, "createdAt": "2026-10-09T16:56:08.2010170Z" }
+  ],
+  "wrapperDirectory": "H:\\Github Repositories\\fileconverter\\work\\progress-compositing-original-x8rPfo",
+  "executedSourceArchive": {
+    "path": "outputs/reports/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion-executed-sources.json.gz",
+    "bytes": 841820,
+    "sha256": "c7293307426866a5b23fe462059238983a1fcb7874cdaf74182b1336c2a00896"
+  },
+  "requestedCompletedRuns": 3,
+  "checkpointOutputBytes": null,
+  "maximumConversionMsPerRun": 21600000,
+  "partialOutputStopEnabled": false,
+  "observedStableBlankPrivateBytes": null,
+  "currentCompletedConversions": null,
+  "observedFullSessionIncrementalPrivateMiB": null,
+  "executionReturned": false,
+  "ownedRuntimeCleanupVerified": false,
+  "allTemporaryDataRemainsRepositoryLocal": true,
+  "headedManualValidation": false,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "lateHevcPoolOomResolved": false,
+  "continuation": "Poll session23942; if its handle is unavailable, query these exact PID-parent-birth identities. A timeout is not terminal. Do not restart the attempt or remove live-owned scratch. Preserve terminal reports and verify finally cleanup when it actually returns."
+}
