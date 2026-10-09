@@ -7,6 +7,14 @@ not the entire product specification.
 
 ## 2026-10-10 — Full single-idle terminal failure and independent AIFF build correction
 
+ONE actual corrected AIFF build now live: run37998603437/job114050863894/new
+SHA20cf3cb, verified22:20:29Z. SDK success/compile in progress, zero existing runs
+for exact corrected SHA before dispatch. Branch normal descendant push preserves
+failed old build provenance; all8 source pins/own Git scratch cleanup verified.
+Proof: `evidence/aiff-id3-specialist-build-v2-live-2026-10-10.json` and v2 branch
+receipt. Next observe same remote handle and verify actual terminal artifact;
+no compiled/browser/public claim yet. Local full driver and supplement stopped.
+
 Status: **Partially implemented**. Full original run16225 actually failed in the
 separate16MiB encoder, not the earlier decoder allocation. Zero complete outputs,
 zero of3 validated repeats; same-run audio supplement37437 terminal/incomplete,

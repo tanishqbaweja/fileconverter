@@ -6,6 +6,15 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-10 — Actual full single-idle run FAILED in encoder; owned output cleaned
 
+Corrected AIFF builder ACTUALLY dispatched once at new SHA20cf3cb on normal
+descendant isolated branch. Run37998603437/job114050863894 verified live22:20:29Z:
+SDK step success, genuine compile in progress. No duplicate for that SHA (API
+checked before dispatch), no force push/checkout/index/public/main changes; all8
+branch source pins verified and owned Git scratch removed. Proof:
+`evidence/aiff-id3-specialist-build-v2-live-2026-10-10.json` and v2 branch receipt.
+Observe SAME job; no native binary/browser/memory/quality/public acceptance yet.
+No local conversion/browser remains running. Prior failure receipt is preserved.
+
 Same session16225 ended, driver exit1; NOT a successful conversion. First abort
 was separate fixed16MiB encoder OOM requesting heap16875520B; outer error then
 reported mutex deadlock. This is NOT the older decoder's eight-byte shortage.
