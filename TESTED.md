@@ -4,6 +4,26 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — ONE changed full-original attempt actually live
+
+Launched controller session16225/stamp2026-10-09T20-55-24-319Z. Actual driver
+PID27484/parent34760/birth20:56:05.253496Z verified live via native CIM;
+headless Chrome20708, production server5248 and100ms native monitor28596 are
+live descendants. Chrome profile ONLY in `work/mpeg2-single-idle-full-runtime-UnvbTZ`;
+wrapper ONLY in `work/single-idle-full-wrapper-TIX1MR`. Clean five-minute blank
+baseline/startup in progress; real conversion completion NOT observed/inferred.
+Launch RAM7,878,197,248bytes/disk1,563,138,695,168bytes pass unchanged guards.
+ONE actual new86704920…a8ec core, same controlled observer/AppCSS/default-quality/
+I/O/lower blank/whole-tree250 and three requested completed repeats.203 executed
+source preimages archived losslessly and independently rechecked against current
+files; no post-launch source mutation. Live receipt:
+`evidence/2026-10-09T20-55-24-319Z-single-idle-full-live.json`.
+Actual UI build proof/client/source gzip retained, same validated prior hashes.
+No old-core restart, no baseline replay, no memory/fidelity/speed acceptance.
+Continue SAME session/PID; observation timeout is not terminal. Converted output
+and profile are intentionally active until driver validation/finally, never sweep
+them while live. On actual terminal inspect result/cleanup and independent evidence.
+
 ## 2026-10-10 — New-binary failure ABI and full-run preparation verified
 
 Read-only qualification joins actual NEW86704920…a8ec binary to decoded old ABI:

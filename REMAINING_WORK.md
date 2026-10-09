@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — New full-original run ACTUALLY LIVE, acceptance still pending
+
+Status: **Partially implemented**. ONE actual new-core controller session16225,
+stamp2026-10-09T20-55-24-319Z. Driver27484/parent34760/birth20:56:05.253496Z,
+headless Chrome20708/server5248/native100ms monitor28596 verified live by CIM.
+Initial clean five-minute baseline/startup, no completed conversion inferred.
+Host RAM7,878,197,248bytes/disk1,563,138,695,168bytes pass unchanged preflight;
+same full protected original/default-quality/SSIM/three repeats/whole-tree250/
+lower stable blank/codec-I/O/observer/finally gates.203 source preimages archived
+losslessly/current hashes independently match; source committed3b950d9/pushed.
+Live receipt: `evidence/2026-10-09T20-55-24-319Z-single-idle-full-live.json`.
+Wrapper/profile/output exclusively repo-local, retained only while active, finally
+cleanup after terminal validation/failure/cancellation. Do not manually sweep live
+scratch; do not restart on polling timeout/stale files. Monitor same actual handle.
+This cycle PROGRESS (new qualified/guarded source tests/preparation/staging and ONE
+genuine changed full launch); subsequent unchanged observations are VERIFIED WAIT
+only if same process/session is actually live. Still missing full-original result,
+repeat validations/scaling/whole-tree memory acceptance/speed and remaining original
+spec breadth. Goal remains active; no public promotion or completion claim.
+
 ## 2026-10-10 — Failure diagnostics qualified for new core; full run ready
 
 Status: **Partially implemented**. New binary4 diagnostic function bodies/indices/
