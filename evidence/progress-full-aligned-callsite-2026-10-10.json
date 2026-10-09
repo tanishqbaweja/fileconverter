@@ -1,0 +1,1522 @@
+{
+  "recordedAt": "2026-10-09T20:01:16.618Z",
+  "status": "actual-fatal-aligned-malloc-callsite-decoded-not-fix",
+  "input": {
+    "path": "evidence/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion.json",
+    "sha256": "75c909b9fa23f3b6313dbbbb18134c103d3bd18a12908a91f4b741a8bda2c0b0"
+  },
+  "inspection": {
+    "binary": {
+      "path": "work/mpeg2-split-pipeline-37739125738/within-mpeg2-split.wasm",
+      "bytes": 6904087,
+      "sha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c"
+    },
+    "actualStackSymbols": [
+      {
+        "functionIndex": 4440,
+        "functionNameFromActualBinary": "sbrk",
+        "codeOffset": "0x5fafe6"
+      },
+      {
+        "functionIndex": 4435,
+        "functionNameFromActualBinary": "emscripten_builtin_malloc",
+        "codeOffset": "0x5f8ca4"
+      },
+      {
+        "functionIndex": 4470,
+        "functionNameFromActualBinary": "__wrap_posix_memalign",
+        "codeOffset": "0x606cc7"
+      },
+      {
+        "functionIndex": 4311,
+        "functionNameFromActualBinary": "av_malloc",
+        "codeOffset": "0x5df3bf"
+      },
+      {
+        "functionIndex": 4379,
+        "functionNameFromActualBinary": "av_refstruct_pool_get",
+        "codeOffset": "0x5ee1f2"
+      },
+      {
+        "functionIndex": 2060,
+        "functionNameFromActualBinary": "alloc_frame",
+        "codeOffset": "0x30b537"
+      },
+      {
+        "functionIndex": 1980,
+        "functionNameFromActualBinary": "hevc_receive_frame",
+        "codeOffset": "0x2b9005"
+      },
+      {
+        "functionIndex": 668,
+        "functionNameFromActualBinary": "ff_decode_receive_frame_internal",
+        "codeOffset": "0x10fbf6"
+      },
+      {
+        "functionIndex": 671,
+        "functionNameFromActualBinary": "decode_receive_frame_internal",
+        "codeOffset": "0x1114c6"
+      },
+      {
+        "functionIndex": 670,
+        "functionNameFromActualBinary": "avcodec_send_packet",
+        "codeOffset": "0x110aa4"
+      },
+      {
+        "functionIndex": 4468,
+        "functionNameFromActualBinary": "mpeg2_frames",
+        "codeOffset": "0x6048c9"
+      },
+      {
+        "functionIndex": 4462,
+        "functionNameFromActualBinary": "within_remux",
+        "codeOffset": "0x60395d"
+      }
+    ],
+    "disassembler": {
+      "version": "1.0.39",
+      "registryIntegrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+      "executableSha256": "a9e6a2c224afeecd347c7f931b9efc8a817c146bfdeae2598974d5797284d214"
+    },
+    "functions": {
+      "av_malloc": {
+        "originalMetadata": {
+          "functionIndex": 4311,
+          "name": "av_malloc",
+          "params": [
+            "i32"
+          ],
+          "results": [
+            "i32"
+          ],
+          "bodyStart": 6157062,
+          "bodyEnd": 6157474
+        },
+        "originalBodySha256": "71871358e30da08d048ae856c1fc17650e78deefa12d951593c679fbf8e46a56",
+        "disassemblySha256": "dbfe142be4b3a88d01f23f6db261ce7dd3ab8d86586d16139bd975c1903ce012",
+        "disassemblyBytes": 11543,
+        "decodedInstructionsByteVerified": 217,
+        "firstInstructions": [
+          {
+            "originalOffset": 6157063,
+            "originalOffsetHex": "0x5df307",
+            "instructionHex": "047f",
+            "instruction": "local[1..4] type=i32"
+          },
+          {
+            "originalOffset": 6157065,
+            "originalOffsetHex": "0x5df309",
+            "instructionHex": "230c",
+            "instruction": "global.get 12"
+          },
+          {
+            "originalOffset": 6157067,
+            "originalOffsetHex": "0x5df30b",
+            "instructionHex": "4102",
+            "instruction": "i32.const 2"
+          },
+          {
+            "originalOffset": 6157069,
+            "originalOffsetHex": "0x5df30d",
+            "instructionHex": "46",
+            "instruction": "i32.eq"
+          },
+          {
+            "originalOffset": 6157070,
+            "originalOffsetHex": "0x5df30e",
+            "instructionHex": "0440",
+            "instruction": "if"
+          },
+          {
+            "originalOffset": 6157072,
+            "originalOffsetHex": "0x5df310",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6157074,
+            "originalOffsetHex": "0x5df312",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6157076,
+            "originalOffsetHex": "0x5df314",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6157079,
+            "originalOffsetHex": "0x5df317",
+            "instructionHex": "410c",
+            "instruction": "i32.const 12"
+          },
+          {
+            "originalOffset": 6157081,
+            "originalOffsetHex": "0x5df319",
+            "instructionHex": "6b",
+            "instruction": "i32.sub"
+          },
+          {
+            "originalOffset": 6157082,
+            "originalOffsetHex": "0x5df31a",
+            "instructionHex": "360200",
+            "instruction": "i32.store 2 0"
+          },
+          {
+            "originalOffset": 6157085,
+            "originalOffsetHex": "0x5df31d",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6157087,
+            "originalOffsetHex": "0x5df31f",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6157090,
+            "originalOffsetHex": "0x5df322",
+            "instructionHex": "2201",
+            "instruction": "local.tee 1"
+          },
+          {
+            "originalOffset": 6157092,
+            "originalOffsetHex": "0x5df324",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6157095,
+            "originalOffsetHex": "0x5df327",
+            "instructionHex": "2100",
+            "instruction": "local.set 0"
+          }
+        ],
+        "calls": [
+          {
+            "call": {
+              "originalOffset": 6157170,
+              "originalOffsetHex": "0x5df372",
+              "instructionHex": "1034",
+              "instruction": "call 52 <env.__handle_stack_overflow>"
+            },
+            "context": [
+              {
+                "originalOffset": 6157157,
+                "originalOffsetHex": "0x5df365",
+                "instructionHex": "230a",
+                "instruction": "global.get 10"
+              },
+              {
+                "originalOffset": 6157159,
+                "originalOffsetHex": "0x5df367",
+                "instructionHex": "4b",
+                "instruction": "i32.gt_u"
+              },
+              {
+                "originalOffset": 6157160,
+                "originalOffsetHex": "0x5df368",
+                "instructionHex": "230b",
+                "instruction": "global.get 11"
+              },
+              {
+                "originalOffset": 6157162,
+                "originalOffsetHex": "0x5df36a",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              },
+              {
+                "originalOffset": 6157164,
+                "originalOffsetHex": "0x5df36c",
+                "instructionHex": "4b",
+                "instruction": "i32.gt_u"
+              },
+              {
+                "originalOffset": 6157165,
+                "originalOffsetHex": "0x5df36d",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6157166,
+                "originalOffsetHex": "0x5df36e",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6157168,
+                "originalOffsetHex": "0x5df370",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              },
+              {
+                "originalOffset": 6157170,
+                "originalOffsetHex": "0x5df372",
+                "instructionHex": "1034",
+                "instruction": "call 52 <env.__handle_stack_overflow>"
+              },
+              {
+                "originalOffset": 6157172,
+                "originalOffsetHex": "0x5df374",
+                "instructionHex": "0b",
+                "instruction": "end"
+              },
+              {
+                "originalOffset": 6157173,
+                "originalOffsetHex": "0x5df375",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6157247,
+              "originalOffsetHex": "0x5df3bf",
+              "instructionHex": "10f622",
+              "instruction": "call 4470 <__wrap_posix_memalign>"
+            },
+            "context": [
+              {
+                "originalOffset": 6157234,
+                "originalOffsetHex": "0x5df3b2",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              },
+              {
+                "originalOffset": 6157236,
+                "originalOffsetHex": "0x5df3b4",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6157237,
+                "originalOffsetHex": "0x5df3b5",
+                "instructionHex": "2004",
+                "instruction": "local.get 4"
+              },
+              {
+                "originalOffset": 6157239,
+                "originalOffsetHex": "0x5df3b7",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6157240,
+                "originalOffsetHex": "0x5df3b8",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6157241,
+                "originalOffsetHex": "0x5df3b9",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6157243,
+                "originalOffsetHex": "0x5df3bb",
+                "instructionHex": "2001",
+                "instruction": "local.get 1"
+              },
+              {
+                "originalOffset": 6157245,
+                "originalOffsetHex": "0x5df3bd",
+                "instructionHex": "2000",
+                "instruction": "local.get 0"
+              },
+              {
+                "originalOffset": 6157247,
+                "originalOffsetHex": "0x5df3bf",
+                "instructionHex": "10f622",
+                "instruction": "call 4470 <__wrap_posix_memalign>"
+              },
+              {
+                "originalOffset": 6157250,
+                "originalOffsetHex": "0x5df3c2",
+                "instructionHex": "4100",
+                "instruction": "i32.const 0"
+              },
+              {
+                "originalOffset": 6157252,
+                "originalOffsetHex": "0x5df3c4",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6157334,
+              "originalOffsetHex": "0x5df416",
+              "instructionHex": "10f622",
+              "instruction": "call 4470 <__wrap_posix_memalign>"
+            },
+            "context": [
+              {
+                "originalOffset": 6157321,
+                "originalOffsetHex": "0x5df409",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6157322,
+                "originalOffsetHex": "0x5df40a",
+                "instructionHex": "2004",
+                "instruction": "local.get 4"
+              },
+              {
+                "originalOffset": 6157324,
+                "originalOffsetHex": "0x5df40c",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6157326,
+                "originalOffsetHex": "0x5df40e",
+                "instructionHex": "46",
+                "instruction": "i32.eq"
+              },
+              {
+                "originalOffset": 6157327,
+                "originalOffsetHex": "0x5df40f",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6157328,
+                "originalOffsetHex": "0x5df410",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6157330,
+                "originalOffsetHex": "0x5df412",
+                "instructionHex": "2000",
+                "instruction": "local.get 0"
+              },
+              {
+                "originalOffset": 6157332,
+                "originalOffsetHex": "0x5df414",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6157334,
+                "originalOffsetHex": "0x5df416",
+                "instructionHex": "10f622",
+                "instruction": "call 4470 <__wrap_posix_memalign>"
+              },
+              {
+                "originalOffset": 6157337,
+                "originalOffsetHex": "0x5df419",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6157339,
+                "originalOffsetHex": "0x5df41b",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6157394,
+              "originalOffsetHex": "0x5df452",
+              "instructionHex": "1034",
+              "instruction": "call 52 <env.__handle_stack_overflow>"
+            },
+            "context": [
+              {
+                "originalOffset": 6157381,
+                "originalOffsetHex": "0x5df445",
+                "instructionHex": "230a",
+                "instruction": "global.get 10"
+              },
+              {
+                "originalOffset": 6157383,
+                "originalOffsetHex": "0x5df447",
+                "instructionHex": "4b",
+                "instruction": "i32.gt_u"
+              },
+              {
+                "originalOffset": 6157384,
+                "originalOffsetHex": "0x5df448",
+                "instructionHex": "230b",
+                "instruction": "global.get 11"
+              },
+              {
+                "originalOffset": 6157386,
+                "originalOffsetHex": "0x5df44a",
+                "instructionHex": "2000",
+                "instruction": "local.get 0"
+              },
+              {
+                "originalOffset": 6157388,
+                "originalOffsetHex": "0x5df44c",
+                "instructionHex": "4b",
+                "instruction": "i32.gt_u"
+              },
+              {
+                "originalOffset": 6157389,
+                "originalOffsetHex": "0x5df44d",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6157390,
+                "originalOffsetHex": "0x5df44e",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6157392,
+                "originalOffsetHex": "0x5df450",
+                "instructionHex": "2000",
+                "instruction": "local.get 0"
+              },
+              {
+                "originalOffset": 6157394,
+                "originalOffsetHex": "0x5df452",
+                "instructionHex": "1034",
+                "instruction": "call 52 <env.__handle_stack_overflow>"
+              },
+              {
+                "originalOffset": 6157396,
+                "originalOffsetHex": "0x5df454",
+                "instructionHex": "0b",
+                "instruction": "end"
+              },
+              {
+                "originalOffset": 6157397,
+                "originalOffsetHex": "0x5df455",
+                "instructionHex": "2000",
+                "instruction": "local.get 0"
+              }
+            ]
+          }
+        ],
+        "entireDisassemblyPersisted": false
+      },
+      "__wrap_posix_memalign": {
+        "originalMetadata": {
+          "functionIndex": 4470,
+          "name": "__wrap_posix_memalign",
+          "params": [
+            "i32",
+            "i32"
+          ],
+          "results": [
+            "i32"
+          ],
+          "bodyStart": 6319000,
+          "bodyEnd": 6319884
+        },
+        "originalBodySha256": "82857249c915acb2db80f070cec845e57f7a4f040bc4e60c136165182d15e9ca",
+        "disassemblySha256": "8bed3280202376ec3491fa341594624b1f186c5bc74abc17b49b6c8c804893be",
+        "disassemblyBytes": 27385,
+        "decodedInstructionsByteVerified": 472,
+        "firstInstructions": [
+          {
+            "originalOffset": 6319001,
+            "originalOffsetHex": "0x606b99",
+            "instructionHex": "067f",
+            "instruction": "local[2..7] type=i32"
+          },
+          {
+            "originalOffset": 6319003,
+            "originalOffsetHex": "0x606b9b",
+            "instructionHex": "230c",
+            "instruction": "global.get 12"
+          },
+          {
+            "originalOffset": 6319005,
+            "originalOffsetHex": "0x606b9d",
+            "instructionHex": "4102",
+            "instruction": "i32.const 2"
+          },
+          {
+            "originalOffset": 6319007,
+            "originalOffsetHex": "0x606b9f",
+            "instructionHex": "46",
+            "instruction": "i32.eq"
+          },
+          {
+            "originalOffset": 6319008,
+            "originalOffsetHex": "0x606ba0",
+            "instructionHex": "0440",
+            "instruction": "if"
+          },
+          {
+            "originalOffset": 6319010,
+            "originalOffsetHex": "0x606ba2",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6319012,
+            "originalOffsetHex": "0x606ba4",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6319014,
+            "originalOffsetHex": "0x606ba6",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6319017,
+            "originalOffsetHex": "0x606ba9",
+            "instructionHex": "4114",
+            "instruction": "i32.const 20"
+          },
+          {
+            "originalOffset": 6319019,
+            "originalOffsetHex": "0x606bab",
+            "instructionHex": "6b",
+            "instruction": "i32.sub"
+          },
+          {
+            "originalOffset": 6319020,
+            "originalOffsetHex": "0x606bac",
+            "instructionHex": "360200",
+            "instruction": "i32.store 2 0"
+          },
+          {
+            "originalOffset": 6319023,
+            "originalOffsetHex": "0x606baf",
+            "instructionHex": "230d",
+            "instruction": "global.get 13"
+          },
+          {
+            "originalOffset": 6319025,
+            "originalOffsetHex": "0x606bb1",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6319028,
+            "originalOffsetHex": "0x606bb4",
+            "instructionHex": "2204",
+            "instruction": "local.tee 4"
+          },
+          {
+            "originalOffset": 6319030,
+            "originalOffsetHex": "0x606bb6",
+            "instructionHex": "280200",
+            "instruction": "i32.load 2 0"
+          },
+          {
+            "originalOffset": 6319033,
+            "originalOffsetHex": "0x606bb9",
+            "instructionHex": "2100",
+            "instruction": "local.set 0"
+          }
+        ],
+        "calls": [
+          {
+            "call": {
+              "originalOffset": 6319134,
+              "originalOffsetHex": "0x606c1e",
+              "instructionHex": "10d322",
+              "instruction": "call 4435 <emscripten_builtin_malloc>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319121,
+                "originalOffsetHex": "0x606c11",
+                "instructionHex": "0d00",
+                "instruction": "br_if 0"
+              },
+              {
+                "originalOffset": 6319123,
+                "originalOffsetHex": "0x606c13",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              },
+              {
+                "originalOffset": 6319125,
+                "originalOffsetHex": "0x606c15",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319126,
+                "originalOffsetHex": "0x606c16",
+                "instructionHex": "2006",
+                "instruction": "local.get 6"
+              },
+              {
+                "originalOffset": 6319128,
+                "originalOffsetHex": "0x606c18",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319129,
+                "originalOffsetHex": "0x606c19",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319130,
+                "originalOffsetHex": "0x606c1a",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6319132,
+                "originalOffsetHex": "0x606c1c",
+                "instructionHex": "2001",
+                "instruction": "local.get 1"
+              },
+              {
+                "originalOffset": 6319134,
+                "originalOffsetHex": "0x606c1e",
+                "instructionHex": "10d322",
+                "instruction": "call 4435 <emscripten_builtin_malloc>"
+              },
+              {
+                "originalOffset": 6319137,
+                "originalOffsetHex": "0x606c21",
+                "instructionHex": "4100",
+                "instruction": "i32.const 0"
+              },
+              {
+                "originalOffset": 6319139,
+                "originalOffsetHex": "0x606c23",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319186,
+              "originalOffsetHex": "0x606c52",
+              "instructionHex": "10d522",
+              "instruction": "call 4437 <emscripten_builtin_free>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319173,
+                "originalOffsetHex": "0x606c45",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              },
+              {
+                "originalOffset": 6319175,
+                "originalOffsetHex": "0x606c47",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319176,
+                "originalOffsetHex": "0x606c48",
+                "instructionHex": "2006",
+                "instruction": "local.get 6"
+              },
+              {
+                "originalOffset": 6319178,
+                "originalOffsetHex": "0x606c4a",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6319180,
+                "originalOffsetHex": "0x606c4c",
+                "instructionHex": "46",
+                "instruction": "i32.eq"
+              },
+              {
+                "originalOffset": 6319181,
+                "originalOffsetHex": "0x606c4d",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319182,
+                "originalOffsetHex": "0x606c4e",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6319184,
+                "originalOffsetHex": "0x606c50",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              },
+              {
+                "originalOffset": 6319186,
+                "originalOffsetHex": "0x606c52",
+                "instructionHex": "10d522",
+                "instruction": "call 4437 <emscripten_builtin_free>"
+              },
+              {
+                "originalOffset": 6319189,
+                "originalOffsetHex": "0x606c55",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6319191,
+                "originalOffsetHex": "0x606c57",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319303,
+              "originalOffsetHex": "0x606cc7",
+              "instructionHex": "10d322",
+              "instruction": "call 4435 <emscripten_builtin_malloc>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319290,
+                "originalOffsetHex": "0x606cba",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              },
+              {
+                "originalOffset": 6319292,
+                "originalOffsetHex": "0x606cbc",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319293,
+                "originalOffsetHex": "0x606cbd",
+                "instructionHex": "2006",
+                "instruction": "local.get 6"
+              },
+              {
+                "originalOffset": 6319295,
+                "originalOffsetHex": "0x606cbf",
+                "instructionHex": "4102",
+                "instruction": "i32.const 2"
+              },
+              {
+                "originalOffset": 6319297,
+                "originalOffsetHex": "0x606cc1",
+                "instructionHex": "46",
+                "instruction": "i32.eq"
+              },
+              {
+                "originalOffset": 6319298,
+                "originalOffsetHex": "0x606cc2",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319299,
+                "originalOffsetHex": "0x606cc3",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6319301,
+                "originalOffsetHex": "0x606cc5",
+                "instructionHex": "2001",
+                "instruction": "local.get 1"
+              },
+              {
+                "originalOffset": 6319303,
+                "originalOffsetHex": "0x606cc7",
+                "instructionHex": "10d322",
+                "instruction": "call 4435 <emscripten_builtin_malloc>"
+              },
+              {
+                "originalOffset": 6319306,
+                "originalOffsetHex": "0x606cca",
+                "instructionHex": "4102",
+                "instruction": "i32.const 2"
+              },
+              {
+                "originalOffset": 6319308,
+                "originalOffsetHex": "0x606ccc",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319381,
+              "originalOffsetHex": "0x606d15",
+              "instructionHex": "10db23",
+              "instruction": "call 4571 <__pthread_mutex_timedlock>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319365,
+                "originalOffsetHex": "0x606d05",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              },
+              {
+                "originalOffset": 6319367,
+                "originalOffsetHex": "0x606d07",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319368,
+                "originalOffsetHex": "0x606d08",
+                "instructionHex": "2006",
+                "instruction": "local.get 6"
+              },
+              {
+                "originalOffset": 6319370,
+                "originalOffsetHex": "0x606d0a",
+                "instructionHex": "4103",
+                "instruction": "i32.const 3"
+              },
+              {
+                "originalOffset": 6319372,
+                "originalOffsetHex": "0x606d0c",
+                "instructionHex": "46",
+                "instruction": "i32.eq"
+              },
+              {
+                "originalOffset": 6319373,
+                "originalOffsetHex": "0x606d0d",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319374,
+                "originalOffsetHex": "0x606d0e",
+                "instructionHex": "0440",
+                "instruction": "if"
+              },
+              {
+                "originalOffset": 6319376,
+                "originalOffsetHex": "0x606d10",
+                "instructionHex": "41d888ed00",
+                "instruction": "i32.const 1786968"
+              },
+              {
+                "originalOffset": 6319381,
+                "originalOffsetHex": "0x606d15",
+                "instructionHex": "10db23",
+                "instruction": "call 4571 <__pthread_mutex_timedlock>"
+              },
+              {
+                "originalOffset": 6319384,
+                "originalOffsetHex": "0x606d18",
+                "instructionHex": "4103",
+                "instruction": "i32.const 3"
+              },
+              {
+                "originalOffset": 6319386,
+                "originalOffsetHex": "0x606d1a",
+                "instructionHex": "230c",
+                "instruction": "global.get 12"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319614,
+              "originalOffsetHex": "0x606dfe",
+              "instructionHex": "10d722",
+              "instruction": "call 4439 <dispose_chunk>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319598,
+                "originalOffsetHex": "0x606dee",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6319600,
+                "originalOffsetHex": "0x606df0",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319601,
+                "originalOffsetHex": "0x606df1",
+                "instructionHex": "2106",
+                "instruction": "local.set 6"
+              },
+              {
+                "originalOffset": 6319603,
+                "originalOffsetHex": "0x606df3",
+                "instructionHex": "2005",
+                "instruction": "local.get 5"
+              },
+              {
+                "originalOffset": 6319605,
+                "originalOffsetHex": "0x606df5",
+                "instructionHex": "2006",
+                "instruction": "local.get 6"
+              },
+              {
+                "originalOffset": 6319607,
+                "originalOffsetHex": "0x606df7",
+                "instructionHex": "360204",
+                "instruction": "i32.store 2 4"
+              },
+              {
+                "originalOffset": 6319610,
+                "originalOffsetHex": "0x606dfa",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              },
+              {
+                "originalOffset": 6319612,
+                "originalOffsetHex": "0x606dfc",
+                "instructionHex": "2003",
+                "instruction": "local.get 3"
+              },
+              {
+                "originalOffset": 6319614,
+                "originalOffsetHex": "0x606dfe",
+                "instructionHex": "10d722",
+                "instruction": "call 4439 <dispose_chunk>"
+              },
+              {
+                "originalOffset": 6319617,
+                "originalOffsetHex": "0x606e01",
+                "instructionHex": "0b",
+                "instruction": "end"
+              },
+              {
+                "originalOffset": 6319618,
+                "originalOffsetHex": "0x606e02",
+                "instructionHex": "0240",
+                "instruction": "block"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319710,
+              "originalOffsetHex": "0x606e5e",
+              "instructionHex": "10d722",
+              "instruction": "call 4439 <dispose_chunk>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319694,
+                "originalOffsetHex": "0x606e4e",
+                "instructionHex": "4101",
+                "instruction": "i32.const 1"
+              },
+              {
+                "originalOffset": 6319696,
+                "originalOffsetHex": "0x606e50",
+                "instructionHex": "72",
+                "instruction": "i32.or"
+              },
+              {
+                "originalOffset": 6319697,
+                "originalOffsetHex": "0x606e51",
+                "instructionHex": "2105",
+                "instruction": "local.set 5"
+              },
+              {
+                "originalOffset": 6319699,
+                "originalOffsetHex": "0x606e53",
+                "instructionHex": "2003",
+                "instruction": "local.get 3"
+              },
+              {
+                "originalOffset": 6319701,
+                "originalOffsetHex": "0x606e55",
+                "instructionHex": "2005",
+                "instruction": "local.get 5"
+              },
+              {
+                "originalOffset": 6319703,
+                "originalOffsetHex": "0x606e57",
+                "instructionHex": "360204",
+                "instruction": "i32.store 2 4"
+              },
+              {
+                "originalOffset": 6319706,
+                "originalOffsetHex": "0x606e5a",
+                "instructionHex": "2002",
+                "instruction": "local.get 2"
+              },
+              {
+                "originalOffset": 6319708,
+                "originalOffsetHex": "0x606e5c",
+                "instructionHex": "2007",
+                "instruction": "local.get 7"
+              },
+              {
+                "originalOffset": 6319710,
+                "originalOffsetHex": "0x606e5e",
+                "instructionHex": "10d722",
+                "instruction": "call 4439 <dispose_chunk>"
+              },
+              {
+                "originalOffset": 6319713,
+                "originalOffsetHex": "0x606e61",
+                "instructionHex": "0b",
+                "instruction": "end"
+              },
+              {
+                "originalOffset": 6319714,
+                "originalOffsetHex": "0x606e62",
+                "instructionHex": "2001",
+                "instruction": "local.get 1"
+              }
+            ]
+          },
+          {
+            "call": {
+              "originalOffset": 6319742,
+              "originalOffsetHex": "0x606e7e",
+              "instructionHex": "10cc23",
+              "instruction": "call 4556 <pthread_mutex_unlock>"
+            },
+            "context": [
+              {
+                "originalOffset": 6319721,
+                "originalOffsetHex": "0x606e69",
+                "instructionHex": "41d488ed00",
+                "instruction": "i32.const 1786964"
+              },
+              {
+                "originalOffset": 6319726,
+                "originalOffsetHex": "0x606e6e",
+                "instructionHex": "2d0000",
+                "instruction": "i32.load8_u 0 0"
+              },
+              {
+                "originalOffset": 6319729,
+                "originalOffsetHex": "0x606e71",
+                "instructionHex": "4102",
+                "instruction": "i32.const 2"
+              },
+              {
+                "originalOffset": 6319731,
+                "originalOffsetHex": "0x606e73",
+                "instructionHex": "71",
+                "instruction": "i32.and"
+              },
+              {
+                "originalOffset": 6319732,
+                "originalOffsetHex": "0x606e74",
+                "instructionHex": "45",
+                "instruction": "i32.eqz"
+              },
+              {
+                "originalOffset": 6319733,
+                "originalOffsetHex": "0x606e75",
+                "instructionHex": "2202",
+                "instruction": "local.tee 2"
+              },
+              {
+                "originalOffset": 6319735,
+                "originalOffsetHex": "0x606e77",
+                "instructionHex": "0d01",
+                "instruction": "br_if 1"
+              },
+              {
+                "originalOffset": 6319737,
+                "originalOffsetHex": "0x606e79",
+                "instructionHex": "41d888ed00",
+                "instruction": "i32.const 1786968"
+              },
+              {
+                "originalOffset": 6319742,
+                "originalOffsetHex": "0x606e7e",
+                "instructionHex": "10cc23",
+                "instruction": "call 4556 <pthread_mutex_unlock>"
+              },
+              {
+                "originalOffset": 6319745,
+                "originalOffsetHex": "0x606e81",
+                "instructionHex": "0b",
+                "instruction": "end"
+              },
+              {
+                "originalOffset": 6319746,
+                "originalOffsetHex": "0x606e82",
+                "instructionHex": "0b",
+                "instruction": "end"
+              }
+            ]
+          }
+        ],
+        "entireDisassemblyPersisted": false
+      }
+    },
+    "matchedFatalCall": {
+      "originalOffset": 6319303,
+      "originalOffsetHex": "0x606cc7",
+      "instructionHex": "10d322",
+      "instruction": "call 4435 <emscripten_builtin_malloc>"
+    },
+    "matchedFatalCallContext": [
+      {
+        "originalOffset": 6319287,
+        "originalOffsetHex": "0x606cb7",
+        "instructionHex": "2101",
+        "instruction": "local.set 1"
+      },
+      {
+        "originalOffset": 6319289,
+        "originalOffsetHex": "0x606cb9",
+        "instructionHex": "0b",
+        "instruction": "end"
+      },
+      {
+        "originalOffset": 6319290,
+        "originalOffsetHex": "0x606cba",
+        "instructionHex": "230c",
+        "instruction": "global.get 12"
+      },
+      {
+        "originalOffset": 6319292,
+        "originalOffsetHex": "0x606cbc",
+        "instructionHex": "45",
+        "instruction": "i32.eqz"
+      },
+      {
+        "originalOffset": 6319293,
+        "originalOffsetHex": "0x606cbd",
+        "instructionHex": "2006",
+        "instruction": "local.get 6"
+      },
+      {
+        "originalOffset": 6319295,
+        "originalOffsetHex": "0x606cbf",
+        "instructionHex": "4102",
+        "instruction": "i32.const 2"
+      },
+      {
+        "originalOffset": 6319297,
+        "originalOffsetHex": "0x606cc1",
+        "instructionHex": "46",
+        "instruction": "i32.eq"
+      },
+      {
+        "originalOffset": 6319298,
+        "originalOffsetHex": "0x606cc2",
+        "instructionHex": "72",
+        "instruction": "i32.or"
+      },
+      {
+        "originalOffset": 6319299,
+        "originalOffsetHex": "0x606cc3",
+        "instructionHex": "0440",
+        "instruction": "if"
+      },
+      {
+        "originalOffset": 6319301,
+        "originalOffsetHex": "0x606cc5",
+        "instructionHex": "2001",
+        "instruction": "local.get 1"
+      },
+      {
+        "originalOffset": 6319303,
+        "originalOffsetHex": "0x606cc7",
+        "instructionHex": "10d322",
+        "instruction": "call 4435 <emscripten_builtin_malloc>"
+      },
+      {
+        "originalOffset": 6319306,
+        "originalOffsetHex": "0x606cca",
+        "instructionHex": "4102",
+        "instruction": "i32.const 2"
+      },
+      {
+        "originalOffset": 6319308,
+        "originalOffsetHex": "0x606ccc",
+        "instructionHex": "230c",
+        "instruction": "global.get 12"
+      },
+      {
+        "originalOffset": 6319310,
+        "originalOffsetHex": "0x606cce",
+        "instructionHex": "4101",
+        "instruction": "i32.const 1"
+      },
+      {
+        "originalOffset": 6319312,
+        "originalOffsetHex": "0x606cd0",
+        "instructionHex": "46",
+        "instruction": "i32.eq"
+      }
+    ],
+    "analysisOnlySlice": {
+      "bytes": 535518,
+      "sha256": "5d6900e052a146abaccb39c36ed4c1ec73cfbd1323ccc69fe6a153349ec59c8c",
+      "preservedFunctions": 2,
+      "unreachableReplacements": 4608,
+      "selectedBodyByteExact": true,
+      "instantiated": false,
+      "usedForMedia": false
+    },
+    "runtimeRequest": {
+      "scope": "one-actual-in-progress-pool-request-at-abort-not-media-or-acceptance",
+      "sequence": 212236,
+      "observedPoolAddress": 2411072,
+      "poolName": null,
+      "payloadBytes": 1163520,
+      "refcountHeaderBytes": 16,
+      "failedIndividualAllocationBytes": 1163536,
+      "liveEntriesBeforeRequest": 5,
+      "cachedEntriesInRequestedPoolBeforeRequest": 0,
+      "poolFlags": 1073741824,
+      "maximumScalarBytesRead": 64,
+      "heapCopied": false,
+      "payloadRead": false,
+      "nativeFunctionsCalled": false,
+      "liveReferencesChanged": false,
+      "publicAcceptance": false
+    },
+    "runtimeFreeHeaders": {
+      "scope": "read-only-allocator-header-inventory-not-codec-payload-or-acceptance",
+      "complete": true,
+      "totalFreeChunkBytes": 6523400,
+      "largestFreeChunkBytes": 1163568,
+      "freeChunks": 255,
+      "designatedVictimBytes": 0,
+      "topChunkBytes": 965768,
+      "dynamicFootprintBytes": 31204160,
+      "segmentBase": 2182336,
+      "segmentBytes": 31204160,
+      "unclaimedMemoryAboveSegmentBytes": 167936,
+      "freeChunkSizeLog2Histogram": [
+        0,
+        0,
+        0,
+        0,
+        143,
+        76,
+        2,
+        8,
+        4,
+        0,
+        1,
+        5,
+        4,
+        1,
+        1,
+        1,
+        2,
+        1,
+        0,
+        3,
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "bins": [
+        {
+          "kind": "small",
+          "index": 2,
+          "chunks": 1,
+          "bytes": 16
+        },
+        {
+          "kind": "small",
+          "index": 3,
+          "chunks": 142,
+          "bytes": 3408
+        },
+        {
+          "kind": "small",
+          "index": 4,
+          "chunks": 63,
+          "bytes": 2016
+        },
+        {
+          "kind": "small",
+          "index": 5,
+          "chunks": 13,
+          "bytes": 520
+        },
+        {
+          "kind": "small",
+          "index": 13,
+          "chunks": 1,
+          "bytes": 104
+        },
+        {
+          "kind": "small",
+          "index": 14,
+          "chunks": 1,
+          "bytes": 112
+        },
+        {
+          "kind": "small",
+          "index": 19,
+          "chunks": 2,
+          "bytes": 304
+        },
+        {
+          "kind": "small",
+          "index": 20,
+          "chunks": 1,
+          "bytes": 160
+        },
+        {
+          "kind": "small",
+          "index": 24,
+          "chunks": 1,
+          "bytes": 192
+        },
+        {
+          "kind": "small",
+          "index": 26,
+          "chunks": 1,
+          "bytes": 208
+        },
+        {
+          "kind": "small",
+          "index": 27,
+          "chunks": 1,
+          "bytes": 216
+        },
+        {
+          "kind": "small",
+          "index": 28,
+          "chunks": 1,
+          "bytes": 224
+        },
+        {
+          "kind": "small",
+          "index": 30,
+          "chunks": 1,
+          "bytes": 240
+        },
+        {
+          "kind": "tree",
+          "index": 0,
+          "chunks": 4,
+          "bytes": 1200
+        },
+        {
+          "kind": "tree",
+          "index": 5,
+          "chunks": 1,
+          "bytes": 2032
+        },
+        {
+          "kind": "tree",
+          "index": 6,
+          "chunks": 1,
+          "bytes": 2424
+        },
+        {
+          "kind": "tree",
+          "index": 7,
+          "chunks": 4,
+          "bytes": 14056
+        },
+        {
+          "kind": "tree",
+          "index": 8,
+          "chunks": 1,
+          "bytes": 4648
+        },
+        {
+          "kind": "tree",
+          "index": 9,
+          "chunks": 3,
+          "bytes": 23440
+        },
+        {
+          "kind": "tree",
+          "index": 10,
+          "chunks": 1,
+          "bytes": 8400
+        },
+        {
+          "kind": "tree",
+          "index": 12,
+          "chunks": 1,
+          "bytes": 16656
+        },
+        {
+          "kind": "tree",
+          "index": 15,
+          "chunks": 1,
+          "bytes": 61240
+        },
+        {
+          "kind": "tree",
+          "index": 17,
+          "chunks": 2,
+          "bytes": 234720
+        },
+        {
+          "kind": "tree",
+          "index": 18,
+          "chunks": 1,
+          "bytes": 152928
+        },
+        {
+          "kind": "tree",
+          "index": 22,
+          "chunks": 2,
+          "bytes": 1537512
+        },
+        {
+          "kind": "tree",
+          "index": 24,
+          "chunks": 3,
+          "bytes": 3490656
+        }
+      ],
+      "headerWordsRead": 915,
+      "maximumHeaderWords": 32768,
+      "maximumChunks": 4096,
+      "heapCopied": false,
+      "payloadRead": false,
+      "nativeFunctionsCalled": false,
+      "allocatorMutated": false,
+      "liveFrameCount": null,
+      "fragmentationCauseProven": false
+    },
+    "fragmentationCauseProven": false,
+    "alignmentBranchInterpretationPending": true
+  },
+  "failure": null,
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndAnalysisSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\full-aligned-static-UMfBoX"
+  },
+  "sourcePins": {
+    "scripts/audit-progress-full-aligned-callsite.mjs": "68d5b43e093d06aa9a92480305f147e10bd884c8bcd280eb529e0a80cbf5028e",
+    "scripts/lib/wasm-static-function-slice.mjs": "4b0aebb2f41d4bd7059c953f78031ecb21fedd88fbbd0d546d5fe4ffaad8f60f",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+  },
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "noDocker": true,
+  "productionEngineChanged": false,
+  "heapLimitRaised": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "speedGainClaim": null
+}

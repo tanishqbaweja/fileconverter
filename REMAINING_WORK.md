@@ -1,9 +1,63 @@
 # Remaining work audit
 
-Updated 2026-10-09. This is the living requirement audit for the original
+Updated 2026-10-10 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-10 — TERMINAL full-input attempt; bounded allocator fix still required
+
+Status: **Partially implemented; full protected transcoding not achieved**.
+Historical LIVE/session23942 notes below are superseded: controller completed,
+actual browser child failed1 at106112 encoded frames. Do not restart or replay
+this unchanged attempt. Previous headless-compliance turn yielded authoritative
+owned-process absence evidence; this cycle makes new terminal/allocator evidence
+available and changes the next action, not another status-only monitoring cycle.
+
+Measured complete-tree incremental private memory in the failed observed window
+was227.859375MiB:482906112B peak -243978240B stable same lower blank. Native100ms
+samples6 preconversion/31989 active, zero missing. This is NOT full success or
+three-repeat memory acceptance. Original full-file gate stayed enabled, no64MiB
+diagnostic stop. Actual output1206298852B/input1060017306B/3468839.16ms at failure;
+no complete output validation, no accepted speed/quality/scaling comparison.
+
+New decisive capture and exact actual-binary analysis explain the failed aligned
+fallback's capacity:1163536B RefStruct request, ordinary normalized1163544B;
+actual second wrapper malloc0x606cc7 receives1163572B and normalizes1163576B.
+Largest actual free chunk1163568B is8B too small, despite6523400B total free.
+Captured contiguous top+unclaimed tail1133704B also cannot fit. Qualified decoder
+capture5 live/0 cached pool entries;255 free chunks/915 read-only header words.
+Only fragmented free capacity for this exact padded fallback is established.
+Original pointer alignment, all live-frame inventory, why fragmentation arose,
+best correction and successful conversion remain unverified. No quality reduction,
+heap growth, budget increase, native conversion or live-reference modification.
+
+**Next implementation**, before any changed full replay: choose a bounded
+alignment/HEVC auxiliary-cache policy that avoids the oversized fallback/churn;
+test allocator/pool ownership contracts, reproducible Wasm build, real small
+browser fidelity/write-failure/cancel/cleanup goldens, then ONE genuinely changed
+full-source run retaining every original acceptance gate. Do not repeat UI guesses,
+unchanged goldens/full conversions or reinterpret below-budget failure as support.
+All broader original scope/accounted requirements below remain unchanged.
+
+Independent terminal proof151 complete executed preimages/132 unique driver
+files/exact reconstruction/App+CSS+native+Chrome+defaults/empty forbidden requests.
+All23 observed PID-parent-birth identities absent; both disposable runtimes gone;
+normal UI/CSS/six engines restored/eleven private assets absent. Full protected
+test.mkv size2958573265B and SHA31f36695…db34 reverified. Partial output/profile/
+scratch removed finally; compact rawgzip563543B/trace/CSV/HTML/source proofs retained
+inside repo. Early sample-ring eviction disclosed, not reconstructed or invented.
+New targeted10/10 tests PASS232.2637ms/eight-file lint0 after reserved-variable
+rename; failed static report/WAT caps recorded, no converter gates weakened.
+Eleven executed analyzer source versions archived before the lint-only rename.
+Final combined11/11 tests PASS354.8263ms, including source-archive regression;
+updated test-file lint0. No heavy/browser replay.
+
+Reports: `evidence/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion-analysis.json`
+and `evidence/progress-full-aligned-capacity-2026-10-10.json`; actual raw/trace/
+source archive are hash-bound by the terminal proof. Full goal ACTIVE, not achieved.
+
+The following LIVE observations are historical; no process is to be polled from them.
 
 Running milestone17:05:49Z: SAME session23942 verified live; exact driver32096/
 Chrome34020 births match launch. Actual Run1 stdout85322048B input/94437621B

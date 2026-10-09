@@ -1,0 +1,27 @@
+{
+  "recordedAt": "2026-10-09T20:03:26.700Z",
+  "status": "failed-static-argument-inspection",
+  "input": {
+    "path": "evidence/progress-full-aligned-callsite-2026-10-10.json",
+    "sha256": "5c874ae6767049c965ae91d08db0b981494bb62b964fac2d7a4c44dd3a285404"
+  },
+  "allocatorInput": {
+    "path": "output/playwright/2026-10-08T07-27-40-370Z-late-dlmalloc-static.json",
+    "sha256": "d03b161ce389d252949bd1d36dda90298a58bd090084c2401218a17e2c3a2f16"
+  },
+  "inspection": null,
+  "failure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Buffer.byteLength(text) <= 1048576)\n",
+  "cleanup": {
+    "ownedRuntimeRemoved": true,
+    "cacheAndSliceRemoved": true,
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\full-aligned-flow-EjFvgj"
+  },
+  "sourceSha256": "fdb7d9007881356df837673e2e2bcc952f4f3538994a55f8027da079b9c797a8",
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "productionEngineChanged": false,
+  "noDocker": true,
+  "windowsHidden": true,
+  "publicAcceptance": false,
+  "speedGainClaim": null
+}

@@ -1,8 +1,69 @@
 # Tested conversion ledger
 
-Updated 2026-10-09 from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
+
+## 2026-10-10 — Full attempt TERMINAL; actual aligned fallback capacity explained
+
+This supersedes the historical LIVE/session23942 notes below. The controller is
+terminal0 (collection only), actual conversion child exit1: decoder OOM at
+106112 encoded frames/packets. No completed independently validated output,
+0/3 successful repeats, no full-memory, speed, scaling or public acceptance.
+Do not poll/restart23942 or replay this unchanged full conversion.
+
+Exact complete-tree peak482906112B minus the same stable lower blank243978240B
+=227.859375MiB in the observed failed run. Native100ms coverage:6 valid/0 missing
+pre-conversion,31989 valid/0 missing active samples; no native250MiB breach.
+Input1060017306B/output1206298852B/elapsed3468839.16ms at failure. Fixed32+16MiB
+Wasm,64KiB maximum read/write/queue,one pending operation, final queues0/closed.
+Encoder ownership `failed:false` is NOT decoder or full-pipeline success.
+
+Actual qualified fatal capture: payload1163520B +16B RefStruct header =1163536B
+individual request;5 live entries/no cached entries. Free-header inventory255
+chunks/6523400B total/largest1163568B;915 header-word reads, no payload/heap copy,
+native call or mutation. The33587200B error is a requested heap extent, NOT the
+individual allocation. Actual3e744dc4…a8c6c decoder symbols/opcodes join the fatal
+offset0x606cc7 to the SECOND malloc in the aligned wrapper. Byte-exact static
+wrapper/allocator evidence gives ordinary chunk1163544B, aligned fallback malloc
+argument1163572B, normalized fallback chunk1163576B:8B larger than EVERY captured
+free chunk. Even top+unclaimed tail1133704B cannot fit. Thus fragmented capacity
+for this specific padded fallback is explained; why the allocator fragmented,
+actual original pointer alignment, full live-frame inventory, optimal fix and
+runtime resolution remain unproven. Original raw observer's conservative cause
+fields remain unchanged; the new conclusion is in a separate joined analysis.
+
+Independent terminal audit verifies151 executed preimages,132 unique driver
+files, exact driver/helper reconstruction, actual App/CSS/native/Chrome/defaults,
+no forbidden requests, all23 recorded process identities absent, both runtimes
+gone, normal UI/CSS+six engines restored,eleven private assets absent and the FULL
+2958573265B protected original SHA unchanged. Disposable partial media/profile/
+scratch already removed by verified finally; retained only compact evidence,
+trace/CSV/HTML and reusable engines. Raw18.18MB JSON was losslessly archived to
+563543B before removing the redundant JSON. Early progress samples were evicted
+by the1024-sample ring: timing brackets are retained but NOT independently
+reconstructed from unavailable early samples; no causal speed claim.
+
+New focused tests10/10 PASS232.2637ms; eight-file zero-warning lint PASS after
+renaming the reserved `module` tool variable. First static report cap was too
+small for pretty instruction objects; retained bounded contexts instead. First
+WAT cap also rejected preserved constant-data text; failed receipt retained,
+same existing64MiB static-tool ceiling used (NOT conversion memory). All static
+scratch/cache/slices removed; no browser replay, Docker or visible windows.
+Eleven executed analyzer preimages, including the failed WAT version, retained
+losslessly before the lint-only rename. These tooling failures are not conversion
+successes. Final combined11/11 tests PASS354.8263ms, including the lossless
+executed-source archive regression; updated test-file lint0.
+
+Evidence: `evidence/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion{,-analysis}.json`,
+`evidence/progress-full-aligned-{callsite,normalization-verified,capacity}-2026-10-10.json`,
+`evidence/progress-full-terminal-analysis-source-archive-2026-10-10.json`.
+Next: implement/test a bounded alignment or auxiliary-cache policy that avoids
+this padded fallback/churn while preserving live references, quality and fixed
+heaps; actual small browser goldens before ONE changed full-source attempt.
+Full original goal remains ACTIVE/incomplete; no new profile was published.
+
+The following running observations are historical and superseded by this result.
 
 Full-completion running milestone17:05:49Z: SAME session23942, driver32096/Chrome34020 exact birth identities still live. Five-minute blank stdout232.676MiB (rounded); Run1 actual browser encoding input85322048B/output94437621B/reported incremental peak227.859MiB (rounded). Continues past the former67108864B cutoff, proving this is not another deliberately cancelled64MiB diagnostic. No new browser/conversion or heavy concurrent test launched. Exact final native bytes/coverage, full output validation, repeats, cleanup and late-pool outcome remain pending/null; no full-memory/speed/public acceptance. Compact `evidence/2026-10-09T17-05-49Z-progress-compositing-full-running-observation.json` preserves the actual stdout/identity observation. Previous goal turn was PROGRESS (full-test implementation/validation/push/actual launch); this observation is a VERIFIED WAIT on that same live attempt. Do not repeatedly record unchanged snapshots or rerun the test; next material evidence is terminal failure/completion.
 

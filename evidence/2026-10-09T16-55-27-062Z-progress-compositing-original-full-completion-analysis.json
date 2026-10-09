@@ -1,0 +1,589 @@
+{
+  "recordedAt": "2026-10-09T20:01:59.833Z",
+  "status": "full-attempt-decoder-oom-below-observed250-not-acceptance",
+  "receipt": {
+    "path": "evidence/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion.json",
+    "sha256": "75c909b9fa23f3b6313dbbbb18134c103d3bd18a12908a91f4b741a8bda2c0b0"
+  },
+  "completeExecutedSourcePreimagesVerified": 151,
+  "completeDriverSourceListNowVerified": true,
+  "driverUniqueSourceFiles": 132,
+  "exactDriverAndHelperReconstructed": true,
+  "reusedBaselineNoRerun": true,
+  "sameFullProtectedSource": true,
+  "sameChromeBinaryHashes": true,
+  "sameNativeModulesAndLimits": true,
+  "actualServedApp": {
+    "url": "/assets/ConverterApp-BcOk2BNt.js",
+    "bytes": 315645,
+    "sha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "actualServedStylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "afterBytes": 27940,
+    "afterSha256": "81862974af7b02ede01b5122b4a8bc372600fb6f528bd11fabee2687ea78e311",
+    "matrixCssBytes": 1586,
+    "matrixCssSha256": "37257965a98bdeede4bdcba5677e0f75f42431b7405530169fcfeb2ef106022a"
+  },
+  "identicalHistoricalPrivateCssSuffix": true,
+  "native": {
+    "mode": "full-completion",
+    "blankPrivateBytes": 243978240,
+    "actualPeakPrivateBytes": 482906112,
+    "observedIncrementalPrivateMiB": 227.859375,
+    "nativePeakSequence": 2982,
+    "nativePeakTimestamp": "2026-10-09T17:01:31.9616711Z",
+    "nativePeakProcessRows": [
+      [
+        0,
+        197468160,
+        236789760
+      ],
+      [
+        3,
+        13037568,
+        40828928
+      ],
+      [
+        4,
+        142577664,
+        181125120
+      ],
+      [
+        19,
+        14671872,
+        30986240
+      ],
+      [
+        5,
+        2637824,
+        10383360
+      ],
+      [
+        6,
+        23162880,
+        46034944
+      ],
+      [
+        7,
+        48013312,
+        150118400
+      ],
+      [
+        8,
+        33263616,
+        77213696
+      ],
+      [
+        9,
+        8073216,
+        17879040
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 227.859375,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 6,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 31989,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false,
+    "allRepeatCimPeaksIncluded": true,
+    "completedRuns": 0
+  },
+  "firstBudgetFailure": {
+    "firstFailure": null,
+    "causeProven": false
+  },
+  "failedDecoderRequest": {
+    "scope": "one-actual-in-progress-pool-request-at-abort-not-media-or-acceptance",
+    "sequence": 212236,
+    "observedPoolAddress": 2411072,
+    "poolName": null,
+    "payloadBytes": 1163520,
+    "refcountHeaderBytes": 16,
+    "failedIndividualAllocationBytes": 1163536,
+    "liveEntriesBeforeRequest": 5,
+    "cachedEntriesInRequestedPoolBeforeRequest": 0,
+    "poolFlags": 1073741824,
+    "maximumScalarBytesRead": 64,
+    "heapCopied": false,
+    "payloadRead": false,
+    "nativeFunctionsCalled": false,
+    "liveReferencesChanged": false,
+    "publicAcceptance": false
+  },
+  "allocatorFreeHeaders": {
+    "scope": "read-only-allocator-header-inventory-not-codec-payload-or-acceptance",
+    "complete": true,
+    "totalFreeChunkBytes": 6523400,
+    "largestFreeChunkBytes": 1163568,
+    "freeChunks": 255,
+    "designatedVictimBytes": 0,
+    "topChunkBytes": 965768,
+    "dynamicFootprintBytes": 31204160,
+    "segmentBase": 2182336,
+    "segmentBytes": 31204160,
+    "unclaimedMemoryAboveSegmentBytes": 167936,
+    "freeChunkSizeLog2Histogram": [
+      0,
+      0,
+      0,
+      0,
+      143,
+      76,
+      2,
+      8,
+      4,
+      0,
+      1,
+      5,
+      4,
+      1,
+      1,
+      1,
+      2,
+      1,
+      0,
+      3,
+      3,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "bins": [
+      {
+        "kind": "small",
+        "index": 2,
+        "chunks": 1,
+        "bytes": 16
+      },
+      {
+        "kind": "small",
+        "index": 3,
+        "chunks": 142,
+        "bytes": 3408
+      },
+      {
+        "kind": "small",
+        "index": 4,
+        "chunks": 63,
+        "bytes": 2016
+      },
+      {
+        "kind": "small",
+        "index": 5,
+        "chunks": 13,
+        "bytes": 520
+      },
+      {
+        "kind": "small",
+        "index": 13,
+        "chunks": 1,
+        "bytes": 104
+      },
+      {
+        "kind": "small",
+        "index": 14,
+        "chunks": 1,
+        "bytes": 112
+      },
+      {
+        "kind": "small",
+        "index": 19,
+        "chunks": 2,
+        "bytes": 304
+      },
+      {
+        "kind": "small",
+        "index": 20,
+        "chunks": 1,
+        "bytes": 160
+      },
+      {
+        "kind": "small",
+        "index": 24,
+        "chunks": 1,
+        "bytes": 192
+      },
+      {
+        "kind": "small",
+        "index": 26,
+        "chunks": 1,
+        "bytes": 208
+      },
+      {
+        "kind": "small",
+        "index": 27,
+        "chunks": 1,
+        "bytes": 216
+      },
+      {
+        "kind": "small",
+        "index": 28,
+        "chunks": 1,
+        "bytes": 224
+      },
+      {
+        "kind": "small",
+        "index": 30,
+        "chunks": 1,
+        "bytes": 240
+      },
+      {
+        "kind": "tree",
+        "index": 0,
+        "chunks": 4,
+        "bytes": 1200
+      },
+      {
+        "kind": "tree",
+        "index": 5,
+        "chunks": 1,
+        "bytes": 2032
+      },
+      {
+        "kind": "tree",
+        "index": 6,
+        "chunks": 1,
+        "bytes": 2424
+      },
+      {
+        "kind": "tree",
+        "index": 7,
+        "chunks": 4,
+        "bytes": 14056
+      },
+      {
+        "kind": "tree",
+        "index": 8,
+        "chunks": 1,
+        "bytes": 4648
+      },
+      {
+        "kind": "tree",
+        "index": 9,
+        "chunks": 3,
+        "bytes": 23440
+      },
+      {
+        "kind": "tree",
+        "index": 10,
+        "chunks": 1,
+        "bytes": 8400
+      },
+      {
+        "kind": "tree",
+        "index": 12,
+        "chunks": 1,
+        "bytes": 16656
+      },
+      {
+        "kind": "tree",
+        "index": 15,
+        "chunks": 1,
+        "bytes": 61240
+      },
+      {
+        "kind": "tree",
+        "index": 17,
+        "chunks": 2,
+        "bytes": 234720
+      },
+      {
+        "kind": "tree",
+        "index": 18,
+        "chunks": 1,
+        "bytes": 152928
+      },
+      {
+        "kind": "tree",
+        "index": 22,
+        "chunks": 2,
+        "bytes": 1537512
+      },
+      {
+        "kind": "tree",
+        "index": 24,
+        "chunks": 3,
+        "bytes": 3490656
+      }
+    ],
+    "headerWordsRead": 915,
+    "maximumHeaderWords": 32768,
+    "maximumChunks": 4096,
+    "heapCopied": false,
+    "payloadRead": false,
+    "nativeFunctionsCalled": false,
+    "allocatorMutated": false,
+    "liveFrameCount": null,
+    "fragmentationCauseProven": false
+  },
+  "actualAllocatorRoot": 1786520,
+  "abortObservedAt": "2026-10-09T17:59:20.305Z",
+  "attemptedHeapExtentBytes": 33587200,
+  "attemptedHeapExtentIsIndividualAllocation": false,
+  "finalOwnership": {
+    "scope": "private-split-production-pipeline-not-public-acceptance",
+    "decoderMemoryBytes": 33554432,
+    "encoderMemoryBytes": 16777216,
+    "aggregateWasmMemoryBytes": 50331648,
+    "frames": 106112,
+    "copiedPixelBytes": 245704458240,
+    "packets": 106112,
+    "completedPackets": 106112,
+    "copiedPacketBytes": 1115346558,
+    "peakFrameBytes": 2315520,
+    "peakPacketBytes": 244740,
+    "peakSideBytes": 8,
+    "activePackets": 0,
+    "queuedPackets": 0,
+    "queuedFrames": 0,
+    "additionalPixelBufferBytes": 0,
+    "additionalJsPacketBufferBytes": 0,
+    "failed": false,
+    "closed": true,
+    "maximumMediaAvioWriteBytes": 65536
+  },
+  "encoderOwnershipFailedFlagDoesNotProveDecoderSuccess": true,
+  "lastReportedMetrics": {
+    "inputBytes": 1060017306,
+    "outputBytes": 1206298852,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 65536,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 65536,
+    "elapsedMs": 3468839.16,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0,
+    "scratchBytes": 0
+  },
+  "completedConversions": 0,
+  "completeOutputsIndependentlyValidated": 0,
+  "requestedRepeats": 3,
+  "attemptedRepeats": 1,
+  "fragmentationCauseProven": false,
+  "heapLiveBytes": null,
+  "lateHevcPoolOomResolved": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "actualStackSymbols": [
+    {
+      "functionIndex": 4440,
+      "functionNameFromActualBinary": "sbrk",
+      "codeOffset": "0x5fafe6"
+    },
+    {
+      "functionIndex": 4435,
+      "functionNameFromActualBinary": "emscripten_builtin_malloc",
+      "codeOffset": "0x5f8ca4"
+    },
+    {
+      "functionIndex": 4470,
+      "functionNameFromActualBinary": "__wrap_posix_memalign",
+      "codeOffset": "0x606cc7"
+    },
+    {
+      "functionIndex": 4311,
+      "functionNameFromActualBinary": "av_malloc",
+      "codeOffset": "0x5df3bf"
+    },
+    {
+      "functionIndex": 4379,
+      "functionNameFromActualBinary": "av_refstruct_pool_get",
+      "codeOffset": "0x5ee1f2"
+    },
+    {
+      "functionIndex": 2060,
+      "functionNameFromActualBinary": "alloc_frame",
+      "codeOffset": "0x30b537"
+    },
+    {
+      "functionIndex": 1980,
+      "functionNameFromActualBinary": "hevc_receive_frame",
+      "codeOffset": "0x2b9005"
+    },
+    {
+      "functionIndex": 668,
+      "functionNameFromActualBinary": "ff_decode_receive_frame_internal",
+      "codeOffset": "0x10fbf6"
+    },
+    {
+      "functionIndex": 671,
+      "functionNameFromActualBinary": "decode_receive_frame_internal",
+      "codeOffset": "0x1114c6"
+    },
+    {
+      "functionIndex": 670,
+      "functionNameFromActualBinary": "avcodec_send_packet",
+      "codeOffset": "0x110aa4"
+    },
+    {
+      "functionIndex": 4468,
+      "functionNameFromActualBinary": "mpeg2_frames",
+      "codeOffset": "0x6048c9"
+    },
+    {
+      "functionIndex": 4462,
+      "functionNameFromActualBinary": "within_remux",
+      "codeOffset": "0x60395d"
+    }
+  ],
+  "actualDecoderBinary": {
+    "path": "work/mpeg2-split-pipeline-37739125738/within-mpeg2-split.wasm",
+    "bytes": 6904087,
+    "sha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c"
+  },
+  "workWindows": [
+    {
+      "thresholdBytes": 4194304,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        8420.02999999933,
+        9964.615000000224
+      ],
+      "candidateElapsedWindowMs": [
+        8989.210000000894,
+        10637.460000000894
+      ],
+      "candidateMinusBaselineMs": [
+        -975.4049999993294,
+        2217.4300000015646
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 8388608,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        19576.449999999255,
+        21208.20999999903
+      ],
+      "candidateElapsedWindowMs": [
+        20447.210000000894,
+        22008.370000001043
+      ],
+      "candidateMinusBaselineMs": [
+        -760.9999999981374,
+        2431.920000001788
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 16777216,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        43537.015000000596,
+        45114.98000000045
+      ],
+      "candidateElapsedWindowMs": [
+        42960.93499999866,
+        44514.91000000015
+      ],
+      "candidateMinusBaselineMs": [
+        -2154.045000001788,
+        977.894999999553
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 33554432,
+      "status": "overlapping-windows",
+      "baselineElapsedWindowMs": [
+        93777.94999999925,
+        95382.91999999993
+      ],
+      "candidateElapsedWindowMs": [
+        93319.90500000119,
+        94962.57499999925
+      ],
+      "candidateMinusBaselineMs": [
+        -2063.0149999987334,
+        1184.625
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    },
+    {
+      "thresholdBytes": 67108864,
+      "status": "candidate-later-window",
+      "baselineElapsedWindowMs": [
+        169544.06000000052,
+        171428.17499999888
+      ],
+      "candidateElapsedWindowMs": [
+        172198.62000000104,
+        173739.23000000045
+      ],
+      "candidateMinusBaselineMs": [
+        770.4450000021607,
+        4195.1699999999255
+      ],
+      "scope": "Partial observed output timing, no exact crossing/full-conversion/validated speed acceptance"
+    }
+  ],
+  "earlyWorkCheckpointSamplesEvictedFromBoundedRing": true,
+  "earlyTimingIndependentlyReconstructed": false,
+  "cleanupIdentities": {
+    "originalIdentityCount": 23,
+    "originalIdentitiesAbsent": true,
+    "reusedPids": [],
+    "noProcessesKilled": true,
+    "unavailableBirthsAssumedAbsent": false,
+    "conservativeBirthToleranceMs": 1
+  },
+  "normalProductionAndEngineAssetsRestored": true,
+  "allElevenPrivateAssetsAbsent": true,
+  "fullProtectedPostSha256Verified": true,
+  "terminalArtifacts": [
+    {
+      "path": "outputs/reports/2026-10-09T16-55-58-444Z-private-mpeg2-progress-compositing-full-native-100ms-trace.zip",
+      "bytes": 231036,
+      "sha256": "3ee2226e57f4bdc42ca458c8999e465c6a559dc084ac87d0f3a4b2f840b5b726"
+    },
+    {
+      "path": "outputs/reports/2026-10-09T16-55-58-444Z-private-mpeg2-progress-compositing-full-native-100ms.csv",
+      "bytes": 70056,
+      "sha256": "2a0c4324beb47669ae6bb6941d902b122ea9cf9b8f4f9b849dd572cfb4486e3b"
+    },
+    {
+      "path": "outputs/reports/2026-10-09T16-55-58-444Z-private-mpeg2-progress-compositing-full-native-100ms.html",
+      "bytes": 44924,
+      "sha256": "5453880b66b1dd456af87fe7d1939e430821c7c3bf12f031515e2da088736f60"
+    }
+  ],
+  "rawLosslesslyArchivedAndRedundantJsonRemoved": true,
+  "browserMode": "headless",
+  "windowsHidden": true,
+  "headedManualValidation": false,
+  "analysisSourcePins": {
+    "scripts/analyze-progress-compositing-full-terminal.mjs": "ae53482d06dacf0b3c41337c3ebd76389b0840659d4eb2650b95f1688b6642ed",
+    "scripts/lib/progress-full-terminal-facts.mjs": "8af3d2eb0efefddf63d5a526d1d9b54ee243d0769dabe9aa336138a55fc5fbdc"
+  },
+  "decision": "Keep private; failed at late HEVC pool allocation despite observed whole-tree increase below250. No unchanged full replay. Inspect actual aligned-allocation path before choosing a bounded fix."
+}

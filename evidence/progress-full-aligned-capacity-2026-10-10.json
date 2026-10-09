@@ -1,0 +1,59 @@
+{
+  "recordedAt": "2026-10-09T20:06:02.028Z",
+  "status": "actual-aligned-fallback-free-capacity-failure-explained-not-fix",
+  "inputs": {
+    "evidence/progress-full-aligned-callsite-2026-10-10.json": {
+      "bytes": 48017,
+      "sha256": "5c874ae6767049c965ae91d08db0b981494bb62b964fac2d7a4c44dd3a285404"
+    },
+    "evidence/progress-full-aligned-normalization-verified-2026-10-10.json": {
+      "bytes": 17353,
+      "sha256": "a90f56211146520c3cbbe64d6ee543c09680c830a48cfc5926df7f24930842cb"
+    },
+    "output/playwright/2026-10-08T07-27-40-370Z-late-dlmalloc-static.json": {
+      "bytes": 128420,
+      "sha256": "d03b161ce389d252949bd1d36dda90298a58bd090084c2401218a17e2c3a2f16"
+    },
+    "evidence/2026-10-09T16-55-27-062Z-progress-compositing-original-full-completion-analysis.json": {
+      "bytes": 15111,
+      "sha256": "7deae401de86addffefca6d656997142875b857bd6a735f9efb4666090384f16"
+    }
+  },
+  "actualBinary": {
+    "path": "work/mpeg2-split-pipeline-37739125738/within-mpeg2-split.wasm",
+    "bytes": 6904087,
+    "sha256": "3e744dc4c5083bcd22d779f705ab65a9ec7573e340f8ec0e17879ab382aa8c6c"
+  },
+  "actualRequestAndFreeHeadersJoined": true,
+  "exactCompiledAllocatorAndWrapperBodiesVerified": true,
+  "originalAvMallocBytes": 1163536,
+  "ordinaryMallocChunkBytes": 1163544,
+  "fallbackMallocArgumentBytes": 1163572,
+  "fallbackMallocChunkBytes": 1163576,
+  "largestActualFreeChunkBytes": 1163568,
+  "fallbackChunkShortfallBytes": 8,
+  "totalActualFreeChunkBytes": 6523400,
+  "maximumTopPlusUnclaimedBytes": 1133704,
+  "ordinaryChunkCouldFitRecordedLargest": true,
+  "noRecordedFreeChunkCanFitActualFallback": true,
+  "evenUnclaimedTailCannotMakeTopFitFallback": true,
+  "fragmentedFreeCapacityForActualFallbackProven": true,
+  "observedOrdinaryMallocPointer": null,
+  "ordinaryMallocPointerAlignmentObserved": false,
+  "whyAllocatorFragmentedProven": false,
+  "liveFrameInventoryMeasured": false,
+  "optimalFixProven": false,
+  "productionEngineChanged": false,
+  "runtimeFixImplemented": false,
+  "publicAcceptance": false,
+  "historicalRawAndTerminalFactsUnmodified": true,
+  "browserConversionsPerformed": 0,
+  "actualConverterFunctionsExecuted": 0,
+  "heapLimitRaised": false,
+  "noDocker": true,
+  "sourcePins": {
+    "scripts/analyze-progress-full-aligned-capacity.mjs": "06075fec2f80562487541d9c991a7ff89116eb6f1943c24368f0c3eec95d3256",
+    "scripts/lib/aligned-fallback-capacity.mjs": "801c751b2aad88572417f9c7ee3f3040a4063b2f09d523becf48a27e267d3f9e"
+  },
+  "nextAction": "Choose and test a bounded alignment/cache policy that avoids the padded fallback/auxiliary churn without modifying live references, quality or fixed heaps; no unchanged full replay."
+}

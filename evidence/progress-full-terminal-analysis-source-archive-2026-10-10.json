@@ -1,0 +1,16 @@
+{
+  "recordedAt": "2026-10-09T20:07:45.299Z",
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-10-full-terminal-analysis-executed-sources.json.gz",
+    "bytes": 25306,
+    "sha256": "1760358e6adaa077dc93a7563674070c0a610fd1a7447c632536cb7d78a31d13",
+    "restoredBytes": 81533,
+    "restoredSha256": "7efbf2d9ddcdf6f51e68092a11718c2073fd85c1233293484968bf62dfcf6ddd",
+    "preimages": 11
+  },
+  "failedAttemptRetained": true,
+  "sourceSha256": "14ab534ef5ca60b26da63ef9cc3eead04fa79ad7b895d893a9acb2dcf26532f2",
+  "conversionsPerformed": 0,
+  "noBrowserOrBuild": true,
+  "existingReceiptsUnmodified": true
+}
