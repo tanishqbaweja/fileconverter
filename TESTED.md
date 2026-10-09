@@ -4,6 +4,27 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Actual private AIFF compile and bounded collection succeeded
+
+Corrected no-Docker run37998603437/job114050863894 at immutable20cf3cb completed
+successfully. All12 artifact/source hashes, exact five compiled-C metadata changes,
+and actual16/32MiB shared Wasm limits verified;9,148,560 bytes of useful private
+tools retained under work. Initial collector session70049 failed its too-small8MiB
+static-file check (published Wasm alone8,793,240 bytes). Failure retained and exact
+original collector hash reconstructible; only download admission corrected, no
+codec/fidelity/heap/process250MiB weakening. Nine focused tests PASS478.737ms,
+scoped lint0. Owned download/runtime scratch removed. Exact redundant hosted
+artifact11648103107 removed after local verification; API now zero artifacts.
+See build, initial-collection-failure and hosted-cleanup evidence JSONs.
+Subsequent real headless Chrome154 gate: existing AAC/M4A case PASS exact7 tags,
+178-byte PNG/full PCM/every normalized audio clock/hash. Unicode case FAILED
+expected-art1/observed0. Exact native fixture control reproduced failing inputSHA:
+mdta fixture itself has0 pictures; ordinary metadata fixture has1. No converter
+change justified by that failure. Original failure report and native control
+retained. Small complete-tree diagnostic200.08984375MiB, NOT stress/repeat/scaling
+acceptance. Helper births absent, OPFS empty, served engine restored, own generated
+fixtures/outputs/browser profile removed. No public or speedup acceptance.
+
 ## 2026-10-10 — Actual full single-idle run FAILED in encoder; owned output cleaned
 
 Corrected AIFF builder ACTUALLY dispatched once at new SHA20cf3cb on normal

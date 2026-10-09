@@ -1,0 +1,20 @@
+{
+  "status": "failed-collection-not-build-or-browser-failure",
+  "runId": "37998603437",
+  "collectorSourceSha256": "616d4647e06dd8c8bf9cd2e5ff2da39598d0271c320b48e7776cb459d1560fe4",
+  "sessionId": 70049,
+  "exitCode": 1,
+  "failedAssertion": "info.isFile() && !info.isSymbolicLink() && info.size > 0 && info.size < 8 * 1024 ** 2",
+  "reportedLocation": "scripts/collect-aiff-id3-build.mjs:43:12",
+  "failureFilenameAvailable": false,
+  "publishedAiffWasmBytes": 8793240,
+  "initialPerFileMaximumBytesExclusive": 8388608,
+  "causeOfIncorrectBound": "Blanket 8 MiB static artifact bound was smaller than the already published AIFF Wasm; actual failing filename was not reported and is not invented",
+  "ownedDownloadRuntimeRemoved": true,
+  "reusableToolDirectoryCreated": false,
+  "buildProofCreated": false,
+  "hostedArtifactDeleted": false,
+  "browserConversionsPerformed": 0,
+  "publicAcceptance": false,
+  "correction": "Wasm at most existing published bytes plus 1 MiB; other static tool files at most 1 MiB; unchanged 16 MiB total, 8 MiB archive, source/artifact hashes, 16/32 MiB Wasm limits, ownership and cleanup"
+}

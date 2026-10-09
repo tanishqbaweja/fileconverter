@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-10-09T22:31:33.036Z",
+  "status": "exact-owned-hosted-archive-absent-local-verified-private-tools-retained",
+  "buildProofSha256": "f6399f91077eb7295223f0ed5f20b2fe1f31e02ae0aa8103868f11cdada0177c",
+  "before": {
+    "total_count": 1,
+    "artifacts": [
+      {
+        "id": 11648103107,
+        "node_id": "MDg6QXJ0aWZhY3QxMTY0ODEwMzEwNw==",
+        "name": "private-aiff-id3-specialist-37998603437",
+        "size_in_bytes": 3088178,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11648103107",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11648103107/zip",
+        "expired": false,
+        "digest": "sha256:dc1fd686c0ef6c7361d80b6e5b315a886c8f839a8e9015289523ab46bc492467",
+        "created_at": "2026-10-09T22:25:51Z",
+        "updated_at": "2026-10-09T22:25:51Z",
+        "expires_at": "2026-10-10T22:25:50Z",
+        "workflow_run": {
+          "id": 37998603437,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "codex/aiff-id3-specialist-20261010",
+          "head_sha": "20cf3cb851fd45225754e0a1e42be0343aabeaf1"
+        }
+      }
+    ]
+  },
+  "after": {
+    "total_count": 0,
+    "artifacts": []
+  },
+  "deletionPerformed": true,
+  "exactArtifactId": 11648103107,
+  "localToolsVerified": true,
+  "localToolsBytes": 9148560,
+  "localToolsRetainedForBrowserTests": true,
+  "ownedRuntimeRemoved": true,
+  "convertedFilesDeleted": 0,
+  "originalReadOrChanged": false,
+  "sourceSha256": "c75440c937f9681e7bf16b6ef6aa63b308eb454dc233377ce3f7466353d566ff",
+  "browserConversionOrPublicAcceptance": false
+}

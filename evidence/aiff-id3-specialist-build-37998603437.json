@@ -1,0 +1,724 @@
+{
+  "recordedAt": "2026-10-09T22:31:24.295Z",
+  "status": "actual-private-aiff-id3-build-source-and-wasm-bounds-verified-not-browser-acceptance",
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-09T22:19:46Z",
+    "databaseId": 37998603437,
+    "headSha": "20cf3cb851fd45225754e0a1e42be0343aabeaf1",
+    "jobs": [
+      {
+        "completedAt": "2026-10-09T22:25:55Z",
+        "conclusion": "success",
+        "databaseId": 114050863894,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-09T22:19:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T22:19:50Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T22:19:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:19:55Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T22:19:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:20:03Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-09T22:19:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:20:22Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-09T22:20:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:50Z",
+            "conclusion": "success",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-09T22:20:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "success",
+            "name": "Retain private metadata-only AIFF specialist",
+            "number": 6,
+            "startedAt": "2026-10-09T22:25:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 7,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 8,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 9,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 10,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 11,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 12,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 13,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 14,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 15,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 16,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 17,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:51Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 18,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:54Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 19,
+            "startedAt": "2026-10-09T22:25:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:54Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 38,
+            "startedAt": "2026-10-09T22:25:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T22:25:54Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 39,
+            "startedAt": "2026-10-09T22:25:54Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37998603437/job/114050863894"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-09T22:25:56Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37998603437"
+  },
+  "artifact": {
+    "id": 11648103107,
+    "node_id": "MDg6QXJ0aWZhY3QxMTY0ODEwMzEwNw==",
+    "name": "private-aiff-id3-specialist-37998603437",
+    "size_in_bytes": 3088178,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11648103107",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11648103107/zip",
+    "expired": false,
+    "digest": "sha256:dc1fd686c0ef6c7361d80b6e5b315a886c8f839a8e9015289523ab46bc492467",
+    "created_at": "2026-10-09T22:25:51Z",
+    "updated_at": "2026-10-09T22:25:51Z",
+    "expires_at": "2026-10-10T22:25:50Z",
+    "workflow_run": {
+      "id": 37998603437,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/aiff-id3-specialist-20261010",
+      "head_sha": "20cf3cb851fd45225754e0a1e42be0343aabeaf1"
+    }
+  },
+  "manifest": {
+    "engine": "within-aiff-private-id3-specialist",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "ffmpegAmrPatchSha256": "cdfa17008d34716c1b16783cd4677647bb4b6c211628fa5adff22be450b711d5",
+    "ffmpegAviIndexPatchSha256": "0b6771caab27b60763d57a42086e4e7fa1addfb4e72e95294d0859a90af08732",
+    "opencoreAmrVersion": "0.1.6",
+    "opencoreAmrSourceSha256": "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
+    "lameVersion": "4.0",
+    "lameSourceSha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
+    "opusVersion": "1.6.1",
+    "opusSourceSha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+    "liboggVersion": "1.3.6",
+    "liboggSourceSha256": "5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061",
+    "libvorbisVersion": "1.3.7",
+    "libvorbisSourceSha256": "b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b",
+    "libtheoraVersion": "1.2.0",
+    "libtheoraSourceSha256": "279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e",
+    "libvpxVersion": "1.16.0",
+    "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+    "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
+    "currentWrapperSourceSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+    "mp4WebmOpusPrimingSourcePatchSha256": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+    "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+    "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
+    "directSourcePatchSha256": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+    "directMp4OnlySourcePatchSha256": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+    "licenses": [
+      "FFmpeg LGPL-3.0-or-later",
+      "LAME LGPL-2.0-or-later",
+      "libopus BSD-3-Clause",
+      "libogg BSD-3-Clause",
+      "libvorbis BSD-3-Clause",
+      "libtheora BSD-3-Clause",
+      "libvpx BSD-3-Clause",
+      "OpenCORE AMR Apache-2.0"
+    ],
+    "initialWasmMemoryBytes": 16777216,
+    "maximumWasmMemoryBytes": 33554432,
+    "modules": [
+      {
+        "name": "within-aiff",
+        "wasmPthreadPoolSize": 0,
+        "videoCodecThreads": 1,
+        "initialWasmMemoryBytes": 16777216,
+        "maximumWasmMemoryBytes": 33554432,
+        "wasmGrowthStepBytes": 4194304,
+        "entrypoint": "within_aiff",
+        "sourceSha256": "61a79709a46ded6d7d72f92801cf2979bf3881d621e7f84f530f7f77335fddd1",
+        "profiles": [
+          "m4a-to-aiff"
+        ]
+      }
+    ],
+    "wasmSimd": true,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "outstandingWrites": 1,
+    "audioFifoMaximumQueuedSamples": 16384,
+    "audioEncoderOptions": {
+      "selectableCodecs": [
+        "mp3",
+        "aac",
+        "opus",
+        "vorbis",
+        "wma",
+        "amr",
+        "flac",
+        "alac",
+        "pcm"
+      ],
+      "selectableCompressionModes": [
+        "lossy",
+        "lossless"
+      ],
+      "selectableBitRates": [
+        64000,
+        96000,
+        128000,
+        192000,
+        256000,
+        320000
+      ],
+      "selectableSampleRates": [
+        24000,
+        32000,
+        44100,
+        48000
+      ],
+      "selectableChannels": [
+        1,
+        2
+      ],
+      "selectableQualityPolicies": [
+        "smaller",
+        "balanced",
+        "higher"
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true,
+      "codecAndCompressionMustMatchOutputProfile": true
+    },
+    "audioArtworkOptions": {
+      "supportedOutputs": [
+        "mp3",
+        "flac"
+      ],
+      "supportedImageCodecs": [
+        "mjpeg",
+        "png"
+      ],
+      "maximumImages": 1,
+      "maximumBytes": 4194304,
+      "maximumDimension": 4096,
+      "maximumPixels": 16777216,
+      "packetCopyWithoutImageDecode": true
+    },
+    "matroskaArtworkOptions": {
+      "supportedImageCodecs": [
+        "mjpeg",
+        "png"
+      ],
+      "maximumImages": 8,
+      "maximumBytesPerImage": 4194304,
+      "maximumTotalBytes": 8388608,
+      "maximumDimension": 4096,
+      "maximumPixelsPerImage": 16777216,
+      "representation": "matroska-attachment",
+      "packetCopyWithoutImageDecode": true
+    },
+    "aacEncoderOptions": {
+      "coder": "fast",
+      "tns": false,
+      "pns": false,
+      "intensityStereo": false,
+      "midSideStereo": false,
+      "supportedSampleRates": [
+        8000,
+        11025,
+        12000,
+        16000,
+        22050,
+        24000,
+        32000,
+        44100,
+        48000
+      ],
+      "preserveStandardSourceRate": true,
+      "maximumSampleRate": 48000,
+      "monoBitRate": 128000,
+      "stereoBitRate": 192000
+    },
+    "opusEncoderOptions": {
+      "application": "audio",
+      "complexity": 0,
+      "vbr": true,
+      "supportedSampleRates": [
+        8000,
+        12000,
+        16000,
+        24000,
+        48000
+      ],
+      "preserveStandardSourceRate": true,
+      "maximumSampleRate": 48000,
+      "monoBitRate": 64000,
+      "stereoBitRate": 128000
+    },
+    "vorbisEncoderOptions": {
+      "quality": 4,
+      "preserveSourceRate": true,
+      "maximumSampleRate": 48000,
+      "maximumChannels": 2
+    },
+    "mp3EncoderOptions": {
+      "compressionLevel": 9,
+      "preservedSpeechSampleRates": [
+        8000,
+        16000
+      ],
+      "monoBitRatesBySampleRate": {
+        "8000": 32000,
+        "16000": 64000,
+        "default": 128000
+      },
+      "stereoBitRate": 192000,
+      "selectableBitRates": [
+        64000,
+        96000,
+        128000,
+        192000,
+        256000,
+        320000
+      ],
+      "selectableSampleRates": [
+        32000,
+        44100,
+        48000
+      ],
+      "selectableChannels": [
+        1,
+        2
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true
+    },
+    "videoEncoderOptions": {
+      "selectableCodecs": [
+        "vp8",
+        "vp9",
+        "mpeg4",
+        "theora"
+      ],
+      "selectableMaximumWidths": [
+        320,
+        480,
+        640
+      ],
+      "selectableBitRates": [
+        300000,
+        600000,
+        1000000,
+        2000000,
+        4000000
+      ],
+      "theoraUsesQualityBasedVbr": true,
+      "selectableFrameRateCaps": [
+        15,
+        24,
+        25,
+        30
+      ],
+      "selectableQualityPolicies": [
+        "smaller",
+        "balanced",
+        "higher"
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true,
+      "neverUpscales": true,
+      "neverFrameRateUpconverts": true
+    },
+    "wmaEncoderOptions": {
+      "speechInputMaximumSampleRate": 16000,
+      "speechOutputSampleRate": 32000,
+      "speechMonoBitRate": 64000,
+      "defaultOutputSampleRate": 48000,
+      "defaultBitRate": 320000
+    },
+    "largeFileMemfs": false,
+    "profiles": [
+      "m4a-to-aiff"
+    ],
+    "enabledDecoders": [
+      "aac",
+      "alac",
+      "amrnb",
+      "amrwb",
+      "flac",
+      "h264",
+      "hevc",
+      "mp3",
+      "mpeg2video",
+      "mpeg4",
+      "opus",
+      "pcm_s16be",
+      "pcm_s16le",
+      "theora",
+      "vorbis",
+      "wmav1",
+      "wmav2"
+    ],
+    "enabledEncoders": [
+      "aac",
+      "alac",
+      "flac",
+      "h263",
+      "libmp3lame",
+      "libopencore_amrnb",
+      "libopus",
+      "libtheora",
+      "libvorbis",
+      "libvpx_vp8",
+      "libvpx_vp9",
+      "mpeg4",
+      "pcm_s16be",
+      "pcm_s16le",
+      "wmav2"
+    ],
+    "enabledDemuxers": [
+      "aac",
+      "aiff",
+      "amr",
+      "asf",
+      "avi",
+      "flac",
+      "flv",
+      "h264",
+      "hevc",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mp3",
+      "mpegts",
+      "mpegvideo",
+      "ogg",
+      "wav"
+    ],
+    "enabledMuxers": [
+      "3gp",
+      "adts",
+      "aiff",
+      "amr",
+      "asf",
+      "avi",
+      "flac",
+      "flv",
+      "h264",
+      "hevc",
+      "ipod",
+      "ivf",
+      "latm",
+      "m4v",
+      "matroska",
+      "mov",
+      "mp3",
+      "mp4",
+      "mpeg2video",
+      "mpegts",
+      "ogg",
+      "wav",
+      "webm"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "av1_frame_merge",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "vp9_superframe",
+      "vvc_mp4toannexb"
+    ],
+    "scope": "private-changed-source-build-not-browser-or-public-acceptance",
+    "sources": {
+      "media/ffmpeg/build-aiff-id3-specialist.mjs": "859064146aaa0ae3358e576e3082f268df4a53b0e7c4044ecda6cf94f6d670f0",
+      "media/ffmpeg/aiff-id3-build-recipe.mjs": "33a5dbc24e8b5da20296dcc2244eef0b3354f56b32271dd10d0ba7b3f7366ada",
+      "media/ffmpeg/aiff-id3-build-manifest.mjs": "8e64923258f90133b284642e2b04b28e39047db027a961a519d626fc5cfc26f4",
+      "media/ffmpeg/aiff-id3-specialist-source.mjs": "b249dd4c67e994b3a069357dd196964c0b2faed8fbff8c077e8cf7dc0913b2e4",
+      "media/ffmpeg/make-aiff-id3-specialist.mjs": "cf95d3192f3c29b762af1636b0010e51c8c3e506801b09ff359bc9afc28c871a",
+      "media/ffmpeg/make-aiff-specialist.mjs": "58750a89366d79a09d81996bd8b3f348cdeec24055a196b413c91e746746d2f4",
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/reproduce-nondocker.sh": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+      "media/ffmpeg/build-remux.sh": "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e",
+      "media/ffmpeg/build-libraries.sh": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",
+      "media/ffmpeg/wasm-pkg-config.sh": "2d72728fc32bf856f3f46f525f1fe48f91126304e42d16175b1e527b701f6998",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      "scripts/lib/aiff-id3-build-workflow.mjs": "bf59359d930523f7adef3ed5c5caa580a38f87d8b102dc69b2140d028524edb4",
+      ".github/workflows/reproduce-ffmpeg-nondocker.yml": "b9e57e066e35f8467f843a63eed1f411dd56720686f14f1b5e3f9775d1be0091",
+      "media/ffmpeg/build-lame.sh": "12089e665699250514741677b7358b8207b099317d1e671ec908171b90b83913",
+      "media/ffmpeg/build-ogg.sh": "8dda87254f43bcea0125e2f1e0464ddf3db237776bf807e2fd60c343793de38f",
+      "media/ffmpeg/build-opencore-amr.sh": "37fde3e50eec823b6fdc8c2dda1b8d47547dbcd0d74844a618ce1ebbdb9d4185",
+      "media/ffmpeg/build-opus.sh": "76fe92ffba0e6ea011be0998de78ef76431874bb6c7c5b7336b6f84d4d23a0fb",
+      "media/ffmpeg/build-vorbis.sh": "9559bbcd2ab8f4b57a8c4248573c08b4724c3ccd3b2533fa283b83a5d13522a7",
+      "media/ffmpeg/build-vpx.sh": "11bb4bb4d9650e82ec47a3b7ae4f6ca0c45b21261fc306e012594cd880a7dc7c",
+      "media/ffmpeg/patches/amr-bounded-packets.patch": "cdfa17008d34716c1b16783cd4677647bb4b6c211628fa5adff22be450b711d5",
+      "media/ffmpeg/patches/audio-options-source.patch": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+      "media/ffmpeg/patches/avi-bounded-index.patch": "0b6771caab27b60763d57a42086e4e7fa1addfb4e72e95294d0859a90af08732",
+      "media/ffmpeg/patches/direct-mp4-only-source.patch": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+      "media/ffmpeg/patches/direct-published-source.patch": "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212",
+      "media/ffmpeg/patches/direct-source-79e4db.patch": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+      "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+      "media/ffmpeg/patches/matroska-artwork-source.patch": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+      "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+      "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "media/ffmpeg/patches/mp4-webm-opus-priming-source.patch": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+      "media/ffmpeg/patches/mpeg2-encoder-pool-release-diagnostic.patch": "e8925b20f9e87d2eaecf77fedd030547416679ad0afce4300feef5265ed70d92",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "media/ffmpeg/patches/openh264-force-intra-wasm.patch": "aa2292dee4498598d4ef7ec28b8fe92b07150360f66a64d9ea1f5d99caeef55f",
+      "media/ffmpeg/patches/refstruct-readonly-pool-diagnostic.patch": "18e5a8889c2675a419757eb04ed6aa2c9a9730a7e4f9300e059e9e53da3d1280",
+      "media/ffmpeg/patches/specialist-source-79e4db.patch": "5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941",
+      "media/ffmpeg/patches/theora-source.patch": "903f48bdc2b06db90b378c60f006fe110880e47684102340f99ddb5f02a15dde"
+    },
+    "artifacts": {
+      "LICENSE.lame": "e64f9c5a18f56828c10a575df13ade641aa3af4512a7afe6c411256943b57aaf",
+      "LICENSE.lame-linking": "5c1f8d44f1eacbea3e1c31ff6ee11a4e1690ccbed4ee4af16de3b6eb61dc69a8",
+      "LICENSE.libogg": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814",
+      "LICENSE.libtheora": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc",
+      "LICENSE.libvorbis": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a",
+      "LICENSE.opencore-amr": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb",
+      "LICENSE.opus": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+      "config_components.h": "ce9c59dfc4bf2af0f1c2a51e7302035447924c3d6f266a3a9bbe1314f52ba0c4",
+      "within-aiff.mjs": "01caddd34039e3c4b593589a29d32b9518e9af592528179e4ef6db65476c8d07",
+      "within-aiff.wasm": "dcb8453176f3fb27ed155e231aef80141d50e5ca58008faed58dcd549a38cf2b",
+      "within_aiff.c": "61a79709a46ded6d7d72f92801cf2979bf3881d621e7f84f530f7f77335fddd1"
+    },
+    "metadataCandidate": {
+      "allowedSourceEdits": 5,
+      "publishedSourceRecoveredSha256": "a542881bee3e4cd407f61be87d284fabe6a9ab7b70d2c1db63e542f745395814",
+      "compiledSourceSha256": "61a79709a46ded6d7d72f92801cf2979bf3881d621e7f84f530f7f77335fddd1",
+      "generatedRecipeSha256": "e34d82eb3d905e59927870a8f38361c210570dd2e1748c685267b9154bad9133",
+      "actualWasmMemoryLimitsVerified": true,
+      "codecSettingsChanged": false,
+      "ioBoundsChanged": false,
+      "memoryLimitsRaised": false,
+      "reproductionOfPublishedBinaryAttempted": false,
+      "actualBrowserConversionVerified": false,
+      "completeChromiumMemoryAcceptance": false,
+      "audioFidelityAcceptance": false,
+      "speedImprovementProven": false,
+      "publicAcceptance": false
+    }
+  },
+  "files": [
+    {
+      "file": "LICENSE.lame",
+      "bytes": 25281,
+      "sha256": "e64f9c5a18f56828c10a575df13ade641aa3af4512a7afe6c411256943b57aaf"
+    },
+    {
+      "file": "LICENSE.lame-linking",
+      "bytes": 503,
+      "sha256": "5c1f8d44f1eacbea3e1c31ff6ee11a4e1690ccbed4ee4af16de3b6eb61dc69a8"
+    },
+    {
+      "file": "LICENSE.libogg",
+      "bytes": 1466,
+      "sha256": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814"
+    },
+    {
+      "file": "LICENSE.libtheora",
+      "bytes": 1470,
+      "sha256": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc"
+    },
+    {
+      "file": "LICENSE.libvorbis",
+      "bytes": 1470,
+      "sha256": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a"
+    },
+    {
+      "file": "LICENSE.opencore-amr",
+      "bytes": 10271,
+      "sha256": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb"
+    },
+    {
+      "file": "LICENSE.opus",
+      "bytes": 1945,
+      "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551"
+    },
+    {
+      "file": "build-manifest.json",
+      "bytes": 14846,
+      "sha256": "8264783202a2880282e4edd4005e0039f88e8b47ccb943eadf0af0ac42a21830"
+    },
+    {
+      "file": "config_components.h",
+      "bytes": 75831,
+      "sha256": "ce9c59dfc4bf2af0f1c2a51e7302035447924c3d6f266a3a9bbe1314f52ba0c4"
+    },
+    {
+      "file": "within-aiff.mjs",
+      "bytes": 45561,
+      "sha256": "01caddd34039e3c4b593589a29d32b9518e9af592528179e4ef6db65476c8d07"
+    },
+    {
+      "file": "within-aiff.wasm",
+      "bytes": 8796362,
+      "sha256": "dcb8453176f3fb27ed155e231aef80141d50e5ca58008faed58dcd549a38cf2b"
+    },
+    {
+      "file": "within_aiff.c",
+      "bytes": 173554,
+      "sha256": "61a79709a46ded6d7d72f92801cf2979bf3881d621e7f84f530f7f77335fddd1"
+    }
+  ],
+  "publishedToolSizeReference": {
+    "bytes": 8793240,
+    "sha256": "56806d4dd2fa3e4d6f354fd2c8f41f7f0025b0d8adb754cac5a5e7aae52f354c",
+    "maximumMetadataModuleGrowthBytes": 1048576
+  },
+  "reusableToolDirectory": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-specialist-37998603437",
+  "reusableToolBytes": 9148560,
+  "retentionReason": "Small private tool required for pending genuine browser tag/artwork/audio/memory tests; remove when superseded",
+  "downloadRuntimeRemoved": true,
+  "hostedCleanupStepPassed": true,
+  "compiledCMetadataEditsReversedExactly": true,
+  "actualWasmLimitsIndependentlyVerified": true,
+  "collectorSourceSha256": "7bc62549e3f5b18c599b653706cd6bb272a12626aa1ea4d53b377ddd9f4cf7b5",
+  "originalReadOrCopied": false,
+  "noDocker": true,
+  "browserConversionsPerformed": 0,
+  "publishedAssetsChanged": false,
+  "speedImprovementProven": false,
+  "audioFidelityAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false
+}

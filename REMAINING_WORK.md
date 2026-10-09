@@ -5,6 +5,43 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Private AIFF build succeeded; bounded collection and hosted cleanup verified
+
+Status: **Partially implemented**. Actual corrected no-Docker run37998603437 /
+job114050863894 / SHA20cf3cb completed successfully, including the private upload
+and always-cleanup steps. All12 local tool hashes and immutable executed sources,
+five reversible compiled-C metadata edits, imported shared16/32MiB Wasm limits,
+and profile28-only scope independently verified. Evidence:
+`evidence/aiff-id3-specialist-build-37998603437.json`.
+
+Initial collection failed because its blanket8MiB static-file bound was already
+smaller than the published8,793,240-byte Wasm; failing filename unavailable, not
+invented. Corrected only static-tool size admission: existing module+1MiB max,
+other files1MiB max, unchanged16MiB total/archive8MiB/source/hash/ownership/heap
+checks. Nine focused tests PASS478.737ms; scoped zero-warning lint passed.
+`evidence/aiff-id3-initial-collection-failure-2026-10-10.json` preserves the failure.
+Fresh failed and successful download/cache scratch removed. Exactly one useful
+9,148,560-byte local toolset retained for browser tests, not converted media.
+Hosted artifact11648103107 deleted only after local hash verification; actual API
+confirms zero artifacts. `evidence/aiff-id3-hosted-cleanup-37998603437.json`.
+
+Actual first headless Chrome154 gate ran: existing AAC/M4A artwork case passed
+seven tags, exact178-byte PNG, complete independently decoded PCM and every
+normalized1024-sample frame hash/clock. Unicode ALAC case failed an art assertion;
+native control reproduced its exact sourceSHA and proved generated mdta input
+contained ZERO attached pictures. Standard metadata fixture preserves ONE picture.
+This is a fixture bug, not proof of an AIFF artifact-loss cause. Failure and own
+cleanup retained in `evidence/2026-10-09T22-34-37-518Z-aiff-id3-browser.json`;
+exact native control is `evidence/aiff-unicode-fixture-control-2026-10-10.json`.
+Complete-tree small diagnostic200.08984375MiB; not stress/scaling/repeat acceptance.
+All observed helper births absent, OPFS empty, normal served engine hashes
+restored, own fixture/output/profile scratch gone. Public assets/manifests intact.
+Next correct and qualify Unicode fixtures BEFORE browser staging; test artwork
+where source actually has it and independent existing-author precedence separately.
+No new public capability, speed, repeat or scaling acceptance. Full-original
+encoder failure remains separately unresolved below.
+This cycle changes authoritative state (PROGRESS), not an unchanged build retry.
+
 ## 2026-10-10 — Full single-idle terminal failure and independent AIFF build correction
 
 ONE actual corrected AIFF build now live: run37998603437/job114050863894/new
