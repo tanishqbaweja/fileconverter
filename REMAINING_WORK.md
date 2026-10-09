@@ -5,6 +5,50 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Matched full-original copy-kernel comparison PREPARED; no browser yet
+
+Previous turn PROGRESS: new142-byte two-existing-heaps kernel, real five-case
+production-browser codec/recovery success,25 focused regressions, cleanup,
+lossless evidence compaction and remote-verified37d3ac5. Old56971 and52353 are
+TERMINAL, never poll/restart. Current worktree and protected fixture constraints
+rechecked; original goal/spec and Playwright skill reread, npx present, no AGENTS.
+
+New diagnose-split-copy-progress.mjs derives from the ACTUALLY executed paired
+controller/source, not guessed benchmark code. Both versions serve the SAME
+normal UI315630B/e018d973...03172, same actual3e744 decoder/settings/quality/
+fixed32+16MiB/64KiB/onewrite, ALL Chromium processes/250MiB/SAME lower settled
+five-minute blank/full original2958573265B/SHA/three full-run+independent
+validators/finally. Only candidate uses the newly validated native copy kernel.
+No UI candidate stacking/rebuild during candidate setup; normal finally retained.
+Fresh2GiB physical+virtual and32GiB disk guards before actual launch, sequential
+owned headless/hidden children, compact failure traces/reports and restoration.
+
+New bounded scalar observer retains just FIRST successful copied/encoded frame:
+width/height/pixel format/active byte count and3 source/target strides. No media
+views, offsets, pixels, per-frame history or growing queues; scalar record cannot
+prove native allocation cause. Existing codec/AVIO/owner code reconstructs exactly.
+Additional4/8MiB timing brackets join16/32/64: OBSERVATIONS ONLY, diagnostic still
+stops at64MiB or300s, not4/8MiB. Full input remains protected/uncut; cancellation
+still FAILS full conversion and no short-run/whole-memory/speed/public acceptance.
+Missing/bracket lower times stay null, no interpolation or overshoot speed claim.
+
+Preparation-only receipt2026-10-09T14-28-13-539Z-split-copy-progress-preparation.json:
+136 current pre/post pins; both generated drivers syntax PASS,48758/48725 UTF8B,
+same normal asset binding; ZERO executions/builds/browser/actual frame layouts.
+Four focused recipe/scalar/timing tests PASS332.5071ms, seven-file scoped lint0.
+Pre-browser harness failures recorded: complete-state assertion has real third
+error argument; stager name appears in source pin list AND three calls; replacing
+before source-list injection is needed for exact reverse reconstruction. Corrected
+using actual source, no conversion gates weakened, no browser/profile/fixture
+replays. Owned preparation wrappers removed normally.
+
+NEXT one pushed-source matched pair, observe SAME returned handle through actual
+terminal state; do not concurrently edit pinned files/build/stage/open another
+browser. At terminal verify actual first layout/copy metrics/checkpoints/native
+late-inclusive peaks/protected post-SHA/restoration/identity cleanup and reports.
+Native allocation and separate late HEVC pool OOM remain unresolved; full goal
+ACTIVE/INCOMPLETE. No speed, full-source, repeats or250MiB acceptance yet.
+
 ## 2026-10-09 — New private two-memory copy kernel: real browser correctness passed; speed/memory pending
 
 Concrete new transport candidate, not another UI-only change. Auditable
