@@ -5,6 +5,54 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Progress compositing has controlled browser evidence and private build
+
+ONE changed headless controlled CSS test from pushed6f78cb1, session34447 now
+TERMINAL0. Receipt2026-10-09T15-18-50-602Z: actual normal production App binding/
+Chrome154.0.8037.98/headers/cross-origin isolation, NO selected file/conversion.
+Explicit labelled UI fixture replays34 retained real-input progress values at
+125ms, four ABBA repeats. Width baseline LayoutCount1007/1012, candidate0/0;
+baseline layout time65.082/74.362ms vs candidate0/0. This proves isolated bar
+layout savings ONLY, not full conversion speed/memory/native allocation cause.
+Seven real painted-width/color/height comparisons0/.1/1/10/50/99/100 match within
+1/64CSSpx, including original rem-scaled minimum marker. Actual50% screenshot
+reviewed; screenshot is controlled UI, NOT headed/manual conversion coverage.
+Original site metrics/worker remained idle. Eight pre/post source pins match;
+Chrome root birth absent, owned server stopped, owned profile/runtime removed.
+
+NEW build-progress-compositing-candidate.mjs overlays only App+CSS in build hooks,
+never writes either public source. Actual production candidate315645B (+15B vs
+315630 baseline),96141855...36a48; CSS26354B/3c4c62c5...34a6. Candidate type and
+lint zero diagnostics; exact recipe and client JS/CSS gzip archives independently
+reconstruct. Source/bundle byte size is NOT allocated native memory. Normal App
+315630/e018... restored automatically; all9 build source pins unchanged.
+Build58064 TERMINAL1 on a harness assumption that CSS must load in client hook:
+Vinext loaded CSS during RSC pass and reused it. Normal finally restored verified
+App hash. Corrected hook checks actual emitted CLIENT CSS/new transform+marker,
+not guessed pass; one changed build79978 TERMINAL0, receipt15-22-00-000Z. No
+browser/codec replay for that build correction. Existing harmless Vinext dynamic
+import warnings remain, not type/lint failures or conversion evidence.
+
+13/13 focused source/real-UI/build/previous rejected-candidate evidence tests
+PASS447.9318ms; five-file scoped lint0. No full suite/goldens/full-original replay,
+no new media/converted copies. Compact reports/source/client archives and one
+reviewed screenshot retained. Public source/registry/engines unchanged. Compact
+referenced raw/source archives are included with the pushed evidence, not left
+as untracked dependencies. These are focused LOCAL Windows/private-core tests;
+they do not prove fresh-clone/portable CI, which remains an original-spec gap
+(historical absolute root and reusable private-engine slot dependencies must be
+accounted for). No private core binary or converted media added to Git here.
+
+NEXT run genuine changed-UI conversion/recovery goldens, verifying BOTH actual
+served new App AND new stylesheet, independent unchanged output hashes/fidelity,
+controls/geometry/privacy/cleanup. CSS differs intentionally ONLY by exact recipe;
+compare actual before/after stylesheet hashes to the new build, never pretend
+baseline CSS is identical. Then run new full-original memory/throughput diagnostic
+using original JS copy transport (NOT rejected copy kernel), same full input/
+settings/ALL-process250MiB/fidelity/finally. Until those gates, keep private and
+do not claim renderer burst fixed, accepted fastest conversion or full completion.
+Separate late HEVC-pool OOM and remaining specification requirements remain open.
+
 ## 2026-10-09 — New progress compositing candidate, controlled UI test next
 
 Previous turn PROGRESS: one actual candidate rejected and evidence pushed0883743;

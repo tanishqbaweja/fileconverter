@@ -1,0 +1,292 @@
+{
+  "recordedAt": "2026-10-09T15:19:15.927Z",
+  "status": "controlled-production-page-css-workload-tested-not-conversion-acceptance",
+  "scope": "Controlled progress-only CSS workload replay in actual production page; not a conversion, codec benchmark or allocation-cause proof",
+  "sourcePins": {
+    "scripts/diagnose-progress-compositing.mjs": "8a18d472a22cb657a190d7ae0c7024a77127ca7da7137bca5d74bd3650297673",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "AGENTS.md": "0eb3a2f80ba7177f71ef8fb1f34eed1f0b2e73cb4f81bbbfef11d7c8caac2b6a"
+  },
+  "postSourcePins": {
+    "scripts/diagnose-progress-compositing.mjs": "8a18d472a22cb657a190d7ae0c7024a77127ca7da7137bca5d74bd3650297673",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "AGENTS.md": "0eb3a2f80ba7177f71ef8fb1f34eed1f0b2e73cb4f81bbbfef11d7c8caac2b6a"
+  },
+  "workload": {
+    "source": {
+      "path": "outputs/reports/2026-10-09T14-56-09-725Z-split-copy-corrected-candidate-raw.json.gz",
+      "bytes": 125909,
+      "sha256": "b85a39ba279460e50475323519474f701e130717feaeaeb69968d3373d68432f"
+    },
+    "progressValues": [
+      0.002215121753964744,
+      0.03781711317532642,
+      0.06955646575816671,
+      0.08340023311878336,
+      0.09690630392416529,
+      0.10939948786429664,
+      0.12560679311080034,
+      0.14350237833302398,
+      0.16173562631040675,
+      0.17929358257754688,
+      0.19685153884468704,
+      0.21272118133603157,
+      0.2265649486966482,
+      0.23669452715074135,
+      0.24648647664975099,
+      0.2616808274308529,
+      0.28092702987363743,
+      0.31502995414244034,
+      0.33799034549174833,
+      0.3481199239458415,
+      0.37081011749087106,
+      0.43061840484791913,
+      0.47270571817324925,
+      0.4992871792208262,
+      0.55245010131598,
+      0.6122583886730282,
+      0.674281797784041,
+      0.7252295981252301,
+      0.7717471549584898,
+      0.8182647117917494,
+      0.847061294593291,
+      0.8869334861646564,
+      0.9356661647518808,
+      0.9910442086009994
+    ],
+    "updateIntervalMs": 125,
+    "recordedProgressResampledForUiOnly": true
+  },
+  "host": {
+    "acquiredAt": "2026-10-09T15:18:51.0961240Z",
+    "freePhysicalBytes": 10142052352,
+    "freeVirtualBytes": 18999398400,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskBytes": 1612394299392,
+  "owned": {
+    "server": {
+      "pid": 38964,
+      "parentPid": 18488,
+      "createdAt": "2026-10-09T15:18:51.1593100Z"
+    },
+    "chrome": {
+      "pid": 37076,
+      "parentPid": 18488,
+      "createdAt": "2026-10-09T15:18:52.6555110Z"
+    }
+  },
+  "asset": {
+    "url": "/assets/ConverterApp-BuCmNpWV.js",
+    "bytes": 315630,
+    "sha256": "e018d973a604af5f4a678860c08cea5e3c6f587a952b933799566dbaa2203172"
+  },
+  "rows": [
+    {
+      "mode": "baseline",
+      "delta": {
+        "LayoutCount": 1007,
+        "RecalcStyleCount": 1008,
+        "LayoutDuration": 0.065082,
+        "RecalcStyleDuration": 0.046415,
+        "TaskDuration": 0.288134,
+        "ScriptDuration": 0.002109
+      },
+      "updates": 34
+    },
+    {
+      "mode": "candidate",
+      "delta": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 98,
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0.008129000000000004,
+        "TaskDuration": 0.05113899999999999,
+        "ScriptDuration": 0.001548
+      },
+      "updates": 34
+    },
+    {
+      "mode": "candidate",
+      "delta": {
+        "LayoutCount": 0,
+        "RecalcStyleCount": 102,
+        "LayoutDuration": 0,
+        "RecalcStyleDuration": 0.008630000000000006,
+        "TaskDuration": 0.05234,
+        "ScriptDuration": 0.001414
+      },
+      "updates": 34
+    },
+    {
+      "mode": "baseline",
+      "delta": {
+        "LayoutCount": 1012,
+        "RecalcStyleCount": 1013,
+        "LayoutDuration": 0.074362,
+        "RecalcStyleDuration": 0.053835999999999995,
+        "TaskDuration": 0.320589,
+        "ScriptDuration": 0.0016179999999999996
+      },
+      "updates": 34
+    }
+  ],
+  "geometry": [
+    {
+      "percent": 0,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 3.1875,
+      "candidatePaintedWidth": 3.1875,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 0.1,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 3.1875,
+      "candidatePaintedWidth": 3.1875,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 1,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 3.203125,
+      "candidatePaintedWidth": 3.212188720703125,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 10,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 32.109375,
+      "candidatePaintedWidth": 32.12187194824219,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 50,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 160.609375,
+      "candidatePaintedWidth": 160.609375,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 99,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 318,
+      "candidatePaintedWidth": 318.0065612792969,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    },
+    {
+      "percent": 100,
+      "baselineTrackWidth": 321.21875,
+      "candidateTrackWidth": 321.21875,
+      "baselinePaintedWidth": 321.21875,
+      "candidatePaintedWidth": 321.21875,
+      "markerWidth": 3.1875,
+      "baselineColor": "rgb(246, 94, 67)",
+      "candidateColor": "rgb(246, 94, 67)",
+      "markerColor": "rgb(246, 94, 67)",
+      "heights": [
+        5.59375,
+        5.59375
+      ]
+    }
+  ],
+  "screenshots": [
+    "output/playwright/2026-10-09T15-18-50-602Z-progress-compositing-css.png"
+  ],
+  "failure": null,
+  "cleanup": {
+    "chrome": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37076,
+        "parentPid": 18488,
+        "createdAt": "2026-10-09T15:18:52.6555110Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-09T15:19:15.111Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 490,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "ownedServerStopped": true,
+    "runtimeRemoved": true
+  },
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "nativeAllocationCauseProven": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "browserVersion": "154.0.8037.98"
+}
