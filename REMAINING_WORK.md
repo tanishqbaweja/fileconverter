@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Copy comparison terminal failure checked; candidate-only correction prepared
+
+Actual prior pair receipt2026-10-09T14-31-37-500Z is TERMINAL failed-or-incomplete;
+do not poll/restart its old session. Baseline reached the unchanged64MiB output
+diagnostic checkpoint, then cancelled normally:6020 actual frames/packets,
+67794433 output bytes, no validated complete file. Independently reconstructed
+both archived executed drivers and lossless raw archives; all136 current pins,
+same normal served asset and actual private codec artifacts match. Whole-tree
+late-inclusive baseline peak490360832 minus settled clean blank241704960 gives
+237.13671875MiB for this PARTIAL window only, NOT full-source acceptance.
+
+Candidate failed BEFORE server/Chrome/observer/conversion: obsolete exact staged
+adapter guard expected18330B/020b3bd..., while the already validated copy adapter
+is19517B/e03a7fb4...daace6. Owned browser/server/observer, blank/native samples,
+served asset and runs are null/empty, never invented zero-memory measurements.
+Actual cleanup reports restoration/protected-source/media scratch removal; both
+runtime paths and redundant raw reports independently absent. Original full SHA
+and2958573265B size rechecked unchanged. No paired speed result is available.
+
+NEW exact reversible guard correction keeps the byte/hash checks and binds both
+assertions AND recorded adapter metadata to the three actual retained golden
+adapters. No codec, quality, IO, public registry, memory or completion gates change.
+Candidate-only controller reuses checked baseline archives/work windows; one
+hidden candidate launch only, birth-bound old-tree absence observation, same
+Chrome launcher/library hashes, normal UI, fresh2GiB physical+virtual/32GiB disk,
+same64MiB/300s diagnostic, full input, all-tree250MiB, native limits, fidelity and
+finally gates. Four focused evidence/reversal/drift/source tests PASS264.9147ms;
+four-file lint zero warnings. Preparation2026-10-09T14-54-49-786Z executions0,
+no browser/build/accepted speed or full-source proof. NEXT launch only the
+corrected candidate from pushed sources, then audit its actual result. Do NOT
+rerun the usable baseline, unchanged goldens, or earlier expensive failures.
+
 ## 2026-10-09 — User requires hidden/headless execution
 
 All further unattended work must run without visible command or browser windows;
