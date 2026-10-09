@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Changed progress UI correctness suite prepared; not executed yet
+
+Latest user window concern is authoritative: all new subprocesses hidden and
+browsers headless, no unrelated windows closed. Previous concern-only turn did
+not advance converter acceptance. New progress-compositing-golden-recipe derives
+from the exact retained executed baseline, preserving every conversion/default
+codec/quality/independent validator/privacy/recovery/cleanup gate. Adds exact
+served candidate App AND fetched stylesheet byte/SHA binding, before and after
+the identical historical private matrix CSS suffix. Intentional CSS change is
+checked independently, not spoofed as identical baseline CSS. Same six UI states,
+matrix/controls/overflow/geometry tolerance1/64CSSpx. Original JS transport/core
+unchanged; rejected copy kernel not staged. Old driver helper taskkill path now
+checks PID+parent+birth first; server/runner launch and absence records retained.
+Browser samples still lack native birth identities; do not call numeric browser
+PID absence a full identity cleanup certificate.
+
+6/6 focused recipe/progress tests PASS435.0722ms, three-file lint0. Preparation
+2026-10-09T15-41-34-960Z verifies current pins/archive bindings and exact reversible
+derivative; ZERO launches/conversions. New controller archives pinned source
+preimages along with actual generated sources so later project evolution does
+not erase executed provenance. Next ONE changed five-golden correctness suite,
+fresh2GiB RAM/disk preflight, full protected test.mkv pre/post SHA, normal App/CSS
+restoration, actual screenshots review. No full-original/memory/speed/public
+acceptance yet; full goal remains ACTIVE.
+
 ## 2026-10-09 — Progress compositing has controlled browser evidence and private build
 
 ONE changed headless controlled CSS test from pushed6f78cb1, session34447 now

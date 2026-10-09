@@ -1,0 +1,61 @@
+{
+  "status": "prepared-not-executed",
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a",
+    "scripts/validate-stable-ui-headless-baseline.mjs": "e92797e54f6097c9ee4a816b2b4cb7398032ca88e01b912745e7faec03b74e14",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "tests/stable-ui-headless-baseline.test.mjs": "54bf423d5d892d617e2e25c61d62a047a0eb441f0014fa95db66108fee33b0fd",
+    "scripts/validate-progress-compositing-goldens.mjs": "3b1ce4a30b94d2d32da9b1c8bdc61bf22a093a44e0e56e57dd2d79a12e14e3b6",
+    "scripts/lib/progress-compositing-golden-recipe.mjs": "825ce3f7596afca5edbca395e6a7b977d204c354749f9b96567d3363da9ac44a",
+    "tests/progress-compositing-goldens.test.mjs": "41126937eec090623fa58f8ca63f97d2cb4d674dd500d946228dc36d69e7f110",
+    "scripts/build-progress-compositing-candidate.mjs": "7565917d6e890ab8b5a38d80101bf32d7f5c99ff41a6a08125d29dd38ea9e080",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "AGENTS.md": "0eb3a2f80ba7177f71ef8fb1f34eed1f0b2e73cb4f81bbbfef11d7c8caac2b6a"
+  },
+  "baselinePath": "evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline.json",
+  "referenceBuild": {
+    "path": "evidence/2026-10-09T15-22-00-000Z-progress-compositing-build.json",
+    "sha256": "dbe00f248a66ec523d3912f8913543d1beecf75633dd2dfd29cfd76ae6a702d9"
+  },
+  "app": {
+    "url": "/assets/ConverterApp-BcOk2BNt.js",
+    "bytes": 315645,
+    "sha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "stylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "afterBytes": 27940,
+    "afterSha256": "81862974af7b02ede01b5122b4a8bc372600fb6f528bd11fabee2687ea78e311",
+    "matrixCssBytes": 1586,
+    "matrixCssSha256": "37257965a98bdeede4bdcba5677e0f75f42431b7405530169fcfeb2ef106022a"
+  },
+  "specSha256": "f16e1e77d1ee285acec099308c6330b18162a12e18faa780a4e5882ad3cb1f00",
+  "driverSha256": "447afb96a46415c48ae968514014c6ac87b9533c4af10f6b86353a8a26b21f93",
+  "specPatches": 4,
+  "driverPatches": 6,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "headless": true,
+  "windowsHidden": true,
+  "publicAcceptance": false
+}
