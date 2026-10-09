@@ -4,6 +4,43 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — New bounded HEVC single-idle candidate implemented; compile pending
+
+Based on the actual padded-fallback failure, NEW private policy retains at most
+ONE fully released object per tab_mvf/rpl_tab pool, instead of repeatedly freeing
+every returned entry. Mutex-protected final-unref admission only; selected only
+for single-thread HEVC decoding. Reservedbit29 is disjoint from existingbit30;
+uncachedbit30 still takes precedence for MPEG2 encoder/unselected policies.
+Live refs/DPB/payload sizes/codec settings/pixels/32+16MiB fixed heaps/encoder/
+AVIO/backpressure/public UI are unchanged. This is a candidate, NOT a proven fix
+or speed/memory acceptance; maximum one idle entry per pool is file-size independent.
+
+Bounded pinned FFmpeg8.1.2 source audit reconstructs EXACT old late-slot C hash
+c2a288dd…72f6; new two-edit policy source77474911…da5e reverses byte-exactly.
+Generated build derives from the frozen recipe, retains actual64-byte late slot,
+old82-request unit and unchanged separate encoder. NEW actual-Wasm32 lifetime
+unit checks40 selector/four policy configurations, multiply referenced objects,
+uninit with live refs, init-error/reset/free semantics, zero-on-every-get and
+200000 original1163520B-payload reuses requiring ONE fresh allocation. These are
+required assertions awaiting actual compilation/execution, not passed native tests.
+
+Local17/17 focused tests PASS202.1341ms, recipe Bash syntax verified and scoped
+six-file ESLint0. Initial syntax test16/17: assumedC: Git Bash path unavailable;
+corrected discovery from actual `git --exec-path` (D: install), no WSL/visible
+launcher or converter replay. New no-Docker hosted build workflow and exact
+source archive prepared. No browser conversion/test.mkv read/output generated.
+Evidence `evidence/mpeg2-single-idle-source-2026-10-10.json` and compact source
+archive `outputs/reports/2026-10-10-mpeg2-single-idle-native-sources.json.gz`.
+Next actual changed build, inspect real compiled lifecycle/manifest; small
+headless browser fidelity/adverse goldens required before ONE changed full test.
+No profile promoted, no fastest-speed claim, full original goal ACTIVE.
+
+Registered-workflow dispatch preparation now also passes18/18 focused tests
+207.7041ms/three-file lint0. A one-command isolated Git-tree derivative selects
+the new builder through the existing registered no-Docker workflow; canonical
+workflow/index/HEAD/main stay unchanged, no checkout or protected-media copy.
+No build is inferred from preparation; actual job handle/result must be recorded.
+
 ## 2026-10-10 — Full attempt TERMINAL; actual aligned fallback capacity explained
 
 This supersedes the historical LIVE/session23942 notes below. The controller is

@@ -1,0 +1,54 @@
+name: Build private HEVC single-idle candidate without Docker
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: private-mpeg2-single-idle
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ca-certificates curl make patch pkg-config xz-utils
+      - name: Install pinned SDK locally, no Docker
+        shell: bash
+        run: |
+          mkdir -p work/sdk-tmp
+          export TMPDIR="$GITHUB_WORKSPACE/work/sdk-tmp"
+          git clone --filter=blob:none --no-checkout https://github.com/emscripten-core/emsdk.git work/emsdk
+          git -C work/emsdk checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          test "$(git -C work/emsdk rev-parse HEAD)" = 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          work/emsdk/emsdk install 6.0.4
+          work/emsdk/emsdk activate 6.0.4
+      - name: Build changed decoder and actual Wasm32 lifetime tests
+        shell: bash
+        run: |
+          source work/emsdk/emsdk_env.sh
+          export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+          export TMPDIR="$GITHUB_WORKSPACE/work/sdk-tmp"
+          node media/ffmpeg/build-mpeg2-single-idle.mjs
+      - name: Retain reusable private tools and compact proofs only
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-mpeg2-single-idle-${{ github.run_id }}
+          path: work/mpeg2-split-pipeline-output/
+          if-no-files-found: error
+          retention-days: 1
+      - name: Clean repository-owned disposable build data
+        if: always()
+        shell: bash
+        run: |
+          for task_path in "$GITHUB_WORKSPACE/work/emsdk" "$GITHUB_WORKSPACE/work/sdk-tmp" "$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-build" "$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-output" "$GITHUB_WORKSPACE/work/mpeg2-split-encoder-build" "$GITHUB_WORKSPACE/work/mpeg2-split-encoder-output"; do
+            case "$task_path" in
+              "$GITHUB_WORKSPACE/work/emsdk"|"$GITHUB_WORKSPACE/work/sdk-tmp"|"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-build"|"$GITHUB_WORKSPACE/work/mpeg2-split-pipeline-output"|"$GITHUB_WORKSPACE/work/mpeg2-split-encoder-build"|"$GITHUB_WORKSPACE/work/mpeg2-split-encoder-output") ;;
+              *) exit 2 ;;
+            esac
+            ! test -L "$task_path"
+            rm -rf -- "$task_path"
+          done

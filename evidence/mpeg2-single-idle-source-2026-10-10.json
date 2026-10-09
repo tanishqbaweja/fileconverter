@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-09T20:17:10.953Z",
+  "status": "verified-reversible-single-idle-policy-source-not-browser-acceptance",
+  "upstreamSource": {
+    "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavutil/refstruct.c",
+    "bytes": 11308,
+    "sha256": "d8936c56db57fe53d9836e950563483104670c2fc98687f87fb497e078ba742f"
+  },
+  "oldExecutedLateSha256": "c2a288ddbd4c814ab3d63cc14798a7de76690bc0fc11775fc7c62dd8247f72f6",
+  "patchedSourceSha256": "774749111621629ff38291ea1d197bf566b628a88eb4ed3fb3ef484e8599da5e",
+  "generatedRecipeSha256": "61531b832a59be7e470b551288f4bb2c6e23a6f988074cdc4de655a89d721ad2",
+  "sourcePins": {
+    "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+    "media/ffmpeg/patch-mpeg2-single-idle.mjs": "9b9cbe34b9109d419010a08a9fb2539137eb3c20c3b95e89c4cfa136f98c869c",
+    "media/ffmpeg/mpeg2-hevc-single-idle-policy.h": "702cad3c915a789e1d096f52ba09976a09d0e549f039a3c9b9ac687fc7e89211",
+    "media/ffmpeg/mpeg2-single-idle-smoke.c": "c75984831c14b9f866612f0ca41a2e5c270ceb9f6fe6c220f26d7f75ae6c52d6",
+    "media/ffmpeg/mpeg2-single-idle-recipe.mjs": "981cfa7757b832d7c581747fd83fe5a2e5d4addaee1a2d0aa0a8de0bcecb2c22",
+    "media/ffmpeg/build-mpeg2-single-idle.mjs": "a1097363223f64e8d2440e1f539aa71a3747742d5903e02fb9175a05c16d931e",
+    ".github/workflows/mpeg2-single-idle-nondocker.yml": "0abad5e1727286c3828d7e8609f2aa53499c25f7831ec932d118edfcd771eac3",
+    "scripts/verify-mpeg2-single-idle-source.mjs": "e310338a8e36cd32cbc0f4b1c24e6633d578b92fbdc58dfa62579dc9b47fbf3e"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-10-mpeg2-single-idle-native-sources.json.gz",
+    "bytes": 8733,
+    "sha256": "c0287e2263788b163073d28a6288c3a4897d6191ac50ea49d260ea1b5c0eb284",
+    "restoredBytes": 53589,
+    "restoredSha256": "6fd53b4359aa182e8390efe524184dfea46a355cb2dfdc16f67024452d1c43f4"
+  },
+  "exactOldSourceReconstructed": true,
+  "byteExactPolicyReversal": true,
+  "mutationNegativeControlsPassed": true,
+  "affectedIdleAdmissionOnly": true,
+  "selectedPools": [
+    "tab_mvf",
+    "rpl_tab"
+  ],
+  "privateBit": 536870912,
+  "maximumIdleEntriesPerSelectedPool": 1,
+  "admissionAndListCheckUnderOriginalMutex": true,
+  "uncachedBitStillTakesPrecedence": true,
+  "codecSelectorsUnchangedExceptIdleFlag": true,
+  "liveReferencesChanged": false,
+  "pixelsOrCodecOptionsChanged": false,
+  "heapLimitsRaised": false,
+  "publicFilesChanged": false,
+  "compilerExecuted": false,
+  "browserConversionsPerformed": 0,
+  "originalRead": false,
+  "speedImprovementProven": false,
+  "publicAcceptance": false
+}

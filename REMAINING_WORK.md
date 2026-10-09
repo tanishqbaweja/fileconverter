@@ -5,6 +5,43 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Bounded single-idle HEVC policy source implemented
+
+Status: **Partially implemented; actual compilation/browser results pending**.
+New private candidate changes idle admission only: at most ONE completely
+released object per HEVC tab_mvf/rpl_tab pool, single-thread decoder selector.
+Bit29/no extra list/counter/history; condition checked under original pool mutex,
+existing uncachedbit30 still takes precedence. No live refs, DPB, sizes, pixels,
+quality/settings, fixed32+16MiB, separate encoder or I/O changes. Actual failed
+fallback analysis below justifies investigating reuse to avoid allocator churn;
+it does NOT prove this will complete the original or improve conversion speed.
+
+Exact old late-slot sourcec2a288dd…72f6 reconstructed from pinned8.1.2 primary
+source; new77474911…da5e reverses two additive edits exactly. Existing historical
+policies/builds/manifests/evidence remain untouched. New recipe derives from the
+frozen build, retains64-byte abort slot/old82-request unit and adds a REAL-Wasm32
+libavutil ownership unit:40 selector/four policy configurations, multi-ref and
+uninit with live refs, reset/free/init-error/zeroing preservation,200000 sequential
+reuses of original1163520B payload requiring ONE fresh allocation. Actual compiler
+must run these assertions; source checks are not runtime/conversion certification.
+
+Local17/17 focused PASS202.1341ms/Bash syntax/scoped six-file lint0. Initial16/17
+syntax guard failed due assumedC: Git Bash, fixed using actual `git --exec-path`;
+no WSL/visible windows/browser retry. New no-Docker isolated workflow ready.
+No original/media/profile/output generated; reusable compact source proof only.
+Next changed hosted build, inspect compiled manifest/lifetimes, then actual small
+headless production-browser fidelity/adverse cases before ONE changed full test.
+Do not replay unchanged old core or claim acceptance based on source/synthetic
+tests. Full requirement audit remains ACTIVE/incomplete with broad scope intact.
+
+Source evidence: `evidence/mpeg2-single-idle-source-2026-10-10.json`.
+
+Dispatch source preparation also validated18/18 focused tests207.7041ms/
+three-file lint0: existing registered no-Docker workflow on an isolated Git tree,
+only private builder command changes. Canonical workflow/index/HEAD/main and
+protected media untouched; no copied checkout. Actual branch/job handles/results
+must be verified before calling the build live or compiled.
+
 ## 2026-10-10 — TERMINAL full-input attempt; bounded allocator fix still required
 
 Status: **Partially implemented; full protected transcoding not achieved**.
