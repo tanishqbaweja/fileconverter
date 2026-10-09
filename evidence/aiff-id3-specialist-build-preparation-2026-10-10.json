@@ -1,0 +1,64 @@
+{
+  "recordedAtUtc": "2026-10-09T21:57:16Z",
+  "status": "private-build-source-and-workflow-prepared-not-compiled",
+  "scope": "M-08 smaller AIFF specialist: metadata-only changes already source-qualified; this cycle adds isolated no-Docker build support, not public acceptance.",
+  "sourcePins": {
+    "media/ffmpeg/aiff-id3-build-recipe.mjs": "33a5dbc24e8b5da20296dcc2244eef0b3354f56b32271dd10d0ba7b3f7366ada",
+    "media/ffmpeg/build-aiff-id3-specialist.mjs": "06bf623b9651f37acb846df7a5eb375f8f31ee0b050d4ac072596da4a9d4a387",
+    "scripts/lib/aiff-id3-build-workflow.mjs": "bf59359d930523f7adef3ed5c5caa580a38f87d8b102dc69b2140d028524edb4",
+    "scripts/prepare-aiff-id3-build-branch.mjs": "7c6cd67c684df9c132bbe9767f8cb74095e7b33830ac6e3b610598580f0102be",
+    "tests/aiff-id3-build-recipe.test.mjs": "abb5d4463d550fa9abbb446cede453a68ad1c86cb97df85594f8d9c4f104e84d"
+  },
+  "recipe": {
+    "originalReproductionSha256": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+    "generatedShellSha256": "e34d82eb3d905e59927870a8f38361c210570dd2e1748c685267b9154bad9133",
+    "canonicalWorkflowSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "generatedWorkflowSha256": "b9e57e066e35f8467f843a63eed1f411dd56720686f14f1b5e3f9775d1be0091",
+    "originalLinkerSha256": "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e",
+    "unchangedInitialMemoryBytes": 16777216,
+    "unchangedMaximumMemoryBytes": 33554432,
+    "originalBuildAndWorkflowReversibilityPassed": true,
+    "publishedBinaryComparisonNotApplicableToChangedPrivateSource": true,
+    "normalPublishedReproductionWorkflowUnchanged": true,
+    "compiledSourceReversalAndActualWasmMemoryChecksImplementedButNotExecuted": true
+  },
+  "failedPreparation": {
+    "stage": "unit module import before new recipe tests",
+    "failedTestSourceSha256": "d6749df077244cd5e67f68447e037be0d90b35caff619b3822a44346968241c1",
+    "error": "ERR_MODULE_NOT_FOUND: yaml",
+    "tests": 2,
+    "passed": 1,
+    "failed": 1,
+    "otherPassedTest": "Existing real private C source-generation/no-overwrite/finally control, 401.5359ms; no media conversion or C compilation.",
+    "correction": "Use already installed js-yaml; no dependency installation or change. Failed import is not counted as passing."
+  },
+  "finalChecks": {
+    "command": "node scripts/run-repository-owned-node.mjs --test tests/aiff-id3-build-recipe.test.mjs",
+    "passed": 5,
+    "failed": 0,
+    "durationMs": 335.1581,
+    "generatedShellSyntaxCheckExitCode": 0,
+    "parsedWorkflowDefaultPermissionsConcurrencySdkAndCleanupPreserved": true,
+    "fiveFileEslintExitCode": 0,
+    "gitDiffCheckExitCode": 0,
+    "original203AndSupplement13LiveSourcePinsUnchanged": true
+  },
+  "currentLiveTasks": {
+    "conversionSessionId": 16225,
+    "audioSupplementSessionId": 37437,
+    "sameHandlesPolledStillRunning": true,
+    "latestRun1InputBytes": 975514414,
+    "latestRun1OutputBytes": 1092623877,
+    "roundedObservedIncrementalPrivateMiB": 227.785,
+    "fullConversionCompleted": false,
+    "decodedFullAudioSupplementCompleted": false
+  },
+  "actualNewBrowserConversions": 0,
+  "actualAiffBuilds": 0,
+  "originalProtectedFixtureModifiedOrCopied": false,
+  "publishedEnginesChanged": false,
+  "noDocker": true,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "nextAction": "Commit scoped sources, prepare the isolated codex/aiff-id3-specialist-20261010 Git tree without changing canonical workflow/index/HEAD/main, and dispatch ONE registered within-aiff build. Validate its genuine terminal artifacts before any browser staging; local browser tests must wait for current stress run and supplement to finish."
+}

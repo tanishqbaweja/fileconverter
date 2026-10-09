@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — M-08 smaller AIFF metadata specialist build implementation ready
+
+Status: **Partially implemented**. The earlier source-only five-edit AIFF
+specialist now has a separate no-Docker Linux builder and isolated registered
+workflow recipe. Existing dependencies/configure/linker/16–32MiB limits/disk
+preflight/always cleanup preserved; actual compiled C reversal and Wasm limits
+will be checked after real compilation. Normal public reproduction/source/assets
+are unchanged; a changed private binary is not falsely compared or labelled an
+exact public rebuild. Evidence:
+`evidence/aiff-id3-specialist-build-preparation-2026-10-10.json`.
+
+Initial absent `yaml` package failed the new test import; already installed
+`js-yaml` correction required no installation. Failure hash retained; final5
+focused tests PASS335.1581ms/five-file lint0/diff0/Bash syntax/parsed workflow0.
+All203 original and13 supplement live source hashes remain unchanged; sessions
+16225/37437 continue, no new local browser/conversion/media copy. Next: commit,
+prepare isolated build tree and dispatch ONE within-aiff compile. Actual native
+build/reproducibility/artwork-alias/full-audio/browser250MiB/repeats/recovery and
+publication remain missing. Browser staging/testing must wait for current stress
+and supplement terminal. This cycle PROGRESS, not a build or acceptance claim.
+
 ## 2026-10-10 — Same-run guarded audio validation attached; no duplicate conversion
 
 Status: **Partially implemented**. An existing 2026-10-07 cancellable read-only

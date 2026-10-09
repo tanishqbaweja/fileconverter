@@ -4,6 +4,28 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Smaller AIFF ID3 specialist: no-Docker build support prepared
+
+Separate private builder derives reversibly from exact no-Docker reproduction
+source6323620d…57f5e, retaining dependencies/configure/linker/disk checks/cleanup.
+Only private source generation and evidence retention change; comparison to the
+deliberately different public binary is NOT a reproduction claim. Native builder
+will verify actual compiled C reverses through the five metadata-only edits to
+published a542881b…5814 and actual Wasm stays16/32MiB. Those native checks are
+implemented, NOT yet executed. Canonical workflow/public C/engines unchanged.
+Isolated workflow preserves SDK/permissions/default all-core path/always cleanup.
+
+Initial optional `yaml` import failed before recipe tests; switched to already
+installed `js-yaml`, no dependency changes. Initial failed test source hash and
+passing C-generation control retained. Final5 focused tests PASS335.1581ms,
+five-file lint0/diff-check0, generated Bash syntax/parsed YAML passed. Evidence:
+`evidence/aiff-id3-specialist-build-preparation-2026-10-10.json`.
+All203 original and13 supplement source pins still unchanged; BOTH existing
+sessions16225/37437 running. No new local browser, media copy or conversion.
+Next: isolated Git tree/ONE hosted compile; do not stage browser assets while
+the original stress run is live. M-08 remains partial; no compile/browser/tag/
+artwork/quality/memory/speed/public acceptance yet. This cycle PROGRESS.
+
 ## 2026-10-10 — Guarded full-audio supplement ACTUALLY attached to this same run
 
 Reused the preserved 2026-10-07 cancellable READ-ONLY watcher, not another
