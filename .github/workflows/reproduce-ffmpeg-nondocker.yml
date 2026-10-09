@@ -182,9 +182,21 @@ jobs:
               WITHIN_MPEG2_DECODER_SET="${{ inputs.mpeg2_decoder_set || 'wide' }}" \
               WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC="${{ inputs.mpeg2_frame_allocation_diagnostic || '0' }}" \
               WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media/ffmpeg/build-mpeg2-candidate.sh
+          elif test "${{ inputs.core }}" = within-aiff; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            node media/ffmpeg/build-aiff-id3-specialist.mjs
           else
             bash media/ffmpeg/reproduce-nondocker.sh
           fi
+
+      - name: Retain private metadata-only AIFF specialist
+        if: success() && inputs.core == 'within-aiff'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-aiff-id3-specialist-${{ github.run_id }}
+          path: work/ffmpeg-nondocker-output/
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Retain private H264 candidate and corresponding sources
         if: success() && inputs.core == 'within-h264-candidate'
