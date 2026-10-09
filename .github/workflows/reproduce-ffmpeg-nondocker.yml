@@ -174,7 +174,7 @@ jobs:
             bash media/ffmpeg/build-mpeg2-split-pipeline.sh
           elif test "${{ inputs.core }}" = within-mpeg2-aligned-reuse; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
-            node media/ffmpeg/build-mpeg2-aligned-reuse.mjs
+            node media/ffmpeg/build-mpeg2-single-idle.mjs
           elif test "${{ inputs.core }}" = within-mpeg2-candidate; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC="${{ inputs.mpeg2_allocator_diagnostic || '0' }}" \
