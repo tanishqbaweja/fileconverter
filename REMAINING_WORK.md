@@ -5,6 +5,55 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Corrected copy candidate tested and REJECTED for original profile
+
+ONE candidate-only production-browser diagnostic from pusheda07988f; retained
+baseline was NOT rerun. Session73415 TERMINAL0 (controller), actual child1 due
+whole-tree memory gate. Receipt2026-10-09T14-56-09-725Z and independent-analysis
+receipt verify141 pre/post current source pins, exact executed driver/helper
+reconstruction, actual adapter19517B/e03a... binding, same Chrome154.0.8037.98/
+launcher+library hashes/normal UI/codec/defaults/quality/fixed32+16MiB/IO/native
+gates/full unchanged input. Fresh physical3.74GiB+virtual11.97GiB passed2GiB,
+32GiB disk preflight passed; all hidden/headless, no Docker/unrelated kills.
+
+Actual candidate1464 frames/packets,4392 native plane calls,3389921280 copied
+pixel bytes,20141205 output bytes/30369345 input bytes/55.613s before normal
+budget cancellation. Native whole-tree peak531017728 minus settled clean blank
+245923840 =271.88671875MiB: FAIL250. Includes late phase samples/all processes,
+not JS/Wasm substitution. First native failure260.31640625MiB preceded cancel;
+adjacent108ms renderer39624 birth-bound jump55246848B, every other process delta0.
+This proves the process, NOT allocator/object/callsite/copy-kernel causality.
+Failure-only dump is delayed AFTER normal cancellation, not peak-time provenance.
+
+Actual first successful frame1920x804/yuv420p active2315520B with source AND
+target strides[1920,960,960]. Original bridge already performs ONE contiguous
+Uint8Array.set per plane for this layout; proposed per-row-loop elimination
+does not apply to the OBSERVED frame. All-frame layout history was not retained.
+4/8/16MiB output crossing brackets are each later than retained baseline by
+[344.9,3402.84]/[482.3,3664.92]/[493.48,3618.42]ms;32/64MiB unavailable because
+safety stop. These are partial observations, not exact timing/statistical causal
+regression/full validated speed claims. Candidate REJECTED for original profile;
+do not replay it unchanged or promote it. Small padded-fixture correctness still
+valid; auditable private kernel remains research-only, not accepted optimization.
+
+Independent post-terminal audit: raw/source gzip size/SHA/reconstruction match,
+all22 native PID/parent/birth identities absent with conservative1ms tolerance,
+own wrapper and media/profile runtime absent, full protected size/SHA unchanged,
+normal UI+six original engine asset hashes restored/all11 private additions
+absent. Terminal split packets/queues0/kernel+session closed; UI worker snapshot1
+is NOT independent terminal-owner count. One bounded read/write65536B, queuepeak
+65536B/one pending operation; final reported queue/pending0. Partial media deleted
+by finally; redundant raw JSON removed ONLY after identity/SHA/byte-exact gzip
+verification, compact sources/traces/CSV/HTML retained.15/15 focused source/kernel/
+real-evidence regressions PASS912.6097ms; new analyzer/evidence tests lint0.
+
+NEXT use actual retained renderer/source evidence to identify a concrete missing
+allocation source before another changed implementation. Do NOT rerun rejected
+copy/render-decomposition/unchanged dump experiments or shorten tests to pass.
+Separate fixed32MiB late HEVC-pool OOM remains unresolved; copy transport did not
+fix it. ZERO complete outputs/independent complete validation/repeat/scaling/
+speed/whole-memory/public acceptance. Entire original specification remains ACTIVE.
+
 ## 2026-10-09 — Copy comparison terminal failure checked; candidate-only correction prepared
 
 Actual prior pair receipt2026-10-09T14-31-37-500Z is TERMINAL failed-or-incomplete;
