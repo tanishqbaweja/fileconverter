@@ -1,0 +1,31 @@
+{
+  "processObservationAt": "2026-10-09T17:05:49.3971180Z",
+  "status": "same-full-input-attempt-running-past-old-diagnostic-stop",
+  "sessionId": 23942,
+  "launchReceipt": "evidence/2026-10-09T16-55-27-062Z-progress-compositing-full-live-launch.json",
+  "actualConsoleObservation": "Run1 running: input=85322048, output=94437621, peak=227.859MiB.",
+  "reportedRun": 1,
+  "reportedState": "running",
+  "reportedInputBytes": 85322048,
+  "reportedOutputBytes": 94437621,
+  "reportedPeakIncrementalPrivateMiBRounded": 227.859,
+  "previousDiagnosticStopOutputBytes": 67108864,
+  "continuedPastPreviousDiagnosticStop": true,
+  "identitiesObservedLive": [
+    { "pid": 32096, "parentPid": 32304, "createdAt": "2026-10-09T16:55:57.8778570Z" },
+    { "pid": 34020, "parentPid": 32096, "createdAt": "2026-10-09T16:56:07.7077050Z" }
+  ],
+  "exactBlankPrivateBytes": null,
+  "exactPeakCompleteChromiumTreePrivateBytes": null,
+  "fullSessionNativeSampleCoverage": null,
+  "independentlyValidatedCompletedConversions": null,
+  "executionTerminal": false,
+  "cleanupComplete": false,
+  "newBrowserOrConversionLaunchedThisObservation": false,
+  "publicAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "lateHevcPoolOomResolved": false,
+  "scope": "Bounded stdout and exact live PID-parent-birth observation only. Rounded running peak is not the final exact native-memory formula or completed-file validation. No restart, new browser, profiler, GC or media copy. Continue polling the same session; retain terminal reports and verify finally cleanup when execution actually returns."
+}

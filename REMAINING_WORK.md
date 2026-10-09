@@ -5,6 +5,17 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+Running milestone17:05:49Z: SAME session23942 verified live; exact driver32096/
+Chrome34020 births match launch. Actual Run1 stdout85322048B input/94437621B
+output/reported peak227.859MiB (rounded), past old67108864B diagnostic cutoff.
+Five-minute blank settled232.676MiB (rounded). This verifies real continuing
+browser encoding, NOT exact final primary-memory acceptance/full validation/
+repeats/scaling/speed/cleanup or late-pool resolution. Missing final evidence
+remains null. No duplicate test/browser/heavy concurrent workload. Compact
+running observation17-05-49Z retained; previous turn PROGRESS, current monitoring
+VERIFIED WAIT. Poll same session to terminal; do not create unchanged snapshot
+cycles or restart. Terminal analysis/verified cleanup remain next material work.
+
 ## 2026-10-09 — Full-completion attempt launched, authoritative handle LIVE
 
 Status: **Partially implemented / execution pending**, not completion. ONE actual
