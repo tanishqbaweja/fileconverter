@@ -1,0 +1,68 @@
+{
+  "recordedAtUtc": "2026-10-09T21:29:02Z",
+  "status": "qualified-read-only-supplement-attached-full-audio-result-pending",
+  "baseWatcher": {
+    "path": "scripts/watch-original-audio-supplement.mjs",
+    "sha256": "60de2291f44e7b4e8be124ac230a40d232ca45dac406f167d7b3fc6cbe09e72b",
+    "controls": "evidence/abortable-audio-validator-controls-2026-10-07.json",
+    "generatedCancellableValidatorSha256": "fe776572c73d9c5e4427b7676e1330942ecb43e8014f7f5b63ddafc6a4a23626",
+    "currentControlSourcePinsVerified": true,
+    "newNativeCancellationControlsExecuted": false
+  },
+  "derivation": {
+    "generatedWatcherSha256": "409866e051a659e48b21dec59a05b5b339ce69bd83e3ad7cdc8bcdfb7605c65b",
+    "reversalToOriginalWatcherByteExact": true,
+    "changes": "Absolute helper imports; current driver/profile/parent/birth bindings; actual driver SHA and headless-profile startup attestation; new source pins; unique report suffix. Existing full-output recognition, unchanged file identity/size, audio fidelity, safe-window cancellation, bounded reads and finally cleanup remain unchanged.",
+    "onlyDriverPostCompletionFullCountProbeAdmitted": true,
+    "guardCancelsAtOwnerFinalDecodeOrSSIMBeforeOutputDisposal": true,
+    "sourceAudioTracksReportedAfterSourceHashAndNativeInspection": 1,
+    "conversionEngineOrLiveDriverEdited": false
+  },
+  "checks": {
+    "command": "node scripts/run-repository-owned-node.mjs --test tests/single-idle-audio-supplement.test.mjs tests/abortable-audio-validator-recipe.test.mjs tests/abortable-audio-validator-evidence.test.mjs tests/streaming-copied-audio-validation.test.mjs",
+    "passed": 13,
+    "failed": 0,
+    "durationMs": 248.5108,
+    "threeFileEslintExitCode": 0,
+    "gitDiffCheckExitCode": 0,
+    "preparationReceipt": "evidence/2026-10-09T21-27-57-699Z-single-idle-audio-supplement-preparation.json",
+    "preparationExecutions": 0,
+    "preparationWrapperRemoved": true,
+    "all203OriginalSourcePinsUnchanged": true
+  },
+  "actualAttachment": {
+    "liveReceipt": "evidence/2026-10-09T21-28-22-502Z-single-idle-audio-supplement-live.json",
+    "watcherSessionId": 37437,
+    "watcherPid": 34212,
+    "watcherParentPid": 39816,
+    "watcherBirthUtc": "2026-10-09T21:28:23.8225620Z",
+    "conversionSessionId": 16225,
+    "driverPid": 27484,
+    "driverParentPid": 34760,
+    "driverBirthUtc": "2026-10-09T20:56:05.2534960Z",
+    "driverSha256": "e65e464a1065d54e4c3da78b58ac1030cc0bfe7b17ca86602de803532a7bf96a",
+    "nativeProcessBirthAndParentIdentitiesVerifiedLive": true,
+    "newBrowserLaunches": 0,
+    "newConversions": 0,
+    "mediaCopies": 0,
+    "liveOutputsDeletedBySupplement": 0,
+    "freePhysicalBytesAtAttachment": 6257778688,
+    "requiredPhysicalBytes": 2147483648,
+    "wrapper": "work/single-idle-audio-wrapper-7Bb2bM",
+    "wrapperRetainedWhileWatcherLive": true
+  },
+  "observedFullRun": {
+    "runNumber": 1,
+    "latestStdoutInputBytes": 508405922,
+    "latestStdoutOutputBytes": 580674640,
+    "roundedObservedIncrementalPrivateMiB": 227.785,
+    "closedFullOutputValidatedBySupplement": null
+  },
+  "performanceCaveat": "Supplement startup verifies the protected full-source SHA and inspects audio; waiting uses a bounded native owner/child query every 10 seconds. Its audio decoding and output SHA reading happen only after browser output is closed. Shared-host observation overhead must be disclosed; this attachment is not a matched conversion-speed benchmark.",
+  "nextAction": "Continue both same handles without restart. If a complete output is observed, inspect the genuine decoded audio result. After both terminal, join each supplement output SHA/size/file identity/ordinal evidence to the owning driver's independent output report and verify both cleanup records. A missed safe window or failure remains incomplete evidence, never fidelity acceptance.",
+  "originalFullAudioValidated": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false
+}

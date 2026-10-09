@@ -1,0 +1,67 @@
+{
+  "recordedAt": "2026-10-09T21:28:24.225Z",
+  "status": "actual-read-only-watcher-launched-awaiting-closed-output",
+  "executions": 1,
+  "originalLiveReceipt": {
+    "path": "evidence/2026-10-09T20-55-24-319Z-single-idle-full-live.json",
+    "sha256": "27e5ae727fa9384e2c2fdeb7999010088c5782de042b555769888a4c30007047"
+  },
+  "originalDriverIdentity": {
+    "pid": 27484,
+    "parentPid": 34760,
+    "createdAt": "2026-10-09T20:56:05.2534960Z"
+  },
+  "originalDriverSha256": "e65e464a1065d54e4c3da78b58ac1030cc0bfe7b17ca86602de803532a7bf96a",
+  "originalRuntime": "mpeg2-single-idle-full-runtime-UnvbTZ",
+  "sourcePins": {
+    "scripts/watch-single-idle-audio-supplement.mjs": "2d59e008511d78c64e702d7a2fbca46ec4cd6fb1894fd069590304d85ce62cee",
+    "scripts/lib/single-idle-audio-supplement-recipe.mjs": "43a1735291a8b16047a3c1a6f66e9e3b88dd0c7cd8b344e521254a5cabfa1dfd",
+    "tests/single-idle-audio-supplement.test.mjs": "9194d0d4fb09fffa642fd70fbd1954d03dd4474a2779cf491f64eee5b22d0145",
+    "scripts/lib/full-copied-audio-gate-recipe.mjs": "934f71cc915f186c56ce7e4a75089245456ffd5d205ad638ec853f3cc9c3d709",
+    "scripts/lib/streaming-copied-audio-validation.mjs": "77bdfcb3fadc6725aa2093b1ea748e86aec1bb38a9e221deaca8bc8485abc5ec",
+    "scripts/lib/abortable-audio-validator-recipe.mjs": "22a5d354b804d07a73238a1ad0838a48108c7ed4805c73f7c592f8db625cf797",
+    "scripts/check-abortable-audio-validator.mjs": "862884ea091577083c1225dcde2e5366b880d35e57ae57aefb6e68e3286477d7",
+    "tests/abortable-audio-validator-recipe.test.mjs": "2c3368aa81064622ff8158832e0cb23404f428b4e4821101c0baa9c86abf7490",
+    "scripts/watch-original-audio-supplement.mjs": "60de2291f44e7b4e8be124ac230a40d232ca45dac406f167d7b3fc6cbe09e72b",
+    "scripts/lib/closed-original-output-probe.mjs": "0752a83e2f0667a1a16b633342aa6c014a8a27ccbc091335c6477c0789eedc11",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8"
+  },
+  "all203OriginalSourcePinsUnchanged": true,
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-09T21-28-22-502Z-single-idle-audio-supplement-sources.json.gz",
+    "bytes": 33816,
+    "sha256": "3cf39249d30ba4834abc75183e409b4f386d5b565eb3559e2893df0dbc9f7de4",
+    "restoredBytes": 101997,
+    "restoredSha256": "184595e3668091b34e47ad3634a943cbb783410240282a727e93edee48602826",
+    "generatedSha256": "409866e051a659e48b21dec59a05b5b339ce69bd83e3ad7cdc8bcdfb7605c65b"
+  },
+  "hostPreflight": {
+    "acquiredAt": "2026-10-09T21:28:23.3443360Z",
+    "freePhysicalBytes": 6257778688,
+    "freeVirtualBytes": 10398023680,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "watcherIdentity": {
+    "pid": 34212,
+    "parentPid": 39816,
+    "createdAt": "2026-10-09T21:28:23.8225620Z"
+  },
+  "wrapper": "H:\\Github Repositories\\fileconverter\\work\\single-idle-audio-wrapper-7Bb2bM",
+  "wrapperAbsent": false,
+  "failure": null,
+  "watcherExitCode": null,
+  "actualNewConversions": 0,
+  "generatedMediaCopies": 0,
+  "applicationOrEngineChanged": false,
+  "originalFullAudioValidated": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false
+}

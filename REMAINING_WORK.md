@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Same-run guarded audio validation attached; no duplicate conversion
+
+Status: **Partially implemented**. An existing 2026-10-07 cancellable read-only
+watcher was found and qualified for this EXACT current driver through a strictly
+reversible derivative. Original closed-output recognition, complete PCM hashes/
+per-frame clocks/counts/endpoints, file identity and safe-window cancellation/
+cleanup are unchanged.13 focused tests PASS248.5108ms/three-file lint0/diff0;
+prior real native cancellation controls/current source hashes verified. Evidence:
+`evidence/single-idle-audio-supplement-qualification-2026-10-10.json`.
+
+ONE actual attached watcher session37437/PID34212/parent39816/birth21:28:23.822562Z
+is live beside SAME conversion session16225/driver27484/Chrome20708, native
+identities verified21:29:02Z. Startup verified protected source SHA and inspected
+ONE audio track; no closed complete output validation yet. All203 original
+source pins unchanged; zero new browser/conversion/media copy/output deletion.
+Actual receipt: `evidence/2026-10-09T21-28-22-502Z-single-idle-audio-supplement-live.json`.
+Only read a full closed file when its owning driver starts the exact post-complete
+count probe; cancel/await readers at final-decode/SSIM, well before owner cleanup.
+If that window is missed, preserve failure and do not claim audio fidelity.
+
+Continue BOTH actual handles to terminal; then join every full output SHA/size/
+identity/audio ordinal to the owning independent report and check both finally
+cleanups. This may obtain missing audio proof without repeating conversion.
+The prepared in-driver gate remains a fallback, not already active. Startup
+source hashing/bounded10s owner queries are disclosed shared-host overhead, not
+matched speed proof. Full stress/fidelity/memory/scaling and broader goal remain
+unverified; no public promotion. This cycle PROGRESS, not a restart or acceptance.
+
 ## 2026-10-10 — Full-audio validation insertion implemented; real proof still pending
 
 Status: **Partially implemented**. Separate additive recipe now inserts the

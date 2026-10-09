@@ -4,6 +4,38 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Guarded full-audio supplement ACTUALLY attached to this same run
+
+Reused the preserved 2026-10-07 cancellable READ-ONLY watcher, not another
+converter. Strict reversible derivative changes only current imports/owner/
+profile/parent/birth bindings, startup driver-SHA/headless attestation, source
+pins and report suffix. Existing exact closed-output probe recognition,
+file-identity/unchanged-size, complete audio/timing and safe-window guard unchanged.
+13 focused tests PASS248.5108ms/three-file lint0/diff-check0. Existing real native
+cancellation controls and their current source hashes independently verified;
+no redundant native control or browser conversion run. Preparation executions0,
+fresh wrapper removed. Proof:
+`evidence/single-idle-audio-supplement-qualification-2026-10-10.json`.
+
+ONE actual watcher session37437/PID34212/parent39816/birth21:28:23.822562Z
+attached to existing driver27484/session16225. Native identities freshly
+verified21:29:02Z; headless Chrome20708 unchanged. Startup protected-source SHA
+verification/native inspection reported ONE actual audio track; no completed
+output/audio validation yet. All203 live source hashes remain unchanged. Actual
+receipt: `evidence/2026-10-09T21-28-22-502Z-single-idle-audio-supplement-live.json`.
+Watcher/source archives/scratch are repo-local, native children hidden. Zero
+new browser/conversion/media copy; original driver retains sole output disposal.
+Supplement closes/awaits readers if the owner's final-decode/SSIM window begins.
+Never test a growing file or race the owner's deletion; missed window is failure.
+
+Current Run1 latest stdout508,405,922 input/580,674,640 output bytes, rounded
+227.785MiB observed increment; no terminal/memory/fidelity/speed acceptance.
+Continue BOTH same handles; after terminal join complete output hashes/identities/
+all audio ordinals to owning independent validations and verify both cleanups.
+Disclose startup full-source hashing and 10s owner queries as shared-host observer
+overhead; no matched speed claim. Future in-driver gate remains useful if safe
+supplement evidence cannot be obtained. This cycle PROGRESS, no full-run restart.
+
 ## 2026-10-10 — Missing full-audio gate prepared without changing the active run
 
 New separate `scripts/lib/full-copied-audio-gate-recipe.mjs` adds the bounded
