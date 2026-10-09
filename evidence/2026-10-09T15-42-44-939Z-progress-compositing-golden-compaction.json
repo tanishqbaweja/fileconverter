@@ -1,0 +1,22 @@
+{
+  "recordedAt": "2026-10-09T15:50:55.122Z",
+  "audit": {
+    "path": "evidence/2026-10-09T15-42-44-939Z-progress-compositing-golden-analysis.json",
+    "sha256": "bd19a56f5efb5a3553d0cc3cfd5fc13adc632d28e883c1cf6f993e676fb9e876"
+  },
+  "rawPath": "output/playwright/2026-10-09T15-43-18.198Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+  "rawBytes": 556571,
+  "rawSha256": "a3ae9c379bdebbcb8f3254a8fc9252060e9f0f6789ae274f388c2caa3c43635a",
+  "compressedReport": {
+    "path": "outputs/reports/2026-10-09T15-42-44-939Z-progress-compositing-golden-report.json.gz",
+    "bytes": 40007,
+    "sha256": "81841041d36ea45a7185b202b49f3689c8e64d078ed54187c2402af07057d4b1",
+    "restoredBytes": 556571,
+    "restoredSha256": "a3ae9c379bdebbcb8f3254a8fc9252060e9f0f6789ae274f388c2caa3c43635a"
+  },
+  "removedVerifiedRedundantRawOnly": true,
+  "bytesSaved": 516564,
+  "originalControllerFailurePreserved": true,
+  "browserIdentityCleanupCertified": false,
+  "mediaOrProfilesRemoved": false
+}

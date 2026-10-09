@@ -1,0 +1,584 @@
+{
+  "recordedAt": "2026-10-09T15:48:23.513Z",
+  "status": "independently-verified-five-goldens-with-follow-up-numeric-cleanup",
+  "originalControllerFailurePreserved": true,
+  "proof": {
+    "path": "evidence/2026-10-09T15-42-44-939Z-progress-compositing-goldens.json",
+    "sha256": "31b5411db01d502e557d37d1d7baf3c08e74ddbce6e67dedf244287aa17f1f0f"
+  },
+  "build": {
+    "path": "evidence/2026-10-09T15-42-44-939Z-progress-compositing-build.json",
+    "sha256": "b70dca5522bbc68544caed4cebacbee540f63bd4ad0913806a0a393aa1175686"
+  },
+  "executedSourcePreimages": 28,
+  "exactGeneratedSourcesReconstructed": true,
+  "conversions": [
+    {
+      "sourceCodec": "mpeg4",
+      "destination": "opfs",
+      "frames": "48",
+      "audioTracks": 2,
+      "outputBytes": 321692,
+      "outputSha256": "d366abbe466cbd7a70ae7353efda456471c9b064402996a58fa1d2dd7589bf94",
+      "ssim": 0.992146,
+      "timestampAlignedSsim": 0.964181
+    },
+    {
+      "sourceCodec": "hevc",
+      "destination": "opfs",
+      "frames": "96",
+      "audioTracks": 2,
+      "outputBytes": 652521,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "ssim": 0.985963,
+      "timestampAlignedSsim": 0.954974
+    },
+    {
+      "sourceCodec": "hevc",
+      "destination": "direct",
+      "frames": "96",
+      "audioTracks": 2,
+      "outputBytes": 652521,
+      "outputSha256": "6c0575388593dd8e789e8e7d5d8c188620e16d6957c768585e9abc5694b4fc32",
+      "ssim": 0.985963,
+      "timestampAlignedSsim": 0.954974
+    }
+  ],
+  "actualServedApp": {
+    "url": "/assets/ConverterApp-BcOk2BNt.js",
+    "bytes": 315645,
+    "sha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "actualServedStylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "afterBytes": 27940,
+    "afterSha256": "81862974af7b02ede01b5122b4a8bc372600fb6f528bd11fabee2687ea78e311",
+    "matrixCssBytes": 1586,
+    "matrixCssSha256": "37257965a98bdeede4bdcba5677e0f75f42431b7405530169fcfeb2ef106022a"
+  },
+  "geometry": {
+    "matchingHeadlessGeometryAccepted": true,
+    "cssIntentionallyChanged": true,
+    "actualCandidateCssBound": true,
+    "baselineCssBound": true,
+    "identicalHistoricPrivateMatrixCssRetained": true,
+    "toleranceCssPixels": 0.015625,
+    "maximumDeltaCssPixels": 0,
+    "comparisons": [
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "error",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "running",
+        "observationPhase": "real-output-before-cancel",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "cancelled",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      }
+    ],
+    "scope": "Same headless1280x900/fixture/settings/six UI states; exact intentional CSS change; not speed/full-source memory acceptance"
+  },
+  "independentFullDecode": 3,
+  "decodedPcmPreserved": 3,
+  "copiedAudioTiming": 3,
+  "presentationTimeline": 3,
+  "artworkPreserved": 3,
+  "recoveryPassed": [
+    "direct-write-failure",
+    "cancel-after-direct-output"
+  ],
+  "emptyStorageInventories": 5,
+  "protectedFixture": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "cleanup": {
+    "helperAudit": [
+      {
+        "role": "production-server",
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 27932,
+          "parentPid": 34380,
+          "createdAt": "2026-10-09T15:43:15.7260800Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-09T15:48:18.396Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 347,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "role": "playwright-runner",
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35192,
+          "parentPid": 34380,
+          "createdAt": "2026-10-09T15:43:17.0136210Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-09T15:48:18.735Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 338,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "nativeFollowUp": {
+      "recordedAt": "2026-10-09T15:48:19.123Z",
+      "queriedPids": [
+        26052,
+        32564,
+        10628,
+        34752,
+        38380,
+        38496,
+        28508,
+        38860,
+        30820,
+        29272,
+        19768,
+        31572,
+        27588,
+        31372,
+        16440,
+        36584,
+        32184,
+        19800,
+        15304,
+        33860,
+        38060,
+        21472,
+        36400,
+        31132
+      ],
+      "current": [],
+      "noProcessesKilled": true,
+      "nativeBrowserBirthsUnavailable": true,
+      "fullIdentityCleanupCertified": false,
+      "reusedPidObservations": [],
+      "originalSampledProcessesNotPresentAtFollowUp": true
+    },
+    "normalProductionRestored": true,
+    "namedRuntimePathsAbsent": true,
+    "privateAssetsAbsent": 11,
+    "transientPid": {
+      "pid": 38860,
+      "sampledParentPid": 26052,
+      "postCheckParentPid": 38072,
+      "parentMismatchObserved": true,
+      "currentlyAbsent": true,
+      "browserBirthIdentityUnavailable": true,
+      "noProcessesKilled": true
+    }
+  },
+  "normalStylesheetArchive": {
+    "path": "outputs/reports/2026-10-09T15-42-44-939Z-progress-compositing-normal-client.css.gz",
+    "bytes": 6388,
+    "sha256": "5dacd8ebd793a795286522ee88a9a808c7d2842108de9fdbaa9e339e752caae0",
+    "rawBytes": 26213,
+    "rawSha256": "f78f673c089ceb0dcfd1a885ff03e2a43984d851cfbe1d915e9a773a45c747dd"
+  },
+  "screenshots": [
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-1.png",
+      "bytes": 139331,
+      "sha256": "dcc12b656a73b3666dc4862a417972fa9055e72faccff9f0da383538946c6cde"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-2.png",
+      "bytes": 127090,
+      "sha256": "dc6e2b10780405ce3f1dbe2eecf7098a9047c549b7bb11a9a99d584e4f3ba952"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-3.png",
+      "bytes": 144907,
+      "sha256": "b8b1bd635ddc3e5c0bfc6862571b111dd1ad17f5f044f6cc81d3956e92a8b908"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-4.png",
+      "bytes": 147671,
+      "sha256": "65d093f8150337a351593e8d4d08c568b355b5411f990100b8258e0decfcd873"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-5.png",
+      "bytes": 152569,
+      "sha256": "82884ac467dc9112d230884effb120f9aa0166297e3f4b051e315f0e978aa575"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-6.png",
+      "bytes": 152356,
+      "sha256": "0aabc68b5aa731dfa9fb67c6bad11d1f9e9e49e7f7f27e785170b6e5b1c4ca69"
+    }
+  ],
+  "visualReview": {
+    "reviewedByMainAgent": true,
+    "observations": "All six actual screenshots reviewed: three saved, write failure, real running output and cancelled state. Bar/layout visually preserved.",
+    "limitation": "Historical private staged adapter retains published route labels/settings disclosures; screenshots are not acceptance of that UI for the private MPEG2 route."
+  },
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "headedManualValidation": false,
+  "originalFullSourceAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false
+}

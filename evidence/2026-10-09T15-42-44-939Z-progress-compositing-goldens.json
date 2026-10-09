@@ -1,0 +1,613 @@
+{
+  "recordedAt": "2026-10-09T15:43:54.236Z",
+  "status": "failed-or-incomplete",
+  "failure": "\nValidation: AssertionError [ERR_ASSERTION]: Inspect PID reuse; never kill unrelated processes\n+ actual - expected\n\n+ [\n+   {\n+     ParentProcessId: 38072,\n+     ProcessId: 38860\n+   }\n+ ]\n- []\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/validate-progress-compositing-goldens.mjs:150:14\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "sourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a",
+    "scripts/validate-stable-ui-headless-baseline.mjs": "e92797e54f6097c9ee4a816b2b4cb7398032ca88e01b912745e7faec03b74e14",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "tests/stable-ui-headless-baseline.test.mjs": "54bf423d5d892d617e2e25c61d62a047a0eb441f0014fa95db66108fee33b0fd",
+    "scripts/validate-progress-compositing-goldens.mjs": "3b1ce4a30b94d2d32da9b1c8bdc61bf22a093a44e0e56e57dd2d79a12e14e3b6",
+    "scripts/lib/progress-compositing-golden-recipe.mjs": "825ce3f7596afca5edbca395e6a7b977d204c354749f9b96567d3363da9ac44a",
+    "tests/progress-compositing-goldens.test.mjs": "41126937eec090623fa58f8ca63f97d2cb4d674dd500d946228dc36d69e7f110",
+    "scripts/build-progress-compositing-candidate.mjs": "7565917d6e890ab8b5a38d80101bf32d7f5c99ff41a6a08125d29dd38ea9e080",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "AGENTS.md": "0eb3a2f80ba7177f71ef8fb1f34eed1f0b2e73cb4f81bbbfef11d7c8caac2b6a"
+  },
+  "postSourcePins": {
+    "scripts/validate-stable-progress-ui-headless.mjs": "43ebdcc6737954c71626e8a57057846035e0c2de782bbdd4b07a54f6979279d1",
+    "scripts/lib/headless-stable-ui-golden-recipe.mjs": "db9d6240b6f35291f63d048755bc8600e4dd0a8f2bd7ae0cf1a236e7f827148c",
+    "tests/headless-stable-ui-goldens.test.mjs": "5f428f1aeb2f3e541e090efaf763bed9be9d3b0011156ffe4b661d767a2f1f19",
+    "scripts/validate-stable-progress-ui-goldens.mjs": "2b6201c7e9ab33ffe18e13578421ae9b02604eb227936d68c3655d01e874ac19",
+    "scripts/build-stable-progress-ui-candidate.mjs": "198ac1c27475cfd7ab18f6a23665c2e50ec475970593cfba399b3d1d11dd8e40",
+    "scripts/lib/stable-progress-ui-recipe.mjs": "39647301aed6204a331eccb7a78b9a8530c60ce1067b5bceb7df08f1426e1fb4",
+    "tests/stable-progress-ui.test.mjs": "a9cabba48637a2bf3f10c024b3a0680dd53c2ce498821a0ede9049161e4b1a5e",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a",
+    "scripts/lib/mpeg2-hero-width-golden-recipe.mjs": "a4b2bb6f1c0f0143772804b89f0863714241ec1ad0c04f810a376434cc57223f",
+    "scripts/lib/mpeg2-matrix-golden-recipe.mjs": "3e266f495e8f195917947a3711288a87fbc9133766b75c6851076903ebd6265c",
+    "scripts/validate-mpeg2-split-direct.mjs": "b4cb70a6977f664337e6c80e8f296f58d2f50297b599e96a21cff91b84d0a9c4",
+    "scripts/stage-mpeg2-late-allocator-abort.mjs": "a60ba129f7a2660e76f651b37c392d1466de235adceff2c550fbcd9d568fd6ca",
+    "tests/browser/mpeg2-split-direct-candidate.spec.ts": "e91991243c9923df2380e19b7dc4a5c85b09c7e507e3b1d1112c96ee3a0ca73a",
+    "scripts/validate-stable-ui-headless-baseline.mjs": "e92797e54f6097c9ee4a816b2b4cb7398032ca88e01b912745e7faec03b74e14",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "tests/stable-ui-headless-baseline.test.mjs": "54bf423d5d892d617e2e25c61d62a047a0eb441f0014fa95db66108fee33b0fd",
+    "scripts/validate-progress-compositing-goldens.mjs": "3b1ce4a30b94d2d32da9b1c8bdc61bf22a093a44e0e56e57dd2d79a12e14e3b6",
+    "scripts/lib/progress-compositing-golden-recipe.mjs": "825ce3f7596afca5edbca395e6a7b977d204c354749f9b96567d3363da9ac44a",
+    "tests/progress-compositing-goldens.test.mjs": "41126937eec090623fa58f8ca63f97d2cb4d674dd500d946228dc36d69e7f110",
+    "scripts/build-progress-compositing-candidate.mjs": "7565917d6e890ab8b5a38d80101bf32d7f5c99ff41a6a08125d29dd38ea9e080",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "AGENTS.md": "0eb3a2f80ba7177f71ef8fb1f34eed1f0b2e73cb4f81bbbfef11d7c8caac2b6a"
+  },
+  "hostPreflight": {
+    "acquiredAt": "2026-10-09T15:42:45.3764460Z",
+    "freePhysicalBytes": 9869361152,
+    "freeVirtualBytes": 17453682688,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "launchHostPreflight": {
+    "acquiredAt": "2026-10-09T15:43:15.4562842Z",
+    "freePhysicalBytes": 11350179840,
+    "freeVirtualBytes": 19398578176,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskPreflightBytes": 1610090299392,
+  "protectedPre": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedPost": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "baseline": {
+    "path": "evidence/2026-10-08T21-50-57-923Z-stable-ui-headless-baseline.json",
+    "sha256": "7f81a27bc0e570c288f715f06caed02a63133d915b8f239c824a1866de6839df"
+  },
+  "buildProofPath": "evidence/2026-10-09T15-42-44-939Z-progress-compositing-build.json",
+  "generatedArchive": {
+    "path": "outputs/reports/2026-10-09T15-42-44-939Z-progress-compositing-golden-executed-sources.json.gz",
+    "bytes": 75956,
+    "sha256": "02ce2835b53c95889161ebd7e37800c09b6c5b284af063b85c5827998adde3cd",
+    "restoredBytes": 334256,
+    "restoredSha256": "6c9f0a25af2958970977a4461ffdfef74a15a65f0b98668906c01f7ab33e0b03"
+  },
+  "report": {
+    "rawPath": "output/playwright/2026-10-09T15-43-18.198Z-mpeg2-split-pipeline-37739125738-direct-artwork.json",
+    "rawBytes": 556571,
+    "rawSha256": "a3ae9c379bdebbcb8f3254a8fc9252060e9f0f6789ae274f388c2caa3c43635a",
+    "archive": {
+      "path": "outputs/reports/2026-10-09T15-42-44-939Z-progress-compositing-golden-report.json.gz",
+      "bytes": 40007,
+      "sha256": "81841041d36ea45a7185b202b49f3689c8e64d078ed54187c2402af07057d4b1",
+      "restoredBytes": 556571,
+      "restoredSha256": "a3ae9c379bdebbcb8f3254a8fc9252060e9f0f6789ae274f388c2caa3c43635a"
+    }
+  },
+  "analysis": {
+    "matchingHeadlessGeometryAccepted": true,
+    "cssIntentionallyChanged": true,
+    "actualCandidateCssBound": true,
+    "baselineCssBound": true,
+    "identicalHistoricPrivateMatrixCssRetained": true,
+    "toleranceCssPixels": 0.015625,
+    "maximumDeltaCssPixels": 0,
+    "comparisons": [
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "complete",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "error",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "running",
+        "observationPhase": "real-output-before-cancel",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      },
+      {
+        "jobState": "cancelled",
+        "observationPhase": "terminal-after-cleanup",
+        "deltas": [
+          {
+            "selector": ".control-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".encoding-options-grid",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".live-metrics",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".conversion-plan",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".matrix",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".hero-copy",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          {
+            "selector": ".converter-card",
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          }
+        ]
+      }
+    ],
+    "scope": "Same headless1280x900/fixture/settings/six UI states; exact intentional CSS change; not speed/full-source memory acceptance"
+  },
+  "stylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "afterBytes": 27940,
+    "afterSha256": "81862974af7b02ede01b5122b4a8bc372600fb6f528bd11fabee2687ea78e311",
+    "matrixCssBytes": 1586,
+    "matrixCssSha256": "37257965a98bdeede4bdcba5677e0f75f42431b7405530169fcfeb2ef106022a"
+  },
+  "screenshots": [
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-1.png",
+      "bytes": 139331,
+      "sha256": "dcc12b656a73b3666dc4862a417972fa9055e72faccff9f0da383538946c6cde"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-2.png",
+      "bytes": 127090,
+      "sha256": "dc6e2b10780405ce3f1dbe2eecf7098a9047c549b7bb11a9a99d584e4f3ba952"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-3.png",
+      "bytes": 144907,
+      "sha256": "b8b1bd635ddc3e5c0bfc6862571b111dd1ad17f5f044f6cc81d3956e92a8b908"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-4.png",
+      "bytes": 147671,
+      "sha256": "65d093f8150337a351593e8d4d08c568b355b5411f990100b8258e0decfcd873"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-5.png",
+      "bytes": 152569,
+      "sha256": "82884ac467dc9112d230884effb120f9aa0166297e3f4b051e315f0e978aa575"
+    },
+    {
+      "path": "output/playwright/2026-10-09T15-42-44-939Z-progress-compositing-matrix-goldens-6.png",
+      "bytes": 152356,
+      "sha256": "0aabc68b5aa731dfa9fb67c6bad11d1f9e9e49e7f7f27e785170b6e5b1c4ca69"
+    }
+  ],
+  "cleanup": {
+    "normalProductionRestored": true,
+    "ownedWrapper": "H:\\Github Repositories\\fileconverter\\work\\progress-compositing-goldens-IpmZkq",
+    "ownedWrapperAbsent": true,
+    "helpersBirthIdentities": {
+      "path": "outputs/reports/2026-10-09T15-42-44-939Z-progress-compositing-golden-launch-identities.json",
+      "sha256": "e5889f46779518a8d591961973957e659b00f9e47afb5bdca610d0e040b6217d",
+      "launchRecords": [
+        {
+          "role": "production-server",
+          "identity": {
+            "pid": 27932,
+            "parentPid": 34380,
+            "createdAt": "2026-10-09T15:43:15.7260800Z"
+          },
+          "absence": {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 27932,
+              "parentPid": 34380,
+              "createdAt": "2026-10-09T15:43:15.7260800Z"
+            },
+            "observations": [
+              {
+                "acquiredAt": "2026-10-09T15:43:45.874Z",
+                "current": null,
+                "unavailable": null,
+                "ownedIdentityPresent": false,
+                "sameParent": null
+              }
+            ],
+            "pidReused": false,
+            "elapsedMs": 361,
+            "noProcessesKilled": true,
+            "unavailableIsNotZero": true
+          }
+        },
+        {
+          "role": "playwright-runner",
+          "identity": {
+            "pid": 35192,
+            "parentPid": 34380,
+            "createdAt": "2026-10-09T15:43:17.0136210Z"
+          },
+          "absence": {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 35192,
+              "parentPid": 34380,
+              "createdAt": "2026-10-09T15:43:17.0136210Z"
+            },
+            "observations": [
+              {
+                "acquiredAt": "2026-10-09T15:43:46.200Z",
+                "current": null,
+                "unavailable": null,
+                "ownedIdentityPresent": false,
+                "sameParent": null
+              }
+            ],
+            "pidReused": false,
+            "elapsedMs": 326,
+            "noProcessesKilled": true,
+            "unavailableIsNotZero": true
+          }
+        }
+      ],
+      "runtime": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-matrix-golden-runtime-zLzo4H",
+      "runtimeAbsent": true
+    },
+    "numericBrowserPidsAbsent": {
+      "observedCount": 24,
+      "current": [
+        {
+          "ProcessId": 38860,
+          "ParentProcessId": 38072
+        }
+      ],
+      "nativeBrowserBirthsUnavailable": true
+    }
+  },
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "headedManualValidation": false,
+  "visualReviewPending": true,
+  "originalFullSourceAcceptance": false,
+  "publicAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false
+}

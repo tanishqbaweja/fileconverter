@@ -5,6 +5,57 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Progress compositing passes actual correctness; full-original test next
+
+ONE changed private UI suite from pushed cb6cb6a, session73427 now TERMINAL1.
+Actual five Playwright tests PASS27.1s: MPEG4→MPEG2 MP4/OPFS, HEVC→MPEG2 MP4/OPFS
+and direct destination, actual direct-write failure, real-output cancellation.
+All three output bytes/SHA/frames/two audio tracks/packet hashes/decoded PCM/
+full independent decode/timelines/SSIM match retained baseline. Outputs321692B,
+652521B,652521B;48/96/96frames. Fixed48MiB aggregate Wasm, one pending write,
+read≤64KiB/write+queue≤512KiB, terminal queues0/native sessionsclosed; original
+JS transport retained, rejected copy kernel absent. These short fixtures are
+correctness tests, NOT full-source/speed/complete-browser-memory acceptance.
+
+Actual new App315645B/96141855…36a48 and CSS26354B/3c4c62c5…34a6 checked on all
+five flows. Identical historical1586B private matrix stylesheet suffix retained,
+candidate fetched/final CSS byte+SHA proven; intentional difference honest.
+All six actual UI states same viewport/matrix/options/controls/geometry: max
+delta0CSSpx vs tolerance1/64. Six actual screenshots reviewed: saved/error/running/
+cancelled layout/bar preserved. Historical private engine adapter still displays
+published route labels/disclosures; this is not a public UI acceptance of private
+MPEG2 support and not headed/manual coverage.
+
+Controller status remains failed-or-incomplete: ONLY post-restoration numeric
+PID-empty check failed on38860. It was sampled renderer,parent26052; postcheck
+parent38072 differs. Follow-up query confirms absent; old recorded server/runner
+birth identities absent and named runtime directories gone. No unrelated process
+killed. Browser samples lack birth identities, so no full identity certificate.
+Do NOT erase original failure or rerun five conversions unchanged. Independent
+analysis15-42-44-939Z checks exact archived generated sources/all28 pinned source
+preimages, actual outputs/validators/App+CSS/six screenshots/storage/ownership,
+current restoration/native absence/protected full SHA. Receipt explicitly keeps
+failure and unavailable browser births.28 pre/post pins equal; normal App/CSS,
+six original engine hashes restored,11 private assets absent; five inventories
+empty, failed/cancelled partial outputs removed by genuine browser cleanup.
+
+16/16 focused tests PASS458.7523ms, six-file lint0. New retained UI/evidence tests
+read hash-bound normal CSS archive rather than requiring dist; no fresh-clone
+portable/full CI acceptance yet. All referenced compact source/JS/CSS/raw archives,
+launch records and screenshots retained for push, no converted media/core binaries.
+Compaction removes ONLY independently verified redundant556571B raw JSON after
+byte-exact40007B gzip roundtrip, saves516564B; original failed controller receipt
+and entire measurement report preserved losslessly. Generated conversion files/
+profiles/scratch remain repository-local and disposable finally-cleaned.
+Post-compaction six archive/recipe tests PASS121.7438ms (no raw JSON dependency);
+git diff --check clean. No browser replay.
+
+NEXT one changed full-original diagnostic with original JS transport/new App+CSS,
+reuse verified retained baseline (NO baseline rerun), same full test.mkv/settings/
+5min settled blank/ALL-process250MiB/bounded IO/fidelity/finally, matched output
+checkpoints. Existing late HEVC-pool OOM remains separate. Keep candidate private,
+no renderer-spike-cause/accepted-fastest/full250/public/spec completion claim.
+
 ## 2026-10-09 — Changed progress UI correctness suite prepared; not executed yet
 
 Latest user window concern is authoritative: all new subprocesses hidden and
