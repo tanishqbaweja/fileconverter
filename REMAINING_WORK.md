@@ -5,6 +5,60 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Changed native candidate passed all five real headless goldens
+
+Status: **Partially implemented**; actual small-browser correctness/recovery
+verified, full-source/repeats/scaling/memory/speed acceptance still missing.
+ONE actual new86704920…a8ec decoder suite5/5 PASS29.1s. Three genuine production
+browser transcodes48/96/96frames (MPEG4 OPFS, HEVC OPFS/direct) reproduce exact
+prior output hashes/decoded audio/timestamps/artwork/chapters/compatible metadata.
+SSIM unchanged0.992146/0.985963/0.985963; same fixed32+16MiB/no growth/encoder/
+quality/I/O. Cancellation and write-error propagate with partial files removed.
+Proof: `evidence/2026-10-09T20-41-29-131Z-single-idle-browser-goldens.json`.
+26 focused source/actual-evidence tests PASS972.9592ms/five-file lint0.
+
+Executed source preimages/golden report compactly retained; headless/hidden only.
+Owned helpers absent by birth identity; scratch/profiles/generated media gone,
+six normal engines restored/nine private additions absent/AppCSS unchanged,
+full protected original SHA pre/post unchanged. Exact redundant hosted artifact
+11643347901 deleted and run artifact API0 verified; small9.6MB local reusable core
+retained only in work for next full test. Cleanup proof:
+`evidence/mpeg2-single-idle-hosted-cleanup-37986418102.json`.
+
+Next exact action: requalify failure-only allocator/header observer against the
+NEW compiled binary (do not blindly reuse old3e744 layout qualification), then
+ONE new full-original stress attempt under unchanged250MiB/quality/timing/IO
+gates. No old-core replay, no repeated small suite, no duplicate build dispatch.
+Goal remains active; this cycle PROGRESS (compiled result, genuinely changed
+browser conversions/independent fidelity proof/recovery/cleanup).
+Historical pending snapshots below are superseded by the terminal result above.
+
+## 2026-10-10 — Actual changed build succeeded; browser/stress acceptance still partial
+
+Status: **Partially implemented**. Actual run37986418102/job114009420396 is now
+TERMINAL SUCCESS,525seconds compiling20:22:00–20:30:45Z; no Docker. Build time
+is not conversion speed. Compiled decoder86704920…a8ec differs from failed3e744…;
+encoder identical/fixed32+16MiB/no growth. Actual Wasm32 unit:40 selectors,
+4 policies,200000 sequential1163520-byte reuses/ONE fresh allocation, all live
+reference/uninit/error/zeroing contracts PASS. Hosted build data/download runtime
+cleaned;9.6MB reusable tools retained only inside work for next real browser tests.
+Evidence: `evidence/mpeg2-single-idle-build-37986418102.json`.
+
+New source-bound five-case harness keeps unchanged independent validators/quality
+and output goldens, forces hidden/headless mode, and birth-identity cleanup.
+23 focused tests PASS893.0153ms/lint0; preparation proof
+`evidence/2026-10-09T20-41-23-933Z-single-idle-browser-goldens.json` is source-only,
+zero conversions/owned scratch gone. ONE actual changed-core browser suite
+launched; terminal outcome recorded above. Next: validate those real outputs and
+recovery, qualify failure-only observer against new binary, then one changed
+full protected-original attempt. No old-core retry/duplicate hosted dispatch.
+Still missing full-original completion/repeats/scaling/memory and speed acceptance.
+This cycle PROGRESS (actual compiled evidence/new guarded harness/tests/launched
+changed real-browser verification). Previous user-window audit found no owned
+visible CMD roots but did not advance conversion acceptance; no-progress on that
+goal dimension, now addressed with an actual changed implementation/test action.
+
+Historical live snapshot below is SUPERSEDED by terminal proof above:
 Changed single-idle build ACTUALLY LIVE: ONE dispatch37986418102, isolated
 e9d90b95814c2557895a5d71793384d7d6386c3f/branchcodex/mpeg2-single-idle-20261010;
 API20:25:31UTC job114009420396 in_progress. Pinned SDK step passed/compile started

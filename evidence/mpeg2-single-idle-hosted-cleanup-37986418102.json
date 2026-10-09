@@ -1,0 +1,44 @@
+{
+  "recordedAt": "2026-10-09T20:43:35.022Z",
+  "status": "exact-hosted-artifact-absent-local-tools-verified-retained",
+  "buildProofSha256": "de35c69f291584d1c0e8f1f5bae44a53edfc5031a208d47ea3edde54024062b1",
+  "before": {
+    "total_count": 1,
+    "artifacts": [
+      {
+        "id": 11643347901,
+        "node_id": "MDg6QXJ0aWZhY3QxMTY0MzM0NzkwMQ==",
+        "name": "private-mpeg2-aligned-reuse-37986418102",
+        "size_in_bytes": 2366076,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11643347901",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11643347901/zip",
+        "expired": false,
+        "digest": "sha256:0e3c642d810a9b9d5aeb4c64f8f1c8249a57cbc13989e687d59dfa357e5ef820",
+        "created_at": "2026-10-09T20:30:46Z",
+        "updated_at": "2026-10-09T20:30:46Z",
+        "expires_at": "2026-10-10T20:30:45Z",
+        "workflow_run": {
+          "id": 37986418102,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "codex/mpeg2-single-idle-20261010",
+          "head_sha": "e9d90b95814c2557895a5d71793384d7d6386c3f"
+        }
+      }
+    ]
+  },
+  "after": {
+    "total_count": 0,
+    "artifacts": []
+  },
+  "deletionPerformed": true,
+  "exactArtifactId": 11643347901,
+  "localToolsVerified": true,
+  "localToolsBytes": 9631422,
+  "localToolsRetainedForBrowserStress": true,
+  "ownedRuntimeRemoved": true,
+  "convertedFilesDeleted": 0,
+  "originalReadOrChanged": false,
+  "sourceSha256": "99c6443d8d9e5a0779359af4b8a12ca9e770808aa6bc256ea8ed6de3b9075e98",
+  "publicAcceptance": false
+}

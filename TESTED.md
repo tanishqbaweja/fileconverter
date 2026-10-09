@@ -4,6 +4,57 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Changed single-idle core: 5/5 real headless goldens PASS
+
+ONE changed-core suite completed5/5 tests in29.1s (small suite elapsed time,
+NOT full-file conversion speed). Three genuine production-worker conversions:
+MPEG4→MPEG2 OPFS, HEVC→MPEG2 OPFS, HEVC→MPEG2 selected-destination adapter;
+48/96/96 decoded frames. ALL output bytes/hashes, decoded audio, packet/timestamp
+goldens, artwork, chapters, language/general metadata and warnings match prior
+validated outputs exactly; SSIM0.992146/0.985963/0.985963 (unchanged≥0.98).
+Both direct-write failure and cancellation after real output passed with no
+partial files/queued operations. Same fixed48MiB heaps and bounded production I/O.
+Headless only; no headed/manual claim.26 focused source/actual-evidence tests
+PASS972.9592ms/five-file lint0. No native conversion, no Docker.
+
+Actual hash-bound proof: `evidence/2026-10-09T20-41-29-131Z-single-idle-browser-goldens.json`.
+Executed source preimages/generated test/driver/stager and raw diagnostics retained
+losslessly in compact gzip archives; both helper birth identities absent. All
+disposable fixtures/outputs/profiles/runtime removed, six generated engine assets
+restored, nine private files absent, normal App/CSS unchanged. Full original
+pre/post SHA31f36695…db34/2,958,573,265bytes unchanged. Verified local tools retained
+for full testing; exact redundant hosted artifact11643347901 deleted/API0:
+`evidence/mpeg2-single-idle-hosted-cleanup-37986418102.json`.
+
+Still NOT public acceptance: no new full-original completion, three stress
+repeats, scaling, certified250MiB measurement or speed improvement. Next action:
+qualify the failure-only allocator observer against actual new86704920…a8ec
+binary, then ONE changed full-original attempt. No old-core or small-suite replay.
+The source/build-pending snapshots below are historical and superseded.
+
+## 2026-10-10 — Changed single-idle core actually compiled
+
+Run37986418102/job114009420396 is TERMINAL SUCCESS, not still compiling.
+Actual compile20:22:00–20:30:45Z (525seconds; build time, NOT conversion time).
+Hosted finally cleanup passed. Collected source-bound decoder
+`86704920f30ed243240614df92d05deba9f76c33e739a927903677b677f8a8ec`;
+encoder byte-exact, fixed32+16MiB/no growth unchanged. Actual compiled Wasm32
+lifetime unit passed40 selector/4 policy cases and200000 sequential reuses of
+1163520-byte payload with ONE fresh allocation; multiref/live-uninit/init-error/
+zero-every-time tests passed. This is synthetic allocation evidence, not media.
+One reusable9,631,422-byte tool directory retained inside work; disposable
+download runtime gone. Terminal proof: `evidence/mpeg2-single-idle-build-37986418102.json`.
+
+New additive browser harness preserves all five original correctness/recovery
+tests and exact prior output hashes, with explicit headless/hidden launches and
+birth-identity guarded cleanup.23/23 focused tests PASS893.0153ms; three-file
+lint0. Preparation `evidence/2026-10-09T20-41-23-933Z-single-idle-browser-goldens.json`
+passed with no browser/conversion; generated sources retained losslessly, scratch
+gone. ONE actual changed-core suite launched; its terminal result is recorded above.
+Full-original failure resolution,250MiB stress/repeats/scaling and speed remain
+UNPROVEN; private candidate/public registry unchanged. Goal remains active.
+
+Historical live snapshot below is SUPERSEDED by the terminal proof above:
 Changed candidate build ACTUALLY LIVE: ONE dispatch37986418102, isolated commit
 e9d90b95814c2557895a5d71793384d7d6386c3f/branchcodex/mpeg2-single-idle-20261010.
 Authoritative20:25:31UTC API confirms job114009420396 in_progress; SDK installation
