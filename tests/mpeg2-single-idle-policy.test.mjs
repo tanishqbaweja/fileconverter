@@ -89,3 +89,18 @@ test("Registered workflow isolated derivative changes only existing private buil
   assert.ok(preparer.includes('assert.equal(await git(["ls-files", "--", "test.mkv"]), ""'));
   assert.ok(preparer.includes('assert.equal(await git(["ls-remote", "origin", "refs/heads/main"]), main)'));
 });
+
+test("Tool collector rejects invalid job IDs before network/storage; requires actual build/manifest/lifetimes and owned cleanup", async () => {
+  const collector = (await read("scripts/collect-mpeg2-single-idle-build.mjs")).toString();
+  for (const token of ['assert.equal(run.status, "completed")', 'assert.equal(run.conclusion, "success")',
+    'assert.equal(run.headSha, branch.commit)', 'assert.equal(smoke.sequentialFreshAllocations, 1)',
+    'assert.equal(smoke.maximumIdleEntriesPerSelectedPool, 1)', 'constants.COPYFILE_EXCL',
+    'current.ino, identity.ino', 'await runtime.close()', 'windowsHide: true',
+    'assert.equal(hash, branch.workflow.generatedSha256)', 'reverseSingleIdleRefstruct(actualRefstruct)']) assert.ok(collector.includes(token), token);
+  for (const invalid of ["../test.mkv", "not-a-job"]) {
+    const result = spawnSync(process.execPath, ["scripts/collect-mpeg2-single-idle-build.mjs", invalid],
+      { cwd: path.resolve(import.meta.dirname, ".."), encoding: "utf8", windowsHide: true });
+    assert.notEqual(result.status, 0); assert.match(result.stderr, /AssertionError/);
+    assert.doesNotMatch(result.stderr, /ENOENT|HTTP|gh\.exe/);
+  }
+});

@@ -4,6 +4,17 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+Changed candidate build ACTUALLY LIVE: ONE dispatch37986418102, isolated commit
+e9d90b95814c2557895a5d71793384d7d6386c3f/branchcodex/mpeg2-single-idle-20261010.
+Authoritative20:25:31UTC API confirms job114009420396 in_progress; SDK installation
+passed, actual compile step began20:22:00Z. Canonical source commit61d9b82 pushed
+to media-options; main/workflow/index/HEAD unchanged, no copied checkout/media.
+No compiled unit/result/browser conversion inferred yet; compiler/lifetime
+results remain null. Observe SAME job, no duplicate dispatch. Branch/live receipts
+retained; tool collector/source-identity/ownership guards pass19/19 focused tests
+435.4543ms/two-file lint0. This cycle is PROGRESS (bounded implementation/tests/
+push/actual changed launch), with verified waits on that exact live job only.
+
 ## 2026-10-10 — New bounded HEVC single-idle candidate implemented; compile pending
 
 Based on the actual padded-fallback failure, NEW private policy retains at most

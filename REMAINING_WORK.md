@@ -5,6 +5,17 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+Changed single-idle build ACTUALLY LIVE: ONE dispatch37986418102, isolated
+e9d90b95814c2557895a5d71793384d7d6386c3f/branchcodex/mpeg2-single-idle-20261010;
+API20:25:31UTC job114009420396 in_progress. Pinned SDK step passed/compile started
+20:22:00Z. Source61d9b82 pushed/media-options, canonical workflow/index/HEAD/main
+unchanged; no media or checkout copy. Compiler/lifetime results remain null,
+NOT acceptance. Same-job monitoring only, no duplicate dispatch. Collector guards
+and isolated workflow19/19 focused PASS435.4543ms/two-file lint0. Branch and actual
+live evidence in `evidence/mpeg2-single-idle-build-{branch,live}-2026-10-10.json`.
+Previous turn PROGRESS (new actual fallback evidence); this turn PROGRESS
+(bounded policy implementation/verification/push/ONE changed hosted build).
+
 ## 2026-10-10 — Bounded single-idle HEVC policy source implemented
 
 Status: **Partially implemented; actual compilation/browser results pending**.

@@ -1,0 +1,192 @@
+{
+  "observedAtUtc": "2026-10-09 20:25:31 UTC",
+  "status": "actual-single-idle-hosted-build-in-progress-not-conversion",
+  "run": {
+    "conclusion": "",
+    "databaseId": 37986418102,
+    "headSha": "e9d90b95814c2557895a5d71793384d7d6386c3f",
+    "jobs": [
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114009420396,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-09T20:21:23Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T20:21:25Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T20:21:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T20:21:30Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T20:21:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T20:21:34Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-09T20:21:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T20:22:00Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-09T20:21:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-09T20:22:00Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37986418102/job/114009420396"
+      }
+    ],
+    "status": "in_progress",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37986418102"
+  },
+  "exactRunAndJobHandleVerified": true,
+  "dispatches": 1,
+  "registeredWorkflow": "reproduce-ffmpeg-nondocker.yml",
+  "inputCore": "within-mpeg2-aligned-reuse",
+  "actualChangedBuilder": "media/ffmpeg/build-mpeg2-single-idle.mjs",
+  "isolatedBranch": "codex/mpeg2-single-idle-20261010",
+  "canonicalWorkflowAndMainUnchanged": true,
+  "sdkInstallationPassed": true,
+  "compileStepStartedAt": "2026-10-09T20:22:00Z",
+  "compilerResult": null,
+  "compiledLifecycleResult": null,
+  "actualBrowserConversions": 0,
+  "protectedOriginalRead": false,
+  "noDocker": true,
+  "publicAcceptance": false,
+  "next": "Observe SAME job37986418102, never dispatch duplicate. Require terminal success and source-bound compiled lifecycle proof before browser tests."
+}
