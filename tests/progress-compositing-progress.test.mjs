@@ -3,11 +3,11 @@ import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
-import { loadRetainedCopyProgress } from "../scripts/lib/retained-split-copy-progress.mjs";
+import { loadArchivedJsCopyControl } from "../scripts/lib/archived-js-copy-control.mjs";
 import { makeProgressCompositingProgressDriver, progressCompositingFiles } from "../scripts/lib/progress-compositing-progress-recipe.mjs";
 import { baselineBinding, sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file));
-const retained = await loadRetainedCopyProgress(root);
+const retained = await loadArchivedJsCopyControl(root);
 const golden = JSON.parse(await read("evidence/2026-10-09T15-42-44-939Z-progress-compositing-golden-analysis.json"));
 const helperUri = "file:///UNIT_ONLY_NOT_EXECUTED/trace-helper.mjs";
 const make = (source = retained.executed.generated, app = golden.actualServedApp, css = golden.actualServedStylesheet) =>
@@ -37,6 +37,7 @@ test("No full-file, blank, codec, quality, native-memory, writer, cancellation, 
   assert.equal(recipe.previous.expectedAsset.sha256, baselineBinding.sha256);
   assert.ok(!source.includes('windowsHide: false') && !source.includes('"--headed"'));
   assert.equal(retained.baseline.raw.runs[0].independentValidation, null, "Retained baseline is partial, never completed acceptance");
+  assert.equal(retained.currentCoreVerified, false, "Portable source tests must not claim current native artifacts verified");
 });
 
 test("Unbound stylesheet/source/default UI rejected; controller has one launch and no baseline rerun", async () => {

@@ -6,7 +6,7 @@ export { makeSplitCopyProgressTraceHelper as makeProgressCompositingTraceHelper 
 export const progressCompositingFiles = Object.freeze([
   "scripts/diagnose-progress-compositing-original.mjs", "scripts/lib/progress-compositing-progress-recipe.mjs", "tests/progress-compositing-progress.test.mjs",
   "scripts/build-progress-compositing-candidate.mjs", "scripts/lib/progress-compositing-recipe.mjs", "tests/progress-compositing.test.mjs",
-  "scripts/lib/retained-split-copy-progress.mjs", "AGENTS.md",
+  "scripts/lib/retained-split-copy-progress.mjs", "scripts/lib/archived-js-copy-control.mjs", "AGENTS.md",
 ]);
 function patch(source, patches) {
   let value = source;

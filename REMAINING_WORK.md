@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-09 — Browser launch held by RAM; portable recipe tests improved
+
+ONE launch attempt from pushed4d063b2,16-02-48-645Z, TERMINAL1 at host preflight.
+Free physical1449357312B (~1.35GiB), virtual4926619648B; required2GiB each. ZERO
+diagnostic driver/browser/server/core stage/build/profile/media executions, no
+native samples/work windows; failure retained, no smaller memory threshold.
+productionRestored:false means restoration not invoked (no mutation), not lost
+assets. Current normal binding/source pins were verified by retained loader.
+User asked once non-blockingly to free RAM; no unrelated process closed/killed,
+no unchanged launch retry. Original memory/throughput diagnostic still pending.
+
+Safe in-scope CI improvement meanwhile: NEW archived-js-copy-control reader for
+recipe tests validates receipt/raw-control/parent-source hashes and exact fullfile/
+250/64MiB/300s/cancelled-not-complete metadata WITHOUT requiring local private
+cores, dist or current historical source pins. Explicitly DOES NOT certify current
+native artifacts; actual stress controller STILL invokes full live-artifact loader.
+New progress recipe unit tests use archived reader; runtime/full-source/quality/
+all-process budget unchanged. Source pin set now145; old144 preparation/failed
+preflight receipts remain original immutable evidence.6/6 focused recipe plus
+actual-golden-evidence tests PASS259.8711ms; four-file lint0. New bounded fresh
+checkout verifier copies11 exact COMMITTED Git blobs (<2MiB), no node_modules/
+dist/work/test.mkv, runs ONLY three recipe tests, finally removes owned checkout.
+Next execute that verifier after commit; do not claim fresh/portable/full/Linux CI
+until actual results. No additional conversion/recovery replay.
+
 ## 2026-10-09 — Full-input progress UI diagnostic prepared with retained JS control
 
 Previous turn PROGRESS pushedfb9cd22: actual five golden tests/independent archive
