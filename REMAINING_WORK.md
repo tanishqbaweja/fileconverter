@@ -41,7 +41,13 @@ SHAc531cc26…1ef83 retains full executed caller/driver/trace/preimages before l
 Live receipts: evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json and
 evidence/2026-10-10T13-32-15-738Z-progress-compositing-build.json. Preparation:
 evidence/2026-10-10T13-31-48-547Z-encoder-plane-original-full-preparation.json.
-No terminal/full-conversion/final memory/speed/cleanup acceptance yet. Keep
+At13:40:01UTC actual stdout shows Run1 running: input33,646,145B/output22,770,455B,
+rounded peak incremental234.969MiB (not a final raw calculation). Same driver
+and Chrome parent/birth identities re-queried13:39:56UTC remain live. Actual
+encoding/output has begun after unchanged startup settlement, not merely a
+scheduled conversion. Compact observation:
+evidence/encoder-plane-full-observation-2026-10-10.json.0 completed conversions;
+no terminal/full-conversion/final memory/speed/cleanup acceptance yet. Keep
 source-pinned files frozen while live; inspect the same session/birth identity,
 never restart because observation waits expire. Playwright skill used for actual
 headless production test; headed/manual coverage remains unverified.

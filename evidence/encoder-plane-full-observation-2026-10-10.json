@@ -1,0 +1,41 @@
+{
+  "recordedAt": "2026-10-10T13:40:01Z",
+  "status": "actual-full-source-conversion-running-not-acceptance",
+  "terminalSessionId": 59855,
+  "liveReceipt": "evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json",
+  "sourceBytes": 2958573265,
+  "processObservationAt": "2026-10-10T13:39:56.785Z",
+  "driverIdentity": {
+    "pid": 42468,
+    "parentPid": 37648,
+    "createdAt": "2026-10-10T13:32:53.7592610Z"
+  },
+  "chromeIdentity": {
+    "pid": 8524,
+    "parentPid": 42468,
+    "createdAt": "2026-10-10T13:33:05.2555620Z"
+  },
+  "processIdentitiesActuallyRequeried": true,
+  "observedHeadlessFlag": "--headless=new",
+  "observedProfilePath": "work/mpeg2-encoder-plane-full-runtime-zlL5Bm/profile",
+  "terminalProgress": {
+    "runNumber": 1,
+    "jobState": "running",
+    "inputBytes": 33646145,
+    "outputBytes": 22770455,
+    "roundedPeakIncrementalPrivateMiB": 234.969,
+    "roundedEarlyBlankPrivateMiB": 226.715,
+    "method": "Actual driver stdout; rounded values are not acceptance calculations or final raw samples"
+  },
+  "completedConversions": 0,
+  "requestedRuns": 3,
+  "fullSourceReadComplete": false,
+  "independentValidationComplete": false,
+  "completeChromiumMemoryAcceptance": false,
+  "originalFullSourceAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "terminalCleanupComplete": false,
+  "liveScratchMustNotBeRemoved": true,
+  "sameAttemptMustBeObservedWithoutRestart": true
+}

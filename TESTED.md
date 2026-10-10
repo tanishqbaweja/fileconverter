@@ -28,6 +28,10 @@ preimages losslessly archived1,035,770B SHA c531cc26553e203a90251f706ab098a3abfe
 Profile/output/scratch remain repository-local with finally cleanup; no disposal
 of live scratch. No actual full-video completion/memory/speed/terminal cleanup
 claim. Reobserve session59855/recorded birth; never replay on polling timeout.
+Actual13:40UTC Run1 running: input33,646,145B/output22,770,455B; stdout-rounded
+peak234.969MiB is live-only, not a final acceptance result. Driver/Chrome exact
+births remain CIM-confirmed13:39:56UTC;0 completed conversions. See
+evidence/encoder-plane-full-observation-2026-10-10.json.
 Evidence: evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json,
 evidence/2026-10-10T13-32-15-738Z-progress-compositing-build.json,
 evidence/2026-10-10T13-31-48-547Z-encoder-plane-original-full-preparation.json.
