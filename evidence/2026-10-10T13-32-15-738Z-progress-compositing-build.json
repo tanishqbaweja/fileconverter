@@ -1,0 +1,90 @@
+{
+  "recordedAt": "2026-10-10T13:32:48.018Z",
+  "status": "private-progress-compositing-built-not-conversion-acceptance",
+  "sourcePins": {
+    "scripts/build-progress-compositing-candidate.mjs": "7565917d6e890ab8b5a38d80101bf32d7f5c99ff41a6a08125d29dd38ea9e080",
+    "scripts/lib/progress-compositing-recipe.mjs": "92af6797c55e06a727e41582d4c15409fed1efe8c147ede69c1dd66c5076e2a4",
+    "tests/progress-compositing.test.mjs": "7d496267f2ce19c0b73f0ad65d2df6b7caa9d2f447b325fbfe20dba55b2b45b6",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29"
+  },
+  "loads": [
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    }
+  ],
+  "asset": {
+    "url": "/assets/ConverterApp-BcOk2BNt.js",
+    "bytes": 315645,
+    "sha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "stylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-10T13-32-15-738Z-progress-compositing-candidate-sources.json.gz",
+    "bytes": 23803,
+    "sha256": "b1cd607d42a9e02a980a9115cc93b447e21869c9895c6a7b73f70c0dbd141544",
+    "rawBytes": 124233,
+    "rawSha256": "6aed4f37bc4dc8d09e03ff9b606259e1a4334ddbbe7c97903e3fa005dcf039c0"
+  },
+  "appArchive": {
+    "path": "outputs/reports/2026-10-10T13-32-15-738Z-progress-compositing-client.js.gz",
+    "bytes": 67746,
+    "sha256": "796bdea7dc5ff0eb03d30be7195761ea35d5e36608abe576c76e72f6ae71f8c7",
+    "rawBytes": 315645,
+    "rawSha256": "96141855483b530b003afd81206bd63ce1c2a86e7e56c2462275352a69e36a48"
+  },
+  "cssArchive": {
+    "path": "outputs/reports/2026-10-10T13-32-15-738Z-progress-compositing-client.css.gz",
+    "bytes": 6413,
+    "sha256": "42e9da2a7dc45cb944e8907c31ceb29a3224352794be3d6118329a57c40dbde5",
+    "rawBytes": 26354,
+    "rawSha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6"
+  },
+  "candidateLintErrors": 0,
+  "candidateLintWarnings": 0,
+  "candidateTypeDiagnostics": 0,
+  "publishedSourceUnchanged": true,
+  "engineChanged": false,
+  "codecOptionsChanged": false,
+  "limitsChanged": false,
+  "cssChangedPrivately": true,
+  "forBrowser": true,
+  "normalProductionRestored": false,
+  "nativeAllocationCauseProven": false,
+  "conversionSpeedAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false
+}

@@ -4,6 +4,35 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Full-original changed-encoder gate bound and launched once
+
+Hash-gated reversible caller/driver/stager preserves full protected original,
+genuine HEVC→MPEG2/default1920x804,3 repeats,6h deadline each,5min lower blank,
+ALL Chromium-tree250MiB/100ms native monitor, original quality/timing/audio/art/
+metadata/privacy/direct-writer/cleanup gates. Compound manifest/exact new encoder
+and unchanged byte-qualified decoder independently bound; no decoder rebuild,
+generic profiler, source truncation, reduced quality or memory-formula change.
+First unit2/3: edit-count guard expected2 but actual3 stage-path appearances;
+corrected exact count only. First preparation failed before browser because
+canonical workflow absent from compound manifest source map; separately included
+canonical workflow in source-pin union, retaining exact hash assertion. Corrected
+prepare13:31:49UTC PASS/0executions/223preimages/owned wrappers absent; new golden
+receipt separately hash-bound to exact build+branch.11 focused PASS868.7003ms,
+20 encoder-focused PASS800.3928ms/four-file zero-warning lint PASS.
+
+ONE actual session59855 live; driver42468,parent37648,birth13:32:53.7592610UTC;
+headless Chrome8524,parent42468,birth13:33:05.255562UTC independently CIM-observed.
+UI production build matches prior exact progress asset/CSS. Fresh2GiB physical/
+virtual and32GiB disk guards pass. Exact executed caller/driver/trace plus223
+preimages losslessly archived1,035,770B SHA c531cc26553e203a90251f706ab098a3abfe805eb3657ef5207679e31c71ef83.
+Profile/output/scratch remain repository-local with finally cleanup; no disposal
+of live scratch. No actual full-video completion/memory/speed/terminal cleanup
+claim. Reobserve session59855/recorded birth; never replay on polling timeout.
+Evidence: evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json,
+evidence/2026-10-10T13-32-15-738Z-progress-compositing-build.json,
+evidence/2026-10-10T13-31-48-547Z-encoder-plane-original-full-preparation.json.
+Playwright skill guides headless real production-browser testing. Goal ACTIVE.
+
 ## 2026-10-10 — Actual encoder plane lifecycle and five browser goldens passed
 
 Changed no-Docker encoder-only run38044000567 TERMINALsuccess10:15:26UTC;

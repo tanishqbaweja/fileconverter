@@ -5,6 +5,47 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Changed encoder bound to full-original gate; one actual attempt live
+
+Status: **Partially implemented**, not acceptance. Added hash-gated reversible
+full-driver/caller/abort-stager derivatives. Full2,958,573,265B protected test.mkv,
+1920x804/default-quality genuine HEVC→MPEG2, three independently validated
+repeats, original six-hour per-run ceiling, lower five-minute blank baseline,
+complete Chromium-tree250MiB,100ms native monitor, SSIM>=0.98, audio/timestamp/
+metadata/artwork, direct-writer bounds, privacy and finally cleanup gates remain.
+Exact compound manifest/new encoder SHA and separate immutable build provenance
+are checked before browser startup; decoder bytes/qualified ABI/map unchanged.
+No repeated decoder rebuild/qualification/profiler or smaller-file substitution.
+
+First focused unit run2/3 passed: stager path appears three times, not two
+(including the frozen source list); corrected only the exact edit-count guard.
+First actual --prepare-only failed before any browser because the compound
+manifest correctly excludes the workflow from its source map. Added canonical
+workflow separately to caller source-pin union; no hash/gate relaxed. Also bind
+the successful five-case golden receipt to actual build/branch hashes.
+Corrected preparation13:31:49UTC passed:0 executions,223 source preimages,
+lossless1,035,766B archive, owned wrappers absent, normal production unchanged.
+11 focused checks PASS868.7003ms;20 encoder-focused PASS800.3928ms;
+four new-file zero-warning lint PASS. Historical source/failed runs unchanged.
+
+ONE actual attempt session59855 launched from13:32:15UTC; UI candidate production
+build passed and matched exact prior asset/stylesheet. Driver42468,parent37648,
+birth13:32:53.7592610UTC confirmed actually live by CIM. Headless Chrome8524,
+parent42468,birth13:33:05.255562UTC observed with --headless=new and repository-
+local profile work/mpeg2-encoder-plane-full-runtime-zlL5Bm/profile. No visible
+launcher, Docker, unrelated application kill or unrecorded full-source retry.
+Fresh host guards: physical4,078,751,744/5,897,043,968B and virtual6,220,468,224/
+7,983,022,080B; disk1,490,345,443,328B. Actual223-source archive1,035,770B
+SHAc531cc26…1ef83 retains full executed caller/driver/trace/preimages before launch.
+
+Live receipts: evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json and
+evidence/2026-10-10T13-32-15-738Z-progress-compositing-build.json. Preparation:
+evidence/2026-10-10T13-31-48-547Z-encoder-plane-original-full-preparation.json.
+No terminal/full-conversion/final memory/speed/cleanup acceptance yet. Keep
+source-pinned files frozen while live; inspect the same session/birth identity,
+never restart because observation waits expire. Playwright skill used for actual
+headless production test; headed/manual coverage remains unverified.
+
 ## 2026-10-10 — Real bounded encoder Wasm and byte-exact browser goldens passed
 
 Status: **Partially implemented**. Changed no-Docker encoder-only run38044000567
