@@ -4,6 +4,23 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Encoder compile failure preserved; declaration-only correction
+
+Run38043483415 TERMINALfailure supersedes earlier live observations. Actual fatal
+error: private factory has no previous prototype, libavutil/buffer.c:265:15 under
+strict missing-prototypes enforcement; optional stdbit.h configure probe not cause.
+No compiled lifecycle/encoder/browser result. Full70,284-byte failed-step log and
+13 exact executed Git-source preimages retained losslessly, failure remains failed.
+Hosted cleanup passed; local collector runtime removed. Additive private forward
+declaration reverses exactly, no compiler-check suppression/pool/codec/heap change.
+Source generator/first preflight unchanged; old executed builder/recipe frozen.
+Initial focused8/9 failed stale text-only builder reversal assertion; corrected
+9/9 PASS245.9084ms/eight-file lint0/all1,030 unit PASS7147.7901ms/diff-check0.
+Changed private branch helper refuses unchanged
+source and preserves original failed branch/main/canonical workflow. Compile and
+browser goldens pending. Evidence:
+`evidence/mpeg2-encoder-plane-build-failure-38043483415.json`.
+
 ## 2026-10-10 — Encoder-plane candidate source preflight passed; compile pending
 
 Actual pinned source/reversal preflight passed for a private cap-one-idle-plane

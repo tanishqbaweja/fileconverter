@@ -5,6 +5,29 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Encoder build failed strict prototype check; changed correction ready
+
+Status: **Partially implemented**. Run38043483415 actually TERMINALfailure,
+superseding its live checkpoints. Configure completed and make failed at
+libavutil/buffer.c:265:15: private factory has no previous prototype under
+`-Werror=missing-prototypes`. The stdbit.h error in configure's printed optional
+probe is NOT this failure's cause. No encoder/lifecycle/browser acceptance.
+Full70,284-byte failed-step log and13 exact Git-source preimages retained in
+lossless archives; hosted always-cleanup passed, local collector scratch removed.
+Receipt: `evidence/mpeg2-encoder-plane-build-failure-38043483415.json`.
+
+Additive private forward declaration reverses byte-exactly to the actual failed
+buffer source. Old source generator/preflight/failed build remain unchanged;
+changed builder/recipe actual old versions frozen, never historically repinned.
+No warning suppression, heap/codec/pixel/pool-policy change. Recipe checks new
+buffer SHA76fcae…081a; real Wasm lifecycle and initialization still required.
+Initial local9-check cycle failed one stale textual builder-call assertion (8/9),
+updated to check the now-nested exact reversal, not weakened lifecycle checks.
+Corrected9/9 focused PASS245.9084ms/eight-file zero-warning lint PASS;
+all1,030 unit tests PASS7147.7901ms/diff-check0.
+Next: one changed isolated encoder-only build, then byte-exact browser goldens;
+no unchanged retry or full-original conversion started. Full goal remains open.
+
 ## 2026-10-10 — Private bounded encoder-plane candidate prepared; compile pending
 
 Status: **Partially implemented**. Source-hash-pinned derivative targets only the

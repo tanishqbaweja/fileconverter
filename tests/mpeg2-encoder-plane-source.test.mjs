@@ -70,7 +70,7 @@ test("Builder refuses this Windows host before compile/source mutation; real Was
   const builder = (await read("media/ffmpeg/build-mpeg2-encoder-planes.mjs")).toString();
   assert.match(builder, /windowsHide: true/);
   assert.match(builder, /imported: true, initialPages: 256, maximumPages: 256, shared: true/);
-  assert.match(builder, /reverseSingleIdlePlaneBuffer\(patchedBuffer\)/);
+  assert.match(builder, /reverseSingleIdlePlaneBuffer\(reversePlaneFactoryPrototype\(patchedBuffer\)\)/);
   assert.match(builder, /browserAcceptance: false/);
   if (process.platform === "win32") await assert.rejects(execute(process.execPath,
     ["media/ffmpeg/build-mpeg2-encoder-planes.mjs"], { cwd: root, windowsHide: true, timeout: 15000, maxBuffer: 16384 }),

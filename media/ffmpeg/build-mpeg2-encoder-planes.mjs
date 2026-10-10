@@ -8,6 +8,7 @@ import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scrat
 import { readWasmMemoryLimits } from "../../scripts/lib/wasm-memory-limits.mjs";
 import { makeSingleIdleEncoderPlaneRecipe } from "./mpeg2-encoder-plane-recipe.mjs";
 import { reverseSingleIdlePlaneBuffer, reverseSingleIdlePlaneGetBuffer } from "./mpeg2-encoder-plane-source.mjs";
+import { reversePlaneFactoryPrototype } from "./mpeg2-encoder-plane-prototype-source.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/mpeg2-split-encoder-output");
 const sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.platform, "linux", "Run only in isolated no-Docker hosted builder");
@@ -28,7 +29,7 @@ try {
     "zeroEveryAcquisitionPassed", "nonselectedCacheUnchanged"]) assert.equal(smoke[key], true);
   const patchedBuffer = await readFile(path.join(output, "encoder-plane-buffer.c"), "utf8");
   const patchedGet = await readFile(path.join(output, "encoder-plane-get-buffer.c"), "utf8");
-  reverseSingleIdlePlaneBuffer(patchedBuffer); reverseSingleIdlePlaneGetBuffer(patchedGet);
+  reverseSingleIdlePlaneBuffer(reversePlaneFactoryPrototype(patchedBuffer)); reverseSingleIdlePlaneGetBuffer(patchedGet);
   assert.deepEqual(await readFile(path.join(output, "encoder-plane-policy.h")),
     await readFile(path.join(root, "media/ffmpeg/mpeg2-encoder-plane-policy.h")));
   const wasm = await readFile(path.join(output, "split-encoder.wasm"));
@@ -43,12 +44,13 @@ try {
     "LICENSE.LGPLv2.1", "mpeg2-accessory-smoke.json"]) artifacts[name] = sha(await readFile(path.join(output, name)));
   for (const name of ["media/ffmpeg/build-mpeg2-encoder-planes.mjs", "media/ffmpeg/mpeg2-encoder-plane-recipe.mjs",
     "media/ffmpeg/mpeg2-encoder-plane-source.mjs", "media/ffmpeg/mpeg2-encoder-plane-policy.h",
-    "media/ffmpeg/mpeg2-encoder-plane-smoke.c", "media/ffmpeg/patch-mpeg2-encoder-planes.mjs"])
+    "media/ffmpeg/mpeg2-encoder-plane-smoke.c", "media/ffmpeg/patch-mpeg2-encoder-planes.mjs",
+    "media/ffmpeg/mpeg2-encoder-plane-prototype-source.mjs", "media/ffmpeg/patch-mpeg2-encoder-plane-prototype.mjs"])
     sources[name] = sha(await readFile(path.join(root, name)));
   await writeFile(path.join(output, "encoder-plane-build-manifest.json"), JSON.stringify({
     scope: "private-actual-wasm32-plane-lifecycle-and-initialization-not-browser-acceptance", ffmpeg: "8.1.2", emscripten: "6.0.4",
     artifacts, sources, executedRecipeSha256: sha(generated), baseInitialization: initialization.sources,
-    memoryLimits: readWasmMemoryLimits(wasm), smoke, actualSourceReversalsPassed: true,
+    memoryLimits: readWasmMemoryLimits(wasm), smoke, actualSourceReversalsPassed: true, privateFactoryDeclarationPresent: true,
     decoderBuilt: false, heapLimitsRaised: false, codecOptionsChanged: false, browserAcceptance: false,
     fullOriginalCompleted: false, completeChromiumMemoryAcceptance: false, speedImprovementProven: false,
     publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
