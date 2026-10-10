@@ -6,6 +6,22 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-10 — Actual private AIFF compile and bounded collection succeeded
 
+Corrected headless production Chrome154 gate **3/3 PASS**: exact7 common tags,
+Unicode artist→author alias, independent preexisting-author precedence, two exact
+178-byte PNG covers, full PCM and all188/94/94 normalized frame clocks/payloads.
+Actual fixed16MiB Wasm,16KiB output/queue,1 pending write,terminal0 pending/queue.
+Stable blank295673856B; observed sampled conversion528740352B/222.26953125MiB
+complete-tree increment.180 samples/18 conversion/0 unavailable; small correctness
+diagnostic ONLY, not stress/scaling/recovery/public acceptance or speedup proof.
+Helpers absent by birth, OPFS empty, all disposable media/profile scratch removed,
+normal dist/public engine hashes restored. Corrected fixture qualification precedes
+staging. Exact successful JSON2026-10-09T22-37-46-979Z; previous failure retained.
+Both full raw reports losslessly archived (37,463/48,229 bytes), not discarded.
+Playwright skill guided real headless production testing; no native converter.
+Final990/990 combined units PASS8406.3882ms;8-file scoped lint0/diff0. No broad
+production build/TypeScript/current-other-browser/stress acceptance claimed by
+this source/test-only final regression. Protected original not read or changed.
+
 Corrected no-Docker run37998603437/job114050863894 at immutable20cf3cb completed
 successfully. All12 artifact/source hashes, exact five compiled-C metadata changes,
 and actual16/32MiB shared Wasm limits verified;9,148,560 bytes of useful private

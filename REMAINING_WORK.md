@@ -7,6 +7,32 @@ not the entire product specification.
 
 ## 2026-10-10 — Private AIFF build succeeded; bounded collection and hosted cleanup verified
 
+Corrected real headless Chrome154.0.8037.98 gate now **3/3 PASS** (supersedes the
+failed fixture attempt, which remains retained below). Native qualification before
+staging proves actual input tags/art inventory. Existing AAC and Unicode ALAC
+with art preserve exact7 common tags plus artist→author mapping; separate Unicode
+mdta source retains its distinct preexisting author without overwriting artist.
+Both art-bearing inputs preserve exact178-byte64x64 PNG, no art invented for the
+mdta source. All three complete PCM hashes and every normalized1024-sample frame
+clock/payload match independently:192512/96000/96000 decoded samples. Fixed16MiB
+actual Wasm,16KiB writes/queues,1 pending write,terminal0 queues/pending/OPFS.
+No forbidden requests; all owned helper birth identities absent, runtime profile,
+fixtures and output copies removed, served engine hashes restored. Evidence:
+`evidence/2026-10-09T22-37-46-979Z-aiff-id3-browser.json`.
+
+Observed small complete-tree incremental private222.26953125MiB from stable clean
+blank295673856B to sampled conversion peak528740352B;180 total100ms OS samples,
+18 conversion samples/0 unavailable. This is NOT large stress/scaling/repeat/
+recovery/public acceptance. Lossless raw histories retained as verified37,463/
+48,229-byte gzip reports; readable compact evidence preserves all case records.
+Next: exact same private specialist large3-repeat/direct+OPFS/failure/cancel/
+cleanup and current-browser memory gates; no public promotion before all pass.
+
+Final checkpoint:990/990 combined unit tests PASS8406.3882ms; all8 changed
+JavaScript/test files zero-warning lint PASS; diff whitespace check PASS. Exact
+executed initial driver retained at pushed eea53b5 rather than silently repinning
+its failure. No browser/source build repeated during final regression; no Docker.
+
 Status: **Partially implemented**. Actual corrected no-Docker run37998603437 /
 job114050863894 / SHA20cf3cb completed successfully, including the private upload
 and always-cleanup steps. All12 local tool hashes and immutable executed sources,

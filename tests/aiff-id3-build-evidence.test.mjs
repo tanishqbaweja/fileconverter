@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { spawnSync } from "node:child_process";
+import { gunzipSync } from "node:zlib";
 import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
@@ -46,6 +48,8 @@ test("Initial collection failure preserved; exactly reconstruct original too-sma
 test("Actual first browser gate passed existing AAC art/audio then exposed an exact native fixture error; owned data gone", async () => {
   const bytes = await read("evidence/2026-10-09T22-34-37-518Z-aiff-id3-browser.json"), browser = JSON.parse(bytes);
   assert.equal(browser.status, "failed-or-incomplete"); assert.match(browser.failure, /0 !== 1/);
+  const executed = spawnSync("git", ["show", "eea53b5:scripts/validate-aiff-id3-browser.mjs"], { cwd: root, windowsHide: true, maxBuffer: 1048576 });
+  assert.equal(executed.status, 0); assert.equal(sha(executed.stdout), browser.sourcePins["scripts/validate-aiff-id3-browser.mjs"]);
   assert.equal(browser.cases.length, 2);
   const passed = browser.cases[0]; assert.equal(passed.status, "passed-small-browser-tag-artwork-full-pcm-and-clock-check");
   assert.equal(passed.audio.source.pcmSha256, passed.audio.output.pcmSha256);
@@ -59,4 +63,55 @@ test("Actual first browser gate passed existing AAC art/audio then exposed an ex
   assert.deepEqual(browser.forbiddenRequests, []); assert.equal(browser.publicAcceptance, false);
   for (const row of browser.identities) assert.equal(row.absence.status, "owned-identity-absent");
   await assert.rejects(access(browser.ownedRuntime), { code: "ENOENT" });
+});
+test("Corrected fixture is independently qualified before staging; original codec/art/hash/PCM/clock/heap gates retained", async () => {
+  const source = (await read("scripts/validate-aiff-id3-browser.mjs")).toString();
+  assert.ok(source.indexOf("Qualify real source artwork before any browser staging") < source.indexOf("staged.push"));
+  assert.ok(source.includes('...(explicitAuthor ? ["-movflags", "use_metadata_tags"] : [])'));
+  for (const token of ["artwork: !explicitAuthor", "expectedArtwork: definition.artwork", "tags.author, definition.author", "after.pcmSha256, before.pcmSha256",
+    "after.rows, before.rows", "fixtureMeta.artwork.sha256", "metrics.peakWasmMemoryBytes, 16777216", "headless=new", "windowsHide: true", "owned-identity-absent"])
+    assert.ok(source.includes(token), token);
+});
+test("Corrected real Chrome gate verifies Unicode/author precedence, full PCM/clocks/artwork and finally cleanup without claiming stress", async () => {
+  const report = JSON.parse(await read("evidence/2026-10-09T22-37-46-979Z-aiff-id3-browser.json"));
+  assert.equal(report.failure, null); assert.equal(report.status, "passed-three-small-private-aiff-correctness-cases");
+  assert.equal(report.browserVersion, "154.0.8037.98"); assert.equal(report.cases.length, 3);
+  assert.deepEqual(report.cases.map(row => row.expectedArtwork), [true, true, false]);
+  for (const row of report.cases) {
+    assert.equal(row.status, "passed-small-browser-tag-artwork-full-pcm-and-clock-check");
+    assert.equal(row.audio.source.pcmSha256, row.audio.output.pcmSha256); assert.deepEqual(row.audio.source.rows, row.audio.output.rows);
+    assert.ok(row.audio.source.samples > 0); assert.deepEqual(row.opfsCleanup, []);
+    if (row.expectedArtwork) assert.equal(row.artworkSha256, "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0");
+    assert.equal(row.state.metrics.peakWasmMemoryBytes, 16777216);
+    assert.equal(row.state.metrics.peakPendingOperations, 1); assert.equal(row.state.metrics.queuedBytes, 0);
+  }
+  assert.equal(report.cases[1].probe.format.tags.author, "Émile / कलाकार");
+  assert.equal(report.cases[2].probe.format.tags.author, "Auteur indépendant Ω");
+  assert.equal(report.cases[2].probe.format.tags.artist, "Émile / कलाकार");
+  assert.equal(report.incrementalPrivateMiB, (report.peakBytes - report.baseline.privateBytes) / 1048576);
+  assert.equal(report.incrementalPrivateMiB, 222.26953125);
+  for (const key of ["publicAcceptance", "stressMemoryAcceptance", "scalingAcceptance", "speedImprovementProven", "protectedOriginalRead"])
+    assert.equal(report[key], false);
+  assert.deepEqual(report.forbiddenRequests, []); assert.equal(report.assetsRestored, true); assert.equal(report.ownedRuntimeRemoved, true);
+  for (const row of report.identities) assert.equal(row.absence.status, "owned-identity-absent");
+  await assert.rejects(access(report.ownedRuntime), { code: "ENOENT" });
+  assert.equal(report.sourcePins["scripts/validate-aiff-id3-browser.mjs"], sha(await read("scripts/validate-aiff-id3-browser.mjs")));
+});
+test("Compacted successful and failed reports retain every exact process/frame/source byte losslessly", async () => {
+  for (const stamp of ["2026-10-09T22-34-37-518Z", "2026-10-09T22-37-46-979Z"]) {
+    const compact = JSON.parse(await read(`evidence/${stamp}-aiff-id3-browser.json`));
+    const archive = await read(compact.losslessRawReport.path), restored = gunzipSync(archive), raw = JSON.parse(restored);
+    assert.equal(archive.length, compact.losslessRawReport.bytes); assert.equal(sha(archive), compact.losslessRawReport.sha256);
+    assert.equal(restored.length, compact.losslessRawReport.restoredBytes); assert.equal(sha(restored), compact.losslessRawReport.restoredSha256);
+    assert.deepEqual(raw.cases, compact.cases); assert.deepEqual(raw.sourcePins, compact.sourcePins);
+    assert.equal(raw.incrementalPrivateMiB, compact.incrementalPrivateMiB);
+    assert.equal(raw.samples.length, Object.values(compact.sampleSummary).reduce((sum, row) => sum + row.totalSamples, 0));
+    const valid = raw.samples.filter(row => row.phase === "conversion" && row.privateBytes !== null);
+    assert.equal(Math.max(...valid.map(row => row.privateBytes)), compact.peakBytes);
+    for (const row of raw.samples) {
+      if (row.sampleError !== null) { assert.equal(row.privateBytes, null); continue; }
+      assert.ok(row.processes.some(process => process.pid === raw.identities.find(identity => identity.role === "headless-chrome").identity.pid));
+      assert.equal(row.privateBytes, row.processes.reduce((sum, process) => sum + process.privateBytes, 0));
+    }
+  }
 });

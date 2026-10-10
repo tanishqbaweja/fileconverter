@@ -76,7 +76,7 @@ try {
   const cover = path.join(runtime.directory, "cover.png");
   await native(["-v", "error", "-i", fixture, "-map", "0:v:0", "-c:v", "copy", cover]);
   assert.equal(sha(await readFile(cover)), fixtureMeta.artwork.sha256);
-  const definitions = [{ id: "existing-aac-artwork", file: fixture, tags: fixtureMeta.expectedTags, author: fixtureMeta.expectedTags.artist }];
+  const definitions = [{ id: "existing-aac-artwork", file: fixture, tags: fixtureMeta.expectedTags, author: fixtureMeta.expectedTags.artist, artwork: true }];
   const unicode = { title: "Titre café — 音楽", artist: "Émile / कलाकार", album: "Album naïf", genre: "Essai", date: "2026", track: "3/9", comment: "αβγ & <texte>" };
   for (const explicitAuthor of [false, true]) {
     const tags = { ...unicode, ...(explicitAuthor ? { author: "Auteur indépendant Ω" } : {}) };
@@ -84,11 +84,19 @@ try {
     await native(["-v", "error", "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=2", "-i", cover,
       "-map", "0:a:0", "-map", "1:v:0", "-c:a", "alac", "-c:v", "copy", "-disposition:v:0", "attached_pic",
       "-map_metadata", "-1", ...Object.entries(tags).flatMap(([key, value]) => ["-metadata", `${key}=${value}`]),
-      "-fflags", "+bitexact", "-flags:a", "+bitexact", "-movflags", "use_metadata_tags", file]);
-    definitions.push({ id: explicitAuthor ? "unicode-existing-author" : "unicode-artist-alias", file, tags, author: explicitAuthor ? tags.author : tags.artist });
+      "-fflags", "+bitexact", "-flags:a", "+bitexact", ...(explicitAuthor ? ["-movflags", "use_metadata_tags"] : []), file]);
+    definitions.push({ id: explicitAuthor ? "unicode-existing-author" : "unicode-artist-alias", file, tags, author: explicitAuthor ? tags.author : tags.artist, artwork: !explicitAuthor });
   }
   const references = new Map();
-  for (const definition of definitions) references.set(definition.id, await decoded(definition.file));
+  const inputProbes = new Map();
+  for (const definition of definitions) {
+    const probe = JSON.parse(await native(["-v", "error", "-show_streams", "-show_format", "-of", "json", definition.file], true));
+    for (const [key, value] of Object.entries(definition.tags)) assert.equal(probe.format.tags[key], value, `Qualified source/${key}`);
+    const pictures = probe.streams.filter(stream => stream.disposition?.attached_pic === 1);
+    assert.equal(pictures.length, definition.artwork ? 1 : 0, "Qualify real source artwork before any browser staging");
+    if (definition.artwork) { assert.equal(pictures[0].codec_name, "png"); assert.equal(pictures[0].width, 64); assert.equal(pictures[0].height, 64); }
+    inputProbes.set(definition.id, probe); references.set(definition.id, await decoded(definition.file));
+  }
   // Change only private served dist engine files; public source/manifests/UI unchanged.
   for (const name of ["within-aiff.mjs", "within-aiff.wasm"]) {
     const target = path.join(root, "dist/client/engines/remux", name), backup = path.join(runtime.directory, `original-${name}`);
@@ -136,7 +144,7 @@ try {
     assetRequests.add(new URL(request.url()).pathname); return route.continue();
   });
   for (const definition of definitions) {
-    const row = { id: definition.id, status: "started", sourceSha256: sha(await readFile(definition.file)) }; cases.push(row);
+    const row = { id: definition.id, status: "started", sourceSha256: sha(await readFile(definition.file)), inputProbe: inputProbes.get(definition.id), expectedArtwork: definition.artwork }; cases.push(row);
     try {
       await page.goto(origin + "/?test=1");
       await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", null, { timeout: 15000 });
@@ -165,10 +173,13 @@ try {
       row.probe = JSON.parse(await native(["-v", "error", "-show_streams", "-show_format", "-of", "json", output], true));
       const audio = row.probe.streams.filter(stream => stream.codec_type === "audio"), art = row.probe.streams.filter(stream => stream.disposition?.attached_pic === 1);
       assert.equal(audio.length, 1); assert.equal(audio[0].codec_name, "pcm_s16be"); assert.equal(audio[0].sample_rate, "48000"); assert.equal(audio[0].channels, 1);
-      assert.equal(art.length, 1); assert.equal(art[0].codec_name, "png"); assert.equal(art[0].width, 64); assert.equal(art[0].height, 64);
-      const outputCover = path.join(runtime.directory, `${definition.id}.png`);
-      await native(["-v", "error", "-i", output, "-map", "0:v:0", "-c:v", "copy", outputCover]);
-      row.artworkSha256 = sha(await readFile(outputCover)); assert.equal(row.artworkSha256, fixtureMeta.artwork.sha256);
+      assert.equal(art.length, definition.artwork ? 1 : 0);
+      if (definition.artwork) {
+        assert.equal(art[0].codec_name, "png"); assert.equal(art[0].width, 64); assert.equal(art[0].height, 64);
+        const outputCover = path.join(runtime.directory, `${definition.id}.png`);
+        await native(["-v", "error", "-i", output, "-map", "0:v:0", "-c:v", "copy", outputCover]);
+        row.artworkSha256 = sha(await readFile(outputCover)); assert.equal(row.artworkSha256, fixtureMeta.artwork.sha256);
+      }
       const tags = row.probe.format.tags;
       for (const [key, value] of Object.entries(definition.tags)) assert.equal(tags[key], value, `${definition.id}/${key}`);
       assert.equal(tags.author, definition.author);
