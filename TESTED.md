@@ -4,6 +4,28 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Same full-video process verified live; terminal verifier tested
+
+No new full-video attempt. Session59855 still running; exact driver42468/Chrome
+8524 PID-parent-births re-queried13:53:49UTC; actual stdout Run1 input262,539,368B/
+output295,788,666B/rounded peak234.969MiB/0completed. All223 measured source pins
+remain frozen and verified. See evidence/encoder-plane-full-monitor-2026-10-10.json.
+Independent analyzer added outside measured sources: rejects live receipts before
+reads (actual CLI negative verified), exact raw/source recovery and actual caller/
+driver reconstruction, current build/source/Chrome/UI/CSS/observer identity joins,
+all-repeat CIM/native100ms simultaneous complete-tree memory and original blank,
+quality/full decode/frame/timing/bounds/ownership/recovery, actual born-process
+absence/protected full SHA/restoration/owned scratch checks after terminal only.
+Synthetic3-run positive and17 negative mutations test verifier semantics, NOT
+conversion acceptance; historical actual encoder failure remains227.78515625MiB/
+0completed, rejected as changed-candidate evidence. Separate historical rawReport
+restored byte/hash fields handled without rewriting receipt; actual18,182,454B
+archive recovery verified. Initial4 focused PASS294.6484ms/final8 focused
+PASS502.3713ms/25 encoder-focused PASS796.8644ms/three-file zero-warning lint and
+diff PASS. Analyzer not run on still-live video; no terminal/full-memory/public/
+speed/scaling/whole-goal acceptance, new browser/conversion/restart/profiler/GC/
+native prefix validation or media copy. Next reobserve session59855 unchanged.
+
 ## 2026-10-10 — Full-original changed-encoder gate bound and launched once
 
 Hash-gated reversible caller/driver/stager preserves full protected original,

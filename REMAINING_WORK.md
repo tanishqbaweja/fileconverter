@@ -5,6 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Same full-video attempt live; independent terminal checker ready
+
+Status: **Partially implemented**. Previous goal turn made concrete progress:
+full-original gate bound/tested/launched once. Current same session59855 is
+actually live, not inferred from a state file: driver42468,parent37648,birth
+13:32:53.7592610UTC and Chrome8524,parent42468,birth13:33:05.2555620UTC re-queried
+13:53:49UTC. Actual Run1 running input262,539,368B/output295,788,666B; reported
+peak234.969MiB remains stdout-rounded, not final acceptance.0 completed outputs.
+All223 measured source hashes remain unchanged; no new browser/build/conversion,
+native output-prefix validator, profiler, forced GC, restart or disposable copy.
+Observation: evidence/encoder-plane-full-monitor-2026-10-10.json.
+
+Added independent post-terminal analysis outside those frozen source pins:
+scripts/analyze-encoder-plane-full-terminal.mjs and
+scripts/lib/encoder-plane-terminal-facts.mjs. Rejects live receipts before reads;
+exact lossless raw/source-archive recovery; reconstructs actual caller/driver;
+joins separately verified encoder/decoder builds; same full source/native probe,
+Chrome hashes, UI/CSS, controlled fatal adapter; all-repeat simultaneous CIM AND
+native100ms peak computation with original blank baseline and process summation;
+quality/frame/timestamp/full-decode/I/O/ownership/recovery checks; actual PID-parent-
+birth absence, protected full SHA and normal assets/scratch cleanup rechecks.
+No browser, converter, build, kill, fixture generation or live-source mutation.
+Only an independently validated three-run session can pass its session gate;
+missing native samples remain unavailable and withhold that gate. Public/scaling/
+speed/whole-goal acceptance always remains false; additional clean session needed.
+
+Actual historical failed encoder report recomputes478,404,608B peak and
+227.78515625MiB without becoming a new-candidate pass. Synthetic positive/17
+negative cases are verifier-logic tests ONLY, not real media results. Actual live
+receipt CLI refusal passes. Baseline archive schema inspection caught older
+restored byte/hash fields stored separately in rawReport; explicit immutable
+field join added and actual18,182,454B recovery verified, no historical repinning.
+4 initial focused PASS294.6484ms; final8 focused PASS502.3713ms;25 encoder-focused
+PASS796.8644ms;3-file zero-warning lint/diff-check PASS. Terminal analyzer has NOT
+run against this still-live video or issued a pass. Next: reobserve session59855;
+after actual terminal receipt, run analyzer on that exact receipt, retain failures
+and prove finally cleanup. Do not delete live scratch or replay on wait expiry.
+
 ## 2026-10-10 — Changed encoder bound to full-original gate; one actual attempt live
 
 Status: **Partially implemented**, not acceptance. Added hash-gated reversible

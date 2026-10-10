@@ -1,0 +1,35 @@
+{
+  "status": "same-actual-full-source-attempt-still-running-not-acceptance",
+  "processObservationAt": "2026-10-10T13:53:49.149Z",
+  "terminalSessionId": 59855,
+  "liveReceipt": "evidence/2026-10-10T13-32-15-738Z-encoder-plane-full-live.json",
+  "driverIdentity": {
+    "pid": 42468,
+    "parentPid": 37648,
+    "createdAt": "2026-10-10T13:32:53.7592610Z"
+  },
+  "chromeIdentity": {
+    "pid": 8524,
+    "parentPid": 42468,
+    "createdAt": "2026-10-10T13:33:05.2555620Z"
+  },
+  "processIdentitiesActuallyRequeried": true,
+  "sourcePinsVerifiedUnchanged": 223,
+  "postTerminalAnalyzerIsOutsideMeasuredSourcePins": true,
+  "terminalProgressObservedDuringSameContinuation": {
+    "runNumber": 1,
+    "jobState": "running",
+    "inputBytes": 262539368,
+    "outputBytes": 295788666,
+    "roundedPeakIncrementalPrivateMiB": 234.969,
+    "method": "Actual session59855 stdout, not final raw memory or a completed-output validator"
+  },
+  "completedConversions": 0,
+  "requestedRuns": 3,
+  "fullSourceAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "speedAcceptance": false,
+  "publicAcceptance": false,
+  "sameAttemptMustBeObservedWithoutRestart": true,
+  "liveScratchMustNotBeRemoved": true
+}
