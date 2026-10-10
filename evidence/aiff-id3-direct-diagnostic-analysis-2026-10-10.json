@@ -1,0 +1,438 @@
+{
+  "recordedAt": "2026-10-10T09:02:25.947Z",
+  "sourceSha256": "a172f96045bc19def2c10457d7380181d005ee0310ac246663e2a3403a4bfbd3",
+  "status": "actual-direct-diagnostic-observed-small-worker-js-heaps-no-allocation-cause-or-production-fix-proven",
+  "proof": {
+    "path": "evidence/2026-10-10T08-54-35-664Z-aiff-id3-direct-handle-diagnostic.json",
+    "sha256": "74b0e79ef3794b278685239bac59f91314f15b71339f160fa279336516af316b"
+  },
+  "previousFailedStress": {
+    "path": "evidence/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-stress.json",
+    "sha256": "961b56ad9ad91f2ba89183351b6429a9012e2ee58e1114fd4282da138af664e7"
+  },
+  "observerArchive": {
+    "path": "outputs/reports/2026-10-10T08-54-35-664Z-aiff-id3-direct-handle-diagnostic-observer.json.gz",
+    "bytes": 3845,
+    "sha256": "10d976983e2c74b6b8d73f6796e3e40a5d46466d1bfd4ab5545ada8707b0d4c0",
+    "restoredBytes": 50835,
+    "restoredSha256": "101842f82a4a3cecc71fd5ec0c53ae4a6346d8a06b0e9031f04675d6aa7340a5"
+  },
+  "diagnosticOnly": true,
+  "productionAcceptance": false,
+  "blankBaseline": {
+    "phase": "blank-baseline",
+    "stable": true,
+    "privateBytes": 254468096,
+    "spreadBytes": 16384,
+    "rssBytes": 528900096,
+    "firstTimestamp": "2026-10-10T08:54:58.811Z",
+    "lastTimestamp": "2026-10-10T08:55:04.705Z",
+    "sampleCount": 15,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "phase": "loaded-idle",
+    "stable": true,
+    "privateBytes": 311517184,
+    "spreadBytes": 4993024,
+    "rssBytes": 627499008,
+    "firstTimestamp": "2026-10-10T08:55:15.887Z",
+    "lastTimestamp": "2026-10-10T08:55:21.771Z",
+    "sampleCount": 12,
+    "minimumElapsedMs": 8000
+  },
+  "peakPrivateBytes": 494628864,
+  "incrementalPrivateMiB": 229.03515625,
+  "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "allObservedProcessesCounted": true,
+  "processExclusions": [],
+  "sampleCount": 74,
+  "samplerLimits": {
+    "snapshots": 256,
+    "targets": 16,
+    "phases": 32,
+    "logLines": 64,
+    "gpuLogLines": 32,
+    "logChars": 512,
+    "versionBytes": 16384
+  },
+  "snapshotsEvicted": 0,
+  "workerHeapMeasurementsAvailable": 68,
+  "unavailableWorkerHeapMeasurements": 0,
+  "gpuRelatedStderr": [],
+  "stderrScope": "This instrumented session only; absence of captured GPU errors is not evidence about the earlier failure",
+  "runs": [
+    {
+      "run": 1,
+      "elapsedMs": 5606.379999995232,
+      "peakPrivateBytes": 494628864,
+      "incrementalPrivateMiB": 229.03515625,
+      "cleanupDeltaFromLoadedMiB": 18.98828125,
+      "nativePeakTimestamp": "2026-10-10T08:55:26.9066892Z",
+      "nativePeakProcesses": [
+        {
+          "pid": 10300,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.5014917Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 211005440
+        },
+        {
+          "pid": 11584,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:55:04.7517804Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 14663680
+        },
+        {
+          "pid": 18040,
+          "parentPid": 42624,
+          "createdAt": "2026-10-10T08:54:42.0439321Z",
+          "nativeType": "browser",
+          "cimBirthMatchedType": "browser",
+          "privateBytes": 50925568
+        },
+        {
+          "pid": 39208,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.4376616Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 34525184
+        },
+        {
+          "pid": 39352,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3947650Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 8056832
+        },
+        {
+          "pid": 39724,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3586043Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "gpu-process",
+          "privateBytes": 139337728
+        },
+        {
+          "pid": 41576,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.1036358Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "crashpad-handler",
+          "privateBytes": 2502656
+        },
+        {
+          "pid": 41840,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.7280010Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 20176896
+        },
+        {
+          "pid": 42512,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3646280Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 13434880
+        }
+      ],
+      "observedWorkerTargets": [
+        {
+          "targetId": "D33073D2A0DCB3636318389FD22EB058",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        },
+        {
+          "targetId": "B0C1F8319579EF01D2D9A9CB77CCFA06",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/direct-file-writer.worker-DhYFCwqs.js"
+        },
+        {
+          "targetId": "84CD92F384B218F122F3A24839799E06",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        }
+      ],
+      "writerWorkerObserved": true,
+      "conversionRealmSummary": {
+        "phase": "conversion-1",
+        "observations": 5,
+        "unavailableTargetLists": 0,
+        "workerObservations": 8,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 1921968,
+        "peakWorkerAllocatedJSHeapBytes": 3407872,
+        "peakWorkerBackingStorageBytes": 864225
+      },
+      "cleanupRealmSummary": {
+        "phase": "cleanup-1",
+        "observations": 10,
+        "unavailableTargetLists": 0,
+        "workerObservations": 10,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 570688,
+        "peakWorkerAllocatedJSHeapBytes": 1835008,
+        "peakWorkerBackingStorageBytes": 293917
+      }
+    },
+    {
+      "run": 2,
+      "elapsedMs": 5481.894999995828,
+      "peakPrivateBytes": 461201408,
+      "incrementalPrivateMiB": 197.15625,
+      "cleanupDeltaFromLoadedMiB": 25.46484375,
+      "nativePeakTimestamp": "2026-10-10T08:55:49.6210321Z",
+      "nativePeakProcesses": [
+        {
+          "pid": 10300,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.5014917Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 176267264
+        },
+        {
+          "pid": 13028,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:55:31.1105348Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 14688256
+        },
+        {
+          "pid": 18040,
+          "parentPid": 42624,
+          "createdAt": "2026-10-10T08:54:42.0439321Z",
+          "nativeType": "browser",
+          "cimBirthMatchedType": "browser",
+          "privateBytes": 52187136
+        },
+        {
+          "pid": 39208,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.4376616Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 34734080
+        },
+        {
+          "pid": 39352,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3947650Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 8011776
+        },
+        {
+          "pid": 39724,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3586043Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "gpu-process",
+          "privateBytes": 139198464
+        },
+        {
+          "pid": 41576,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.1036358Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "crashpad-handler",
+          "privateBytes": 2502656
+        },
+        {
+          "pid": 41840,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.7280010Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 20176896
+        },
+        {
+          "pid": 42512,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3646280Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 13434880
+        }
+      ],
+      "observedWorkerTargets": [
+        {
+          "targetId": "277A3F4785ED389184BF1F7EDB96A82E",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        },
+        {
+          "targetId": "00CF272A1C00CFC08980A9277524A780",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/direct-file-writer.worker-DhYFCwqs.js"
+        },
+        {
+          "targetId": "88D04A6CDB138D3E5B6C15C5576BBE50",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        }
+      ],
+      "writerWorkerObserved": true,
+      "conversionRealmSummary": {
+        "phase": "conversion-2",
+        "observations": 5,
+        "unavailableTargetLists": 0,
+        "workerObservations": 8,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 1912608,
+        "peakWorkerAllocatedJSHeapBytes": 3145728,
+        "peakWorkerBackingStorageBytes": 864225
+      },
+      "cleanupRealmSummary": {
+        "phase": "cleanup-2",
+        "observations": 10,
+        "unavailableTargetLists": 0,
+        "workerObservations": 10,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 570688,
+        "peakWorkerAllocatedJSHeapBytes": 1835008,
+        "peakWorkerBackingStorageBytes": 293917
+      }
+    },
+    {
+      "run": 3,
+      "elapsedMs": 5477.6650000065565,
+      "peakPrivateBytes": 472956928,
+      "incrementalPrivateMiB": 208.3671875,
+      "cleanupDeltaFromLoadedMiB": 27.92578125,
+      "nativePeakTimestamp": "2026-10-10T08:56:16.4135502Z",
+      "nativePeakProcesses": [
+        {
+          "pid": 10300,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.5014917Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 188903424
+        },
+        {
+          "pid": 18040,
+          "parentPid": 42624,
+          "createdAt": "2026-10-10T08:54:42.0439321Z",
+          "nativeType": "browser",
+          "cimBirthMatchedType": "browser",
+          "privateBytes": 50540544
+        },
+        {
+          "pid": 24684,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:55:57.1218424Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 14635008
+        },
+        {
+          "pid": 39208,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.4376616Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 34734080
+        },
+        {
+          "pid": 39352,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3947650Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 8011776
+        },
+        {
+          "pid": 39724,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3586043Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "gpu-process",
+          "privateBytes": 139964416
+        },
+        {
+          "pid": 41576,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.1036358Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "crashpad-handler",
+          "privateBytes": 2502656
+        },
+        {
+          "pid": 41840,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.7280010Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "renderer",
+          "privateBytes": 20176896
+        },
+        {
+          "pid": 42512,
+          "parentPid": 18040,
+          "createdAt": "2026-10-10T08:54:42.3646280Z",
+          "nativeType": "unknown",
+          "cimBirthMatchedType": "utility",
+          "privateBytes": 13488128
+        }
+      ],
+      "observedWorkerTargets": [
+        {
+          "targetId": "3AB772FF1F632164DA4999180050C23B",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        },
+        {
+          "targetId": "6ED6525BD1D20A383034FC75DCB54D42",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/direct-file-writer.worker-DhYFCwqs.js"
+        },
+        {
+          "targetId": "B3C7E5F50E2EE44F98DD83F70855A032",
+          "type": "worker",
+          "url": "http://127.0.0.1:61197/assets/conversion.worker-DwlcpCZl.js"
+        }
+      ],
+      "writerWorkerObserved": true,
+      "conversionRealmSummary": {
+        "phase": "conversion-3",
+        "observations": 5,
+        "unavailableTargetLists": 0,
+        "workerObservations": 8,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 1925312,
+        "peakWorkerAllocatedJSHeapBytes": 3407872,
+        "peakWorkerBackingStorageBytes": 864225
+      },
+      "cleanupRealmSummary": {
+        "phase": "cleanup-3",
+        "observations": 9,
+        "unavailableTargetLists": 0,
+        "workerObservations": 9,
+        "unavailableWorkerHeaps": 0,
+        "peakWorkerUsedJSHeapBytes": 568404,
+        "peakWorkerAllocatedJSHeapBytes": 1835008,
+        "peakWorkerBackingStorageBytes": 293917
+      }
+    }
+  ],
+  "cancellationPassed": true,
+  "sameFixtureAndExistingSourcePins": true,
+  "sourceOrCodecOrQualityFixImplemented": false,
+  "allocationCauseEstablished": false,
+  "speedImprovementProven": false,
+  "protectedOriginalRead": false,
+  "interpretation": "Sampled individual worker JS heaps peak below2MiB and return below0.6MiB after cleanup; nested direct-writer targets were observed. These partial isolate measurements neither replace complete-tree private memory nor establish where renderer-native/GPU bytes were allocated. Earlier260.72265625MiB failure remains failed.",
+  "next": "Reuse bounded-renderer-attribution and memory-infra-attribution for bounded native allocator dumps at loaded idle, active conversion and cleanup in an explicitly changed diagnostic. Locate renderer/GPU allocation sources before any production fix or unchanged acceptance rerun.",
+  "ownedRuntimeRemoved": true,
+  "assetsRestored": true,
+  "newBrowserLaunchedByAnalysis": false,
+  "noDocker": true
+}

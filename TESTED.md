@@ -4,6 +4,40 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Changed direct AIFF diagnostic captured real nested-worker heaps
+
+Actual session6102 is terminal0, not live. One changed hidden/headless diagnostic
+retained exact fixture/core/defaults/full PCM/art/tag/hash/three-repeat/cancel/
+cleanup/all-process250MiB gates, adding existing single-flight CDP heap sampler
+and bounded Chrome stderr only. Both generated driver and launcher reverse to
+the original pinned sources; no native codec or production behavior fix.
+Five source/observer/CDP tests PASS183.3216ms; four-file lint0 before launch.
+Post-terminal verification: 11 focused tests PASS235.7081ms; all1,006 unit
+tests PASS7752.0103ms; scoped six-file lint0 and `git diff --check`0.
+These checks do not rerun a browser conversion or promote this private route.
+Three real140,922,233→153,600,760-byte outputs validated identically to previous
+OPFS/direct outputs. Elapsed5606.380/5481.895/5477.665ms; complete-tree
+254,468,096B stable blank→494,628,864B peak/229.03515625MiB observed increment.
+This is instrumentation, **not production acceptance or a speedup/fix proof**.
+The earlier260.72265625MiB failure remains failed and its source/report unchanged.
+
+74 complete bounded snapshots,68 available worker-heap measurements/0 unavailable,
+including real nested direct-writer targets in all3 conversions. Sampled individual
+worker JS peaks1,921,968/1,912,608/1,925,312B; cleanup peaks570,688/570,688/568,404B.
+These small sampled isolate heaps do not identify renderer-native/GPU allocations
+or replace process-tree private bytes. No GPU-related stderr error captured in
+THIS session; that says nothing about cause in the earlier unlogged failure.
+Source/launcher/driver, full JSON/CSV/HTML/native-peaks and observer retained in
+lossless verified archives. Helpers/parent births absent, disposable generated
+media/profiles/scratch/raw-report directories gone, normal engine restored.
+Proofs: `evidence/2026-10-10T08-54-35-664Z-aiff-id3-direct-handle-diagnostic.json`,
+`evidence/2026-10-10T08-54-35-612Z-aiff-id3-direct-diagnostic-launch.json`,
+`evidence/aiff-id3-direct-diagnostic-analysis-2026-10-10.json`.
+Next: bounded native renderer/GPU allocator dumps using existing attribution
+helpers before choosing a production optimization; no unchanged acceptance retry.
+Playwright skill guided real headless production execution. No Docker, headed
+coverage, public promotion, new frontend build or original-video OOM fix claimed.
+
 ## 2026-10-10 — Direct AIFF stress completed valid outputs but failed the memory gate
 
 Actual hidden/headless session29742 is terminal FAILED, not live. Three genuine

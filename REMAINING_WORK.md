@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Worker heap attribution observed; renderer-native allocation still missing
+
+Status: **Partially implemented**. Actual changed diagnostic session6102 exited0
+with3 byte-identical, independently full-PCM/art/tag validated AIFF outputs and
+observed229.03515625MiB full-tree increment. Codec/core/settings/input/all-process
+baseline/formula/fidelity/250MiB/repeat/cancel/recovery gates unchanged; only
+existing bounded CDP worker-heap sampling and bounded Chrome stderr added.
+Instrumentation is not a production fix, acceptance or speedup. Earlier direct
+260.72265625MiB failure remains authoritative and unchanged, not reclassified.
+
+74 bounded snapshots include real nested writer-worker targets.68 worker heap
+measurements available/0 unavailable; sampled individual used-JS peaks below2MiB
+and after-cleanup below0.6MiB. No allocator cause or retained-worker/native leak
+proven; these measurements are not whole-tree memory substitutes. No GPU-related
+stderr error captured in this session, not evidence about the earlier failure.
+Owned generated media/profiles/raw reports/scratch removed, every recorded helper
+and parent birth absent, served normal engine restored. Exact executed sources
+and full raw diagnostics retained losslessly. Proofs: diagnostic08-54-35-664Z,
+launch08-54-35-612Z and `evidence/aiff-id3-direct-diagnostic-analysis-2026-10-10.json`.
+
+Next distinct action: existing bounded-renderer-attribution/memory-infra-attribution
+native allocator dumps at loaded idle, actual conversion and cleanup, preserving
+all processes and annotating overlapping allocator values. Only then choose a
+production change; no unchanged acceptance replay or optimistic direct promotion.
+Original full-video encoder OOM, larger scaling, direct acceptance/write failures,
+broader browser/reproducibility/product requirements remain incomplete. Five
+focused source/observer/CDP tests PASS183.3216ms and scoped four-file lint0 before
+launch. Playwright skill used; headless/hidden only, no Docker or native converter.
+Post-terminal verification:11 focused tests PASS235.7081ms and all1,006 unit
+tests PASS7752.0103ms; six-file lint0/diff-check0. No browser conversion replay
+or change to public acceptance; native-allocation cause remains unproven.
+
 ## 2026-10-10 — Direct AIFF gate failed; allocation attribution required before any replay
 
 Status: **Partially implemented**. Actual direct-handle session29742 exited1
