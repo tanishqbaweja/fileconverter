@@ -168,7 +168,7 @@ jobs:
             bash media/ffmpeg/verify-mpeg2-split-properties.sh
           elif test "${{ inputs.core }}" = within-mpeg2-split-encoder; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
-            bash media/ffmpeg/build-mpeg2-split-encoder.sh
+            node media/ffmpeg/build-mpeg2-encoder-planes.mjs
           elif test "${{ inputs.core }}" = within-mpeg2-split-pipeline; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             bash media/ffmpeg/build-mpeg2-split-pipeline.sh
