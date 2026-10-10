@@ -5,6 +5,28 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Independent audit bound to changed observer; current run still live
+
+Status: **Partially implemented**. Previous turn PROGRESS: corrected observer,
+focused tests and one actual headless full-original launch pushedc5f6f37. Same
+session79454/driver20152/Chrome31100 actual parent-birth identities requeried
+19:01:41UTC,227 frozen source hashes unchanged. No new conversion or restart.
+New separate post-terminal audit reuses exact SHA-bound historical analyzer,
+reverses only driver/caller/evidence-path/import/source-pin identity edits.
+Same whole-tree250/native100ms/original lower blank/all-repeat CIM, full independent
+quality/decode/timing/ownership/recovery, archive/source/compiled identity and
+postterminal process/profile/media/restoration/protected fullSHA gates retained.
+Public/scaling/speed/fullgoal acceptance still withheld even if session passes.
+Actual live CLI refusal before inspection/scratch PASS; actual227-preimage driver/
+caller reconstruction PASS; all3 new analysis files outside measured source pins.
+Actual prior failed copy remains234.96875MiB/0full outputs, not rebranded as pass.
+14 focused PASS445.3086ms;34 encoder-focused PASS861.2306ms/three-file zero-warning
+lint/diff PASS. New verifier prepared/tested, NOT executed against current live
+run. No profiler/GC/build/browser/stager/kill/pinned-source edit/native converter.
+Next poll SAME79454; only actual terminal permits independent new audit and
+cleanup proof. Fullrepeat/clean-session/~10GB scaling/speed and broader original
+spec remain open. Keep owned active scratch until actual finally cleanup.
+
 ## 2026-10-11 — One actual changed-observer full-original attempt LIVE
 
 Status: **Partially implemented**, no acceptance. Session79454 launched once

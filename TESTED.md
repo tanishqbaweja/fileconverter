@@ -4,6 +4,35 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Changed-driver independent terminal audit prepared and tested
+
+Previous turn PROGRESS: stage-aware correction/30 checks/actual one launch/pushed
+c5f6f37. Same session79454 STILL LIVE; driver20152,parent6064,birth18:57:40.8532160
+and Chrome31100,parent20152,birth18:57:51.3424160UTC requeried19:01:41UTC. All227
+measured source hashes remain unchanged. No second browser/conversion/build or
+stager/source mutation. Blank settling, no completed output/terminal claims.
+
+Added post-terminal-only scripts/analyze-encoder-plane-staged-full-terminal.mjs,
+scripts/lib/encoder-plane-staged-terminal-recipe.mjs and focused test. Generator
+requires exact historical executed audit SHA bdf5bd41016c5d6820141b5d3634cac3fc2520369742943e77cf49be0b3184f0;
+reverses byte-exactly after changed caller/driver aliases, terminal-path identity,
+absolute imports and own analysis-source pins. Retains original whole-tree/native
+100ms/all-repeat CIM/private-minus-original-blank, quality/full decode/timing,
+source-preimage/actual caller+driver/build/probe/Chrome/UI/CSS/fatal-observer joins,
+PID-parent-birth absence, original full postSHA/normal-engine/owned-scratch checks.
+No browser/converter/build/retry/kill/GC; generated own analyzer scratch finally
+cleaned. Refuses live/prepared filenames and nonterminal receipt state BEFORE
+source/archive/process/fixture inspection or scratch allocation. Actual CLI
+live-path refusal tested; current227-preimage archive reconstructs exact measured
+driver+caller, and all3 new verifier files are outside frozen227 source pins.
+Actual prior final-copy failure recomputes234.96875MiB/0completed and remains a
+failure, not retroactively accepted. No old-source edit/repinning/media copy.
+14 focused PASS445.3086ms;34 encoder-focused PASS861.2306ms;
+three new-file zero-warning lint/diff PASS. New analyzer NOT executed on current
+still-live run. After actual wrapper terminal, invoke on its actual
+*-encoder-plane-staged-original-full-terminal.json receipt only. FullgoalACTIVE;
+full repeats/clean session/scaling/speed/public/broader-spec acceptance pending.
+
 ## 2026-10-11 — Changed observer full-original attempt actually launched once
 
 ONE actual session79454 from pushed+remote-verifiede71f38d. Live receipt
