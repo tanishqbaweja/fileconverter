@@ -1,0 +1,110 @@
+{
+  "recordedAt": "2026-10-10T16:32:44.644Z",
+  "receipt": {
+    "path": "evidence/2026-10-10T13-32-15-738Z-encoder-plane-original-full-terminal.json",
+    "sha256": "d91d0f88085ddab84516b66a94e2e68e3f927425b5fb610232ed198a95faeecc"
+  },
+  "status": "failed-or-incomplete-full-original-session-not-acceptance",
+  "native": {
+    "mode": "full-completion",
+    "blankPrivateBytes": 237727744,
+    "actualPeakPrivateBytes": 484110336,
+    "observedIncrementalPrivateMiB": 234.96875,
+    "nativePeakSequence": 3007,
+    "nativePeakTimestamp": "2026-10-10T13:38:35.0882353Z",
+    "nativePeakProcessRows": [
+      [
+        0,
+        45760512,
+        148545536
+      ],
+      [
+        2,
+        8056832,
+        17944576
+      ],
+      [
+        3,
+        143110144,
+        180727808
+      ],
+      [
+        4,
+        202117120,
+        241569792
+      ],
+      [
+        6,
+        33153024,
+        77443072
+      ],
+      [
+        19,
+        15654912,
+        31027200
+      ],
+      [
+        7,
+        13414400,
+        42319872
+      ],
+      [
+        8,
+        2564096,
+        10428416
+      ],
+      [
+        9,
+        20279296,
+        43233280
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 234.96875,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 6,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 95343,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false,
+    "allRepeatCimPeaksIncluded": true,
+    "completedRuns": 0
+  },
+  "requestedRuns": 3,
+  "attemptedRuns": 1,
+  "completedConversions": 0,
+  "validatedRuns": [],
+  "unavailableNativeConversionSamples": 0,
+  "missingSamplesNeverRecordedAsZero": true,
+  "observedMemoryWithinLimit": true,
+  "fullOriginalSessionGatePassed": false,
+  "observedFirstAbort": null,
+  "independentValidationOutsideBrowser": true,
+  "additionalCleanSessionRequired": true,
+  "scalingAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "exactExecutedCallerAndDriverReconstructed": true,
+  "sourcePreimagesVerified": 223,
+  "actualRecordedIdentitiesRequeriedAndAbsent": true,
+  "reusedPids": [],
+  "noProcessesKilled": true,
+  "fullProtectedPostSha256Verified": true,
+  "normalProductionAndSixEnginesRestored": true,
+  "ninePrivateAssetsAbsent": true,
+  "ownedRuntimeAndWrapperAbsent": true,
+  "analysisSourcePins": {
+    "scripts/analyze-encoder-plane-full-terminal.mjs": "bdf5bd41016c5d6820141b5d3634cac3fc2520369742943e77cf49be0b3184f0",
+    "scripts/lib/encoder-plane-terminal-facts.mjs": "d4006123d595c956be2b42dd78f9fd10be7a7518e64e1d7ca6d7bc848e3dbe10",
+    "tests/mpeg2-encoder-plane-terminal.test.mjs": "dc8f95dc6f28d676d99470a939c63b03aa66cf32c096c40bd59a7227c01fcdd1"
+  }
+}

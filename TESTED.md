@@ -4,6 +4,40 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Same full-video attempt terminal; final-copy checkpoint failure
+
+Supersedes all session59855 LIVE observations below. Actual wrapper returned
+16:32:24UTC, exit0 for evidence collection, but candidate driver exit1/failed.
+No restart or additional conversion. First failure is the test observer's
+`Reject reset/nonmonotonic work counters`, not a recorded encoder OOM:
+last encoding output3,337,014,856B becomes157,286,400B in the explicitly reported
+"Copying staged MP4 to selected destination" phase. Staged size3,337,164,038B.
+Native split final reports296,160 frames/296,160 completed packets, closed=true,
+failed=false, zero active/queued packets/frames; this is native completion ONLY,
+not a successfully saved, independently validated full conversion. Final save
+was cancelled by the failed harness.0 completed/validated runs of3 requested.
+No original-quality/full-decode/timing/repeat/clean-session/scaling/speed pass.
+
+Prepared terminal analyzer actually PASS on this exact terminal receipt:223
+preimages/current pins/executed caller+driver reconstructed; exact compiled
+encoder/unchanged decoder, original source/probe/browser/UI/CSS/adapter joins.
+Native100ms complete-tree peak484,110,336B minus same blank237,727,744B equals
+234.96875MiB;95,343 valid conversion samples/0 unavailable. Observed window is
+under250, NOT completed-session memory acceptance. No abort records/forbidden
+requests; fixed32+16MiB Wasm,64KiB encode I/O,512KiB final-copy I/O/queue,
+one pending operation. Runtime/profile/media/staging/partial destination and
+wrapper removed by finally; actual owned PID-parent-birth identities independently
+absent, protected full size/SHA unchanged, normal UI/CSS/six engines restored,
+nine private assets absent. No unrelated process killed. Raw19,167,387B retained
+losslessly in565,572B gzip SHA c37c46fedcac42b4454341997ac55967dbfc4f75d12cc244ce4f841318ed0e0b;
+restored SHA d6c1fca59a4cd7f8522eb17d9eba17cf79c91a0d49646364438dbc99a00bccfe.
+Redundant raw removed only after byte/hash recovery. See
+evidence/2026-10-10T13-32-15-738Z-encoder-plane-original-full-terminal.json and
+evidence/2026-10-10T13-32-15-738Z-encoder-plane-original-full-terminal-analysis.json.
+Next: diagnose stage-aware progress observation with focused regression before
+any changed full-original retry; preserve old measured helper/receipts unchanged.
+All future work headless/hidden; no Docker/public promotion/whole-goal completion.
+
 ## 2026-10-10 — Same full-video process verified live; terminal verifier tested
 
 No new full-video attempt. Session59855 still running; exact driver42468/Chrome

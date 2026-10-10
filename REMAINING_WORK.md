@@ -5,6 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Full-video attempt terminal; final-copy observer correction needed
+
+Status: **Partially implemented**. Supersedes all session59855 LIVE statements
+below. Actual terminal receipt16:32:24UTC/candidate exit1; first failure is
+`Reject reset/nonmonotonic work counters` in the test checkpoint observer when
+production enters "Copying staged MP4 to selected destination": encoding count
+3,337,014,856B transitions to157,286,400B destination-copy progress, with
+3,337,164,038B staged. Native split logs296,160 completed frames/packets and
+closed=true/failed=false, not proof of a saved or independently valid output.
+Harness cancellation prevented final save/validators;0 of3 full runs complete.
+No encoder abort recorded. Do not label this a conversion pass or repeat an
+unchanged three-hour run. Diagnose and narrowly test stage-aware observation
+before any changed full-original retry; historical helper/pins remain immutable.
+
+Independent prepared terminal analyzer actually executed successfully on exact
+receipt:223 source preimages/current hashes and executed caller/driver verified;
+build/source/original probe/Chrome/UI/CSS/adapter joins; owned process birth
+identities absent, protected full SHA/size unchanged, owned output/profile/
+runtime/wrapper removed, normal assets restored. Native100ms95,343 conversion
+samples/0 unavailable, ALL-tree484,110,336B minus original blank237,727,744B =
+234.96875MiB. Under budget only for observed incomplete window, not full-session
+acceptance. Compact lossless raw/source archives retained; no media retained.
+Full validation/three repeats/clean session/~10GB scaling/identical-setting speed
+and broader original-spec gates remain pending. No new browser/restart/build/GC/
+profiler/converter run/public promotion; goal ACTIVE. User's headless-only request
+continues to override old headed coverage; subprocess windows remain hidden.
+Evidence: evidence/2026-10-10T13-32-15-738Z-encoder-plane-original-full-terminal.json;
+evidence/2026-10-10T13-32-15-738Z-encoder-plane-original-full-terminal-analysis.json.
+
 ## 2026-10-10 — Same full-video attempt live; independent terminal checker ready
 
 Status: **Partially implemented**. Previous goal turn made concrete progress:
