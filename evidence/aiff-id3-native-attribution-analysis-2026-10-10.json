@@ -1,0 +1,901 @@
+{
+  "recordedAt": "2026-10-10T09:23:11.272Z",
+  "status": "eight-real-bounded-native-dumps-observed-not-causal-fix-or-acceptance",
+  "proof": {
+    "path": "evidence/2026-10-10T09-18-16-934Z-aiff-id3-direct-handle-native-attribution.json",
+    "sha256": "7b4fa9171dfb550926f99555c5b4a076aab368701a4795b70670bb770baa66b0"
+  },
+  "previousFailure": {
+    "path": "evidence/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-stress.json",
+    "sha256": "961b56ad9ad91f2ba89183351b6429a9012e2ee58e1114fd4282da138af664e7",
+    "incrementalPrivateMiB": 260.72265625,
+    "remainsFailed": true
+  },
+  "sameOriginalSourcesCoreInputAndOutput": true,
+  "diagnosticOnly": true,
+  "publicAcceptance": false,
+  "productionFix": false,
+  "speedImprovementProven": false,
+  "blankPrivateBytes": 270032896,
+  "loadedPrivateBytes": 356806656,
+  "peakPrivateBytes": 532140032,
+  "incrementalPrivateMiB": 249.96484375,
+  "runs": [
+    {
+      "run": 1,
+      "elapsedMs": 5882.545000001788,
+      "outputBytes": 153600760,
+      "sha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+      "incrementalPrivateMiB": 249.96484375,
+      "cleanupDeltaFromLoadedMiB": 3.98046875
+    },
+    {
+      "run": 2,
+      "elapsedMs": 5609.694999992847,
+      "outputBytes": 153600760,
+      "sha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+      "incrementalPrivateMiB": 214.62109375,
+      "cleanupDeltaFromLoadedMiB": 6.44921875
+    },
+    {
+      "run": 3,
+      "elapsedMs": 5829.274999991059,
+      "outputBytes": 153600760,
+      "sha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+      "incrementalPrivateMiB": 222.078125,
+      "cleanupDeltaFromLoadedMiB": 49.6953125
+    }
+  ],
+  "peakAccounting": [
+    {
+      "phase": "conversion-1",
+      "validSamples": 68,
+      "unavailableSamples": 0,
+      "peakPrivateBytes": 532140032,
+      "processCountAtPeak": 11,
+      "allRowsIncluded": true
+    },
+    {
+      "phase": "conversion-2",
+      "validSamples": 68,
+      "unavailableSamples": 0,
+      "peakPrivateBytes": 495079424,
+      "processCountAtPeak": 10,
+      "allRowsIncluded": true
+    },
+    {
+      "phase": "conversion-3",
+      "validSamples": 86,
+      "unavailableSamples": 0,
+      "peakPrivateBytes": 502898688,
+      "processCountAtPeak": 10,
+      "allRowsIncluded": true
+    }
+  ],
+  "trace": {
+    "serializedBytes": 8751110,
+    "sha256": "3d2984fc763a35f4d1df9691aefb1868b35f32c6d0c16c6eb6f55ab736b94b45",
+    "overflow": false,
+    "dataLossOccurred": false,
+    "parseError": null,
+    "events": 2363,
+    "compactedBeforeRelease": true,
+    "rawRetained": false
+  },
+  "limits": {
+    "chromiumBufferBytes": 4194304,
+    "maximumSerializedBytes": 16777216,
+    "maximumDumps": 8,
+    "maximumRealmRows": 1024,
+    "realmIntervalMs": 100,
+    "ioReadBytes": 262144
+  },
+  "dumpCount": 8,
+  "realmSamples": 687,
+  "realmRowsEvicted": 0,
+  "largestLoadedRendererSelection": {
+    "pid": 12008,
+    "rule": "Largest OS-private renderer at loaded dump; not independently mapped to page target or allocator callsite"
+  },
+  "selectedRows": [
+    {
+      "phase": "blank-idle",
+      "requestDumpGuid": "0x3",
+      "traceIntervalMicroseconds": [
+        81006477734,
+        81006498655
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 14655488,
+          "tracePrivateFootprintBytes": 14909440,
+          "providers": {
+            "malloc": {
+              "effective_size": 3519789,
+              "size": 3581328,
+              "virtual_size": 3452928
+            },
+            "blink_gc": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": null,
+            "partition_alloc": {
+              "effective_size": 479232,
+              "size": 479232
+            },
+            "v8": {
+              "effective_size": 847928,
+              "size": 847928
+            },
+            "gpu": null,
+            "shared_memory": {
+              "effective_size": 44099,
+              "size": 86016
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 84078592,
+          "tracePrivateFootprintBytes": 84205568,
+          "providers": {
+            "malloc": {
+              "effective_size": 5708788,
+              "size": 5712192,
+              "virtual_size": 5390336
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 1997616,
+              "size": 4901360
+            },
+            "shared_memory": {
+              "effective_size": 119193,
+              "size": 1978368
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "loaded-idle",
+      "requestDumpGuid": "0x5",
+      "traceIntervalMicroseconds": [
+        81016736671,
+        81016755702
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 62107648,
+          "tracePrivateFootprintBytes": 62140416,
+          "providers": {
+            "malloc": {
+              "effective_size": 18404464,
+              "size": 18795984,
+              "virtual_size": 14745600
+            },
+            "blink_gc": {
+              "effective_size": 17039440,
+              "size": 17039440
+            },
+            "blink_gc/main": {
+              "effective_size": 16253008,
+              "size": 16253008
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "partition_alloc": {
+              "effective_size": 2959693,
+              "size": 3997696
+            },
+            "v8": {
+              "effective_size": 9906100,
+              "size": 9906100
+            },
+            "gpu": {
+              "effective_size": 262016,
+              "size": 262016
+            },
+            "shared_memory": {
+              "effective_size": 109818,
+              "size": 552832
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 124575744,
+          "tracePrivateFootprintBytes": 109625344,
+          "providers": {
+            "malloc": {
+              "effective_size": 8078667,
+              "size": 8169184,
+              "virtual_size": 7794688
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2241376,
+              "size": 7656076
+            },
+            "shared_memory": {
+              "effective_size": 111047,
+              "size": 2166784
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "conversion-1",
+      "requestDumpGuid": "0x6",
+      "traceIntervalMicroseconds": [
+        81018334697,
+        81018550212
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 153718784,
+          "tracePrivateFootprintBytes": 184852480,
+          "providers": {
+            "malloc": {
+              "effective_size": 78203872,
+              "size": 79031888,
+              "virtual_size": 72634368
+            },
+            "blink_gc": {
+              "effective_size": 36307024,
+              "size": 36307024
+            },
+            "blink_gc/main": {
+              "effective_size": 34734160,
+              "size": 34734160
+            },
+            "blink_gc/workers": {
+              "effective_size": 1572864,
+              "size": 1572864
+            },
+            "partition_alloc": {
+              "effective_size": 21223757,
+              "size": 22261760
+            },
+            "v8": {
+              "effective_size": 18199356,
+              "size": 18199356
+            },
+            "gpu": {
+              "effective_size": 2555712,
+              "size": 2555712
+            },
+            "shared_memory": {
+              "effective_size": 1185018,
+              "size": 4992832
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 138162176,
+          "tracePrivateFootprintBytes": 138743808,
+          "providers": {
+            "malloc": {
+              "effective_size": 10381140,
+              "size": 10653984,
+              "virtual_size": 10280960
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2308208,
+              "size": 22173468
+            },
+            "shared_memory": {
+              "effective_size": 119239,
+              "size": 7884800
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "cleanup-1",
+      "requestDumpGuid": "0x8",
+      "traceIntervalMicroseconds": [
+        81043670009,
+        81043689035
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 77496320,
+          "tracePrivateFootprintBytes": 77496320,
+          "providers": {
+            "malloc": {
+              "effective_size": 21975477,
+              "size": 22516432,
+              "virtual_size": 20983808
+            },
+            "blink_gc": {
+              "effective_size": 22151248,
+              "size": 22151248
+            },
+            "blink_gc/main": {
+              "effective_size": 21364816,
+              "size": 21364816
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "partition_alloc": {
+              "effective_size": 4733261,
+              "size": 5771264
+            },
+            "v8": {
+              "effective_size": 8998652,
+              "size": 8998652
+            },
+            "gpu": {
+              "effective_size": 262016,
+              "size": 262016
+            },
+            "shared_memory": {
+              "effective_size": 136442,
+              "size": 606080
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 117239808,
+          "tracePrivateFootprintBytes": 117239808,
+          "providers": {
+            "malloc": {
+              "effective_size": 10392295,
+              "size": 10694992,
+              "virtual_size": 10280960
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2372092,
+              "size": 8573224
+            },
+            "shared_memory": {
+              "effective_size": 127431,
+              "size": 2191360
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "conversion-2",
+      "requestDumpGuid": "0x9",
+      "traceIntervalMicroseconds": [
+        81045000020,
+        81045189787
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 141643776,
+          "tracePrivateFootprintBytes": 178491392,
+          "providers": {
+            "malloc": {
+              "effective_size": 78017308,
+              "size": 79245216,
+              "virtual_size": 72691712
+            },
+            "blink_gc": {
+              "effective_size": 29229136,
+              "size": 29229136
+            },
+            "blink_gc/main": {
+              "effective_size": 27656272,
+              "size": 27656272
+            },
+            "blink_gc/workers": {
+              "effective_size": 1572864,
+              "size": 1572864
+            },
+            "partition_alloc": {
+              "effective_size": 21432653,
+              "size": 22470656
+            },
+            "v8": {
+              "effective_size": 17926736,
+              "size": 17926736
+            },
+            "gpu": {
+              "effective_size": 2555712,
+              "size": 2555712
+            },
+            "shared_memory": {
+              "effective_size": 1187066,
+              "size": 5005120
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 140578816,
+          "tracePrivateFootprintBytes": 140890112,
+          "providers": {
+            "malloc": {
+              "effective_size": 10911676,
+              "size": 11214400,
+              "virtual_size": 10817536
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2376444,
+              "size": 22503848
+            },
+            "shared_memory": {
+              "effective_size": 127431,
+              "size": 7700480
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "cleanup-2",
+      "requestDumpGuid": "0xc",
+      "traceIntervalMicroseconds": [
+        81070523351,
+        81070544459
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 85671936,
+          "tracePrivateFootprintBytes": 85671936,
+          "providers": {
+            "malloc": {
+              "effective_size": 21167101,
+              "size": 21708160,
+              "virtual_size": 18505728
+            },
+            "blink_gc": {
+              "effective_size": 28442704,
+              "size": 28442704
+            },
+            "blink_gc/main": {
+              "effective_size": 27656272,
+              "size": 27656272
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "partition_alloc": {
+              "effective_size": 5437773,
+              "size": 6475776
+            },
+            "v8": {
+              "effective_size": 11996924,
+              "size": 11996924
+            },
+            "gpu": {
+              "effective_size": 262016,
+              "size": 262016
+            },
+            "shared_memory": {
+              "effective_size": 136442,
+              "size": 614272
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 116256768,
+          "tracePrivateFootprintBytes": 116256768,
+          "providers": {
+            "malloc": {
+              "effective_size": 8552612,
+              "size": 8863424,
+              "virtual_size": 8769536
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2382392,
+              "size": 8583524
+            },
+            "shared_memory": {
+              "effective_size": 135623,
+              "size": 2203648
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "conversion-3",
+      "requestDumpGuid": "0xd",
+      "traceIntervalMicroseconds": [
+        81071949799,
+        81072112726
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 160423936,
+          "tracePrivateFootprintBytes": 186245120,
+          "providers": {
+            "malloc": {
+              "effective_size": 72506015,
+              "size": 76748384,
+              "virtual_size": 72847360
+            },
+            "blink_gc": {
+              "effective_size": 34996304,
+              "size": 34996304
+            },
+            "blink_gc/main": {
+              "effective_size": 33423440,
+              "size": 33423440
+            },
+            "blink_gc/workers": {
+              "effective_size": 1572864,
+              "size": 1572864
+            },
+            "partition_alloc": {
+              "effective_size": 21690701,
+              "size": 22728704
+            },
+            "v8": {
+              "effective_size": 22104324,
+              "size": 22104324
+            },
+            "gpu": {
+              "effective_size": 2490176,
+              "size": 2490176
+            },
+            "shared_memory": {
+              "effective_size": 1215738,
+              "size": 4906880
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 140001280,
+          "tracePrivateFootprintBytes": 140455936,
+          "providers": {
+            "malloc": {
+              "effective_size": 10404598,
+              "size": 10715408,
+              "virtual_size": 10498048
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2452216,
+              "size": 21826020
+            },
+            "shared_memory": {
+              "effective_size": 135623,
+              "size": 7647232
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    },
+    {
+      "phase": "cleanup-3",
+      "requestDumpGuid": "0x13",
+      "traceIntervalMicroseconds": [
+        81119667807,
+        81119686850
+      ],
+      "processes": [
+        {
+          "pid": 12008,
+          "osType": "renderer",
+          "traceName": "Renderer",
+          "osPrivateBytesBeforeDump": 131350528,
+          "tracePrivateFootprintBytes": 131350528,
+          "providers": {
+            "malloc": {
+              "effective_size": 28330882,
+              "size": 29012240,
+              "virtual_size": 28385280
+            },
+            "blink_gc": {
+              "effective_size": 29622352,
+              "size": 29622352
+            },
+            "blink_gc/main": {
+              "effective_size": 27918416,
+              "size": 27918416
+            },
+            "blink_gc/workers": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "partition_alloc": {
+              "effective_size": 18528589,
+              "size": 19566592
+            },
+            "v8": {
+              "effective_size": 13300440,
+              "size": 13300440
+            },
+            "gpu": {
+              "effective_size": 262016,
+              "size": 262016
+            },
+            "shared_memory": {
+              "effective_size": 152826,
+              "size": 634752
+            }
+          }
+        },
+        {
+          "pid": 27296,
+          "osType": "gpu-process",
+          "traceName": "GPU Process",
+          "osPrivateBytesBeforeDump": 110202880,
+          "tracePrivateFootprintBytes": 110202880,
+          "providers": {
+            "malloc": {
+              "effective_size": 8374757,
+              "size": 8693472,
+              "virtual_size": 8597504
+            },
+            "blink_gc": null,
+            "blink_gc/main": null,
+            "blink_gc/workers": null,
+            "partition_alloc": {},
+            "v8": null,
+            "gpu": {
+              "effective_size": 2374520,
+              "size": 8575652
+            },
+            "shared_memory": {
+              "effective_size": 143815,
+              "size": 2215936
+            }
+          }
+        }
+      ],
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "acceptanceMetric": false
+    }
+  ],
+  "workerCounts": [
+    {
+      "phase": "cleanup-1",
+      "before": {
+        "startedAt": 1791623955134,
+        "finishedAt": 1791623955135,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "5BFA945F249E703AC898A400FBF4BC95",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 570688,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          }
+        ]
+      },
+      "after": {
+        "startedAt": 1791623955236,
+        "finishedAt": 1791623955291,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "5BFA945F249E703AC898A400FBF4BC95",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 572620,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          }
+        ]
+      },
+      "noWorkerLeakInferredFromProviderBytes": true
+    },
+    {
+      "phase": "cleanup-2",
+      "before": {
+        "startedAt": 1791623982002,
+        "finishedAt": 1791623982003,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "79F2AE5838AAFE56083FD24443DA92D3",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 572620,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          }
+        ]
+      },
+      "after": {
+        "startedAt": 1791623982103,
+        "finishedAt": 1791623982153,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "79F2AE5838AAFE56083FD24443DA92D3",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 574416,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          }
+        ]
+      },
+      "noWorkerLeakInferredFromProviderBytes": true
+    },
+    {
+      "phase": "cleanup-3",
+      "before": {
+        "startedAt": 1791624029184,
+        "finishedAt": 1791624030196,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "4FB3A73B72405F7DE466D999F592CC0C",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 570688,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          },
+          {
+            "targetId": "D223A79A555ADE8D85FE2057A3243B64",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          }
+        ]
+      },
+      "after": {
+        "startedAt": 1791624031411,
+        "finishedAt": 1791624032424,
+        "targetsAvailable": true,
+        "workers": [
+          {
+            "targetId": "4FB3A73B72405F7DE466D999F592CC0C",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": 572620,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 293917,
+            "error": null
+          },
+          {
+            "targetId": "D223A79A555ADE8D85FE2057A3243B64",
+            "type": "worker",
+            "url": "http://127.0.0.1:58377/assets/conversion.worker-DwlcpCZl.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          }
+        ]
+      },
+      "noWorkerLeakInferredFromProviderBytes": true
+    }
+  ],
+  "fullAllProcessDumpRowsRetained": {
+    "path": "outputs/reports/2026-10-10T09-18-16-934Z-aiff-id3-direct-handle-native-attribution-native-attribution.json.gz",
+    "bytes": 22030,
+    "sha256": "b4ec0b083c2a79de271d1ba5fedd2bf2829fcdf6affaa51bbb0043d2b24346bb",
+    "restoredBytes": 549966,
+    "restoredSha256": "cbf03aefbb863ea0b57152e1b20f688ca1e0d2b490d54ec24de23374f3ea3d14"
+  },
+  "allocatorValuesOverlap": true,
+  "summedAllocatorTotal": null,
+  "allocationCauseProven": false,
+  "caveat": "Allocator snapshots, OS samples and native peaks are distinct times. Light provider sizes may include garbage/reserves and overlap; not live-object attribution, leak proof, earlier failed-run cause or production acceptance. All OS descendants, including tracing/updater/unknown rows, remain counted.",
+  "next": "Investigate retained Blink/partition and transient renderer malloc with exact UI/writer lifecycle source and a controlled single-variable optimization. Do not replay unchanged acceptance or infer an allocator leak from snapshot sizes alone.",
+  "analyzerSha256": "2e932357d1656725f4bd79245397b1ba3f658bd929c617359db01ec698667b13"
+}

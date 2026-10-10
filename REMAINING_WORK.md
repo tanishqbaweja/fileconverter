@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Native AIFF attribution observed; production fix still missing
+
+Status: **Partially implemented**. New reversible private recipe reuses bounded
+renderer/memory-infra helpers for8 light dumps, with4MiB trace/16MiB serialized
+cap/256KiB reads/1,024 realm rows. Complete-tree OS formula/all processes/250MiB,
+original fixture/core/settings/full-content/repeat/cancel/cleanup gates retained.
+10 focused checks PASS308.6231ms and four-file lint0/diff-check0 before launch.
+Actual hidden/headless session34511 is terminal0 with3 full-PCM/art/tag/hash-valid
+outputs and249.96484375MiB observed increment.8 successful bounded dumps,
+8,751,110-byte trace/2,363events,no data loss/overflow,687realm snapshots/0evicted.
+Full compacted native data retained losslessly; helper releases raw trace as
+documented(rawRetained=false),not independent full-trace replay evidence.
+All OS descendant rows counted,including tracing/updater/unknowns. Native snapshots
+show transient renderer malloc sizes~77–79MB and retained Blink/main~21–28MB;
+partition after cleanup3 is19,566,592B. Overlapping provider snapshots do not prove
+a callsite,leak or the earlier failed-run cause; no allocator total is summed.
+Cleanup3 has2 adjacent conversion-worker targets,one unavailable heap,not a writer
+target; lifecycle/debugger timing must be investigated before claiming retention.
+Old260.72265625MiB failure remains failed,no production fix/acceptance/speedup.
+All owned helper/parent births absent,media/profiles/scratch/raw dirs gone,normal
+served engine restored.10 focused post-terminal checks PASS246.1452ms,all1,012
+unit tests PASS7253.7153ms,six-file lint0/diff-check0. Exact evidence:
+`evidence/2026-10-10T09-18-16-934Z-aiff-id3-direct-handle-native-attribution.json`,
+`evidence/2026-10-10T09-18-16-877Z-aiff-id3-native-attribution-launch.json`,
+`evidence/aiff-id3-native-attribution-analysis-2026-10-10.json`.
+Frozen preceding diagnostic and all1,006 unit verification pushed asff2f4bf to
+media-options; remote main unchanged. Next: exact UI/writer lifecycle source
+investigation and a controlled single-variable optimization,not an unchanged
+acceptance retry or another generic profiler. Full-video encoder OOM,direct
+acceptance/write-failure/larger scaling and broader product requirements incomplete.
+
+
 ## 2026-10-10 — Worker heap attribution observed; renderer-native allocation still missing
 
 Status: **Partially implemented**. Actual changed diagnostic session6102 exited0

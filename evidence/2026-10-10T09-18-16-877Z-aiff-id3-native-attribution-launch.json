@@ -1,0 +1,46 @@
+{
+  "recordedAt": "2026-10-10T09:20:38.513Z",
+  "diagnosticOnly": true,
+  "productionAcceptance": false,
+  "noAutomaticRetry": true,
+  "childExitCode": 0,
+  "failure": null,
+  "baseLaunchSha256": "1d1729ca34208bbc772ede5c537f30a6d97cbc4fa7a05943fa274b12bb85fd9d",
+  "executedLaunch": {
+    "path": "outputs/reports/2026-10-10T09-18-16-877Z-aiff-id3-native-attribution-executed-launch.mjs.gz",
+    "bytes": 5190,
+    "sha256": "360111e228c57cd9c72b0dea15f233fe0c8e22d94f6ec25507ab7455caecb66d",
+    "restoredBytes": 15243,
+    "restoredSha256": "1b32eeeb6e0b39d12337c18f5bedec15fc550083a7a23b87b093478e39168188"
+  },
+  "identity": {
+    "pid": 17948,
+    "parentPid": 40432,
+    "createdAt": "2026-10-10T09:18:16.8885550Z"
+  },
+  "absence": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 17948,
+      "parentPid": 40432,
+      "createdAt": "2026-10-10T09:18:16.8885550Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-10T09:20:38.504Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 411,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-native-launch-vkekjy",
+  "ownedRuntimeRemoved": true,
+  "subprocessWindowsHidden": true,
+  "browserHeadless": true
+}

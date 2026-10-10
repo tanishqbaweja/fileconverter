@@ -4,6 +4,53 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Eight real bounded native AIFF dumps captured
+
+New private instrumentation composes the frozen worker-heap diagnostic and
+unchanged original stress recipe. It requests at most8 light memory-infra dumps
+(blank,loaded,each of3 conversion/cleanup pairs), using existing4MiB trace,
+16MiB serialized cap/256KiB reads/1,024 realm rows/one pending dump. Snapshot
+allocator providers overlap and are never summed or substituted for OS private
+memory. Shutdown detaches tracing/realm CDP resources and keeps owned cleanup
+even if report finalization fails. No forced GC, codec or production change.
+10 focused recipe/resource/metadata/CDP/trace-join tests PASS308.6231ms;
+four-file lint0/diff-check0 before browser launch. Added startup-failure release
+check,3 focused tests PASS176.0765ms. Actual hidden/headless session34511 exited0:
+three unchanged140,922,233→153,600,760-byte/full-PCM/art/Unicode-tag/hash validated
+outputs,5882.545/5609.695/5829.275ms. Stable blank270,032,896B,loaded356,806,656B,
+peak532,140,032B/249.96484375MiB.222 valid100ms conversion samples/0 unavailable;
+all descendants, unknown/updater/tracing processes retained in accounting.
+Three cleanup deltas3.98046875/6.44921875/49.6953125MiB under original96MiBgate.
+Native tracing is instrumentation only, NOT a production fix or acceptance.
+Earlier260.72265625MiB failure remains failed; no speedup/scaling claimed.
+
+Eight actual successful dumps,8,751,110 serialized bytes/2,363 trace events,
+no overflow/data loss/parse error;687 realm snapshots/0evicted. Existing helper
+compacts all dump/provider/realm rows before releasing raw trace; raw retained=false,
+explicitly not a promise of a replayable full trace. Full compacted data retained
+losslessly in22,030-byte gzip. Largest loaded rendererPID12008 has sampled malloc
+sizes79,031,888/79,245,216/76,748,384B in conversions; after cleanup Blink/main
+21,364,816/27,656,272/27,918,416B and partition5,771,264/6,475,776/19,566,592B.
+Providers overlap/are nondeterministic; snapshots are not native peaks/live-object
+or leak/callsite attribution. GPU snapshots remain reported, never subtracted.
+Cleanup3 adjacent CDP snapshots show2 conversion-worker targets (one unavailable
+heap),not a remaining direct-writer target; investigate lifecycle/debugger timing
+before calling it a leaked worker or changing production. Exact target IDs/nulls
+retained. No old failed-run allocation cause established.
+
+Normal served assets restored; driver3860,parent17948,Chrome4584,server10828,
+observer20388 exact births absent. Owned media,profile,scratch/raw report dirs gone.
+Exact launcher/driver/source/full JSON/CSV/HTML/native peaks/observer/allocator
+archives retained.10 post-terminal focused tests PASS246.1452ms,all1,012 unit tests
+PASS7253.7153ms,six-file lint0,diff-check0. No native conversion,Docker,headed
+coverage,public promotion,frontend rebuild or original-video encoder OOM fix.
+Proofs: `evidence/2026-10-10T09-18-16-934Z-aiff-id3-direct-handle-native-attribution.json`,
+`evidence/2026-10-10T09-18-16-877Z-aiff-id3-native-attribution-launch.json`,
+`evidence/aiff-id3-native-attribution-analysis-2026-10-10.json`.
+Next: exact UI/writer lifecycle source investigation and controlled single-variable
+optimization,not an unchanged acceptance replay or another generic profiler.
+
+
 ## 2026-10-10 — Changed direct AIFF diagnostic captured real nested-worker heaps
 
 Actual session6102 is terminal0, not live. One changed hidden/headless diagnostic
