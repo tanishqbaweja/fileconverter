@@ -1,0 +1,544 @@
+{
+  "recordedAt": "2026-10-10T09:39:05.618Z",
+  "status": "actual-encoder-static-call-stack-audited-not-allocation-cause",
+  "failure": null,
+  "inspection": {
+    "binary": {
+      "path": "work/mpeg2-single-idle-37986418102/split-encoder.wasm",
+      "bytes": 674961,
+      "sha256": "8b2fd64d3205143971d451f0ed562039d98fbac9f276d6cbb3c8898d889f4242"
+    },
+    "glue": {
+      "path": "work/mpeg2-single-idle-37986418102/split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e"
+    },
+    "rawAbortEvidence": {
+      "path": "outputs/reports/2026-10-09T20-55-24-319Z-single-idle-full-raw.json.gz",
+      "sha256": "849b98dd7514555190378389286588db47c3f9215e50dc756f3b6cc9a0fb6411",
+      "restoredSha256": "6b76e5489f0171ec672a0170aff4327ff0f0df435a894a0cf411c30b47f80612"
+    },
+    "abort": {
+      "observedAt": "2026-10-09T22:10:47.979Z",
+      "role": "encoder",
+      "reason": "Cannot enlarge memory arrays to size 16875520 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 16777216, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0",
+      "stack": "Error: Actual Emscripten abort observation\n    at onAbort (http://127.0.0.1:49271/engines/remux/within-direct.mjs:193:22)\n    at Object.onAbort (http://127.0.0.1:49271/engines/remux/within-direct.mjs:209:47)\n    at abort (http://127.0.0.1:49271/engines/remux/_private_split_encoder.mjs:1:12856)\n    at abortOnCannotGrowMemory (http://127.0.0.1:49271/engines/remux/_private_split_encoder.mjs:1:37652)\n    at _emscripten_resize_heap (http://127.0.0.1:49271/engines/remux/_private_split_encoder.mjs:1:38100)\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[486]:0x72adc\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[480]:0x70a48\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[484]:0x7223e\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[414]:0x66a72\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[350]:0x587ac\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[75]:0x9501\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[245]:0x3dc7a\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[244]:0x39628\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[68]:0x7b1f\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[70]:0x84c2\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[69]:0x8204\n    at http://127.0.0.1:49271/engines/remux/_private_split_encoder.wasm:wasm-function[526]:0x7637b\n    at Object._within_split_encoder_send (http://127.0.0.1:49271/engines/remux/_private_split_encoder.mjs:1:13715)\n    at Object.call (http://127.0.0.1:49271/engines/remux/mpeg2-split-session.mjs:77:29)\n    at within_split_call (http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:58370)\n    at imports.<computed> (http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.mpeg2_packets (http://127.0.0.1:49271/engines/remux/_private_split_decoder.wasm:wasm-function[4469]:0x60637b)\n    at within-mpeg2-split.wasm.mpeg2_frames (http://127.0.0.1:49271/engines/remux/_private_split_decoder.wasm:wasm-function[4468]:0x605480)\n    at within-mpeg2-split.wasm.within_remux (http://127.0.0.1:49271/engines/remux/_private_split_decoder.wasm:wasm-function[4462]:0x603974)\n    at __asyncify_wrapper_4462 (http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:39798)\n    at callUserCallback (http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:26461)\n    at Object.doRewind (http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:42116)\n    at http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:43088\n    at http://127.0.0.1:49271/engines/remux/_private_split_decoder.mjs:1:44112"
+    },
+    "selectedFunctions": [
+      {
+        "functionIndex": 68,
+        "params": [
+          "i32",
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 31463,
+        "bodyEnd": 32356,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_68",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "6efc2b14490d7a57afe370ddb6a04f0ef2721d2c4cf30fe9f2240bebc8250fa6",
+        "textBytes": 10796,
+        "textSha256": "2ec60c774dbc75768242d2973afcfb9f06f2de734398f3babe388b7c1fb42550",
+        "directlyCalledFunctionIndices": [
+          410,
+          288,
+          537,
+          413,
+          354,
+          390
+        ],
+        "indirectCallSites": 2
+      },
+      {
+        "functionIndex": 69,
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 32358,
+        "bodyEnd": 33362,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_69",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "fb68284b36fefee8092ad0b3e8e038d9499f032732997040600d5dacc2d492c4",
+        "textBytes": 13584,
+        "textSha256": "7994bf0a35e5fff3a68f6be358f7ca51575867a866ca199dfa666d3938ae5bd9",
+        "directlyCalledFunctionIndices": [
+          397,
+          410,
+          363,
+          391,
+          393,
+          455,
+          390,
+          392,
+          70
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 70,
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 33364,
+        "bodyEnd": 34288,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_70",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "f3e59acb09c699ff4dc7edecd752a6eb21c9418da4bd6bc392c5a51c1641e5f8",
+        "textBytes": 14072,
+        "textSha256": "39386208bdf88e7c4d0f4b12f24174507f1d8ca69e1509b3be92a44580a12d04",
+        "directlyCalledFunctionIndices": [
+          390,
+          394,
+          624,
+          579,
+          609,
+          606,
+          291,
+          68,
+          410,
+          537,
+          288
+        ],
+        "indirectCallSites": 1
+      },
+      {
+        "functionIndex": 75,
+        "params": [
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 35557,
+        "bodyEnd": 38598,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_75",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "3bc6b07988fb2bee2d47537ea9b98b4f08da4010c701d29f8ec2a5c4604635bf",
+        "textBytes": 45365,
+        "textSha256": "48a37b8dd6eff7c15455e1435589a96cf140b423b81396ec7838a513a739f6c8",
+        "directlyCalledFunctionIndices": [
+          398,
+          410,
+          414,
+          401,
+          402,
+          355,
+          454,
+          444,
+          537,
+          421,
+          417,
+          357,
+          350,
+          390
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 244,
+        "params": [
+          "i32",
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 234554,
+        "bodyEnd": 252943,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_244",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "40311ca2fd8d587194188c16733f86d3241f658820ba94b0f4c651aa5a9f20f4",
+        "textBytes": 356070,
+        "textSha256": "35143088792526cf11b386adc3fa84e92a0251471beb3c23a5f874c021ed036f",
+        "directlyCalledFunctionIndices": [
+          117,
+          410,
+          446,
+          392,
+          245,
+          444,
+          475,
+          314,
+          286,
+          280,
+          41,
+          69,
+          71,
+          288,
+          281,
+          287,
+          390,
+          394,
+          119,
+          330,
+          289,
+          118,
+          246,
+          227,
+          235,
+          236,
+          72,
+          238,
+          237,
+          631,
+          290,
+          79,
+          334,
+          482,
+          415,
+          417,
+          354,
+          537
+        ],
+        "indirectCallSites": 22
+      },
+      {
+        "functionIndex": 245,
+        "params": [
+          "i32",
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 252945,
+        "bodyEnd": 253526,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_245",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "327092e9fd150c924dcaf8905f71abfec0d8f2e483c1eb7e306a5e7d99666603",
+        "textBytes": 5999,
+        "textSha256": "00b20494a4a80d6dd9fb1a8e92b0f63641e70dd4dc3f49cb511fe7e7cb351682",
+        "directlyCalledFunctionIndices": [
+          75,
+          410,
+          390,
+          440,
+          393
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 350,
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 362376,
+        "bodyEnd": 362570,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_350",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "42356428e4307b58e481497aead4a3a6d1c9c61e5c7310e6f538a6d7fa1ad6e4",
+        "textBytes": 2038,
+        "textSha256": "9ba1b08b50533ba52eff18e2b0165e8353d298a81df8d1ab13a14d7e73d10a14",
+        "directlyCalledFunctionIndices": [
+          414,
+          420,
+          482,
+          417
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 414,
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 420400,
+        "bodyEnd": 420556,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_414",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "74b4804f9afb05be61026d47ecc92b17393126f15328b4676e08622d9c673da9",
+        "textBytes": 1556,
+        "textSha256": "c732bb5f1021f997afd11b83d111555d595485a2fa4b67ea168cd89e7c8481d3",
+        "directlyCalledFunctionIndices": [
+          484
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 480,
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 458368,
+        "bodyEnd": 464127,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_480",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "870a0a5ca0f762ca7b3a9b1788db874fe9c6b88b1b8c229c02fdb849e7be1ea5",
+        "textBytes": 89420,
+        "textSha256": "8d20be047056d880764f047c13463f1008ade3e1a29577e2e1f4d2dd6d9a578b",
+        "directlyCalledFunctionIndices": [
+          481,
+          624,
+          537,
+          486,
+          609
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 484,
+        "params": [
+          "i32",
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 467458,
+        "bodyEnd": 467890,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_484",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "37aa6fc98368dbe88b440d7600fc28fde1e2a27e5ad046cd75be9419da0c943f",
+        "textBytes": 4863,
+        "textSha256": "bbd92553928295adbd3cb0ee87af24b22c596426c044d6046f346bc40dcab32a",
+        "directlyCalledFunctionIndices": [
+          480,
+          624,
+          485,
+          609
+        ],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 486,
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 469660,
+        "bodyEnd": 469761,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_486",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "0848de898dc59c6cb3310dd3a8ab1ebfaec891908034e6573802bd2aca82fb0b",
+        "textBytes": 1044,
+        "textSha256": "ef5a635a0bfcc77ea7892d863db408cb251c64057bd66d800a7279b329e26194",
+        "directlyCalledFunctionIndices": [],
+        "indirectCallSites": 0
+      },
+      {
+        "functionIndex": 526,
+        "params": [
+          "i32"
+        ],
+        "results": [
+          "i32"
+        ],
+        "bodyStart": 483449,
+        "bodyEnd": 484301,
+        "functionNameFromActualBinary": null,
+        "analysisLabel": "analysis_index_526",
+        "labelIsSynthetic": true,
+        "originalBodySha256": "c32eb122ba8f7f0a4d0933bdf3f01c2218694c55db4f2fa6286264bde5d82d73",
+        "textBytes": 6740,
+        "textSha256": "44e283b641009492896cf163f3454a57aa65ebd72aca5e6fa4cfa720978f3f52",
+        "directlyCalledFunctionIndices": [
+          527,
+          388,
+          389,
+          458,
+          373,
+          69
+        ],
+        "indirectCallSites": 0
+      }
+    ],
+    "callChain": [
+      {
+        "functionIndex": 486,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x72adc",
+        "expectedInnerFrame": null,
+        "directCallToObservedInnerFrame": null
+      },
+      {
+        "functionIndex": 480,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x70a48",
+        "expectedInnerFrame": 486,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 484,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x7223e",
+        "expectedInnerFrame": 480,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 414,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x66a72",
+        "expectedInnerFrame": 484,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 350,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x587ac",
+        "expectedInnerFrame": 414,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 75,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x9501",
+        "expectedInnerFrame": 350,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 245,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x3dc7a",
+        "expectedInnerFrame": 75,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 244,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x39628",
+        "expectedInnerFrame": 245,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 68,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x7b1f",
+        "expectedInnerFrame": 244,
+        "directCallToObservedInnerFrame": false
+      },
+      {
+        "functionIndex": 70,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x84c2",
+        "expectedInnerFrame": 68,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 69,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x8204",
+        "expectedInnerFrame": 70,
+        "directCallToObservedInnerFrame": true
+      },
+      {
+        "functionIndex": 526,
+        "functionNameFromActualBinary": null,
+        "codeOffset": "0x7637b",
+        "expectedInnerFrame": 69,
+        "directCallToObservedInnerFrame": true
+      }
+    ],
+    "syntheticLabelsForAnalysisOnly": true,
+    "actualDebugNamesAvailable": false,
+    "noDecoderSymbolSubstitution": true,
+    "selectedOriginalBodyBytesPreserved": true,
+    "wasmInstantiated": false,
+    "wasmFunctionExecution": false,
+    "functionSlice": {
+      "bytes": 182425,
+      "sha256": "8c4fc47499a67142e1c75a3d52feb301402d82d6d8abe2c89e329116355c090c",
+      "preserved": 12,
+      "unreachableReplacements": 626
+    },
+    "disassemblyCollection": {
+      "streamedBytes": 14625748,
+      "retainedBytes": 1035229,
+      "discardedBytes": 13590519,
+      "limits": {
+        "streamedBytes": 67108864,
+        "retainedBytes": 8388608,
+        "perFunctionBytes": 1048576,
+        "lineChars": 4096,
+        "functions": 32,
+        "stderrChars": 8192,
+        "timeoutMs": 20000
+      },
+      "toolExitCode": 0,
+      "subprocessWindowsHidden": true,
+      "originalFunctionsExecuted": 0
+    },
+    "disassembler": {
+      "version": "1.0.39",
+      "integrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+      "entrySha256": "cecf06ab5c65c3b7c05bafe601bbba61a45e4939889c5c51351e8817ac06f48d",
+      "objdumpSha256": "a9e6a2c224afeecd347c7f931b9efc8a817c146bfdeae2598974d5797284d214"
+    },
+    "installedLlvmPriorAttempt": {
+      "outcome": "failed-wasm-target-unavailable",
+      "filesChanged": false,
+      "originalFunctionsExecuted": 0
+    },
+    "individualAllocationBytes": null,
+    "liveHeapBytes": null,
+    "largestFreeBlockBytes": null,
+    "fragmentationProven": false,
+    "caveat": "Static selected actual bytes and call edges only. Synthetic numeric labels are not C symbols. Operand values, actual allocation size and dynamic allocator state remain unavailable."
+  },
+  "archivedFunctions": {
+    "path": "outputs/reports/2026-10-10T09-39-02-488Z-single-idle-encoder-static-functions.json.gz",
+    "bytes": 141443,
+    "sha256": "a2a58c9c0355a0b3f9114ee139ee3f75751b7f13641a0d6b8a7773db2605a617",
+    "restoredBytes": 1624979,
+    "restoredSha256": "7ac8be8c4698e13ce6871cb4e48237dd2a789d048d1973ef66b2b4fe8a422a6c"
+  },
+  "cleanup": {
+    "runtimeRemoved": true,
+    "originalBinaryUnchanged": true
+  },
+  "cleanupErrors": [],
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\encoder-stack-static-GT8ulR",
+  "publicAcceptance": false,
+  "productionFix": false,
+  "originalVideoRead": false,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalWasmFunctionsExecuted": 0,
+  "noDocker": true,
+  "subprocessWindowsHidden": true,
+  "sourcePins": {
+    "scripts/audit-single-idle-encoder-stack.mjs": "39aec4496dc8fd0402b414df2f6ba8f86154a7f29494fb61fd300f47d59e3e70",
+    "scripts/lib/wasm-anonymous-index-slice.mjs": "881b0713663184a4a8f8bcfaf908d8181b407b6bbf2c75fffc70dc5425901767",
+    "scripts/lib/selected-wasm-disassembly.mjs": "bd0a3bec77f8a3932a47330de841ca66a8912015f8a63f2682f02a4b1f6ae029",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-static-function-slice.mjs": "4b0aebb2f41d4bd7059c953f78031ecb21fedd88fbbd0d546d5fe4ffaad8f60f",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  }
+}

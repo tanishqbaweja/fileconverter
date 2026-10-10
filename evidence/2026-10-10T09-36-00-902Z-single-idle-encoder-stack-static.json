@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-10T09:36:11.798Z",
+  "status": "failed-static-audit",
+  "failure": "RangeError [ERR_CHILD_PROCESS_STDIO_MAXBUFFER]: stdout maxBuffer length exceeded\n    at Socket.onChildStdout (node:child_process:484:14)\n    at Socket.emit (node:events:508:28)\n    at addChunk (node:internal/streams/readable:559:12)\n    at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)\n    at Readable.push (node:internal/streams/readable:390:5)\n    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)",
+  "inspection": null,
+  "archivedFunctions": null,
+  "cleanup": {
+    "runtimeRemoved": true,
+    "originalBinaryUnchanged": true
+  },
+  "cleanupErrors": [],
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\encoder-stack-static-JWhJbk",
+  "publicAcceptance": false,
+  "productionFix": false,
+  "originalVideoRead": false,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalWasmFunctionsExecuted": 0,
+  "noDocker": true,
+  "subprocessWindowsHidden": true,
+  "sourcePins": {
+    "scripts/audit-single-idle-encoder-stack.mjs": "b03702f557bc72cc8a11e7aea23d75ada11d8efd696dff5102fa6db340cf5f90",
+    "scripts/lib/wasm-anonymous-index-slice.mjs": "881b0713663184a4a8f8bcfaf908d8181b407b6bbf2c75fffc70dc5425901767",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-static-function-slice.mjs": "4b0aebb2f41d4bd7059c953f78031ecb21fedd88fbbd0d546d5fe4ffaad8f60f",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  }
+}

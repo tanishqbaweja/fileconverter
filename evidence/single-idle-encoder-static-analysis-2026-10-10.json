@@ -1,0 +1,347 @@
+{
+  "recordedAt": "2026-10-10T09:42:29.436Z",
+  "status": "source-informed-first-encoder-plane-allocation-path-not-dynamic-capacity-or-fix",
+  "proof": {
+    "path": "evidence/2026-10-10T09-39-02-488Z-single-idle-encoder-stack-static.json",
+    "sha256": "7840b936c86de146a7d377d77d8995079ee693900ce14a516a6860811384cfa9"
+  },
+  "actualBinarySha256": "8b2fd64d3205143971d451f0ed562039d98fbac9f276d6cbb3c8898d889f4242",
+  "actualFrames": [
+    {
+      "functionIndex": 486,
+      "actualCodeOffset": "0x72adc",
+      "actualInstruction": "call 29 <env.emscripten_resize_heap>",
+      "context": [
+        " 072ac4: 42 ff ff ff ff 0f          |     i64.const 4294967295",
+        " 072aca: 58                         |     i64.le_u",
+        " 072acb: 04 40                      |     if",
+        " 072acd: 20 03                      |       local.get 3",
+        " 072acf: a7                         |       i32.wrap_i64",
+        " 072ad0: 22 01                      |       local.tee 1",
+        " 072ad2: 3f 00                      |       memory.size 0",
+        " 072ad4: 41 10                      |       i32.const 16",
+        " 072ad6: 74                         |       i32.shl",
+        " 072ad7: 4d                         |       i32.le_u",
+        " 072ad8: 0d 01                      |       br_if 1",
+        " 072ada: 20 01                      |       local.get 1",
+        " 072adc: 10 1d                      |       call 29 <env.emscripten_resize_heap>",
+        " 072ade: 0d 01                      |       br_if 1",
+        " 072ae0: 0b                         |     end"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 480,
+      "actualCodeOffset": "0x70a48",
+      "actualInstruction": "call 486",
+      "context": [
+        " 070a30: 28 02 00                   |                       i32.load 2 0",
+        " 070a33: 22 01                      |                       local.tee 1",
+        " 070a35: 20 08                      |                       local.get 8",
+        " 070a37: 41 b4 b5 14                |                       i32.const 334516",
+        " 070a3b: 28 02 00                   |                       i32.load 2 0",
+        " 070a3e: 6b                         |                       i32.sub",
+        " 070a3f: 6a                         |                       i32.add",
+        " 070a40: 41 00                      |                       i32.const 0",
+        " 070a42: 20 01                      |                       local.get 1",
+        " 070a44: 6b                         |                       i32.sub",
+        " 070a45: 71                         |                       i32.and",
+        " 070a46: 22 01                      |                       local.tee 1",
+        " 070a48: 10 e6 03                   |                       call 486",
+        " 070a4b: 22 03                      |                       local.tee 3",
+        " 070a4d: 20 00                      |                       local.get 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 484,
+      "actualCodeOffset": "0x7223e",
+      "actualInstruction": "call 480",
+      "context": [
+        " 07222b: 20 01                      |   local.get 1",
+        " 07222d: 41 0b                      |   i32.const 11",
+        " 07222f: 6a                         |   i32.add",
+        " 072230: 41 78                      |   i32.const 4294967288",
+        " 072232: 71                         |   i32.and",
+        " 072233: 20 01                      |   local.get 1",
+        " 072235: 41 0b                      |   i32.const 11",
+        " 072237: 49                         |   i32.lt_u",
+        " 072238: 1b                         |   select",
+        " 072239: 22 05                      |   local.tee 5",
+        " 07223b: 41 1c                      |   i32.const 28",
+        " 07223d: 6a                         |   i32.add",
+        " 07223e: 10 e0 03                   |   call 480",
+        " 072241: 22 02                      |   local.tee 2",
+        " 072243: 45                         |   i32.eqz"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 414,
+      "actualCodeOffset": "0x66a72",
+      "actualInstruction": "call 484",
+      "context": [
+        " 066a59: 20 00                      |   local.get 0",
+        " 066a5b: 41 ec b8 09                |   i32.const 154732",
+        " 066a5f: fe 10 02 00                |   i32.atomic.load 2 0",
+        " 066a63: 4b                         |   i32.gt_u",
+        " 066a64: 0d 00                      |   br_if 0",
+        " 066a66: 1a                         |   drop",
+        " 066a67: 20 00                      |   local.get 0",
+        " 066a69: 04 40                      |   if",
+        " 066a6b: 20 01                      |     local.get 1",
+        " 066a6d: 41 08                      |     i32.const 8",
+        " 066a6f: 6a                         |     i32.add",
+        " 066a70: 20 00                      |     local.get 0",
+        " 066a72: 10 e4 03                   |     call 484",
+        " 066a75: 21 00                      |     local.set 0",
+        " 066a77: 41 00                      |     i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 350,
+      "actualCodeOffset": "0x587ac",
+      "actualInstruction": "call 414",
+      "context": [
+        " 058797: 20 01                      | local.get 1",
+        " 058799: 23 0a                      | global.get 10",
+        " 05879b: 49                         | i32.lt_u",
+        " 05879c: 72                         | i32.or",
+        " 05879d: 04 40                      | if",
+        " 05879f: 20 01                      |   local.get 1",
+        " 0587a1: 10 21                      |   call 33 <env.__handle_stack_overflow>",
+        " 0587a3: 0b                         | end",
+        " 0587a4: 20 01                      | local.get 1",
+        " 0587a6: 24 00                      | global.set 0",
+        " 0587a8: 20 04                      | local.get 4",
+        " 0587aa: 20 00                      | local.get 0",
+        " 0587ac: 10 9e 03                   | call 414",
+        " 0587af: 22 03                      | local.tee 3",
+        " 0587b1: 36 02 0c                   | i32.store 2 12"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 75,
+      "actualCodeOffset": "0x9501",
+      "actualInstruction": "call 350",
+      "context": [
+        " 0094ed: 41 7f                      |             i32.const 4294967295",
+        " 0094ef: 73                         |             i32.xor",
+        " 0094f0: 41 18                      |             i32.const 24",
+        " 0094f2: 76                         |             i32.shr_u",
+        " 0094f3: 41 01                      |             i32.const 1",
+        " 0094f5: 71                         |             i32.and",
+        " 0094f6: 05                         |           else",
+        " 0094f7: 41 00                      |             i32.const 0",
+        " 0094f9: 0b                         |           end",
+        " 0094fa: 04 40                      |           if",
+        " 0094fc: 20 02                      |             local.get 2",
+        " 0094fe: 28 02 4c                   |             i32.load 2 76",
+        " 009501: 10 de 02                   |             call 350",
+        " 009504: 0c 01                      |             br 1",
+        " 009506: 0b                         |           end"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 245,
+      "actualCodeOffset": "0x3dc7a",
+      "actualInstruction": "call 75",
+      "context": [
+        " 03dc5f: 20 05                      |   local.get 5",
+        " 03dc61: 28 02 5c                   |   i32.load 2 92",
+        " 03dc64: 36 02 44                   |   i32.store 2 68",
+        " 03dc67: 20 01                      |   local.get 1",
+        " 03dc69: 20 05                      |   local.get 5",
+        " 03dc6b: 28 02 60                   |   i32.load 2 96",
+        " 03dc6e: 36 02 48                   |   i32.store 2 72",
+        " 03dc71: 0b                         | end",
+        " 03dc72: 02 40                      | block",
+        " 03dc74: 20 05                      |   local.get 5",
+        " 03dc76: 20 01                      |   local.get 1",
+        " 03dc78: 41 00                      |   i32.const 0",
+        " 03dc7a: 10 4b                      |   call 75",
+        " 03dc7c: 22 03                      |   local.tee 3",
+        " 03dc7e: 41 00                      |   i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 244,
+      "actualCodeOffset": "0x39628",
+      "actualInstruction": "call 245",
+      "context": [
+        " 039611: 22 06                      |                             local.tee 6",
+        " 039613: 41 00                      |                             i32.const 0",
+        " 039615: 48                         |                             i32.lt_s",
+        " 039616: 0d 05                      |                             br_if 5",
+        " 039618: 20 0d                      |                             local.get 13",
+        " 03961a: 41 01                      |                             i32.const 1",
+        " 03961c: 36 02 50                   |                             i32.store 2 80",
+        " 03961f: 0c 01                      |                             br 1",
+        " 039621: 0b                         |                           end",
+        " 039622: 20 04                      |                           local.get 4",
+        " 039624: 20 05                      |                           local.get 5",
+        " 039626: 20 02                      |                           local.get 2",
+        " 039628: 10 f5 01                   |                           call 245",
+        " 03962b: 22 06                      |                           local.tee 6",
+        " 03962d: 41 00                      |                           i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 68,
+      "actualCodeOffset": "0x7b1f",
+      "actualInstruction": "call_indirect 0 (type 8)",
+      "context": [
+        " 007b05: 24 00                      | global.set 0",
+        " 007b07: 02 40                      | block",
+        " 007b09: 02 40                      |   block",
+        " 007b0b: 02 40                      |     block",
+        " 007b0d: 20 00                      |       local.get 0",
+        " 007b0f: 20 01                      |       local.get 1",
+        " 007b11: 20 02                      |       local.get 2",
+        " 007b13: 20 03                      |       local.get 3",
+        " 007b15: 20 00                      |       local.get 0",
+        " 007b17: 28 02 0c                   |       i32.load 2 12",
+        " 007b1a: 22 06                      |       local.tee 6",
+        " 007b1c: 28 02 50                   |       i32.load 2 80",
+        " 007b1f: 11 08 00                   |       call_indirect 0 (type 8)",
+        " 007b22: 22 05                      |       local.tee 5",
+        " 007b24: 41 00                      |       i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 70,
+      "actualCodeOffset": "0x84c2",
+      "actualInstruction": "call 68",
+      "context": [
+        " 0084aa: 36 02 cc 0b                |                       i32.store 2 1484",
+        " 0084ae: 20 05                      |                       local.get 5",
+        " 0084b0: 28 02 5c                   |                       i32.load 2 92",
+        " 0084b3: 0b                         |                     end",
+        " 0084b4: 0c 01                      |                     br 1",
+        " 0084b6: 0b                         |                   end",
+        " 0084b7: 20 00                      |                   local.get 0",
+        " 0084b9: 20 01                      |                   local.get 1",
+        " 0084bb: 20 04                      |                   local.get 4",
+        " 0084bd: 20 03                      |                   local.get 3",
+        " 0084bf: 41 2c                      |                   i32.const 44",
+        " 0084c1: 6a                         |                   i32.add",
+        " 0084c2: 10 44                      |                   call 68",
+        " 0084c4: 0b                         |                 end",
+        " 0084c5: 21 02                      |                 local.set 2"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 69,
+      "actualCodeOffset": "0x8204",
+      "actualInstruction": "call 70",
+      "context": [
+        " 0081ea: 0b                         |   end",
+        " 0081eb: 02 40                      |   block",
+        " 0081ed: 20 09                      |     local.get 9",
+        " 0081ef: 28 02 48                   |     i32.load 2 72",
+        " 0081f2: 22 01                      |     local.tee 1",
+        " 0081f4: 28 02 18                   |     i32.load 2 24",
+        " 0081f7: 0d 00                      |     br_if 0",
+        " 0081f9: 20 01                      |     local.get 1",
+        " 0081fb: 28 02 28                   |     i32.load 2 40",
+        " 0081fe: 0d 00                      |     br_if 0",
+        " 008200: 20 00                      |     local.get 0",
+        " 008202: 20 01                      |     local.get 1",
+        " 008204: 10 46                      |     call 70",
+        " 008206: 22 02                      |     local.tee 2",
+        " 008208: 41 00                      |     i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    },
+    {
+      "functionIndex": 526,
+      "actualCodeOffset": "0x7637b",
+      "actualInstruction": "call 69",
+      "context": [
+        " 076359: 36 02 b4 01                |   i32.store 2 180",
+        " 07635d: 20 03                      |   local.get 3",
+        " 07635f: 41 00                      |   i32.const 0",
+        " 076361: 36 02 b4 01                |   i32.store 2 180",
+        " 076365: 20 04                      |   local.get 4",
+        " 076367: 41 0c                      |   i32.const 12",
+        " 076369: 6a                         |   i32.add",
+        " 07636a: 10 85 03                   |   call 389",
+        " 07636d: 41 ac ba 1c                |   i32.const 466220",
+        " 076371: 28 02 00                   |   i32.load 2 0",
+        " 076374: 41 a0 ba 1c                |   i32.const 466208",
+        " 076378: 28 02 00                   |   i32.load 2 0",
+        " 07637b: 10 45                      |   call 69",
+        " 07637d: 22 02                      |   local.tee 2",
+        " 07637f: 41 00                      |   i32.const 0"
+      ],
+      "functionNameFromActualBinary": null
+    }
+  ],
+  "all12PcsMatchedOriginalInstructionAddresses": true,
+  "explicitGrowthImportObserved": true,
+  "indirectCodecDispatchObserved": true,
+  "unavailableDebugNamesRemainNull": true,
+  "sourceInformedIdentification": {
+    "inferred": true,
+    "notDebugSymbolCertification": true,
+    "function75": "avcodec_default_get_buffer2 with inlined video_get_buffer",
+    "function350": "av_buffer_allocz",
+    "failingRequestSource": "FramePool.buffer_size[0], first encoder pixel plane under the actual uncached-plane patch",
+    "evidence": "Exact0x9501 i32.load offset76 followed by call350; actual patch adds buffer_size immediately after linesize; zeroing buffer wrapper calls allocator414 then memory.fill",
+    "wasm32FramePoolPrefixLayout": [
+      {
+        "field": "pools[4]",
+        "bytes": 16
+      },
+      {
+        "field": "format",
+        "bytes": 4
+      },
+      {
+        "field": "width,height",
+        "bytes": 8
+      },
+      {
+        "field": "stride_align[8]",
+        "bytes": 32
+      },
+      {
+        "field": "linesize[4]",
+        "bytes": 16
+      }
+    ],
+    "bufferSizeZeroOffset": 76,
+    "patch": {
+      "path": "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch",
+      "sha256": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "matchesActualBuildManifest": true
+    },
+    "pinnedPrimarySources": [
+      "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/get_buffer.c",
+      "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavutil/buffer.c"
+    ],
+    "failedIndividualAllocationBytes": null,
+    "actualFramePoolPointer": null,
+    "encoderLiveHeapBytes": null,
+    "largestFreeBlockBytes": null,
+    "fragmentationProven": false,
+    "packetReserveIdentifiedAsFailedAllocation": false,
+    "decoderPoolCauseClaim": false
+  },
+  "productionFix": false,
+  "fullVideoAcceptance": false,
+  "speedImprovementProven": false,
+  "publicAcceptance": false,
+  "conversions": 0,
+  "originalWasmFunctionsExecuted": 0,
+  "originalVideoRead": false,
+  "next": "Investigate a bounded single-idle encoder pixel-plane pool retaining only fully unreferenced planes, zeroing every reused acquisition and preserving original strides/padding/codec reference counts. Prove actual compiled ownership/capacity and identical browser goldens before any full-original retest. Do not raise heaps or assume fragmentation proven.",
+  "analyzerSha256": "b9c6ad31dcb52ed9a0ee40642ada6f5b51c2069c5ca24db63ddca0c1f31f0fd4"
+}

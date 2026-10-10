@@ -1,0 +1,64 @@
+{
+  "recordedAt": "2026-10-10T09:55:23.179Z",
+  "scope": "private-source-policy-not-compiled-lifecycle-or-browser-acceptance",
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\encoder-plane-source-yXWnbc",
+  "upstream": [
+    {
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavutil/buffer.c",
+      "bytes": 10042,
+      "sha256": "810049e1ac054af6870a5c58c02903f29a210732ecfe724b79ece8c8a18ad2ac"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/get_buffer.c",
+      "bytes": 9530,
+      "sha256": "38efe5e7fc627437306290919c8de3e2de5817d611b29d1f98e7ee6c12a8fb19"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavutil/buffer_internal.h",
+      "bytes": 3044,
+      "sha256": "0cd37612f88b1889d23234a5739eda0cf4dcb22c23c82bc4bb023696fcf1b4ad"
+    }
+  ],
+  "archive": {
+    "path": "outputs/reports/mpeg2-encoder-plane-source-preflight-2026-10-10.json.gz",
+    "bytes": 9744,
+    "sha256": "e71988e404e7e6cdec783aa543b9a53a6b8758465fc4a57581674f826a718195",
+    "restoredBytes": 62975,
+    "restoredSha256": "fb48df4aa33169e795964ed56138291fa3b99b5cc18d2ec01bc866c69d6bffee"
+  },
+  "failure": null,
+  "runtimeRemoved": true,
+  "compiledLifecycleExecuted": false,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalVideoRead": false,
+  "heapLimitsRaised": false,
+  "pixelsOrCodecOptionsChanged": false,
+  "publicAcceptance": false,
+  "speedImprovementProven": false,
+  "liveCapacityOrFragmentationProven": false,
+  "sourcePins": {
+    "media/ffmpeg/mpeg2-encoder-plane-source.mjs": "7a25478e61d6edee7ad5582e29dbd7a9ef43f8ed51dc984eafededf1abb46b52",
+    "media/ffmpeg/mpeg2-encoder-plane-policy.h": "e28fae242c4615681c9b87f461b4ee2a56065330950379c43e69e4a3567a2b10",
+    "media/ffmpeg/mpeg2-encoder-plane-smoke.c": "6546d208968d91053fbd0c748d7368aa1b46ad80a7dfe802771e6bbbc21a5e43",
+    "media/ffmpeg/patch-mpeg2-encoder-planes.mjs": "271a7e128eeac6789717c5a6c71c70f438cd3668e233c7c2f0faf73b20f171e5",
+    "scripts/verify-mpeg2-encoder-plane-source.mjs": "08898498428945d45161719effdcccb1273a7bcb52533026b1f0c57354a9efbc",
+    "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee"
+  },
+  "oldEncoderGetSha256": "62a73fe537318e4706f25904022d071e8f8ef9535b5334bf5c7b650e572c0478",
+  "changedBufferSha256": "d8f4da7a856ef0e2221bb4dc715a20a21dbf8b7b7b16527c34f742941eb10b56",
+  "changedGetSha256": "bb93754bc4f830df6d55043a6231992a3d34e1f75e6b556734d989560aba489f",
+  "exactSourceReversals": true,
+  "publicStructAbiChanged": false,
+  "policy": {
+    "scope": "single-thread MPEG2 encoder only, memory-poisoning disabled",
+    "maximumIdleEntriesPerSelectedPool": 1,
+    "otherPoolsUnchanged": true,
+    "zeroEveryAcquisitionIncludingPadding": true,
+    "discardOnlyInFinalUnrefCallback": true,
+    "capDecisionUnderExistingMutex": true,
+    "originalPoolRefcountsUnchanged": true,
+    "idlePlaneMayIncreaseResidentHeap": true,
+    "fixed16MiBFitNotProven": true
+  }
+}

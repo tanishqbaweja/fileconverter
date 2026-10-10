@@ -5,6 +5,70 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Private bounded encoder-plane candidate prepared; compile pending
+
+Status: **Partially implemented**. Source-hash-pinned derivative targets only the
+actual failed encoder's pixel planes, not decoder auxiliary pools. At most one
+fully released idle plane per selected pool; discard decision under the existing
+mutex, original reference decrements/uninit lifecycle preserved. Every selected
+acquisition zeroes the complete allocation including padding. Selection is
+MPEG2 encoder/thread_count1/memory-poisoning disabled; other pools and codec
+options unchanged. No public struct/ABI change or heap increase. Retaining even
+one idle plane can increase resident heap; fixed16MiB fit is NOT established.
+
+Actual source preflight passed once, with exact upstream hashes, exact reversal
+to old encoder get_buffer stage and untouched buffer_internal.h.9,744-byte
+lossless source archive/compact receipt retained; fresh source scratch removed.
+Receipt: `evidence/mpeg2-encoder-plane-source-preflight-2026-10-10.json`.
+Prepared real-libavutil Wasm32 lifecycle gate covers80 selectors,200,000 sequential
+reuses, cap1/default cap unchanged, final unrefs/aliases, uninit with live refs,
+allocator-callback failure and zero-every-acquisition. It has NOT yet executed.
+Encoder-only private no-Docker builder preserves exact wrapper/codec flags,
+fixed16MiB heap and old initialization/accessory gates; avoids decoder rebuild.
+Registered workflow derivative changes only the encoder builder command on an
+isolated branch, preserving canonical workflow/main/default/cleanup/retention.
+Generated Bash syntax and Windows precompile refusal pass.15 focused tests
+PASS222.3842ms;all1,027 unit PASS8263.0295ms;16-file zero-warning lint PASS.
+No browser/media/original read,
+compiled fit/lifecycle, production fix, fidelity, speed or memory acceptance.
+Next: dispatch encoder-only build, verify actual compiled lifecycle/initialization,
+then unchanged browser golden gates before any full original retry. Full goal open.
+
+## 2026-10-10 — Actual encoder stack narrowed to first pixel plane; fix unproven
+
+Status: **Partially implemented**. Read-only static audit of the actual failed
+674,961-byte anonymous encoder (SHA-256 `8b2fd64d…4242`) preserves all12 numeric
+stack bodies, signatures and original PC addresses. Synthetic analysis labels
+are explicitly not C debug symbols; decoder symbols were not substituted.
+All12 PCs join exact original disassembly instructions. Function75 at0x9501
+loads offset76 then calls350; function350 calls the allocator and zeroes memory.
+The actual build's uncached-plane patch places `FramePool.buffer_size[0]` at76.
+Identification as the first encoder pixel-plane allocation is source-informed
+inference, not symbol certification. Actual allocation bytes/live heap/largest
+free block remain unavailable; fragmentation is not proven. Heap extent16875520
+is not individual request size. Fixed16MiB encoder/32MiB decoder remain unchanged.
+
+First static collector failed with `ERR_CHILD_PROCESS_STDIO_MAXBUFFER`; its
+proof and exact executed source are frozen unchanged. Corrected bounded streaming
+collector discards unselected functions:14,625,748 bytes streamed,1,035,229
+retained. Lossless selected-body/original-address archive is141,443 bytes.
+Owned pinned WABT1.0.39 package/cache/runtime removed; original binary unchanged.
+No browser, media conversion, original-video read, Wasm function execution,
+Docker, public-engine/registry edit, speed proof or acceptance claim.
+13 focused tests PASS158.584ms; all1,021 unit tests PASS7976.1931ms; eight-file
+zero-warning lint PASS. Evidence: successful static audit09-39-02-488Z,
+first failed audit09-36-00-902Z, frozen first-failure receipt and
+`evidence/single-idle-encoder-static-analysis-2026-10-10.json`.
+
+Next: bounded single-idle encoder pixel-plane reuse, only final-unreferenced
+planes, zeroing every acquisition and preserving alignment/padding/live codec
+references. Prove actual compiled lifecycle and browser goldens before another
+full original attempt. Do not raise heaps or repeat the unchanged69-minute OOM.
+UI completion already retires conversion workers and direct writers close their
+streams; a leaked-worker explanation is not established by the AIFF snapshots.
+Full original/fidelity/repeats/larger scaling, AIFF direct memory acceptance,
+broader current-browser/product requirements and the full goal remain open.
+
 ## 2026-10-10 — Native AIFF attribution observed; production fix still missing
 
 Status: **Partially implemented**. New reversible private recipe reuses bounded

@@ -1,0 +1,17 @@
+{
+  "recordedAt": "2026-10-10T09:37:24.383Z",
+  "proof": {
+    "path": "evidence/2026-10-10T09-36-00-902Z-single-idle-encoder-stack-static.json",
+    "sha256": "bff79040fec537df83f3c8778055fa9fbb11db14a77d57dfbe4fff8ddd3e1014"
+  },
+  "failureRemainsFailed": true,
+  "exactExecutedAudit": {
+    "path": "outputs/reports/2026-10-10T09-36-00-902Z-single-idle-encoder-static-failed-source.mjs.gz",
+    "bytes": 3876,
+    "sha256": "4958f55116c11b1442ffe0b73773670cce56bf51ec96adc0108b5b141b7b4b22",
+    "restoredBytes": 10091,
+    "restoredSha256": "b03702f557bc72cc8a11e7aea23d75ada11d8efd696dff5102fa6db340cf5f90"
+  },
+  "ownSourceSha256": "6d920a2dcb54383e7002d331fa31136e3b5adcbd314e2fd23f300f7d03c047d1",
+  "next": "Replace whole stdout buffering with bounded selected-function streaming, keeping8MiB retained total and exact original binary unchanged. No conversion replay."
+}
