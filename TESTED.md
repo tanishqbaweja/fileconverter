@@ -4,6 +4,35 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Actual encoder plane lifecycle and five browser goldens passed
+
+Changed no-Docker encoder-only run38044000567 TERMINALsuccess10:15:26UTC;
+first compiler failure38043483415 stays failed. Actual675,411-byte Wasm hash
+a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee, unchanged
+68,202-byte JS; exact source reversals/fixed shared16MiB/old initialization and
+accessory checks pass. Actual Wasm32 lifecycle:80 selectors,200,000 sequential
+acquisitions, one fresh plane allocation/cap1, live aliases/final unref/uninit with
+live refs/callback allocation failure/zero-every-acquisition/default cache pass.
+Unchanged verified decoder separately assembled, not represented as one build.
+
+Actual headless session65139 exit0,5/5 in26.8s:3 genuine production-browser
+MPEG4/HEVC→MPEG2 conversions byte-identical to previous output hashes/full decoded
+audio/timestamps/pixels/artwork/tags, plus direct write-failure and output-started
+cancellation cleanup. Sources487,007/562,503B, outputs321,692/652,521B, frames48/96;
+SSIM0.992146/0.985963 unchanged. Same32+16MiB/bounded I/O/one pending write.
+No complete-process memory/scaling/full-original completion/speed acceptance or
+public promotion. Original pre/post size/SHA unchanged; media/profiles/wrappers
+removed, owned server/runner absent, normal served assets/app/CSS restored.
+Raw532,028B report replaced by verified lossless37,125B gzip; executed sources
+146,994B gzip retained. Exact redundant308,574B hosted archive removed after local
+tool verification/API zero;7,922,905B small tools stay repository-local for next
+full test.17 focused PASS703.8442ms/eight-file lint0/diff-check0;
+all1,038 unit PASS7175.0795ms after terminal browser and cleanup. Playwright skill,
+headless/hidden only; headed/manual coverage unverified. Receipts: build38044000567,
+goldens10-17-44-886Z, hosted cleanup and golden compaction. Next unchanged full
+quality/source/three-run250MiB gate with ONLY encoder policy candidate changed.
+Full goal remains active/incomplete.
+
 ## 2026-10-10 — Encoder compile failure preserved; declaration-only correction
 
 Run38043483415 TERMINALfailure supersedes earlier live observations. Actual fatal

@@ -5,6 +5,52 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Real bounded encoder Wasm and byte-exact browser goldens passed
+
+Status: **Partially implemented**. Changed no-Docker encoder-only run38044000567
+actually TERMINALsuccess at10:15:26UTC, superseding pending compilation. Original
+38043483415 remains failed with full log/executed-source archive. Changed private
+branch7b6dd822…60e0c1/main/canonical workflow checks pass; no decoder rebuild.
+Actual encoder675,411B SHA`a4ba6225…fe1cee`; JS68,202B remains byte-exact. Real
+Wasm32 libavutil unit passes80 selectors/200,000 sequential acquisitions/one fresh
+plane allocation/cap1/final-unref and alias lifetime/uninit with live references/
+allocator-callback failure/zero every acquisition/nonselected cache unchanged.
+Exact compiled source reversal, fixed shared16MiB encoder, existing4 layout/15
+settings initialization and accessory gates pass. This is not video acceptance.
+
+Actual headless browser session65139 TERMINAL0:5/5 pass26.8s. Three genuine
+production-pipeline MPEG4/HEVC→MPEG2 conversions match old output bytes/hashes,
+pixels/SSIM, complete decoded audio, timestamps, tags and artwork; direct and OPFS.
+Sources487,007/562,503B, outputs321,692/652,521B, frames48/96, SSIM0.992146/
+0.985963 unchanged. Direct write-failure and cancellation after actual output
+remove partials. Fixed aggregate32+16MiB/bounded I/O/one pending operation remain.
+Candidate identity separately checked; raw rows never mutated for golden joins.
+Full Chromium memory, large-file scaling, speedup and original-OOM resolution
+are NOT proven by these small goldens. No public runtime/registry promotion.
+
+Protected test.mkv pre/post2,958,573,265B/SHA31f366…db34 unchanged. All generated
+media/profiles/browser wrappers removed; recorded server/runner births absent,
+six normal assets restored/nine private additions absent/app and CSS unchanged.
+532,028-byte redundant raw report removed only after byte-exact recovery from
+37,125-byte gzip;146,994-byte executed-source archive and compact receipts remain.
+Exact308,574-byte redundant hosted tool archive deleted after every local tool
+hash verified; API confirms zero run artifacts.7,922,905B small reusable private
+tools retained inside work/ for full-source testing, not converted media.
+17 focused checks PASS703.8442ms/eight-file zero-warning lint PASS/diff-check0;
+all1,038 unit tests PASS7175.0795ms after terminal browser/cleanup verification.
+
+Evidence: `evidence/mpeg2-encoder-plane-build-38044000567.json`,
+`evidence/2026-10-10T10-17-44-886Z-encoder-plane-browser-goldens.json`,
+`evidence/mpeg2-encoder-plane-hosted-cleanup-38044000567.json`,
+`evidence/mpeg2-encoder-plane-golden-compaction-2026-10-10.json`.
+Playwright skill guided headless validation; headed/manual coverage unverified.
+Next: bind the existing full-original three-run250MiB gate to this exact encoder
+and unchanged byte-qualified decoder/abort ABI, retaining every original quality,
+source/timing/independent-validator/privacy/memory/cleanup gate. Run ONE changed
+attempt; never restart a live handle or reduce file/settings/heap requirements.
+Original full transcode, three repeat stress/scaling, AIFF direct acceptance and
+broader product/browser requirements remain incomplete; full goal active.
+
 ## 2026-10-10 — Encoder build failed strict prototype check; changed correction ready
 
 Status: **Partially implemented**. Run38043483415 actually TERMINALfailure,

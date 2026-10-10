@@ -1,0 +1,45 @@
+{
+  "observedAt": "2026-10-10T10:21:18.658Z",
+  "status": "exact-redundant-hosted-archive-absent-local-tools-retained",
+  "buildProofSha256": "c205a5aedddfd0e7c3b2879f8140ffcb8befe765e583ff218c90bb127f27b3b0",
+  "before": {
+    "total_count": 1,
+    "artifacts": [
+      {
+        "id": 11667226361,
+        "node_id": "MDg6QXJ0aWZhY3QxMTY2NzIyNjM2MQ==",
+        "name": "private-mpeg2-split-encoder-38044000567",
+        "size_in_bytes": 308574,
+        "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11667226361",
+        "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11667226361/zip",
+        "expired": false,
+        "digest": "sha256:4a788e4a29bfaab657ff5b2ebde81658daa3ef788a730ea76b7329000f9c06ab",
+        "created_at": "2026-10-10T10:15:22Z",
+        "updated_at": "2026-10-10T10:15:22Z",
+        "expires_at": "2026-10-11T10:15:21Z",
+        "workflow_run": {
+          "id": 38044000567,
+          "repository_id": 1304803353,
+          "head_repository_id": 1304803353,
+          "head_branch": "codex/mpeg2-encoder-plane-prototype-20261010",
+          "head_sha": "7b6dd8223d4a71b7f067017c6c8b5a7fa960e0c1"
+        }
+      }
+    ]
+  },
+  "after": {
+    "total_count": 0,
+    "artifacts": []
+  },
+  "deletionPerformed": true,
+  "exactArtifactId": 11667226361,
+  "localToolsVerified": true,
+  "localToolsBytes": 7922905,
+  "localToolsRetainedForBrowserStress": true,
+  "recoverableFromVerifiedLocalToolsAndPinnedRebuild": true,
+  "ownedRuntimeRemoved": true,
+  "convertedFilesDeleted": 0,
+  "originalReadOrChanged": false,
+  "sourceSha256": "12292558afd9f989949515a107e2821d9e931ba490ae148c0ac9064a3a2151dd",
+  "publicAcceptance": false
+}

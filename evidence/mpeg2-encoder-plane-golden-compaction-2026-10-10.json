@@ -1,0 +1,23 @@
+{
+  "observedAt": "2026-10-10T10:23:02.185Z",
+  "proof": {
+    "path": "evidence/2026-10-10T10-17-44-886Z-encoder-plane-browser-goldens.json",
+    "sha256": "93028d8d8cbdb734fd7d683cedc65d1249034aa958032aa62ea1f11da46aa8b4"
+  },
+  "rawRemoved": {
+    "path": "output/playwright/2026-10-10T10-17-55.506Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+    "bytes": 532028,
+    "sha256": "e286f45a5f5ee7b1234e9525bf40805d8161bc227590d70b2d5e959f3f7b92f5"
+  },
+  "retained": {
+    "path": "outputs/reports/2026-10-10T10-17-44-886Z-encoder-plane-golden-report.json.gz",
+    "bytes": 37125,
+    "sha256": "3b1649da0aeb72828dc057a2933a9622dcf85e8fdef8aa5ca7005e4baeeddbcc",
+    "restoredBytes": 532028,
+    "restoredSha256": "e286f45a5f5ee7b1234e9525bf40805d8161bc227590d70b2d5e959f3f7b92f5"
+  },
+  "exactByteRecoveryVerifiedBeforeRemoval": true,
+  "mediaRemovedHere": false,
+  "protectedOriginalTouched": false,
+  "sourceSha256": "446e764d420f99a75eb3c06bf2b1bde53bbe3a045a79f8da9d40f62f725f83bb"
+}
