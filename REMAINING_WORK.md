@@ -5,6 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Stage-aware observer correction verified; full rerun pending
+
+Status: **Partially implemented**. Previous turn PROGRESS: actual terminal receipt
+and independent analyzer/cleanup pushed5114681. Added separate bounded-scalar
+encoding/final-destination-copy observer, not a converter/settings change.
+Exact recognized production MP4 copy phase permits its one semantic counter
+transition; strict within-stage counters/fixed staged size/no further source
+reads/512KiB I/O-queue/one pending remain. Early encoding windows unchanged;
+unavailable values not zero, no double-counting or inferred save completion.
+New full caller/driver reverse exactly to old measured versions with only
+observer/source-pin/evidence-identity edits. Original223 pins are unchanged.
+Full protected input/1920x804/defaultquality/fixed32+16MiB/lower blank/ALL-tree250/
+three repeats/independent full validators/recovery/finally remain byte-exact.
+
+Actual raw transition reproduces old failure while new helper preserves exact
+five early work brackets. First test15/16 failed due to replay assuming evicted
+early samples still existed; fixed using separately retained actual brackets,
+not inventing missing samples.17 focused PASS679.9937ms;30 encoder-focused
+PASS766.4803ms/four-file zero-warning lint/diff PASS. Actual --prepare-only PASS
+18:55:39UTC,0 conversions/227 preimages/fresh2GiB RAM+32GiB disk guards/own
+wrappers gone/normal production restored. No new full conversion acceptance,
+codec/quality/heap change, public promotion, native conversion or Docker.
+Receipt: evidence/2026-10-10T18-55-37-505Z-encoder-plane-staged-original-full-preparation.json.
+Next one changed full-original headless execution; retain actual terminal result,
+then independently validate all required repeats. Clean-session/~10GB scaling,
+identical-setting speed and broader original-spec work remain open/fullgoalACTIVE.
+
 ## 2026-10-10 — Full-video attempt terminal; final-copy observer correction needed
 
 Status: **Partially implemented**. Supersedes all session59855 LIVE statements

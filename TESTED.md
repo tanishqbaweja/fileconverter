@@ -4,6 +4,40 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Stage-aware full-video observer prepared and regression-tested
+
+Previous turn is PROGRESS: recorded actual terminal failure, verified cleanup and
+pushed5114681; not an unchanged wait. New additive observer recognizes only the
+production mkv-to-mp4 final-copy phase. Keeps historical observer/driver/caller/
+source pins unchanged; full derivatives reverse byte-exactly. Encoding work
+windows stay untouched; one bounded scalar copy-stage record validates fixed
+staged size, nondecreasing copy output/time/input, no new copy-phase source reads,
+512KiB I/O/queue and one pending operation. Missing progress remains unavailable.
+Initial copy-start optional scratch maxima are not fabricated as measured zero.
+Unknown/reset phases, output beyond staging, changed stage size, counter rollback
+or oversized buffers/queue still fail. No synthetic save/conversion acceptance.
+
+Actual hash-bound raw replays old observer's exact failure and new observer's
+correct handling of3,337,014,856B encoding→157,286,400B destination-copy count.
+First focused run15/16: replay wrongly assumed the bounded sample ring retained
+early checkpoints; actual samplesEvicted disproved it. Corrected replay uses the
+separately retained exact before/after brackets plus real remaining samples,
+preserving all five encoding windows exactly. No invented missing samples.
+Corrected17 focused PASS679.9937ms;30 encoder-focused PASS766.4803ms;
+four new-file zero-warning lint PASS/diff check PASS. Negative cases retain
+strict limits, old receipts remain failures. No codec/build/settings/heap/public
+engine/registry change. Browser rerun/full validators/repeats still pending.
+
+Actual --prepare-only18:55:39UTC PASS,0executions/227 source preimages,
+fresh5,468,057,600B physical/8,241,786,880B virtual and1,486,429,396,992B disk;
+owned wrappers removed/normal production restored. Exact executed source archive
+1,043,203B SHA7b744958e66b2fa2ddf4ff52f0cefedaaa941f8130270bd8a495f182cca554a1,
+restores4,797,078B SHAa840adad286e12b2b8ba10dfd2ac05fe8d9c9f76d9e80803dabe47aae6067722.
+Receipt: evidence/2026-10-10T18-55-37-505Z-encoder-plane-staged-original-full-preparation.json.
+Next one changed full-original headless attempt with original three-run/quality/
+full-native-validation/250MiB/clean-session/scaling gates unchanged. Playwright
+skill read; npx prerequisite confirmed. No Docker/visible windows; fullgoalACTIVE.
+
 ## 2026-10-10 — Same full-video attempt terminal; final-copy checkpoint failure
 
 Supersedes all session59855 LIVE observations below. Actual wrapper returned
