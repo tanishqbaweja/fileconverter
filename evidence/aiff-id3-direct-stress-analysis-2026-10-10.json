@@ -1,0 +1,1667 @@
+{
+  "recordedAt": "2026-10-10T08:38:48.539Z",
+  "sourceSha256": "af9cbe6ee4a99e575436dd65fba682b10d9a1da7a39dcd9bdabc84214d163ef6",
+  "status": "direct-three-valid-outputs-fail-full-tree-memory-no-allocation-cause-claimed",
+  "formula": "peak complete Chromium process-tree private memory during conversion - stable clean blank-Chromium process-tree private memory",
+  "limitMiB": 250,
+  "excessBytes": 11243520,
+  "records": [
+    {
+      "proof": "evidence/2026-10-10T08-18-49-643Z-aiff-id3-sync-opfs-stress.json",
+      "proofSha256": "9a1cff1faecc13bb931ea1ca549eb135faac492ee31dad7a11aaa7d998fa16c2",
+      "rawReport": {
+        "path": "outputs/reports/2026-10-10T08-18-49-643Z-aiff-id3-sync-opfs-2026-10-10T08-20-55-187Z-m4a-to-aiff-stress-native-100ms.json.gz",
+        "bytes": 33185,
+        "sha256": "043a2c60a1d394e6249b9f8e98d413afd957d674090446e9d453958aa1422e1b",
+        "restoredBytes": 823277,
+        "restoredSha256": "532c63f3bbc3512dab2bdd5984836201ba47132f60e546d73a4d391ffa822dea"
+      },
+      "mode": "sync-opfs",
+      "fixtureSha256": "cd5b778644222d68e391fcbbe3c4845c6872cab92b7726d85437e7720590fdee",
+      "buildProof": {
+        "path": "evidence/aiff-id3-specialist-build-37998603437.json",
+        "sha256": "f6399f91077eb7295223f0ed5f20b2fe1f31e02ae0aa8103868f11cdada0177c"
+      },
+      "sourcePins": {
+        "scripts/validate-aiff-id3-stress.mjs": "1d1729ca34208bbc772ede5c537f30a6d97cbc4fa7a05943fa274b12bb85fd9d",
+        "scripts/lib/aiff-id3-stress-recipe.mjs": "4aa02c75e9c4caf113d0a8911add987580b7a2da17645ca65eb47656ef4e52f2",
+        "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+        "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+        "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+        "scripts/lib/native-memory-history.mjs": "abfad6cbac33469565f081deee4c49b665771d46bf38e3fcaf487370b77811c5",
+        "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+        "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+        "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+        "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+        "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+        "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+        "public/engines/remux/build-manifest.json": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+        "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+        "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b"
+      },
+      "passed": true,
+      "checks": {
+        "networkPrivacy": true,
+        "aiffCancellation": true,
+        "processTreePrivateMemory": true,
+        "repeatableOutputHash": true,
+        "pendingOperations": true,
+        "queuedBytes": true,
+        "readChunkBytes": true,
+        "writeChunkBytes": true,
+        "scratchChunkBytes": true,
+        "scratchCleanup": true,
+        "boundedImageWorkingSet": true,
+        "adaptiveArchiveCompression": true,
+        "imageOutputBytes": true,
+        "wasmMemoryBytes": true,
+        "cleanupRecovery": true,
+        "cancellationCleanup": true
+      },
+      "browser": {
+        "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "version": "154.0.8037.98",
+        "rootPid": 37168,
+        "headless": true,
+        "startedAt": "2026-10-10T08:18:56.219Z"
+      },
+      "blankBaseline": {
+        "phase": "blank-baseline",
+        "stable": true,
+        "privateBytes": 272162816,
+        "spreadBytes": 2027520,
+        "rssBytes": 572731392,
+        "firstTimestamp": "2026-10-10T08:19:06.463Z",
+        "lastTimestamp": "2026-10-10T08:19:12.705Z",
+        "sampleCount": 10,
+        "minimumElapsedMs": 8000
+      },
+      "loadedIdle": {
+        "phase": "loaded-idle",
+        "stable": true,
+        "privateBytes": 311812096,
+        "spreadBytes": 2224128,
+        "rssBytes": 626515968,
+        "firstTimestamp": "2026-10-10T08:19:27.414Z",
+        "lastTimestamp": "2026-10-10T08:19:33.367Z",
+        "sampleCount": 14,
+        "minimumElapsedMs": 8000
+      },
+      "peakPrivateBytes": 488910848,
+      "incrementalPrivateMiB": 206.70703125,
+      "cleanupRecoveryLimitMiB": 96,
+      "observedMedianElapsedMs": 5361.6500000059605,
+      "runs": [
+        {
+          "run": 1,
+          "elapsedMs": 5060.014999985695,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 488910848,
+          "incrementalPrivateMiB": 206.70703125,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 32768,
+          "peakQueuedBytes": 32768,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 16777220,
+          "peakTimestamp": "2026-10-10T08:19:38.4127259Z",
+          "peakProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 139620352,
+              "rssBytes": 177606656
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3908324Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13742080,
+              "rssBytes": 41132032
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.4242753Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 8126464,
+              "rssBytes": 17842176
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.2528142Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 36512,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:19:12.7491643Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 17502208,
+              "rssBytes": 33755136
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 34656256,
+              "rssBytes": 78344192
+            },
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 48795648,
+              "rssBytes": 149225472
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.7825353Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 20217856,
+              "rssBytes": 42946560
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 203739136,
+              "rssBytes": 248139776
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 139620352,
+              "rssBytes": 177606656
+            }
+          ],
+          "newGpuBirthsAtPeak": [],
+          "cleanupPrivateBytes": 329076736,
+          "cleanupDeltaFromLoadedMiB": 16.46484375,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 329076736,
+            "spreadBytes": 4284416,
+            "rssBytes": 669446144,
+            "firstTimestamp": "2026-10-10T08:19:53.589Z",
+            "lastTimestamp": "2026-10-10T08:19:59.765Z",
+            "sampleCount": 10,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:19:56.664Z",
+          "cleanupProcesses": [
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "privateBytes": 46592000,
+              "rssBytes": 147185664
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2528140Z",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.3855790Z",
+              "privateBytes": 117166080,
+              "rssBytes": 163000320
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:18:56.3908320Z",
+              "privateBytes": 13664256,
+              "rssBytes": 41205760
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:18:56.4242750Z",
+              "privateBytes": 8077312,
+              "rssBytes": 17928192
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "privateBytes": 34869248,
+              "rssBytes": 79396864
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "privateBytes": 71315456,
+              "rssBytes": 136650752
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.7825350Z",
+              "privateBytes": 20217856,
+              "rssBytes": 42946560
+            },
+            {
+              "pid": 30644,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:19:42.6019190Z",
+              "privateBytes": 14663680,
+              "rssBytes": 30924800
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 6782249,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:50096/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        },
+        {
+          "run": 2,
+          "elapsedMs": 5704.20000000298,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 457478144,
+          "incrementalPrivateMiB": 176.73046875,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 32768,
+          "peakQueuedBytes": 32768,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 16777220,
+          "peakTimestamp": "2026-10-10T08:20:02.4384112Z",
+          "peakProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 141877248,
+              "rssBytes": 187813888
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3908324Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13701120,
+              "rssBytes": 41328640
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.4242753Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 8077312,
+              "rssBytes": 17948672
+            },
+            {
+              "pid": 30644,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:19:42.6019193Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 14663680,
+              "rssBytes": 30924800
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.2528142Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 34869248,
+              "rssBytes": 79536128
+            },
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 48074752,
+              "rssBytes": 149815296
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.7825353Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 20217856,
+              "rssBytes": 42954752
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 173486080,
+              "rssBytes": 220876800
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 141877248,
+              "rssBytes": 187813888
+            }
+          ],
+          "newGpuBirthsAtPeak": [],
+          "cleanupPrivateBytes": 341204992,
+          "cleanupDeltaFromLoadedMiB": 28.03125,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 341204992,
+            "spreadBytes": 24576,
+            "rssBytes": 681385984,
+            "firstTimestamp": "2026-10-10T08:20:20.973Z",
+            "lastTimestamp": "2026-10-10T08:20:26.928Z",
+            "sampleCount": 10,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:20:23.968Z",
+          "cleanupProcesses": [
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "privateBytes": 47677440,
+              "rssBytes": 147398656
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2528140Z",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.3855790Z",
+              "privateBytes": 116973568,
+              "rssBytes": 163602432
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:18:56.3908320Z",
+              "privateBytes": 13783040,
+              "rssBytes": 41521152
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:18:56.4242750Z",
+              "privateBytes": 8077312,
+              "rssBytes": 17948672
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "privateBytes": 34869248,
+              "rssBytes": 79585280
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "privateBytes": 82436096,
+              "rssBytes": 147300352
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.7825350Z",
+              "privateBytes": 20217856,
+              "rssBytes": 42954752
+            },
+            {
+              "pid": 34672,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:20:09.6773570Z",
+              "privateBytes": 14659584,
+              "rssBytes": 30867456
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 8271631,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:50096/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        },
+        {
+          "run": 3,
+          "elapsedMs": 5361.6500000059605,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 464363520,
+          "incrementalPrivateMiB": 183.296875,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 32768,
+          "peakQueuedBytes": 32768,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 16777220,
+          "peakTimestamp": "2026-10-10T08:20:28.3294335Z",
+          "peakProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 141840384,
+              "rssBytes": 187723776
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3908324Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13877248,
+              "rssBytes": 41598976
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.4242753Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 8077312,
+              "rssBytes": 17948672
+            },
+            {
+              "pid": 34672,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:20:09.6773570Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 14659584,
+              "rssBytes": 30867456
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.2528142Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 32907264,
+              "rssBytes": 78348288
+            },
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 50343936,
+              "rssBytes": 151973888
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.7825353Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 20217856,
+              "rssBytes": 42962944
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 179056640,
+              "rssBytes": 225820672
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "createdAt": "2026-10-10T08:18:56.3855792Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 141840384,
+              "rssBytes": 187723776
+            }
+          ],
+          "newGpuBirthsAtPeak": [],
+          "cleanupPrivateBytes": 336609280,
+          "cleanupDeltaFromLoadedMiB": 23.6484375,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 336609280,
+            "spreadBytes": 24576,
+            "rssBytes": 677748736,
+            "firstTimestamp": "2026-10-10T08:20:47.533Z",
+            "lastTimestamp": "2026-10-10T08:20:53.605Z",
+            "sampleCount": 10,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:20:47.533Z",
+          "cleanupProcesses": [
+            {
+              "pid": 37168,
+              "parentPid": 30940,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2218660Z",
+              "privateBytes": 47804416,
+              "rssBytes": 147587072
+            },
+            {
+              "pid": 35940,
+              "parentPid": 37168,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.2528140Z",
+              "privateBytes": 2510848,
+              "rssBytes": 10207232
+            },
+            {
+              "pid": 14536,
+              "parentPid": 37168,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.3855790Z",
+              "privateBytes": 117272576,
+              "rssBytes": 164249600
+            },
+            {
+              "pid": 19720,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:18:56.3908320Z",
+              "privateBytes": 13774848,
+              "rssBytes": 41508864
+            },
+            {
+              "pid": 20964,
+              "parentPid": 37168,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:18:56.4242750Z",
+              "privateBytes": 8077312,
+              "rssBytes": 17948672
+            },
+            {
+              "pid": 36752,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5201520Z",
+              "privateBytes": 33296384,
+              "rssBytes": 78548992
+            },
+            {
+              "pid": 41952,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.5680270Z",
+              "privateBytes": 79032320,
+              "rssBytes": 143851520
+            },
+            {
+              "pid": 37884,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:18:56.7825350Z",
+              "privateBytes": 20217856,
+              "rssBytes": 42962944
+            },
+            {
+              "pid": 42804,
+              "parentPid": 37168,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:20:36.3024400Z",
+              "privateBytes": 14622720,
+              "rssBytes": 30883840
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 8683251,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:50096/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        }
+      ],
+      "conversionNativeSamples": [
+        {
+          "phase": "conversion-1",
+          "validSamples": 64,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-2",
+          "validSamples": 70,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-3",
+          "validSamples": 67,
+          "unavailableSamples": 0
+        }
+      ],
+      "cancellation": {
+        "passed": true,
+        "inputBytes": 4561163,
+        "outputBytes": 2687138,
+        "phaseAtTrigger": "Writing AIFF PCM audio",
+        "phaseAfterCancellation": "Cancelled",
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 32768,
+        "peakPendingOperations": 1,
+        "pendingOperations": 0,
+        "queuedBytes": 0,
+        "projectLocalEntriesBefore": [],
+        "projectLocalEntriesAfter": []
+      },
+      "helpersAbsent": true,
+      "assetsRestored": true,
+      "ownedRuntimeRemoved": true
+    },
+    {
+      "proof": "evidence/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-stress.json",
+      "proofSha256": "961b56ad9ad91f2ba89183351b6429a9012e2ee58e1114fd4282da138af664e7",
+      "rawReport": {
+        "path": "outputs/reports/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-2026-10-10T08-33-37-511Z-m4a-to-aiff-direct-handle-stress-native-100ms.json.gz",
+        "bytes": 36106,
+        "sha256": "b42469a04e17bdb7fc79183ad1e01baee00ca0647b7596a123b635f288344b78",
+        "restoredBytes": 909445,
+        "restoredSha256": "b49bb08598f8bc2b8aa12aae573273e77c2fc0b82c2f6e8a0c0ed089c214eb8c"
+      },
+      "mode": "direct-handle",
+      "fixtureSha256": "cd5b778644222d68e391fcbbe3c4845c6872cab92b7726d85437e7720590fdee",
+      "buildProof": {
+        "path": "evidence/aiff-id3-specialist-build-37998603437.json",
+        "sha256": "f6399f91077eb7295223f0ed5f20b2fe1f31e02ae0aa8103868f11cdada0177c"
+      },
+      "sourcePins": {
+        "scripts/validate-aiff-id3-stress.mjs": "1d1729ca34208bbc772ede5c537f30a6d97cbc4fa7a05943fa274b12bb85fd9d",
+        "scripts/lib/aiff-id3-stress-recipe.mjs": "4aa02c75e9c4caf113d0a8911add987580b7a2da17645ca65eb47656ef4e52f2",
+        "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+        "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+        "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+        "scripts/lib/native-memory-history.mjs": "abfad6cbac33469565f081deee4c49b665771d46bf38e3fcaf487370b77811c5",
+        "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+        "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+        "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+        "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+        "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+        "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+        "public/engines/remux/build-manifest.json": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+        "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+        "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b"
+      },
+      "passed": false,
+      "checks": {
+        "networkPrivacy": true,
+        "aiffCancellation": true,
+        "processTreePrivateMemory": false,
+        "repeatableOutputHash": true,
+        "pendingOperations": true,
+        "queuedBytes": true,
+        "readChunkBytes": true,
+        "writeChunkBytes": true,
+        "scratchChunkBytes": true,
+        "scratchCleanup": true,
+        "boundedImageWorkingSet": true,
+        "adaptiveArchiveCompression": true,
+        "imageOutputBytes": true,
+        "wasmMemoryBytes": true,
+        "cleanupRecovery": true,
+        "cancellationCleanup": true
+      },
+      "browser": {
+        "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "version": "154.0.8037.98",
+        "rootPid": 35716,
+        "headless": true,
+        "startedAt": "2026-10-10T08:31:13.062Z"
+      },
+      "blankBaseline": {
+        "phase": "blank-baseline",
+        "stable": true,
+        "privateBytes": 270364672,
+        "spreadBytes": 2088960,
+        "rssBytes": 569835520,
+        "firstTimestamp": "2026-10-10T08:31:23.050Z",
+        "lastTimestamp": "2026-10-10T08:31:29.315Z",
+        "sampleCount": 10,
+        "minimumElapsedMs": 8000
+      },
+      "loadedIdle": {
+        "phase": "loaded-idle",
+        "stable": true,
+        "privateBytes": 316227584,
+        "spreadBytes": 311296,
+        "rssBytes": 628215808,
+        "firstTimestamp": "2026-10-10T08:31:44.640Z",
+        "lastTimestamp": "2026-10-10T08:31:50.739Z",
+        "sampleCount": 14,
+        "minimumElapsedMs": 8000
+      },
+      "peakPrivateBytes": 543752192,
+      "incrementalPrivateMiB": 260.72265625,
+      "cleanupRecoveryLimitMiB": 96,
+      "observedMedianElapsedMs": 6372.274999991059,
+      "runs": [
+        {
+          "run": 1,
+          "elapsedMs": 5654.234999999404,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 503189504,
+          "incrementalPrivateMiB": 222.0390625,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 17043492,
+          "peakTimestamp": "2026-10-10T08:31:57.7006978Z",
+          "peakProcesses": [
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.7674976Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 21041152,
+              "rssBytes": 42770432
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3891517Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 8032256,
+              "rssBytes": 17760256
+            },
+            {
+              "pid": 9904,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:29.3652346Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 14733312,
+              "rssBytes": 30969856
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 142831616,
+              "rssBytes": 181362688
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.5027161Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 212946944,
+              "rssBytes": 257134592
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.0948321Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "createdAt": "2026-10-10T08:31:13.0641829Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 53161984,
+              "rssBytes": 150056960
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3581847Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13647872,
+              "rssBytes": 41119744
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.4367445Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 34287616,
+              "rssBytes": 77463552
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 142831616,
+              "rssBytes": 181362688
+            }
+          ],
+          "newGpuBirthsAtPeak": [],
+          "cleanupPrivateBytes": 381255680,
+          "cleanupDeltaFromLoadedMiB": 62.015625,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 381255680,
+            "spreadBytes": 114688,
+            "rssBytes": 702500864,
+            "firstTimestamp": "2026-10-10T08:32:25.082Z",
+            "lastTimestamp": "2026-10-10T08:32:39.466Z",
+            "sampleCount": 9,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:32:32.224Z",
+          "cleanupProcesses": [
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0641820Z",
+              "privateBytes": 49979392,
+              "rssBytes": 148983808
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0948320Z",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.3517960Z",
+              "privateBytes": 109158400,
+              "rssBytes": 148324352
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:31:13.3581840Z",
+              "privateBytes": 13336576,
+              "rssBytes": 41189376
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:31:13.3891510Z",
+              "privateBytes": 7983104,
+              "rssBytes": 17862656
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.4367440Z",
+              "privateBytes": 34496512,
+              "rssBytes": 78626816
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.5027160Z",
+              "privateBytes": 125255680,
+              "rssBytes": 180805632
+            },
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.7674970Z",
+              "privateBytes": 21041152,
+              "rssBytes": 42778624
+            },
+            {
+              "pid": 5556,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:32:05.0569100Z",
+              "privateBytes": 17498112,
+              "rssBytes": 33726464
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 6794177,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:54681/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              },
+              {
+                "url": "http://127.0.0.1:54681/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        },
+        {
+          "run": 2,
+          "elapsedMs": 6639.875,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 519942144,
+          "incrementalPrivateMiB": 238.015625,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 17043492,
+          "peakTimestamp": "2026-10-10T08:32:41.0770698Z",
+          "peakProcesses": [
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.7674976Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 21041152,
+              "rssBytes": 42778624
+            },
+            {
+              "pid": 5556,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:32:05.0569105Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 17498112,
+              "rssBytes": 33730560
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3891517Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 7983104,
+              "rssBytes": 17866752
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 138080256,
+              "rssBytes": 176218112
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.5027161Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 231960576,
+              "rssBytes": 253702144
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.0948321Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "createdAt": "2026-10-10T08:31:13.0641829Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 52903936,
+              "rssBytes": 151408640
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3581847Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13471744,
+              "rssBytes": 41328640
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.4367445Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 34496512,
+              "rssBytes": 78692352
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 138080256,
+              "rssBytes": 176218112
+            }
+          ],
+          "newGpuBirthsAtPeak": [],
+          "cleanupPrivateBytes": 392642560,
+          "cleanupDeltaFromLoadedMiB": 72.875,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 392642560,
+            "spreadBytes": 28672,
+            "rssBytes": 714313728,
+            "firstTimestamp": "2026-10-10T08:33:01.748Z",
+            "lastTimestamp": "2026-10-10T08:33:08.013Z",
+            "sampleCount": 10,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:33:01.748Z",
+          "cleanupProcesses": [
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0641820Z",
+              "privateBytes": 50098176,
+              "rssBytes": 149286912
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0948320Z",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.3517960Z",
+              "privateBytes": 114937856,
+              "rssBytes": 154107904
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:31:13.3581840Z",
+              "privateBytes": 13377536,
+              "rssBytes": 41242624
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:31:13.3891510Z",
+              "privateBytes": 7983104,
+              "rssBytes": 17866752
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.4367440Z",
+              "privateBytes": 34496512,
+              "rssBytes": 78741504
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.5027160Z",
+              "privateBytes": 130719744,
+              "rssBytes": 186404864
+            },
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.7674970Z",
+              "privateBytes": 21041152,
+              "rssBytes": 42778624
+            },
+            {
+              "pid": 41164,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:32:50.0237190Z",
+              "privateBytes": 17481728,
+              "rssBytes": 33685504
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 9931381,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:54681/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        },
+        {
+          "run": 3,
+          "elapsedMs": 6372.274999991059,
+          "sourceBytes": 140922233,
+          "outputBytes": 153600760,
+          "outputSha256": "8295fda722e8b578b18fa88bad0e9c6ae24ec35a27942900c998ddd6848f0dd2",
+          "fullPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+          "artworkSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+          "peakPrivateBytes": 543752192,
+          "incrementalPrivateMiB": 260.72265625,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 262144,
+          "peakQueuedBytes": 262144,
+          "peakPendingOperations": 1,
+          "peakWasmMemoryBytes": 16777216,
+          "sharedArrayBufferBytes": 17043492,
+          "peakTimestamp": "2026-10-10T08:33:15.1238317Z",
+          "peakProcesses": [
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.7674976Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 21041152,
+              "rssBytes": 42778624
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3891517Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 7983104,
+              "rssBytes": 17866752
+            },
+            {
+              "pid": 11644,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:33:13.3586402Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 44576768,
+              "rssBytes": 38264832
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 138612736,
+              "rssBytes": 177676288
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.5027161Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 209829888,
+              "rssBytes": 248483840
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.0948321Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "crashpad-handler",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "createdAt": "2026-10-10T08:31:13.0641829Z",
+              "nativeType": "browser",
+              "cimBirthMatchedType": "browser",
+              "privateBytes": 53903360,
+              "rssBytes": 154767360
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3581847Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "utility",
+              "privateBytes": 13320192,
+              "rssBytes": 41218048
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.4367445Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 34496512,
+              "rssBytes": 78827520
+            },
+            {
+              "pid": 41164,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:32:50.0237195Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "renderer",
+              "privateBytes": 17481728,
+              "rssBytes": 33730560
+            }
+          ],
+          "peakGpuProcesses": [
+            {
+              "pid": 11644,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:33:13.3586402Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 44576768,
+              "rssBytes": 38264832
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:31:13.3517963Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 138612736,
+              "rssBytes": 177676288
+            }
+          ],
+          "newGpuBirthsAtPeak": [
+            {
+              "pid": 11644,
+              "parentPid": 35716,
+              "createdAt": "2026-10-10T08:33:13.3586402Z",
+              "nativeType": "unknown",
+              "cimBirthMatchedType": "gpu-process",
+              "privateBytes": 44576768,
+              "rssBytes": 38264832
+            }
+          ],
+          "cleanupPrivateBytes": 394932224,
+          "cleanupDeltaFromLoadedMiB": 75.05859375,
+          "cleanupStable": {
+            "stable": true,
+            "privateBytes": 394932224,
+            "spreadBytes": 122880,
+            "rssBytes": 716521472,
+            "firstTimestamp": "2026-10-10T08:33:29.806Z",
+            "lastTimestamp": "2026-10-10T08:33:36.025Z",
+            "sampleCount": 10,
+            "minimumElapsedMs": 8000
+          },
+          "cleanupRepresentativeTimestamp": "2026-10-10T08:33:29.806Z",
+          "cleanupProcesses": [
+            {
+              "pid": 35716,
+              "parentPid": 31880,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0641820Z",
+              "privateBytes": 52035584,
+              "rssBytes": 150925312
+            },
+            {
+              "pid": 34500,
+              "parentPid": 35716,
+              "type": "crashpad-handler",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.0948320Z",
+              "privateBytes": 2506752,
+              "rssBytes": 10199040
+            },
+            {
+              "pid": 15708,
+              "parentPid": 35716,
+              "type": "gpu-process",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.3517960Z",
+              "privateBytes": 115732480,
+              "rssBytes": 154931200
+            },
+            {
+              "pid": 39768,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "network.mojom.NetworkService",
+              "sandboxType": "none",
+              "createdAt": "2026-10-10T08:31:13.3581840Z",
+              "privateBytes": 13160448,
+              "rssBytes": 41140224
+            },
+            {
+              "pid": 9100,
+              "parentPid": 35716,
+              "type": "utility",
+              "utilitySubtype": "storage.mojom.StorageService",
+              "sandboxType": "service",
+              "createdAt": "2026-10-10T08:31:13.3891510Z",
+              "privateBytes": 7933952,
+              "rssBytes": 17817600
+            },
+            {
+              "pid": 40620,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.4367440Z",
+              "privateBytes": 34500608,
+              "rssBytes": 78835712
+            },
+            {
+              "pid": 23268,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.5027160Z",
+              "privateBytes": 130539520,
+              "rssBytes": 186220544
+            },
+            {
+              "pid": 4028,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:31:13.7674970Z",
+              "privateBytes": 21041152,
+              "rssBytes": 42778624
+            },
+            {
+              "pid": 42896,
+              "parentPid": 35716,
+              "type": "renderer",
+              "utilitySubtype": null,
+              "sandboxType": null,
+              "createdAt": "2026-10-10T08:33:18.3520240Z",
+              "privateBytes": 17481728,
+              "rssBytes": 33673216
+            }
+          ],
+          "cleanupRealms": {
+            "pageUsedJSHeapBytes": 10749227,
+            "workers": [
+              {
+                "url": "http://127.0.0.1:54681/assets/conversion.worker-DwlcpCZl.js",
+                "usedJSHeapSize": null
+              }
+            ]
+          }
+        }
+      ],
+      "conversionNativeSamples": [
+        {
+          "phase": "conversion-1",
+          "validSamples": 108,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-2",
+          "validSamples": 74,
+          "unavailableSamples": 0
+        },
+        {
+          "phase": "conversion-3",
+          "validSamples": 72,
+          "unavailableSamples": 0
+        }
+      ],
+      "cancellation": {
+        "passed": true,
+        "inputBytes": 5085451,
+        "outputBytes": 3440802,
+        "phaseAtTrigger": "Writing AIFF PCM audio",
+        "phaseAfterCancellation": "Cancelled",
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 262144,
+        "peakPendingOperations": 1,
+        "pendingOperations": 0,
+        "queuedBytes": 0,
+        "projectLocalEntriesBefore": [],
+        "projectLocalEntriesAfter": []
+      },
+      "helpersAbsent": true,
+      "assetsRestored": true,
+      "ownedRuntimeRemoved": true
+    }
+  ],
+  "allObservedProcessesCounted": true,
+  "processExclusions": [],
+  "observedDirectMedianElapsedRatio": 1.188491415885777,
+  "speedComparisonCaveat": "Same fixture/build/settings; different writer and sequential clean sessions, not a randomized controlled speedup benchmark or fastest-possible proof.",
+  "allocationCauseEstablished": false,
+  "findings": [
+    "All six outputs independently match full PCM, artwork and repeated AIFF bytes; direct memory failure cannot be relabelled a pass.",
+    "Both observed GPU processes remain included at direct run3 peak; same-birth CIM labels enrich, never filter native process rows.",
+    "Direct cleanup private memory is higher; sampled worker heaps are null, so renderer private bytes cannot be attributed to a particular JS/native allocation.",
+    "Direct writer source terminates its helper on close/abort; no retained-worker leak or GPU restart cause is proven by these reports."
+  ],
+  "next": "No unchanged replay. Reuse existing bounded cdp-realm-memory sampler plus owned GPU/process event evidence for one explicitly diagnostic changed run; identify allocations before changing production behavior. Preserve all processes, exact stable baseline/formula, quality, full input, 250MiB and fidelity gates.",
+  "publicAcceptance": false,
+  "multiGigabyteScalingAcceptance": false,
+  "speedImprovementProven": false,
+  "protectedOriginalRead": false,
+  "newBrowserLaunched": false,
+  "processesKilled": false,
+  "noDocker": true
+}

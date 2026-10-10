@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Direct AIFF gate failed; allocation attribution required before any replay
+
+Status: **Partially implemented**. Actual direct-handle session29742 exited1
+after three structurally/content-valid outputs with exact OPFS-matching full PCM,
+178-byte PNG, Unicode tags and AIFF hash. The complete-tree memory gate alone
+fails: stable blank270,364,672B→peak543,752,192B/260.72265625MiB, exceeding250MiB
+by11,243,520B.254 valid100ms conversion samples/zero unavailable; fixed16MiB
+Wasm,256KiB read/write/queue,one pending. Cleanup recovery and real-output cancel
+pass; all own helper births absent, disposable media/profiles/raw reports gone,
+served assets restored. Frozen full reports and executed-source archives retained.
+Proof: `evidence/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-stress.json`.
+
+Analysis preserves all processes, including both GPU births at run3 peak. The
+extra GPU44,576,768B is observed, but its cause and causal role in writer memory
+are unproven; do not subtract it. Direct cleanup renderer private bytes are
+higher and sampled worker heaps unavailable. Existing helper termination code
+does not prove a retained-worker leak. Same pinned sources/core/fixture permit
+an observed timing comparison, not a controlled speedup or fastest-tool claim.
+Exact stable median cleanup attribution corrected after initial read-only
+analyzer assertion; no conversion replay. Analysis:
+`evidence/aiff-id3-direct-stress-analysis-2026-10-10.json`.
+
+Next safe action: reuse existing bounded cdp-realm-memory sampler, capture owned
+GPU/process events and renderer allocation sources in ONE explicitly diagnostic
+changed run before choosing a production fix. No unchanged retry, smaller input,
+heap increase, process exclusion or changed baseline/quality/fidelity/250MiB gate.
+Private core remains unpromoted. OPFS three-repeat proof remains valid; direct
+acceptance, cold repeats, write failures, scaling, broader browsers and original
+full-video encoder OOM are still incomplete. Playwright skill used; all commands
+hidden/browsers headless, native tools fixture/independent validation only.
+Checkpoint:12 focused tests PASS201.3417ms;1000 combined units PASS9826.5156ms
+and finally exit0; two-file zero-warning lint and whitespace gates PASS. Five
+exact archives120,743B retained; no disposable converted copies. Original
+test.mkv remains2,958,573,265B and was not used/read/copied in this AIFF cycle.
+
 ## 2026-10-10 — Private AIFF OPFS stress verified; hidden/headless execution retained
 
 Status: **Partially implemented** overall. Actual session91894 has exited PASS

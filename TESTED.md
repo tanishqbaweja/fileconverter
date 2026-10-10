@@ -4,6 +4,41 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Direct AIFF stress completed valid outputs but failed the memory gate
+
+Actual hidden/headless session29742 is terminal FAILED, not live. Three genuine
+140,922,233→153,600,760-byte ALAC→AIFF browser outputs independently match the
+earlier OPFS full-PCM/art/tag/output hashes. Direct elapsed5654.235/6639.875/
+6372.275ms; reads/writes/queue256KiB,one pending,actual16MiB Wasm. Stable blank
+270,364,672B; whole Chromium conversion peak543,752,192B gives260.72265625MiB,
+11,243,520B above250MiB.254 valid100ms conversion samples,zero unavailable.
+All other current gates pass, including real-output cancellation and the existing
+96MiB cleanup recovery limit (62.016/72.875/75.059MiB). This is NOT an accepted
+direct route. Normal assets restored, all recorded helper births absent and own
+generated media/profile/raw-report directories removed; lossless source and full
+JSON/CSV/HTML/native-peaks retained. Proof:
+`evidence/2026-10-10T08-31-05-604Z-aiff-id3-direct-handle-stress.json`.
+
+Read-only comparison uses same15 pinned sources/build/fixture and exact stable
+cleanup medians. Both actual GPU births remain in run3 peak, including new
+PID11644/parent35716/birth08:33:13.3586402Z/44,576,768B. Matched CIM type labels
+enrich native unknown rows but never filter the sum. Higher direct cleanup
+renderer bytes observed; worker heaps null, so no JS/native leak or GPU restart
+cause is claimed. Writer source already terminates its helper on close/abort.
+Observed direct median6372.275ms vs OPFS5361.650ms is not a controlled speedup
+benchmark. Initial analyzer incorrectly compared last cleanup sample to the
+stable median and asserted before writing any result; corrected using the exact
+existing stableWindow function, without conversion replay or weaker bounds.
+Analysis: `evidence/aiff-id3-direct-stress-analysis-2026-10-10.json`.
+Next: changed bounded CDP realm/GPU/process attribution, not an unchanged rerun,
+smaller fixture, omitted GPU, enlarged heap, or public promotion. Playwright skill
+guided the actual headless production flow; OS picker/manual coverage unverified.
+Regression:12/12 focused stress/CDP evidence tests PASS201.3417ms;1000/1000
+combined units PASS9826.5156ms and owned command finally exited0. Two changed
+analysis/test files zero-warning lint PASS; whitespace gate PASS. Five exact new
+lossless report/source archives total120,743B, not disposable media. No production
+source/build/registry promotion or new headed/other-browser coverage claimed.
+
 ## 2026-10-10 — Headless private AIFF stress terminal: three validated repeats and cancellation
 
 Session91894 is now terminal PASS, not running. Chrome154.0.8037.98 was
