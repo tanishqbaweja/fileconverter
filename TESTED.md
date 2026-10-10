@@ -20,6 +20,7 @@ PASS8263.0295ms,16-file zero-warning lint PASS. Public assets/registry and prote
 test.mkv untouched. Next isolated encoder-only build then actual browser goldens,
 not another unchanged full-original attempt. Evidence:
 `evidence/mpeg2-encoder-plane-source-preflight-2026-10-10.json`.
+Source pushedc45b812/media-options; isolated encoder-only branch a446deb25583b8b22de4da216222da91991ab4fd remote-verified, canonical HEAD/index/workflow/main unchanged. One actual registered dispatch38043483415 is IN_PROGRESS10:02UTC, installing native prerequisites; compilation/lifecycle/initialization are still pending. SAME run must be polled to terminal, not restarted from an observation timeout. Branch/launch receipts retained; own local index scratch removed, no media/profile/copy/browser created. Full goal remains active; no acceptance or speed claim.
 
 ## 2026-10-10 — Eight real bounded native AIFF dumps captured
 

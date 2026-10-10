@@ -1,0 +1,194 @@
+{
+  "observedAt": "2026-10-10 10:02:46 UTC",
+  "scope": "actual-dispatched-live-encoder-only-build-not-compiled-result",
+  "dispatch": {
+    "workflow": "reproduce-ffmpeg-nondocker.yml",
+    "input": {
+      "core": "within-mpeg2-split-encoder"
+    },
+    "issuedOnce": true,
+    "branch": "codex/mpeg2-encoder-planes-20261010",
+    "expectedHeadSha": "a446deb25583b8b22de4da216222da91991ab4fd"
+  },
+  "actualGitHubSnapshot": {
+    "conclusion": "",
+    "createdAt": "2026-10-10T10:01:55Z",
+    "databaseId": 38043483415,
+    "headBranch": "codex/mpeg2-encoder-planes-20261010",
+    "headSha": "a446deb25583b8b22de4da216222da91991ab4fd",
+    "jobs": [
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114188234879,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-10T10:02:00Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-10T10:02:03Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-10T10:02:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-10T10:02:09Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-10T10:02:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-10T10:02:09Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38043483415/job/114188234879"
+      }
+    ],
+    "status": "in_progress",
+    "updatedAt": "2026-10-10T10:02:01Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38043483415"
+  },
+  "compiledLifecycleResult": null,
+  "initializationResult": null,
+  "browserConversions": 0,
+  "fullOriginalAccepted": false,
+  "publicAcceptance": false,
+  "next": "Poll SAME38043483415 to authoritative terminal. Never restart based on a timeout or pending step. Preserve failure logs/executed recipe on failure; verify compiled sources, Wasm limits, lifecycle and initialization before browser golden testing."
+}

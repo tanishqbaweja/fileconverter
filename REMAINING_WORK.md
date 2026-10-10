@@ -31,8 +31,16 @@ Generated Bash syntax and Windows precompile refusal pass.15 focused tests
 PASS222.3842ms;all1,027 unit PASS8263.0295ms;16-file zero-warning lint PASS.
 No browser/media/original read,
 compiled fit/lifecycle, production fix, fidelity, speed or memory acceptance.
-Next: dispatch encoder-only build, verify actual compiled lifecycle/initialization,
-then unchanged browser golden gates before any full original retry. Full goal open.
+Source work pushed as `c45b812` to media-options. Isolated branch
+`codex/mpeg2-encoder-planes-20261010` at `a446deb25583b8b22de4da216222da91991ab4fd`
+is pushed/remote-verified; canonical HEAD/index/workflow and main unchanged.
+One registered encoder-only dispatch: [run38043483415](https://github.com/tanishqbaweja/fileconverter/actions/runs/38043483415).
+Authoritative snapshot10:02UTC: actually IN_PROGRESS, native prerequisites
+installing, compiler/lifecycle/init results still unavailable. Exact branch and
+launch receipts retained; local isolated-index scratch removed, no media copy.
+Next: poll SAME38043483415 to terminal (no duplicate timeout-based restart),
+verify actual compiled lifecycle/initialization, then unchanged browser golden
+gates before any full original retry. Full goal open.
 
 ## 2026-10-10 — Actual encoder stack narrowed to first pixel plane; fix unproven
 
