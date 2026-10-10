@@ -4,7 +4,53 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-10 — Headless private AIFF stress terminal: three validated repeats and cancellation
+
+Session91894 is now terminal PASS, not running. Chrome154.0.8037.98 was
+headless; subprocess launch options were hidden. Each real140,922,233-byte,
+800-second stereo48k ALAC input produced153,600,760-byte AIFF in5060.015,
+5704.200 and5361.650ms. Full independently decoded PCM hash, all7 Unicode tags
+plus author alias, exact178-byte PNG packet and output SHA agree across3 repeats.
+Stable blank272,162,816B; complete Chromium conversion peak488,910,848B gives
+206.70703125MiB incremental private memory.201 valid100ms conversion samples,
+zero unavailable during conversion. One validation-only OpenProcess failure is
+retained as null, not zero.256KiB reads,32KiB writes/queue,one pending write,
+actual16MiB Wasm. Cleanup deltas16.465/28.031/23.648MiB retain the existing96MiB
+gate; no tighter recovery claim. Cancellation after2,687,138 real output bytes
+passed with zero terminal queues/pending and no project-local entries.
+All recorded helper births absent, owned generated media/profile/raw-report
+directories removed and served engine restored. Full JSON/CSV/HTML/native-peaks
+and executed source retained in lossless hash-verified gzip archives.
+Proof: `evidence/2026-10-10T08-18-49-643Z-aiff-id3-sync-opfs-stress.json`.
+This is private OPFS acceptance only: direct-output stress, cold repeats,
+write-failure/recovery, larger scaling and public promotion remain pending.
+No speed improvement comparison claimed. No Docker or new visible windows;
+unrelated console processes were inspected read-only and left untouched.
+Regression checkpoint:7/7 focused stress/evidence tests PASS189.1397ms,
+997/997 combined units PASS8329.3781ms; six-file scoped zero-warning lint PASS
+and whitespace check PASS. Existing production assets unchanged; no new broad
+frontend build, TypeScript, headed or other-browser coverage claimed.
+
 ## 2026-10-10 — Actual private AIFF compile and bounded collection succeeded
+
+Private stress initialattempt08:11UTC FAILED before browser: old report-path
+guard rejected placing reports under work. Real140,922,233-byte800s ALAC fixture
+qualified exact historical PCM, stereo48k, Unicode tags and178-byte PNG. Zero
+conversions; full executed source retained/lossless, own generated media gone,
+served assets restored and runner birth absent. Initial lint warning corrected;
+source-only recipe unit PASS157.613ms and three-file zero-warning lint PASS.
+Corrected reports stay in fresh identity-owned outputs/reports. Actual corrected
+stress session83274 live, terminal results pending; no unchanged duplicate retry.
+Historical live superseded:83274 terminalFAILED blank stability, no converter
+navigation;19,922,944B final-five spread vs5,080,842.24B allowed, all samples valid.
+Strict criteria unchanged; only blank settlement timeout30→90s. Session19391 then
+completed genuine153,600,760-byte AIFF from140,922,233-byte source in5450.605ms,
+but old preserved-art-count predicate demanded a false exclusion warning after
+earlier artwork checks. Zero validated repeats/public acceptance. Exact failure
+artifacts preserved. Predicate now counts verified AIFF artwork, all actual
+subtitle/additional/excluded attachment warning gates remain. Fresh corrected
+session91894 pending; all prior helper births absent/scratch/media removed/assets
+restored. New tests retain exact failed-source hashes and reject false pass claims.
 
 Corrected headless production Chrome154 gate **3/3 PASS**: exact7 common tags,
 Unicode artist→author alias, independent preexisting-author precedence, two exact

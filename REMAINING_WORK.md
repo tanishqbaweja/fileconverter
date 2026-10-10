@@ -5,7 +5,69 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-10 — Private AIFF OPFS stress verified; hidden/headless execution retained
+
+Status: **Partially implemented** overall. Actual session91894 has exited PASS
+with3 independently validated153,600,760-byte AIFF outputs from the identical
+140,922,233-byte800s ALAC fixture. Exact full PCM, Unicode tags/author alias,
+178-byte PNG and repeated output hash all pass. Stable blank272,162,816B and
+complete-tree conversion peak488,910,848B yield206.70703125MiB incremental
+private memory.201 valid100ms conversion samples/zero unavailable; one
+validation-only unavailable sample is preserved as null.256KiB reads,
+32KiB writes/queue,one pending,actual16MiB Wasm. Existing96MiB cleanup recovery
+gate retained; measured16.465/28.031/23.648MiB deltas, not a stronger guarantee.
+Real-output cancellation passes; all helper births absent, generated media,
+profiles and owned raw-report directories removed, normal engine restored.
+Lossless archives and executed-source hashes retained. Proof:
+`evidence/2026-10-10T08-18-49-643Z-aiff-id3-sync-opfs-stress.json`.
+
+User's hidden/headless instruction remains mandatory (AGENTS.md): recorded
+browser headless, helper subprocess windows hidden, unrelated applications
+untouched. Playwright skill used to audit existing production-browser evidence;
+headed/manual coverage remains unverified. No additional run launched to repeat
+this accepted OPFS result. Next distinct gates: direct-handle3 repeats, cold
+session, write failures/recovery, scaling/current-other-browser/reproducibility
+and public preservation/exclusion disclosures. This does not promote the private
+core, prove a speedup, solve the original full-video encoder OOM, or complete the
+original project. Historical live receipts below are superseded by this terminal.
+Focused stress/source/evidence tests7/7 PASS189.1397ms; complete combined units
+997/997 PASS8329.3781ms; scoped six-file zero-warning lint and whitespace gates
+PASS. Production frontend/worker/registry assets were not changed or promoted.
+
 ## 2026-10-10 — Private AIFF build succeeded; bounded collection and hosted cleanup verified
+
+Private large stress implementation added after this small gate: exact reversible
+derivative of current memory harness b4ab5663, same real browser conversion/native
+full-PCM/structure/hash/repeat/cancel/recovery/process250MiB gates; additional
+birth identity checks, regular-directory identity cleanup and local-only network
+allowlist. Private Wasm gate tightened to32MiB, not enlarged. Source artwork
+qualification and bounded AIFF artwork validator added. Initial failed attempt
+08:11UTC generated/qualified real140,922,233-byte800-second stereo ALAC plus PNG
+and Unicode tags, but old report-location guard rejected work-based reportRoot
+BEFORE server/browser/observer. Exact executed source losslessly retained; no
+conversion/pass evidence. All own fixture/output scratch removed and served
+engine restored. Lint warning initially failed; exit callback corrected. Reports
+now live in fresh identity-owned outputs/reports child; corrected recipe unit and
+three-file lint PASS. Failure: `evidence/2026-10-10T08-11-02-597Z-aiff-id3-sync-opfs-stress.json`.
+Corrected actual session83274 observed live after this concrete path fix; do NOT
+launch another identical session while it remains live. Three repeats/recovery/
+current-Chrome stress acceptance still pending actual terminal evidence.
+
+Subsequent authoritative terminals supersede that historical live receipt:
+83274 FAILED before navigation, blank19CIM/294native valid samples; last-five
+spread19,922,944B exceeds5,080,842.24B allowed. No unavailable-as-zero or last-sample
+baseline fallback. Exact analysis retained; blank wait changed30→90s only,
+minimum8s/five samples/2% spread/formula/250MiB untouched. Third session19391 did
+complete genuine140,922,233→153,600,760-byte AIFF conversion in5450.605ms, fixed
+16MiB Wasm/256KiB reads/32KiB writes+queue/one pending/terminal0 queue. Validator
+verified art earlier, then falsely demanded an exclusion warning because its
+preserved-art counter still named MP3/FLAC only. Failed result retained with zero
+validated repeats, not called accepted. AIFF now counted ONLY alongside its exact
+picture/tag checks; subtitle/additional/unrepresented-attachment warnings remain.
+All own raw reports/media/profile/helpers removed; lossless failure archives
+retain exact executed code, source and process histories. Evidence timestamps
+08-12-27-536Z and08-16-11-647Z plus baseline-analysis JSON. Corrected actual session
+91894 running; observe same handle to terminal, no identical duplicate retry.
 
 Corrected real headless Chrome154.0.8037.98 gate now **3/3 PASS** (supersedes the
 failed fixture attempt, which remains retained below). Native qualification before

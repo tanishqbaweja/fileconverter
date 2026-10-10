@@ -1,0 +1,7642 @@
+{
+  "recordedAt": "2026-10-10T08:13:11.941Z",
+  "status": "failed-or-incomplete-private-stress",
+  "failure": "Error: Private stress child exit 1\n    at ChildProcess.<anonymous> (file:///H:/Github%20Repositories/fileconverter/scripts/validate-aiff-id3-stress.mjs:88:95)\n    at Object.onceWrapper (node:events:623:26)\n    at ChildProcess.emit (node:events:508:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:294:12)",
+  "mode": "sync-opfs",
+  "sourcePins": {
+    "scripts/validate-aiff-id3-stress.mjs": "1d1729ca34208bbc772ede5c537f30a6d97cbc4fa7a05943fa274b12bb85fd9d",
+    "scripts/lib/aiff-id3-stress-recipe.mjs": "70d7fd62360d7c978625c4df80f2a2303f56f67192a047193fc1e899e02b446b",
+    "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/native-memory-history.mjs": "abfad6cbac33469565f081deee4c49b665771d46bf38e3fcaf487370b77811c5",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "public/engines/remux/build-manifest.json": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b"
+  },
+  "buildProof": {
+    "path": "evidence/aiff-id3-specialist-build-37998603437.json",
+    "sha256": "f6399f91077eb7295223f0ed5f20b2fe1f31e02ae0aa8103868f11cdada0177c"
+  },
+  "fixture": {
+    "bytes": 140922233,
+    "sha256": "cd5b778644222d68e391fcbbe3c4845c6872cab92b7726d85437e7720590fdee",
+    "durationSeconds": 800,
+    "losslessPcmReference": true,
+    "decodedPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "alac",
+          "codec_long_name": "ALAC (Apple Lossless Audio Codec)",
+          "codec_type": "audio",
+          "codec_tag_string": "alac",
+          "codec_tag": "0x63616c61",
+          "sample_fmt": "s16p",
+          "sample_rate": "48000",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bits_per_sample": 0,
+          "initial_padding": 0,
+          "id": "0x1",
+          "r_frame_rate": "0/0",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/48000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 38400000,
+          "duration": "800.000000",
+          "bit_rate": "1408830",
+          "bits_per_raw_sample": "16",
+          "nb_frames": "9375",
+          "extradata_size": 36,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "eng",
+            "handler_name": "SoundHandler"
+          }
+        },
+        {
+          "index": 1,
+          "codec_name": "png",
+          "codec_long_name": "PNG (Portable Network Graphics) image",
+          "codec_type": "video",
+          "codec_tag_string": "[0][0][0][0]",
+          "codec_tag": "0x0000",
+          "width": 64,
+          "height": 64,
+          "coded_width": 64,
+          "coded_height": 64,
+          "has_b_frames": 0,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "1:1",
+          "pix_fmt": "rgb24",
+          "level": -99,
+          "color_range": "pc",
+          "color_space": "gbr",
+          "refs": 1,
+          "id": "0x0",
+          "r_frame_rate": "90000/1",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/90000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 72000000,
+          "duration": "800.000000",
+          "disposition": {
+            "default": 0,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 1,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          }
+        }
+      ],
+      "format": {
+        "filename": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-stress-MPwX6r\\large-artwork.m4a",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "800.000000",
+        "size": "140922233",
+        "bit_rate": "1409222",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "M4A ",
+          "minor_version": "512",
+          "compatible_brands": "M4A isomiso2",
+          "title": "Within deterministic ALAC stress fixture",
+          "artist": "Émile / कलाकार",
+          "album": "Album naïf",
+          "date": "2026",
+          "comment": "αβγ & <texte>",
+          "genre": "Essai",
+          "track": "3/9"
+        }
+      }
+    },
+    "artwork": {
+      "codec": "png",
+      "width": 64,
+      "height": 64,
+      "bytes": 178,
+      "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    "expectedTags": {
+      "title": "Within deterministic ALAC stress fixture",
+      "artist": "Émile / कलाकार",
+      "album": "Album naïf",
+      "genre": "Essai",
+      "date": "2026",
+      "track": "3/9",
+      "comment": "αβγ & <texte>",
+      "author": "Émile / कलाकार"
+    }
+  },
+  "host": {
+    "acquiredAt": "2026-10-10T08:12:27.9983563Z",
+    "freePhysicalBytes": 6091227136,
+    "freeVirtualBytes": 7352463360,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskBytes": 1512549502976,
+  "recipeBaseSha256": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+  "recipeGeneratedSha256": "b93af7e2c46794780d765ba36205020d824beb17a25fb75e20e4fd7e29f99b1c",
+  "executedSource": {
+    "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-executed-source.mjs.gz",
+    "bytes": 44017,
+    "sha256": "481cbbea1c22be802f47cddbb63253592d101d2d6e479b3c2f4d982ce5914789",
+    "restoredBytes": 225126,
+    "restoredSha256": "b93af7e2c46794780d765ba36205020d824beb17a25fb75e20e4fd7e29f99b1c"
+  },
+  "retainedReports": [
+    {
+      "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-2026-10-10T08-13-09-020Z-m4a-to-aiff-stress-native-100ms-failure-native-peaks.csv.gz",
+      "bytes": 1467,
+      "sha256": "e7633d9e933230f6761a92e72847d779e566c57d8ab4c57e9130cb0a05444ae8",
+      "restoredBytes": 10124,
+      "restoredSha256": "4e040825714882def75d048fe089d7da9d3611c574da5911c711e3d3054c4ae1"
+    },
+    {
+      "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-2026-10-10T08-13-09-020Z-m4a-to-aiff-stress-native-100ms-failure.csv.gz",
+      "bytes": 504,
+      "sha256": "69f15ab60d05bf7a500e2a45c405e7e803e406cd8cbebeaac00662cb3223aac2",
+      "restoredBytes": 1626,
+      "restoredSha256": "1c65c086b09fd8e15046d560cb528392deb61cb61c5f04710fb1feccd5b6f120"
+    },
+    {
+      "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-2026-10-10T08-13-09-020Z-m4a-to-aiff-stress-native-100ms-failure.html.gz",
+      "bytes": 1875,
+      "sha256": "6af075b28166549d06feb65e56824242d7ace90ed38639a43a9895477f732b9f",
+      "restoredBytes": 9593,
+      "restoredSha256": "0cbd6655a6d1a29d84a6e0ce4772d99d48c30ee11d5619ce4e8d475418f78c7b"
+    },
+    {
+      "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-2026-10-10T08-13-09-020Z-m4a-to-aiff-stress-native-100ms-failure.json.gz",
+      "bytes": 10475,
+      "sha256": "b192608550bb00a123c6d7f9ac873871ea7a29a9db0d6d5a6eccf2faab3c8231",
+      "restoredBytes": 216985,
+      "restoredSha256": "f51136f5d9e32343ff23e5aab408bf22ce678f9f94ea761f40eb48769b3c0aaf"
+    }
+  ],
+  "reportSummary": {
+    "passed": false,
+    "checks": null,
+    "runs": [],
+    "blankBaseline": {
+      "phase": "blank-baseline",
+      "privateBytes": 247623680,
+      "rssBytes": 529174528,
+      "stable": false,
+      "sampleCount": 19
+    },
+    "loadedIdle": null,
+    "incrementalPrivateMiB": null,
+    "nativeMemory": {
+      "intervalMs": 100,
+      "scope": "All owned Chromium descendants; unknown types counted; native observer is not a converter or speed proof",
+      "sequence": 302,
+      "lastAcquiredAt": 1791619988952,
+      "observerCpuFirstMs": 375,
+      "observerCpuLastMs": 5703.125,
+      "observerCpuDeltaMs": 5328.125,
+      "limits": {
+        "identities": 512,
+        "phases": 128,
+        "transitions": 256,
+        "graphBuckets": 4096,
+        "unavailableExamplesPerAggregate": 8
+      },
+      "graphBucketDurationMs": 1000,
+      "graphBucketsEvicted": 0,
+      "rowColumns": [
+        "sequence",
+        "timestamp",
+        "phase",
+        "privateBytes",
+        "rssBytes",
+        "nativeElapsedMs",
+        "sampleError",
+        "processRows"
+      ],
+      "processRowColumns": [
+        "identityIndex",
+        "privateBytes",
+        "rssBytes"
+      ],
+      "identities": [
+        {
+          "pid": 6600,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.5176450Z",
+          "creationFileTime": "134360935555176450",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 7020,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.5447912Z",
+          "creationFileTime": "134360935555447912",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 10584,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.4228120Z",
+          "creationFileTime": "134360935554228120",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 24220,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.4176008Z",
+          "creationFileTime": "134360935554176008",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 29072,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.4548830Z",
+          "creationFileTime": "134360935554548830",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31384,
+          "parentPid": 35264,
+          "createdAt": "2026-10-10T08:12:35.1263399Z",
+          "creationFileTime": "134360935551263399",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31544,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.5769822Z",
+          "creationFileTime": "134360935555769822",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 32928,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.1563417Z",
+          "creationFileTime": "134360935551563417",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 35360,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.8113993Z",
+          "creationFileTime": "134360935558113993",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 35936,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:35.5752531Z",
+          "creationFileTime": "134360935555752531",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 34488,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:38.6999983Z",
+          "creationFileTime": "134360935586999983",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38828,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:38.7194199Z",
+          "creationFileTime": "134360935587194199",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 15160,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:38.7486944Z",
+          "creationFileTime": "134360935587486944",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 29324,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:12:56.8360696Z",
+          "creationFileTime": "134360935768360696",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 32124,
+          "parentPid": 29324,
+          "createdAt": "2026-10-10T08:12:56.8644411Z",
+          "creationFileTime": "134360935768644411",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38480,
+          "parentPid": 39732,
+          "createdAt": "2026-10-10T08:12:56.9144514Z",
+          "creationFileTime": "134360935769144514",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39732,
+          "parentPid": 29324,
+          "createdAt": "2026-10-10T08:12:56.8914953Z",
+          "creationFileTime": "134360935768914953",
+          "executableName": "updater.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 32632,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:13:05.4265241Z",
+          "creationFileTime": "134360935854265241",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 42848,
+          "parentPid": 31384,
+          "createdAt": "2026-10-10T08:13:05.4374003Z",
+          "creationFileTime": "134360935854374003",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ],
+      "transitions": [
+        {
+          "phase": "blank-baseline",
+          "at": 1791619955663
+        },
+        {
+          "phase": "failure-1",
+          "at": 1791619988110
+        }
+      ],
+      "phases": [
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 1,
+          "lastSequence": 294,
+          "validSamples": 294,
+          "unavailableSamples": 0,
+          "peak": [
+            25,
+            "2026-10-10T08:12:38.8204049Z",
+            "blank-baseline",
+            302145536,
+            623714304,
+            16.0871,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51097600
+              ],
+              [
+                2,
+                13127680,
+                39284736
+              ],
+              [
+                12,
+                8015872,
+                16367616
+              ],
+              [
+                3,
+                96309248,
+                119578624
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47271936,
+                139423744
+              ],
+              [
+                6,
+                18059264,
+                46264320
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                10,
+                8675328,
+                20942848
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "rssPeak": [
+            25,
+            "2026-10-10T08:12:38.8204049Z",
+            "blank-baseline",
+            302145536,
+            623714304,
+            16.0871,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51097600
+              ],
+              [
+                2,
+                13127680,
+                39284736
+              ],
+              [
+                12,
+                8015872,
+                16367616
+              ],
+              [
+                3,
+                96309248,
+                119578624
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47271936,
+                139423744
+              ],
+              [
+                6,
+                18059264,
+                46264320
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                10,
+                8675328,
+                20942848
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "last": [
+            294,
+            "2026-10-10T08:13:08.0788489Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            12.9077,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": []
+        },
+        {
+          "phase": "failure-1",
+          "firstSequence": 295,
+          "lastSequence": 302,
+          "validSamples": 8,
+          "unavailableSamples": 0,
+          "peak": [
+            299,
+            "2026-10-10T08:13:08.6236855Z",
+            "failure-1",
+            247918592,
+            529395712,
+            10.6213,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            299,
+            "2026-10-10T08:13:08.6236855Z",
+            "failure-1",
+            247918592,
+            529395712,
+            10.6213,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            302,
+            "2026-10-10T08:13:08.9524449Z",
+            "failure-1",
+            247918592,
+            529395712,
+            13.088600000000001,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": []
+        }
+      ],
+      "graphBuckets": [
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 1,
+          "lastSequence": 8,
+          "validSamples": 8,
+          "unavailableSamples": 0,
+          "peak": [
+            6,
+            "2026-10-10T08:12:36.7568150Z",
+            "blank-baseline",
+            279474176,
+            571453440,
+            11.0977,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18341888,
+                48431104
+              ],
+              [
+                2,
+                13123584,
+                39182336
+              ],
+              [
+                3,
+                96829440,
+                119603200
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                40968192,
+                127496192
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "rssPeak": [
+            6,
+            "2026-10-10T08:12:36.7568150Z",
+            "blank-baseline",
+            279474176,
+            571453440,
+            11.0977,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18341888,
+                48431104
+              ],
+              [
+                2,
+                13123584,
+                39182336
+              ],
+              [
+                3,
+                96829440,
+                119603200
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                40968192,
+                127496192
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "last": [
+            8,
+            "2026-10-10T08:12:36.9731051Z",
+            "blank-baseline",
+            279474176,
+            571453440,
+            10.6896,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18341888,
+                48431104
+              ],
+              [
+                2,
+                13123584,
+                39182336
+              ],
+              [
+                3,
+                96829440,
+                119603200
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                40968192,
+                127496192
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619956
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 9,
+          "lastSequence": 17,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            17,
+            "2026-10-10T08:12:37.9577390Z",
+            "blank-baseline",
+            283152384,
+            582549504,
+            13.7539,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18534400,
+                51052544
+              ],
+              [
+                2,
+                13127680,
+                39231488
+              ],
+              [
+                3,
+                96833536,
+                119799808
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                44445696,
+                135725056
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "rssPeak": [
+            17,
+            "2026-10-10T08:12:37.9577390Z",
+            "blank-baseline",
+            283152384,
+            582549504,
+            13.7539,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18534400,
+                51052544
+              ],
+              [
+                2,
+                13127680,
+                39231488
+              ],
+              [
+                3,
+                96833536,
+                119799808
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                44445696,
+                135725056
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "last": [
+            17,
+            "2026-10-10T08:12:37.9577390Z",
+            "blank-baseline",
+            283152384,
+            582549504,
+            13.7539,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85385216
+              ],
+              [
+                1,
+                18534400,
+                51052544
+              ],
+              [
+                2,
+                13127680,
+                39231488
+              ],
+              [
+                3,
+                96833536,
+                119799808
+              ],
+              [
+                4,
+                8105984,
+                17440768
+              ],
+              [
+                5,
+                44445696,
+                135725056
+              ],
+              [
+                6,
+                18059264,
+                46223360
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45940736
+              ],
+              [
+                9,
+                15200256,
+                31502336
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619957
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 18,
+          "lastSequence": 26,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            25,
+            "2026-10-10T08:12:38.8204049Z",
+            "blank-baseline",
+            302145536,
+            623714304,
+            16.0871,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51097600
+              ],
+              [
+                2,
+                13127680,
+                39284736
+              ],
+              [
+                12,
+                8015872,
+                16367616
+              ],
+              [
+                3,
+                96309248,
+                119578624
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47271936,
+                139423744
+              ],
+              [
+                6,
+                18059264,
+                46264320
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                10,
+                8675328,
+                20942848
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "rssPeak": [
+            25,
+            "2026-10-10T08:12:38.8204049Z",
+            "blank-baseline",
+            302145536,
+            623714304,
+            16.0871,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51097600
+              ],
+              [
+                2,
+                13127680,
+                39284736
+              ],
+              [
+                12,
+                8015872,
+                16367616
+              ],
+              [
+                3,
+                96309248,
+                119578624
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47271936,
+                139423744
+              ],
+              [
+                6,
+                18059264,
+                46264320
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                10,
+                8675328,
+                20942848
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "last": [
+            26,
+            "2026-10-10T08:12:38.9283683Z",
+            "blank-baseline",
+            285696000,
+            587010048,
+            15.8598,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51097600
+              ],
+              [
+                2,
+                13221888,
+                39403520
+              ],
+              [
+                3,
+                96309248,
+                119578624
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47419392,
+                139911168
+              ],
+              [
+                6,
+                18059264,
+                46264320
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619958
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 27,
+          "lastSequence": 35,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            34,
+            "2026-10-10T08:12:39.7987121Z",
+            "blank-baseline",
+            286171136,
+            588312576,
+            15.9328,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51101696
+              ],
+              [
+                2,
+                13377536,
+                39686144
+              ],
+              [
+                3,
+                96337920,
+                119582720
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47710208,
+                140918784
+              ],
+              [
+                6,
+                18059264,
+                46268416
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "rssPeak": [
+            34,
+            "2026-10-10T08:12:39.7987121Z",
+            "blank-baseline",
+            286171136,
+            588312576,
+            15.9328,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51101696
+              ],
+              [
+                2,
+                13377536,
+                39686144
+              ],
+              [
+                3,
+                96337920,
+                119582720
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47710208,
+                140918784
+              ],
+              [
+                6,
+                18059264,
+                46268416
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "last": [
+            35,
+            "2026-10-10T08:12:39.9072496Z",
+            "blank-baseline",
+            286171136,
+            588312576,
+            25.303800000000003,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85430272
+              ],
+              [
+                1,
+                18534400,
+                51101696
+              ],
+              [
+                2,
+                13377536,
+                39686144
+              ],
+              [
+                3,
+                96337920,
+                119582720
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47710208,
+                140918784
+              ],
+              [
+                6,
+                18059264,
+                46268416
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45993984
+              ],
+              [
+                9,
+                15200256,
+                31580160
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619959
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 36,
+          "lastSequence": 45,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            45,
+            "2026-10-10T08:12:40.9933192Z",
+            "blank-baseline",
+            286261248,
+            588554240,
+            20.0984,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85434368
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96407552,
+                119615488
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            45,
+            "2026-10-10T08:12:40.9933192Z",
+            "blank-baseline",
+            286261248,
+            588554240,
+            20.0984,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85434368
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96407552,
+                119615488
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            45,
+            "2026-10-10T08:12:40.9933192Z",
+            "blank-baseline",
+            286261248,
+            588554240,
+            20.0984,
+            null,
+            [
+              [
+                0,
+                42864640,
+                85434368
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96407552,
+                119615488
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619960
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 46,
+          "lastSequence": 54,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            46,
+            "2026-10-10T08:12:41.1016779Z",
+            "blank-baseline",
+            286265344,
+            588566528,
+            26.319100000000002,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85446656
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96407552,
+                119615488
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            52,
+            "2026-10-10T08:12:41.7490625Z",
+            "blank-baseline",
+            286261248,
+            588587008,
+            17.7136,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            54,
+            "2026-10-10T08:12:41.9655622Z",
+            "blank-baseline",
+            286261248,
+            588587008,
+            24.7574,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619961
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 55,
+          "lastSequence": 63,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            55,
+            "2026-10-10T08:12:42.0731104Z",
+            "blank-baseline",
+            286261248,
+            588587008,
+            25.7592,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51109888
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            62,
+            "2026-10-10T08:12:42.8329289Z",
+            "blank-baseline",
+            286261248,
+            588685312,
+            15.7294,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51208192
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            63,
+            "2026-10-10T08:12:42.9416056Z",
+            "blank-baseline",
+            286261248,
+            588685312,
+            15.825600000000001,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51208192
+              ],
+              [
+                2,
+                13377536,
+                39698432
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619962
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 64,
+          "lastSequence": 72,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            69,
+            "2026-10-10T08:12:43.5951202Z",
+            "blank-baseline",
+            286380032,
+            588840960,
+            24.063200000000002,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51208192
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            69,
+            "2026-10-10T08:12:43.5951202Z",
+            "blank-baseline",
+            286380032,
+            588840960,
+            24.063200000000002,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51208192
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            72,
+            "2026-10-10T08:12:43.9207160Z",
+            "blank-baseline",
+            286380032,
+            588840960,
+            18.3873,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                18538496,
+                51208192
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619963
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 73,
+          "lastSequence": 81,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            78,
+            "2026-10-10T08:12:44.5765259Z",
+            "blank-baseline",
+            287293440,
+            589385728,
+            16.8859,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                19451904,
+                51752960
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            78,
+            "2026-10-10T08:12:44.5765259Z",
+            "blank-baseline",
+            287293440,
+            589385728,
+            16.8859,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                19451904,
+                51752960
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                96403456,
+                119631872
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            81,
+            "2026-10-10T08:12:44.9003944Z",
+            "blank-baseline",
+            274165760,
+            576425984,
+            19.1493,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                19451904,
+                51752960
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47726592,
+                141082624
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619964
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 82,
+          "lastSequence": 91,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            86,
+            "2026-10-10T08:12:45.4433669Z",
+            "blank-baseline",
+            274300928,
+            576565248,
+            26.7544,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85450752
+              ],
+              [
+                1,
+                19451904,
+                51752960
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17502208
+              ],
+              [
+                5,
+                47861760,
+                141221888
+              ],
+              [
+                6,
+                18059264,
+                46276608
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "rssPeak": [
+            88,
+            "2026-10-10T08:12:45.6639388Z",
+            "blank-baseline",
+            274300928,
+            576630784,
+            25.058,
+            null,
+            [
+              [
+                0,
+                42868736,
+                85454848
+              ],
+              [
+                1,
+                19451904,
+                51761152
+              ],
+              [
+                2,
+                13496320,
+                39854080
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141250560
+              ],
+              [
+                6,
+                18059264,
+                46292992
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23339008,
+                45998080
+              ],
+              [
+                9,
+                15200256,
+                31588352
+              ]
+            ]
+          ],
+          "last": [
+            91,
+            "2026-10-10T08:12:45.9916358Z",
+            "blank-baseline",
+            272056320,
+            574578688,
+            19.778000000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51761152
+              ],
+              [
+                2,
+                13496320,
+                39895040
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141262848
+              ],
+              [
+                6,
+                18059264,
+                46292992
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619965
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 92,
+          "lastSequence": 100,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            92,
+            "2026-10-10T08:12:46.0988886Z",
+            "blank-baseline",
+            272056320,
+            574578688,
+            17.197100000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51761152
+              ],
+              [
+                2,
+                13496320,
+                39895040
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141262848
+              ],
+              [
+                6,
+                18059264,
+                46292992
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            98,
+            "2026-10-10T08:12:46.7452513Z",
+            "blank-baseline",
+            272056320,
+            574623744,
+            17.3577,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51781632
+              ],
+              [
+                2,
+                13496320,
+                39895040
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            100,
+            "2026-10-10T08:12:46.9598878Z",
+            "blank-baseline",
+            272056320,
+            574623744,
+            19.1489,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51781632
+              ],
+              [
+                2,
+                13496320,
+                39895040
+              ],
+              [
+                3,
+                83275776,
+                106672128
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619966
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 101,
+          "lastSequence": 109,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            106,
+            "2026-10-10T08:12:47.6044548Z",
+            "blank-baseline",
+            272060416,
+            574656512,
+            14.810400000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51781632
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            106,
+            "2026-10-10T08:12:47.6044548Z",
+            "blank-baseline",
+            272060416,
+            574656512,
+            14.810400000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51781632
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            109,
+            "2026-10-10T08:12:47.9252403Z",
+            "blank-baseline",
+            272060416,
+            574656512,
+            23.094800000000003,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19451904,
+                51781632
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619967
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 110,
+          "lastSequence": 119,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            110,
+            "2026-10-10T08:12:48.0323486Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            16.1725,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            110,
+            "2026-10-10T08:12:48.0323486Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            16.1725,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            119,
+            "2026-10-10T08:12:48.9950706Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            16.834,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619968
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 120,
+          "lastSequence": 128,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            120,
+            "2026-10-10T08:12:49.1015641Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            17.272000000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            120,
+            "2026-10-10T08:12:49.1015641Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            17.272000000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            128,
+            "2026-10-10T08:12:49.9554471Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            15.205200000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619969
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 129,
+          "lastSequence": 137,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            129,
+            "2026-10-10T08:12:50.0624750Z",
+            "blank-baseline",
+            272064512,
+            574660608,
+            14.8125,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141271040
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            135,
+            "2026-10-10T08:12:50.7119186Z",
+            "blank-baseline",
+            272064512,
+            574689280,
+            13.888200000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141299712
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            137,
+            "2026-10-10T08:12:50.9301837Z",
+            "blank-baseline",
+            272064512,
+            574689280,
+            13.565900000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141299712
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619970
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 138,
+          "lastSequence": 146,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            138,
+            "2026-10-10T08:12:51.0388803Z",
+            "blank-baseline",
+            272064512,
+            574689280,
+            14.6262,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141299712
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            138,
+            "2026-10-10T08:12:51.0388803Z",
+            "blank-baseline",
+            272064512,
+            574689280,
+            14.6262,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39911424
+              ],
+              [
+                3,
+                83275776,
+                106688512
+              ],
+              [
+                4,
+                8105984,
+                17510400
+              ],
+              [
+                5,
+                47861760,
+                141299712
+              ],
+              [
+                6,
+                18059264,
+                46309376
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            146,
+            "2026-10-10T08:12:51.9132839Z",
+            "blank-baseline",
+            254001152,
+            528384000,
+            13.8116,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619971
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 147,
+          "lastSequence": 156,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            147,
+            "2026-10-10T08:12:52.0225537Z",
+            "blank-baseline",
+            254001152,
+            528384000,
+            14.8427,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51785728
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            153,
+            "2026-10-10T08:12:52.6734781Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            19.334300000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            156,
+            "2026-10-10T08:12:52.9948069Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            16.9444,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619972
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 157,
+          "lastSequence": 165,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            157,
+            "2026-10-10T08:12:53.1035437Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            26.5276,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            157,
+            "2026-10-10T08:12:53.1035437Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            26.5276,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            165,
+            "2026-10-10T08:12:53.9692299Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            17.0286,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619973
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 166,
+          "lastSequence": 174,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            166,
+            "2026-10-10T08:12:54.0799813Z",
+            "blank-baseline",
+            254001152,
+            528396288,
+            14.2505,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141152256
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            170,
+            "2026-10-10T08:12:54.5177770Z",
+            "blank-baseline",
+            254001152,
+            528445440,
+            13.981100000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141201408
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            174,
+            "2026-10-10T08:12:54.9548186Z",
+            "blank-baseline",
+            254001152,
+            528445440,
+            15.6849,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19456000,
+                51798016
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141201408
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619974
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 175,
+          "lastSequence": 183,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            182,
+            "2026-10-10T08:12:55.8287109Z",
+            "blank-baseline",
+            254009344,
+            528519168,
+            13.3865,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141201408
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            182,
+            "2026-10-10T08:12:55.8287109Z",
+            "blank-baseline",
+            254009344,
+            528519168,
+            13.3865,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141201408
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            183,
+            "2026-10-10T08:12:55.9372822Z",
+            "blank-baseline",
+            254009344,
+            528519168,
+            14.271600000000001,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141201408
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619975
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 184,
+          "lastSequence": 192,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            192,
+            "2026-10-10T08:12:56.9349235Z",
+            "blank-baseline",
+            267309056,
+            593260544,
+            16.7654,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3633152,
+                17690624
+              ]
+            ]
+          ],
+          "rssPeak": [
+            192,
+            "2026-10-10T08:12:56.9349235Z",
+            "blank-baseline",
+            267309056,
+            593260544,
+            16.7654,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3633152,
+                17690624
+              ]
+            ]
+          ],
+          "last": [
+            192,
+            "2026-10-10T08:12:56.9349235Z",
+            "blank-baseline",
+            267309056,
+            593260544,
+            16.7654,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19464192,
+                51871744
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3633152,
+                17690624
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619976
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 193,
+          "lastSequence": 201,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            197,
+            "2026-10-10T08:12:57.4799991Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            17.381600000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "rssPeak": [
+            197,
+            "2026-10-10T08:12:57.4799991Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            17.381600000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "last": [
+            201,
+            "2026-10-10T08:12:57.9173805Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            13.7127,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619977
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 202,
+          "lastSequence": 210,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            202,
+            "2026-10-10T08:12:58.0251019Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            14.1111,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "rssPeak": [
+            202,
+            "2026-10-10T08:12:58.0251019Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            14.1111,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "last": [
+            210,
+            "2026-10-10T08:12:58.9007364Z",
+            "blank-baseline",
+            267538432,
+            594771968,
+            17.8552,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19484672,
+                51884032
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619978
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 211,
+          "lastSequence": 220,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            211,
+            "2026-10-10T08:12:59.0118657Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            14.7767,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "rssPeak": [
+            211,
+            "2026-10-10T08:12:59.0118657Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            14.7767,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "last": [
+            220,
+            "2026-10-10T08:12:59.9920777Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            22.311300000000003,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619979
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 221,
+          "lastSequence": 229,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            221,
+            "2026-10-10T08:13:00.1015494Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            25.9997,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "rssPeak": [
+            221,
+            "2026-10-10T08:13:00.1015494Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            25.9997,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "last": [
+            229,
+            "2026-10-10T08:13:00.9769942Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            21.6983,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619980
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 230,
+          "lastSequence": 238,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            230,
+            "2026-10-10T08:13:01.0843727Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            22.8279,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "rssPeak": [
+            230,
+            "2026-10-10T08:13:01.0843727Z",
+            "blank-baseline",
+            267546624,
+            594780160,
+            22.8279,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                13,
+                3346432,
+                16224256
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                14,
+                3153920,
+                15355904
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                15,
+                3166208,
+                15372288
+              ],
+              [
+                16,
+                3842048,
+                19189760
+              ]
+            ]
+          ],
+          "last": [
+            238,
+            "2026-10-10T08:13:01.9553130Z",
+            "blank-baseline",
+            254038016,
+            528637952,
+            13.3568,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19492864,
+                51892224
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619981
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 239,
+          "lastSequence": 247,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            241,
+            "2026-10-10T08:13:02.2860413Z",
+            "blank-baseline",
+            254042112,
+            528642048,
+            23.6625,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                39940096
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141299712
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            243,
+            "2026-10-10T08:13:02.5049115Z",
+            "blank-baseline",
+            254042112,
+            528699392,
+            31.026200000000003,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                39944192
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141352960
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            247,
+            "2026-10-10T08:13:02.9432114Z",
+            "blank-baseline",
+            254042112,
+            528699392,
+            27.6717,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                39944192
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141352960
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619982
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 248,
+          "lastSequence": 256,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            248,
+            "2026-10-10T08:13:03.0524622Z",
+            "blank-baseline",
+            254042112,
+            528699392,
+            28.507,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                39944192
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141352960
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            252,
+            "2026-10-10T08:13:03.4900382Z",
+            "blank-baseline",
+            254042112,
+            528871424,
+            22.218,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                40034304
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141434880
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            256,
+            "2026-10-10T08:13:03.9299227Z",
+            "blank-baseline",
+            254042112,
+            528871424,
+            25.3888,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                40034304
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141434880
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619983
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 257,
+          "lastSequence": 265,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            257,
+            "2026-10-10T08:13:04.0380564Z",
+            "blank-baseline",
+            254042112,
+            528871424,
+            22.1771,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                40034304
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141434880
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            257,
+            "2026-10-10T08:13:04.0380564Z",
+            "blank-baseline",
+            254042112,
+            528871424,
+            22.1771,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                40034304
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141434880
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            265,
+            "2026-10-10T08:13:04.9113920Z",
+            "blank-baseline",
+            254042112,
+            528871424,
+            16.296200000000002,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13500416,
+                40034304
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47853568,
+                141434880
+              ],
+              [
+                7,
+                2641920,
+                10248192
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619984
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 266,
+          "lastSequence": 274,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            270,
+            "2026-10-10T08:13:05.4565581Z",
+            "blank-baseline",
+            270368768,
+            571154432,
+            14.3847,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13410304,
+                39972864
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47898624,
+                142970880
+              ],
+              [
+                17,
+                8306688,
+                22183936
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                18,
+                8204288,
+                18690048
+              ]
+            ]
+          ],
+          "rssPeak": [
+            270,
+            "2026-10-10T08:13:05.4565581Z",
+            "blank-baseline",
+            270368768,
+            571154432,
+            14.3847,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13410304,
+                39972864
+              ],
+              [
+                3,
+                83279872,
+                106733568
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                47898624,
+                142970880
+              ],
+              [
+                17,
+                8306688,
+                22183936
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45658112
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ],
+              [
+                18,
+                8204288,
+                18690048
+              ]
+            ]
+          ],
+          "last": [
+            274,
+            "2026-10-10T08:13:05.8936485Z",
+            "blank-baseline",
+            254771200,
+            531279872,
+            12.8321,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13410304,
+                40067072
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48758784,
+                143806464
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45662208
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619985
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 275,
+          "lastSequence": 284,
+          "validSamples": 10,
+          "unavailableSamples": 0,
+          "peak": [
+            275,
+            "2026-10-10T08:13:06.0040428Z",
+            "blank-baseline",
+            254771200,
+            531398656,
+            13.6469,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13410304,
+                40075264
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48758784,
+                143863808
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            275,
+            "2026-10-10T08:13:06.0040428Z",
+            "blank-baseline",
+            254771200,
+            531398656,
+            13.6469,
+            null,
+            [
+              [
+                0,
+                41275392,
+                84017152
+              ],
+              [
+                1,
+                19496960,
+                51896320
+              ],
+              [
+                2,
+                13410304,
+                40075264
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48758784,
+                143863808
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            284,
+            "2026-10-10T08:13:06.9880831Z",
+            "blank-baseline",
+            247623680,
+            529174528,
+            13.7729,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20107264,
+                55566336
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48758784,
+                143863808
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619986
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 285,
+          "lastSequence": 293,
+          "validSamples": 9,
+          "unavailableSamples": 0,
+          "peak": [
+            285,
+            "2026-10-10T08:13:07.0963081Z",
+            "blank-baseline",
+            247885824,
+            529248256,
+            12.9596,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20369408,
+                55640064
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48758784,
+                143863808
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            292,
+            "2026-10-10T08:13:07.8600513Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            16.1248,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            293,
+            "2026-10-10T08:13:07.9708707Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            13.2383,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619987
+        },
+        {
+          "phase": "blank-baseline",
+          "firstSequence": 294,
+          "lastSequence": 294,
+          "validSamples": 1,
+          "unavailableSamples": 0,
+          "peak": [
+            294,
+            "2026-10-10T08:13:08.0788489Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            12.9077,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            294,
+            "2026-10-10T08:13:08.0788489Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            12.9077,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            294,
+            "2026-10-10T08:13:08.0788489Z",
+            "blank-baseline",
+            247652352,
+            529305600,
+            12.9077,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20185088,
+                55685120
+              ],
+              [
+                2,
+                13414400,
+                40116224
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619988
+        },
+        {
+          "phase": "failure-1",
+          "firstSequence": 295,
+          "lastSequence": 302,
+          "validSamples": 8,
+          "unavailableSamples": 0,
+          "peak": [
+            299,
+            "2026-10-10T08:13:08.6236855Z",
+            "failure-1",
+            247918592,
+            529395712,
+            10.6213,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "rssPeak": [
+            299,
+            "2026-10-10T08:13:08.6236855Z",
+            "failure-1",
+            247918592,
+            529395712,
+            10.6213,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "last": [
+            302,
+            "2026-10-10T08:13:08.9524449Z",
+            "failure-1",
+            247918592,
+            529395712,
+            13.088600000000001,
+            null,
+            [
+              [
+                0,
+                33513472,
+                78082048
+              ],
+              [
+                1,
+                20451328,
+                55771136
+              ],
+              [
+                2,
+                13414400,
+                40120320
+              ],
+              [
+                3,
+                83333120,
+                106799104
+              ],
+              [
+                4,
+                8105984,
+                17588224
+              ],
+              [
+                5,
+                48709632,
+                143876096
+              ],
+              [
+                7,
+                2502656,
+                10182656
+              ],
+              [
+                8,
+                23023616,
+                45715456
+              ],
+              [
+                9,
+                14864384,
+                31260672
+              ]
+            ]
+          ],
+          "unavailableExamples": [],
+          "second": 1791619988
+        }
+      ],
+      "error": null
+    },
+    "cancellation": null,
+    "failure": {
+      "name": "Error",
+      "message": "Blank Chromium private-memory baseline is unavailable or unstable; no last-sample fallback.",
+      "stack": "Error: Blank Chromium private-memory baseline is unavailable or unstable; no last-sample fallback.\n    at file:///H:/Github%20Repositories/fileconverter/work/aiff-id3-stress-MPwX6r/run.mjs:1017:11"
+    }
+  },
+  "helperProof": {
+    "launches": [
+      {
+        "role": "production-server",
+        "identity": {
+          "pid": 37156,
+          "parentPid": 35264,
+          "createdAt": "2026-10-10T08:12:32.7103000Z"
+        },
+        "absence": {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 37156,
+            "parentPid": 35264,
+            "createdAt": "2026-10-10T08:12:32.7103000Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-10T08:13:10.721Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 352,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      },
+      {
+        "role": "headless-chrome",
+        "identity": {
+          "pid": 31384,
+          "parentPid": 35264,
+          "createdAt": "2026-10-10T08:12:35.1263390Z"
+        },
+        "absence": {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 31384,
+            "parentPid": 35264,
+            "createdAt": "2026-10-10T08:12:35.1263390Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-10T08:13:11.064Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 343,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      },
+      {
+        "role": "read-only-memory-observer",
+        "identity": {
+          "pid": 27800,
+          "parentPid": 35264,
+          "createdAt": "2026-10-10T08:12:35.6682140Z"
+        },
+        "absence": {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 27800,
+            "parentPid": 35264,
+            "createdAt": "2026-10-10T08:12:35.6682140Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-10T08:13:11.428Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 364,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      }
+    ],
+    "forbiddenRequests": [],
+    "profileRemoved": true,
+    "observerScratchRemoved": true,
+    "runtime": "H:\\Github Repositories\\fileconverter\\work\\profile-runtime-BzVyV9"
+  },
+  "runner": {
+    "identity": {
+      "pid": 35264,
+      "parentPid": 38228,
+      "createdAt": "2026-10-10T08:12:32.2826530Z"
+    },
+    "absence": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 35264,
+        "parentPid": 38228,
+        "createdAt": "2026-10-10T08:12:32.2826530Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-10T08:13:11.845Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 366,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  },
+  "assetsRestored": true,
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-stress-MPwX6r",
+  "ownedRuntimeRemoved": true,
+  "ownedRawReportDirectory": "H:\\Github Repositories\\fileconverter\\outputs\\reports\\aiff-id3-stress-MPwX6r",
+  "ownedRawReportsRemoved": true,
+  "protectedOriginalRead": false,
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "nativeToolsOnlyFixturesAndValidation": true,
+  "noDocker": true,
+  "publicAcceptance": false,
+  "multiGigabyteScalingAcceptance": false,
+  "speedImprovementProven": false
+}

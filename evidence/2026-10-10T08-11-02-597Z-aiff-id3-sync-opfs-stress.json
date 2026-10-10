@@ -1,0 +1,243 @@
+{
+  "recordedAt": "2026-10-10T08:11:08.229Z",
+  "status": "failed-or-incomplete-private-stress",
+  "failure": "Error: Private stress child exit 1\n    at ChildProcess.<anonymous> (file:///H:/Github%20Repositories/fileconverter/scripts/validate-aiff-id3-stress.mjs:85:88)\n    at Object.onceWrapper (node:events:623:26)\n    at ChildProcess.emit (node:events:508:28)\n    at ChildProcess._handle.onexit (node:internal/child_process:294:12)",
+  "mode": "sync-opfs",
+  "sourcePins": {
+    "scripts/validate-aiff-id3-stress.mjs": "cea012ed2576bb2f046fd87d24719054901c8c60dc10b58701733a266dbc1154",
+    "scripts/lib/aiff-id3-stress-recipe.mjs": "fbdd1e92ef459754d589a8ebf21efe9475430693e9c715a11b90a4237084ca33",
+    "scripts/memory-profile.mjs": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/native-memory-history.mjs": "abfad6cbac33469565f081deee4c49b665771d46bf38e3fcaf487370b77811c5",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "public/engines/remux/build-manifest.json": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b"
+  },
+  "buildProof": {
+    "path": "evidence/aiff-id3-specialist-build-37998603437.json",
+    "sha256": "f6399f91077eb7295223f0ed5f20b2fe1f31e02ae0aa8103868f11cdada0177c"
+  },
+  "fixture": {
+    "bytes": 140922233,
+    "sha256": "cd5b778644222d68e391fcbbe3c4845c6872cab92b7726d85437e7720590fdee",
+    "durationSeconds": 800,
+    "losslessPcmReference": true,
+    "decodedPcmSha256": "0a7c4781b220b2d06fc42201618bdce6ea12ccce9fd6ed570de999baafe4e7ff",
+    "probe": {
+      "streams": [
+        {
+          "index": 0,
+          "codec_name": "alac",
+          "codec_long_name": "ALAC (Apple Lossless Audio Codec)",
+          "codec_type": "audio",
+          "codec_tag_string": "alac",
+          "codec_tag": "0x63616c61",
+          "sample_fmt": "s16p",
+          "sample_rate": "48000",
+          "channels": 2,
+          "channel_layout": "stereo",
+          "bits_per_sample": 0,
+          "initial_padding": 0,
+          "id": "0x1",
+          "r_frame_rate": "0/0",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/48000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 38400000,
+          "duration": "800.000000",
+          "bit_rate": "1408830",
+          "bits_per_raw_sample": "16",
+          "nb_frames": "9375",
+          "extradata_size": 36,
+          "disposition": {
+            "default": 1,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 0,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          },
+          "tags": {
+            "language": "eng",
+            "handler_name": "SoundHandler"
+          }
+        },
+        {
+          "index": 1,
+          "codec_name": "png",
+          "codec_long_name": "PNG (Portable Network Graphics) image",
+          "codec_type": "video",
+          "codec_tag_string": "[0][0][0][0]",
+          "codec_tag": "0x0000",
+          "width": 64,
+          "height": 64,
+          "coded_width": 64,
+          "coded_height": 64,
+          "has_b_frames": 0,
+          "sample_aspect_ratio": "1:1",
+          "display_aspect_ratio": "1:1",
+          "pix_fmt": "rgb24",
+          "level": -99,
+          "color_range": "pc",
+          "color_space": "gbr",
+          "refs": 1,
+          "id": "0x0",
+          "r_frame_rate": "90000/1",
+          "avg_frame_rate": "0/0",
+          "time_base": "1/90000",
+          "start_pts": 0,
+          "start_time": "0.000000",
+          "duration_ts": 72000000,
+          "duration": "800.000000",
+          "disposition": {
+            "default": 0,
+            "dub": 0,
+            "original": 0,
+            "comment": 0,
+            "lyrics": 0,
+            "karaoke": 0,
+            "forced": 0,
+            "hearing_impaired": 0,
+            "visual_impaired": 0,
+            "clean_effects": 0,
+            "attached_pic": 1,
+            "timed_thumbnails": 0,
+            "non_diegetic": 0,
+            "captions": 0,
+            "descriptions": 0,
+            "metadata": 0,
+            "dependent": 0,
+            "still_image": 0,
+            "multilayer": 0
+          }
+        }
+      ],
+      "format": {
+        "filename": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-stress-BF2uQo\\large-artwork.m4a",
+        "nb_streams": 2,
+        "nb_programs": 0,
+        "nb_stream_groups": 0,
+        "format_name": "mov,mp4,m4a,3gp,3g2,mj2",
+        "format_long_name": "QuickTime / MOV",
+        "start_time": "0.000000",
+        "duration": "800.000000",
+        "size": "140922233",
+        "bit_rate": "1409222",
+        "probe_score": 100,
+        "tags": {
+          "major_brand": "M4A ",
+          "minor_version": "512",
+          "compatible_brands": "M4A isomiso2",
+          "title": "Within deterministic ALAC stress fixture",
+          "artist": "Émile / कलाकार",
+          "album": "Album naïf",
+          "date": "2026",
+          "comment": "αβγ & <texte>",
+          "genre": "Essai",
+          "track": "3/9"
+        }
+      }
+    },
+    "artwork": {
+      "codec": "png",
+      "width": 64,
+      "height": 64,
+      "bytes": 178,
+      "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    "expectedTags": {
+      "title": "Within deterministic ALAC stress fixture",
+      "artist": "Émile / कलाकार",
+      "album": "Album naïf",
+      "genre": "Essai",
+      "date": "2026",
+      "track": "3/9",
+      "comment": "αβγ & <texte>",
+      "author": "Émile / कलाकार"
+    }
+  },
+  "host": {
+    "acquiredAt": "2026-10-10T08:11:03.1768415Z",
+    "freePhysicalBytes": 5387005952,
+    "freeVirtualBytes": 7121825792,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskBytes": 1511628238848,
+  "recipeBaseSha256": "b4ab56636eb381df7eeae9f18a28db8a8301c4f20b0e0f9a106b7eb0bad1965c",
+  "recipeGeneratedSha256": "919ee8fb2ef98793a0129869ef249ef303b29afa74e9852e888336710736e361",
+  "executedSource": {
+    "path": "outputs/reports/2026-10-10T08-11-02-597Z-aiff-id3-sync-opfs-executed-source.mjs.gz",
+    "bytes": 44007,
+    "sha256": "9ec54dc13cc24f48405cd90dc47540c99bf9922d8cb94eedb5036b2244a164c9",
+    "restoredBytes": 225114,
+    "restoredSha256": "919ee8fb2ef98793a0129869ef249ef303b29afa74e9852e888336710736e361"
+  },
+  "retainedReports": [],
+  "reportSummary": null,
+  "helperProof": null,
+  "runner": {
+    "identity": {
+      "pid": 36824,
+      "parentPid": 6856,
+      "createdAt": "2026-10-10T08:11:07.2833170Z"
+    },
+    "absence": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 36824,
+        "parentPid": 6856,
+        "createdAt": "2026-10-10T08:11:07.2833170Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-10T08:11:08.165Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 381,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  },
+  "assetsRestored": true,
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\aiff-id3-stress-BF2uQo",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalRead": false,
+  "browserMode": "headless",
+  "subprocessWindowsHidden": true,
+  "nativeToolsOnlyFixturesAndValidation": true,
+  "noDocker": true,
+  "publicAcceptance": false,
+  "multiGigabyteScalingAcceptance": false,
+  "speedImprovementProven": false
+}

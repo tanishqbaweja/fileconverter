@@ -1,0 +1,176 @@
+{
+  "recordedAt": "2026-10-10T08:14:59.636Z",
+  "terminalPath": "evidence/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-stress.json",
+  "terminalSha256": "4b79879aaff2df2e3194cfd514b079994ca1e58ce9937b2d40b3a601ae96138f",
+  "rawReport": {
+    "path": "outputs/reports/2026-10-10T08-12-27-536Z-aiff-id3-sync-opfs-2026-10-10T08-13-09-020Z-m4a-to-aiff-stress-native-100ms-failure.json.gz",
+    "bytes": 10475,
+    "sha256": "b192608550bb00a123c6d7f9ac873871ea7a29a9db0d6d5a6eccf2faab3c8231",
+    "restoredBytes": 216985,
+    "restoredSha256": "f51136f5d9e32343ff23e5aab408bf22ce678f9f94ea761f40eb48769b3c0aaf"
+  },
+  "status": "exact-stress-blank-baseline-failure-analyzed-no-conversion",
+  "sourceSha256": "d918d9e60f2c53efc91641dd3ecbf73c405804827a1d02da79ff12e0136e810b",
+  "sampleCount": 19,
+  "minimumElapsedMs": 8000,
+  "stabilityRelativeSpreadLimit": 0.02,
+  "elapsedMs": 29715,
+  "lastFiveMedianBytes": 254042112,
+  "lastFiveSpreadBytes": 19922944,
+  "lastFiveAllowedSpreadBytes": 5080842.24,
+  "stableWindowResult": null,
+  "blankSamples": [
+    {
+      "timestamp": "2026-10-10T08:12:37.388Z",
+      "elapsedMs": 4695,
+      "privateBytes": 279474176,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:39.108Z",
+      "elapsedMs": 6415,
+      "privateBytes": 285650944,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:40.847Z",
+      "elapsedMs": 8154,
+      "privateBytes": 286175232,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:42.817Z",
+      "elapsedMs": 10124,
+      "privateBytes": 286261248,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:44.517Z",
+      "elapsedMs": 11824,
+      "privateBytes": 286380032,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:46.268Z",
+      "elapsedMs": 13575,
+      "privateBytes": 272056320,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:47.957Z",
+      "elapsedMs": 15264,
+      "privateBytes": 272060416,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:49.547Z",
+      "elapsedMs": 16854,
+      "privateBytes": 272064512,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:51.066Z",
+      "elapsedMs": 18373,
+      "privateBytes": 272064512,
+      "processCount": 10,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:52.638Z",
+      "elapsedMs": 19945,
+      "privateBytes": 254001152,
+      "processCount": 9,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:54.194Z",
+      "elapsedMs": 21501,
+      "privateBytes": 254001152,
+      "processCount": 9,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:55.764Z",
+      "elapsedMs": 23071,
+      "privateBytes": 254001152,
+      "processCount": 9,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:57.477Z",
+      "elapsedMs": 24784,
+      "privateBytes": 267517952,
+      "processCount": 13,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:12:59.024Z",
+      "elapsedMs": 26331,
+      "privateBytes": 267538432,
+      "processCount": 13,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:13:00.695Z",
+      "elapsedMs": 28002,
+      "privateBytes": 267546624,
+      "processCount": 13,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:13:02.263Z",
+      "elapsedMs": 29570,
+      "privateBytes": 254038016,
+      "processCount": 9,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:13:04.111Z",
+      "elapsedMs": 31418,
+      "privateBytes": 254042112,
+      "processCount": 9,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:13:05.604Z",
+      "elapsedMs": 32911,
+      "privateBytes": 255131648,
+      "processCount": 11,
+      "unavailable": null
+    },
+    {
+      "timestamp": "2026-10-10T08:13:07.103Z",
+      "elapsedMs": 34410,
+      "privateBytes": 247623680,
+      "processCount": 9,
+      "unavailable": null
+    }
+  ],
+  "nativePhases": [
+    {
+      "phase": "blank-baseline",
+      "valid": 294,
+      "unavailable": 0,
+      "peakPrivateBytes": 302145536,
+      "lastPrivateBytes": 247652352
+    },
+    {
+      "phase": "failure-1",
+      "valid": 8,
+      "unavailable": 0,
+      "peakPrivateBytes": 247918592,
+      "lastPrivateBytes": 247918592
+    }
+  ],
+  "helperBirthsAbsent": true,
+  "browserConversionsPerformed": 0,
+  "publicAcceptance": false
+}
