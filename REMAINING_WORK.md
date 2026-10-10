@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — One actual changed-observer full-original attempt LIVE
+
+Status: **Partially implemented**, no acceptance. Session79454 launched once
+from pushed+remote-verifiede71f38d after focused regressions and preparation.
+Actual live receipt18:57:41UTC; driver20152,parent6064,birth18:57:40.8532160UTC
+requeried18:58:17UTC, actual Chrome31100,parent20152,birth18:57:51.3424160UTC
+headless flag confirmed. All227 measured pins unchanged; fresh physical/virtual
+2GiB and disk32GiB guards pass before and after exact UI candidate build.
+Exact caller/driver/trace and227 preimages losslessly archived; prospective
+five-minute clean blank stabilization still underway. No completed output,
+final-copy success, independent fidelity/repeat/memory/scaling/speed pass.
+Active owned wrapper/profile/media/runtime remain needed inside repository;
+do not delete or claim cleaned before terminal. Poll SAME79454 and born driver,
+not a duplicate/timeout restart; no pinned-source edits/build/stager/GC/profiler.
+Receipt: evidence/2026-10-10T18-57-09-340Z-encoder-plane-staged-full-live.json;
+UI build: evidence/2026-10-10T18-57-09-340Z-progress-compositing-build.json.
+After actual terminal, independently analyze this changed derivative and prove
+finally cleanup. Additional clean session/~10GB scaling/identical-setting speed
+and every broader original requirement still pending/fullgoalACTIVE. No Docker;
+all automated browsers/headless helpers hidden, headed coverage not relabelled.
+
 ## 2026-10-11 — Stage-aware observer correction verified; full rerun pending
 
 Status: **Partially implemented**. Previous turn PROGRESS: actual terminal receipt

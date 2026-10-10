@@ -4,6 +4,27 @@ Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Changed observer full-original attempt actually launched once
+
+ONE actual session79454 from pushed+remote-verifiede71f38d. Live receipt
+evidence/2026-10-10T18-57-09-340Z-encoder-plane-staged-full-live.json records
+driver20152,parent6064,birth18:57:40.8532160UTC; actual CIM requery18:58:17UTC
+matches. Chrome31100,parent20152,birth18:57:51.3424160UTC actually has --headless;
+server12616 and native observer44588 also owned children, not unrelated windows.
+All227 measured source hashes rechecked unchanged. Actual fresh5,726,367,744B
+physical/8,579,444,736B virtual; after UI build6,024,048,640B physical/
+8,476,557,312B virtual;1,486,426,529,792B disk. Same original guard thresholds.
+UI build PASS/exact historical asset+CSS. Actual executed caller/driver/trace and
+227 preimages retained in1,043,202B gzip SHA46a0098afb97a9973544e0cec83d542647cc6c97bf15082baa11d5587c2a480c;
+restores4,797,078B SHA6cbec94514b4414295efab8caae5f9e5f3170dba61f1ef3d810a6a98276108b8.
+Prospective five-minute blank stabilization underway; no full conversion completed,
+no actual final-copy success/independent validation/memory acceptance claimed.
+Owned active wrapper work/encoder-plane-staged-full-wrapper-lq4MsV and fresh
+profile/runtime/output stay repository-local and must NOT be swept while live.
+Poll SAME79454/recorded identities; no timeout restart/concurrent browser/build/
+stager/pinned-source edit/forced GC/profiler/Docker/public promotion. Whole goal
+ACTIVE; three full validated repeats/clean session/scaling/speed/broader scope open.
+
 ## 2026-10-11 — Stage-aware full-video observer prepared and regression-tested
 
 Previous turn is PROGRESS: recorded actual terminal failure, verified cleanup and
