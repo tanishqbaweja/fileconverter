@@ -4,6 +4,53 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Private4Mbps full caller/stager/driver integrated; actual preparation passed
+
+Previous cycle PROGRESS: strict actual clock-window audit and prospective numeric
+SSIM capture, pushed3652492. This cycle adds independent files, preserving every
+old measured source. EXACT two bitrate/audit edits match the actual short4Mbps
+recipe; same engine/geometry/FPS/q4/20/one-thread/defaultGOP/I/O/abort observer.
+Full driver checks actual native configuration after open, one record per run,
+three-record cap, settings saved before assertions. Numeric bounded/null SSIM
+retained before unchanged0.98 gate. New full identities cannot overwrite old
+clock receipts or source archives. No native converter, Docker or visible windows.
+
+New caller verifies hash-bound control/candidate identical-input comparison,
+78/78actual current/preimage sources,79-source same-page production-worker recovery,
+their compressed raw/source/helper records, and15-source independent clock audit.
+All249historical full source hashes reverify and remain included. Qualification
+data retain their own archived provenance separately from actual full runtime pins.
+All old failure/ownership/host/disk/memory/fidelity/three-run/cleanup gates retained.
+Actual private adapter20047B/SHA81ea465cb26a839fed9ae4b25223e42a19d0486023cd443ff34126ed3a3eb2a7;
+old18330B observer adapter checked before editing, restores reversibly.
+
+Initial static failures: stager path occurred4times rather than assumed3;
+replace-all reversal also changed the newly inserted source path, fixed by editing
+before adding source declarations. Historical successful cleanup has no errors
+field, so retained original !errors?.length gate rather than requiring nonexistent
+[] data. Test literal corrected to original full1MiB queue bound (measured short
+queue512KiB), and quoted JSON deadline field. None caused a conversion or weakened
+an acceptance threshold. Final focused33tests PASS2153.5001ms; four-file ESLint PASS.
+Existing bounded graph/sample histories with three simulated summaries fit32MiB
+report cap; synthetic report-size check is NOT runtime/memory acceptance.
+
+Actual --prepare-only exit0:
+evidence/2026-10-11T08-22-10-381Z-encoder-plane-bitrate-original-full-preparation.json.
+256actual source pre/post pins including all249old+7new; source archive gzip1228431B
+SHA bd88e58fef40d5562453b01130a3357433d896de9af14809c544376f0e1f77e9,
+restored5303653B SHA4c8c2eac1e48a3562112f942a17d7008825683665bf21815921b6b01a855ecdc.
+Unchanged8MiB archive/256sources/32MiB raw/250MiB/3runs/6h per run/0.98/0.001s gates.
+Free physical10.76GB/free virtual6.97GB, disk2.338TB; safety checks pass unchanged.
+ZERO browsers/conversions; owned preparation/wrapper scratch absent, normal assets
+preserved. Independent current whole test.mkv rehash2958573265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+
+Still no actual full4Mbps conversion/acceptance or speed gain. Next meaningful
+changed full test retains3runs; historical2Mbps ~2h18m conversion plus validation
+suggests roughly9hours total if all three pass. Use actual interruptible ETA sleeps,
+not repeated agent polling. Required in-driver native100ms memory acquisition and
+bounded progress/backpressure checks remain active; no monitoring gates disabled.
+All broader original-spec missing/partial work and public acceptance remain open.
+
 ## 2026-10-11 — Strict clock full-terminal audit executed; bounded full SSIM capture ready
 
 Previous turn PROGRESS: real4Mbps full-geometry write-failure/cancel and same-page

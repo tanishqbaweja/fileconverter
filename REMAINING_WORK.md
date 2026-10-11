@@ -5,6 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Qualified4Mbps full runner integrated and prepared
+
+Status: **Partially implemented**. New additive caller, stager and full driver use
+EXACTLY the short-qualified bitrate/audit edits. Original failure observer retained;
+native-open actual settings audited once per run, bounded to three records. Full
+numeric SSIM diagnostic retained before unchanged0.98 assertion. No public route,
+engine binary, geometry, FPS, quantizers, thread count, memory denominator, repeat
+count, six-hour per-run deadline, output bridge or cleanup threshold changed.
+
+Actual preparation08:22:10 launches ZERO browsers/conversions, verifies all
+256runtime/current/preimage sources (all249historical pins preserved), plus separate
+hash-bound78/78/79-source short/control/recovery prerequisites and15-source clock
+terminal audit. Source archive5303653B restored,1228431B gzip, below unchanged8MiB
+cap. Original18330B abort adapter is checked before the two edits; new20047B adapter
+SHA81ea465cb26a839fed9ae4b25223e42a19d0486023cd443ff34126ed3a3eb2a7.
+Host and32GiB disk preflight pass; preparation scratch finally removed/normal
+production assets preserved. Protected full original rehashed unchanged.
+
+33focused regressions PASS2153.5001ms; four-file ESLint PASS. Initial exact-edit
+count/order and test-source spelling errors caught before browser launch and
+corrected; no gates weakened. Three-run report-size simulation passes unchanged
+32MiB cap but is NOT browser evidence. Preparation receipt:
+evidence/2026-10-11T08-22-10-381Z-encoder-plane-bitrate-original-full-preparation.json.
+
+Still missing: actual4Mbps full-original quality/memory/repeat qualification,
+independent terminal audit, additional clean session, scaling, speed comparison
+and every broader missing/partial requirement below. Old2Mbps full quality failure
+remains failed with unknown numeric score; no historical output retroaccepted.
+
 ## 2026-10-11 — Clock-specific full terminal audit verified; full numeric SSIM capture implemented
 
 Status: **Partially implemented**. Executed strict clock terminal audit preserving
