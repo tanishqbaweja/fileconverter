@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-11T12:33:59.798Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "38138821153",
+  "proofSha256": "42ed9ef4d44b1d8ed8355baec48d011714e7adb7bf56d23e7321f00875008298",
+  "artifactBefore": {
+    "id": 11701533647,
+    "node_id": "MDg6QXJ0aWZhY3QxMTcwMTUzMzY0Nw==",
+    "name": "private-mpeg2-aligned-reuse-38138821153",
+    "size_in_bytes": 2367243,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11701533647",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11701533647/zip",
+    "expired": false,
+    "digest": "sha256:f131aae0d1df66a2e902fd1d0ed90058c9b639927986477fdce9a7f55c7eff34",
+    "created_at": "2026-10-11T12:28:09Z",
+    "updated_at": "2026-10-11T12:28:09Z",
+    "expires_at": "2026-10-12T12:28:08Z",
+    "workflow_run": {
+      "id": 38138821153,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-allocation-attempt-20261011-binding-fix",
+      "head_sha": "ee27c56b37f713c4e820d81fd7d18b9a470fef0a"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-allocation-attempt-38138821153",
+  "localToolBytes": 9634350,
+  "recoverability": "Verified reusable local tools remain; no user files or converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

@@ -41,6 +41,22 @@ Corrected native control passed nine cases with exact changed source retained
 separately at `evidence/2026-10-11T12-17-46-137Z-allocation-attempt-native-control.json`;
 15/15 focused correction tests and five-file zero-warning lint passed. This
 remains native synthetic qualification only, not a Wasm/browser pass.
+Changed hosted build38138821153 queued12:19:27UTC on source-bound binding-fix
+branch ee27c56b..., with separate launch/branch receipts. Estimated630-second
+wait before one terminal check; actual compilation/browser result still pending.
+Superseding actual terminal: **38138821153 passed** in524 seconds; source-bound
+collector also passed, fixed32+16MiB and actual nine-case Wasm constructor/dispatch
+tests qualified. Exact build/collector/cleanup receipts retained. Verified small
+9,634,350B tool slot is purposefully repo-local for next browser qualification;
+temporary downloads/profiles/scratch gone, disposable remote artifact deleted
+and refreshed count0. One actual630.1097-second ETA sleep preceded one terminal
+check; no repeated polling or media conversions. Source/body layout and REAL
+browser native-fatal capture still next. Original full-video failure/fix, quality,
+250MiB repeat/scaling acceptance and speed remain unproven. Broad goal ACTIVE.
+Final focused gate23/23 passed (3,156.5895 ms), new cleanup/evidence-test
+zero-warning lint/whitespace passed; prior256/19/38 source joins intact. No live
+conversion/browser/build/collector remains at this checkpoint. Safe next step is
+qualifying the actual new module's failure slot in a headless browser control.
 
 ## 2026-10-11 — Direct-buffer control qualified; original-video fix still pending
 

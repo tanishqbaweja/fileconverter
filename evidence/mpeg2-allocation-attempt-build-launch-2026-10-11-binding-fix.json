@@ -1,0 +1,23 @@
+{
+  "status": "actual-changed-hosted-build-queued-not-terminal-or-browser-acceptance",
+  "createdAt": "2026-10-11T12:19:27Z",
+  "runId": 38138821153,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38138821153",
+  "headSha": "ee27c56b37f713c4e820d81fd7d18b9a470fef0a",
+  "branch": "codex/mpeg2-allocation-attempt-20261011-binding-fix",
+  "branchProof": "evidence/mpeg2-allocation-attempt-build-branch-2026-10-11-binding-fix.json",
+  "workflow": "reproduce-ffmpeg-nondocker.yml",
+  "core": "within-mpeg2-aligned-reuse",
+  "observedStatus": "queued",
+  "conclusion": null,
+  "changedReason": "Compiler-only EM_ASM binding witness replaced with EM_JS; allocator and nine dispatch/failure assertions unchanged",
+  "previousFailedRunPreserved": 38137796983,
+  "previousComparableSuccessfulRun": 37986418102,
+  "previousComparableJobSeconds": 567,
+  "estimatedWaitMilliseconds": 630000,
+  "timerCompletionMustBeObservedSeparately": true,
+  "browserConversionsPerformed": 0,
+  "protectedSourceRead": false,
+  "noDocker": true,
+  "publicAcceptance": false
+}

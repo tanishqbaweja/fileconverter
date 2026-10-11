@@ -68,6 +68,43 @@ Final changed-source/evidence combined regression passed **20/20** in
 479.0544 ms; final changed-test zero-warning lint passed5.868 seconds and
 whitespace checks passed. Historical failing preimages, corrected current13,
 actual-control38 and full256/terminal19 current pins all remain verified.
+Changed build job38138821153 actually queued12:19:27UTC against isolated commit
+ee27c56b37f713c4e820d81fd7d18b9a470fef0a. Binding-fix branch/launch receipts are
+separate from first failed attempt. One estimated630-second interruptible wait
+uses previous successful matching567-second build, not the224-second failure.
+No full video, newbrowser or production runtime acceptance at launch.
+
+Superseding actual terminal: corrected **38138821153 PASSED** in524 seconds
+(12:19:30–12:28:14UTC), including actual Wasm32 nine-case dispatch/constructor
+binding plus unchanged200,000-reuse/one-idle/lifetime controls. ONE actual
+630.1097-second interruptible ETA sleep then ONE terminal check. Collector
+session94226 finishedexit0 after one30.0231-second wait; session is CLOSED.
+Exact source/workflow/run/artifact/module/lifecycle/fixed-memory gates passed:
+`evidence/mpeg2-allocation-attempt-build-38138821153.json` and
+`evidence/mpeg2-allocation-attempt-collector-38138821153.json` retain actual
+manifest, generated collector/preimages and cleanup. Decoder6,904,593B
+SHA9ce862602f8db5e61f5047e4ecdccea1d8f7e8c98452fb486a95befeeb558039;
+encoder remains byte-exact original8b2fd64d...4242, not the newer plane candidate.
+Imported shared Wasm memory remains fixed512+256pages (32+16MiB). New64-byte
+attempt slot/constructor import actually linked; allocator/codec/heap admission
+unchanged and actual full-original request/cause remain unknown.
+
+Hosted job scratch and local download/collector runtimes removed. Verified
+9,634,350-byte reusable tool slot remains ONLY at
+`work/mpeg2-allocation-attempt-38138821153` for imminent browser qualification;
+remove when superseded. Source-bound disposable remote artifact11701533647
+(2,367,243B) deleted after local SHA verification; refreshed remote artifact
+count0. Cleanup proof:
+`evidence/mpeg2-allocation-attempt-hosted-cleanup-38138821153.json`.
+No browser/media conversion/original read/converted copies/public profile change.
+Next: new exact-binary slot/layout and REAL headless native-fatal control, then
+use the measured attempt/free state to select a concrete original-video fix.
+Wasm synthetic qualification is not speed/fidelity/250MiB/full-video acceptance.
+Final actual-build evidence + native/recipe/history regression **23/23 passed**
+in3,156.5895 ms; new cleanup/evidence-test zero-warning lint and whitespace check
+passed. Actual collector/lint sessions94226/87947 are CLOSED; no conversion or
+browser is live. New receipt/source/current joins and all prior256/19/38 pins
+remain intact. Goal remains ACTIVE/incomplete, not blocked or achieved.
 
 ## 2026-10-11 — Actual direct-buffer failure control passed; ETA-based watching
 
