@@ -6,6 +6,40 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-11 — Real headless native allocation-request capture qualified
 
+New decoder+plane-encoder MEDIA qualification passed3/3 actual browser cases
+in1.4min: normal96-frame1920x804 HEVC→MPEG2 MP4 and SAME-PAGE validated recovery
+after genuine write failure and cancellation, using production replacement
+workers without reload. Receipt
+`evidence/2026-10-11T13-23-21-737Z-allocation-attempt-media.json` (SHAb0f8fe79...).
+All3 outputSHAs554cc841.../2,245,558B match, ordinal SSIM0.983095 passes unchanged
+0.98; timestamp-aligned0.966841 is diagnostic only. Full independent decode,
+2audio packet/decoded-content hashes, artwork/titles/metadata/timing passed.
+Native configurations4Mbps/1920x804/24fps/q4:20 and fixed32+16MiB verified.
+Actual64KiB reads/512KiB writes+queue/one pending/final0/scratch0; this selected
+destination MP4 route uses bounded disk-backed staging+512KiB transfer, not
+native direct-to-destination AVIO. No full-output memory copies or native
+converter substitute. Native tools generated deterministic fixtures/validated.
+
+All136 current/pre/post/source joins retained in423,863B gzip/2,014,543B restored
+archive; raw681,342B report retained in47,207B gzip. Protected original whole
+bytes/SHA31f36695... match before/after, fixture4,457,906B SHA6de34df2... matches
+before/after each conversion. All disposable media, fixture/tool/profile/runtime
+data removed; stock UI/CSS/engines restored/private additions absent, server and
+runner birth identities absent. Three whole-tree diagnostic sample groups use
+NON-STABILIZED baselines and do NOT certify250MiB full acceptance. Conversion
+times3.259105/3.0475/3.32895s are not a proven speedup. First5/5unit checks/scoped
+lint and later8/8actual evidence+old256/19 checks passed. No developmental browser
+failure or retry occurred. Live session22737 CLOSED; ONE60.027s estimated sleep
+then ONEterminal check, not repeated agent polling. Broad goal still incomplete.
+Historic256/new136 union299 has43 additive files/no hash conflicts; bounded
+segmented full-source archive, new-core original diagnostic and actual allocation
+fix remain next. No public selector or acceptance claim changed.
+Final **26/26** focused checks passed869.7708ms; five-file zero-warning lint
+passed7.604s/whitespace passed. Redundant681342B raw report deleted ONLY after
+exact recoverable47,207B gzip validation; independent post-retention receipt
+`evidence/2026-10-11T13-23-21-737Z-allocation-attempt-media-retention.json`
+records this, without rewriting the measured historical receipt/source pins.
+
 Composite integration now passed one real headless SYNTHETIC native fatal in
 5.249 seconds, with source-bound receipts
 `evidence/2026-10-11T13-10-58-221Z-composite-allocation-abort-control.json` and

@@ -1,0 +1,24 @@
+{
+  "scope": "Independent post-validation raw-report compaction, not new conversion or acceptance",
+  "proof": {
+    "path": "evidence/2026-10-11T13-23-21-737Z-allocation-attempt-media.json",
+    "sha256": "b0f8fe797130a82f0b53444aa901c6cc07dc080e6c1e2b4f30d29decef20bc3b"
+  },
+  "rawReport": {
+    "path": "output/playwright/2026-10-11T13-23-32.879Z-allocation-attempt-media-vQEEDF-direct-artwork.json",
+    "bytes": 681342,
+    "sha256": "d32be9056ec3e7c5e297553a14b448136a66f77f0494965b1fdc7ea76a13c53f",
+    "removedAfterArchiveValidation": true
+  },
+  "retainedArchive": {
+    "path": "outputs/reports/2026-10-11T13-23-21-737Z-allocation-attempt-media-golden-report.json.gz",
+    "bytes": 47207,
+    "sha256": "89af87b11dae73a2ae35bb565b8aa550f73b4459020885c26b413ce8f321b5bd",
+    "restoredBytes": 681342,
+    "restoredSha256": "d32be9056ec3e7c5e297553a14b448136a66f77f0494965b1fdc7ea76a13c53f"
+  },
+  "removedFiles": 1,
+  "exactRawBytesRecoverableFromArchive": true,
+  "historicalReceiptUnmodified": true,
+  "noMediaOrProtectedInputDeleted": true
+}

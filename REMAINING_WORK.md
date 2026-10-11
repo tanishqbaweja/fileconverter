@@ -7,6 +7,40 @@ not the entire product specification.
 
 ## 2026-10-11 — Native request/phase observer browser qualification passed
 
+Superseding media qualification (still **Partially implemented**): actual new
+decoder9ce86260... plus plane encodera4ba6225... completed3 genuine96-frame
+1920x804 HEVC→MPEG2 browser conversions, including same-page replacement-worker
+recovery after write failure and cancellation. Actual receipt
+`evidence/2026-10-11T13-23-21-737Z-allocation-attempt-media.json`; all3 outputs
+2,245,558B/SHA554cc841... identical, SSIM0.983095≥0.98; full decode, copied/decoded
+two-track audio, artwork, titles/metadata and≤0.001s timeline gates passed.
+Selected-destination MP4 profile honestly uses bounded disk-backed OPFS staging
+and512KiB transfer, NOT native direct destination AVIO. Read64KiB/write+queue
+512KiB/one pending/fixed32+16MiB, final queues/pending/scratch0. Native bytewise
+component/build provenance and current composite adapter retained.
+
+All136 executed/current/pre/post/source bytes archived (423863B gzip/2014543B
+restored) within unchanged8MiB source/2MiB raw-report limits. Actual source fixture
+4,457,906B SHA6de34df2... unchanged; protected original2,958,573,265B whole SHA
+31f36695... verified before AND after. Stock UI/CSS/six engines restored, private
+additions and generated fixture/output/tool/profile scratch removed; owned
+server/runner identities absent. Short non-stabilized process samples do NOT
+prove250MiB primary acceptance. No speedup claimed (3.259/3.048/3.329s conversions).
+Suite3/3passed in1.4min, same verified session22737 checked ONCE after requested
+60.027s interruptible ETA sleep; handle now CLOSED. No expensive unchanged rerun.
+
+First scoped5/5 units and four-file lint passed; actual witness8/8 later passed,
+including old256/19 integrity. Historic256+new136 source union is299,43 additive
+files andZERO conflicting pins. Next full integration must retain the original
+256 archive byte-exact PLUS an explicitly bounded/hash-joined additive layer;
+do not silently discard sources or relax conversion limits. Protected original
+failed allocation/cause/fix, full fidelity/repeat/250MiB/scaling/speed and all
+other broad requirements remain unverified. No route is added to public UI.
+Final **26/26** focused unit/evidence/source/retention checks passed869.7708ms;
+five-file zero-warning lint passed7.604s, whitespace passed. Removed ONLY the
+redundant681342B raw report after exact47,207B gzip restore/hash validation;
+post-retention receipt preserves original history and byte-exact recovery.
+
 Superseding integration (still **Partially implemented**): one composite observer
 now handles the current direct-AVBuffer and pool-get paths with a single bounded
 failure stack/header walk. Original measured4Mbps adapter reverses byte-exactly
