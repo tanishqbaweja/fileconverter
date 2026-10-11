@@ -29,6 +29,12 @@ corrected; no gates weakened. Three-run report-size simulation passes unchanged
 32MiB cap but is NOT browser evidence. Preparation receipt:
 evidence/2026-10-11T08-22-10-381Z-encoder-plane-bitrate-original-full-preparation.json.
 
+One actual changed full attempt now launched08:24:52UTC, driver38196/parent31676,
+birth2026-10-11T08:24:52.3050800Z. Live receipt08:24:12-bitrate-full-live.json;
+session83763.256actual source preimages/current pins archived losslessly, exact UI
+asset/CSS retained. Terminal evidence is PENDING, not acceptance. Required internal
+100ms native sampler remains active; agent waits use conversion ETA sleeps.
+
 Still missing: actual4Mbps full-original quality/memory/repeat qualification,
 independent terminal audit, additional clean session, scaling, speed comparison
 and every broader missing/partial requirement below. Old2Mbps full quality failure

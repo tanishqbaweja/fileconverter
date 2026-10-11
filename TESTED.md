@@ -51,6 +51,17 @@ not repeated agent polling. Required in-driver native100ms memory acquisition an
 bounded progress/backpressure checks remain active; no monitoring gates disabled.
 All broader original-spec missing/partial work and public acceptance remain open.
 
+ACTUAL long test launched once, session83763, driver38196/parent31676/birth
+2026-10-11T08:24:52.3050800Z; wrapperwork/encoder-plane-bitrate-full-wrapper-rXdq3i.
+Live receipt evidence/2026-10-11T08-24-12-696Z-encoder-plane-bitrate-full-live.json.
+Live source archive1228433B SHA5f7a38ea4d225151da828e9aab72351ac5faa0dd11ee0ddeb566945fef3c2dd1,
+restored5303653B SHAd9dfccb8e628a65d35e37b3267f54f257b6227eb953d085313a6d1a2c2e8091b,
+driverSHAb9e05e13f3d3d47eb02d3589d1e40cc2e5bae62d54c1c6c6ca2dd8b205f0cfe2.
+All256preimages verified, no measured source edited during run. Private exact
+progress UI315645B andCSS26354B archives retained/hash-bound build proof. Both
+ledgers are outside measured source pins. Actual terminal result still PENDING;
+live receipt is not completion or acceptance. No restart on missing observations.
+
 ## 2026-10-11 — Strict clock full-terminal audit executed; bounded full SSIM capture ready
 
 Previous turn PROGRESS: real4Mbps full-geometry write-failure/cancel and same-page
