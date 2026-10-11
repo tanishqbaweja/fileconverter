@@ -1,0 +1,11 @@
+{
+  "proofPath": "evidence/2026-10-11T07-51-01-110Z-encoder-plane-recovery-diagnostic.json",
+  "proofSha256": "e55ef0c3b33970469494104596d7d0a4b3b51bd2fd425f0c9f380627a842a2e2",
+  "rawPath": "output/playwright/2026-10-11T07-51-06.629Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+  "bytes": 460801,
+  "sha256": "da259e724186584a2f0ab095c0be491ce2e54e95974e96de90b166beaabd1fee",
+  "recoverableFrom": "outputs/reports/2026-10-11T07-51-01-110Z-encoder-plane-recovery-golden-report.json.gz",
+  "removedAfterLosslessVerification": true,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false
+}

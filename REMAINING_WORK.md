@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 —4Mbps adverse cleanup and same-page worker replacement verified
+
+Status: **Partially implemented**. Actual private1920x804/24fps4Mbps browser
+write-failure and cancellation tests now include subsequent complete conversions
+on the SAME page without reload. Original worker deliberately retired/replaced by
+production cleanup; old worker objects absent and replacement recovery verified.
+Both independent recovered outputs2,245,558B/identical SHA, unchanged SSIM0.983095
+>=0.98; all audio/artwork/title/timing/metadata/full-decode assertions pass.
+Write failure after real512KiB write; cancellation after748166B/54encoded frames;
+partial outputs[]/scratch0/queues0/native closed. Fixed48MiB, reads<=64KiB,
+writes<=512KiB/one pending unchanged. Short memory is NOT250MiB acceptance.
+
+Initial assertion wrongly required a retained worker; actual failed receipt and
+two losslessly archived adverse reports remain failed/unaccepted. Source confirms
+intentional worker termination. Do not alter production to preserve workers.
+Oversized short trace not retained; bounded actual screenshot inspected (headless,
+not manual headed). Failed collector/trace-retention approach recorded in TESTED.
+
+Corrected07:51:01-recovery-diagnostic.json:2real cases PASS/~1minute, session74201
+closed/exit0. Source pre/post/current79pins and historical249full pins verified;
+protected whole size/SHA unchanged. All owned conversions/fixtures/profiles/
+scratch/helper identities finally absent, normal assets restored. Duplicate raw
+reports deleted recoverably after lossless/inode checks. One80s ETA sleep+one
+terminal check per attempt; no live timer/process.21 focused regressions PASS,
+six-file lint PASS; final compaction evidence join added. Detailed results/hashes
+and failed approaches in TESTED.md.
+Final evidence-join rerun21PASS/0failed/3334.5242ms; six-file lint rerun exit0;
+all11 compact retained artifacts hash/restoration verified before staging.
+
+Still missing: strict clock-specific full-terminal audit and full-driver numeric
+SSIM capture, original4Mbps/full-resolution qualification, three stress repeats,
+clean sessions/complete-tree memory/scaling/speed and varied-content coverage.
+The complete broader original requirement audit below remains authoritative;
+short recovery alone does not authorize publication or project completion.
+
 ## 2026-10-11 — Identical-input4Mbps candidate passes short quality control
 
 Status: **Partially implemented**. Existing native bitrate API now has a qualified

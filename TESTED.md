@@ -4,6 +4,83 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 —4Mbps full-geometry adverse cleanup and same-page recovery pass
+
+Previous turn PROGRESS: identical-input native bitrate-only comparison clears
+short quality gate0.983095, pushed ce862e8; no full/public acceptance inferred.
+This cycle qualifies write-failure/cancellation recovery through the SAME real
+production page, worker lifecycle, private codec adapter, AVIO and destinations.
+No protected-file/full-size rerun and no codec/public asset changes.
+
+Added recovery recipe reusing the exact validated4Mbps adapter and factoring the
+entire existing correctness callback without changing its independent assertions.
+After each adverse event the SAME page runs a complete96-frame1920x804/24fps
+HEVC->MPEG2 conversion with title/artwork/audio/timestamps/metadata/full decode
+and unchanged ordinalSSIM>=0.98. No page reload; production itself retires and
+replaces the worker. Both retired worker objects must be absent before/after
+recovery. Cancel fixture is now native-generated12-second1920x804 HEVC using
+the same seeded noise/codec options, still under16MiB; not protected-file content.
+
+Recorded failed approach: initial07:46:32 browser session26944,2failed/exit1,
+incorrectly required the worker to remain alive after terminal events. Both
+actual adverse checks passed before that invalid assertion; worker count0 is
+intentional, verified in ConverterApp.tsx replaceWorker/terminal message paths.
+Do NOT change production to retain a codec worker merely to pass the test.
+Inspected the retained actual first failure screenshot: Stopped safely, original
+destination error, zero queued bytes,48MiB Wasm. Headless screenshot inspection
+is NOT headed/manual certification. Playwright restarted its test worker after
+the unexpected assertion, creating two afterAll reports; no conversion retry.
+Collector's one-report expectation then failed, and trace exceeded unchanged8MiB
+retention bound. Original failure stays failed; scratch/assets/whole original
+restored. Compact failed collection07:46:32 retains BOTH raw adverse reports
+losslessly, plus the original generated-source version and bounded screenshot/
+context. Oversized trace was not retained. A proposed trace-retention source
+edit missed its exact target during preparation, exited before scratch/browser;
+removed rather than relaxing the cap. These approaches are recorded, not retried.
+
+Corrected lifecycle assertions preserve automatic worker replacement; config
+maxFailures1 stops further cases on unexpected failure, retries0 unchanged.
+Preparation07:50:54/0conversions cleaned. Actual corrected session74201 is CLOSED/
+exit0, TWO real browser cases PASS (~1minute). Receipt:
+evidence/2026-10-11T07-51-01-110Z-encoder-plane-recovery-diagnostic.json.
+Write failure rejected a real512KiB destination write after96 encoded frames;
+partial outputs[]/scratch0/queues0. Cancellation occurred with748166B genuine
+written output,54 encoded frames; native closure/no held packets/queues and
+partial outputs[]/scratch0. Both actual C encoder-context audits match4Mbps,
+1920x804/24fps/qmin4/qmax20, fixed32+16MiB/no growth and prior full-geometry config.
+
+Both same-page recovered outputs2,245,558B and identical SHA, ordinal0.983095/
+timestamp-aligned0.966841. Source4,457,906B SHA
+6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb,
+pre/post unchanged each recovery. Active elapsed3016.60ms/2943.885ms. These are
+short correctness/recovery observations, not speed improvement or full stress.
+Reads<=64KiB/writes<=512KiB/one pending/final0, fixed48MiB; whole-process short
+memory diagnostics do NOT certify stable-blank incremental250MiB compliance.
+Each confirmed-live browser run used one80s ETA sleep then ONE terminal check;
+no rapid agent polls. No live conversion/session/timer remains.
+
+21 focused/source/discovery/frozen-bitrate/SSIM/recovery/native-session checks
+PASS2357.6845ms; six-file zero-warning ESLint PASS8239.1425ms before final report
+compaction-join assertion.79 current actual source pre/post/archive hashes match;
+Final rerun including that join:21PASS/0failed/3334.5242ms; six-file lint final
+handle33069 CLOSED/exit0. All11 retained compact artifacts independently hash/
+restoration verified before staging. Verbatim hash-bound Playwright error-context
+contains four trailing-space code-frame lines; preserve its exact bytes, do not
+rewrite captured evidence. Staged whitespace check excludes ONLY that artifact.
+249 historical full-run current source pins independently reverified unchanged.
+Complete protected original size/SHA before/after both attempts unchanged.
+All own converted fixtures/output/profile/scratch/helper births finally absent;
+normal generated/published asset hashes restored. Compact source gzip164101B /
+SHA41f5b067f93de8f4d02ae9d821bf6c2e6bc69962459b460be6ba5063b6ffa855,
+raw gzip32904B/SHA65f2f96769a21cf990802d58c7809c7b627eb992594e136682bbfdb79f14b0c5.
+Duplicate raw460801B plus two failed raw25441B/27174B removed only after exact
+lossless archive/hash/realpath/inode verification, recoverable from compact gzip.
+
+Next: strict clock-specific full-terminal audit and numeric SSIM capture before
+a meaningful4Mbps full-original run; varied-content, three repeats/clean sessions,
+memory/scaling/speed and broader original scope remain incomplete. No public
+selector or fidelity/memory/cleanup thresholds changed.
+
 ## 2026-10-11 — Bitrate-only controlled browser candidate clears short quality gate
 
 Previous turn PROGRESS: bounded numeric SSIM diagnostic proved default settings

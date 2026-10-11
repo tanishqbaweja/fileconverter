@@ -1,0 +1,31 @@
+{
+  "proofPath": "evidence/2026-10-11T07-46-32-435Z-encoder-plane-recovery-diagnostic.json",
+  "proofSha256": "6b0e6025338e8b07ed6e5669499a531bdb59a76a858fe5a55d5548cb9792e8f0",
+  "reports": [
+    {
+      "originalPath": "output/playwright/2026-10-11T07-46-37.704Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+      "originalBytes": 25441,
+      "originalSha256": "fe231cf232f4c583b68d777db25a20c0ce58b87e61135bb3e11c8ed41823ea03",
+      "path": "outputs/reports/2026-10-11T07-46-32-435Z-encoder-plane-recovery-failed-worker-report-0.json.gz",
+      "bytes": 5901,
+      "sha256": "732774dfa20ba3a28131eae492e1694c9a0e2981d65f353ccf03f5208b072b1a",
+      "recoveredAdverseKind": "direct-write-failure",
+      "samePageRecoveryNotProven": true,
+      "duplicateRawRemovedAfterLosslessVerification": true
+    },
+    {
+      "originalPath": "output/playwright/2026-10-11T07-47-04.707Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+      "originalBytes": 27174,
+      "originalSha256": "2014f584e89ead5519efcb43d25dbd539d48dbd7c6247cc4858c4c22c18da18f",
+      "path": "outputs/reports/2026-10-11T07-46-32-435Z-encoder-plane-recovery-failed-worker-report-1.json.gz",
+      "bytes": 6594,
+      "sha256": "5390aa9c18eb9f64c9ecfd6a805bbdf7f2a8dfcfd01afa8494cf1c0947b14951",
+      "recoveredAdverseKind": "cancel-after-direct-output",
+      "samePageRecoveryNotProven": true,
+      "duplicateRawRemovedAfterLosslessVerification": true
+    }
+  ],
+  "reason": "Test incorrectly required retained worker; production deliberately terminates/replaces it after terminal jobs",
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false
+}
