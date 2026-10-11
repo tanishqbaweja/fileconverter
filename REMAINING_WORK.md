@@ -5,6 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Exact first-malloc capacity explained; changed bounded plane candidate pending build
+
+**Partially implemented**. Static inspection of actual417182a9…1014 preserves
+four original typed functions/fatal PCs; original failed399,383B first malloc
+requires399,392B chunk. Largest captured free chunk213,728B and even optimistic
+contiguous top+tail383,712B cannot fit it, despite2,591,184B aggregate free space.
+Fragmented free capacity for this failure is proven; why fragmentation arose
+and live allocation census remain unknown. Fatal frame call loads field84,
+source-informed FramePool.buffer_size[2] identification joined to exact executed
+C source910da629…ab4. No browser/media/original read during static analysis.
+All7 static and3 capacity current/pre/post/source preimages retained; tools,
+cache and owned scratch removed. See alignment16-malloc-static-executed-sources
+and alignment16-first-malloc-capacity2026-10-12 evidence.
+
+New PRIVATE source candidate reuses the actual byte-exact single-idle encoder
+pool primitive for only single-thread/nonpoisoned HEVC decoder planes: one idle
+entry per plane pool, final-unref only, zero complete padded buffer on every get.
+No live-reference/codec/size/padding/default-policy change. Four-byte private
+FramePool selector only; decoder heap remains32MiB. Get_buffer SHA79c74c19…f6e0
+reverses to910da629…ab4. Ten exact source preimages and7,964B source archive
+retained in hevc-plane-source-preflight2026-10-12. New actual native compilation,
+compiled80-selector/200000-reuse lifecycle, qualified new-binary observer and
+browser goldens/recovery/full repeat/memory/fidelity/speed all remain PENDING.
+Source preparation is not a fix or supported route. Do not repeat the failed
+4171 configuration unchanged or expose the candidate in the public UI. Next:
+wire/build decoder candidate and validate real Wasm lifetime before browser/full
+retest, keeping genuine a4b encoder and every original constraint. Other original
+partial requirements remain fully in scope; overall goal is not achieved.
+Final50/50focused regression and ten-file zero-warning JavaScript lint passed.
+Header/new Wasm lifecycle/browser/full fit remain unverified. No unchanged
+original conversion was rerun and no native FFmpeg converter was used.
+
 ## 2026-10-12 — Changed original test failed after3h08m; native allocation work remains
 
 **Partially implemented**. Actual new decoder417182a9…1014 + plane encoder

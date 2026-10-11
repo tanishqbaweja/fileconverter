@@ -4,6 +4,70 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Exact first-malloc capacity verified; bounded HEVC plane source candidate prepared
+
+Previous goal turn was progress: the actual changed3-hour original failure
+and late cleanup were independently audited/pushed. This cycle does NOT repeat
+the failed conversion. Actual decoder417182a9…1014 static inspection retains
+four original byte-exact typed bodies (709/2061/4436/4471), original fatal first
+malloc PC0x606d5f (second site0x606df9 is NOT the fatal site) and frame allocation
+PC0x11b20b. Analysis slices were never instantiated or used for media. Pinned
+WABT1.0.39/setup/cache/slice and both owned wrappers removed in finally; no
+protected-video read, converter-function execution, browser, Docker or conversion.
+Session32312 terminal0 after one60.029s ETA/check. Exact generated collector,
+all7 current/pre/post/source preimages and64,778B lossless selected-functions
+archive restoring729,798B retained in22-32-09-935Z alignment16-malloc-static and
+`evidence/alignment16-malloc-static-executed-sources-2026-10-12.json`.
+
+Actual399,383B first request normalizes via compiled(request+19)&-16 to399,392B.
+Captured largest free chunk213,728B is185,664B short. Even optimistic contiguous
+top170,720B+unclaimed tail212,992B=383,712B is15,680B short, despite2,591,184B
+total free space. Fragmented free capacity for THIS allocation is now proven;
+WHY the heap fragmented/live allocation census/any runtime fix remain unproven.
+Actual frame PC loads field84; reconstructed exact executed get_buffer source
+SHA910da629…ab4 joins FramePool.buffer_size[2] (third plane), explicitly a
+source-informed layout identification, no payload/heap copy or live-frame read.
+Three current/pre/post/source preimages retained in
+`evidence/alignment16-first-malloc-capacity-2026-10-12.json`. Historical failure
+and its original cause flags were not overwritten. Two capacity units PASS167.151ms
+and three-file zero-warning lint PASS9.594s before actual analysis terminal0.
+
+Private source candidate selects only single-thread HEVC decoder planes with
+memory poisoning off. At mostONE final-unreferenced idle entry per selected
+plane pool; complete padded buffers zeroed on EVERY acquisition; live refs,
+frame sizes/strides/padding, codec options and nonselected policies unchanged.
+Adds one4B private FramePool selector field, no public struct ABI change. The
+bounded pool primitive INCLUDING compiler-only factory prototype is BYTE-EXACT
+actual encoder libavutil source76fcae1c…81a, not a new untested cache algorithm.
+New decoder get_buffer sourceSHA79c74c19…f6e0 exactly reverses to910da629…ab4.
+All80 native selector cases and200,000-reuse/live-alias/uninit/error/zeroing smoke
+source cases retained in the prepared decoder derivative; they have NOT yet run
+against a new decoder build. Two source units PASS211.024ms.
+
+Source preparation terminal0 retains10 current/pre/post/source preimages and
+7,964B lossless archive restoring50,311B in
+`evidence/hevc-plane-source-preflight-2026-10-12.json`. ZERO new native build,
+compiled lifecycle, browser/whole-video conversion or speed/memory acceptance.
+Fixed32MiB decoder fit remains unknown; unchanged plane encoder a4b must remain
+separate. Next: wire private decoder build, run real Wasm lifetime contracts,
+new actual-binary observer controls and genuine fidelity/recovery qualification
+before any changed original retest. Public registry/UI/app/engines unchanged.
+
+Preparation guard caught the retained compiler-only factory prototype before
+source preparation; reverse/reapply that exact declaration instead of accepting
+the wrong upstream hash. ESLint rejected an explicitly supplied C header as
+unconfigured; final lint scopes JavaScript/tests, header compilation still pending.
+Two read-only filename guesses and PowerShell rg-glob arguments failed harmlessly;
+correct files were discovered with rg --files. No expensive conversion repeated
+or verification threshold weakened. Overall broad goal remains ACTIVE/incomplete.
+Final50/50focused regression PASS3,966.265ms, including actual new static7,
+capacity3, candidate10 and historical111/146/native53/source326/failure witnesses.
+All ten changed/new JavaScript/test files zero-warning lint PASS (session27441
+terminal0 after one30.037s ETA/check); C header compilation remains pending.
+Whitespace check passed. No active conversion/native build or retained disposable
+converted media created this turn. Only compact reports/reusable source archives
+retained; existing small qualified engine tools stay available for next build.
+
 ## 2026-10-12 — Changed full-original test FAILED later; exact OOM and late cleanup audited
 
 Session67733 is TERMINAL1 after one12,600.050s ETA timer and one same-handle
