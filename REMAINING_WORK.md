@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Full run terminal; observer works, SSIM check remains failed
+
+Status: **Partially implemented**. Actual10717.0193-second interruptible ETA sleep
+completed without agent conversion polls; one observation of SAME53643 returned
+TERMINAL/outer exit0. Collector/cleanup succeeded but candidate exited1/failed.
+No conversion/timer remains live; do not re-poll or restart this same run.
+
+Browser completed genuine HEVC1920x804 -> MPEG-2 Video1920x804, saved3337164038B
+in~2h18m03s. Independent pre-assertion FFprobe/title mappings retained; driver
+reached SSIM after earlier structure, timing, copied-audio and full-decode checks.
+SSIM >=0.98 assertion failed; actual numeric score/stderr not retained, so cause
+may be sub-threshold quality OR an invalid/missing parse. Neither is acceptance.
+IndependentValidation:null/0fully validated of3, no full/public/speed acceptance.
+Do NOT lower threshold or repeat unchanged multi-hour settings. Next: strict
+clock-specific terminal audit; retain bounded numeric/parser diagnostics before
+assertion, then focused genuine browser quality diagnosis at full original
+geometry/settings. Small fixture diagnosis does not replace full-original gates.
+
+Native clock fence was exercised50times, <=15.9389ms wait/1ms initial alignment,
+zero drops/rewrites/fence failures; native history/tracker96328same/error:null.
+Reported221.73828125MiB remains diagnostic until strict full audit; no public
+250MiB acceptance. Observer shut down automatically, all cleanup flags true/
+no errors. Large output/profile/runtime and own wrapper removed, source/normal
+assets restored, all249 measured pins unchanged, whole original postSHA unchanged.
+Five known process roles freshly absent with no manual kills. Terminal receipt
+03:53:11-clock-original-full-terminal.json and lossless514659B raw gzip retained;
+exact hashes/tested details in TESTED.md. The broad original goal remains active.
+
 ## 2026-10-11 — Corrected full run launched once; wait to12:25IST
 
 Status: **Partially implemented**, no conversion acceptance. Actual session53643

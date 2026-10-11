@@ -4,6 +4,54 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — ETA wait completed; real full output fails quality gate, not observer
+
+Supersedes historical live/waiting status below. Actual clock.sleep completed
+10,717.0193seconds; ZERO agent conversion polls during it. One06:55UTC observation
+of SAME53643 returned TERMINAL/outer exit0. Driver candidate exited1/failed;
+outer status actual-full-attempt-terminal-independent-analysis-pending means
+cleanup collection succeeded, NOT conversion acceptance. No conversion is running.
+
+Terminal evidence/2026-10-11T03-53-11-041Z-encoder-plane-clock-original-full-terminal.json.
+First failure assert.ok(ssim >= 0.98) at generated driver493. SSIM numeric value
+and native stderr were not retained before this assertion; the value is UNKNOWN
+(could be a sub-threshold score or a nonnumeric/missing parse). Do NOT claim a
+specific score or proven fidelity defect without that evidence. No unchanged
+full retry and no lowered0.98 threshold. Next diagnosis must retain bounded
+validator results before assertion and use focused, genuine production-browser
+quality fixtures at the original1920x804 geometry/settings before another full run.
+Small diagnosis must never substitute for the required complete original test.
+
+Actual run1 state COMPLETE, source HEVC1920x804 -> output MPEG-2 Video1920x804,
+saved3,337,164,038B, elapsed8,282,647.77ms (~2h18m03s). Pre-assertion independent
+FFprobe retained; exact video/audio title-name mappings retained. Execution reached
+SSIM after preceding stream/metadata/artwork/chapter/frame-count/timestamp/copied-
+audio/full-decode assertions. Their detailed final validation record was not
+written, so independentValidation:null and0fully validated of3 remain accurate.
+This is genuine large browser decode/re-encode evidence, NOT extension renaming,
+not overall accepted fidelity, and not a controlled before/after speed benchmark.
+
+Observer repair ACTUALLY exercised: history and tracker sequence96328 match,
+native.error:null, clock fence97308batches/50waited, maximum1ms initial alignment
+gap and15.9389ms wait, zero samples dropped/rewritten, no fence failure and owned
+monitorClosed:true. Original historical clock cause still unproven. Reported
+incremental private peak221.73828125MiB is a measured diagnostic, not a public/full
+acceptance grant; a new strict clock-specific terminal audit is still required.
+Fixed48MiB Wasm, peak write/queue524288B, one pending operation, scratch closed.
+
+All cleanup booleans TRUE/errors absent: completed output/profile/runtime removed,
+normal production assets restored, observer and Chrome root stopped automatically;
+NO manual kill. Driver absence in terminal receipt; fresh06:57:15CIM also finds
+none of five known driver/caller/Chrome-root/observer/server PIDs. Own wrapper/raw
+runtime absent independently verified. Protected test.mkv bounded whole-file
+postSHA again PASS2958573265B/31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+All249 pre/post/current source pins unchanged. Only compact reports retained.
+Raw gzip514659B/SHA771f8b15ba673ac0cb9a941170575d3b067f159da7532e9a5c7505c572bf3d01,
+restores19172679B/SHA7dfe4f9c05c23d82e8920c556c854825f329d4d7a075f715457f0db0b0cf21bd;
+gzip/restored hashes independently verified. Source and exact UI build archives
+were verified/pushed92f43a5. This full result changes the next action from native
+observer debugging to quality-validator/encoding diagnosis. Goal ACTIVE/incomplete.
+
 ## 2026-10-11 — One clock-qualified full run launched; ETA-based wait
 
 Launched ONCE from pushed/remote-verified4f3721e after actual preparation and
