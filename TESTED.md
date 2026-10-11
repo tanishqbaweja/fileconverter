@@ -4,6 +4,35 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — One corrected full session live; non-polling ETA timer set
+
+Launched ONCE after pushed+remote-verifiedf5c423d and successful preparation.
+Actual session48948 remains running; live receipt
+evidence/2026-10-11T00-18-32-419Z-encoder-plane-title-full-live.json.
+Driver6784,parent37312,birth00:19:08.0355130UTC and Chrome3744,parent6784,
+birth00:19:17.7032680UTC independently requeried, real --headless=new flag.
+One55s startup sleep and one session observation established the actual driver;
+no repeated conversion-progress polling. All240 measured source pins unchanged.
+Actual source archive1,143,419B SHA181fbd05745a7f0d18a83ee8c8051de8b41ac630e9baf8ca57e244b5c5e58634;
+restores5,044,356B SHAc9077714185c298f6d4993e8ad2dbbd7b8d2b72e26c756a91d8a98c374faab92.
+Actual driveracadddb2fff24d49018e4a5ed69274d67b79350e717282335ad3c12d02613214,
+trace3365da6b55009b33f8e40a688e006bc98e1f33ccd128bbcd8e6bfeb85783293a.
+No full output/repeat/independent validation/memory/recovery/scaling/speed acceptance.
+
+Prior actual first file conversion+save10104031.780ms (~2h48m24s), plus initial
+stable-blank/setup, gives approximately03:20UTC/08:50IST for first observation;
+independent validation duration remains uncertain. App automation tool returned
+unavailable and codex_app MCP server is absent: NO app heartbeat was created.
+Available nonblocking functions timer ACTUALLY started00:21:45.801UTC, due
+2026-10-11T03:20:00.000Z,10694178ms, running cell1171; store key
+fileconverter-eta-timer-48948. It performs ZERO conversion checks while waiting.
+Do not poll session48948 or timer1171 before that ETA just to restate live status.
+On timer completion observe SAME session once; do not infer terminal from elapsed
+time or restart on observation timeout. Existing driver handles actual memory/
+failure/cancel/cleanup internally. Keep all240 pins frozen and avoid another build,
+browser, conversion, sampler or profiler while this run is active. Owned active
+scratch must remain until actual driver's finally cleanup. Goal ACTIVE/incomplete.
+
 ## 2026-10-11 — Corrected full validator prepared; no browser run yet
 
 Additive scripts/run-encoder-plane-title-original-full.mjs and its strict reversible

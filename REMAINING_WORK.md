@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Corrected full-original session launched once; ETA timer waiting
+
+Status: **Partially implemented**, no acceptance. Actual session48948/driver6784/
+Chrome3744 parent-birth identities verified from current CIM after one launch from
+pushedf5c423d. Receipt evidence/2026-10-11T00-18-32-419Z-encoder-plane-title-full-live.json;
+actual driver/source archive hashes retained, all240 source pins unchanged. Three
+full-original repetitions and all unchanged quality/metadata/ALL-tree250/native
+memory/recovery gates still required. Startup/live is not a validated output.
+No new source, engine or UI mutation after the measured launch.
+
+Measured historical first-file conversion/save~2h48m24s plus setup gives an
+uncertain first-check ETA03:20UTC/08:50IST Oct11. Validation time is not yet measured.
+App scheduled wake-up tool/MCP are unavailable; no heartbeat was created. Actual
+nonblocking functions timer cell1171/store fileconverter-eta-timer-48948 started
+00:21:45.801UTC for10694178ms, due03:20UTC. ZERO conversion polling while waiting.
+Do not check the same session/timer every few seconds or every goal continuation.
+Keep240 pins frozen and owned active scratch until finally cleanup; no second
+browser/conversion/build/stager/profiler. When timer elapses, inspect SAME48948
+once and estimate the next meaningful wait if still live. Never restart on missing
+observation or infer completion from ETA. Full broader original-spec scope remains.
+
 ## 2026-10-11 — Full title validator and bounded cleanup diagnostics prepared
 
 Status: **Partially implemented**. New additive full driver/caller changes only
