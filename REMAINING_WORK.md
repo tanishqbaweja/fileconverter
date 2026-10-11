@@ -5,9 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Changed original test failed after3h08m; native allocation work remains
+
+**Partially implemented**. Actual new decoder417182a9…1014 + plane encoder
+a4ba6225…1cee got past the old failure, but run1 still failed at250,047 frames
+and4,943,266,688B partial output after11,292,672.680ms. None of three requested
+runs completed or reached independent full quality validation. Session67733 is
+terminal1; no live conversion remains and unchanged retry is rejected.
+
+Bounded native evidence proves a399,383B/alignment16 first-malloc failure with
+2,591,184B total free space but largest free chunk213,728B,top170,720B and tail
+212,992B. Exact compiled request/chunk capacity and allocation lifetimes still
+need investigation; live heap/why fragmentation arose remain unproven. Observed
+FAILED-window whole-Chromium increment227.94921875MiB does not prove full-run
+or repeatability acceptance. Fidelity, fixed memory, privacy and250MiB gates
+were not weakened. Do not promote this private candidate.
+
+Historical10-second browser-exit observation failed, correctly failing caller;
+later independent audit found all23 PID/birth identities absent. Temporary
+converted media/profile/wrapper/candidate gone, normal app restored, protected
+whole size/SHA unchanged, all326 pre/post/source preimages retained. Historical
+failure is not overwritten. Evidence:18-50-12-867Z alignment16-original-full
+terminal/terminal-analysis,599,633B recoverable raw archive and326 source archive.
+Two source-frozen audit files and exact inspector recipe retained. Next safe
+work is first-malloc capacity/lifetime analysis and a genuinely changed bounded
+implementation, not replaying this3-hour failure. Broad original goal remains
+active/incomplete and all other material partial requirements remain in scope.
+Final36/36focused regression and three-file zero-warning lint passed; those
+offline checks do not negate the actual whole-video failure.
+
 ## 2026-10-12 — Changed full-original stress runner now prepared
 
-Actual changed execution is now LIVE session67733 (driver26128 birth
+Historical launch checkpoint, superseded by the terminal audit above:
+Actual changed execution was LIVE session67733 (driver26128 birth
 2026-10-11T18:50:59.6567750Z, Chrome20476 birth18:51:05.1936390Z), native identities
 verified. Same handle must be resumed; never launch another because observation
 expires. Full326 source archive and protected pre-SHA retained in18-50-12-867Z

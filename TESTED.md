@@ -4,9 +4,58 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Changed full-original test FAILED later; exact OOM and late cleanup audited
+
+Session67733 is TERMINAL1 after one12,600.050s ETA timer and one same-handle
+check; never poll or restart it. Actual first production-browser HEVC→MPEG-2
+conversion failed after11,292,672.680ms (3h08m12.673s),250,047 encoded frames/
+completed packets and4,943,266,688B partial output. Protected whole source remains
+2,958,573,265B/SHA31f36695…db34 before/after. ZERO complete independent outputs;
+runs2/3 and quality validation were not reached. No output is accepted.
+
+New decoder417182a9…1014 actually failed FIRST malloc of399,383B/alignment16,
+sequence8,345,966, phase1 fast-malloc-pending. Exact16 C words retained; no fresh
+pointer was freed and no upstream-alignment fallback request is guessed. Genuine
+failure PCs include4441/0x5fb032,4436/0x5f8cef and4471/0x606d5f, not the synthetic
+control PCs or old9ce fatal PCs. Complete bounded357-header-word inventory:
+56 free chunks,total2,591,184B,largest213,728B,top170,720B,unclaimed tail212,992B.
+No heap copy/payload/native-at-abort/allocator mutation; heap-live and why the
+free space fragmented remain unknown. Heap-growth extent33,570,816B is NOT the
+399,383B individual allocation. Do not replay this configuration unchanged.
+
+Native106,311 rows retained with original timing/no dropped samples and closed
+receipt fence. Observed full-tree peak480,133,120B minus stable blank241,111,040B
+=227.94921875MiB in the FAILED observed window. This is NOT complete250MiB or
+three-run acceptance. Reads/writes/one-operation queue, fixed32+16MiB Wasm,
+actual4Mbps/full resolution/24fps/q4:20/BT709 and privacy gates remain unchanged.
+
+Historical cleanup had a genuine10-second Chrome-exit observation timeout;
+caller failed its cleanup gate. Do not rewrite that as success. Later independent
+audit found all23 recorded PID/parent/birth identities absent, without killing
+any process. Wrapper/candidate/media/profile gone, normal app restored, source326
+pre/post/preimage joins exact. Original failed terminal receipt preserved.
+19,189,540B raw report is recoverable in599,633B SHA07eb2fef…da02 gzip; redundant
+raw deleted only after identity/hash/byte-exact verification. Converted partial
+media were removed by owned-runtime finally cleanup. Independent audit receipt
+`evidence/2026-10-11T18-50-12-867Z-alignment16-original-full-terminal-analysis.json`
+is58,417B with two source preimages and exact generated inspector retained.
+
+Two new failure-audit units PASS609.164ms; two-file zero-warning lint PASS6.508s.
+First witness-only check accidentally treated an import rebasing as a validator
+change, and lint rejected a local variable named module; both fixed before audit
+capture. Audit session1685 terminal0 after one60s ETA/check. Source-frozen326 and
+two audit files not edited after capture. Next: actual first-malloc capacity and
+allocation-lifetime investigation before a changed fix; no speedup/public/full
+acceptance or overall goal completion is claimed.
+Final36/36focused regression PASS2,171.435ms, including all new terminal witnesses
+plus actual111/146/native53/source326 joins and old full failure/source layers.
+Three new audit/witness files zero-warning lint PASS7.751s; git whitespace check
+passed. Browser/app/native sources were not changed after this full capture.
+
 ## 2026-10-12 — Changed full-file runner prepared with original gates retained
 
-ONE changed full-original execution is now live: session67733, actual driver
+Historical launch checkpoint, now superseded by the terminal audit above:
+ONE changed full-original execution was live: session67733, actual driver
 26128/parent25972/birth2026-10-11T18:50:59.6567750Z and Chrome20476/parent26128/
 birth18:51:05.1936390Z independently observed by native process query. Do not
 restart because a status observation times out. Launch physical8,156,651,520B and
