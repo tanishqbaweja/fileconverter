@@ -1,0 +1,132 @@
+{
+  "diagnosticAuditOnly": true,
+  "cleanupGatePassed": false,
+  "originalCleanupErrors": [
+    "AggregateError: One or more owned cleanup actions failed"
+  ],
+  "cleanupErrorCausesProven": false,
+  "firstCandidateFailure": {
+    "name": "AssertionError",
+    "message": "Preserve primary video title\n+ actual - expected\n\n+ undefined\n- 'HDHub4u.Ag'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Preserve primary video title\n+ actual - expected\n\n+ undefined\n- 'HDHub4u.Ag'\n\n    at file:///H:/Github%20Repositories/fileconverter/work/encoder-plane-staged-full-wrapper-lq4MsV/probe.mjs:449:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  },
+  "outerCollectorFailure": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(!raw.cleanup.errors?.length)\n\n    at file:///H:/Github%20Repositories/fileconverter/work/encoder-plane-staged-full-caller-1WxDau/caller.mjs:127:12",
+  "savedButNotIndependentlyValidated": [
+    {
+      "number": 1,
+      "outputBytes": 3337164038,
+      "elapsedMs": 10104031.780000001
+    }
+  ],
+  "recordedAt": "2026-10-10T23:58:06.323Z",
+  "receipt": {
+    "path": "evidence/2026-10-10T18-57-09-340Z-encoder-plane-staged-original-full-terminal.json",
+    "sha256": "098609a323ed0abccac06ecb11e68ff10e90c65ad4d0ce4aa3b341506e169a6f"
+  },
+  "status": "failed-or-incomplete-full-original-session-not-acceptance",
+  "native": {
+    "mode": "full-completion",
+    "blankPrivateBytes": 249106432,
+    "actualPeakPrivateBytes": 490311680,
+    "observedIncrementalPrivateMiB": 230.03125,
+    "nativePeakSequence": 2963,
+    "nativePeakTimestamp": "2026-10-10T19:03:16.3923569Z",
+    "nativePeakProcessRows": [
+      [
+        0,
+        144142336,
+        182546432
+      ],
+      [
+        1,
+        12914688,
+        40792064
+      ],
+      [
+        19,
+        17481728,
+        33910784
+      ],
+      [
+        2,
+        48164864,
+        151146496
+      ],
+      [
+        3,
+        8093696,
+        17981440
+      ],
+      [
+        4,
+        2572288,
+        10485760
+      ],
+      [
+        7,
+        198078464,
+        236969984
+      ],
+      [
+        8,
+        35758080,
+        80105472
+      ],
+      [
+        9,
+        23105536,
+        46030848
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 230.03125,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 7,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 93029,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false,
+    "allRepeatCimPeaksIncluded": true,
+    "completedRuns": 0
+  },
+  "requestedRuns": 3,
+  "attemptedRuns": 1,
+  "completedConversions": 0,
+  "validatedRuns": [],
+  "unavailableNativeConversionSamples": 0,
+  "missingSamplesNeverRecordedAsZero": true,
+  "observedMemoryWithinLimit": true,
+  "fullOriginalSessionGatePassed": false,
+  "observedFirstAbort": null,
+  "independentValidationOutsideBrowser": true,
+  "additionalCleanSessionRequired": true,
+  "scalingAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "exactExecutedCallerAndDriverReconstructed": true,
+  "sourcePreimagesVerified": 227,
+  "actualRecordedIdentitiesRequeriedAndAbsent": true,
+  "reusedPids": [],
+  "noProcessesKilled": true,
+  "fullProtectedPostSha256Verified": true,
+  "normalProductionAndSixEnginesRestored": true,
+  "ninePrivateAssetsAbsent": true,
+  "ownedRuntimeAndWrapperAbsent": true,
+  "analysisSourcePins": {
+    "scripts/analyze-encoder-plane-staged-full-terminal.mjs": "cc14ca820eaed50a53e23bb996b613344af96a446756f7465fdbe1fce4d0ddb6",
+    "scripts/lib/encoder-plane-staged-terminal-recipe.mjs": "da8f5ffaafec346c9e093ec2e72054e6faa861e4041307c1b75f8553a45de16f",
+    "tests/mpeg2-encoder-plane-staged-terminal.test.mjs": "eb2e36ff46142412bdaaf818de174d9bc7c7282e48dad4fc664aeb85d23752c0",
+    "scripts/analyze-encoder-plane-full-terminal.mjs": "bdf5bd41016c5d6820141b5d3634cac3fc2520369742943e77cf49be0b3184f0",
+    "scripts/lib/encoder-plane-terminal-facts.mjs": "d4006123d595c956be2b42dd78f9fd10be7a7518e64e1d7ca6d7bc848e3dbe10",
+    "tests/mpeg2-encoder-plane-terminal.test.mjs": "dc8f95dc6f28d676d99470a939c63b03aa66cf32c096c40bd59a7227c01fcdd1"
+  }
+}

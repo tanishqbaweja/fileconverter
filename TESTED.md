@@ -1,10 +1,52 @@
 # Tested conversion ledger
 
-Updated 2026-10-10 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-11 — Changed-driver independent terminal audit prepared and tested
+## 2026-10-11 — Actual staged-full failure audited; no full retry
+
+Session79454 TERMINAL exit1, receipt21:57:18.705UTC Oct10. This supersedes all
+historical STILL LIVE statements below. Browser Saved3,337,164,038B after
+10,104,031.780ms; full source/default1920x804/fixed32+16MiB unchanged. First actual
+candidate failure: Preserve primary video title, output tags.title undefined.
+The title's container representation has not yet been established; no claim that
+the codec or muxer cause is proven. Independent validation remained null/recovery
+null;1 attempted run,0 fully validated of3, no public/scaling/speed acceptance.
+Native split closed successfully with296,160 frames/packets/completedPackets,
+0 pending pixel/packet buffers; final copy used one512KiB buffer and one pending
+operation. This proves browser/native work and save state, NOT full output fidelity.
+
+Outer caller independently failed on raw.cleanup.errors: generic AggregateError,
+underlying causes unavailable. This is NOT the first candidate failure and is NOT
+silently excused. Diagnostic cleanupGatePassed=false. Independent archive-bound
+checks prove media/profile/runtime/wrapper absent, all recorded born identities
+absent/no unrelated process killed, normal UI/CSS/six engines restored/nine private
+assets absent, whole protected test.mkv size+SHA unchanged. No converted copy kept.
+
+Executed scripts/diagnose-encoder-plane-staged-full-failure.mjs on ACTUAL receipt,
+exit0 diagnostic audit only. New recipe reverses exactly to the unchanged staged
+acceptance analyzer except explicit failed-receipt guards, preserved cleanup/error
+facts and separate failure-analysis filename. No changed acceptance thresholds.
+All227 source preimages/archive byte+SHA joins/exact actual caller+driver/build/
+probe/Chrome/UI/CSS identities verified. Peak complete tree490,311,680B minus
+same clean blank249,106,432B =230.03125MiB;93,029 valid native conversion samples,
+0 unavailable. Memory below limit in this failed attempt is NOT session acceptance.
+
+Raw gzip570,810B SHA7067fe1e10ba96e2c62eb787c924fd3366a4f3f806a9124dc2de1bafbf265699;
+restores19,178,194B SHA1e29303911e5ff2d96a9f8875d7691e9348932b60dc7f182d6fae1762b0f2fe3.
+Receipt: evidence/2026-10-10T18-57-09-340Z-encoder-plane-staged-original-full-terminal.json.
+Audit: same path with -failure-analysis.json. Actual original receipt/failed
+assertions are preserved unchanged; no replay/rebranding/retry. New focused
+initial failure-audit3/3 PASS82.7429ms; added actual archive-bound failure case,
+then all38 encoder-focused tests PASS938.3033ms (including4 failure-audit tests),
+three-file zero-warning lint and git diff --check PASS. Own test,
+lint and diagnostic runtimes finally cleaned. Goal remains ACTIVE/incomplete.
+Next small title-bearing browser reproduction must retain independent probe
+details and nested cleanup error causes, then fix based on observed cause.
+Future monitoring uses measured ETA plus completion-time timer, not frequent polls.
+
+## 2026-10-11 — Historical: changed-driver audit prepared while run was live
 
 Previous turn PROGRESS: stage-aware correction/30 checks/actual one launch/pushed
 c5f6f37. Same session79454 STILL LIVE; driver20152,parent6064,birth18:57:40.8532160

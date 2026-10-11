@@ -1,11 +1,51 @@
 # Remaining work audit
 
-Updated 2026-10-10 (Asia/Calcutta). This is the living requirement audit for the original
+Updated 2026-10-11 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-11 — Independent audit bound to changed observer; current run still live
+## 2026-10-11 — Changed-observer full attempt TERMINAL; fidelity and cleanup failed
+
+Status: **Partially implemented**, NOT accepted. This supersedes every historical
+STILL LIVE/poll instruction below for session79454. It ended21:57:18UTC Oct10;
+driver20152 and Chrome31100 are absent. No unchanged retry was launched.
+Run1 reached browser Saved with3,337,164,038 output bytes after10,104,031.780ms
+(about2h48m24s), but independent validation stopped at the primary video-title
+assertion: expected source title, observed undefined output tags.title. Container
+metadata mapping versus actual metadata loss is not yet diagnosed. Do not remove
+the fidelity requirement or count Saved/native completion as a validated pass.
+The later caller failure is separate: raw.cleanup.errors retains an AggregateError
+without its underlying causes. Cleanup gate FAILED even though independent checks
+prove owned media/profile/runtime/wrapper gone, actual born processes absent,
+normal production/six engines restored/nine private assets absent and protected
+test.mkv whole size+SHA unchanged. Cleanup root cause remains unproven.
+
+Actual failure-only audit passed archive SHA/length,227 source preimages and exact
+executed caller/driver reconstruction, build/UI/CSS bindings, fresh owned-identity
+absence and protected full postSHA. It recomputes ALL-tree peak490,311,680B minus
+same stable blank249,106,432B =230.03125MiB,93,029 valid conversion100ms samples,
+0 unavailable. One attempt,0 fully validated runs of3; no session/public/scaling/
+speed/full-goal acceptance. Native split completion296,160 frames/packets, fixed
+32+16MiB and bounded512KiB destination copy are evidence, not fidelity acceptance.
+Raw19,178,194B retained losslessly as570,810B gzip; redundant raw already removed
+by the actual caller after exact archive verification. No disposable large output
+is retained. Independent failure audit has its own finally-cleaned small scratch.
+
+Regression:38 encoder-focused tests PASS938.3033ms, including4 new failure-audit
+tests with actual saved-but-invalid output/archive/cleanup assertions; three-file
+zero-warning lint and git diff --check PASS. No conversion was launched by tests.
+Evidence: evidence/2026-10-10T18-57-09-340Z-encoder-plane-staged-original-full-terminal.json
+and matching -failure-analysis.json; raw archive in outputs/reports with matching
+stamp and -encoder-plane-staged-full-raw.json.gz. The unchanged acceptance audit is
+not weakened: new diagnostic audit explicitly requires failure and withholds pass.
+Next: small title-bearing production-browser reproduction with complete validator
+metadata retained; diagnose nested cleanup errors before any full retry. Broader
+requirements, three repeats, clean sessions,~10GB scaling and speed remain open.
+Monitoring preference: estimate remaining time from actual progress and use a
+completion-time timer, not frequent polls; mark uncertain estimates honestly.
+
+## 2026-10-11 — Historical: independent audit prepared while run was live
 
 Status: **Partially implemented**. Previous turn PROGRESS: corrected observer,
 focused tests and one actual headless full-original launch pushedc5f6f37. Same
