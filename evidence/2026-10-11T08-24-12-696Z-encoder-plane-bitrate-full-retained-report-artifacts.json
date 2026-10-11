@@ -1,0 +1,28 @@
+{
+  "recordedAt": "2026-10-11T11:29:25.547Z",
+  "status": "failed-partial-run-report-artifacts-only-not-acceptance",
+  "analysis": {
+    "path": "evidence/2026-10-11T08-24-12-696Z-encoder-plane-bitrate-original-full-terminal-analysis.json",
+    "sha256": "00cd8b70057f2a5b7b130e5d368a0ef18be9795e2ba5880b7075075fd8a5b62f"
+  },
+  "artifacts": [
+    {
+      "path": "outputs/reports/2026-10-11T08-24-52-714Z-private-mpeg2-encoder-plane-bitrate-full-native-100ms.csv",
+      "bytes": 70179,
+      "sha256": "7dc0daf53ccb8297ab23778cad276b023ea52590e08ed9529d36e098a4a69911"
+    },
+    {
+      "path": "outputs/reports/2026-10-11T08-24-52-714Z-private-mpeg2-encoder-plane-bitrate-full-native-100ms.html",
+      "bytes": 35564,
+      "sha256": "fe420c495ffc83f16b95f8d6a7ec182d2acb2b0a98912c587011219088ba092c"
+    }
+  ],
+  "retainedGraphSamples": 1024,
+  "samplesEvicted": 689,
+  "allNativePhaseCountsRetained": true,
+  "actualNativeSequence": 27057,
+  "partialOutputRetained": false,
+  "failedIndividualAllocationBytes": null,
+  "fragmentationCauseProven": false,
+  "publicAcceptance": false
+}

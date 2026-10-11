@@ -5,6 +5,40 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Actual4Mbps full test stopped on decoder-frame OOM; independently audited
+
+Status: **Partially implemented; NOT qualified/public**. One actual changed full
+attempt/session83763 is CLOSED. Run1 stopped safely09:14:16UTC after2629778.63ms
+(43m50s active),748428500B processed/74921encoded frames/1398331053B partial output.
+ZERO accepted outputs, runs2/3 not attempted after failure. Native decoder heap
+fixed32MiB attempted extent34086912B; no heap growth or larger limit permitted.
+Independent quality validation never reached; numeric SSIM null/not known.
+
+Actual C configuration4Mbps/full1920x804/24fps/q4/20 verified. Captured untruncated
+native path HEVC alloc_frame -> avcodec_default_get_buffer2 -> av_buffer_allocz.
+Existing pool-specific observer correctly refused to invent a pending pool request
+or allocator read on this direct-frame path. Failed allocation size/live heap/free
+blocks/retention root cause/fragmentation remain unknown. Larger heap or retrying
+identical settings is not the next step. Qualify a bounded direct-frame allocator
+observation and investigate retained buffers/reuse without changing fidelity.
+
+Strict terminal-only audit reverified256actual full sources/preimages/current hashes,
+executed driver/caller/UI/engines, original whole size/SHA, fresh owned births absent,
+all scratch/runtime gone and normal assets restored. Native27057rows match both
+consumers/24054eligible/0unavailable,13bounded actual clock waits/observer closed.
+Observed PARTIAL window481656832B - SAME stable blank238669824B =231.73046875MiB,
+not full/three-repeat/quality/scaling/speed acceptance. Partial media finally deleted;
+only compact hash-bound reports retained. Independent report:
+evidence/2026-10-11T08-24-12-696Z-encoder-plane-bitrate-original-full-terminal-analysis.json.
+
+User-requested actual10500000ms ETA sleep completed, followed by one terminal
+observation; no rapid agent polls, no automatic restart, no live timer/conversion.
+Full4Mbps stress is still incomplete. All broader missing/partial work remains open.
+
+Final39focused regressions PASS3240.8677ms; five-file lint PASS9876.361ms.
+Compact CSV70179B/HTMLgraph35564B retained with hashes/1024bounded graph samples;
+all native phase peaks/counts remain in lossless raw archive. No media retained.
+
 ## 2026-10-11 — Qualified4Mbps full runner integrated and prepared
 
 Status: **Partially implemented**. New additive caller, stager and full driver use

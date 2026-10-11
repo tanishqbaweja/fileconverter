@@ -4,6 +4,64 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Actual4Mbps full run FAILED native decoder heap; strict terminal audit passed
+
+Session83763 now CLOSED/outercollector exit0 but actual conversion driver exit1.
+Outer exit0 only means failed evidence was collected/cleaned, NEVER acceptance.
+One actual changed test, no repeated failed configuration. First conversion actual
+2629778.63ms/43m50s active,748428500inputB/1398331053partialoutputB,74921frames.
+Stopped09:14:16.558UTC on decoder32MiB fixed heap trying extent34086912B. Failed
+extent is NOT an individual allocation size or live-heap measurement. Run state
+error/Stopped safely/queues0/pending0/scratch0/worker ready. Genuine MPEG2 packets
+74921completed, output-byte accounting real; incomplete deleted file not validated.
+Full quality/SSIM validation NOT reached; score null/unknown. ZERO accepted outputs,
+no run2/3, no private/full/public/scaling/speed/goal acceptance.
+
+Captured native call path is HEVC alloc_frame -> avcodec_default_get_buffer2 ->
+av_buffer_allocz -> av_malloc -> __wrap_posix_memalign -> malloc/sbrk -> abort.
+Untruncated bounded stack retained. Source hevc-decoder-uncached-frame-buffers.patch
+uses direct av_buffer_alloc(z) for these planes, consistent with observed path.
+Pool-specific pending-request observer refuses non-pool call path; its scalar
+request/free-list/live-heap data remain null/unavailable. No speculative malloc
+size, no claim of fragmentation or proven retained-buffer root cause. New candidate
+peak packet314024B vs earlier2Mbps296261B is diagnostic only, not causal proof.
+Next: bounded qualified direct-frame allocation observation/retention investigation,
+then a concrete lower-retention candidate; do not rerun identical4Mbps32MiB setup
+or enable growth/raise heap/memory/quality gates as a workaround.
+
+Actual native audit words verify4Mbps/1920x804/24fps/timebase1:24/q4:20/SAR1:1,
+BT709 original preserved (unlike unspecified synthetic fixture); Csettings_match1.
+Unchanged total48MiB, native reads/writes64KiB/peakqueue64KiB/one pending/final0.
+Native whole-tree peak481656832B minus SAME stable blank238669824B =231.73046875MiB
+for OBSERVED PARTIAL window only. Native observer27057rows/24054eligible/0unavailable,
+13real bounded clock waits/max15.7511ms/no dropped or rewritten samples/closed.
+
+Independent terminal-only auditor is reversible extension of strict clock audit:
+all archive/preimages/current-source/driver/caller/UI/engine/original SHA/whole-tree
+memory/title/fidelity/cleanup/birth-identity gates preserved, qualified adapter SHA
+substituted exactly and native-setting/failed-path facts added. It ran once/exit0;
+report evidence/2026-10-11T08-24-12-696Z-encoder-plane-bitrate-original-full-terminal-analysis.json.
+256actual measured sources plus19independent audit source pins verified, all owned
+births freshly absent/no kills/reusedPids[], original full SHA unchanged, normal
+UI/six engines restored/nine private assets absent/runtime+wrapper gone. Partial
+outputs/profiles/validation copies/scratch finally removed; no converted copies
+retained. Raw15372435B retained losslessly as477823B gzip:
+SHA22bd3ca795b8407619ea71e40b349ce27e01628302c5b7edd9c66daaf299a6ea,
+restoredSHAd80f2e9e67baf5912a36094f637021102d83962e69a1a420ce4380bbf18ab8f4.
+
+Actual ETA clock.sleep10500000ms completed with no agent poll during that sleep;
+one terminal observation afterwards. Built-in bounded100ms acquisition stayed
+active and failure stopped/cleaned automatically while asleep. No heartbeat,
+live conversion/session/timer now. Post-terminal11focused tests PASS1442.3456ms;
+four-file lint passed. Separate retained-evidence regression added after audit so
+the19measured audit source pins are not rewritten. Broad original goal stays active.
+
+Final39strict/source/actual-evidence/fence/bitrate/recovery regressions PASS3240.8677ms;
+five-file ESLint PASS9876.361ms. Actual timestamped CSV70179B/HTMLgraph35564B
+also retained under outputs/reports with hash-bound artifact receipt;1024bounded
+chart samples are diagnostic, not a substitute for ALL native phase counts/peaks.
+No converted media retained. No active run, timer or pending terminal observation.
+
 ## 2026-10-11 — Private4Mbps full caller/stager/driver integrated; actual preparation passed
 
 Previous cycle PROGRESS: strict actual clock-window audit and prospective numeric

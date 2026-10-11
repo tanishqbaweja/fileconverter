@@ -1,0 +1,218 @@
+{
+  "bitrateSpecificAudit": true,
+  "clockSpecificAudit": true,
+  "titleSpecificAudit": true,
+  "cleanupDiagnostics": [],
+  "recordedAt": "2026-10-11T11:25:01.548Z",
+  "receipt": {
+    "path": "evidence/2026-10-11T08-24-12-696Z-encoder-plane-bitrate-original-full-terminal.json",
+    "sha256": "fd9c01ed61d4fdd0a805df5347b358190a18ecb6a86cce3a2ad7c9ab571169b3"
+  },
+  "status": "failed-or-incomplete-full-original-session-not-acceptance",
+  "native": {
+    "mode": "full-completion",
+    "blankPrivateBytes": 238669824,
+    "actualPeakPrivateBytes": 481656832,
+    "observedIncrementalPrivateMiB": 231.73046875,
+    "nativePeakSequence": 3546,
+    "nativePeakTimestamp": "2026-10-11T08:31:25.2059777Z",
+    "nativePeakProcessRows": [
+      [
+        0,
+        20578304,
+        43876352
+      ],
+      [
+        20,
+        14671872,
+        31076352
+      ],
+      [
+        1,
+        122728448,
+        161783808
+      ],
+      [
+        2,
+        13045760,
+        41361408
+      ],
+      [
+        3,
+        8192000,
+        18534400
+      ],
+      [
+        6,
+        2637824,
+        10530816
+      ],
+      [
+        7,
+        220504064,
+        269979648
+      ],
+      [
+        8,
+        46071808,
+        148873216
+      ],
+      [
+        9,
+        33226752,
+        77381632
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 231.73046875,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 7,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 24047,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false,
+    "allRepeatCimPeaksIncluded": true,
+    "completedRuns": 0
+  },
+  "requestedRuns": 3,
+  "attemptedRuns": 1,
+  "completedConversions": 0,
+  "validatedRuns": [],
+  "unavailableNativeConversionSamples": 0,
+  "missingSamplesNeverRecordedAsZero": true,
+  "observedMemoryWithinLimit": true,
+  "fullOriginalSessionGatePassed": false,
+  "observedFirstAbort": {
+    "role": "decoder",
+    "reason": "Cannot enlarge memory arrays to size 34086912 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0",
+    "stack": "Error: Actual Emscripten abort observation\n    at onAbort (http://127.0.0.1:51727/engines/remux/within-direct.mjs:193:22)\n    at Object.onAbort (http://127.0.0.1:51727/engines/remux/within-direct.mjs:209:47)\n    at abort (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:10902)\n    at abortOnCannotGrowMemory (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:35496)\n    at _emscripten_resize_heap (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:35944)\n    at imports.<computed> (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:39334)\n    at within-mpeg2-split.wasm.sbrk (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4440]:0x5faffd)\n    at within-mpeg2-split.wasm.emscripten_builtin_malloc (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4435]:0x5f8cbb)\n    at within-mpeg2-split.wasm.__wrap_posix_memalign (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4470]:0x606cde)\n    at within-mpeg2-split.wasm.av_malloc (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4311]:0x5df3bf)\n    at within-mpeg2-split.wasm.av_buffer_allocz (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4187]:0x5c6248)\n    at within-mpeg2-split.wasm.avcodec_default_get_buffer2 (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[708]:0x11b028)\n    at within-mpeg2-split.wasm.ff_get_buffer (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[679]:0x113a4c)\n    at within-mpeg2-split.wasm.ff_thread_get_buffer (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[2339]:0x35faa8)\n    at within-mpeg2-split.wasm.alloc_frame (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[2060]:0x30b481)\n    at within-mpeg2-split.wasm.hevc_receive_frame (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[1980]:0x2b9005)\n    at within-mpeg2-split.wasm.ff_decode_receive_frame_internal (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[668]:0x10fbf6)\n    at within-mpeg2-split.wasm.decode_receive_frame_internal (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[671]:0x1114c6)\n    at within-mpeg2-split.wasm.avcodec_send_packet (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[670]:0x110aa4)\n    at within-mpeg2-split.wasm.mpeg2_frames (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4468]:0x6048e0)\n    at within-mpeg2-split.wasm.within_remux (http://127.0.0.1:51727/engines/remux/_private_split_decoder.wasm:wasm-function[4462]:0x603974)\n    at __asyncify_wrapper_4462 (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:39798)\n    at callUserCallback (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:26461)\n    at Object.doRewind (http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:42116)\n    at http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:43088\n    at http://127.0.0.1:51727/engines/remux/_private_split_decoder.mjs:1:44112",
+    "observedAt": "2026-10-11T09:14:16.558Z",
+    "attemptedHeapExtentBytes": 34086912,
+    "failedIndividualAllocationBytes": null,
+    "heapLiveBytes": null,
+    "fragmentationCauseProven": false,
+    "requestedHeapExtentIsIndividualAllocation": false
+  },
+  "independentValidationOutsideBrowser": true,
+  "additionalCleanSessionRequired": true,
+  "scalingAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "validatedTitleMappings": [],
+  "firstCandidateFailure": {
+    "name": "AssertionError",
+    "message": "Aborted(Cannot enlarge memory arrays to size 34086912 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n+ actual - expected\n\n+ 'error'\n- 'complete'\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Aborted(Cannot enlarge memory arrays to size 34086912 bytes (OOM). Either (1) compile with -sINITIAL_MEMORY=X with X higher than the current value 33554432, (2) compile with -sALLOW_MEMORY_GROWTH which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with -sABORTING_MALLOC=0)\n+ actual - expected\n\n+ 'error'\n- 'complete'\n\n    at file:///H:/Github%20Repositories/fileconverter/work/encoder-plane-bitrate-full-wrapper-rXdq3i/probe.mjs:418:12"
+  },
+  "exactStreamTitlesIndependentlyRechecked": false,
+  "historicalFullOutputRetroactivelyAccepted": false,
+  "nativeRowConsumersAgree": true,
+  "rowsCountedWithoutDropping": 27057,
+  "evaluatedConversionSamples": 24054,
+  "observerClosedAndClockFenceValid": true,
+  "actualWaitedBatches": 13,
+  "maximumClockFenceWaitMs": 15.75109999999404,
+  "historicalDeletedOutputNumericSsimKnown": true,
+  "savedButNotValidated": [],
+  "actualNativeBitRate": 4000000,
+  "actualNativeConfigurationSamples": [
+    {
+      "words": [
+        1,
+        1920,
+        804,
+        0,
+        1,
+        24,
+        24,
+        1,
+        4000000,
+        4,
+        20,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "nativeSettingsMatch": 1,
+      "expectedBitRate": 4000000,
+      "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+    }
+  ],
+  "partialFailedRuns": [
+    {
+      "number": 1,
+      "state": "error",
+      "processedInputBytes": 748428500,
+      "generatedPartialOutputBytes": 1398331053,
+      "elapsedMs": 2629778.629999995,
+      "numericSsim": null,
+      "qualityAccepted": false,
+      "qualityValidationReached": false,
+      "acceptedOutputBytes": 0
+    }
+  ],
+  "failedAllocationObservation": {
+    "observedCallPath": "HEVC frame allocation via avcodec_default_get_buffer2/av_buffer_allocz",
+    "exactNativeAbortCallPathRetained": true,
+    "attemptedHeapExtentBytes": 34086912,
+    "requestedHeapExtentIsIndividualAllocation": false,
+    "failedIndividualAllocationBytes": null,
+    "heapLiveBytes": null,
+    "poolRequest": null,
+    "poolRequestUnavailable": "Error: Actual pool-get/av_malloc abort call path unavailable",
+    "allocatorFreeBlocks": null,
+    "allocatorFreeBlocksUnavailable": "Error: Qualified pending pool request unavailable; allocator not read",
+    "fragmentationCauseProven": false,
+    "allocationRetentionRootCauseProven": false,
+    "sameFailedConfigurationShouldBeRepeated": false
+  },
+  "exactExecutedCallerAndDriverReconstructed": true,
+  "sourcePreimagesVerified": 256,
+  "actualRecordedIdentitiesRequeriedAndAbsent": true,
+  "reusedPids": [],
+  "noProcessesKilled": true,
+  "fullProtectedPostSha256Verified": true,
+  "normalProductionAndSixEnginesRestored": true,
+  "ninePrivateAssetsAbsent": true,
+  "ownedRuntimeAndWrapperAbsent": true,
+  "analysisSourcePins": {
+    "scripts/analyze-encoder-plane-bitrate-full-terminal.mjs": "2480a0b21c45e37be6f211ca6e68f6f26dc8fa98938a6f70b96786c47a3398a5",
+    "scripts/lib/encoder-plane-bitrate-terminal-recipe.mjs": "053932cccfd7d869a2a9c688d637cf4a99b14349cc63c8fcebef3e7d99e5df2a",
+    "scripts/lib/encoder-plane-bitrate-terminal-facts.mjs": "e10239a65d789d3ecef8ef7eb76f36bf418c1295f383ff47a6addc37a70ca505",
+    "tests/mpeg2-encoder-plane-bitrate-terminal.test.mjs": "4fa1c3214e2572ce2f77cbe7b6682ba9bec4d54c04dbbff92c220656de745a1a",
+    "scripts/analyze-encoder-plane-clock-full-terminal.mjs": "8fa1ae4eb1a45ae556996da528afdad2f2babdc70e5e6509e017795bd49334a5",
+    "scripts/lib/encoder-plane-clock-terminal-recipe.mjs": "f774889859cdfa1a436bd34a3bae9d1cd16599e545bab53a9de7da2309197e9a",
+    "scripts/lib/encoder-plane-clock-terminal-facts.mjs": "8f7172bd99eab20a0afe34977040123a9507d0a53911bfe210289400b372aee2",
+    "tests/mpeg2-encoder-plane-clock-terminal.test.mjs": "6d1c6edbbfccbf5d173d8f44007ff3067ab47e3198724f9cae668b7919d8ae49",
+    "scripts/analyze-encoder-plane-title-full-terminal.mjs": "ff66fd294f5c66973fb0421887f8550ab7e02d670238e5ee55c68147a5d72cab",
+    "scripts/lib/encoder-plane-title-terminal-recipe.mjs": "4957a90f7963cafb05762270c7e1779ccd817bebae9b4cb5977332107552c3a4",
+    "scripts/lib/encoder-plane-title-terminal-facts.mjs": "cf142e25a82ccae138e05d32bb8899dfa0c4070fb5ca25426d185290553ef16f",
+    "tests/mpeg2-encoder-plane-title-terminal.test.mjs": "0db7bf07d14bd403fde305bf53f9f073dada3f63b712c6617c3d279e5a4a4c69",
+    "scripts/lib/encoder-plane-staged-failure-recipe.mjs": "73377bb22b01e6dda11235e2ed18932594fcf87e8590bfe941070ef40d62a18c",
+    "scripts/analyze-encoder-plane-staged-full-terminal.mjs": "cc14ca820eaed50a53e23bb996b613344af96a446756f7465fdbe1fce4d0ddb6",
+    "scripts/lib/encoder-plane-staged-terminal-recipe.mjs": "da8f5ffaafec346c9e093ec2e72054e6faa861e4041307c1b75f8553a45de16f",
+    "tests/mpeg2-encoder-plane-staged-terminal.test.mjs": "eb2e36ff46142412bdaaf818de174d9bc7c7282e48dad4fc664aeb85d23752c0",
+    "scripts/analyze-encoder-plane-full-terminal.mjs": "bdf5bd41016c5d6820141b5d3634cac3fc2520369742943e77cf49be0b3184f0",
+    "scripts/lib/encoder-plane-terminal-facts.mjs": "d4006123d595c956be2b42dd78f9fd10be7a7518e64e1d7ca6d7bc848e3dbe10",
+    "tests/mpeg2-encoder-plane-terminal.test.mjs": "dc8f95dc6f28d676d99470a939c63b03aa66cf32c096c40bd59a7227c01fcdd1"
+  }
+}
