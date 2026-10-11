@@ -5,6 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Identical-input4Mbps candidate passes short quality control
+
+Status: **Partially implemented**. Existing native bitrate API now has a qualified
+private bitrate-only browser experiment, actual native-context settings audit,
+pre/post fixture SHA capture and strict independent comparison. Both real inputs
+4,457,906B /SHA6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb
+match exactly; config words differ only in bitrate. Same1920x804/24fps/96frames,
+qmin4/qmax20/one thread/fixed48MiB/I/O/queues/0.98 quality and exact timing gates.
+
+Control2Mbps FAILED0.972072; candidate4Mbps PASSED0.983095 and remaining short
+metadata/artwork/audio/full-decode assertions. Active elapsed3066.005ms versus
+3079.675ms (~0.45% slower, one pair only), output1,265,310B versus2,245,558B.
+No speed gain claimed. Candidate retained for further qualification, NOT public.
+Short synthetic evidence does not replace protected test.mkv, full-memory/three
+repeat/clean-session/scaling/speed/adverse-recovery acceptance; all remain open.
+Historical full numeric score remains unknown. No long conversion was restarted.
+
+Evidence:2026-10-11T07-38-57-951Z-encoder-plane-bitrate-comparison.json and paired
+07:35:02/07:36:13 diagnostic receipts. Final14 focused plus18 native handoff
+regressions:32PASS/0failed/2167.6847ms; five-file lint PASS5274.7301ms;
+78 measured pre/post/current source pins each and249 historical full
+source pins verified. Original whole SHA before/after both unchanged. All owned
+converted files/profiles/fixture/scratch and helpers cleaned; only compact reports
+retained. Two redundant raw JSON files deleted recoverably after lossless checks.
+Each real run used one50s ETA sleep then one terminal observation; no live handle.
+
+Next: original-geometry varied-content and adverse/repeated-job qualification of
+4Mbps; strict clock-specific full-terminal audit and full-driver numeric SSIM
+capture before any full rerun. Broad original scope remains as audited below.
+
 ## 2026-10-11 — Numeric quality failure reproduced without another full run
 
 Status: **Partially implemented**. Added bounded pre-assertion FFmpeg SSIM capture

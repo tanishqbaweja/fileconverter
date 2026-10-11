@@ -1,0 +1,62 @@
+{
+  "recordedAt": "2026-10-11T07:38:57.952Z",
+  "status": "short-identical-input-bitrate-control-only-not-full-acceptance",
+  "proofs": [
+    {
+      "path": "evidence/2026-10-11T07-35-02-447Z-encoder-plane-bitrate-2000000-diagnostic.json",
+      "sha256": "e5015bc8521e013e9a0a7e43f0cb37a9c0bdc1c4ce15edd7ae07c1cfd5262a55",
+      "measuredSourceCount": 78
+    },
+    {
+      "path": "evidence/2026-10-11T07-36-13-517Z-encoder-plane-bitrate-4000000-diagnostic.json",
+      "sha256": "3b2e3add47fe7d356f88630ba9d4b38ef5bd601a6d8ac381c751e2bcc6aef78a",
+      "measuredSourceCount": 78
+    }
+  ],
+  "comparison": {
+    "identicalInputBytesVerified": true,
+    "onlyNativeBitrateDiffers": true,
+    "input": {
+      "bytes": 4457906,
+      "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+    },
+    "control": {
+      "bitRate": 2000000,
+      "ssim": 0.972072,
+      "elapsedMs": 3066.0049999952316,
+      "outputBytes": 1265310,
+      "caseStatus": "failed"
+    },
+    "candidate": {
+      "bitRate": 4000000,
+      "ssim": 0.983095,
+      "elapsedMs": 3079.6749999821186,
+      "outputBytes": 2245558,
+      "caseStatus": "passed"
+    },
+    "elapsedRatioCandidateToControl": 1.0044585706764693,
+    "retainedForFullQualification": true,
+    "speedImprovementProven": false,
+    "fullOriginalAcceptance": false,
+    "publicAcceptance": false
+  },
+  "rawCleanup": [
+    {
+      "path": "output/playwright/2026-10-11T07-35-07.952Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+      "bytes": 215859,
+      "sha256": "6fb6850c88c279eb1e8b77f2977da21dac2414ee988197b993a5b80f0c865ff1",
+      "removedAfterLosslessArchiveVerification": true,
+      "recoverableFrom": "outputs/reports/2026-10-11T07-35-02-447Z-encoder-plane-bitrate-2000000-golden-report.json.gz"
+    },
+    {
+      "path": "output/playwright/2026-10-11T07-36-18.555Z-mpeg2-encoder-planes-38044000567-direct-artwork.json",
+      "bytes": 227988,
+      "sha256": "0dc23a6bdd43fecbb6a3943bf88998ef8762a702d8edee0385181867864f6b0a",
+      "removedAfterLosslessArchiveVerification": true,
+      "recoverableFrom": "outputs/reports/2026-10-11T07-36-13-517Z-encoder-plane-bitrate-4000000-golden-report.json.gz"
+    }
+  ],
+  "fullOriginalAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false
+}

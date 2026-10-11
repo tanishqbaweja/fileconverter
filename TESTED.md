@@ -4,6 +4,69 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Bitrate-only controlled browser candidate clears short quality gate
+
+Previous turn PROGRESS: bounded numeric SSIM diagnostic proved default settings
+fail the synthetic full-geometry fixture, pushed add5a03. This cycle performs a
+justified control rerun to retain input SHA and audit actual native settings;
+it does not repeat the unchanged multi-hour protected conversion.
+
+Added private bitrate recipe/launcher through the existing twelve-argument
+within_remux API. Only argument9 changes to an explicit2,000,000 or4,000,000bps;
+width/FPS/quality remain automatic, actual1920x804/24fps/qmin4/qmax20, GOP48,
+no B-frames, one thread/slice, same codec binaries/fixed32+16MiB/no growth.
+Initialization capture reads96B native configuration AFTER open and requires
+native C settings_match(actual AVCodecContext)==1. No config rewriting, native
+conversion, resized source, threshold reduction or queue/memory changes.
+
+Actual production-browser control07:35:02 FAILED unchanged ordinalSSIM>=0.98:
+0.972072, timestamp-aligned0.957886. Actual candidate07:36:13 PASSED:
+ordinal0.983095, timestamp-aligned0.966841. Exact frame presentation <=1ms is
+separately validated; ordinal matching must not be mistaken for changing clocks.
+Both retain all structural/artwork/audio/timeline/title/metadata validators;
+candidate reaches/passes the final compatible container metadata allowlist too.
+
+Independent verified identical source:4,457,906B SHA
+6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb.
+Each independently generated fixture's pre/post bytes+SHA agree; compared inputs
+are proven byte-identical, not inferred merely from the shared seed. Same96frames,
+geometry, engines and native config24words; bitrate is the only differing word.
+Control output1,265,310B /3066.005ms active metrics; candidate2,245,558B /
+3079.675ms. Candidate/control elapsed ratio1.00446 (~0.45% slower in ONE pair).
+No speed improvement or repeatability claimed. Candidate is retained for further
+qualification, NOT made public or accepted as full-original/250MiB/scaling proof.
+The historical deleted full output's numeric SSIM is still UNKNOWN.
+
+Four new focused recipe/discovery/native-audit/negative-comparison checks passed
+1984.2161ms; preparation07:34:51 ran0conversions and cleaned its wrapper. Final
+13 focused/parser/discovery/frozen-quality/evidence checks PASS2423.0923ms;
+five-file zero-warning ESLint PASS. After adding lossless-cleanup evidence checks,
+final14 focused checks plus18 native frame/packet/session regressions:32PASS,
+0failed/2167.6847ms. Five-file lint rerun PASS/5274.7301ms; git diff --check PASS.
+Both real browser commands terminal: control
+exit1/session92273, candidate exit0/session25504; one50s sleep then one observation
+per confirmed-live handle, no progress polling. No live conversion/timer remains.
+
+Compact comparison evidence:
+evidence/2026-10-11T07-38-57-951Z-encoder-plane-bitrate-comparison.json.
+Source receipts07:35:02-bitrate-2000000 /07:36:13-bitrate-4000000-diagnostic.json
+retain generated-source gzip158848B/158846B and raw gzip17330B/17914B. All78
+actual source pre/post/current hashes and archived preimages verified each run;
+historical249 full-source current pins independently reverified unchanged.
+Complete protected test.mkv size/SHA before/after BOTH browser runs unchanged.
+All owned fixtures/output/profile/scratch and helper process identities finally
+absent; published assets restored; completed queues0/one pending/reads<=64KiB/
+writes<=512KiB/fixed48MiB. Short memory samples remain diagnostic, not stable
+blank complete-Chromium certification. Redundant raw JSON215859B+227988B removed
+only after exact lossless gzip restoration/hash/realpath/inode checks; recoverable
+from retained gzip. No converted media retained or drive-wide cleanup performed.
+
+Next: qualify4Mbps on original-geometry varied-content and adverse/repeated-job
+cases; implement strict clock-specific terminal audit and pre-assertion numeric
+SSIM capture in the full driver before any controlled full rerun. Original three
+repeats/clean sessions/memory/scaling/speed gates and broad format scope remain
+incomplete. Do not turn this short pass into full/public acceptance.
+
 ## 2026-10-11 — Full-geometry browser fixture reproduces a numeric quality failure
 
 Previous turn PROGRESS: real complete3.34GB browser output, repaired native
