@@ -60,6 +60,17 @@ zero-warning lint PASS7.406s; whitespace PASS. Actual native62/control126/media1
 full-preparation338 current source snapshots now frozen; do not edit their source
 bytes during a live conversion. Relevant reports/preimages retained compactly.
 
+Actual changed full run23-47-49-089Z launched ONCE (session35436): recorded driver
+36624/parent45372/birth2026-10-11T23:48:58.791233Z matched live CIM; owned headless
+Chrome39004/parent36624/birth23:49:06.871514Z also observed live. Launch host6.33GB
+physical/11.26GB virtual passed unchanged2GiB checks; complete protected pre-SHA
+exact, all338 source preimages/actual generated driver retained. This is a LIVE
+launch record, not terminal or acceptance evidence. Read-only FFprobe confirms
+source duration12340.096s/24fps; prior250047frames/11292.673s suggests roughly4h
+first conversion, approximately12h three-run suite plus validation (estimates,
+new throughput unproven). Wait4h15 before ONE same-handle check; autonomous native
+memory/safety sampling stays enabled. No frozen code changed while the job is live.
+
 ## 2026-10-12 — Bounded HEVC plane native build verified; browser qualification next (superseded above)
 
 Previous goal turn was progress: rechecking available4.83GiB physical/6.27GiB

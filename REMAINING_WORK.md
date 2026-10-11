@@ -31,6 +31,13 @@ Final74-check regression and18-file zero-warning lint pass. Actual native62/
 control126/media158/full-preparation338 sources are frozen for the changed full
 run. No old expensive conversion rerun and no speed/public acceptance asserted.
 
+Changed full run23-47-49-089Z is now launched once: driver36624 and owned headless
+Chrome39004 were verified live by PID/parent/birth. Actual338-source archive and
+protected pre-SHA retained; launch memory guard passes. All full-original/primary/
+speed/public gates are still pending, not inferred from this live record. Estimate
+first conversion~4h and complete three repeats~12h plus validation; use4h15 ETA
+sleep then one same-handle observation, no source mutation or duplicate launch.
+
 ## 2026-10-12 — Actual decoder-plane native qualification passed; browser/full acceptance pending (superseded above)
 
 **Partially implemented**. Actual changed no-Docker run38183370743 succeeded at
