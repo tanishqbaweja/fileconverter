@@ -7,6 +7,15 @@ not the entire product specification.
 
 ## 2026-10-12 — Changed full-original stress runner now prepared
 
+Actual changed execution is now LIVE session67733 (driver26128 birth
+2026-10-11T18:50:59.6567750Z, Chrome20476 birth18:51:05.1936390Z), native identities
+verified. Same handle must be resumed; never launch another because observation
+expires. Full326 source archive and protected pre-SHA retained in18-50-12-867Z
+alignment16-full-live receipt. All three repeat runs, independent full fidelity,
+complete-tree250MiB acceptance, post-SHA and finally cleanup remain pending;
+owned wrapper3rtnNt/candidateC1wwJM are IN USE. Estimated3–4hours for first
+conversion; whole three-run gate takes longer. Overall goal is not achieved.
+
 **Partially implemented**. New reversible runner qualifies actual417182a9…1014
 decoder plus a4ba6225…1cee plane encoder against the three browser media/recovery
 witnesses. Preparation verified326 current/pre/post/source preimages, retaining

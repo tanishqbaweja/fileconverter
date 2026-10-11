@@ -6,6 +6,21 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-12 — Changed full-file runner prepared with original gates retained
 
+ONE changed full-original execution is now live: session67733, actual driver
+26128/parent25972/birth2026-10-11T18:50:59.6567750Z and Chrome20476/parent26128/
+birth18:51:05.1936390Z independently observed by native process query. Do not
+restart because a status observation times out. Launch physical8,156,651,520B and
+virtual10,218,762,240B passed unchanged2GiB guards; whole protected size/SHA passed.
+Receipt `evidence/2026-10-11T18-50-12-867Z-alignment16-full-live.json` retains326
+pre-source pins and842,694B exact recoverable source archive. Owned wrapper
+`work/allocation-attempt-full-wrapper-3rtnNt` and candidate
+`work/allocation-attempt-media-C1wwJM` are IN USE, not disposable yet. Cleanup,
+post-source/protected hashes, independent full validation and all three repeats
+are pending. No completion/memory/speed/public acceptance is claimed.
+Estimated first conversion3–4hours from historical whole-file throughput;
+entire three-run validation is longer. Keep native100ms safety capture enabled,
+but do not repeatedly query the live session every few seconds.
+
 Previous goal turn was progress: three actual new-decoder browser conversions
 and recovery passed. This cycle adds reversible full-runner/stager/failure-schema
 qualification without editing those frozen sources. New preparation receipt
