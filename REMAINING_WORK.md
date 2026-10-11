@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Observer repair integrated; corrected full preparation verified
+
+Status: **Partially implemented**. Observer integration is now implemented in
+scripts/run-encoder-plane-clock-original-full.mjs and its strict recipe. It is
+NOT full conversion acceptance. Byte-exact reversal reconstructs the actual
+failed title driver/caller; only bounded clock fence, always-stop cleanup,
+observer birth ownership and evidence identities change. Original codec/input/
+48MiB/fidelity/metadata/250MiB complete-tree/native100ms/three repeats/recovery
+and six-hour settings remain unchanged. No historical failure is reclassified.
+
+Actual source-bound Node diagnostic and failed clock-run archive required before
+preparation; their current hashes and null/non-null failure meanings are checked.
+Caller retains all disk/host/correctness/restoration gates and live-driver checks.
+Three new tests plus clock/title/cleanup regressions15PASS750.9057ms; three-file
+zero-warning lint PASS. Actual preparation receipt03:51:12 proves249source pins,
+source preimages and generated syntax;0executions/nullfailure/owned scratch gone.
+Archive hashes independently verified, old240sources unchanged, bounded whole
+test.mkv hash unchanged. FreeRAM/virtual >2GiB and disk >32GiB; five known old
+roles freshly absent. No browser/conversion during preparation. Detailed paths,
+hashes and exact results in TESTED.md.
+
+Next: push prepared code, launch only ONE meaningful corrected full test and
+sleep to an estimated first completion check (~3hours from launch). Preserve
+all249 measured pins while active; never poll each goal continuation. This still
+requires three genuinely completed and independently validated outputs, valid
+native coverage, recovery, clean sessions/scaling/speed and a strict new
+post-terminal audit. Broader original-spec requirements remain unfinished.
+
 ## 2026-10-11 — Full run terminal failure; ETA watching policy; observer repair still prospective
 
 Status: **Partially implemented**. This supersedes historical live/timer entries.

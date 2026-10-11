@@ -4,6 +4,44 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Clock-qualified full driver integrated and preparation passed
+
+Previous turn PROGRESS: archived actual terminal failure,26observer regressions,
+real short Node diagnostic, updated ledgers and pushed550d7a9. This cycle now
+integrates that tested helper through a new observer-only full-driver recipe.
+The driver reverses byte-exactly to the actual previous failed title driver;
+codec, fixed48MiB Wasm, original input, fidelity, metadata,250MiB ALL-tree budget,
+three repetitions, six-hour-per-run limit and all recovery gates stay unchanged.
+Native acquisition still100ms. The new driver records the observer's actual
+parent/birth identity. Finally always invokes stop even when phase transition
+throws, reports monitorClosed truthfully, and retains fatal/nested cleanup errors.
+No historical observerStopped:false, missing sample or invalid result is changed.
+
+New caller binds the actual Node-only diagnostic to all eight source hashes,
+requires the actual old clock failure, verifies its raw gzip SHA/restoration and
+all240 old pre/post pins, keeps old raw runtime absent and refuses live drivers.
+Diagnostic qualification explicitly excludes browser/private-memory acceptance.
+Original full-run/disk/host/cleanup/restoration/assertion gates remain intact.
+Union249sources stays under the unchanged256 bound with exact archived preimages.
+
+Three new recipe/source-binding tests plus12relevant clock/title/cleanup checks:
+15PASS/0failed/750.9057ms. Three-file zero-warning lint PASS4.6934s. Generated
+driver/caller syntax and exact reverse reconstruction PASS. Actual preparation:
+evidence/2026-10-11T03-51-12-846Z-encoder-plane-clock-original-full-preparation.json,
+prepared-not-executed/0launches/nullfailure, wrapper/scratch removed, normal
+production assets unchanged. Archive1207058B/SHA32133e6d7833a566db77c59764e8b6854dfc56ed2a5dd040142de65be762a18d,
+restores5231216B/SHAdf30a55f38058d8a2df3e27c665d1cb8023bbe915353a47d53f56b44548997c8,
+drivera0617ddbed955797de02c2a7e13c9fdc41d2ca81aefb350f8462aa0c567f263a,
+traceb2acd4b5f0baa293d8149ab0e2bfa49adfedaef2bdbb3d862ab1b45f0b9deabf.
+All249 current pre/post/source-archive pins independently verified. Free physical
+7,150,411,776B/virtual6,343,778,304B >2GiB and disk2,338,446,974,976B >32GiB.
+Independent bounded-stream whole test.mkv hash again PASS,2958573265B and original
+31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34. Fresh03:52:14UTC
+CIM finds none of the five old known driver/caller/observer/Chrome-root/server PIDs.
+No conversion has run on this preparation receipt; no full/public/speed acceptance.
+Next authorized step: push this prepared version, launch ONE corrected full
+attempt, freeze its source pins, then sleep until a throughput/history-based ETA.
+
 ## 2026-10-11 — ETA wait completed; full attempt failed; prospective observer repair tested
 
 This entry supersedes the historical live/waiting entries below. Session48948
