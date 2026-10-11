@@ -4,6 +4,49 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Title-bearing browser matrix passed; full acceptance still pending
+
+Actual one headless launch of scripts/validate-mpeg2-encoder-plane-titles.mjs:
+session7187 TERMINAL exit0, five cases PASS30.7s. Three genuine production-browser
+MPEG-4/HEVC to MPEG-2/MP4 conversions (48/96 frames, OPFS and selected direct
+destination), plus actual write-failure and cancellation cleanup. Explicit primary
+video title Primary café — 音楽 and both audio titles survived exactly. Independent
+FFprobe represents the Matroska stream tags.title as MP4 stream tags.name; generic
+handler_name is never accepted as a title. This establishes the representation
+mapping on actual small title-bearing outputs, not fidelity of the deleted full
+attempt. That historical title assertion used the wrong output field, but its full
+output was not completely validated and cannot be retroactively accepted.
+
+Same fixed32+16MiB candidate and original pixel/decoded-audio/packet/timestamp/
+chapter/container/artwork/language/writer/recovery gates. Strict reversible recipe
+only adds the explicit video-title fixture and exact video/audio title checks.
+Added metadata changes the actual fixture/output byte counts and hashes: these
+are retained as NEW evidence, never projected onto old byte-exact golden outputs.
+Complete-tree memory/full-original/scaling/speed/public acceptance remain FALSE.
+Nested cleanup failure causes from the earlier full attempt are still unproven;
+the successful small cleanup does not diagnose or excuse that AggregateError.
+
+Receipt: evidence/2026-10-11T00-04-25-682Z-encoder-plane-title-browser-goldens.json.
+Actual source archive150,110B SHA6028b3536240c9d1ac1b6587af4ae3efc803d36e3a79a0946b5d08d81de05aee;
+raw report gzip37,304B SHA1d3fd1cf77199990c45d5bfb38762d1c030eb26556724d3435aa094b0d68de2c,
+restores530,525B SHA942854f12ed2858af7f37c827f13175454f9b61eea500d1b002ffe2c4a365783.
+Both archive byte/hash/restoration checks passed; redundant raw report removed
+00:10UTC only after exact verification. No converted fixture/profile/scratch kept;
+owned helper birth identities absent, normal production UI/CSS/six engines restored,
+private additions absent, source pins unchanged. Whole protected test.mkv pre/post
+2,958,573,265B and SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34 unchanged.
+
+Five new title/evidence tests include actual source preimages/report/build SHA joins
+and negative metadata/pixel/audio/clock/queue/Wasm/cleanup cases. All43 focused
+encoder/title tests PASS1030.2748ms; five-file zero-warning lint and diff check PASS.
+Monitoring followed measured roughly one-minute ETA, one55s sleep and one terminal
+check, not repeated progress polls. For future long conversions, estimate remaining
+time from measured frames/timestamps and use a completion-time timer; if uncertain,
+state that and use a long interval. No conversion is currently active.
+Next: additive full validator with exact container-specific title mapping and
+pre-assertion output metadata/nested cleanup error retention, before a full retry.
+No unchanged expensive browser matrix rerun or original full retry in this cycle.
+
 ## 2026-10-11 — Actual staged-full failure audited; no full retry
 
 Session79454 TERMINAL exit1, receipt21:57:18.705UTC Oct10. This supersedes all

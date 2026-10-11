@@ -5,6 +5,34 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Small title-preservation reproduction verified; full gate still partial
+
+Status: **Partially implemented** for full MPEG-2 acceptance. One actual headless
+title-bearing browser matrix ended exit0: five cases PASS30.7s, three genuine
+MPEG-4/HEVC to MPEG-2/MP4 outputs and two failure/cancellation recoveries. Exact
+Unicode primary video and both audio titles appear as MP4 tags.name, not tags.title.
+This verifies the container-specific field mapping and resolves the earlier
+validator field mismatch for small fixtures without relaxing title fidelity.
+It does NOT validate the deleted full output, excuse the old cleanup AggregateError,
+or complete three full stress repeats, clean sessions, scaling, speed or publicity.
+
+Pixel/audio/clock/artwork/chapter/language/bounded writer/fixed48MiB/recovery gates
+unchanged. Actual title-bearing output hashes and byte counts are new evidence, not
+relabelled historical goldens. Whole protected test.mkv size/SHA and source pins
+unchanged; normal assets restored, fixture/output/browser/owned helper scratch gone.
+Only compact source and report archives retained; redundant530,525B raw report
+removed after exact lossless verification. Actual receipt:
+evidence/2026-10-11T00-04-25-682Z-encoder-plane-title-browser-goldens.json.
+All43 focused encoder/title tests PASS1030.2748ms, five-file zero-warning lint and
+diff check PASS. No new full retry and no repeated unchanged browser matrix.
+
+Next full derivative must require exact Matroska title -> MP4 name preservation,
+retain the independent output probe BEFORE assertions and preserve bounded nested
+cleanup error causes without suppressing failures. Full candidate still private.
+Monitoring now uses measured ETA + completion-time sleep/timer; uncertain estimates
+use a stated long interval. Actual short matrix used one55s sleep/one terminal check.
+No conversion currently active. The broad original-spec audit remains incomplete.
+
 ## 2026-10-11 — Changed-observer full attempt TERMINAL; fidelity and cleanup failed
 
 Status: **Partially implemented**, NOT accepted. This supersedes every historical
