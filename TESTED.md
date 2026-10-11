@@ -4,6 +4,66 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Direct-buffer allocator failure hook added; actual control held before Chrome
+
+Previous cycle PROGRESS: actual4Mbps full test identified direct HEVC frame alloc
+OOM and strict terminal audit, pusheddf2c1c0. This cycle preserves ALL256measured
+full and19audit source files; adds standalone failure observer + export-only control
+and reversible browser driver derived from original privacy/ownership/finally path.
+No full/short media conversion rerun. Broad goal not narrowed to this diagnostic.
+
+New observer requires exact current coreSHA86704920f30ed243240614df92d05deba9f76c33e739a927903677b677f8a8ec,
+allocator root1786520 and direct AVBuffer/malloc indices4187/4311/4435. Bounded
+free-header-only inspection at first native fatal:32768words/4096chunks, frozen
+scalar inventory, no native call/payload/heap copy, no normal polling or queue,
+no suppressed native error. Non-qualified path never reads core, corrupt headers
+remain null/unavailable. Individual request bytes/live heap/pool request and
+historical fragmentation/retention/root cause remain unknown, not retrofilled.
+
+Synthetic control changes ONLY export section of current6904110B core to expose
+its real compiled av_buffer_allocz. All other sections/bodies/data/imports/types/
+memory exactly preserved. Original immutable export builder reused reversibly;
+actual metadata checks direct AVBuffer + HEVC get_buffer2/alloc_frame/receive_frame
+indices. Added control native call is only a synthetic32MiB allocation, NEVER media
+conversion or staged/published asset. Held source recipes preserve real headless
+Chrome/privacy/request classification/unchanged2GiBhost/birth/normal-close/finally
+cleanup and error checks. Native-error preservation/header immutability/corruption/
+unavailable/factory byte identity/driver syntax/source reversibility units pass.
+
+Initial static reversal collided with generic [i32] parameters; fixed using the
+full exact assertion anchor, no old checker changed. Initial source-hash placeholder
+replaced with actual measured current builder SHA before any execution. Static
+failures occurred before Chrome. Final19focused current/full-proof/allocator
+regressions PASS1233.7934ms; five-file zero-warning lint PASS6978.1119ms.
+
+Actual command11:37:14 exit1 on ORIGINAL Unchanged2GiB host preflight before any
+Chrome/server/browser runtime. No actual failing host values retained; subsequent
+read-only snapshot11:37:43 physical5025988608B/virtual1733177344B labelled separately.
+Old38source preimages retained unchanged in835810B/205031Bgzip; old caller scratch
+qWssSg absent/export-only bytes removed. Receipt11:37:14-preflight-failure.json.
+
+Corrected caller archives precise preflight holds BEFORE driver import, no false
+cleanup claim before finally. One actual corrected preparation11:39:18 exit0 means
+HELD, NOT passed control: physical5072887808B/virtual2004074496B, unchanged minimum
+2147483648B each; safeToStartfalse, driverImportedfalse, browsers0/conversions0/
+proofnull.38pre/post/current source pins recursively include local Node imports,
+original static qualification, lockfile and browser helpers. Source837010B/gzip205415B,
+SHA241339240eb946555e4685aa60c042493c2aead86fb24d22af8c167e3d76a5c7,
+restoredSHA81cee3e242c06fe291db2c83be679a163b5f2532002e7d1fb5136418f8aabb32.
+Owned callerBdTqaA and syntheticWasms finally gone; original engines untouched.
+No application closed/kill, no Docker/visible windows/heap growth/quality changes.
+
+Browser hook integration/header inventory STILL UNVERIFIED until safety allows
+the bounded synthetic control. User asked about freeing optional application
+memory; no repeated launch attempts/timer/live handle. Prior real4Mbps failure
+and original actual memory/quality unknowns remain unchanged. Separate evidence
+unit created after held capture, so measured38source pins are not rewritten.
+
+Final21focused source/provenance/allocator/full-prerequisite/evidence regressions
+PASS1263.9117ms; separate evidence-file lint PASS6983.3771ms. Both failed/held source
+archives restore losslessly and owned directories are absent. No live session,
+timer, converted file, browser integration acceptance or full stress rerun.
+
 ## 2026-10-11 — Actual4Mbps full run FAILED native decoder heap; strict terminal audit passed
 
 Session83763 now CLOSED/outercollector exit0 but actual conversion driver exit1.

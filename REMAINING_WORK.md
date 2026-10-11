@@ -5,6 +5,40 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Direct-AVBuffer allocator observation implemented; browser control held safely
+
+Status: **Partially implemented**. New failure-only observer recognizes actual
+current-core av_buffer_allocz4187/av_malloc4311/builtin malloc4435 path, instead of
+requiring the unrelated pending refstruct pool. Exact coreSHA86704920.../root1786520
+qualified from retained current binary/map/layout. Reads ONLY bounded free headers
+at fatal callback (32768words/4096chunks); no native call, heap copy, payload read,
+normal-conversion polling, growth or fatal suppression. Unknown request/live heap
+and original retention/fragmentation cause remain null/unproven.
+
+Reversible export-only synthetic control adds one export to the SAME compiled
+av_buffer_allocz; all code/data/types/imports/memory/table sections byte-exact.
+Current binary/function indices statically verified, including original HEVC frame
+path. Unit controls pass, not actual browser integration or full acceptance.
+Actual browser attempt11:37:14 stopped at original host preflight BEFORE any launch;
+old sources retained, actual failing values unavailable, later snapshot separately
+labelled. Caller improved to archive precise future holds and finally removal.
+Actual11:39:18 prepared proof: available virtual2004074496B <2147483648B; Chrome
+NOT launched/driver NOT imported/zero conversions.38current source/preimages pinned,
+837010B source archive/205415B gzip; owned scratch/export-only Wasm finally removed.
+
+19focused regressions PASS1233.7934ms; five-file lint PASS6978.1119ms. Initial static
+replace anchor collision fixed without altering original checks. No conversion
+rerun, no native FFmpeg, no public registry change, no goal completion. User asked
+to free optional application memory; do not repeatedly retry while unchanged.
+Next after host safety passes: actual headless synthetic direct-buffer abort/control
+and header inventory validation. Then integrate qualified observer for a meaningful
+changed full diagnostic, identify actual retained allocations, and fix/requalify.
+All broader missing/partial original requirements remain open.
+
+Final21focused regression/evidence tests PASS1263.9117ms; separate evidence lint
+PASS6983.3771ms. Held preparation is explicitly tested as ZERO browser executions,
+not a passing control. No live process/timer or converted output to clean.
+
 ## 2026-10-11 — Actual4Mbps full test stopped on decoder-frame OOM; independently audited
 
 Status: **Partially implemented; NOT qualified/public**. One actual changed full
