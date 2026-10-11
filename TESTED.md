@@ -4,6 +4,29 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — First actual alignment16 build failed BEFORE SDK patch
+
+Run38160211970 is TERMINAL/failure, not queued/live. It reached the new outer
+builder but its occurrence guard saw both the real root declaration and a
+nested historical edit literal (`3 !== 2`, line20). The SDK patch/native
+compile/13-case Wasm test were never reached. Hosted finally cleanup passed;
+no media read/conversion/output. Planned10-minute timer was NOT started because
+the pre-wait observation found terminal failure. Exact failed log and all four
+native preparation source preimages were retained BEFORE correction in
+`evidence/alignment16-first-build-failure-38160211970.json`; actual run metadata
+and observation-source preimages are in the17-35-24-259Z hosted receipt.
+
+Correction extracts a pure actual-builder factory, anchors declaration/imports,
+preserves nested literals and reverses every edit to pinned old builder bytes.
+A new test actually invokes this factory on the real doubled-root fixture;
+syntax checks alone missed this failure. Corrected build uses a NEW isolated
+`builder-fix` branch/receipt, without replacing the first failure. No memory,
+quality, codec, lifetime, AVIO, original stress or cleanup threshold changed.
+Actual changed native build and browser qualification remain pending.
+
+Corrected factory/failure-lineage/collector/proof preparation:11/11 focused
+tests PASS1,017.874ms; nine changed/new files zero-warning lint PASS6.309s.
+
 ## 2026-10-11 — Exact fallback capacity proof; decoder alignment16 build preparation
 
 The previous goal cycle was concrete progress, not a verified wait: the changed

@@ -1,0 +1,212 @@
+{
+  "recordedAt": "2026-10-11T17:36:19.762Z",
+  "receipt": {
+    "path": "evidence/2026-10-11T17-35-24-259Z-alignment16-hosted-run.json",
+    "sha256": "55947edeb05d93ca1c9e93052f7194e6cf61f517f6609c16f3ce5390ee4ec3f7"
+  },
+  "run": {
+    "conclusion": "failure",
+    "createdAt": "2026-10-11T17:34:23Z",
+    "databaseId": 38160211970,
+    "headSha": "2485242c69fc568f8af02c741ecb75a5ae85272b",
+    "jobs": [
+      {
+        "completedAt": "2026-10-11T17:35:06Z",
+        "conclusion": "failure",
+        "databaseId": 114531351947,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-11T17:34:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T17:34:28Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T17:34:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:34:33Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T17:34:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:34:38Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-11T17:34:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-11T17:34:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "failure",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:03Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:05Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "2026-10-11T17:35:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:05Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "2026-10-11T17:35:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:35:05Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-11T17:35:05Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38160211970/job/114531351947"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-11T17:35:07Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38160211970"
+  },
+  "failedLog": "reproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t﻿2026-10-11T17:35:03.7406454Z ##[group]Run source work/emsdk/emsdk_env.sh\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7406879Z \u001b[36;1msource work/emsdk/emsdk_env.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7407335Z \u001b[36;1mif test \"within-mpeg2-aligned-reuse\" = within-h264-sad-arithmetic; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7407830Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7408222Z \u001b[36;1m  bash media/ffmpeg/verify-sad-arithmetic.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7408704Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-h264-vaa-arithmetic; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7409188Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7409571Z \u001b[36;1m  bash media/ffmpeg/verify-vaa-arithmetic.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7410033Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-h264-candidate; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7410505Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7410839Z \u001b[36;1m  WITHIN_H264_MEMORY_MIB=\"64\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7411142Z \u001b[36;1m    WITHIN_H264_LIBRARY_LTO=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7411482Z \u001b[36;1m    WITHIN_H264_VAA_SIMD=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7411768Z \u001b[36;1m    WITHIN_H264_SAD_SIMD=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7412076Z \u001b[36;1m    WITHIN_H264_ALLOCATOR_DIAGNOSTIC=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7412522Z \u001b[36;1m    WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7413110Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-split-contract; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7413783Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7414180Z \u001b[36;1m  bash media/ffmpeg/verify-mpeg2-split-frame.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7414678Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-split-properties; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7415200Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7415596Z \u001b[36;1m  bash media/ffmpeg/verify-mpeg2-split-properties.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7438829Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-split-encoder; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7439430Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7439868Z \u001b[36;1m  bash media/ffmpeg/build-mpeg2-split-encoder.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7440406Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-split-pipeline; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7441154Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7441571Z \u001b[36;1m  bash media/ffmpeg/build-mpeg2-split-pipeline.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7442096Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-aligned-reuse; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7442614Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7443012Z \u001b[36;1m  node media/ffmpeg/build-mpeg2-alignment16.mjs\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7443509Z \u001b[36;1melif test \"within-mpeg2-aligned-reuse\" = within-mpeg2-candidate; then\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7444381Z \u001b[36;1m  export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7444758Z \u001b[36;1m  WITHIN_MPEG2_ALLOCATOR_DIAGNOSTIC=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7445126Z \u001b[36;1m    WITHIN_MPEG2_ALLOCATOR=\"emmalloc\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7445472Z \u001b[36;1m    WITHIN_MPEG2_DECODER_SET=\"wide\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7445848Z \u001b[36;1m    WITHIN_MPEG2_FRAME_ALLOCATION_DIAGNOSTIC=\"0\" \\\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7446369Z \u001b[36;1m    WITHIN_KEEP_MPEG2_CANDIDATE=1 bash media/ffmpeg/build-mpeg2-candidate.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7446830Z \u001b[36;1melse\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7447099Z \u001b[36;1m  bash media/ffmpeg/reproduce-nondocker.sh\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7447427Z \u001b[36;1mfi\u001b[0m\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7510895Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7511346Z env:\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7511603Z   WITHIN_KEEP_NONDOCKER_OUTPUT: 1\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7512035Z   WITHIN_BUILD_CORE_FILTER: within-mpeg2-aligned-reuse\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.7512451Z ##[endgroup]\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8680534Z Setting up EMSDK environment (suppress these messages with EMSDK_QUIET=1)\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8682293Z Adding directories to PATH:\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8684040Z PATH += /home/runner/work/fileconverter/fileconverter/work/emsdk\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8685577Z PATH += /home/runner/work/fileconverter/fileconverter/work/emsdk/upstream/emscripten\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8686410Z \nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8686636Z Setting environment variables:\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8689782Z PATH = /home/runner/work/fileconverter/fileconverter/work/emsdk:/home/runner/work/fileconverter/fileconverter/work/emsdk/upstream/emscripten:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8692386Z EMSDK = /home/runner/work/fileconverter/fileconverter/work/emsdk\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.8693297Z EMSDK_NODE = /home/runner/work/fileconverter/fileconverter/work/emsdk/node/22.16.0_64bit/bin/node\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9148758Z node:internal/modules/run_main:123\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9149472Z     triggerUncaughtException(\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9149924Z     ^\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9150102Z \nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9150456Z AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9151001Z \nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9151138Z 3 !== 2\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9151336Z \nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9151962Z     at file:///home/runner/work/fileconverter/fileconverter/media/ffmpeg/build-mpeg2-alignment16.mjs:20:47 {\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9152915Z   generatedMessage: true,\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9153372Z   code: 'ERR_ASSERTION',\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9154005Z   actual: 3,\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9154517Z   expected: 2,\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9155170Z   operator: 'strictEqual'\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9155870Z }\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9156157Z \nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9156454Z Node.js v22.16.0\nreproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-11T17:35:03.9201024Z ##[error]Process completed with exit code 1.\n",
+  "failedLogSha256": "53efa9c28fcc858ef38bbcf0106e628c45376a2182ec47523d1537576f114879",
+  "sourcePins": {
+    "media/ffmpeg/build-mpeg2-alignment16.mjs": "2d17b272e650a157248033dedf6cc2873c297ff0aded672ce4c3058dcd381c5a",
+    "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "590833a79f59f604b7f5044796b02e605818a6e6c17d450344dbcc2eb3830cae",
+    "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "b371a7ca71a4bcd823e671d23aacea6c8b0038f8f9cbd86fd3b77e9052dde01d",
+    "media/ffmpeg/mpeg2-alignment16-smoke.c": "5eb7b3ee4c2aaa8708626f4cc35f86f7581b94145d66d0a49e0acae76fcdb6ad",
+    "scripts/retain-alignment16-first-build-failure.mjs": "b58f9c3ed8b0cbec5c830fefce61ae9966d8f8741b66b7de779c25f9181a56fb"
+  },
+  "sourcePreimages": {
+    "media/ffmpeg/build-mpeg2-alignment16.mjs": "Ly8gUHJpdmF0ZSBob3N0ZWQgTGludXggY2FuZGlkYXRlLCBubyBEb2NrZXIvcHVibGljIG11dGF0aW9uLiBTREsgc291cmNlIG92ZXJyaWRlCi8vIGlzIHJlc3RvcmVkIEJFRk9SRSBzZXBhcmF0ZSBlbmNvZGVyIGNvbXBpbGF0aW9uIGFuZCBhZ2FpbiBpbiBmaW5hbGx5LgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IHNwYXduIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgYWNjZXNzLCByZWFkRmlsZSwgd3JpdGVGaWxlIH0gZnJvbSAibm9kZTpmcy9wcm9taXNlcyI7CmltcG9ydCBwYXRoIGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IHNoYSB9IGZyb20gIi4uLy4uL3NjcmlwdHMvbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCB9IGZyb20gIi4uLy4uL3NjcmlwdHMvbGliL293bmVkLXJ1bnRpbWUtc2NyYXRjaC5tanMiOwppbXBvcnQgeyBwYXRjaEFsaWdubWVudDE2U2RrLCByZXN0b3JlQWxpZ25tZW50MTZTZGsgfSBmcm9tICIuL21wZWcyLWFsaWdubWVudDE2LXNkay5tanMiOwpjb25zdCByb290ID0gcGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLi8uLiIpLCBvdXRwdXQgPSBwYXRoLmpvaW4ocm9vdCwgIndvcmsvbXBlZzItc3BsaXQtcGlwZWxpbmUtb3V0cHV0Iik7CmFzc2VydC5lcXVhbChwcm9jZXNzLnBsYXRmb3JtLCAibGludXgiLCAiVXNlIGlzb2xhdGVkIG5vLURvY2tlciBob3N0ZWQgYnVpbGRlciIpOwpjb25zdCBwcmlvciA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCAibWVkaWEvZmZtcGVnL2J1aWxkLW1wZWcyLWFsbG9jYXRpb24tYXR0ZW1wdC5tanMiKSwgInV0ZjgiKTsKYXNzZXJ0LmVxdWFsKHNoYShwcmlvciksICJjNDgwZWI2MjNlMWE5YjBiYjhkNWUxMjhlYmM3YzNiMDdiNzIyN2FlNGJlNmE3YmFlNWYxYTMzMTVjMmE0NDY3Iik7CmNvbnN0IGVkaXRzID0gWwogIFsncGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLi8uLiIpJywgSlNPTi5zdHJpbmdpZnkocm9vdCldLAogIFsncGF0aC5qb2luKHJvb3QsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxsb2NhdGlvbi1hdHRlbXB0LXJlY2lwZS5tanMiKScsICdwYXRoLmpvaW4ocm9vdCwgIm1lZGlhL2ZmbXBlZy9tcGVnMi1hbGlnbm1lbnQxNi1yZWNpcGUubWpzIiknXSwKICBbJ21ha2VBbGxvY2F0aW9uQXR0ZW1wdFJlY2lwZSBhcyBtYWtlQWxpZ25lZFJldXNlUmVjaXBlJywgJ21ha2VBbGlnbm1lbnQxNlJlY2lwZSBhcyBtYWtlQWxpZ25lZFJldXNlUmVjaXBlJ10sCl07CmxldCBnZW5lcmF0ZWQgPSBwcmlvcjsKZm9yIChjb25zdCBbYmVmb3JlLCBhZnRlcl0gb2YgZWRpdHMpIHsgYXNzZXJ0LmVxdWFsKGdlbmVyYXRlZC5zcGxpdChiZWZvcmUpLmxlbmd0aCwgMik7IGdlbmVyYXRlZCA9IGdlbmVyYXRlZC5yZXBsYWNlKGJlZm9yZSwgYWZ0ZXIpOyB9Ci8vIEFsbCBvcmlnaW5hbCByZWxhdGl2ZSBpbXBvcnRzIGJlbG9uZyB0byB0aGUgb3JpZ2luYWwgbWVkaWEvZmZtcGVnIGRpcmVjdG9yeS4KY29uc3QgeyBwYXRoVG9GaWxlVVJMIH0gPSBhd2FpdCBpbXBvcnQoIm5vZGU6dXJsIik7CmZvciAoY29uc3QgZmlsZSBvZiBbIi4uLy4uL3NjcmlwdHMvbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIiwgIi4uLy4uL3NjcmlwdHMvbGliL293bmVkLXJ1bnRpbWUtc2NyYXRjaC5tanMiLCAiLi4vLi4vc2NyaXB0cy9saWIvd2FzbS1zdGFjay1zeW1ib2xzLm1qcyJdKQogIGdlbmVyYXRlZCA9IGdlbmVyYXRlZC5yZXBsYWNlKEpTT04uc3RyaW5naWZ5KGZpbGUpLCBKU09OLnN0cmluZ2lmeShwYXRoVG9GaWxlVVJMKHBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lLCBmaWxlKSkuaHJlZikpOwpsZXQgcnVudGltZSwgc3RhdGUsIHNka1JlY2lwZTsKdHJ5IHsKICBydW50aW1lID0gYXdhaXQgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCgiYWxpZ25tZW50MTYtYnVpbGRlci0iKTsgc3RhdGUgPSBwYXRoLmpvaW4ocnVudGltZS5kaXJlY3RvcnksICJzZGstc3RhdGUuanNvbiIpOwogIHNka1JlY2lwZSA9IGF3YWl0IHBhdGNoQWxpZ25tZW50MTZTZGsocm9vdCwgc3RhdGUpOwogIGNvbnN0IGJ1aWxkZXIgPSBwYXRoLmpvaW4ocnVudGltZS5kaXJlY3RvcnksICJidWlsZGVyLm1qcyIpOyBhd2FpdCB3cml0ZUZpbGUoYnVpbGRlciwgZ2VuZXJhdGVkLCB7IGZsYWc6ICJ3eCIgfSk7CiAgY29uc3QgY2hpbGQgPSBzcGF3bihwcm9jZXNzLmV4ZWNQYXRoLCBbYnVpbGRlcl0sIHsgY3dkOiByb290LCBlbnY6IHsgLi4ucnVudGltZS5lbnYsIFdJVEhJTl9BTElHTk1FTlQxNl9TREtfU1RBVEU6IHN0YXRlIH0sIHdpbmRvd3NIaWRlOiB0cnVlLCBzdGRpbzogImluaGVyaXQiIH0pOwogIGF3YWl0IG5ldyBQcm9taXNlKChyZXNvbHZlLCByZWplY3QpID0+IHsgY2hpbGQub25jZSgiZXJyb3IiLCByZWplY3QpOyBjaGlsZC5vbmNlKCJleGl0IiwgKGNvZGUsIHNpZ25hbCkgPT4gY29kZSA9PT0gMCA/IHJlc29sdmUoKSA6IHJlamVjdChuZXcgRXJyb3IoYEFsaWdubWVudDE2IGJ1aWxkIGV4aXQgJHtjb2RlfS8ke3NpZ25hbH1gKSkpOyB9KTsKICBjb25zdCByZXN0b3JlID0gYXdhaXQgcmVzdG9yZUFsaWdubWVudDE2U2RrKHJvb3QsIHN0YXRlKTsgYXNzZXJ0LmVxdWFsKHJlc3RvcmUudXBzdHJlYW1Tb3VyY2VSZXN0b3JlZCwgdHJ1ZSk7CiAgY29uc3Qgc21va2VCeXRlcyA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihvdXRwdXQsICJhbGlnbm1lbnQxNi1zbW9rZS5qc29uIikpLCBzbW9rZSA9IEpTT04ucGFyc2Uoc21va2VCeXRlcyk7CiAgYXNzZXJ0LmVxdWFsKHNtb2tlLnBhc3NlZCwgMTMpOyBhc3NlcnQuZXF1YWwoc21va2UuY2FzZXMsIDEzKTsgYXNzZXJ0LmVxdWFsKHNtb2tlLm1hbGxvY0FsaWdubWVudCwgMTYpOwogIGFzc2VydC5lcXVhbChzbW9rZS5oZWFwQnl0ZXMsIDMzNTU0NDMyKTsgYXNzZXJ0LmVxdWFsKHNtb2tlLmxhcmdlV3JhcHBlclJlamVjdGVkRnJlc2hQb2ludGVyLCBmYWxzZSk7IGFzc2VydC5lcXVhbChzbW9rZS5jb252ZXJzaW9uc1BlcmZvcm1lZCwgMCk7CiAgY29uc3QgbWFuaWZlc3RQYXRoID0gcGF0aC5qb2luKG91dHB1dCwgImJ1aWxkLW1hbmlmZXN0Lmpzb24iKSwgbWFuaWZlc3QgPSBKU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKG1hbmlmZXN0UGF0aCkpOwogIGFzc2VydC5lcXVhbChtYW5pZmVzdC5hcnRpZmFjdHNbInNwbGl0LWVuY29kZXIud2FzbSJdLCAiOGIyZmQ2NGQzMjA1MTQzOTcxZDQ1MWYwZWQ1NjIwMzlkOThmYmFjOWYyNzZkNmNiYjNjODg5OGQ4ODlmNDI0MiIpOwogIGFzc2VydC5ub3RFcXVhbChtYW5pZmVzdC5hcnRpZmFjdHNbIndpdGhpbi1tcGVnMi1zcGxpdC53YXNtIl0sICI5Y2U4NjI2MDJmOGRiNWU2MWY1MDQ3ZTRlY2RjY2VhMWQ4ZjdlOGM5ODQ1MmZiNDg2YTk1YmVmZWViNTU4MDM5Iik7CiAgZm9yIChjb25zdCBmaWxlIG9mIFsibWVkaWEvZmZtcGVnL2J1aWxkLW1wZWcyLWFsaWdubWVudDE2Lm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtc2RrLm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtcmVjaXBlLm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtc21va2UuYyJdKQogICAgbWFuaWZlc3Quc291cmNlc1tmaWxlXSA9IHNoYShhd2FpdCByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgZmlsZSkpKTsKICBtYW5pZmVzdC5hcnRpZmFjdHNbImFsaWdubWVudDE2LXNtb2tlLmpzb24iXSA9IHNoYShzbW9rZUJ5dGVzKTsKICBtYW5pZmVzdC5zY29wZSA9ICJwcml2YXRlLWRlY29kZXItZGxtYWxsb2MtYWxpZ25tZW50MTYtZml4ZWQtaGVhcHMtbm90LWJyb3dzZXItYWNjZXB0YW5jZSI7CiAgbWFuaWZlc3QuYWxsb2NhdGlvbkF0dGVtcHQuYWxsb2NhdG9yUG9saWN5Q2hhbmdlZCA9IHRydWU7CiAgbWFuaWZlc3QuYWxpZ25tZW50MTYgPSB7IG9yaWdpbmFsU2RrU291cmNlU2hhMjU2OiByZXN0b3JlLnNvdXJjZVNoYTI1NiwgZGVjb2Rlck1hbGxvY0FsaWdubWVudDogMTYsIHNlcGFyYXRlRW5jb2RlclNka1Jlc3RvcmVkOiB0cnVlLCBhY3R1YWxXYXNtU21va2U6IHNtb2tlLAogICAgZ2VuZXJhdGVkU2RrU291cmNlU2hhMjU2OiBzZGtSZWNpcGUuZ2VuZXJhdGVkU2hhMjU2LCB1cHN0cmVhbUFsbG9jYXRvckJvZHlVbmNoYW5nZWQ6IHRydWUsIGFsbG9jYXRvclBvbGljeUNoYW5nZWQ6IHRydWUsCiAgICBnZW5lcmF0ZWRCdWlsZGVyU2hhMjU2OiBzaGEoZ2VuZXJhdGVkKSwgbGl2ZVJlZmVyZW5jZXNDaGFuZ2VkOiBmYWxzZSwgY29kZWNTZXR0aW5nc0NoYW5nZWQ6IGZhbHNlLCBoZWFwTGltaXRzUmFpc2VkOiBmYWxzZSwgYnJvd3NlckZpZGVsaXR5VmVyaWZpZWQ6IGZhbHNlLCBzcGVlZEdhaW5Qcm92ZW46IGZhbHNlLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSB9OwogIGF3YWl0IHdyaXRlRmlsZShtYW5pZmVzdFBhdGgsIEpTT04uc3RyaW5naWZ5KG1hbmlmZXN0LCBudWxsLCAyKSArICJcbiIpOwp9IGZpbmFsbHkgewogIGlmIChydW50aW1lKSB7CiAgICBsZXQgYmFja3VwRXhpc3RzID0gdHJ1ZTsKICAgIHRyeSB7IGF3YWl0IGFjY2VzcyhzdGF0ZSk7IH0gY2F0Y2ggKGVycm9yKSB7IGlmIChlcnJvci5jb2RlID09PSAiRU5PRU5UIikgYmFja3VwRXhpc3RzID0gZmFsc2U7IGVsc2UgdGhyb3cgZXJyb3I7IH0KICAgIC8vIERvIG5vdCBlcmFzZSB0aGUgb25seSByZWNvdmVyeSBjb3B5IHdoZW4gcmVzdG9yYXRpb24gZmFpbHMuCiAgICBpZiAoYmFja3VwRXhpc3RzKSB7CiAgICAgIHRyeSB7IGF3YWl0IHJlc3RvcmVBbGlnbm1lbnQxNlNkayhyb290LCBzdGF0ZSk7IH0KICAgICAgY2F0Y2ggKGVycm9yKSB7IGNvbnNvbGUuZXJyb3IoYFNESyByZXN0b3JlIGZhaWxlZDsgcmVjb3ZlcnkgYmFja3VwIHJldGFpbmVkIGF0ICR7c3RhdGV9YCk7IHRocm93IGVycm9yOyB9CiAgICB9CiAgICBhd2FpdCBydW50aW1lLmNsb3NlKCk7IGF3YWl0IGFzc2VydC5yZWplY3RzKGFjY2VzcyhydW50aW1lLmRpcmVjdG9yeSksIHsgY29kZTogIkVOT0VOVCIgfSk7CiAgfQp9Cg==",
+    "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "Ly8gSXNvbGF0ZWQgU0RLIHNvdXJjZSBvdmVycmlkZTsgbmV2ZXIgdG91Y2ggdGhlIHVzZXIncyBpbnN0YWxsZWQgdG9vbGNoYWluLgovLyBFbXNjcmlwdGVuIGl0c2VsZiBzdXBwb3J0cyBNQUxMT0NfQUxJR05NRU5UIG92ZXJyaWRlcy4gVGhlIG9yZGluYXJ5L2ZyZWUgQUJJCi8vIHJlbWFpbnMgdXBzdHJlYW0sIG5vdCBhbiBpbnRlcmlvci1wb2ludGVyIHNoaW0gb3IgcmVmZXJlbmNlLWxpZmV0aW1lIGNoYW5nZS4KaW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBsc3RhdCwgcmVhZEZpbGUsIHJlYWxwYXRoLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgc2hhIH0gZnJvbSAiLi4vLi4vc2NyaXB0cy9saWIvc3RhYmxlLXVpLWhlYWRsZXNzLWJhc2VsaW5lLXJlY2lwZS5tanMiOwpleHBvcnQgY29uc3QgU0RLX0RMTUFMTE9DX1NPVVJDRV9TSEEyNTYgPSAiMTc1ZWY3Y2FiNmQ1OWI4NTg0NzFhZDhiYTE2ZWU4YTJmMDUzNmRkZjY2Njc0MmI1ZTA0NGIxODcxNzE2OTVkNiI7CmNvbnN0IHByZWZpeCA9ICIvKiBQcml2YXRlIGRlY29kZXItb25seSBvdmVycmlkZTsgdXBzdHJlYW0gYWxsb2NhdG9yIGJvZHkgdW5jaGFuZ2VkLiAqL1xuI2RlZmluZSBNQUxMT0NfQUxJR05NRU5UIDE2XG4iOwpleHBvcnQgZnVuY3Rpb24gbWFrZUFsaWdubWVudDE2U2RrU291cmNlKHNvdXJjZSkgewogIGFzc2VydC5lcXVhbChzaGEoc291cmNlKSwgU0RLX0RMTUFMTE9DX1NPVVJDRV9TSEEyNTYpOyBhc3NlcnQuZXF1YWwoQnVmZmVyLmJ5dGVMZW5ndGgoc291cmNlKSwgMjM2NTcwKTsKICBhc3NlcnQub2soc291cmNlLnN0YXJ0c1dpdGgoIlxuLyogWFhYIEVtc2NyaXB0ZW4gWFhYICovIikpOwogIGFzc2VydC5vayhzb3VyY2UuaW5jbHVkZXMoIiNpZm5kZWYgTUFMTE9DX0FMSUdOTUVOVCIpKTsgYXNzZXJ0Lm9rKHNvdXJjZS5pbmNsdWRlcygiX1N0YXRpY19hc3NlcnQoTUFMTE9DX0FMSUdOTUVOVCA9PSA4IikpOwogIGNvbnN0IGdlbmVyYXRlZCA9IHByZWZpeCArIHNvdXJjZTsgYXNzZXJ0LmVxdWFsKGdlbmVyYXRlZC5zbGljZShwcmVmaXgubGVuZ3RoKSwgc291cmNlKTsKICByZXR1cm4geyBnZW5lcmF0ZWQsIGdlbmVyYXRlZFNoYTI1Njogc2hhKGdlbmVyYXRlZCksIG9yaWdpbmFsU2hhMjU2OiBzaGEoc291cmNlKSwgcHJlZml4LCBhbGlnbm1lbnQ6IDE2LAogICAgdXBzdHJlYW1Cb2R5VW5jaGFuZ2VkOiB0cnVlLCBoZWFwTGltaXRzUmFpc2VkOiBmYWxzZSwgcnVudGltZUZpeFByb3ZlbjogZmFsc2UgfTsKfQphc3luYyBmdW5jdGlvbiB0YXJnZXQocm9vdCwgZmlsZSkgewogIGNvbnN0IHNkayA9IHBhdGguam9pbihyb290LCAid29yay9lbXNkayIpLCBleHBlY3RlZCA9IHBhdGguam9pbihzZGssICJ1cHN0cmVhbS9lbXNjcmlwdGVuL3N5c3RlbS9saWIvZGxtYWxsb2MuYyIpOwogIGFzc2VydC5lcXVhbChmaWxlLCBleHBlY3RlZCk7IGFzc2VydC5lcXVhbChhd2FpdCByZWFscGF0aChmaWxlKSwgZXhwZWN0ZWQpOyBjb25zdCBpZGVudGl0eSA9IGF3YWl0IGxzdGF0KGZpbGUsIHsgYmlnaW50OiB0cnVlIH0pOwogIGFzc2VydC5vayhpZGVudGl0eS5pc0ZpbGUoKSAmJiAhaWRlbnRpdHkuaXNTeW1ib2xpY0xpbmsoKSk7IHJldHVybiBpZGVudGl0eTsKfQpleHBvcnQgYXN5bmMgZnVuY3Rpb24gcGF0Y2hBbGlnbm1lbnQxNlNkayhyb290LCBzdGF0ZUZpbGUpIHsKICBhc3NlcnQuZXF1YWwocHJvY2Vzcy5wbGF0Zm9ybSwgImxpbnV4Iik7IGFzc2VydC5lcXVhbChwYXRoLmRpcm5hbWUocGF0aC5kaXJuYW1lKHN0YXRlRmlsZSkpLCBwYXRoLmpvaW4ocm9vdCwgIndvcmsiKSk7CiAgYXNzZXJ0Lm1hdGNoKHBhdGguYmFzZW5hbWUocGF0aC5kaXJuYW1lKHN0YXRlRmlsZSkpLCAvXmFsaWdubWVudDE2LWJ1aWxkZXItW0EtWmEtejAtOV0rJC8pOwogIGNvbnN0IGZpbGUgPSBwYXRoLmpvaW4ocm9vdCwgIndvcmsvZW1zZGsvdXBzdHJlYW0vZW1zY3JpcHRlbi9zeXN0ZW0vbGliL2RsbWFsbG9jLmMiKSwgaWRlbnRpdHkgPSBhd2FpdCB0YXJnZXQocm9vdCwgZmlsZSk7CiAgY29uc3Qgc291cmNlID0gYXdhaXQgcmVhZEZpbGUoZmlsZSwgInV0ZjgiKSwgcmVjaXBlID0gbWFrZUFsaWdubWVudDE2U2RrU291cmNlKHNvdXJjZSk7CiAgY29uc3Qgc3RhdGUgPSB7IGZpbGUsIG9yaWdpbmFsU2hhMjU2OiByZWNpcGUub3JpZ2luYWxTaGEyNTYsIGdlbmVyYXRlZFNoYTI1NjogcmVjaXBlLmdlbmVyYXRlZFNoYTI1NiwKICAgIG9yaWdpbmFsQmFzZTY0OiBCdWZmZXIuZnJvbShzb3VyY2UpLnRvU3RyaW5nKCJiYXNlNjQiKSwgZGV2OiBpZGVudGl0eS5kZXYudG9TdHJpbmcoKSwgaW5vOiBpZGVudGl0eS5pbm8udG9TdHJpbmcoKSB9OwogIGF3YWl0IHdyaXRlRmlsZShzdGF0ZUZpbGUsIEpTT04uc3RyaW5naWZ5KHN0YXRlKSwgeyBmbGFnOiAid3giIH0pOwogIHRyeSB7CiAgICBhd2FpdCB3cml0ZUZpbGUoZmlsZSwgcmVjaXBlLmdlbmVyYXRlZCk7IGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZEZpbGUoZmlsZSkpLCByZWNpcGUuZ2VuZXJhdGVkU2hhMjU2KTsKICB9IGNhdGNoIChlcnJvcikgewogICAgLy8gQSBmYWlsZWQvdHJ1bmNhdGVkIHdyaXRlIGlzIG91cnMsIGJ1dCBvbmx5IHVuZG8gaXQgb24gdGhlIHNhbWUgaW5vZGUuCiAgICB0cnkgewogICAgICBjb25zdCBjdXJyZW50ID0gYXdhaXQgdGFyZ2V0KHJvb3QsIGZpbGUpOyBhc3NlcnQuZXF1YWwoY3VycmVudC5kZXYsIGlkZW50aXR5LmRldik7IGFzc2VydC5lcXVhbChjdXJyZW50LmlubywgaWRlbnRpdHkuaW5vKTsKICAgICAgYXdhaXQgd3JpdGVGaWxlKGZpbGUsIHNvdXJjZSk7IGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZEZpbGUoZmlsZSkpLCByZWNpcGUub3JpZ2luYWxTaGEyNTYpOwogICAgfSBjYXRjaCAocm9sbGJhY2tFcnJvcikgeyB0aHJvdyBuZXcgQWdncmVnYXRlRXJyb3IoW2Vycm9yLCByb2xsYmFja0Vycm9yXSwgYFNESyByb2xsYmFjayBmYWlsZWQ7IHByZXNlcnZlIGJhY2t1cCAke3N0YXRlRmlsZX1gKTsgfQogICAgdGhyb3cgZXJyb3I7CiAgfQogIHJldHVybiByZWNpcGU7Cn0KZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHJlc3RvcmVBbGlnbm1lbnQxNlNkayhyb290LCBzdGF0ZUZpbGUpIHsKICBhc3NlcnQuZXF1YWwocHJvY2Vzcy5wbGF0Zm9ybSwgImxpbnV4Iik7IGFzc2VydC5lcXVhbChwYXRoLmRpcm5hbWUocGF0aC5kaXJuYW1lKHN0YXRlRmlsZSkpLCBwYXRoLmpvaW4ocm9vdCwgIndvcmsiKSk7CiAgYXNzZXJ0Lm1hdGNoKHBhdGguYmFzZW5hbWUocGF0aC5kaXJuYW1lKHN0YXRlRmlsZSkpLCAvXmFsaWdubWVudDE2LWJ1aWxkZXItW0EtWmEtejAtOV0rJC8pOwogIGNvbnN0IHN0YXRlQnl0ZXMgPSBhd2FpdCByZWFkRmlsZShzdGF0ZUZpbGUpOyBhc3NlcnQub2soc3RhdGVCeXRlcy5sZW5ndGggPD0gNTI0Mjg4KTsgY29uc3Qgc3RhdGUgPSBKU09OLnBhcnNlKHN0YXRlQnl0ZXMpLCBvcmlnaW5hbCA9IEJ1ZmZlci5mcm9tKHN0YXRlLm9yaWdpbmFsQmFzZTY0LCAiYmFzZTY0Iik7CiAgYXNzZXJ0LmVxdWFsKHNoYShvcmlnaW5hbCksIFNES19ETE1BTExPQ19TT1VSQ0VfU0hBMjU2KTsgYXNzZXJ0LmVxdWFsKHN0YXRlLm9yaWdpbmFsU2hhMjU2LCBTREtfRExNQUxMT0NfU09VUkNFX1NIQTI1Nik7CiAgY29uc3QgaWRlbnRpdHkgPSBhd2FpdCB0YXJnZXQocm9vdCwgc3RhdGUuZmlsZSk7IGFzc2VydC5lcXVhbChpZGVudGl0eS5kZXYudG9TdHJpbmcoKSwgc3RhdGUuZGV2KTsgYXNzZXJ0LmVxdWFsKGlkZW50aXR5Lmluby50b1N0cmluZygpLCBzdGF0ZS5pbm8pOwogIGNvbnN0IGN1cnJlbnQgPSBzaGEoYXdhaXQgcmVhZEZpbGUoc3RhdGUuZmlsZSkpOyBhc3NlcnQub2soW3N0YXRlLm9yaWdpbmFsU2hhMjU2LCBzdGF0ZS5nZW5lcmF0ZWRTaGEyNTZdLmluY2x1ZGVzKGN1cnJlbnQpKTsKICBpZiAoY3VycmVudCAhPT0gc3RhdGUub3JpZ2luYWxTaGEyNTYpIGF3YWl0IHdyaXRlRmlsZShzdGF0ZS5maWxlLCBvcmlnaW5hbCk7CiAgYXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkRmlsZShzdGF0ZS5maWxlKSksIHN0YXRlLm9yaWdpbmFsU2hhMjU2KTsgcmV0dXJuIHsgdXBzdHJlYW1Tb3VyY2VSZXN0b3JlZDogdHJ1ZSwgc291cmNlU2hhMjU2OiBzdGF0ZS5vcmlnaW5hbFNoYTI1NiB9Owp9CmlmIChwYXRoLnJlc29sdmUocHJvY2Vzcy5hcmd2WzFdID8/ICIiKSA9PT0gaW1wb3J0Lm1ldGEuZmlsZW5hbWUpIHsKICBhc3NlcnQuZXF1YWwocHJvY2Vzcy5hcmd2Lmxlbmd0aCwgNCk7IGFzc2VydC5lcXVhbChwcm9jZXNzLmFyZ3ZbMl0sICJyZXN0b3JlIik7CiAgYXdhaXQgcmVzdG9yZUFsaWdubWVudDE2U2RrKHBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lLCAiLi4vLi4iKSwgcGF0aC5yZXNvbHZlKHByb2Nlc3MuYXJndlszXSkpOwp9Cg==",
+    "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBtYWtlQWxsb2NhdGlvbkF0dGVtcHRSZWNpcGUgfSBmcm9tICIuL21wZWcyLWFsbG9jYXRpb24tYXR0ZW1wdC1yZWNpcGUubWpzIjsKZXhwb3J0IGZ1bmN0aW9uIG1ha2VBbGlnbm1lbnQxNlJlY2lwZShzb3VyY2UpIHsKICBjb25zdCBwcmlvciA9IG1ha2VBbGxvY2F0aW9uQXR0ZW1wdFJlY2lwZShzb3VyY2UpOwogIGNvbnN0IGVuY29kZXIgPSAnYmFzaCAiJHtTQ1JJUFRfRElSfS9idWlsZC1tcGVnMi1zcGxpdC1lbmNvZGVyLnNoIic7CiAgYXNzZXJ0LmVxdWFsKHByaW9yLnNwbGl0KGVuY29kZXIpLmxlbmd0aCwgMik7CiAgY29uc3Qgc21va2UgPSBgIyBSZWFsIFdhc20gYWxsb2NhdG9yIGNvbnRyYWN0OyBubyBtZWRpYSBvciBwcmltYXJ5LW1lbW9yeSBhY2NlcHRhbmNlLgplbWNjICJcJHtTQ1JJUFRfRElSfS9tcGVnMi1hbGlnbm1lbnQxNi1zbW9rZS5jIiAiXCR7U0NSSVBUX0RJUn0vbXBlZzItYWxsb2NhdGlvbi1hdHRlbXB0LmMiIC1PMiAtVU5ERUJVRyAtcHRocmVhZCBcXAogIC1zUFRIUkVBRF9QT09MX1NJWkU9MCAtc01BTExPQz1kbG1hbGxvYyAtc0VOVklST05NRU5UPW5vZGUgLXNGSUxFU1lTVEVNPTAgXFwKICAtc0VYSVRfUlVOVElNRT0xIC1zQVNTRVJUSU9OUz0xIC1zTU9EVUxBUklaRT0wIC1zRVhQT1JUX0VTNj0wIFxcCiAgLXNBTExPV19NRU1PUllfR1JPV1RIPTAgLXNJTklUSUFMX01FTU9SWT0zMzU1NDQzMiAtc01BWElNVU1fTUVNT1JZPTMzNTU0NDMyIFxcCiAgLVdsLC0td3JhcD1wb3NpeF9tZW1hbGlnbiAtbyAiXCR7QlVJTERfUk9PVH0vYWxpZ25tZW50MTYtc21va2UuanMiCm5vZGUgIlwke0JVSUxEX1JPT1R9L2FsaWdubWVudDE2LXNtb2tlLmpzIiA+ICJcJHtPVVRQVVRfUk9PVH0vYWxpZ25tZW50MTYtc21va2UuanNvbiIKdGVzdCAtcyAiXCR7T1VUUFVUX1JPT1R9L2FsaWdubWVudDE2LXNtb2tlLmpzb24iCmA7CiAgY29uc3QgYm91bmRhcnkgPSAiIyBDb21waWxlIHRoZSBwcmVzZXJ2ZWQgcHJvZHVjdGlvbiBBVklPL2tlcm5lbCB3aXRoIHRoZSBzZXBhcmF0ZSBjb2RlYyBob29rcy4iOwogIGFzc2VydC5lcXVhbChwcmlvci5zcGxpdChib3VuZGFyeSkubGVuZ3RoLCAyKTsKICBjb25zdCByZXN0b3JlID0gJ25vZGUgIiR7U0NSSVBUX0RJUn0vbXBlZzItYWxpZ25tZW50MTYtc2RrLm1qcyIgcmVzdG9yZSAiJHtXSVRISU5fQUxJR05NRU5UMTZfU0RLX1NUQVRFOj99IlxuJzsKICBjb25zdCBnZW5lcmF0ZWQgPSBwcmlvci5yZXBsYWNlKGJvdW5kYXJ5LCBzbW9rZSArIGJvdW5kYXJ5KS5yZXBsYWNlKGVuY29kZXIsIHJlc3RvcmUgKyBlbmNvZGVyKTsKICBhc3NlcnQuZXF1YWwoZ2VuZXJhdGVkLnJlcGxhY2Uoc21va2UsICIiKS5yZXBsYWNlKHJlc3RvcmUsICIiKSwgcHJpb3IsCiAgICAiT25seSByZWFsIGFsbG9jYXRvciBjb250cmFjdCBhbmQgcHJlLWVuY29kZXIgU0RLIHJlc3RvcmF0aW9uIGFkZGVkOyBidWZmZXJzLCBoZWFwcywgY29kZWNzLCBBVklPLCBsaWZldGltZXMgdW5jaGFuZ2VkIik7CiAgcmV0dXJuIGdlbmVyYXRlZDsKfQo=",
+    "media/ffmpeg/mpeg2-alignment16-smoke.c": "LyogR2VudWluZSBXYXNtIGFsbG9jYXRpb24gY29udHJhY3RzLiBObyBtZWRpYSBjb252ZXJzaW9uIG9yIGFjY2VwdGFuY2UgY2xhaW0uICovCiNkZWZpbmUgX1BPU0lYX0NfU09VUkNFIDIwMDExMkwKI2luY2x1ZGUgPGFzc2VydC5oPgojaW5jbHVkZSA8ZXJybm8uaD4KI2luY2x1ZGUgPHN0ZGludC5oPgojaW5jbHVkZSA8c3RkaW8uaD4KI2luY2x1ZGUgPHN0ZGxpYi5oPgojaW5jbHVkZSA8c3RyaW5nLmg+CiNpbmNsdWRlIDxlbXNjcmlwdGVuL2hlYXAuaD4KZXh0ZXJuIHZvbGF0aWxlIHVpbnQzMl90IHdpdGhpbl9hbGxvY2F0b3JfYXR0ZW1wdF93b3Jkc1sxNl07CmludCBtYWluKHZvaWQpCnsKICAgIGNvbnN0IHNpemVfdCBzaXplc1tdID0gezAsIDEsIDcsIDgsIDE1LCAxNiwgMTcsIDI2MjE0NCwgMTU5NzQ2M307CiAgICB1bnNpZ25lZCBjYXNlcyA9IDA7CiAgICBhc3NlcnQoZW1zY3JpcHRlbl9nZXRfaGVhcF9zaXplKCkgPT0gMzM1NTQ0MzIpOwogICAgZm9yICh1bnNpZ25lZCBpID0gMDsgaSA8IHNpemVvZihzaXplcykgLyBzaXplb2Yoc2l6ZXNbMF0pOyArK2kpIHsKICAgICAgICBzaXplX3QgYnl0ZXMgPSBzaXplc1tpXTsKICAgICAgICB1bnNpZ25lZCBjaGFyICpwID0gbWFsbG9jKGJ5dGVzKTsKICAgICAgICBhc3NlcnQocCAmJiAoKHVpbnRwdHJfdClwICYgMTUpID09IDApOwogICAgICAgIG1lbXNldChwLCAweDVhLCBieXRlcyk7CiAgICAgICAgZm9yIChzaXplX3QgaiA9IDA7IGogPCBieXRlczsgKytqKSBhc3NlcnQocFtqXSA9PSAweDVhKTsKICAgICAgICBmcmVlKHApOyArK2Nhc2VzOwogICAgfQogICAgdW5zaWduZWQgY2hhciAqcCA9IGNhbGxvYygyNTcsIDMpOyBhc3NlcnQocCAmJiAoKHVpbnRwdHJfdClwICYgMTUpID09IDApOwogICAgZm9yICh1bnNpZ25lZCBpID0gMDsgaSA8IDc3MTsgKytpKSBhc3NlcnQocFtpXSA9PSAwKTsKICAgIG1lbXNldChwLCAweDM3LCA3NzEpOyBwID0gcmVhbGxvYyhwLCAyNjIxNDQpOyBhc3NlcnQocCAmJiAoKHVpbnRwdHJfdClwICYgMTUpID09IDApOwogICAgZm9yICh1bnNpZ25lZCBpID0gMDsgaSA8IDc3MTsgKytpKSBhc3NlcnQocFtpXSA9PSAweDM3KTsKICAgIGZyZWUocCk7IGNhc2VzICs9IDI7CiAgICB2b2lkICphbGlnbmVkID0gTlVMTDsKICAgIGFzc2VydChwb3NpeF9tZW1hbGlnbigmYWxpZ25lZCwgMTYsIDE1OTc0NjMpID09IDApOwogICAgYXNzZXJ0KGFsaWduZWQgJiYgKCh1aW50cHRyX3QpYWxpZ25lZCAmIDE1KSA9PSAwKTsKICAgIGFzc2VydCh3aXRoaW5fYWxsb2NhdG9yX2F0dGVtcHRfd29yZHNbM10gPT0gNik7CiAgICBhc3NlcnQod2l0aGluX2FsbG9jYXRvcl9hdHRlbXB0X3dvcmRzWzVdID09IDE1OTc0NjMpOwogICAgYXNzZXJ0KHdpdGhpbl9hbGxvY2F0b3JfYXR0ZW1wdF93b3Jkc1s3XSA9PSAodWludHB0cl90KWFsaWduZWQpOwogICAgYXNzZXJ0KHdpdGhpbl9hbGxvY2F0b3JfYXR0ZW1wdF93b3Jkc1s5XSA9PSAwKTsKICAgIGFzc2VydCh3aXRoaW5fYWxsb2NhdG9yX2F0dGVtcHRfd29yZHNbMTBdID09IDApOyAvKiBObyByZWplY3RlZCBmcmVzaCBwb2ludGVyLiAqLwogICAgbWVtc2V0KGFsaWduZWQsIDB4NDgsIDE1OTc0NjMpOyBmcmVlKGFsaWduZWQpOyArK2Nhc2VzOwogICAgYXNzZXJ0KHBvc2l4X21lbWFsaWduKCZhbGlnbmVkLCAzMiwgMTAyNCkgPT0gMCk7CiAgICBhc3NlcnQoKCh1aW50cHRyX3QpYWxpZ25lZCAmIDMxKSA9PSAwKTsgZnJlZShhbGlnbmVkKTsgKytjYXNlczsKICAgIGFzc2VydChlbXNjcmlwdGVuX2dldF9oZWFwX3NpemUoKSA9PSAzMzU1NDQzMik7CiAgICBwcmludGYoIntcImNhc2VzXCI6JXUsXCJwYXNzZWRcIjoldSxcIm1hbGxvY0FsaWdubWVudFwiOjE2LFwib2JzZXJ2ZWRSZXF1ZXN0Qnl0ZXNcIjoxNTk3NDYzLFwibGFyZ2VXcmFwcGVyUmVqZWN0ZWRGcmVzaFBvaW50ZXJcIjpmYWxzZSxcImhlYXBCeXRlc1wiOjMzNTU0NDMyLFwiY29udmVyc2lvbnNQZXJmb3JtZWRcIjowfVxuIiwgY2FzZXMsIGNhc2VzKTsKICAgIHJldHVybiAwOwp9Cg==",
+    "scripts/retain-alignment16-first-build-failure.mjs": "Ly8gUHJlc2VydmUgdGhlIGFjdHVhbCBmYWlsZWQgcnVuL2xvZyBhbmQgZXhhY3Qgc291cmNlIGJ5dGVzIEJFRk9SRSBjb3JyZWN0aW9uLgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IGV4ZWNGaWxlIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgcmVhZEZpbGUsIHdyaXRlRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgcGF0aCBmcm9tICJub2RlOnBhdGgiOwppbXBvcnQgeyBwcm9taXNpZnkgfSBmcm9tICJub2RlOnV0aWwiOwppbXBvcnQgeyBzaGEgfSBmcm9tICIuL2xpYi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIik7IGFzc2VydC5lcXVhbChwcm9jZXNzLmFyZ3YubGVuZ3RoLCAyKTsKY29uc3QgcmVjZWlwdFBhdGggPSAiZXZpZGVuY2UvMjAyNi0xMC0xMVQxNy0zNS0yNC0yNTlaLWFsaWdubWVudDE2LWhvc3RlZC1ydW4uanNvbiIsIHJlY2VpcHRCeXRlcyA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCByZWNlaXB0UGF0aCkpLCByZWNlaXB0ID0gSlNPTi5wYXJzZShyZWNlaXB0Qnl0ZXMpOwphc3NlcnQuZXF1YWwocmVjZWlwdC5mYWlsdXJlLCBudWxsKTsgYXNzZXJ0LmVxdWFsKHJlY2VpcHQucnVuLnN0YXR1cywgImNvbXBsZXRlZCIpOyBhc3NlcnQuZXF1YWwocmVjZWlwdC5ydW4uY29uY2x1c2lvbiwgImZhaWx1cmUiKTsgYXNzZXJ0LmVxdWFsKHJlY2VpcHQucnVuSWQsICIzODE2MDIxMTk3MCIpOwpjb25zdCBmYWlsZWRMb2cgPSAoYXdhaXQgcHJvbWlzaWZ5KGV4ZWNGaWxlKSgiRDovUHJvZ3JhbSBGaWxlcy9HaXRIdWIgQ0xJL2doLmV4ZSIsIFsicnVuIiwgInZpZXciLCByZWNlaXB0LnJ1bklkLCAiLS1yZXBvIiwgInRhbmlzaHFiYXdlamEvZmlsZWNvbnZlcnRlciIsICItLWxvZy1mYWlsZWQiXSwgeyBjd2Q6IHJvb3QsIHdpbmRvd3NIaWRlOiB0cnVlLCB0aW1lb3V0OiA2MDAwMCwgbWF4QnVmZmVyOiAxMzEwNzIgfSkpLnN0ZG91dDsKYXNzZXJ0Lm1hdGNoKGZhaWxlZExvZywgLzMgIT09IDIvKTsgYXNzZXJ0Lm1hdGNoKGZhaWxlZExvZywgL2J1aWxkLW1wZWcyLWFsaWdubWVudDE2XC5tanM6MjA6NDcvKTsKY29uc3Qgc291cmNlUGlucyA9IHt9LCBzb3VyY2VQcmVpbWFnZXMgPSB7fTsKZm9yIChjb25zdCBmaWxlIG9mIFsibWVkaWEvZmZtcGVnL2J1aWxkLW1wZWcyLWFsaWdubWVudDE2Lm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtc2RrLm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtcmVjaXBlLm1qcyIsICJtZWRpYS9mZm1wZWcvbXBlZzItYWxpZ25tZW50MTYtc21va2UuYyIsICJzY3JpcHRzL3JldGFpbi1hbGlnbm1lbnQxNi1maXJzdC1idWlsZC1mYWlsdXJlLm1qcyJdKSB7CiAgY29uc3QgYnl0ZXMgPSBhd2FpdCByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgZmlsZSkpOyBzb3VyY2VQaW5zW2ZpbGVdID0gc2hhKGJ5dGVzKTsgc291cmNlUHJlaW1hZ2VzW2ZpbGVdID0gYnl0ZXMudG9TdHJpbmcoImJhc2U2NCIpOwp9CmNvbnN0IG91dHB1dCA9ICJldmlkZW5jZS9hbGlnbm1lbnQxNi1maXJzdC1idWlsZC1mYWlsdXJlLTM4MTYwMjExOTcwLmpzb24iOwphd2FpdCB3cml0ZUZpbGUocGF0aC5qb2luKHJvb3QsIG91dHB1dCksIEpTT04uc3RyaW5naWZ5KHsgcmVjb3JkZWRBdDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLCByZWNlaXB0OiB7IHBhdGg6IHJlY2VpcHRQYXRoLCBzaGEyNTY6IHNoYShyZWNlaXB0Qnl0ZXMpIH0sIHJ1bjogcmVjZWlwdC5ydW4sCiAgZmFpbGVkTG9nLCBmYWlsZWRMb2dTaGEyNTY6IHNoYShmYWlsZWRMb2cpLCBzb3VyY2VQaW5zLCBzb3VyY2VQcmVpbWFnZXMsIGZhaWx1cmU6ICJFeGFjdCB0cmFuc2Zvcm0gb2NjdXJyZW5jZSBndWFyZDogcm9vdCBleHByZXNzaW9uIGFsc28gb2NjdXJzIGluIG5lc3RlZCBoaXN0b3JpY2FsIGVkaXQgbGl0ZXJhbCIsCiAgc2RrUGF0Y2hSZWFjaGVkOiBmYWxzZSwgbmF0aXZlQ29tcGlsYXRpb25SZWFjaGVkOiBmYWxzZSwgb3JpZ2luYWxSZWFkOiBmYWxzZSwgY29udmVyc2lvbnNQZXJmb3JtZWQ6IDAsCiAgaG9zdGVkQ2xlYW51cFBhc3NlZDogcmVjZWlwdC5ydW4uam9icy5mbGF0TWFwKGpvYiA9PiBqb2Iuc3RlcHMpLnNvbWUoc3RlcCA9PiBzdGVwLm5hbWUgPT09ICJSZW1vdmUgcmVwb3NpdG9yeS1sb2NhbCBidWlsZCBkYXRhIiAmJiBzdGVwLmNvbmNsdXNpb24gPT09ICJzdWNjZXNzIiksIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlIH0sIG51bGwsIDIpICsgIlxuIiwgeyBmbGFnOiAid3giIH0pOwpjb25zb2xlLmxvZyhKU09OLnN0cmluZ2lmeSh7IG91dHB1dCwgZmFpbGVkUnVuUmV0YWluZWQ6IHRydWUsIG5hdGl2ZUNvbXBpbGF0aW9uUmVhY2hlZDogZmFsc2UgfSkpOwo="
+  },
+  "failure": "Exact transform occurrence guard: root expression also occurs in nested historical edit literal",
+  "sdkPatchReached": false,
+  "nativeCompilationReached": false,
+  "originalRead": false,
+  "conversionsPerformed": 0,
+  "hostedCleanupPassed": true,
+  "publicAcceptance": false
+}

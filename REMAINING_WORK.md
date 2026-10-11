@@ -5,6 +5,20 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — First candidate build terminal; actual transformation corrected
+
+**Partially implemented**: actual no-Docker run38160211970 failed at an outer
+source-rewrite occurrence guard BEFORE SDK patch/native compilation. Hosted
+cleanup passed. Failed log and executed native sources are retained in
+`evidence/alignment16-first-build-failure-38160211970.json`; original video was
+not read, no converted copies created. First pre-wait check was terminal, so
+the estimated sleep was not used and the run was not treated as live.
+Pure declaration/import-anchored factory now tests the ACTUAL transformation
+against both root occurrences and reverses byte-exactly. A corrected build must
+use a new `builder-fix` branch/receipt; first failure stays failed. No acceptance
+gate was weakened. Actual native13-case smoke, new binary/slot qualification,
+browser fidelity/recovery and changed original/full stress remain to be done.
+
 ## 2026-10-11 — Alignment capacity proven; targeted candidate awaiting actual build
 
 Status: **Partially implemented**. Actual original failure plus exact compiled

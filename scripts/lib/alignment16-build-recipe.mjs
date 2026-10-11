@@ -8,7 +8,8 @@ export function makeAlignment16Workflow(source) {
   assert.equal(prior.split(before).length, 2);
   const generated = prior.replace(before, after); assert.equal(generated.replace(after, before), prior); return generated;
 }
-export function makeAlignment16Collector(source, root) {
+export function makeAlignment16Collector(source, root, revision = "") {
+  assert.ok(["", "builder-fix"].includes(revision));
   const prior = makeAllocationAttemptCollector(source, root).generated;
   const extra = `  const alignment = JSON.parse(await readFile(path.join(download, "alignment16-smoke.json")));
   assert.deepEqual(alignment, manifest.alignment16.actualWasmSmoke);
@@ -24,7 +25,8 @@ export function makeAlignment16Collector(source, root) {
   const edits = [
     ["work/mpeg2-allocation-attempt-${runId}", "work/mpeg2-alignment16-${runId}"],
     ["evidence/mpeg2-allocation-attempt-build-${runId}.json", "evidence/mpeg2-alignment16-build-${runId}.json"],
-    ["evidence/mpeg2-allocation-attempt-build-branch-2026-10-11.json", "evidence/mpeg2-alignment16-build-branch-2026-10-11.json"],
+    ["evidence/mpeg2-allocation-attempt-build-branch-2026-10-11.json", `evidence/mpeg2-alignment16-build-branch-2026-10-11${revision ? "-" + revision : ""}.json`],
+    ...(revision ? [["assert.equal(process.argv.length, 3)", "assert.equal(process.argv.length, 4)"]] : []),
     ["allocation-attempt-artifact-", "alignment16-artifact-"],
     ["|allocation-attempt-smoke\\.json)", "|allocation-attempt-smoke\\.json|alignment16-smoke\\.json)"],
     ["private-fixed-heaps-allocation-attempt-diagnostic-not-browser-acceptance", "private-decoder-dlmalloc-alignment16-fixed-heaps-not-browser-acceptance"],

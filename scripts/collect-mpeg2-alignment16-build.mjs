@@ -7,8 +7,9 @@ import { makeAlignment16Collector } from "./lib/alignment16-build-recipe.mjs";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { sha } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), runId = process.argv[2];
-assert.equal(process.argv.length, 3); assert.match(runId ?? "", /^[0-9]{8,}$/);
-const source = await readFile(path.join(root, "scripts/collect-mpeg2-single-idle-build.mjs"), "utf8"), recipe = makeAlignment16Collector(source, root);
+const revision = process.argv[3] ?? ""; assert.ok(["", "builder-fix"].includes(revision));
+assert.equal(process.argv.length, revision ? 4 : 3); assert.match(runId ?? "", /^[0-9]{8,}$/);
+const source = await readFile(path.join(root, "scripts/collect-mpeg2-single-idle-build.mjs"), "utf8"), recipe = makeAlignment16Collector(source, root, revision);
 const runtime = await createOwnedRuntimeScratch("alignment16-collector-");
 const sourceFiles = ["scripts/collect-mpeg2-alignment16-build.mjs", "scripts/lib/alignment16-build-recipe.mjs", "scripts/lib/allocation-attempt-build-recipe.mjs", "scripts/collect-mpeg2-single-idle-build.mjs"];
 const preimages = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, (await readFile(path.join(root, file))).toString("base64")])));
@@ -16,7 +17,7 @@ let failure = null;
 try { const driver = path.join(runtime.directory, "collector.mjs"); await writeFile(driver, recipe.generated, { flag: "wx" }); await import(pathToFileURL(driver).href); }
 catch (error) { failure = String(error.stack ?? error).slice(0, 8192); process.exitCode = 1; }
 finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
-await writeFile(path.join(root, `evidence/mpeg2-alignment16-collector-${runId}.json`), JSON.stringify({ recordedAt: new Date().toISOString(), runId, failure,
+await writeFile(path.join(root, `evidence/mpeg2-alignment16-collector-${runId}.json`), JSON.stringify({ recordedAt: new Date().toISOString(), runId, revision, failure,
   generatedSource: recipe.generated, generatedSha256: recipe.generatedSha256,
   sourcePins: Object.fromEntries(Object.entries(preimages).map(([file, bytes]) => [file, sha(Buffer.from(bytes, "base64"))])), preimages,
   ownedRuntime: runtime.directory, ownedRuntimeRemoved: true, browserConversionsPerformed: 0, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
