@@ -31,6 +31,14 @@ without changing main or the current canonical workflow. Source-bound collector
 retains all old artifact/lifecycle/memory/ownership checks and additionally
 requires the compiled nine-case slot control and actual constructor import.
 Hosted compilation/browser qualification have not yet run at this checkpoint.
+Superseding launch checkpoint: isolated branch commit 4e7b294721a85c60097ee2ae591f18982be8bcf9
+was pushed/verified while current canonical workflow/main/HEAD stayed unchanged.
+Actual registered no-Docker workflow job **38137796983** was created at
+12:02:57 UTC and observed queued. Launch and branch proofs are
+`evidence/mpeg2-allocation-attempt-build-launch-2026-10-11.json` and
+`evidence/mpeg2-allocation-attempt-build-branch-2026-10-11.json`. Same prior build
+job took 567 seconds; estimated one interruptible wait is 630 seconds. Queued is
+not success; terminal/compiler/browser/cleanup qualification still pending.
 Final focused regression passed **18/18** (817.3208 ms), including exact original
 256/19 pins and actual-control 38 pins; eight changed JS files passed zero-warning
 lint (7.311 seconds), and whitespace check passed. Build prep/collector syntax,
@@ -38,6 +46,28 @@ negative job IDs and exact workflow reversal are covered without dispatching.
 Next: compile the changed core, qualify its actual slot/native fatal in a short
 headless control, then use a concrete changed original diagnostic; no unchanged
 long conversion is being replayed. Broad goal remains active/incomplete.
+
+Actual hosted run **38137796983 FAILED** after 224 seconds. The new synthetic
+test compiled native successfully but Emscripten6.0.4 rejected EM_ASM alongside
+setjmp/longjmp in main. Full exact old test preimage remains in the first native
+receipt; failure/cleanup/zero-artifact/actual 630.0187-second ETA sleep/one terminal
+check are retained in `evidence/mpeg2-allocation-attempt-build-failure-38137796983.json`.
+The correction replaces ONLY the constructor witness with an EM_JS binding;
+exact reversible helper/tests verify no dispatch or interrupted-allocation
+assertions changed. The compiled wrapper itself is unchanged. Corrected branch
+and receipt use a fresh `binding-fix` suffix, never overwrite the first run or
+its historical source hashes. Hosted cleanup passed; no candidate downloaded,
+video touched or browser launched. Changed build still requires qualification.
+Changed native control genuinely executed the corrected witness and again
+passed all nine cases; receipt `evidence/2026-10-11T12-17-46-137Z-allocation-attempt-native-control.json`
+retains its own exact13 current/pre/post/preimage joins (not the old source
+relabelled). Focused regression at correction checkpoint passed15/15 in
+595.7127 ms; five-file zero-warning lint passed6.948 seconds. Both native scratch
+directories are gone, and no media has been converted.
+Final changed-source/evidence combined regression passed **20/20** in
+479.0544 ms; final changed-test zero-warning lint passed5.868 seconds and
+whitespace checks passed. Historical failing preimages, corrected current13,
+actual-control38 and full256/terminal19 current pins all remain verified.
 
 ## 2026-10-11 — Actual direct-buffer failure control passed; ETA-based watching
 

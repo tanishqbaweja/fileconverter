@@ -12,7 +12,8 @@ export function makeAllocationAttemptWorkflow(source) {
   assert.equal(generated.replace(after, before), prior);
   return generated;
 }
-export function makeAllocationAttemptCollector(source, root) {
+export function makeAllocationAttemptCollector(source, root, revision = "") {
+  assert.ok(["", "binding-fix"].includes(revision));
   assert.equal(sha(source), "e0b73aad9af787c5676d0864a945c18c521e6851847d92753251793d7f35af42");
   const extra = `  const attempt = JSON.parse(await readFile(path.join(download, "allocation-attempt-smoke.json")));
   assert.deepEqual(attempt, manifest.allocationAttempt.actualWasm32SyntheticDispatch);
@@ -29,7 +30,8 @@ export function makeAllocationAttemptCollector(source, root) {
     ['path.resolve(import.meta.dirname, "..")', JSON.stringify(root)],
     ['work/mpeg2-single-idle-${runId}', 'work/mpeg2-allocation-attempt-${runId}'],
     ['evidence/mpeg2-single-idle-build-${runId}.json', 'evidence/mpeg2-allocation-attempt-build-${runId}.json'],
-    ['evidence/mpeg2-single-idle-build-branch-2026-10-10.json', 'evidence/mpeg2-allocation-attempt-build-branch-2026-10-11.json'],
+    ['evidence/mpeg2-single-idle-build-branch-2026-10-10.json', `evidence/mpeg2-allocation-attempt-build-branch-2026-10-11${revision ? "-" + revision : ""}.json`],
+    ...(revision ? [['assert.equal(process.argv.length, 3)', 'assert.equal(process.argv.length, 4)']] : []),
     ['single-idle-artifact-', 'allocation-attempt-artifact-'],
     ['|single-idle-hevc-policy\\.h)', '|single-idle-hevc-policy\\.h|allocation-attempt-smoke\\.json)'],
     ['private-fixed-heaps-hevc-single-idle-candidate-not-browser-acceptance', 'private-fixed-heaps-allocation-attempt-diagnostic-not-browser-acceptance'],

@@ -26,6 +26,21 @@ must be used for any live long job.
 Final focused result: 18/18 passed (817.3208 ms), eight-file zero-warning lint
 passed (7.311 seconds), old256/19 and control38 current pins still pass. These
 checks do not substitute for actual hosted Wasm/browser evidence.
+Actual no-Docker build job 38137796983 is queued against isolated commit
+4e7b2947..., exact branch/launch receipts retained. It has not passed at this
+checkpoint. Estimated sleep 630 seconds derives from the comparable prior
+567-second job; check this same run after sleeping, never duplicate on timeout.
+Superseding terminal: 38137796983 FAILED in the new test's compiler-only binding
+witness (EM_ASM plus synthetic setjmp/longjmp main); hosted cleanup passed and
+zero artifacts were retained. Exact failing source/receipt and compiler error
+are retained in `evidence/mpeg2-allocation-attempt-build-failure-38137796983.json`.
+A reversible EM_JS witness correction preserves allocator and all nine test
+assertions. Any changed retry uses a fresh binding-fix branch/receipt; no old
+failure or source hash is rewritten. Actual Wasm/browser qualification pending.
+Corrected native control passed nine cases with exact changed source retained
+separately at `evidence/2026-10-11T12-17-46-137Z-allocation-attempt-native-control.json`;
+15/15 focused correction tests and five-file zero-warning lint passed. This
+remains native synthetic qualification only, not a Wasm/browser pass.
 
 ## 2026-10-11 — Direct-buffer control qualified; original-video fix still pending
 

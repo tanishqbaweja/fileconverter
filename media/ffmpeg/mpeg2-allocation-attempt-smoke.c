@@ -45,6 +45,12 @@ static void complete(int result, size_t bytes)
     assert(within_allocator_attempt_words[13] == 1);
     assert(within_allocator_attempt_words[14] == 0 && within_allocator_attempt_words[15] == 0);
 }
+#ifdef __EMSCRIPTEN__
+EM_JS(void, within_assert_allocator_attempt_binding, (uintptr_t address), {
+    if (Module["withinAllocatorAttemptAddress"] !== address || Module["withinAllocatorAttemptWords"] !== 16)
+        throw new Error("Actual constructor slot binding failed");
+});
+#endif
 int main(void)
 {
     void *pointer;
@@ -94,10 +100,7 @@ int main(void)
     assert(within_allocator_attempt_words[2] == UINT32_MAX);
     complete(0, 128);
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
-      if (Module["withinAllocatorAttemptAddress"] !== $0 || Module["withinAllocatorAttemptWords"] !== 16)
-        throw new Error("Actual constructor slot binding failed");
-    }, (uintptr_t)within_allocator_attempt_words);
+    within_assert_allocator_attempt_binding((uintptr_t)within_allocator_attempt_words);
 #endif
     puts("{\"scope\":\"synthetic-allocator-attempt-dispatch-not-media-oom\",\"cases\":9,\"passed\":9,\"slotBytes\":64,\"failurePhasesObserved\":[1,4],\"originalDispatchPreserved\":true,\"conversionsPerformed\":0}");
     return 0;
