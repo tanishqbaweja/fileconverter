@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Full title validator and bounded cleanup diagnostics prepared
+
+Status: **Partially implemented**. New additive full driver/caller changes only
+the verified Matroska title -> MP4 name representation, retains output metadata
+BEFORE assertions and bounded nested cleanup causes, plus distinct source/evidence
+identities. Byte-exact reversals reconstruct the ACTUAL old staged driver/caller;
+all full-original/three-repeat/quality/.001s-clock/.98-SSIM/audio/artwork/chapter/
+language/disposition/fixed48MiB/ALL-tree250/native100ms/original blank/recovery gates
+remain. No cleanup failures excused and no old frozen source edits.
+Caller requires hash-bound actual title-bearing goldens and all227 old full source
+pins unchanged; includes all240 new source pins/build inputs within unchanged256
+unique-file limit. Known live identities must be absent before another launch.
+
+Actual --prepare-only exit0, executions0, own scratch cleaned, normal assets intact;
+evidence/2026-10-11T00-15-52-206Z-encoder-plane-title-original-full-preparation.json.
+Source archive1,143,422B with exact5,044,356B restoration retained. Host physical/
+virtual2GiB and disk32GiB guards passed. Six new focused tests and all49 relevant
+regressions PASS975.3012ms, five-file zero-warning lint PASS. Duplicate source-list
+handling and unit historical-message/build-extension assumptions fixed without
+weakening actual coverage or limits; no expensive browser rerun during debugging.
+Cleanup cause capture retains errors/cause/code/stdout/stderr with strict depth,
+node and byte caps, but the previous full AggregateError cause remains unproven.
+Prepared only, NOT full/memory/scaling/speed/public acceptance. Next: one corrected
+full-original session, ETA-based scheduled observation instead of frequent polls.
+
 ## 2026-10-11 — Small title-preservation reproduction verified; full gate still partial
 
 Status: **Partially implemented** for full MPEG-2 acceptance. One actual headless

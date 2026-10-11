@@ -4,6 +4,41 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Corrected full validator prepared; no browser run yet
+
+Additive scripts/run-encoder-plane-title-original-full.mjs and its strict reversible
+recipe preserve the actual executed staged driver/caller. Only exact title -> MP4
+name mapping (video and audio), pre-assertion independent output probe retention,
+bounded nested cleanup diagnostics, source coverage and distinct evidence identities
+change. Language, dispositions, chapters, artwork, audio hashes/full decode, exact
+clock, SSIM>=.98, fixed32+16MiB, native100ms/ALL-tree250/original stable blank,
+three full-original repeats, six-hour conversion deadlines and all cleanup failure
+gates remain unchanged. No suppressed cleanup errors, altered codec or new engine.
+
+Caller requires the ACTUAL title-bearing browser receipt, SHA/length-bound compressed
+report, unchanged build/branch and exact independent validators before proceeding.
+Also requires all227 previous failed full source pins unchanged, and actual old
+born-process absence before any new launch. Source-list deduplication BEFORE union
+retains the same256 UNIQUE-file cap; build .sh/.patch inputs remain independently
+guarded and included. Initial unit run exposed duplicate caller-list length and
+assertion-message shape assumptions, then build-input extension mismatch in the
+unit coverage fixture; corrected to match actual caller union/manifest behavior,
+not by relaxing paths or limits. No browser was launched by those tests.
+
+Actual --prepare-only exit0: evidence/2026-10-11T00-15-52-206Z-encoder-plane-title-original-full-preparation.json,
+status prepared-not-executed, executions0. All240 source preimages retained as
+1,143,422B gzip SHA0b2c332fa51f36103067e502f00660b69b0d357748c1a343b2cc4c574180e602;
+restores5,044,356B SHAabb078ac8a6adf7f7b6305a413025f3a2a42a0a3694961629b521978700430dc.
+Generated driver52263e13c87cb9e3065a56b81663176f8fe957f1a51e0937a328ad7f5ae89db1,
+trace3d25f6b92d97b0ead6ec949880d310ee08915298b89a7e07c3a059e034d9cd38.
+Physical5,662,973,952B/virtual8,399,249,408B and disk2,339,752,370,176B preflight pass.
+Normal production unchanged/restored, own preparation and wrapper scratch gone.
+Six new focused tests PASS373.6754ms; all49 encoder/title/cleanup tests PASS975.3012ms,
+five-file zero-warning lint PASS. Nested cleanup serialization preserves every
+attempted action's errors/cause/code/stdout/stderr with32-node/6-depth/8KiB-text/
+32KiB-serialized bounds and cycle/getter safety; older cleanup cause remains UNKNOWN.
+Preparation is not browser/memory/fidelity/speed acceptance. Full retry still pending.
+
 ## 2026-10-11 — Title-bearing browser matrix passed; full acceptance still pending
 
 Actual one headless launch of scripts/validate-mpeg2-encoder-plane-titles.mjs:
