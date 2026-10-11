@@ -5,6 +5,57 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Full run terminal failure; ETA watching policy; observer repair still prospective
+
+Status: **Partially implemented**. This supersedes historical live/timer entries.
+Actual session48948 is CLOSED/exit1; timer1171 and the long interruptible sleep
+completed. No conversion is currently running, no full retry launched in this
+cycle, and the complete original specification remains unfinished.
+
+The user requires ETA-based waits: estimate from measured throughput/history,
+sleep until a meaningful next check, observe the same run once, and re-estimate
+only if necessary. No every-few-seconds or every-goal-continuation agent polling.
+Keep required native memory acquisition running independently. Completion must
+come from real saved/validated output, not an elapsed timer. The actual first
+ETA03:20UTC/08:50IST was followed without progress polling during the sleep.
+
+Actual failed terminal receipt:
+evidence/2026-10-11T00-18-32-419Z-encoder-plane-title-original-full-terminal.json.
+First candidate failure was native tracker observedAt >= at; exact offending
+times were not captured, so the physical clock cause remains UNKNOWN. One row
+missing from native history invalidates full memory coverage. Retained pre-fault
+232.2421875MiB is diagnostic ONLY, no accepted memory. Run1 lasted~2h49m27s,
+read2,807,326,273B and wrote3,170,137,784B PARTIAL, then production cancellation
+and finally cleanup removed it. No saved/independently validated output;0of3.
+No full fidelity/title/recovery/scaling/speed/public acceptance can be inferred.
+
+Confirmed cleanup defect: phase setter threw before stop could run. Only the
+owned native observer42568 was stopped after fresh parent/birth/locked-handle
+checks; caller then exited and removed its own wrapper. Historical raw cleanup
+observerStopped:false/errors remain FAILED, not relabelled. Driver/caller/observer/
+Chrome-root/server absent; production assets restored; protected test.mkv size
+and independent whole-file post-SHA unchanged. Lossless580093B raw gzip retained,
+large partial media/profile/runtime and redundant raw removed. All240 historical
+source pins still unchanged; archive SHA/restoration independently verified.
+Strict failure audit ran and refused native.error; no acceptance gate weakened.
+
+Additive prospective clock fence + always-stop helper implemented, not wired to
+the full driver yet. Original250MiB complete-tree formula/baseline/timestamps/
+sequences unchanged; bounded1000ms monotonic catch-up, one<=8MiB fault payload,
+one callback, stale-batch rejection, exact failure retention.26focused/regression
+tests PASS962.1508ms and four-file zero-warning lint PASS. Real short Node-tree
+observer23rows PASS (03:45:24 receipt), eight source pins verified, owned observer
+and scratch removed. NOT a Chromium conversion; actual catch-up was not needed,
+historical clock cause not proven, no browser/private-memory acceptance granted.
+
+Missing next gate: integrate the tested helpers in a new audited/source-bound
+driver, qualify its preparation and teardown without changing codec/settings/
+quality/250MiB/three repeats, and run one meaningful full retry with ETA sleep.
+Existing title-specific strict audit cannot accept invalid native coverage and
+must remain unchanged. Other families, compatibility, controls, CI, scaling and
+speed optimization requirements in the requirement audit below remain in scope.
+Detailed exact reports/tests/hashes and failure distinctions are in TESTED.md.
+
 ## 2026-10-11 — Corrected-driver independent terminal audit prepared, not executed
 
 Status: **Partially implemented**. New separate title-specific post-terminal CLI,

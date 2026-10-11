@@ -1,0 +1,747 @@
+{
+  "recordedAt": "2026-10-11T03:34:27.210Z",
+  "status": "actual-native-receipt-clock-and-owned-close-passed-not-browser-acceptance",
+  "failure": null,
+  "targetType": "owned-Node-process-tree-not-Chromium",
+  "targetPid": 4940,
+  "observerIdentity": {
+    "pid": 17392,
+    "parentPid": 4940,
+    "createdAt": "2026-10-11T03:34:23.7621350Z"
+  },
+  "observerAbsent": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 17392,
+      "parentPid": 4940,
+      "createdAt": "2026-10-11T03:34:23.7621350Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-11T03:34:27.207Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 408,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "native": {
+    "intervalMs": 100,
+    "scope": "All owned Chromium descendants; unknown types counted; native observer is not a converter or speed proof",
+    "sequence": 24,
+    "lastAcquiredAt": 1791689666744,
+    "observerCpuFirstMs": 390.625,
+    "observerCpuLastMs": 734.375,
+    "observerCpuDeltaMs": 343.75,
+    "limits": {
+      "identities": 512,
+      "phases": 128,
+      "transitions": 256,
+      "graphBuckets": 4096,
+      "unavailableExamplesPerAggregate": 8
+    },
+    "graphBucketDurationMs": 1000,
+    "graphBucketsEvicted": 0,
+    "rowColumns": [
+      "sequence",
+      "timestamp",
+      "phase",
+      "privateBytes",
+      "rssBytes",
+      "nativeElapsedMs",
+      "sampleError",
+      "processRows"
+    ],
+    "processRowColumns": [
+      "identityIndex",
+      "privateBytes",
+      "rssBytes"
+    ],
+    "identities": [
+      {
+        "pid": 4940,
+        "parentPid": 43576,
+        "createdAt": "2026-10-11T03:34:23.7027989Z",
+        "creationFileTime": "134361632637027989",
+        "executableName": "node.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 17392,
+        "parentPid": 4940,
+        "createdAt": "2026-10-11T03:34:23.7621351Z",
+        "creationFileTime": "134361632637621351",
+        "executableName": "powershell.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 21864,
+        "parentPid": 4940,
+        "createdAt": "2026-10-11T03:34:24.2543073Z",
+        "creationFileTime": "134361632642543073",
+        "executableName": "powershell.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 41160,
+        "parentPid": 17392,
+        "createdAt": "2026-10-11T03:34:23.7850521Z",
+        "creationFileTime": "134361632637850521",
+        "executableName": "conhost.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 36440,
+        "parentPid": 21864,
+        "createdAt": "2026-10-11T03:34:24.2634768Z",
+        "creationFileTime": "134361632642634768",
+        "executableName": "conhost.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      }
+    ],
+    "transitions": [
+      {
+        "phase": "blank-baseline",
+        "at": 1791689663757
+      },
+      {
+        "phase": "finally-cleanup",
+        "at": 1791689666712
+      }
+    ],
+    "phases": [
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 1,
+        "lastSequence": 23,
+        "validSamples": 23,
+        "unavailableSamples": 0,
+        "peak": [
+          5,
+          "2026-10-11T03:34:24.6734486Z",
+          "blank-baseline",
+          200495104,
+          249028608,
+          11.5751,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67518464
+            ],
+            [
+              1,
+              69066752,
+              82354176
+            ],
+            [
+              2,
+              69656576,
+              83058688
+            ],
+            [
+              4,
+              1294336,
+              8044544
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          5,
+          "2026-10-11T03:34:24.6734486Z",
+          "blank-baseline",
+          200495104,
+          249028608,
+          11.5751,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67518464
+            ],
+            [
+              1,
+              69066752,
+              82354176
+            ],
+            [
+              2,
+              69656576,
+              83058688
+            ],
+            [
+              4,
+              1294336,
+              8044544
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          23,
+          "2026-10-11T03:34:26.6359269Z",
+          "blank-baseline",
+          130838528,
+          159817728,
+          9.604800000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              70361088,
+              84008960
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      },
+      {
+        "phase": "finally-cleanup",
+        "firstSequence": 24,
+        "lastSequence": 24,
+        "validSamples": 1,
+        "unavailableSamples": 0,
+        "peak": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      }
+    ],
+    "graphBuckets": [
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 1,
+        "lastSequence": 7,
+        "validSamples": 7,
+        "unavailableSamples": 0,
+        "peak": [
+          5,
+          "2026-10-11T03:34:24.6734486Z",
+          "blank-baseline",
+          200495104,
+          249028608,
+          11.5751,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67518464
+            ],
+            [
+              1,
+              69066752,
+              82354176
+            ],
+            [
+              2,
+              69656576,
+              83058688
+            ],
+            [
+              4,
+              1294336,
+              8044544
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          5,
+          "2026-10-11T03:34:24.6734486Z",
+          "blank-baseline",
+          200495104,
+          249028608,
+          11.5751,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67518464
+            ],
+            [
+              1,
+              69066752,
+              82354176
+            ],
+            [
+              2,
+              69656576,
+              83058688
+            ],
+            [
+              4,
+              1294336,
+              8044544
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          7,
+          "2026-10-11T03:34:24.8909458Z",
+          "blank-baseline",
+          129544192,
+          158158848,
+          11.4799,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67751936
+            ],
+            [
+              1,
+              69066752,
+              82354176
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791689664
+      },
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 8,
+        "lastSequence": 17,
+        "validSamples": 10,
+        "unavailableSamples": 0,
+        "peak": [
+          17,
+          "2026-10-11T03:34:25.9832279Z",
+          "blank-baseline",
+          129658880,
+          158646272,
+          9.861500000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              69181440,
+              82837504
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          17,
+          "2026-10-11T03:34:25.9832279Z",
+          "blank-baseline",
+          129658880,
+          158646272,
+          9.861500000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              69181440,
+              82837504
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          17,
+          "2026-10-11T03:34:25.9832279Z",
+          "blank-baseline",
+          129658880,
+          158646272,
+          9.861500000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              69181440,
+              82837504
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791689665
+      },
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 18,
+        "lastSequence": 23,
+        "validSamples": 6,
+        "unavailableSamples": 0,
+        "peak": [
+          23,
+          "2026-10-11T03:34:26.6359269Z",
+          "blank-baseline",
+          130838528,
+          159817728,
+          9.604800000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              70361088,
+              84008960
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          23,
+          "2026-10-11T03:34:26.6359269Z",
+          "blank-baseline",
+          130838528,
+          159817728,
+          9.604800000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              70361088,
+              84008960
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          23,
+          "2026-10-11T03:34:26.6359269Z",
+          "blank-baseline",
+          130838528,
+          159817728,
+          9.604800000000001,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67756032
+            ],
+            [
+              1,
+              70361088,
+              84008960
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791689666
+      },
+      {
+        "phase": "finally-cleanup",
+        "firstSequence": 24,
+        "lastSequence": 24,
+        "validSamples": 1,
+        "unavailableSamples": 0,
+        "peak": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "rssPeak": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "last": [
+          24,
+          "2026-10-11T03:34:26.7442171Z",
+          "finally-cleanup",
+          131035136,
+          160018432,
+          10.7271,
+          null,
+          [
+            [
+              0,
+              59170816,
+              67760128
+            ],
+            [
+              1,
+              70557696,
+              84205568
+            ],
+            [
+              3,
+              1306624,
+              8052736
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791689666
+      }
+    ],
+    "error": null,
+    "receiptClockFence": {
+      "limits": {
+        "maximumWaitMs": 1000,
+        "waitIntervalMs": 1,
+        "receiptMarginMs": 1,
+        "maximumSamples": 256
+      },
+      "batches": 24,
+      "waitedBatches": 0,
+      "maximumWaitMs": 0.024899999999888678,
+      "maximumFirstAheadMs": 0,
+      "recentWaits": [],
+      "fenceFailure": null,
+      "originalTimestampAssertionsUnchanged": true,
+      "samplesDropped": 0,
+      "timestampsRewritten": 0,
+      "maximumRetainedBatches": 1,
+      "monitorClosed": true,
+      "failedBatch": null,
+      "historicalClockFailureCauseProven": false,
+      "publicAcceptance": false
+    }
+  },
+  "fence": {
+    "limits": {
+      "maximumWaitMs": 1000,
+      "waitIntervalMs": 1,
+      "receiptMarginMs": 1,
+      "maximumSamples": 256
+    },
+    "batches": 24,
+    "waitedBatches": 0,
+    "maximumWaitMs": 0.024899999999888678,
+    "maximumFirstAheadMs": 0,
+    "recentWaits": [],
+    "fenceFailure": null,
+    "originalTimestampAssertionsUnchanged": true,
+    "samplesDropped": 0,
+    "timestampsRewritten": 0,
+    "maximumRetainedBatches": 1,
+    "monitorClosed": true,
+    "failedBatch": null,
+    "historicalClockFailureCauseProven": false,
+    "publicAcceptance": false
+  },
+  "protectedInputOpened": false,
+  "nativeConversionPerformed": false,
+  "browsersLaunched": 0,
+  "genuineConversions": 0,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "subprocessWindowsHidden": true,
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\native-receipt-clock-check-y34zdr",
+  "runtimeAbsent": true
+}

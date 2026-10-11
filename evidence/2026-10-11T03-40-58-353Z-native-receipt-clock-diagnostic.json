@@ -1,0 +1,878 @@
+{
+  "recordedAt": "2026-10-11T03:41:01.693Z",
+  "status": "actual-native-receipt-clock-and-owned-close-passed-not-browser-acceptance",
+  "failure": null,
+  "targetType": "owned-Node-process-tree-not-Chromium",
+  "targetPid": 44268,
+  "observerIdentity": {
+    "pid": 36432,
+    "parentPid": 44268,
+    "createdAt": "2026-10-11T03:40:58.3626580Z"
+  },
+  "observerAbsent": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 36432,
+      "parentPid": 44268,
+      "createdAt": "2026-10-11T03:40:58.3626580Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-11T03:41:01.690Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 422,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "native": {
+    "intervalMs": 100,
+    "scope": "All owned Chromium descendants; unknown types counted; native observer is not a converter or speed proof",
+    "sequence": 24,
+    "lastAcquiredAt": 1791690061227,
+    "observerCpuFirstMs": 218.75,
+    "observerCpuLastMs": 531.25,
+    "observerCpuDeltaMs": 312.5,
+    "limits": {
+      "identities": 512,
+      "phases": 128,
+      "transitions": 256,
+      "graphBuckets": 4096,
+      "unavailableExamplesPerAggregate": 8
+    },
+    "graphBucketDurationMs": 1000,
+    "graphBucketsEvicted": 0,
+    "rowColumns": [
+      "sequence",
+      "timestamp",
+      "phase",
+      "privateBytes",
+      "rssBytes",
+      "nativeElapsedMs",
+      "sampleError",
+      "processRows"
+    ],
+    "processRowColumns": [
+      "identityIndex",
+      "privateBytes",
+      "rssBytes"
+    ],
+    "identities": [
+      {
+        "pid": 35648,
+        "parentPid": 36432,
+        "createdAt": "2026-10-11T03:40:58.3739284Z",
+        "creationFileTime": "134361636583739284",
+        "executableName": "conhost.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 36432,
+        "parentPid": 44268,
+        "createdAt": "2026-10-11T03:40:58.3626587Z",
+        "creationFileTime": "134361636583626587",
+        "executableName": "powershell.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 39304,
+        "parentPid": 44268,
+        "createdAt": "2026-10-11T03:40:58.7324353Z",
+        "creationFileTime": "134361636587324353",
+        "executableName": "powershell.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 44268,
+        "parentPid": 17188,
+        "createdAt": "2026-10-11T03:40:58.3116302Z",
+        "creationFileTime": "134361636583116302",
+        "executableName": "node.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 30064,
+        "parentPid": 39304,
+        "createdAt": "2026-10-11T03:40:58.7410217Z",
+        "creationFileTime": "134361636587410217",
+        "executableName": "conhost.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      }
+    ],
+    "transitions": [
+      {
+        "phase": "blank-baseline",
+        "at": 1791690058358
+      },
+      {
+        "phase": "finally-cleanup",
+        "at": 1791690061165
+      }
+    ],
+    "phases": [
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 1,
+        "lastSequence": 23,
+        "validSamples": 23,
+        "unavailableSamples": 0,
+        "peak": [
+          4,
+          "2026-10-11T03:40:59.0550914Z",
+          "blank-baseline",
+          199290880,
+          247840768,
+          9.9811,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65503232,
+              81096704
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "rssPeak": [
+          4,
+          "2026-10-11T03:40:59.0550914Z",
+          "blank-baseline",
+          199290880,
+          247840768,
+          9.9811,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65503232,
+              81096704
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "last": [
+          23,
+          "2026-10-11T03:41:01.1201490Z",
+          "blank-baseline",
+          134533120,
+          160677888,
+          11.4725,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70451200,
+              84103168
+            ],
+            [
+              3,
+              62783488,
+              68526080
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      },
+      {
+        "phase": "finally-cleanup",
+        "firstSequence": 24,
+        "lastSequence": 24,
+        "validSamples": 1,
+        "unavailableSamples": 0,
+        "peak": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "rssPeak": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "last": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      }
+    ],
+    "graphBuckets": [
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 1,
+        "lastSequence": 3,
+        "validSamples": 3,
+        "unavailableSamples": 0,
+        "peak": [
+          3,
+          "2026-10-11T03:40:58.9472717Z",
+          "blank-baseline",
+          199278592,
+          247808000,
+          9.2081,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65490944,
+              81063936
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "rssPeak": [
+          3,
+          "2026-10-11T03:40:58.9472717Z",
+          "blank-baseline",
+          199278592,
+          247808000,
+          9.2081,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65490944,
+              81063936
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "last": [
+          3,
+          "2026-10-11T03:40:58.9472717Z",
+          "blank-baseline",
+          199278592,
+          247808000,
+          9.2081,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65490944,
+              81063936
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791690058
+      },
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 4,
+        "lastSequence": 12,
+        "validSamples": 9,
+        "unavailableSamples": 0,
+        "peak": [
+          4,
+          "2026-10-11T03:40:59.0550914Z",
+          "blank-baseline",
+          199290880,
+          247840768,
+          9.9811,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65503232,
+              81096704
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "rssPeak": [
+          4,
+          "2026-10-11T03:40:59.0550914Z",
+          "blank-baseline",
+          199290880,
+          247840768,
+          9.9811,
+          null,
+          [
+            [
+              4,
+              1302528,
+              8044544
+            ],
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69095424,
+              82407424
+            ],
+            [
+              2,
+              65503232,
+              81096704
+            ],
+            [
+              3,
+              62091264,
+              68243456
+            ]
+          ]
+        ],
+        "last": [
+          12,
+          "2026-10-11T03:40:59.9186896Z",
+          "blank-baseline",
+          133079040,
+          158830592,
+          10.5524,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              69070848,
+              82391040
+            ],
+            [
+              3,
+              62709760,
+              68390912
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791690059
+      },
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 13,
+        "lastSequence": 21,
+        "validSamples": 9,
+        "unavailableSamples": 0,
+        "peak": [
+          21,
+          "2026-10-11T03:41:00.9029393Z",
+          "blank-baseline",
+          134139904,
+          160243712,
+          13.131300000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70057984,
+              83709952
+            ],
+            [
+              3,
+              62783488,
+              68485120
+            ]
+          ]
+        ],
+        "rssPeak": [
+          21,
+          "2026-10-11T03:41:00.9029393Z",
+          "blank-baseline",
+          134139904,
+          160243712,
+          13.131300000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70057984,
+              83709952
+            ],
+            [
+              3,
+              62783488,
+              68485120
+            ]
+          ]
+        ],
+        "last": [
+          21,
+          "2026-10-11T03:41:00.9029393Z",
+          "blank-baseline",
+          134139904,
+          160243712,
+          13.131300000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70057984,
+              83709952
+            ],
+            [
+              3,
+              62783488,
+              68485120
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791690060
+      },
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 22,
+        "lastSequence": 23,
+        "validSamples": 2,
+        "unavailableSamples": 0,
+        "peak": [
+          23,
+          "2026-10-11T03:41:01.1201490Z",
+          "blank-baseline",
+          134533120,
+          160677888,
+          11.4725,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70451200,
+              84103168
+            ],
+            [
+              3,
+              62783488,
+              68526080
+            ]
+          ]
+        ],
+        "rssPeak": [
+          23,
+          "2026-10-11T03:41:01.1201490Z",
+          "blank-baseline",
+          134533120,
+          160677888,
+          11.4725,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70451200,
+              84103168
+            ],
+            [
+              3,
+              62783488,
+              68526080
+            ]
+          ]
+        ],
+        "last": [
+          23,
+          "2026-10-11T03:41:01.1201490Z",
+          "blank-baseline",
+          134533120,
+          160677888,
+          11.4725,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70451200,
+              84103168
+            ],
+            [
+              3,
+              62783488,
+              68526080
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791690061
+      },
+      {
+        "phase": "finally-cleanup",
+        "firstSequence": 24,
+        "lastSequence": 24,
+        "validSamples": 1,
+        "unavailableSamples": 0,
+        "peak": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "rssPeak": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "last": [
+          24,
+          "2026-10-11T03:41:01.2279024Z",
+          "finally-cleanup",
+          134733824,
+          160940032,
+          11.383000000000001,
+          null,
+          [
+            [
+              0,
+              1298432,
+              8048640
+            ],
+            [
+              1,
+              70651904,
+              84299776
+            ],
+            [
+              3,
+              62783488,
+              68591616
+            ]
+          ]
+        ],
+        "unavailableExamples": [],
+        "second": 1791690061
+      }
+    ],
+    "error": null,
+    "receiptClockFence": {
+      "limits": {
+        "maximumWaitMs": 1000,
+        "waitIntervalMs": 1,
+        "receiptMarginMs": 1,
+        "maximumSamples": 256
+      },
+      "batches": 24,
+      "waitedBatches": 0,
+      "maximumWaitMs": 0.02280000000007476,
+      "maximumFirstAheadMs": 0,
+      "recentWaits": [],
+      "fenceFailure": null,
+      "originalTimestampAssertionsUnchanged": true,
+      "samplesDropped": 0,
+      "timestampsRewritten": 0,
+      "maximumRetainedBatches": 1,
+      "monitorClosed": true,
+      "failedBatch": null,
+      "failedBatchLocation": null,
+      "failedBatchUnavailable": false,
+      "historicalClockFailureCauseProven": false,
+      "publicAcceptance": false
+    }
+  },
+  "fence": {
+    "limits": {
+      "maximumWaitMs": 1000,
+      "waitIntervalMs": 1,
+      "receiptMarginMs": 1,
+      "maximumSamples": 256
+    },
+    "batches": 24,
+    "waitedBatches": 0,
+    "maximumWaitMs": 0.02280000000007476,
+    "maximumFirstAheadMs": 0,
+    "recentWaits": [],
+    "fenceFailure": null,
+    "originalTimestampAssertionsUnchanged": true,
+    "samplesDropped": 0,
+    "timestampsRewritten": 0,
+    "maximumRetainedBatches": 1,
+    "monitorClosed": true,
+    "failedBatch": null,
+    "failedBatchLocation": null,
+    "failedBatchUnavailable": false,
+    "historicalClockFailureCauseProven": false,
+    "publicAcceptance": false
+  },
+  "protectedInputOpened": false,
+  "nativeConversionPerformed": false,
+  "browsersLaunched": 0,
+  "genuineConversions": 0,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "subprocessWindowsHidden": true,
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\native-receipt-clock-check-bFjwta",
+  "runtimeAbsent": true,
+  "sourcePins": {
+    "scripts/validate-native-receipt-clock.mjs": "cdf26c1f5bcfaa5ed4d999af9bcf079fc988f95b5e761cdca941c34020d160b1",
+    "scripts/lib/native-receipt-clock-fence.mjs": "3d69e3f9a776a3cef45a09008353f82c5a67c199ba9f4cf608d95b19bf4ebdc2",
+    "scripts/lib/clock-fenced-native-failure-observer.mjs": "172ae89fe235ee5107176c943e139ebea3695cc9ed03340bd59b13581ba45d92",
+    "scripts/lib/native-budget-failure-observer.mjs": "fd9b8a554f8ab4092c4fa9d1b128aaed16282469f500d8cb1d3725a09ef4b332",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82"
+  }
+}

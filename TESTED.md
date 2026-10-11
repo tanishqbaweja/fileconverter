@@ -4,6 +4,84 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — ETA wait completed; full attempt failed; prospective observer repair tested
+
+This entry supersedes the historical live/waiting entries below. Session48948
+exited1 and timer1171 completed. There is NO conversion running and NO new full
+retry in this cycle. The goal is ACTIVE/incomplete, not achieved.
+
+Watching policy requested by the user: estimate the next meaningful check from
+measured throughput or a comparable completed run, include setup/validation
+uncertainty, then use a real interruptible sleep timer. Do not poll conversion
+progress every few seconds or on each goal continuation. When that timer ends,
+observe the same run once and revise the estimate if necessary. An ETA is not
+proof of completion. This limits agent polling, NOT the required in-test native
+memory sampler. The actual first-check timer ran00:21:45.801UTC to03:20UTC;
+the subsequent interruptible clock sleep lasted10,145.6821seconds, with no
+conversion polls during that wait. Both waits are now terminal.
+
+Actual terminal receipt:
+evidence/2026-10-11T00-18-32-419Z-encoder-plane-title-original-full-terminal.json.
+Candidate first failed assert.ok(observedAt >= at) in the original native budget
+tracker. The offending snapshot/reader timestamp was not retained: precise
+clock skew, adjustment or hardware cause is UNKNOWN. Native history96467 versus
+tracker96468 means incomplete coverage; the retained232.2421875MiB peak is only
+a pre-fault diagnostic, NOT a passed250MiB result. Run1 stopped at2,807,326,273B
+read/3,170,137,784B partial output and10,167,195.74ms (~2h49m27s), no saved output,
+no independent validation/pre-assertion output probe,0completed/validated of3.
+The production cancellation completed and the large partial media/profile/runtime
+were removed; no quality, full-memory, repeat, scaling, speed or public acceptance.
+
+Proven teardown defect: generated driver called observer.setPhase BEFORE stop;
+the existing fatal error prevented stop from executing. Only the birth-verified,
+parent-verified, handle-locked native observer42568 was manually stopped. The
+outer wrapper then exited and removed its own scratch. Its historical raw
+observerStopped:false and cleanup error remain unchanged; later cleanup must
+not rewrite that failure. Driver, caller, observer, Chrome root and server were
+subsequently absent. Driver absence and wrapper restoration are in the terminal
+receipt. Normal production assets restored and protected test.mkv unchanged:
+2,958,573,265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34
+(independent post-terminal whole-file streaming hash verified).
+
+Lossless raw archive outputs/reports/2026-10-11T00-18-32-419Z-encoder-plane-title-full-raw.json.gz:
+580093B/SHA985acdb8199804b97dd5c580940c1a9d73eb64bbfca9e17cc92d63a11711ef96;
+restores19164886B/SHA4b929c4554583c29c4f32e88aef6ffdd2ecc881f7e3f6943e44787ab858938c7.
+Compressed/restored hashes and all240 unchanged pre/post source pins independently
+verified again. Strict title terminal --diagnose-failure audit ACTUALLY ran and
+exited1 on native.error != null; no failure-analysis report was produced. That
+gate remains strict: this invalid observer run is NOT accepted retroactively.
+
+New prospective native-receipt-clock-fence.mjs waits at most1000ms on a monotonic
+deadline for fresh reader time to reach unmodified acquisition/completion time.
+It retains the original timestamp, sequence, baseline and full-tree250MiB gates;
+no dropped rows, changed timestamps, zero substitutes or fabricated acceptance.
+clock-fenced-native-failure-observer.mjs retains at most one <=8MiB offending
+batch, once in the native report, links it from the callback report, and never
+mislabels an earlier batch when a native read fails. Its always-stop helper
+attempts observer shutdown even if phase transition throws, preserving all errors.
+These additions are NOT wired into the full driver yet; no full retry launched.
+
+Actual regression command (repository-owned Node launcher): --test
+tests/native-receipt-clock-fence.test.mjs tests/native-budget-failure-observer.test.mjs
+tests/native-memory-peaks.test.mjs tests/native-memory-history.test.mjs
+tests/native-memory-bursts.test.mjs:26PASS/0failed/962.1508ms. Six new focused
+checks cover controlled future timestamps, bounded persistent/late clock failure,
+always-stop errors, root+child251MiB admission with the unchanged250MiB threshold,
+single callback, exact single failed-batch retention and stale-payload rejection.
+Four-file zero-warning ESLint PASS4.6137s. No engine/browser settings changed.
+
+Actual final headless OS-observer integration (NOT Chromium):
+evidence/2026-10-11T03-45-24-030Z-native-receipt-clock-diagnostic.json,
+23native rows/3.4434s, eight current source pins independently verified, owned
+observer41812 absent, runtime gone, monitorClosed:true. No actual clock catch-up
+was needed; that branch was exercised only by controlled unit tests. Earlier
+03:34/03:40 Node diagnostics retained as historical small receipts, not browser
+acceptance. No browser, input read, native conversion, Docker, headed window or
+large converted copy in this repair cycle. All public-acceptance flags false.
+Next: qualify a new source-bound driver that integrates the tested observer and
+always-stop changes; preserve all original quality/memory/three-repeat gates,
+then prepare and schedule any justified full retry using ETA-based sleep.
+
 ## 2026-10-11 — Title-specific post-terminal audit prepared without conversion polling
 
 Previous turn PROGRESS: corrected full validator,49 focused checks, actual one
