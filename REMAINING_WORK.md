@@ -5,6 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Corrected-driver independent terminal audit prepared, not executed
+
+Status: **Partially implemented**. New separate title-specific post-terminal CLI,
+strict reversible normal/failure recipes and stronger title facts are ready.
+All four new files are outside measured240 pins; static240 source hashes verified
+unchanged. No conversion/process/progress/timer polling before scheduled03:20UTC/
+08:50IST, no source/engine/UI/build/stager/browser mutation while measurement runs.
+Current conversion outcome is NOT inferred from historical live receipt or timer.
+
+Normal audit keeps every original archive/source/reconstructed actual caller+driver/
+build/Chrome/UI/CSS/full-original/three-repeat/fidelity/ALL-tree250/native100ms/
+ownership/cleanup/restoration gate, plus independent exact video/audio title names
+and retained pre-assertion probe equality. Explicit --diagnose-failure is separate,
+cannot grant acceptance and preserves collector failure versus candidate failure.
+Bounded parsed nested cleanup diagnostics retain evidence, not guessed historical
+causes. Both audit modes reject live/prepared/foreign paths before inspection or
+scratch. Existing historical failed output remains failed,0validated/230.03125MiB.
+
+Six new focused audit tests PASS715.9916ms;28 relevant regressions PASS922.2871ms,
+four-file zero-warning lint/diff PASS. Immutable actual240-source launch archive
+reconstructs byte-exactly and all new analysis files are unmeasured. Synthetic
+positive fixtures test logic only, NOT actual full-session evidence. Own unit/lint
+scratch cleaned; actual active driver owns its scratch until finally cleanup.
+Next: ETA-driven one observation of SAME48948, actual terminal receipt then new
+audit (explicit failure mode if outer collector failed). No full/memory/scaling/
+speed/public acceptance yet; the complete broader original specification remains.
+
 ## 2026-10-11 — Corrected full-original session launched once; ETA timer waiting
 
 Status: **Partially implemented**, no acceptance. Actual session48948/driver6784/

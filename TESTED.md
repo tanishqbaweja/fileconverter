@@ -4,6 +4,45 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Title-specific post-terminal audit prepared without conversion polling
+
+Previous turn PROGRESS: corrected full validator,49 focused checks, actual one
+session48948 launch and nonblocking ETA timer1171. This cycle adds ONLY separate
+post-terminal tooling outside all240 measured source pins. No session/process/CDP/
+progress/timer polling, source/engine/UI edit, build, stager or browser launch.
+Static240-source SHA check passes. ETA remains03:20UTC/08:50IST; do not replace
+that timer with repeated continuation checks or infer live/terminal from its age.
+
+scripts/analyze-encoder-plane-title-full-terminal.mjs refuses live/prepared/foreign
+paths before archive/fixture/process reads or owned scratch allocation. Normal
+mode requires actual terminal receipt with null collector failure; explicit
+--diagnose-failure mode requires failed collector/candidate and keeps separate
+-failure-analysis filename/diagnostic-only/no-acceptance semantics. Both strict
+recipes reverse byte-exactly to the unchanged staged acceptance/failure audits.
+Source/preimage/actual caller+driver/build/Chrome/UI/CSS/full protected postSHA/
+ALL-tree/native100ms/three-repeat/fidelity/ownership/restoration gates unchanged.
+Own analysis source pins also retain the old failure-recipe input when used.
+
+New terminal facts retain all original full memory/fidelity gates and additionally
+require exact primary-video/audio title -> MP4 name mappings and identical saved
+pre-assertion/output-validation probes for every validated output. Missing,
+contradictory, changed or generic handler names cannot satisfy preservation.
+Bounded cleanup detail parsing retains actual nested causes/code/stderr when
+present; legacy generic AggregateError stays cause-UNKNOWN, never invented proof.
+Actual historical failed full attempt stays230.03125MiB/0 validated/no acceptance;
+small title mappings do not retroactively validate its deleted output.
+
+Six new audit-focused tests PASS715.9916ms, then28 relevant regression tests
+PASS922.2871ms; four-file zero-warning lint and diff check PASS. Tests reconstruct
+the exact immutable actual240-preimage launch archive/caller/driver, prove new
+audit files unmeasured, reject the actual live path in BOTH modes before touching
+live runtime, and exercise synthetic-only title/probe/fidelity/memory negatives.
+No full-session audit executed yet, no new full output or speed/public acceptance.
+Own unit/lint runtimes finally cleaned; active conversion scratch remains owned
+by the unchanged driver until its actual finally cleanup. Goal ACTIVE/incomplete.
+After ETA: observe SAME48948 once, then use this new audit ONLY on actual terminal
+receipt; --diagnose-failure is required for failed outer collector receipts.
+
 ## 2026-10-11 — One corrected full session live; non-polling ETA timer set
 
 Launched ONCE after pushed+remote-verifiedf5c423d and successful preparation.
