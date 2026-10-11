@@ -7,6 +7,16 @@ not the entire product specification.
 
 ## 2026-10-12 — Decoder-plane build wired, actual native qualification pending
 
+Run38182492577 genuinely failed at internal-header include before new lifetime
+smoke. Exact failed Git-head15 sources/full log retained before correction;
+hosted finally cleanup passed. The recipe now searches the actual FFmpeg source
+tree for buffer_internal.h, with a new regression assertion. A distinctly named
+include-fix branch will qualify the changed recipe. No full conversion repeated;
+native and browser acceptance remain pending, no public capability promotion.
+Changed source/build/evidence12 checks plus failure archive/one-include-only
+witness pass; zero-warning focused lint passes. Failure remains recorded rather
+than replaced by subsequent retry results.
+
 **Partially implemented**. New decoder-only recipe and reversible hosted
 builder/branch/collector integrate prepared HEVC plane source, actual Wasm
 80-selector/200000-reuse lifetime smoke BEFORE production linking and original

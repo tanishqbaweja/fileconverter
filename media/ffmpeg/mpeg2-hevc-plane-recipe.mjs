@@ -11,7 +11,7 @@ printf '%s  %s\\n' 76fcae1c9409074b9b287d77d189ba06ab84e680e818a7649c56a6ad43db0
 printf '%s  %s\\n' 79c74c197a61441287a0c8cb6e1a2703aadc1db0dc9f2625a2dd5a7f70b4f6e0 ffmpeg/libavcodec/get_buffer.c | sha256sum --check --strict
 `;
   const marker = "# Compile the preserved production AVIO/kernel with the separate codec hooks.";
-  const smoke = `emcc "\${BUILD_ROOT}/hevc-plane-smoke.c" "\${SCRIPT_DIR}/mpeg2-allocation-attempt.c" -I"\${PREFIX}/include" -I"\${SCRIPT_DIR}" \\
+  const smoke = `emcc "\${BUILD_ROOT}/hevc-plane-smoke.c" "\${SCRIPT_DIR}/mpeg2-allocation-attempt.c" -I"\${BUILD_ROOT}/ffmpeg" -I"\${PREFIX}/include" -I"\${SCRIPT_DIR}" \\
   "\${PREFIX}/lib/libavutil.a" -O2 -UNDEBUG -pthread -sPTHREAD_POOL_SIZE=0 -sMALLOC=dlmalloc \\
   -sENVIRONMENT=node -sFILESYSTEM=0 -sEXIT_RUNTIME=1 -sASSERTIONS=1 -sMODULARIZE=0 -sEXPORT_ES6=0 \\
   -sALLOW_MEMORY_GROWTH=0 -sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432 -Wl,--wrap=posix_memalign \\

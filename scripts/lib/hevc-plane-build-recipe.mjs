@@ -18,8 +18,8 @@ export function makeHevcPlaneBranchCaller(source, root) {
   assert.equal(sha(source), "9eef6722a954d68f5a3d5d8ecdea9f8e3b04c7c26134f15e71eb69c35b2293a7");
   const edits = [
     ['root = path.resolve(import.meta.dirname, "..")', `root = ${JSON.stringify(path.resolve(root))}`],
-    ["codex/mpeg2-alignment16-20261011", "codex/mpeg2-hevc-planes-20261012"],
-    ["evidence/mpeg2-alignment16-build-branch-2026-10-11", "evidence/mpeg2-hevc-plane-build-branch-2026-10-12"],
+    ["codex/mpeg2-alignment16-20261011", "codex/mpeg2-hevc-planes-20261012-include-fix"],
+    ["evidence/mpeg2-alignment16-build-branch-2026-10-11", "evidence/mpeg2-hevc-plane-build-branch-2026-10-12-include-fix"],
     ["alignment16-git-index-", "hevc-plane-git-index-"],
     ["Build decoder-only alignment16 candidate with unchanged fixed heaps and encoder", "Build bounded HEVC plane candidate with fixed alignment16 heap and unchanged encoder"],
     ["alignment16-private-build-branch-pushed-not-dispatched", "hevc-plane-private-build-branch-pushed-not-dispatched"],
@@ -52,7 +52,7 @@ export function makeHevcPlaneCollector(source, root) {
   return transform(prior, [
     ["work/mpeg2-alignment16-${runId}", "work/mpeg2-hevc-planes-${runId}"],
     ["evidence/mpeg2-alignment16-build-${runId}.json", "evidence/mpeg2-hevc-plane-build-${runId}.json"],
-    ["evidence/mpeg2-alignment16-build-branch-2026-10-11.json", "evidence/mpeg2-hevc-plane-build-branch-2026-10-12.json"],
+    ["evidence/mpeg2-alignment16-build-branch-2026-10-11.json", "evidence/mpeg2-hevc-plane-build-branch-2026-10-12-include-fix.json"],
     ["alignment16-artifact-", "hevc-plane-artifact-"],
     ["|alignment16-smoke\\.json)", "|alignment16-smoke\\.json|hevc-plane-smoke\\.json|hevc-plane-(?:buffer|get-buffer)\\.c)"],
     ["private-decoder-dlmalloc-alignment16-fixed-heaps-not-browser-acceptance", "private-alignment16-hevc-plane-single-idle-not-browser-acceptance"],

@@ -1,0 +1,25 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import test from "node:test";
+import { gunzipSync } from "node:zlib";
+import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
+const root = path.resolve(import.meta.dirname, "..");
+test("actual failed HEVC build retains byte-exact log and15 Git-head preimages; corrected smoke adds only source-header search", async () => {
+  const receipt = JSON.parse(await readFile(path.join(root, "evidence/hevc-plane-build-failure-38182492577.json")));
+  assert.equal(receipt.run.status, "completed"); assert.equal(receipt.run.conclusion, "failure");
+  assert.equal(receipt.run.headSha, "f82068b5284fc01a97e3678f8f0b701eafbf67de");
+  assert.equal(receipt.sourcesMatchedActualFailedGitHead, true); assert.equal(receipt.hostedCleanupPassed, true);
+  const compressed = await readFile(path.join(root, receipt.archive.path));
+  assert.equal(compressed.length, receipt.archive.bytes); assert.equal(sha(compressed), receipt.archive.sha256);
+  const restored = gunzipSync(compressed); assert.equal(restored.length, receipt.archive.restoredBytes); assert.equal(sha(restored), receipt.archive.restoredSha256);
+  const bundle = JSON.parse(restored); assert.equal(sha(bundle.failedLog), receipt.failedLogSha256);
+  assert.match(bundle.failedLog, /fatal error: 'libavutil\/buffer_internal.h' file not found/);
+  assert.equal(Object.keys(receipt.sourcePins).length, 15);
+  for (const [name, digest] of Object.entries(receipt.sourcePins)) assert.equal(sha(Buffer.from(bundle.sourcePreimages[name], "base64")), digest);
+  const name = "media/ffmpeg/mpeg2-hevc-plane-recipe.mjs", original = Buffer.from(bundle.sourcePreimages[name], "base64").toString("utf8");
+  const anchor = '-I"\\${PREFIX}/include" -I"\\${SCRIPT_DIR}"'; assert.equal(original.split(anchor).length, 2);
+  const expected = original.replace(anchor, '-I"\\${BUILD_ROOT}/ffmpeg" ' + anchor);
+  assert.equal(await readFile(path.join(root, name), "utf8"), expected);
+  assert.equal(receipt.originalRead, false); assert.equal(receipt.browserConversionsPerformed, 0); assert.equal(receipt.publicAcceptance, false);
+});

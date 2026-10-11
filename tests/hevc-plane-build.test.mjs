@@ -17,6 +17,11 @@ test("new decoder shell syntax keeps fixed32+16MiB and SDK restore before unchan
   const result = spawnSync(bash, ["--noprofile", "--norc", "-n"], { input: generated, encoding: "utf8", windowsHide: true, timeout: 15000 }); assert.equal(result.status, 0, result.stderr);
   assert.ok(generated.indexOf("patch-mpeg2-hevc-planes.mjs") < generated.indexOf("emconfigure ./configure"));
   assert.ok(generated.indexOf("hevc-plane-smoke.js") < generated.indexOf('emcc "${BUILD_ROOT}/within_split_pipeline.c"'));
+  // buffer_internal.h is not installed: the actual FFmpeg source/config tree
+  // must be searched, not just PREFIX/include. Regression for run38182492577.
+  const smokeCommand = generated.slice(generated.indexOf('emcc "${BUILD_ROOT}/hevc-plane-smoke.c"'), generated.indexOf('node "${BUILD_ROOT}/hevc-plane-smoke.js"'));
+  assert.ok(smokeCommand.includes('-I"${BUILD_ROOT}/ffmpeg"'));
+  assert.ok(smokeCommand.includes('"${PREFIX}/lib/libavutil.a"'));
   assert.ok(generated.indexOf("mpeg2-alignment16-sdk.mjs") < generated.indexOf('bash "${SCRIPT_DIR}/build-mpeg2-split-encoder.sh"'));
   assert.ok(generated.includes("-sINITIAL_MEMORY=33554432 -sMAXIMUM_MEMORY=33554432"));
   assert.ok(!generated.includes("-sALLOW_MEMORY_GROWTH=1"));

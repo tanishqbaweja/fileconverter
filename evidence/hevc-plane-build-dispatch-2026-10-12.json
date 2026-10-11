@@ -1,0 +1,13 @@
+{
+  "recordedAt": "2026-10-11T22:58:11.846Z",
+  "branch": "codex/mpeg2-hevc-planes-20261012",
+  "headSha": "f82068b5284fc01a97e3678f8f0b701eafbf67de",
+  "repository": "tanishqbaweja/fileconverter",
+  "workflow": "reproduce-ffmpeg-nondocker.yml",
+  "core": "within-mpeg2-aligned-reuse",
+  "dispatchAttempted": true,
+  "responseVerified": true,
+  "runId": null,
+  "userMediaUploaded": false,
+  "response": ""
+}

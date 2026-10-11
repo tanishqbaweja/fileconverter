@@ -6,6 +6,22 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-12 — Bounded HEVC plane build wired; actual compilation next
 
+Actual hosted run38182492577 at f82068b5284fc01a97e3678f8f0b701eafbf67de
+FAILED after5m10s, before new lifecycle/production link: smoke compilation could
+not find libavutil/buffer_internal.h because only installed public headers were
+searched. Fifteen executed native-source files matched failed Git HEAD before
+editing; complete failed log/source preimages are byte-exact gzip retained in
+outputs/reports/hevc-plane-build-failure-38182492577.json.gz, bound by
+evidence/hevc-plane-build-failure-38182492577.json. Hosted cleanup passed;
+no user media read/uploaded, browser conversion or artifact published. Corrected
+only the smoke include search to the actual compiled FFmpeg source/config tree;
+added regression assertion. Next changed include-fix branch, never unchanged
+redispatch. Native lifecycle/browser/full-file/fidelity/memory/speed remain pending.
+Changed recipe/source/preflight/prior-build12 checks PASS; byte-exact failed-log/
+15-preimage/one-include-only regression plus build3 checks PASS4/4. Six changed
+JavaScript/test files and separate failure-witness test zero-warning lint PASS.
+No acceptance gate changed or expensive conversion repeated.
+
 Previous goal turn was progress: exact compiled first-malloc fragmented capacity
 and private source candidate passed50 focused checks. New decoder-only recipe
 patches fresh regular FFmpeg buffer.c/get_buffer.c, validates exact76fcae1c…81a/

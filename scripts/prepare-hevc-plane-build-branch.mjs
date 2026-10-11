@@ -16,7 +16,7 @@ try {
   const target = path.join(runtime.directory, "branch.mjs"); await writeFile(target, recipe.generated, { flag: "wx" }); await import(pathToFileURL(target).href);
 } finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
 const postSourcePins = {}; for (const name of sourceFiles) postSourcePins[name] = sha(await readFile(path.join(root, name))); assert.deepEqual(postSourcePins, sourcePins);
-const output = "evidence/hevc-plane-branch-executed-sources-2026-10-12.json";
+const output = "evidence/hevc-plane-branch-executed-sources-2026-10-12-include-fix.json";
 await writeFile(path.join(root, output), JSON.stringify({ recordedAt: new Date().toISOString(), recipe, sourcePins, postSourcePins, sourcePreimages,
   ownedWrapperAbsent: true, actualBuildStarted: false, originalVideoRead: false, browserConversions: 0, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output }));

@@ -1,0 +1,186 @@
+{
+  "recordedAt": "2026-10-11T23:08:30.431Z",
+  "repository": "tanishqbaweja/fileconverter",
+  "expectedHead": "f82068b5284fc01a97e3678f8f0b701eafbf67de",
+  "state": {
+    "conclusion": "failure",
+    "createdAt": "2026-10-11T22:58:13Z",
+    "databaseId": 38182492577,
+    "headSha": "f82068b5284fc01a97e3678f8f0b701eafbf67de",
+    "jobs": [
+      {
+        "completedAt": "2026-10-11T23:03:23Z",
+        "conclusion": "failure",
+        "databaseId": 114597825229,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-11T22:58:16Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T22:58:18Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T22:58:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T22:58:25Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T22:58:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T22:58:30Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-11T22:58:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T22:58:56Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-11T22:58:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "failure",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-11T22:58:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:19Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:20Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "2026-10-11T23:03:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:21Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "2026-10-11T23:03:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T23:03:21Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-11T23:03:21Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38182492577/job/114597825229"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38182492577"
+  }
+}
