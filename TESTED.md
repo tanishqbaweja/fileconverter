@@ -4,6 +4,38 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Changed full-file runner prepared with original gates retained
+
+Previous goal turn was progress: three actual new-decoder browser conversions
+and recovery passed. This cycle adds reversible full-runner/stager/failure-schema
+qualification without editing those frozen sources. New preparation receipt
+`evidence/2026-10-11T18-47-14-549Z-alignment16-original-full-preparation.json`
+has326 exact current/pre/post/source preimages: all256 historical sources plus70
+additions under the unchanged128-addition/2MiB/384-union/8MiB runtime archive caps.
+The842,691B lossless source archive restores2,054,341B. Genuine browser-qualified
+decoder417182a9…1014 and encoder a4ba6225…1cee are selected; synthetic export cores
+are not staged. Original three runs, six-hour limit each, five-minute settling,
+full-tree250MiB formula, SSIM/timing/audio/metadata validators, native100ms monitor,
+source audits, privacy and finally cleanup gates reverse byte-exact.
+
+Preparation performed ZERO browser launches/conversions. Physical8,612,192,256B
+and virtual10,364,190,720B passed2GiB guards; disk2,332,609,990,656B passed32GiB.
+Whole protected test.mkv remained2,958,573,265B/SHA31f36695…db34 before/after.
+Owned wrapper/candidate were removed; normal app/CSS remained restored. Public,
+full-source, complete-memory and speed acceptance remain false.
+
+Initial focused derivation checks caught an overbroad filename replacement and
+ambiguous reversal of three imports targeting one factory BEFORE any preparation
+or browser launch. Anchoring the timestamped receipt and entire import statements
+fixed both; no thresholds or validation weakened. Three focused units PASS825.299ms;
+four changed files zero-warning lint PASS9.596s. Preparation session36300 terminal0
+after one30s ETA timer/check; no repeated polling. Next: focused regression and
+ONE actual changed full-original stress run, not an unchanged failure replay.
+Final focused regression31/31PASS1,670.363ms (new full preparation/derivation,
+actual111/146/native53 witnesses and historical failure/source-layer gates).
+Five changed/new files zero-warning lint PASS5.960s; git diff whitespace check
+passed. These offline tests do not replace the still-pending full conversion.
+
 ## 2026-10-12 — Alignment16 production-browser media/recovery PASS; full acceptance pending
 
 Previous goal turn was concrete progress: actual changed native build/contracts

@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Changed full-original stress runner now prepared
+
+**Partially implemented**. New reversible runner qualifies actual417182a9…1014
+decoder plus a4ba6225…1cee plane encoder against the three browser media/recovery
+witnesses. Preparation verified326 current/pre/post/source preimages, retaining
+all256 historical sources with70 additions inside unchanged evidence caps.
+All original full stress/memory/fidelity/privacy/cleanup gates remain unchanged;
+source-frozen historical/current browser helpers were not edited. Entire
+test.mkv size/SHA matched before/after; host physical+virtual2GiB and disk32GiB
+preflights passed. Owned9.7MB candidate and wrapper were removed in finally;
+production app/CSS restored. See18-47-14-549Z alignment16-original-full-preparation
+receipt and recoverable source archive. No browser conversion occurred in
+preparation, and no speed/full-memory/public acceptance follows from it.
+Next work is the actual changed full-file run and independent terminal analysis.
+Full broad original goal remains active; all other audited partial requirements
+remain in scope. Initial two source-derivation guard failures were corrected
+before preparation and recorded in TESTED.md; no unchanged expensive retry.
+Final31/31focused regression and five-file zero-warning lint passed. Actual full
+conversion, three repeats, independent full fidelity and primary memory remain
+unverified; offline preparation is not completion evidence.
+
 ## 2026-10-12 — Changed browser fidelity/recovery verified; full stress remains partial
 
 **Partially implemented**. Actual alignment16 decoder417182a9…1014 + existing
