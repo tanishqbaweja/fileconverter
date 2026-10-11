@@ -1,0 +1,29 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import test from "node:test";
+import { makeAlignment16SdkSource, SDK_DLMALLOC_SOURCE_SHA256, patchAlignment16Sdk } from "../media/ffmpeg/mpeg2-alignment16-sdk.mjs";
+import { makeAlignment16Recipe } from "../media/ffmpeg/mpeg2-alignment16-recipe.mjs";
+import { makeAllocationAttemptRecipe } from "../media/ffmpeg/mpeg2-allocation-attempt-recipe.mjs";
+import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
+const root = path.resolve(import.meta.dirname, "..");
+test("official pinned6.0.4 allocator body stays byte-exact under supported16-byte override; incorrect source refuses before mutation", async () => {
+  const response = await fetch("https://raw.githubusercontent.com/emscripten-core/emscripten/6.0.4/system/lib/dlmalloc.c", { signal: AbortSignal.timeout(30000) });
+  assert.ok(response.ok); const source = await response.text(); assert.ok(Buffer.byteLength(source) <= 300000); assert.equal(sha(source), SDK_DLMALLOC_SOURCE_SHA256);
+  const recipe = makeAlignment16SdkSource(source); assert.equal(recipe.generated.slice(recipe.prefix.length), source);
+  assert.equal(recipe.alignment, 16); assert.equal(recipe.upstreamBodyUnchanged, true); assert.equal(recipe.heapLimitsRaised, false);
+  assert.throws(() => makeAlignment16SdkSource(source + "\n"));
+  if (process.platform !== "linux") await assert.rejects(patchAlignment16Sdk(root, path.join(root, "work/alignment16-builder-UNIT/sdk-state.json")));
+});
+test("decoder-only recipe restores SDK BEFORE unchanged encoder and reverses every unrelated conversion/native contract gate", async () => {
+  const source = await readFile(path.join(root, "media/ffmpeg/build-mpeg2-split-pipeline.sh"), "utf8"), old = makeAllocationAttemptRecipe(source), generated = makeAlignment16Recipe(source);
+  const restore = 'node "${SCRIPT_DIR}/mpeg2-alignment16-sdk.mjs" restore "${WITHIN_ALIGNMENT16_SDK_STATE:?}"\n';
+  assert.ok(generated.indexOf(restore) < generated.indexOf('bash "${SCRIPT_DIR}/build-mpeg2-split-encoder.sh"'));
+  const start = generated.indexOf("# Real Wasm allocator contract;"), end = generated.indexOf("# Compile the preserved production AVIO/kernel", start);
+  assert.ok(start >= 0 && end > start); assert.equal(generated.slice(0, start) + generated.slice(end).replace(restore, ""), old);
+  for (const token of ["-sINITIAL_MEMORY=33554432", "-sMAXIMUM_MEMORY=33554432", "-sALLOW_MEMORY_GROWTH=0", "-sMALLOC=dlmalloc", "allocation-attempt-smoke", "single-idle-smoke"]) assert.ok(generated.includes(token), token);
+  for (const file of ["build-mpeg2-alignment16.mjs", "mpeg2-alignment16-sdk.mjs", "mpeg2-alignment16-recipe.mjs"]) {
+    const checked = spawnSync(process.execPath, ["--check", path.join(root, "media/ffmpeg", file)], { windowsHide: true, encoding: "utf8" }); assert.equal(checked.status, 0, checked.stderr);
+  }
+});

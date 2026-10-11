@@ -1,0 +1,112 @@
+{
+  "recordedAt": "2026-10-11T17:14:35.945Z",
+  "status": "actual-upstream-fatal-malloc-callsite-retained-not-fix",
+  "input": {
+    "path": "evidence/2026-10-11T14-01-14-330Z-allocation-attempt-original-full-terminal-analysis.json",
+    "sha256": "dd836f2a7152690b173a2611b270ce51a5b8c65eefa75588eab68266c1e9d347"
+  },
+  "inspection": {
+    "binary": {
+      "path": "work/mpeg2-allocation-attempt-38138821153/within-mpeg2-split.wasm",
+      "bytes": 6904593,
+      "sha256": "9ce862602f8db5e61f5047e4ecdccea1d8f7e8c98452fb486a95befeeb558039"
+    },
+    "actualFatalCall": {
+      "originalOffsetHex": "0x606e5c",
+      "originalInstruction": "call 4436 <emscripten_builtin_malloc>",
+      "originalContext": [
+        " 606e43: 41 0b                      |             i32.const 11",
+        " 606e45: 49                         |             i32.lt_u",
+        " 606e46: 1b                         |             select",
+        " 606e47: 22 06                      |             local.tee 6",
+        " 606e49: 41 1c                      |             i32.const 28",
+        " 606e4b: 6a                         |             i32.add",
+        " 606e4c: 21 01                      |             local.set 1",
+        " 606e4e: 0b                         |           end",
+        " 606e4f: 23 0c                      |           global.get 12",
+        " 606e51: 45                         |           i32.eqz",
+        " 606e52: 20 07                      |           local.get 7",
+        " 606e54: 41 02                      |           i32.const 2",
+        " 606e56: 46                         |           i32.eq",
+        " 606e57: 72                         |           i32.or",
+        " 606e58: 04 40                      |           if",
+        " 606e5a: 20 01                      |             local.get 1",
+        " 606e5c: 10 d4 22                   |             call 4436 <emscripten_builtin_malloc>",
+        " 606e5f: 41 02                      |             i32.const 2",
+        " 606e61: 23 0c                      |             global.get 12",
+        " 606e63: 41 01                      |             i32.const 1"
+      ]
+    },
+    "actualMallocSites": [
+      "2\n        i32.const -1\n        local.get $l2\n        select\n        i32.store\n        i32.const 1918752\n        i32.const 16\n        i32.store\n        i32.const 1918756\n        local.get $p1\n        i32.store\n        i32.const 1918760\n        i32.const 0\n        i32.store\n        i32.const 1918736\n        i32.const 1095519281\n        i32.store\n        local.get $p1\n        i32.const 262144\n        i32.lt_u\n        local.set $l2\n      end\n      block $B4 (result i32)\n        block $B5\n          block $B6\n            global.get $g12\n            i32.eqz\n            if $I7\n              local.get $l2\n              br_if $B6\n              i32.const 1918748\n              i32.const 1\n              i32.store\n            end\n            global.get $g12\n            i32.eqz\n            local.get $l7\n            i32.eqz\n            i32.or\n            if $I8\n              local.get $p1\n              call $emscripten_builtin_malloc\n              i32.const 0\n              global.get $g12\n              i32.const 1\n              i32.eq\n              br_if $B1\n              drop\n              local.se",
+      "     local.get $l2\n                if $I16\n                  global.get $__tls_base\n                  i32.const 48\n                  i32.store\n                  i32.const 0\n                  local.set $p1\n                  br $B14\n                end\n                i32.const 16\n                local.get $p1\n                i32.const 11\n                i32.add\n                i32.const -8\n                i32.and\n                local.tee $l2\n                local.get $p1\n                i32.const 11\n                i32.lt_u\n                select\n                local.tee $l6\n                i32.const 28\n                i32.add\n                local.set $p1\n              end\n              global.get $g12\n              i32.eqz\n              local.get $l7\n              i32.const 2\n              i32.eq\n              i32.or\n              if $I17\n                local.get $p1\n                call $emscripten_builtin_malloc\n                i32.const 2\n                global.get $g12\n                i32.const 1\n                i32.eq\n                br_if $B1\n                drop\n          "
+    ],
+    "archive": {
+      "path": "outputs/reports/2026-10-11T17-14-33-847Z-attempt-alignment-selected-functions.json.gz",
+      "bytes": 34405,
+      "sha256": "b68fe01225773bf6d75853370d0b2c9e8412977a9a042ce49dd3707cdbd40731",
+      "restoredBytes": 385157,
+      "restoredSha256": "1715279a8d1965cc05f74ed9c94b86e7534e805bfec38fe2c8b015490ff30fbf"
+    },
+    "selectedFunctions": [
+      {
+        "name": "emscripten_builtin_malloc",
+        "originalMetadata": {
+          "functionIndex": 4436,
+          "name": "emscripten_builtin_malloc",
+          "params": [
+            "i32"
+          ],
+          "results": [
+            "i32"
+          ],
+          "bodyStart": 6258506,
+          "bodyEnd": 6265061
+        },
+        "originalBodySha256": "08224e0db605cc31bef1847b4f1d76358d59f83ee81f8567f241f6a8f7d304cb",
+        "textSha256": "8f0538c4cbdf13327bc9c29a8de7411b9dee3ca7f8ca1664cfbde14a111b5866"
+      },
+      {
+        "name": "__wrap_posix_memalign",
+        "originalMetadata": {
+          "functionIndex": 4471,
+          "name": "__wrap_posix_memalign",
+          "params": [
+            "i32",
+            "i32"
+          ],
+          "results": [
+            "i32"
+          ],
+          "bodyStart": 6319074,
+          "bodyEnd": 6320353
+        },
+        "originalBodySha256": "59693efcfa90502e1d671d2273ccd3d247e9a6d35e28710be5981228d12d0f32",
+        "textSha256": "56984b63c400ea20f277a482fb5c6ba388602f6f98372116e9f8ee1b914ca74c"
+      }
+    ],
+    "originalBodiesByteExact": true,
+    "originalPcNotSlicePc": true,
+    "disassembler": {
+      "version": "1.0.39",
+      "registryIntegrity": "sha512-ba+dRL/75VQQY7RkU/CgriGbkoWAfS8TDyUlJfJhJ8KhtXgMl5dhNvoPNUcQ9IWRhW8u41glMSuZeTvsYq2rRg==",
+      "entrySha256": "cecf06ab5c65c3b7c05bafe601bbba61a45e4939889c5c51351e8817ac06f48d"
+    },
+    "instantiated": false,
+    "converterFunctionsExecuted": 0,
+    "internalFailedRequestProven": false,
+    "failureCauseProven": false,
+    "runtimeFixImplemented": false
+  },
+  "failure": null,
+  "cleanup": {
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\attempt-alignment-static-4yDFHB",
+    "runtimeCacheAndToolRemoved": true,
+    "originalBinaryUnchanged": true
+  },
+  "sourceSha256": "27052c159245dc2ae9dce140b5e9e1c9113ec68c3bcb8d877f87f65c6c242b9c",
+  "originalVideoRead": false,
+  "conversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true
+}

@@ -4,6 +4,53 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Exact fallback capacity proof; decoder alignment16 build preparation
+
+The previous goal cycle was concrete progress, not a verified wait: the changed
+full failure was independently audited. The subsequent static audit now joins
+that actual C request to the exact two compiled malloc bodies and the original
+second-malloc PC `0x606e5c` in decoder `9ce86260…`. This supersedes the prior
+internal-request/fragmented-capacity UNKNOWN statement, not the failed full test.
+The ordinary chunk is 1,597,472B; the compiled alignment fallback passes a derived
+1,597,500B to malloc, normalized to 1,597,504B. The largest captured free chunk
+was 1,597,496B: an 8B shortfall. Even top plus unclaimed tail is only 1,067,392B.
+Fragmented free capacity for this padded fallback is proven; WHY the heap became
+fragmented, the retained-live inventory, and a successful fix remain unproven.
+The historical directly-observed internal-request slot remains null.
+
+First static disassembly failed its unchanged 64MiB stream cap; it remains a
+failed receipt with exact executed-source preimage. The corrected analysis-only
+slice preserves both original bodies and maps their instruction addresses back
+to the actual binary; it is never instantiated or used for conversion. The
+successful executed source is retained before a lint-only variable/projection
+correction. No cap was raised and no original video was read. See
+`evidence/2026-10-11T17-13-06-340Z-attempt-alignment-static.json`,
+`evidence/2026-10-11T17-14-33-847Z-attempt-alignment-static.json`, both
+`attempt-alignment-static-*-sources-2026-10-11.json` preimage receipts, and
+`evidence/attempt-alignment-capacity-2026-10-11.json`.
+
+Private candidate preparation only: the official pinned Emscripten6.0.4
+dlmalloc body stays byte-exact beneath a supported `MALLOC_ALIGNMENT 16`
+override for the decoder. The isolated SDK is restored BEFORE compiling the
+unchanged separate encoder, and again in finally. A failed restore retains its
+recovery backup. Fixed32+16MiB heaps, AVIO, quality, live references and existing
+native lifetime controls stay unchanged. The proposed actual Wasm smoke has
+13 malloc/calloc/realloc/posix_memalign contracts, including the observed
+1,597,463B request. It has NOT yet been compiled or executed. Public assets,
+registry and canonical registered workflow are unchanged; an isolated no-Docker
+workflow/collector is prepared for a genuine build. No build/browser/full
+memory/fidelity/scaling/speed/public acceptance is implied by preparation.
+
+Preparation corrections recorded: the official SDK begins with a newline;
+the initial source-header assertion was corrected to its pinned exact bytes.
+The new historical-source witness initially used `row` instead of `rest` in
+its explicit inverse lint edit (7/8 passed); only the witness was corrected,
+then its 2/2 focused tests passed. Final 31/31 focused new and existing
+allocator/build/media/full-provenance regressions passed (4,036.074ms);
+13-file zero-warning lint plus the two final corrected tests passed.
+All owned test/tool caches and static scratch are gone; no converted copies
+were created in this cycle. Broad goal remains ACTIVE/incomplete.
+
 ## 2026-10-11 — Changed full diagnostic TERMINAL; actual fallback narrowed
 
 Supersedes ALL43314 LIVE statements. Same session43314 CLOSED outerexit0;

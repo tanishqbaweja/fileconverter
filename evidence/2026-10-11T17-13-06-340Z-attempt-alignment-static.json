@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-10-11T17:13:21.737Z",
+  "status": "failed-read-only-static-audit",
+  "input": {
+    "path": "evidence/2026-10-11T14-01-14-330Z-allocation-attempt-original-full-terminal-analysis.json",
+    "sha256": "dd836f2a7152690b173a2611b270ce51a5b8c65eefa75588eab68266c1e9d347"
+  },
+  "inspection": null,
+  "failure": "AssertionError [ERR_ASSERTION]: Disassembly stream cap\n    at Object.feed (file:///H:/Github%20Repositories/fileconverter/scripts/lib/selected-wasm-disassembly.mjs:33:14)\n    at disassembleSelectedWasmFunctions (file:///H:/Github%20Repositories/fileconverter/scripts/lib/selected-wasm-disassembly.mjs:51:55)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/audit-attempt-alignment-callsite.mjs:42:19",
+  "cleanup": {
+    "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\attempt-alignment-static-JF6hci",
+    "runtimeCacheAndToolRemoved": true,
+    "originalBinaryUnchanged": true
+  },
+  "sourceSha256": "12dfa9b6db3e6dc3fd495f580dfa0aa96bd9bb94f31aad088970ffaf50634480",
+  "originalVideoRead": false,
+  "conversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true
+}

@@ -5,6 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Alignment capacity proven; targeted candidate awaiting actual build
+
+Status: **Partially implemented**. Actual original failure plus exact compiled
+wrapper/allocator argument flow proves an 8B contiguous-chunk shortfall in the
+alignment fallback: derived internal malloc argument1,597,500B, normalized
+chunk1,597,504B versus largest captured free1,597,496B. This supersedes the older
+internal-size/fragmented-capacity unknown statement below, NOT the failed full
+test or any acceptance gate. The historic direct slot stays null; why the heap
+fragmented and what live allocations remain are not proven. Exact binary/body/
+original-PC/archive/source joins and stale-phase/PC/normalization negatives are
+tested in `tests/attempt-alignment-evidence.test.mjs` and
+`tests/attempt-alignment-capacity.test.mjs`; proof is
+`evidence/attempt-alignment-capacity-2026-10-11.json`.
+
+Changed decoder-only allocator preparation uses upstream's supported16-byte
+malloc alignment, not interior pointers or altered reference lifetimes. The
+pinned original SDK body is unchanged; the SDK is restored before compiling the
+separate unchanged encoder and in finally, preserving backup if restoration
+fails. Native13-case real-Wasm contracts, isolated registered no-Docker workflow,
+source-bound bounded artifact collector and rollback safeguards are implemented
+but the candidate build/smoke/browser qualification are still UNEXECUTED.
+32+16MiB limits, AVIO/backpressure, quality and all original full stress gates
+stay unchanged. No public route/registry/UI or canonical workflow changed.
+
+Failed64MiB full disassembly is retained with executed preimage; corrected
+non-executed analysis slice preserves original bodies/PCs without raising caps.
+SDK-newline and witness inverse-edit test mistakes are recorded in TESTED.md,
+not reasons to replay the expensive unchanged conversion. Final31/31 focused
+regression and zero-warning changed-file lint passed. Original video was not
+read or changed in this static/preparation cycle; no converted files created.
+
+Next: actually compile/execute the new fixed-heap allocator contracts; collect
+and verify actual changed binary/sources and unchanged encoder; requalify browser
+fidelity/cancellation/write-failure against its NEW symbol/slot layout; only then
+run a changed full original test with fresh host/disk/hash checks. Full fidelity,
+three stress repeats,250MiB full-tree acceptance, ~10GB scaling, safe speed
+optimization and the entire original cross-format scope remain incomplete.
+
 ## 2026-10-11 — Actual full failure now narrows alignment fallback
 
 Status remains **Partially implemented**. Session43314 TERMINAL (outer0/driver1),
