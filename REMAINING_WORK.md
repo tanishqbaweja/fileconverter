@@ -7,6 +7,36 @@ not the entire product specification.
 
 ## 2026-10-11 — Native request/phase observer browser qualification passed
 
+Superseding integration (still **Partially implemented**): one composite observer
+now handles the current direct-AVBuffer and pool-get paths with a single bounded
+failure stack/header walk. Original measured4Mbps adapter reverses byte-exactly
+after removing the new prefix and sole decoder-observer substitution; encoder,
+AVIO, settings, native audit and fatal chain unchanged. Actual synthetic browser
+control passed5.249 seconds, receipts
+`evidence/2026-10-11T13-10-58-221Z-composite-allocation-abort-control.json` and
+`-executed-sources.json`. All102 current/pre/post/source preimages retained in
+391,985-byte gzip/1,567,415-byte restored archive within unchanged128-file/2MiB
+bounds. Actual current getter4380, allocator1786648, attempt1918736 and
+pool1918800 slots source/binary/map-bound. Direct fatal captured33,554,432B
+synthetic fast request/16 words/44 header words, prior callback once, fatal
+preserved; pool path remains unit-qualified, NOT a genuine pool-fatal witness.
+Normal cleanup/all11 sampled births absent and no media/protected input reads.
+
+Recorded development failures: wrong receipt field in a unit assertion; empty
+reverse-edit anchor and overlapping source-list rename caught by unit guards;
+two launch preflights failed BEFORE browser creation on generated-root and
+test-source filename paths. Corrected with nonempty anchored/reordered edits,
+explicit repository root and source-path existence assertions. No threshold
+relaxation, historical source/evidence rewriting, or expensive media retry.
+Next: bounded segmented full-source retention without dropping the original256
+pins, actual short new-decoder/plane-encoder correctness/recovery qualification,
+then changed protected-original diagnostic. Original failure request/cause/fix,
+full fidelity/three repeats/250MiB/scaling/speed and all broad product gaps remain
+unproven; no public capability added. No live conversion remains.
+Final focused **27/27 passed** in1115.9325ms (composite witness, prior74/38/256/19
+pins and original full-prerequisite/gate regressions). Six-file zero-warning lint
+passed6.450 seconds; whitespace passed. These checks are not media acceptance.
+
 Status: **Partially implemented**. Actual new-core constructor/64-byte C request
 slot and bounded header capture now passed one real headless native-fatal control
 in7.671 seconds. Exact receipts:

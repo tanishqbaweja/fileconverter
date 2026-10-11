@@ -6,6 +6,35 @@ This is the living progress record. It is regenerated after each test/profile cy
 
 ## 2026-10-11 — Real headless native allocation-request capture qualified
 
+Composite integration now passed one real headless SYNTHETIC native fatal in
+5.249 seconds, with source-bound receipts
+`evidence/2026-10-11T13-10-58-221Z-composite-allocation-abort-control.json` and
+`-executed-sources.json`. Single bounded stack supports direct/current pool
+indices; one free-header walk, at most32 validated request words, unchanged
+32768-header-word/4096-chunk caps. Actual direct request33,554,432B/16 C words,
+44 headers/free top2944B; pool path was not invoked in this actual control.
+Prior callback exactlyonce/native fatal threw/stack limit restored. Live heap,
+original-video request/cause, internal fallback size, fragmentation, media
+correctness, full memory and speed acceptance remain null/unproven.
+New served adapter reverses exactly to measured20047-byte4Mbps adapter after
+removing prefix/one observer substitution; native encoder/AVIO/settings/audit
+unchanged. All102 current/pre/post/preimage joins fit unchanged128-source/2MiB
+archive limits (391985B gzip,1567415B restored); exact new map/binary binds both
+slots/current typed pool getter. Host physical4380086272/virtual5636648960 passed
+2GiB gates; normal cleanup/all11 sampled births absent, scratch/profile/export
+module gone, no converted copies, protected input not read or altered.
+Seven focused integration tests pass; exact captured-witness regression follows.
+Development failures retained here: unit wrong receipt field, inverse-edit
+empty-anchor and overlapping-rename errors, plus generated-root and nonexistent
+test-path preflight ENOENT before any browser. Explicit path assertions and
+nonempty/reordered reversible edits corrected them; no old source pins weakened.
+Full bounded layered source archive/short correctness/recovery/new full-video
+diagnostic remain next, not a claimed fix or acceptance. Broad goal remains active.
+Final focused **27/27 passed** in1115.9325ms, including new102 and old74/38/256/19
+source joins/full original-prerequisite gates; six-file zero-warning lint passed
+6.450 seconds and whitespace passed. No live handles or media conversion remain;
+the actual short control finished before a wait timer was needed.
+
 One actual browser control passed in7.671 seconds with zero media conversions.
 Receipts: `evidence/2026-10-11T12-49-19-512Z-allocation-attempt-abort-control.json`
 and `-executed-sources.json`. Current decoder9ce86260... exact typed function
