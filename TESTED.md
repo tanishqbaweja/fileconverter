@@ -4,6 +4,43 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Real headless native allocation-request capture qualified
+
+One actual browser control passed in7.671 seconds with zero media conversions.
+Receipts: `evidence/2026-10-11T12-49-19-512Z-allocation-attempt-abort-control.json`
+and `-executed-sources.json`. Current decoder9ce86260... exact typed function
+indices, linker-map allocator1786648/64-byte slot1918736 and all module/build
+source hashes verified. Export-only derivative changes section7 alone; every
+code/data/import/type/memory section is exact, never a media converter candidate.
+
+Actual compiled C recorded the SYNTHETIC request33,554,432 bytes at
+fast-malloc-pending, alignment16, sequence1, not a guessed heap-growth extent.
+Observer read16 C-slot words and44 allocator header words; complete inventory
+reported2,944-byte top/free chunk and31,367,168 unclaimed bytes above segment.
+These values describe ONLY this deliberate32MiB allocation in an otherwise
+idle32MiB heap, NOT the historical full-video failure. Aligned-fallback internal
+malloc size stays null; only its wrapper request can be known from the slot.
+Live heap, codec retention, original request/cause, fragmentation and speedup
+remain unproven. Previous callback ran exactly once and native fatal still threw;
+stack limit restored, no growth/native call/payload read/heap copy or suppression.
+
+All74 actual/prerequisite source current/pre/post/preimage joins retained in
+327,262-byte gzip (1,340,389 bytes restored, unchanged2MiB/128-source bounds).
+Fresh host physical3,343,835,136/virtual3,891,798,016 bytes passed the unchanged
+2GiB safety gate. Worker/browser/server normal cleanup passed;11 sampled native
+birth identities absent, task profile/caller/export-only Wasm finally removed.
+Protected video not read, public registry/assets unchanged, no converted copies.
+Initial focused14/14 tests and four-file zero-warning lint passed; a mechanical
+recipe reversal collision was corrected BEFORE any browser execution, preserving
+exact guards. Next: integrate this qualified observer with the preserved pool
+observer for a concrete changed original diagnostic; no unchanged long rerun.
+Entire original goal remains ACTIVE/incomplete, not narrowed to this control.
+Final actual-control/observer/source/build regression **17/17 passed** in
+504.2686 ms; five-file zero-warning lint passed8.297 seconds and whitespace
+check passed. All74 new,38 prior-control and256/19 full/audit source checks
+remain intact. Lint session79056 is CLOSED; actual browser control finished
+without a live handle, so no conversion/status polling or sleep was needed.
+
 ## 2026-10-11 — Allocation-attempt slot implemented; native dispatch contract passed
 
 The previous actual fatal-path observer could not distinguish the wrapper's

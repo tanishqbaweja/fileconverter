@@ -5,6 +5,29 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Native request/phase observer browser qualification passed
+
+Status: **Partially implemented**. Actual new-core constructor/64-byte C request
+slot and bounded header capture now passed one real headless native-fatal control
+in7.671 seconds. Exact receipts:
+`evidence/2026-10-11T12-49-19-512Z-allocation-attempt-abort-control.json` and
+`-executed-sources.json`. All74 executed/prerequisite current/preimage joins,
+actual binary/map/function identities and exact non-export Wasm sections retained.
+SYNTHETIC failed fast-malloc request33,554,432B is genuinely recorded; the original
+video's failed request/cause is STILL unknown. Fallback internal malloc size/live
+heap/fragmentation remain null or unproven. No limits or fatal semantics changed.
+
+Normal owned browser/worker/server cleanup passed, all11 sampled native births
+absent, scratch/profile/export-only module removed, zero converted copies or
+protected-video reads. Next is the qualified composite pool/direct observer and
+bounded exact-source archive integration before a changed original diagnostic.
+No full-video fix, repeat/scaling, fidelity/250MiB acceptance, speedup or public
+route is claimed; all other original requirements remain in this audit.
+Final focused17/17 evidence/observer checks and five-file zero-warning lint/
+whitespace passed; all74 new plus38/256/19 older current/preimage joins still
+verify. No live browser or conversion remains. This is progress toward diagnosis,
+not completion of the broad project or the protected-original conversion.
+
 ## 2026-10-11 — Capture exact allocator attempt before fatal call
 
 Status: **Partially implemented**. A bounded 64-byte scalar slot now records the
