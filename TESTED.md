@@ -4,6 +4,25 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Changed full-original diagnostic LIVE, not acceptance
+
+Supersedes the host-held launch: after the user closed Chrome, unchanged caller
+passed both host gates and actually spawned the driver. Same live session43314;
+receipt `evidence/2026-10-11T14-01-14-330Z-allocation-attempt-full-live.json`.
+Driver PID43620/parent44284/birth14:02:10.2296570Z independently queried and
+MATCHED live; no restart on timeout. Actual launch physical5,536,485,376B and
+virtual5,159,198,720B≥2GiB. All312 source records and actual driver/trace/caller
+bytes archived BEFORE launch (840604B gzip, SHA4e94c368...,2023140B restored).
+Owned wrapper allocation-attempt-full-wrapper-yJ7vZM and mixed candidate
+allocation-attempt-media-9jo3dF must remain until driver's finally restoration.
+Progress-UI build is measured and hash-bound by caller; complete protected-file
+conversion, independent validation, 3 repeats, memory/cause/cleanup/post-SHA
+still PENDING. This is a changed diagnostic, not a public capability or fix.
+One60.031s launch-preparation sleep and one same-session check; then roughly
+3-hour first-conversion ETA sleep based on historical43m50/748,428,500 input
+bytes versus unchanged2,958,573,265B original. Validation and later repeats
+are additional. Required native safety sampling remains autonomous.
+
 ## 2026-10-11 — Full-file launch held before browser creation
 
 The changed full caller was invoked once after pushed checkpointceef323. It

@@ -5,6 +5,21 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Changed full-original diagnostic actually LIVE
+
+**Partially implemented**, acceptance PENDING. User freed memory; actual launch
+passes2GiB physical+virtual. Session43314 and independent birth-qualified live
+driver43620/parent44284/14:02:10.2296570Z match receipt
+`evidence/2026-10-11T14-01-14-330Z-allocation-attempt-full-live.json`.
+All312 current sources/actual driver/trace/caller retained BEFORE spawn; immutable
+historical256 remains joined. Do not modify pinned sources, build/stage another
+candidate, kill unrelated processes, restart on wait timeout, or remove owned
+wrapper/candidate before terminal restoration. Estimate about3hours for first
+conversion from prior measured throughput; validation/two repeats take longer.
+Sleep for that ETA then inspect SAME handle once; local safety sampler stays on.
+All full fidelity/repeat/250MiB/cause/fix/scaling/speed/post-SHA/cleanup and broad
+product requirements remain pending. Historical host-held launch is retained.
+
 ## 2026-10-11 — Actual changed launch held at host preflight
 
 Full diagnostic remains **Partially implemented** / not executed. One changed
