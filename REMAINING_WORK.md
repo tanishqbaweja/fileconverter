@@ -5,6 +5,28 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Capture exact allocator attempt before fatal call
+
+Status: **Partially implemented**. A bounded 64-byte scalar slot now records the
+wrapper's requested size/alignment and whether a fatal occurred in its first
+malloc or subsequent aligned fallback. The original allocation dispatch is
+included byte-exact; no limits, codec references or public capability changed.
+Local compiled C passed nine SYNTHETIC cases, including both interrupted calls;
+receipt `evidence/2026-10-11T11-58-21-033Z-allocation-attempt-native-control.json`
+retains all 13 source preimages/current pins and owned-scratch removal. Initial
+14/14 regression and scoped lint passed. Native tests did not convert any media.
+
+The actual original failed request, allocator free state at that failure, cause
+and fix remain unverified. New isolated no-Docker build/collector derivatives
+retain old memory/lifecycle/source/cleanup gates; real compiled Wasm and browser
+fatal qualification are next, before another changed full-original attempt.
+No speedup/fidelity/full-video memory acceptance or public route is claimed.
+All other remaining original requirements continue to apply; ETA-based waiting
+must be used for any live long job.
+Final focused result: 18/18 passed (817.3208 ms), eight-file zero-warning lint
+passed (7.311 seconds), old256/19 and control38 current pins still pass. These
+checks do not substitute for actual hosted Wasm/browser evidence.
+
 ## 2026-10-11 — Direct-buffer control qualified; original-video fix still pending
 
 Status: **Partially implemented**. The actual headless synthetic control now

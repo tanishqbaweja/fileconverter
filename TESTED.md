@@ -4,6 +4,41 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Allocation-attempt slot implemented; native dispatch contract passed
+
+The previous actual fatal-path observer could not distinguish the wrapper's
+fast malloc attempt from its upstream aligned fallback or recover request size.
+New private diagnostic includes `mpeg2-aligned-reuse.c` unchanged and records
+the current request/alignment/phase/return status into ONE fixed 64-byte scalar
+slot BEFORE potentially fatal allocator calls. It does not change allocation
+admission, sizes, pointers, frees, live references, codec options or Wasm limits.
+No payload copies, per-allocation log, dynamic diagnostic memory or history.
+
+Compiled local LLVM-MinGW C control passed nine synthetic dispatch cases:
+all six original outcomes, both distinct interrupted allocation phases and
+saturating sequence. Receipt (13 exact source preimages/current pins):
+`evidence/2026-10-11T11-58-21-033Z-allocation-attempt-native-control.json`.
+Owned executable/compiler scratch was removed in finally. This is native
+synthetic code testing ONLY, not native conversion, real Wasm fatal observation,
+browser correctness, original-video failure resolution or speed acceptance.
+Initial combined regression passed 14/14 (2,953.1294 ms), four changed JS files
+passed zero-warning lint (5.681 seconds). No browser/video read/conversion.
+
+New reversible build recipe retains existing single-idle lifecycle controls,
+fixed 32+16 MiB, independent encoder, quality and production AVIO. A separately
+isolated Git index/workflow derivative can use the registered no-Docker builder
+without changing main or the current canonical workflow. Source-bound collector
+retains all old artifact/lifecycle/memory/ownership checks and additionally
+requires the compiled nine-case slot control and actual constructor import.
+Hosted compilation/browser qualification have not yet run at this checkpoint.
+Final focused regression passed **18/18** (817.3208 ms), including exact original
+256/19 pins and actual-control 38 pins; eight changed JS files passed zero-warning
+lint (7.311 seconds), and whitespace check passed. Build prep/collector syntax,
+negative job IDs and exact workflow reversal are covered without dispatching.
+Next: compile the changed core, qualify its actual slot/native fatal in a short
+headless control, then use a concrete changed original diagnostic; no unchanged
+long conversion is being replayed. Broad goal remains active/incomplete.
+
 ## 2026-10-11 — Actual direct-buffer failure control passed; ETA-based watching
 
 Supersedes the earlier host-memory hold only for synthetic browser integration;
