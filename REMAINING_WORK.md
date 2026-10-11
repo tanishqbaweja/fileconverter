@@ -1,9 +1,45 @@
 # Remaining work audit
 
-Updated 2026-10-11 (Asia/Calcutta). This is the living requirement audit for the original
+Updated 2026-10-12 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-12 — Changed browser fidelity/recovery verified; full stress remains partial
+
+**Partially implemented**. Actual alignment16 decoder417182a9…1014 + existing
+plane-pooled encoder a4ba6225…1cee now qualify in the production headless browser.
+Three genuine full-geometry96-frame HEVC→MPEG-2-in-MP4 conversions plus write-
+failure/cancellation SAME-PAGE production-worker recovery passed. Exact output
+2,245,558B/SHA554cc841…5f27 matches old candidate; independent decode, ordinal
+SSIM0.983095≥0.98,1ms presentation timing, two AAC tracks/artwork/titles/metadata
+pass. Observed3.389/3.048/3.011s are NOT controlled performance evidence.
+Bounded64KiB input/512KiB staged-final-copy/one pending/fixed32+16MiB, terminal
+queues/pending/scratch zero. Honest MP4 private staging, not native direct AVIO.
+
+Fresh changed-binary synthetic fatal/observer prerequisite also passed: current
+typed function bodies/map/original PCs and C-slot request/header reads joined;
+111current/pre/post/preimages/no payload or heap mutation. Eleven owned sampled
+native identities absent. Real media receipt binds146current/pre/post/preimages;
+protected whole before/after size/SHA unchanged,stock assets/app/CSS restored,
+private additions/helper/runtime/fixtures/profiles/converted copies removed.
+Compact lossless source/report archives retained; redundant682,978B raw report
+deleted after independent archive/identity/hash validation, fully recoverable.
+Proofs18-16-00-125Z alignment16-abort-control/executed-sources and18-21-53-018Z
+alignment16-media/retention; event timestamps are2026-10-11UTC. Earlier preparation
+receipts are not conversions. Focused40/40 regression/13-file zero-warning lint
+passed. Staged whitespace review flags seven benign EOF blank lines in exact
+executed/pinned source bytes; preserved, not hidden or marked clean. No other
+whitespace defect. Closed26252 and51923 must not be polled.
+
+Next source-bound changed full runner must consume THESE4171+a4b media/observer
+witnesses, preserve historical312/256 source layers and bounded additive limits,
+and retain all original full3runs/quality/250MiB/native100ms/5-minute-stable-blank/
+host/disk/protected-hash/finally gates. Do not replay old9ce unchanged. No full-
+original completion/fidelity/repeats/full-tree memory,~10GB scaling, controlled
+speedup, or public promotion is proven by these short conversions. Full original
+cross-format/browser/privacy/compatibility/CI/unsupported-audit scope remains
+intact and incomplete. Goal ACTIVE; meaningful progress, not an external blocker.
 
 ## 2026-10-11 — Actual changed native contracts verified; media acceptance missing
 

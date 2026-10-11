@@ -1,8 +1,76 @@
 # Tested conversion ledger
 
-Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
+
+## 2026-10-12 — Alignment16 production-browser media/recovery PASS; full acceptance pending
+
+Previous goal turn was concrete progress: actual changed native build/contracts
+and source-bound cleanup passed. This cycle adds genuine browser qualification,
+not an unchanged expensive retry. All event receipt stamps below are2026-10-11UTC.
+
+NEW417182a9…1014 failure-only observer passed an actual headless synthetic
+32MiB allocation failure in4.85s, with fresh current binary/map/NINE typed body
+hashes/original PCs. Wrapper/av_malloc/av_buffer_allocz/allocator/sbrk fatal chain
+preserved exactly once; C request32MiB/phase1/read16 scalar words,44 allocator
+header words,2,896B free. Pool slot NOT read; no payload/native calls/heap copy/
+mutation. This is synthetic failure integration, NOT media, live retention,
+fragmentation cause or250MiB acceptance. Eleven sampled native birth identities
+absent; worker/browser/server/profile/export-only control removed. All111
+current/pre/post/preimages retained within unchanged128-source/2MiB limits.
+Receipts18-16-00-125Z alignment16-abort-control and executed-sources; source
+archive is lossless. Earlier18-15-47-965Z preparation launched no browser.
+
+Compound actual alignment16 decoder + genuine plane-pooled encoder a4ba6225…
+passed production-browser normal conversion and SAME-PAGE production worker
+replacement after real write failure/cancellation. Three independently verified
+HEVC1920x804/24fps/96-frame conversions produced genuine MPEG-2-in-MP4 at4Mbps/
+q4:20/BT709. Input4,457,906B/SHA6de34df2…5dcb; each output2,245,558B with exact
+SHA554cc841…5f27, byte-identical to prior9ce candidate. Ordinal SSIM0.983095≥0.98,
+full96-frame decode/timing within1ms, two AAC packet/decoded hashes, attached
+PNG artwork, titles and metadata preservation pass. Timestamp-aligned SSIM
+0.966841 is retained separately, not silently substituted for ordinal score.
+Observed conversions3,389.330/3,048.295/3,011.315ms are NOT a controlled speedup.
+
+64KiB reads,512KiB writes/queue cap,one pending operation, fixed32+16MiB Wasm/
+48MiB peak and50,331,652B SAB total. MP4 uses bounded private-storage staging
+and a512KiB copy to selected destination, NOT native direct AVIO. Final queues/
+pending/scratch zero; partial outputs removed; retired workers replaced without
+page reload, recovery outputs independently validated. Actual protected whole
+before/after2,958,573,265B/SHA31f36695…9db34 unchanged. Stock six engine files,
+app and CSS restored; nine private additions absent; owned helpers/scratch/
+fixtures/profiles/converted copies gone. Host2GiB and disk preflights passed.
+
+Actual media receipt18-21-53-018Z binds all146current/pre/post/source bytes and
+the changed decoder/observer/encoder compound. Executed source archive425,189B
+(restores2,015,954B); report47,786B gzip (restores682,978B exact raw JSON). After
+independent validation, redundant raw report removed by identity/hash guards;
+retention receipt preserves full recoverability without changing historical
+proof. Earlier18-21-30-112Z preparation did not convert/read original. Session
+26252 CLOSED0 after estimated60.0329s + final-case60.0226s sleeps, with one
+same-handle check per wake; browser suite3/3 passed in1.4m. No busy polling.
+
+Preparation-only corrections: an inverse clone check rejected overlapping
+replacement targets before writing candidate source; final helper uses the
+actual hosted-cleanup receipt as its extra evidence contribution. A witness
+clone's relative import anchor initially mismatched and was corrected before
+writing/running it. Neither caused a media retry or weakened a gate.
+Final40/40 focused new/old observer, media, build, full provenance and retention
+regression PASS1,684.988ms; all13 changed/new JS/test files zero-warning lint
+PASS (session51923 closed0 after one30.0254s estimated sleep/check). Staged
+whitespace review flags seven extra EOF blank lines in byte-frozen executed
+sources; those bytes are retained to preserve the actual111/146 witnesses, not
+silently reformatted or relabelled as a clean check. No other whitespace defect.
+Playwright skill guided real headless browser testing; no headed coverage
+is claimed. No Docker/public asset/registry/UI/route promotion.
+
+Full-original completion/fidelity/three stress repeats, stable blank complete-
+Chromium250MiB acceptance,~10GB scaling and controlled speed optimization remain
+unproven. Next implement a source-bound changed full runner using THIS4171+
+a4b qualified compound/observer; retain original3runs/six-hour/quality/250MiB/
+native100ms/source/host/disk/hash/cleanup gates. Do NOT launch old9ce unchanged
+or poll closed26252/51923. Full broad goal remains ACTIVE/incomplete.
 
 ## 2026-10-11 — Actual alignment16 Wasm build/contracts PASS; browser still pending
 

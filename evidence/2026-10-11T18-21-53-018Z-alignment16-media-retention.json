@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-11T18:29:21.134Z",
+  "proof": {
+    "path": "evidence/2026-10-11T18-21-53-018Z-alignment16-media.json",
+    "sha256": "c13be40d56d35205dfdc51942cd2eb3cb641775afc9348869861cd5b50ec741f"
+  },
+  "retainedArchive": {
+    "path": "outputs/reports/2026-10-11T18-21-53-018Z-alignment16-media-golden-report.json.gz",
+    "bytes": 47786,
+    "sha256": "618fe2cd66ebf9290f029b8e67fa7ad13349d04c2c590b08c9c8b1a477f053a0",
+    "restoredBytes": 682978,
+    "restoredSha256": "919320bbb9a25ed91bc67e20790996a35bc5ac36f1bf74fe34a502fe4e26ebc0"
+  },
+  "rawReport": {
+    "path": "output/playwright/2026-10-11T18-22-05.758Z-alignment16-media-k6xCtA-direct-artwork.json",
+    "bytes": 682978,
+    "sha256": "919320bbb9a25ed91bc67e20790996a35bc5ac36f1bf74fe34a502fe4e26ebc0",
+    "removedAfterArchiveValidation": true
+  },
+  "exactRawBytesRecoverableFromArchive": true,
+  "removedFiles": 1,
+  "convertedMediaDeleted": 0,
+  "publicAcceptance": false
+}
