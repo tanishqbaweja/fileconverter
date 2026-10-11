@@ -4,7 +4,45 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Bounded HEVC plane build wired; actual compilation next
+## 2026-10-12 — Bounded HEVC plane native build verified; browser qualification next
+
+Previous goal turn was progress: rechecking available4.83GiB physical/6.27GiB
+virtual memory cleared the2GiB host safety check. This cycle builds the actual
+changed candidate rather than repeating the failed3-hour conversion. Corrected
+include-fix run38183370743 SUCCESS at c95c79ded203f1d268e66f11a426713f81fcd1df
+(10m03s overall,9m20s compile); retained failed first build below is not rewritten.
+Actual decoder6,905,152B SHA256
+07ff8c19e9f58205f21a9cd10f6d7f0e0fb8f1e7086b810818724846117d51e4;
+unchanged encoder8b2fd64d…4242; both fixed32+16MiB, no heap growth. Actual patched
+libavutil HEVC lifetime smoke PASS80 selector configurations/200000 sequential
+reuses/1 fresh allocation/maximum1 idle entry per selected pool, live aliases,
+uninit with live refs, callback failure, zeroed full padding on every acquisition,
+nonselected cache unchanged. Existing13 alignment contracts and9 allocator
+dispatch cases plus auxiliary/refstruct units pass. This is NOT a media conversion
+or proof that the late original-file allocation failure is resolved.
+
+[Native build proof](evidence/mpeg2-hevc-plane-build-38183370743.json) joins all62
+executed current source hashes,20 artifact hashes, actual successful head/workflow,
+real smoke JSON, SDK restoration before unchanged separate encoder and finally.
+Collector retains5 current/pre/post source preimages and exact generated recipe;
+owned build/download/caller scratch removed. Hosted duplicate artifact11718702195
+deleted ONLY after local head/id/digest/hash verification; API confirms0 remaining,
+bound cleanup receipt retained. Useful9,666,765B local tools remain under approved
+work/mpeg2-hevc-planes-38183370743 for fresh browser qualification; no converted
+media, original read, user-file upload, public engine or registry change. Exact
+failed log/source gzip retained compactly. Native/source/failure/evidence17 checks
+PASS1.281s; new cleanup/witness zero-warning lint PASS. Next freshly qualify actual
+07ff8c19…51e4 observer addresses/typed bodies and genuine browser fidelity/recovery
+before any changed original-file run. Old417 observer PCs/addresses cannot be reused.
+Full original three repeats/250MiB acceptance/scaling/speed improvement and broad
+remaining project requirements are STILL pending.
+Final proportional regression:58 focused source/driver/native/evidence checks
+PASS2.598s, zero-warning new cleanup/witness lint PASS, git diff whitespace PASS.
+Actual native62-source and collector5-source snapshots are now frozen by evidence;
+future observer/browser integration must preserve them or retain exact preimages
+before changing the qualified implementation. No expensive browser suite replay.
+
+## 2026-10-12 — Bounded HEVC plane build preparation and retained first failure
 
 Actual hosted run38182492577 at f82068b5284fc01a97e3678f8f0b701eafbf67de
 FAILED after5m10s, before new lifecycle/production link: smoke compilation could

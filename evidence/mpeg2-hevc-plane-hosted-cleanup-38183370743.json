@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-11T23:24:28.602Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "38183370743",
+  "proofSha256": "bc7a16c6d6d145573ab7a25ebbc7557a5299186f54c4dc2317d71a40ca2bca44",
+  "artifactBefore": {
+    "id": 11718702195,
+    "node_id": "MDg6QXJ0aWZhY3QxMTcxODcwMjE5NQ==",
+    "name": "private-mpeg2-aligned-reuse-38183370743",
+    "size_in_bytes": 2376919,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11718702195",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11718702195/zip",
+    "expired": false,
+    "digest": "sha256:c1a22310946e5343c3c1ce86c6d202376584663929ba3766a239d8ecf4cd917a",
+    "created_at": "2026-10-11T23:21:56Z",
+    "updated_at": "2026-10-11T23:21:56Z",
+    "expires_at": "2026-10-12T23:21:56Z",
+    "workflow_run": {
+      "id": 38183370743,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-hevc-planes-20261012-include-fix",
+      "head_sha": "c95c79ded203f1d268e66f11a426713f81fcd1df"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-hevc-planes-38183370743",
+  "localToolBytes": 9666765,
+  "recoverability": "Verified small local build tools retained for actual browser qualification; no user files/converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

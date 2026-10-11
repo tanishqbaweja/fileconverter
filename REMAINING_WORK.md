@@ -5,7 +5,30 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Decoder-plane build wired, actual native qualification pending
+## 2026-10-12 — Actual decoder-plane native qualification passed; browser/full acceptance pending
+
+**Partially implemented**. Actual changed no-Docker run38183370743 succeeded at
+c95c79ded203f1d268e66f11a426713f81fcd1df. New decoder07ff8c19…51e4 preserves
+fixed32MiB, unchanged8b2 encoder16MiB/settings/I/O/public ABI/live references.
+Compiled actual libavutil80 selectors/200000 reuses with1 fresh allocation/1
+maximum idle entry and alias/uninit/failure/full-padding-zeroing checks PASS;
+original13 allocator/9 dispatch/auxiliary/refstruct checks PASS. All62 current
+source hashes/20 artifacts/actual head/workflow/smoke JSON and exact5-source
+collector recipe/pre/post preimages joined; regression/evidence17 checks and
+zero-warning focused lint pass. Hosted duplicate deleted after verified local
+copy;0 artifacts remain, all owned build/download/wrapper scratch removed.
+Only9.22MiB useful native tools/compact reports retained, no converted media.
+
+New binary still requires fresh actual-address/body abort-observer qualification,
+genuine production-browser fidelity/metadata/timestamps/repeat/recovery validation,
+then changed complete original-file runs and exact250MiB total-process acceptance.
+Lifetime units do NOT prove fragmented-memory failure fixed or speed improved;
+no public route promoted. Full original specification remains in scope below.
+Final proportional58-check regression and new cleanup/witness zero-warning lint
+pass; no expensive media test repeated. Actual native62/collector5 source snapshots
+are retained/frozen for subsequent browser qualification.
+
+## 2026-10-12 — Decoder-plane build preparation and preserved first failure
 
 Run38182492577 genuinely failed at internal-header include before new lifetime
 smoke. Exact failed Git-head15 sources/full log retained before correction;
