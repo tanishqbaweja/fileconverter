@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Numeric quality failure reproduced without another full run
+
+Status: **Partially implemented**. Added bounded pre-assertion FFmpeg SSIM capture
+and a focused full-geometry synthetic browser diagnostic. Missing/NaN/ambiguous
+scores are null/parser failures, never accepted low scores or zeros. Original0.98
+quality gate, same production I/O/core/FPS/geometry/fixed48MiB/cleanup unchanged.
+No protected-file segment/replacement, no native converter, no full-file retry.
+
+Actual headless96-frame1920x804 HEVC -> MPEG-2 browser output completed,4,457,906B
+to1,265,310B/~2047.99ms, then ordinal SSIM0.972072 genuinely FAILED0.98. Separate
+timestamp SSIM0.957886 retained. Exact presentation timing/full decode/copied and
+decoded audio checks passed before quality failure. This proves the default
+settings fail THIS deterministic grained fixture, not the deleted original's
+specific score/cause. Original whole pre/postSHA unchanged. No full/public/memory/
+scaling/speed acceptance. Receipt07:11:32-quality-diagnostic.json records caseStatus
+failed despite diagnostic-only completion. Session30606 CLOSED/exit1 after one
+55s ETA sleep and one observation; no timer/conversion remains live.
+
+Initial launch selected no tests; anchored filter corrected and actual --list
+discovery added. Missing unit import also fixed. Eight final focused/evidence
+tests PASS1484.7313ms; six-file lint PASS.75actual pre/post/current source hashes
+and generated preimages agree. Only compact gzip reports retained; redundant raw
+JSON removed recoverably, all converted fixtures/output/profile/scratch finally
+gone, helper birth-absence proofs and normal asset restoration retained. Detailed
+failed approaches, exact reports/hashes/results are in TESTED.md.
+
+Next: bitrate-only4Mbps candidate through existing native API (not a rebuilt or
+renamed converter), actual native settings + identical-input hash, same0.98 gate,
+focused browser validation and cleanup. Current2Mbps choice is not sufficient on
+the measured fixture. Do not repeat unchanged multi-hour original or lower quality.
+Full clock-specific terminal audit, all three accepted original runs, memory,
+recovery, scaling/speed and the broader original specification remain incomplete.
+
 ## 2026-10-11 — Full run terminal; observer works, SSIM check remains failed
 
 Status: **Partially implemented**. Actual10717.0193-second interruptible ETA sleep

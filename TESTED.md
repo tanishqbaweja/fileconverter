@@ -4,6 +4,73 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Full-geometry browser fixture reproduces a numeric quality failure
+
+Previous turn PROGRESS: real complete3.34GB browser output, repaired native
+observer/automatic cleanup, actual ETA sleep and terminal failure at the unchanged
+SSIM>=0.98 gate; pushed5b659d0. No full conversion/timer was restarted this cycle.
+Historical deleted full output's numeric SSIM remains UNKNOWN.
+
+Added bounded-ssim-summary.mjs: retain final FFmpeg SSIM line <=2048B plus stderr
+size/SHA under unchanged32MiB native cap BEFORE assertion. Distinguish numeric
+low/zero/negative from missing/NaN/infinite/malformed/ambiguous summaries; missing
+scores remain null, never zero or acceptance. No pixels, clocks or0.98 gate changed.
+FFmpeg documents matched resolution/pixel format and per-frame comparison:
+https://ffmpeg.org/ffmpeg-filters.html#ssim. Synthetic probes confirm both yuv420p.
+
+New focused quality recipe reverses exactly to title-bearing correctness suite
+except native-generated HEVC fixture1920x804/96frames/fixed temporal-uniform noise
+strength4,seed20261011 and bounded numeric capture. Same compiled encoder/decoder,
+production worker/AVIO/direct destination+OPFS staging/backpressure/cancellation,
+fixed32+16MiB/no growth, full geometry/FPS, independent frame/audio/clock/metadata
+assertions unchanged. Only direct HEVC case selected, no broad suite rerun. This
+synthetic fixture is NOT a partial copy/replacement of protected test.mkv and
+cannot substitute for complete original acceptance.
+
+Initial preparation07:08:53 succeeded/0conversions. Initial actual launch07:09:25
+selected NO tests due ^-anchored filter against Playwright's prefixed full title;
+exited1/0conversions, helpers/scratch/assets restored. Root filter corrected,
+real browser-free --list discovery proves exactly one selected test. A missing
+spawnSync import in the new discovery unit was caught/fixed before browser retry.
+These failed approaches are retained, not relabelled as conversions or passes.
+
+Actual corrected session30606 is now CLOSED/exit1. One55.0267s ETA sleep, one
+observation, no repeated progress polling. Evidence:
+evidence/2026-10-11T07-11-32-834Z-encoder-plane-quality-diagnostic.json.
+Browser COMPLETED HEVC->MPEG-2 Video at1920x804/96frames,4,457,906B input to
+1,265,310B output/2047.99ms active metrics. Both summaries parsed numerically:
+ordinal SSIM0.972072 FAILS0.98; timestamp-aligned0.957886 retained separately.
+Independent exact <=1ms presentation timeline, full decode and copied/decoded
+audio checks reached/passed before that quality assertion. This demonstrates
+default settings insufficient on THIS deterministic fixture, not the exact
+historical full-file cause or a complete fidelity/metadata/public acceptance.
+Browser case FAILED; outer status diagnostic-only means cause data captured,
+NOT a passed test. Main protected whole SHA/size verified before and after.
+
+75source pre/post/current pins and actual generated-source preimages verified.
+Exact source gzip153281B/SHAcc2ebc2c2795104d2ad5e990630b1d00aeac46970a34c36cd1d57133f1e5e616,
+restores704309B/SHA8d9e52bf5725ec5ef76564df4772f6a32061987aac5031c2b31dee7f8b0c4b16.
+Raw report gzip16625B/SHA3dff861d33a66de22dff720c4f96ca49555673c23e46a6a8f8aadf3340370950,
+restores206669B/SHA8430b5d1a192b0c9b47d20db552dd174b9addc0b7cff9846d6879e1d0fce022d.
+Redundant exact raw JSON removed after byte/hash/inode verification; recoverable
+from gzip. All generated fixtures/outputs/browser/helper profiles and own scratch
+finally removed, normal app/CSS/engines restored, no private additions remain.
+Helper server2732/runner18104 parent/birth absence proofs retained. No original
+input modification, Docker, headed window, native converter or large copy.
+Short diagnostic memory/SSIM/timing are not full-browser250MiB or speed acceptance.
+
+Eight focused/current-evidence tests PASS1484.7313ms; six-file zero-warning lint
+PASS. Includes actual test discovery, exact current source/archive joins, retained
+real0.972072 failure, and rejection of missing score, swapped geometry or falsely
+passing case. Synthetic fixture/result capture is now reliable for next tuning.
+Native mpeg2_run already permits4Mbps with unchanged geometry/quantizer defaults;
+its within_remux bitrate argument is index9 and private mapping currently inserts
+zeros, selecting2Mbps default. Next meaningful candidate: controlled bitrate-only
+4Mbps experiment with actual native-settings audit and identical-input hash,
+keeping0.98/memory/cleanup gates. Do not rerun unchanged2Mbps full file or invent
+its missing numeric score. Full clock-specific terminal audit still required.
+Goal ACTIVE/incomplete; all broader original-spec requirements remain in scope.
+
 ## 2026-10-11 — ETA wait completed; real full output fails quality gate, not observer
 
 Supersedes historical live/waiting status below. Actual clock.sleep completed
