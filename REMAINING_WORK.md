@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Direct-buffer control qualified; original-video fix still pending
+
+Status: **Partially implemented**. The actual headless synthetic control now
+passed in 6.750 seconds after the unchanged 2 GiB host safety gate passed. See
+`evidence/2026-10-11T11-43-59-302Z-direct-buffer-abort-control.json` and
+`-executed-sources.json`; all 38 source pins/preimages, generated worker, native
+function identities and byte-exact non-export Wasm sections are retained.
+The first native fatal recorded a bounded free-header inventory without native
+calls, heap copying, growth, payload access or fatal suppression. Browser,
+worker, server, profile and export-only scratch cleanup passed. Zero media
+conversions, original-source reads or public acceptance occurred.
+
+The original HEVC frame allocation failure is NOT fixed. Its failed individual
+allocation size, live heap and fragmentation/retention cause remain unknown;
+synthetic free-header values must never be assigned to the original failure.
+Next: qualify a prospective observer alongside the existing pool observer,
+resolve exact source-retention bounds without weakening old evidence, and test
+a concrete low-retention change before any expensive original-video retry.
+Full correctness/fidelity, repeated runs, complete-tree 250 MiB qualification,
+scaling and speed acceptance remain outstanding, as do other partial/missing
+requirements in this audit. Historical preflight holds remain honestly held.
+
+User-directed monitoring policy is in `MONITORING.md`: estimate remaining time,
+sleep interruptibly until that estimate, check the same run once, and revise the
+estimate if necessary. Required autonomous safety sampling/cleanup continues.
+There is no live conversion at this checkpoint.
+
+Focused evidence/observer regression passed 11/11 (315.782 ms), changed-test
+zero-warning lint and whitespace checks passed. Historical decoder build
+workflow provenance is explicitly joined to its retained build manifest instead
+of being mislabeled a current executed-source hash; all actual38 and prior256/19
+current-source checks remain intact. This does not close the original-video fix.
+
 ## 2026-10-11 — Direct-AVBuffer allocator observation implemented; browser control held safely
 
 Status: **Partially implemented**. New failure-only observer recognizes actual

@@ -4,6 +4,49 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Actual direct-buffer failure control passed; ETA-based watching
+
+Supersedes the earlier host-memory hold only for synthetic browser integration;
+the held reports below remain unchanged historical evidence. One safe headless
+control completed in 6.750 seconds with zero media conversions. Receipt:
+`evidence/2026-10-11T11-43-59-302Z-direct-buffer-abort-control.json` and its
+`-executed-sources.json` companion. Available virtual memory passed the unchanged
+2 GiB launch gate. All 38 executed source preimages/current hashes are retained
+in the 205,415-byte source gzip (837,010 bytes restored).
+
+The real compiled av_buffer_allocz fatal path was observed at indices
+4440/4435/4470/4311/4187. Header-only inventory read 44 words (cap 32,768),
+reported one 3,136-byte free chunk and 31,367,168 unclaimed bytes above the
+allocator segment. These are SYNTHETIC-control facts, not the original video's
+allocator state. Previous onAbort ran exactly once; the native fatal still threw,
+fixed 32 MiB Wasm did not grow, and stack limits were restored. Individual failed
+request size, live heap, original retention/fragmentation cause remain unknown.
+No full-video fix, fidelity, 250 MiB acceptance, speedup or public route is claimed.
+
+Normal browser/server/worker cleanup passed, all 11 sampled native birth
+identities were absent, and owned profile/caller/export-only Wasm were removed.
+Only compact evidence/source archive remains. Added evidence regression tests
+join the actual proof/source hashes, bounded capture, unchanged non-export Wasm
+sections, privacy and cleanup; they do not repeat a browser or conversion.
+
+`MONITORING.md` records the user's ETA-based interruptible sleeping requirement.
+Agent status checks occur after the estimated wait, not every few seconds;
+required autonomous bounded memory/safety sampling remains enabled. No
+conversion is running at this checkpoint. Goal remains active and incomplete.
+
+Initial new evidence regression result: 10/11 passed; the failure mistakenly
+treated decoder build-time workflow provenance as a current runtime pin. The
+retained build receipt SHA de35c69f... and manifest join verify historical
+workflow SHA 2710248a..., while current workflow SHA cda0b434... is recorded
+separately. Corrected regression keeps all 38 actual executed/current source
+checks unchanged and explicitly checks this one historical/current distinction;
+no evidence was rewritten and no browser/conversion was repeated.
+
+Final focused regression: **11/11 passed** in 315.782 ms, including the actual
+control evidence and all 256 original-full/19 terminal-analysis current pins.
+Changed evidence-test ESLint passed with zero warnings (5.564 seconds); git
+diff whitespace check passed. These checks launched no browser or converter.
+
 ## 2026-10-11 — Direct-buffer allocator failure hook added; actual control held before Chrome
 
 Previous cycle PROGRESS: actual4Mbps full test identified direct HEVC frame alloc
