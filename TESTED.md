@@ -4,6 +4,26 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Full-file launch held before browser creation
+
+The changed full caller was invoked once after pushed checkpointceef323. It
+stopped at the original2GiB host-memory gate BEFORE protected-media reads,
+disk preflight, runtime/candidate creation, UI build, browser or driver spawn.
+Receipt `evidence/2026-10-11T13-59-15-528Z-allocation-attempt-original-full-terminal.json`:
+executions0, source archive/driver/wrapper/candidate/protected readsnull, no
+cleanup errors and all312 current pre/post pins unchanged. Available physical
+memory4,351,315,968B passed, but virtual memory1,706,586,112B (1.59GiB) failed.
+This is a HOST preflight failure, NOT a conversion failure or primary250MiB
+measurement. No process closed, settings changed, generated media or live handle.
+User asked to free memory; no blind repeated launches or sleep on a missing run.
+The previous throughput estimate is about3hours for the FIRST conversion only,
+plus independent validation and two additional repeats; no full-project ETA.
+Preflight witness regression21/21 passed1538.1314ms; new witness zero-warning lint
+passed5.706s. After user closed Chrome, read-only host recheck14:00:41.3666965Z
+found physical6,337,007,616B/virtual5,911,506,944B: both original2GiB gates PASS.
+The failed invocation remains immutable history; a new launch is justified by
+this concrete external-state change, not an unchanged conversion retry.
+
 ## 2026-10-11 — Full-file request observer integrated; preparation verified
 
 Still **Partially implemented**, not full-file acceptance. New

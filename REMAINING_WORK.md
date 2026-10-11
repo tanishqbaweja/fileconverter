@@ -5,6 +5,22 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Actual changed launch held at host preflight
+
+Full diagnostic remains **Partially implemented** / not executed. One changed
+caller invocation after pushedceef323 stopped BEFORE browser/driver creation,
+protected reads, candidate scratch, UI staging or conversion. Exact receipt
+`evidence/2026-10-11T13-59-15-528Z-allocation-attempt-original-full-terminal.json`:
+physical4,351,315,968B≥2GiB; virtual1,706,586,112B<2GiB; executions0 and all312
+source pre/post pins unchanged. No media outputs or live handle, no automatic
+unchanged retry and no unrelated apps killed. Wait for host-memory availability
+to change, recheck the unchanged safety gate, then run the already-prepared
+changed diagnostic. This host gate is NOT the site's250MiB acceptance formula.
+Superseding user-triggered read-only recheck14:00:41.3666965Z after Chrome closed:
+physical6,337,007,616B/virtual5,911,506,944B now BOTH PASS2GiB. Launch can proceed;
+the old preflight failure is preserved, not reclassified.21/21 witness regression
+passed1538.1314ms; scoped witness lint passed5.706s.
+
 ## 2026-10-11 — Changed full-driver integration prepared, not accepted
 
 Status: **Partially implemented**. `scripts/run-allocation-attempt-original-full.mjs`
