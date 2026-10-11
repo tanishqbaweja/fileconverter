@@ -5,6 +5,21 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Nested origin correction; actual candidate qualification pending
+
+**Partially implemented**. Second actual build38160580276 is TERMINAL/failure
+after its one confirmed-live10-minute sleep and one same-handle wake check.
+SDK patch reached, compiler not reached: nested source import was rebased from
+scratch instead of media/ffmpeg. Failure log and six actual failed-HEAD source
+preimages retained BEFORE correction; hosted cleanup passed. Original media
+not read/no converted copies. New unit executes actual nested generation and
+checks all nine import URLs, without SDK/compiler/browser/media execution.
+Origin fix and exact-reversal/failure-lineage/collector controls9/9 passed;
+eight-file zero-warning lint passed. New `origin-fix` build must prove actual
+native13-case/fixed-heap/unchanged-encoder contracts, then new binary/slot browser
+qualification and changed original stress. No acceptance/memory/fidelity/
+privacy/lifetime threshold changed, no public promotion, broad goal incomplete.
+
 ## 2026-10-11 — First candidate build terminal; actual transformation corrected
 
 **Partially implemented**: actual no-Docker run38160211970 failed at an outer

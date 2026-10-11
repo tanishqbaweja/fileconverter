@@ -7,7 +7,7 @@ import { makeAlignment16Collector } from "./lib/alignment16-build-recipe.mjs";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { sha } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), runId = process.argv[2];
-const revision = process.argv[3] ?? ""; assert.ok(["", "builder-fix"].includes(revision));
+const revision = process.argv[3] ?? ""; assert.ok(["", "builder-fix", "origin-fix"].includes(revision));
 assert.equal(process.argv.length, revision ? 4 : 3); assert.match(runId ?? "", /^[0-9]{8,}$/);
 const source = await readFile(path.join(root, "scripts/collect-mpeg2-single-idle-build.mjs"), "utf8"), recipe = makeAlignment16Collector(source, root, revision);
 const runtime = await createOwnedRuntimeScratch("alignment16-collector-");

@@ -9,7 +9,7 @@ export function makeAlignment16Workflow(source) {
   const generated = prior.replace(before, after); assert.equal(generated.replace(after, before), prior); return generated;
 }
 export function makeAlignment16Collector(source, root, revision = "") {
-  assert.ok(["", "builder-fix"].includes(revision));
+  assert.ok(["", "builder-fix", "origin-fix"].includes(revision));
   const prior = makeAllocationAttemptCollector(source, root).generated;
   const extra = `  const alignment = JSON.parse(await readFile(path.join(download, "alignment16-smoke.json")));
   assert.deepEqual(alignment, manifest.alignment16.actualWasmSmoke);

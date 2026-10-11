@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { access, readFile } from "node:fs/promises";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { pathToFileURL } from "node:url";
 import test from "node:test";
 import { makeAlignment16SdkSource, SDK_DLMALLOC_SOURCE_SHA256, patchAlignment16Sdk } from "../media/ffmpeg/mpeg2-alignment16-sdk.mjs";
 import { makeAlignment16Recipe } from "../media/ffmpeg/mpeg2-alignment16-recipe.mjs";
@@ -25,6 +26,25 @@ test("actual outer-builder generation preserves nested root literals and reverse
   let reversed = recipe.generated; for (const [before, after] of recipe.edits.toReversed()) reversed = reversed.replace(after, before);
   assert.equal(reversed, prior); assert.throws(() => makeAlignment16Builder(prior + "\n", root));
   const checked = spawnSync(process.execPath, ["--check", "--input-type=module"], { input: recipe.generated, windowsHide: true, encoding: "utf8" });
+  assert.equal(checked.status, 0, checked.stderr);
+});
+test("execute actual nested generation only: import origins bind real media sources, not outer scratch; no SDK/compiler/spawn", async () => {
+  const source = await readFile(path.join(root, "media/ffmpeg/build-mpeg2-allocation-attempt.mjs"), "utf8"), outer = makeAlignment16Builder(source, root).generated;
+  const start = outer.indexOf("const prior = await readFile("), end = outer.indexOf("const runtime = await createOwnedRuntimeScratch(");
+  assert.ok(start > 0 && end > start); const preparation = outer.slice(start, end);
+  assert.ok(!preparation.includes("spawn(")); assert.ok(!preparation.includes("writeFile("));
+  assert.ok(preparation.includes('path.resolve(root, "media/ffmpeg", file)'));
+  const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
+  const nested = await new AsyncFunction("root", "readFile", "assert", "sha", "path", "pathToFileURL", preparation + "\nreturn generated;")(root, readFile, assert, sha, path, pathToFileURL);
+  const imports = [...nested.matchAll(/^import [^\n]+ from "([^"]+)";/gm)].map(match => match[1]);
+  assert.equal(imports.length, 9);
+  for (const specifier of imports) {
+    assert.ok(specifier.startsWith("node:") || specifier.startsWith("file:"), specifier);
+    if (specifier.startsWith("file:")) { await access(new URL(specifier)); assert.ok(!specifier.includes("alignment16-builder-")); }
+  }
+  const expected = pathToFileURL(path.join(root, "media/ffmpeg/mpeg2-single-idle-source.mjs")).href;
+  assert.ok(imports.includes(expected));
+  const checked = spawnSync(process.execPath, ["--check", "--input-type=module"], { input: nested, windowsHide: true, encoding: "utf8" });
   assert.equal(checked.status, 0, checked.stderr);
 });
 test("decoder-only recipe restores SDK BEFORE unchanged encoder and reverses every unrelated conversion/native contract gate", async () => {

@@ -4,6 +4,29 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Second build terminal; nested origin binding corrected
+
+Run38160580276 was confirmed in_progress at exact head6fdb74d2… BEFORE a
+600,000ms ETA timer. Actual sleep600.036s completed; ONE same-run post-timer
+observation found completed/failure. No busy polling/restart on timeout.
+The SDK patch returned, but nested generation resolved
+`mpeg2-single-idle-source.mjs` relative to the outer scratch directory rather
+than media/ffmpeg. No native compilation or Wasm-smoke execution was reached.
+Hosted finally cleanup passed. Failed log and all SIX preparation sources are
+retained in `evidence/alignment16-hosted-failure-38160580276.json`, each compared
+against the actual failed Git head before any correction. Actual pre/post run
+receipts are17-39-53-718Z and17-50-07-147Z. SDK restoration was awaited by the
+executed finally; no independent post-restore SDK-byte receipt is claimed.
+
+Correction changes only the origin used for nested import rebasing. New unit
+actually executes the real nested source-generation prefix with actual files,
+verifies all nine imports and the real single-idle-source URL, and syntax-checks
+its generated result. This is generation validation, NOT compiler/browser/media
+execution. Final9/9 focused generation/failure-lineage/collector tests passed
+1,146.990ms; eight changed/new files zero-warning lint passed7.286s. New
+`origin-fix` branch/receipt required; previous failed runs stay failed. All
+conversion/heaps/quality/lifetime/memory/privacy/cleanup requirements unchanged.
+
 ## 2026-10-11 — First actual alignment16 build failed BEFORE SDK patch
 
 Run38160211970 is TERMINAL/failure, not queued/live. It reached the new outer

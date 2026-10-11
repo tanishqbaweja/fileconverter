@@ -8,7 +8,7 @@ import { sha } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeAlignment16Workflow } from "./lib/alignment16-build-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
-const revision = process.argv[2] ?? ""; assert.ok(process.argv.length <= 3); assert.ok(["", "builder-fix"].includes(revision));
+const revision = process.argv[2] ?? ""; assert.ok(process.argv.length <= 3); assert.ok(["", "builder-fix", "origin-fix"].includes(revision));
 const suffix = revision ? `-${revision}` : "";
 const branch = `codex/mpeg2-alignment16-20261011${suffix}`, workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
 const output = `evidence/mpeg2-alignment16-build-branch-2026-10-11${suffix}.json`;

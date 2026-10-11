@@ -8,7 +8,7 @@ import { sha } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeAlignment16Workflow } from "./lib/alignment16-build-recipe.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
-const runId = process.argv[2], revision = process.argv[3] ?? ""; assert.ok(["", "builder-fix"].includes(revision));
+const runId = process.argv[2], revision = process.argv[3] ?? ""; assert.ok(["", "builder-fix", "origin-fix"].includes(revision));
 assert.equal(process.argv.length, revision ? 4 : 3); assert.match(runId ?? "", /^[0-9]{8,}$/);
 const branch = JSON.parse(await readFile(path.join(root, `evidence/mpeg2-alignment16-build-branch-2026-10-11${revision ? "-" + revision : ""}.json`)));
 const canonical = await readFile(path.join(root, branch.workflow.path), "utf8");

@@ -11,6 +11,7 @@ export function makeAlignment16Builder(prior, root) {
     ['const root = path.resolve(import.meta.dirname, "../..")', `const root = ${JSON.stringify(root)}`],
     ['path.join(root, "media/ffmpeg/mpeg2-allocation-attempt-recipe.mjs")', 'path.join(root, "media/ffmpeg/mpeg2-alignment16-recipe.mjs")'],
     ['makeAllocationAttemptRecipe as makeAlignedReuseRecipe', 'makeAlignment16Recipe as makeAlignedReuseRecipe'],
+    ['path.resolve(import.meta.dirname, file)', 'path.resolve(root, "media/ffmpeg", file)'],
     ...["stable-ui-headless-baseline-recipe.mjs", "owned-runtime-scratch.mjs", "wasm-stack-symbols.mjs"].map(file =>
       [`from "../../scripts/lib/${file}"`, `from ${JSON.stringify(pathToFileURL(path.join(root, "scripts/lib", file)).href)}`]),
   ];
