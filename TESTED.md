@@ -4,6 +4,33 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Bounded HEVC plane build wired; actual compilation next
+
+Previous goal turn was progress: exact compiled first-malloc fragmented capacity
+and private source candidate passed50 focused checks. New decoder-only recipe
+patches fresh regular FFmpeg buffer.c/get_buffer.c, validates exact76fcae1c…81a/
+79c74c19…f6e0 sources, compiles against actual libavutil, runs80-selector/
+200000-reuse/live-alias/error/uninit/zeroing Wasm lifecycle before production link,
+and keeps actual13-case alignment16 plus prior9 dispatch/auxiliary lifecycle tests.
+SDK source restores before separate encoder compilation and finally. Decoder32MiB,
+encoder16MiB, all codec/I/O options and source-snapshot gates remain unchanged.
+
+New outer/nested/branch/workflow/collector recipes reverse to qualified existing
+implementations. Isolated Git index creates only a private codex build branch;
+canonical HEAD/index/workflow and main remain protected. Collector keeps20-file,
+8MiB artifact/16MiB local-tool caps, copying only source/head-bound successful
+tools with COPYFILE_EXCL and birth/inode-bound cleanup. Exactly three new artifacts
+(HEVC lifecycle JSON and two actual compiled C sources) fit the existing20-file cap;
+no cap increase or public engine mutation. Windows builder refuses before SDK or
+source changes. Three focused preparation tests PASS484.591ms; eight changed/new
+JavaScript/test files zero-warning lint PASS5.168s. Actual build has NOT yet run
+at this checkpoint, and browser/full-source/memory/fidelity/speed/public acceptance
+remain unverified. Continuation rechecked the live worktree: all53 focused
+preparation/source/evidence/full-driver checks PASS (1.467s); eight-file
+zero-warning lint PASS (6.591s); git diff whitespace check PASS. No expensive
+browser conversion was repeated. Next ONE isolated no-Docker build, not an
+original-video retry.
+
 ## 2026-10-12 — Exact first-malloc capacity verified; bounded HEVC plane source candidate prepared
 
 Previous goal turn was progress: the actual changed3-hour original failure

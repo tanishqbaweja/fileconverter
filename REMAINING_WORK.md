@@ -5,6 +5,22 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Decoder-plane build wired, actual native qualification pending
+
+**Partially implemented**. New decoder-only recipe and reversible hosted
+builder/branch/collector integrate prepared HEVC plane source, actual Wasm
+80-selector/200000-reuse lifetime smoke BEFORE production linking and original
+13 allocator/9 dispatch/auxiliary units. Fresh source paths/hashes checked;
+SDK restoration before unchanged encoder and finally retained. Existing fixed
+32+16MiB limits, settings, source/head/run qualification and20-file/8MiB artifact/
+16MiB local-tool caps remain unchanged. Three syntax/derivation/refusal preparation
+tests and eight-file zero-warning lint pass. Still no actual native build at this
+checkpoint; compiled lifecycle/new binary qualification, browser fidelity/recovery,
+full original three repeats,250MiB and controlled speed comparison remain pending.
+Live-worktree continuation verifies53 focused checks and eight-file zero-warning
+lint; actual compiled behavior still pending. Next ONE isolated no-Docker build.
+No public registry change or media upload.
+
 ## 2026-10-12 — Exact first-malloc capacity explained; changed bounded plane candidate pending build
 
 **Partially implemented**. Static inspection of actual417182a9…1014 preserves
