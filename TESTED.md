@@ -4,6 +4,33 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — One clock-qualified full run launched; ETA-based wait
+
+Launched ONCE from pushed/remote-verified4f3721e after actual preparation and
+15focused/regression checks. Actual session53643/live receipt
+evidence/2026-10-11T03-53-11-041Z-encoder-plane-clock-full-live.json; driver24788,
+parent26848,birth03:53:44.0939210UTC. One50s startup sleep and one session
+observation, then fresh03:54:49CIM confirmed driver and headless Chrome36512,
+parent24788,birth03:53:50.0556930UTC, real --headless=new and repository profile.
+Native observer26220,parent24788,birth03:53:50.5111820UTC; server40860 also owned.
+No repeated progress polling. All249 measured source pins unchanged, actual
+source gzip/restoration independently verified. Archive1207054B/SHAa085a35938a9915ab972b24d5b8cc408fe1d49fc057dbd64d966ae53c1026a64,
+restores5231216B/SHAfa21dc53223687e29c0299cb28e1227f980e56cd122203fad1d122437ebf7e86,
+driverfe1d2ac6e54246e3f454d133f3d1e416ab284e29015349c397d93e331bafbb7e,
+tracee98146e26532c8b8d866aec6e2dbc2871ed44e030b063343ff232c2e85b349ab.
+Launch RAM physical7076802560B/virtual6435844096B >2GiB. Actual UI build proof
+03:53:11 JSON SHA846cd35d4e7513d1c17b428a87cd7916c2d55cdc75f337228746de4f0908e30c.
+No completed/validated output or full/native/repeat/scaling/speed/public acceptance.
+
+Prior first-file conversion ~2h49m plus setup gives uncertain first observation
+ETA06:55UTC/12:25IST Oct11. Sleep to that ETA using interruptible clock.sleep;
+do NOT poll53643 on goal continuations or restart from observation timeout.
+Observe SAME53643 once after the wait, then estimate the next meaningful wait
+if still live. Validation time and total three-run duration remain unproven.
+Keep249 source pins frozen; no second browser/conversion/build/stager/profiler,
+and no premature cleanup of active owned media/profile/runtime. App automation
+was previously unavailable; no heartbeat/automation created for this wait.
+
 ## 2026-10-11 — Clock-qualified full driver integrated and preparation passed
 
 Previous turn PROGRESS: archived actual terminal failure,26observer regressions,

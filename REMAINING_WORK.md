@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Corrected full run launched once; wait to12:25IST
+
+Status: **Partially implemented**, no conversion acceptance. Actual session53643
+launched once from pushed4f3721e; live receipt03:53:11-clock-full-live.json.
+Driver24788,parent26848,birth03:53:44.0939210UTC and headless Chrome36512/owned
+native observer26220 verified by fresh03:54:49CIM after one startup wait. All249
+measured pins unchanged and actual source archive hashes/restoration verified.
+No completed/validated output, native/repeat/recovery/scaling/speed/public result.
+
+Historical first conversion~2h49m plus setup gives first-check ETA06:55UTC/
+12:25IST Oct11. Use real interruptible clock.sleep until that estimate, not
+repeated agent progress queries. Required100ms native sampling continues within
+the driver. When wait ends, observe SAME53643 once, then revise ETA if necessary.
+Do not restart on observation timeout or infer completion from the elapsed timer.
+Keep249 source files frozen and active owned scratch intact until real finally;
+no second conversion/browser/build/stager/profiler. Later terminal audit must
+reconstruct this clock-qualified caller/driver and retain all original gates.
+The entire broader original specification remains active and incomplete.
+
 ## 2026-10-11 — Observer repair integrated; corrected full preparation verified
 
 Status: **Partially implemented**. Observer integration is now implemented in
