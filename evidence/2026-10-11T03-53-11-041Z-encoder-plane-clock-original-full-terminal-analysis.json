@@ -1,0 +1,149 @@
+{
+  "clockSpecificAudit": true,
+  "titleSpecificAudit": true,
+  "cleanupDiagnostics": [],
+  "recordedAt": "2026-10-11T08:04:30.873Z",
+  "receipt": {
+    "path": "evidence/2026-10-11T03-53-11-041Z-encoder-plane-clock-original-full-terminal.json",
+    "sha256": "4fea74fe6f3610c858e316ad26af91efb88ecaf0eb147325ba1c52c3de6062e6"
+  },
+  "status": "failed-or-incomplete-full-original-session-not-acceptance",
+  "native": {
+    "mode": "full-completion",
+    "blankPrivateBytes": 243695616,
+    "actualPeakPrivateBytes": 476205056,
+    "observedIncrementalPrivateMiB": 221.73828125,
+    "nativePeakSequence": 35249,
+    "nativePeakTimestamp": "2026-10-11T04:58:05.0823390Z",
+    "nativePeakProcessRows": [
+      [
+        1,
+        20652032,
+        35086336
+      ],
+      [
+        2,
+        12648448,
+        37654528
+      ],
+      [
+        3,
+        2617344,
+        9252864
+      ],
+      [
+        20,
+        14970880,
+        27004928
+      ],
+      [
+        5,
+        8097792,
+        17145856
+      ],
+      [
+        6,
+        210608128,
+        239579136
+      ],
+      [
+        7,
+        36352000,
+        58007552
+      ],
+      [
+        8,
+        47960064,
+        128716800
+      ],
+      [
+        9,
+        122298368,
+        96116736
+      ]
+    ],
+    "lastLoopReportedIncrementalMiB": 221.73828125,
+    "primaryLimitExceededInObservedWindow": false,
+    "latePhasePeaksIncluded": true,
+    "phaseCoverage": [
+      {
+        "phase": "pre-conversion-1",
+        "validSamples": 5,
+        "unavailableSamples": 0
+      },
+      {
+        "phase": "conversion-1",
+        "validSamples": 75766,
+        "unavailableSamples": 0
+      }
+    ],
+    "completeChromiumMemoryAcceptance": false,
+    "allRepeatCimPeaksIncluded": true,
+    "completedRuns": 0
+  },
+  "requestedRuns": 3,
+  "attemptedRuns": 1,
+  "completedConversions": 0,
+  "validatedRuns": [],
+  "unavailableNativeConversionSamples": 0,
+  "missingSamplesNeverRecordedAsZero": true,
+  "observedMemoryWithinLimit": true,
+  "fullOriginalSessionGatePassed": false,
+  "observedFirstAbort": null,
+  "independentValidationOutsideBrowser": true,
+  "additionalCleanSessionRequired": true,
+  "scalingAcceptance": false,
+  "conversionSpeedAcceptance": false,
+  "publicAcceptance": false,
+  "goalComplete": false,
+  "validatedTitleMappings": [],
+  "firstCandidateFailure": {
+    "name": "AssertionError",
+    "message": "The expression evaluated to a falsy value:\n\n  assert.ok(ssim >= 0.98)\n",
+    "stack": "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(ssim >= 0.98)\n\n    at file:///H:/Github%20Repositories/fileconverter/work/encoder-plane-clock-full-wrapper-f2FaoA/probe.mjs:493:68\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  },
+  "exactStreamTitlesIndependentlyRechecked": false,
+  "historicalFullOutputRetroactivelyAccepted": false,
+  "nativeRowConsumersAgree": true,
+  "rowsCountedWithoutDropping": 96328,
+  "evaluatedConversionSamples": 75771,
+  "observerClosedAndClockFenceValid": true,
+  "actualWaitedBatches": 50,
+  "maximumClockFenceWaitMs": 15.93889999948442,
+  "historicalDeletedOutputNumericSsimKnown": false,
+  "savedButNotValidated": [
+    {
+      "number": 1,
+      "outputBytes": 3337164038,
+      "elapsedMs": 8282647.769999981,
+      "qualityAccepted": false,
+      "numericSsim": null
+    }
+  ],
+  "exactExecutedCallerAndDriverReconstructed": true,
+  "sourcePreimagesVerified": 249,
+  "actualRecordedIdentitiesRequeriedAndAbsent": true,
+  "reusedPids": [],
+  "noProcessesKilled": true,
+  "fullProtectedPostSha256Verified": true,
+  "normalProductionAndSixEnginesRestored": true,
+  "ninePrivateAssetsAbsent": true,
+  "ownedRuntimeAndWrapperAbsent": true,
+  "analysisSourcePins": {
+    "scripts/analyze-encoder-plane-clock-full-terminal.mjs": "8fa1ae4eb1a45ae556996da528afdad2f2babdc70e5e6509e017795bd49334a5",
+    "scripts/lib/encoder-plane-clock-terminal-recipe.mjs": "f774889859cdfa1a436bd34a3bae9d1cd16599e545bab53a9de7da2309197e9a",
+    "scripts/lib/encoder-plane-clock-terminal-facts.mjs": "8f7172bd99eab20a0afe34977040123a9507d0a53911bfe210289400b372aee2",
+    "tests/mpeg2-encoder-plane-clock-terminal.test.mjs": "6d1c6edbbfccbf5d173d8f44007ff3067ab47e3198724f9cae668b7919d8ae49",
+    "scripts/analyze-encoder-plane-title-full-terminal.mjs": "ff66fd294f5c66973fb0421887f8550ab7e02d670238e5ee55c68147a5d72cab",
+    "scripts/lib/encoder-plane-title-terminal-recipe.mjs": "4957a90f7963cafb05762270c7e1779ccd817bebae9b4cb5977332107552c3a4",
+    "scripts/lib/encoder-plane-title-terminal-facts.mjs": "cf142e25a82ccae138e05d32bb8899dfa0c4070fb5ca25426d185290553ef16f",
+    "tests/mpeg2-encoder-plane-title-terminal.test.mjs": "0db7bf07d14bd403fde305bf53f9f073dada3f63b712c6617c3d279e5a4a4c69",
+    "scripts/lib/encoder-plane-staged-failure-recipe.mjs": "73377bb22b01e6dda11235e2ed18932594fcf87e8590bfe941070ef40d62a18c",
+    "scripts/analyze-encoder-plane-staged-full-terminal.mjs": "cc14ca820eaed50a53e23bb996b613344af96a446756f7465fdbe1fce4d0ddb6",
+    "scripts/lib/encoder-plane-staged-terminal-recipe.mjs": "da8f5ffaafec346c9e093ec2e72054e6faa861e4041307c1b75f8553a45de16f",
+    "tests/mpeg2-encoder-plane-staged-terminal.test.mjs": "eb2e36ff46142412bdaaf818de174d9bc7c7282e48dad4fc664aeb85d23752c0",
+    "scripts/analyze-encoder-plane-full-terminal.mjs": "bdf5bd41016c5d6820141b5d3634cac3fc2520369742943e77cf49be0b3184f0",
+    "scripts/lib/encoder-plane-terminal-facts.mjs": "d4006123d595c956be2b42dd78f9fd10be7a7518e64e1d7ca6d7bc848e3dbe10",
+    "tests/mpeg2-encoder-plane-terminal.test.mjs": "dc8f95dc6f28d676d99470a939c63b03aa66cf32c096c40bd59a7227c01fcdd1"
+  }
+}

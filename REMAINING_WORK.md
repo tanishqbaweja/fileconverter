@@ -5,6 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Clock-specific full terminal audit verified; full numeric SSIM capture implemented
+
+Status: **Partially implemented**. Executed strict clock terminal audit preserving
+all original archive/source/caller/driver/whole-tree/quality/cleanup gates plus
+clock-fence and native consumer/count/denominator joins. Independently reverified
+249actual source/current hashes, exact executed caller+driver, original full SHA,
+fresh owned births absent, normal assets restored/private additions absent and
+removed runtime. No browser/conversion rerun. Actual analysis report:
+2026-10-11T03-53-11-041Z-encoder-plane-clock-original-full-terminal-analysis.json.
+
+Observed full-window native/CIM peak476205056B - SAME stable blank243695616B =
+221.73828125MiB.96328rows/75771eligible samples/0unavailable,50real bounded waits,
+no rewritten/dropped timestamps/rows, observer closed. Old output3337164038B
+still ZERO quality-accepted conversions: deleted original's numericSSIM unknown,
+session gate false. Memory-window result is not full/public/scaling acceptance.
+
+Prospective full driver records bounded SSIM diagnostic BEFORE unchanged0.98
+assertion; parser errors remain null/failures. No codec/bitrate/geometry/FPS/
+memory/repeat/deadline/cleanup changes. Source declaration + ALL historical build
+pins252<=256; .sh/.patch discovery misuse corrected without dropping sources or
+relaxing grammar.22 focused regressions PASS911.6668ms; five-file lint PASS.
+No generated conversions retained, new analyzer scratch finally removed; no live
+handle/timer. Original failure history remains failed and unchanged.
+
+Still missing:4Mbps full-caller integration and full-original qualification using
+the new numeric-capture driver, three stress repeats/clean sessions/scaling/speed
+and all broader original requirements below. Strict terminal-audit and diagnostic
+capture work are now implemented, not an authorization to publish this profile.
+
 ## 2026-10-11 —4Mbps adverse cleanup and same-page worker replacement verified
 
 Status: **Partially implemented**. Actual private1920x804/24fps4Mbps browser

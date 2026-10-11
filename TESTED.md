@@ -4,6 +4,67 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Strict clock full-terminal audit executed; bounded full SSIM capture ready
+
+Previous turn PROGRESS: real4Mbps full-geometry write-failure/cancel and same-page
+replacement-worker recovery passed, pushed9724016. This cycle launches ZERO
+browsers/conversions and does not rerun the multi-hour original. Goal remains
+the complete original specification, not just the private media prototype.
+
+Added clock-specific terminal auditor as an exact reversible extension of the
+existing strict title audit. Preserves original source/gzip/preimages/current
+pins, exact executed caller+driver reconstruction, source/engine/UI identity,
+unchanged full quality/frame/audio/timing/recovery gates, complete Chromium tree
+formula, five-minute lower blank denominator, cleanup and birth-identity audit.
+Additional checks: native history sequence equals original budget tracker;
+ALL phase valid/unavailable counts total every row; eligible pre/conversion
+counts equal tracker evaluated samples; exact original stable denominator;
+unchanged250MiB/one callback/native100ms bounds; exact1s clock-fence limits,
+no rewritten/dropped rows, no failed/stale batch, actually closed observer,
+bounded wait history and matching fence records in both consumer reports.
+
+ACTUAL terminal-only audit ran once/exit0 in4756.5264ms. Fresh owned births
+requeried and absent, no processes killed; complete original size/SHA rehashed
+unchanged; all249 actual source preimages/current pins, executed caller/driver,
+normal generated assets/six published engines/nine absent private assets and
+removed wrapper/runtime independently verified. Output:
+evidence/2026-10-11T03-53-11-041Z-encoder-plane-clock-original-full-terminal-analysis.json.
+
+Independent result: observed full-conversion/pre-conversion peak complete-tree
+476205056B minus original stable blank243695616B =221.73828125MiB.96328native
+rows reach both consumers;75771eligible conversion rows; unavailable0. Real
+50clock-fence waited batches/max15.9389ms, no timestamp edits/sample loss.
+This confirms the OBSERVED window's memory measurement, NOT public/scaling/clean
+session/fidelity acceptance. The old default2Mbps full output3337164038B/~2h18m
+still has ZERO accepted conversions and unknown/null numericSSIM after its failed
+0.98 assertion; never project the later synthetic0.983095 score onto it. Session
+gate remains false and goal/public/speed/scaling acceptance false.
+
+Prospective full driver now records bounded independentSsimDiagnostic BEFORE
+requireNumericSsim and unchanged assert.ok(ssim>=0.98). Reverses exactly to actual
+clock driver except parser import/source pins/pre-assertion diagnostic. Missing/
+NaN/ambiguous scores stay null/errors, not zero. Same native32MiB stderr bound,
+codec/bitrate/geometry/FPS/three runs/6hour deadline/memory/audio/timing/cleanup.
+THIS IS NOT a launched4Mbps full caller: bitrate integration/qualification remains
+next. Static source declaration + all249historical/build pins join to252<=256;
+no historic source removed. Initial unit attempts incorrectly passed final build
+.sh/.patch pins through executable declaration grammar; fixed by parsing the
+driver first then joining EVERY historical pin. These failed unit approaches
+are recorded, no grammar/validation threshold relaxed or expensive test repeated.
+
+Final22 focused strict-audit/actual-evidence/source/fence/parser/title regressions
+PASS911.6668ms; five-file zero-warning ESLint PASS4615.8615ms. Actual audit's own
+analysis source pins verified current by separate evidence tests outside that
+measured set. No converted media or scratch created/retained, only compact JSON;
+new owned analyzer/repository-runner scratch finally removed. No live conversion,
+session or timer. Old failed/full receipts and archives unmodified.
+
+Next: integrate qualified4Mbps adapter and recovery evidence with full caller +
+numeric-capture driver, preserve all historical/current source/host/disk/ownership
+guards, check resulting source union, then a meaningful full-original run with
+ETA sleep. Three repeats/clean sessions/scaling/speed and broader formats/CI/
+browser/offline/privacy/document/image requirements remain as audited below.
+
 ## 2026-10-11 —4Mbps full-geometry adverse cleanup and same-page recovery pass
 
 Previous turn PROGRESS: identical-input native bitrate-only comparison clears
