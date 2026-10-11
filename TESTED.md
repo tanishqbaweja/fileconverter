@@ -4,7 +4,63 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Bounded HEVC plane native build verified; browser qualification next
+## 2026-10-12 — Real bounded HEVC plane browser conversions/recovery verified; full original prepared
+
+Previous goal turn was progress: actual07ff8c19…51e4 native candidate built and
+qualified. Fresh real Chrome154.0.8037.98 headless control23-31-32-593Z PASS:
+actual map re-read _gm_=1786648/attempt1918736/pool1918800, nine typed native
+bodies re-read; shifted4442/4437/4472/4313/4188 fatal symbols and new PCs retained,
+no old417 function/PC assumptions. Intentional32MiB synthetic request yielded16
+native scalar words/44 bounded free-header words, no payload/heap copy/native calls,
+original fatal chain preserved, forbidden requests[], all11 sampled birth identities
+absent after normal close; control binary/profile/server/owned scratch finally gone.
+All126 current/pre/post/preimages and exact generated recipes retained within
+128-file/2MiB bounds. This control is NOT a conversion or250MiB acceptance.
+
+Actual [media receipt23-36-02-695Z](evidence/2026-10-11T23-36-02-695Z-hevc-plane-media.json)
+PASS3 Playwright cases in1.5m: genuine HEVC→MPEG2 MP4 plus production replacement
+worker same-page recovery after write failure and real cancellation. All3 outputs
+2,245,558B/SHA554cc841…5f27 independently match prior qualified deterministic
+output, input4,457,906B,1920x804/24fps/96frames/4Mbps/q4:20/BT709. Ordinal SSIM
+.983095≥.98; separate timestamp-aligned diagnostic.966841 retained, NOT substituted.
+All96 presentation times within1ms, two copied audio packet/decoded-PCM hashes,
+PNG attached picture and exact titles/metadata preserved; partials removed.
+Observed3,822.115/3,681.585/3,784.725ms are NOT a controlled speed comparison or
+speed gain. Previous417 short timings were3,389.330/3,048.295/3,011.315ms; no faster
+claim from these unmatched-session measurements. New profile still uses bounded
+disk-backed MP4 staging then selected-output512KiB copy, NOT native direct AVIO.
+Fixed32+16MiB Wasm/64KiB reads/512KiB writes and queue/one pending operation/final0.
+Short process snapshots are NOT continuous stable-blank/250MiB acceptance.
+
+All158 actual current/pre/post/source bytes, composite observer/core/plane-encoder,
+generated stager/spec/driver/config joined. Protected complete test.mkv size and
+SHA exact before/after; production app/CSS/six engines restored, nine private
+additions absent. Fixtures/converted outputs/profile/owned wrappers/helper trees
+finally absent; no user data upload or public promotion. Raw679,792B metadata
+report deleted ONLY after identity/hash/byte-exact49,891B gzip verification;
+full original bytes recoverable, retention receipt retained. Compact executed
+source archive447,894B retained. No expensive old conversion repeated.
+
+Fresh full preparation23-41-58-813Z PASS with ZERO launches: all338 current/pre/post
+preimages (historical256+additive82) inside unchanged128/384/2MiB/8MiB caps;
+actual qualified158-source stager/core and new failure observer bound. Whole
+protected source before/after SHA exact,2GiB host/32GiB disk checks pass, candidate/
+wrapper gone and production restored. Full three repeats,6h/run,0.98 quality,
+1ms timing, fixed buffers/heaps, continuous100ms whole-tree sampling/250MiB and
+cleanup gates remain byte-exact to executed harness. Runtime guards caught a
+5-not4 label occurrence and, during full preparation only, a source-hash numeric
+substring/duplicate identity mistake; precise corrected mappings passed before
+any full launch. No correctness/quality/source/heap/limit weakened.
+Next ONE changed original-full test, never unchanged417 retry. Full-file completion,
+repeat-memory/scaling/controlled speed gain/public acceptance and broader original
+specification remain pending. Playwright skill used for real headless browser
+verification; requested no-visible-window constraint preserved.
+Final focused regression74/74 PASS2.325s; all18 new JavaScript/test files
+zero-warning lint PASS7.406s; whitespace PASS. Actual native62/control126/media158/
+full-preparation338 current source snapshots now frozen; do not edit their source
+bytes during a live conversion. Relevant reports/preimages retained compactly.
+
+## 2026-10-12 — Bounded HEVC plane native build verified; browser qualification next (superseded above)
 
 Previous goal turn was progress: rechecking available4.83GiB physical/6.27GiB
 virtual memory cleared the2GiB host safety check. This cycle builds the actual

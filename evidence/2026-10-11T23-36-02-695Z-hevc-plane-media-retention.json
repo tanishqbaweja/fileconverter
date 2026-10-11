@@ -1,0 +1,24 @@
+{
+  "recordedAt": "2026-10-11T23:39:06.905Z",
+  "proof": {
+    "path": "evidence/2026-10-11T23-36-02-695Z-hevc-plane-media.json",
+    "sha256": "0fe68009e2457434f4e41169d7751210233c743e0a0795b1ae2729276677d2ee"
+  },
+  "retainedArchive": {
+    "path": "outputs/reports/2026-10-11T23-36-02-695Z-hevc-plane-media-golden-report.json.gz",
+    "bytes": 49891,
+    "sha256": "d32ef5c434e4bac88d3de61c1d581e6fd9756b1f8dcf359a73653259607d8e52",
+    "restoredBytes": 679792,
+    "restoredSha256": "ff07c41989c80f63eb09cdf62bf46ec58dfd8147508cad23266c64112a3ad468"
+  },
+  "rawReport": {
+    "path": "output/playwright/2026-10-11T23-36-15.066Z-hevc-plane-media-YUxvnG-direct-artwork.json",
+    "bytes": 679792,
+    "sha256": "ff07c41989c80f63eb09cdf62bf46ec58dfd8147508cad23266c64112a3ad468",
+    "removedAfterArchiveValidation": true
+  },
+  "exactRawBytesRecoverableFromArchive": true,
+  "removedFiles": 1,
+  "convertedMediaDeleted": 0,
+  "publicAcceptance": false
+}

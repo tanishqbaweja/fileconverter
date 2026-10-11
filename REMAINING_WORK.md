@@ -5,7 +5,33 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Actual decoder-plane native qualification passed; browser/full acceptance pending
+## 2026-10-12 — Real changed decoder browser fidelity/recovery passed; full original prepared
+
+**Partially implemented**. Fresh actual07ff8c19…51e4/Chrome154 control qualifies
+new native indices/bodies/map/PCs and126 current/pre/post/preimages, preserving
+bounded scalar/header reads/fatal chain/privacy/cleanup. Three genuine production
+browser HEVC→MPEG2 MP4 conversions pass independent pixel/audio/timeline/artwork/
+title validation, plus same-page production-worker replacement after write failure
+and cancellation. Exact prior output hashes/96frames/.983095 ordinal SSIM, all1ms
+frame timings,4Mbps/q4:20/full1920x804 preserved;158 actual sources and generated
+recipes retained. Fixed32+16MiB/64KiB reads/512KiB one-write queue/final0 unchanged.
+MP4 remains bounded OPFS staging plus selected-destination copy; not native direct
+AVIO. Timings3.82/3.68/3.78s do not prove speed gain over prior3.39/3.05/3.01s.
+All generated media/profiles/scratch removed, protected complete SHA unchanged,
+normal production restored; only compact source-bound reports remain. Raw report
+duplicate removed after exact recoverable archive verification. No public change.
+
+Changed full preparation passes with0 launches,338 snapshots/historical256+
+new82, unchanged evidence limits/three full repeats/6h-per-run/.98SSIM/1ms/250MiB/
+continuous whole-process measurement/source/cleanup gates. Next ONE actual changed
+full-original test. Completion, repeated memory return/scaling/controlled speed
+optimization and every broader missing/partial requirement below remain pending;
+short-file correctness and synthetic abort checks do not establish full acceptance.
+Final74-check regression and18-file zero-warning lint pass. Actual native62/
+control126/media158/full-preparation338 sources are frozen for the changed full
+run. No old expensive conversion rerun and no speed/public acceptance asserted.
+
+## 2026-10-12 — Actual decoder-plane native qualification passed; browser/full acceptance pending (superseded above)
 
 **Partially implemented**. Actual changed no-Docker run38183370743 succeeded at
 c95c79ded203f1d268e66f11a426713f81fcd1df. New decoder07ff8c19…51e4 preserves
