@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-11T18:08:30.328Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "38161556498",
+  "proofSha256": "36f25deea3303a71e0f48ff3dceb76cf1d313e36e51186aa263af2de72efc2a2",
+  "artifactBefore": {
+    "id": 11710532032,
+    "node_id": "MDg6QXJ0aWZhY3QxMTcxMDUzMjAzMg==",
+    "name": "private-mpeg2-aligned-reuse-38161556498",
+    "size_in_bytes": 2367820,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11710532032",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11710532032/zip",
+    "expired": false,
+    "digest": "sha256:543fd04f332780d5291fb2f960b78fac1b7260e2492be06e41742b8cba1d38eb",
+    "created_at": "2026-10-11T18:01:52Z",
+    "updated_at": "2026-10-11T18:01:52Z",
+    "expires_at": "2026-10-12T18:01:50Z",
+    "workflow_run": {
+      "id": 38161556498,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-alignment16-20261011-origin-fix",
+      "head_sha": "51da078101f96b9194269c179384cdf9a1a82a33"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-alignment16-38161556498",
+  "localToolBytes": 9635564,
+  "recoverability": "Verified small local build tools retained for actual browser qualification; no user files/converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

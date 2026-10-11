@@ -5,6 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Actual changed native contracts verified; media acceptance missing
+
+**Partially implemented**. Actual no-Docker build38161556498/head51da0781…
+completed SUCCESS (7m55s/compile7m07s). One confirmed-live10-minute ETA sleep
+and ONE wake check; collector25954 closed0 after one30-second ETA sleep/check.
+New decoder417182a9…1014 uses fixed32MiB; unchanged encoder8b2fd64d…4242 uses
+fixed16MiB. Actual13/13 Wasm allocation contracts cover the observed1,597,463B
+request without alignment rejection. Existing9 dispatch and200,000 lifecycle
+reuse/zeroing/live-reference controls PASS. All53current source hashes, run/head,
+artifacts, fixed heaps, encoder and changed-binary names/map are independently
+joined by `tests/mpeg2-alignment16-build-evidence.test.mjs`.
+
+This proves build/allocator-contract work, NOT successful media or a full fix.
+Fresh changed-binary map/names confirm root/slots/indexes numerically unchanged;
+OLD9ce function bodies/fatal PCs/observer proof must not be substituted. Next
+implement/qualify4171+plane-pooled encoder production-browser candidate with
+actual new-binary observer binding, fidelity, cancellation/write-failure and
+cleanup; then changed original/full3-repeat/250MiB/scaling/speed tests.
+
+Disposable hosted artifact11710532032 deleted only after exact local/head/digest
+verification; remote artifact count0. Verified9.2MiB reusable tool set remains
+inside repository work for browser qualification, not converted copies.
+Hosted/local scratch cleaned. No protected-media read/change/conversion or
+user-data upload; no public registry/assets/UI/workflow mutation or Docker.
+Proofs: `evidence/mpeg2-alignment16-build-38161556498.json`, collector/branch and
+`evidence/mpeg2-alignment16-hosted-cleanup-38161556498.json`. Original overall
+cross-format/privacy/fidelity/full-memory/scaling/speed scope remains intact
+and incomplete; goal ACTIVE, not blocked or complete.
+
+Final40/40 focused regression passed1,262.647ms and all21 changed/new JavaScript/
+test files zero-warning lint passed6.656s; whitespace passed. This covers the
+native preparation and unchanged old-browser evidence, not NEW4171 media
+conversion. No live hosted build, collector or conversion remains at this
+checkpoint. Do not poll the terminal run38161556498 or closed collector25954.
+
 ## 2026-10-11 — Nested origin correction; actual candidate qualification pending
 
 **Partially implemented**. Second actual build38160580276 is TERMINAL/failure

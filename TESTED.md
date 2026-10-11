@@ -4,6 +4,54 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Actual alignment16 Wasm build/contracts PASS; browser still pending
+
+Supersedes candidate-native-build UNEXECUTED statements below. No-Docker run
+[38161556498](https://github.com/tanishqbaweja/fileconverter/actions/runs/38161556498)
+at private head51da078101f96b9194269c179384cdf9a1a82a33 completed SUCCESS in
+7m55s (compile step7m07s). Confirmed live before an actual600.0301s ETA sleep;
+ONE same-run wake observation was terminal. Collector25954 then completed0
+after one30.0164s estimated sleep/check. No repeated status polling.
+
+Actual new decoder SHA417182a9ed0f5e19e77c5248545c80265b87abd477984872d9ccf4094d8b1014;
+imported shared heap512/512 pages (32MiB), no growth. Separate encoder retains
+SHA8b2fd64d…4242 and256/256 shared pages (16MiB), exactly unchanged. Upstream
+dlmalloc body SHA175ef7ca…695d6 and supported16-byte prefix produce actual SDK
+source SHA2ad4ca73…4d546; SDK restored BEFORE separate encoder compilation.
+13/13 genuine compiled/executed Wasm allocation contracts PASS, including
+malloc/calloc/realloc/alignment32 and the actual1,597,463B/alignment16 request
+with no rejected fresh pointer. Existing9/9 synthetic dispatch contracts,
+200,000 sequential lifecycle reuses/one fresh allocation, live-reference,
+init-error/uninit/zero-every-time controls also PASS. These are native Wasm
+contracts, NOT media conversion or a primary Chromium memory measurement.
+
+Independent witness joins actual run/head/all53current build source hashes/all
+artifact bytes/manifest/fixed heaps/encoder/imports and fresh changed-binary
+debug names/link-map addresses. Current map has root0x1b4318/attempt0x1d4710/
+abort0x1d4750; indexes4188/4312/4436/4441/4471 re-read from NEW4171 binary.
+Unchanged numerical addresses/indexes do not permit substituting OLD9ce fatal
+PCs, function bodies or observer source claims. Actual collector generated
+source and current/preimages are retained; owned download/tool caches removed.
+Proof: `evidence/mpeg2-alignment16-build-38161556498.json`, `…collector-38161556498.json`,
+`…build-branch-2026-10-11-origin-fix.json`, and18-04-20-636Z hosted-run receipt.
+
+Deleted ONLY disposable hosted artifact11710532032 after exact local byte,
+run/head/digest/size ownership verification; authoritative remaining artifact
+count0. Recoverable verified9,635,564B (9.2MiB) local tools retained ONLY under
+`work/mpeg2-alignment16-38161556498` for next browser qualification. Hosted build
+cleanup and local owned scratch finally cleanup passed. No user media read,
+uploaded, converted, modified or deleted in this build cycle. No Docker,
+public asset/registry/UI change, full-original completion, browser fidelity,
+250MiB full-tree acceptance, ~10GB scaling or speedup claim. Full goal ACTIVE.
+Next: qualify the changed decoder with the existing plane-pooled encoder in the
+production browser, including new-binary observer binding/fidelity/recovery;
+then a changed full original retry, retaining all original gates.
+
+Final combined regression40/40 PASS1,262.647ms, covering new native/source/
+artifact/cleanup witnesses plus unchanged historical full/media/provenance
+and allocator contracts. All21 changed/new JavaScript/test files zero-warning
+lint PASS6.656s; whitespace check PASS. No new browser conversion performed.
+
 ## 2026-10-11 — Second build terminal; nested origin binding corrected
 
 Run38160580276 was confirmed in_progress at exact head6fdb74d2… BEFORE a

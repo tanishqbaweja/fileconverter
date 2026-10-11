@@ -1,0 +1,208 @@
+{
+  "recordedAt": "2026-10-11T18:04:20.636Z",
+  "runId": "38161556498",
+  "revision": "origin-fix",
+  "failure": null,
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-11T17:53:59Z",
+    "databaseId": 38161556498,
+    "headSha": "51da078101f96b9194269c179384cdf9a1a82a33",
+    "jobs": [
+      {
+        "completedAt": "2026-10-11T18:01:57Z",
+        "conclusion": "success",
+        "databaseId": 114535365889,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-11T17:54:02Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T17:54:04Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T17:54:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:54:10Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T17:54:04Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:54:18Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-11T17:54:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T17:54:43Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-11T17:54:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "success",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-11T17:54:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:50Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:52Z",
+            "conclusion": "success",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "2026-10-11T18:01:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:52Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "2026-10-11T18:01:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:52Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "2026-10-11T18:01:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:52Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "2026-10-11T18:01:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:55Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "2026-10-11T18:01:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:55Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "2026-10-11T18:01:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T18:01:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-11T18:01:55Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38161556498/job/114535365889"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-11T18:01:58Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38161556498"
+  },
+  "expectedHead": "51da078101f96b9194269c179384cdf9a1a82a33",
+  "actualSuccessfulBuildVerified": true,
+  "sourcePins": {
+    "scripts/record-alignment16-hosted-run.mjs": "c45f72e7e1a861f2a72d77b0c9dd67687c079d233d371d0f63b13dcacd23df07",
+    "scripts/lib/alignment16-build-recipe.mjs": "6c5985c7bd36f2ae36edf4200ae0aa2b9054b45edfd5ecf1eba64697e0f6fbe0",
+    "scripts/prepare-alignment16-build-branch.mjs": "9eef6722a954d68f5a3d5d8ecdea9f8e3b04c7c26134f15e71eb69c35b2293a7"
+  },
+  "sourcePreimages": {
+    "scripts/record-alignment16-hosted-run.mjs": "Ly8gT25lIGF1dGhvcml0YXRpdmUgb2JzZXJ2YXRpb24gb2YgdGhlIHNhbWUgZGlzcGF0Y2hlZCBydW47IG5ldmVyIHJlZGlzcGF0Y2guCmltcG9ydCBhc3NlcnQgZnJvbSAibm9kZTphc3NlcnQvc3RyaWN0IjsKaW1wb3J0IHsgZXhlY0ZpbGUgfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBhY2Nlc3MsIHJlYWRGaWxlLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgc2hhIH0gZnJvbSAiLi9saWIvc3RhYmxlLXVpLWhlYWRsZXNzLWJhc2VsaW5lLXJlY2lwZS5tanMiOwppbXBvcnQgeyBjcmVhdGVPd25lZFJ1bnRpbWVTY3JhdGNoIH0gZnJvbSAiLi9saWIvb3duZWQtcnVudGltZS1zY3JhdGNoLm1qcyI7CmltcG9ydCB7IG1ha2VBbGlnbm1lbnQxNldvcmtmbG93IH0gZnJvbSAiLi9saWIvYWxpZ25tZW50MTYtYnVpbGQtcmVjaXBlLm1qcyI7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiksIGV4ZWN1dGUgPSBwcm9taXNpZnkoZXhlY0ZpbGUpOwpjb25zdCBydW5JZCA9IHByb2Nlc3MuYXJndlsyXSwgcmV2aXNpb24gPSBwcm9jZXNzLmFyZ3ZbM10gPz8gIiI7IGFzc2VydC5vayhbIiIsICJidWlsZGVyLWZpeCIsICJvcmlnaW4tZml4Il0uaW5jbHVkZXMocmV2aXNpb24pKTsKYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsIHJldmlzaW9uID8gNCA6IDMpOyBhc3NlcnQubWF0Y2gocnVuSWQgPz8gIiIsIC9eWzAtOV17OCx9JC8pOwpjb25zdCBicmFuY2ggPSBKU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBgZXZpZGVuY2UvbXBlZzItYWxpZ25tZW50MTYtYnVpbGQtYnJhbmNoLTIwMjYtMTAtMTEke3JldmlzaW9uID8gIi0iICsgcmV2aXNpb24gOiAiIn0uanNvbmApKSk7CmNvbnN0IGNhbm9uaWNhbCA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBicmFuY2gud29ya2Zsb3cucGF0aCksICJ1dGY4Iik7CmFzc2VydC5lcXVhbChzaGEoY2Fub25pY2FsKSwgYnJhbmNoLndvcmtmbG93LmNhbm9uaWNhbFNoYTI1Nik7IGFzc2VydC5lcXVhbChtYWtlQWxpZ25tZW50MTZXb3JrZmxvdyhjYW5vbmljYWwpLCBicmFuY2gud29ya2Zsb3cuZ2VuZXJhdGVkRXhhY3RTb3VyY2UpOwpjb25zdCBydW50aW1lID0gYXdhaXQgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCgiYWxpZ25tZW50MTYtcnVuLW9ic2VydmF0aW9uLSIpOyBsZXQgcnVuLCBmYWlsdXJlID0gbnVsbDsKdHJ5IHsKICBydW4gPSBKU09OLnBhcnNlKChhd2FpdCBleGVjdXRlKCJEOi9Qcm9ncmFtIEZpbGVzL0dpdEh1YiBDTEkvZ2guZXhlIiwgWyJydW4iLCAidmlldyIsIHJ1bklkLCAiLS1yZXBvIiwgInRhbmlzaHFiYXdlamEvZmlsZWNvbnZlcnRlciIsICItLWpzb24iLAogICAgImRhdGFiYXNlSWQsaGVhZFNoYSxjcmVhdGVkQXQsdXBkYXRlZEF0LHN0YXR1cyxjb25jbHVzaW9uLGpvYnMsdXJsIl0sIHsgY3dkOiByb290LCBlbnY6IHJ1bnRpbWUuZW52LCB3aW5kb3dzSGlkZTogdHJ1ZSwgdGltZW91dDogNjAwMDAsIG1heEJ1ZmZlcjogMTA0ODU3NiB9KSkuc3Rkb3V0KTsKICBhc3NlcnQuZXF1YWwoU3RyaW5nKHJ1bi5kYXRhYmFzZUlkKSwgcnVuSWQpOyBhc3NlcnQuZXF1YWwocnVuLmhlYWRTaGEsIGJyYW5jaC5jb21taXQpOwogIGFzc2VydC5vayhbInF1ZXVlZCIsICJpbl9wcm9ncmVzcyIsICJjb21wbGV0ZWQiLCAid2FpdGluZyIsICJwZW5kaW5nIiwgInJlcXVlc3RlZCJdLmluY2x1ZGVzKHJ1bi5zdGF0dXMpKTsKfSBjYXRjaCAoZXJyb3IpIHsgZmFpbHVyZSA9IFN0cmluZyhlcnJvci5zdGFjayA/PyBlcnJvcikuc2xpY2UoMCwgODE5Mik7IHByb2Nlc3MuZXhpdENvZGUgPSAxOyB9CmZpbmFsbHkgeyBhd2FpdCBydW50aW1lLmNsb3NlKCk7IGF3YWl0IGFzc2VydC5yZWplY3RzKGFjY2VzcyhydW50aW1lLmRpcmVjdG9yeSksIHsgY29kZTogIkVOT0VOVCIgfSk7IH0KY29uc3Qgc291cmNlRmlsZXMgPSBbInNjcmlwdHMvcmVjb3JkLWFsaWdubWVudDE2LWhvc3RlZC1ydW4ubWpzIiwgInNjcmlwdHMvbGliL2FsaWdubWVudDE2LWJ1aWxkLXJlY2lwZS5tanMiLCAic2NyaXB0cy9wcmVwYXJlLWFsaWdubWVudDE2LWJ1aWxkLWJyYW5jaC5tanMiXTsKY29uc3Qgc291cmNlUGlucyA9IHt9LCBzb3VyY2VQcmVpbWFnZXMgPSB7fTsKZm9yIChjb25zdCBmaWxlIG9mIHNvdXJjZUZpbGVzKSB7IGNvbnN0IGJ5dGVzID0gYXdhaXQgcmVhZEZpbGUocGF0aC5qb2luKHJvb3QsIGZpbGUpKTsgc291cmNlUGluc1tmaWxlXSA9IHNoYShieXRlcyk7IHNvdXJjZVByZWltYWdlc1tmaWxlXSA9IGJ5dGVzLnRvU3RyaW5nKCJiYXNlNjQiKTsgfQpjb25zdCByZWNvcmRlZEF0ID0gbmV3IERhdGUoKS50b0lTT1N0cmluZygpLCBvdXRwdXQgPSBgZXZpZGVuY2UvJHtyZWNvcmRlZEF0LnJlcGxhY2VBbGwoL1s6Ll0vZywgIi0iKX0tYWxpZ25tZW50MTYtaG9zdGVkLXJ1bi5qc29uYDsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBvdXRwdXQpLCBKU09OLnN0cmluZ2lmeSh7IHJlY29yZGVkQXQsIHJ1bklkLCByZXZpc2lvbiwgZmFpbHVyZSwgcnVuLCBleHBlY3RlZEhlYWQ6IGJyYW5jaC5jb21taXQsCiAgYWN0dWFsU3VjY2Vzc2Z1bEJ1aWxkVmVyaWZpZWQ6IGZhaWx1cmUgPT09IG51bGwgJiYgcnVuLnN0YXR1cyA9PT0gImNvbXBsZXRlZCIgJiYgcnVuLmNvbmNsdXNpb24gPT09ICJzdWNjZXNzIiwgc291cmNlUGlucywgc291cmNlUHJlaW1hZ2VzLAogIGNhbm9uaWNhbFdvcmtmbG93VW5jaGFuZ2VkOiB0cnVlLCBvd25lZFJ1bnRpbWU6IHJ1bnRpbWUuZGlyZWN0b3J5LCBvd25lZFJ1bnRpbWVSZW1vdmVkOiB0cnVlLCBvcmlnaW5hbFZpZGVvUmVhZDogZmFsc2UsCiAgYnJvd3NlckNvbnZlcnNpb25zUGVyZm9ybWVkOiAwLCBhbGxvY2F0b3JGaXhWZXJpZmllZDogZmFsc2UsIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlLCBub0RvY2tlcjogdHJ1ZSB9LCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKY29uc29sZS5sb2coSlNPTi5zdHJpbmdpZnkoeyBvdXRwdXQsIHJ1bklkLCBmYWlsdXJlLCBzdGF0dXM6IHJ1bj8uc3RhdHVzLCBjb25jbHVzaW9uOiBydW4/LmNvbmNsdXNpb24sIGhlYWRTaGE6IHJ1bj8uaGVhZFNoYSB9KSk7Cg==",
+    "scripts/lib/alignment16-build-recipe.mjs": "Ly8gQWRkaXRpdmUsIHJldmVyc2libGUgcHJpdmF0ZSBkZXJpdmF0aXZlczsgcHJlc2VydmUgb3JpZ2luYWwgb3duZXJzaGlwL2dhdGVzLgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IG1ha2VBbGxvY2F0aW9uQXR0ZW1wdFdvcmtmbG93LCBtYWtlQWxsb2NhdGlvbkF0dGVtcHRDb2xsZWN0b3IgfSBmcm9tICIuL2FsbG9jYXRpb24tYXR0ZW1wdC1idWlsZC1yZWNpcGUubWpzIjsKaW1wb3J0IHsgc2hhIH0gZnJvbSAiLi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmV4cG9ydCBmdW5jdGlvbiBtYWtlQWxpZ25tZW50MTZXb3JrZmxvdyhzb3VyY2UpIHsKICBjb25zdCBwcmlvciA9IG1ha2VBbGxvY2F0aW9uQXR0ZW1wdFdvcmtmbG93KHNvdXJjZSk7CiAgY29uc3QgYmVmb3JlID0gIm5vZGUgbWVkaWEvZmZtcGVnL2J1aWxkLW1wZWcyLWFsbG9jYXRpb24tYXR0ZW1wdC5tanMiLCBhZnRlciA9ICJub2RlIG1lZGlhL2ZmbXBlZy9idWlsZC1tcGVnMi1hbGlnbm1lbnQxNi5tanMiOwogIGFzc2VydC5lcXVhbChwcmlvci5zcGxpdChiZWZvcmUpLmxlbmd0aCwgMik7CiAgY29uc3QgZ2VuZXJhdGVkID0gcHJpb3IucmVwbGFjZShiZWZvcmUsIGFmdGVyKTsgYXNzZXJ0LmVxdWFsKGdlbmVyYXRlZC5yZXBsYWNlKGFmdGVyLCBiZWZvcmUpLCBwcmlvcik7IHJldHVybiBnZW5lcmF0ZWQ7Cn0KZXhwb3J0IGZ1bmN0aW9uIG1ha2VBbGlnbm1lbnQxNkNvbGxlY3Rvcihzb3VyY2UsIHJvb3QsIHJldmlzaW9uID0gIiIpIHsKICBhc3NlcnQub2soWyIiLCAiYnVpbGRlci1maXgiLCAib3JpZ2luLWZpeCJdLmluY2x1ZGVzKHJldmlzaW9uKSk7CiAgY29uc3QgcHJpb3IgPSBtYWtlQWxsb2NhdGlvbkF0dGVtcHRDb2xsZWN0b3Ioc291cmNlLCByb290KS5nZW5lcmF0ZWQ7CiAgY29uc3QgZXh0cmEgPSBgICBjb25zdCBhbGlnbm1lbnQgPSBKU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihkb3dubG9hZCwgImFsaWdubWVudDE2LXNtb2tlLmpzb24iKSkpOwogIGFzc2VydC5kZWVwRXF1YWwoYWxpZ25tZW50LCBtYW5pZmVzdC5hbGlnbm1lbnQxNi5hY3R1YWxXYXNtU21va2UpOwogIGFzc2VydC5lcXVhbChhbGlnbm1lbnQucGFzc2VkLCAxMyk7IGFzc2VydC5lcXVhbChhbGlnbm1lbnQuY2FzZXMsIDEzKTsgYXNzZXJ0LmVxdWFsKGFsaWdubWVudC5tYWxsb2NBbGlnbm1lbnQsIDE2KTsKICBhc3NlcnQuZXF1YWwoYWxpZ25tZW50Lm9ic2VydmVkUmVxdWVzdEJ5dGVzLCAxNTk3NDYzKTsgYXNzZXJ0LmVxdWFsKGFsaWdubWVudC5sYXJnZVdyYXBwZXJSZWplY3RlZEZyZXNoUG9pbnRlciwgZmFsc2UpOwogIGFzc2VydC5lcXVhbChhbGlnbm1lbnQuaGVhcEJ5dGVzLCAzMzU1NDQzMik7IGFzc2VydC5lcXVhbChhbGlnbm1lbnQuY29udmVyc2lvbnNQZXJmb3JtZWQsIDApOwogIGFzc2VydC5lcXVhbChtYW5pZmVzdC5hbGlnbm1lbnQxNi5vcmlnaW5hbFNka1NvdXJjZVNoYTI1NiwgIjE3NWVmN2NhYjZkNTliODU4NDcxYWQ4YmExNmVlOGEyZjA1MzZkZGY2NjY3NDJiNWUwNDRiMTg3MTcxNjk1ZDYiKTsKICBmb3IgKGNvbnN0IGtleSBvZiBbInNlcGFyYXRlRW5jb2RlclNka1Jlc3RvcmVkIiwgInVwc3RyZWFtQWxsb2NhdG9yQm9keVVuY2hhbmdlZCIsICJhbGxvY2F0b3JQb2xpY3lDaGFuZ2VkIl0pIGFzc2VydC5lcXVhbChtYW5pZmVzdC5hbGlnbm1lbnQxNltrZXldLCB0cnVlKTsKICBmb3IgKGNvbnN0IGtleSBvZiBbImxpdmVSZWZlcmVuY2VzQ2hhbmdlZCIsICJjb2RlY1NldHRpbmdzQ2hhbmdlZCIsICJoZWFwTGltaXRzUmFpc2VkIiwgImJyb3dzZXJGaWRlbGl0eVZlcmlmaWVkIiwgInNwZWVkR2FpblByb3ZlbiIsICJwdWJsaWNBY2NlcHRhbmNlIl0pIGFzc2VydC5lcXVhbChtYW5pZmVzdC5hbGlnbm1lbnQxNltrZXldLCBmYWxzZSk7CiAgYXNzZXJ0LmVxdWFsKG1hbmlmZXN0LmFsbG9jYXRpb25BdHRlbXB0LmFsbG9jYXRvclBvbGljeUNoYW5nZWQsIHRydWUpOwogIGFzc2VydC5ub3RFcXVhbChzaGEoZGVjb2RlciksICI5Y2U4NjI2MDJmOGRiNWU2MWY1MDQ3ZTRlY2RjY2VhMWQ4ZjdlOGM5ODQ1MmZiNDg2YTk1YmVmZWViNTU4MDM5Iik7CmA7CiAgY29uc3QgZWRpdHMgPSBbCiAgICBbIndvcmsvbXBlZzItYWxsb2NhdGlvbi1hdHRlbXB0LSR7cnVuSWR9IiwgIndvcmsvbXBlZzItYWxpZ25tZW50MTYtJHtydW5JZH0iXSwKICAgIFsiZXZpZGVuY2UvbXBlZzItYWxsb2NhdGlvbi1hdHRlbXB0LWJ1aWxkLSR7cnVuSWR9Lmpzb24iLCAiZXZpZGVuY2UvbXBlZzItYWxpZ25tZW50MTYtYnVpbGQtJHtydW5JZH0uanNvbiJdLAogICAgWyJldmlkZW5jZS9tcGVnMi1hbGxvY2F0aW9uLWF0dGVtcHQtYnVpbGQtYnJhbmNoLTIwMjYtMTAtMTEuanNvbiIsIGBldmlkZW5jZS9tcGVnMi1hbGlnbm1lbnQxNi1idWlsZC1icmFuY2gtMjAyNi0xMC0xMSR7cmV2aXNpb24gPyAiLSIgKyByZXZpc2lvbiA6ICIifS5qc29uYF0sCiAgICAuLi4ocmV2aXNpb24gPyBbWyJhc3NlcnQuZXF1YWwocHJvY2Vzcy5hcmd2Lmxlbmd0aCwgMykiLCAiYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsIDQpIl1dIDogW10pLAogICAgWyJhbGxvY2F0aW9uLWF0dGVtcHQtYXJ0aWZhY3QtIiwgImFsaWdubWVudDE2LWFydGlmYWN0LSJdLAogICAgWyJ8YWxsb2NhdGlvbi1hdHRlbXB0LXNtb2tlXFwuanNvbikiLCAifGFsbG9jYXRpb24tYXR0ZW1wdC1zbW9rZVxcLmpzb258YWxpZ25tZW50MTYtc21va2VcXC5qc29uKSJdLAogICAgWyJwcml2YXRlLWZpeGVkLWhlYXBzLWFsbG9jYXRpb24tYXR0ZW1wdC1kaWFnbm9zdGljLW5vdC1icm93c2VyLWFjY2VwdGFuY2UiLCAicHJpdmF0ZS1kZWNvZGVyLWRsbWFsbG9jLWFsaWdubWVudDE2LWZpeGVkLWhlYXBzLW5vdC1icm93c2VyLWFjY2VwdGFuY2UiXSwKICAgIFsnImZhaWx1cmVDYXVzZVByb3ZlbiIsICJhbGxvY2F0b3JQb2xpY3lDaGFuZ2VkIiwgImhlYXBMaW1pdHNSYWlzZWQiJywgJyJmYWlsdXJlQ2F1c2VQcm92ZW4iLCAiaGVhcExpbWl0c1JhaXNlZCInXSwKICAgIFsiICBjb21wbGV0ZSA9IHRydWU7IiwgZXh0cmEgKyAiICBjb21wbGV0ZSA9IHRydWU7Il0sCiAgICBbImFjdHVhbC1hbGxvY2F0aW9uLWF0dGVtcHQtYnVpbGQtdW5pdC12ZXJpZmllZC1ub3QtYnJvd3Nlci1hY2NlcHRhbmNlIiwgImFjdHVhbC1hbGlnbm1lbnQxNi1idWlsZC11bml0LXZlcmlmaWVkLW5vdC1icm93c2VyLWFjY2VwdGFuY2UiXSwKICBdOwogIGxldCBnZW5lcmF0ZWQgPSBwcmlvcjsKICBmb3IgKGNvbnN0IFtiZWZvcmUsIGFmdGVyXSBvZiBlZGl0cykgeyBhc3NlcnQuZXF1YWwoZ2VuZXJhdGVkLnNwbGl0KGJlZm9yZSkubGVuZ3RoLCAyLCBiZWZvcmUpOyBnZW5lcmF0ZWQgPSBnZW5lcmF0ZWQucmVwbGFjZShiZWZvcmUsIGFmdGVyKTsgfQogIGxldCByZXN0b3JlZCA9IGdlbmVyYXRlZDsgZm9yIChjb25zdCBbYmVmb3JlLCBhZnRlcl0gb2YgZWRpdHMudG9SZXZlcnNlZCgpKSByZXN0b3JlZCA9IHJlc3RvcmVkLnJlcGxhY2UoYWZ0ZXIsIGJlZm9yZSk7CiAgYXNzZXJ0LmVxdWFsKHJlc3RvcmVkLCBwcmlvciwgIlNvdXJjZSwgbGlmZXRpbWUsIGZpeGVkIGhlYXBzLCBlbmNvZGVyIGJ5dGVzLCBhcnRpZmFjdCBvd25lcnNoaXAvY2xlYW51cCBnYXRlcyByZXRhaW5lZCIpOwogIHJldHVybiB7IGdlbmVyYXRlZCwgZ2VuZXJhdGVkU2hhMjU2OiBzaGEoZ2VuZXJhdGVkKSwgZWRpdHMgfTsKfQo=",
+    "scripts/prepare-alignment16-build-branch.mjs": "Ly8gSXNvbGF0ZWQgaW5kZXgvdHJlZTsgbm8gY2hlY2tvdXQgY29waWVzLCBwcm90ZWN0ZWQgbWVkaWEgb3IgY2Fub25pY2FsIG11dGF0aW9uLgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IGV4ZWNGaWxlLCBzcGF3blN5bmMgfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBhY2Nlc3MsIHJlYWRGaWxlLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgc2hhIH0gZnJvbSAiLi9saWIvc3RhYmxlLXVpLWhlYWRsZXNzLWJhc2VsaW5lLXJlY2lwZS5tanMiOwppbXBvcnQgeyBjcmVhdGVPd25lZFJ1bnRpbWVTY3JhdGNoIH0gZnJvbSAiLi9saWIvb3duZWQtcnVudGltZS1zY3JhdGNoLm1qcyI7CmltcG9ydCB7IG1ha2VBbGlnbm1lbnQxNldvcmtmbG93IH0gZnJvbSAiLi9saWIvYWxpZ25tZW50MTYtYnVpbGQtcmVjaXBlLm1qcyI7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiksIGV4ZWN1dGUgPSBwcm9taXNpZnkoZXhlY0ZpbGUpOwpjb25zdCByZXZpc2lvbiA9IHByb2Nlc3MuYXJndlsyXSA/PyAiIjsgYXNzZXJ0Lm9rKHByb2Nlc3MuYXJndi5sZW5ndGggPD0gMyk7IGFzc2VydC5vayhbIiIsICJidWlsZGVyLWZpeCIsICJvcmlnaW4tZml4Il0uaW5jbHVkZXMocmV2aXNpb24pKTsKY29uc3Qgc3VmZml4ID0gcmV2aXNpb24gPyBgLSR7cmV2aXNpb259YCA6ICIiOwpjb25zdCBicmFuY2ggPSBgY29kZXgvbXBlZzItYWxpZ25tZW50MTYtMjAyNjEwMTEke3N1ZmZpeH1gLCB3b3JrZmxvd1BhdGggPSAiLmdpdGh1Yi93b3JrZmxvd3MvcmVwcm9kdWNlLWZmbXBlZy1ub25kb2NrZXIueW1sIjsKY29uc3Qgb3V0cHV0ID0gYGV2aWRlbmNlL21wZWcyLWFsaWdubWVudDE2LWJ1aWxkLWJyYW5jaC0yMDI2LTEwLTExJHtzdWZmaXh9Lmpzb25gOwphd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MocGF0aC5qb2luKHJvb3QsIG91dHB1dCkpLCB7IGNvZGU6ICJFTk9FTlQiIH0pOwpjb25zdCBnaXQgPSBhc3luYyAoYXJncywgZW52ID0gcHJvY2Vzcy5lbnYpID0+IChhd2FpdCBleGVjdXRlKCJnaXQiLCBhcmdzLCB7IGN3ZDogcm9vdCwgZW52LCB3aW5kb3dzSGlkZTogdHJ1ZSwgdGltZW91dDogMzAwMDAsIG1heEJ1ZmZlcjogNjU1MzYgfSkpLnN0ZG91dC50cmltKCk7CmFzc2VydC5lcXVhbChhd2FpdCBnaXQoWyJzdGF0dXMiLCAiLS1wb3JjZWxhaW4iXSksICIiLCAiQ29tbWl0IHNjb3BlZCB3b3JrIGZpcnN0Iik7CmFzc2VydC5lcXVhbChhd2FpdCBnaXQoWyJscy1maWxlcyIsICItLSIsICJ0ZXN0Lm1rdiJdKSwgIiIpOwphc3NlcnQuZXF1YWwoYXdhaXQgZ2l0KFsicmVtb3RlIiwgImdldC11cmwiLCAib3JpZ2luIl0pLCAiaHR0cHM6Ly9naXRodWIuY29tL3RhbmlzaHFiYXdlamEvZmlsZWNvbnZlcnRlci5naXQiKTsKYXdhaXQgYXNzZXJ0LnJlamVjdHMoZ2l0KFsic2hvdy1yZWYiLCAiLS12ZXJpZnkiLCBgcmVmcy9oZWFkcy8ke2JyYW5jaH1gXSkpOwphc3NlcnQuZXF1YWwoYXdhaXQgZ2l0KFsibHMtcmVtb3RlIiwgIm9yaWdpbiIsIGByZWZzL2hlYWRzLyR7YnJhbmNofWBdKSwgIiIpOwpjb25zdCBwYXJlbnQgPSBhd2FpdCBnaXQoWyJyZXYtcGFyc2UiLCAiSEVBRCJdKSwgbWFpbiA9IGF3YWl0IGdpdChbImxzLXJlbW90ZSIsICJvcmlnaW4iLCAicmVmcy9oZWFkcy9tYWluIl0pOwpjb25zdCBzb3VyY2UgPSBhd2FpdCByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgd29ya2Zsb3dQYXRoKSwgInV0ZjgiKSwgZ2VuZXJhdGVkID0gbWFrZUFsaWdubWVudDE2V29ya2Zsb3coc291cmNlKTsKY29uc3QgcnVudGltZSA9IGF3YWl0IGNyZWF0ZU93bmVkUnVudGltZVNjcmF0Y2goImFsaWdubWVudDE2LWdpdC1pbmRleC0iKTsgbGV0IHRyZWUsIGNvbW1pdCwgYmxvYjsKdHJ5IHsKICBjb25zdCBlbnYgPSB7IC4uLnJ1bnRpbWUuZW52LCBHSVRfSU5ERVhfRklMRTogcGF0aC5qb2luKHJ1bnRpbWUuZGlyZWN0b3J5LCAiaXNvbGF0ZWQuaW5kZXgiKSB9OwogIGF3YWl0IGdpdChbInJlYWQtdHJlZSIsIHBhcmVudF0sIGVudik7CiAgY29uc3QgaGFzaGVkID0gc3Bhd25TeW5jKCJnaXQiLCBbImhhc2gtb2JqZWN0IiwgIi13IiwgIi0tc3RkaW4iXSwgeyBjd2Q6IHJvb3QsIGVudiwgd2luZG93c0hpZGU6IHRydWUsIGlucHV0OiBnZW5lcmF0ZWQsIGVuY29kaW5nOiAidXRmOCIsIHRpbWVvdXQ6IDMwMDAwLCBtYXhCdWZmZXI6IDY1NTM2IH0pOwogIGFzc2VydC5lcXVhbChoYXNoZWQuc3RhdHVzLCAwLCBoYXNoZWQuc3RkZXJyKTsgYmxvYiA9IGhhc2hlZC5zdGRvdXQudHJpbSgpOyBhc3NlcnQubWF0Y2goYmxvYiwgL15bYS1mMC05XXs0MH0kLyk7CiAgYXdhaXQgZ2l0KFsidXBkYXRlLWluZGV4IiwgIi0tYWRkIiwgIi0tY2FjaGVpbmZvIiwgYDEwMDY0NCwke2Jsb2J9LCR7d29ya2Zsb3dQYXRofWBdLCBlbnYpOwogIHRyZWUgPSBhd2FpdCBnaXQoWyJ3cml0ZS10cmVlIl0sIGVudik7CiAgY29tbWl0ID0gYXdhaXQgZ2l0KFsiY29tbWl0LXRyZWUiLCB0cmVlLCAiLXAiLCBwYXJlbnQsICItbSIsICJCdWlsZCBkZWNvZGVyLW9ubHkgYWxpZ25tZW50MTYgY2FuZGlkYXRlIHdpdGggdW5jaGFuZ2VkIGZpeGVkIGhlYXBzIGFuZCBlbmNvZGVyIl0sIGVudik7CiAgYXNzZXJ0LmRlZXBFcXVhbCgoYXdhaXQgZ2l0KFsiZGlmZi10cmVlIiwgIi0tbm8tY29tbWl0LWlkIiwgIi0tbmFtZS1vbmx5IiwgIi1yIiwgY29tbWl0XSkpLnNwbGl0KCJcbiIpLCBbd29ya2Zsb3dQYXRoXSk7CiAgYXdhaXQgZ2l0KFsidXBkYXRlLXJlZiIsIGByZWZzL2hlYWRzLyR7YnJhbmNofWAsIGNvbW1pdCwgIjAiLnJlcGVhdCg0MCldKTsKICBhd2FpdCBnaXQoWyItYyIsICJnYy5hdXRvPTAiLCAicHVzaCIsICJvcmlnaW4iLCBgJHtjb21taXR9OnJlZnMvaGVhZHMvJHticmFuY2h9YF0pOwogIGFzc2VydC5lcXVhbCgoYXdhaXQgZ2l0KFsibHMtcmVtb3RlIiwgIm9yaWdpbiIsIGByZWZzL2hlYWRzLyR7YnJhbmNofWBdKSkuc3BsaXQoL1xzLylbMF0sIGNvbW1pdCk7CiAgYXNzZXJ0LmVxdWFsKGF3YWl0IGdpdChbInJldi1wYXJzZSIsICJIRUFEIl0pLCBwYXJlbnQpOyBhc3NlcnQuZXF1YWwoYXdhaXQgZ2l0KFsic3RhdHVzIiwgIi0tcG9yY2VsYWluIl0pLCAiIik7CiAgYXNzZXJ0LmVxdWFsKGF3YWl0IGdpdChbImxzLXJlbW90ZSIsICJvcmlnaW4iLCAicmVmcy9oZWFkcy9tYWluIl0pLCBtYWluKTsKICBhc3NlcnQuZXF1YWwoYXdhaXQgcmVhZEZpbGUocGF0aC5qb2luKHJvb3QsIHdvcmtmbG93UGF0aCksICJ1dGY4IiksIHNvdXJjZSk7Cn0gZmluYWxseSB7IGF3YWl0IHJ1bnRpbWUuY2xvc2UoKTsgYXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHJ1bnRpbWUuZGlyZWN0b3J5KSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsgfQpjb25zdCBzb3VyY2VQaW5zID0gT2JqZWN0LmZyb21FbnRyaWVzKGF3YWl0IFByb21pc2UuYWxsKFsic2NyaXB0cy9wcmVwYXJlLWFsaWdubWVudDE2LWJ1aWxkLWJyYW5jaC5tanMiLCAic2NyaXB0cy9saWIvYWxpZ25tZW50MTYtYnVpbGQtcmVjaXBlLm1qcyJdLm1hcChhc3luYyBmaWxlID0+IFtmaWxlLCBzaGEoYXdhaXQgcmVhZEZpbGUocGF0aC5qb2luKHJvb3QsIGZpbGUpKSldKSkpOwphd2FpdCB3cml0ZUZpbGUocGF0aC5qb2luKHJvb3QsIG91dHB1dCksIEpTT04uc3RyaW5naWZ5KHsgcmVjb3JkZWRBdDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLCBzdGF0dXM6ICJhbGlnbm1lbnQxNi1wcml2YXRlLWJ1aWxkLWJyYW5jaC1wdXNoZWQtbm90LWRpc3BhdGNoZWQiLCBicmFuY2gsIHBhcmVudCwgY29tbWl0LCB0cmVlLAogIHdvcmtmbG93OiB7IHBhdGg6IHdvcmtmbG93UGF0aCwgY2Fub25pY2FsU2hhMjU2OiBzaGEoc291cmNlKSwgZ2VuZXJhdGVkU2hhMjU2OiBzaGEoZ2VuZXJhdGVkKSwgZ2VuZXJhdGVkRXhhY3RTb3VyY2U6IGdlbmVyYXRlZCwgZ2l0QmxvYjogYmxvYiB9LAogIGNoYW5nZWRUcmFja2VkRmlsZXM6IFt3b3JrZmxvd1BhdGhdLCBjYW5vbmljYWxIZWFkSW5kZXhBbmRXb3JrZmxvd1VuY2hhbmdlZDogdHJ1ZSwgbWFpblVuY2hhbmdlZDogdHJ1ZSwgcmVtb3RlVmVyaWZpZWQ6IHRydWUsCiAgbm9DaGVja291dE9yTWVkaWFDb3B5Q3JlYXRlZDogdHJ1ZSwgb3duZWRJbmRleFJ1bnRpbWVSZW1vdmVkOiB0cnVlLCBzb3VyY2VQaW5zLCBydW50aW1lRGlyZWN0b3J5OiBydW50aW1lLmRpcmVjdG9yeSwKICBhY3R1YWxCdWlsZFN0YXJ0ZWQ6IGZhbHNlLCBicm93c2VyQ29udmVyc2lvbnNQZXJmb3JtZWQ6IDAsIG9yaWdpbmFsUmVhZDogZmFsc2UsIG5vRG9ja2VyOiB0cnVlLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSB9LCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKY29uc29sZS5sb2coSlNPTi5zdHJpbmdpZnkoeyBvdXRwdXQsIGJyYW5jaCwgY29tbWl0LCByZW1vdGVWZXJpZmllZDogdHJ1ZSB9KSk7Cg=="
+  },
+  "canonicalWorkflowUnchanged": true,
+  "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\alignment16-run-observation-5zlJMi",
+  "ownedRuntimeRemoved": true,
+  "originalVideoRead": false,
+  "browserConversionsPerformed": 0,
+  "allocatorFixVerified": false,
+  "publicAcceptance": false,
+  "noDocker": true
+}
