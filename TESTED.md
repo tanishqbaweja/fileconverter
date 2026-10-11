@@ -4,6 +4,48 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Full-file request observer integrated; preparation verified
+
+Still **Partially implemented**, not full-file acceptance. New
+`scripts/run-allocation-attempt-original-full.mjs` derives the EXACT actually
+executed 4Mbps full driver (SHA b9e05e13...) with reversible, enumerated changes
+only: actual qualified decoder9ce86260... plus encoder-plane a4ba6225...,
+media-tested 29,544-byte composite adapter SHA0060b162..., scalar-failure
+validation instead of the obsolete null-only assertion, source-layer coverage,
+and owned runtime/report identities. Original five-minute blank baseline,
+all-process 250MiB formula/native100ms clock fences, SSIM0.98, timeline0.001s,
+three repeats/six hours each, fixed32+16MiB, queues/backpressure/privacy,
+independent validators and terminal cleanup reverse byte-exactly to history.
+
+Actual `--prepare-only` passed, receipt
+`evidence/2026-10-11T13-55-32-334Z-allocation-attempt-original-full-preparation.json`.
+Executions0: NO browser, new conversion, UI build or public profile change.
+All312 current/pre/post/preimages joined: immutable historical256 plus56
+additions, bounded separately by128 files/2MiB additive bytes and8MiB runtime
+archive. Original archive is unchanged and referenced hash-exact, not discarded
+or repinned. New source archive840603B gzip/2023140B restored, SHA92b926a6...;
+actually prepared driver/trace/caller bytes retained before any possible launch.
+Real mixed candidate9,727,010B was verified then deleted with its owned wrapper;
+stock UI stayed intact. Original test.mkv2,958,573,265B full SHA31f36695... read
+and verified BEFORE AND AFTER. Host physical4,412,686,336B/virtual2,845,024,256B
+passed unchanged2GiB gate; repository free2,337,048,961,024B passed32GiB guard.
+Session41551 CLOSED exit0, checked ONCE after an actual30.018s ETA sleep.
+
+Recorded preparation development failures: original stager CLI is `stage` /
+`restore`, not `--restore`; corrected before any asset staging. Two read-only
+source-list investigations incorrectly assumed a single-line JSON list; the
+actual multi-line bounded declaration parser was then used. One new unit had
+an extra closing parenthesis, caught by Node and ESLint before execution and
+corrected. No native/browser retry, historical witness change or gate relaxation.
+Integration regression18/18 passed1884.0924ms; nine-file zero-warning lint
+passed8.954s before actual preparation. Original full allocation cause/fix,
+full fidelity/three repeats/250MiB/scaling/speed and broad product gaps remain
+unverified. Next safe action is the changed protected-original diagnostic;
+do not repeat the old failed decoder unchanged. Final preparation witness and
+regression **29/29 passed1779.6306ms**; ten-file zero-warning lint passed6.936s,
+whitespace passed. Preparation evidence is independently reparsed, not assumed
+from the caller's exit code.
+
 ## 2026-10-11 — Real headless native allocation-request capture qualified
 
 New decoder+plane-encoder MEDIA qualification passed3/3 actual browser cases

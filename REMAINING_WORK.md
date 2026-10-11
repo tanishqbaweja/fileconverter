@@ -5,6 +5,39 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Changed full-driver integration prepared, not accepted
+
+Status: **Partially implemented**. `scripts/run-allocation-attempt-original-full.mjs`
+now combines the actually media-qualified decoder/request-slot/composite observer
+with the actual plane encoder, preserving the exact executed full driver's
+quality/250MiB/repeat/clock-fence/privacy/cleanup gates by byte-exact reversal.
+The old null-only fatal assertion is replaced by strict captured-scalar
+validation; unavailable requests/live heap/cause remain null or unproven.
+No conversion-memory or correctness limits were raised.
+
+Actual preparation receipt
+`evidence/2026-10-11T13-55-32-334Z-allocation-attempt-original-full-preparation.json`
+passed with ZERO executions. All312 current/pre/post/recoverable source records
+retained as immutable historical256 plus56 bounded additions (128-file/2MiB
+addition;8MiB runtime cap). New840603B gzip restores2023140B of prepared
+driver/trace/caller/delta bytes; original gzip remains byte-exact and recoverable.
+Owned9.727MB tool candidate and wrapper removed, stock UI unchanged, protected
+original whole size/SHA verified before/after. Headless launch, actual-birth
+duplicate prevention, wait-for-terminal-before-cleanup and lossless raw retention
+are implemented; only preparation, NOT a new full conversion, was executed.
+18/18 focused integration/evidence tests and nine-file lint passed before prep.
+Stager CLI mismatch, two read-only parser assumptions and new-unit parenthesis
+failure recorded in TESTED.md; all corrected before any browser/asset mutation.
+
+Remaining: run the changed original diagnostic; independently establish the
+actual failing request/free-state/cause or full success; optimize the actual
+allocation path if needed without changing fidelity or memory limits; complete
+three full fidelity/memory repeats and larger-file scaling/speed evidence.
+No profile promoted and no broad requirement reclassified as complete. All
+existing missing/partial requirements below still apply. Final actual-preparation
+witness/source/archive/ownership regression29/29 passed1779.6306ms; ten-file lint
+passed6.936s and whitespace passed. This is preparation evidence, not acceptance.
+
 ## 2026-10-11 — Native request/phase observer browser qualification passed
 
 Superseding media qualification (still **Partially implemented**): actual new
