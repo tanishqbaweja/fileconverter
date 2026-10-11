@@ -4,6 +4,51 @@ Updated 2026-10-11 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-11 — Changed full diagnostic TERMINAL; actual fallback narrowed
+
+Supersedes ALL43314 LIVE statements. Same session43314 CLOSED outerexit0;
+actual browser driverexit1. Checked ONCE after requested actual10800.065s
+(3-hour) ETA sleep. Run1 failed after2,992,564.815ms (49m52.6s), input748,428,500B,
+partial output1,398,331,053B and74,921 encoded frames/packets. ZERO complete
+conversions/SSIM/full-fidelity validations; runs2/3 not attempted. OOM attempted
+heap extent34,086,912B against fixed32MiB is NOT the failed individual request.
+
+New actual C-slot evidence: FFmpeg requested1,597,463B/alignment16; first malloc
+returned3,521,864 (8mod16), only this fresh unexposed pointer was freed, then
+upstream alignment fallback aborted (phase4/sequence2,500,741). Direct
+av_buffer_allocz/default_get_buffer2/HEVC alloc_frame stack is bound to real
+decoder9ce86260...; pool slot NOT read. Actual bounded free-header snapshot:
+7,436,456B total free, largest chunk1,597,496B,239 chunks/top592,256B/unclaimed
+475,136B/892 header words≤32768. Wrapper request now KNOWN; upstream INTERNAL
+malloc size, live heap, fragmentation/root cause STILL UNKNOWN/unproven.
+Do not turn free totals or the33B largest-chunk/request difference into a cause
+claim. Next audit exact compiled upstream allocator/request arithmetic, then
+qualify a concrete allocation change BEFORE another expensive original retry.
+
+Independent recomputation: whole-tree485,965,824 minus stable blank240,332,800
+=234.25390625MiB observed PARTIAL peak; NOT full memory acceptance. All30,447
+native rows reach both consumers;27,438 pre/conversion eligible samples,0
+unavailable; no drops/timestamp rewrites, clock fence closed. Actual4Mbps full
+1920x804/24fps/q4:20/BT709 native context retained, 32+16MiB/fixed48MiB Wasm,
+64KiB I/O/queue andone pending; terminal queues/pending/scratch0.
+
+Receipts `evidence/2026-10-11T14-01-14-330Z-allocation-attempt-original-full-terminal.json`
+and `-terminal-analysis.json`. All312 current/pre/post/preimages plus2 independent
+analysis-source preimages joined. Actual independent audit52046 CLOSED exit0,
+afterone30.022s ETA sleep/check;24 owned driver/server/browser/observer/native
+births absent. All3 owned wrapper/candidate/browser scratch directories removed,
+stock UI/engines restored, original whole2,958,573,265B SHA31f36695... unchanged
+before/after. Partial output and redundant16,636,060B rawJSON deleted after exact
+recoverable528,647B gzip (SHA84396005...) validation; compact70,228B CSV/39,521B
+HTML/194,117B trace retained. No Docker/native conversion/public capability/
+quality or memory relaxation/speedup/full completion. Failed configuration will
+not be repeated unchanged. Two audit units passed778.5038ms; two-file lint
+passed8.630s before actual audit. Playwright skill kept the launch headless,
+using the original user-requested scripted stress-test workflow. Final actual
+terminal witness/negative controls/source/cleanup regression24/24 passed1616.4893ms;
+three-file zero-warning lint passed5.796s and whitespace passed. No live handle
+remains; fullgoal still incomplete, not blocked by this diagnosable allocation.
+
 ## 2026-10-11 — Changed full-original diagnostic LIVE, not acceptance
 
 Supersedes the host-held launch: after the user closed Chrome, unchanged caller

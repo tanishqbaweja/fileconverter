@@ -5,6 +5,37 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-11 — Actual full failure now narrows alignment fallback
+
+Status remains **Partially implemented**. Session43314 TERMINAL (outer0/driver1),
+not live; checked once after actual3-hour ETA sleep. Run1 failed49m52.6s at
+748,428,500B input/1,398,331,053B partial output/74,921 frames. No full fidelity,
+SSIM,3 repeats or full250MiB acceptance. Current decoder's C slot actually
+records wrapper request1,597,463B, first fresh mallocpointer3,521,864/8mod16,
+freed BEFORE upstream alignment fallback (phase4). Captured direct HEVC-buffer
+path, not pool. Free total7,436,456B/largest1,597,496B/239chunks; bounded892
+header words with no payload/native calls/heap mutation. Internal upstream
+malloc size/live heap/fragmentation or retention cause STILL unproven.
+
+Independent terminal and analysis receipts14-01-14-330Z retain actual driver,
+all312 current/pre/post/preimages and2 audit-source preimages. Whole-tree observed
+partial234.25390625MiB recomputed with unchanged blank denominator;30,447 native
+rows/clock fences agree. Actual protected whole before/after size/SHA unchanged;
+stock assets restored,24 sampled/owned birth-qualified identities absent,3
+scratch directories and partialoutput removed. Exact raw16.636MB JSON recovered
+from528647B gzip; redundant raw deleted, compact CSV/HTML/trace remain. Nothing
+promoted. Audit52046 closed0; no live browser/conversion remains.
+
+Next: audit source/BINARY-bound upstream alignment arithmetic from the actual
+captured path; qualify a concrete allocation fix without changing reference
+lifetimes/ABI/zeroing/quality/fixed heaps, then changed full retry. Do not rerun
+this now-measured failed configuration unchanged or infer cause from free totals.
+Full fidelity/repeats/250MiB/scaling/speed and ALL broad requirements remain open.
+Final actual terminal witness/negative/source/cleanup regression24/24 passed
+1616.4893ms; three-file zero-warning lint passed5.796s/whitespace passed. The
+goal remains ACTIVE/incomplete; this is concrete diagnostic progress, not a
+genuine external blocker or permission to stop the allocation investigation.
+
 ## 2026-10-11 — Changed full-original diagnostic actually LIVE
 
 **Partially implemented**, acceptance PENDING. User freed memory; actual launch
