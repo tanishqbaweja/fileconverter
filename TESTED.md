@@ -4,6 +4,28 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-13 — Qualified input-error full attempt LIVE; next observation after ETA wait
+
+One actual full driver44848/parent41344 launched19:51:30.892454Z;
+headless Chromium30552/native sampler41476, detached supervisor16216.
+All five recorded PID-parent-birth identities independently native-rechecked
+live19:52:05Z; status/locks alone never used. [Actual launch](evidence/2026-10-12T19-50-01-210Z-input-read-full-live.json),
+[native-qualified wait plan](evidence/2026-10-12T19-50-01-210Z-input-read-full-wait-plan.json).
+All380 actual source pins still current, exact executed source archive651,888B
+retained with actual UI/source archives. Whole original SHA verified before
+launch, free physical18,828,996,608B/virtual11,871,649,792B; original guards,
+input, three-run/fidelity/memory/cancel/cleanup gates unchanged. No blind retry,
+duplicate conversion or injected read fault. Baseline was still null/unsettled
+at observation, not invented or recorded as zero.
+
+First conversion estimated4–4.5h from the actual prior full rates; validation
+and repeat jobs add time. One requested interruptible ETA-length wait planned
+until2026-10-13T00:12:05.342Z (~05:42IST), not frequent agent polling. This is
+not a speed gain, completion, memory acceptance or proof of old failure cause.
+Live finally owns scratch/output/profile cleanup; never delete under this
+driver. Goal remains ACTIVE/incomplete; continue the same handle after timeout
+or interruption, no restart from stale or missing status alone.
+
 ## 2026-10-13 — Fresh qualified-input full harness prepared; no conversion from preparation
 
 Integrated the exact162-source browser-qualified bounded input-error adapter into

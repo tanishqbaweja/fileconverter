@@ -5,6 +5,22 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-13 — Qualified input-error full attempt LIVE; no full acceptance yet
+
+**Partially implemented**. One actual full driver44848/parent41344, headless
+Chromium30552/sampler41476/supervisor16216; all five PID-parent-birth identities
+native-rechecked live19:52:05Z. All380 actual source pins match current; exact
+full executed-source/UI archives retained. [Launch](evidence/2026-10-12T19-50-01-210Z-input-read-full-live.json),
+[ETA wait plan](evidence/2026-10-12T19-50-01-210Z-input-read-full-wait-plan.json).
+Protected whole SHA prelaunch unchanged, safety guards passed; full original,
+fixed heaps/quality, three completed runs, fidelity and250MiB formula unchanged.
+Original observer's blank baseline null/unsettled at checkpoint, not fabricated.
+First conversion estimate4–4.5h, repeats/validators additional; one requested
+interruptible ETA wait until~05:42IST13Oct. No frequent agent polling, blind
+retry, duplicate/restart, public promotion or deletion of live-owned scratch.
+This attempt adds bounded qualified read attribution, not a claimed fix or
+speed gain. Full gate and all broader requirements remain incomplete.
+
 ## 2026-10-13 — Qualified input-error full harness prepared; full-media reliability still partial
 
 **Partially implemented**. Exact162-source browser-qualified read capture now
