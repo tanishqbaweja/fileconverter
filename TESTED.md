@@ -4,7 +4,50 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Durable full-original FAILED; Asyncify input allocation identified, not fixed
+## 2026-10-12 — Reusable Asyncify suspension storage implemented; actual short browser recovery/fidelity PASS
+
+Added a private, reproducible JavaScript-glue patch over the exact executed
+packet-cache decoder. Reserve one262,156-byte block at runtime startup before
+source probing; reuse the unchanged256KiB suspension stack, reset its headers
+and rewind-function identity each time, clear owned bytes on acquire/release,
+reject overlapping/foreign leases, defer close during an active lease, and free
+at native-job close. An aborted runtime is not called to free potentially unsafe
+native state; worker termination releases that heap. Decoder32MiB/encoder16MiB,
+native Wasm binaries, source/codec settings, and every existing gate unchanged.
+This changes allocation timing/ownership, not proof of the original OOM cause.
+
+Actual headless production-browser suite:3 tests PASS in1.6m, including one
+normal conversion, destination-write failure plus same-page replacement-worker
+recovery, and cancellation plus same-page recovery. All5 jobs report exactly
+one allocation/free and zero active/retained bytes at close, with actual lease
+counts69/69/69/39/69. Three independently validated96-frame1920x804 HEVC-to-
+MPEG2 outputs remain byte-exact2,245,558B, SHA554cc841…5f27, ordinal SSIM.983095
+against unchanged.98 gate, exact audio/artwork/timestamps/metadata. Same4Mbps/q4.
+Elapsed3800.030/3657.915/3566.625ms are observations, NOT a controlled speed gain.
+Selected-destination route still explicitly uses bounded OPFS mux staging and a
+512KiB final-copy buffer; this patch does not establish direct native AVIO save.
+
+[Actual run](evidence/2026-10-12T14-25-42-022Z-asyncify-storage-media.json)
+and [independent source/report join](evidence/2026-10-12T14-25-42-022Z-asyncify-storage-media-verified.json)
+retain all157 executed/current/pre/post sources and lossless compact reports.
+Whole test.mkv pre/post size/SHA unchanged. Disposable media, profiles, wrapper,
+and helper scratch removed; owned helper identities absent, stock assets restored.
+Redundant759,038B raw report removed after verifying its66,179B gzip, no data loss.
+No Docker, visible windows, native converter, or public promotion.
+
+Focused8-test cycle initially failed on a mistyped manifest hash (a following
+line number accidentally appended), then on a whitespace-sensitive headless
+string assertion; corrected before browser launch. Actual config headless=true
+and retries=0 are now checked structurally. Subsequent28 focused regressions
+PASS2.242s, six-file zero-warning lint PASS. Full-original correctness/fidelity,
+three repeats, complete-Chromium<=250MiB, clean sessions/scaling, and controlled
+speed remain UNVERIFIED for this changed candidate. Next integrate its glue and
+explicit close into a fresh durable full harness; never rerun unchanged old glue.
+Final retained-evidence regression31/31 PASS2.612s, including independently
+decoded output hashes, all157 source joins and cleanup; eight-file lint and
+git whitespace checks PASS.
+
+## 2026-10-12 — Historical durable full-original FAILED; Asyncify input allocation identified
 
 The ONE actual test ran under hidden detached supervision; one interruptible
 12,600.317-second ETA wait, no repeated agent polling, duplicate or restart.

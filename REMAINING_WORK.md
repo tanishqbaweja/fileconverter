@@ -5,7 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Full-original allocation failure verified; durable evidence works, media goal remains partial
+## 2026-10-12 — Reusable suspension storage short-browser qualification complete; full media requirement still partial
+
+**Partially implemented**. The changed private glue reserves/reuses one262,156B
+Asyncify suspension allocation before probing, keeps the256KiB stack and fixed
+32+16MiB heaps/native engines/settings, clears owned bytes, rejects overlap,
+defers active close and frees at job close. Pure lifecycle and exact-glue tests
+pass; actual production-browser suite3/3 PASS with5 module lifecycles (one
+allocation/free each,69/69/69/39/69 actual leases, zero retained/active at close).
+Three genuine HEVC-to-MPEG2 outputs are byte-exact and independently decoded,
+SSIM.983095>=.98, same dimensions/audio/artwork/timestamps/metadata. Failure and
+cancellation recover on the same page through the production replacement worker.
+[Run](evidence/2026-10-12T14-25-42-022Z-asyncify-storage-media.json),
+[source/report verification](evidence/2026-10-12T14-25-42-022Z-asyncify-storage-media-verified.json).
+
+All157 actual source preimages/current/pre/post join; protected original
+unchanged, stock assets restored, disposable data removed, lossless compact
+reports retained.28 focused regressions PASS2.242s/six-file lint PASS. Earlier
+hash-transcription and whitespace-only unit failures are recorded in TESTED.md.
+Headed/manual remains unverified per user-required headless execution.
+
+This is NOT full-original or250MiB acceptance, proof of the original allocator
+failure's cause, or a controlled speed gain. Route stays private; no new public
+capability. Next create/qualify fresh durable full harness with this changed glue
+and explicit close, then full protected source/three complete repeats/independent
+fidelity/exact whole-tree memory/cleanup. Cold sessions, scaling, matched speed,
+direct native selected-destination AVIO, and all broader original-spec gaps
+remain accounted for below. Goal ACTIVE/incomplete; no unchanged expensive replay.
+Final focused31/31 tests PASS2.612s; eight-file zero-warning lint/whitespace PASS.
+
+## 2026-10-12 — Historical full-original allocation failure verified; durable evidence works
 
 **Partially implemented**. One full-original attempt FAILED after~3h30m29s:
 zero of3 completed/validated conversions,244,859 last bridged frames/packets,
