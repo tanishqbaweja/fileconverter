@@ -1,9 +1,50 @@
 # Remaining work audit
 
-Updated 2026-10-12 (Asia/Calcutta). This is the living requirement audit for the original
+Updated 2026-10-13 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-13 — Input attribution and recovery qualified; immediate original-file scan passed
+
+**Partially implemented** media/full-file reliability requirement remains partial.
+Added bounded error capture before native C discards exception identity: two
+failure-only scalar records, exact offset/count/input size, allowlisted type/code,
+sanitized known source locations; no raw text/file data/filename and no retry.
+Current reader, native binaries/heaps,4Mbps/q4 and fidelity/backpressure gates unchanged.
+Actual four-test headless suite PASS2.4min, with four genuine96-frame1920×804
+HEVC→MPEG-2 MP4 outputs independently validated (same2,245,558B/output SHA,
+SSIM .983095≥.98), all three adverse modes cleanly recovering through production
+worker replacement without page reload. Injected NotReadableError/code0 at exact
+1,048,576B captured twice because native AVIO calls again, not added retries.
+[Actual controls](evidence/2026-10-12T19-28-30-102Z-input-read-media.json).
+
+Separate full protected-original input-only diagnostic PASS:2,958,573,265B,
+45,145 bounded production-bridge reads plus three seeks,64KiB/one pending,
+8,016.135ms scan window; zero frames/output, deliberate pre-conversion stop.
+No immediate read failure reproduced. Does NOT prove conversion, fidelity,
+250MiB memory, scaling, CPU encoding speed gain, or the three-hour error's cause.
+[Input-only result](evidence/2026-10-12T19-34-03-916Z-input-only-original-scan.json).
+162/167 actual/current/pre/post source joins; all original whole hashes unchanged,
+stock assets restored, owned media/profile/scratch gone. Four successful recorded
+helper birth identities native-rechecked absent; no unrelated process killed.
+2,002,147B redundant raw JSON removed only after verified recoverable lossless
+archives. [Verification](evidence/2026-10-13-input-read-diagnostics-verified.json).
+
+Failed first control/scan receipts and exact preimages retained; test assumptions
+about native call count and conversion-vs-scan suspension count corrected without
+weakening any conversion acceptance gate. Old recursive trace-resource retention
+replaced by bounded direct attachments; oversize trace omitted,8MiB cap unchanged.
+Next safe work: fresh source-bound full harness with qualified bounded attribution
+so an actual long-lived failure has type/code/exact offset rather than generic
+text. Full-original correctness/fidelity/three repeats/250MiB/cold/scaling, controlled
+conversion speed, native direct AVIO and every broader original-spec gap still
+required. No unchanged hours-long replay, blind retry, public promotion or goal
+completion. Headed coverage remains unverified under the user's headless constraint.
+Final34 focused regressions PASS3.713s;12-file zero-warning lint and source
+whitespace PASS. Retained byte-exact Playwright error-context has six generated
+trailing-space lines, kept unchanged for its hash. No new public capability
+marked supported from these diagnostic results.
 
 ## 2026-10-13 — Actual changed full run failed on input I/O; media requirement remains partial
 

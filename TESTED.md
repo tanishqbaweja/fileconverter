@@ -1,8 +1,73 @@
 # Tested conversion ledger
 
-Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
+
+## 2026-10-13 — Qualified bounded input diagnostics; whole original input-only scan passed
+
+Implemented failure-only capture around the unchanged production `withinBridge.read`:
+at most two scalar records per job, exact requested offset/count/input size,
+allowlisted exception/cause type and numeric code, known-message classification,
+at most eight sanitized source-class/line/column locations. No raw exception text,
+filename, URL, function name, file bytes or buffer retained. Unknown fields remain
+null; getters/emitters cannot mask the original exception. No retry, reader,
+Wasm binary/heap, encoding, fidelity or backpressure change. Private derivative
+only; all historically executed sources stay unchanged.
+
+Actual headless four-test production suite PASS (2.4min): normal full-geometry
+96-frame HEVC→MPEG-2 MP4 plus write-failure, cancellation and injected read-failure,
+each with genuine independently validated same-page production-worker recovery.
+Four completed outputs: 2,245,558B, unchanged output SHA
+`554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27`;
+4Mbps/q4, ordinal SSIM .983095≥.98, audio/PCM/artwork/timing/metadata gates retained.
+Elapsed 4,828.260/6,305.210/5,660.860/4,641.495ms are unmatched diagnostics,
+NOT a controlled speed gain. Read control captured `NotReadableError`, code0,
+offset1,048,576/request65,536/input4,457,906B twice: FFmpeg's existing second
+AVIO request, not a wrapper retry. Seven actual module lifecycles allocate/free
+once and close with zero active/retained suspension bytes. [Browser receipt](evidence/2026-10-12T19-28-30-102Z-input-read-media.json).
+
+Separate whole-original input-only headless diagnostic PASS15.3s test runtime:
+actual production BYOB bridge read all2,958,573,265B in45,145 serial reads,
+then three64KiB seeks at2,186,655,938 /2,958,507,729 /0. Fixed65,536B scratch,
+one pending read,8,016.135ms scan window. This is NOT a transcode: zero encoded
+frames/output bytes, intentional terminal error before demux/decode/encode,
+worker retired and native contexts closed. One actual suspension lease, one
+allocation/free, zero retained. No read-error records. Immediate read failure
+was NOT reproduced; neither this throughput nor a cached-file scan proves
+long-lived three-hour cause, complete conversion, fidelity, scaling, or250MiB
+acceptance. [Input-only receipt](evidence/2026-10-12T19-34-03-916Z-input-only-original-scan.json).
+
+Rejected controls retained: initial unit assumptions incorrectly treated DOMException
+NotReadableError as legacy FileError code4 (actual0), and Node assert.rejects
+itself inspected a hostile Proxy; corrected tests preserve exact rethrow.
+First browser test expected one record but actual native AVIO called twice;
+failed before read recovery, not counted passed. Its old failure-retention walk
+visited unbounded trace resources; fresh derivative retains direct bounded
+attachments only, unchanged caps. First scan's body succeeded but inherited
+conversion assertion required >1 suspension; corrected ONLY the separate scan
+to require exactly1. Its oversize trace exceeded8MiB and was not retained; no
+cap raised. Failed receipts/preimages preserved, no automatic retries or
+unchanged long-run replay.
+
+Independent lossless joins:162 actual/current/pre/post sources for qualified
+conversion controls,167 for qualified input-only scan; failed historical
+versions retained with explicit current differences. Four whole-original
+pre/post hashes AND independent current whole SHA unchanged. Stock assets/UI/CSS
+restored, owned fixtures/outputs/profiles/runtime absent. Four recorded successful
+server/runner PID-parent-birth identities independently native-rechecked absent;
+no unrelated process killed. Removed2,002,147B redundant raw JSON only after
+archive hashes/lossless restoration verified; recoverable gzip copies retained.
+[Verified joins and cleanup](evidence/2026-10-13-input-read-diagnostics-verified.json).
+Next: fresh source-bound full harness using the qualified input-error capture
+to identify an actual long-lived failure. Overall goal remains incomplete;
+no public promotion or encoding-speed/memory acceptance from these diagnostics.
+Final34 focused regression tests PASS3.713s, including unchanged prior157/365
+source joins and full-run failure audit; all12 new code/test files zero-warning
+lint PASS, source whitespace PASS. Byte-exact retained Playwright error-context
+has six generated trailing-space lines; not rewritten to invalidate its hash.
+Five actual passing headless tests (four conversion
+controls plus the separately classified input-only diagnostic), not a full gate.
 
 ## 2026-10-13 — Actual reusable-storage full run FAILED on input I/O; no heap-abort record
 
