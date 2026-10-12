@@ -5,6 +5,20 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Durable full-original driver actually LIVE; all acceptance still unproven
+
+**Partially implemented**. ONE native-CIM birth-qualified driver8904/Chrome33524/
+sampler36052 under detached supervisor29340/child13188, not inferred from status
+or lock. Actual346-source archive retained; bounded native checkpoint being
+persisted, sequence1207/24,737B, blank baseline still unavailable during startup.
+One unavailable startup memory row not rewritten as zero. [Live receipt](evidence/2026-10-12T10-18-33-321Z-packet-cache-full-live.json).
+First conversion estimate about3½h; independent validators/required3 repeats
+extra. [ETA wait plan](evidence/2026-10-12T10-18-33-321Z-durable-full-wait-plan.json).
+No scheduler automation created (host tool unavailable), duplicate, restart,
+early scratch cleanup, unsupported-public promotion or full conversion claim.
+Remaining complete terminal/fidelity/<=250 MiB/full repeats/cleanup evidence,
+cold sessions/scaling/controlled speed and all broader original-spec gaps.
+
 ## 2026-10-12 — Durable diagnostic checkpoints implemented; full conversion acceptance still partial
 
 **Partially implemented**. Diagnostic sidecar now atomically persists bounded

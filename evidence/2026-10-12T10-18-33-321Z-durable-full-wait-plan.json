@@ -1,0 +1,37 @@
+{
+  "status": "native-birth-qualified-live-eta-wait-not-acceptance",
+  "observedAt": "2026-10-12T10:21:37.5817752Z",
+  "supervisorReport": "evidence/2026-10-12T10-18-32-756Z-packet-cache-supervisor-full.json",
+  "liveReceipt": "evidence/2026-10-12T10-18-33-321Z-packet-cache-full-live.json",
+  "nativeCheckpoint": "outputs/reports/2026-10-12T10-19-18-453Z-private-mpeg2-packet-cache-full-native-100ms-native-checkpoint.json",
+  "ownedIdentities": [
+    {"pid":29340,"parentPid":28432,"createdAt":"2026-10-12T10:18:32.7613020Z","name":"node.exe"},
+    {"pid":13188,"parentPid":29340,"createdAt":"2026-10-12T10:18:33.2203400Z","name":"node.exe"},
+    {"pid":8904,"parentPid":13188,"createdAt":"2026-10-12T10:19:17.6997550Z","name":"node.exe"},
+    {"pid":33524,"parentPid":8904,"createdAt":"2026-10-12T10:19:24.0792530Z","name":"chrome.exe"},
+    {"pid":36052,"parentPid":8904,"createdAt":"2026-10-12T10:19:24.4933670Z","name":"powershell.exe"}
+  ],
+  "nativeCheckpointObservedBytes": 24737,
+  "nativeCoverageThroughSequence": 1207,
+  "nativePhasesObserved": [
+    {"phase":"blank-baseline","validSamples":12,"unavailableSamples":0},
+    {"phase":"blank-startup-settle","validSamples":1194,"unavailableSamples":1}
+  ],
+  "blankBaselineObserved": null,
+  "conversionAcceptance": false,
+  "firstConversionEstimatedSeconds": 12600,
+  "estimatedFirstConversionNotAllRepeats": true,
+  "validatorsAndThreeRequiredRepeatsExtra": true,
+  "interruptibleEtaSleepMs": 12600000,
+  "earliestNextObservationUtc": "2026-10-12T13:55:00.000Z",
+  "estimatedNextObservationLocal": "2026-10-12 19:25 Asia/Calcutta",
+  "automationCreated": false,
+  "automationFailure": "This app tool is no longer available through dynamic tools. Use the codex_app MCP server. If that server is unavailable on this host, task delegation is unavailable.",
+  "automationDocumentationInspected": "https://learn.chatgpt.com/docs/automations?surface=app",
+  "observationPolicy": "No repeated agent polling. After ETA, inspect this same supervisor/live/native checkpoint and verify actual process births; an observation timeout is not permission to restart. Missing native samples remain null. No scratch deletion until terminal and exact owned-process absence checks.",
+  "unattendedHeadless": true,
+  "noDocker": true,
+  "noProcessesKilled": true,
+  "noConversionDuplicateOrRestart": true,
+  "broaderGoalRemainsIncomplete": true
+}

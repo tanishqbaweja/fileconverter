@@ -4,6 +4,25 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — ONE durable full-original test actually launched; ETA wait
+
+Driver8904/parent13188/birth10:19:17.6997550Z, headless Chrome33524/birth
+10:19:24.0792530Z, native sampler36052/birth10:19:24.4933670Z and detached
+supervisor29340/child13188 independently native-CIM birth-qualified live at
+10:21:37.5817752Z. [Live receipt](evidence/2026-10-12T10-18-33-321Z-packet-cache-full-live.json)
+retains346 actual source versions. Native sidecar is being atomically persisted:
+24,737B, sequence1207, baseline still null during blank-startup settling;
+one unavailable startup row stays unavailable, never zero. No completed full
+conversion, OOM fix, primary acceptance or public promotion inferred.
+
+First conversion conservative estimate about3½h, independent validators and
+three required repeats extra. Scheduled follow-up tool unavailable on this host;
+no automation created. Use interruptible ETA-length wait, then ONE observation
+of this SAME run. [Wait plan](evidence/2026-10-12T10-18-33-321Z-durable-full-wait-plan.json).
+Background native/privacy/queue/failure/finally guards continue. Do not delete
+live profile/output/scratch or claim post-run protected hash before terminal
+evidence and birth-qualified cleanup. Full original settings/gates unchanged.
+
 ## 2026-10-12 — Bounded durable native checkpoint controls pass; full integration preparation
 
 Previous goal turn was progress: owned interruption recovery, hidden supervisor
