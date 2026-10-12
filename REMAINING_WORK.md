@@ -5,7 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Changed full-original attempt LIVE; completion/fidelity/memory remain unverified
+## 2026-10-13 — Actual changed full run failed on input I/O; media requirement remains partial
+
+**Partially implemented**. ONE actual full test failed after~2h56m50s, zero of3
+validated conversions;218,892 actual frames/packets,4,106,849,675B incomplete
+output/stage deleted. Suspension storage reused30,199 times, one allocation/free,
+zero active/retained at close; no captured heap abort. Failure occurred earlier
+than the old244,859-frame OOM boundary, so that full fix remains unproven.
+Generic input `network error`/Matroska Read error/native I/O error retained;
+exception type/code/stack, exact failing offset and underlying cause missing/null.
+No forbidden network requests. [Verified terminal](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-terminal-analysis.json).
+
+Failed-window primary result231MiB is NOT acceptance: full output/fidelity/repeat
+gates failed;95,714 valid and22 unavailable active samples, unavailable retained
+null. Original baseline/all phase peaks/counts preserved in compact durable
+checkpoint;98,703 native samples, clock drops/rewrites0. All365 source/current/
+pre/post joins pass. Independent26 owned-birth checks absent, original whole
+pre/post/post-terminal SHA unchanged, disposable output/profile/wrapper/candidate/
+supervisor scratch gone, stock assets restored, compact reports retained.
+One requested4h20 ETA sleep completed, no agent rapid polling or duplicate test.
+
+Next safe progress is qualified bounded input-failure attribution and investigation
+of persistent BYOB reader lifecycle, not an unchanged expensive replay or blind
+retry. Full protected correctness/fidelity/three repeats/250MiB/cold/scaling,
+controlled speed, direct native AVIO and all broader original-spec gaps remain.
+Goal ACTIVE/incomplete; this new failure is not a fundamental unsupported proof.
+Final26 focused regressions PASS2.192s; terminal-analysis/evidence lint and
+whitespace PASS. Supervisor0/converter1 distinction explicitly tested.
+
+## 2026-10-12 — Historical changed attempt LIVE (superseded above)
 
 **Partially implemented**. ONE changed full driver47412/parent6800, headless
 Chromium8852/native sampler944/detached supervisor39608; all5 recorded PID/

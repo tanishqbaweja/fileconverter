@@ -4,7 +4,47 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Changed reusable-storage full test LIVE; ETA-length wait, not acceptance
+## 2026-10-13 — Actual reusable-storage full run FAILED on input I/O; no heap-abort record
+
+One actual4h20 interruptible ETA wait completed (15,600.0601s); first conversion
+had already failed after10,609,542.385ms (~2h56m50s), zero of3 complete/validated.
+Last actual split report218,892 frames/packets;4,106,849,675-byte incomplete
+output/stage deleted by owned finally-cleanup. Reusable suspension block reports
+one allocation,30,199 real acquisitions, one free, zero active/retained bytes,
+no aborted native-release path. Zero captured Wasm-abort records. This earlier
+failure does NOT prove survival at the prior244,859-frame Asyncify OOM boundary.
+
+Retained input-read error is generic `network error`, Matroska Read error/native
+I/O error. Actual exception name/code/stack, exact failed read offset and
+underlying filesystem/Chromium cause were not captured; remain null/unproven.
+Current worker uses a persistent bounded BYOB File-slice stream; native catch
+keeps only the exception message and returns-5. No forbidden network requests.
+Chromium [upstream stream error handling](https://chromium.googlesource.com/chromium/src/+/HEAD/third_party/blink/renderer/core/fetch/body_stream_buffer.cc)
+uses this generic text for consumer failures, distinct from its explicit array-
+buffer allocation error. This is a source-level lead, NOT exact running-Chrome
+binary attribution or evidence of upload/internet failure. Do not blindly retry.
+
+Observed complete-Chromium failed-window peak485,113,856B minus stable blank
+242,892,800B =231MiB. NOT acceptance: full correctness/repeat/fidelity failed;
+95,714 valid conversion samples,22 unavailable Toolhelp-snapshot rows kept
+null/excluded, not zero. Native98,703 samples; original baseline/every phase
+peak/count match the bounded durable checkpoint, clock drops/rewrites0, monitor
+closed. All365 actual/current/pre/post source versions still join. Independent
+26 owned birth identities absent, original whole pre/post AND post-terminal SHA
+unchanged, stock assets restored and all owned wrapper/profile/candidate/
+supervisor scratch removed. Redundant checkpoint removed after lossless gzip.
+[Terminal analysis](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-terminal-analysis.json).
+
+Next qualify bounded input-read error attribution (type/code/stack/exact requested
+offset/count; no payload or filename), then investigate long-lived stream
+lifecycle before another full run. Do not replay unchanged failure, raise heaps,
+change fidelity, promote support, infer a speed gain, or call the overall goal
+complete. All broader original-spec requirements remain in REMAINING_WORK.md.
+Final26 focused regressions PASS2.192s; terminal-analysis/evidence zero-warning
+lint and whitespace PASS. Full supervisor exit0 means evidence collection
+completed, never that its child converter exit1 succeeded.
+
+## 2026-10-12 — Historical changed full test LIVE (superseded above)
 
 One actual full driver launched14:44:51.726882Z: PID47412/parent6800, hidden
 headless Chromium8852 and native sampler944, detached supervisor39608. All5
