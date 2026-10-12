@@ -4,6 +4,18 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Corrected packet native workflow/branch/collector ready for fresh actual build
+
+Previous goal turn was progress: actual terminal native build failure retained
+before source changes and precise SDK-driver-only correction prepared. Fresh
+warning-fix derivative changes actual workflow builder to strict candidate;
+new branch/collector target separate exact head and retain all old native/lifetime/
+fixed-heap/codec/AVIO/source/privacy/cleanup and20/8MiB/16MiB artifact limits.
+Canonical/failure sources remain byte-frozen.12 focused checks PASS0.679s, five
+new JS files zero-warning lint PASS5.642s, whitespace PASS. No unchanged full
+conversion repeated. Actual strict build/unit/browser/full/quality/memory/speed
+acceptance remain pending; next ONE changed no-Docker native dispatch.
+
 ## 2026-10-12 — Actual native packet build failed at SDK-driver warning; precise fixed-heap correction prepared
 
 ONE actual hosted job38205014374 at567c6dea…9aa78 finished FAILURE after4m56

@@ -5,6 +5,16 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Fresh warning-fix native qualification ready
+
+**Partially implemented**. Corrected isolated workflow selects actual strict native
+builder. Fresh branch/collector/observer point to separate warning-fix source head,
+keep source/hash/ownership/cleanup/20-file/8MiB/16MiB gates and old failure evidence.
+12 focused checks/five-file zero-warning lint/whitespace pass. Next actual changed
+native build/unit, then fresh production-browser/recovery/full-original/repeats/
+scaling/controlled speed. No public promotion, unchanged expensive conversion or
+scope reduction; all original missing/partial requirements remain active.
+
 ## 2026-10-12 — Native packet build failure retained; SDK-only correction ready for real qualification
 
 **Partially implemented**. Actual first job38205014374 failed4m56 overall at
