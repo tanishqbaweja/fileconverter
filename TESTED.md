@@ -4,7 +4,54 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Interrupted full run recovered; bounded hidden supervisor control passed
+## 2026-10-12 — Bounded durable native checkpoint controls pass; full integration preparation
+
+Previous goal turn was progress: owned interruption recovery, hidden supervisor
+qualification, unchanged full-harness preparation, tests and pushed checkpoint.
+Added a diagnostic sidecar around the exact original clock/phase/budget observer.
+Every native batch still reaches the original tracker and peak accumulator.
+Sidecar has one pending disk write, 1-second cadence, atomic/file-flushed replace,
+2 MiB hard cap, 16 recent graph buckets, all bounded phase peaks and birth-qualified
+process identities. The actual blank baseline is retained immutably when supplied;
+otherwise null. No input names/content/frames/packets/native heap copied into it.
+Checkpoint coverage is explicitly incomplete and cannot prove acceptance.
+
+Five unit tests PASS: 6,000 synthetic snapshots retain an evicted early peak and
+unknown descendants, missing rows remain null, slow writes coalesce without
+blocking native acquisition, disk failure stays fatal, denominator/path/reuse
+guards hold. Actual Windows control34 native samples matched every original
+phase peak; root was an owned Node fixture, NOT Chromium. Separate synthetic
+exit19 without journal closure left a readable LIVE checkpoint, not completion.
+[Control proof](evidence/2026-10-12T10-08-28-243Z-durable-native-checkpoint-control.json)
+retains17 source versions, exact generated fixture, compact lossless checkpoints,
+owned-birth absence, raw checkpoint/runtime cleanup. Original video not read.
+
+First control failed the synthetic fixture (exit1 instead of19): fixture moved
+phase time backwards relative to initial phase. Native33-sample portion had
+already passed. Exact failed sources/receipt retained, not rewritten; corrected
+fixture uses current monotonic phase time and captures bounded stderr.
+[Failed control](evidence/2026-10-12T10-07-17-848Z-durable-native-checkpoint-control.json).
+One unused-binding lint warning corrected before final qualification. No codec,
+public route, memory formula or quality threshold changed; no speedup claimed.
+App/Windows job termination survival remains unverified.
+
+Fresh full recipe reverses to the qualified packet-cache driver/caller with only
+two observer import/options edits and additive source closure. Fresh supervisor
+differs only by its own identity and full target. Preparation-only execution
+started under it; no browser conversion restarted. Three complete repeats,
+6-hour per run, fixed32+16 MiB, 4 Mbps, native fidelity and whole-Chromium250 MiB
+gates remain unchanged. Actual detached preparation PASS26.970s/exit0/zero
+browsers:346 current/pre/post/preimages (original333 unchanged+13 additions),
+2,025,843 restored bytes under unchanged2 MiB evidence cap, whole protected
+test.mkv SHA pre/post equal, host/disk guards, stock restoration and all owned
+scratch removed. [Preparation](evidence/2026-10-12T10-12-17-079Z-packet-cache-original-full-preparation.json).
+This is not conversion, memory acceptance or a speed comparison.
+21 focused durable/control/full/recovery regressions PASS1.258s; ten-file
+zero-warning lint/whitespace PASS. Next ONE full original under hidden supervisor
+with persistent bounded sidecar; first conversion ETA about3½h, validators and
+further required repeats separate. No duplicate or unchanged failed-core replay.
+
+## 2026-10-12 — Historical recovery and first supervisor checkpoint (superseded above)
 
 Previous RAM recheck yielded new evidence: 10.57 GiB physical / 17.91 GiB
 virtual available; both exceed the unchanged 2 GiB host safety check. The old

@@ -5,7 +5,38 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Interruption recovery verified; durable full-run orchestration still partial
+## 2026-10-12 — Durable diagnostic checkpoints implemented; full conversion acceptance still partial
+
+**Partially implemented**. Diagnostic sidecar now atomically persists bounded
+phase peaks/identities/recent graph/real baseline-or-null using one pending write,
+1-second cadence, 2 MiB cap and16 recent buckets. It does not change original
+native sampling, clock fence, phase or primary acceptance formula; every row
+continues to the original observer. 6,000 synthetic-row retention/null/baseline/
+disk-error/backpressure/path controls pass. Real Windows34 samples matched
+original phase peaks on an owned Node fixture. Separate synthetic abrupt exit19
+left a readable LIVE checkpoint without finally/close, explicitly not complete
+conversion evidence.17 exact executed-source versions and generated fixture
+retained; own process births absent, raw checkpoints/runtime removed.
+[Control proof](evidence/2026-10-12T10-08-28-243Z-durable-native-checkpoint-control.json).
+First synthetic phase-time failure/33-sample OS success retained independently;
+corrected fixture plus bounded stderr, no expensive full conversion repeated.
+
+New full recipe/supervisor add sidecar import/options and explicit source pins
+while reversing to qualified existing code. Preparation-only launched; no full
+browser conversion restarted. Full integration preparation PASS26.970s/exit0/
+zero browsers:346 exact pre/post/current source versions (old333 unchanged+13),
+2,025,843 restored bytes under unchanged2 MiB evidence cap, original whole SHA
+before/after, disk/host guards and owned cleanup. [Preparation](evidence/2026-10-12T10-12-17-079Z-packet-cache-original-full-preparation.json).
+Still need
+actual original/three repeats and exact <=250 MiB/fidelity gates, independent
+terminal analysis, clean sessions/scaling/controlled speed and every broader
+original-spec gap. App or Windows job abort survival remains unverified; live
+checkpoints are lower-bound partial observations, never completed acceptance.
+21 focused tests PASS1.258s; ten-file zero-warning lint/whitespace PASS. Next
+one full-original run under hidden supervisor, with bounded durable evidence;
+first conversion estimate about3½h plus independent validation/repeats.
+
+## 2026-10-12 — Historical interruption recovery/supervisor checkpoint (superseded above)
 
 **Partially implemented**. Previous goal turn's RAM check was progress because
 it established that the unchanged host guard no longer blocks testing. Old
