@@ -5,6 +5,20 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Changed full-original attempt LIVE; completion/fidelity/memory remain unverified
+
+**Partially implemented**. ONE changed full driver47412/parent6800, headless
+Chromium8852/native sampler944/detached supervisor39608; all5 recorded PID/
+parent/birth identities native-rechecked live at14:47:02Z. All365 actual source
+pins/current verified; fixed32+16MiB, quality, whole original, three complete
+runs and250MiB primary formula unchanged. Durable checkpoint starts with null
+unsettled blank baseline, never zero. [Launch](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-live.json),
+[wait plan](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-wait-plan.json).
+Estimated first conversion4–4.5h; one interruptible4h20 wait, no rapid polling
+or duplicate/restart. Live-owned data stays under test finally-cleanup, not
+removed prematurely. No terminal correctness/fidelity/repeats/memory/speed or
+public acceptance yet. Broader goal remains ACTIVE/incomplete.
+
 ## 2026-10-12 — Qualified changed full harness ready; actual full conversion requirement remains partial
 
 **Partially implemented**. Fresh durable full harness now uses the exact tested

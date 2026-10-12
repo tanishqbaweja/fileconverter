@@ -4,6 +4,25 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Changed reusable-storage full test LIVE; ETA-length wait, not acceptance
+
+One actual full driver launched14:44:51.726882Z: PID47412/parent6800, hidden
+headless Chromium8852 and native sampler944, detached supervisor39608. All5
+supervisor/parent/driver/browser/sampler PID-parent-birth identities independently
+rechecked live at14:47:02Z. [Live full receipt](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-live.json),
+[birth-qualified ETA wait plan](evidence/2026-10-12T14-43-54-627Z-asyncify-storage-full-wait-plan.json).
+All365 actual source pins still current; actual full source archive retained.
+Native checkpoint persists the original observer's bounded diagnostics; blank
+baseline not settled yet at observation, not invented or recorded as zero.
+Launch free physical12,359,979,008B/virtual17,653,030,912B, protected whole SHA
+verified before launch, fixed heaps/quality/source/three-run250MiB gates unchanged.
+
+First conversion estimate4–4.5h from last observed244,859 frames/12,628.74561s
+versus296,160 original frames. One interruptible15,600,000ms (4h20) clock wait
+planned instead of rapid polling; not a speed guarantee or3-run completion ETA.
+No duplicate/restart, public promotion, cleanup of live-owned scratch, or full
+fidelity/memory/repeat claim. Validators and other runs add time. Goal incomplete.
+
 ## 2026-10-12 — Changed reusable-storage full harness prepared, not yet full acceptance
 
 Fresh additive full candidate now creates the EXACT short-browser-qualified
