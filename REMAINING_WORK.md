@@ -5,6 +5,29 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-13 — Qualified input-error full harness prepared; full-media reliability still partial
+
+**Partially implemented**. Exact162-source browser-qualified read capture now
+integrated into fresh full-original harness. Original reader, codecs/binaries,
+32+16MiB, suspension reuse,4Mbps/q4, full protected input, three completed runs,
+independent full fidelity/SSIM≥.98, six-hour/run and250MiB primary formula all
+unchanged. Failed terminal/raw reports retain bounded exact read error details;
+successful conversions require no read errors. No injected fault enabled/retry.
+Actual hidden preparation PASS (zero executions),380 current/pre/post source
+pins with all365 prior pins retained;256 historical+124 additive, all preimages
+recovered. [Preparation](evidence/2026-10-12T19-44-46-839Z-input-read-original-full-preparation.json).
+Whole original pre/post hash unchanged; stock/UI/CSS restored, owned preparation
+candidate/wrapper/supervisor scratch removed. Host/disk unchanged safety guards
+passed. Initial duplicate metadata hit evidence-size cap; fresh hard-pinned
+external references recover every source without raising limits or omitting any.
+39 focused regressions PASS6.537s, seven-file lint/source whitespace PASS.
+
+This is not a full conversion/memory/fidelity/speed result. Next one actual full
+production-browser attempt with qualified attribution; cause of the previous
+long-lived read failure remains unknown. Every broader requirement and stress,
+cold/scaling, controlled encoding speed, direct native AVIO and browser coverage
+gap remains in this audit. Goal ACTIVE/incomplete, no public promotion.
+
 ## 2026-10-13 — Input attribution and recovery qualified; immediate original-file scan passed
 
 **Partially implemented** media/full-file reliability requirement remains partial.

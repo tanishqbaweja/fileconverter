@@ -4,6 +4,39 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-13 — Fresh qualified-input full harness prepared; no conversion from preparation
+
+Integrated the exact162-source browser-qualified bounded input-error adapter into
+a fresh full-original stager/driver/caller. Existing reader, native Wasm binaries,
+32+16MiB heaps,262,156B reusable suspension storage,4Mbps/q4, full unchanged
+original, three completed/independently validated runs, SSIM≥.98, six-hour/run
+timeout and250MiB complete-Chromium formula remain unchanged. Success requires
+zero input-error records; failed raw/terminal receipts preserve at most six
+failure-only records across three jobs, exact requested offset/count/type/code,
+no payload/filename/raw error text. No fault flag enabled, no retry added, no
+old generic error reclassified as a proven cause, no public promotion.
+
+Actual hidden supervisor preparation PASS exit0, executions0.380 sources =256
+byte-exact historical +124 additive; every prior365 source retained unchanged,
+every preimage recovered/current/pre/post verified. Archive651,889B/SHA
+`c247ae68b7b9801fecbea4e36e8d3de9ae7a644acf4c71b495d09f80606cc380`.
+[Preparation](evidence/2026-10-12T19-44-46-839Z-input-read-original-full-preparation.json),
+[hidden supervisor](evidence/2026-10-12T19-44-45-751Z-input-read-supervisor-prepare-only.json).
+Whole original pre/post SHA unchanged; stock/UI/CSS restored, owned candidate/
+wrapper/supervisor runtime absent. Host physical10,359,607,296B/virtual
+4,109,783,040B and disk2,292,306,894,848B passed unchanged2GiB/32GiB guards.
+
+Initial focused integration rejected duplicated receipt bytes above unchanged
+2MiB additive evidence cap (then2,109,660B after first dedup). Fresh archive
+uses exact hard-pinned references to six existing report archives and two exact
+existing receipts; every byte recovered and rehashed, no source omitted or cap
+raised. Wrong hash/encoding references rejected by tests. No browser conversion
+or expensive full replay happened during these failed unit preparations.
+Final39 focused regressions PASS6.537s; seven-file lint PASS, source whitespace
+PASS. Preparation is never full conversion, fidelity, memory or speed acceptance.
+Next one full production-browser attempt will gather actual long-lived input
+diagnostics while preserving all original gates; goal remains ACTIVE/incomplete.
+
 ## 2026-10-13 — Qualified bounded input diagnostics; whole original input-only scan passed
 
 Implemented failure-only capture around the unchanged production `withinBridge.read`:
