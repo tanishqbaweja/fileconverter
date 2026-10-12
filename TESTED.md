@@ -4,7 +4,48 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — ONE durable full-original test actually launched; ETA wait
+## 2026-10-12 — Durable full-original FAILED; Asyncify input allocation identified, not fixed
+
+The ONE actual test ran under hidden detached supervision; one interruptible
+12,600.317-second ETA wait, no repeated agent polling, duplicate or restart.
+First required conversion failed after12,628,745.61ms (~3h30m29s), zero of3
+validated conversions. Last bridge report244,859 frames/packets; incomplete
+4,776,487,861-byte output deleted by owned finally-cleanup. Whole original
+test.mkv SHA before/after and independent post-terminal read unchanged. Stock
+production assets restored; wrapper/candidate/profile/supervisor scratch removed.
+Independent26 owned-birth checks pass without killing unrelated/reused processes.
+[Terminal analysis](evidence/2026-10-12T10-18-33-321Z-durable-full-terminal-analysis.json).
+
+Actual decoder4421 abort path: Emscripten Asyncify.allocateData -> builtin malloc
+during __asyncjs__within_input_read / Matroska parsing. Attempted heap extent
+33,624,064B exceeds fixed32 MiB; encoder remains16 MiB. NOT an individually
+measured allocation size, not the prior qualified AVBuffer/pool slot. Those
+slots/free headers were correctly not read; requested bytes/live heap/
+fragmentation cause remain unavailable/null. No heap-limit increase or public
+promotion. Packet-cache native/small-browser passes did not fix all full-file
+allocations; unchanged candidate is not eligible for another expensive replay.
+
+117,939 native samples,114,915 valid active-conversion rows/zero unavailable
+active rows; one startup unavailable row retained. Stable blank240,627,712B,
+failed-window complete-Chromium private peak487,940,096B, difference235.855469
+MiB using unchanged formula. This is NOT memory/profile acceptance because
+conversion/fidelity/repeat gates failed or were not reached. Clock fence healthy,
+zero dropped/rewritten timestamps. Durable checkpoint preserves actual baseline
+and EVERY original phase peak;16 recent buckets, one pending write, bounded file.
+Final checkpoint losslessly compressed and redundant raw removed. Original
+19,231,557-byte report retained as612,713-byte gzip, all346 source/current/pre/post
+pins/preimages joined. No native converter or original-file substitution.
+
+Static audit of exact executed decoder glueSHA c819ad…f85a finds
+StackSize262,144 and malloc(12+StackSize), then free(currData) after rewind.
+Configured262,156B is static evidence only, not measured failed malloc argument.
+[Static audit](evidence/2026-10-12T10-18-33-321Z-asyncify-storage-static.json).
+Next qualify one bounded reusable suspension-storage lease with reentrancy,
+zeroing, failure/cancel/lifecycle controls, then actual browser goldens before
+another original full test. No claimed runtime fix or controlled speed gain.
+24 focused regressions PASS1.946s; three-file zero-warning lint/whitespace PASS.
+
+## 2026-10-12 — Historical durable full launch/ETA checkpoint (superseded above)
 
 Driver8904/parent13188/birth10:19:17.6997550Z, headless Chrome33524/birth
 10:19:24.0792530Z, native sampler36052/birth10:19:24.4933670Z and detached

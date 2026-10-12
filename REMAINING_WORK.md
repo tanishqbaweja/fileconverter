@@ -5,7 +5,37 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Durable full-original driver actually LIVE; all acceptance still unproven
+## 2026-10-12 — Full-original allocation failure verified; durable evidence works, media goal remains partial
+
+**Partially implemented**. One full-original attempt FAILED after~3h30m29s:
+zero of3 completed/validated conversions,244,859 last bridged frames/packets,
+4,776,487,861-byte partial deleted. Actual decoder abort occurs in Asyncify
+input-read suspension allocation/builtin malloc, not qualified AVBuffer/pool
+request. Attempted heap extent33,624,064B; decoder stays32 MiB/encoder16 MiB.
+Individual allocation/live heap/fragmentation remain unavailable, not inferred
+from heap extent. Current packet-cache route is not full-qualified; do not
+repeat unchanged failure or solve it by raising Wasm limits.
+[Analysis](evidence/2026-10-12T10-18-33-321Z-durable-full-terminal-analysis.json).
+
+Durable full-run capture verified:117,939 samples, exact baseline/all original
+phase peaks, bounded recent graph/file/writes, missing startup row preserved,
+no clock drops/rewrites. Failed-window235.855469 MiB is not acceptance despite
+being below250: correctness/fidelity/full completion/repeats not reached.
+All346 source versions/current/pre/post join; lossless compact terminal/checkpoint
+archives retained, redundant raw removed.26 owned birth identities absent,
+profile/output/wrapper/candidate/supervisor scratch gone, stock assets restored,
+whole protected SHA unchanged including independent post-terminal read.
+
+Static actual glue confirms256 KiB suspension stack plus12-byte header and
+per-suspension malloc/free. No runtime allocation-size measurement or fix claimed.
+[Static evidence](evidence/2026-10-12T10-18-33-321Z-asyncify-storage-static.json).
+Next implement/qualify one bounded reusable suspension-storage lease preserving
+fixed heaps, lifecycle/reentrancy/zeroing/error handling, same actual browser
+goldens, full original/3 repeats/<=250 MiB/fidelity gates, clean sessions/scaling/
+controlled speed and all broader original-spec gaps.24 focused tests PASS1.946s;
+three-file zero-warning lint/whitespace PASS. Goal ACTIVE/incomplete, no restart.
+
+## 2026-10-12 — Historical durable full LIVE checkpoint (superseded above)
 
 **Partially implemented**. ONE native-CIM birth-qualified driver8904/Chrome33524/
 sampler36052 under detached supervisor29340/child13188, not inferred from status
