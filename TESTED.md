@@ -4,6 +4,34 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Packet-cache full-original harness prepared and independently qualified
+
+Previous goal turn was progress (actual browser fidelity/recovery qualification).
+Fresh full bindings preserve historical executed source files and byte-reverse
+to original full driver b9e05e13…cfe2; no quality, whole-Chromium250MiB formula,
+three-run, six-hour-per-run, native-validator, privacy, host/disk or cleanup gate
+changed. Actual4421 decoder/qualifieda4b encoder, original native4Mbps settings,
+real complete test.mkv, no partial stop. [Preparation](evidence/2026-10-12T05-48-04-956Z-packet-cache-original-full-preparation.json)
+PASS0 browser executions, protected whole SHA before/after unchanged,2GiB host/
+32GiB disk preflight PASS; candidate/wrapper absent and stock UI restored.
+
+All333 actual current/pre/post/preimages recoverable, historical256 untouched+
+77 additions under existing128/384/2MiB/8MiB limits. Initial duplicate report
+embedding exceeded evidence-only2MiB delta guard BEFORE browser launch. Fresh
+evidence module references exactly two already-qualified hard-hash/size-bound
+media/report archives; no source or pin dropped, no cap increased. Materialization
+rechecks external bytes and reconstructs all333 preimages. Unqualified archive/
+path/hash/size references rejected. Retained archive481,815B/1,793,434B restored.
+Four derivation/unit tests and18 focused current/historical evidence regressions
+PASS1.202s; six-file zero-warning lint PASS. These are preparation gates, NOT full
+conversion, OOM fix, memory acceptance or speed gain. Next ONE changed-binary
+original full run, automatically three complete repeats if all gates pass.
+
+Original independently inspected duration12,340.096s/24fps/1920×804. First full
+conversion conservative estimate≈3½h from prior244,873 frames/9,782.117s (~25fps)
+on same source/settings; validation/repeats additional, no completion promise.
+No public promotion or narrowing of the broader original specification.
+
 ## 2026-10-12 — Actual packet-cache browser media/fidelity and same-page recovery PASS
 
 ONE new-core headless production suite:3 cases PASS1.4m, no retry. Actual4421

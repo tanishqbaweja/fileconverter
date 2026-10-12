@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — New packet-cache full-original harness qualified; execution/acceptance next
+
+**Partially implemented**. Actual full preparation PASS0 browsers, protected
+whole test.mkv SHA unchanged,32GiB disk/2GiB host guards, stock UI restored and
+owned candidate/wrapper absent. All333 source preimages/current/pre/post joined,
+historical256 untouched/77 additions. Fresh evidence-only module deduplicates two
+already-qualified hard-hash/size-bound archives; no source omitted or original
+128/384/2MiB/8MiB cap raised. Full driver reverses byte-exactly to historical base;
+all three complete repeats, six-hour-per-run, whole-Chromium250MiB formula,
+independent fidelity/structure/content, fixed heaps/privacy/cleanup unchanged.
+[Preparation](evidence/2026-10-12T05-48-04-956Z-packet-cache-original-full-preparation.json).
+18 focused tests/six-file lint PASS. No full conversion or OOM fix inferred.
+
+Remaining next: ONE actual changed-binary complete original/three-repeat run,
+then independent terminal analysis, clean-session/scaling/controlled speed and
+all broader specification gaps. No public promotion. Conservative first-run
+conversion estimate≈3½h on12,340.096s original at prior~25frames/s; validation and
+further repeats separate, estimate not a guarantee.
+
 ## 2026-10-12 — Packet-cache short browser fidelity/recovery PASS; full acceptance remains
 
 **Partially implemented**. Actual4421 decoder/qualifieda4b encoder production
