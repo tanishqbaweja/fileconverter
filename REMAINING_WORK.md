@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Qualified changed full harness ready; actual full conversion requirement remains partial
+
+**Partially implemented**. Fresh durable full harness now uses the exact tested
+reusable-storage glue and explicit close adapter, adds bounded scalar lifecycle
+capture/assertions, and preserves the full protected input, three completed runs,
+6h/run,4Mbps/q4/SSIM>=.98, complete-Chromium<=250MiB formula and original cleanup/
+privacy/buffering gates. Actual hidden-supervisor preparation PASS, zero browsers:
+[receipt](evidence/2026-10-12T14-40-42-917Z-asyncify-storage-original-full-preparation.json).
+All365 actual source versions retain prior346;256 historical+109 additive under
+unchanged384/128/2MiB/8MiB caps, four exact gzip references losslessly reverified.
+Whole protected SHA unchanged, stock assets restored, all owned scratch removed.
+23 focused tests PASS2.476s/eight-file lint PASS. Failed first preparation retained
+and fixed by deduplicating references, not dropping sources or raising limits;
+earlier unit mistakes recorded in TESTED.md, no full conversion was launched then.
+
+Next actual full-original run under hidden detached supervision. Qualification
+does not establish full fidelity, stable250MiB memory, repeats, speed gain or
+public support. Native output still uses explicitly disclosed bounded OPFS stage
+and final destination copy, not proof of direct native AVIO save. All other
+original-spec requirements remain in the audit below. Goal ACTIVE/incomplete.
+
 ## 2026-10-12 — Reusable suspension storage short-browser qualification complete; full media requirement still partial
 
 **Partially implemented**. The changed private glue reserves/reuses one262,156B

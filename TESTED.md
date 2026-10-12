@@ -4,6 +4,35 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Changed reusable-storage full harness prepared, not yet full acceptance
+
+Fresh additive full candidate now creates the EXACT short-browser-qualified
+glue/native composition and stages its tested close adapter. Durable native
+observer remains unchanged. Driver captures at most16 scalar suspension-final
+records and requires one allocation/free, unchanged262,156B reservation, zero
+active/retained bytes for every completed full run. Original complete test.mkv,
+three runs,6h/run,4Mbps/q4,SSIM>=.98, all-stream validation, strict complete-
+Chromium250MiB formula, blank settling, backpressure/privacy/finally gates remain.
+
+Actual hidden-supervisor preparation PASS (zero browsers/conversions):
+[preparation](evidence/2026-10-12T14-40-42-917Z-asyncify-storage-original-full-preparation.json).
+All365 source pins/preimages/current/post joined, retaining every prior346 plus
+19 additions; historical256 byte-exact,109 additive<=128, total<=384. Four exact
+already-qualified gzip archives are externally referenced/reverified instead of
+duplicated, with unchanged2MiB additive/8MiB runtime evidence caps. Whole protected
+fixture pre/post unchanged; wrapper/candidate/supervisor scratch removed, stock
+production hashes restored. Compact630,516B source archive retained.
+
+Initial preparation failed BEFORE fixture/conversion work because duplicate
+source references exceeded the raw384-reference guard. Fixed caller deduplicates
+references, never raises the cap or omits a unique source. Failed supervisor
+receipt remains retained. Earlier unit failures: bracket typo; source-path edit
+matched six rather than five entries (fixed to change only two actual stage/
+restore command targets, preserving historical source references); misspelled
+observer-name assertion. Corrected before successful preparation/any full launch.
+Final23 focused tests PASS2.476s, eight-file zero-warning lint/whitespace PASS.
+Full completion/fidelity/repeats/memory/speed/scaling and broader goal still open.
+
 ## 2026-10-12 — Reusable Asyncify suspension storage implemented; actual short browser recovery/fidelity PASS
 
 Added a private, reproducible JavaScript-glue patch over the exact executed
