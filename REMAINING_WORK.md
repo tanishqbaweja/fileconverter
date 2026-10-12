@@ -15,6 +15,10 @@ native build/unit, then fresh production-browser/recovery/full-original/repeats/
 scaling/controlled speed. No public promotion, unchanged expensive conversion or
 scope reduction; all original missing/partial requirements remain active.
 
+ONE corrected dispatch now confirmed live: job38206263853/head021552ac…c9113,
+separate source-bound branch, eight-source receipt and canonical state preserved.
+10m ETA sleep/one same-job check; native bytes frozen, acceptance still pending.
+
 ## 2026-10-12 — Native packet build failure retained; SDK-only correction ready for real qualification
 
 **Partially implemented**. Actual first job38205014374 failed4m56 overall at
