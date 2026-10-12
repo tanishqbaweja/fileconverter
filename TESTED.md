@@ -22,6 +22,15 @@ Focused17/17 PASS0.590s, nine new JS files zero-warning lint PASS5.366s.
 Actual build, browser fidelity, full conversion, primary memory, speed and public
 acceptance still pending; no expensive conversion repeated. Next ONE fresh build.
 
+Fresh isolated branch567c6dea9016e7fb7f79f62678a036e58d89aa78 pushed/verified,
+canonical HEAD/index/workflow/main unchanged, six source pre/post/preimages and
+exact generated branch caller retained; owned runtime absent. Dispatch intent
+retained before external call; first list observation was not yet visible, so
+same dispatch re-observed without redispatch. Actual job38205014374 is confirmed
+in_progress at that exact head. Prior equivalent build~10m; use10m ETA sleep and
+one same-job observation, no seconds polling. Native sources now frozen during
+job; no user media uploaded/read or local browser/conversion launch.
+
 ## 2026-10-12 — Changed original full run failed in packet reallocation; bounded reuse source candidate prepared
 
 Previous goal turn was progress: actual new native build, browser fidelity/recovery

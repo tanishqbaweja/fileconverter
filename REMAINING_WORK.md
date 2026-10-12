@@ -20,6 +20,11 @@ original full/repeats/scaling/controlled speed remain pending. No public promoti
 or unchanged expensive conversion; all broader missing/partial requirements below
 remain part of the active goal.
 
+Actual fresh source-head567c6dea…9aa78/job38205014374 confirmed in_progress after
+ONE dispatch; initial API lag did not trigger redispatch. Exact branch/source
+receipts retained, canonical state unchanged, no user media uploaded/read and no
+local conversion.10m ETA sleep before one same-job check; native source frozen.
+
 ## 2026-10-12 — Actual original packet-allocation OOM; private reuse candidate awaiting native qualification
 
 **Partially implemented**. Changed original full23-47-49-089Z failed after
