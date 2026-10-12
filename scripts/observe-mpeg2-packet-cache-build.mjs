@@ -36,4 +36,3 @@ if (mode === "--dispatch") {
   await writeFile(path.join(root, output), JSON.stringify({ recordedAt: new Date().toISOString(), repository, expectedHead: branch.commit, state }, null, 2) + "\n", { flag: "wx" });
   console.log(JSON.stringify({ output, ...state }));
 }
-

@@ -20,4 +20,3 @@ const output = `evidence/packet-cache-collector-${runId}.json`;
 await writeFile(path.join(root, output), JSON.stringify({ recordedAt: new Date().toISOString(), runId, failure, recipe, sourcePins, postSourcePins, preimages,
   ownedRuntime: runtime.directory, ownedRuntimeRemoved: true, browserConversions: 0, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output, failure })); assert.equal(failure, null);
-

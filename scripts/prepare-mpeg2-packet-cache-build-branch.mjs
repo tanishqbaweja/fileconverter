@@ -21,4 +21,3 @@ const output = "evidence/packet-cache-branch-executed-sources-2026-10-12.json";
 await writeFile(path.join(root, output), JSON.stringify({ recordedAt: new Date().toISOString(), recipe, sourcePins, postSourcePins, sourcePreimages,
   ownedWrapperAbsent: true, actualBuildStarted: false, originalVideoRead: false, browserConversions: 0, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output }));
-
