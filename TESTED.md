@@ -4,7 +4,61 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Real bounded HEVC plane browser conversions/recovery verified; full original prepared
+## 2026-10-12 — Changed original full run failed in packet reallocation; bounded reuse source candidate prepared
+
+Previous goal turn was progress: actual new native build, browser fidelity/recovery
+qualification and ONE changed full-original launch. That launch is now terminal;
+no conversion is running and the earlier live checkpoint below is historical.
+[Actual terminal](evidence/2026-10-11T23-47-49-089Z-hevc-plane-original-full-terminal.json)
+records native candidate exit1 despite successful parent collection exit0.
+[Independent audit](evidence/2026-10-11T23-47-49-089Z-hevc-plane-original-full-terminal-analysis.json)
+joins all338 current/pre/post/preimages, both byte-frozen audit sources and nine
+actual new07ff typed functions/body hashes/fatal PCs. First run failed after
+9,782,117.14ms (2h43m02s),244873 bridged frames/packets but244872 completed packets.
+Partial4,778,321,222B output was deleted in finally;0 completed conversions,
+no full quality validation, second/third runs not reached. No completion count
+normalized, no public promotion, no unchanged expensive retry.
+
+Fatal stack is sbrk→malloc→realloc→av_realloc→av_buffer_realloc→av_new_packet→
+mpeg2_packets→mpeg2_frames→within_remux, NOT prior HEVC-plane first-malloc399383B
+or aligned-fallback failure. The observer correctly refused unrelated plane slots:
+0 scalar words; individual allocation bytes, free inventory, heap census and cause
+remain UNKNOWN/null. Attempted heap extent33,599,488B is NOT the allocation size.
+Native peak475,750,400B minus stable same-instance blank240,480,256B yields
+224.37109375MiB for the FAILED observed window, NOT primary acceptance. All92669
+native rows retained,89650 active samples/0 active unavailable, receipt fence
+closed/0 drops/0 rewritten timestamps. Complete stable-baseline, fixed32+16MiB,
+4Mbps/q4:20, original resolution/timing, read/write/backpressure and250MiB gates
+unchanged. Comparing differently failing runtimes does NOT establish speed gain.
+
+All25 recorded owned PID/parent/birth identities independently observed absent;
+no unrelated process killed. Original2,958,573,265B/SHA31f36695…9db34 identical
+before/after. Profiles/wrappers/converted partials/raw duplicate finally gone;
+production UI/CSS restored. Compact recoverable raw593,558B/source901,557B and
+CSV/HTML/trace retained. Historical launch receipt remains unmodified.
+
+Targeted current source investigation finds already-bounded MP4 fragments:
+frag_duration1,000,000us/frag_size1,048,576B/max_interleave_delta1s, not a normal
+whole-output MP4 index. It does NOT prove absence of every mux allocation or the
+OOM cause. The actual bridge unrefs then av_new_packet each encoded packet.
+New PRIVATE source candidate reuses only one final-unreferenced variable-size
+packet lease (at most1MiB payload+64B padding); live aliases remain intact and
+close defers until final unref. No fixed1MiB allocation for every live packet,
+heap increase, codec, metadata, timestamp, fragment or AVIO changes. Exact
+generated bridge/kernel replacements reverse to executed originals. Actual
+av_buffer_create failure ownership verified against retained executed C source.
+Planned actual-libavutil smoke includes200000 reuses, full padding, maximum
+packet, mux-like live alias/deferred close and four injected allocation failures.
+[Source preparation](evidence/2026-10-12T04-32-59-448Z-mpeg2-packet-cache-source.json)
+joins nine current/pre/post/preimages and338 executed originals; archive36,188B.
+This candidate is NOT compiled/native/browser/quality/memory/speed acceptance.
+Next: real pinned native build/lifetime smoke, then changed browser qualification
+before any new full run. Final focused regression36/36 PASS1.156s; five new
+preparation/witness JavaScript files zero-warning lint PASS5.227s, independent
+terminal auditor/witness three-file lint PASS4.913s; whitespace PASS. No expensive
+browser conversion repeated. The complete original specification remains unfinished.
+
+## 2026-10-12 — Real bounded HEVC plane browser conversions/recovery verified; full original prepared (superseded above)
 
 Previous goal turn was progress: actual07ff8c19…51e4 native candidate built and
 qualified. Fresh real Chrome154.0.8037.98 headless control23-31-32-593Z PASS:
@@ -64,12 +118,13 @@ Actual changed full run23-47-49-089Z launched ONCE (session35436): recorded driv
 36624/parent45372/birth2026-10-11T23:48:58.791233Z matched live CIM; owned headless
 Chrome39004/parent36624/birth23:49:06.871514Z also observed live. Launch host6.33GB
 physical/11.26GB virtual passed unchanged2GiB checks; complete protected pre-SHA
-exact, all338 source preimages/actual generated driver retained. This is a LIVE
+exact, all338 source preimages/actual generated driver retained. This was a LIVE
 launch record, not terminal or acceptance evidence. Read-only FFprobe confirms
 source duration12340.096s/24fps; prior250047frames/11292.673s suggests roughly4h
 first conversion, approximately12h three-run suite plus validation (estimates,
-new throughput unproven). Wait4h15 before ONE same-handle check; autonomous native
-memory/safety sampling stays enabled. No frozen code changed while the job is live.
+new throughput unproven). Actual4h15 ETA sleep followed ONE same-handle terminal
+check. These estimates are superseded by the failure above; no job remains live.
+Autonomous native memory/safety sampling stayed enabled; frozen code unchanged.
 
 ## 2026-10-12 — Bounded HEVC plane native build verified; browser qualification next (superseded above)
 

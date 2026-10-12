@@ -1,0 +1,77 @@
+{
+  "recordedAt": "2026-10-12T04:32:59.451Z",
+  "status": "private-packet-cache-source-prepared-not-built",
+  "actualFailure": {
+    "path": "evidence/2026-10-11T23-47-49-089Z-hevc-plane-original-full-terminal-analysis.json",
+    "sha256": "0587b19e2b5675e277fdd00e54bae9f1440af0dce6a6825aa008a68e39c87705",
+    "callPath": "packet-reallocation",
+    "individualAllocationBytes": null,
+    "allocatorInventory": null,
+    "failureCauseProven": false,
+    "completedConversions": 0
+  },
+  "actual338ExecutedSourcesJoined": true,
+  "sourcePins": {
+    "scripts/prepare-mpeg2-packet-cache-source.mjs": "4671b602e0561562d01e653e9df3e651a76098b88bfca6c54ee47d4bbd60cfd5",
+    "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+    "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+    "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+    "tests/mpeg2-packet-cache-source.test.mjs": "80286c97d63ce1f9b1ca9fad23937be2418dfcd5cd733afc35c54980fbd0e9b8",
+    "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+    "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "work/mpeg2-hevc-planes-38183370743/hevc-plane-buffer.c": "76fcae1c9409074b9b287d77d189ba06ab84e680e818a7649c56a6ad43db081a"
+  },
+  "postSourcePins": {
+    "scripts/prepare-mpeg2-packet-cache-source.mjs": "4671b602e0561562d01e653e9df3e651a76098b88bfca6c54ee47d4bbd60cfd5",
+    "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+    "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+    "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+    "tests/mpeg2-packet-cache-source.test.mjs": "80286c97d63ce1f9b1ca9fad23937be2418dfcd5cd733afc35c54980fbd0e9b8",
+    "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+    "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "work/mpeg2-hevc-planes-38183370743/hevc-plane-buffer.c": "76fcae1c9409074b9b287d77d189ba06ab84e680e818a7649c56a6ad43db081a"
+  },
+  "archive": {
+    "path": "outputs/reports/2026-10-12T04-32-59-448Z-mpeg2-packet-cache-source.json.gz",
+    "bytes": 36188,
+    "sha256": "6ebafcc85b64bd8d237e6ffc321ee40ff0bfe571a19956e6f372e389b0f9c270",
+    "restoredBytes": 116225,
+    "restoredSha256": "d41ba9b36f1ac590371242c999fb36af6acbf91a5d5191c51ec59a058a6b4171"
+  },
+  "generatedBridgeSha256": "efeca2d90250e0e9989978692c34428275e175cfc6d7bf1467a72f1da4172258",
+  "generatedKernelSha256": "717b89f27ac1044d02ee8d92494a20ce2e5ae9d6c34dbf6a9283508ec84cdb09",
+  "unchangedFragmentationOptions": {
+    "movflags": "frag_keyframe+delay_moov+default_base_moof+skip_trailer",
+    "fragDurationUs": 1000000,
+    "fragSizeBytes": 1048576,
+    "maxInterleaveUs": 1000000
+  },
+  "candidatePolicy": {
+    "maximumIdleLeases": 1,
+    "maximumIdlePayloadBytes": 1048576,
+    "paddingBytes": 64,
+    "allocateActualRequiredBytes": true,
+    "fixedMaximumAllocationForEveryLivePacket": false,
+    "liveReferencesReleasedEarly": false,
+    "zeroEveryAcquisitionIncludingPadding": true,
+    "finalUnrefOnlyReuse": true,
+    "deferredCloseUntilLiveReferencesGone": true,
+    "metadataAndTimingByteExact": true,
+    "codecSettingsChanged": false,
+    "heapLimitsRaised": false,
+    "sourceOrOutputBufferingChanged": false
+  },
+  "actualAvBufferCreateFailureDoesNotConsumeDataConfirmedFromExecutedSource": true,
+  "nativeBuildExecuted": false,
+  "nativeLifecycleSmokeExecuted": false,
+  "browserLaunches": 0,
+  "conversions": 0,
+  "originalVideoRead": false,
+  "fullOriginalAcceptance": false,
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "nextAction": "Compile against pinned actual libavutil and fixed32MiB decoder, execute lifetime/failure smoke, then qualify changed browser before any new full attempt"
+}

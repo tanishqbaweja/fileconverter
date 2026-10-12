@@ -5,7 +5,41 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Real changed decoder browser fidelity/recovery passed; full original prepared
+## 2026-10-12 — Actual original packet-allocation OOM; private reuse candidate awaiting native qualification
+
+**Partially implemented**. Changed original full23-47-49-089Z failed after
+2h43m02s in av_new_packet/av_buffer_realloc, not the old399383B HEVC-plane or
+aligned-fallback path. Actual candidate exit1,0 completed conversions;244873
+bridged packets versus244872 completed preserves the single failed packet.
+4,778,321,222B partial deleted; quality/repeat/large-file acceptance unreached.
+Independent source/body/PC-bound audit retains338 current/pre/post/preimages,
+all92669 native samples/89650 active with0 unavailable/fence0 drops. Exact
+475750400−240480256 yields224.37109375MiB ONLY for failed observed window, not
+250MiB acceptance. Individual allocation, free inventory and cause unknown;
+33,599,488B attempted heap extent is not allocation size. All25 owned birth
+identities absent, original whole size/SHA unchanged, production restored, all
+converted partial/profile/scratch/raw duplicates removed. Compact reports retained.
+See [terminal audit](evidence/2026-10-11T23-47-49-089Z-hevc-plane-original-full-terminal-analysis.json).
+
+Actual mux already fragments at1s/1MiB; source does not establish OOM cause.
+New private variable-size packet-lease cache source reverses exact executed
+bridge/kernel and permits only one idle final-unreferenced lease≤1MiB+64B. No
+live-reference release, fixed1MiB-per-packet allocation, heap growth, codec,
+timestamp, metadata, fragmentation, source/output buffering or AVIO changes.
+Nine-source preparation plus original338 join and executed C allocation-failure
+ownership contract retained in36,188B compact source archive. Planned actual
+libavutil smoke covers200000 reuses, aliases/deferred close/padding and four
+injected failure cases. [Source receipt](evidence/2026-10-12T04-32-59-448Z-mpeg2-packet-cache-source.json)
+is NOT native/browser acceptance. Remaining next work: compile real pinned
+fixed32MiB decoder and execute lifetime/failure smoke; qualify fresh actual
+binary observer and production-browser fidelity/recovery; only then run a
+changed full-original configuration and required repeats/scaling/controlled speed
+benchmarks. No unchanged long conversion repeated, no public route promoted.
+Focused36/36 regression, zero-warning five-file preparation/witness lint and
+three-file auditor lint, and whitespace checks pass. No expensive browser test
+repeated. The full missing/partial requirements below remain in scope; goal unfinished.
+
+## 2026-10-12 — Real changed decoder browser fidelity/recovery passed; full original prepared (superseded above)
 
 **Partially implemented**. Fresh actual07ff8c19…51e4/Chrome154 control qualifies
 new native indices/bodies/map/PCs and126 current/pre/post/preimages, preserving
@@ -31,12 +65,13 @@ Final74-check regression and18-file zero-warning lint pass. Actual native62/
 control126/media158/full-preparation338 sources are frozen for the changed full
 run. No old expensive conversion rerun and no speed/public acceptance asserted.
 
-Changed full run23-47-49-089Z is now launched once: driver36624 and owned headless
+Historical checkpoint: changed full run23-47-49-089Z launched once; driver36624 and owned headless
 Chrome39004 were verified live by PID/parent/birth. Actual338-source archive and
 protected pre-SHA retained; launch memory guard passes. All full-original/primary/
 speed/public gates are still pending, not inferred from this live record. Estimate
-first conversion~4h and complete three repeats~12h plus validation; use4h15 ETA
-sleep then one same-handle observation, no source mutation or duplicate launch.
+first conversion~4h and complete three repeats~12h plus validation was an estimate;
+actual4h15 ETA sleep/one same-handle terminal observation found the failure above.
+No source mutation or duplicate launch; all those owned processes now absent.
 
 ## 2026-10-12 — Actual decoder-plane native qualification passed; browser/full acceptance pending (superseded above)
 
