@@ -1,0 +1,16 @@
+{
+  "report": "evidence/2026-10-12T09-52-49-560Z-packet-cache-supervisor-probe.json",
+  "source": "Independent exec_command native Get-CimInstance Win32_Process census after launcher command returned exit_code 0",
+  "queryPids": [34660, 25504, 26752],
+  "rows": [
+    {"createdAt": "2026-10-12T09:52:49.5662530Z", "pid": 34660, "parentPid": 26752},
+    {"createdAt": "2026-10-12T09:52:50.3528560Z", "pid": 25504, "parentPid": 34660}
+  ],
+  "journalStatusObserved": "running",
+  "journalUpdatedAt": "2026-10-12T09:52:51.073Z",
+  "observationWallClockTimestamp": null,
+  "launcherPidAbsent": true,
+  "ordinaryLauncherExitSurvivalOnly": true,
+  "appAbortOrWindowsJobTerminationSurvivalVerified": false,
+  "noConversionPerformed": true
+}

@@ -5,7 +5,43 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Packet-cache full-original driver LIVE; completion/acceptance unproven
+## 2026-10-12 — Interruption recovery verified; durable full-run orchestration still partial
+
+**Partially implemented**. Previous goal turn's RAM check was progress because
+it established that the unchanged host guard no longer blocks testing. Old
+full-run session/recorded processes are absent; no original terminal report or
+completed full conversion exists. Independent probe found a genuine but
+incomplete 1.53 GB / 3,352.276-second MPEG2 output, not full acceptance. Exact
+owned cleanup removed five scratch/profile directories; stock assets restored,
+whole protected test.mkv SHA unchanged, all333 actual source preimages joined.
+[Recovery](evidence/2026-10-12T05-53-16-380Z-packet-cache-original-full-interruption-recovery.json).
+Missing native-memory samples cannot be reconstructed or treated as zero;
+interruption cause remains unknown. Historical LIVE section below is not current.
+
+New hidden detached supervisor preserves fixed 64 KiB log tails, atomic flushed
+256 KiB-capped checkpoint, birth-qualified identities, child failures and owned
+runtime finally-cleanup. Actual ordinary launcher-exit control passed with
+1 MiB per-stream output, expected exit7, independent live-after-launcher-exit
+census, terminal absent-owned-birth checks, and five source preimages.
+[Control audit](evidence/2026-10-12T09-52-49-560Z-packet-cache-supervisor-probe-audit.json).
+No codec, settings, thresholds, public registry or frozen full harness changed.
+
+Actual supervisor preparation-only command PASS12.564s/exit0/zero browsers:
+all333 frozen source joins, protected whole SHA pre/post, unchanged3 repeats/
+6h/250 MiB/4 Mbps gates, host/disk guards, stock assets and owned cleanup.
+[Preparation](evidence/2026-10-12T09-54-13-838Z-packet-cache-original-full-preparation.json).
+This supplies a concrete safe launch-control result, not any conversion result.
+20 focused tests PASS2.545s; eight-file zero-warning lint/whitespace PASS.
+
+Remaining: durable native-memory/phase sample recovery; survival/recovery under
+app interruption or Windows job termination (ordinary exit is not that proof);
+ONE actual complete changed-binary original run with all three validated repeats,
+same exact <=250 MiB whole-Chromium formula and fidelity gates; independent
+terminal analysis, cold-session/scaling/controlled speed and broader original
+specification gaps. Preparation-only orchestration does not perform conversion
+and cannot establish OOM fix, speed gain, full acceptance or goal completion.
+
+## 2026-10-12 — Historical full-driver LIVE checkpoint (superseded above)
 
 **Partially implemented**. ONE actual changed-binary driver39080 and owned
 headless Chrome46628 birth-qualified live, session72231. Full original/required

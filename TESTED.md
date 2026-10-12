@@ -4,7 +4,46 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — ONE actual packet-cache full-original driver launched; ETA wait
+## 2026-10-12 — Interrupted full run recovered; bounded hidden supervisor control passed
+
+Previous RAM recheck yielded new evidence: 10.57 GiB physical / 17.91 GiB
+virtual available; both exceed the unchanged 2 GiB host safety check. The old
+full-run session is missing and every recorded process is absent, not merely
+an observation timeout. No completed full conversion or terminal memory report
+exists. Its genuine MPEG2/AAC/artwork MP4 partial was 1,532,758,257 bytes and
+3,352.276 seconds versus the original 12,340.096 seconds. This is incomplete,
+not a successful conversion. Native inspection only; no native converter used.
+[Recovery](evidence/2026-10-12T05-53-16-380Z-packet-cache-original-full-interruption-recovery.json)
+retains all333 executed-source preimages/current/pre/post, restores stock
+production assets, verifies the entire protected test.mkv SHA unchanged, and
+removes all five exact owned directories including the partial/profile.
+Only a 7,230-byte compressed server log and compact receipts remain. Cause of
+interruption, missing native peak and blank baseline remain unavailable/null.
+
+Added an independent detached, windowsHide supervisor without editing the
+frozen conversion harness. Real native birth-qualified control confirmed both
+supervisor and child live after the launcher PID was absent. A 15-second
+fixture drained 1 MiB per output stream into exact 64 KiB tails; atomic,
+file-flushed journal stayed at 197,705 bytes below its 256 KiB cap. Expected
+exit7 remains failure; own runtime removed and both owned birth identities
+absent. Five executed-source preimages and audit preimage retained.
+[Control audit](evidence/2026-10-12T09-52-49-560Z-packet-cache-supervisor-probe-audit.json).
+Ordinary launcher-exit survival ONLY: app/Windows job termination survival and
+durable native-memory sample recovery are NOT verified. No full conversion
+restarted, no public route promoted, no quality/memory gate or speed claim changed.
+
+Actual detached production-harness preparation completed in 12.564 seconds,
+exit0, zero browser/conversion executions. Whole original SHA before/after,
+32 GiB disk/2 GiB host guards, all333 frozen-source joins, unchanged three-run/
+six-hour/250 MiB/4 Mbps gates, stock restoration and owned scratch cleanup pass.
+[Preparation](evidence/2026-10-12T09-54-13-838Z-packet-cache-original-full-preparation.json)
+and [supervisor terminal](evidence/2026-10-12T09-54-13-126Z-packet-cache-supervisor-prepare-only.json).
+20 focused recovery/supervisor/full-harness regressions PASS in 2.545 seconds;
+eight-file zero-warning lint and git whitespace check PASS. This is launch qualification, NOT a speed
+benchmark or full original acceptance. Next add durable phase/native-memory
+recovery before another expensive full run.
+
+## 2026-10-12 — Historical launch checkpoint (superseded by interruption recovery above)
 
 Actual live session72231, driver39080/parent40872/birth05:54:01.1507380Z and
 headless Chrome46628/parent39080/birth05:54:05.9114610Z confirmed by native CIM,
