@@ -4,6 +4,63 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Actual packet-cache browser media/fidelity and same-page recovery PASS
+
+ONE new-core headless production suite:3 cases PASS1.4m, no retry. Actual4421
+decoder plus qualifieda4b plane encoder, fixed32+16MiB. Genuine HEVC→MPEG2 MP4,
+same-page production-worker replacement after bounded destination-write failure
+and cancellation, followed by two independently validated recoveries. All3 outputs
+byte-exact2,245,558B SHA554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27,
+same prior qualified output.1920×804/24fps/96 frames/4Mbps/q4:20/BT709; ordinal
+SSIM.983095≥.98, timestamp diagnostic.966841 remains separately disclosed.
+All96 presentation timestamps≤1ms, two audio tracks compressed/decoded PCM hashes,
+PNG artwork and stream titles preserved. [Actual media proof](evidence/2026-10-12T05-33-59-279Z-packet-cache-media.json).
+
+Three conversion timings4432.515/3520.185/3285.810ms vs prior07ff
+3822.115/3681.585/3784.725ms are unmatched sessions, NOT a controlled speed gain.
+Bounded MP4 OPFS staging then512KiB selected-destination copy remains honestly
+reported, NOT direct native AVIO.64KiB reads/512KiB writes/one pending operation,
+final queued/pending/scratch0. Short whole-process samples are NOT250MiB acceptance.
+
+Whole protected original SHA/2,958,573,265B unchanged before/after. Host2GiB and
+disk2GiB guards passed; fixtures/converted media/profiles/helpers/caller gone,
+stock six engines/UI/CSS restored and nine private additions absent. Independent
+terminal audit confirms all20 sampled Chromium/helper PIDs absent; handles PID
+reuse by post-terminal birth comparison, no processes killed. All151 executed
+media sources/current/pre/post retained in493,484B gzip (2,287,751B restored,
+unchanged8MiB archive cap), plus separately joined native72 preimages. Redundant
+750,096B raw metadata removed only after exact recoverable65,374B gzip validation.
+Only compact code/reports and reusable native tools remain, no converted copies.
+
+Focused41/41 regression PASS1.048s including previous frozen native/control/media
+evidence;15 new JS/test files zero-warning lint PASS. Previous failed native build
+and old full original packet OOM remain preserved; not rewritten as success.
+This is browser short-fidelity/recovery progress, NOT original OOM resolution,
+full-file success, primary memory acceptance, scaling or speed acceptance. Next
+fresh changed-binary full harness, complete original and required repeats/scaling/
+controlled optimization. No public promotion; broad specification stays active.
+
+## 2026-10-12 — Fresh packet-cache browser abort control PASS
+
+Previous goal work was progress (actual native qualification); the RAM-only check
+was a read-only status response. Fresh observers bind actual4421 decoder and its
+new wrapper4473 index, preserving old executed files. Three focused tests PASS;
+zero-browser preparation then ONE actual headless Chrome control PASS in6s.
+[Browser proof](evidence/2026-10-12T05-30-34-367Z-packet-cache-abort-control.json)
+captures actual sbrk4442/builtin4437/wrapper4473/av_malloc4313/av_buffer_allocz4188
+typed bodies/PCs, one synthetic32MiB request,16 scalar words/44 allocator HEADER
+words, no pool/payload/native-at-abort calls/heap copy. No forbidden requests.
+All11 sampled owned births absent; worker/server/profile/export-only control and
+caller runtime removed normally, no unrelated processes killed or original read.
+
+All74 executed browser source preimages/current/post joined in369,147B gzip,
+1,417,000B restored under unchanged128-file/2MiB caps. Separately hash-joined all72
+actual native preimages/current/post in the previously qualified native envelope,
+verified before AND after browser run. No provenance omitted or cap increased.
+This synthetic control is NOT a media conversion, full-file fix,250MiB acceptance,
+fidelity or speed gain. Next actual production-browser fidelity/cancel/write
+recovery, then changed original/full repeats/scaling. Public selector unchanged.
+
 ## 2026-10-12 — Actual bounded packet-cache native build and lifetime/failure qualification PASS
 
 Previous goal turn was progress: preserved actual first build failure and precise

@@ -5,6 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Packet-cache short browser fidelity/recovery PASS; full acceptance remains
+
+**Partially implemented**. Actual4421 decoder/qualifieda4b encoder production
+headless suite3/3 PASS1.4m: genuine HEVC→MPEG2 MP4 and same-page write-failure/
+cancellation recovery. All3 independently validated byte-exact outputs match
+prior qualified output;96 frames/1920×804/24fps/4Mbps/BT709, ordinal SSIM.983095,
+audio packet+PCM hashes/timestamps/artwork/titles retained. Fixed32+16MiB and
+64KiB reads/512KiB writes/one pending operation/final queues0. OPFS MP4 staging
+then selected-destination bounded copy disclosed, not claimed direct-native AVIO.
+Unmatched timings4432.515/3520.185/3285.810ms do NOT prove speed improvement.
+[Media proof](evidence/2026-10-12T05-33-59-279Z-packet-cache-media.json).
+
+Whole original SHA unchanged, disk/host guards passed, disposable converted files/
+fixtures/profiles/owned scratch absent, stock assets restored. All151 media source
+preimages/current/post and separate native72 envelope joined under unchanged
+caps; compact raw report recoverable after redundant metadata removal. Independent
+20-PID cleanup check passes without killing unrelated/reused processes.41 focused
+regressions and15-file zero-warning lint PASS. No public route promoted.
+
+Remaining: fresh changed-binary full harness and COMPLETE original conversion,
+three required runs, full-browser250MiB acceptance/cleanup, clean-session/scaling/
+controlled-speed evidence and all broader original-spec gaps. Old07ff original
+packet allocation OOM is not proven fixed; do not rerun unchanged old binary.
+
+## 2026-10-12 — Fresh packet-cache browser abort control PASS; media/full still missing
+
+**Partially implemented**. Fresh actual4421 observers bind wrapper4473 and nine
+typed function bodies. One real headless Chrome synthetic control PASS6s: exact
+32MiB request,16 scalar/44 bounded allocator-header words, privacy/no payload
+reads/no native-at-abort calls/fixed heap gates retained. All11 owned sampled
+births, worker/server/profile/caller/control binary absent after normal cleanup.
+All74 browser executed source preimages/current/post within original128/2MiB
+caps, separately bound all72 native executed preimages with pre/post verification;
+no source omission or budget increase. [Proof](evidence/2026-10-12T05-30-34-367Z-packet-cache-abort-control.json).
+Not conversion/fidelity/full original/memory/speed acceptance. Remaining actual
+short media/recovery then changed original/repeats/scaling/controlled speed;
+all broader specification gaps remain active, no public promotion.
+
 ## 2026-10-12 — Actual packet-cache native lifecycle PASS; fresh browser/full acceptance missing
 
 **Partially implemented**. Actual no-Docker job38206263853 SUCCESS6m15s at exact
