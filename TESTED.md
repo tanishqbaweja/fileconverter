@@ -4,7 +4,31 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Real fixed-heap packet-cache native build prepared
+## 2026-10-12 — Actual native packet build failed at SDK-driver warning; precise fixed-heap correction prepared
+
+ONE actual hosted job38205014374 at567c6dea…9aa78 finished FAILURE after4m56
+overall. Actual10m ETA sleep then one same-job observation, no seconds polling,
+redispatch or expensive browser conversion. Hosted finally cleanup PASS, API0
+artifacts; no local converter/browser launched and original test.mkv not read.
+[Failure receipt](evidence/packet-cache-build-failure-38205014374.json) retains
+full failed log and22 exact failed Git-head current/source preimages in41,846B
+recoverable gzip BEFORE any correction. Historical first build sources unchanged.
+
+Cause is emcc driver warning `MAXIMUM_MEMORY is only meaningful with
+ALLOW_MEMORY_GROWTH`, promoted by new smoke's-Werror; new packet lifecycle smoke
+and production link not completed. No packet correctness/speed/memory conclusion.
+New strict derivative changes ONLY that driver's unused-command-line diagnostic
+to warning via-Wno-error=unused-command-line-argument; retains-Wall/-Wextra/-Werror
+for C, visible SDK diagnostic, both explicit fixed32MiB options and no growth.
+Actual kernel/cache/smoke/settings, all old source, artifact caps and validation
+gates unchanged. Three corrected nested builders and shell parse; current22
+failed preimages/complete failure log and nine prior source joins verified.
+Final20/20 focused checks PASS0.905s; five new strict/failure JS files zero-warning
+lint PASS5.157s, whitespace PASS. Corrected candidate still needs a fresh source-
+bound warning-fix branch/build and real native smoke, then browser/full/repeats/
+scaling/controlled speed. No live native job or conversion remains, no promotion.
+
+## 2026-10-12 — Real fixed-heap packet-cache native build prepared (superseded above)
 
 Previous goal turn was progress: actual packet-reallocation failure independently
 audited, source candidate prepared,36 focused checks and ledger pushedfb82f89.

@@ -5,7 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Native packet-cache build/recovery/lifetime qualification prepared
+## 2026-10-12 — Native packet build failure retained; SDK-only correction ready for real qualification
+
+**Partially implemented**. Actual first job38205014374 failed4m56 overall at
+SDK driver's redundantMAXIMUM_MEMORY warning promoted by-Werror, BEFORE new
+packet unit/production link completion. Exact failed head567c6dea…9aa78/full
+log22 current/preimage sources retained in41,846B gzip; hosted finally cleanup
+PASS/API0 artifacts.10m ETA sleep then one same-job check, no redispatch/seconds
+polling/local browser or conversion/original-file read. No native job remains live.
+
+Strict fresh derivative leaves old failed sources intact and alters only the
+specific unused-command-line-argument severity. C-Wall/-Wextra/-Werror, visible
+SDK diagnostic, explicit32MiB initial/maximum/no-growth and all cache/lifetime/
+codec/AVIO/artifact/acceptance gates preserved. Corrected nested builders/shell
+parse,20 focused checks and five-file zero-warning lint/whitespace pass. Still
+must create fresh warning-fix source-bound branch and actually compile/run native
+unit, qualify new browser, then full original/repeats/scaling/controlled speed.
+No public promotion or quality/speed/memory acceptance; whole goal unfinished.
+See [preserved actual failure](evidence/packet-cache-build-failure-38205014374.json).
+
+## 2026-10-12 — Native packet-cache build/recovery/lifetime qualification prepared (superseded above)
 
 **Partially implemented**. Fresh no-Docker hosted builder and source-bound branch/
 collector/observer derivatives ready. Exact actual HEVC plane/allocator/encoder/

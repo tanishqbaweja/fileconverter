@@ -1,0 +1,225 @@
+{
+  "recordedAt": "2026-10-12T04:56:21.530Z",
+  "observation": {
+    "path": "evidence/packet-cache-build-observation-38205014374-1791780930435.json",
+    "sha256": "c2dd134016d16278d3101bf83e984c789bf88061b95e253971b251ed55dc03f2"
+  },
+  "run": {
+    "conclusion": "failure",
+    "createdAt": "2026-10-12T04:44:29Z",
+    "databaseId": 38205014374,
+    "headSha": "567c6dea9016e7fb7f79f62678a036e58d89aa78",
+    "jobs": [
+      {
+        "completedAt": "2026-10-12T04:49:25Z",
+        "conclusion": "failure",
+        "databaseId": 114666468762,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-12T04:44:32Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-12T04:44:34Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-12T04:44:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:44:40Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-12T04:44:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:44:45Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-12T04:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:45:11Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-12T04:44:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "failure",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-12T04:45:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:22Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:23Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "2026-10-12T04:49:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:24Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "2026-10-12T04:49:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-12T04:49:24Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-12T04:49:24Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38205014374/job/114666468762"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38205014374"
+  },
+  "failedLogSha256": "955976c8034ac2775325722018122cf5b4e86c83af603acc1814c1144e24cfa9",
+  "sourcePins": {
+    "media/ffmpeg/build-mpeg2-packet-cache.mjs": "555ee56daefcf35cb5df1a7f69ba02370faed534e394b7b7643b8c3742d3ab82",
+    "media/ffmpeg/mpeg2-packet-cache-builder-recipe.mjs": "588ef097beac7d067622b49174ae74ee40b4ec58228ef0807cb3c23cadfe3e55",
+    "media/ffmpeg/mpeg2-packet-cache-recipe.mjs": "dd177d39945215aa04c3d55940c592e64869361019355f67f4fa82cdb8d4381e",
+    "media/ffmpeg/make-mpeg2-packet-cache-pipeline.mjs": "d83b97a477331c759718cb586dda2ff814d0ffffd61ea0fb90ebdde4eabc0334",
+    "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+    "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+    "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+    "media/ffmpeg/build-mpeg2-hevc-planes.mjs": "2eaef641b07bfdef904f2e1ba05300cc28b230989894e7c69dedf828642e7e7d",
+    "media/ffmpeg/mpeg2-hevc-plane-builder-recipe.mjs": "44fd305b234ee129ba8f8149ca68a0fbdad1694dd581e5b2a1291138c6201cb0",
+    "media/ffmpeg/mpeg2-hevc-plane-recipe.mjs": "7f39d3d8653a75091824ce1388aadeef0786d604c39eaa0152062d16dd33732f",
+    "media/ffmpeg/mpeg2-hevc-plane-source.mjs": "f52bd8b1cff7a820dd9ade453dbe72e59c91939aacd65fa8bac3432d14b591ec",
+    "media/ffmpeg/mpeg2-hevc-plane-policy.h": "ba3475e401247117c11f7de4b3c8b8f96d6341cfbd6865871499a1aaad0c4ef8",
+    "media/ffmpeg/patch-mpeg2-hevc-planes.mjs": "94d298027e4741c4dc971d5060bda5538779e4e0fc849595909da6e48aa7e5d7",
+    "media/ffmpeg/mpeg2-encoder-plane-source.mjs": "7a25478e61d6edee7ad5582e29dbd7a9ef43f8ed51dc984eafededf1abb46b52",
+    "media/ffmpeg/mpeg2-encoder-plane-prototype-source.mjs": "fc34e18f291ab5468113a863f5dd9ffa5f0913677f75104dbfb99f176e753dd6",
+    "media/ffmpeg/mpeg2-encoder-plane-smoke.c": "6546d208968d91053fbd0c748d7368aa1b46ad80a7dfe802771e6bbbc21a5e43",
+    "media/ffmpeg/build-mpeg2-alignment16.mjs": "c44148bd6b1340a1b96b2687c2a48ae6e773ef43805c2d95e1c62f7bbde60495",
+    "media/ffmpeg/mpeg2-alignment16-builder-recipe.mjs": "11e8d95b9c6c50b87a7b7298b809bdd3182d11f5322cac10a64c65268997c13d",
+    "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "590833a79f59f604b7f5044796b02e605818a6e6c17d450344dbcc2eb3830cae",
+    "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "b371a7ca71a4bcd823e671d23aacea6c8b0038f8f9cbd86fd3b77e9052dde01d",
+    "media/ffmpeg/mpeg2-alignment16-smoke.c": "5eb7b3ee4c2aaa8708626f4cc35f86f7581b94145d66d0a49e0acae76fcdb6ad",
+    "media/ffmpeg/build-mpeg2-allocation-attempt.mjs": "c480eb623e1a9b0bb8d5e128ebc7c3b07b7227ae4be6a7bae5f1a3315c2a4467"
+  },
+  "sourcesMatchedActualFailedGitHead": true,
+  "archive": {
+    "path": "outputs/reports/packet-cache-build-failure-38205014374.json.gz",
+    "bytes": 41846,
+    "sha256": "1c1d93e401488e91b4477afd9dd176793b1234dbe13bf8ce4d523608fed8e9c3",
+    "restoredBytes": 210618,
+    "restoredSha256": "d2a522a29ba895497f0ddca6b64ae9328a52eaa3d206628d84d9a6b4828a3842"
+  },
+  "hostedCleanupPassed": true,
+  "originalRead": false,
+  "browserConversionsPerformed": 0,
+  "publicAcceptance": false
+}
